@@ -1,15 +1,4 @@
-# Ministry of Justice Template Repository
+# Ministry of Justice Modernisation Platform
 
-Use this template to [create a repository] with the default initial files for a Ministry of Justice Github repository, including:
-
-* The correct LICENSE
-* Github actions
-* .gitignore file
-
-Once you have created your repository, please:
-
-* Edit the copy of this README.md file to document your project
-* Grant permissions to the appropriate MoJ teams
-* Setup branch protection
-
-[create a repository]: https://github.com/ministryofjustice/template-repository/generate
+## About this repository
+This is the Ministry of Justice [Modernisation Platform team](https://github.com/orgs/ministryofjustice/teams/modernisation-platform)'s repository for public work on the Modernisation Platform.
