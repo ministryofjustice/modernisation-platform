@@ -1,1 +1,4 @@
 .env
+.terraform
+*.tfstate
+.DS_Store
