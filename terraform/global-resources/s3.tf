@@ -6,7 +6,5 @@ resource "aws_s3_bucket" "modernisation-platform-terraform-state" {
     enabled = true
   }
 
-  tags {
-    local.global_resources
-  }
+  tags = local.global_resources
 }
