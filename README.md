@@ -18,4 +18,4 @@ This repository currently holds the Modernisation Platform's:
 | Name                                                  | Description                                                      | Link                                                                                       |
 |-------------------------------------------------------|------------------------------------------------------------------|--------------------------------------------------------------------------------------------|
 | modernisation-platform-terraform-iam-superadmins      | Module for creating high-level set superadmins in an AWS account | https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins      |
-| modernisaiton-platform-terraform-iam-federated-access | Module for configuring IAM Federated Access for AWS              | https://github.com/ministryofjustice/modernisation-platform-terraform-iam-federated-access |
+| modernisation-platform-terraform-iam-federated-access | Module for configuring IAM Federated Access for AWS              | https://github.com/ministryofjustice/modernisation-platform-terraform-iam-federated-access |
