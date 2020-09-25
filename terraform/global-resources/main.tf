@@ -11,3 +11,12 @@ terraform {
 provider "aws" {
   region = "eu-west-2"
 }
+
+provider "aws" {
+  alias  = "environments"
+  region = "eu-west-2"
+
+  assume_role {
+    role_arn = "arn:aws:iam::${local.environments_management.root_account_id}:role/${local.environments_management.root_account_role}"
+  }
+}

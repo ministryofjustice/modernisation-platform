@@ -1,0 +1,10 @@
+{
+  "name": "shared-services",
+  "environments": ["logs", "security"],
+  "tags": {
+    "business-unit": "Platforms",
+    "application": "modernisation-platform-shared-services",
+    "is-production": false,
+    "owner": "<Modernisation Platform>: modernisation-platform@digital.justice.gov.uk"
+  }
+}
