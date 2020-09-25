@@ -1,0 +1,9 @@
+{
+  "name": "shared-services",
+  "environments": ["dev"],
+  "tags": {
+    "business-unit": "Platforms",
+    "application": "shared-services",
+    "is-production": false
+  }
+}
