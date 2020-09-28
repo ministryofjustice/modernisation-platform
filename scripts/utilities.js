@@ -3,7 +3,7 @@ const fs = require('fs').promises
 const utilities = {
   async getFilesRecursively (directory) {
     const ls = await fs.readdir(directory, { withFileTypes: true })
-    const files = ls.filter(file => !file.isDirectory()).map(async file => {
+    const files = ls.filter(file => !file.isDirectory()).filter(file => file.name.endsWith('.json')).map(async file => {
       const filePath = `${directory}/${file.name}`
       const contents = await fs.readFile(filePath, 'utf8').then(content => JSON.parse(content))
       return { ...contents, ...{ source: filePath } }
