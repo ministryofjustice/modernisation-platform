@@ -1,0 +1,18 @@
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+jobs:
+  check-environment-definitions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: "14"
+      - run: npm install
+      - uses: actions/github-script@v2
+        with:
+          script: |
+            const run = require(`${process.env.GITHUB_WORKSPACE}/scripts/check-environment-definitions.js`)
+            await run({ github, context })
