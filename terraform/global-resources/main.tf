@@ -15,7 +15,7 @@ provider "aws" {
 
 # Environments provider
 provider "aws" {
-  alias = "environments"
+  alias  = "environments"
   region = "eu-west-2"
 
   assume_role {

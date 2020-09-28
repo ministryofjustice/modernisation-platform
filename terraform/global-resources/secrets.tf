@@ -32,7 +32,7 @@ data "aws_secretsmanager_secret_version" "environments_management" {
 }
 
 locals {
-  auth0_saml  = jsondecode(data.aws_secretsmanager_secret_version.auth0_saml.secret_string)
-  github_saml = jsondecode(data.aws_secretsmanager_secret_version.github_saml.secret_string)
+  auth0_saml              = jsondecode(data.aws_secretsmanager_secret_version.auth0_saml.secret_string)
+  github_saml             = jsondecode(data.aws_secretsmanager_secret_version.github_saml.secret_string)
   environments_management = jsondecode(data.aws_secretsmanager_secret_version.environments_management.secret_string)
 }
