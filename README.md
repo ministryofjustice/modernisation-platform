@@ -7,6 +7,7 @@ This is the Ministry of Justice [Modernisation Platform team](https://github.com
 This repository currently holds the Modernisation Platform's:
 - [Architecture Decision Record (ADR)](architecture-decision-record)
 - [Infrastructure as code](terraform)
+- [Environment definitions](environments)
 
 ## Other useful repositories
 ### Core repositories
@@ -17,5 +18,6 @@ This repository currently holds the Modernisation Platform's:
 ### Terraform modules
 | Name                                                  | Description                                                      | Link                                                                                       |
 |-------------------------------------------------------|------------------------------------------------------------------|--------------------------------------------------------------------------------------------|
-| modernisation-platform-terraform-iam-superadmins      | Module for creating high-level set superadmins in an AWS account | https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins      |
+| modernisation-platform-terraform-environments         | Module for creating environment OUs and application accounts     | https://github.com/ministryofjustice/modernisation-platform-terraform-environments         |
 | modernisation-platform-terraform-iam-federated-access | Module for configuring IAM Federated Access for AWS              | https://github.com/ministryofjustice/modernisation-platform-terraform-iam-federated-access |
+| modernisation-platform-terraform-iam-superadmins      | Module for creating high-level set superadmins in an AWS account | https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins      |
