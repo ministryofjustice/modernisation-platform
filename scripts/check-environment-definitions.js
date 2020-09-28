@@ -30,20 +30,18 @@ module.exports = async ({ github, context }) => {
       missingRequired.forEach(configuration => {
         message.push(`\`${configuration.name}\` is missing: \`${configuration.missing.required.join('`, `')}\``)
       })
-    }
 
-    message.push('Please refer to the Ministry of Justice [Tagging Guidelines](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html) for more information.')
+      message.push('Please refer to the Ministry of Justice [Tagging Guidelines](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html) for more information.')
 
-    const formattedMessage = message.join('\r\n\r\n')
+      const formattedMessage = message.join('\r\n\r\n')
 
-    await github.issues.createComment({
-      issue_number: context.issue.number,
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      body: formattedMessage
-    })
+      await github.issues.createComment({
+        issue_number: context.issue.number,
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        body: formattedMessage
+      })
 
-    if (missingRequired.length) {
       throw new Error(formattedMessage)
     }
   } catch (e) {
