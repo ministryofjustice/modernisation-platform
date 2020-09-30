@@ -1,14 +1,16 @@
 # Environments management
-resource "aws_secretsmanager_secret" "environments_management" {
-  name        = "environments_management"
-  description = "IDs for AWS-specific resources for environment management, such as account ID"
+resource "aws_secretsmanager_secret" "environment_management" {
+  provider    = aws.modernisation-platform
+  name        = "environment_management"
+  description = "IDs for AWS-specific resources for environment management, such as organizational unit IDs"
   tags        = local.environments
 }
 
-data "aws_secretsmanager_secret_version" "environments_management" {
-  secret_id = aws_secretsmanager_secret.environments_management.id
+data "aws_secretsmanager_secret_version" "environment_management" {
+  provider  = aws.modernisation-platform
+  secret_id = aws_secretsmanager_secret.environment_management.id
 }
 
 locals {
-  environments_management = jsondecode(data.aws_secretsmanager_secret_version.environments_management.secret_string)
+  environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 }

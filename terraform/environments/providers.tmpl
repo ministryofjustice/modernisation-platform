@@ -1,0 +1,15 @@
+%{ for key, value in accounts ~}
+provider "aws" {
+  alias  = "${key}"
+  region = "eu-west-2"
+  assume_role {
+    role_arn = "arn:aws:iam::${value}:role/OrganizationAccountAccessRole"
+  }
+}
+
+resource "aws_iam_role" "assumable-modernisation-platform-role" {
+  name = "AssumableByModernisationPlatform"
+  assume_role_policy = data.aws_iam_policy_document.assumable-by-modernisation-platform.json
+  provider = aws.${key}
+}
+%{ endfor ~}
