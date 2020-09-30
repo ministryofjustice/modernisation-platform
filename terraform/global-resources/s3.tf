@@ -22,3 +22,28 @@ resource "aws_s3_bucket_public_access_block" "modernisation-platform-terraform-s
   block_public_acls   = true
   block_public_policy = true
 }
+
+# Allow access to the bucket from the MoJ root account
+data "aws_iam_policy_document" "allow-access-from-root-account" {
+  statement {
+    sid    = "AllowAccessFromRootAccount"
+    effect = "Allow"
+    actions = [
+      "s3:*"
+    ]
+    resources = [
+      "arn:aws:s3:::${aws_s3_bucket.modernisation-platform-terraform-state.id}/*"
+    ]
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::${local.root_account.master_account_id}:user/ModernisationPlatformOrganisationManagement"
+      ]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "allow-access-from-root-account" {
+  bucket = aws_s3_bucket.modernisation-platform-terraform-state.id
+  policy = data.aws_iam_policy_document.allow-access-from-root-account.json
+}
