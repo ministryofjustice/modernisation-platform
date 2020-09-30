@@ -15,7 +15,7 @@ resource "aws_s3_bucket_object" "modernisation-platform-providers" {
   key          = "providers-generated.tf"
   content      = local.providers_file
   content_type = "text/plain"
-  metadata     = {
+  metadata = {
     md5 = md5(local.providers_file)
   }
   tags = local.environments
