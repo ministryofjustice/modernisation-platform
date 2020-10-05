@@ -6,7 +6,7 @@ module.exports = async ({ github, context }) => {
     const configurations = await utilities.getFilesRecursively('./environments').then(configuration => configuration.map(application => {
       // Ensure each configuration has the correct keys and/or tags
       const missingConfiguration = utilities.checkKeys(application, ['name', 'environments', 'tags'])
-      const missingRequiredTags = utilities.checkKeys(application.tags, ['business-unit', 'application', 'is-production', 'owner'])
+      const missingRequiredTags = utilities.checkKeys(application.tags, ['business-unit', 'application', 'owner'])
 
       return {
         ...application,

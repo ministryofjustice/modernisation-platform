@@ -4,7 +4,6 @@
   "tags": {
     "application": "shared-services",
     "business-unit": "Platforms",
-    "is-production": false,
     "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
   }
 }
