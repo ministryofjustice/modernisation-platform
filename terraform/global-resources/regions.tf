@@ -8,5 +8,5 @@ data "aws_regions" "current" {}
 
 resource "local_file" "providers" {
   filename = "providers.tf"
-  content  = templatefile("./templates/providers.tmpl", { regions: data.aws_regions.current.names })
+  content  = templatefile("./templates/providers.tmpl", { regions : data.aws_regions.current.names })
 }
