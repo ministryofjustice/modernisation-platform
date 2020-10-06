@@ -1,5 +1,5 @@
 locals {
-  baselines = ["securityhub"]
+  baselines = ["securityhub", "guardduty"]
 }
 
 # Get AWS regions for baseline services as listed above
