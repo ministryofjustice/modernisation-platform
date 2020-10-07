@@ -20,14 +20,3 @@ resource "aws_s3_bucket_object" "modernisation-platform-providers" {
   }
   tags = local.environments
 }
-
-data "aws_s3_bucket_object" "modernisation-platform-providers" {
-  provider = aws.modernisation-platform
-  bucket   = "modernisation-platform-terraform-state"
-  key      = "providers-generated.tf"
-}
-
-resource "local_file" "providers-generated" {
-  filename = "providers-generated.tf"
-  content  = data.aws_s3_bucket_object.modernisation-platform-providers.body
-}
