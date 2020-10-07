@@ -2,4 +2,3 @@
 .terraform
 *.tfstate*
 .DS_Store
-*-generated.tf
