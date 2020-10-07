@@ -5,7 +5,7 @@
 # in environments.tf.
 locals {
   providers_file = templatefile("providers.tmpl", {
-    accounts : local.environment_management.account_ids
+    accounts : module.environments.environment_account_ids
   })
 }
 
