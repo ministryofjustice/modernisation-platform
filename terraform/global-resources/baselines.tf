@@ -1,6 +1,6 @@
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines"
-  baseline_directory = "./generated"
+  source                = "github.com/ministryofjustice/modernisation-platform-terraform-baselines"
+  baseline_directory    = "./generated"
   baseline_provider_key = "aws"
 }
 
