@@ -4,7 +4,7 @@ module "iam" {
 }
 
 module "auth0" {
-  source                     = "github.com/ministryofjustice/modernisation-platform-terraform-iam-federated-access"
+  source                     = "github.com/ministryofjustice/moj-terraform-aws-sso?ref=fb77656b7fd1a3be7364dfd0e96d13023231f3d9"
   auth0_tenant_domain        = "justice-modernisation-platform.eu.auth0.com"
   auth0_client_id            = local.auth0_saml.client_id
   auth0_client_secret        = local.auth0_saml.client_secret
