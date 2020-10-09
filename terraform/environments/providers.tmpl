@@ -22,4 +22,18 @@ resource "aws_iam_role_policy_attachment" "modernisation-platform" {
   provider   = aws.${key}
 }
 
+module "baselines-${key}" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines"
+  providers = {
+    aws = aws.${key}
+  }
+  baseline_directory    = "./generated"
+  baseline_provider_key = "${key}"
+  baseline_assume_role  = true
+}
+
+module "generated-${key}" {
+  source               = "./generated/${key}"
+  baseline_assume_role = "arn:aws:iam::$${local.environment_management.account_ids["${key}"]}:role/OrganizationAccountAccessRole"
+}
 %{ endfor ~}
