@@ -9,7 +9,7 @@ There are two types of providers in this configuration.
 In [main.tf](main.tf), the default AWS provider is the MoJ root account. There is a secondary provider, with the alias `modernisation-platform`, that assumes the `OrganizationAccountAccessRole` in the Modernisation Platform account.
 
 ### Generated providers
-As of 2020-09-29, there is an open issue regarding dynamic providers (hashicorp/terraform#24476) in Terraform. Therefore, we need to generate a file that defines providers as "static" blocks.
+As of 2020-09-29, there is an [open issue regarding dynamic providers](https://github.com/hashicorp/terraform/issues/24476) in Terraform. Therefore, we need to generate a file that defines providers as "static" blocks.
 
 `providers.tf` creates a local variable that runs `templatefile()` on [providers.tmpl](providers.tmpl), which loops through accounts created within the `environments` module and creates an `aws_iam_role` in each account to allow the Modernisation Platform access.
 
