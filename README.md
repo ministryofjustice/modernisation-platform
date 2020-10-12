@@ -18,5 +18,6 @@ This repository currently holds the Modernisation Platform's:
 ### Terraform modules
 | Name                                                  | Description                                                      | Link                                                                                       |
 |-------------------------------------------------------|------------------------------------------------------------------|--------------------------------------------------------------------------------------------|
+| modernisation-platform-terraform-baselines            | Module for generating application account baseline files         | https://github.com/ministryofjustice/modernisation-platform-terraform-baselines            |
 | modernisation-platform-terraform-environments         | Module for creating environment OUs and application accounts     | https://github.com/ministryofjustice/modernisation-platform-terraform-environments         |
 | modernisation-platform-terraform-iam-superadmins      | Module for creating high-level set superadmins in an AWS account | https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins      |
