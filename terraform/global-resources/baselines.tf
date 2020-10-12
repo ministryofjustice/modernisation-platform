@@ -5,5 +5,6 @@ module "baselines" {
 }
 
 module "generated" {
-  source = "./generated/aws"
+  source        = "./generated/aws"
+  baseline_tags = local.global_resources
 }
