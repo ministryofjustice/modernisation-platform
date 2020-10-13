@@ -19,8 +19,10 @@ resource "aws_s3_bucket" "modernisation-platform-terraform-state" {
 
 resource "aws_s3_bucket_public_access_block" "modernisation-platform-terraform-state" {
   bucket              = aws_s3_bucket.modernisation-platform-terraform-state.id
-  block_public_acls   = true
-  block_public_policy = true
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 # Allow access to the bucket from the MoJ root account
