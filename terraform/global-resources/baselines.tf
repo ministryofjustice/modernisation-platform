@@ -5,6 +5,7 @@ module "baselines" {
 }
 
 module "generated" {
-  source        = "./generated/aws"
-  baseline_tags = local.global_resources
+  source                   = "./generated/aws"
+  baseline_tags            = local.global_resources
+  baseline_root_account_id = local.root_account.master_account_id
 }
