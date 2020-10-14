@@ -68,7 +68,7 @@ resource "aws_cloudwatch_log_group" "cloudtrail" {
   name       = "cloudtrail"
   kms_key_id = aws_kms_key.cloudtrail.arn
   tags       = var.baseline_tags
-  }
+}
 
 resource "aws_cloudwatch_log_stream" "cloudtrail_stream" {
   name           = data.aws_caller_identity.cloudtrail_current.account_id
@@ -164,9 +164,9 @@ data "aws_iam_policy_document" "cloudtrail" {
   }
 
   statement {
-    sid     = "Require SSL"
-    effect  = "Deny"
-    actions = ["s3:*"]
+    sid       = "Require SSL"
+    effect    = "Deny"
+    actions   = ["s3:*"]
     resources = ["${aws_s3_bucket.cloudtrail.arn}/*"]
 
     principals {

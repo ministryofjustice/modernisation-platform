@@ -173,14 +173,14 @@ resource "aws_config_configuration_recorder_status" "aws-eu-west-2" {
 # Create an SNS topic for each region
 resource "aws_sns_topic" "aws-eu-west-2" {
   provider = aws.aws-eu-west-2
-  name = "config"
-  tags = var.baseline_tags
+  name     = "config"
+  tags     = var.baseline_tags
 }
 
 resource "aws_sns_topic_policy" "aws-eu-west-2" {
   provider = aws.aws-eu-west-2
-  arn    = aws_sns_topic.aws-eu-west-2.arn
-  policy = data.aws_iam_policy_document.sns_topic_policy-aws-eu-west-2.json
+  arn      = aws_sns_topic.aws-eu-west-2.arn
+  policy   = data.aws_iam_policy_document.sns_topic_policy-aws-eu-west-2.json
 }
 
 data "aws_iam_policy_document" "sns_topic_policy-aws-eu-west-2" {
@@ -225,16 +225,16 @@ data "aws_iam_policy_document" "sns_topic_policy-aws-eu-west-2" {
 
 # Configure AWS Config rules
 resource "aws_config_config_rule" "access-keys-rotated" {
-  provider = aws.aws-eu-west-2
-  name     = "access-keys-rotated"
+  provider                    = aws.aws-eu-west-2
+  name                        = "access-keys-rotated"
   maximum_execution_frequency = "TwentyFour_Hours"
 
   input_parameters = jsonencode({
-    maxAccessKeyAge: "90"
+    maxAccessKeyAge : "90"
   })
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "ACCESS_KEYS_ROTATED"
   }
 
@@ -244,16 +244,16 @@ resource "aws_config_config_rule" "access-keys-rotated" {
 }
 
 resource "aws_config_config_rule" "account-part-of-organizations" {
-  provider = aws.aws-eu-west-2
-  name     = "account-part-of-organizations"
+  provider                    = aws.aws-eu-west-2
+  name                        = "account-part-of-organizations"
   maximum_execution_frequency = "TwentyFour_Hours"
 
   input_parameters = jsonencode({
-    MasterAccountId: var.baseline_root_account_id
+    MasterAccountId : var.baseline_root_account_id
   })
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "ACCOUNT_PART_OF_ORGANIZATIONS"
   }
 
@@ -263,12 +263,12 @@ resource "aws_config_config_rule" "account-part-of-organizations" {
 }
 
 resource "aws_config_config_rule" "cloud-trail-cloud-watch-logs-enabled" {
-  provider = aws.aws-eu-west-2
-  name     = "cloud-trail-cloud-watch-logs-enabled"
+  provider                    = aws.aws-eu-west-2
+  name                        = "cloud-trail-cloud-watch-logs-enabled"
   maximum_execution_frequency = "TwentyFour_Hours"
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "CLOUD_TRAIL_CLOUD_WATCH_LOGS_ENABLED"
   }
 
@@ -278,12 +278,12 @@ resource "aws_config_config_rule" "cloud-trail-cloud-watch-logs-enabled" {
 }
 
 resource "aws_config_config_rule" "cloud-trail-encryption-enabled" {
-  provider = aws.aws-eu-west-2
-  name     = "cloud-trail-encryption-enabled"
+  provider                    = aws.aws-eu-west-2
+  name                        = "cloud-trail-encryption-enabled"
   maximum_execution_frequency = "TwentyFour_Hours"
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "CLOUD_TRAIL_ENCRYPTION_ENABLED"
   }
 
@@ -293,12 +293,12 @@ resource "aws_config_config_rule" "cloud-trail-encryption-enabled" {
 }
 
 resource "aws_config_config_rule" "cloud-trail-log-file-validation-enabled" {
-  provider = aws.aws-eu-west-2
-  name     = "cloud-trail-log-file-validation-enabled"
+  provider                    = aws.aws-eu-west-2
+  name                        = "cloud-trail-log-file-validation-enabled"
   maximum_execution_frequency = "TwentyFour_Hours"
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "CLOUD_TRAIL_LOG_FILE_VALIDATION_ENABLED"
   }
 
@@ -312,7 +312,7 @@ resource "aws_config_config_rule" "iam-group-has-users-check" {
   name     = "iam-group-has-users-check"
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "IAM_GROUP_HAS_USERS_CHECK"
   }
 
@@ -326,7 +326,7 @@ resource "aws_config_config_rule" "iam-no-inline-policy-check" {
   name     = "iam-no-inline-policy-check"
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "IAM_NO_INLINE_POLICY_CHECK"
   }
 
@@ -336,22 +336,22 @@ resource "aws_config_config_rule" "iam-no-inline-policy-check" {
 }
 
 resource "aws_config_config_rule" "iam-password-policy" {
-  provider = aws.aws-eu-west-2
-  name     = "iam-password-policy"
+  provider                    = aws.aws-eu-west-2
+  name                        = "iam-password-policy"
   maximum_execution_frequency = "TwentyFour_Hours"
 
   input_parameters = jsonencode({
-    RequireUppercaseCharacters: "true",
-    RequireLowercaseCharacters: "true",
-    RequireSymbols: "true",
-    RequireNumbers: "true",
-    MinimumPasswordLength: "8",
-    PasswordReusePrevention: "5",
-    MaxPasswordAge: "0",
+    RequireUppercaseCharacters : "true",
+    RequireLowercaseCharacters : "true",
+    RequireSymbols : "true",
+    RequireNumbers : "true",
+    MinimumPasswordLength : "8",
+    PasswordReusePrevention : "5",
+    MaxPasswordAge : "0",
   })
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "IAM_PASSWORD_POLICY"
   }
 
@@ -361,12 +361,12 @@ resource "aws_config_config_rule" "iam-password-policy" {
 }
 
 resource "aws_config_config_rule" "iam-root-access-key-check" {
-  provider = aws.aws-eu-west-2
-  name     = "iam-root-access-key-check"
+  provider                    = aws.aws-eu-west-2
+  name                        = "iam-root-access-key-check"
   maximum_execution_frequency = "TwentyFour_Hours"
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "IAM_ROOT_ACCESS_KEY_CHECK"
   }
 
@@ -376,12 +376,12 @@ resource "aws_config_config_rule" "iam-root-access-key-check" {
 }
 
 resource "aws_config_config_rule" "iam-user-mfa-enabled" {
-  provider = aws.aws-eu-west-2
-  name     = "iam-user-mfa-enabled"
+  provider                    = aws.aws-eu-west-2
+  name                        = "iam-user-mfa-enabled"
   maximum_execution_frequency = "TwentyFour_Hours"
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "IAM_USER_MFA_ENABLED"
   }
 
@@ -391,16 +391,16 @@ resource "aws_config_config_rule" "iam-user-mfa-enabled" {
 }
 
 resource "aws_config_config_rule" "iam-user-unused-credentials-check" {
-  provider = aws.aws-eu-west-2
-  name     = "iam-user-unused-credentials-check"
+  provider                    = aws.aws-eu-west-2
+  name                        = "iam-user-unused-credentials-check"
   maximum_execution_frequency = "TwentyFour_Hours"
 
   input_parameters = jsonencode({
-    maxCredentialUsageAge: "30"
+    maxCredentialUsageAge : "30"
   })
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "IAM_USER_UNUSED_CREDENTIALS_CHECK"
   }
 
@@ -410,12 +410,12 @@ resource "aws_config_config_rule" "iam-user-unused-credentials-check" {
 }
 
 resource "aws_config_config_rule" "mfa-enabled-for-iam-console-access" {
-  provider = aws.aws-eu-west-2
-  name     = "mfa-enabled-for-iam-console-access"
+  provider                    = aws.aws-eu-west-2
+  name                        = "mfa-enabled-for-iam-console-access"
   maximum_execution_frequency = "TwentyFour_Hours"
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "MFA_ENABLED_FOR_IAM_CONSOLE_ACCESS"
   }
 
@@ -429,14 +429,14 @@ resource "aws_config_config_rule" "required-tags" {
   name     = "required-tags"
 
   input_parameters = jsonencode({
-    tag1Key: "business-unit",
-    tag2Key: "application",
-    tag3Key: "owner",
-    tag4Key: "is-production"
+    tag1Key : "business-unit",
+    tag2Key : "application",
+    tag3Key : "owner",
+    tag4Key : "is-production"
   })
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "REQUIRED_TAGS"
   }
 
@@ -446,12 +446,12 @@ resource "aws_config_config_rule" "required-tags" {
 }
 
 resource "aws_config_config_rule" "root-account-mfa-enabled" {
-  provider = aws.aws-eu-west-2
-  name     = "root-account-mfa-enabled"
+  provider                    = aws.aws-eu-west-2
+  name                        = "root-account-mfa-enabled"
   maximum_execution_frequency = "TwentyFour_Hours"
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "ROOT_ACCOUNT_MFA_ENABLED"
   }
 
@@ -465,7 +465,7 @@ resource "aws_config_config_rule" "s3-account-level-public-access-blocks" {
   name     = "s3-account-level-public-access-blocks"
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "S3_ACCOUNT_LEVEL_PUBLIC_ACCESS_BLOCKS"
   }
 
@@ -479,7 +479,7 @@ resource "aws_config_config_rule" "s3-bucket-public-read-prohibited" {
   name     = "s3-bucket-public-read-prohibited"
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "S3_BUCKET_PUBLIC_READ_PROHIBITED"
   }
 
@@ -493,7 +493,7 @@ resource "aws_config_config_rule" "s3-bucket-public-write-prohibited" {
   name     = "s3-bucket-public-write-prohibited"
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "S3_BUCKET_PUBLIC_WRITE_PROHIBITED"
   }
 
@@ -507,7 +507,7 @@ resource "aws_config_config_rule" "s3-bucket-server-side-encryption-enabled" {
   name     = "s3-bucket-server-side-encryption-enabled"
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "S3_BUCKET_SERVER_SIDE_ENCRYPTION_ENABLED"
   }
 
@@ -521,7 +521,7 @@ resource "aws_config_config_rule" "s3-bucket-ssl-requests-only" {
   name     = "s3-bucket-ssl-requests-only"
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "S3_BUCKET_SSL_REQUESTS_ONLY"
   }
 
@@ -531,12 +531,12 @@ resource "aws_config_config_rule" "s3-bucket-ssl-requests-only" {
 }
 
 resource "aws_config_config_rule" "securityhub-enabled" {
-  provider = aws.aws-eu-west-2
-  name     = "securityhub-enabled"
+  provider                    = aws.aws-eu-west-2
+  name                        = "securityhub-enabled"
   maximum_execution_frequency = "TwentyFour_Hours"
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "SECURITYHUB_ENABLED"
   }
 
@@ -550,7 +550,7 @@ resource "aws_config_config_rule" "sns-encrypted-kms" {
   name     = "sns-encrypted-kms"
 
   source {
-    owner = "AWS"
+    owner             = "AWS"
     source_identifier = "SNS_ENCRYPTED_KMS"
   }
 
