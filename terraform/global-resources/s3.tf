@@ -28,9 +28,9 @@ resource "aws_s3_bucket_public_access_block" "modernisation-platform-terraform-s
 # Allow access to the bucket from the MoJ root account
 data "aws_iam_policy_document" "allow-access-from-root-account" {
   statement {
-    sid    = "AllowAccessFromRootAccount"
-    effect = "Allow"
-    actions = ["s3:*"]
+    sid       = "AllowAccessFromRootAccount"
+    effect    = "Allow"
+    actions   = ["s3:*"]
     resources = ["${aws_s3_bucket.modernisation-platform-terraform-state.arn}/*"]
 
     principals {
