@@ -30,17 +30,40 @@ data "aws_iam_policy_document" "allow-access-from-root-account" {
   statement {
     sid    = "AllowAccessFromRootAccount"
     effect = "Allow"
-    actions = [
-      "s3:*"
-    ]
-    resources = [
-      "arn:aws:s3:::${aws_s3_bucket.modernisation-platform-terraform-state.id}/*"
-    ]
+    actions = ["s3:*"]
+    resources = ["${aws_s3_bucket.modernisation-platform-terraform-state.arn}/*"]
+
     principals {
       type = "AWS"
       identifiers = [
         "arn:aws:iam::${local.root_account.master_account_id}:user/ModernisationPlatformOrganisationManagement"
       ]
+    }
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["true"]
+    }
+  }
+
+  statement {
+    sid     = "Require SSL"
+    effect  = "Deny"
+    actions = ["s3:*"]
+    resources = [
+      "${aws_s3_bucket.modernisation-platform-terraform-state.arn}/*"
+    ]
+
+    principals {
+      identifiers = ["*"]
+      type        = "AWS"
+    }
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
     }
   }
 }
