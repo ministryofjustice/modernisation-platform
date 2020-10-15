@@ -1,11 +1,10 @@
-module "baselines" {
-  source                = "github.com/ministryofjustice/modernisation-platform-terraform-baselines"
-  baseline_directory    = "./generated"
-  baseline_provider_key = "aws"
-}
-
-module "generated" {
-  source                   = "./generated/aws"
-  baseline_tags            = local.global_resources
-  baseline_root_account_id = local.root_account.master_account_id
+resource "local_file" "providers" {
+  filename = "./providers.tf"
+  content = templatefile("../templates/providers.tmpl", {
+    account_regions : local.account_regions,
+    assume_role : false,
+    provider_key : "modernisation-platform",
+    root_account_id_path : "local.root_account.master_account_id",
+    tags_path : "local.global_resources"
+  })
 }
