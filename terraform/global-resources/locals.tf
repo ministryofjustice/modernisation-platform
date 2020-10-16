@@ -1,4 +1,5 @@
 data "aws_organizations_organization" "root_account" {}
+data "aws_regions" "current" {}
 
 locals {
   global_resources = {
@@ -7,5 +8,6 @@ locals {
     is-production = true
     owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
   }
-  root_account = data.aws_organizations_organization.root_account
+  root_account    = data.aws_organizations_organization.root_account
+  account_regions = data.aws_regions.current.names
 }
