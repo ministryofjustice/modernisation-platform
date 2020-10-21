@@ -20,18 +20,3 @@ resource "aws_iam_role_policy_attachment" "modernisation-platform" {
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
   provider   = aws.shared-services-dev
 }
-
-module "baselines-shared-services-dev" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines"
-  providers = {
-    aws = aws.shared-services-dev
-  }
-  baseline_directory    = "./generated"
-  baseline_provider_key = "shared-services-dev"
-  baseline_assume_role  = true
-}
-
-module "generated-shared-services-dev" {
-  source               = "./generated/shared-services-dev"
-  baseline_assume_role = "arn:aws:iam::${local.environment_management.account_ids["shared-services-dev"]}:role/OrganizationAccountAccessRole"
-}
