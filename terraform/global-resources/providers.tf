@@ -80,11 +80,10 @@ provider "aws" {
   alias  = "modernisation-platform-us-west-2"
 }
 
-
 module "baselines" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines"
   providers = {
-    aws                = aws
+    aws                = aws.modernisation-platform-eu-west-2
     aws.ap-northeast-1 = aws.modernisation-platform-ap-northeast-1
     aws.ap-northeast-2 = aws.modernisation-platform-ap-northeast-2
     aws.ap-south-1     = aws.modernisation-platform-ap-south-1
