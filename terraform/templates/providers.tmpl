@@ -14,10 +14,18 @@ provider "aws" {
 %{ endfor ~}
 
 %{~ if assume_role ~}
-module "baselines-${provider_key}" {
-%{~ else ~}
-module "baselines" {
+module "cross-account-access-${provider_key}" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access"
+  providers = {
+    aws = aws.${provider_key}-eu-west-2
+  }
+  account_id = local.modernisation_platform_account.id
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+  role_name  = "ModernisationPlatformAccess"
+}
 %{~ endif }
+
+module "baselines-${provider_key}" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines"
   providers = {
     aws                = aws.${provider_key}-eu-west-2
