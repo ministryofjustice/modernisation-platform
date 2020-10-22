@@ -144,6 +144,16 @@ provider "aws" {
   }
 }
 
+module "cross-account-access-shared-services-dev" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access"
+  providers = {
+    aws = aws.shared-services-dev-eu-west-2
+  }
+  account_id = local.modernisation_platform_account.id
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+  role_name  = "ModernisationPlatformAccess"
+}
+
 module "baselines-shared-services-dev" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines"
   providers = {
