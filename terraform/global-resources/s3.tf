@@ -26,12 +26,14 @@ resource "aws_s3_bucket_public_access_block" "modernisation-platform-terraform-s
 }
 
 # Allow access to the bucket from the MoJ root account
+# Policy extrapolated from:
+# https://www.terraform.io/docs/backends/types/s3.html#s3-bucket-permissions
 data "aws_iam_policy_document" "allow-access-from-root-account" {
   statement {
-    sid       = "AllowAccessFromRootAccount"
+    sid       = "AllowListBucketFromRootAccount"
     effect    = "Allow"
-    actions   = ["s3:*"]
-    resources = ["${aws_s3_bucket.modernisation-platform-terraform-state.arn}/*"]
+    actions   = ["s3:ListBucket"]
+    resources = [aws_s3_bucket.modernisation-platform-terraform-state.arn]
 
     principals {
       type = "AWS"
@@ -39,11 +41,22 @@ data "aws_iam_policy_document" "allow-access-from-root-account" {
         "arn:aws:iam::${local.root_account.master_account_id}:user/ModernisationPlatformOrganisationManagement"
       ]
     }
+  }
 
-    condition {
-      test     = "Bool"
-      variable = "aws:SecureTransport"
-      values   = ["true"]
+  statement {
+    sid    = "AllowModifyObjectsFromRootAccount"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject"
+    ]
+    resources = ["${aws_s3_bucket.modernisation-platform-terraform-state.arn}/*"]
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::${local.root_account.master_account_id}:user/ModernisationPlatformOrganisationManagement"
+      ]
     }
   }
 
