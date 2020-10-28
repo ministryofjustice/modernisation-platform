@@ -34,7 +34,7 @@ jobs:
         run: terraform refresh
       - name: plan
         id: plan
-        run: terraform plan -refresh=false -input=false -no-color 2>&1 | tee $GITHUB_WORKSPACE/plan.txt
+        run: terraform plan -refresh=false -input=false -no-color > $GITHUB_WORKSPACE/plan.txt
         continue-on-error: true
       - uses: actions/github-script@v3
         if: github.event_name == 'pull_request'
