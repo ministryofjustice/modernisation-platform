@@ -1,10 +1,13 @@
 terraform {
-  # `backend` blocks do not support variables, so the bucket name is hard-coded here, although created in the s3.tf file.
+  # `backend` blocks do not support variables, so the following are hard-coded here:
+  # - S3 bucket name, which is created in s3.tf
+  # - DynamoDB table name, which is created in dynamodb.tf
   backend "s3" {
-    bucket  = "modernisation-platform-terraform-state"
-    region  = "eu-west-2"
-    key     = "global-resources/terraform.tfstate"
-    encrypt = true
+    bucket         = "modernisation-platform-terraform-state"
+    dynamodb_table = "modernisation-platform-terraform-state-lock"
+    encrypt        = true
+    key            = "global-resources/terraform.tfstate"
+    region         = "eu-west-2"
   }
 }
 
