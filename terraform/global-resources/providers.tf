@@ -80,7 +80,7 @@ provider "aws" {
   alias  = "modernisation-platform-us-west-2"
 }
 
-module "baselines" {
+module "baselines-modernisation-platform" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines"
   providers = {
     aws                = aws.modernisation-platform-eu-west-2
