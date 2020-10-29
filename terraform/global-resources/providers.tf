@@ -103,6 +103,7 @@ module "baselines-modernisation-platform" {
     aws.us-west-1      = aws.modernisation-platform-us-west-1
     aws.us-west-2      = aws.modernisation-platform-us-west-2
   }
-  root_account_id = local.root_account.master_account_id
-  tags            = local.global_resources
+  replication_region = "eu-west-1"
+  root_account_id    = local.root_account.master_account_id
+  tags               = local.global_resources
 }
