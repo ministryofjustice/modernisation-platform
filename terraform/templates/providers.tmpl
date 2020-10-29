@@ -33,6 +33,7 @@ module "baselines-${provider_key}" {
     aws.${region} ${substr("              ", 0, 14-length(region))}= aws.${provider_key}-${region}
     %{~ endfor ~}
   }
-  root_account_id = ${root_account_id_path}
-  tags            = ${tags_path}
+  replication_region = "eu-west-1"
+  root_account_id    = ${root_account_id_path}
+  tags               = ${tags_path}
 }
