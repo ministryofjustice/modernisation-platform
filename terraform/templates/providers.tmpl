@@ -37,6 +37,6 @@ module "baselines-${provider_key}" {
     aws.${region} ${substr("              ", 0, 14-length(region))}= aws.${provider_key}-${region}
     %{~ endfor ~}
   }
-  root_account_id    = ${root_account_id_path}
-  tags               = ${tags_path}
+  root_account_id = ${root_account_id_path}
+  tags            = ${tags_path}
 }
