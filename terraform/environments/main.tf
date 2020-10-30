@@ -1,11 +1,12 @@
 terraform {
-  # `backend` blocks do not support variables, so the bucket name is hard-coded here, although created in the global-resources/s3.tf file.
-  # The user that this Terraform configuration should be run as, has access to this bucket.
+  # `backend` blocks do not support variables, so the following are hard-coded here:
+  # - S3 bucket name, which is created in s3.tf
   backend "s3" {
-    bucket  = "modernisation-platform-terraform-state"
-    region  = "eu-west-2"
-    key     = "environments/terraform.tfstate"
+    acl    = "bucket-owner-full-control"
+    bucket = "modernisation-platform-terraform-state"
     encrypt = true
+    key     = "environments/terraform.tfstate"
+    region  = "eu-west-2"
   }
 }
 
