@@ -60,8 +60,8 @@ data "aws_iam_policy_document" "allow-access-from-root-account" {
   }
 
   statement {
-    effect = "Allow"
-    actions = ["s3:PutObject"]
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
     resources = ["${aws_s3_bucket.modernisation-platform-terraform-state.arn}/*"]
 
     principals {
@@ -72,9 +72,9 @@ data "aws_iam_policy_document" "allow-access-from-root-account" {
     }
 
     condition {
-      test = "StringEquals"
+      test     = "StringEquals"
       variable = "s3:x-amz-acl"
-      values = ["bucket-owner-full-control"]
+      values   = ["bucket-owner-full-control"]
     }
   }
 
