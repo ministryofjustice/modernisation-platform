@@ -47,8 +47,7 @@ data "aws_iam_policy_document" "allow-access-from-root-account" {
     sid    = "AllowModifyObjectsFromRootAccount"
     effect = "Allow"
     actions = [
-      "s3:GetObject",
-      "s3:PutObject"
+      "s3:GetObject"
     ]
     resources = ["${aws_s3_bucket.modernisation-platform-terraform-state.arn}/*"]
 
@@ -57,6 +56,25 @@ data "aws_iam_policy_document" "allow-access-from-root-account" {
       identifiers = [
         "arn:aws:iam::${local.root_account.master_account_id}:user/ModernisationPlatformOrganisationManagement"
       ]
+    }
+  }
+
+  statement {
+    effect = "Allow"
+    actions = ["s3:PutObject"]
+    resources = ["${aws_s3_bucket.modernisation-platform-terraform-state.arn}/*"]
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::${local.root_account.master_account_id}:user/ModernisationPlatformOrganisationManagement"
+      ]
+    }
+
+    condition {
+      test = "StringEquals"
+      variable = "s3:x-amz-acl"
+      values = ["bucket-owner-full-control"]
     }
   }
 
