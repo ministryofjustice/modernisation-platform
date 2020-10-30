@@ -28,12 +28,15 @@ module "cross-account-access-${provider_key}" {
 module "baselines-${provider_key}" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines"
   providers = {
-    aws                = aws.${provider_key}-eu-west-2
+    # Default and replication regions
+    aws                    = aws.${provider_key}-eu-west-2
+    aws.replication-region = aws.${provider_key}-eu-west-1
+
+    # Other regions
     %{~ for region in account_regions ~}
     aws.${region} ${substr("              ", 0, 14-length(region))}= aws.${provider_key}-${region}
     %{~ endfor ~}
   }
-  replication_region = "eu-west-1"
   root_account_id    = ${root_account_id_path}
   tags               = ${tags_path}
 }

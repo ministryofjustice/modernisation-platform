@@ -157,7 +157,11 @@ module "cross-account-access-shared-services-dev" {
 module "baselines-shared-services-dev" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines"
   providers = {
-    aws                = aws.shared-services-dev-eu-west-2
+    # Default and replication regions
+    aws                    = aws.shared-services-dev-eu-west-2
+    aws.replication-region = aws.shared-services-dev-eu-west-1
+
+    # Other regions
     aws.ap-northeast-1 = aws.shared-services-dev-ap-northeast-1
     aws.ap-northeast-2 = aws.shared-services-dev-ap-northeast-2
     aws.ap-south-1     = aws.shared-services-dev-ap-south-1
