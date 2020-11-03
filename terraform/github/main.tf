@@ -89,6 +89,16 @@ module "terraform-module-s3-bucket" {
   ]
 }
 
+module "terraform-module-trusted-advisor" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-trusted-advisor"
+  description = "A Terraform module to refresh AWS Trusted Advisor."
+  topics = [
+    "aws",
+    "trusted-advisor"
+  ]
+}
+
 # Teams and their access to the above repositories
 module "core-team" {
   source      = "./modules/team"
@@ -101,6 +111,7 @@ module "core-team" {
     module.terraform-module-environments.repository.id,
     module.terraform-module-iam-superadmins.repository.id,
     module.terraform-module-s3-bucket-replication-role.repository.id,
-    module.terraform-module-s3-bucket.repository.id
+    module.terraform-module-s3-bucket.repository.id,
+    module.terraform-module-trusted-advisor.repository.id
   ]
 }
