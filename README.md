@@ -24,3 +24,4 @@ This repository currently holds the Modernisation Platform's:
 | [modernisation-platform-terraform-iam-superadmins](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins) | Module for creating defined IAM users as superadmins |
 | [modernisation-platform-terraform-s3-bucket-replication-role](https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role) | Module for creating an IAM role for S3 bucket replication |
 | [modernisation-platform-terraform-s3-bucket](https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket) | Module for creating S3 buckets with sensible defaults e.g. replication, encryption |
+| [modernisation-platform-terraform-trusted-advisor](https://github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor) | Module for refreshing Trusted Advisor every 60 minutees |
