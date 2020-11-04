@@ -6,7 +6,7 @@ locals {
 
 resource "github_repository" "default" {
   name                   = var.name
-  description            = join(" — ", [var.description, "This repository is defined and managed in Terraform."])
+  description            = join(" • ", [var.description, "This repository is defined and managed in Terraform"])
   homepage_url           = var.homepage_url
   visibility             = "public"
   has_issues             = var.type == "core" ? true : false
