@@ -15,10 +15,11 @@ provider "github" {
 
 # Repositories
 module "core" {
-  source      = "./modules/repository"
-  type        = "core"
-  name        = "modernisation-platform"
-  description = "A place for the public work of the Modernisation Platform"
+  source       = "./modules/repository"
+  type         = "core"
+  name         = "modernisation-platform"
+  description  = "A place for the public work of the Modernisation Platform"
+  homepage_url = "https://ministryofjustice.github.io/modernisation-platform/index.html"
   topics = [
     "architecture-decisions",
     "aws",

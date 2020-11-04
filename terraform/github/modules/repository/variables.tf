@@ -8,6 +8,12 @@ variable "description" {
   description = "Repository description"
 }
 
+variable "homepage_url" {
+  type        = string
+  description = "Repository homepage URL"
+  default     = ""
+}
+
 variable "topics" {
   type        = list(string)
   description = "Repository topics, in addition to 'modernisation-platform', 'terraform-module', 'civil-service'"
