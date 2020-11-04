@@ -110,3 +110,7 @@ module "baselines-modernisation-platform" {
   root_account_id = local.root_account.master_account_id
   tags            = local.global_resources
 }
+
+module "trusted-advisor-modernisation-platform" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor"
+}
