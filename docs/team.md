@@ -1,4 +1,4 @@
-# Modernisation Platform - Our team
+# Our team
 
 Our team is currently made up of 3 members:
 
