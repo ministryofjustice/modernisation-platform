@@ -30,17 +30,18 @@ module "core" {
 module "terraform-module-baselines" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-baselines"
-  description = "A Modernisation Platform-specific configuration of the MoJ Security Guidance AWS account baselines"
+  description = "Module for enabling and configuring common baseline services such as SecurityHub"
   topics = [
     "aws",
-    "moj-security"
+    "aws-baselines",
+    "moj-security",
   ]
 }
 
 module "terraform-module-cross-account-access" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-cross-account-access"
-  description = "A simple Terraform module for allowing cross-account access"
+  description = "Module for creating an IAM role that can be assumed from another account"
   topics = [
     "aws",
     "iam"
@@ -50,7 +51,7 @@ module "terraform-module-cross-account-access" {
 module "terraform-module-environments" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-environments"
-  description = "A proof of concept for provisioning additional environment-based OUs with attached accounts within the Modernisation Platform"
+  description = "Module for creating organizational units and accounts within AWS Organizations from JSON files"
   topics = [
     "organizational-units",
     "aws"
@@ -60,7 +61,7 @@ module "terraform-module-environments" {
 module "terraform-module-iam-superadmins" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-iam-superadmins"
-  description = "A Terraform module for setting up Modernisation Platform superadmins on an account by account basis"
+  description = "Module for creating defined IAM users as superadmins"
   topics = [
     "aws",
     "iam"
@@ -70,7 +71,7 @@ module "terraform-module-iam-superadmins" {
 module "terraform-module-s3-bucket-replication-role" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-s3-bucket-replication-role"
-  description = "Terraform module for creating an S3 bucket replication role based on bucket ARNs"
+  description = "Module for creating an IAM role for S3 bucket replication"
   topics = [
     "aws",
     "s3",
@@ -82,7 +83,7 @@ module "terraform-module-s3-bucket-replication-role" {
 module "terraform-module-s3-bucket" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-s3-bucket"
-  description = "A Terraform module for standardised S3 bucket creation."
+  description = "Module for creating S3 buckets with sensible defaults e.g. replication, encryption"
   topics = [
     "aws",
     "s3",
@@ -93,7 +94,7 @@ module "terraform-module-s3-bucket" {
 module "terraform-module-trusted-advisor" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-trusted-advisor"
-  description = "A Terraform module to refresh AWS Trusted Advisor."
+  description = "Module for refreshing Trusted Advisor every 60 minutees"
   topics = [
     "aws",
     "trusted-advisor"
