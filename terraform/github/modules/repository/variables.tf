@@ -14,6 +14,12 @@ variable "homepage_url" {
   default     = ""
 }
 
+variable "secrets" {
+  type        = map
+  description = "key:value map for GitHub actions secrets"
+  default     = {}
+}
+
 variable "topics" {
   type        = list(string)
   description = "Repository topics, in addition to 'modernisation-platform', 'terraform-module', 'civil-service'"

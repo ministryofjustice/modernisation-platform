@@ -25,6 +25,11 @@ module "core" {
     "aws",
     "documentation"
   ]
+  secrets = {
+    AWS_ACCESS_KEY_ID      = "example"
+    AWS_SECRET_ACCESS_KEY  = "example"
+    TERRAFORM_GITHUB_TOKEN = "example"
+  }
 }
 
 module "terraform-module-baselines" {
