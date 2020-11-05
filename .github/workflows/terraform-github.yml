@@ -1,0 +1,47 @@
+name: terraform
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+    paths: 'terraform/github/**'
+    branches:
+      - main
+
+env:
+  AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+  TF_IN_AUTOMATION: true
+
+defaults:
+  run:
+    working-directory: './terraform/github'
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.13.5
+      - name: init
+        id: init
+        run: terraform init -input=false
+      - name: validate
+        id: validate
+        run: terraform validate -no-color
+      - name: refresh
+        id: refresh
+        run: terraform refresh
+      - name: plan
+        id: plan
+        run: terraform plan -refresh=false -input=false -no-color > $GITHUB_WORKSPACE/plan.txt
+        continue-on-error: true
+      - uses: actions/github-script@v3
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const run = require(`${process.env.GITHUB_WORKSPACE}/scripts/comment-from-file.js`)
+            await run({ github, context, command: "terraform plan", file: "plan.txt" })
