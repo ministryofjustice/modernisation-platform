@@ -1,7 +1,7 @@
 resource "github_team" "default" {
   name        = var.name
   privacy     = "closed"
-  description = join(" — ", [var.description, "This team is defined and managed in Terraform."])
+  description = join(" • ", [var.description, "This team is defined and managed in Terraform"])
 }
 
 resource "github_team_membership" "default" {
