@@ -4,6 +4,7 @@ locals {
   topics        = var.type == "core" ? local.base_topics : concat(local.base_topics, local.module_topics)
 }
 
+# Repository basics
 resource "github_repository" "default" {
   name                   = var.name
   description            = join(" • ", [var.description, "This repository is defined and managed in Terraform"])
@@ -47,4 +48,16 @@ resource "github_branch_protection" "default" {
     dismiss_stale_reviews           = true
     required_approving_review_count = 1
   }
+}
+
+# Secrets
+data "github_actions_public_key" "default" {
+  repository = github_repository.default.id
+}
+
+resource "github_actions_secret" "default" {
+  for_each        = var.secrets
+  repository      = github_repository.default.id
+  secret_name     = each.key
+  plaintext_value = each.value
 }
