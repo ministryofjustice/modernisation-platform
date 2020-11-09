@@ -10,6 +10,7 @@ locals {
   # GitHub usernames for the full Modernisation Platform team
   members = toset([
     "davidkelliott",
+    "donmasters",
     "ewastempel",
     "jakemulley",
     "kcbotsh",
