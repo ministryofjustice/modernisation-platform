@@ -99,7 +99,7 @@ module "terraform-module-s3-bucket" {
 module "terraform-module-trusted-advisor" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-trusted-advisor"
-  description = "Module for refreshing Trusted Advisor every 60 minutees"
+  description = "Module for refreshing Trusted Advisor every 60 minutes"
   topics = [
     "aws",
     "trusted-advisor"
