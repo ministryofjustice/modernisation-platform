@@ -7,7 +7,7 @@ terraform {
     bucket         = "modernisation-platform-terraform-state"
     dynamodb_table = "modernisation-platform-terraform-state-lock"
     encrypt        = true
-    key            = "global-resources/terraform.tfstate"
+    key            = "modernisation-platform-account/terraform.tfstate"
     region         = "eu-west-2"
   }
 }
