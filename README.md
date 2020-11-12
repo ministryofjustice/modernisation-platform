@@ -1,19 +1,20 @@
 # Ministry of Justice Modernisation Platform
 
 ## About this repository
-This is the Ministry of Justice [Modernisation Platform team](https://github.com/orgs/ministryofjustice/teams/modernisation-platform)'s repository for public work on the Modernisation Platform.
+This is the Ministry of Justice [Modernisation Platform team](https://github.com/orgs/ministryofjustice/teams/modernisation-platform)'s repository for core work on the Modernisation Platform.
 
 ## Contents
 This repository currently holds the Modernisation Platform's:
 - [Architecture Decision Record (ADR)](architecture-decision-record)
-- [Infrastructure as code](terraform)
 - [Environment definitions](environments)
+- [Infrastructure as code](terraform)
+- [Source code for ministryofjustice.github.io/modernisation-platform](docs)
 
 ## Other useful repositories
 ### Core repositories
 | Name | Description |
 |-|-|
-| [Modernisation Platform](https://github.com/ministryofjustice/modernisation-platform) (this one) | Our repository for public work, including our ADR and infrastructure as code |
+| [Modernisation Platform](https://github.com/ministryofjustice/modernisation-platform) (this one) | Our repository for core work, including our ADR and infrastructure as code |
 
 ### Terraform modules
 | Name | Description |

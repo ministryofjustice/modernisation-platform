@@ -1,6 +1,6 @@
 terraform {
   # `backend` blocks do not support variables, so the following are hard-coded here:
-  # - S3 bucket name, which is created in global-resources/s3.tf
+  # - S3 bucket name, which is created in modernisation-platform-account/s3.tf
   backend "s3" {
     bucket  = "modernisation-platform-terraform-state"
     encrypt = true
@@ -18,7 +18,7 @@ module "core" {
   source       = "./modules/repository"
   type         = "core"
   name         = "modernisation-platform"
-  description  = "A place for the public work of the Modernisation Platform"
+  description  = "A place for the core work of the Modernisation Platform"
   homepage_url = "https://ministryofjustice.github.io/modernisation-platform/index.html"
   topics = [
     "architecture-decisions",

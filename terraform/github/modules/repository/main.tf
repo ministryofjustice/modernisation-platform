@@ -13,14 +13,15 @@ resource "github_repository" "default" {
   has_issues             = var.type == "core" ? true : false
   has_projects           = var.type == "core" ? true : false
   has_wiki               = var.type == "core" ? true : false
+  has_downloads          = true
   is_template            = false
   allow_merge_commit     = true
   allow_squash_merge     = true
   allow_rebase_merge     = true
   delete_branch_on_merge = true
-  has_downloads          = true
   auto_init              = false
   archived               = false
+  vulnerability_alerts   = true
   topics                 = concat(local.topics, var.topics)
 
   template {
@@ -34,8 +35,8 @@ resource "github_repository" "default" {
 }
 
 resource "github_branch_protection" "default" {
-  repository             = github_repository.default.id
-  branch                 = "main"
+  repository_id          = github_repository.default.id
+  pattern                = "main"
   enforce_admins         = true
   require_signed_commits = true
 
