@@ -2,7 +2,7 @@
 
 As a team, we regularly discuss and decide on our alliance, and document these openly and publicly.
 
-As of 3rd November 2020, our alliance is as follows (in alphabetical order):
+As of 9th November 2020, our alliance is as follows (in alphabetical order):
 
 - We agree that it is important for us to all develop
 - We agree that it is OK to respectfully challenge and debate each other
