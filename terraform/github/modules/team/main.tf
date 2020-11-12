@@ -20,6 +20,10 @@ locals {
     "SteveMarshall",
     "zuriguardiola"
   ])
+  # GitHub usernames for CI users
+  ci_users = toset([
+    "modernisation-platform-ci"
+  ])
 }
 
 resource "github_team" "default" {
@@ -43,6 +47,13 @@ resource "github_team_membership" "members" {
     user
     if ! contains(local.maintainers, user)
   ])
+  team_id  = github_team.default.id
+  username = each.value
+  role     = "member"
+}
+
+resource "github_team_membership" "ci" {
+  for_each = local.ci_users
   team_id  = github_team.default.id
   username = each.value
   role     = "member"
