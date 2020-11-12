@@ -2,8 +2,7 @@ name: terraform
 
 on:
   pull_request:
-    types: [opened, edited, reopened, synchronize, locked, unlocked]
-    paths: 'terraform/github/**'
+    types: [opened, edited, reopened, synchronize]
     branches:
       - main
 
