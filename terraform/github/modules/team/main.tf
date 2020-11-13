@@ -16,7 +16,7 @@ locals {
     "jakemulley",
     "kcbotsh",
     "nishamoj",
-    "philhorrocks"
+    "philhorrocks",
     "seanprivett",
     "SimonPPledger",
     "SteveMarshall",
