@@ -3,8 +3,9 @@ locals {
   # NB: Terraform shows a perputal difference in roles if someone is an organisation owner
   # and will attempt to change them from `maintainer` to `member`, so owners should go in here.
   maintainers = toset([
-    "jakemulley",
     "ewastempel",
+    "jakemulley",
+    "philhorrocks",
     "SteveMarshall"
   ])
   # GitHub usernames for the full Modernisation Platform team
@@ -15,6 +16,7 @@ locals {
     "jakemulley",
     "kcbotsh",
     "nishamoj",
+    "philhorrocks",
     "seanprivett",
     "SimonPPledger",
     "SteveMarshall",
