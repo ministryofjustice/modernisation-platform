@@ -9,6 +9,9 @@ module "state-bucket" {
   tags                 = local.global_resources
 }
 
+# Allow access to the bucket from the MoJ root account
+# Policy extrapolated from:
+# https://www.terraform.io/docs/backends/types/s3.html#s3-bucket-permissions
 data "aws_iam_policy_document" "allow-state-access-from-root-account" {
   statement {
     sid       = "AllowListBucketFromRootAccount"
