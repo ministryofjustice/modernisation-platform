@@ -1,39 +1,23 @@
-resource "aws_s3_bucket" "modernisation-platform-terraform-state" {
-  bucket = "modernisation-platform-terraform-state"
-  acl    = "private"
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "aws:kms"
-      }
-    }
+module "state-bucket" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket"
+  providers = {
+    aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
-
-  versioning {
-    enabled = true
-  }
-
-  tags = local.global_resources
-}
-
-resource "aws_s3_bucket_public_access_block" "modernisation-platform-terraform-state" {
-  bucket                  = aws_s3_bucket.modernisation-platform-terraform-state.id
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
+  bucket_policy        = data.aws_iam_policy_document.allow-state-access-from-root-account.json
+  bucket_name          = "modernisation-platform-terraform-state"
+  replication_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSS3BucketReplication"
+  tags                 = local.global_resources
 }
 
 # Allow access to the bucket from the MoJ root account
 # Policy extrapolated from:
 # https://www.terraform.io/docs/backends/types/s3.html#s3-bucket-permissions
-data "aws_iam_policy_document" "allow-access-from-root-account" {
+data "aws_iam_policy_document" "allow-state-access-from-root-account" {
   statement {
     sid       = "AllowListBucketFromRootAccount"
     effect    = "Allow"
     actions   = ["s3:ListBucket"]
-    resources = [aws_s3_bucket.modernisation-platform-terraform-state.arn]
+    resources = [module.state-bucket.bucket.arn]
 
     principals {
       type = "AWS"
@@ -49,7 +33,7 @@ data "aws_iam_policy_document" "allow-access-from-root-account" {
     actions = [
       "s3:GetObject"
     ]
-    resources = ["${aws_s3_bucket.modernisation-platform-terraform-state.arn}/*"]
+    resources = ["${module.state-bucket.bucket.arn}/*"]
 
     principals {
       type = "AWS"
@@ -62,7 +46,7 @@ data "aws_iam_policy_document" "allow-access-from-root-account" {
   statement {
     effect    = "Allow"
     actions   = ["s3:PutObject"]
-    resources = ["${aws_s3_bucket.modernisation-platform-terraform-state.arn}/*"]
+    resources = ["${module.state-bucket.bucket.arn}/*"]
 
     principals {
       type = "AWS"
@@ -77,29 +61,4 @@ data "aws_iam_policy_document" "allow-access-from-root-account" {
       values   = ["bucket-owner-full-control"]
     }
   }
-
-  statement {
-    sid     = "Require SSL"
-    effect  = "Deny"
-    actions = ["s3:*"]
-    resources = [
-      "${aws_s3_bucket.modernisation-platform-terraform-state.arn}/*"
-    ]
-
-    principals {
-      identifiers = ["*"]
-      type        = "AWS"
-    }
-
-    condition {
-      test     = "Bool"
-      variable = "aws:SecureTransport"
-      values   = ["false"]
-    }
-  }
-}
-
-resource "aws_s3_bucket_policy" "allow-access-from-root-account" {
-  bucket = aws_s3_bucket.modernisation-platform-terraform-state.id
-  policy = data.aws_iam_policy_document.allow-access-from-root-account.json
 }
