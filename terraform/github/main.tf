@@ -28,7 +28,7 @@ module "core" {
   secrets = {
     AWS_ACCESS_KEY_ID      = "example"
     AWS_SECRET_ACCESS_KEY  = "example"
-    TERRAFORM_GITHUB_TOKEN = "example"
+    TERRAFORM_GITHUB_TOKEN = "This needs to be manually set in GitHub."
   }
 }
 
