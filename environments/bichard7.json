@@ -1,0 +1,9 @@
+{
+  "name": "bichard7",
+  "environments": ["dev-current", "dev-next", "test-current", "test-next", "shared", "sandbox-a", "sandbox-b", "sandbox-c"],
+  "tags": {
+    "application": "bichard7",
+    "business-unit": "CJSE",
+    "owner": "cjse@madetech.com"
+  }
+}
