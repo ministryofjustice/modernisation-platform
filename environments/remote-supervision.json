@@ -1,0 +1,9 @@
+{
+  "name": "remote-supervision",
+  "environments": ["non-production", "production"],
+  "tags": {
+    "application": "remote-supervision",
+    "business-unit": "Probation",
+    "owner": "Remote Supervision: remote.supervision+hosting@digital.justice.gov.uk"
+  }
+}
