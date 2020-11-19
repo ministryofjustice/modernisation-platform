@@ -4,7 +4,7 @@ Date: 2020-10-21
 
 ## Status
 
-🤔 Proposed, supersedes [0002 - Use IAM Federated Access](0002-use-iam-federated-access.md)
+✅ Accepted
 
 ## Context
 

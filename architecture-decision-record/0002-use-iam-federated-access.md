@@ -4,7 +4,7 @@ Date: 2020-09-15
 
 ## Status
 
-🤔 Proposed
+❌ Rejected
 
 ## Context
 
