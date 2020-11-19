@@ -17,6 +17,7 @@ We have decided to use GitHub Actions as our CI/CD runner due to the following:
 - we get unlimited free running minutes on all of our public repositories
 - it offers centralised CI/CD alongside our code storage
 - it helps us meet our goal of working in the open
+- other teams within Ministry of Justice are moving toward GitHub Actions themselves, so we can align ourselves
 
 ## Consequences
 
