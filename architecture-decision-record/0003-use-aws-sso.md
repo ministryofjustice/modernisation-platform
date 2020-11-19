@@ -16,6 +16,10 @@ Rather than managing the administrative burden of the Joiners, Movers and Leaver
 
 We can, if we wish, still utilise a different service (e.g. GitHub) as a IdP through Auth0, whilst SCIM provisioning with a different IdP (e.g. G-Suite).
 
+We decided to use AWS SSO in favour of [IAM Federated Access](0002-use-iam-federated-access.md) to allow us to centrally manage identities across the Ministry of Justice at the organisational level rather than at a team level.
+
+A further benefit of this is that AWS SSO can be used across all AWS accounts, not just ones provisioned within the Modernisation Platform, as long as the AWS account is part of the AWS organisation.
+
 ## Consequences
 
 ### General consequences
