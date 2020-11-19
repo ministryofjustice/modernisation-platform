@@ -2,14 +2,14 @@
 
 As a team, we regularly discuss and decide on our alliance, and document these openly and publicly.
 
-As of 9th November 2020, our alliance is as follows (in alphabetical order):
+As of 17th November 2020, our alliance is as follows (in alphabetical order):
 
-- We agree that it is important for us to all develop
+- We agree that it is important for us to all learn
 - We agree that it is OK to respectfully challenge and debate each other
 - We agree that no question is a stupid question
 - We will aim to communicate more than necessary in Slack
 - We will be transparent, open and inclusive
-- We will call out each other when we break out principles
+- We will call out each other when we break our principles
 - We will hold a monthly remote social activity
 - We will highlight achievements
 - We will lead a blameless culture
