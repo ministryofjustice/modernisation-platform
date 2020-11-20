@@ -28,6 +28,7 @@ get_all_local_environment_definitions () {
 
 get_all_remote_workspace_definitions () {
   cd terraform/environments/bootstrap || exit
+  terraform init -input=false
   terraform workspace list > ../../../tmp/remote-workspaces.tmp
   cat ../../../tmp/remote-workspaces.tmp | grep "\S" | grep -v "default" | tr -d "* " | tee ../../../tmp/remote-workspaces.tmp
   cd ../../.. || exit
