@@ -1,0 +1,9 @@
+{
+  "name": "modernisation-platform-core",
+  "environments": ["logging", "security", "network-services", "shared-services"],
+  "tags": {
+    "application": "modernisation-platform",
+    "business-unit": "Platforms",
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
+  }
+}
