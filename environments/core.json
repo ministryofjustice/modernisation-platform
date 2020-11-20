@@ -1,5 +1,5 @@
 {
-  "name": "modernisation-platform-core",
+  "name": "core",
   "environments": ["logging", "security", "network-services", "shared-services"],
   "tags": {
     "application": "modernisation-platform",
