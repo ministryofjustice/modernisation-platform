@@ -37,7 +37,7 @@ get_all_remote_workspace_definitions () {
 compare_local_and_remote_definitions () {
   sort tmp/remote-workspaces.tmp -o tmp/remote-workspaces.tmp
   sort tmp/local-environments.tmp -o tmp/local-environments.tmp
-  comm -1 -3 tmp/remote-workspaces.tmp tmp/local-environments.tmp > tmp/remote-workspaces-missing.tmp
+  grep -xvFf tmp/remote-workspaces.tmp tmp/local-environments.tmp > tmp/remote-workspaces-missing.tmp
 }
 
 create_missing_remote_workspaces () {
