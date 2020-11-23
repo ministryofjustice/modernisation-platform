@@ -57,7 +57,7 @@ create_remote_workspaces () {
       output=$(terraform workspace new "$workspace") || (echo "$output" && false)
       output=$(terraform workspace select "$workspace") || (echo "$output" && false)
     done < ../../../tmp/$line-remote-missing.tmp
-    cd ..
+    cd ../..
   done < ../../tmp/local-applications.tmp
 }
 
