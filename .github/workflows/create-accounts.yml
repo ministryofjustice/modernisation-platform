@@ -2,6 +2,8 @@ name: terraform
 
 on:
   push:
+    paths:
+      - 'environments/**.json'
     branches:
       - main
 
