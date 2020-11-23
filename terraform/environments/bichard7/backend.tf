@@ -8,7 +8,7 @@ terraform {
     encrypt              = true
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
-    workspace_key_prefix = "environments" # This will store the object as environments/${workspace}/terraform.tfstate
+    workspace_key_prefix = "environments/bichard7" # This will store the object as environments/bichard7/${workspace}/terraform.tfstate
   }
 }
 
