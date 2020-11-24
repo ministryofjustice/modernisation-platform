@@ -1,4 +1,4 @@
-# # Backend
+# Backend
 terraform {
   # `backend` blocks do not support variables, so the following are hard-coded here:
   # - S3 bucket name, which is created in s3.tf
