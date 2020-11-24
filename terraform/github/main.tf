@@ -19,7 +19,7 @@ module "core" {
   type         = "core"
   name         = "modernisation-platform"
   description  = "A place for the core work of the Modernisation Platform"
-  homepage_url = "https://ministryofjustice.github.io/modernisation-platform/index.html"
+  homepage_url = "https://ministryofjustice.github.io/modernisation-platform"
   topics = [
     "architecture-decisions",
     "aws",
@@ -30,6 +30,14 @@ module "core" {
     AWS_SECRET_ACCESS_KEY  = "example"
     TERRAFORM_GITHUB_TOKEN = "This needs to be manually set in GitHub."
   }
+}
+
+module "hello-world" {
+  source      = "./modules/repository"
+  type        = "core"
+  name        = "modernisation-platform-hello-world"
+  description = "A sample application configuration within the Modernisation Platform"
+  topics      = ["sample-code"]
 }
 
 module "terraform-module-baselines" {
@@ -123,6 +131,7 @@ module "core-team" {
   description = "Modernisation Platform team"
   repositories = [
     module.core.repository.id,
+    module.hello-world.repository.id,
     module.terraform-module-baselines.repository.id,
     module.terraform-module-cross-account-access.repository.id,
     module.terraform-module-environments.repository.id,
