@@ -1,6 +1,6 @@
 {
-  "name": "core",
-  "environments": ["logging", "security", "network-services", "shared-services"],
+  "name": "core-shared-services",
+  "environments": ["production"],
   "tags": {
     "application": "modernisation-platform",
     "business-unit": "Platforms",
