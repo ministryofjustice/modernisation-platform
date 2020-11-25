@@ -47,6 +47,7 @@ compare_local_and_remote_definitions () {
       cp tmp/"$line"-local.tmp tmp/"$line"-remote-missing.tmp
     fi
   done < tmp/local-applications.tmp
+  echo "Finished comparing local and remote definitions"
 }
 
 create_remote_workspaces () {
@@ -55,6 +56,7 @@ create_remote_workspaces () {
       called_function="create_remote_workspaces: creating $workspace in $line"
       cd "terraform/environments/$line" || exit
       run_terraform
+      echo "Running terraform workspace new $workspace"
       output=$(terraform workspace new "$workspace") || (echo "$output" && false)
       cd ../../..
     done < tmp/"$line-remote-missing.tmp"

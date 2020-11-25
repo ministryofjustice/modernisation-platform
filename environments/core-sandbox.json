@@ -1,8 +1,8 @@
 {
-  "name": "shared-services",
+  "name": "core-sandbox",
   "environments": ["dev"],
   "tags": {
-    "application": "shared-services",
+    "application": "core-sandbox",
     "business-unit": "Platforms",
     "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
   }

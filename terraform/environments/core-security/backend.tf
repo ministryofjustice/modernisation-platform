@@ -8,7 +8,7 @@ terraform {
     encrypt              = true
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
-    workspace_key_prefix = "environments/shared-services" # This will store the object as environments/shared-services/${workspace}/terraform.tfstate
+    workspace_key_prefix = "environments/core-security" # This will store the object as environments/core-security/${workspace}/terraform.tfstate
   }
 }
 
