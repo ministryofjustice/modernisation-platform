@@ -8,14 +8,14 @@ run_terraform () {
 }
 
 get_all_local_application_definitions () {
-  cat environments/*.json | jq -r '. | .name' > tmp/local-applications.tmp
+  jq -r '(input_filename | ltrimstr("environments/") | rtrimstr(".json"))' environments/*.json > tmp/local-applications.tmp
 }
 
 get_all_local_environment_definitions_split_by_application () {
   for file in environments/*.json
   do
     filename=$(basename "$file" .json)
-    cat "$file" | jq -r '. | .name + "-" + .environments[]' > tmp/"$filename"-local.tmp
+    jq -r '(input_filename | ltrimstr("environments/") | rtrimstr(".json")) + "-" + .environments[]' $file > tmp/"$filename"-local.tmp
   done
 }
 
@@ -69,7 +69,7 @@ main () {
   get_all_local_environment_definitions_split_by_application &&
   create_local_workspaces &&
   compare_local_and_remote_definitions &&
-  create_remote_workspaces
+  create_remote_workspaces &&
   rm -r tmp/
 }
 
