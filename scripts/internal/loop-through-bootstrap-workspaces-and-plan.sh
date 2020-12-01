@@ -41,7 +41,7 @@ loop_through_workspaces_and_plan() {
 main () {
   mkdir -p tmp/ &&
   get_remote_workspaces &&
-  loop_through_workspaces_and_plan
+  loop_through_workspaces_and_plan &&
   rm -r tmp/
 }
 
