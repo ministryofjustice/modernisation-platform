@@ -23,7 +23,7 @@ create_accounts () {
 }
 
 get_all_local_environment_definitions () {
-  cat environments/*.json | jq -r '. | .name + "-" + .environments[]' > tmp/local-environments.tmp
+  jq -r '(input_filename | ltrimstr("environments/") | rtrimstr(".json")) + "-" + .environments[]' environments/*.json > tmp/local-environments.tmp
 }
 
 get_all_remote_workspace_definitions () {

@@ -5,7 +5,7 @@ module.exports = async ({ github, context }) => {
     // Get all configuration files
     const configurations = await utilities.getFilesRecursively('./environments').then(configuration => configuration.map(application => {
       // Ensure each configuration has the correct keys and/or tags
-      const missingConfiguration = utilities.checkKeys(application, ['name', 'environments', 'tags'])
+      const missingConfiguration = utilities.checkKeys(application, ['environments', 'tags'])
       const missingRequiredTags = utilities.checkKeys(application.tags, ['business-unit', 'application', 'owner'])
 
       return {
@@ -28,7 +28,7 @@ module.exports = async ({ github, context }) => {
       message.push('### ❗ Required')
 
       missingRequired.forEach(configuration => {
-        message.push(`\`${configuration.name}\` is missing: \`${configuration.missing.required.join('`, `')}\``)
+        message.push(`\`${configuration.source}\` is missing: \`${configuration.missing.required.join('`, `')}\``)
       })
 
       message.push('Please refer to the Ministry of Justice [Tagging Guidelines](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html) for more information.')
