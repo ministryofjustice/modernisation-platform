@@ -28,7 +28,7 @@ module.exports = async ({ github, context }) => {
       message.push('### ❗ Required')
 
       missingRequired.forEach(configuration => {
-        message.push(`\`${configuration.name}\` is missing: \`${configuration.missing.required.join('`, `')}\``)
+        message.push(`\`${configuration.source}\` is missing: \`${configuration.missing.required.join('`, `')}\``)
       })
 
       message.push('Please refer to the Ministry of Justice [Tagging Guidelines](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html) for more information.')
