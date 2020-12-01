@@ -1,5 +1,4 @@
 {
-  "name": "core-logging",
   "environments": ["production"],
   "tags": {
     "application": "modernisation-platform",

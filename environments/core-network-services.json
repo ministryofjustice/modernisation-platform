@@ -1,5 +1,4 @@
 {
-  "name": "core-network-services",
   "environments": ["production"],
   "tags": {
     "application": "modernisation-platform",
