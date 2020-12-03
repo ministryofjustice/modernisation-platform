@@ -1,0 +1,58 @@
+# Creating environments
+
+## Overview
+
+In the Modernisation Platform, you can define environments via a JSON file in the [environments](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments) directory of the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform).
+
+To provision new environments, create a JSON file and submit a pull request to the Modernisation Platform repository. When this is merged, we will provision your environments. Each environment defined represents an AWS account, see the [example](#example) below for more information.
+
+## Our recommendations
+- Your JSON filename _must_ represent the application name
+- Tags _must_ follow the [Ministry of Justice Security Guidance for Tagging](https://ministryofjustice.github.io/security-guidance/baseline-aws-accounts/#tagging), though this doesn't automatically tag resources you configure in your provisioned accounts. It is used to tag the account itself.
+- Usually two environments per application, namely `non-production` and `production`
+
+## Steps
+1. `git clone` the Modernisation Platform repository: `git clone https://github.com/ministryofjustice/modernisation-platform.git`
+2. Create a new JSON file in `environments/`
+3. Fill out the JSON file template below
+4. Submit a pull request
+5. On merging your pull request, we will provision your AWS accounts
+
+## JSON files
+
+### Keys and what their values should represent
+- `name` key is now deprecated. We now use the JSON file name instead.
+- `environments` should be an array of environments required. If you require a production environment, please use the keyword `production`, as we use it to determine retention periods, backup frequency, and similar that will be different compared to non-production environments
+- `tags` should be an object of the mandatory tags defined in the MoJ [Tagging Guidance](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tagging-your-infrastructure). You can omit `is-production` as we infer this from the environment name
+
+### Blank
+
+`filename`: `application-name.json`
+```json
+{
+  "environments": [],
+  "tags": {
+    "application": "",
+    "business-unit": "",
+    "owner": ""
+  }
+}
+```
+
+### Example
+
+An JSON definition for an nonsensical application called [`glados`](https://en.wikipedia.org/wiki/GLaDOS), that needs two environments: `non-production` and `production`.
+
+`filename`: `glados.json`
+```json
+{
+  "environments": ["non-production", "production"],
+  "tags": {
+    "application": "GLaDOS",
+    "business-unit": "Platforms",
+    "owner": "GLaDOS (Genetic Lifeform and Disk Operating System): aperture-science@digital.justice.gov.uk"
+  }
+}
+```
+
+This will provision two AWS accounts, which will be called: `glados-non-production`, and `glados-production`.
