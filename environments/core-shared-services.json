@@ -1,5 +1,4 @@
 {
-  "name": "core-shared-services",
   "environments": ["production"],
   "tags": {
     "application": "modernisation-platform",
