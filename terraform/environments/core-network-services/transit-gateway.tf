@@ -35,12 +35,23 @@ resource "aws_ec2_transit_gateway_route_table" "TGW_route_table" {
 #########################
 # VPC attachment
 #########################
+locals {
+  created_vpcs_ids = {
+    live     = module.live_vpc.vpc_id
+    non-live = module.non_live_vpc.vpc_id
+  }
+  created_private_tgw_subnet_ids = {
+    live     = module.live_vpc.private_tgw_subnet_ids
+    non-live = module.non_live_vpc.private_tgw_subnet_ids
+  }
+}
+
 resource "aws_ec2_transit_gateway_vpc_attachment" "attachments" {
   for_each = toset(var.env_vpcs)
 
   transit_gateway_id = aws_ec2_transit_gateway.TGW.id
-  vpc_id             = each.value == "live" ? module.live_vpc.vpc_id : module.non_live_vpc.vpc_id
-  subnet_ids         = each.value == "live" ? module.live_vpc.private_tgw_subnet_ids : module.non_live_vpc.private_tgw_subnet_ids
+  vpc_id             = local.created_vpcs_ids[each.value]
+  subnet_ids         = local.created_private_tgw_subnet_ids[each.value]
 
   # Turn off default route table association and propogation, as we're providing our own
   transit_gateway_default_route_table_association = false
