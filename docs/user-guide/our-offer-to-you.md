@@ -14,7 +14,7 @@ We're currently exploring supporting the following for all applications:
 - automated domain allocation for all applications
 - automated OS patching for applications that support it
 - automated TLS certificates for all applications
-- bastion access for all applications
+- management access to application resources
 - centralised networking for all applications, including VPCs, subnets, inter-application connections
 
 ### What we don't offer
@@ -26,7 +26,7 @@ We don't offer the following, although we can help advise if you need it:
 - application security
 - ongoing maintenance of the application, including patching the application, updating dependencies, and ensuring it remains deployable
 - user support for applications
-- alternative ways for end users to access applications that aren't available on the public internet
+- alternative ways for end users to access applications that aren't web compliant, such as access to an application via AWS WorkSpaces because it can't be accessed over DOM1
 
 ### What we expect from application teams
 
