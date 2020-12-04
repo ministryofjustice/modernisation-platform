@@ -1,4 +1,4 @@
-# Our team
+## Our team
 
 Our team is currently made up of 4 members:
 

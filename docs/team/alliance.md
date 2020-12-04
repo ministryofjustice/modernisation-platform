@@ -1,4 +1,4 @@
-# Our alliance
+## Our alliance
 
 As a team, we regularly discuss and decide on our alliance, and document these openly and publicly.
 
