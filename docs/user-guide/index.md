@@ -1,10 +1,17 @@
 ## User guide
 
-### Overview of the Modernisation Platform
-TODO: Include a high level overview, our service offering, concepts
+### Overview
+- [Should I use the Cloud Platform, or the Modernisation Platform?](cloud-platform-or-modernisation-platform.md)
+- Our offering to you
 
 ### Getting started
-- [Creating environments](creating-environments.md)
+- [Creating environments (aka AWS accounts)](creating-environments.md)
+- Deploying an application
+
+### Concepts and overviews
+- Networking
+- Security
+- Shared responsibilty for resources
 
 ### Need help?
 If you need help, drop us a Slack message in the [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) channel.
