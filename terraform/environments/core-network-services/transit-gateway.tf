@@ -38,6 +38,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "attachments" {
   vpc_id                                          = each.value == "live" ? module.live_vpc.vpc_id : module.non_live_vpc.vpc_id
   subnet_ids                                      = each.value == "live" ? module.live_vpc.private_tgw_subnet_ids : module.non_live_vpc.private_tgw_subnet_ids
   transit_gateway_default_route_table_association = false
+  transit_gateway_default_route_table_propagation = false
   dns_support                                     = "enable"
   ipv6_support                                    = "disable"
   tags = merge(
@@ -58,6 +59,12 @@ resource "aws_ec2_transit_gateway_route_table_association" "tables" {
 
 resource "aws_ec2_transit_gateway_route_table_propagation" "propagation" {
   count                          = length(var.env_vpcs)
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[var.env_vpcs[count.index]].id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.TGW_route_table[var.env_vpcs[count.index]].id
+}
+resource "aws_ec2_transit_gateway_route" "nat_route" {
+  count                          = length(var.env_vpcs)
+  destination_cidr_block         = "0.0.0.0/0"
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[var.env_vpcs[count.index]].id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.TGW_route_table[var.env_vpcs[count.index]].id
 }
