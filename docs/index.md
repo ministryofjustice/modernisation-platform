@@ -1,8 +1,8 @@
 ## Contents
 
-### Team
-- [Our alliance](alliance.md)
-- [Our team](team.md)
+### [Team](team/index.md)
+- [Our alliance](team/alliance.md)
+- [Our team](team/team.md)
 
 ### Modernisation Platform
 - [User guide](user-guide/index.md)
