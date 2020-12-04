@@ -1,56 +1,63 @@
-module "transit-gateway-live" {
-  source = "terraform-aws-modules/transit-gateway/aws"
-  name   = "transit-gateway-london-live-01"
+#########################
+# Create TGW
+#########################
+resource "aws_ec2_transit_gateway" "TGW" {
+  description                     = "ModernisationPlatform Transit Gateway"
+  amazon_side_asn                 = var.amazon_side_asn
+  default_route_table_association = var.enable_default_route_table_association ? "enable" : "disable"
+  default_route_table_propagation = var.enable_default_route_table_propagation ? "enable" : "disable"
+  auto_accept_shared_attachments  = var.enable_auto_accept_shared_attachments ? "enable" : "disable"
+  vpn_ecmp_support                = var.enable_vpn_ecmp_support ? "enable" : "disable"
+  dns_support                     = var.enable_dns_support ? "enable" : "disable"
+  tags = merge(
+    local.tags,
+    {
+      Name = "TGW-ModernisationPlatform"
+    },
+  )
+}
+#########################
+# Route table and routes
+#########################
+resource "aws_ec2_transit_gateway_route_table" "TGW_route_table" {
+  for_each           = toset(var.env_vpcs)
+  transit_gateway_id = aws_ec2_transit_gateway.TGW.id
+  tags = merge(
+    local.tags,
+    {
+      Name = each.value
+    },
+  )
+}
+#########################
+# VPC attachment
+#########################
+resource "aws_ec2_transit_gateway_vpc_attachment" "attachments" {
+  for_each                                        = toset(var.env_vpcs)
+  transit_gateway_id                              = aws_ec2_transit_gateway.TGW.id
+  vpc_id                                          = each.value == "live" ? module.live_vpc.vpc_id : module.non_live_vpc.vpc_id
+  subnet_ids                                      = each.value == "live" ? module.live_vpc.private_tgw_subnet_ids : module.non_live_vpc.private_tgw_subnet_ids
+  transit_gateway_default_route_table_association = false
+  dns_support                                     = "enable"
+  ipv6_support                                    = "disable"
+  tags = merge(
+    local.tags,
+    {
+      Name = each.value
+    },
+  )
+}
+##########################
+# Route table association
+##########################
+resource "aws_ec2_transit_gateway_route_table_association" "tables" {
+  count                          = length(var.env_vpcs)
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[var.env_vpcs[count.index]].id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.TGW_route_table[var.env_vpcs[count.index]].id
+}
 
-  # Disable default route table association and propogation
-  enable_default_route_table_association = false
-  enable_default_route_table_propagation = false
-
-  # Enable auto-accepted shared attachments
-  enable_auto_accept_shared_attachments = true
-
-  # Resource Access Manager: Share with other AWS accounts
-  ram_allow_external_principals = true
-  ram_principals                = []
-
-  # Attach VPCs to TGW
-  vpc_attachments = {
-    # Live VPC attachment
-    live = {
-      vpc_id = module.vpc-live.vpc_id
-
-      # Get the subnet IDs for the private TGW subnets
-      subnet_ids = [
-        for subnet in data.aws_subnet.subnet-live :
-        subnet.id
-        if contains(local.private_tgw_cidr_blocks_live, subnet.cidr_block)
-      ]
-
-      # Turn on DNS support
-      dns_support                                     = true
-
-      # Turn off IPv6 support
-      ipv6_support                                    = false
-
-      # Disable default route table association and propogation
-      transit_gateway_default_route_table_association = false
-      transit_gateway_default_route_table_propagation = false
-
-      # Configure TGW routes
-      tgw_routes = [
-        {
-          destination_cidr_block = "10.230.0.0/28"
-        },
-        {
-          destination_cidr_block = "10.230.0.16/28"
-        },
-        {
-          destination_cidr_block = "10.230.0.32/28"
-        }
-      ]
-    }
-  }
-
-  # Tag the resource
-  tags = local.tags
+resource "aws_ec2_transit_gateway_route_table_propagation" "propagation" {
+  count                          = length(var.env_vpcs)
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[var.env_vpcs[count.index]].id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.TGW_route_table[var.env_vpcs[count.index]].id
 }
