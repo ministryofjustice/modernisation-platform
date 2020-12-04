@@ -30,7 +30,7 @@ We don't offer the following, although we can help advise if you need it:
 - application security
 - ongoing maintenance of the application, including patching the application, updating dependencies, and ensuring it remains deployable
 - user support for applications
-- alternative ways for end users to access applications that aren't web compliant, such as access to an application via AWS WorkSpaces because it can't be accessed over DOM1
+- alternative ways for end users to access applications that can't be accessible over the internet
 
 ---
 
