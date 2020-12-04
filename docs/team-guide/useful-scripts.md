@@ -19,15 +19,15 @@ This script is run via the [create-accounts.yml workflow](https://github.com/min
 
 Used as part of a CI/CD pipeline? ❌
 
-This can be run to create a local environment directories and their subsequent Terraform workspaces.
+This can be run to create local environment directories and their subsequent remote Terraform workspaces. The output is the subdirectories in [`terraform/environments/`](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments)
 
-### `utilities.js`
+### [`utilities.js`](https://github.com/ministryofjustice/modernisation-platform/tree/main/scripts/utilities.js)
 
 Used as part of a CI/CD pipeline? ✅
 
 Used as part of `check-environment-definitions.js`.
 
-### `internal/loop-through-bootstrap-workspaces-and-plan.sh`
+### [`internal/loop-through-bootstrap-workspaces-and-plan.sh`](https://github.com/ministryofjustice/modernisation-platform/tree/main/scripts/internal/loop-through-bootstrap-workspaces-and-plan.sh)
 
 Used as part of a CI/CD pipeline? ❌
 
