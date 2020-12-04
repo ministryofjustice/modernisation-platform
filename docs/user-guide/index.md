@@ -2,7 +2,7 @@
 
 ### Overview
 - [Should I use the Cloud Platform, or the Modernisation Platform?](cloud-platform-or-modernisation-platform.md)
-- Our offering to you
+- [Our offer to you](our-offer-to-you.md)
 
 ### Getting started
 - [Creating environments (aka AWS accounts)](creating-environments.md)
