@@ -10,7 +10,7 @@ resource "aws_route53_zone" "modernisation-platform" {
 # Remote Supervision NS delegation
 resource "aws_route53_record" "remote-supervision-production" {
   allow_overwrite = true
-  name            = "remote-supervision-production.${local.modernisation-platform-domain}"
+  name            = "rs-production.${local.modernisation-platform-domain}"
   ttl             = 30
   type            = "NS"
   zone_id         = aws_route53_zone.modernisation-platform.zone_id
@@ -24,7 +24,7 @@ resource "aws_route53_record" "remote-supervision-production" {
 
 resource "aws_route53_record" "remote-supervision-non-production" {
   allow_overwrite = true
-  name            = "remote-supervision-non-production.${local.modernisation-platform-domain}"
+  name            = "rs-non-production.${local.modernisation-platform-domain}"
   ttl             = 30
   type            = "NS"
   zone_id         = aws_route53_zone.modernisation-platform.zone_id
