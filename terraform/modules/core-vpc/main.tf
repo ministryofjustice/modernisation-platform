@@ -5,7 +5,7 @@ data "aws_availability_zones" "available" {
 
 locals {
   availability_zones = sort(data.aws_availability_zones.available.names)
-  test = flatten([
+  subnets_map = flatten([
     for k, v in var.subnet_cidrs_by_type : [
       for index, cidr in v : {
         type = k
@@ -14,7 +14,7 @@ locals {
       }
     ]
   ])
-  another_test = {
+  subnets_map_associations = {
     for subnet in local.test :
     "${subnet.type}-${subnet.az}" => {
       cidr = subnet.cidr
