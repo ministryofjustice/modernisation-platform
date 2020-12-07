@@ -37,12 +37,12 @@ resource "aws_ec2_transit_gateway_route_table" "TGW_route_table" {
 #########################
 locals {
   created_vpcs_ids = {
-    live     = module.live_vpc.vpc_id
-    non-live = module.non_live_vpc.vpc_id
+    live     = module.vpc["live"].vpc_id
+    non-live = module.vpc["non_live"].vpc_id
   }
   created_private_tgw_subnet_ids = {
-    live     = module.live_vpc.private_tgw_subnet_ids
-    non-live = module.non_live_vpc.private_tgw_subnet_ids
+    live     = module.vpc["live"].tgw_subnet_ids
+    non-live = module.vpc["non_live"].tgw_subnet_ids
   }
 }
 

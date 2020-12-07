@@ -6,7 +6,7 @@ Terraform module for creating core VPC - also provisions Transit Gateway subnets
 
 ```
 module "vpc" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines//modules/ebs"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines//modules/??????"
 }
 ```
 
@@ -24,7 +24,7 @@ module "vpc" {
 |                Name                |                           Description                           |  Type  |
 |:----------------------------------:|:---------------------------------------------------------------:|:------:|
 |  vpc_id                            | VPC id                                                          | string |
-|  private_tgw_subnet_ids            | private subnets ids for Transit Gateway connections             | list   |
+|  private_tgw_subnet_ids            | private subnet ids for Transit Gateway connections              | list   |
 
 ## Looking for issues?
 If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).

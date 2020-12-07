@@ -10,7 +10,7 @@ variable "vpc_cidr" {
   type = string
 }
 
-variable "private_tgw_cidr_blocks" {
+variable "tgw_cidr_blocks" {
   type = list
 }
 

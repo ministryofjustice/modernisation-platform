@@ -9,17 +9,17 @@ resource "aws_vpc" "vpc" {
   )
 }
 
-resource "aws_subnet" "private_tgw" {
-  count = length(var.private_tgw_cidr_blocks)
+resource "aws_subnet" "tgw" {
+  count = length(var.tgw_cidr_blocks)
 
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = element(var.private_tgw_cidr_blocks, count.index)
+  cidr_block        = element(var.tgw_cidr_blocks, count.index)
   availability_zone = element(var.subnet_azs, count.index)
 
   tags = merge(
     var.tags_common,
     {
-      Name = "${var.tags_prefix}-private-tgw${count.index + 1}"
+      Name = "${var.tags_prefix}-tgw${count.index + 1}"
     },
   )
 }
@@ -103,8 +103,8 @@ resource "aws_route" "private_nat" {
   nat_gateway_id         = aws_nat_gateway.nat_gw[count.index].id
 }
 
-resource "aws_route_table" "private_tgw" {
-  count = length(var.private_tgw_cidr_blocks)
+resource "aws_route_table" "tgw" {
+  count = length(var.tgw_cidr_blocks)
 
   vpc_id = aws_vpc.vpc.id
 
@@ -116,10 +116,10 @@ resource "aws_route_table" "private_tgw" {
   )
 }
 
-resource "aws_route" "private_tgw_nat" {
-  count = length(var.private_tgw_cidr_blocks)
+resource "aws_route" "tgw_nat" {
+  count = length(var.tgw_cidr_blocks)
 
-  route_table_id         = aws_route_table.private_tgw[count.index].id
+  route_table_id         = aws_route_table.tgw[count.index].id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.nat_gw[count.index].id
 }
@@ -165,9 +165,9 @@ resource "aws_route_table_association" "private" {
   route_table_id = aws_route_table.private[count.index].id
 }
 
-resource "aws_route_table_association" "private_tgw" {
-  count = length(var.private_tgw_cidr_blocks)
+resource "aws_route_table_association" "tgw" {
+  count = length(var.tgw_cidr_blocks)
 
-  subnet_id      = aws_subnet.private_tgw[count.index].id
-  route_table_id = aws_route_table.private_tgw[count.index].id
+  subnet_id      = aws_subnet.tgw[count.index].id
+  route_table_id = aws_route_table.tgw[count.index].id
 }
