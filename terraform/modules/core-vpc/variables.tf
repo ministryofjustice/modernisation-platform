@@ -2,16 +2,9 @@ variable "vpc_cidr" {
   type = string
 }
 
-variable "tgw_cidr_blocks" {
-  type = list
-}
-
-variable "private_cidr_blocks" {
-  type = list
-}
-
-variable "public_cidr_blocks" {
-  type = list
+variable "subnet_cidrs_by_type" {
+  description = "Map of subnet CIDR blocks with the keys representing what they are for"
+  type        = map
 }
 
 variable "tags_common" {

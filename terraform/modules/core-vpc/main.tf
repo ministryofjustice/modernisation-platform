@@ -5,8 +5,26 @@ data "aws_availability_zones" "available" {
 
 locals {
   availability_zones = sort(data.aws_availability_zones.available.names)
+  test = flatten([
+    for k, v in var.subnet_cidrs_by_type : [
+      for index, cidr in v : {
+        type = k
+        cidr = cidr
+        az   = local.availability_zones[index]
+      }
+    ]
+  ])
+  another_test = {
+    for subnet in local.test :
+    "${subnet.type}-${subnet.az}" => {
+      cidr = subnet.cidr
+      az   = subnet.az
+      type = subnet.type
+    }
+  }
 }
 
+# VPC
 resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr
 
@@ -18,51 +36,23 @@ resource "aws_vpc" "vpc" {
   )
 }
 
-resource "aws_subnet" "tgw" {
-  count = length(var.tgw_cidr_blocks)
+# VPC: Subnet per type, per availability zone
+resource "aws_subnet" "default" {
+  for_each = local.another_test
 
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = element(var.tgw_cidr_blocks, count.index)
-  availability_zone = element(local.availability_zones, count.index)
+  cidr_block        = each.value.cidr
+  availability_zone = each.value.az
 
   tags = merge(
     var.tags_common,
     {
-      Name = "${var.tags_prefix}-tgw${count.index + 1}"
-    },
+      Name = "${var.tags_prefix}-${each.value.type}-${each.value.az}"
+    }
   )
 }
 
-resource "aws_subnet" "private" {
-  count = length(var.private_cidr_blocks)
-
-  vpc_id            = aws_vpc.vpc.id
-  cidr_block        = element(var.private_cidr_blocks, count.index)
-  availability_zone = element(local.availability_zones, count.index)
-
-  tags = merge(
-    var.tags_common,
-    {
-      Name = "${var.tags_prefix}-private${count.index + 1}"
-    },
-  )
-}
-
-resource "aws_subnet" "public" {
-  count = length(var.public_cidr_blocks)
-
-  vpc_id            = aws_vpc.vpc.id
-  cidr_block        = element(var.public_cidr_blocks, count.index)
-  availability_zone = element(local.availability_zones, count.index)
-
-  tags = merge(
-    var.tags_common,
-    {
-      Name = "${var.tags_prefix}-public${count.index + 1}"
-    },
-  )
-}
-
+# VPC: Internet Gateway
 resource "aws_internet_gateway" "ig" {
   vpc_id = aws_vpc.vpc.id
 
@@ -74,6 +64,7 @@ resource "aws_internet_gateway" "ig" {
   )
 }
 
+# Route table per type, per AZ (apart from public, which is separate)
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.vpc.id
 
@@ -85,98 +76,84 @@ resource "aws_route_table" "public" {
   )
 }
 
+# Public Internet Gateway route
 resource "aws_route" "public_ig" {
   route_table_id         = aws_route_table.public.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.ig.id
 }
 
-resource "aws_route_table" "private" {
-  count = length(var.private_cidr_blocks)
-
+# Non-public route tables
+resource "aws_route_table" "default" {
+  for_each = {
+    for key in keys(local.another_test) :
+    key => local.another_test[key]
+    if substr(key, 0, 6) != "public"
+  }
   vpc_id = aws_vpc.vpc.id
 
   tags = merge(
     var.tags_common,
     {
-      Name = "${var.tags_prefix}-private${count.index + 1}"
-    },
+      Name = "${var.tags_prefix}-${each.key}"
+    }
   )
 }
 
-resource "aws_route" "private_nat" {
-  count = length(var.private_cidr_blocks)
+# Private NAT routes
+resource "aws_route" "default_nat" {
+  for_each = {
+    for key in keys(local.another_test) :
+    key => local.another_test[key]
+    if substr(key, 0, 6) != "public"
+  }
 
-  route_table_id         = aws_route_table.private[count.index].id
+  route_table_id         = aws_route_table.default[each.key].id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.nat_gw[count.index].id
+  nat_gateway_id         = aws_nat_gateway.default["public-${substr(each.key, length(each.key) - 10, length(each.key))}"].id
 }
 
-resource "aws_route_table" "tgw" {
-  count = length(var.tgw_cidr_blocks)
-
-  vpc_id = aws_vpc.vpc.id
-
-  tags = merge(
-    var.tags_common,
-    {
-      Name = "${var.tags_prefix}-private-tgw${count.index + 1}"
-    },
-  )
-}
-
-resource "aws_route" "tgw_nat" {
-  count = length(var.tgw_cidr_blocks)
-
-  route_table_id         = aws_route_table.tgw[count.index].id
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.nat_gw[count.index].id
-}
-
-resource "aws_eip" "eip" {
-  count = length(var.public_cidr_blocks)
+# Elastic IPs for NAT Gateway
+resource "aws_eip" "default" {
+  for_each = {
+    for key in keys(local.another_test) :
+    key => local.another_test[key]
+    if substr(key, 0, 6) == "public"
+  }
 
   vpc = true
 
   tags = merge(
     var.tags_common,
     {
-      Name = "${var.tags_prefix}-nat-eip${count.index + 1}"
+      Name = "${var.tags_prefix}-nat-eip-${each.key}"
     },
   )
 }
 
-resource "aws_nat_gateway" "nat_gw" {
-  count = length(var.public_cidr_blocks)
+# Public NAT Gateway
+resource "aws_nat_gateway" "default" {
+  for_each = {
+    for key in keys(local.another_test) :
+    key => local.another_test[key]
+    if substr(key, 0, 6) == "public"
+  }
 
-  allocation_id = aws_eip.eip[count.index].id
-  subnet_id     = aws_subnet.public[count.index].id
+  allocation_id = aws_eip.default[each.key].id
+  subnet_id     = aws_subnet.default[each.key].id
 
   tags = merge(
     var.tags_common,
     {
-      Name = "${var.tags_prefix}-nat-gateway${count.index + 1}"
-    },
+      Name = "${var.tags_prefix}-nat-gateway-${each.key}"
+    }
   )
 }
 
-resource "aws_route_table_association" "public" {
-  count = length(var.public_cidr_blocks)
+# Route table associations
+resource "aws_route_table_association" "default" {
+  for_each = local.another_test
 
-  subnet_id      = aws_subnet.public[count.index].id
-  route_table_id = aws_route_table.public.id
-}
-
-resource "aws_route_table_association" "private" {
-  count = length(var.private_cidr_blocks)
-
-  subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = aws_route_table.private[count.index].id
-}
-
-resource "aws_route_table_association" "tgw" {
-  count = length(var.tgw_cidr_blocks)
-
-  subnet_id      = aws_subnet.tgw[count.index].id
-  route_table_id = aws_route_table.tgw[count.index].id
+  subnet_id      = aws_subnet.default[each.key].id
+  route_table_id = substr(each.key, 0, 6) == "public" ? aws_route_table.public.id : aws_route_table.default[each.key].id
 }
