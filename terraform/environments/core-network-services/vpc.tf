@@ -41,7 +41,15 @@ locals {
       }
     }
   }
+  useful_vpc_ids = {
+    for key in keys(local.vpcs) :
+    key => {
+      vpc_id                 = module.vpc[key].vpc_id
+      private_tgw_subnet_ids = module.vpc[key].tgw_subnet_ids
+    }
+  }
 }
+
 module "vpc" {
   for_each            = local.vpcs
   source              = "../../modules/core-vpc"
