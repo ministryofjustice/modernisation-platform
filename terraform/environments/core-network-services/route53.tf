@@ -15,10 +15,10 @@ resource "aws_route53_record" "remote-supervision-production" {
   type            = "NS"
   zone_id         = aws_route53_zone.modernisation-platform.zone_id
   records = [
-    "ns-1127.awsdns-12.org.",
-    "ns-123.awsdns-15.com.",
-    "ns-643.awsdns-16.net.",
-    "ns-1848.awsdns-39.co.uk."
+    "ns-1009.awsdns-62.net.",
+    "ns-1104.awsdns-10.org.",
+    "ns-316.awsdns-39.com.",
+    "ns-1876.awsdns-42.co.uk"
   ]
 }
 
@@ -29,9 +29,9 @@ resource "aws_route53_record" "remote-supervision-non-production" {
   type            = "NS"
   zone_id         = aws_route53_zone.modernisation-platform.zone_id
   records = [
-    "ns-1127.awsdns-12.org.",
-    "ns-123.awsdns-15.com.",
-    "ns-643.awsdns-16.net.",
-    "ns-1848.awsdns-39.co.uk."
+    "ns-897.awsdns-48.net.",
+    "ns-1217.awsdns-24.org.",
+    "ns-77.awsdns-09.com.",
+    "ns-1636.awsdns-12.co.uk."
   ]
 }
