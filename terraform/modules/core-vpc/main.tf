@@ -1,3 +1,12 @@
+# Get AZs for account
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
+locals {
+  availability_zones = sort(data.aws_availability_zones.available.names)
+}
+
 resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr
 
@@ -14,7 +23,7 @@ resource "aws_subnet" "tgw" {
 
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = element(var.tgw_cidr_blocks, count.index)
-  availability_zone = element(var.subnet_azs, count.index)
+  availability_zone = element(local.availability_zones, count.index)
 
   tags = merge(
     var.tags_common,
@@ -29,7 +38,7 @@ resource "aws_subnet" "private" {
 
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = element(var.private_cidr_blocks, count.index)
-  availability_zone = element(var.subnet_azs, count.index)
+  availability_zone = element(local.availability_zones, count.index)
 
   tags = merge(
     var.tags_common,
@@ -44,7 +53,7 @@ resource "aws_subnet" "public" {
 
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = element(var.public_cidr_blocks, count.index)
-  availability_zone = element(var.subnet_azs, count.index)
+  availability_zone = element(local.availability_zones, count.index)
 
   tags = merge(
     var.tags_common,
