@@ -44,7 +44,7 @@ locals {
 }
 module "vpc" {
   for_each            = local.vpcs
-  source              = "./modules/core-vpc"
+  source              = "../../modules/core-vpc"
   vpc_cidr            = local.vpcs[each.key].cidr.vpc
   tgw_cidr_blocks     = local.vpcs[each.key].cidr.tgw
   private_cidr_blocks = local.vpcs[each.key].cidr.private
