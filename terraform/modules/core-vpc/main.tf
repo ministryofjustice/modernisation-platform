@@ -15,7 +15,7 @@ locals {
     ]
   ])
   subnets_map_associations = {
-    for subnet in local.test :
+    for subnet in local.subnets_map :
     "${subnet.type}-${subnet.az}" => {
       cidr = subnet.cidr
       az   = subnet.az
@@ -38,7 +38,7 @@ resource "aws_vpc" "vpc" {
 
 # VPC: Subnet per type, per availability zone
 resource "aws_subnet" "default" {
-  for_each = local.another_test
+  for_each = local.subnets_map_associations
 
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = each.value.cidr
@@ -86,8 +86,8 @@ resource "aws_route" "public_ig" {
 # Non-public route tables
 resource "aws_route_table" "default" {
   for_each = {
-    for key in keys(local.another_test) :
-    key => local.another_test[key]
+    for key in keys(local.subnets_map_associations) :
+    key => local.subnets_map_associations[key]
     if substr(key, 0, 6) != "public"
   }
   vpc_id = aws_vpc.vpc.id
@@ -103,8 +103,8 @@ resource "aws_route_table" "default" {
 # Private NAT routes
 resource "aws_route" "default_nat" {
   for_each = {
-    for key in keys(local.another_test) :
-    key => local.another_test[key]
+    for key in keys(local.subnets_map_associations) :
+    key => local.subnets_map_associations[key]
     if substr(key, 0, 6) != "public"
   }
 
@@ -116,8 +116,8 @@ resource "aws_route" "default_nat" {
 # Elastic IPs for NAT Gateway
 resource "aws_eip" "default" {
   for_each = {
-    for key in keys(local.another_test) :
-    key => local.another_test[key]
+    for key in keys(local.subnets_map_associations) :
+    key => local.subnets_map_associations[key]
     if substr(key, 0, 6) == "public"
   }
 
@@ -134,8 +134,8 @@ resource "aws_eip" "default" {
 # Public NAT Gateway
 resource "aws_nat_gateway" "default" {
   for_each = {
-    for key in keys(local.another_test) :
-    key => local.another_test[key]
+    for key in keys(local.subnets_map_associations) :
+    key => local.subnets_map_associations[key]
     if substr(key, 0, 6) == "public"
   }
 
@@ -152,7 +152,7 @@ resource "aws_nat_gateway" "default" {
 
 # Route table associations
 resource "aws_route_table_association" "default" {
-  for_each = local.another_test
+  for_each = local.subnets_map_associations
 
   subnet_id      = aws_subnet.default[each.key].id
   route_table_id = substr(each.key, 0, 6) == "public" ? aws_route_table.public.id : aws_route_table.default[each.key].id
