@@ -1,14 +1,3 @@
-# core-network-services
-
-terraform {
-  required_version = ">= 0.13"
-}
-
-
-data "aws_availability_zones" "available" {
-  state = "available"
-}
-
 resource "aws_ram_resource_share" "shared-services" {
   provider = aws.core-network-services
 
@@ -45,29 +34,32 @@ resource "aws_ram_principal_association" "transit_gateway_association" {
   provider = aws.core-network-services
 
   principal          = data.aws_caller_identity.current.account_id
-  resource_share_arn = aws_ram_resource_share.shared-services.id
+  resource_share_arn = aws_ram_resource_share.shared-services.arn
 }
 
-resource "aws_ram_resource_share_accepter" "receiver_accept" {
-  provider = aws.core-network-services
 
-  share_arn = aws_ram_principal_association.transit_gateway_association.resource_share_arn
-}
-
-resource "time_sleep" "wait2" {
-  depends_on = [aws_ram_resource_share_accepter.receiver_accept]
-
+# this needs to sleep
+resource "time_sleep" "wait_60_seconds" {
+  depends_on      = [aws_ram_principal_association.transit_gateway_association]
   create_duration = "60s"
 }
 
+resource "aws_ram_resource_share_accepter" "receiver_accept" {
+  # provider = aws.core-network-services
 
-# Create the VPC attachment in the second account...
+  depends_on = [
+    time_sleep.wait_60_seconds
+  ]
+  share_arn = aws_ram_principal_association.transit_gateway_association.resource_share_arn
+}
+
+# # Create the VPC attachment in the second account...
 resource "aws_ec2_transit_gateway_vpc_attachment" "live" {
 
   depends_on = [
     aws_ram_principal_association.transit_gateway_association,
     aws_ram_resource_association.ram-association,
-    time_sleep.wait2
+    aws_ram_resource_share_accepter.receiver_accept
   ]
 
   subnet_ids         = module.vpc["live"].tgw_subnet_ids
