@@ -5,6 +5,19 @@ data "aws_availability_zones" "available" {
 
 locals {
   availability_zones = sort(data.aws_availability_zones.available.names)
+  # subnets_map outputs the following:
+  # [
+  #   {
+  #     az   = "eu-west-2a"
+  #     cidr = "10.230.8.0/23"
+  #     type = "private"
+  #   },
+  #   {
+  #     az   = "eu-west-2b"
+  #     cidr = "10.230.10.0/23"
+  #     type = "private"
+  #   }...
+  # ]
   subnets_map = flatten([
     for k, v in var.subnet_cidrs_by_type : [
       for index, cidr in v : {
@@ -14,6 +27,19 @@ locals {
       }
     ]
   ])
+  # subnets_map_assocations outputs the following:
+  # {
+  #   private-eu-west-2a = {
+  #     az   = "eu-west-2a"
+  #     cidr = "10.230.8.0/23"
+  #     type = "private"
+  #   }
+  #   private-eu-west-2b = {
+  #     az   = "eu-west-2b"
+  #     cidr = "10.230.10.0/23"
+  #     type = "private"
+  #   }
+  # }...
   subnets_map_associations = {
     for subnet in local.subnets_map :
     "${subnet.type}-${subnet.az}" => {
