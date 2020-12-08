@@ -62,6 +62,9 @@ module "vpc" {
   subnet_cidrs_by_type = local.vpcs[each.key].cidr.subnets
   vpc_cidr             = local.vpcs[each.key].cidr.vpc
 
+  # NAT Gateway
+  enable_nat_gateway = true
+
   # Tags
   tags_common = local.tags
   tags_prefix = each.key

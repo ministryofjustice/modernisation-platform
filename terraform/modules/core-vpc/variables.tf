@@ -16,3 +16,9 @@ variable "tags_prefix" {
   description = "prefix for name tags"
   type        = string
 }
+
+variable "enable_nat_gateway" {
+  description = "Enable NAT Gateway on this VPC"
+  type        = bool
+  default     = false
+}

@@ -105,7 +105,7 @@ resource "aws_route" "default_nat" {
   for_each = {
     for key in keys(local.subnets_map_associations) :
     key => local.subnets_map_associations[key]
-    if substr(key, 0, 6) != "public"
+    if substr(key, 0, 6) != "public" && (var.enable_nat_gateway == true)
   }
 
   route_table_id         = aws_route_table.default[each.key].id
@@ -136,7 +136,7 @@ resource "aws_nat_gateway" "default" {
   for_each = {
     for key in keys(local.subnets_map_associations) :
     key => local.subnets_map_associations[key]
-    if substr(key, 0, 6) == "public"
+    if substr(key, 0, 6) == "public" && (var.enable_nat_gateway == true)
   }
 
   allocation_id = aws_eip.default[each.key].id
