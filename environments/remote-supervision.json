@@ -1,5 +1,4 @@
 {
-  "name": "remote-supervision",
   "environments": ["non-production", "production"],
   "tags": {
     "application": "remote-supervision",

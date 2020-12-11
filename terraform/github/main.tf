@@ -19,7 +19,7 @@ module "core" {
   type         = "core"
   name         = "modernisation-platform"
   description  = "A place for the core work of the Modernisation Platform"
-  homepage_url = "https://ministryofjustice.github.io/modernisation-platform/index.html"
+  homepage_url = "https://ministryofjustice.github.io/modernisation-platform"
   topics = [
     "architecture-decisions",
     "aws",
@@ -30,6 +30,14 @@ module "core" {
     AWS_SECRET_ACCESS_KEY  = "example"
     TERRAFORM_GITHUB_TOKEN = "This needs to be manually set in GitHub."
   }
+}
+
+module "hello-world" {
+  source      = "./modules/repository"
+  type        = "core"
+  name        = "modernisation-platform-hello-world"
+  description = "A sample application configuration within the Modernisation Platform"
+  topics      = ["sample-code"]
 }
 
 module "terraform-module-baselines" {
@@ -106,6 +114,16 @@ module "terraform-module-trusted-advisor" {
   ]
 }
 
+module "terraform-module-network-services-cidr-allocation" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-network-services-cidr-allocation"
+  description = "Module for CIDR allocation storage and retrieval"
+  topics = [
+    "aws",
+    "network-services"
+  ]
+}
+
 # Teams and their access to the above repositories
 module "core-team" {
   source      = "./modules/team"
@@ -113,12 +131,14 @@ module "core-team" {
   description = "Modernisation Platform team"
   repositories = [
     module.core.repository.id,
+    module.hello-world.repository.id,
     module.terraform-module-baselines.repository.id,
     module.terraform-module-cross-account-access.repository.id,
     module.terraform-module-environments.repository.id,
     module.terraform-module-iam-superadmins.repository.id,
     module.terraform-module-s3-bucket-replication-role.repository.id,
     module.terraform-module-s3-bucket.repository.id,
-    module.terraform-module-trusted-advisor.repository.id
+    module.terraform-module-trusted-advisor.repository.id,
+    module.terraform-module-network-services-cidr-allocation.repository.id
   ]
 }

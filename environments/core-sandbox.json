@@ -1,0 +1,8 @@
+{
+  "environments": ["dev"],
+  "tags": {
+    "application": "core-sandbox",
+    "business-unit": "Platforms",
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
+  }
+}

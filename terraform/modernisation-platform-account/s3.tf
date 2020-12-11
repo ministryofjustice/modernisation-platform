@@ -6,7 +6,7 @@ module "state-bucket" {
   bucket_policy        = data.aws_iam_policy_document.allow-state-access-from-root-account.json
   bucket_name          = "modernisation-platform-terraform-state"
   replication_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSS3BucketReplication"
-  tags                 = local.global_resources
+  tags                 = local.tags
 }
 
 # Allow access to the bucket from the MoJ root account

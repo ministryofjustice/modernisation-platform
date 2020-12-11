@@ -1,6 +1,6 @@
-# Our team
+## Our team
 
-Our team is currently made up of 4 members:
+Our team is currently made up of 5 members:
 
 - Don Masters, WebOps Engineer
 - Jake Mulley, Technical Architect
