@@ -6,7 +6,7 @@ resource "aws_ec2_transit_gateway" "TGW" {
   amazon_side_asn                 = "64589"
   default_route_table_association = "disable"
   default_route_table_propagation = "disable"
-  auto_accept_shared_attachments  = "disable"
+  auto_accept_shared_attachments  = "enable"
   vpn_ecmp_support                = "enable"
   dns_support                     = "enable"
   tags = merge(

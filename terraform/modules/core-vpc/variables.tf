@@ -22,3 +22,15 @@ variable "enable_nat_gateway" {
   type        = bool
   default     = false
 }
+
+variable "shared_resource" {
+  description = ""
+  type        = bool
+  default     = false
+}
+
+variable "transit_gateway_id" {
+  description = ""
+  type = string
+  default = ""
+}

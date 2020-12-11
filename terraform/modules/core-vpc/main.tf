@@ -139,6 +139,18 @@ resource "aws_route" "default_nat" {
   nat_gateway_id         = aws_nat_gateway.default["public-${substr(each.key, length(each.key) - 10, length(each.key))}"].id
 }
 
+resource "aws_route" "shared_tgw" {
+  for_each = {
+    for key in keys(local.subnets_map_associations) :
+    key => local.subnets_map_associations[key]
+    if substr(key, 0, 6) != "public" && (var.shared_resource == true)
+  }
+
+  route_table_id = aws_route_table.default[each.key].id
+  destination_cidr_block = "0.0.0.0/0"
+  transit_gateway_id = var.transit_gateway_id
+}
+
 # Elastic IPs for NAT Gateway
 resource "aws_eip" "default" {
   for_each = {
