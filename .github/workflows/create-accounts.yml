@@ -19,6 +19,6 @@ jobs:
       - uses: actions/checkout@main
       - uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.13.5
+          terraform_version: 0.14.2
       - name: Run scripts/create-accounts.sh
         run: sh scripts/create-accounts.sh
