@@ -8,8 +8,8 @@
 - [Creating environments (aka AWS accounts)](creating-environments.md)
 - Deploying an application
 
-### Concepts and overviews
-- Networking
+### Concepts
+- [Networking](../concepts/networking)
 - Security
 - Shared responsibilty for resources
 

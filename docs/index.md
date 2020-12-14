@@ -8,3 +8,4 @@
 ### Modernisation Platform
 - [Team guide](team-guide/index.md)
 - [User guide](user-guide/index.md)
+- [Concepts](concepts/index.md)
