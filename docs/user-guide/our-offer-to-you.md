@@ -17,7 +17,7 @@ We're currently exploring supporting the following for all applications:
 - automated OS patching for applications that support it
 - automated TLS certificates for all applications
 - management access to application resources
-- centralised networking for all applications, including VPCs, subnets, inter-application connections
+- [centralised networking for all applications, including VPCs, subnets, inter-application connections](../concepts/networking)
 
 ---
 
