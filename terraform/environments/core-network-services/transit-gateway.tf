@@ -1,7 +1,7 @@
 #########################
 # Create TGW
 #########################
-resource "aws_ec2_transit_gateway" "TGW" {
+resource "aws_ec2_transit_gateway" "transit-gateway" {
   description                     = "ModernisationPlatform Transit Gateway"
   amazon_side_asn                 = "64589"
   default_route_table_association = "disable"
@@ -20,10 +20,10 @@ resource "aws_ec2_transit_gateway" "TGW" {
 #########################
 # Route table and routes
 #########################
-resource "aws_ec2_transit_gateway_route_table" "TGW_route_table" {
+resource "aws_ec2_transit_gateway_route_table" "transit-gateway-route-table" {
   for_each = toset(keys(local.vpcs))
 
-  transit_gateway_id = aws_ec2_transit_gateway.TGW.id
+  transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
   tags = merge(
     local.tags,
     {
@@ -38,7 +38,7 @@ resource "aws_ec2_transit_gateway_route_table" "TGW_route_table" {
 resource "aws_ec2_transit_gateway_vpc_attachment" "attachments" {
   for_each = toset(keys(local.vpcs))
 
-  transit_gateway_id = aws_ec2_transit_gateway.TGW.id
+  transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
   vpc_id             = local.useful_vpc_ids[each.value].vpc_id
   subnet_ids         = local.useful_vpc_ids[each.value].private_tgw_subnet_ids
 
@@ -67,14 +67,14 @@ resource "aws_ec2_transit_gateway_route_table_association" "tables" {
   for_each = toset(keys(local.vpcs))
 
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[each.value].id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.TGW_route_table[each.value].id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.transit-gateway-route-table[each.value].id
 }
 
 resource "aws_ec2_transit_gateway_route_table_propagation" "propagation" {
   for_each = toset(keys(local.vpcs))
 
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[each.value].id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.TGW_route_table[each.value].id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.transit-gateway-route-table[each.value].id
 }
 
 resource "aws_ec2_transit_gateway_route" "nat_route" {
@@ -82,5 +82,5 @@ resource "aws_ec2_transit_gateway_route" "nat_route" {
 
   destination_cidr_block         = "0.0.0.0/0"
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[each.value].id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.TGW_route_table[each.value].id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.transit-gateway-route-table[each.value].id
 }
