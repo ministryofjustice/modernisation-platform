@@ -4,7 +4,7 @@ variable "vpc_cidr" {
 
 variable "subnet_cidrs_by_type" {
   description = "Map of subnet CIDR blocks with the keys representing what they are for"
-  type        = map
+  type        = map(any)
 }
 
 variable "tags_common" {
@@ -31,6 +31,18 @@ variable "shared_resource" {
 
 variable "transit_gateway_id" {
   description = ""
-  type = string
-  default = ""
+  type        = string
+  default     = ""
+}
+
+variable "nacl_ingress" {
+  description = "List of NACL ingress rules"
+  type = map(any)
+  default = null
+}
+
+variable "nacl_egress" {
+  description = "List of NACL egress rules"
+  type = map(any)
+  default = null
 }

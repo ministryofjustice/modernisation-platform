@@ -62,6 +62,54 @@ resource "aws_vpc" "vpc" {
   )
 }
 
+# NACLs
+resource "aws_network_acl" "default" {
+  vpc_id = aws_vpc.vpc.id
+}
+
+resource "aws_network_acl_rule" "ingress" {
+  for_each = (var.nacl_ingress != null) ? tomap(var.nacl_ingress) : {}
+
+  network_acl_id = aws_network_acl.default.id
+  egress         = false
+
+  # Source/destination
+  cidr_block     = each.value.cidr_block
+
+  # Protocol
+  protocol = each.value.protocol
+
+  # Rules
+  rule_action = each.value.rule_action
+  rule_number = each.value.rule_number
+
+  # Ports
+  # from_port = each.value.from_port ? each.value.from_port : null
+  # to_port   = each.value.to_port ? each.value.to_port : null
+}
+
+# resource "aws_network_acl_rule" "egress" {
+#   for_each = var.nacl_egress
+
+#   network_acl_id = aws_network_acl.default.id
+#   cidr_block     = aws_vpc.vpc.cidr_block
+#   egress         = true
+
+#   # Source/destination
+#   cidr_block     = each.value.cidr_block
+
+#   # Protocol
+#   protocol = each.value.protocol
+
+#   # Rules
+#   rule_action = each.value.rule_action
+#   rule_number = each.value.rule_number
+
+#   # Ports
+#   from_port = each.value.from_port
+#   to_port   = each.value.to_port
+# }
+
 # VPC: Subnet per type, per availability zone
 resource "aws_subnet" "default" {
   for_each = local.subnets_map_associations
@@ -146,9 +194,9 @@ resource "aws_route" "shared_tgw" {
     if substr(key, 0, 6) != "public" && (var.shared_resource == true)
   }
 
-  route_table_id = aws_route_table.default[each.key].id
+  route_table_id         = aws_route_table.default[each.key].id
   destination_cidr_block = "0.0.0.0/0"
-  transit_gateway_id = var.transit_gateway_id
+  transit_gateway_id     = var.transit_gateway_id
 }
 
 # Elastic IPs for NAT Gateway
