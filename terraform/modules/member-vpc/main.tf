@@ -77,7 +77,7 @@ locals {
         for cidr_index, cidr in set : {
           key  = key
           cidr = cidr
-          type = set_index == 0 ? "public" : (set_index == 2 ? "private" : "data")
+          type = set_index == 0 ? "private" : (set_index == 1 ? "public" : "data")
           az   = local.availability_zones[cidr_index]
         }
       ]
@@ -99,6 +99,13 @@ resource "aws_vpc" "vpc" {
       Name = var.tags_prefix
     },
   )
+}
+
+resource "aws_vpc_ipv4_cidr_block_association" "default" {
+  for_each = tomap(var.subnet_sets)
+
+  vpc_id = aws_vpc.vpc.id
+  cidr_block = each.value
 }
 
 # # NACLs
@@ -157,27 +164,29 @@ resource "aws_subnet" "tgw" {
   cidr_block = each.value.cidr
   availability_zone = each.value.az
 
-  # tags = merge(
-  #   var.tags_common,
-  #   {
-  #     Name = "${var.tags_prefix}-${each.value.type}-${each.value.az}"
-  #   }
-  # )
+  tags = merge(
+    var.tags_common,
+    {
+      Name = each.key
+    }
+  )
 }
 
 resource "aws_subnet" "sets" {
+  depends_on = [aws_vpc_ipv4_cidr_block_association.default]
+
   for_each = tomap(local.expanded_worker_subnets_with_keys)
 
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = each.value.cidr
   availability_zone = each.value.az
 
-  # tags = merge(
-  #   var.tags_common,
-  #   {
-  #     Name = "${var.tags_prefix}-${each.value.type}-${each.value.az}"
-  #   }
-  # )
+  tags = merge(
+    var.tags_common,
+    {
+      Name = each.key
+    }
+  )
 }
 
 # # VPC: Internet Gateway
