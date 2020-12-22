@@ -53,7 +53,20 @@ data "aws_availability_zones" "available" {
 # Locals
 locals {
   availability_zones   = sort(data.aws_availability_zones.available.names)
-  expanded_tgw_subnets = cidrsubnets(var.vpc_cidr, 2, 2, 2)
+
+  expanded_tgw_subnets = [
+    for index, cidr in cidrsubnets(var.vpc_cidr, 2, 2, 2): {
+      key = "transit-gateway"
+      cidr = cidr
+      az = local.availability_zones[index]
+    }
+  ]
+
+  expanded_tgw_subnets_with_keys = {
+    for subnet in local.expanded_tgw_subnets:
+    "${subnet.key}-${subnet.az}" => subnet
+  }
+
   expanded_worker_subnets = {
     for key, subnet_set in var.subnet_sets :
     key => chunklist(cidrsubnets(subnet_set, 3, 3, 3, 4, 4, 4, 4, 4, 4), 3)
@@ -138,10 +151,11 @@ resource "aws_vpc" "vpc" {
 
 # VPC: Subnet per type, per availability zone
 resource "aws_subnet" "tgw" {
-  for_each = toset(local.expanded_tgw_subnets)
+  for_each = tomap(local.expanded_tgw_subnets_with_keys)
 
   vpc_id     = aws_vpc.vpc.id
-  cidr_block = each.value
+  cidr_block = each.value.cidr
+  availability_zone = each.value.az
 
   # tags = merge(
   #   var.tags_common,
