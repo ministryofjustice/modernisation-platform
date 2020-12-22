@@ -3,7 +3,7 @@ variable "vpc_cidr" {
 }
 
 variable "subnet_sets" {
-type=map(any)
+  type = map(any)
 }
 
 # variable "subnet_cidrs_by_type" {
