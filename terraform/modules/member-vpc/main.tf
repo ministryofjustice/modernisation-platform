@@ -138,7 +138,7 @@ resource "aws_vpc" "vpc" {
 
 # VPC: Subnet per type, per availability zone
 resource "aws_subnet" "tgw" {
-  for_each = tomap(local.expanded_tgw_subnets)
+  for_each = toset(local.expanded_tgw_subnets)
 
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = each.value.cidr
