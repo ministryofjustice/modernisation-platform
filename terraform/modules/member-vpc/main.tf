@@ -1,6 +1,3 @@
-
-
-
 # Get AZs for account
 data "aws_availability_zones" "available" {
   state = "available"
@@ -55,33 +52,29 @@ data "aws_availability_zones" "available" {
 
 # Locals
 locals {
+  availability_zones   = sort(data.aws_availability_zones.available.names)
   expanded_tgw_subnets = cidrsubnets(var.vpc_cidr, 2, 2, 2)
-}
-
-locals {
   expanded_worker_subnets = {
-    for key, subnet in var.subnet_sets: key => cidrsubnets(subnet, 4, 4, 4, 5, 5, 5, 5, 5, 5)
+    for key, subnet_set in var.subnet_sets:
+    key => chunklist(cidrsubnets(subnet_set, 3, 3, 3, 4, 4, 4, 4, 4, 4), 3)
   }
-
-availability_zones = sort(data.aws_availability_zones.available.names)
-  expanded_worker_subnets = flatten([
-    for k, v in var.subnet_sets : [
-      for index, cidr in v : {
-        type = k
-        cidr = cidr
-        az   = local.availability_zones[index]
-      }
+  expanded_worker_subnets_assocation = flatten([
+    for key, subnet_set in local.expanded_worker_subnets: [
+      for set_index, set in subnet_set: [
+        for cidr_index, cidr in set: {
+          key = key
+          cidr = cidr
+          type = set_index == 0 ? "public" : (set_index == 2 ? "private" : "data")
+          az   = local.availability_zones[cidr_index]
+        }
+      ]
     ]
   ])
-  expanded_worker_subnets_assocation = {
-    for subnet in local.expanded_worker_subnets:
-      "${subnet.type}-${subnet.az}" => {
-        cidr = subnet.cidr
-      }...
-    }
+  expanded_worker_subnets_with_keys = {
+    for subnet in local.expanded_worker_subnets_assocation:
+    "${subnet.key}-${subnet.type}-${subnet.az}" => subnet
   }
 }
-
 
 # VPC
 resource "aws_vpc" "vpc" {
@@ -145,11 +138,11 @@ resource "aws_vpc" "vpc" {
 
 # VPC: Subnet per type, per availability zone
 resource "aws_subnet" "tgw" {
-  for_each = toset(local.expanded_tgw_subnets)
+  for_each = tomap(local.expanded_tgw_subnets)
 
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = each.value
-  # availability_zone = each.value.az
+  cidr_block        = each.value.cidr
+  availability_zone = each.value.az
 
   # tags = merge(
   #   var.tags_common,
@@ -160,11 +153,11 @@ resource "aws_subnet" "tgw" {
 }
 
 resource "aws_subnet" "sets" {
-  for_each = [for set in local.expanded_worker_subnets: set]
-  
+  for_each = tomap(local.expanded_worker_subnets_with_keys)
+
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = each.value
-  # availability_zone = each.value.az
+  cidr_block        = each.value.cidr
+  availability_zone = each.value.az
 
   # tags = merge(
   #   var.tags_common,
@@ -173,7 +166,6 @@ resource "aws_subnet" "sets" {
   #   }
   # )
 }
-
 
 # # VPC: Internet Gateway
 # resource "aws_internet_gateway" "ig" {

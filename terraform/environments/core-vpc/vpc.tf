@@ -25,7 +25,7 @@ module "vpc" {
   source = "../../modules/member-vpc"
 
   subnet_sets = each.value.cidr.subnet_sets
-  vpc_cidr = each.value.cidr.transit_gateway
+  vpc_cidr    = each.value.cidr.transit_gateway
   # # CIDRs
   # subnet_cidrs_by_type = each.value.cidr.subnets
   # vpc_cidr             = each.value.cidr.vpc
