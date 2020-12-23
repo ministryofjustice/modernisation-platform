@@ -20,12 +20,19 @@ locals {
 }
 
 module "vpc" {
+  providers = {
+    aws = aws
+    aws.core-network-services = aws.core-network-services
+  }
+
   for_each = local.vpcs[terraform.workspace]
 
   source = "../../modules/member-vpc"
 
   subnet_sets = each.value.cidr.subnet_sets
   vpc_cidr    = each.value.cidr.transit_gateway
+
+  transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
   # # CIDRs
   # subnet_cidrs_by_type = each.value.cidr.subnets
   # vpc_cidr             = each.value.cidr.vpc
@@ -41,6 +48,24 @@ module "vpc" {
   tags_common = {}
   tags_prefix = each.key
 
+}
+
+module "vpc_tgw_routing" {
+  source = "../../modules/vpc-tgw-routing"
+
+  for_each = local.vpcs[terraform.workspace]
+
+  providers = {
+    aws                       = aws
+    aws.core-network-services = aws.core-network-services
+  }
+
+  subnet_sets = each.value.cidr.subnet_sets
+  tgw_vpc_attachment = module.vpc_attachment[each.key].tgw_vpc_attachment
+  tgw_route_table = module.vpc_attachment[each.key].tgw_route_table
+  tgw_id = data.aws_ec2_transit_gateway.transit-gateway.id
+
+  depends_on = [module.vpc_attachment, module.vpc]
 }
 
 output "expanded_worker_subnets" {

@@ -21,6 +21,11 @@ variable "tags_prefix" {
   type        = string
 }
 
+variable "transit_gateway_id" {
+  description = "tgw ID"
+  type = string
+}
+
 # variable "enable_nat_gateway" {
 #   description = "Enable NAT Gateway on this VPC"
 #   type        = bool

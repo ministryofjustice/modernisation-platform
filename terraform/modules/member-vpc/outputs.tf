@@ -6,8 +6,9 @@ output "vpc_id" {
 output "tgw_subnet_ids" {
   description = "Transit Gateway subnet IDs"
   value = [
-    for key, subnet in aws_subnet.tgw :
+    for key, subnet in aws_subnet.subnets :
     subnet.id
+    if substr(key, 0, 15) == "transit-gateway"
   ]
 }
 
