@@ -40,4 +40,15 @@ module "vpc" {
   # Tags
   tags_common = {}
   tags_prefix = each.key
+
 }
+
+# output "expanded_worker_subnets" {
+#   value = module.vpc["hmpps-production"].expanded_worker_subnets
+# }
+# output "expanded_worker_subnets_assocation" {
+#   value = module.vpc["hmpps-production"].expanded_worker_subnets_assocation
+# }
+# output "expanded_worker_subnets_with_keys" {
+#   value = module.vpc["hmpps-production"].expanded_worker_subnets_with_keys
+# }

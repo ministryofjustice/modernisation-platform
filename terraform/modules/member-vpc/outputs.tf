@@ -20,3 +20,13 @@
 #     if substr(key, 0, 3) != "tgw"
 #   ]
 # }
+
+output "expanded_worker_subnets" {
+  value = local.expanded_worker_subnets
+}
+output "expanded_worker_subnets_assocation" {
+  value = local.expanded_worker_subnets_assocation
+}
+output "expanded_worker_subnets_with_keys" {
+  value = local.expanded_worker_subnets_with_keys
+}

@@ -202,6 +202,19 @@ resource "aws_internet_gateway" "ig" {
 }
 
 # Route table per type, per AZ (apart from public, which is separate)
+resource "aws_route_table" "tgw" {
+ 
+  vpc_id = aws_vpc.vpc.id
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-tgw"
+    },
+  )
+}
+
+# Route table per type, per AZ (apart from public, which is separate)
 resource "aws_route_table" "public" {
   for_each = var.subnet_sets
 
@@ -215,29 +228,44 @@ resource "aws_route_table" "public" {
   )
 }
 
-# # Public Internet Gateway route
-# resource "aws_route" "public_ig" {
-#   route_table_id         = aws_route_table.public.id
-#   destination_cidr_block = "0.0.0.0/0"
-#   gateway_id             = aws_internet_gateway.ig.id
-# }
+# Public Internet Gateway route
+resource "aws_route" "public_ig" {
+  for_each = aws_route_table.public
 
-# # Non-public route tables
-# resource "aws_route_table" "default" {
-#   for_each = {
-#     for key in keys(local.subnets_map_associations) :
-#     key => local.subnets_map_associations[key]
-#     if substr(key, 0, 6) != "public"
-#   }
-#   vpc_id = aws_vpc.vpc.id
+  route_table_id         = aws_route_table.public[each.key].id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.ig.id
+}
 
-#   tags = merge(
-#     var.tags_common,
-#     {
-#       Name = "${var.tags_prefix}-${each.key}"
-#     }
-#   )
-# }
+
+# Route table per type, per AZ
+resource "aws_route_table" "private" {
+  for_each = var.subnet_sets
+
+  vpc_id = aws_vpc.vpc.id
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-${each.key}-private"
+    },
+  )
+}
+
+# Route table per type, per AZ
+resource "aws_route_table" "data" {
+  for_each = var.subnet_sets
+
+  vpc_id = aws_vpc.vpc.id
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-${each.key}-data"
+    },
+  )
+}
+
 
 # # Private NAT routes
 # resource "aws_route" "default_nat" {
@@ -252,59 +280,24 @@ resource "aws_route_table" "public" {
 #   nat_gateway_id         = aws_nat_gateway.default["public-${substr(each.key, length(each.key) - 10, length(each.key))}"].id
 # }
 
-# resource "aws_route" "shared_tgw" {
-#   for_each = {
-#     for key in keys(local.subnets_map_associations) :
-#     key => local.subnets_map_associations[key]
-#     if substr(key, 0, 6) != "public" && (var.shared_resource == true)
-#   }
+resource "aws_route" "shared_tgw" {
+ 
+  route_table_id         = aws_route_table.tgw.id
+  destination_cidr_block = "0.0.0.0/0"
+  transit_gateway_id     = var.transit_gateway_id
+}
 
-#   route_table_id         = aws_route_table.default[each.key].id
-#   destination_cidr_block = "0.0.0.0/0"
-#   transit_gateway_id     = var.transit_gateway_id
-# }
+# Route table associations
+resource "aws_route_table_association" "sets" {
+  for_each = local.expanded_worker_subnets_with_keys
 
-# # Elastic IPs for NAT Gateway
-# resource "aws_eip" "default" {
-#   for_each = {
-#     for key in keys(local.subnets_map_associations) :
-#     key => local.subnets_map_associations[key]
-#     if substr(key, 0, 6) == "public"
-#   }
+  subnet_id      = aws_subnet.sets["${each.value.key}-${each.value.type}-${each.value.az}"].id
+  route_table_id = (each.value.type == "public") ? aws_route_table.public[each.value.key].id : (each.value.type == "data") ? aws_route_table.data[each.value.key].id: aws_route_table.private[each.value.key].id
+}
 
-#   vpc = true
+resource "aws_route_table_association" "tgw" {
+  for_each = local.expanded_tgw_subnets_with_keys
 
-#   tags = merge(
-#     var.tags_common,
-#     {
-#       Name = "${var.tags_prefix}-nat-eip-${each.key}"
-#     },
-#   )
-# }
-
-# # Public NAT Gateway
-# resource "aws_nat_gateway" "default" {
-#   for_each = {
-#     for key in keys(local.subnets_map_associations) :
-#     key => local.subnets_map_associations[key]
-#     if substr(key, 0, 6) == "public" && (var.enable_nat_gateway == true)
-#   }
-
-#   allocation_id = aws_eip.default[each.key].id
-#   subnet_id     = aws_subnet.default[each.key].id
-
-#   tags = merge(
-#     var.tags_common,
-#     {
-#       Name = "${var.tags_prefix}-nat-gateway-${each.key}"
-#     }
-#   )
-# }
-
-# # Route table associations
-# resource "aws_route_table_association" "default" {
-#   for_each = local.subnets_map_associations
-
-#   subnet_id      = aws_subnet.default[each.key].id
-#   route_table_id = substr(each.key, 0, 6) == "public" ? aws_route_table.public.id : aws_route_table.default[each.key].id
-# }
+  subnet_id = aws_subnet.tgw["${each.value.key}-${each.value.az}"].id
+  route_table_id = aws_route_table.tgw.id
+}
