@@ -37,12 +37,12 @@ variable "transit_gateway_id" {
 
 variable "nacl_ingress" {
   description = "List of NACL ingress rules"
-  type = map(any)
-  default = null
+  type        = map(any)
+  default     = null
 }
 
 variable "nacl_egress" {
   description = "List of NACL egress rules"
-  type = map(any)
-  default = null
+  type        = map(any)
+  default     = null
 }

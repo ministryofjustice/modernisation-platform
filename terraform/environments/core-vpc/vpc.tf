@@ -43,9 +43,9 @@ module "vpc" {
 
 }
 
-# output "expanded_worker_subnets" {
-#   value = module.vpc["hmpps-production"].expanded_worker_subnets
-# }
+output "expanded_worker_subnets" {
+  value = module.vpc["hmpps-production"].expanded_worker_subnets
+}
 # output "expanded_worker_subnets_assocation" {
 #   value = module.vpc["hmpps-production"].expanded_worker_subnets_assocation
 # }

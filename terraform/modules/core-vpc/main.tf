@@ -74,7 +74,7 @@ resource "aws_network_acl_rule" "ingress" {
   egress         = false
 
   # Source/destination
-  cidr_block     = each.value.cidr_block
+  cidr_block = each.value.cidr_block
 
   # Protocol
   protocol = each.value.protocol

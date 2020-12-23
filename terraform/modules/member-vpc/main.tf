@@ -52,18 +52,19 @@ data "aws_availability_zones" "available" {
 
 # Locals
 locals {
-  availability_zones   = sort(data.aws_availability_zones.available.names)
+  availability_zones = sort(data.aws_availability_zones.available.names)
 
   expanded_tgw_subnets = [
-    for index, cidr in cidrsubnets(var.vpc_cidr, 2, 2, 2): {
-      key = "transit-gateway"
+    for index, cidr in cidrsubnets(var.vpc_cidr, 2, 2, 2) : {
+      key  = "transit-gateway"
       cidr = cidr
-      az = local.availability_zones[index]
+      az   = local.availability_zones[index]
+      type = "transit-gateway"
     }
   ]
 
   expanded_tgw_subnets_with_keys = {
-    for subnet in local.expanded_tgw_subnets:
+    for subnet in local.expanded_tgw_subnets :
     "${subnet.key}-${subnet.az}" => subnet
   }
 
@@ -87,6 +88,21 @@ locals {
     for subnet in local.expanded_worker_subnets_assocation :
     "${subnet.key}-${subnet.type}-${subnet.az}" => subnet
   }
+
+  all_subnets_with_keys = merge(
+    local.expanded_tgw_subnets_with_keys,
+    local.expanded_worker_subnets_with_keys
+  )
+
+  all_distinct_route_tables = distinct([
+    for key, subnet in local.all_subnets_with_keys :
+    "${subnet.key}-${subnet.type}"
+  ])
+
+  all_route_table_associations = {
+    for key, subnet in local.all_subnets_with_keys :
+    key => "${subnet.key}-${subnet.type}"
+  }
 }
 
 # VPC
@@ -104,7 +120,7 @@ resource "aws_vpc" "vpc" {
 resource "aws_vpc_ipv4_cidr_block_association" "default" {
   for_each = tomap(var.subnet_sets)
 
-  vpc_id = aws_vpc.vpc.id
+  vpc_id     = aws_vpc.vpc.id
   cidr_block = each.value
 }
 
@@ -157,11 +173,28 @@ resource "aws_vpc_ipv4_cidr_block_association" "default" {
 # # }
 
 # VPC: Subnet per type, per availability zone
+# resource "aws_subnet" "subnets" {
+#   depends_on = [aws_vpc_ipv4_cidr_block_association.default]
+
+#   for_each = tomap(local.all_subnets_with_keys)
+
+#   vpc_id            = aws_vpc.vpc.id
+#   cidr_block        = each.value.cidr
+#   availability_zone = each.value.az
+
+#   tags = merge(
+#     var.tags_common,
+#     {
+#       Name = each.key
+#     }
+#   )
+# }
+
 resource "aws_subnet" "tgw" {
   for_each = tomap(local.expanded_tgw_subnets_with_keys)
 
-  vpc_id     = aws_vpc.vpc.id
-  cidr_block = each.value.cidr
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = each.value.cidr
   availability_zone = each.value.az
 
   tags = merge(
@@ -201,9 +234,22 @@ resource "aws_internet_gateway" "ig" {
   )
 }
 
+# resource "aws_route_table" "route_tables" {
+#   for_each = toset(local.all_distinct_route_tables)
+
+#   vpc_id = aws_vpc.vpc.id
+
+#   tags = merge(
+#     var.tags_common,
+#     {
+#       Name = "${var.tags_prefix}-${each.value}"
+#     }
+#   )
+# }
+
 # Route table per type, per AZ (apart from public, which is separate)
 resource "aws_route_table" "tgw" {
- 
+
   vpc_id = aws_vpc.vpc.id
 
   tags = merge(
@@ -236,6 +282,17 @@ resource "aws_route" "public_ig" {
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.ig.id
 }
+# resource "aws_route" "public_ig" {
+#   for_each = {
+#     for key, route_table in aws_route_table.route_tables :
+#     key => route_table
+#     if substr(key, length(key) - 6, length(key)) == "public"
+#   }
+
+#   route_table_id         = aws_route_table.route_tables[each.key].id
+#   destination_cidr_block = "0.0.0.0/0"
+#   gateway_id             = aws_internet_gateway.ig.id
+# }
 
 
 # Route table per type, per AZ
@@ -280,24 +337,31 @@ resource "aws_route_table" "data" {
 #   nat_gateway_id         = aws_nat_gateway.default["public-${substr(each.key, length(each.key) - 10, length(each.key))}"].id
 # }
 
-resource "aws_route" "shared_tgw" {
- 
-  route_table_id         = aws_route_table.tgw.id
-  destination_cidr_block = "0.0.0.0/0"
-  transit_gateway_id     = var.transit_gateway_id
-}
+# resource "aws_route" "shared_tgw" {
 
-# Route table associations
+#   route_table_id         = aws_route_table.tgw.id
+#   destination_cidr_block = "0.0.0.0/0"
+#   # transit_gateway_id     = var.transit_gateway_id
+# }
+
+# resource "aws_route_table_association" "route_table_associations" {
+#   for_each = tomap(local.all_route_table_associations)
+
+#   subnet_id      = aws_subnet.subnets[each.key].id
+#   route_table_id = aws_route_table.route_tables[each.value].id
+# }
+
+# # Route table associations
 resource "aws_route_table_association" "sets" {
   for_each = local.expanded_worker_subnets_with_keys
 
   subnet_id      = aws_subnet.sets["${each.value.key}-${each.value.type}-${each.value.az}"].id
-  route_table_id = (each.value.type == "public") ? aws_route_table.public[each.value.key].id : (each.value.type == "data") ? aws_route_table.data[each.value.key].id: aws_route_table.private[each.value.key].id
+  route_table_id = (each.value.type == "public") ? aws_route_table.public[each.value.key].id : (each.value.type == "data") ? aws_route_table.data[each.value.key].id : aws_route_table.private[each.value.key].id
 }
 
 resource "aws_route_table_association" "tgw" {
   for_each = local.expanded_tgw_subnets_with_keys
 
-  subnet_id = aws_subnet.tgw["${each.value.key}-${each.value.az}"].id
+  subnet_id      = aws_subnet.tgw["${each.value.key}-${each.value.az}"].id
   route_table_id = aws_route_table.tgw.id
 }
