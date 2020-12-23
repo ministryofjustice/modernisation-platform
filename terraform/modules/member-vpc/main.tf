@@ -189,29 +189,31 @@ resource "aws_subnet" "sets" {
   )
 }
 
-# # VPC: Internet Gateway
-# resource "aws_internet_gateway" "ig" {
-#   vpc_id = aws_vpc.vpc.id
+# VPC: Internet Gateway
+resource "aws_internet_gateway" "ig" {
+  vpc_id = aws_vpc.vpc.id
 
-#   tags = merge(
-#     var.tags_common,
-#     {
-#       Name = "${var.tags_prefix}-IG"
-#     },
-#   )
-# }
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-IG"
+    },
+  )
+}
 
-# # Route table per type, per AZ (apart from public, which is separate)
-# resource "aws_route_table" "public" {
-#   vpc_id = aws_vpc.vpc.id
+# Route table per type, per AZ (apart from public, which is separate)
+resource "aws_route_table" "public" {
+  for_each = var.subnet_sets
 
-#   tags = merge(
-#     var.tags_common,
-#     {
-#       Name = "${var.tags_prefix}-public"
-#     },
-#   )
-# }
+  vpc_id = aws_vpc.vpc.id
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-${each.key}-public"
+    },
+  )
+}
 
 # # Public Internet Gateway route
 # resource "aws_route" "public_ig" {
