@@ -128,11 +128,24 @@ resource "aws_vpc_ipv4_cidr_block_association" "default" {
   cidr_block = each.value
 }
 
-# # NACLs
-# resource "aws_network_acl" "default" {
-#   vpc_id = aws_vpc.vpc.id
-# }
+# NACLs
+resource "aws_network_acl" "private" {
+  for_each = {for key, value in local.expanded_worker_subnets_assocation: key => value
+  if value.type == "private"}
 
+  vpc_id = aws_vpc.vpc.id
+
+  subnet_ids = [aws_subnet.subnets["${each.value.key}-${each.value.type}-${each.value.az}"].id]
+
+}
+
+resource "aws_network_acl" "data" {
+  vpc_id = aws_vpc.vpc.id
+}
+
+resource "aws_network_acl" "dmz" {
+  vpc_id = aws_vpc.vpc.id
+}
 # resource "aws_network_acl_rule" "ingress" {
 #   for_each = (var.nacl_ingress != null) ? tomap(var.nacl_ingress) : {}
 
@@ -200,6 +213,7 @@ resource "aws_subnet" "subnets" {
 #   vpc_id            = aws_vpc.vpc.id
 #   cidr_block        = each.value.cidr
 #   availability_zone = each.value.az
+
 
 #   tags = merge(
 #     var.tags_common,
