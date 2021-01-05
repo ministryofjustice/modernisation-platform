@@ -7,56 +7,27 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
-# locals {
-#   availability_zones = sort(data.aws_availability_zones.available.names)
-#   # subnets_map outputs the following:
-#   # [
-#   #   {
-#   #     az   = "eu-west-2a"
-#   #     cidr = "10.230.8.0/23"
-#   #     type = "private"
-#   #   },
-#   #   {
-#   #     az   = "eu-west-2b"
-#   #     cidr = "10.230.10.0/23"
-#   #     type = "private"
-#   #   }...
-#   # ]
-#   subnets_map = flatten([
-#     for k, v in var.subnet_cidrs_by_type : [
-#       for index, cidr in v : {
-#         type = k
-#         cidr = cidr
-#         az   = local.availability_zones[index]
-#       }
-#     ]
-#   ])
-#   # subnets_map_assocations outputs the following:
-#   # {
-#   #   private-eu-west-2a = {
-#   #     az   = "eu-west-2a"
-#   #     cidr = "10.230.8.0/23"
-#   #     type = "private"
-#   #   }
-#   #   private-eu-west-2b = {
-#   #     az   = "eu-west-2b"
-#   #     cidr = "10.230.10.0/23"
-#   #     type = "private"
-#   #   }
-#   # }...
-#   subnets_map_associations = {
-#     for subnet in local.subnets_map :
-#     "${subnet.type}-${subnet.az}" => {
-#       cidr = subnet.cidr
-#       az   = subnet.az
-#       type = subnet.type
-#     }
-#   }
-# }
-
 # Locals
 locals {
   availability_zones = sort(data.aws_availability_zones.available.names)
+
+ nacl_rules = [
+    { egress : false, action : "deny", protocol : -1, port : 0,   rule_num : 810, cidr : "10.0.0.0/8" },
+    { egress : false, action : "deny", protocol : -1, port : 0,   rule_num : 820, cidr : "172.16.0.0/12" },
+    { egress : false, action : "deny", protocol : -1, port : 0,   rule_num : 830, cidr : "192.168.0.0/16" },
+    { egress : false, action : "allow", protocol : -1, port : 0,   rule_num : 910, cidr : "0.0.0.0/0" },
+    { egress : true, action : "deny", protocol : -1, port : 0,   rule_num : 810, cidr : "10.0.0.0/8" },
+    { egress : true, action : "deny", protocol : -1, port : 0,   rule_num : 820, cidr : "172.16.0.0/12" },
+    { egress : true, action : "deny", protocol : -1, port : 0,   rule_num : 830, cidr : "192.168.0.0/16" },
+    { egress : true, action : "allow", protocol : -1, port : 0,   rule_num : 910, cidr : "0.0.0.0/0" }
+  ]
+
+  nacls = distinct([
+    for key, subnet in local.all_subnets_with_keys :
+      "${subnet.key}-${subnet.type}"
+      if subnet.key != "transit-gateway"
+  ])
+
 
   expanded_tgw_subnets = [
     for index, cidr in cidrsubnets(var.vpc_cidr, 2, 2, 2) : {
@@ -107,6 +78,25 @@ locals {
     for key, subnet in local.all_subnets_with_keys :
     key => "${subnet.key}-${subnet.type}"
   }
+
+expanded_rules = toset(flatten([
+    for key, value in toset(local.nacls): [
+      for rule_key, rule in toset(local.nacl_rules) : {
+        key = value
+        egress = rule.egress
+        action = rule.action
+        protocol = rule.protocol
+        port = rule.port
+        rule_num = rule.rule_num
+        cidr  = rule.cidr
+      }
+    ]
+  ]))
+  expanded_rules_with_keys = {
+    for rule in local.expanded_rules:
+      "${rule.key}-${rule.cidr}-${rule.egress}-${rule.action}-${rule.protocol}-${rule.port}-${rule.rule_num}" => rule
+  }
+
 }
 
 # VPC
@@ -129,23 +119,57 @@ resource "aws_vpc_ipv4_cidr_block_association" "default" {
 }
 
 # NACLs
-resource "aws_network_acl" "private" {
-  for_each = {for key, value in local.expanded_worker_subnets_assocation: key => value
-  if value.type == "private"}
-
+resource "aws_network_acl" "default" {
+  for_each = toset(local.nacls)
   vpc_id = aws_vpc.vpc.id
+  subnet_ids = [
+    for az in local.availability_zones:
+      aws_subnet.subnets["${each.key}-${az}"].id
+  ]
 
-  subnet_ids = [aws_subnet.subnets["${each.value.key}-${each.value.type}-${each.value.az}"].id]
-
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-${each.value}"
+    },
+  )
 }
 
-resource "aws_network_acl" "data" {
-  vpc_id = aws_vpc.vpc.id
+resource "aws_network_acl_rule" "apply_network_map_rules" {
+  for_each = local.expanded_rules_with_keys 
+ 
+  network_acl_id = aws_network_acl.default[each.value.key].id
+  rule_number    = each.value.rule_num
+  egress         = each.value.egress
+  protocol       = each.value.protocol
+  rule_action    = each.value.action
+  cidr_block     = each.value.cidr
 }
 
-resource "aws_network_acl" "dmz" {
-  vpc_id = aws_vpc.vpc.id
+resource "aws_network_acl_rule" "allow_local_network_ingress" {
+  for_each = toset(local.nacls)
+
+  network_acl_id = aws_network_acl.default[each.value].id
+  rule_number    = 210
+  egress         = false
+  protocol       = "-1"
+  rule_action    = "allow"
+  cidr_block     = var.subnet_sets[split("-", each.value)[0]]
 }
+
+resource "aws_network_acl_rule" "allow_local_network_egress" {
+  for_each = toset(local.nacls)
+
+  network_acl_id = aws_network_acl.default[each.value].id
+  rule_number    = 210
+  egress         = true
+  protocol       = "-1"
+  rule_action    = "allow"
+  cidr_block     = var.subnet_sets[split("-", each.value)[0]]
+}
+
+
+
 # resource "aws_network_acl_rule" "ingress" {
 #   for_each = (var.nacl_ingress != null) ? tomap(var.nacl_ingress) : {}
 

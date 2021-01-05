@@ -30,8 +30,8 @@ output "tgw_subnet_ids" {
 #   ]
 # }
 
-output "expanded_worker_subnets" {
-  value = local.all_route_table_associations
+output "debug" {
+  value = local.expanded_rules_with_keys
 }
 output "expanded_worker_subnets_assocation" {
   value = local.expanded_worker_subnets_assocation

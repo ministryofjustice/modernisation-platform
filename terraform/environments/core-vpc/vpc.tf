@@ -16,6 +16,7 @@ locals {
     #   for file in fileset("vpcs", "*-pre-production.json") :
     #     replace(file, ".json", "") => jsondecode(file("env/${file}"))
     # }
+
   }
 }
 
@@ -31,7 +32,7 @@ module "vpc" {
 
   subnet_sets = each.value.cidr.subnet_sets
   vpc_cidr    = each.value.cidr.transit_gateway
-
+  
   transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
   # # CIDRs
   # subnet_cidrs_by_type = each.value.cidr.subnets
@@ -45,7 +46,7 @@ module "vpc" {
   # enable_nat_gateway = false
 
   # Tags
-  tags_common = {}
+  tags_common = local.tags
   tags_prefix = each.key
 
 }
@@ -68,9 +69,9 @@ module "vpc_tgw_routing" {
   depends_on = [module.vpc_attachment, module.vpc]
 }
 
-output "expanded_worker_subnets" {
-  value = module.vpc["hmpps-production"].expanded_worker_subnets
-}
+# output "debug" {
+#   value = module.vpc["hmpps-production"].debug
+# }
 # output "expanded_worker_subnets_assocation" {
 #   value = module.vpc["hmpps-production"].expanded_worker_subnets_assocation
 # }
