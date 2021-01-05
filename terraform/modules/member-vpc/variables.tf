@@ -23,7 +23,7 @@ variable "tags_prefix" {
 
 variable "transit_gateway_id" {
   description = "tgw ID"
-  type = string
+  type        = string
 }
 
 # variable "enable_nat_gateway" {
