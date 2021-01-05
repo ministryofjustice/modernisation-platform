@@ -22,7 +22,7 @@ locals {
 
 module "vpc" {
   providers = {
-    aws = aws
+    aws                       = aws
     aws.core-network-services = aws.core-network-services
   }
 
@@ -32,7 +32,7 @@ module "vpc" {
 
   subnet_sets = each.value.cidr.subnet_sets
   vpc_cidr    = each.value.cidr.transit_gateway
-  
+
   transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
   # # CIDRs
   # subnet_cidrs_by_type = each.value.cidr.subnets
@@ -61,10 +61,10 @@ module "vpc_tgw_routing" {
     aws.core-network-services = aws.core-network-services
   }
 
-  subnet_sets = each.value.cidr.subnet_sets
+  subnet_sets        = each.value.cidr.subnet_sets
   tgw_vpc_attachment = module.vpc_attachment[each.key].tgw_vpc_attachment
-  tgw_route_table = module.vpc_attachment[each.key].tgw_route_table
-  tgw_id = data.aws_ec2_transit_gateway.transit-gateway.id
+  tgw_route_table    = module.vpc_attachment[each.key].tgw_route_table
+  tgw_id             = data.aws_ec2_transit_gateway.transit-gateway.id
 
   depends_on = [module.vpc_attachment, module.vpc]
 }
