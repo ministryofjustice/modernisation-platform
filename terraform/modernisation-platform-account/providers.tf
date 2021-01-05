@@ -81,10 +81,8 @@ provider "aws" {
 locals {
   enabled_baseline_regions = [
     "eu-central-1", # Europe (Frankfurt)
-    "eu-north-1",   # Europe (Stockholm)
     "eu-west-1",    # Europe (Ireland)
     "eu-west-2",    # Europe (London)
-    "eu-west-3",    # Europe (Paris)
     "us-east-1",    # US East (N. Virginia) (for global services)
   ]
 }
