@@ -30,6 +30,20 @@ output "tgw_subnet_ids" {
 #   ]
 # }
 
+locals {
+  base_values = [
+    for index, value in aws_network_acl.default : {
+      arn  = value.arn
+      id   = value.id
+      name = value.tags.Name
+    }
+  ]
+}
+
+output "nacl_refs" {
+  value = local.base_values
+}
+
 output "debug" {
   value = local.expanded_rules_with_keys
 }

@@ -6,32 +6,15 @@
       "oasys": "10.232.16.0/21"
     }
   },
-  "nacl": {
-    "nomis": [
+  "nacl": [
       {
-        "ingress": null,
-        "subnet-type": "public",
+        "app" : "nomis",
+        "egress": true,
+        "subnet_type": "public",
         "protocol": -1,
         "rule_action": "allow",
         "rule_number": 100,
-        "cidr_block": "10.10.10.10/8"
-      },
-      {
-        "ingress": null,
-        "subnet-type": "private",
-        "protocol": -1,
-        "rule_action": "allow",
-        "rule_number": 110,
-        "cidr_block": "10.10.10.10/8"
-      },
-      {
-        "egress": null,
-        "subnet-type": "private",
-        "protocol": -1,
-        "rule_action": "allow",
-        "rule_number": 100,
-        "cidr_block": "10.10.10.10/8"
+        "cidr_block": "10.10.10.0/24"
       }
     ]
-  }
 }

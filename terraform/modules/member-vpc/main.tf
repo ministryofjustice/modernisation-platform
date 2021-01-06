@@ -11,21 +11,21 @@ data "aws_availability_zones" "available" {
 locals {
   availability_zones = sort(data.aws_availability_zones.available.names)
 
- nacl_rules = [
-    { egress : false, action : "deny", protocol : -1, port : 0,   rule_num : 810, cidr : "10.0.0.0/8" },
-    { egress : false, action : "deny", protocol : -1, port : 0,   rule_num : 820, cidr : "172.16.0.0/12" },
-    { egress : false, action : "deny", protocol : -1, port : 0,   rule_num : 830, cidr : "192.168.0.0/16" },
-    { egress : false, action : "allow", protocol : -1, port : 0,   rule_num : 910, cidr : "0.0.0.0/0" },
-    { egress : true, action : "deny", protocol : -1, port : 0,   rule_num : 810, cidr : "10.0.0.0/8" },
-    { egress : true, action : "deny", protocol : -1, port : 0,   rule_num : 820, cidr : "172.16.0.0/12" },
-    { egress : true, action : "deny", protocol : -1, port : 0,   rule_num : 830, cidr : "192.168.0.0/16" },
-    { egress : true, action : "allow", protocol : -1, port : 0,   rule_num : 910, cidr : "0.0.0.0/0" }
+  nacl_rules = [
+    { egress : false, action : "deny", protocol : -1, port : 0, rule_num : 810, cidr : "10.0.0.0/8" },
+    { egress : false, action : "deny", protocol : -1, port : 0, rule_num : 820, cidr : "172.16.0.0/12" },
+    { egress : false, action : "deny", protocol : -1, port : 0, rule_num : 830, cidr : "192.168.0.0/16" },
+    { egress : false, action : "allow", protocol : -1, port : 0, rule_num : 910, cidr : "0.0.0.0/0" },
+    { egress : true, action : "deny", protocol : -1, port : 0, rule_num : 810, cidr : "10.0.0.0/8" },
+    { egress : true, action : "deny", protocol : -1, port : 0, rule_num : 820, cidr : "172.16.0.0/12" },
+    { egress : true, action : "deny", protocol : -1, port : 0, rule_num : 830, cidr : "192.168.0.0/16" },
+    { egress : true, action : "allow", protocol : -1, port : 0, rule_num : 910, cidr : "0.0.0.0/0" }
   ]
 
   nacls = distinct([
     for key, subnet in local.all_subnets_with_keys :
-      "${subnet.key}-${subnet.type}"
-      if subnet.key != "transit-gateway"
+    "${subnet.key}-${subnet.type}"
+    if subnet.key != "transit-gateway"
   ])
 
 
@@ -79,22 +79,22 @@ locals {
     key => "${subnet.key}-${subnet.type}"
   }
 
-expanded_rules = toset(flatten([
-    for key, value in toset(local.nacls): [
+  expanded_rules = toset(flatten([
+    for key, value in toset(local.nacls) : [
       for rule_key, rule in toset(local.nacl_rules) : {
-        key = value
-        egress = rule.egress
-        action = rule.action
+        key      = value
+        egress   = rule.egress
+        action   = rule.action
         protocol = rule.protocol
-        port = rule.port
+        port     = rule.port
         rule_num = rule.rule_num
-        cidr  = rule.cidr
+        cidr     = rule.cidr
       }
     ]
   ]))
   expanded_rules_with_keys = {
-    for rule in local.expanded_rules:
-      "${rule.key}-${rule.cidr}-${rule.egress}-${rule.action}-${rule.protocol}-${rule.port}-${rule.rule_num}" => rule
+    for rule in local.expanded_rules :
+    "${rule.key}-${rule.cidr}-${rule.egress}-${rule.action}-${rule.protocol}-${rule.port}-${rule.rule_num}" => rule
   }
 
 }
@@ -121,10 +121,10 @@ resource "aws_vpc_ipv4_cidr_block_association" "default" {
 # NACLs
 resource "aws_network_acl" "default" {
   for_each = toset(local.nacls)
-  vpc_id = aws_vpc.vpc.id
+  vpc_id   = aws_vpc.vpc.id
   subnet_ids = [
-    for az in local.availability_zones:
-      aws_subnet.subnets["${each.key}-${az}"].id
+    for az in local.availability_zones :
+    aws_subnet.subnets["${each.key}-${az}"].id
   ]
 
   tags = merge(
@@ -136,8 +136,8 @@ resource "aws_network_acl" "default" {
 }
 
 resource "aws_network_acl_rule" "apply_network_map_rules" {
-  for_each = local.expanded_rules_with_keys 
- 
+  for_each = local.expanded_rules_with_keys
+
   network_acl_id = aws_network_acl.default[each.value.key].id
   rule_number    = each.value.rule_num
   egress         = each.value.egress
@@ -344,8 +344,8 @@ resource "aws_route" "tgw" {
 
   }
 
-  transit_gateway_id = var.transit_gateway_id
-  route_table_id = aws_route_table.route_tables[each.key].id
+  transit_gateway_id     = var.transit_gateway_id
+  route_table_id         = aws_route_table.route_tables[each.key].id
   destination_cidr_block = "0.0.0.0/0"
 }
 
