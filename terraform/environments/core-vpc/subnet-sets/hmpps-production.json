@@ -15,6 +15,15 @@
         "rule_action": "allow",
         "rule_number": 100,
         "cidr_block": "10.10.10.0/24"
+      },
+      {
+        "app" : "oasys",
+        "egress": false,
+        "subnet_type": "data",
+        "protocol": -1,
+        "rule_action": "deny",
+        "rule_number": 123,
+        "cidr_block": "10.10.90.0/24"
       }
     ]
 }

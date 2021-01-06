@@ -114,19 +114,6 @@ locals {
     "${rule.key}-${rule.cidr}-${rule.egress}-${rule.action}-${rule.protocol}-${rule.port}-${rule.rule_num}" => rule
   }
 
-  # Distinct subnets with default NACL rule assocations
-  expanded_default_nacl_rules_with_assocations = flatten([
-    for rule_value in local.expanded_default_nacl_rules : [
-      for subnet_value in local.distinct_subnets_by_key_type : merge({
-        subnet_key = subnet_value
-      }, rule_value)
-    ]
-  ])
-
-  expanded_default_nacl_rules_and_subnets_with_keys = {
-    for rule_value in local.expanded_default_nacl_rules_with_assocations :
-    "${rule_value.subnet_key}-${rule_value.name}" => rule_value
-  }
 }
 
 # VPC
