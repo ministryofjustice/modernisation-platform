@@ -45,7 +45,7 @@ output "nacl_refs" {
 }
 
 output "debug" {
-  value = local.expanded_rules_with_keys
+  value = local.expanded_default_nacl_rules_and_subnets_with_keys
 }
 output "expanded_worker_subnets_assocation" {
   value = local.expanded_worker_subnets_assocation

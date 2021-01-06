@@ -16,7 +16,7 @@ data "aws_vpc" "selected" {
   provider = aws.core-network-services
 
   filter {
-    name = "tag:Name"
+    name   = "tag:Name"
     values = ["live"]
   }
 }
@@ -37,7 +37,7 @@ resource "aws_route" "test" {
 
   for_each = tomap(var.subnet_sets)
 
-  route_table_id = data.aws_route_table.live-public.id
+  route_table_id         = data.aws_route_table.live-public.id
   destination_cidr_block = each.value
-  transit_gateway_id = var.tgw_id
+  transit_gateway_id     = var.tgw_id
 }
