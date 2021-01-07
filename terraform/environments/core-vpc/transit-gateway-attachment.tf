@@ -36,23 +36,23 @@ resource "time_sleep" "wait_60_seconds" {
 
 # Create the VPC attachment in the second account...
 module "vpc_attachment" {
-  source = "../../modules/ec2-tgw-attachment"
-
   for_each = toset(keys(local.vpcs[terraform.workspace]))
-
+  source   = "../../modules/ec2-tgw-attachment"
   providers = {
     aws                       = aws
     aws.core-network-services = aws.core-network-services
   }
 
+  subnet_ids         = module.vpc[each.key].tgw_subnet_ids
+  transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
+  vpc_id             = module.vpc[each.key].vpc_id
+  type               = local.tags.is-production ? "live_data" : "non_live_data"
+  tags               = local.tags
+
   depends_on = [
     aws_ram_principal_association.transit_gateway_association,
     time_sleep.wait_60_seconds
   ]
-
-  subnet_ids = module.vpc[each.key].tgw_subnet_ids
-  tgw_id     = data.aws_ec2_transit_gateway.transit-gateway.id
-  vpc_id     = module.vpc[each.key].vpc_id
 }
 
 # This doesn't work on shared TGWs
