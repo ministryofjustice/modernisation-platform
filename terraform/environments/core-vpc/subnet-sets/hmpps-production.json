@@ -14,7 +14,9 @@
         "protocol": -1,
         "rule_action": "allow",
         "rule_number": 100,
-        "cidr_block": "10.10.10.0/24"
+        "cidr_block": "10.10.10.0/24",
+        "from_port" : "0",
+        "to_port" : "0"
       },
       {
         "app" : "oasys",
@@ -23,7 +25,9 @@
         "protocol": -1,
         "rule_action": "deny",
         "rule_number": 123,
-        "cidr_block": "10.10.90.0/24"
+        "cidr_block": "10.10.90.0/24",
+        "from_port" : "0",
+        "to_port" : "0"
       }
     ]
 }

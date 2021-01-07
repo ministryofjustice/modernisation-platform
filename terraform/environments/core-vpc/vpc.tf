@@ -20,9 +20,6 @@ locals {
   }
 }
 
-output "vpcs" {
-  value = local.vpcs
-}
 
 module "vpc" {
   providers = {
