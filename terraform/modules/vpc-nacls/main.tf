@@ -1,7 +1,9 @@
 locals {
 
-  nacl_base = [
-    for key, value in var.nacl_config : {
+  nacl_base = { for value in var.nacl_config : 
+
+    "${value.app}-${value.cidr_block}-${value.egress}-${value.subnet_type}" =>
+    {
       name        = value.app
       cidr_block  = value.cidr_block
       egress      = value.egress
@@ -9,27 +11,21 @@ locals {
       rule_action = value.rule_action
       rule_number = value.rule_number
       subnet_type = value.subnet_type
+      from_port   = value.from_port
+      to_port     = value.to_port
     }
-  ]
-
-  expanded_nacl_base_with_keys = {
-    for data in local.nacl_base :
-    "${data.name}-${data.cidr_block}-${data.egress}-${data.subnet_type}" => data
-  }
-
-  expanded_nacl_refs_with_keys = {
-    for data in var.nacl_refs :
-    data.name => data
   }
 }
 
 resource "aws_network_acl_rule" "custom_nacl_deployment" {
-  for_each = local.expanded_nacl_base_with_keys
+  for_each = local.nacl_base
 
-  network_acl_id = local.expanded_nacl_refs_with_keys["${var.tags_prefix}-${each.value.name}-${each.value.subnet_type}"].id
+  network_acl_id = var.nacl_refs["${var.tags_prefix}-${each.value.name}-${each.value.subnet_type}"].id
   rule_number    = each.value.rule_number
   egress         = each.value.egress
   protocol       = each.value.protocol
   rule_action    = each.value.rule_action
   cidr_block     = each.value.cidr_block
+  from_port      = each.value.from_port
+  to_port        = each.value.to_port
 }

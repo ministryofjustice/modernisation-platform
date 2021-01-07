@@ -31,17 +31,19 @@ output "tgw_subnet_ids" {
 # }
 
 locals {
-  base_values = [
-    for index, value in aws_network_acl.default : {
+  network_acl_refs = { for value in aws_network_acl.default :
+
+    value.tags.Name =>
+    {
       arn  = value.arn
       id   = value.id
       name = value.tags.Name
     }
-  ]
+  }
 }
 
 output "nacl_refs" {
-  value = local.base_values
+  value = local.network_acl_refs
 }
 
 output "expanded_worker_subnets_assocation" {

@@ -3,7 +3,7 @@ variable "nacl_config" {
 }
 
 variable "nacl_refs" {
-  type = list(any)
+  type = map(any)
 }
 
 variable "tags_common" {
