@@ -1,6 +1,6 @@
 locals {
   vpcs = {
-    live = {
+    live_data = {
       cidr = {
         vpc = "10.231.0.0/19"
         subnets = {
@@ -22,7 +22,7 @@ locals {
         }
       }
     }
-    non_live = {
+    non_live_data = {
       cidr = {
         vpc = "10.231.32.0/19"
         subnets = {
