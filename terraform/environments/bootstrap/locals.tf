@@ -3,6 +3,12 @@
 data "aws_organizations_organization" "root_account" {}
 
 locals {
+  enabled_baseline_regions = [
+    "eu-central-1", # Europe (Frankfurt)
+    "eu-west-1",    # Europe (Ireland)
+    "eu-west-2",    # Europe (London)
+    "us-east-1",    # US East (N. Virginia) (for global services)
+  ]
   environments = {
     business-unit = "Platforms"
     application   = "Modernisation Platform: Environments Management"
