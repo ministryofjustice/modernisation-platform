@@ -20,6 +20,14 @@ provider "aws" {
   }
 }
 
+provider "aws" {
+  alias  = "core-network-services"
+  region = "eu-west-2"
+  assume_role {
+    role_arn = "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/ModernisationPlatformAccess"
+  }
+}
+
 # AWS provider for the Modernisation Platform, to get things from there if required
 provider "aws" {
   alias  = "modernisation-platform"
@@ -43,6 +51,7 @@ output "current-account-id" {
   value = data.aws_caller_identity.current.account_id
 }
 
-locals {
-  environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
+## Using the core-network-services provider
+data "aws_caller_identity" "core" {
+  provider = aws.core-network-services
 }

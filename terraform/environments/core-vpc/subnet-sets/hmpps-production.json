@@ -1,0 +1,29 @@
+{
+  "cidr": {
+    "transit_gateway": "10.232.0.0/26",
+    "subnet_sets": {
+      "nomis": "10.232.8.0/21",
+      "oasys": "10.232.16.0/21"
+    }
+  },
+  "nacl": [
+      {
+        "app" : "nomis",
+        "egress": true,
+        "subnet_type": "public",
+        "protocol": -1,
+        "rule_action": "allow",
+        "rule_number": 100,
+        "cidr_block": "10.10.10.0/24"
+      },
+      {
+        "app" : "oasys",
+        "egress": false,
+        "subnet_type": "data",
+        "protocol": -1,
+        "rule_action": "deny",
+        "rule_number": 123,
+        "cidr_block": "10.10.90.0/24"
+      }
+    ]
+}

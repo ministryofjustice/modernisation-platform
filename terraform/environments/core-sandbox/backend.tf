@@ -27,15 +27,6 @@ provider "aws" {
 }
 
 # Sample outputs
-## Using the Modernisation Platform provider
-data "aws_caller_identity" "modernisation-platform" {
-  provider = aws.modernisation-platform
-}
-
-output "modernisation-platform-account-id" {
-  value = data.aws_caller_identity.modernisation-platform.account_id
-}
-
 ## Using the default provider (specifying nothing)
 data "aws_caller_identity" "current" {}
 
@@ -43,6 +34,11 @@ output "current-account-id" {
   value = data.aws_caller_identity.current.account_id
 }
 
-locals {
-  environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
+## Using the Modernisation Platform provider
+data "aws_caller_identity" "modernisation-platform" {
+  provider = aws.modernisation-platform
+}
+
+output "modernisation-platform-account-id" {
+  value = data.aws_caller_identity.modernisation-platform.account_id
 }
