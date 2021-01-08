@@ -1,4 +1,5 @@
 locals {
+  environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
   tags = {
     business-unit = "Platforms"
     application   = "Modernisation Platform: core-vpc"
