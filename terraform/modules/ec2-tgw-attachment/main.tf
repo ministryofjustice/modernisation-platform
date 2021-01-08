@@ -1,5 +1,53 @@
+# Providers
+## Transit Gateway host
 provider "aws" {
-  alias = "core-network-services"
+  alias = "transit-gateway-host"
+}
+
+## Transit Gatrway tenant
+provider "aws" {
+  alias = "transit-gateway-tenant"
+}
+
+# Data lookups
+
+## Look up RAM Resource Share in the host account
+data "aws_ram_resource_share" "transit-gateway" {
+  provider = aws.transit-gateway-host
+
+  name           = var.resource_share_name
+  resource_owner = "SELF"
+}
+
+## Look up Transit Gateway Route Tables in the host account to associate with
+data "aws_ec2_transit_gateway_route_table" "default" {
+  provider = aws.transit-gateway-host
+
+  filter {
+    name   = "tag:Name"
+    values = [var.type]
+  }
+
+  filter {
+    name   = "transit-gateway-id"
+    values = [var.transit_gateway_id]
+  }
+}
+
+## Get the Transit Gateway tenant account ID
+data "aws_caller_identity" "transit-gateway-tenant" {}
+
+# Add the tenant account to the Transit Gateway Resource Share
+resource "aws_ram_principal_association" "transit_gateway_association" {
+  provider           = aws.transit-gateway-host
+  principal          = data.aws_caller_identity.transit-gateway-tenant.account_id
+  resource_share_arn = data.aws_ram_resource_share.transit-gateway.arn
+}
+
+# Due to propagation in AWS, a RAM share will take up to 60 seconds to appear in an account,
+# so we need to wait before attaching our tenant VPCs to it
+resource "time_sleep" "wait_60_seconds" {
+  create_duration = "60s"
 }
 
 # Attach provided subnet IDs and VPC to the provided Transit Gateway ID
@@ -18,28 +66,18 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "default" {
   transit_gateway_default_route_table_propagation = true
 
   tags = merge(var.tags, {
-    Name = "shared-transit-gateway-attachment"
+    Name = "${var.resource_share_name}-attachment"
   })
-}
 
-# Look up route tables to associate with
-data "aws_ec2_transit_gateway_route_table" "default" {
-  provider = aws.core-network-services
-
-  filter {
-    name   = "tag:Name"
-    values = [var.type]
-  }
-
-  filter {
-    name   = "transit-gateway-id"
-    values = [var.transit_gateway_id]
-  }
+  depends_on = [
+    aws_ram_principal_association.transit_gateway_association,
+    time_sleep.wait_60_seconds
+  ]
 }
 
 # Associate the Transit Gateway Route Table with the VPC
 resource "aws_ec2_transit_gateway_route_table_association" "default" {
-  provider = aws.core-network-services
+  provider = aws.transit-gateway-host
 
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.default.id
   transit_gateway_route_table_id = data.aws_ec2_transit_gateway_route_table.default.id

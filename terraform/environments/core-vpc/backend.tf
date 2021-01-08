@@ -26,6 +26,15 @@ provider "aws" {
   region = "eu-west-2"
 }
 
+# AWS provider for core-network-services, which is where our Transit Gateway sits
+provider "aws" {
+  alias  = "core-network-services"
+  region = "eu-west-2"
+  assume_role {
+    role_arn = "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/ModernisationPlatformAccess"
+  }
+}
+
 # Sample outputs
 ## Using the Modernisation Platform provider
 data "aws_caller_identity" "modernisation-platform" {
@@ -36,13 +45,18 @@ output "modernisation-platform-account-id" {
   value = data.aws_caller_identity.modernisation-platform.account_id
 }
 
+## Using the core-network-services provider
+data "aws_caller_identity" "core-network-services" {
+  provider = aws.core-network-services
+}
+
+output "core-network-services-account-id" {
+  value = data.aws_caller_identity.core-network-services.account_id
+}
+
 ## Using the default provider (specifying nothing)
 data "aws_caller_identity" "current" {}
 
 output "current-account-id" {
   value = data.aws_caller_identity.current.account_id
-}
-
-locals {
-  environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 }
