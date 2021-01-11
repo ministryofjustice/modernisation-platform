@@ -1,5 +1,5 @@
 locals {
-   # useful_vpc_ids = {
+  # useful_vpc_ids = {
   #   for key in keys(local.vpcs) :
   #   key => {
   #     vpc_id                 = module.vpc[key].vpc_id
@@ -8,12 +8,12 @@ locals {
   # }
 
   network = {
-     live_data = {
-        cidr = "10.231.0.0/19"
-     }
-     non_live_data = {
-       cidr = "10.231.32.0/19"
-     }
+    live_data = {
+      cidr = "10.231.0.0/19"
+    }
+    non_live_data = {
+      cidr = "10.231.32.0/19"
+    }
   }
 
 }

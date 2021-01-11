@@ -7,19 +7,19 @@ locals {
   availability_zones = sort(data.aws_availability_zones.available.names)
 
   # Subnets
-  expanded_subnets = chunklist(cidrsubnets(var.vpc_cidr, 9, 9, 9, 4, 4, 4, 4, 4, 4, 4, 4, 4),3)
+  expanded_subnets = chunklist(cidrsubnets(var.vpc_cidr, 9, 9, 9, 4, 4, 4, 4, 4, 4, 4, 4, 4), 3)
 
   # Subnet associations
   expanded_subnets_assocation = flatten([
     for key, subnet in local.expanded_subnets : [
-         for cidr_index, cidr in subnet : {
-          key   = key
-          cidr  = cidr
-          az    = local.availability_zones[cidr_index]
-          type  = key == 0 ? "tgw" : (key == 1 ? "data" : (key == 2 ? "private" : "public"))
-          group = var.tags_prefix
-        }
-      ]
+      for cidr_index, cidr in subnet : {
+        key   = key
+        cidr  = cidr
+        az    = local.availability_zones[cidr_index]
+        type  = key == 0 ? "tgw" : (key == 1 ? "data" : (key == 2 ? "private" : "public"))
+        group = var.tags_prefix
+      }
+    ]
   ])
 
   # Subnets with keys
@@ -27,7 +27,7 @@ locals {
     for subnet in local.expanded_subnets_assocation :
     "${subnet.group}-${subnet.type}-${subnet.az}" => subnet
   }
-  
+
   # build subnet group type
   subnet_group = distinct([
     for key, subnet in local.expanded_subnets_with_keys :
@@ -256,4 +256,4 @@ resource "aws_route" "private_transit_gateway" {
   route_table_id         = aws_route_table.private[each.key].id
   destination_cidr_block = "0.0.0.0/0"
   transit_gateway_id     = var.transit_gateway_id
-  }
+}

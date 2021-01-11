@@ -22,7 +22,7 @@ variable "gateway" {
   type        = string
   default     = "none"
   validation {
-    condition     = var.gateway == "transit" || var.gateway == "nat" || var.gateway == "none" 
+    condition     = var.gateway == "transit" || var.gateway == "nat" || var.gateway == "none"
     error_message = "Must provide either transit, nat or none."
   }
 
