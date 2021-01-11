@@ -12,14 +12,14 @@ locals {
   availability_zones = sort(data.aws_availability_zones.available.names)
 
   nacl_rules = [
-    { egress : false, action : "deny", protocol : -1, port : 0, rule_num : 810, cidr : "10.0.0.0/8" },
-    { egress : false, action : "deny", protocol : -1, port : 0, rule_num : 820, cidr : "172.16.0.0/12" },
-    { egress : false, action : "deny", protocol : -1, port : 0, rule_num : 830, cidr : "192.168.0.0/16" },
-    { egress : false, action : "allow", protocol : -1, port : 0, rule_num : 910, cidr : "0.0.0.0/0" },
-    { egress : true, action : "deny", protocol : -1, port : 0, rule_num : 810, cidr : "10.0.0.0/8" },
-    { egress : true, action : "deny", protocol : -1, port : 0, rule_num : 820, cidr : "172.16.0.0/12" },
-    { egress : true, action : "deny", protocol : -1, port : 0, rule_num : 830, cidr : "192.168.0.0/16" },
-    { egress : true, action : "allow", protocol : -1, port : 0, rule_num : 910, cidr : "0.0.0.0/0" }
+    { egress : false, action : "deny", protocol : -1, from_port : 0, to_port : 0, rule_num : 810, cidr : "10.0.0.0/8" },
+    { egress : false, action : "deny", protocol : -1, from_port : 0, to_port : 0, rule_num : 820, cidr : "172.16.0.0/12" },
+    { egress : false, action : "deny", protocol : -1, from_port : 0, to_port : 0, rule_num : 830, cidr : "192.168.0.0/16" },
+    { egress : false, action : "allow", protocol : -1, from_port : 0, to_port : 0, rule_num : 910, cidr : "0.0.0.0/0" },
+    { egress : true, action : "deny", protocol : -1, from_port : 0, to_port : 0, rule_num : 810, cidr : "10.0.0.0/8" },
+    { egress : true, action : "deny", protocol : -1, from_port : 0, to_port : 0, rule_num : 820, cidr : "172.16.0.0/12" },
+    { egress : true, action : "deny", protocol : -1, from_port : 0, to_port : 0, rule_num : 830, cidr : "192.168.0.0/16" },
+    { egress : true, action : "allow", protocol : -1, from_port : 0, to_port : 0, rule_num : 910, cidr : "0.0.0.0/0" }
   ]
 
   nacls = distinct([
@@ -99,19 +99,20 @@ locals {
   expanded_rules = toset(flatten([
     for key, value in toset(local.nacls) : [
       for rule_key, rule in toset(local.nacl_rules) : {
-        key      = value
-        egress   = rule.egress
-        action   = rule.action
-        protocol = rule.protocol
-        port     = rule.port
-        rule_num = rule.rule_num
-        cidr     = rule.cidr
+        key       = value
+        egress    = rule.egress
+        action    = rule.action
+        protocol  = rule.protocol
+        from_port = rule.from_port
+        to_port   = rule.to_port
+        rule_num  = rule.rule_num
+        cidr      = rule.cidr
       }
     ]
   ]))
   expanded_rules_with_keys = {
     for rule in local.expanded_rules :
-    "${rule.key}-${rule.cidr}-${rule.egress}-${rule.action}-${rule.protocol}-${rule.port}-${rule.rule_num}" => rule
+    "${rule.key}-${rule.cidr}-${rule.egress}-${rule.action}-${rule.protocol}-${rule.from_port}-${rule.to_port}-${rule.rule_num}" => rule
   }
 
 }
@@ -179,6 +180,8 @@ resource "aws_network_acl_rule" "apply_network_map_rules" {
   protocol       = each.value.protocol
   rule_action    = each.value.action
   cidr_block     = each.value.cidr
+  from_port      = each.value.from_port
+  to_port        = each.value.to_port
 }
 
 resource "aws_network_acl_rule" "allow_local_network_ingress" {
