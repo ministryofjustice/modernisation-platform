@@ -99,14 +99,14 @@ locals {
   expanded_rules = toset(flatten([
     for key, value in toset(local.nacls) : [
       for rule_key, rule in toset(local.nacl_rules) : {
-        key      = value
-        egress   = rule.egress
-        action   = rule.action
-        protocol = rule.protocol
-        from_port     = rule.from_port
-        to_port       = rule.to_port
-        rule_num = rule.rule_num
-        cidr     = rule.cidr
+        key       = value
+        egress    = rule.egress
+        action    = rule.action
+        protocol  = rule.protocol
+        from_port = rule.from_port
+        to_port   = rule.to_port
+        rule_num  = rule.rule_num
+        cidr      = rule.cidr
       }
     ]
   ]))
