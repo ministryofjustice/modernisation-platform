@@ -2,10 +2,10 @@ variable "vpc_cidr" {
   type = string
 }
 
-variable "subnet_cidrs_by_type" {
-  description = "Map of subnet CIDR blocks with the keys representing what they are for"
-  type        = map(any)
-}
+# variable "subnet_cidrs_by_type" {
+#   description = "Map of subnet CIDR blocks with the keys representing what they are for"
+#   type        = map(any)
+# }
 
 variable "tags_common" {
   description = "MOJ required tags"
@@ -17,10 +17,15 @@ variable "tags_prefix" {
   type        = string
 }
 
-variable "enable_nat_gateway" {
-  description = "Enable NAT Gateway on this VPC"
-  type        = bool
-  default     = false
+variable "gateway" {
+  description = "Type of Gateway to use for environment"
+  type        = string
+  default     = "none"
+  validation {
+    condition     = var.gateway == "transit" || var.gateway == "nat" || var.gateway == "none"
+    error_message = "Must provide either transit, nat or none."
+  }
+
 }
 
 variable "shared_resource" {
