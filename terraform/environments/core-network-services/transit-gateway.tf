@@ -21,7 +21,7 @@ resource "aws_ec2_transit_gateway" "transit-gateway" {
 # Route table and routes
 #########################
 resource "aws_ec2_transit_gateway_route_table" "transit-gateway-route-table" {
-  for_each = toset(keys(local.vpcs))
+  for_each = toset(keys(local.network))
 
   transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
   tags = merge(
@@ -36,7 +36,7 @@ resource "aws_ec2_transit_gateway_route_table" "transit-gateway-route-table" {
 # VPC attachment
 #########################
 resource "aws_ec2_transit_gateway_vpc_attachment" "attachments" {
-  for_each = toset(keys(local.vpcs))
+  for_each = toset(keys(local.network))
 
   transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
   vpc_id             = local.useful_vpc_ids[each.value].vpc_id
@@ -64,21 +64,21 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "attachments" {
 # Route table association
 ##########################
 resource "aws_ec2_transit_gateway_route_table_association" "tables" {
-  for_each = toset(keys(local.vpcs))
+  for_each = toset(keys(local.network))
 
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[each.value].id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.transit-gateway-route-table[each.value].id
 }
 
 resource "aws_ec2_transit_gateway_route_table_propagation" "propagation" {
-  for_each = toset(keys(local.vpcs))
+  for_each = toset(keys(local.network))
 
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[each.value].id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.transit-gateway-route-table[each.value].id
 }
 
 resource "aws_ec2_transit_gateway_route" "nat_route" {
-  for_each = toset(keys(local.vpcs))
+  for_each = toset(keys(local.network))
 
   destination_cidr_block         = "0.0.0.0/0"
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[each.value].id
