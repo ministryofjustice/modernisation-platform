@@ -20,7 +20,6 @@ locals {
   }
 }
 
-
 module "vpc" {
   providers = {
     aws                       = aws
@@ -35,6 +34,10 @@ module "vpc" {
   vpc_cidr    = each.value.cidr.transit_gateway
 
   transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
+
+  # VPC Flow Logs
+  vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
+
   # # CIDRs
   # subnet_cidrs_by_type = each.value.cidr.subnets
   # vpc_cidr             = each.value.cidr.vpc
@@ -49,7 +52,6 @@ module "vpc" {
   # Tags
   tags_common = local.tags
   tags_prefix = each.key
-
 }
 
 module "vpc_tgw_routing" {
@@ -80,9 +82,7 @@ module "vpc_nacls" {
 
   tags_common = local.tags
   tags_prefix = each.key
-
 }
-
 
 # output "nacl_refs" {
 #   value = module.vpc["hmpps-production"].nacl_refs

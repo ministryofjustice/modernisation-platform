@@ -55,3 +55,8 @@ variable "transit_gateway_id" {
 #   type = map(any)
 #   default = null
 # }
+
+variable "vpc_flow_log_iam_role" {
+  description = "VPC Flow Log IAM role ARN for VPC Flow Logs to CloudWatch"
+  type        = string
+}
