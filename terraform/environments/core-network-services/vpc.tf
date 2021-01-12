@@ -21,7 +21,7 @@ module "vpc" {
   source   = "../../modules/core-vpc"
 
   # CIDRs
-  vpc_cidr             = local.network[each.key].cidr
+  vpc_cidr = local.network[each.key].cidr
 
   # private gateway type
   #   nat = Nat Gateway
