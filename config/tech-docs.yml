@@ -36,3 +36,7 @@ prevent_indexing: false
 show_contribution_banner: true
 github_repo: ministryofjustice/modernisation-platform
 github_branch: main
+
+# Slack
+owner_slack_workspace: mojdt
+default_owner_slack: '#modernisation-platform'
