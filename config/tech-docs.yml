@@ -1,5 +1,5 @@
 # Host to use for canonical URL generation (without trailing slash)
-host: https://ministryofjustice/modernisation-platform
+host: https://ministryofjustice.github.io/modernisation-platform
 
 # Header-related options
 show_govuk_logo: true
@@ -20,15 +20,15 @@ enable_search: true
 ga_tracking_id:
 
 # Enable multipage navigation in the sidebar
-multipage_nav: true
+multipage_nav: false
 
 # Enable collapsible navigation in the sidebar
-collapsible_nav: true
+collapsible_nav: false
 
 # Table of contents depth – how many levels to include in the table of contents.
 # If your ToC is too long, reduce this number and we'll only show higher-level
 # headings.
-max_toc_heading_level: 1
+max_toc_heading_level: 3
 
 # Prevent robots from indexing (e.g. whilst in development)
 prevent_indexing: false
