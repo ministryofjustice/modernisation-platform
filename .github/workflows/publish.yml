@@ -1,0 +1,27 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - "main"
+    paths-ignore:
+      - "docs/**"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    container:
+      image: ministryofjustice/cloud-platform-tech-docs-publisher:1.1
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build
+      run: bundle exec middleman build --build-dir docs --relative-links
+      env:
+        ROOT_DOCPATH: /template-documentation-site
+    - run: touch docs/.nojekyll
+    - run: git config --global user.email "tools@digital.justice.gov.uk"
+    - run: git config --global user.name "GitHub Action"
+    - run: git checkout -b gh-pages
+    - run: git add docs
+    - run: git commit -m "Published at $(date)"
+    - run: git push origin gh-pages --force
