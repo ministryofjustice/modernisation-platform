@@ -1,6 +1,12 @@
-## Terraform
+---
+title: Terraform
+last_reviewed_on: 2021-01-13
+review_in: 2 months
+---
 
-### What we manage in Terraform
+# <%= current_page.data.title %>
+
+## What we manage in Terraform
 
 We currently manage the following in Terraform:
 
@@ -11,7 +17,7 @@ We currently manage the following in Terraform:
     - [environment-specific infrastructure that we manage](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments), including the core accounts for the Modernisation Platform
   - [the Modernisation Platform landing zone account](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modernisation-platform-account), including S3 state storage for all environments
 
-#### Terraform workspaces
+### Terraform workspaces
 
 We make use of Terraform workspaces to create the same resources in each environment. This allows you to interpolate `terraform.workspace` to configure different values, such as Autoscaling Group limits or tags, in different environments. For example:
 
@@ -39,7 +45,7 @@ $ terraform plan
 
 You will likely get an error if you haven't changed your workspace from `default`.
 
-#### Permissions required for each directory in `terraform/`
+### Permissions required for each directory in `terraform/`
 
 Terraform doesn't look recursively for `.tf` files, so we utilise subdirectories to keep related infrastructure together. You need different permissions to run each directory, following the directory structure:
 
