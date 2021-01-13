@@ -17,7 +17,7 @@ jobs:
     - name: Build
       run: bundle exec middleman build --build-dir docs --relative-links
       env:
-        ROOT_DOCPATH: /template-documentation-site
+        ROOT_DOCPATH: /modernisation-platform
     - run: touch docs/.nojekyll
     - run: git config --global user.email "tools@digital.justice.gov.uk"
     - run: git config --global user.name "GitHub Action"
