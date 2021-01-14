@@ -52,3 +52,7 @@ output "expanded_worker_subnets_assocation" {
 output "expanded_worker_subnets_with_keys" {
   value = local.expanded_worker_subnets_with_keys
 }
+
+# output "test" {
+#   value = local.subnet_sets_with_index
+# }
