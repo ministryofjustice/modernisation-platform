@@ -11,7 +11,7 @@ data "aws_availability_zones" "available" {
 locals {
   availability_zones = sort(data.aws_availability_zones.available.names)
 
-  protected_subnet_nacl_indexes = [ 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330 ]
+  protected_subnet_nacl_indexes = [310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330]
 
   # Network AccessControlList rules (NACL's)
   nacl_rules = [
@@ -129,22 +129,22 @@ locals {
       }
     ]
   ]))
-expanded_rules_with_keys = {
+  expanded_rules_with_keys = {
     for rule in local.expanded_rules :
     "${rule.key}-${rule.cidr}-${rule.egress}-${rule.action}-${rule.protocol}-${rule.from_port}-${rule.to_port}-${rule.rule_num}" => rule
   }
 
-protected_nacl_rules = toset(flatten([
-      for rule_key, rule in toset(local.nacl_rules) : {
-        key       = rule_key
-        egress    = rule.egress
-        action    = rule.action
-        protocol  = rule.protocol
-        from_port = rule.from_port
-        to_port   = rule.to_port
-        rule_num  = rule.rule_num
-        cidr      = rule.cidr
-      }
+  protected_nacl_rules = toset(flatten([
+    for rule_key, rule in toset(local.nacl_rules) : {
+      key       = rule_key
+      egress    = rule.egress
+      action    = rule.action
+      protocol  = rule.protocol
+      from_port = rule.from_port
+      to_port   = rule.to_port
+      rule_num  = rule.rule_num
+      cidr      = rule.cidr
+    }
   ]))
   protected_nacl_rules_with_keys = {
     for rule in local.protected_nacl_rules :
@@ -158,10 +158,10 @@ protected_nacl_rules = toset(flatten([
     "com.amazonaws.eu-west-2.ec2messages",
     "com.amazonaws.eu-west-2.ssm",
     "com.amazonaws.eu-west-2.ssmmessages"
-    ]
+  ]
   ssm_endpoints_expanded = flatten([
-    for app_key, app in var.subnet_sets: [
-      for key, endpoint in local.ssm_endpoints: {    
+    for app_key, app in var.subnet_sets : [
+      for key, endpoint in local.ssm_endpoints : {
         app_name = app_key
         endpoint = endpoint
       }
@@ -170,7 +170,7 @@ protected_nacl_rules = toset(flatten([
   expanded_ssm_endpoints_with_keys = {
     for item in local.ssm_endpoints_expanded :
     "${item.app_name}-${item.endpoint}" => item
-  }  
+  }
 
 }
 
@@ -199,7 +199,7 @@ resource "aws_vpc_ipv4_cidr_block_association" "subnet_sets" {
 
 # Add protected CIDR to VPC
 resource "aws_vpc_ipv4_cidr_block_association" "protected" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id     = aws_vpc.vpc.id
   cidr_block = var.protected
 }
 
@@ -339,7 +339,7 @@ resource "aws_network_acl_rule" "allow_internet_ingress" {
 resource "aws_network_acl" "subnets_protected" {
   depends_on = [aws_subnet.protected]
 
-  vpc_id   = aws_vpc.vpc.id
+  vpc_id = aws_vpc.vpc.id
   subnet_ids = [
     for az in local.availability_zones :
     aws_subnet.protected["protected-${az}"].id
@@ -368,13 +368,13 @@ resource "aws_network_acl_rule" "base_nacl_rules_for_protected" {
 
 # add rules to protected subnets nacl for all local subnet-sets
 resource "aws_network_acl_rule" "local_nacl_rules_for_protected_ingress" {
-for_each = { 
-  for index, subnet in keys(var.subnet_sets): 
+  for_each = {
+    for index, subnet in keys(var.subnet_sets) :
     index => var.subnet_sets[subnet]
-    }
+  }
 
   network_acl_id = aws_network_acl.subnets_protected.id
-  rule_number    = ((each.key +1 ) * 10) + 200 
+  rule_number    = ((each.key + 1) * 10) + 200
   egress         = false
   protocol       = "tcp"
   rule_action    = "allow"
@@ -383,13 +383,13 @@ for_each = {
   to_port        = "443"
 }
 resource "aws_network_acl_rule" "local_nacl_rules_for_protected_egress" {
-for_each = { 
-  for index, subnet in keys(var.subnet_sets): 
+  for_each = {
+    for index, subnet in keys(var.subnet_sets) :
     index => var.subnet_sets[subnet]
-    }
+  }
 
   network_acl_id = aws_network_acl.subnets_protected.id
-  rule_number    = ((each.key +1 ) * 10) + 200 
+  rule_number    = ((each.key + 1) * 10) + 200
   egress         = true
   protocol       = "tcp"
   rule_action    = "allow"
@@ -477,7 +477,7 @@ resource "aws_security_group" "ssm_endpoints" {
 
   name        = "${each.key}_SSM"
   description = "Control SSM traffic"
-  vpc_id            = aws_vpc.vpc.id
+  vpc_id      = aws_vpc.vpc.id
 
   tags = merge(
     var.tags_common,
@@ -487,19 +487,19 @@ resource "aws_security_group" "ssm_endpoints" {
   )
 }
 resource "aws_security_group_rule" "ssm-ingress1" {
-for_each = var.subnet_sets
+  for_each = var.subnet_sets
 
-    type              = "ingress"
-    from_port         = 443
-    to_port           = 443
-    protocol          = "tcp"
-    cidr_blocks       = [each.value]
-    security_group_id = aws_security_group.ssm_endpoints[each.key].id
-  
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = [each.value]
+  security_group_id = aws_security_group.ssm_endpoints[each.key].id
+
 }
 # # SSM Endpoints
 resource "aws_vpc_endpoint" "ssm" {
- for_each = toset(local.ssm_endpoints)
+  for_each = toset(local.ssm_endpoints)
 
   vpc_id            = aws_vpc.vpc.id
   service_name      = each.value
@@ -515,7 +515,7 @@ resource "aws_vpc_endpoint" "ssm" {
 
   private_dns_enabled = true
 
-tags = merge(
+  tags = merge(
     var.tags_common,
     {
       Name = "${var.tags_prefix}-${each.key}"

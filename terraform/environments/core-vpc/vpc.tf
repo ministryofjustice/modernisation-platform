@@ -35,7 +35,7 @@ module "vpc" {
   protected   = each.value.cidr.protected
   vpc_cidr    = each.value.cidr.transit_gateway
 
-  bastion_linux = each.value.options.bastion_linux
+  bastion_linux   = each.value.options.bastion_linux
   bastion_windows = each.value.options.bastion_windows
 
   transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
