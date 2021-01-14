@@ -298,8 +298,10 @@ resource "aws_network_acl_rule" "allow_vpc_endpoint_ingress" {
   network_acl_id = aws_network_acl.default[each.value].id
   rule_number    = 220
   egress         = false
-  protocol       = "-1"
+  protocol       = "tcp"
   rule_action    = "allow"
+  from_port      = 443
+  to_port        = 443
   cidr_block     = var.protected
 }
 
@@ -309,8 +311,10 @@ resource "aws_network_acl_rule" "allow_vpc_endpoint_egress" {
   network_acl_id = aws_network_acl.default[each.value].id
   rule_number    = 220
   egress         = true
-  protocol       = "-1"
+  protocol       = "tcp"
   rule_action    = "allow"
+  from_port      = 443
+  to_port        = 443
   cidr_block     = var.protected
 }
 
@@ -439,17 +443,17 @@ resource "aws_route" "public_ig" {
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.ig.id
 }
-resource "aws_route" "tgw" {
-  for_each = {
-    for key, route_table in aws_route_table.route_tables :
-    key => route_table
-    if substr(key, length(key) - 6, length(key)) != "public"
-  }
+# resource "aws_route" "tgw" {
+#   for_each = {
+#     for key, route_table in aws_route_table.route_tables :
+#     key => route_table
+#     if substr(key, length(key) - 6, length(key)) != "public"
+#   }
 
-  transit_gateway_id     = var.transit_gateway_id
-  route_table_id         = aws_route_table.route_tables[each.key].id
-  destination_cidr_block = "0.0.0.0/0"
-}
+#   transit_gateway_id     = var.transit_gateway_id
+#   route_table_id         = aws_route_table.route_tables[each.key].id
+#   destination_cidr_block = "0.0.0.0/0"
+# }
 
 
 resource "aws_route_table" "protected" {
@@ -498,7 +502,7 @@ resource "aws_security_group_rule" "ssm-ingress1" {
 
 }
 # # SSM Endpoints
-resource "aws_vpc_endpoint" "ssm" {
+resource "aws_vpc_endpoint" "ssm_interfaces" {
   for_each = toset(local.ssm_endpoints)
 
   vpc_id            = aws_vpc.vpc.id
@@ -523,8 +527,25 @@ resource "aws_vpc_endpoint" "ssm" {
   )
 }
 
+resource "aws_vpc_endpoint" "ssm_s3" {
 
-################  S3 enpoint required ################
+  vpc_id            = aws_vpc.vpc.id
+  service_name      = "com.amazonaws.eu-west-2.s3"
+  vpc_endpoint_type = "Gateway"
+
+route_table_ids = [
+  for value in local.all_distinct_route_table_associations :
+    aws_route_table.route_tables[value].id
+]
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-com.amazonaws.eu-west-2.s3"
+    }
+  )
+}
+
 
 # # Bastion Security Groups
 # resource "aws_security_group" "bastion" {
