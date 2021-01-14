@@ -17,7 +17,7 @@
   },
   "nacl": [
       {
-        "app" : "nomis",
+        "app" : "crime_apps",
         "egress": true,
         "subnet_type": "public",
         "protocol": -1,
@@ -28,7 +28,7 @@
         "to_port" : "0"
       },
       {
-        "app" : "oasys",
+        "app" : "get_paid",
         "egress": false,
         "subnet_type": "data",
         "protocol": -1,
