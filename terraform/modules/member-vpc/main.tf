@@ -533,10 +533,10 @@ resource "aws_vpc_endpoint" "ssm_s3" {
   service_name      = "com.amazonaws.eu-west-2.s3"
   vpc_endpoint_type = "Gateway"
 
-route_table_ids = [
-  for value in local.all_distinct_route_table_associations :
+  route_table_ids = [
+    for value in local.all_distinct_route_table_associations :
     aws_route_table.route_tables[value].id
-]
+  ]
 
   tags = merge(
     var.tags_common,
