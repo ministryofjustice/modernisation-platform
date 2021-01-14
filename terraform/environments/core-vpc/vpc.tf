@@ -84,9 +84,33 @@ module "vpc_nacls" {
 
   tags_common = local.tags
   tags_prefix = each.key
-
 }
 
+locals {
+  non-tgw-vpc = flatten([
+    for key, vpc in module.vpc : [
+      for set in keys(module.vpc[key].non_tgw_subnet_arns_by_set) : {
+        key  = key
+        set  = set
+        arns = module.vpc[key].non_tgw_subnet_arns_by_set["${set}"]
+      }
+    ]
+  ])
+}
+
+module "resource-share" {
+  source = "../../modules/ram-resource-share"
+  for_each = {
+    for vpc in local.non-tgw-vpc : "${vpc.key}-${vpc.set}" => vpc
+  }
+
+  # Subnet ARNs to attach to a resource share
+  resource_arns = each.value.arns
+
+  # Tags
+  tags_common = local.tags
+  tags_prefix = each.key
+}
 
 # output "nacl_refs" {
 #   value = module.vpc["hmpps-production"].nacl_refs
