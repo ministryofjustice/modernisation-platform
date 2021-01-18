@@ -11,17 +11,10 @@ jobs:
   run:
     runs-on: ubuntu-latest
     container:
-      image: ministryofjustice/cloud-platform-tech-docs-publisher:1.1
+      image: ministryofjustice/tech-docs-github-pages-publisher:0.5
     steps:
     - uses: actions/checkout@v2
-    - name: Build
-      run: bundle exec middleman build --build-dir docs --relative-links
+    - name: Publish
+      run: /publishing-scripts/publish.sh
       env:
         ROOT_DOCPATH: /modernisation-platform
-    - run: touch docs/.nojekyll
-    - run: git config --global user.email "tools@digital.justice.gov.uk"
-    - run: git config --global user.name "GitHub Action"
-    - run: git checkout -b gh-pages
-    - run: git add docs
-    - run: git commit -m "Published at $(date)"
-    - run: git push origin gh-pages --force
