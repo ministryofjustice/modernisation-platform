@@ -92,7 +92,7 @@ locals {
       for set in keys(module.vpc[key].non_tgw_subnet_arns_by_set) : {
         key  = key
         set  = set
-        arns = module.vpc[key].non_tgw_subnet_arns_by_set["${set}"]
+        arns = module.vpc[key].non_tgw_subnet_arns_by_set[set]
       }
     ]
   ])
