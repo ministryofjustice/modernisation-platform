@@ -11,7 +11,7 @@ jobs:
   run:
     runs-on: ubuntu-latest
     container:
-      image: ministryofjustice/tech-docs-github-pages-publisher:0.5
+      image: ministryofjustice/tech-docs-github-pages-publisher:0.8
     steps:
     - uses: actions/checkout@v2
     - name: Publish
