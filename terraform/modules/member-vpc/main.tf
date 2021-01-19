@@ -300,8 +300,8 @@ resource "aws_network_acl_rule" "allow_vpc_endpoint_ingress" {
   egress         = false
   protocol       = "tcp"
   rule_action    = "allow"
-  from_port      = 443
-  to_port        = 443
+  from_port      = 1024
+  to_port        = 65535
   cidr_block     = var.protected
 }
 
@@ -398,8 +398,8 @@ resource "aws_network_acl_rule" "local_nacl_rules_for_protected_egress" {
   protocol       = "tcp"
   rule_action    = "allow"
   cidr_block     = each.value
-  from_port      = "443"
-  to_port        = "443"
+  from_port      = "1024"
+  to_port        = "65535"
 }
 
 # VPC: Internet Gateway
@@ -443,17 +443,17 @@ resource "aws_route" "public_ig" {
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.ig.id
 }
-# resource "aws_route" "tgw" {
-#   for_each = {
-#     for key, route_table in aws_route_table.route_tables :
-#     key => route_table
-#     if substr(key, length(key) - 6, length(key)) != "public"
-#   }
+resource "aws_route" "tgw" {
+  for_each = {
+    for key, route_table in aws_route_table.route_tables :
+    key => route_table
+    if substr(key, length(key) - 6, length(key)) != "public"
+  }
 
-#   transit_gateway_id     = var.transit_gateway_id
-#   route_table_id         = aws_route_table.route_tables[each.key].id
-#   destination_cidr_block = "0.0.0.0/0"
-# }
+  transit_gateway_id     = var.transit_gateway_id
+  route_table_id         = aws_route_table.route_tables[each.key].id
+  destination_cidr_block = "0.0.0.0/0"
+}
 
 
 resource "aws_route_table" "protected" {
