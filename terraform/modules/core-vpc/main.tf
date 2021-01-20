@@ -75,7 +75,28 @@ resource "aws_vpc" "vpc" {
   )
 }
 
-# # VPC: Subnet per type, per availability zone
+# VPC Flow Logs
+resource "aws_cloudwatch_log_group" "default" {
+  name = "${var.tags_prefix}-vpc-flow-logs"
+}
+
+resource "aws_flow_log" "cloudwatch" {
+  iam_role_arn             = var.vpc_flow_log_iam_role
+  log_destination          = aws_cloudwatch_log_group.default.arn
+  traffic_type             = "ALL"
+  log_destination_type     = "cloud-watch-logs"
+  max_aggregation_interval = "60"
+  vpc_id                   = aws_vpc.vpc.id
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-vpc-flow-logs"
+    }
+  )
+}
+
+# VPC: Subnet per type, per availability zone
 resource "aws_subnet" "subnets" {
 
   for_each = tomap(local.expanded_subnets_with_keys)

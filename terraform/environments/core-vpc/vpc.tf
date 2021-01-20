@@ -20,7 +20,6 @@ locals {
   }
 }
 
-
 module "vpc" {
   providers = {
     aws                       = aws
@@ -39,6 +38,10 @@ module "vpc" {
   bastion_windows = each.value.options.bastion_windows
 
   transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
+
+  # VPC Flow Logs
+  vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
+
   # # CIDRs
   # subnet_cidrs_by_type = each.value.cidr.subnets
   # vpc_cidr             = each.value.cidr.vpc
@@ -53,7 +56,6 @@ module "vpc" {
   # Tags
   tags_common = local.tags
   tags_prefix = each.key
-
 }
 
 module "vpc_tgw_routing" {
@@ -92,7 +94,7 @@ locals {
       for set in keys(module.vpc[key].non_tgw_subnet_arns_by_set) : {
         key  = key
         set  = set
-        arns = module.vpc[key].non_tgw_subnet_arns_by_set["${set}"]
+        arns = module.vpc[key].non_tgw_subnet_arns_by_set[set]
       }
     ]
   ])
