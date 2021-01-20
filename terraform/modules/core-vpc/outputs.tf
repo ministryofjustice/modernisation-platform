@@ -20,6 +20,3 @@ output "non_tgw_subnet_ids" {
     if value.type != "tgw"
   ]
 }
-
-
-
