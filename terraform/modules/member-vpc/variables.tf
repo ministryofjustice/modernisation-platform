@@ -2,6 +2,10 @@ variable "vpc_cidr" {
   type = string
 }
 
+variable "protected" {
+  type = string
+}
+
 variable "subnet_sets" {
   type = map(any)
 }
@@ -25,6 +29,19 @@ variable "transit_gateway_id" {
   description = "tgw ID"
   type        = string
 }
+
+variable "bastion_linux" {
+  description = ""
+  type        = bool
+  default     = false
+}
+
+variable "bastion_windows" {
+  description = ""
+  type        = bool
+  default     = false
+}
+
 
 # variable "enable_nat_gateway" {
 #   description = "Enable NAT Gateway on this VPC"

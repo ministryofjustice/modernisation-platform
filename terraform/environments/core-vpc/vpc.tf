@@ -31,7 +31,11 @@ module "vpc" {
   source = "../../modules/member-vpc"
 
   subnet_sets = each.value.cidr.subnet_sets
+  protected   = each.value.cidr.protected
   vpc_cidr    = each.value.cidr.transit_gateway
+
+  bastion_linux   = each.value.options.bastion_linux
+  bastion_windows = each.value.options.bastion_windows
 
   transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
 
@@ -84,13 +88,40 @@ module "vpc_nacls" {
   tags_prefix = each.key
 }
 
+locals {
+  non-tgw-vpc = flatten([
+    for key, vpc in module.vpc : [
+      for set in keys(module.vpc[key].non_tgw_subnet_arns_by_set) : {
+        key  = key
+        set  = set
+        arns = module.vpc[key].non_tgw_subnet_arns_by_set[set]
+      }
+    ]
+  ])
+}
+
+module "resource-share" {
+  source = "../../modules/ram-resource-share"
+  for_each = {
+    for vpc in local.non-tgw-vpc : "${vpc.key}-${vpc.set}" => vpc
+  }
+
+  # Subnet ARNs to attach to a resource share
+  resource_arns = each.value.arns
+
+  # Tags
+  tags_common = local.tags
+  tags_prefix = each.key
+}
+
 # output "nacl_refs" {
 #   value = module.vpc["hmpps-production"].nacl_refs
 # }
 
-# output "debug" {
-#   value = module.vpc["hmpps-production"].debug
+# output "test" {
+#   value = module.vpc["hmpps-production"].test
 # }
+
 # output "expanded_worker_subnets_assocation" {
 #   value = module.vpc["hmpps-production"].expanded_worker_subnets_assocation
 # }

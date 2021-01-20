@@ -1,10 +1,10 @@
 {
   "cidr": {
-    "transit_gateway": "10.233.0.0/26",
-    "protected": "10.232.0.0/23",
+    "transit_gateway": "10.233.0.64/26",
+    "protected": "10.232.2.0/23",
     "subnet_sets": {
-      "nomis": "10.233.8.0/21",
-      "oasys": "10.233.16.0/21"
+      "crime_apps": "10.233.24.0/21",
+      "get_paid": "10.233.32.0/21"
     } 
   },
   "options": {
@@ -17,7 +17,7 @@
   },
   "nacl": [
       {
-        "app" : "nomis",
+        "app" : "crime_apps",
         "egress": true,
         "subnet_type": "public",
         "protocol": -1,
@@ -28,7 +28,7 @@
         "to_port" : "0"
       },
       {
-        "app" : "oasys",
+        "app" : "get_paid",
         "egress": false,
         "subnet_type": "data",
         "protocol": -1,
