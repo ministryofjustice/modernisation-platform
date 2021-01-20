@@ -3,7 +3,7 @@ terraform {
   required_providers {
     github = {
       version = ">= 4.1.0"
-      source  = "hashicorp/github"
+      source  = "integrations/github"
     }
   }
 }
