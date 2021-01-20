@@ -189,7 +189,27 @@ resource "aws_vpc" "vpc" {
   )
 }
 
-# Add subnet-set CIDR's to VPC
+# VPC Flow Logs
+resource "aws_cloudwatch_log_group" "default" {
+  name = "${var.tags_prefix}-vpc-flow-logs"
+}
+
+resource "aws_flow_log" "cloudwatch" {
+  iam_role_arn             = var.vpc_flow_log_iam_role
+  log_destination          = aws_cloudwatch_log_group.default.arn
+  max_aggregation_interval = "60"
+  traffic_type             = "ALL"
+  log_destination_type     = "cloud-watch-logs"
+  vpc_id                   = aws_vpc.vpc.id
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-vpc-flow-logs"
+    }
+  )
+}
+
 resource "aws_vpc_ipv4_cidr_block_association" "subnet_sets" {
   for_each = tomap(var.subnet_sets)
 

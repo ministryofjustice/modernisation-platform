@@ -20,6 +20,7 @@ provider "aws" {
   }
 }
 
+# AWS provider for core-network-services to get the Transit Gateway attachment
 provider "aws" {
   alias  = "core-network-services"
   region = "eu-west-2"
