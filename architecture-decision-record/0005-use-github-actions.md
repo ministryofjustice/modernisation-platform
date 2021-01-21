@@ -1,4 +1,4 @@
-# 4. Use GitHub Actions as our CI/CD runner
+# 5. Use GitHub Actions as our CI/CD runner
 
 Date: 2020-11-19
 
