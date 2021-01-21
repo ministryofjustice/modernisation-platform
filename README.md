@@ -8,7 +8,7 @@ This repository currently holds the Modernisation Platform's:
 - [Architecture Decision Record (ADR)](architecture-decision-record)
 - [Environment definitions](environments)
 - [Infrastructure as code](terraform)
-- [Source code for ministryofjustice.github.io/modernisation-platform](docs)
+- [Source code for ministryofjustice.github.io/modernisation-platform](source)
 
 ## Other useful repositories
 ### Core repositories
