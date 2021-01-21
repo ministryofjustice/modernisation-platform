@@ -1,0 +1,24 @@
+name: New environment files
+
+on:
+  push:
+    paths:
+      - 'environments/**.json'
+    branches:
+      - main
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  create-and-commit-files:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - name: Provision environment directories
+        run: bash ./scripts/provision-environment-directories.sh
+      - name: Commit changes to GitHub
+        run: bash ./scripts/git-setup.sh
+      - run: bash ./scripts/git-commit.sh terraform/environments
+      - run: bash ./scripts/git-pull-request.sh terraform/environments
