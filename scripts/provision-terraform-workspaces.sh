@@ -4,7 +4,7 @@
 #
 # You need to pass through an argument to this script:
 #
-# bootstrap (` sh scripts/provision-terraform-workspaces.sh bootstrap`)
+# bootstrap (`sh scripts/provision-terraform-workspaces.sh bootstrap`)
 # Using the `bootstrap` argument will create Terraform workspaces for all applications and their environments
 # within terraform/environments/bootstrap/* subdirectories.
 # Use case: to create Terraform workspaces for bootstrap steps.
@@ -23,7 +23,10 @@ TMP_DIR=tmp/terraform-workspaces
 TF_ENV_DIR=terraform/environments
 
 refresh_tmp_location() {
-  rm -r tmp/
+  if [ -d "tmp/" ]; then
+    rm -r tmp/
+  fi
+
   mkdir -p $TMP_DIR/local
   mkdir -p $TMP_DIR/remote
 }
@@ -42,10 +45,9 @@ get_remote_terraform_workspaces() {
 }
 
 fix_workspace_syntax() {
-  for file in $TMP_DIR/*/*.txt; do
-    # cleanup file syntax (removes spaces, "* default")
-    # also hides the file contents from the terminal (>/dev/null)
-    cat "$file" | grep "\S" | grep -v "default" | tr -d "* " | sort | uniq | tee "$file" >/dev/null
+  for file in "$TMP_DIR"/*/*.txt; do
+    # cleanup file syntax (removes preceding asterisks (*), spaces, the "default" terraform workspace, new lines, duplicate lines)
+    sed -e "s/*//" -e "s/^[[:space:]]*//" -e "/default/d" -e "/^$/d" "$file" | sort -u -o "$file"
   done
 }
 
@@ -55,7 +57,7 @@ create_missing_remote_workspaces() {
 
   directory_basename=$(basename "$2")
 
-  if [ "$1" == "bootstrap" ]; then
+  if [ "$1" = "bootstrap" ]; then
     # To create Terraform workspaces for bootstrapping, we need all of the
     # environments listed together
 
@@ -79,22 +81,22 @@ create_missing_remote_workspaces() {
 }
 
 main () {
-  if [ "$1" == "" ]; then
+  if [ -z "$1" ]; then
     echo "Type missing: must be \"bootstrap\", \"all-environments\", or an application name e.g. \"core-vpc\""
   else
 
     refresh_tmp_location &&
     get_local_definitions &&
 
-    if [ "$1" == "bootstrap" ]; then
+    if [ "$1" = "bootstrap" ]; then
 
       # Get all bootstrappable directories in TF_ENV_DIR/bootstrap/*
-      directories=$(find "$TF_ENV_DIR/bootstrap" -type d -maxdepth 1 -mindepth 1)
+      directories=$(find "$TF_ENV_DIR/bootstrap" -mindepth 1 -maxdepth 1 -type d)
 
-    elif [ "$1" == "all-environments" ]; then
+    elif [ "$1" = "all-environments" ]; then
 
       # Get all directories in TF_ENV_DIR/*, minus /bootstrap and .terraform
-      directories=$(find "$TF_ENV_DIR" -type d -maxdepth 1 -mindepth 1 -not \( -name ".terraform" -o -name "bootstrap" \))
+      directories=$(find "$TF_ENV_DIR" -mindepth 1 -maxdepth 1 -type d -not \( -name ".terraform" -o -name "bootstrap" \))
 
     elif [ -d "$TF_ENV_DIR/$1" ]; then
 
@@ -117,4 +119,4 @@ main () {
   fi
 }
 
-main $1
+main "$1"
