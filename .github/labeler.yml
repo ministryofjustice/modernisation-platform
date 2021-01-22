@@ -1,0 +1,17 @@
+onboarding:
+  - ./environments
+
+documentation:
+  - ./source
+
+dependencies:
+  - "**/**/.lock.hcl"
+
+github-workflow:
+  - "./github/workflows"
+
+networking:
+  - any: ["terraform/environments/core-vpc", "terraform/environments/core-network-services"]
+
+core:
+  - any: ["terraform/environments/core-*"]
