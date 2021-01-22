@@ -5,7 +5,7 @@ documentation:
   - ./source/*
 
 dependencies:
-  - "**/**/.lock.hcl"
+  - "**/**/*.lock.hcl"
 
 github-workflow:
   - "./github/workflows/*"
