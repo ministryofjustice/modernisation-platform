@@ -40,5 +40,5 @@ jobs:
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access apply
       - name: Configure secure baselines in environments
         run: bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
-      - run: bash scripts/loop-through-terraform-workspaces.sh bootstrap/secure-baselines plan
-      - run: bash scripts/loop-through-terraform-workspaces.sh bootstrap/secure-baselines apply
+      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines plan
+      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines apply
