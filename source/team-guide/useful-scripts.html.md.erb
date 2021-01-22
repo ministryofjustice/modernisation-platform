@@ -6,47 +6,56 @@ review_in: 2 months
 
 # <%= current_page.data.title %>
 
-In the Modernisation Platform repository, we have some [useful scripts](https://github.com/ministryofjustice/modernisation-platform/tree/main/scripts) for common things for working on the Modernisation Platform.
+In the Modernisation Platform repository, we have some [useful scripts](https://github.com/ministryofjustice/modernisation-platform/tree/main/scripts) to:
 
-## General scripts
+- help with day-to-day tasks whilst working on the Modernisation Platform
+- map common functions to work in CI/CD
 
-### [`check-environment-definitions.js`](https://github.com/ministryofjustice/modernisation-platform/tree/main/scripts/check-environment-definitions.js)
+## Git scripts
 
-Used as part of a CI/CD pipeline? ✅
+The scripts prefixed `git-` are for running common `git` commands as part of CI/CD.
 
-This script is run via the [check-environment-definitions.yml workflow](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/check-environment-definitions.yml) when a JSON file is added or changes in the `/environments` directory and a PR is subsequently created. It checks that the JSON file includes required tags and comments on the PR if there's an issue.
+| Filename | Description | Used in CI/CD? |
+|-|-|-|
+| [`git-setup.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/git-setup.sh) | Configures `git` with the [modernisation-platform-ci](https://github.com/modernisation-platform-ci) GitHub user | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml#L21) |
+| [`git-commit.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/git-commit.sh) | Checks out a branch named `date-${epoch-time}` and commits files changed in the provided path | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml#L21) |
+| [`git-pull-request.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/git-pull-request.sh) | Creates a pull request back to `main` from the current checked out branch | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml#L21) |
 
-### [`create-accounts.sh`](https://github.com/ministryofjustice/modernisation-platform/tree/main/scripts/create-accounts.sh)
+## Terraform scripts
 
-Used as part of a CI/CD pipeline? ✅
+The scripts prefixed `git-` are for running common `terraform` commands as part of CI/CD.
 
-This script is run via the [create-accounts.yml workflow](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/create-accounts.yml) when a PR is merged into `main` that has a new environment definition. It runs the Terraform to create the environment.
+### General use
 
+| Filename | Description | Used in CI/CD? |
+|-|-|-|
+| [`terraform-init.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/terraform-init.sh) | Runs `terraform init` in the provided path with appropriate flags set for CI/CD | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml#L29) |
+| [`terraform-plan.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/terraform-plan.sh) | Runs `terraform plan` in the provided path with appropriate flags set for CI/CD, and redacts the output (see [redact-output.sh](#other-scripts)) | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml#L29) |
+| [`terraform-apply.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/terraform-apply.sh) | Runs `terraform apply` in the provided path with appropriate flags set for CI/CD, and redacts the output (see [redact-output.sh](#other-scripts)) | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml#L29) |
 
-### [`create-per-account-local-workspaces.sh`](https://github.com/ministryofjustice/modernisation-platform/tree/main/scripts/create-per-account-local-workspaces.sh)
+### Specific use
 
-Used as part of a CI/CD pipeline? ❌
+| Filename | Description | Used in CI/CD? |
+|-|-|-|
+| [`provision-terraform-workspaces.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/provision-terraform-workspaces.sh) | Runs `terraform workspace new ${application-name}-${environment}` in the provided directory | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml#L36) |
+| [`loop-through-terraform-workspaces.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/loop-through-terraform-workspaces.sh) | Runs `terraform plan` or `apply` across all remote `terraform workspaces` in the provided directory | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml#L39) |
 
-This can be run to create local environment directories and their subsequent remote Terraform workspaces. The output is the subdirectories in [`terraform/environments/`](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments)
+## Other scripts
 
-### [`utilities.js`](https://github.com/ministryofjustice/modernisation-platform/tree/main/scripts/utilities.js)
+| Filename | Description | Used in CI/CD? |
+|-|-|-|
+| [`redact-output.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/redact-output.sh) | Runs `sed` to redact values from `terraform plan` and `terraform apply` | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/terraform-apply.sh#L17) |
+| [`check-environment-definitions.js`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/check-environment-definitions.js) | Checks `environments/*.json` files have required keys and values and comments on a PR if it doesn't | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/check-environment-definitions.yml#L18) |
+| [`provision-environment-directories.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/provision-environment-directories.sh) | Copies `templates/*.tf` files to an environment directory when a new environment is created | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml#L20) |
 
-Used as part of a CI/CD pipeline? ✅
+### Internal scripts
 
-Used as part of `check-environment-definitions.js`.
+| Filename | Description | Used in CI/CD? |
+|-|-|-|
+| [`internal/upgrade-terraform-providers.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/internal/upgrade-terraform-providers.sh) | This script looks for any directory that holds a `*.tf` file, unless it's a `.terraform` directory or is the `templates/` directory, and runs `terraform init -upgrade` within them. It's useful for bulk-updating all of the Terraform providers and modules in one go | ❌ |
 
-## Internal scripts
+### Utilities
 
-### [`internal/loop-through-bootstrap-workspaces-and-plan.sh`](https://github.com/ministryofjustice/modernisation-platform/tree/main/scripts/internal/loop-through-bootstrap-workspaces-and-plan.sh)
-
-Used as part of a CI/CD pipeline? ❌
-
-This script shouldn't be run as part of a CI/CD pipeline as it may leak secrets. It can be run locally to check each account has been correctly bootstrapped, or to see what is going to be created across all environments if you add a new resource to the bootstrap file. It is in the `internal` subdirectory to separate it from publicly runnable scripts.
-
-### [`internal/upgrade-terraform-providers.sh`](https://github.com/ministryofjustice/modernisation-platform/tree/main/scripts/internal/upgrade-terraform-providers.sh)
-
-Used as part of a CI/CD pipeline? ❌
-
-This script looks for any directory that holds a `*.tf` file, unless it's a `.terraform` directory or is the `templates/` directory, and runs `terraform init -upgrade` within the directories.
-
-It's useful for bulk-updating all of the Terraform providers and modules in one go. The `.terraform.lock.hcl` files that are part of this PR is a sample of what files are generated by Terraform when this script is run.
+| Filename | Description | Used in CI/CD? |
+|-|-|-|
+| [`utilities.js`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/utilities.js) | Used as part of `check-environment-definitions.js` | ✅ |
