@@ -1,19 +1,16 @@
-name: Publish
+name: Check for broken links
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - "main"
-    paths-ignore:
-      - "docs/**"
+  pull_request:
+    paths: 'source/**'
 
 jobs:
-  run:
+  check-links:
     runs-on: ubuntu-latest
     container:
       image: ministryofjustice/tech-docs-github-pages-publisher:1.1
     steps:
     - uses: actions/checkout@v2
-    - name: Publish
-      run: /publishing-scripts/publish.sh
+    - name: htmlproofer
+      run: /publishing-scripts/publish.sh no-repository-changes
