@@ -13,6 +13,7 @@ locals {
     "davidkelliott",
     "donmasters",
     "ewastempel",
+    "jackstockley89",
     "jakemulley",
     "kcbotsh",
     "nishamoj",
