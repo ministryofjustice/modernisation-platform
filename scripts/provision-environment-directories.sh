@@ -30,7 +30,7 @@ copy_templates() {
   for file in "${templates[@]}"; do
     filename=$(basename "$file")
     echo "Copying $file to $1, replacing application_name with $application_name"
-    sed "s/application_name/${application_name}/g" "$file" > "$1/$filename"
+    sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
   done
 
   echo "Finished copying templates."
