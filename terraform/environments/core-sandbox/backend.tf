@@ -11,34 +11,3 @@ terraform {
     workspace_key_prefix = "environments/core-sandbox" # This will store the object as environments/core-sandbox/${workspace}/terraform.tfstate
   }
 }
-
-# AWS provider for the workspace you're working in (every resource will default to using this, unless otherwise specified)
-provider "aws" {
-  region = "eu-west-2"
-  assume_role {
-    role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
-  }
-}
-
-# AWS provider for the Modernisation Platform, to get things from there if required
-provider "aws" {
-  alias  = "modernisation-platform"
-  region = "eu-west-2"
-}
-
-# Sample outputs
-## Using the default provider (specifying nothing)
-data "aws_caller_identity" "current" {}
-
-output "current-account-id" {
-  value = data.aws_caller_identity.current.account_id
-}
-
-## Using the Modernisation Platform provider
-data "aws_caller_identity" "modernisation-platform" {
-  provider = aws.modernisation-platform
-}
-
-output "modernisation-platform-account-id" {
-  value = data.aws_caller_identity.modernisation-platform.account_id
-}
