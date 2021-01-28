@@ -1,12 +1,4 @@
-# Sharing
-provider "aws" {
-  alias  = "core-vpc-production"
-  region = "eu-west-2"
-
-  assume_role {
-    role_arn = "arn:aws:iam::${local.environment_management.account_ids["core-vpc-production"]}:role/ModernisationPlatformAccess"
-  }
-}
+data "aws_caller_identity" "current" {}
 
 module "ram-principal-association" {
   source = "../../modules/ram-principal-association"
@@ -24,15 +16,15 @@ module "ram-principal-association" {
 # The below ram-ec2-retagging module needs to be run separately due to Terraform being unable to work out how many IDs there are to tag from a data lookup.
 #
 
-# module "ram-ec2-retagging" {
-#   source = "../../modules/ram-ec2-retagging"
-#   providers = {
-#     aws.share-host   = aws.core-vpc-production # Core VPC production holds the share
-#     aws.share-tenant = aws                     # The default provider (unaliased, `aws`) is the tenant
-#   }
+module "ram-ec2-retagging" {
+  source = "../../modules/ram-ec2-retagging"
+  providers = {
+    aws.share-host   = aws.core-vpc-production # Core VPC production holds the share
+    aws.share-tenant = aws                     # The default provider (unaliased, `aws`) is the tenant
+  }
 
-#   vpc_name   = "hmpps-production"
-#   subnet_set = "nomis"
+  vpc_name   = "hmpps-production"
+  subnet_set = "nomis"
 
-#   depends_on = [module.ram-principal-association]
-# }
+  depends_on = [module.ram-principal-association]
+}
