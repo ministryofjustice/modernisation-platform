@@ -12,8 +12,6 @@ github-workflow:
 
 networking:
   - "terraform/environments/core-vpc/**"
-
-networking:
   - "terraform/environments/core-network-services/**"
 
 core:
