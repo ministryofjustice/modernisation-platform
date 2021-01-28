@@ -67,7 +67,7 @@ resource "aws_ec2_transit_gateway_route_table" "route-tables" {
 }
 
 # Associate the route table with the VPC attachment
-resource "aws_ec2_transit_gateway_route_table_association" "tables" {
+resource "aws_ec2_transit_gateway_route_table_association" "association" {
   for_each = local.networking
 
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[each.key].id
