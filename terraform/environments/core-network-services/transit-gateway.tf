@@ -1,46 +1,35 @@
 #########################
-# Create TGW
+# Create Transit Gateway
 #########################
 resource "aws_ec2_transit_gateway" "transit-gateway" {
-  description                     = "ModernisationPlatform Transit Gateway"
+  description = "Managed by Terraform"
+
   amazon_side_asn                 = "64589"
+  auto_accept_shared_attachments  = "enable"
   default_route_table_association = "disable"
   default_route_table_propagation = "disable"
-  auto_accept_shared_attachments  = "enable"
-  vpn_ecmp_support                = "enable"
   dns_support                     = "enable"
+  vpn_ecmp_support                = "enable"
+
   tags = merge(
     local.tags,
     {
-      Name = "TGW-ModernisationPlatform"
+      Name = "Modernisation Platform: Transit Gateway"
     },
   )
 }
 
 #########################
-# Route table and routes
-#########################
-resource "aws_ec2_transit_gateway_route_table" "transit-gateway-route-table" {
-  for_each = toset(keys(local.network))
-
-  transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
-  tags = merge(
-    local.tags,
-    {
-      Name = each.value
-    },
-  )
-}
-
-#########################
-# VPC attachment
+# Attach VPCs to the Transit Gateway
 #########################
 resource "aws_ec2_transit_gateway_vpc_attachment" "attachments" {
-  for_each = toset(keys(local.network))
+  for_each = local.networking
 
   transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
-  vpc_id             = local.useful_vpc_ids[each.value].vpc_id
-  subnet_ids         = local.useful_vpc_ids[each.value].private_tgw_subnet_ids
+
+  # Attach VPC and private subnets to the Transit Gateway
+  vpc_id     = local.useful_vpc_ids[each.key].vpc_id
+  subnet_ids = local.useful_vpc_ids[each.key].private_tgw_subnet_ids
 
   # Turn off default route table association and propogation, as we're providing our own
   transit_gateway_default_route_table_association = false
@@ -55,32 +44,51 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "attachments" {
   tags = merge(
     local.tags,
     {
-      Name = each.value
+      Name = each.key
     },
   )
 }
 
-##########################
-# Route table association
-##########################
-resource "aws_ec2_transit_gateway_route_table_association" "tables" {
-  for_each = toset(keys(local.network))
+#########################
+# Route table and routes
+#########################
+# Create a route table for each VPC attachment
+resource "aws_ec2_transit_gateway_route_table" "route-tables" {
+  for_each = local.networking
 
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[each.value].id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.transit-gateway-route-table[each.value].id
+  transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
+
+  tags = merge(
+    local.tags,
+    {
+      Name = each.key
+    },
+  )
 }
 
+# Associate the route table with the VPC attachment
+resource "aws_ec2_transit_gateway_route_table_association" "association" {
+  for_each = local.networking
+
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[each.key].id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables[each.key].id
+}
+
+# Propogate routes from the VPC attachment to the route table
 resource "aws_ec2_transit_gateway_route_table_propagation" "propagation" {
-  for_each = toset(keys(local.network))
+  for_each = local.networking
 
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[each.value].id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.transit-gateway-route-table[each.value].id
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[each.key].id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables[each.key].id
 }
 
+#########################
+# Routes for VPC attachments
+#########################
 resource "aws_ec2_transit_gateway_route" "nat_route" {
-  for_each = toset(keys(local.network))
+  for_each = local.networking
 
   destination_cidr_block         = "0.0.0.0/0"
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[each.value].id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.transit-gateway-route-table[each.value].id
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[each.key].id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables[each.key].id
 }
