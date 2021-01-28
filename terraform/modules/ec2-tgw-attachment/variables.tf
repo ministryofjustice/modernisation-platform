@@ -32,3 +32,8 @@ variable "vpc_id" {
   description = "VPC ID to attach to the Transit Gateway"
   type        = string
 }
+
+variable "vpc_name" {
+  description = "VPC name (used for tagging)"
+  type        = string
+}
