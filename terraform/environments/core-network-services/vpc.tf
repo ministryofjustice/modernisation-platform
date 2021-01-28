@@ -1,14 +1,13 @@
 locals {
-  network = {
-    live_data = {
-      cidr = "10.230.0.0/19"
-    }
-    non_live_data = {
-      cidr = "10.230.32.0/19"
-    }
+  networking = {
+    live_data     = "10.230.0.0/19"
+    non_live_data = "10.230.32.0/19"
   }
+}
+
+locals {
   useful_vpc_ids = {
-    for key in keys(local.network) :
+    for key in keys(local.networking) :
     key => {
       vpc_id                 = module.vpc[key].vpc_id
       private_tgw_subnet_ids = module.vpc[key].tgw_subnet_ids
@@ -17,11 +16,11 @@ locals {
 }
 
 module "vpc" {
-  for_each = local.network
+  for_each = local.networking
   source   = "../../modules/core-vpc"
 
   # CIDRs
-  vpc_cidr = local.network[each.key].cidr
+  vpc_cidr = each.value
 
   # private gateway type
   #   nat = Nat Gateway
