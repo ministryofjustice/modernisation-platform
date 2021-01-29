@@ -21,6 +21,7 @@ module "vpc_attachment" {
 
   subnet_ids = module.vpc[each.key].tgw_subnet_ids
   vpc_id     = module.vpc[each.key].vpc_id
+  vpc_name   = each.key
 
   tags = local.tags
 }

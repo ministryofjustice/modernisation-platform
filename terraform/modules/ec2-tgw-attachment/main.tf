@@ -35,23 +35,30 @@ data "aws_ec2_transit_gateway_route_table" "default" {
 }
 
 ## Get the Transit Gateway tenant account ID
-data "aws_caller_identity" "transit-gateway-tenant" {}
+data "aws_caller_identity" "transit-gateway-tenant" {
+  provider = aws.transit-gateway-tenant
+}
 
-# Add the tenant account to the Transit Gateway Resource Share
+# Resource creation
+
+## Add the tenant account to the Transit Gateway Resource Share
 resource "aws_ram_principal_association" "transit_gateway_association" {
-  provider           = aws.transit-gateway-host
+  provider = aws.transit-gateway-host
+
   principal          = data.aws_caller_identity.transit-gateway-tenant.account_id
   resource_share_arn = data.aws_ram_resource_share.transit-gateway.arn
 }
 
-# Due to propagation in AWS, a RAM share will take up to 60 seconds to appear in an account,
-# so we need to wait before attaching our tenant VPCs to it
+## Due to propagation in AWS, a RAM share will take up to 60 seconds to appear in an account,
+## so we need to wait before attaching our tenant VPCs to it
 resource "time_sleep" "wait_60_seconds" {
   create_duration = "60s"
 }
 
-# Attach provided subnet IDs and VPC to the provided Transit Gateway ID
+## Attach provided subnet IDs and VPC to the provided Transit Gateway ID
 resource "aws_ec2_transit_gateway_vpc_attachment" "default" {
+  provider = aws.transit-gateway-tenant
+
   subnet_ids         = var.subnet_ids
   transit_gateway_id = var.transit_gateway_id
   vpc_id             = var.vpc_id
@@ -66,7 +73,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "default" {
   transit_gateway_default_route_table_propagation = true
 
   tags = merge(var.tags, {
-    Name = "${var.resource_share_name}-attachment"
+    Name = "${var.vpc_name}-attachment"
   })
 
   depends_on = [
@@ -75,7 +82,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "default" {
   ]
 }
 
-# Associate the Transit Gateway Route Table with the VPC
+## Associate the Transit Gateway Route Table with the VPC
 resource "aws_ec2_transit_gateway_route_table_association" "default" {
   provider = aws.transit-gateway-host
 
