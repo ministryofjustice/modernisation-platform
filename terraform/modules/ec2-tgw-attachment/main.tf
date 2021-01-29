@@ -89,3 +89,13 @@ resource "aws_ec2_transit_gateway_route_table_association" "default" {
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.default.id
   transit_gateway_route_table_id = data.aws_ec2_transit_gateway_route_table.default.id
 }
+
+## Retag the new Transit Gateway VPC attachment in the Transit Gateway host
+resource "aws_ec2_tag" "retag" {
+  provider = aws.transit-gateway-host
+
+  resource_id = aws_ec2_transit_gateway_vpc_attachment.default.id
+
+  key   = "Name"
+  value = "${var.vpc_name}-attachment"
+}
