@@ -29,7 +29,7 @@ resource "time_sleep" "wait_60_seconds" {
 
 # Attach the VPC to the central Transit Gateway
 module "vpc_attachment" {
-  for_each = local.network
+  for_each = local.networking
   source   = "../../modules/ec2-tgw-attachment"
   providers = {
     aws.transit-gateway-tenant = aws
@@ -42,6 +42,7 @@ module "vpc_attachment" {
 
   subnet_ids = module.vpc[each.key].tgw_subnet_ids
   vpc_id     = module.vpc[each.key].vpc_id
+  vpc_name   = "${each.key}-${terraform.workspace}"
 
   tags = local.tags
 }
