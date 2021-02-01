@@ -1,14 +1,17 @@
 #!/bin/bash
 
 basedir=terraform/environments
-templates=(terraform/templates/*.tf)
+networkdir=environments-networks
+templates=terraform/templates/*.tf
 
 provision_environment_directories() {
   for file in environments/*.json; do
     application_name=$(basename "$file" .json)
+  
     directory=$basedir/$application_name
 
     if [ -d "$directory" ]; then
+
       # Do nothing if a directory already exists
       echo ""
       echo "Ignoring $directory, it already exists"
@@ -22,6 +25,10 @@ provision_environment_directories() {
       copy_templates "$directory" "$application_name"
 
     fi
+    
+    # Copies mapping template which holds subnet-set id/account and business unit details.  
+    jq -s --arg APPLICATION_NAME "$application_name" '.[].cidr.subnet_sets | to_entries[] | select(.value.accounts | index($APPLICATION_NAME)) | {filename : (input_filename | ltrimstr("environments-networks/") | rtrimstr(".json")), subnetset : .key}' $networkdir/*.json > $directory/networking.auto.tfvars.json
+
   done
 }
 

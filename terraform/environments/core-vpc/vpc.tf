@@ -3,15 +3,27 @@ locals {
   vpcs = {
     # VPCs that sit within the core-vpc-production account
     core-vpc-production = {
-      for file in fileset("subnet-sets", "*-production.json") :
-      replace(file, ".json", "") => jsondecode(file("subnet-sets/${file}"))
+      for file in fileset("../../environments-networks", "*-production.json") :
+      replace(file, ".json", "") => jsondecode(file("environments-networks/${file}"))
     }
-    # VPCs that sit within the core-vpc-non-live-data account
-    core-vpc-non-live-data = {
-      for file in fileset("subnet-sets", "*-non-live-data.json") :
-      replace(file, ".json", "") => jsondecode(file("subnet-sets/${file}"))
-    }
-    # VPCs that sit within the core-vpc-pre-production account
+
+    # core-vpc-preproduction = {
+    #   for file in fileset("../../environments-networks", "*-preproduction.json") :
+    #   replace(file, ".json", "") => jsondecode(file("environments-networks/${file}"))
+    # }
+    
+    # # VPCs that sit within the core vpc test account
+    # core-vpc-test = {
+    #   for file in fileset("../../environments-networks", "*-test.json") :
+    #   replace(file, ".json", "") => jsondecode(file("environments-networks/${file}"))
+    # }
+
+    # # VPCs that sit within the core vpc development account
+    #  core-vpc-development = {
+    #   for file in fileset("../../environments-networks", "*-development.json") :
+    #   replace(file, ".json", "") => jsondecode(file("environments-networks/${file}"))
+    # }
+    # VPCs that sit within the core development account
     # core-vpc-pre-production = {
     #   for file in fileset("vpcs", "*-pre-production.json") :
     #     replace(file, ".json", "") => jsondecode(file("env/${file}"))
