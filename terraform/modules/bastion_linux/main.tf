@@ -9,10 +9,10 @@ provider "aws" {
 # extract environment name from workspace name
 locals {
 
-##############################################################################
-## TEMP override whilst using sandbox type accounts, UNCOMMENT THE BELOW LINE
-## Delete static line below it
-##############################################################################
+  ##############################################################################
+  ## TEMP override whilst using sandbox type accounts, UNCOMMENT THE BELOW LINE
+  ## Delete static line below it
+  ##############################################################################
   # environment_name = trimprefix(terraform.workspace, "${var.account_name}-")
   environment_name = "production"
 
@@ -132,8 +132,8 @@ resource "aws_s3_bucket" "bucket" {
       Name = "bastion"
     },
   )
-  
-  }
+
+}
 
 resource "aws_s3_bucket_object" "bucket_public_keys_readme" {
   bucket     = aws_s3_bucket.bucket.id
@@ -156,7 +156,7 @@ resource "aws_security_group" "bastion_linux" {
   )
 }
 resource "aws_security_group_rule" "bastion_linux_egress_to_inteface_endpoints" {
-  security_group_id        = aws_security_group.bastion_linux.id
+  security_group_id = aws_security_group.bastion_linux.id
 
   description              = "Outgoing traffic from linux bastion"
   type                     = "egress"
@@ -166,14 +166,14 @@ resource "aws_security_group_rule" "bastion_linux_egress_to_inteface_endpoints" 
   source_security_group_id = data.aws_security_group.core_vpc_protected.id
 }
 resource "aws_security_group_rule" "bastion_linux_egress_to_s3_endpoint" {
-  security_group_id        = aws_security_group.bastion_linux.id
+  security_group_id = aws_security_group.bastion_linux.id
 
-  description              = "Outgoing traffic from linux bastion"
-  type                     = "egress"
-  from_port                = "443"
-  to_port                  = "443"
-  protocol                 = "TCP"
-  prefix_list_ids          = [data.aws_vpc_endpoint.s3.prefix_list_id]
+  description     = "Outgoing traffic from linux bastion"
+  type            = "egress"
+  from_port       = "443"
+  to_port         = "443"
+  protocol        = "TCP"
+  prefix_list_ids = [data.aws_vpc_endpoint.s3.prefix_list_id]
 }
 
 
@@ -198,7 +198,7 @@ resource "aws_iam_role" "bastion_host_role" {
   tags = merge(
     var.tags_common,
     {
-      Name ="bastion_linux_ec2_role"
+      Name = "bastion_linux_ec2_role"
     },
   )
 
@@ -269,16 +269,16 @@ data "aws_iam_policy_document" "bastion_ssm_s3_policy_document" {
       "s3:GetObject"
     ]
     resources = [
-        "arn:aws:s3:::aws-ssm-${var.region}/*",
-        "arn:aws:s3:::aws-windows-downloads-${var.region}/*",
-        "arn:aws:s3:::amazon-ssm-${var.region}/*",
-        "arn:aws:s3:::amazon-ssm-packages-${var.region}/*",
-        "arn:aws:s3:::${var.region}-birdwatcher-prod/*",
-        "arn:aws:s3:::aws-ssm-distributor-file-${var.region}/*",
-        "arn:aws:s3:::aws-ssm-document-attachments-${var.region}/*",
-        "arn:aws:s3:::patch-baseline-snapshot-${var.region}/*"
+      "arn:aws:s3:::aws-ssm-${var.region}/*",
+      "arn:aws:s3:::aws-windows-downloads-${var.region}/*",
+      "arn:aws:s3:::amazon-ssm-${var.region}/*",
+      "arn:aws:s3:::amazon-ssm-packages-${var.region}/*",
+      "arn:aws:s3:::${var.region}-birdwatcher-prod/*",
+      "arn:aws:s3:::aws-ssm-distributor-file-${var.region}/*",
+      "arn:aws:s3:::aws-ssm-document-attachments-${var.region}/*",
+      "arn:aws:s3:::patch-baseline-snapshot-${var.region}/*"
     ]
-    }
+  }
 }
 resource "aws_iam_policy" "bastion_ssm_s3_policy" {
   name   = "bastion_ssm_s3"
@@ -299,7 +299,7 @@ resource "aws_iam_instance_profile" "bastion_host_profile" {
 
 data "aws_ami" "linux_2_image" {
   most_recent = true
-  owners = ["amazon"]
+  owners      = ["amazon"]
 
   filter {
     name   = "name"
@@ -329,7 +329,7 @@ resource "aws_instance" "bastion_linux" {
   tags = merge(
     var.tags_common,
     {
-      Name ="bastion_linux"
+      Name = "bastion_linux"
     }
   )
 }
