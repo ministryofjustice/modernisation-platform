@@ -11,7 +11,7 @@ locals {
     #   for file in fileset("../../environments-networks", "*-preproduction.json") :
     #   replace(file, ".json", "") => jsondecode(file("environments-networks/${file}"))
     # }
-    
+
     # # VPCs that sit within the core vpc test account
     # core-vpc-test = {
     #   for file in fileset("../../environments-networks", "*-test.json") :
