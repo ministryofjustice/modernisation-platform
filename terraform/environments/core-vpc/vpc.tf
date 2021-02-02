@@ -42,11 +42,11 @@ module "vpc" {
 
   source = "../../modules/member-vpc"
 
-  subnet_sets = { for key, subnet in each.value.cidr.subnet_sets: key => subnet.cidr}
+  subnet_sets = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
   protected   = each.value.cidr.protected
   vpc_cidr    = each.value.cidr.transit_gateway
 
-  bastion_linux   = each.value.options.bastion_linux
+  bastion_linux = each.value.options.bastion_linux
   #bastion_windows = each.value.options.bastion_windows
 
   transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
@@ -80,7 +80,7 @@ module "vpc_tgw_routing" {
     aws.core-network-services = aws.core-network-services
   }
 
-  subnet_sets        = { for key, subnet in each.value.cidr.subnet_sets: key => subnet.cidr}
+  subnet_sets        = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
   tgw_vpc_attachment = module.vpc_attachment[each.key].tgw_vpc_attachment
   tgw_route_table    = module.vpc_attachment[each.key].tgw_route_table
   tgw_id             = data.aws_ec2_transit_gateway.transit-gateway.id
@@ -119,7 +119,7 @@ module "resource-share" {
   }
 
   # Subnet ARNs to attach to a resource share
-  resource_arns = each.value.arns
+  resource_arns = [for key, subnet in each.value.arns : subnet]
 
   # Tags
   tags_common = local.tags
