@@ -11,7 +11,7 @@ data "aws_ec2_transit_gateway" "transit-gateway" {
 data "aws_ram_resource_share" "transit-gateway-shared" {
   provider = aws.core-network-services
 
-  name           = "shared-transit-gateway"
+  name           = "transit-gateway"
   resource_owner = "SELF"
 }
 
@@ -36,7 +36,7 @@ module "vpc_attachment" {
     aws.transit-gateway-host   = aws.core-network-services
   }
 
-  resource_share_name = "shared-transit-gateway"
+  resource_share_name = "transit-gateway"
   transit_gateway_id  = data.aws_ec2_transit_gateway.transit-gateway.id
   type                = each.key
 
