@@ -2,19 +2,20 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/hashicorp/aws" {
-  version = "3.24.1"
+  version = "3.25.0"
   hashes = [
-    "h1:REyi17e2k8dLY8tyKb13Orwmc3s1S5bNTkleXrkfcPc=",
-    "zh:0afc5eb8c187dfb1f6bb1b023c81c79fa845ac07df4dd74e6d0be93aab3e4dfd",
-    "zh:1099b6f235dd0fea319e012518a56058edebc45e24f4bb1f46645309d4b0c346",
-    "zh:35ab316170abd51e778a89de738126e994181b10d475746344fdb5b4dce71ea0",
-    "zh:50aaa001a65ab244824a83d2b7f4efa0d8e9482d65ed34b6ea0908fb7e814582",
-    "zh:6392854df0d8f6169424db56b434e42c0e6cf1248f64b87127bc4fe5a2f098ff",
-    "zh:67bcc011f97805d2ed381deaa7a6f739e0df080deb559c6ee49140aee58fa2d2",
-    "zh:726a03a2160b0465b269cf2075ee6ca02829186fab85e8ed637cbfd55e3a7d9b",
-    "zh:ae13b97bd51fc3e81068cb672382b39bd81f33ecfb339fb5ca469af2024e2f0c",
-    "zh:e04a71bd670e55d178ed027a1adbcab63db83a99b467c1a9ae25cb6555c2032d",
-    "zh:fe1eeb632a638a3584e15d50c1b9761a6994915e265922d623cc03a8ed94918d",
+    "h1:9bXU5cFO/2DX8z5whaGMA7wcCalKQJZrBm89AuePuEM=",
+    "h1:oyaXLqVhtPnHDnwk2yU9qP4dTgfPHyuo27mX/ljeCTQ=",
+    "zh:2d3c65461bc63ec39bce7b5afdbed9a3b4dd5c2c8ee94616ad1866e24cf9b8f0",
+    "zh:2fb2ea6ccac30b909b603e183433737a30c58ec1f9a6a8b5565f0f051490c07a",
+    "zh:31a5f192c8cf29fb677cd639824f9a685578a2564c6b790517db33ea56229045",
+    "zh:437a12cf9a4d7bc92c9bf14ee7e224d5d3545cbd2154ba113ae82c4bb68edc27",
+    "zh:4bbdc3155a5dea90b2d50adfa460b0759c4dd959efaf7f66b2a0385a53b469b2",
+    "zh:63a8cd523ba31358692a34a06e111d88769576ac6d0e5adad8e0b4ae0a2d8882",
+    "zh:c4301ce86e8cb2c464949bb99e729ffe7b0c55eaf34b82ba526bb5039bca36f3",
+    "zh:c97b84861c6c550b8d2feb12d089660fffbf51dc7d660dcc9d54d4a7b3c2c882",
+    "zh:d6a103570e2d5c387b068fac4b88654dfa21d44ca1bdfa4bc8ab94c88effd71a",
+    "zh:f08cf2faf960a8ca374ac860f37c31c88ed2bab460116ac74678e0591babaac5",
   ]
 }
 
@@ -22,6 +23,7 @@ provider "registry.terraform.io/hashicorp/time" {
   version = "0.6.0"
   hashes = [
     "h1:AzpZsovYtv0/V2/lp/4chIiaXxPWaAOpqqoXceNAW7g=",
+    "h1:CI0tS9o8Yrcq789g4M0NaY4IWfN6MOX41FnZHoCGPKg=",
     "zh:130c61cb41888107bf1e2f1db05b4f664d63af70e7828c0ab16be9fc5302aede",
     "zh:16132715a10cb31dc6ce6d9320904f84ddb32cbb74516e528009463370d6f715",
     "zh:2fb8701ac13115bd92187a9c6e47ca2ecedf98943e48e3f5d8a8f3f4bd3fcdf4",

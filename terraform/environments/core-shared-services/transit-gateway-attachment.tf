@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 data "aws_ec2_transit_gateway" "transit-gateway" {
   provider = aws.core-network-services
   filter {
@@ -5,10 +7,11 @@ data "aws_ec2_transit_gateway" "transit-gateway" {
     values = ["64589"]
   }
 }
+
 data "aws_ram_resource_share" "transit-gateway-shared" {
   provider = aws.core-network-services
 
-  name           = "shared-transit-gateway"
+  name           = "transit-gateway"
   resource_owner = "SELF"
 }
 
@@ -26,19 +29,20 @@ resource "time_sleep" "wait_60_seconds" {
 
 # Attach the VPC to the central Transit Gateway
 module "vpc_attachment" {
-  for_each = local.network
+  for_each = local.networking
   source   = "../../modules/ec2-tgw-attachment"
   providers = {
     aws.transit-gateway-tenant = aws
     aws.transit-gateway-host   = aws.core-network-services
   }
 
-  resource_share_name = "shared-transit-gateway"
+  resource_share_name = "transit-gateway"
   transit_gateway_id  = data.aws_ec2_transit_gateway.transit-gateway.id
   type                = each.key
 
   subnet_ids = module.vpc[each.key].tgw_subnet_ids
   vpc_id     = module.vpc[each.key].vpc_id
+  vpc_name   = "${each.key}-${terraform.workspace}"
 
   tags = local.tags
 }

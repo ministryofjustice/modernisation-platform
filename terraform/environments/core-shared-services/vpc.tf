@@ -1,30 +1,18 @@
 locals {
-  # useful_vpc_ids = {
-  #   for key in keys(local.vpcs) :
-  #   key => {
-  #     vpc_id                 = module.vpc[key].vpc_id
-  #     private_tgw_subnet_ids = module.vpc[key].tgw_subnet_ids
-  #   }
-  # }
-
-  network = {
-    live_data = {
-      cidr = "10.231.0.0/19"
-    }
-    non_live_data = {
-      cidr = "10.231.32.0/19"
-    }
+  networking = {
+    live_data     = "10.231.0.0/19"
+    non_live_data = "10.231.32.0/19"
   }
-
 }
 
 module "vpc" {
-  for_each = local.network
+  for_each = local.networking
   source   = "../../modules/core-vpc"
 
   # CIDRs
-  vpc_cidr = local.network[each.key].cidr
+  vpc_cidr = each.value
 
+  # Transit Gateway ID
   transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
 
   # private gateway type

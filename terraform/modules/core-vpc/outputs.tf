@@ -8,7 +8,7 @@ output "tgw_subnet_ids" {
   value = [
     for key, value in local.expanded_subnets_with_keys :
     aws_subnet.subnets[key].id
-    if value.type == "tgw"
+    if value.type == "transit-gateway"
   ]
 }
 
@@ -17,6 +17,6 @@ output "non_tgw_subnet_ids" {
   value = [
     for key, value in local.expanded_subnets_with_keys :
     aws_subnet.subnets[key].id
-    if value.type != "tgw"
+    if value.type != "transit-gateway"
   ]
 }
