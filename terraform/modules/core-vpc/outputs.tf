@@ -20,3 +20,11 @@ output "non_tgw_subnet_ids" {
     if value.type != "transit-gateway"
   ]
 }
+
+output "private_route_tables" {
+  value = {
+    for key, value in local.expanded_subnets_with_keys :
+    key => aws_route_table.private[key].id
+    if value.type != "public"
+  }
+}
