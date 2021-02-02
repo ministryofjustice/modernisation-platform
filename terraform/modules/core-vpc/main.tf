@@ -270,15 +270,3 @@ resource "aws_route" "private_nat" {
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.default["${each.value.group}-public-${each.value.az}"].id
 }
-
-resource "aws_route" "private_transit_gateway" {
-  for_each = {
-    for key, value in local.expanded_subnets_with_keys :
-    key => value
-    if value.type != "public" && var.gateway == "transit"
-  }
-
-  route_table_id         = aws_route_table.private[each.key].id
-  destination_cidr_block = "0.0.0.0/0"
-  transit_gateway_id     = var.transit_gateway_id
-}
