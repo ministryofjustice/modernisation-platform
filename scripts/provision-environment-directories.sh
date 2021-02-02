@@ -64,7 +64,7 @@ provision_environment_directories() {
     #     "set": "general"
     #   }
     # ]
-    jq --arg APPLICATION_NAME "$application_name" '[ .[].subnet_sets[] | select(.accounts[] | contains($APPLICATION_NAME)) | { "business-unit": ."business-unit", "set": .set } ] | select(length > 0)' <<< "$networking_definitions" > "$directory"/networking.auto.tfvars.json
+    jq --arg APPLICATION_NAME "$application_name" '{ networking: [ .[].subnet_sets[] | select(.accounts[] | contains($APPLICATION_NAME)) | { "business-unit": ."business-unit", "set": .set, "application": $APPLICATION_NAME } ] } | select(length > 0)' <<< "$networking_definitions" > "$directory"/networking.auto.tfvars.json
   done
 }
 
