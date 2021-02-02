@@ -88,7 +88,7 @@ locals {
 }
 
 module "baselines-modernisation-platform" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=regional-enablement"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=v2.0.0"
   providers = {
     # Default and replication regions
     aws                    = aws.modernisation-platform-eu-west-2

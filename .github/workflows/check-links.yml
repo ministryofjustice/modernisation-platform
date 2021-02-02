@@ -9,7 +9,7 @@ jobs:
   check-links:
     runs-on: ubuntu-latest
     container:
-      image: ministryofjustice/tech-docs-github-pages-publisher:1.1
+      image: ministryofjustice/tech-docs-github-pages-publisher:1.2
     steps:
     - uses: actions/checkout@v2
     - name: htmlproofer

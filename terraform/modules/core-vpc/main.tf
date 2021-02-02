@@ -16,7 +16,7 @@ locals {
         key   = key
         cidr  = cidr
         az    = local.availability_zones[cidr_index]
-        type  = key == 0 ? "tgw" : (key == 1 ? "data" : (key == 2 ? "private" : "public"))
+        type  = key == 0 ? "transit-gateway" : (key == 1 ? "data" : (key == 2 ? "private" : "public"))
         group = var.tags_prefix
       }
     ]
@@ -35,8 +35,8 @@ locals {
   ])
   # default rules for subnets
   nacl_rules = [
-    { egress : false, action : "allow", protocol : -1, from_port : 0, to_port : 0, rule_num : 910, cidr : "0.0.0.0/0" },
-    { egress : true, action : "allow", protocol : -1, from_port : 0, to_port : 0, rule_num : 910, cidr : "0.0.0.0/0" }
+    { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 910, cidr = "0.0.0.0/0" },
+    { egress = true, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 910, cidr = "0.0.0.0/0" }
   ]
 
   expanded_rules = toset(flatten([
@@ -78,6 +78,7 @@ resource "aws_vpc" "vpc" {
 # VPC Flow Logs
 resource "aws_cloudwatch_log_group" "default" {
   name = "${var.tags_prefix}-vpc-flow-logs"
+  tags = var.tags_common
 }
 
 resource "aws_flow_log" "cloudwatch" {
@@ -98,7 +99,6 @@ resource "aws_flow_log" "cloudwatch" {
 
 # VPC: Subnet per type, per availability zone
 resource "aws_subnet" "subnets" {
-
   for_each = tomap(local.expanded_subnets_with_keys)
 
   vpc_id            = aws_vpc.vpc.id
@@ -166,13 +166,13 @@ resource "aws_network_acl_rule" "allow_local_network_egress" {
 }
 
 # VPC: Internet Gateway
-resource "aws_internet_gateway" "ig" {
+resource "aws_internet_gateway" "default" {
   vpc_id = aws_vpc.vpc.id
 
   tags = merge(
     var.tags_common,
     {
-      Name = "${var.tags_prefix}-IG"
+      Name = "${var.tags_prefix}-internet-gateway"
     },
   )
 }
@@ -190,10 +190,10 @@ resource "aws_route_table" "public" {
 }
 
 # Public Internet Gateway route
-resource "aws_route" "public_ig" {
+resource "aws_route" "public_internet_gateway" {
   route_table_id         = aws_route_table.public.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.ig.id
+  gateway_id             = aws_internet_gateway.default.id
 }
 
 # Non-public route tables
@@ -212,6 +212,7 @@ resource "aws_route_table" "private" {
     }
   )
 }
+
 # Route table associations
 resource "aws_route_table_association" "default" {
   for_each = local.expanded_subnets_with_keys
