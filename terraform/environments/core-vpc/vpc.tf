@@ -33,11 +33,6 @@ locals {
 }
 
 module "vpc" {
-  providers = {
-    aws                       = aws
-    aws.core-network-services = aws.core-network-services
-  }
-
   for_each = local.vpcs[terraform.workspace]
 
   source = "../../modules/member-vpc"
