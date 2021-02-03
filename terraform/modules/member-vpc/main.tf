@@ -119,6 +119,10 @@ locals {
     if subnet.key != "transit-gateway" && subnet.type != "data"
   ])
 
+  all_distinct_route_tables_with_keys = {
+    for rt in local.all_distinct_route_tables :
+    rt => rt
+  }
   # All distinct route tables
   all_distinct_route_tables = distinct([
     for subnet in local.all_subnets_with_keys :
@@ -451,7 +455,7 @@ resource "aws_internet_gateway" "default" {
 }
 
 resource "aws_route_table" "route_tables" {
-  for_each = toset(local.all_distinct_route_tables)
+  for_each = tomap(local.all_distinct_route_tables_with_keys)
 
   vpc_id = aws_vpc.vpc.id
 
@@ -479,17 +483,17 @@ resource "aws_route" "public_internet_gateway" {
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.default.id
 }
-resource "aws_route" "transit-gateway" {
-  for_each = {
-    for key, route_table in aws_route_table.route_tables :
-    key => route_table
-    if substr(key, length(key) - 6, length(key)) != "public"
-  }
-
-  transit_gateway_id     = var.transit_gateway_id
-  route_table_id         = aws_route_table.route_tables[each.key].id
-  destination_cidr_block = "0.0.0.0/0"
-}
+# # resource "aws_route" "transit-gateway" {
+# #   for_each = {
+# #     for key, route_table in aws_route_table.route_tables :
+# #     key => route_table
+# #     if substr(key, length(key) - 6, length(key)) != "public"
+# #   }
+#
+#   transit_gateway_id     = var.transit_gateway_id
+#   route_table_id         = aws_route_table.route_tables[each.key].id
+#   destination_cidr_block = "0.0.0.0/0"
+# }
 
 
 resource "aws_route_table" "protected" {
@@ -582,7 +586,13 @@ resource "aws_vpc_endpoint" "ssm_s3" {
   )
 }
 
-
+output "private_route_tables" {
+  value = {
+    for key, value in local.all_distinct_route_tables_with_keys :
+    key => aws_route_table.route_tables[key].id
+    if substr(key, length(key) - 6, length(key)) != "public"
+  }
+}
 # # Bastion Security Groups
 # resource "aws_security_group" "bastion" {
 #   for_each = var.subnet_sets
