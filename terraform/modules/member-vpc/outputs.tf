@@ -24,11 +24,11 @@ output "non_tgw_subnet_arns" {
 output "non_tgw_subnet_arns_by_set" {
   value = {
     for set, cidr in var.subnet_sets :
-    set => [
-      for key, subnet in aws_subnet.subnets :
-      subnet.arn
+    set => {
+      for key, subnet in local.expanded_worker_subnets_assocation :
+      "${key}-${cidr}" => aws_subnet.subnets[key].arn
       if substr(key, 0, length(set)) == set
-    ]
+    }
   }
 }
 

@@ -1,13 +1,29 @@
-provider "aws" {
-  alias = "core-network-services"
-}
-
 # Get AZs for account
 data "aws_availability_zones" "available" {
   state = "available"
 }
 
-# Locals
+# VPC Endpoints
+# EC2
+data "aws_vpc_endpoint_service" "ec2" {
+  service = "ec2"
+}
+
+# EC2 Messages
+data "aws_vpc_endpoint_service" "ec2messages" {
+  service = "ec2messages"
+}
+
+# SSM
+data "aws_vpc_endpoint_service" "ssm" {
+  service = "ssm"
+}
+
+# SSM Messages
+data "aws_vpc_endpoint_service" "ssmmessages" {
+  service = "ssmmessages"
+}
+
 locals {
   availability_zones = sort(data.aws_availability_zones.available.names)
 
@@ -15,12 +31,12 @@ locals {
 
   # Network AccessControlList rules (NACL's)
   nacl_rules = [
-    { egress : false, action : "deny", protocol : -1, from_port : 0, to_port : 0, rule_num : 810, cidr : "10.0.0.0/8" },
-    { egress : false, action : "deny", protocol : -1, from_port : 0, to_port : 0, rule_num : 820, cidr : "172.16.0.0/12" },
-    { egress : false, action : "deny", protocol : -1, from_port : 0, to_port : 0, rule_num : 830, cidr : "192.168.0.0/16" },
-    { egress : true, action : "deny", protocol : -1, from_port : 0, to_port : 0, rule_num : 810, cidr : "10.0.0.0/8" },
-    { egress : true, action : "deny", protocol : -1, from_port : 0, to_port : 0, rule_num : 820, cidr : "172.16.0.0/12" },
-    { egress : true, action : "deny", protocol : -1, from_port : 0, to_port : 0, rule_num : 830, cidr : "192.168.0.0/16" }
+    { egress = false, action = "deny", protocol = -1, from_port = 0, to_port = 0, rule_num = 810, cidr = "10.0.0.0/8" },
+    { egress = false, action = "deny", protocol = -1, from_port = 0, to_port = 0, rule_num = 820, cidr = "172.16.0.0/12" },
+    { egress = false, action = "deny", protocol = -1, from_port = 0, to_port = 0, rule_num = 830, cidr = "192.168.0.0/16" },
+    { egress = true, action = "deny", protocol = -1, from_port = 0, to_port = 0, rule_num = 810, cidr = "10.0.0.0/8" },
+    { egress = true, action = "deny", protocol = -1, from_port = 0, to_port = 0, rule_num = 820, cidr = "172.16.0.0/12" },
+    { egress = true, action = "deny", protocol = -1, from_port = 0, to_port = 0, rule_num = 830, cidr = "192.168.0.0/16" }
   ]
   nacls = distinct([
     for key, subnet in local.all_subnets_with_keys :
@@ -154,10 +170,10 @@ locals {
 
   # SSM Endpoints (Systems Session Manager)
   ssm_endpoints = [
-    "com.amazonaws.eu-west-2.ec2",
-    "com.amazonaws.eu-west-2.ec2messages",
-    "com.amazonaws.eu-west-2.ssm",
-    "com.amazonaws.eu-west-2.ssmmessages"
+    data.aws_vpc_endpoint_service.ec2.service_name,
+    data.aws_vpc_endpoint_service.ec2messages.service_name,
+    data.aws_vpc_endpoint_service.ssm.service_name,
+    data.aws_vpc_endpoint_service.ssmmessages.service_name
   ]
   ssm_endpoints_expanded = flatten([
     for app_key, app in var.subnet_sets : [
@@ -423,13 +439,13 @@ resource "aws_network_acl_rule" "local_nacl_rules_for_protected_egress" {
 }
 
 # VPC: Internet Gateway
-resource "aws_internet_gateway" "ig" {
+resource "aws_internet_gateway" "default" {
   vpc_id = aws_vpc.vpc.id
 
   tags = merge(
     var.tags_common,
     {
-      Name = "${var.tags_prefix}-IG"
+      Name = "${var.tags_prefix}-internet-gateway"
     },
   )
 }
@@ -452,7 +468,7 @@ resource "aws_route_table_association" "route_table_associations" {
   subnet_id      = aws_subnet.subnets[each.key].id
   route_table_id = aws_route_table.route_tables[each.value].id
 }
-resource "aws_route" "public_ig" {
+resource "aws_route" "public_internet_gateway" {
   for_each = {
     for key, route_table in aws_route_table.route_tables :
     key => route_table
@@ -461,9 +477,9 @@ resource "aws_route" "public_ig" {
 
   route_table_id         = aws_route_table.route_tables[each.key].id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.ig.id
+  gateway_id             = aws_internet_gateway.default.id
 }
-resource "aws_route" "tgw" {
+resource "aws_route" "transit-gateway" {
   for_each = {
     for key, route_table in aws_route_table.route_tables :
     key => route_table
@@ -521,7 +537,7 @@ resource "aws_security_group_rule" "ssm-ingress1" {
   security_group_id = aws_security_group.ssm_endpoints[each.key].id
 
 }
-# # SSM Endpoints
+# SSM Endpoints
 resource "aws_vpc_endpoint" "ssm_interfaces" {
   for_each = toset(local.ssm_endpoints)
 
