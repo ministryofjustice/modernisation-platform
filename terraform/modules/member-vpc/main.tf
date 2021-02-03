@@ -120,7 +120,7 @@ locals {
   ])
 
   all_distinct_route_tables_with_keys = {
-    for rt in local.all_distinct_route_tables:
+    for rt in local.all_distinct_route_tables :
     rt => rt
   }
   # All distinct route tables
@@ -455,7 +455,7 @@ resource "aws_internet_gateway" "default" {
 }
 
 resource "aws_route_table" "route_tables" {
-  for_each = tomap (local.all_distinct_route_tables_with_keys)
+  for_each = tomap(local.all_distinct_route_tables_with_keys)
 
   vpc_id = aws_vpc.vpc.id
 
@@ -588,7 +588,7 @@ resource "aws_vpc_endpoint" "ssm_s3" {
 
 output "private_route_tables" {
   value = {
-    for key, value in local.all_distinct_route_tables_with_keys:
+    for key, value in local.all_distinct_route_tables_with_keys :
     key => aws_route_table.route_tables[key].id
     if substr(key, length(key) - 6, length(key)) != "public"
   }
