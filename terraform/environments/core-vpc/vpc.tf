@@ -121,6 +121,16 @@ module "resource-share" {
   tags_prefix = each.key
 }
 
+module "core-vpc-tgw-routes" {
+  for_each = local.vpcs[terraform.workspace]
+  source   = "../../modules/core-vpc-tgw-routes"
+
+  transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
+  route_table_ids    = module.vpc[each.key].private_route_tables
+
+  depends_on = [module.vpc_attachment]
+}
+
 # output "nacl_refs" {
 #   value = module.vpc["hmpps-production"].nacl_refs
 # }
