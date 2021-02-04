@@ -71,8 +71,7 @@ module "vpc_tgw_routing" {
   for_each = local.vpcs[terraform.workspace]
 
   providers = {
-    aws                       = aws
-    aws.core-network-services = aws.core-network-services
+    aws = aws.core-network-services
   }
 
   subnet_sets        = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
