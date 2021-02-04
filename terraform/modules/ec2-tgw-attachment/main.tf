@@ -4,7 +4,7 @@ provider "aws" {
   alias = "transit-gateway-host"
 }
 
-## Transit Gatrway tenant
+## Transit Gateway tenant
 provider "aws" {
   alias = "transit-gateway-tenant"
 }
