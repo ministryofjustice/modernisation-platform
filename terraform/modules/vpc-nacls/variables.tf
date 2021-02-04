@@ -1,17 +1,14 @@
 variable "nacl_config" {
-  type = list(any)
+  description = "List of maps of NACLs configurations"
+  type        = list(any)
 }
 
 variable "nacl_refs" {
-  type = map(any)
-}
-
-variable "tags_common" {
-  description = "MOJ required tags"
-  type        = map(string)
+  description = "Map of internal NACL references including arn, id, and name"
+  type        = map(any)
 }
 
 variable "tags_prefix" {
-  description = "prefix for name tags"
+  description = "Prefix for name tags"
   type        = string
 }

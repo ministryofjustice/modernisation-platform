@@ -83,14 +83,10 @@ module "vpc_tgw_routing" {
 }
 
 module "vpc_nacls" {
-  source = "../../modules/vpc-nacls"
-
-  for_each = local.vpcs[terraform.workspace]
-
+  source      = "../../modules/vpc-nacls"
+  for_each    = local.vpcs[terraform.workspace]
   nacl_config = each.value.nacl
   nacl_refs   = module.vpc[each.key].nacl_refs
-
-  tags_common = local.tags
   tags_prefix = each.key
 }
 
