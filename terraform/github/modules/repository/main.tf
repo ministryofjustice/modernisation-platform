@@ -9,7 +9,7 @@ resource "github_repository" "default" {
   name                   = var.name
   description            = join(" • ", [var.description, "This repository is defined and managed in Terraform"])
   homepage_url           = var.homepage_url
-  visibility             = "public"
+  visibility             = var.visibility
   has_issues             = var.type == "core" ? true : false
   has_projects           = var.type == "core" ? true : false
   has_wiki               = var.type == "core" ? true : false
@@ -21,6 +21,7 @@ resource "github_repository" "default" {
   delete_branch_on_merge = true
   auto_init              = false
   archived               = false
+  archive_on_destroy     = true
   vulnerability_alerts   = true
   topics                 = concat(local.topics, var.topics)
 

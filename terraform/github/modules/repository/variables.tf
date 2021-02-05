@@ -15,7 +15,7 @@ variable "homepage_url" {
 }
 
 variable "secrets" {
-  type        = map
+  type        = map(any)
   description = "key:value map for GitHub actions secrets"
   default     = {}
 }
@@ -29,4 +29,10 @@ variable "type" {
   type        = string
   description = "Type of repository: `core`, `module`. Defaults to `module`"
   default     = "module"
+}
+
+variable "visibility" {
+  type        = string
+  description = "Visibility type: `public`, `internal`, `private`"
+  default     = "public"
 }

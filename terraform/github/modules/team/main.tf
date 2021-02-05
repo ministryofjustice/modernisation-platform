@@ -56,7 +56,7 @@ resource "github_team_membership" "members" {
   for_each = toset([
     for user in local.members :
     user
-    if ! contains(local.maintainers, user)
+    if !contains(local.maintainers, user)
   ])
   team_id  = github_team.default.id
   username = each.value
