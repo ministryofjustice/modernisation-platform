@@ -1,9 +1,10 @@
 name: "Validate core-vpc configuration"
 
 on: 
+  workflow_dispatch:
   pull_request:
     branches:
-      - master
+      - main
     paths:
       - 'scripts/tests/validate/fixtures/pre-terraform-core-vpc-validation.json'
       - 'environments-networks/**.json'
@@ -17,5 +18,5 @@ jobs:
         uses: actions/checkout@v2
       - name: Validate core-vpc json files
         run: |
-          chmod u+x /scripts/tests/validate/validate-core-vpc-configuration.sh
+          chmod u+x scripts/tests/validate/validate-core-vpc-configuration.sh
           ./scripts/tests/validate/validate-core-vpc-configuration.sh
