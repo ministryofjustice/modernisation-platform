@@ -1,18 +1,3 @@
-terraform {
-  # `backend` blocks do not support variables, so the following are hard-coded here:
-  # - S3 bucket name, which is created in modernisation-platform-account/s3.tf
-  backend "s3" {
-    bucket  = "modernisation-platform-terraform-state"
-    encrypt = true
-    key     = "github/terraform.tfstate"
-    region  = "eu-west-2"
-  }
-}
-
-provider "github" {
-  owner = "ministryofjustice"
-}
-
 # Repositories
 module "core" {
   source       = "./modules/repository"
@@ -124,6 +109,17 @@ module "terraform-module-network-services-cidr-allocation" {
   ]
 }
 
+module "terraform-module-modernisation-platform-cidr-allocation" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-cidr-allocation"
+  description = "modernisation platform automated cidr allocation"
+  visibility  = "internal"
+  topics = [
+    "aws",
+    "network-services"
+  ]
+}
+
 # Teams and their access to the above repositories
 module "core-team" {
   source      = "./modules/team"
@@ -136,9 +132,10 @@ module "core-team" {
     module.terraform-module-cross-account-access.repository.id,
     module.terraform-module-environments.repository.id,
     module.terraform-module-iam-superadmins.repository.id,
+    module.terraform-module-modernisation-platform-cidr-allocation.repository.id,
+    module.terraform-module-network-services-cidr-allocation.repository.id,
     module.terraform-module-s3-bucket-replication-role.repository.id,
     module.terraform-module-s3-bucket.repository.id,
-    module.terraform-module-trusted-advisor.repository.id,
-    module.terraform-module-network-services-cidr-allocation.repository.id
+    module.terraform-module-trusted-advisor.repository.id
   ]
 }
