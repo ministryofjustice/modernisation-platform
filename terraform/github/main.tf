@@ -132,7 +132,7 @@ module "core-team" {
     module.terraform-module-cross-account-access.repository.id,
     module.terraform-module-environments.repository.id,
     module.terraform-module-iam-superadmins.repository.id,
-    module.terraform-module-modernisation-platform-cidr-allocation.id,
+    module.terraform-module-modernisation-platform-cidr-allocation.repository.id,
     module.terraform-module-network-services-cidr-allocation.repository.id,
     module.terraform-module-s3-bucket-replication-role.repository.id,
     module.terraform-module-s3-bucket.repository.id,
