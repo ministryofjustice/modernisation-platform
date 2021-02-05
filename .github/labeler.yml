@@ -5,7 +5,7 @@ documentation:
   - "source/**"
 
 dependencies:
-  - "**/*.lock.hcl"
+  - "terraform/**/*.lock.hcl"
 
 github-workflow:
   - "github/workflows/**"
