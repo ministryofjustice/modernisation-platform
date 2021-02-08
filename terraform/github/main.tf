@@ -120,7 +120,7 @@ module "terraform-module-modernisation-platform-cidr-allocation" {
   ]
 }
 
-# Teams and their access to the above repositories
+# Everyone, with access to the above repositories
 module "core-team" {
   source      = "./modules/team"
   name        = "modernisation-platform"
@@ -138,4 +138,8 @@ module "core-team" {
     module.terraform-module-s3-bucket.repository.id,
     module.terraform-module-trusted-advisor.repository.id
   ]
+
+  maintainers = local.maintainers
+  members     = local.members
+  ci          = local.ci_users
 }
