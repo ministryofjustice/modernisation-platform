@@ -79,9 +79,3 @@ resource "aws_iam_access_key" "ci" {
     create_before_destroy = true
   }
 }
-
-# NOTE: These are extremely sensitive keys. Do not output these anywhere publicly accessible.
-output "ci_access_keys" {
-  value     = aws_iam_access_key.ci
-  sensitive = true
-}
