@@ -44,9 +44,9 @@ resource "aws_route53_record" "bichard7" {
   type            = "NS"
   zone_id         = aws_route53_zone.modernisation-platform.zone_id
   records = [
-    "ns-510.awsdns-63.com.",
-    "ns-2025.awsdns-61.co.uk.",
-    "ns-1453.awsdns-53.org.",
-    "ns-615.awsdns-12.net."
+    "ns-1067.awsdns-05.org.",
+    "ns-434.awsdns-54.com.",
+    "ns-1782.awsdns-30.co.uk.",
+    "ns-836.awsdns-40.net."
   ]
 }
