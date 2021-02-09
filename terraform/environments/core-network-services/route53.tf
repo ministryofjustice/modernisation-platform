@@ -35,3 +35,18 @@ resource "aws_route53_record" "remote-supervision-non-production" {
     "ns-1636.awsdns-12.co.uk."
   ]
 }
+
+# Bichard7 NS delegation
+resource "aws_route53_record" "bichard7" {
+  allow_overwrite = true
+  name            = "bichard7.${local.modernisation-platform-domain}"
+  ttl             = 30
+  type            = "NS"
+  zone_id         = aws_route53_zone.modernisation-platform.zone_id
+  records = [
+    "ns-510.awsdns-63.com.",
+    "ns-2025.awsdns-61.co.uk.",
+    "ns-1453.awsdns-53.org.",
+    "ns-615.awsdns-12.net."
+  ]
+}
