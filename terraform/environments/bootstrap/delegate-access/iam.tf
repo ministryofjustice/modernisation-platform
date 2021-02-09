@@ -1,5 +1,5 @@
 module "cross-account-access" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v1.0.0"
   providers = {
     aws = aws.workspace
   }
