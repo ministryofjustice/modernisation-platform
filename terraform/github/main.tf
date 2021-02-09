@@ -10,11 +10,12 @@ module "core" {
     "aws",
     "documentation"
   ]
-  secrets = {
-    AWS_ACCESS_KEY_ID      = "example"
-    AWS_SECRET_ACCESS_KEY  = "example"
+  secrets = merge(local.ci_iam_user_keys, {
+    PRIVILEGED_AWS_ACCESS_KEY_ID     = "example"
+    PRIVILEGED_AWS_SECRET_ACCESS_KEY = "example"
+    # Terraform GitHub token for the CI/CD user
     TERRAFORM_GITHUB_TOKEN = "This needs to be manually set in GitHub."
-  }
+  })
 }
 
 module "hello-world" {
