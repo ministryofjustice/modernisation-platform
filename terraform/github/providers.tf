@@ -1,5 +1,6 @@
 provider "github" {
-  owner = "ministryofjustice"
+  organization = "ministryofjustice"
+  token        = var.github_token
 }
 
 provider "aws" {

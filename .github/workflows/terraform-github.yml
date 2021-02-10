@@ -23,13 +23,13 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+      TF_VAR_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
       TF_IN_AUTOMATION: true
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1.3.2
         with:
-          terraform_version: 0.14.4
+          terraform_version: 0.14.6
           terraform_wrapper: false
       - name: terraform init
         run: bash scripts/terraform-init.sh terraform/github
