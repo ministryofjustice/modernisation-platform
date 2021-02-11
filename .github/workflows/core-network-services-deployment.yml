@@ -58,11 +58,6 @@ jobs:
           # PLAN ONLY FOR TESTING PURPOSES
           bash scripts/terraform-init.sh terraform/environments/core-network-services
           terraform -chdir="terraform/environments/core-network-services" workspace select core-network-services-production
-          bash scripts/terraform_plan_comment_update.sh terraform/environments/core-network-services
-
+          echo "TASK TO APPLY TERRAFORM"
+          
           # bash scripts/terraform-plan.sh terraform/environments/core-network-services
-        env:
-          SECRET: ${GITHUB_TOKEN}
-          GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}
-          PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
-
