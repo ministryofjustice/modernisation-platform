@@ -35,6 +35,7 @@ jobs:
       - name: Run terraform plan in terraform/environments
         run: |
           bash scripts/terraform-init.sh terraform/environments/core-network-services
+          terraform workspace select core-network-services-production
           PLAN-DETAILS=`bash scripts/terraform-plan.sh terraform/environments/core-network-services`
           bash scripts/update-pr-comments.sh ${PLAN-DETAILS}
         env:
