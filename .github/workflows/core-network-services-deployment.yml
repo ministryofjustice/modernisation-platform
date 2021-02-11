@@ -28,11 +28,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1.3.2
+        with:
+          terraform_version: 0.14.4
+          terraform_wrapper: false
+
       - name: Run terraform plan in terraform/environments
         run: |
-          scripts/terraform-init.sh terraform/environments/core-network-services
-          PLAN-DETAILS=`scripts/terraform-plan.sh terraform/environments/core-network-services`
-          scripts/update-pr-comments.sh ${PLAN-DETAILS}
+          bash scripts/terraform-init.sh terraform/environments/core-network-services
+          terraform workspace select core-network-services-production
+          PLAN-DETAILS=`bash scripts/terraform-plan.sh terraform/environments/core-network-services`
+          bash scripts/update-pr-comments.sh ${PLAN-DETAILS}
         env:
           SECRET: ${GITHUB_TOKEN}
           GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}
@@ -45,13 +50,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1.3.2
+        with:
+          terraform_version: 0.14.4
+          terraform_wrapper: false
       - name: Terraform apply
         run: |
           # PLAN ONLY FOR TESTING PURPOSES
-          scripts/terraform-init.sh terraform/environments/core-network-services
-          scripts/terraform_plan_comment_update.sh terraform/environments/core-network-services
+          bash scripts/terraform-init.sh terraform/environments/core-network-services
+          bash scripts/terraform_plan_comment_update.sh terraform/environments/core-network-services
 
-          # scripts/terraform-plan.sh terraform/environments/core-network-services
+          # bash scripts/terraform-plan.sh terraform/environments/core-network-services
         env:
           SECRET: ${GITHUB_TOKEN}
           GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}
