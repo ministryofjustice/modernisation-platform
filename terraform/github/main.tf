@@ -10,11 +10,12 @@ module "core" {
     "aws",
     "documentation"
   ]
-  secrets = {
-    AWS_ACCESS_KEY_ID      = "example"
-    AWS_SECRET_ACCESS_KEY  = "example"
+  secrets = merge(local.ci_iam_user_keys, {
+    PRIVILEGED_AWS_ACCESS_KEY_ID     = "example"
+    PRIVILEGED_AWS_SECRET_ACCESS_KEY = "example"
+    # Terraform GitHub token for the CI/CD user
     TERRAFORM_GITHUB_TOKEN = "This needs to be manually set in GitHub."
-  }
+  })
 }
 
 module "hello-world" {
@@ -99,27 +100,6 @@ module "terraform-module-trusted-advisor" {
   ]
 }
 
-module "terraform-module-network-services-cidr-allocation" {
-  source      = "./modules/repository"
-  name        = "modernisation-platform-terraform-network-services-cidr-allocation"
-  description = "Module for CIDR allocation storage and retrieval"
-  topics = [
-    "aws",
-    "network-services"
-  ]
-}
-
-module "terraform-module-modernisation-platform-cidr-allocation" {
-  source      = "./modules/repository"
-  name        = "modernisation-platform-cidr-allocation"
-  description = "modernisation platform automated cidr allocation"
-  visibility  = "internal"
-  topics = [
-    "aws",
-    "network-services"
-  ]
-}
-
 # Everyone, with access to the above repositories
 module "core-team" {
   source      = "./modules/team"
@@ -132,8 +112,6 @@ module "core-team" {
     module.terraform-module-cross-account-access.repository.id,
     module.terraform-module-environments.repository.id,
     module.terraform-module-iam-superadmins.repository.id,
-    module.terraform-module-modernisation-platform-cidr-allocation.repository.id,
-    module.terraform-module-network-services-cidr-allocation.repository.id,
     module.terraform-module-s3-bucket-replication-role.repository.id,
     module.terraform-module-s3-bucket.repository.id,
     module.terraform-module-trusted-advisor.repository.id
