@@ -2,7 +2,7 @@
 
 MESSAGE=`echo $1 | grep '^Plan:'`
 
-OUTPUT="{\"body\":\"`ECHO ${MESSAGE} | sed 's/ /\\./g'`\"}"
+OUTPUT="{\"body\":\"`echo ${MESSAGE} | sed 's/ /\\./g'`\"}"
 
 curl -s -X POST -d ${OUTPUT} -H \
 "Authorization: token ${SECRET}" \
