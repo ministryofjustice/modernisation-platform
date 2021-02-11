@@ -35,14 +35,12 @@ jobs:
       - name: Run terraform plan in terraform/environments
         run: |
           bash scripts/terraform-init.sh terraform/environments/core-network-services
-          pushd terraform/environments/core-network-services
-          terraform workspace select core-network-services-production
-          popd
+          terraform -chdir="terraform/environments/core-network-services" workspace select core-network-services-production
           PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-network-services`
           bash scripts/update-pr-comments.sh ${PLAN}
         env:
-          SECRET: ${GITHUB_TOKEN}
-          GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}
+          SECRET: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
           PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
 
   core-network-services-deployment-real-apply:
@@ -59,6 +57,7 @@ jobs:
         run: |
           # PLAN ONLY FOR TESTING PURPOSES
           bash scripts/terraform-init.sh terraform/environments/core-network-services
+          terraform -chdir="terraform/environments/core-network-services" workspace select core-network-services-production
           bash scripts/terraform_plan_comment_update.sh terraform/environments/core-network-services
 
           # bash scripts/terraform-plan.sh terraform/environments/core-network-services
