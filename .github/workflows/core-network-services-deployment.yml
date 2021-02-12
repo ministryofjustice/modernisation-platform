@@ -24,7 +24,6 @@ defaults:
 jobs:
   core-network-services-deployment-plan:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1.3.2
@@ -38,7 +37,7 @@ jobs:
           terraform -chdir="terraform/environments/core-network-services" workspace select core-network-services-production
           PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-network-services | grep '^Plan: \|^No changes.'`
           ENCODED=`echo ${PLAN} | base64`
-          bash scripts/update-pr-comments.sh ${ENCODED}
+          [ ! -z ${{ github.event.pull_request.number }} ] && bash scripts/update-pr-comments.sh ${ENCODED}
         env:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
