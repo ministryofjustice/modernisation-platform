@@ -31,13 +31,14 @@ jobs:
         with:
           terraform_version: 0.14.4
           terraform_wrapper: false
-
-      - name: Run terraform plan in terraform/environments
+ 
+      - name: Run terraform plan in terraform/environments/core-network-services
         run: |
           bash scripts/terraform-init.sh terraform/environments/core-network-services
           terraform -chdir="terraform/environments/core-network-services" workspace select core-network-services-production
-          PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-network-services | grep '^Plan: '`
-          bash scripts/update-pr-comments.sh ${PLAN}
+          PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-network-services | grep '^Plan: \|^No changes.'`
+          ENCODED=`echo ${PLAN} | base64`
+          bash scripts/update-pr-comments.sh ${ENCODED}
         env:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
@@ -53,11 +54,9 @@ jobs:
         with:
           terraform_version: 0.14.4
           terraform_wrapper: false
-      - name: Terraform apply
+
+      - name: Run Terraform apply in terraform/environments/core-network-services
         run: |
-          # PLAN ONLY FOR TESTING PURPOSES
           bash scripts/terraform-init.sh terraform/environments/core-network-services
           terraform -chdir="terraform/environments/core-network-services" workspace select core-network-services-production
-          echo "TASK TO APPLY TERRAFORM"
-          
-          # bash scripts/terraform-plan.sh terraform/environments/core-network-services
+          bash scripts/terraform-apply.sh terraform/environments/core-network-services
