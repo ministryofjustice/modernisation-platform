@@ -36,7 +36,7 @@ jobs:
         run: |
           bash scripts/terraform-init.sh terraform/environments/core-network-services
           terraform -chdir="terraform/environments/core-network-services" workspace select core-network-services-production
-          PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-network-services`
+          PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-network-services | grep '^Plan: '`
           bash scripts/update-pr-comments.sh ${PLAN}
         env:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
