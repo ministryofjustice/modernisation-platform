@@ -1,6 +1,6 @@
 # CIDR allocation register
 
-| CIDR            | mask |allocated to  |
+| CIDR            | mask | allocated to  |
 | :---------------| :--  | :----------------------------------- |
 | 10.230.0.0      | /16  | core-networking                      |
 | 10.231.0.0      | /16  | core-networking                      |
@@ -11,9 +11,23 @@
 | 10.236.0.0      | /16  | shared-vpcs production               |
 |||
 
+# Core Networks CIDR's
+
+| CIDR            | mask | allocated to  |
+| :---------------| :--  | :----------------------------------- |
+| 10.230.0.0      | /19  | core-network-services live_data      |
+| 10.230.32.0     | /19  | core-network-services non_live_data  |
+| 10.230.128.0    | /19  | core-logging live_data               |
+| 10.230.160.0    | /19  | core-logging non_live_data           |
+| 10.231.0.0      | /19  | core-shared-services live_data       |
+| 10.231.32.0     | /19  | core-shared-services non_live_data   |
+| 10.231.128.0    | /19  | core-security live_data              |
+| 10.231.160.0    | /19  | core-security non_live_data          |
+|||
+
 ### Protected Subnets /23s
 
-| CIDR            | mask |allocated to  |
+| CIDR            | mask | allocated to  |
 | :---------------| :--  | :------------------------------------ |
 | 10.232.0.0      | /23  | hmpps                                 |
 | 10.232.2.0      | /23  | laa                                   |
@@ -146,7 +160,7 @@
 
 ### Non-live-data /21s
 
-| CIDR            | mask |allocated to  |
+| CIDR            | mask | allocated to                          |
 | :---------------| :--  | :------------------------------------ |
 | 10.233.0.0/21   | /21  | allocated to transit gateway subnets  |
 | 10.233.8.0.21   | /21  | hmpps - nomis                         |
@@ -183,7 +197,7 @@
 |||
   ### Non-live-data /26s for TGW subnets
 
-| CIDR          | mask |allocated to |
+| CIDR            | mask | allocated to |
 | :---------------| :--- | :----------------------------------- |
 | 10.233.0.0      | /26  | hmpps                                |
 | 10.233.0.64     | /26  | laa                                  |
@@ -220,7 +234,7 @@
 |||
 ### Reserved (tbd) /21s
 
-| CIDR            | mask |allocated to  |
+| CIDR            | mask | allocated to  |
 | :---------------| :--  | :----------------------------------- |
 | 10.234.0.0/21   | /21  | allocated to transit gateway subnets |
 | 10.234.8.0.21   | /21  | -                                    |
@@ -257,7 +271,7 @@
 |||
   ### Reserved /26s for TGW subnets
 
-| CIDR          | mask |allocated to |
+| CIDR            | mask | allocated to |
 | :---------------| :--- | :----------------------------------- |
 | 10.234.0.0      | /26  | -                                    |
 | 10.234.0.64     | /26  | -                                    |
@@ -294,7 +308,7 @@
 |||
 ### Pre-production /21s
 
-| CIDR            | mask |allocated to  |
+| CIDR            | mask | allocated to  |
 | :---------------| :--  | :----------------------------------- |
 | 10.235.0.0/21   | /21  | allocated to transit gateway subnets |
 | 10.235.8.0.21   | /21  | -                                    |
@@ -331,7 +345,7 @@
 |||
   ### Pre-production /26s for TGW subnets
 
-  | CIDR          | mask |allocated to |
+  | CIDR          | mask | allocated to |
 | :---------------| :--- | :----------------------------------- |
 | 10.235.0.0      | /26  | -                                    |
 | 10.235.0.64     | /26  | -                                    |
@@ -368,7 +382,7 @@
 |||
 ### Production /21s
 
-| CIDR            | mask |allocated to  |
+| CIDR            | mask | allocated to  |
 | :---------------| :--  | :----------------------------------- |
 | 10.236.0.0/21   | /21  | allocated to transit gateway subnets |
 | 10.236.8.0.21   | /21  | -                                    |
@@ -405,7 +419,7 @@
 |||
   ### Production /26s for TGW subnets
 
-  | CIDR          | mask |allocated to |
+  | CIDR          | mask | allocated to |
 | :---------------| :--- | :----------------------------------- |
 | 10.236.0.0      | /26  | -                                    |
 | 10.236.0.64     | /26  | -                                    |
