@@ -28,3 +28,9 @@ output "private_route_tables" {
     if value.type != "public"
   }
 }
+
+output "public_igw_route" {
+
+        value = aws_route.public_internet_gateway
+}
+
