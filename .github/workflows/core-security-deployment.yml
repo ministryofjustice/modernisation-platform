@@ -1,5 +1,5 @@
 ---
-name: core-network-services-deployment
+name: core-security-deployment
 
 on: 
   push:
@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths:
-      - 'terraform/environments/core-network-services/**'
+      - 'terraform/environments/core-security/**'
   workflow_dispatch:
 
 env:
@@ -22,7 +22,7 @@ defaults:
     shell: bash
 
 jobs:
-  core-network-services-deployment-plan:
+  core-security-deployment-plan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -31,14 +31,14 @@ jobs:
           terraform_version: 0.14.4
           terraform_wrapper: false
  
-      - name: Run terraform plan in terraform/environments/core-network-services
+      - name: Run terraform plan in terraform/environments/core-security
         run: |
           # Test if this is a PR or PULL event
           if [ ! -z ${{ github.event.pull_request.number }} ]
           then
-          bash scripts/terraform-init.sh terraform/environments/core-network-services
-          terraform -chdir="terraform/environments/core-network-services" workspace select core-network-services-production
-          PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-network-services | tee /dev/stderr | grep '^Plan: \|^No changes.'`
+          bash scripts/terraform-init.sh terraform/environments/core-security
+          terraform -chdir="terraform/environments/core-security" workspace select core-security-production
+          PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-security | tee /dev/stderr | grep '^Plan: \|^No changes.'`
           ENCODED=`echo ${PLAN} | base64`
           bash scripts/update-pr-comments.sh ${ENCODED}
           fi
@@ -47,10 +47,10 @@ jobs:
           GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
           PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
 
-  core-network-services-deployment-apply:
+  core-security-deployment-apply:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main'
-    needs: [core-network-services-deployment-plan]
+    needs: [core-security-deployment-plan]
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1.3.2
@@ -58,8 +58,8 @@ jobs:
           terraform_version: 0.14.4
           terraform_wrapper: false
 
-      - name: Run Terraform apply in terraform/environments/core-network-services
+      - name: Run Terraform apply in terraform/environments/core-security
         run: |
-          bash scripts/terraform-init.sh terraform/environments/core-network-services
-          terraform -chdir="terraform/environments/core-network-services" workspace select core-network-services-production
-          bash scripts/terraform-apply.sh terraform/environments/core-network-services
+          bash scripts/terraform-init.sh terraform/environments/core-security
+          terraform -chdir="terraform/environments/core-security" workspace select core-security-production
+          bash scripts/terraform-apply.sh terraform/environments/core-security
