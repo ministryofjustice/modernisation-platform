@@ -1,5 +1,5 @@
 ---
-name: core-network-services-deployment
+name: core-shared-services-deployment
 
 on: 
   push:
@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths:
-      - 'terraform/environments/core-network-services/**'
+      - 'terraform/environments/core-shared-services/**'
   workflow_dispatch:
 
 env:
@@ -22,7 +22,7 @@ defaults:
     shell: bash
 
 jobs:
-  core-network-services-deployment-plan:
+  core-shared-services-deployment-plan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -31,14 +31,14 @@ jobs:
           terraform_version: 0.14.4
           terraform_wrapper: false
  
-      - name: Run terraform plan in terraform/environments/core-network-services
+      - name: Run terraform plan in terraform/environments/core-shared-services
         run: |
           # Test if this is a PR or PULL event
           if [ ! -z ${{ github.event.pull_request.number }} ]
           then
-          bash scripts/terraform-init.sh terraform/environments/core-network-services
-          terraform -chdir="terraform/environments/core-network-services" workspace select core-network-services-production
-          PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-network-services | tee /dev/stderr | grep '^Plan: \|^No changes.'`
+          bash scripts/terraform-init.sh terraform/environments/core-shared-services
+          terraform -chdir="terraform/environments/core-shared-services" workspace select core-shared-services-production
+          PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-shared-services | tee /dev/stderr | grep '^Plan: \|^No changes.'`
           ENCODED=`echo ${PLAN} | base64`
           bash scripts/update-pr-comments.sh ${ENCODED}
           fi
@@ -47,10 +47,10 @@ jobs:
           GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
           PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
 
-  core-network-services-deployment-apply:
+  core-shared-services-deployment-apply:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main'
-    needs: [core-network-services-deployment-plan]
+    needs: [core-shared-services-deployment-plan]
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1.3.2
@@ -58,8 +58,8 @@ jobs:
           terraform_version: 0.14.4
           terraform_wrapper: false
 
-      - name: Run Terraform apply in terraform/environments/core-network-services
+      - name: Run Terraform apply in terraform/environments/core-shared-services
         run: |
-          bash scripts/terraform-init.sh terraform/environments/core-network-services
-          terraform -chdir="terraform/environments/core-network-services" workspace select core-network-services-production
-          bash scripts/terraform-apply.sh terraform/environments/core-network-services
+          bash scripts/terraform-init.sh terraform/environments/core-shared-services
+          terraform -chdir="terraform/environments/core-shared-services" workspace select core-shared-services-production
+          bash scripts/terraform-apply.sh terraform/environments/core-shared-services
