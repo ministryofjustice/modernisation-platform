@@ -1,100 +1,69 @@
 package test
 
 import (
-	"fmt"
-	"path"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
-	tfPlan "github.com/hashicorp/terraform/plans/planfile"
 	"github.com/stretchr/testify/assert"
 )
 
-//################################################
-//# The test uses the output from a Terraform plan
-//################################################
-
-func TestTerraformPlan(t *testing.T) {
-
-	// Retryable errors in terraform testing.
-	tfOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+func TestTransitGateway(t *testing.T) {
+	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: "../",
 	})
 
-	// Refresh terraform to update plan
-	terraform.RunTerraformCommand(t, tfOptions, "refresh")
-
-	// Output a local copy of the plan to read
-	tfPlanOutput := "terraform.tfplan"
-	terraform.RunTerraformCommand(t, tfOptions, terraform.FormatArgs(tfOptions, "plan", "-out="+tfPlanOutput)...)
-
-	// Read and parse the plan output
-	reader, err := tfPlan.Open(path.Join(tfOptions.TerraformDir, tfPlanOutput))
-
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer reader.Close()
-
-	plan, _ := reader.ReadPlan()
-
-	if plan.Changes.Empty() {
-		t.Fatal("Empty plan outcome")
-
-	}
-	fmt.Printf("Checking terrafom plan...")
-
-	// Map to hold plan output values
-	outputs := map[string]string{}
-
-	for _, res := range plan.Changes.Outputs {
-
-		outputs[res.Addr.OutputValue.Name] = terraform.Output(t, tfOptions, res.Addr.OutputValue.Name)
-
-	}
-
-	// List all outputs for Terraform
-	for key, value := range outputs {
-
-		fmt.Println("Terraform Outputs:", key, "=", value)
-	}
-
-	//##########################################
-	//# Test Terraform outputs - non-live-data
-	//##########################################
+	terraform.RunTerraformCommand(t, terraformOptions, "refresh")
+	terraform.Plan(t, terraformOptions)
 
 	//Test private route tables
 	var privateRouteTableData = []string{
-		"non_live_data-private-eu-west-2a",
-		"non_live_data-private-eu-west-2b",
-		"non_live_data-private-eu-west-2c",
+		"private-eu-west-2a",
+		"private-eu-west-2b",
+		"private-eu-west-2c",
+		"data-eu-west-2a",
+		"data-eu-west-2b",
+		"data-eu-west-2c",
+		"transit-gateway-eu-west-2a",
+		"transit-gateway-eu-west-2b",
+		"transit-gateway-eu-west-2c",
 	}
-
+	//Test for non_live private route tables
 	for _, element := range privateRouteTableData {
-
-		assert.Contains(t, outputs["private_route_tables"], element)
+		output := terraform.Output(t, terraformOptions, "non_live_data_private_route_tables")
+		assert.Contains(t, output, element)
+	}
+	//Test for live private route tables
+	for _, element := range privateRouteTableData {
+		output := terraform.Output(t, terraformOptions, "live_data_private_route_tables")
+		assert.Contains(t, output, element)
 	}
 
 	//Test public igw cidr
-	assert.Equal(t, outputs["public_igw_route"], "0.0.0.0/0")
+	output7 := terraform.Output(t, terraformOptions, "public_route_tables")
+	assert.Equal(t, output7, "map[live_data:live_data-public non_live_data:non_live_data-public]")
+
+	//Test public igw cidr
+	output1 := terraform.Output(t, terraformOptions, "public_igw_route")
+	assert.Equal(t, output1, "map[live_data:0.0.0.0/0 non_live_data:0.0.0.0/0]")
+
+	//Test transit-gateway will not be affected
+	output2 := terraform.Output(t, terraformOptions, "transit_gateway")
+	assert.Equal(t, output2, "64589")
 
 	//Test tgw-subnet count. There should be 3
-	assert.Equal(t, outputs["tgw_subnet_ids"], "3")
+	output3 := terraform.Output(t, terraformOptions, "tgw_subnet_ids")
+	assert.Equal(t, output3, "3")
 
 	//Test non-tgw-subnets count. There should be 9
-	assert.Equal(t, outputs["non_tgw_subnet_ids"], "9")
-
-	//Check we have a live and non-live VPC
-	assert.Contains(t, outputs["vpcs"], "live_data")
-	assert.Contains(t, outputs["vpcs"], "non_live_data")
+	output4 := terraform.Output(t, terraformOptions, "non_tgw_subnet_ids")
+	assert.Equal(t, output4, "9")
 
 	//Check the correct CIDR address have been added
-	assert.Equal(t, "10.230.0.0/19", outputs["live_cidr"])
-	assert.Equal(t, "10.230.32.0/19", outputs["nonlive-cidr"])
+	output5 := terraform.Output(t, terraformOptions, "vpc_cidrs")
+	assert.Equal(t, output5, "map[live_data:10.230.0.0/19 non_live_data:10.230.32.0/19]")
 
-	//Check the transit gateway has been setup
-	assert.Equal(t, "tgw-053d9dd7f1222a554", outputs["transit-gateway"])
+	//Check the transit gateway ram share is created
+	output6 := terraform.Output(t, terraformOptions, "transit_gateway_ram_share")
+	assert.Equal(t, output6, "transit-gateway")
 
 }
-
-//to run  aws-vault exec mod -- go test | grep 'Plan:' |  sed 's/^.*Plan:/Plan:/'

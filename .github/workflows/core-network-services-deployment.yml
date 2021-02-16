@@ -33,12 +33,33 @@ jobs:
  
       - name: Run terraform plan in terraform/environments/core-network-services
         run: |
+          git_dir="$( git rev-parse --show-toplevel )"
+
           # Test if this is a PR or PULL event
           if [ ! -z ${{ github.event.pull_request.number }} ]
           then
+          #CONFIGURE TERRAFORM AND WORKSPACE
           bash scripts/terraform-init.sh terraform/environments/core-network-services
           terraform -chdir="terraform/environments/core-network-services" workspace select core-network-services-production
+
+          #RUN TERRATEST
+          pushd terraform/environments/core-network-services/test
+          apt-get update
+          # Install GOLANG 15.8
+          wget https://dl.google.com/go/go1.15.8.linux-amd64.tar.gz
+          tar -zxvf go1.15.8.linux-amd64.tar.gz
+          mv go /usr/local
+          /usr/local/go/bin/go version
+          # run Terratest
+          TEST=`/usr/local/go/bin/go test | ${git_dir}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
+          popd
+          TEST="TERRATEST RESULT\n${TEST}"
+          ENCODED=`echo ${TEST} | base64`
+          bash scripts/update-pr-comments.sh ${ENCODED}
+
+          #RUN TERRAFORM PLAN
           PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-network-services | tee /dev/stderr | grep '^Plan: \|^No changes.'`
+          PLAN="TERRAFORM PLAN RESULT\n${PLAN}"
           ENCODED=`echo ${PLAN} | base64`
           bash scripts/update-pr-comments.sh ${ENCODED}
           fi
