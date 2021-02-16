@@ -1,14 +1,3 @@
-
-output "live_cidr" {
-
-  value = local.networking.live_data
-}
-
-output "nonlive-cidr" {
-
-  value = local.networking.non_live_data
-}
-
 #TESTING VARIABLES ---------------
 
 output "vpc_cidrs" {
@@ -16,15 +5,6 @@ output "vpc_cidrs" {
     for key, value in local.networking :
     key => value
   }
-}
-
-output "transit_gateway" {
-
-  value = aws_ec2_transit_gateway.transit-gateway.amazon_side_asn
-}
-
-output "transit_gateway_ram_share" {
-  value = aws_ram_resource_share.transit-gateway.name
 }
 
 output "non_live_data_private_route_tables" {
