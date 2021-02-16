@@ -8,7 +8,7 @@ GITHUB_REPOSITORY=`echo ${GITHUB_REPOSITORY} | sed 's/.*://g'`
 # Update github PR with Terraform plan output as a comment
 curl -s -f -X POST -d ${OUTPUT} \
 -H "Authorization: token ${SECRET}" \
-"https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${PULL_REQUEST_NUMBER}/comments"
+"https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${PULL_REQUEST_NUMBER}/comments" 1>/dev/null
 if [ ${?} -ne 0 ]
 then
   echo "ERROR: update-pr-comments.sh exited with an error"

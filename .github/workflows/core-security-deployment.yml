@@ -33,12 +33,37 @@ jobs:
  
       - name: Run terraform plan in terraform/environments/core-security
         run: |
+          git_dir=`git rev-parse --show-toplevel`
+
           # Test if this is a PR or PULL event
           if [ ! -z ${{ github.event.pull_request.number }} ]
           then
+          #CONFIGURE TERRAFORM AND WORKSPACE
           bash scripts/terraform-init.sh terraform/environments/core-security
           terraform -chdir="terraform/environments/core-security" workspace select core-security-production
+
+          #RUN TERRATEST
+          pushd terraform/environments/core-security/test
+          # Install GOLANG 15.8
+          if [ `whoami` != "runner" ]
+          then
+          wget -q https://dl.google.com/go/go1.15.8.linux-amd64.tar.gz
+          tar -zxvf go1.15.8.linux-amd64.tar.gz
+          sudo mv go /usr/local
+          echo "--  running newly installed go  --"
+          TEST=`/usr/local/go/bin/go test | ${git_dir}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
+          else
+          echo "--  running native go  --"
+          TEST=`go test | ${git_dir}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
+          fi
+          popd
+          TEST="TERRATEST RESULT\n${TEST}"
+          ENCODED=`echo ${TEST} | base64`
+          bash scripts/update-pr-comments.sh ${ENCODED}
+
+          #RUN TERRAFORM PLAN
           PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-security | tee /dev/stderr | grep '^Plan: \|^No changes.'`
+          PLAN="TERRAFORM PLAN RESULT\n${PLAN}"
           ENCODED=`echo ${PLAN} | base64`
           bash scripts/update-pr-comments.sh ${ENCODED}
           fi
