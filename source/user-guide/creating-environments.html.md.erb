@@ -34,7 +34,7 @@ You can view our architecture for Environments (AWS accounts) on the [dedicated 
 
 ### Schema
 - `name` key is now deprecated. We now use the JSON file name instead.
-- `environments` should be an array of environments required. If you require a production environment, please use the keyword `production`, as we use it to determine retention periods, backup frequency, and similar that will be different compared to non-production environments
+- `environments` should be an array of objects for environments required. If you require a production environment, please use the keyword `production`, as we use it to determine retention periods, backup frequency, and similar that will be different compared to non-production environments
 - `tags` should be an object of the mandatory tags defined in the MoJ [Tagging Guidance](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tagging-your-infrastructure). You can omit `is-production` as we infer this from the environment name
 
 ### Blank example
@@ -43,7 +43,11 @@ You can view our architecture for Environments (AWS accounts) on the [dedicated 
 
 ```json
 {
-  "environments": [],
+  "environments": [
+    {
+      "name": "production"
+    }
+  ],
   "tags": {
     "application": "",
     "business-unit": "",
@@ -60,7 +64,14 @@ An JSON definition for an nonsensical application called [`glados`](https://en.w
 
 ```json
 {
-  "environments": ["non-production", "production"],
+  "environments": [
+    {
+      "name": "non-production"
+    },
+    {
+      "name": "production"
+    }
+  ],
   "tags": {
     "application": "GLaDOS",
     "business-unit": "Platforms",

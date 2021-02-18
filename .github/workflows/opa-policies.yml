@@ -1,0 +1,23 @@
+name: "Open Policy Agent: validate JSON structures"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    types: [opened, edited, reopened, synchronize]
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run OPA
+        run: bash scripts/tests/validate/opa.sh

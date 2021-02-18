@@ -1,5 +1,9 @@
 {
-  "environments": ["production"],
+  "environments": [
+    {
+      "name": "production"
+    }
+  ],
   "tags": {
     "application": "analytical-platform-management",
     "business-unit": "Platforms",
