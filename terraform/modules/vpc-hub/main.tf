@@ -47,7 +47,7 @@ resource "aws_vpc" "default" {
   enable_dns_hostnames = true
 
   # ClassicLink
-  enable_classiclink = false
+  enable_classiclink             = false
   enable_classiclink_dns_support = false
 
   # Turn off IPv6
