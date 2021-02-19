@@ -1,6 +1,6 @@
 output "vpc_id" {
   description = "VPC ID"
-  value = aws_vpc.default.id
+  value       = aws_vpc.default.id
 }
 
 output "tgw_subnet_ids" {
@@ -38,11 +38,11 @@ output "private_route_tables" {
 
 output "public_route_tables" {
   description = "Public route tables"
-  value = aws_route_table.public
+  value       = aws_route_table.public
 }
 
 output "public_igw_route" {
   description = "Public Internet Gateway route"
-  value = aws_route.public-internet-gateway
+  value       = aws_route.public-internet-gateway
 }
 
