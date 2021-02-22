@@ -8,7 +8,7 @@ data "aws_availability_zones" "available" {
 locals {
   az    = sort(data.aws_availability_zones.available.names)
   cidrs = cidrsubnets(var.vpc_cidr, 9, 9, 9, 4, 4, 4, 4, 4, 4, 4, 4, 4)
-  types = ["public", "private", "data", "transit-gateway"]
+  types = ["transit-gateway", "data", "private", "public"]
 
   types_and_azs_and_cidrs = {
     for index, type in local.types :
@@ -78,6 +78,7 @@ resource "aws_flow_log" "cloudwatch" {
   vpc_id                   = aws_vpc.default.id
 
   tags = merge(
+    var.tags_common,
     {
       Name = "${var.tags_prefix}-vpc-flow-logs"
     }
@@ -89,6 +90,13 @@ resource "aws_flow_log" "cloudwatch" {
 ####################
 resource "aws_internet_gateway" "default" {
   vpc_id = aws_vpc.default.id
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-internet-gateway"
+    }
+  )
 }
 
 ##################
@@ -101,6 +109,13 @@ resource "aws_subnet" "public" {
 
   cidr_block        = each.value.cidr
   availability_zone = each.value.az
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-${each.key}"
+    }
+  )
 }
 
 # Public NACLs
@@ -109,13 +124,20 @@ resource "aws_network_acl" "public" {
   subnet_ids = [
     for subnet in aws_subnet.public : subnet.id
   ]
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-public"
+    }
+  )
 }
 
 # Public NACLs rules
 resource "aws_network_acl_rule" "public" {
   for_each = local.nacl_rules_expanded
 
-  network_acl_id = aws_network_acl.data.id
+  network_acl_id = aws_network_acl.public.id
   rule_number    = each.value.rule_num
   egress         = each.value.egress
   protocol       = each.value.protocol
@@ -146,6 +168,13 @@ resource "aws_network_acl_rule" "public-local-egress" {
 # Public route table
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.default.id
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-public"
+    }
+  )
 }
 
 # Public route table assocation with public subnets
@@ -173,6 +202,13 @@ resource "aws_subnet" "private" {
 
   cidr_block        = each.value.cidr
   availability_zone = each.value.az
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-${each.key}"
+    }
+  )
 }
 
 # Private NACLs
@@ -181,13 +217,20 @@ resource "aws_network_acl" "private" {
   subnet_ids = [
     for subnet in aws_subnet.private : subnet.id
   ]
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-private"
+    }
+  )
 }
 
 # Private NACLs rules
 resource "aws_network_acl_rule" "private" {
   for_each = local.nacl_rules_expanded
 
-  network_acl_id = aws_network_acl.data.id
+  network_acl_id = aws_network_acl.private.id
   rule_number    = each.value.rule_num
   egress         = each.value.egress
   protocol       = each.value.protocol
@@ -220,6 +263,13 @@ resource "aws_route_table" "private" {
   for_each = aws_subnet.private
 
   vpc_id = aws_vpc.default.id
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-${each.key}"
+    }
+  )
 }
 
 # Private route table assocation with private subnets
@@ -227,7 +277,7 @@ resource "aws_route_table_association" "private" {
   for_each = aws_subnet.private
 
   subnet_id      = each.value.id
-  route_table_id = aws_route_table.private[each.value.id].id
+  route_table_id = aws_route_table.private[each.key].id
 }
 
 ################
@@ -240,6 +290,13 @@ resource "aws_subnet" "data" {
 
   cidr_block        = each.value.cidr
   availability_zone = each.value.az
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-${each.key}"
+    }
+  )
 }
 
 # Data NACLs
@@ -248,6 +305,13 @@ resource "aws_network_acl" "data" {
   subnet_ids = [
     for subnet in aws_subnet.data : subnet.id
   ]
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-data"
+    }
+  )
 }
 
 # Data NACLs rules
@@ -287,6 +351,13 @@ resource "aws_route_table" "data" {
   for_each = aws_subnet.data
 
   vpc_id = aws_vpc.default.id
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-${each.key}"
+    }
+  )
 }
 
 # Data route table assocation with data subnets
@@ -294,7 +365,7 @@ resource "aws_route_table_association" "data" {
   for_each = aws_subnet.data
 
   subnet_id      = each.value.id
-  route_table_id = aws_route_table.data[each.value.id].id
+  route_table_id = aws_route_table.data[each.key].id
 }
 
 ###########################
@@ -307,6 +378,13 @@ resource "aws_subnet" "transit-gateway" {
 
   cidr_block        = each.value.cidr
   availability_zone = each.value.az
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-${each.key}"
+    }
+  )
 }
 
 # Transit Gateway NACLs
@@ -315,13 +393,20 @@ resource "aws_network_acl" "transit-gateway" {
   subnet_ids = [
     for subnet in aws_subnet.transit-gateway : subnet.id
   ]
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-transit-gateway"
+    }
+  )
 }
 
 # Transit Gateway NACLs rules
 resource "aws_network_acl_rule" "transit-gateway" {
   for_each = local.nacl_rules_expanded
 
-  network_acl_id = aws_network_acl.data.id
+  network_acl_id = aws_network_acl.transit-gateway.id
   rule_number    = each.value.rule_num
   egress         = each.value.egress
   protocol       = each.value.protocol
@@ -354,6 +439,13 @@ resource "aws_route_table" "transit-gateway" {
   for_each = aws_subnet.transit-gateway
 
   vpc_id = aws_vpc.default.id
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-${each.key}"
+    }
+  )
 }
 
 # Transit Gateway route table assocation with transit-gateway subnets
@@ -361,7 +453,7 @@ resource "aws_route_table_association" "transit-gateway" {
   for_each = aws_subnet.transit-gateway
 
   subnet_id      = each.value.id
-  route_table_id = aws_route_table.transit-gateway[each.value.id].id
+  route_table_id = aws_route_table.transit-gateway[each.key].id
 }
 
 ###############
@@ -371,38 +463,52 @@ resource "aws_eip" "public" {
   for_each = (var.gateway == "nat") ? aws_subnet.public : {}
 
   vpc = true
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-${each.key}-nat"
+    }
+  )
 }
 
 resource "aws_nat_gateway" "public" {
   for_each = (var.gateway == "nat") ? aws_subnet.public : {}
 
-  allocation_id = aws_eip.public[each.value.id]
+  allocation_id = aws_eip.public[each.key].id
   subnet_id     = each.value.id
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-${each.key}"
+    }
+  )
 }
 
 # Private NAT routes
 resource "aws_route" "private-nat" {
-  for_each = aws_nat_gateway.public
+  for_each = (var.gateway == "nat") ? aws_route_table.private : {}
 
-  route_table_id         = aws_route_table.private[each.value.id].id
+  route_table_id         = each.value.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = each.value.id
+  nat_gateway_id         = aws_nat_gateway.public[replace(each.key, "private", "public")].id
 }
 
 # Data NAT routes
 resource "aws_route" "data-nat" {
-  for_each = aws_nat_gateway.public
+  for_each = (var.gateway == "nat") ? aws_route_table.data : {}
 
-  route_table_id         = aws_route_table.data[each.value.id].id
+  route_table_id         = each.value.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = each.value.id
+  nat_gateway_id         = aws_nat_gateway.public[replace(each.key, "data", "public")].id
 }
 
 # Transit Gateway NAT routes
 resource "aws_route" "transit-gateway-nat" {
-  for_each = aws_nat_gateway.public
+  for_each = (var.gateway == "nat") ? aws_route_table.transit-gateway : {}
 
-  route_table_id         = aws_route_table.transit-gateway[each.value.id].id
+  route_table_id         = each.value.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = each.value.id
+  nat_gateway_id         = aws_nat_gateway.public[replace(each.key, "transit-gateway", "public")].id
 }
