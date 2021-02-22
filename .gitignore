@@ -3,3 +3,4 @@
 *.tfstate*
 .DS_Store
 tmp/
+.vscode/
