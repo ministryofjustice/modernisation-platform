@@ -9,23 +9,24 @@ locals {
   useful_vpc_ids = {
     for key in keys(local.networking) :
     key => {
-      vpc_id                 = module.vpc[key].vpc_id
-      private_tgw_subnet_ids = module.vpc[key].tgw_subnet_ids
+      vpc_id                 = module.vpc_hub[key].vpc_id
+      private_tgw_subnet_ids = module.vpc_hub[key].tgw_subnet_ids
     }
   }
 }
 
-module "vpc" {
+module "vpc_hub" {
   for_each = local.networking
-  source   = "../../modules/core-vpc"
+
+  source = "../../modules/vpc-hub"
 
   # CIDRs
   vpc_cidr = each.value
 
-  # private gateway type
-  #   nat = Nat Gateway
+  # Private gateway type
+  #   nat = NAT Gateway
   #   transit = Transit Gateway
-  #   none = no gateway for internal traffic
+  #   none = No gateway for internal traffic
   gateway = "nat"
 
   # VPC Flow Logs
