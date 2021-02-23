@@ -1,9 +1,21 @@
 locals {
   modernisation-platform-domain = "modernisation-platform.service.justice.gov.uk"
+  modernisation-platform-internal-domain = "modernisation-platform.internal"
 }
 
 resource "aws_route53_zone" "modernisation-platform" {
   name = local.modernisation-platform-domain
+  tags = local.tags
+}
+
+resource "aws_route53_zone" "modernisation-platform-internal" {
+
+  name = local.modernisation-platform-internal-domain
+
+  vpc {
+    vpc_id = module.vpc_hub["live_data"].vpc_id
+  }
+
   tags = local.tags
 }
 

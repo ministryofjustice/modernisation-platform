@@ -126,6 +126,25 @@ module "core-vpc-tgw-routes" {
   depends_on = [module.vpc_attachment]
 }
 
+module "dns-zone" {
+
+  providers = {
+    aws.core-network-services = aws.core-network-services
+  }
+
+  for_each = local.vpcs[terraform.workspace]
+  source   = "../../modules/dns-zone"
+
+  dns_zone = each.key
+
+  vpc_id = module.vpc[each.key].vpc_id
+  
+  
+
+  depends_on = [module.vpc]
+}
+
+
 # output "nacl_refs" {
 #   value = module.vpc["hmpps-production"].nacl_refs
 # }
