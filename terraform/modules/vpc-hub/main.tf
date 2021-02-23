@@ -1,3 +1,9 @@
+/**
+ * # modernisation-platform-terraform-vpc-hub
+ *
+ * Terraform module to create a multi-tiered VPC for use with Transit Gateway.
+ */
+
 ######################
 # Availability Zones #
 ######################
