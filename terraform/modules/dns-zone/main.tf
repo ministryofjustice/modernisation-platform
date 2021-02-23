@@ -1,7 +1,14 @@
+
+locals {
+  modernisation-platform-domain = "modernisation-platform.service.justice.gov.uk"
+  modernisation-platform-internal-domain = "modernisation-platform.internal"
+}
+
 provider "aws" {
   alias = "core-network-services" # Provider that holds the resource share
 }
 
+//data calls
 data "aws_route53_zone" "public" {
   provider = aws.core-network-services
   name         = local.modernisation-platform-domain
@@ -14,13 +21,7 @@ data "aws_route53_zone" "private" {
   private_zone = true
 }
 
-
-locals {
-  modernisation-platform-domain = "modernisation-platform.service.justice.gov.uk"
-  modernisation-platform-internal-domain = "modernisation-platform.internal"
-}
-
-
+//create public route53 zone
 resource "aws_route53_zone" "public" {
   
   name = "${var.dns_zone}.${local.modernisation-platform-domain}"
@@ -30,6 +31,7 @@ resource "aws_route53_zone" "public" {
   }
 }
 
+//create provate route53 zone
 resource "aws_route53_zone" "private" {
   
   name = "${var.dns_zone}.internal"
@@ -55,8 +57,3 @@ resource "aws_route53_record" "mod-ns-private" {
   ttl     = "30"
   records = aws_route53_zone.private.name_servers
 }
-
-# output "test_public" {
-  
-#   value = data.aws_route53_zone.public
-# }
