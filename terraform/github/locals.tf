@@ -19,7 +19,6 @@ locals {
 
   # GitHub usernames for team members who don't need full AWS access
   general_members = [
-    "davidkelliott",
     "ewastempel",
     "kcbotsh",
     "nishamoj",
@@ -30,7 +29,9 @@ locals {
 
   # GitHub usernames for engineers who need full AWS access
   engineers = [
+    "davidkelliott",
     "donmasters",
+    "ezman", # Fasih
     "jackstockley89",
     "jakemulley",
     "philhorrocks",
