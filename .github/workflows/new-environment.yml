@@ -67,7 +67,7 @@ jobs:
   secure-baselines:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main'
-    needs: [provision-workspaces]
+    needs: [delegate-access]
     steps:
       - uses: actions/checkout@main
       - uses: hashicorp/setup-terraform@v1
