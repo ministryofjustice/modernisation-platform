@@ -52,3 +52,4 @@ output "non_tgw_subnet_ids" {
 output "tgw_subnet_ids" {
   value = length(module.vpc_hub["non_live_data"].tgw_subnet_ids)
 }
+

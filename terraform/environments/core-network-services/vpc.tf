@@ -3,9 +3,7 @@ locals {
     live_data     = "10.230.0.0/19"
     non_live_data = "10.230.32.0/19"
   }
-}
 
-locals {
   useful_vpc_ids = {
     for key in keys(local.networking) :
     key => {
