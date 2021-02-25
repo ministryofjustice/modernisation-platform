@@ -1,5 +1,5 @@
 locals {
-  modernisation-platform-domain = "modernisation-platform.service.justice.gov.uk"
+  modernisation-platform-domain          = "modernisation-platform.service.justice.gov.uk"
   modernisation-platform-internal-domain = "modernisation-platform.internal"
 }
 

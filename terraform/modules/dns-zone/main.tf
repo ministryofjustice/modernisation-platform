@@ -5,34 +5,34 @@ provider "aws" {
 
 //data calls
 data "aws_route53_zone" "public" {
-  provider = aws.core-network-services
+  provider     = aws.core-network-services
   name         = local.modernisation-platform-domain
   private_zone = false
 }
 
 data "aws_route53_zone" "private" {
-  provider = aws.core-network-services
+  provider     = aws.core-network-services
   name         = local.modernisation-platform-internal-domain
   private_zone = true
 }
 
 
 locals {
-  modernisation-platform-domain = "modernisation-platform.service.justice.gov.uk"
+  modernisation-platform-domain          = "modernisation-platform.service.justice.gov.uk"
   modernisation-platform-internal-domain = "modernisation-platform.internal"
 
-  account_names = [for key, account in var.accounts : account]
-  environment_id = {for key, env in var.environments : key => env}
+  account_names  = [for key, account in var.accounts : account]
+  environment_id = { for key, env in var.environments : key => env }
 
   account_numbers = flatten([
     for value in flatten(local.account_names) :
-      local.environment_id.account_ids[value]
+    local.environment_id.account_ids[value]
   ])
 
 }
 
 resource "aws_route53_zone" "public" {
-  
+
   name = "${var.dns_zone}.${local.modernisation-platform-domain}"
 
   tags = merge(
@@ -45,7 +45,7 @@ resource "aws_route53_zone" "public" {
 
 //create provate route53 zone
 resource "aws_route53_zone" "private" {
-  
+
   name = "${var.dns_zone}.internal"
 
   vpc {
@@ -63,42 +63,42 @@ resource "aws_route53_zone" "private" {
 //Adds DNS name records to the public zone
 resource "aws_route53_record" "mod-ns-public" {
   provider = aws.core-network-services
-  zone_id = data.aws_route53_zone.public.zone_id
-  name    = "${var.dns_zone}.${local.modernisation-platform-domain}"
-  type    = "NS"
-  ttl     = "30"
-  records = aws_route53_zone.public.name_servers
+  zone_id  = data.aws_route53_zone.public.zone_id
+  name     = "${var.dns_zone}.${local.modernisation-platform-domain}"
+  type     = "NS"
+  ttl      = "30"
+  records  = aws_route53_zone.public.name_servers
 }
 
 //Adds DNS name records to the private zone
 resource "aws_route53_record" "mod-ns-private" {
   provider = aws.core-network-services
-  zone_id = data.aws_route53_zone.private.zone_id
-  name    = "${var.dns_zone}.${local.modernisation-platform-internal-domain}"
-  type    = "NS"
-  ttl     = "30"
-  records = aws_route53_zone.private.name_servers
+  zone_id  = data.aws_route53_zone.private.zone_id
+  name     = "${var.dns_zone}.${local.modernisation-platform-internal-domain}"
+  type     = "NS"
+  ttl      = "30"
+  records  = aws_route53_zone.private.name_servers
 }
 
 # IAM Section ----------------
 
 # DNS IAM
 resource "aws_iam_role" "dns" {
-  name                = "dns-${var.dns_zone}"
+  name = "dns-${var.dns_zone}"
   assume_role_policy = jsonencode(
-  {
-  "Version": "2012-10-17",
-  "Statement": [
     {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": local.account_numbers
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {}
-    }
-  ]
-})
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Effect" : "Allow",
+          "Principal" : {
+            "AWS" : local.account_numbers
+          },
+          "Action" : "sts:AssumeRole",
+          "Condition" : {}
+        }
+      ]
+  })
 
   tags = merge(
     var.tags_common,
@@ -116,8 +116,8 @@ resource "aws_iam_role_policy" "dns" {
     Version = "2012-10-17"
     Statement = [
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "route53:ListReusableDelegationSets",
           "route53:ListTrafficPolicyInstances",
           "route53:GetTrafficPolicyInstanceCount",
@@ -134,17 +134,17 @@ resource "aws_iam_role_policy" "dns" {
           "route53:ListGeoLocations",
           "route53:GetHostedZoneCount",
           "route53:GetHealthCheckCount"
-          ],
-          "Resource": "*"
-        },
-        {
-          Action   = ["route53:ChangeResourceRecordSets"]
-          Effect   = "Allow"
-          Resource = [
-            "arn:aws:route53:::hostedzone/${aws_route53_zone.public.id}",
-            "arn:aws:route53:::hostedzone/${aws_route53_zone.private.id}"
-          ]
-        },
+        ],
+        "Resource" : "*"
+      },
+      {
+        Action = ["route53:ChangeResourceRecordSets"]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:route53:::hostedzone/${aws_route53_zone.public.id}",
+          "arn:aws:route53:::hostedzone/${aws_route53_zone.private.id}"
+        ]
+      },
     ]
   })
 }
