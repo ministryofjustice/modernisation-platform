@@ -71,8 +71,7 @@ module "vpc_tgw_routing" {
   for_each = local.vpcs[terraform.workspace]
 
   providers = {
-    aws                       = aws
-    aws.core-network-services = aws.core-network-services
+    aws = aws.core-network-services
   }
 
   subnet_sets        = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
@@ -84,14 +83,10 @@ module "vpc_tgw_routing" {
 }
 
 module "vpc_nacls" {
-  source = "../../modules/vpc-nacls"
-
-  for_each = local.vpcs[terraform.workspace]
-
+  source      = "../../modules/vpc-nacls"
+  for_each    = local.vpcs[terraform.workspace]
   nacl_config = each.value.nacl
   nacl_refs   = module.vpc[each.key].nacl_refs
-
-  tags_common = local.tags
   tags_prefix = each.key
 }
 
@@ -121,17 +116,33 @@ module "resource-share" {
   tags_prefix = each.key
 }
 
-# output "nacl_refs" {
-#   value = module.vpc["hmpps-production"].nacl_refs
-# }
+module "core-vpc-tgw-routes" {
+  for_each = local.vpcs[terraform.workspace]
+  source   = "../../modules/core-vpc-tgw-routes"
 
-# output "test" {
-#   value = module.vpc["hmpps-production"].test
-# }
+  transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
+  route_table_ids    = module.vpc[each.key].private_route_tables
 
-# output "expanded_worker_subnets_assocation" {
-#   value = module.vpc["hmpps-production"].expanded_worker_subnets_assocation
-# }
-# output "expanded_worker_subnets_with_keys" {
-#   value = module.vpc["hmpps-production"].expanded_worker_subnets_with_keys
-# }
+  depends_on = [module.vpc_attachment]
+}
+
+module "dns-zone" {
+  depends_on = [module.vpc]
+
+  providers = {
+    aws.core-network-services = aws.core-network-services
+  }
+
+  for_each = local.vpcs[terraform.workspace]
+  source   = "../../modules/dns-zone"
+
+  dns_zone     = each.key
+  vpc_id       = module.vpc[each.key].vpc_id
+  accounts     = { for key, account in each.value.cidr.subnet_sets : key => account.accounts }
+  environments = local.environment_management
+
+  # Tags
+  tags_common = local.tags
+  tags_prefix = each.key
+
+}

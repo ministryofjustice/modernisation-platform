@@ -4,6 +4,8 @@ This directory contains the infrastructure as code to recreate and administer th
 
 ## Contents
 
-- [environments](environments) contains code to create environments, and configure baselines within them, such as the Ministry of Justice [Security Guidance](https://ministryofjustice.github.io/security-guidance/baseline-aws-accounts/#baseline-for-amazon-web-services-accounts) baselines
-- [github](github) contains code to create and configure our GitHub repositories and teams
-- [modernisation-platform-account](modernisation-platform-account) contains code for resources that sit within the Modernisation Platform AWS account, such as S3 bucket definitions for all our Terraform states; or Route53 definitions that can be used across accounts but sit within the Modernisation Platform account
+- [environments](environments) contains code to manage environments
+- [github](github) contains code to manage GitHub resources we own as a team (such as repositories and team memberships)
+- [modernisation-platform-account](modernisation-platform-account) contains code to manage the Modernisation Platform landing zone account
+- [modules](modules) contains Terraform modules we've built and are testing
+- [templates](templates) contains Terraform templates that are copied to each environment directory in `./environments`

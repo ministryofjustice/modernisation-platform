@@ -1,9 +1,21 @@
 locals {
-  modernisation-platform-domain = "modernisation-platform.service.justice.gov.uk"
+  modernisation-platform-domain          = "modernisation-platform.service.justice.gov.uk"
+  modernisation-platform-internal-domain = "modernisation-platform.internal"
 }
 
 resource "aws_route53_zone" "modernisation-platform" {
   name = local.modernisation-platform-domain
+  tags = local.tags
+}
+
+resource "aws_route53_zone" "modernisation-platform-internal" {
+
+  name = local.modernisation-platform-internal-domain
+
+  vpc {
+    vpc_id = module.vpc_hub["live_data"].vpc_id
+  }
+
   tags = local.tags
 }
 
@@ -33,5 +45,20 @@ resource "aws_route53_record" "remote-supervision-non-production" {
     "ns-1217.awsdns-24.org.",
     "ns-77.awsdns-09.com.",
     "ns-1636.awsdns-12.co.uk."
+  ]
+}
+
+# Bichard7 NS delegation
+resource "aws_route53_record" "bichard7" {
+  allow_overwrite = true
+  name            = "bichard7.${local.modernisation-platform-domain}"
+  ttl             = 30
+  type            = "NS"
+  zone_id         = aws_route53_zone.modernisation-platform.zone_id
+  records = [
+    "ns-1067.awsdns-05.org.",
+    "ns-434.awsdns-54.com.",
+    "ns-1782.awsdns-30.co.uk.",
+    "ns-836.awsdns-40.net."
   ]
 }

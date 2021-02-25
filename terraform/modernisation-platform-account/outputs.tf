@@ -1,4 +1,4 @@
 output "iam_superadmin_passwords" {
-  value     = module.iam.superadmin_passwords
-  sensitive = true
+  description = "PGP-encrypted IAM superadmin passwords, if a Keybase username is provided"
+  value       = module.iam.superadmin_passwords
 }
