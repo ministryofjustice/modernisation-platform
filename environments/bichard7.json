@@ -1,31 +1,85 @@
 {
   "environments": [
     {
-      "name": "dev-current"
+      "name": "dev-current",
+      "access": [
+        {
+          "github_slug": "cjse-bichard7-next",
+          "level": "administrator"
+        }
+      ]
     },
     {
-      "name": "dev-next"
+      "name": "dev-next",
+      "access": [
+        {
+          "github_slug": "cjse-bichard7-next",
+          "level": "administrator"
+        }
+      ]
     },
     {
-      "name": "test-current"
+      "name": "test-current",
+      "access": [
+        {
+          "github_slug": "cjse-bichard7-next",
+          "level": "administrator"
+        }
+      ]
     },
     {
-      "name": "test-next"
+      "name": "test-next",
+      "access": [
+        {
+          "github_slug": "cjse-bichard7-next",
+          "level": "administrator"
+        }
+      ]
     },
     {
-      "name": "shared"
+      "name": "shared",
+      "access": [
+        {
+          "github_slug": "cjse-bichard7-next",
+          "level": "administrator"
+        }
+      ]
     },
     {
-      "name": "sandbox-a"
+      "name": "sandbox-a",
+      "access": [
+        {
+          "github_slug": "cjse-bichard7-next",
+          "level": "administrator"
+        }
+      ]
     },
     {
-      "name": "sandbox-b"
+      "name": "sandbox-b",
+      "access": [
+        {
+          "github_slug": "cjse-bichard7-next",
+          "level": "administrator"
+        }
+      ]
     },
     {
-      "name": "sandbox-c"
+      "name": "sandbox-c",
+      "access": [
+        {
+          "github_slug": "cjse-bichard7-next",
+          "level": "administrator"
+        }
+      ]
     },
     {
-      "name": "sandbox-shared"
+      "name": "sandbox-shared",
+      "access": [
+        {
+          "github_slug": "cjse-bichard7-next",
+          "level": "administrator"
+        }
+      ]
     }
   ],
   "tags": {

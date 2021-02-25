@@ -1,7 +1,8 @@
 {
   "environments": [
     {
-      "name": "production"
+      "name": "production",
+      "access": []
     }
   ],
   "tags": {

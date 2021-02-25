@@ -1,15 +1,17 @@
 {
-	"environments": [
-		{
-      "name": "production"
+  "environments": [
+    {
+      "name": "production",
+      "access": []
     },
     {
-      "name": "non-live-data"
+      "name": "non-live-data",
+      "access": []
     }
-	],
-	"tags": {
-		"application": "modernisation-platform",
-		"business-unit": "Platforms",
-		"owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
-	}
+  ],
+  "tags": {
+    "application": "modernisation-platform",
+    "business-unit": "Platforms",
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
+  }
 }
