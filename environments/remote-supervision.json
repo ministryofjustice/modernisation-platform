@@ -1,5 +1,12 @@
 {
-  "environments": ["non-production", "production"],
+  "environments": [
+    {
+      "name": "non-production"
+    },
+    {
+      "name": "production"
+    }
+  ],
   "tags": {
     "application": "remote-supervision",
     "business-unit": "Probation",
