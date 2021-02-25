@@ -1,5 +1,9 @@
 {
-  "environments": ["dev"],
+  "environments": [
+    {
+      "name": "dev"
+    }
+  ],
   "tags": {
     "application": "core-sandbox",
     "business-unit": "Platforms",

@@ -1,7 +1,11 @@
 {
 	"environments": [
-		"production",
-		"non-live-data"
+		{
+      "name": "production"
+    },
+    {
+      "name": "non-live-data"
+    }
 	],
 	"tags": {
 		"application": "modernisation-platform",

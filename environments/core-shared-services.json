@@ -1,5 +1,9 @@
 {
-  "environments": ["production"],
+  "environments": [
+    {
+      "name": "production"
+    }
+  ],
   "tags": {
     "application": "modernisation-platform",
     "business-unit": "Platforms",

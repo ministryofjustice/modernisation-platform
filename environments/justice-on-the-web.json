@@ -1,5 +1,9 @@
 {
-  "environments": ["sandbox"],
+  "environments": [
+    {
+      "name": "sandbox"
+    }
+  ],
   "tags": {
     "application": "justice-on-the-web-sandbox",
     "business-unit": "HQ",
