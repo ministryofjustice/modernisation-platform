@@ -126,17 +126,23 @@ module "core-vpc-tgw-routes" {
   depends_on = [module.vpc_attachment]
 }
 
-# output "nacl_refs" {
-#   value = module.vpc["hmpps-production"].nacl_refs
-# }
+module "dns-zone" {
+  depends_on = [module.vpc]
 
-# output "test" {
-#   value = module.vpc["hmpps-production"].test
-# }
+  providers = {
+    aws.core-network-services = aws.core-network-services
+  }
 
-# output "expanded_worker_subnets_assocation" {
-#   value = module.vpc["hmpps-production"].expanded_worker_subnets_assocation
-# }
-# output "expanded_worker_subnets_with_keys" {
-#   value = module.vpc["hmpps-production"].expanded_worker_subnets_with_keys
-# }
+  for_each = local.vpcs[terraform.workspace]
+  source   = "../../modules/dns-zone"
+
+  dns_zone     = each.key
+  vpc_id       = module.vpc[each.key].vpc_id
+  accounts     = { for key, account in each.value.cidr.subnet_sets : key => account.accounts }
+  environments = local.environment_management
+
+  # Tags
+  tags_common = local.tags
+  tags_prefix = each.key
+
+}

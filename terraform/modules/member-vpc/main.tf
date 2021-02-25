@@ -209,6 +209,8 @@ resource "aws_vpc" "vpc" {
   )
 }
 
+
+
 # VPC Flow Logs
 resource "aws_cloudwatch_log_group" "default" {
   name = "${var.tags_prefix}-vpc-flow-logs"
@@ -593,6 +595,8 @@ output "private_route_tables" {
     if substr(key, length(key) - 6, length(key)) != "public"
   }
 }
+
+
 # # Bastion Security Groups
 # resource "aws_security_group" "bastion" {
 #   for_each = var.subnet_sets
