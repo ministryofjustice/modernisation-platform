@@ -1,11 +1,17 @@
-name: New environment
+name: "Terraform: New environment"
 
 on:
   push:
     paths:
       - 'environments/**.json'
+      - 'terraform/environments/bootstrap/**'
+      - './github/workflows/new-environment.yml'
     branches:
       - main
+  pull_request:
+    branches:
+      - main
+    types: [opened, edited, reopened, synchronize]
   workflow_dispatch:
 
 env:
@@ -24,21 +30,50 @@ jobs:
       - uses: actions/checkout@main
       - uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.14.4
+          terraform_version: 0.14.6
           terraform_wrapper: false
       - name: Run terraform init in terraform/environments
         run: bash scripts/terraform-init.sh terraform/environments
       - name: Run terraform plan in terraform/environments
         run: bash scripts/terraform-plan.sh terraform/environments
       - name: Run terraform apply in terraform/environments
+        if: github.event.ref == 'refs/heads/main'
         run: bash scripts/terraform-apply.sh terraform/environments
+  provision-workspaces:
+    runs-on: ubuntu-latest
+    if: github.event.ref == 'refs/heads/main'
+    needs: [create-environment]
+    steps:
+      - uses: actions/checkout@main
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.14.6
+          terraform_wrapper: false
       - name: Provision workspaces in terraform/environments/bootstrap/*
         run: bash scripts/provision-terraform-workspaces.sh bootstrap
-      - name: Delegate access to the Modernisastion Platform
-        run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
+  delegate-access:
+    runs-on: ubuntu-latest
+    if: github.event.ref == 'refs/heads/main'
+    needs: [provision-workspaces]
+    steps:
+      - uses: actions/checkout@main
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.14.6
+          terraform_wrapper: false
+      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access plan
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access apply
-      - name: Configure secure baselines in environments
-        run: bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
+  secure-baselines:
+    runs-on: ubuntu-latest
+    if: github.event.ref == 'refs/heads/main'
+    needs: [provision-workspaces]
+    steps:
+      - uses: actions/checkout@main
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.14.6
+          terraform_wrapper: false
+      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines plan
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines apply
