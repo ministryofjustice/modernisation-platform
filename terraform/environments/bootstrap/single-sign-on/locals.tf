@@ -1,6 +1,6 @@
 locals {
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
-  definitions-path = "../../../../environments"
+  definitions-path       = "../../../../environments"
   definitions = [
     for file in fileset(local.definitions-path, "*.json") : merge({
       name = replace(file, ".json", "")
