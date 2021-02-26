@@ -5,23 +5,32 @@ module "baselines" {
     aws                    = aws.workspace-eu-west-2
     aws.replication-region = aws.workspace-eu-west-1
 
-    # Other regions
-    aws.ap-northeast-1 = aws.workspace-ap-northeast-1
-    aws.ap-northeast-2 = aws.workspace-ap-northeast-2
-    aws.ap-south-1     = aws.workspace-ap-south-1
-    aws.ap-southeast-1 = aws.workspace-ap-southeast-1
-    aws.ap-southeast-2 = aws.workspace-ap-southeast-2
-    aws.ca-central-1   = aws.workspace-ca-central-1
-    aws.eu-central-1   = aws.workspace-eu-central-1
-    aws.eu-north-1     = aws.workspace-eu-north-1
-    aws.eu-west-1      = aws.workspace-eu-west-1
-    aws.eu-west-2      = aws.workspace-eu-west-2
-    aws.eu-west-3      = aws.workspace-eu-west-3
-    aws.sa-east-1      = aws.workspace-sa-east-1
-    aws.us-east-1      = aws.workspace-us-east-1
-    aws.us-east-2      = aws.workspace-us-east-2
-    aws.us-west-1      = aws.workspace-us-west-1
-    aws.us-west-2      = aws.workspace-us-west-2
+    # Enabled regions
+    aws.eu-central-1 = aws.workspace-eu-central-1
+    aws.eu-west-1    = aws.workspace-eu-west-1
+    aws.eu-west-2    = aws.workspace-eu-west-2
+    aws.us-east-1    = aws.workspace-us-east-1
+
+    # We're part of a Organization SCP that restricts regional usage, so we can't assume roles in non-restricted regions.
+    # However, Terraform doesn't support optional providers, so we have to ensure there is a provider
+    # declaration for each region used in the module.
+    #
+    # Since we can't assume the roles, and Terraform doesn't support optional providers, we need to
+    # "default" the regional providers for restricted regions to a region that is unrestricted.
+    # They're not part of the enabled_baselines_region list, so Terraform won't try to
+    # create any resources for these providers.
+    aws.eu-north-1     = aws.workspace-eu-west-2
+    aws.ap-northeast-1 = aws.workspace-eu-west-2
+    aws.ap-northeast-2 = aws.workspace-eu-west-2
+    aws.ap-south-1     = aws.workspace-eu-west-2
+    aws.eu-west-3      = aws.workspace-eu-west-2
+    aws.ap-southeast-1 = aws.workspace-eu-west-2
+    aws.ap-southeast-2 = aws.workspace-eu-west-2
+    aws.ca-central-1   = aws.workspace-eu-west-2
+    aws.sa-east-1      = aws.workspace-eu-west-2
+    aws.us-east-2      = aws.workspace-eu-west-2
+    aws.us-west-1      = aws.workspace-eu-west-2
+    aws.us-west-2      = aws.workspace-eu-west-2
   }
 
   # Regions to enable IAM Access Analyzer in
