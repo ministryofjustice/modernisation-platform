@@ -6,6 +6,7 @@ on:
       - 'environments/**.json'
     branches:
       - main
+  workflow_dispatch:
 
 defaults:
   run:
