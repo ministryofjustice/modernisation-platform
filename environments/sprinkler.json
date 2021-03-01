@@ -1,10 +1,12 @@
 {
 	"environments": [
 		{
-      "name": "production"
+      "name": "production",
+      "access": []
     },
     {
-      "name": "development"
+      "name": "development",
+      "access": []
     }
 	],
 	"tags": {

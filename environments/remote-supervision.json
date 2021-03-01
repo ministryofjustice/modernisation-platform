@@ -1,10 +1,22 @@
 {
   "environments": [
     {
-      "name": "non-production"
+      "name": "non-production",
+      "access": [
+        {
+          "github_slug": "hmpps-remote-supervision",
+          "level": "administrator"
+        }
+      ]
     },
     {
-      "name": "production"
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "hmpps-remote-supervision",
+          "level": "administrator"
+        }
+      ]
     }
   ],
   "tags": {

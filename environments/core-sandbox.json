@@ -1,7 +1,8 @@
 {
   "environments": [
     {
-      "name": "dev"
+      "name": "dev",
+      "access": []
     }
   ],
   "tags": {

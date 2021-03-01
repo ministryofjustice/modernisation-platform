@@ -35,6 +35,7 @@ You can view our architecture for Environments (AWS accounts) on the [dedicated 
 ### Schema
 - `name` key is now deprecated. We now use the JSON file name instead.
 - `environments` should be an array of objects for environments required. If you require a production environment, please use the keyword `production`, as we use it to determine retention periods, backup frequency, and similar that will be different compared to non-production environments
+  - the `name` key and `access` object are required, see: (Another example)(#another-example)
 - `tags` should be an object of the mandatory tags defined in the MoJ [Tagging Guidance](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tagging-your-infrastructure). You can omit `is-production` as we infer this from the environment name
 
 ### Blank example
@@ -46,6 +47,10 @@ You can view our architecture for Environments (AWS accounts) on the [dedicated 
   "environments": [
     {
       "name": "production"
+      "access": {
+        "github_slug": "modernisation-platform",
+        "access": "application-team"
+      }
     }
   ],
   "tags": {
@@ -58,7 +63,7 @@ You can view our architecture for Environments (AWS accounts) on the [dedicated 
 
 ### Another example
 
-An JSON definition for an nonsensical application called [`glados`](https://en.wikipedia.org/wiki/GLaDOS), that needs two environments: `non-production` and `production`.
+An JSON definition for an nonsensical application called [`glados`](https://en.wikipedia.org/wiki/GLaDOS), that needs two environments: `non-production` and `production`, and want to give the GitHub team `glados-team` access to each environment.
 
 `filename`: `glados.json`
 
@@ -66,10 +71,18 @@ An JSON definition for an nonsensical application called [`glados`](https://en.w
 {
   "environments": [
     {
-      "name": "non-production"
+      "name": "non-production",
+      "access": {
+        "github_slug": "glados-team",
+        "access": "application-team"
+      }
     },
     {
-      "name": "production"
+      "name": "production",
+      "access": {
+        "github_slug": "glados-team",
+        "access": "application-team"
+      }
     }
   ],
   "tags": {
