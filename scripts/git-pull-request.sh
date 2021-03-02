@@ -13,7 +13,7 @@ payload=$(echo "${pull_request_body}" | jq --arg branch "$pull_request_branch" -
 echo "${payload}" | curl \
   -s -X POST \
   -H "Accept: application/vnd.github.v3+json" \
-  -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+  -H "Authorization: token ${SECRET}" \
   -d @- $repository_url > /dev/null
 ERRORCODE="${?}"
 if [ ${ERRORCODE} -ne 0 ]
