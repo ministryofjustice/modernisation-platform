@@ -10,6 +10,10 @@ This PR commits new files under $1."
 
 payload=$(echo "${pull_request_body}" | jq --arg branch "$pull_request_branch" --arg pr_title "$pull_request_title" -R --slurp '{ body: ., base: "main", head: $branch, title: $pr_title }')
 
+
+echo "PAYLOAD-----------------------${PAYLOAD}"
+echo "URL---------------------------${repository_url}"
+
 echo "${payload}" | curl \
   -X POST \
   -H "Accept: application/vnd.github.v3+json" \
