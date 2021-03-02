@@ -18,7 +18,8 @@ echo "${payload}" | curl \
   -s -X POST \
   -H "Accept: application/vnd.github.v3+json" \
   -H "Authorization: token ${GITHUB_TOKEN}" \
-  -d @- $repository_url > /dev/null
+  -d @- $repository_url
+  # -d @- $repository_url > /dev/null
 ERRORCODE="${?}"
 echo "ERROR---------------------------${ERRORCODE}"
 if [ ${ERRORCODE} -ne 0 ]
