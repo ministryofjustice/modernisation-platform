@@ -16,3 +16,9 @@ echo "${payload}" | curl \
   -H "Authorization: token ${GITHUB_TOKEN}" \
   $repository_url \
   -d @- > /dev/null
+ERRORCODE="${?}"
+if [ ${ERRORCODE} -ne 0 ]
+then
+  echo "ERROR: git_pull-request.sh exited with an error - Code:${ERRORCODE}"
+  exit 1
+fi
