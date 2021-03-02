@@ -34,7 +34,7 @@ refresh_tmp_location() {
 get_local_definitions() {
   for file in environments/*.json; do
     filename=$(basename "$file" .json)
-    cat "$file" | jq -r --arg filename "$filename" '$filename + "-" + .environments[]' >> $TMP_DIR/local/"$filename".txt
+    cat "$file" | jq -r --arg filename "$filename" '$filename + "-" + .environments[].name' >> $TMP_DIR/local/"$filename".txt
   done
 }
 

@@ -3,10 +3,6 @@
     {
       "name": "production",
       "access": []
-    },
-    {
-      "name": "non-live-data",
-      "access": []
     }
   ],
   "tags": {
