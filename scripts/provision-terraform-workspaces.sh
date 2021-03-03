@@ -73,9 +73,9 @@ create_missing_remote_workspaces() {
   # Compare local with remote workspaces, and create missing ones
   for workspace in $(comm -2 -3 "$local_workspaces" "$remote_workspaces"); do
     echo "---------"
-    echo "CREATING $workspace missing for $2"
+    echo "CREATING $2"
     terraform -chdir="$2" workspace new "$workspace"
-    echo "FINISHED creating terraform workspaces in $directory"
+    echo "FINISHED creating $2"
   done
 
 
