@@ -52,9 +52,9 @@ jobs:
 
           #RUN TERRAFORM PLAN
           PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-vpc | tee /dev/stderr | grep '^Plan: \|^No changes.'`
-          PLAN="TERRAFORM PLAN RESULT\n${PLAN}"
-          ENCODED=`echo ${PLAN} | base64`
-          bash scripts/update-pr-comments.sh ${ENCODED}
+          PLAN="> TERRAFORM PLAN RESULT
+          ${PLAN}"
+          bash scripts/update-pr-comments.sh "${PLAN}"
           fi
         env:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
