@@ -40,7 +40,7 @@ get_local_definitions() {
 
 get_remote_terraform_workspaces() {
   directory_basename=$(basename "$1")
-  terraform -chdir="$1" init
+  terraform -chdir="$1" init > /dev/null
   terraform -chdir="$1" workspace list > $TMP_DIR/remote/"$directory_basename".txt
 }
 
@@ -53,7 +53,7 @@ fix_workspace_syntax() {
 
 create_missing_remote_workspaces() {
 
-  echo "Comparing all workspaces for $2"
+  echo "Comparing workspaces for: $2"
 
   directory_basename=$(basename "$2")
 
@@ -72,11 +72,12 @@ create_missing_remote_workspaces() {
 
   # Compare local with remote workspaces, and create missing ones
   for workspace in $(comm -2 -3 "$local_workspaces" "$remote_workspaces"); do
-    echo "$workspace missing for $2... creating it"
+    echo "---------"
+    echo "CREATING $workspace missing for $2"
     terraform -chdir="$2" workspace new "$workspace"
+    echo "FINISHED creating terraform workspaces in $directory"
   done
 
-  echo "Finished creating terraform workspaces in $directory"
 
 }
 
