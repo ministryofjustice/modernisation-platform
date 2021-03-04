@@ -7,15 +7,11 @@ on:
       - main
     paths:
         - 'environments-networks/*-test.json'
-        - 'scripts/tests/validate/fixtures/pre-terraform-core-vpc-validation.json'
-        - 'terraform/environments/core-vpc/**'
   pull_request:
     branches:
       - main
     paths:
         - 'environments-networks/*-test.json'
-        - 'scripts/tests/validate/fixtures/pre-terraform-core-vpc-validation.json'
-        - 'terraform/environments/core-vpc/**'
   workflow_dispatch:
 
 env:
@@ -56,7 +52,7 @@ jobs:
 
           #RUN TERRAFORM PLAN
           PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-vpc | tee /dev/stderr | grep '^Plan: \|^No changes.'`
-          PLAN="> TERRAFORM PLAN RESULT
+          PLAN="> TERRAFORM PLAN RESULT - ${TF_ENV}
           ${PLAN}"
           bash scripts/update-pr-comments.sh "${PLAN}"
           fi
