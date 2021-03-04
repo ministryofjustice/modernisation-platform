@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'terraform/environments/core-shared-services/**'
   pull_request:
     branches:
       - main
