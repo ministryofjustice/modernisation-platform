@@ -5,14 +5,18 @@ on:
   push:
     branches:
       - main
+    paths:
+        - 'environments-networks/*-production.json'
+        - 'scripts/tests/validate/fixtures/pre-terraform-core-vpc-validation.json'
+        - 'terraform/environments/core-vpc/**'
   pull_request:
     branches:
       - main
-  paths:
-      - 'environments-networks/*-production.json'
-      - 'scripts/tests/validate/fixtures/pre-terraform-core-vpc-validation.json'
-      - 'terraform/environments/core-vpc/**'
-  workflow_dispatch:
+    paths:
+        - 'environments-networks/*-production.json'
+        - 'scripts/tests/validate/fixtures/pre-terraform-core-vpc-validation.json'
+        - 'terraform/environments/core-vpc/**'
+    workflow_dispatch:
 
 env:
   AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
