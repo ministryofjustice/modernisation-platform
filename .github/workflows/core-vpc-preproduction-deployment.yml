@@ -68,7 +68,7 @@ jobs:
   core-vpc-preproduction-deployment-apply:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main'
-    needs: [core-vpc-deployment-plan]
+    needs: [core-vpc-preproduction-deployment-plan]
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1.3.2
