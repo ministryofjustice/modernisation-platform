@@ -15,13 +15,13 @@ locals {
     # VPCs that sit within the core vpc test account
     core-vpc-test = {
       for file in fileset("../../../environments-networks", "*-test.json") :
-      replace(file, ".json", "") => jsondecode(file("./../../environments-networks/${file}"))
+      replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))
     }
 
     # VPCs that sit within the core vpc development account
     core-vpc-development = {
       for file in fileset("../../../environments-networks", "*-development.json") :
-      replace(file, ".json", "") => jsondecode(file("./../../environments-networks/${file}"))
+      replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))
     }
 
   }
