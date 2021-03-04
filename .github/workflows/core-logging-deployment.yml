@@ -57,15 +57,15 @@ jobs:
           TEST=`go test | ${git_dir}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
           fi
           popd
-          TEST="TERRATEST RESULT\n${TEST}"
-          ENCODED=`echo ${TEST} | base64`
-          bash scripts/update-pr-comments.sh ${ENCODED}
+          TEST="> TERRATEST RESULT
+          ${TEST}"
+          bash scripts/update-pr-comments.sh "${TEST}"
 
           #RUN TERRAFORM PLAN
           PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-logging | tee /dev/stderr | grep '^Plan: \|^No changes.'`
-          PLAN="TERRAFORM PLAN RESULT\n${PLAN}"
-          ENCODED=`echo ${PLAN} | base64`
-          bash scripts/update-pr-comments.sh ${ENCODED}
+          PLAN="> TERRAFORM PLAN RESULT
+          ${PLAN}"
+          bash scripts/update-pr-comments.sh "${PLAN}"
           fi
         env:
           SECRET: ${{ secrets.GITHUB_TOKEN }}

@@ -1,16 +1,20 @@
 #!/usr/bin/env bash
 
-OUTPUT="{\"body\":\"`echo ${1} | base64 -d | sed 's/ /\\./g'`\"}"
-
 # Remove additional information from GITHUB_REPOSITORY name when using ACT
 GITHUB_REPOSITORY=`echo ${GITHUB_REPOSITORY} | sed 's/.*://g'`
 
+REPOSITORY_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${PULL_REQUEST_NUMBER}/comments"
+PAYLOAD=$(echo "${1}" | jq -R --slurp '{body:.}')
+
 # Update github PR with Terraform plan output as a comment
-curl -s -f -X POST -d ${OUTPUT} \
--H "Authorization: token ${SECRET}" \
-"https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${PULL_REQUEST_NUMBER}/comments" 1>/dev/null
-if [ ${?} -ne 0 ]
+echo "${PAYLOAD}" | curl \
+  -s -X POST \
+  -H "Accept: application/vnd.github.v3+json" \
+  -H "Authorization: token ${SECRET}" \
+  -d @- $REPOSITORY_URL > /dev/null
+ERRORCODE="${?}"
+if [ ${ERRORCODE} -ne 0 ]
 then
-  echo "ERROR: update-pr-comments.sh exited with an error"
+  echo "ERROR: update-pr-comments.sh exited with an error - Code:${ERRORCODE}"
   exit 1
 fi
