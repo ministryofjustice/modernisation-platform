@@ -46,7 +46,7 @@ resource "aws_route53_zone" "public" {
 //create provate route53 zone
 resource "aws_route53_zone" "private" {
 
-  name = "${var.dns_zone}.internal"
+  name = "${var.dns_zone}.${local.modernisation-platform-internal-domain}"
 
   vpc {
     vpc_id = var.vpc_id
@@ -79,6 +79,7 @@ resource "aws_route53_record" "mod-ns-private" {
   ttl      = "30"
   records  = aws_route53_zone.private.name_servers
 }
+
 
 # IAM Section ----------------
 
