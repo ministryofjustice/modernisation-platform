@@ -19,7 +19,7 @@ locals {
     }
 
     # VPCs that sit within the core vpc development account
-     core-vpc-development = {
+    core-vpc-development = {
       for file in fileset("../../../environments-networks", "*-development.json") :
       replace(file, ".json", "") => jsondecode(file("./../../environments-networks/${file}"))
     }
