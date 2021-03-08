@@ -1,0 +1,24 @@
+name: a test
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  a-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - uses: hashicorp/setup-terraform@v1.3.2
+        with:
+          terraform_version: 0.14.7
+          terraform_wrapper: false
+      - name: Provision workspaces in terraform/environments/*
+        run: bash scripts/provision-terraform-workspaces.sh all-environments
+        env:
+          AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
