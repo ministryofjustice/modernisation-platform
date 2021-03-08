@@ -45,7 +45,6 @@ The scripts prefixed `git-` are for running common `terraform` commands as part 
 | Filename | Description | Used in CI/CD? |
 |-|-|-|
 | [`redact-output.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/redact-output.sh) | Runs `sed` to redact values from `terraform plan` and `terraform apply` | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/terraform-apply.sh#L17) |
-| [`check-environment-definitions.js`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/check-environment-definitions.js) | Checks `environments/*.json` files have required keys and values and comments on a PR if it doesn't | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/check-environment-definitions.yml#L18) |
 | [`provision-environment-directories.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/provision-environment-directories.sh) | Copies `templates/*.tf` files to an environment directory when a new environment is created | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml#L20) |
 
 ### Internal scripts
@@ -53,9 +52,3 @@ The scripts prefixed `git-` are for running common `terraform` commands as part 
 | Filename | Description | Used in CI/CD? |
 |-|-|-|
 | [`internal/upgrade-terraform-providers.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/internal/upgrade-terraform-providers.sh) | This script looks for any directory that holds a `*.tf` file, unless it's a `.terraform` directory or is the `templates/` directory, and runs `terraform init -upgrade` within them. It's useful for bulk-updating all of the Terraform providers and modules in one go | ❌ |
-
-### Utilities
-
-| Filename | Description | Used in CI/CD? |
-|-|-|-|
-| [`utilities.js`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/utilities.js) | Used as part of `check-environment-definitions.js` | ✅ |
