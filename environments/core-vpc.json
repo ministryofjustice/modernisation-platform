@@ -3,6 +3,18 @@
     {
       "name": "production",
       "access": []
+    },
+    {
+      "name": "preproduction",
+      "access": []
+    },
+    {
+      "name": "test",
+      "access": []
+    },
+    {
+      "name": "development",
+      "access": []
     }
   ],
   "tags": {

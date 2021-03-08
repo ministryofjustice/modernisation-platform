@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This script provisions Terraform workspaces. It does not run terraform plan or terraform apply.
 #
@@ -22,101 +22,82 @@
 TMP_DIR=tmp/terraform-workspaces
 TF_ENV_DIR=terraform/environments
 
-refresh_tmp_location() {
-  if [ -d "tmp/" ]; then
-    rm -r tmp/
+iterate_environments() {
+# Loop through each application json file
+for JSON_FILE in ${git_dir}/environments/${3}.json
+do
+APPLICATION=`basename "${JSON_FILE}" .json`
+
+  # Build temporary folder to emulate real folder
+  if  [ "${2}" != "bootstrap" ]
+  then
+      if [ -d "${git_dir}/tmp" ]
+      then
+        rm -r "${git_dir}/tmp"
+      fi
+      mkdir "${git_dir}/tmp"
+      # Copy files to emulation folder
+      sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/backend.tf" > "${git_dir}/tmp/backend.tf"
+      sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/locals.tf" > "${git_dir}/tmp/locals.tf"
+      cp "${git_dir}/terraform/templates/providers.tf" "${git_dir}/tmp/providers.tf"
+      cp "${git_dir}/terraform/templates/secrets.tf" "${git_dir}/tmp/secrets.tf"
+      cp "${git_dir}/terraform/templates/versions.tf" "${git_dir}/tmp/versions.tf"
   fi
 
-  mkdir -p $TMP_DIR/local
-  mkdir -p $TMP_DIR/remote
-}
-
-get_local_definitions() {
-  for file in environments/*.json; do
-    filename=$(basename "$file" .json)
-    cat "$file" | jq -r --arg filename "$filename" '$filename + "-" + .environments[].name' >> $TMP_DIR/local/"$filename".txt
-  done
-}
-
-get_remote_terraform_workspaces() {
-  directory_basename=$(basename "$1")
-  terraform -chdir="$1" init
-  terraform -chdir="$1" workspace list > $TMP_DIR/remote/"$directory_basename".txt
-}
-
-fix_workspace_syntax() {
-  for file in "$TMP_DIR"/*/*.txt; do
-    # cleanup file syntax (removes preceding asterisks (*), spaces, the "default" terraform workspace, new lines, duplicate lines)
-    sed -e "s/*//" -e "s/^[[:space:]]*//" -e "/default/d" -e "/^$/d" "$file" | sort -u -o "$file"
-  done
-}
-
-create_missing_remote_workspaces() {
-
-  echo "Comparing all workspaces for $2"
-
-  directory_basename=$(basename "$2")
-
-  if [ "$1" = "bootstrap" ]; then
-    # To create Terraform workspaces for bootstrapping, we need all of the
-    # environments listed together
-
-    cat $TMP_DIR/local/*.txt | sort | uniq > $TMP_DIR/all.txt
-    local_filename=all
-  else
-    local_filename="local/$directory_basename"
-  fi
-
-  local_workspaces="$TMP_DIR/$local_filename.txt"
-  remote_workspaces="$TMP_DIR/remote/$directory_basename.txt"
-
-  # Compare local with remote workspaces, and create missing ones
-  for workspace in $(comm -2 -3 "$local_workspaces" "$remote_workspaces"); do
-    echo "$workspace missing for $2... creating it"
-    terraform -chdir="$2" workspace new "$workspace"
-  done
-
-  echo "Finished creating terraform workspaces in $directory"
-
-}
-
-main () {
-  if [ -z "$1" ]; then
-    echo "Type missing: must be \"bootstrap\", \"all-environments\", or an application name e.g. \"core-vpc\""
-  else
-
-    refresh_tmp_location &&
-    get_local_definitions &&
-
-    if [ "$1" = "bootstrap" ]; then
-
-      # Get all bootstrappable directories in TF_ENV_DIR/bootstrap/*
-      directories=$(find "$TF_ENV_DIR/bootstrap" -mindepth 1 -maxdepth 1 -type d)
-
-    elif [ "$1" = "all-environments" ]; then
-
-      # Get all directories in TF_ENV_DIR/*, minus /bootstrap and .terraform
-      directories=$(find "$TF_ENV_DIR" -mindepth 1 -maxdepth 1 -type d -not \( -name ".terraform" -o -name "bootstrap" \))
-
-    elif [ -d "$TF_ENV_DIR/$1" ]; then
-
-      # Get directory for singular application
-      directories="$TF_ENV_DIR/$1"
-
+  # Loop through each environment for specific application
+  for ENV in `cat "${JSON_FILE}" | jq -r --arg FILENAME "${APPLICATION}" '.environments[].name'`
+  do
+    # Check if state file exists in S3
+    if [ "${2}" = "bootstrap" ]
+    then
+      # For Bootstrap files
+      aws s3api head-object --bucket modernisation-platform-terraform-state --key "environments/${1}/${APPLICATION}-${ENV}/terraform.tfstate"  > /dev/null 2>&1
+      RETURN_CODE="${?}"
     else
-      echo "Directory for \"$1\" does not exist"
-      exit 1
+      aws s3api head-object --bucket modernisation-platform-terraform-state --key "environments/${APPLICATION}/${APPLICATION}-${ENV}/terraform.tfstate" > /dev/null 2>&1 
+      RETURN_CODE="${?}"
     fi
-
-    for directory in $directories; do
-
-      get_remote_terraform_workspaces "$directory" &&
-      fix_workspace_syntax &&
-      create_missing_remote_workspaces "$1" "$directory"
-
-    done
-
-  fi
+    
+    echo "${1}       ${APPLICATION}-${ENV}:-------Return Code: ${RETURN_CODE}"
+  
+    if [[ "${RETURN_CODE}" -ne 0 ]]
+    then
+      [ "${2}" = "bootstrap" ] && TERRAFORM_PATH="${git_dir}/terraform/environments/${1}" || TERRAFORM_PATH="${git_dir}/tmp"
+      # move to Terraform environment folder
+      echo "terraform working folder:    ${TERRAFORM_PATH}"
+      terraform -chdir="${TERRAFORM_PATH}" init > /dev/null
+      terraform -chdir="${TERRAFORM_PATH}" workspace new "${APPLICATION}-${ENV}"
+    fi
+ 
+  done
+done
 }
 
-main "$1"
+main() {
+# Set root path to repository
+git_dir="$( git rev-parse --show-toplevel )"
+
+# Determine workspace build type
+case "${1}" in
+all-environments)
+  iterate_environments "" "${1}" "*"
+  ;;
+bootstrap)
+  iterate_environments "bootstrap/delegate-access" "${1}" "*"
+  iterate_environments "bootstrap/secure-baselines" "${1}" "*"
+  iterate_environments "bootstrap/single-sign-on" "${1}" "*"
+  ;;
+*)
+  # Check if folder exists for application
+  if [ -f ${git_dir}/environments/${1}.json ]
+  then
+    iterate_environments "" "${1}" "${1}"
+  else
+    echo "ERROR: Incorrect Parameter received"
+    exit 1
+  fi
+  ;;
+esac
+}
+
+main "${1}"

@@ -1,0 +1,19 @@
+{
+  "cidr": {
+    "transit_gateway": "10.233.0.64/26",
+    "protected": "10.232.2.0/23",
+    "subnet_sets": {
+      "general": {
+        "cidr": "10.234.16.0/21",
+        "accounts": [
+          "cooker-development"
+        ]
+      }
+    }
+  },
+  "options": {
+    "bastion_linux": true,
+    "additional_endpoints": []
+  },
+  "nacl": []
+}

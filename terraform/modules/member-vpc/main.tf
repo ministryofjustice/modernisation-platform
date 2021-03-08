@@ -335,7 +335,7 @@ resource "aws_network_acl_rule" "allow_local_network_ingress" {
 }
 
 resource "aws_network_acl_rule" "allow_vpc_endpoint_ingress" {
-  for_each = toset(local.distinct_subnets_by_key_type_excluding_data)
+  for_each = toset(local.distinct_subnets_by_key_type)
 
   network_acl_id = aws_network_acl.default[each.value].id
   rule_number    = 220
@@ -348,7 +348,7 @@ resource "aws_network_acl_rule" "allow_vpc_endpoint_ingress" {
 }
 
 resource "aws_network_acl_rule" "allow_vpc_endpoint_egress" {
-  for_each = toset(local.distinct_subnets_by_key_type_excluding_data)
+  for_each = toset(local.distinct_subnets_by_key_type)
 
   network_acl_id = aws_network_acl.default[each.value].id
   rule_number    = 220
