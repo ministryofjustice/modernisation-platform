@@ -5,7 +5,15 @@
       "access": []
     },
     {
-      "name": "non-live-data",
+      "name": "preproduction",
+      "access": []
+    },
+    {
+      "name": "test",
+      "access": []
+    },
+    {
+      "name": "development",
       "access": []
     }
   ],

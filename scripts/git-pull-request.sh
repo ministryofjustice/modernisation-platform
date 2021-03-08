@@ -10,8 +10,14 @@ This PR commits new files under $1."
 
 payload=$(echo "${pull_request_body}" | jq --arg branch "$pull_request_branch" --arg pr_title "$pull_request_title" -R --slurp '{ body: ., base: "main", head: $branch, title: $pr_title }')
 
-echo "${payload}" | curl  \
-  -s -S \
+echo "${payload}" | curl \
+  -s -X POST \
   -H "Accept: application/vnd.github.v3+json" \
-  -H "Authorization: token ${GITHUB_TOKEN}" \
-  --data @- "${repository_url}" > /dev/null
+  -H "Authorization: token ${SECRET}" \
+  -d @- $repository_url > /dev/null
+ERRORCODE="${?}"
+if [ ${ERRORCODE} -ne 0 ]
+then
+  echo "ERROR: git_pull-request.sh exited with an error - Code:${ERRORCODE}"
+  exit 1
+fi

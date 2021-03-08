@@ -1,0 +1,26 @@
+{
+  "cidr": {
+    "transit_gateway": "10.233.0.128/26",
+    "protected": "10.232.4.0/23",
+    "subnet_sets": {
+      "general": {
+        "cidr": "10.237.0.0/21",
+        "accounts": [
+          "sprinkler-production",
+          "bench-production"
+        ]
+      },
+      "patio": {
+        "cidr": "10.237.8.0/21",
+        "accounts": [
+          "heater-production"
+        ]
+      }
+    }
+  },
+  "options": {
+    "bastion_linux": true,
+    "additional_endpoints": []
+  },
+  "nacl": []
+}
