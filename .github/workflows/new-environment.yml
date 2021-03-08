@@ -55,6 +55,8 @@ jobs:
           terraform_wrapper: false
       - name: Provision workspaces in terraform/environments/bootstrap/*
         run: bash scripts/provision-terraform-workspaces.sh bootstrap
+      - name: Provision workspaces in terraform/environments/*
+        run: bash scripts/provision-terraform-workspaces.sh all-environments
   delegate-access:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main'

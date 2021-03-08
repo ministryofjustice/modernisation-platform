@@ -23,3 +23,5 @@ jobs:
         run: bash ./scripts/git-setup.sh
       - run: bash ./scripts/git-commit.sh terraform/environments
       - run: bash ./scripts/git-pull-request.sh terraform/environments
+        env:
+          SECRET: ${{ secrets.GITHUB_TOKEN }}

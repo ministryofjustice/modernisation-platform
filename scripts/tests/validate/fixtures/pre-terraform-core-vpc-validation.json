@@ -1,34 +1,62 @@
 {
-    "transit_gateway": {
-        "hmpps-production": "10.233.0.0/26",
-        "laa-production": "10.233.0.64/26"
+  "transit_gateway": {
+    "garden-development": "10.233.0.0/26",
+    "house-development": "10.233.0.64/26",
+    "garden-production": "10.233.0.128/26",
+    "house-production": "10.233.0.192/26"
+  },
+  "protected": {
+    "garden-development": "10.232.0.0/23",
+    "house-development": "10.232.2.0/23",
+    "garden-production": "10.232.4.0/23",
+    "house-production": "10.232.6.0/23"
+  },
+  "subnet_sets": {
+    "garden-development": {
+      "general": {
+        "cidr": "10.234.0.0/21",
+        "accounts": [
+          "sprinkler-development",
+          "bench-development"
+        ]
+      },
+      "patio": {
+        "cidr": "10.234.8.0/21",
+        "accounts": [
+          "heater-development"
+        ]
+      }
     },
-    "protected": {
-        "hmpps-production": "10.232.0.0/23",
-        "laa-production": "10.232.2.0/23"
+    "house-development": {
+      "general": {
+        "cidr": "10.234.16.0/21",
+        "accounts": [
+          "cooker-development"
+        ]
+      }
     },
-    "subnet_sets": {
-        "hmpps-production": {
-            "general": {
-                "cidr": "10.233.8.0/21",
-                "accounts": [
-                    "core-sandbox-dev"
-                ]
-            },
-            "delius": {
-                "cidr": "10.233.16.0/21",
-                "accounts": [
-                    "core-logging-production"
-                ]
-            }
-        },
-        "laa-production": {
-            "general": {
-                "cidr": "10.233.32.0/21",
-                "accounts": [
-                    "core-security-production"
-                ]
-            }
-        }
+    "garden-production": {
+      "general": {
+        "cidr": "10.237.0.0/21",
+        "accounts": [
+          "sprinkler-production",
+          "bench-production"
+        ]
+      },
+      "patio": {
+        "cidr": "10.237.8.0/21",
+        "accounts": [
+          "heater-production"
+        ]
+      }
+    },
+    "house-production": {
+      "general": {
+        "cidr": "10.237.16.0/21",
+        "accounts": [
+          "cooker-production"
+        ]
+      }
     }
+  }
 }
