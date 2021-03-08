@@ -39,11 +39,15 @@ If they are a GitHub organisation owner, add them to the `maintainers` list too.
 ## Adding them as a superadmin in our AWS landing zone
 
 To add them as a superadmin in our AWS landing zone, add their `firstname.lastname` in the [modernisation-platform-terraform-iam-superadmins](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins) `main.tf` file.
+You can optionally add a Keybase username to obtain the initial password as a PGP encrypted output.
 
 >You can view a [sample PR](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins/pull/21) in case you get stuck.
 
-Once your PR has been merged, in your local Modernisation Platform repository clone:
+Once your PR has been merged, create a new Github release for the IAM superadmins module [sample release](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins/releases).
 
+In your local Modernisation Platform repository clone:
+
+- Update the module reference [sample PR](https://github.com/ministryofjustice/modernisation-platform/pull/389)
 - `cd` into [modernisation-platform/terraform/modernisation-platform-account](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modernisation-platform-account)
 - Run `terraform plan` to check they're going to be added
 - Run `terraform apply` as a `superadmin` to add an IAM user
