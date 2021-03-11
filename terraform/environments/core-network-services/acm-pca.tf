@@ -6,44 +6,80 @@ provider "aws" {
   region = "eu-west-2"
 }
 
-# AWS Config: configure an S3 bucket
-module "ca-bucket" {
-  # source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket"
-  source = "../../../../modernisation-platform-terraform-s3-bucket"
-  providers = {
-    aws.bucket-replication = aws.eu-west-2
+
+resource "aws_s3_bucket" "acm-pca" {
+
+  bucket_prefix ="acm"
+
+  lifecycle {
+    prevent_destroy = false
   }
-  bucket_policy        = data.aws_iam_policy_document.acmpca_bucket_access.json
-  bucket_prefix        = "acm"
-  custom_kms_key       = aws_kms_key.acm.arn
-  replication_role_arn = module.s3-acm-replication-role.role.arn
-  tags                 = local.tags
+
+  dynamic "lifecycle_rule" {
+    for_each = true ? [true] : []
+
+    content {
+      enabled = true
+
+      noncurrent_version_transition {
+        days          = 30
+        storage_class = "GLACIER"
+      }
+
+      transition {
+        days          = 30
+        storage_class = "GLACIER"
+      }
+    }
+  }
+
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm     = "aws:kms"
+        kms_master_key_id = aws_kms_key.acm.arn
+      }
+    }
+  }
+
+  versioning {
+    enabled = true
+  }
+
+  tags = merge(
+    local.tags,
+    {
+      Name = "acm-pca"
+    },
+  )
+
 }
 
-module "s3-acm-replication-role" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role"
-
-  buckets = [
-    module.ca-bucket.bucket.arn
-  ]
-  suffix_name = "-acm-ca"
-  tags = local.tags
+# # # # # # Block public access policies for this bucket
+resource "aws_s3_bucket_public_access_block" "root_ca" {
+  
+  bucket                  = aws_s3_bucket.acm-pca.id
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
 }
+
 
 data "aws_iam_policy_document" "acmpca_bucket_access" {
-  statement {
+
+    statement {
     actions = [
       "s3:GetBucketAcl",
       "s3:GetBucketLocation",
       "s3:PutObject",
-      "s3:PutObjectAcl",
+      "s3:PutObjectAcl"
     ]
 
-    resources = [
-      module.ca-bucket.bucket.arn,
-      "${module.ca-bucket.bucket.arn}/*"
+     resources = [
+      aws_s3_bucket.acm-pca.arn,
+      "${aws_s3_bucket.acm-pca.arn}/*"
     ]
-
     principals {
       identifiers = ["acm-pca.amazonaws.com"]
       type        = "Service"
@@ -51,12 +87,18 @@ data "aws_iam_policy_document" "acmpca_bucket_access" {
   }
 }
 
-resource "aws_s3_bucket_policy" "root-ca" {
-  bucket = module.ca-bucket.bucket.id
+resource "aws_s3_bucket_policy" "root_ca" {
+
+  bucket = aws_s3_bucket.acm-pca.id
   policy = data.aws_iam_policy_document.acmpca_bucket_access.json
+
+  # Create the Public Access Block before the policy is added
+  depends_on = [aws_s3_bucket_public_access_block.root_ca]
+
 }
 
 resource "aws_acmpca_certificate_authority" "root" {
+
   type = "ROOT"
   certificate_authority_configuration {
     key_algorithm     = "RSA_4096"
@@ -71,25 +113,28 @@ resource "aws_acmpca_certificate_authority" "root" {
       locality = "UK"
      }
   }
-    revocation_configuration {
+   revocation_configuration {
+
     crl_configuration {
       custom_cname       = "moj-modernisation-platform-crl-root-CA"
       enabled            = true
       expiration_in_days = 7
-      s3_bucket_name     = module.ca-bucket.bucket.id
+      s3_bucket_name     = aws_s3_bucket.acm-pca.id
     }
   }
-  permanent_deletion_time_in_days = 7
 
-  tags = merge(
+   permanent_deletion_time_in_days = 7
+
+   tags = merge(
     local.tags,
     {
       Name = "acm-pca-root-ca"
     },
   )
+  depends_on = [aws_s3_bucket_policy.root_ca]
 }
 
-# KMS
+# # # KMS
 resource "aws_kms_key" "acm" {
   description             = "ACM PCA (private certificate authority) encryption key"
   enable_key_rotation     = true
@@ -109,16 +154,16 @@ resource "aws_kms_alias" "acm-alias" {
 }
 
 data "aws_iam_policy_document" "kms-acm" {
-#   statement {
-#     effect    = "Allow"
-#     actions   = ["kms:*"]
-#     resources = ["*"]
+  statement {
+    effect    = "Allow"
+    actions   = ["kms:*"]
+    resources = ["*"]
 
-#     principals {
-#       type        = "Service"
-#       identifiers = ["acm-pca.amazonaws.com"]
-#     }
-#   }
+    principals {
+      type        = "Service"
+      identifiers = ["acm-pca.amazonaws.com"]
+    }
+  }
   statement {
     effect    = "Allow"
     actions   = ["kms:*"]
@@ -129,5 +174,4 @@ data "aws_iam_policy_document" "kms-acm" {
       identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
     }
   }
-
 }
