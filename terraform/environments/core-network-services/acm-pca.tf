@@ -52,7 +52,6 @@ resource "aws_s3_bucket" "acm-pca" {
       Name = "acm-pca"
     },
   )
-
 }
 
 
@@ -81,9 +80,6 @@ resource "aws_s3_bucket_policy" "root_ca" {
 
   bucket = aws_s3_bucket.acm-pca.id
   policy = data.aws_iam_policy_document.acmpca_bucket_access.json
-
-  # Create the Public Access Block before the policy is added
-  #depends_on = [aws_s3_bucket_public_access_block.root_ca]
 
 }
 
