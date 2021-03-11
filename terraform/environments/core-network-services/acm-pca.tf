@@ -55,16 +55,6 @@ resource "aws_s3_bucket" "acm-pca" {
 
 }
 
-# # # # # # Block public access policies for this bucket
-resource "aws_s3_bucket_public_access_block" "root_ca" {
-  
-  bucket                  = aws_s3_bucket.acm-pca.id
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
-}
-
 
 data "aws_iam_policy_document" "acmpca_bucket_access" {
 
@@ -93,7 +83,7 @@ resource "aws_s3_bucket_policy" "root_ca" {
   policy = data.aws_iam_policy_document.acmpca_bucket_access.json
 
   # Create the Public Access Block before the policy is added
-  depends_on = [aws_s3_bucket_public_access_block.root_ca]
+  #depends_on = [aws_s3_bucket_public_access_block.root_ca]
 
 }
 
