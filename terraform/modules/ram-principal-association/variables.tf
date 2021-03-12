@@ -12,3 +12,9 @@ variable "subnet_set" {
   description = "Subnet set to attach to"
   type        = string
 }
+
+variable "acm_pca" {
+  description = "ACM certificate manager"
+  type        = string
+
+}

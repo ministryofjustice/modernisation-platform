@@ -7,6 +7,7 @@ provider "aws" {
   region = "eu-west-2"
 }
 
+#Create S3 bucket for ACM
 resource "aws_s3_bucket" "acm-pca" {
 
   bucket_prefix ="acm"
@@ -54,6 +55,7 @@ resource "aws_s3_bucket" "acm-pca" {
   )
 }
 
+#S3 bucket access policy
 data "aws_iam_policy_document" "acmpca_bucket_access" {
 
     statement {
@@ -200,7 +202,7 @@ resource "aws_acmpca_certificate_authority_certificate" "non-live_subordinate" {
 resource "aws_acmpca_certificate" "non-live_subordinate" {
 
   depends_on = [aws_acmpca_certificate_authority.root]
-  
+
   certificate_authority_arn   = aws_acmpca_certificate_authority.root.arn
   certificate_signing_request = aws_acmpca_certificate_authority.non-live_subordinate.certificate_signing_request
   signing_algorithm           = "SHA512WITHRSA"
@@ -272,3 +274,7 @@ data "aws_iam_policy_document" "kms-acm" {
     }
   }
 }
+
+#Create RAM share for subordinate certificates
+
+
