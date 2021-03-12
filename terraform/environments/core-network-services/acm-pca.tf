@@ -1,11 +1,11 @@
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
+data "aws_partition" "current" {}
 
 provider "aws" {
   alias = "eu-west-2"
   region = "eu-west-2"
 }
-
 
 resource "aws_s3_bucket" "acm-pca" {
 
@@ -54,7 +54,6 @@ resource "aws_s3_bucket" "acm-pca" {
   )
 }
 
-
 data "aws_iam_policy_document" "acmpca_bucket_access" {
 
     statement {
@@ -76,13 +75,34 @@ data "aws_iam_policy_document" "acmpca_bucket_access" {
   }
 }
 
-resource "aws_s3_bucket_policy" "root_ca" {
+resource "aws_s3_bucket_policy" "root" {
 
   bucket = aws_s3_bucket.acm-pca.id
   policy = data.aws_iam_policy_document.acmpca_bucket_access.json
-
 }
 
+#Associates a certificate with an AWS Certificate Manager Private Certificate Authority 
+resource "aws_acmpca_certificate_authority_certificate" "root" {
+  certificate_authority_arn = aws_acmpca_certificate_authority.root.arn
+
+  certificate       = aws_acmpca_certificate.root.certificate
+  certificate_chain = aws_acmpca_certificate.root.certificate_chain
+}
+
+resource "aws_acmpca_certificate" "root" {
+  certificate_authority_arn   = aws_acmpca_certificate_authority.root.arn
+  certificate_signing_request = aws_acmpca_certificate_authority.root.certificate_signing_request
+  signing_algorithm           = "SHA512WITHRSA"
+
+  template_arn = "arn:${data.aws_partition.current.partition}:acm-pca:::template/RootCACertificate/V1"
+
+  validity {
+    type  = "YEARS"
+    value = 25
+  }
+}
+
+#Create Private root ACM
 resource "aws_acmpca_certificate_authority" "root" {
 
   type = "ROOT"
@@ -117,10 +137,101 @@ resource "aws_acmpca_certificate_authority" "root" {
       Name = "acm-pca-root-ca"
     },
   )
-  depends_on = [aws_s3_bucket_policy.root_ca]
+  depends_on = [aws_s3_bucket_policy.root]
 }
 
-# # # KMS
+#Create Private subordinate live data certificate
+resource "aws_acmpca_certificate_authority_certificate" "live_subordinate" {
+
+  depends_on = [aws_acmpca_certificate_authority.root]
+
+  certificate_authority_arn = aws_acmpca_certificate_authority.live_subordinate.arn
+
+  certificate       = aws_acmpca_certificate.live_subordinate.certificate
+  certificate_chain = aws_acmpca_certificate.live_subordinate.certificate_chain
+}
+
+resource "aws_acmpca_certificate" "live_subordinate" {
+
+  depends_on = [aws_acmpca_certificate_authority.root]
+
+  certificate_authority_arn   = aws_acmpca_certificate_authority.root.arn
+  certificate_signing_request = aws_acmpca_certificate_authority.live_subordinate.certificate_signing_request
+  signing_algorithm           = "SHA512WITHRSA"
+
+  template_arn = "arn:${data.aws_partition.current.partition}:acm-pca:::template/SubordinateCACertificate_PathLen0/V1"
+
+   validity {
+    type  = "YEARS"
+    value = 24
+  }
+}
+
+resource "aws_acmpca_certificate_authority" "live_subordinate" {
+  type = "SUBORDINATE"
+
+  certificate_authority_configuration {
+    key_algorithm     = "RSA_4096"
+    signing_algorithm = "SHA512WITHRSA"
+
+    subject {
+      common_name = "moj-modernisation-platform-sub-ca-live-data"
+      organization = "ministry-of-justice"
+      organizational_unit = "modernisation-platform"
+      country = "UK"
+      state = "UK"
+      locality = "UK"
+    }
+    
+  }
+}
+
+#Create Private subordinate non-live data certificate
+resource "aws_acmpca_certificate_authority_certificate" "non-live_subordinate" {
+
+  depends_on = [aws_acmpca_certificate_authority.root]
+
+  certificate_authority_arn = aws_acmpca_certificate_authority.non-live_subordinate.arn
+
+  certificate       = aws_acmpca_certificate.non-live_subordinate.certificate
+  certificate_chain = aws_acmpca_certificate.non-live_subordinate.certificate_chain
+}
+
+resource "aws_acmpca_certificate" "non-live_subordinate" {
+
+  depends_on = [aws_acmpca_certificate_authority.root]
+  
+  certificate_authority_arn   = aws_acmpca_certificate_authority.root.arn
+  certificate_signing_request = aws_acmpca_certificate_authority.non-live_subordinate.certificate_signing_request
+  signing_algorithm           = "SHA512WITHRSA"
+
+  template_arn = "arn:${data.aws_partition.current.partition}:acm-pca:::template/SubordinateCACertificate_PathLen0/V1"
+
+  validity {
+    type  = "YEARS"
+    value = 24
+  }
+}
+
+resource "aws_acmpca_certificate_authority" "non-live_subordinate" {
+  type = "SUBORDINATE"
+
+  certificate_authority_configuration {
+    key_algorithm     = "RSA_4096"
+    signing_algorithm = "SHA512WITHRSA"
+
+    subject {
+      common_name = "moj-modernisation-platform-sub-ca-non-live-data"
+      organization = "ministry-of-justice"
+      organizational_unit = "modernisation-platform"
+      country = "UK"
+      state = "UK"
+      locality = "UK"
+    }
+  }
+}
+
+# Setup KMS key 
 resource "aws_kms_key" "acm" {
   description             = "ACM PCA (private certificate authority) encryption key"
   enable_key_rotation     = true
