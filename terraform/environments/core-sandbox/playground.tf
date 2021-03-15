@@ -11,7 +11,8 @@ module "ram-principal-association" {
   }
 
   principal  = data.aws_caller_identity.current.account_id
-  vpc_name   = "garden-production"
-  subnet_set = "patio"
-  acm_pca    = "acm-pca-live"
+  vpc_name = local.json_data.networking[0].business-unit
+  subnet_set = local.json_data.networking[0].set
+  acm_pca    = local.acm_pca[0]
+
 }

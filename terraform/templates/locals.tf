@@ -20,4 +20,4 @@ locals {
 
   acm_pca = [ substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production" || substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction" ? "acm-pca-live" : "acm-pca-non-live" ]
 
-}
+ }
