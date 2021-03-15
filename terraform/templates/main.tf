@@ -11,7 +11,7 @@ module "ram-principal-association" {
   }
 
   principal  = data.aws_caller_identity.current.account_id
-  vpc_name = local.json_data.networking[0].business-unit
+  vpc_name = terraform.workspace
   subnet_set = local.json_data.networking[0].set
   acm_pca    = local.acm_pca[0]
 
