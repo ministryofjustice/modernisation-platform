@@ -13,7 +13,7 @@ resource "aws_s3_bucket" "acm-pca" {
   bucket_prefix = "acm"
 
   lifecycle {
-    prevent_destroy = false
+    prevent_destroy = true
   }
 
   dynamic "lifecycle_rule" {
