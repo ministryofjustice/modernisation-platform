@@ -11,9 +11,9 @@ provider "aws" {
 }
 
 data "aws_ram_resource_share" "default" {
-  provider       = aws.share-host
-  name           = "${var.vpc_name}-${var.subnet_set}-resource-share" # Resource share to lookup
-  
+  provider = aws.share-host
+  name     = "${var.vpc_name}-${var.subnet_set}-resource-share" # Resource share to lookup
+
   resource_owner = "SELF"
 
   filter {
@@ -31,9 +31,9 @@ resource "aws_ram_principal_association" "default" {
 
 #configure acm certificate share association
 data "aws_ram_resource_share" "acm" {
-  provider       = aws.share-acm
-  name           = var.acm_pca # Resource share to lookup
-  
+  provider = aws.share-acm
+  name     = var.acm_pca # Resource share to lookup
+
   resource_owner = "SELF"
 
   filter {

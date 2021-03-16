@@ -35,8 +35,8 @@ data "aws_subnet_ids" "host" {
   provider = aws.share-host
 
   vpc_id = data.aws_vpc.host.id
-  
-  
+
+
   tags = {
     Name = "${var.vpc_name}-${var.subnet_set}*"
   }
@@ -45,13 +45,13 @@ data "aws_subnet_ids" "host" {
 
 # List all subnets in the host account
 data "aws_subnet" "host" {
-  
+
   provider = aws.share-host
 
   for_each = data.aws_subnet_ids.host.ids
   id       = each.key
 
-   tags = {
+  tags = {
     Name = "${var.vpc_name}-${var.subnet_set}*"
   }
 }
@@ -60,7 +60,7 @@ data "aws_subnet" "host" {
 
 # Retag subnets in the associated account
 resource "aws_ec2_tag" "subnets" {
-  
+
   for_each = data.aws_subnet.host
 
   resource_id = each.value.id
@@ -71,13 +71,13 @@ resource "aws_ec2_tag" "subnets" {
 
 
 # output "aws_subnet_host" {
-  
+
 #   #garden-production-patio
 #   value = data.aws_subnet.host
 # }
 
 # output "aws_subnet_tennant" {
-  
+
 #   #garden-production-patio
 #   value = data.aws_subnet_ids.associated
 # }

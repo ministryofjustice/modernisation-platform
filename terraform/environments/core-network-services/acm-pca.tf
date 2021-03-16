@@ -3,14 +3,14 @@ data "aws_region" "current" {}
 data "aws_partition" "current" {}
 
 provider "aws" {
-  alias = "eu-west-2"
+  alias  = "eu-west-2"
   region = "eu-west-2"
 }
 
 #Create S3 bucket for ACM
 resource "aws_s3_bucket" "acm-pca" {
 
-  bucket_prefix ="acm"
+  bucket_prefix = "acm"
 
   lifecycle {
     prevent_destroy = false
@@ -58,7 +58,7 @@ resource "aws_s3_bucket" "acm-pca" {
 #S3 bucket access policy
 data "aws_iam_policy_document" "acmpca_bucket_access" {
 
-    statement {
+  statement {
     actions = [
       "s3:GetBucketAcl",
       "s3:GetBucketLocation",
@@ -66,7 +66,7 @@ data "aws_iam_policy_document" "acmpca_bucket_access" {
       "s3:PutObjectAcl"
     ]
 
-     resources = [
+    resources = [
       aws_s3_bucket.acm-pca.arn,
       "${aws_s3_bucket.acm-pca.arn}/*"
     ]
@@ -113,15 +113,15 @@ resource "aws_acmpca_certificate_authority" "root" {
     signing_algorithm = "SHA512WITHRSA"
 
     subject {
-      common_name = "moj-modernisation-platform-root-CA"
-      organization = "ministry-of-justice"
+      common_name         = "moj-modernisation-platform-root-CA"
+      organization        = "ministry-of-justice"
       organizational_unit = "modernisation-platform"
-      country = "UK"
-      state = "UK"
-      locality = "UK"
-     }
+      country             = "UK"
+      state               = "UK"
+      locality            = "UK"
+    }
   }
-   revocation_configuration {
+  revocation_configuration {
 
     crl_configuration {
       custom_cname       = "moj-modernisation-platform-crl-root-CA"
@@ -131,9 +131,9 @@ resource "aws_acmpca_certificate_authority" "root" {
     }
   }
 
-   permanent_deletion_time_in_days = 7
+  permanent_deletion_time_in_days = 7
 
-   tags = merge(
+  tags = merge(
     local.tags,
     {
       Name = "acm-pca-root-ca"
@@ -163,7 +163,7 @@ resource "aws_acmpca_certificate" "live_subordinate" {
 
   template_arn = "arn:${data.aws_partition.current.partition}:acm-pca:::template/SubordinateCACertificate_PathLen0/V1"
 
-   validity {
+  validity {
     type  = "YEARS"
     value = 24
   }
@@ -177,14 +177,14 @@ resource "aws_acmpca_certificate_authority" "live_subordinate" {
     signing_algorithm = "SHA512WITHRSA"
 
     subject {
-      common_name = "moj-modernisation-platform-sub-ca-live-data"
-      organization = "ministry-of-justice"
+      common_name         = "moj-modernisation-platform-sub-ca-live-data"
+      organization        = "ministry-of-justice"
       organizational_unit = "modernisation-platform"
-      country = "UK"
-      state = "UK"
-      locality = "UK"
+      country             = "UK"
+      state               = "UK"
+      locality            = "UK"
     }
-    
+
   }
 }
 
@@ -223,21 +223,21 @@ resource "aws_acmpca_certificate_authority" "non-live_subordinate" {
     signing_algorithm = "SHA512WITHRSA"
 
     subject {
-      common_name = "moj-modernisation-platform-sub-ca-non-live-data"
-      organization = "ministry-of-justice"
+      common_name         = "moj-modernisation-platform-sub-ca-non-live-data"
+      organization        = "ministry-of-justice"
       organizational_unit = "modernisation-platform"
-      country = "UK"
-      state = "UK"
-      locality = "UK"
+      country             = "UK"
+      state               = "UK"
+      locality            = "UK"
     }
   }
 }
 
 # Setup KMS key 
 resource "aws_kms_key" "acm" {
-  description             = "ACM PCA (private certificate authority) encryption key"
-  enable_key_rotation     = true
-  policy                  = data.aws_iam_policy_document.kms-acm.json
+  description         = "ACM PCA (private certificate authority) encryption key"
+  enable_key_rotation = true
+  policy              = data.aws_iam_policy_document.kms-acm.json
 
   tags = merge(
     local.tags,

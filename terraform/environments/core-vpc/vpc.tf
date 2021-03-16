@@ -26,7 +26,7 @@ locals {
 
   }
 
-    non-tgw-vpc-subnet = flatten([
+  non-tgw-vpc-subnet = flatten([
     for key, vpc in module.vpc : [
       for set in keys(module.vpc[key].non_tgw_subnet_arns_by_subnetset) : {
         key  = key

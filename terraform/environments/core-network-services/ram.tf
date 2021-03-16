@@ -17,7 +17,7 @@ resource "aws_ram_resource_share" "acm-pca-live" {
   name                      = "acm-pca-live"
   allow_external_principals = false
 
-    tags = merge(
+  tags = merge(
     local.tags,
     {
       Name = "acm-pca-live"
@@ -35,7 +35,7 @@ resource "aws_ram_resource_association" "acm-pca-live" {
 resource "aws_ram_resource_share" "acm-pca-non-live" {
   name                      = "acm-pca-non-live"
   allow_external_principals = false
-  
+
   tags = merge(
     local.tags,
     {

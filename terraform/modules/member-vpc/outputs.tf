@@ -17,7 +17,7 @@ output "non_tgw_subnet_arns" {
   value = [
     for key, subnet in aws_subnet.subnets :
     subnet.arn
-    
+
     if substr(key, 0, 15) != "transit-gateway"
   ]
 }
@@ -38,7 +38,7 @@ output "non_tgw_subnet_arns_by_subnetset" {
     for set, cidr in var.subnet_sets : set =>
     {
       for key, subnet in local.expanded_worker_subnets_assocation :
-       "${key}-${cidr}"  => aws_subnet.subnets["${subnet.key}-${subnet.type}-${subnet.az}"].arn
+      "${key}-${cidr}" => aws_subnet.subnets["${subnet.key}-${subnet.type}-${subnet.az}"].arn
       if substr(subnet.key, 0, length(set)) == set
 
     }
