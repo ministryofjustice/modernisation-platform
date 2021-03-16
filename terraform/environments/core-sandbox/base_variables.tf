@@ -15,3 +15,6 @@ variable "account_name" {
   default     = "core-sandbox"
   description = "account name without environment name excluded - can be used to extract environment from workspace name"
 }
+
+
+ 

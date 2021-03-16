@@ -25,6 +25,17 @@ locals {
     }
 
   }
+
+  non-tgw-vpc-subnet = flatten([
+    for key, vpc in module.vpc : [
+      for set in keys(module.vpc[key].non_tgw_subnet_arns_by_subnetset) : {
+        key  = key
+        set  = set
+        arns = module.vpc[key].non_tgw_subnet_arns_by_subnetset[set]
+      }
+    ]
+  ])
+
 }
 
 module "vpc" {
@@ -100,7 +111,7 @@ locals {
 module "resource-share" {
   source = "../../modules/ram-resource-share"
   for_each = {
-    for vpc in local.non-tgw-vpc : "${vpc.key}-${vpc.set}" => vpc
+    for vpc in local.non-tgw-vpc-subnet : "${vpc.key}-${vpc.set}" => vpc
   }
 
   # Subnet ARNs to attach to a resource share
@@ -141,3 +152,4 @@ module "dns-zone" {
   tags_prefix = each.key
 
 }
+
