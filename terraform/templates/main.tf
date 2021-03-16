@@ -16,3 +16,19 @@ module "ram-principal-association" {
   acm_pca    = local.acm_pca[0]
 
 }
+
+#ram-ec2-retagging module 
+
+
+module "ram-ec2-retagging" {
+  source = "../../modules/ram-ec2-retagging"
+  providers = {
+    aws.share-host   = aws.core-vpc-production # Core VPC production holds the share
+    aws.share-tenant = aws                     # The default provider (unaliased, `aws`) is the tenant
+  }
+
+  vpc_name = local.json_data.networking[0].business-unit
+  subnet_set = local.json_data.networking[0].set
+
+  depends_on = [module.ram-principal-association]
+}
