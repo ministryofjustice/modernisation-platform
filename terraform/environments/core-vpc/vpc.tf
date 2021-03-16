@@ -26,6 +26,16 @@ locals {
 
   }
 
+    non-tgw-vpc-subnet = flatten([
+    for key, vpc in module.vpc : [
+      for set in keys(module.vpc[key].non_tgw_subnet_arns_by_subnetset) : {
+        key  = key
+        set  = set
+        arns = module.vpc[key].non_tgw_subnet_arns_by_subnetset[set]
+      }
+    ]
+  ])
+
 }
 
 module "vpc" {
@@ -98,18 +108,6 @@ locals {
   ])
 }
 
-locals {
-  non-tgw-vpc-subnet = flatten([
-    for key, vpc in module.vpc : [
-      for set in keys(module.vpc[key].non_tgw_subnet_arns_by_subnetset) : {
-        key  = key
-        set  = set
-        arns = module.vpc[key].non_tgw_subnet_arns_by_subnetset[set]
-      }
-    ]
-  ])
-}
-
 module "resource-share" {
   source = "../../modules/ram-resource-share"
   for_each = {
@@ -154,17 +152,4 @@ module "dns-zone" {
   tags_prefix = each.key
 
 }
-
-
-# output "name" {
-  
-#   value =  local.non-tgw-vpc-subnet
-# }
-
-
-# output "test" {
-  
-
-#   value = module.vpc["garden-production"].non_tgw_subnet_arns_by_subnetset["patio"]
-# }
 
