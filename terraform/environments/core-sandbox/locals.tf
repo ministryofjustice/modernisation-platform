@@ -16,17 +16,17 @@ locals {
 
   #Required for the false condition 
   default_content = jsonencode(
+    {
+      networking = [
         {
-           networking = [
-               {
-                   application   = ""
-                   business-unit = ""
-                   set           = ""
-                },
-            ]
-        }
-    )
-  
+          application   = ""
+          business-unit = ""
+          set           = ""
+        },
+      ]
+    }
+  )
+
   json_data = fileexists("networking.auto.tfvars.json") ? file("networking.auto.tfvars.json") : local.default_content
 
   file_exists = fileexists("networking.auto.tfvars.json") ? tobool(true) : tobool(false)
@@ -35,10 +35,10 @@ locals {
 
   subnet_set = jsondecode(local.json_data).networking[0].set
 
-  vpc_name = jsondecode(local.json_data).networking[0].business-unit 
+  vpc_name = jsondecode(local.json_data).networking[0].business-unit
 
   environment = substr(terraform.workspace, length(local.application_name), length(terraform.workspace))
 
   provider = "aws.core-vpc${local.environment}"
-  
-  }
+
+}

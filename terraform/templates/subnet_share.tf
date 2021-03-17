@@ -13,10 +13,10 @@ module "ram-principal-association" {
     aws.share-tenant = aws
   }
   principal  = data.aws_caller_identity.current.account_id
-  vpc_name   = "${local.vpc_name}${local.environment}" 
+  vpc_name   = "${local.vpc_name}${local.environment}"
   subnet_set = local.subnet_set
   acm_pca    = local.acm_pca[0]
-  
+
 }
 
 #ram-ec2-retagging module 
@@ -26,13 +26,13 @@ module "ram-ec2-retagging" {
 
   source = "../../modules/ram-ec2-retagging"
   providers = {
-    aws.share-host   = aws.core-vpc-production 
-    aws.share-tenant = aws                     
+    aws.share-host   = aws.core-vpc-production
+    aws.share-tenant = aws
   }
   vpc_name   = "${local.vpc_name}${local.environment}"
   subnet_set = local.subnet_set
 
-  depends_on = [module.ram-principal-association.aws_ram_principal_association] 
+  depends_on = [module.ram-principal-association.aws_ram_principal_association]
 }
 
 
