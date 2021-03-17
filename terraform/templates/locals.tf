@@ -16,7 +16,9 @@ locals {
     owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
   }
 
-  json_data = jsondecode(file("networking.auto.tfvars.json"))
+  json_exists = fileexists("networking.auto.tfvars.json")
+
+  json_data = [local.json_exists ? jsondecode(file("networking.auto.tfvars.json")) : jsondecode(file("")) ]
 
   acm_pca = [substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production" || substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction" ? "acm-pca-live" : "acm-pca-non-live"]
 
