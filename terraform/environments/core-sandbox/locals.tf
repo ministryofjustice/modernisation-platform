@@ -1,6 +1,6 @@
 locals {
   #application_name       = "core-sandbox"
-  application_name = "$application_name"
+  application_name       = "$application_name"
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 
   # This takes the name of the Terraform workspace (e.g. core-vpc-production), strips out the application name (e.g. core-vpc), and checks if
@@ -18,14 +18,14 @@ locals {
   }
 
   environment = trimprefix(terraform.workspace, "${var.networking[0].application}-")
-  vpc_name = var.networking[0].business-unit 
-  subnet_set = var.networking[0].set
-  acm_pca = [substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production" || substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction" ? "acm-pca-live" : "acm-pca-non-live"]
+  vpc_name    = var.networking[0].business-unit
+  subnet_set  = var.networking[0].set
+  acm_pca     = [substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production" || substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction" ? "acm-pca-live" : "acm-pca-non-live"]
 
 }
 
 variable "networking" {
 
-   type=list(any)
+  type = list(any)
 
 }
