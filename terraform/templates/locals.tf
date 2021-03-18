@@ -22,9 +22,16 @@ locals {
     owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
   }
 
+<<<<<<< HEAD
   environment = trimprefix(terraform.workspace, "${var.networking[0].application}-")
   vpc_name = var.networking[0].business-unit 
   subnet_set = var.networking[0].set
+=======
+  json_exists = fileexists("networking.auto.tfvars.json")
+
+  json_data = [local.json_exists ? jsondecode(file("networking.auto.tfvars.json")) : jsondecode(file(""))]
+
+>>>>>>> 470cf89972b8c743e85f4bc22e93f49196c22900
   acm_pca = [substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production" || substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction" ? "acm-pca-live" : "acm-pca-non-live"]
 
 }
