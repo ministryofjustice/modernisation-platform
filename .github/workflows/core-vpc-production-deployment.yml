@@ -52,7 +52,7 @@ jobs:
 
           #RUN TERRAFORM PLAN
           PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-vpc | tee /dev/stderr | grep '^Plan: \|^No changes.'`
-          PLAN="> TERRAFORM PLAN RESULT - ${TF_ENV}
+          PLAN="> TERRAFORM PLAN RESULT - core-vpc - ${TF_ENV}
           ${PLAN}"
           bash scripts/update-pr-comments.sh "${PLAN}"
           fi
