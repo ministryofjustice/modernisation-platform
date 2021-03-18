@@ -27,6 +27,7 @@ locals {
   subnet_set  = var.networking[0].set
 
   acm_pca = [substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production" || substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction" ? "acm-pca-live" : "acm-pca-non-live"]
+  provider_name = "core-vpc-${local.environment}"
 
 }
 
