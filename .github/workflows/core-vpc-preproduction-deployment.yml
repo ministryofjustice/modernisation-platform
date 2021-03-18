@@ -92,5 +92,4 @@ jobs:
         run: |
           bash scripts/loop-through-terraform-workspaces.sh terraform/environments plan
           bash scripts/loop-through-terraform-workspaces.sh terraform/environments apply
-     
-         
+    
