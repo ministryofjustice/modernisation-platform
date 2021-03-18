@@ -64,7 +64,19 @@ provision_environment_directories() {
     #     "set": "general"
     #   }
     # ]
-    jq --arg APPLICATION_NAME "$application_name" '{ networking: [ .[].subnet_sets[] | select(.accounts[] | contains($APPLICATION_NAME)) | { "business-unit": ."business-unit", "set": .set, "application": $APPLICATION_NAME } ] } | select(length > 0)' <<< "$networking_definitions" > "$directory"/networking.auto.tfvars.json
+
+    # check if /environments-networks files exists for this application
+    FILE_EXISTS=`jq --arg APPLICATION_NAME "$application_name" '.[].subnet_sets[] | select(.accounts[] | contains($APPLICATION_NAME))' <<< "$networking_definitions"`
+    if [[ ${FILE_EXISTS} ]]
+    then
+      # set up raw jq data that includes application name, business unit and subnet-set
+      RAW_OUTPUT=`jq --arg APPLICATION_NAME "$application_name" 'limit(1;.[].subnet_sets[] | select(.accounts[] | contains($APPLICATION_NAME)) | { "business-unit": ."business-unit", "set": .set, "application": $APPLICATION_NAME } )' <<< "$networking_definitions"`
+    else
+      # set up raw jq data that includes application name, blank business unit and blank subnet-set
+      RAW_OUTPUT=`jq -n --arg APPLICATION_NAME "$application_name" '{ "business-unit": "", "set": "", "application": $APPLICATION_NAME }'`
+    fi
+    # wrap raw json output with a header and store the result in the applications folder
+    jq -rn --argjson DATA "${RAW_OUTPUT}" '{ networking: [ $DATA ] }' > "$directory"/networking.auto.tfvars.json
   done
 }
 
