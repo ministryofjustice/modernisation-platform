@@ -90,6 +90,6 @@ jobs:
 
       - name: Run Terraform apply in member vpc workspaces to add RAM share
         run: |
-          bash scripts/loop-through-terraform-workspaces.sh terraform/environments plan
-          bash scripts/loop-through-terraform-workspaces.sh terraform/environments apply
+          bash scripts/setup-account-ram-shares.sh terraform/environments plan
+          bash scripts/setup-account-ram-shares.sh terraform/environments apply
     
