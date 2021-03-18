@@ -12,8 +12,8 @@ provider "aws" {
 
 data "aws_ram_resource_share" "default" {
   provider = aws.share-host
-  
-  name     = "${var.vpc_name}-${var.environment}-${var.subnet_set}-resource-share" # Resource share to lookup
+
+  name = "${var.vpc_name}-${var.environment}-${var.subnet_set}-resource-share" # Resource share to lookup
 
   resource_owner = "SELF"
 

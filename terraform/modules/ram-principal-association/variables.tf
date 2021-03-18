@@ -22,5 +22,5 @@ variable "acm_pca" {
 variable "environment" {
 
   description = "environment"
-  type = string
+  type        = string
 }
