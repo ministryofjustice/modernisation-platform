@@ -4,6 +4,8 @@ basedir=terraform/environments
 networkdir=environments-networks
 templates=terraform/templates/*.tf
 
+envs=("production", "preproduction", "test", "development")
+
 provision_environment_directories() {
   # This reshapes the JSON for subnet sets to include the business unit, pulled from the filename; and the set name from the key of the object:
   # [
@@ -91,4 +93,55 @@ copy_templates() {
   echo "Finished copying templates."
 }
 
+setup_ram_share_core() {
+
+    #Runs a Terraform plan/apply in the core-vpc-<env> to create the RAM share and association
+
+    for env "${envs[@]}"; do
+
+    echo "Running terraform across core accounts core-vpc-$env"
+
+    # Select workspace
+    select_workspace=`terraform -chdir=$basedir/core-vpc workspace select core-vpc-$env`
+
+    if [[$select_workspace]]; then
+
+      # Run terraform plan
+      ./scripts/terraform-plan.sh $basedir/core-vpc
+
+      # Run terraform apply
+      #./scripts/terraform-apply.sh $basedir/core-vpc
+    fi
+    echo "Finished running terraform across new workspaces in $application_name-$env"
+   
+    done
+
+setup_ram_share_association() {
+
+    #Runs a Terraform plan/apply in the member-vpc workspace to setup the RAM association
+
+    for env "${envs[@]}"; do
+
+    echo "Running terraform across new workspace $application_name-$env"
+
+    # Select workspace
+    select_workspace=`terraform -chdir=$basedir/$application_name workspace select $application-$env`
+
+    if [[$select_workspace]]; then
+
+        # Run terraform plan
+      ./scripts/terraform-plan.sh $basedir/$application_name
+
+      # Run terraform apply
+      #./scripts/terraform-apply.sh $basedir/$application_name
+    fi 
+    echo "Finished running terraform across new workspaces in $application_name-$env"
+
+    done
+}
+}
+
 provision_environment_directories
+setup_ram_share_core
+setup_ram_share_association
+

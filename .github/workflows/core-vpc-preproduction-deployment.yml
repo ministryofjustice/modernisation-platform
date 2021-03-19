@@ -78,18 +78,3 @@ jobs:
           terraform -chdir="terraform/environments/core-vpc" workspace select "core-vpc-${TF_ENV}"
           bash scripts/terraform-apply.sh terraform/environments/core-vpc
           echo "Terraform apply finished"
-    member-account-ram-share-setup:
-    runs-on: ubuntu-latest
-    needs: [core-vpc-preproduction-deployment-apply]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: hashicorp/setup-terraform@v1.3.2
-        with:
-          terraform_version: 0.14.4
-          terraform_wrapper: false
-
-      - name: Run Terraform apply in member vpc workspaces to add RAM share
-        run: |
-          bash scripts/setup-account-ram-shares.sh terraform/environments plan
-          bash scripts/setup-account-ram-shares.sh terraform/environments apply
-    
