@@ -26,7 +26,7 @@ setup_ram_share_core() {
 
       echo "Terraform plan"
       # Run terraform plan
-      ./scripts/terraform-plan.sh "$basedir/core-vpc-$env"
+      ./scripts/terraform-plan.sh "$basedir/core-vpc"
 
       # Run terraform apply
       #./scripts/terraform-apply.sh $basedir/core-vpc
