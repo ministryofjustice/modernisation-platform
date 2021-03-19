@@ -102,12 +102,12 @@ setup_ram_share_core() {
     echo "Running terraform across core accounts core-vpc-$env"
 
     # Select workspace
-    select_workspace=`terraform -chdir=$basedir/core-vpc workspace select core-vpc-$env`
+    select_workspace=`terraform -chdir="$basedir/core-vpc" workspace select "core-vpc-$env"`
 
     if [[ $select_workspace ]]; then
 
       # Run terraform plan
-      ./scripts/terraform-plan.sh $basedir/core-vpc
+      ./scripts/terraform-plan.sh "$basedir/core-vpc-$env"
 
       # Run terraform apply
       #./scripts/terraform-apply.sh $basedir/core-vpc
@@ -125,12 +125,12 @@ setup_ram_share_association() {
     echo "Running terraform across new workspace $application_name-$env"
 
     # Select workspace
-    select_workspace=`terraform -chdir=$basedir/$application_name workspace select $application-$env`
+    select_workspace=`terraform -chdir="$basedir/$application_name" workspace select "$application-$env"`
 
     if [[ $select_workspace ]]; then
 
         # Run terraform plan
-      ./scripts/terraform-plan.sh $basedir/$application_name
+      ./scripts/terraform-plan.sh "$basedir/$application_name"
 
       # Run terraform apply
       #./scripts/terraform-apply.sh $basedir/$application_name
