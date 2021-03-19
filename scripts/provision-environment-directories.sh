@@ -104,7 +104,7 @@ setup_ram_share_core() {
     # Select workspace
     select_workspace=`terraform -chdir=$basedir/core-vpc workspace select core-vpc-$env`
 
-    if [[$select_workspace]]; then
+    if [[ $select_workspace ]]; then
 
       # Run terraform plan
       ./scripts/terraform-plan.sh $basedir/core-vpc
@@ -127,7 +127,7 @@ setup_ram_share_association() {
     # Select workspace
     select_workspace=`terraform -chdir=$basedir/$application_name workspace select $application-$env`
 
-    if [[$select_workspace]]; then
+    if [[ $select_workspace ]]; then
 
         # Run terraform plan
       ./scripts/terraform-plan.sh $basedir/$application_name
