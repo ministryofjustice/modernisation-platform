@@ -51,9 +51,10 @@ provision_environment_directories() {
 
       #pass directory name to git hub
       echo "::set-env name=application_name::${application_name}"
-
+      
     fi
 
+    echo "::set-env name=application_name::sprinkler"
     # This filters and reshapes networking_definitions to only include the business units and subnet sets for $APPLICATION_NAME
     # e.g. if hmpps-production.json and laa-production.json both contained subnet-sets that specified the account "core-sandbox",
     # and $APPLICATION_NAME was core-sandbox, it would output this:

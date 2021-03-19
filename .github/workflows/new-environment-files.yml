@@ -28,11 +28,10 @@ jobs:
         run: bash ./scripts/provision-environment-directories.sh
       - name: Commit changes to GitHub
         run: bash ./scripts/git-setup.sh
-      - run: bash ./scripts/git-commit.sh terraform/environments
-      - name: Create PR
-        run: bash ./scripts/git-pull-request.sh terraform/environments
+      #- run: bash ./scripts/git-commit.sh terraform/environments
+      #- name: Create PR
+      #  run: bash ./scripts/git-pull-request.sh terraform/environments
       - name: Setup RAM share resources
-        run: |
-            echo  "Env variable ${{ env.application_name }}"
+        run: bash ./scripts/setup_ram_share_resources.sh ${{env.application_name}}
         env:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
