@@ -19,7 +19,7 @@ variable "tgw_id" {
 }
 
 variable "type" {
-  description = "Type of Routing table (live_data / non_live_data)" 
+  description = "Type of Routing table (live_data / non_live_data)"
   type        = string
 
   validation {
