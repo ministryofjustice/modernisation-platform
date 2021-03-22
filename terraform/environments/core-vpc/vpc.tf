@@ -80,6 +80,7 @@ module "vpc_tgw_routing" {
     aws = aws.core-network-services
   }
 
+  type                = local.is-live_data ? "live_data" : "non_live_data"
   subnet_sets        = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
   tgw_vpc_attachment = module.vpc_attachment[each.key].tgw_vpc_attachment
   tgw_route_table    = module.vpc_attachment[each.key].tgw_route_table
