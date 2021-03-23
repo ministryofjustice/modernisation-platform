@@ -17,7 +17,7 @@ module "vpc_attachment" {
 
   resource_share_name = "transit-gateway"
   transit_gateway_id  = data.aws_ec2_transit_gateway.transit-gateway.id
-  type                = local.tags.is-production ? "live_data" : "non_live_data"
+  type                = local.is-live_data ? "live_data" : "non_live_data"
 
   subnet_ids = module.vpc[each.key].tgw_subnet_ids
   vpc_id     = module.vpc[each.key].vpc_id
