@@ -31,6 +31,8 @@ provision_environment_directories() {
   # ]
   networking_definitions=$(jq -n '[ inputs | { subnet_sets: .cidr.subnet_sets | to_entries | map_values(.value + { set: .key, "business-unit": input_filename | ltrimstr("environments-networks/") | rtrimstr(".json") | split("-")[0] } ) } ]' "$networkdir"/*.json)
 
+  applicaion_new=()
+
   for file in environments/*.json; do
     application_name=$(basename "$file" .json)
     directory=$basedir/$application_name
@@ -49,12 +51,26 @@ provision_environment_directories() {
       mkdir -p "$directory"
       copy_templates "$directory" "$application_name"
 
-      #pass directory name to git hub
-      echo "::set-env name=application_name::${application_name}"
+      #Add new account to array
+      application_new=("$application_name")
+      
       
     fi
+    
+    #Ouput new account to Github environmoent which will be callled by setup_ram_share_resources.sh
+    echo "::set-env name=application_name::$( printf "%s' '" "${application_new[@]}" )"
 
-    echo "::set-env name=application_name::sprinkler"
+
+    ################################TESTING#############################
+    #application_new=()
+    application_new=("sprinkler")
+ 
+    #echo "::set-env name=application_name::core-sandbox"
+    echo "::set-env name=application_name::$( printf "%s' '" "${application_new[@]}" )"
+    #echo "::set-env name=application_name::$()"
+
+    ###################################################################
+
     # This filters and reshapes networking_definitions to only include the business units and subnet sets for $APPLICATION_NAME
     # e.g. if hmpps-production.json and laa-production.json both contained subnet-sets that specified the account "core-sandbox",
     # and $APPLICATION_NAME was core-sandbox, it would output this:
