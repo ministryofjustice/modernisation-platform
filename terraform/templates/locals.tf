@@ -30,9 +30,3 @@ locals {
   provider_name = "core-vpc-${local.environment}"
 
 }
-
-variable "networking" {
-
-  type = list(any)
-
-}
