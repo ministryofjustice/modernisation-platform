@@ -78,3 +78,29 @@ jobs:
           terraform -chdir="terraform/environments/core-vpc" workspace select "core-vpc-${TF_ENV}"
           bash scripts/terraform-apply.sh terraform/environments/core-vpc
           echo "Terraform apply finished"
+   
+  member-account-ram-associaton:
+    runs-on: [ubuntu-latest]
+    if: github.event.ref == 'refs/heads/main'
+    needs: [core-vpc-development-deployment-apply]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: get changed files
+        id: new_account
+        run: |
+          echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r HEAD^..HEAD | awk '{print $1}' | grep "terraform/environments/*" |  cut -d/ -f3 | uniq | xargs)"
+      - name: Set RAM assocation for member account
+        run: |
+          if [ ! -n ${{ steps.new_account.outputs.files }} ]
+          then
+          for i in ${{ steps.new_account.outputs.files }}
+          do
+          echo "[+] Setting up RAM asocation for ${i}"
+          bash scripts/member-account-ram-association.sh ${i} ${TF_ENV}
+          done
+          else
+          echo "[+] There were no new AWS member accounts to process"
+          fi
