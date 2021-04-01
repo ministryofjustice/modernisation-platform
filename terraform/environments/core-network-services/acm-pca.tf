@@ -278,3 +278,10 @@ data "aws_iam_policy_document" "kms-acm" {
 #Create RAM share for subordinate certificates
 
 
+output "acmpca_subordinate_non_live" {
+  value = aws_acmpca_certificate_authority.non-live_subordinate.arn
+}
+
+output "acmpca_subordinate_live" {
+  value = aws_acmpca_certificate_authority.live_subordinate.arn
+}
