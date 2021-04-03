@@ -20,7 +20,8 @@
   },
   "options": {
     "bastion_linux": true,
-    "additional_endpoints": []
+    "additional_endpoints": [],
+    "dns_zone_extend": []
   },
   "nacl": []
 }
