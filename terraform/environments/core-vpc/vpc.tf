@@ -168,5 +168,5 @@ module "dns_zone_extend" {
   env          = substr(terraform.workspace, length(local.application_name), length(terraform.workspace))
   zone_id      = { for key, zone in each.value.options.dns_zone_extend : key => zone }
   vpc_id       = module.vpc[each.key].vpc_id 
-  dns_domain       = ".modernisation-platform.internal"
+  dns_domain   = ".modernisation-platform.internal"
 }
