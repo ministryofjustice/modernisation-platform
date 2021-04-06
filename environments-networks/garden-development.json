@@ -21,7 +21,7 @@
   "options": {
     "bastion_linux": true,
     "additional_endpoints": [],
-    "dns_zone_extend": ["garden"]
+    "dns_zone_extend": []
   },
   "nacl": [
     {

@@ -165,4 +165,3 @@ module "dns_zone_extend" {
   vpc_id      = module.vpc[each.key].vpc_id
   dns_domain  = ".modernisation-platform.internal"
 }
-
