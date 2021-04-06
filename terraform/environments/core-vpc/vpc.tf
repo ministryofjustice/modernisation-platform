@@ -36,9 +36,6 @@ locals {
     ]
   ])
 
-  env = substr(terraform.workspace, length(local.application_name), length(terraform.workspace))
-
-  provider = "aws.core-vpc${local.env}"
 }
 
 module "vpc" {
