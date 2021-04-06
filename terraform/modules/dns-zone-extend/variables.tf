@@ -8,10 +8,10 @@ variable "vpc_id" {
 
 variable "dns_domain" {
   type = string
-  
+
 }
 variable "env" {
 
-   type = string
+  type = string
 
 }
