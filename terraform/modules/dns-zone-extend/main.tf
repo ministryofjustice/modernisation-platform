@@ -1,6 +1,6 @@
 data "aws_route53_zone" "private" {
   for_each     = var.zone_id
-  name         = "${each.value}${var.env}${var.dns_domain}"
+  name         = "${each.value}-${var.environment}${var.dns_domain}"
   private_zone = true
 }
 

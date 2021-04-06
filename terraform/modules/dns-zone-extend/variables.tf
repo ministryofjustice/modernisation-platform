@@ -10,7 +10,7 @@ variable "dns_domain" {
   type = string
 
 }
-variable "env" {
+variable "environment" {
 
   type = string
 
