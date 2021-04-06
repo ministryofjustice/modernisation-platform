@@ -1,8 +1,8 @@
 locals {
   nacl_base = {
     for value in var.nacl_config :
-    "${value.app}-${value.cidr_block}-${value.egress}-${value.subnet_type}" => {
-      name        = value.app
+    "${value.subnet_set}-${value.cidr_block}-${value.egress}-${value.subnet_type}" => {
+      name        = value.subnet_set
       cidr_block  = value.cidr_block
       egress      = value.egress
       protocol    = value.protocol
