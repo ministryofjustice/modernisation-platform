@@ -20,7 +20,7 @@
     },
     "nacl": [
         {
-            "app": "general",
+            "subnet_set": "general",
             "egress": true,
             "subnet_type": "public",
             "protocol": -1,
