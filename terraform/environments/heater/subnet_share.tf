@@ -17,7 +17,7 @@ module "ram-principal-association" {
   principal   = data.aws_caller_identity.current.account_id
   vpc_name    = var.networking[0].business-unit
   subnet_set  = var.networking[0].set
-  acm_pca     = local.acm_pca[0]
+  acm_pca     = "acm-pca-${local.is_live[0]}"
   environment = local.environment
 
 }

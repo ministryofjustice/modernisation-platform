@@ -1,0 +1,17 @@
+{
+    "accounts": {
+        "development": {
+            "ecs_type": "FARGATE",
+            "rds_storage": 5,
+            "rds_postgresql_version": "12.5",
+            "rds_instance_class": "db.t3.micro"
+
+        },
+        "production": {
+            "ecs_type": "FARGATE",
+            "rds_storage": 5,
+            "rds_postgresql_version": "12.5",
+            "rds_instance_class": "db.t3.micro"
+        }
+    }
+}
