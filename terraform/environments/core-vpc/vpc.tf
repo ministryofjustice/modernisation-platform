@@ -154,3 +154,14 @@ module "dns-zone" {
 
 }
 
+module "dns_zone_extend" {
+
+  for_each = local.vpcs[terraform.workspace]
+
+  source = "../../modules/dns-zone-extend"
+
+  environment = trimprefix(terraform.workspace, "${var.networking[0].application}-")
+  zone_id     = { for key, zone in each.value.options.dns_zone_extend : key => zone }
+  vpc_id      = module.vpc[each.key].vpc_id
+  dns_domain  = ".modernisation-platform.internal"
+}

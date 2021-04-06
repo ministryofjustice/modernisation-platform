@@ -82,7 +82,7 @@ jobs:
   member-account-ram-associaton:
     runs-on: [ubuntu-latest]
     if: github.event.ref == 'refs/heads/main'
-    needs: [core-vpc-development-deployment-apply]
+    needs: [core-vpc-preproduction-deployment-apply]
     steps:
       - name: checkout
         uses: actions/checkout@v2
