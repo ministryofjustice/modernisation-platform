@@ -13,17 +13,11 @@ variable "tgw_route_table" {
   type        = string
 }
 
+variable "route_table" {
+  description = "Route Table"
+}
+
 variable "tgw_id" {
   description = "Transit Gateway ID"
   type        = string
-}
-
-variable "type" {
-  description = "Type of Routing table (live_data / non_live_data)"
-  type        = string
-
-  validation {
-    condition     = var.type == "live_data" || var.type == "non_live_data"
-    error_message = "Accepted values are live_data, non_live_data."
-  }
 }

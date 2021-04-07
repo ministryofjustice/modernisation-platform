@@ -12,6 +12,12 @@ variable "accounts" {
 variable "environments" {
 }
 
+variable "public_dns_zone" {
+}
+
+variable "private_dns_zone" {
+}
+
 #TAGS
 variable "tags_common" {
   description = "MOJ required tags"
