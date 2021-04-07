@@ -1,14 +1,14 @@
 # lookups for DNS
 
 data "aws_route53_zone" "public" {
-  provider     = aws.core-network-services
+  provider = aws.core-network-services
 
   name         = local.modernisation-platform-domain
   private_zone = false
 }
 
 data "aws_route53_zone" "private" {
-  provider     = aws.core-network-services
+  provider = aws.core-network-services
 
   name         = local.modernisation-platform-internal-domain
   private_zone = true
@@ -17,7 +17,7 @@ data "aws_route53_zone" "private" {
 # lookups for routing
 
 data "aws_vpc" "selected" {
-  provider     = aws.core-network-services
+  provider = aws.core-network-services
 
   filter {
     name   = "tag:Name"
@@ -26,7 +26,7 @@ data "aws_vpc" "selected" {
 }
 
 data "aws_route_table" "main-public" {
-  provider     = aws.core-network-services
+  provider = aws.core-network-services
 
   vpc_id = data.aws_vpc.selected.id
 
