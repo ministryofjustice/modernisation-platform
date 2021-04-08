@@ -1,7 +1,7 @@
 ---
 name: Modernisation Platform Story
 about: Create new Modernisation Platform story
-
+labels: enhancement
 ---
 
 ## User Story
