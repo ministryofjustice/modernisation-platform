@@ -1,7 +1,7 @@
 ---
 name: Modernisation Platform Bug
 about: Create new Modernisation Platform bug
-
+labels: bug
 ---
 
 ## Expected Behavior
