@@ -1,4 +1,45 @@
+# lookups for DNS
+
+data "aws_route53_zone" "public" {
+  provider = aws.core-network-services
+
+  name         = local.modernisation-platform-domain
+  private_zone = false
+}
+
+data "aws_route53_zone" "private" {
+  provider = aws.core-network-services
+
+  name         = local.modernisation-platform-internal-domain
+  private_zone = true
+}
+
+# lookups for routing
+
+data "aws_vpc" "selected" {
+  provider = aws.core-network-services
+
+  filter {
+    name   = "tag:Name"
+    values = [local.type]
+  }
+}
+
+data "aws_route_table" "main-public" {
+  provider = aws.core-network-services
+
+  vpc_id = data.aws_vpc.selected.id
+
+  filter {
+    name   = "tag:Name"
+    values = ["${local.type}-public"]
+  }
+}
+
 locals {
+
+  type = local.is-live_data ? "live_data" : "non_live_data"
+
   # Get all VPC definitions by type
   vpcs = {
     # VPCs that sit within the core-vpc-production account
@@ -36,6 +77,8 @@ locals {
     ]
   ])
 
+  modernisation-platform-domain          = "modernisation-platform.service.justice.gov.uk"
+  modernisation-platform-internal-domain = "modernisation-platform.internal"
 }
 
 module "vpc" {
@@ -80,7 +123,7 @@ module "vpc_tgw_routing" {
     aws = aws.core-network-services
   }
 
-  type               = local.is-live_data ? "live_data" : "non_live_data"
+  route_table        = data.aws_route_table.main-public
   subnet_sets        = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
   tgw_vpc_attachment = module.vpc_attachment[each.key].tgw_vpc_attachment
   tgw_route_table    = module.vpc_attachment[each.key].tgw_route_table
@@ -143,10 +186,12 @@ module "dns-zone" {
   for_each = local.vpcs[terraform.workspace]
   source   = "../../modules/dns-zone"
 
-  dns_zone     = each.key
-  vpc_id       = module.vpc[each.key].vpc_id
-  accounts     = { for key, account in each.value.cidr.subnet_sets : key => account.accounts }
-  environments = local.environment_management
+  dns_zone         = each.key
+  vpc_id           = module.vpc[each.key].vpc_id
+  public_dns_zone  = data.aws_route53_zone.public
+  private_dns_zone = data.aws_route53_zone.private
+  accounts         = { for key, account in each.value.cidr.subnet_sets : key => account.accounts }
+  environments     = local.environment_management
 
   # Tags
   tags_common = local.tags
