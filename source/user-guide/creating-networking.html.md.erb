@@ -1,0 +1,58 @@
+---
+title: Creating networking resources in the Modernisation Platform
+last_reviewed_on: 2021-04-09
+review_in: 3 months
+---
+
+# <%= current_page.data.title %>
+
+## Overview
+
+In the Modernisation Platform, we provide the core networking resources that you will need for your application.
+
+For each account there are networking resources that we provide as standard, and additional resources that can be added if needed.
+
+These are defined in JSON files in the [environment-networks](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments-networks) directory.
+
+The Modernisation Platform will work with you to create these files and assign you VPC and subnet [CIDR ranges](https://github.com/ministryofjustice/modernisation-platform/tree/main/cidr-allocation.md).
+
+### Standard resources
+
+#### VPC
+
+VPC ([AWS Virtual Private Cloud](https://aws.amazon.com/vpc/)), providing out of the box network isolation.
+
+#### Subnet Sets
+
+Three different subnet types spread across all three availability zones (eu-west-2a, eu-west-2b, eu-west2c), making a total of nine subnets:
+
+ * Public (for public resources such as load balancers)
+ * Private (for private resources such as application servers)
+ * Data (for data resources such as databases)
+
+#### DNS Zones
+
+Hosted public and private DNS zones for your application domain names.
+
+#### Certificate Services
+
+Amazon issued public certificates and shared live and non live subordinate private CA(Certificate Authority) for private certificates.
+
+### Additional networking resources
+
+#### Connectivity to other VPCs or external parties
+
+As default your VPC is isolated, if you need connectivity to other VPCs with in the MoJ, or VPN ([Virtual private network](https://aws.amazon.com/vpn)) connections to external parties this can be created.
+
+#### Linux Bastion
+
+Connecting to servers should be done via [AWS Systems Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-sessions-start.html), but if it is not possible to install the SSM agent due to the age of the operating system, then a secure bastion server can be provisioned.
+A bastion can also be used for connecting locally to RDS databases via port forwarding.
+
+#### Extended DNS
+
+Allow your VPC to have access to additional DNS zones in other VPCs.
+
+### Additional information
+
+You can view our architecture for Networking on the [dedicated Networking architecture page](../concepts/networking), which also explains what you get by doing this.
