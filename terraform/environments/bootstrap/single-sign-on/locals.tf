@@ -23,4 +23,17 @@ locals {
       if substr(terraform.workspace, 0, length(application.name)) == application.name && substr(terraform.workspace, length(application.name), length(terraform.workspace)) == "-${environment.name}"
     ]
   ])
+
+  current-environment-definition_developers = flatten([
+    for application in local.definitions : [
+      for environment in application.environments : concat([
+        {
+          account_name = "${application.name}-${environment.name}"
+          github_slug  =  environment.access[0].github_slug
+          level        =  environment.access[0].level
+        }
+      ])
+      if substr(terraform.workspace, 0, length(application.name)) == application.name && substr(terraform.workspace, length(application.name), length(terraform.workspace)) == "-${environment.name}"
+    ]
+  ])
 }

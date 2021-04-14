@@ -6,7 +6,11 @@
     },
     {
       "name": "development",
-      "access": []
+	  "access": [{
+		"github_slug": "laa-aws-infrastructure",
+		"level": "developer"
+	  }]
+       
     }
 	],
 	"tags": {

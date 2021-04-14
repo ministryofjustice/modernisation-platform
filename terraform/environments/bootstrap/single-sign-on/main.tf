@@ -17,6 +17,13 @@ data "aws_ssoadmin_permission_set" "administrator" {
   name         = "AdministratorAccess"
 }
 
+data "aws_ssoadmin_permission_set" "read-only" {
+  provider = aws.sso-management
+
+  instance_arn = local.sso_instance_arn
+  name         = "ViewOnlyAccess"
+}
+
 # Get Identity Store groups
 data "aws_identitystore_group" "default" {
   provider = aws.sso-management
@@ -41,6 +48,25 @@ resource "aws_ssoadmin_account_assignment" "default" {
 
   instance_arn       = local.sso_instance_arn
   permission_set_arn = each.value.level == "administrator" ? data.aws_ssoadmin_permission_set.administrator.arn : data.aws_ssoadmin_permission_set.administrator.arn
+
+  principal_id   = data.aws_identitystore_group.default[each.value.github_slug].group_id
+  principal_type = "GROUP"
+
+  target_id   = local.environment_management.account_ids[terraform.workspace]
+  target_type = "AWS_ACCOUNT"
+}
+
+
+resource "aws_ssoadmin_account_assignment" "developer_access" {
+  provider = aws.sso-management
+
+  for_each = {
+    for account_assignment in local.current-environment-definition_developers :
+    "${account_assignment.account_name}-${account_assignment.github_slug}-${account_assignment.level}" => account_assignment
+  }
+
+  instance_arn       = local.sso_instance_arn
+  permission_set_arn = each.value.level == "developer" ? data.aws_ssoadmin_permission_set.read-only.arn : data.aws_ssoadmin_permission_set.read-only.arn
 
   principal_id   = data.aws_identitystore_group.default[each.value.github_slug].group_id
   principal_type = "GROUP"
