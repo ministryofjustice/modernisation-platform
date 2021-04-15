@@ -518,21 +518,20 @@ resource "aws_route_table_association" "protected" {
 
 
 # SSM Security Groups
-resource "aws_security_group" "ssm_endpoints" {
-  for_each = var.subnet_sets
+resource "aws_security_group" "endpoints" {
 
-  name        = "${each.key}_SSM"
-  description = "Control SSM traffic"
+  name        = "${var.tags_prefix}-int-endpoint"
+  description = "Control interface traffic"
   vpc_id      = aws_vpc.vpc.id
 
   tags = merge(
     var.tags_common,
     {
-      Name = "${each.key}_SSM"
+      Name = "${var.tags_prefix}-int-endpoint"
     }
   )
 }
-resource "aws_security_group_rule" "ssm-ingress1" {
+resource "aws_security_group_rule" "endpoints_ingress_1" {
   for_each = var.subnet_sets
 
   type              = "ingress"
@@ -540,7 +539,7 @@ resource "aws_security_group_rule" "ssm-ingress1" {
   to_port           = 443
   protocol          = "tcp"
   cidr_blocks       = [each.value]
-  security_group_id = aws_security_group.ssm_endpoints[each.key].id
+  security_group_id = aws_security_group.endpoints.id
 
 }
 # SSM Endpoints
@@ -554,10 +553,7 @@ resource "aws_vpc_endpoint" "ssm_interfaces" {
     for az in local.availability_zones :
     aws_subnet.protected["protected-${az}"].id
   ]
-  security_group_ids = [
-    for key, value in var.subnet_sets :
-    aws_security_group.ssm_endpoints[key].id
-  ]
+  security_group_ids = [aws_security_group.endpoints.id]
 
   private_dns_enabled = true
 
