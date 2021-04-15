@@ -29,5 +29,5 @@ test_empty_values {
 }
 
 test_unexpected_business_units {
-  deny["`example.json` uses an unexpected business-unit: got `incorrect-business-unit`, expected one of: HQ, HMPPS, OPG, LAA, HMCTS, CICA, Platforms"] with input as { "filename": "example.json", "tags": { "business-unit": "incorrect-business-unit" } }
+  deny["`example.json` uses an unexpected business-unit: got `incorrect-business-unit`, expected one of: HQ, HMPPS, OPG, LAA, HMCTS, CICA, Platforms, CJSE, Probation"] with input as { "filename": "example.json", "tags": { "business-unit": "incorrect-business-unit" } }
 }
