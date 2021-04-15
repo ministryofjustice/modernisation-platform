@@ -7,7 +7,7 @@
     {
       "name": "development",
 	  "access": [{
-		"github_slug": "laa-aws-infrastructure",
+		"github_slug": "modernisation-platform",
 		"level": "developer"
 	  }]
        

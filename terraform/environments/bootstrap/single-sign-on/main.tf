@@ -38,6 +38,20 @@ data "aws_identitystore_group" "default" {
   }
 }
 
+# Get Identity Store groups
+data "aws_identitystore_group" "developer" {
+  provider = aws.sso-management
+
+  for_each = toset(local.current-environment-definition_developers[*].github_slug)
+
+  identity_store_id = local.sso_identity_store_id
+
+  filter {
+    attribute_path  = "DisplayName"
+    attribute_value = each.value
+  }
+}
+
 resource "aws_ssoadmin_account_assignment" "default" {
   provider = aws.sso-management
 
@@ -68,7 +82,7 @@ resource "aws_ssoadmin_account_assignment" "developer_access" {
   instance_arn       = local.sso_instance_arn
   permission_set_arn = each.value.level == "developer" ? data.aws_ssoadmin_permission_set.read-only.arn : data.aws_ssoadmin_permission_set.read-only.arn
 
-  principal_id   = data.aws_identitystore_group.default[each.value.github_slug].group_id
+  principal_id   = data.aws_identitystore_group.developer[each.value.github_slug].group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
