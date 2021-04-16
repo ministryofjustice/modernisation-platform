@@ -21,7 +21,7 @@ data "aws_ssoadmin_permission_set" "read-only" {
   provider = aws.sso-management
 
   instance_arn = local.sso_instance_arn
-  name         = "ViewOnlyAccess"
+  name         = "modernisation-platform-viewer"
 }
 
 # Get Identity Store groups
