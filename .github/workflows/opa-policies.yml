@@ -1,14 +1,16 @@
 name: "Open Policy Agent: validate JSON structures"
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
   pull_request:
     branches:
       - main
-    types: [opened, edited, reopened, synchronize]
-  workflow_dispatch:
+    paths:
+      - 'scripts/tests/validate/opa.sh'
+      - 'policies/**.rego'
+      - 'environments-networks/**.json'
+      - 'environments/**.json'
+      - '.github/workflows/opa-policies.yml'
 
 defaults:
   run:
