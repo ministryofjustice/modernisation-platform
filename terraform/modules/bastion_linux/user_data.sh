@@ -16,9 +16,21 @@ setfacl -Rdm other:0 /var/log/bastion
 # Make OpenSSH execute a custom script on logins
 echo -e "\\nForceCommand /usr/bin/bastion/shell" >> /etc/ssh/sshd_config
 
+echo "AllowTcpForwarding yes" >> /etc/ssh/sshd_config
 # Block some SSH features that bastion host users could use to circumvent the solution
 awk '!/X11Forwarding/' /etc/ssh/sshd_config > temp && mv temp /etc/ssh/sshd_config
 echo "X11Forwarding no" >> /etc/ssh/sshd_config
+
+#hardening
+# set umask
+sed  -i "s/002/022/g" /etc/profile
+umask 022
+#disable root login
+systemctl stop sshd
+echo "PermitRootLogin no" >> /etc/ssh/ssh_config
+echo "PermitEmptyPasswords no" >> /etc/ssh/ssh_config
+systemctl start sshd
+
 
 mkdir /usr/bin/bastion
 
@@ -36,15 +48,11 @@ if [[ -z $SSH_ORIGINAL_COMMAND ]]; then
   # I suffix the log file name with a random string. I explain why later on.
   SUFFIX=`mktemp -u _XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX`
   # Wrap an interactive shell into "script" to record the SSH session
-
-  ## TEMP #################################################################################
-  ## Turn off session logging for now as an issue exists with creating too many files in S3
-  # script -qf --timing=$LOG_DIR$LOG_FILE$SUFFIX.time $LOG_DIR$LOG_FILE$SUFFIX.data --command=/bin/bash
-
+  script -qf --timing=$LOG_DIR$LOG_FILE$SUFFIX.time $LOG_DIR$LOG_FILE$SUFFIX.data --command=/bin/bash
 else
   # If the module consumer wants to allow remote commands (for ansible or other) then allow that command through.
-  if [ "${allow_ssh_commands}" == "True" ]; then
-    exec /bin/bash -c "$SSH_ORIGINAL_COMMAND"
+  if [ "${allow_ssh_commands}" = "true" ]; then
+    exec /bin/bash -c $SSH_ORIGINAL_COMMAND
   else
     # The "script" program could be circumvented with some commands (e.g. bash, nc).
     # Therefore, I intentionally prevent users from supplying commands.
@@ -83,11 +91,7 @@ cat > /usr/bin/bastion/sync_s3 << 'EOF'
 # Copy log files to S3 with server-side encryption enabled.
 # Then, if successful, delete log files that are older than a day.
 LOG_DIR="/var/log/bastion/"
-
-
-## TEMP #################################################################################
-## Turn off session logging for now as an issue exists with creating too many files in S3
-# aws s3 cp $LOG_DIR s3://${bucket_name}/logs/ --sse --region ${aws_region} --recursive && find $LOG_DIR* -mtime +1 -exec rm {} \;
+aws s3 sync $LOG_DIR s3://${bucket_name}/logs/ --sse --region ${aws_region} && find $LOG_DIR* -mtime +1 -exec rm {} \;
 EOF
 
 chmod 700 /usr/bin/bastion/sync_s3
@@ -157,12 +161,13 @@ chmod 700 /usr/bin/bastion/sync_users
 ###########################################
 
 cat > ~/mycron << EOF
-*/5 * * * * /usr/bin/bastion/sync_s3
-*/5 * * * * /usr/bin/bastion/sync_users
+*/15 * * * * /usr/bin/bastion/sync_users
 0 0 * * * yum -y update --security
+*/10 * * * * /usr/bin/bastion/sync_s3
 EOF
 crontab ~/mycron
 rm ~/mycron
+
 
 
 #########################################

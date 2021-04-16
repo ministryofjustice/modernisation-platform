@@ -4,6 +4,15 @@ variable "region" {
   description = ""
 }
 
+variable "app_name" {
+  type        = string
+  description = "Name of application"
+  validation {
+    condition     = can(regex("^[A-Za-z0-9][A-Za-z0-9-.]{1,61}[A-Za-z0-9]$", var.app_name))
+    error_message = "Invalid name for application supplied in variable app_name."
+  }
+}
+
 variable "business_unit" {
   type        = string
   description = "Fixed variable to specify business-unit for RAM shared subnets"
@@ -14,15 +23,14 @@ variable "subnet_set" {
   description = "Fixed variable to specify subnet-set for RAM shared subnets"
 }
 
-variable "account_name" {
+variable "environment" {
   type        = string
-  description = "account name without environment name excluded - can be used to extract environment from workspace name"
+  description = "application environment"
 }
 
 ##Bastion
-variable "bastion_host_key_pair" {
-  default     = ""
-  description = "Select the key pair to use to launch the bastion host"
+variable "public_key_data" {
+  description = "User public keys for specific environment"
 }
 
 variable "extra_user_data_content" {
@@ -32,45 +40,64 @@ variable "extra_user_data_content" {
 
 variable "allow_ssh_commands" {
   type        = bool
-  default     = true
-  description = "Extra user data content for Bastion ec2"
+  description = "Allow SSH commands to be specified"
+  validation {
+    condition     = (var.allow_ssh_commands == true || var.allow_ssh_commands == false)
+    error_message = "Variable allow_ssh_commands must be boolean."
+  }
 }
 
 ## S3
 variable "bucket_name" {
-  default     = "bastion"
-  description = "Bucket name were the bastion will store the logs"
+  type        = string
+  description = "Bucket used for bucket log storage and user public keys"
+  validation {
+    condition     = can(regex("^[A-Za-z0-9][A-Za-z0-9-.]{1,61}[A-Za-z0-9]$", var.bucket_name))
+    error_message = "The S3 bucket name is not valid in variable bucket_name."
+  }
 }
 
 variable "bucket_versioning" {
-  default     = true
+  type        = bool
   description = "Enable bucket versioning or not"
+  validation {
+    condition     = (var.bucket_versioning == true || var.bucket_versioning == false)
+    error_message = "Variable bucket_versioning must be boolean."
+  }
 }
 
 variable "bucket_force_destroy" {
-  default     = true
+  type        = bool
   description = "The bucket and all objects should be destroyed when using true"
+  validation {
+    condition     = (var.bucket_force_destroy == true || var.bucket_force_destroy == false)
+    error_message = "Variable bucket_force_destroy must be boolean."
+  }
 }
 
 #### Logs
 variable "log_auto_clean" {
+  type        = bool
   description = "Enable or not the lifecycle"
-  default     = true
+  validation {
+    condition     = (var.log_auto_clean == true || var.log_auto_clean == false)
+    error_message = "Variable log_auto_clean must be boolean."
+  }
 }
 
 variable "log_standard_ia_days" {
+  type        = number
   description = "Number of days before moving logs to IA Storage"
-  default     = 30
 }
 
 variable "log_glacier_days" {
+  type        = number
   description = "Number of days before moving logs to Glacier"
-  default     = 60
 }
 
 variable "log_expiry_days" {
+  type        = number
   description = "Number of days before logs expiration"
-  default     = 90
 }
 
 ## Tags / Prefix

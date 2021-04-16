@@ -3,70 +3,70 @@ variable "region" {
   description = ""
   default     = "eu-west-2"
 }
-data "aws_iam_policy_document" "assume_policy_document" {
-  statement {
-    actions = [
-      "sts:AssumeRole"
-    ]
-    principals {
-      type        = "Service"
-      identifiers = ["ec2.amazonaws.com"]
-    }
-  }
-}
+# data "aws_iam_policy_document" "assume_policy_document" {
+#   statement {
+#     actions = [
+#       "sts:AssumeRole"
+#     ]
+#     principals {
+#       type        = "Service"
+#       identifiers = ["ec2.amazonaws.com"]
+#     }
+#   }
+# }
 
-resource "aws_iam_role" "bastion_host_role" {
-  name               = "bastion_linux_ec2_role"
-  path               = "/"
-  assume_role_policy = data.aws_iam_policy_document.assume_policy_document.json
+# resource "aws_iam_role" "bastion_host_role" {
+#   name               = "bastion_linux_ec2_role"
+#   path               = "/"
+#   assume_role_policy = data.aws_iam_policy_document.assume_policy_document.json
 
-  tags = merge(
-    local.tags,
-    {
-      Name = "bastion_linux_ec2_role"
-    },
-  )
+#   tags = merge(
+#     local.tags,
+#     {
+#       Name = "bastion_linux_ec2_role"
+#     },
+#   )
 
-}
+# }
 
-resource "aws_iam_role_policy_attachment" "bastion_host_ssm" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-  role       = aws_iam_role.bastion_host_role.name
-}
+# resource "aws_iam_role_policy_attachment" "bastion_host_ssm" {
+#   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+#   role       = aws_iam_role.bastion_host_role.name
+# }
 
-data "aws_iam_policy_document" "bastion_ssm_s3_policy_document" {
+# data "aws_iam_policy_document" "bastion_ssm_s3_policy_document" {
 
-  statement {
-    effect = "Allow"
-    actions = [
-      "s3:GetObject"
-    ]
-    resources = [
-      "arn:aws:s3:::aws-ssm-${var.region}/*",
-      "arn:aws:s3:::aws-windows-downloads-${var.region}/*",
-      "arn:aws:s3:::amazon-ssm-${var.region}/*",
-      "arn:aws:s3:::amazon-ssm-packages-${var.region}/*",
-      "arn:aws:s3:::${var.region}-birdwatcher-prod/*",
-      "arn:aws:s3:::aws-ssm-distributor-file-${var.region}/*",
-      "arn:aws:s3:::aws-ssm-document-attachments-${var.region}/*",
-      "arn:aws:s3:::patch-baseline-snapshot-${var.region}/*"
-    ]
-  }
-}
-resource "aws_iam_policy" "bastion_ssm_s3_policy" {
-  name   = "bastion_ssm_s3"
-  policy = data.aws_iam_policy_document.bastion_ssm_s3_policy_document.json
-}
+#   statement {
+#     effect = "Allow"
+#     actions = [
+#       "s3:GetObject"
+#     ]
+#     resources = [
+#       "arn:aws:s3:::aws-ssm-${var.region}/*",
+#       "arn:aws:s3:::aws-windows-downloads-${var.region}/*",
+#       "arn:aws:s3:::amazon-ssm-${var.region}/*",
+#       "arn:aws:s3:::amazon-ssm-packages-${var.region}/*",
+#       "arn:aws:s3:::${var.region}-birdwatcher-prod/*",
+#       "arn:aws:s3:::aws-ssm-distributor-file-${var.region}/*",
+#       "arn:aws:s3:::aws-ssm-document-attachments-${var.region}/*",
+#       "arn:aws:s3:::patch-baseline-snapshot-${var.region}/*"
+#     ]
+#   }
+# }
+# resource "aws_iam_policy" "bastion_ssm_s3_policy" {
+#   name   = "bastion_ssm_s3"
+#   policy = data.aws_iam_policy_document.bastion_ssm_s3_policy_document.json
+# }
 
-resource "aws_iam_role_policy_attachment" "bastion_host_ssm_s3" {
-  policy_arn = aws_iam_policy.bastion_ssm_s3_policy.arn
-  role       = aws_iam_role.bastion_host_role.name
-}
+# resource "aws_iam_role_policy_attachment" "bastion_host_ssm_s3" {
+#   policy_arn = aws_iam_policy.bastion_ssm_s3_policy.arn
+#   role       = aws_iam_role.bastion_host_role.name
+# }
 
-resource "aws_iam_instance_profile" "bastion_host_profile" {
-  role = aws_iam_role.bastion_host_role.name
-  path = "/"
-}
+# resource "aws_iam_instance_profile" "bastion_host_profile" {
+#   role = aws_iam_role.bastion_host_role.name
+#   path = "/"
+# }
 
 
 
