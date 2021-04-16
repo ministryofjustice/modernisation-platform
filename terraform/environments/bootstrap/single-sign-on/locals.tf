@@ -1,4 +1,5 @@
 locals {
+  
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
   definitions-path       = "../../../../environments"
   definitions = [
@@ -20,23 +21,19 @@ locals {
     ]
   ])
 
-  current-environment-definition_developers = flatten([
-    for application in local.definitions : [
-      for environment in application.environments : concat([
-        {
-          account_name = "${application.name}-${environment.name}"
-          github_slug  =  environment.access[0].github_slug
-          level        =  environment.access[0].level
-        }
-      ])
-      if substr(terraform.workspace, 0, length(application.name)) == application.name && substr(terraform.workspace, length(application.name), length(terraform.workspace)) == "-${environment.name}"
-    ]
-  ])
+  current-environment-definition_developers = try(flatten([
+     for application in local.definitions : [
+       for environment in application.environments : concat([
+         {
+           account_name = "${application.name}-${environment.name}"
+           github_slug  =  environment.access[0].github_slug
+           level        =  environment.access[0].level
+         }
+       ])
+       if substr(terraform.workspace, 0, length(application.name)) == application.name && substr(terraform.workspace, length(application.name), length(terraform.workspace)) == "-${environment.name}"
+     ]
+   ]),"NO DEVELOPER GITHUB SLUG VARIABLE PROVIDED IN JSON")
+ 
+   account = try({ for account_assignment in local.current-environment-definition_developers : "accounts" => account_assignment }, "NO DEVELOPER GITHUB SLUG VARIABLE PROVIDED IN JSON")
+
 }
-
-output "current-environment-definition" {
-
-  value = local.current-environment-definition
-  
-}
-

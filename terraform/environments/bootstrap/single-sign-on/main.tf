@@ -40,19 +40,21 @@ data "aws_identitystore_group" "default" {
 
 # Get Identity Store groups
 data "aws_identitystore_group" "developer" {
-  provider = aws.sso-management
 
-  for_each = toset(local.current-environment-definition_developers[*].github_slug)
+  count = local.current-environment-definition_developers == "NO DEVELOPER GITHUB SLUG VARIABLE PROVIDED IN JSON" ? 0 : 1
+
+  provider = aws.sso-management
 
   identity_store_id = local.sso_identity_store_id
 
   filter {
     attribute_path  = "DisplayName"
-    attribute_value = each.value
+    attribute_value = try(local.account["accounts"].github_slug, "Datasource (aws_identitystore_group) not found" )
   }
 }
 
 resource "aws_ssoadmin_account_assignment" "default" {
+  
   provider = aws.sso-management
 
   for_each = {
@@ -72,18 +74,15 @@ resource "aws_ssoadmin_account_assignment" "default" {
 
 
 resource "aws_ssoadmin_account_assignment" "developer_access" {
+
+  count = local.current-environment-definition_developers == "NO DEVELOPER GITHUB SLUG VARIABLE PROVIDED IN JSON" ? 0 : 1
+
   provider = aws.sso-management
 
-  for_each = {
-    for account_assignment in local.current-environment-definition_developers :
-    "${account_assignment.account_name}-${account_assignment.github_slug}-${account_assignment.level}" => account_assignment
-  }
-
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = each.value.level == "developer" ? data.aws_ssoadmin_permission_set.read-only.arn : data.aws_ssoadmin_permission_set.read-only.arn
-
-  principal_id   = data.aws_identitystore_group.developer[each.value.github_slug].group_id
-  principal_type = "GROUP"
+  permission_set_arn = try(local.account["accounts"].level == "developer" ? data.aws_ssoadmin_permission_set.read-only.arn : data.aws_ssoadmin_permission_set.read-only.arn, "")
+  principal_id       = try(data.aws_identitystore_group.developer[count.index].group_id, "NO DEVELOPER GITHUB SLUG VARIABLE PROVIDED IN JSON")
+  principal_type     = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
   target_type = "AWS_ACCOUNT"
