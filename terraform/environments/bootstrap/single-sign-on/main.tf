@@ -49,12 +49,12 @@ data "aws_identitystore_group" "developer" {
 
   filter {
     attribute_path  = "DisplayName"
-    attribute_value = try(local.account["accounts"].github_slug, "Datasource (aws_identitystore_group) not found" )
+    attribute_value = try(local.account["accounts"].github_slug, "Datasource (aws_identitystore_group) not found")
   }
 }
 
 resource "aws_ssoadmin_account_assignment" "default" {
-  
+
   provider = aws.sso-management
 
   for_each = {
