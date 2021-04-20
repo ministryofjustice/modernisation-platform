@@ -100,6 +100,22 @@ module "terraform-module-trusted-advisor" {
   ]
 }
 
+module "modernisation-platform-environments" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-environments"
+  description = "Modernisation platform environments"
+  topics = [
+    "aws",
+    "environments"
+  ]
+  secrets = merge(local.ci_iam_user_keys, {
+    PRIVILEGED_AWS_ACCESS_KEY_ID     = "example"
+    PRIVILEGED_AWS_SECRET_ACCESS_KEY = "example"
+    # Terraform GitHub token for the CI/CD user
+    TERRAFORM_GITHUB_TOKEN = "This needs to be manually set in GitHub."
+  })
+}
+
 # Everyone, with access to the above repositories
 module "core-team" {
   source      = "./modules/team"
