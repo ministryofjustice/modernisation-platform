@@ -130,7 +130,8 @@ module "core-team" {
     module.terraform-module-iam-superadmins.repository.id,
     module.terraform-module-s3-bucket-replication-role.repository.id,
     module.terraform-module-s3-bucket.repository.id,
-    module.terraform-module-trusted-advisor.repository.id
+    module.terraform-module-trusted-advisor.repository.id,
+    module.modernisation-platform-environments.repository.id
   ]
 
   maintainers = local.maintainers
