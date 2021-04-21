@@ -17,6 +17,13 @@ data "aws_ssoadmin_permission_set" "administrator" {
   name         = "AdministratorAccess"
 }
 
+data "aws_ssoadmin_permission_set" "read-only" {
+  provider = aws.sso-management
+
+  instance_arn = local.sso_instance_arn
+  name         = "modernisation-platform-viewer"
+}
+
 # Get Identity Store groups
 data "aws_identitystore_group" "default" {
   provider = aws.sso-management
@@ -31,7 +38,23 @@ data "aws_identitystore_group" "default" {
   }
 }
 
+# Get Identity Store groups
+data "aws_identitystore_group" "developer" {
+
+  count = local.current-environment-definition_developers == "NO DEVELOPER GITHUB SLUG VARIABLE PROVIDED IN JSON" ? 0 : 1
+
+  provider = aws.sso-management
+
+  identity_store_id = local.sso_identity_store_id
+
+  filter {
+    attribute_path  = "DisplayName"
+    attribute_value = try(local.account["accounts"].github_slug, "Datasource (aws_identitystore_group) not found")
+  }
+}
+
 resource "aws_ssoadmin_account_assignment" "default" {
+
   provider = aws.sso-management
 
   for_each = {
@@ -44,6 +67,22 @@ resource "aws_ssoadmin_account_assignment" "default" {
 
   principal_id   = data.aws_identitystore_group.default[each.value.github_slug].group_id
   principal_type = "GROUP"
+
+  target_id   = local.environment_management.account_ids[terraform.workspace]
+  target_type = "AWS_ACCOUNT"
+}
+
+
+resource "aws_ssoadmin_account_assignment" "developer_access" {
+
+  count = local.current-environment-definition_developers == "NO DEVELOPER GITHUB SLUG VARIABLE PROVIDED IN JSON" ? 0 : 1
+
+  provider = aws.sso-management
+
+  instance_arn       = local.sso_instance_arn
+  permission_set_arn = try(local.account["accounts"].level == "developer" ? data.aws_ssoadmin_permission_set.read-only.arn : data.aws_ssoadmin_permission_set.read-only.arn, "")
+  principal_id       = try(data.aws_identitystore_group.developer[count.index].group_id, "NO DEVELOPER GITHUB SLUG VARIABLE PROVIDED IN JSON")
+  principal_type     = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
   target_type = "AWS_ACCOUNT"
