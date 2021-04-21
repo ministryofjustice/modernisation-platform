@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
-REPOSITORY_URL=https://api.github.com/repos/ministyofjustice/modernisation-platform-environments/actions/workflows/ram-association.yaml/dispatches
-PAYLOAD=$(echo "${1}" | jq -R --slurp '{"client_payload": { "environment":.}}')
+REPOSITORY_URL=https://api.github.com/repos/ministryofjustice/modernisation-platform-environments/dispatches
+# Pass the environment in and create the payload
+PAYLOAD=$(echo "${1}" | jq -R --slurp '{"event_type": "ram-share-assoc-workflow", "client_payload": { "environment":.}}')
 
-
-# Update github PR with Terraform plan output as a comment
+# Trigger the ram-association.yml workflow in the modernisation-platform-environments repository
 echo "${PAYLOAD}" | curl \
   -s -X POST \
-  -H "Accept: application/vnd.github.everest-preview+json" \
+  -H "Accept: application/vnd.github.v3+json" \
   -H "Authorization: token ${TERRAFORM_GITHUB_TOKEN}" \
-  -d @- $REPOSITORY_URL > /dev/null
+  -d @- $REPOSITORY_URL
 ERRORCODE="${?}"
 if [ ${ERRORCODE} -ne 0 ]
 then
-  echo "ERROR: update-pr-comments.sh exited with an error - Code:${ERRORCODE}"
+  echo "ERROR: trigger-ram-association.sh exited with an error - Code:${ERRORCODE}"
   exit 1
 fi
