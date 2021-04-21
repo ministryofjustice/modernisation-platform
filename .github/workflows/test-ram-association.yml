@@ -1,0 +1,16 @@
+name: "RAM Association: Test"
+
+on:
+  workflow_dispatch: 
+env:
+  TF_ENV: "development"
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  member-account-ram-associaton:
+    runs-on: ubuntu-latest
+    steps:
+      - run: bash scripts/trigger-ram-association.sh ${TF_ENV}
