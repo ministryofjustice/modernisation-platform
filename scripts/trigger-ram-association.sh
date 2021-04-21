@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 REPOSITORY_URL=https://api.github.com/repos/ministyofjustice/modernisation-platform-environments/actions/workflows/ram-association.yaml/dispatches
-PAYLOAD=$(echo "${1}" | jq -R --slurp '{"client_payload": { "environment": ${1}}}')
+PAYLOAD=$(echo "${1}" | jq -R --slurp '{"client_payload": { "environment":.}')
 
 
 # Update github PR with Terraform plan output as a comment
