@@ -1,0 +1,13 @@
+{
+  "environments": [
+    {
+      "name": "production",
+      "access": []
+    }
+  ],
+  "tags": {
+    "application": "analytical-platform-management",
+    "business-unit": "Platforms",
+    "owner": "Analytical Platform: analytical_platform@digital.justice.gov.uk"
+  }
+}

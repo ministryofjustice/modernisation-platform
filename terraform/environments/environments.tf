@@ -1,3 +1,4 @@
+//Module creates accounts
 module "environments" {
   source                             = "github.com/ministryofjustice/modernisation-platform-terraform-environments?ref=v2.0.0"
   environment_directory              = "../../environments"

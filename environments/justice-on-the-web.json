@@ -1,0 +1,13 @@
+{
+  "environments": [
+    {
+      "name": "sandbox",
+      "access": []
+    }
+  ],
+  "tags": {
+    "application": "justice-on-the-web-sandbox",
+    "business-unit": "HQ",
+    "owner": "Justice on the Web WordPress: wordpress@digital.justice.gov.uk"
+  }
+}

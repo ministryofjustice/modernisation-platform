@@ -1,0 +1,27 @@
+{
+  "environments": [
+    {
+      "name": "non-production",
+      "access": [
+        {
+          "github_slug": "hmpps-remote-supervision",
+          "level": "administrator"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "hmpps-remote-supervision",
+          "level": "administrator"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "remote-supervision",
+    "business-unit": "Probation",
+    "owner": "Remote Supervision: remote.supervision+hosting@digital.justice.gov.uk"
+  }
+}
