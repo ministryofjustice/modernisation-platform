@@ -1,42 +1,42 @@
-# name: "Terraform: New environment"
-#
-# on:
-#   push:
-#     paths:
-#       - 'environments/**.json'
-#       - 'terraform/environments/bootstrap/**'
-#       - '.github/workflows/new-environment.yml'
-#     branches:
-#       - main
-#   pull_request:
-#     branches:
-#       - main
-#     types: [opened, edited, reopened, synchronize]
-#   workflow_dispatch:
-#
-# env:
-#   TF_IN_AUTOMATION: true
-#
-# defaults:
-#   run:
-#     shell: bash
-#
-# jobs:
-#   create-environment:
-#     runs-on: ubuntu-latest
-#     env:
-#       AWS_ACCESS_KEY_ID:  ${{ secrets.PRIVILEGED_AWS_ACCESS_KEY_ID }}
-#       AWS_SECRET_ACCESS_KEY:  ${{ secrets.PRIVILEGED_AWS_SECRET_ACCESS_KEY }}
-#     steps:
-#       - uses: actions/checkout@main
-#       - uses: hashicorp/setup-terraform@v1
-#         with:
-#           terraform_version: 0.14.6
-#           terraform_wrapper: false
-#       - name: Run terraform init in terraform/environments
-#         run: bash scripts/terraform-init.sh terraform/environments
-#       - name: Run terraform plan in terraform/environments
-#         run: bash scripts/terraform-plan.sh terraform/environments
+name: "Terraform: New environment"
+
+on:
+  push:
+    paths:
+      - 'environments/**.json'
+      - 'terraform/environments/bootstrap/**'
+      - '.github/workflows/new-environment.yml'
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    types: [opened, edited, reopened, synchronize]
+  workflow_dispatch:
+
+env:
+  TF_IN_AUTOMATION: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  create-environment:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID:  ${{ secrets.PRIVILEGED_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY:  ${{ secrets.PRIVILEGED_AWS_SECRET_ACCESS_KEY }}
+    steps:
+      - uses: actions/checkout@main
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.14.6
+          terraform_wrapper: false
+      - name: Run terraform init in terraform/environments
+        run: bash scripts/terraform-init.sh terraform/environments
+      - name: Run terraform plan in terraform/environments
+        run: bash scripts/terraform-plan.sh terraform/environments
 #       - name: Run terraform apply in terraform/environments
 #         if: github.event.ref == 'refs/heads/main'
 #         run: bash scripts/terraform-apply.sh terraform/environments
