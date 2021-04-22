@@ -37,71 +37,71 @@ jobs:
         run: bash scripts/terraform-init.sh terraform/environments
       - name: Run terraform plan in terraform/environments
         run: bash scripts/terraform-plan.sh terraform/environments
-      - name: Run terraform apply in terraform/environments
-        if: github.event.ref == 'refs/heads/main'
-        run: bash scripts/terraform-apply.sh terraform/environments
-  provision-workspaces:
-    runs-on: ubuntu-latest
-    if: github.event.ref == 'refs/heads/main'
-    needs: [create-environment]
-    env:
-      AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    steps:
-      - uses: actions/checkout@main
-      - uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 0.14.6
-          terraform_wrapper: false
-      - name: Provision workspaces in terraform/environments/bootstrap/*
-        run: bash scripts/provision-terraform-workspaces.sh bootstrap
-      - name: Provision workspaces in terraform/environments/*
-        run: bash scripts/provision-terraform-workspaces.sh all-environments
-  delegate-access:
-    runs-on: ubuntu-latest
-    if: github.event.ref == 'refs/heads/main'
-    needs: [provision-workspaces]
-    env:
-      AWS_ACCESS_KEY_ID:  ${{ secrets.PRIVILEGED_AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY:  ${{ secrets.PRIVILEGED_AWS_SECRET_ACCESS_KEY }}
-    steps:
-      - uses: actions/checkout@main
-      - uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 0.14.6
-          terraform_wrapper: false
-      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access plan
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access apply
-  secure-baselines:
-    runs-on: ubuntu-latest
-    if: github.event.ref == 'refs/heads/main'
-    needs: [delegate-access]
-    env:
-      AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    steps:
-      - uses: actions/checkout@main
-      - uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 0.14.6
-          terraform_wrapper: false
-      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines plan
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines apply
-  single-sign-on:
-    runs-on: ubuntu-latest
-    if: github.event.ref == 'refs/heads/main'
-    needs: [provision-workspaces]
-    env:
-      AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    steps:
-      - uses: actions/checkout@main
-      - uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 0.14.6
-          terraform_wrapper: false
-      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on plan
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on apply
+#       - name: Run terraform apply in terraform/environments
+#         if: github.event.ref == 'refs/heads/main'
+#         run: bash scripts/terraform-apply.sh terraform/environments
+#   provision-workspaces:
+#     runs-on: ubuntu-latest
+#     if: github.event.ref == 'refs/heads/main'
+#     needs: [create-environment]
+#     env:
+#       AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+#       AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#     steps:
+#       - uses: actions/checkout@main
+#       - uses: hashicorp/setup-terraform@v1
+#         with:
+#           terraform_version: 0.14.6
+#           terraform_wrapper: false
+#       - name: Provision workspaces in terraform/environments/bootstrap/*
+#         run: bash scripts/provision-terraform-workspaces.sh bootstrap
+#       - name: Provision workspaces in terraform/environments/*
+#         run: bash scripts/provision-terraform-workspaces.sh all-environments
+#   delegate-access:
+#     runs-on: ubuntu-latest
+#     if: github.event.ref == 'refs/heads/main'
+#     needs: [provision-workspaces]
+#     env:
+#       AWS_ACCESS_KEY_ID:  ${{ secrets.PRIVILEGED_AWS_ACCESS_KEY_ID }}
+#       AWS_SECRET_ACCESS_KEY:  ${{ secrets.PRIVILEGED_AWS_SECRET_ACCESS_KEY }}
+#     steps:
+#       - uses: actions/checkout@main
+#       - uses: hashicorp/setup-terraform@v1
+#         with:
+#           terraform_version: 0.14.6
+#           terraform_wrapper: false
+#       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
+#       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access plan
+#       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access apply
+#   secure-baselines:
+#     runs-on: ubuntu-latest
+#     if: github.event.ref == 'refs/heads/main'
+#     needs: [delegate-access]
+#     env:
+#       AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+#       AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#     steps:
+#       - uses: actions/checkout@main
+#       - uses: hashicorp/setup-terraform@v1
+#         with:
+#           terraform_version: 0.14.6
+#           terraform_wrapper: false
+#       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
+#       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines plan
+#       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines apply
+#   single-sign-on:
+#     runs-on: ubuntu-latest
+#     if: github.event.ref == 'refs/heads/main'
+#     needs: [provision-workspaces]
+#     env:
+#       AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+#       AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#     steps:
+#       - uses: actions/checkout@main
+#       - uses: hashicorp/setup-terraform@v1
+#         with:
+#           terraform_version: 0.14.6
+#           terraform_wrapper: false
+#       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
+#       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on plan
+#       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on apply

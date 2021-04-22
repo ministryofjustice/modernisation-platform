@@ -4,13 +4,12 @@
       "name": "production",
       "access": []
     },
-    {
+		{
       "name": "development",
-	  "access": [{
-		"github_slug": "modernisation-platform",
-		"level": "developer"
-	  }]
-       
+			  "access": [{
+					"github_slug": "modernisation-platform",
+					"level": "developer"
+			  }]
     }
 	],
 	"tags": {
