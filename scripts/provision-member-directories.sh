@@ -45,7 +45,7 @@ provision_environment_directories() {
 
       # Do nothing if a directory already exists
       echo ""
-      echo "Ignoring $directory, it already exists"
+      echo "Ignoring $directory, it already exists or is a core account"
       echo ""
     else
       # Create the directory and copy files if it doesn't exist
@@ -92,8 +92,12 @@ copy_templates() {
 
   for file in $templates; do
     filename=$(basename "$file")
-    echo "Copying $file to $1, replacing application_name with $application_name"
-    sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
+
+    if [ ${file} != "subnet_share.tf" ]
+    then
+      echo "Copying $file to $1, replacing application_name with $application_name"
+      sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
+    fi
   done
 
   echo "Finished copying templates."
