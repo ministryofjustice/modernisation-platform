@@ -31,10 +31,14 @@ provision_environment_directories() {
   #   }...
   # ]
   networking_definitions=$(jq -n '[ inputs | { subnet_sets: .cidr.subnet_sets | to_entries | map_values(.value + { set: .key, "business-unit": input_filename | ltrimstr("environments-networks/") | rtrimstr(".json") | split("-")[0] } ) } ]' "$networkdir"/*.json)
-  for file in environments/*.json; do
 
+  for file in $environment_json_dir/*.json; do
+
+    echo "This is file: $file"
     application_name=$(basename "$file" .json)
+    echo "This is the application name: $application_name"
     directory=$basedir/$application_name
+    echo "This is the directory: $directory"
     account_type=$(jq -r '."account-type"' ${environment_json_dir}/${application_name}.json)
 
     if [ -d $directory ] || [ "$account_type" = "core" ]; then
@@ -97,4 +101,4 @@ copy_templates() {
 
 provision_environment_directories
 
-ls -R 
+ls -R member-repo
