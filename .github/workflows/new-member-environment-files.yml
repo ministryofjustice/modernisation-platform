@@ -24,7 +24,7 @@ jobs:
           repository: ministryofjustice/modernisation-platform-environments
           path: member-repo
       - name: Provision member environment directories
-        run: bash ./scripts/provision-member-environment-directories.sh
+        run: bash ./core-repo/scripts/provision-member-environment-directories.sh
       # - name: Commit changes to GitHub
       #   run: bash ./scripts/git-setup.sh
       # - run: bash ./scripts/git-commit.sh terraform/environments
