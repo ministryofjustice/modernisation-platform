@@ -1,0 +1,20 @@
+{
+    "keys": {
+        "development": {
+            "username1": "public key data ~~~~~~~~~~~~~~~",
+            "username2": "public key data ~~~~~~~~~~~~~~~"
+        },
+        "test": {
+            "username1": "public key data ~~~~~~~~~~~~~~~",
+            "username2": "public key data ~~~~~~~~~~~~~~~"
+        },
+        "preproduction": {
+            "username1": "public key data ~~~~~~~~~~~~~~~",
+            "username2": "public key data ~~~~~~~~~~~~~~~"
+        },
+        "production": {
+            "username1": "public key data ~~~~~~~~~~~~~~~",
+            "username2": "public key data ~~~~~~~~~~~~~~~"
+        }
+    }
+}
