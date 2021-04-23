@@ -16,15 +16,15 @@ jobs:
   create-and-commit-files:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v2
         with:
           path: core-repo
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v2
         with:
           repository: ministryofjustice/modernisation-platform-environments
           path: member-repo
       - name: Provision member environment directories
-        run: bash ./core-repo/scripts/provision-member-environment-directories.sh
+        run: bash ./core-repo/scripts/provision-member-directories.sh
       # - name: Commit changes to GitHub
       #   run: bash ./scripts/git-setup.sh
       # - run: bash ./scripts/git-commit.sh terraform/environments
