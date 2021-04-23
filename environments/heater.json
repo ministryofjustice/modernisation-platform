@@ -1,4 +1,5 @@
 {
+	"account-type": "member",
 	"environments": [
 		{
       "name": "production",
@@ -10,7 +11,7 @@
 		"github_slug": "modernisation-platform",
 		"level": "developer"
 	  }]
-       
+
     }
 	],
 	"tags": {
