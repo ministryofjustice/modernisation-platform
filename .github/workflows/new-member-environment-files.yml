@@ -21,7 +21,7 @@ jobs:
           path: core-repo
       - uses: actions/checkout@main
         with:
-          repository: github.com/ministryofjustice/modernisation-platform-environments
+          repository: ministryofjustice/modernisation-platform-environments
           path: member-repo
       - run: ls -l
       # - name: Provision member environment directories
