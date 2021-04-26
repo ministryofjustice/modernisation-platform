@@ -1,6 +1,6 @@
 #!/bin/bash
 
-basedir=member-repo/terraform/environments
+basedir=modernisation-platform-environments/terraform/environments
 networkdir=core-repo/environments-networks
 templates=core-repo/terraform/templates/*.tf
 environment_json_dir=core-repo/environments
@@ -109,4 +109,4 @@ copy_templates() {
 
 provision_environment_directories
 
-ls -R member-repo
+ls -R modernisation-platform-environments
