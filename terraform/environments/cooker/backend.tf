@@ -8,6 +8,6 @@ terraform {
     encrypt              = true
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
-    workspace_key_prefix = "environments/cooker" # This will store the object as environments/cooker/${workspace}/terraform.tfstate
+    workspace_key_prefix = "environments/accounts/cooker" # This will store the object as environments/cooker/${workspace}/terraform.tfstate
   }
 }

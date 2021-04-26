@@ -673,7 +673,7 @@ data "terraform_remote_state" "core_network_services" {
   config = {
     acl     = "bucket-owner-full-control"
     bucket  = "modernisation-platform-terraform-state"
-    key     = "environments/core-network-services/core-network-services-production/terraform.tfstate"
+    key     = "environments/accounts/core-network-services/core-network-services-production/terraform.tfstate"
     region  = "eu-west-2"
     encrypt = "true"
   }

@@ -8,6 +8,6 @@ terraform {
     encrypt              = true
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
-    workspace_key_prefix = "environments/heater" # This will store the object as environments/heater/${workspace}/terraform.tfstate
+    workspace_key_prefix = "environments/accounts/heater" # This will store the object as environments/heater/${workspace}/terraform.tfstate
   }
 }

@@ -8,6 +8,6 @@ terraform {
     encrypt              = true
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
-    workspace_key_prefix = "environments/justice-on-the-web" # This will store the object as environments/justice-on-the-web/${workspace}/terraform.tfstate
+    workspace_key_prefix = "environments/accounts/justice-on-the-web" # This will store the object as environments/justice-on-the-web/${workspace}/terraform.tfstate
   }
 }
