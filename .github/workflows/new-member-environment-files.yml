@@ -31,7 +31,7 @@ jobs:
       - name: Commit changes to GitHub
         run: bash ./core-repo/scripts/git-setup.sh ./modernisation-platform-environments
       - run: bash ./core-repo/scripts/git-commit.sh terraform/environments ./modernisation-platform-environments
-        env:
+        env:  
           TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
       - run: bash ./core-repo/scripts/git-pull-request.sh terraform/environments ./modernisation-platform-environments
         env:
