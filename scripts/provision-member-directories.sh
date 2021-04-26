@@ -97,6 +97,10 @@ copy_templates() {
     then
       echo "Copying $file to $1, replacing application_name with $application_name"
       sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
+      if [ ${filename} == "backend.tf" ]
+      then
+        sed -i "s/environments\//environments\/members\//g" "$1/$filename"
+      fi
     fi
   done
 
