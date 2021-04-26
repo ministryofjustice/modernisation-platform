@@ -22,7 +22,7 @@ echo "${payload}" | curl \
   -s -X POST \
   -H "Accept: application/vnd.github.v3+json" \
   -H "Authorization: token ${SECRET}" \
-  -d @- $repository_url
+  -d @- $repository_url > /dev/null
 ERRORCODE="${?}"
 if [ ${ERRORCODE} -ne 0 ]
 then

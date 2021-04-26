@@ -3,8 +3,8 @@ name: New member environment files
 on:
   push:
    paths:
-     - 'environments/**.json'
-  branches:
+    - 'environments/**.json'
+   branches:
     - main
   workflow_dispatch:
 

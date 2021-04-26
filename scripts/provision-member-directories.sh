@@ -108,5 +108,3 @@ copy_templates() {
 }
 
 provision_environment_directories
-
-ls -R modernisation-platform-environments
