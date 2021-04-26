@@ -24,6 +24,8 @@ jobs:
           repository: ministryofjustice/modernisation-platform-environments
           path: modernisation-platform-environments
           persist-credentials: false
+        env:  
+          GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
       - name: Provision member environment directories
         run: bash ./core-repo/scripts/provision-member-directories.sh
       - name: Commit changes to GitHub
