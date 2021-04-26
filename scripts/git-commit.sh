@@ -5,7 +5,8 @@ if [ ! -z "$2" ]; then
   cd $GIT_DIR
   GITHUB_REPOSITORY=$(basename `git rev-parse --show-toplevel`)
   GITHUB_REPOSITORY="ministryofjustice/$GITHUB_REPOSITORY"
-  TOKEN="modernisation-platform-ci:$TERRAFORM_GITHUB_TOKEN"
+  #TOKEN="modernisation-platform-ci:$TERRAFORM_GITHUB_TOKEN"
+  TOKEN=$TERRAFORM_GITHUB_TOKEN
 else
   TOKEN=$GITHUB_TOKEN
 fi
