@@ -22,12 +22,17 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: ministryofjustice/modernisation-platform-environments
-          path: member-repo
+          path: modernisation-platform-environments
+          persist-credentials: false
+        env:  
+          TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
       - name: Provision member environment directories
         run: bash ./core-repo/scripts/provision-member-directories.sh
-      # - name: Commit changes to GitHub
-      #   run: bash ./scripts/git-setup.sh
-      # - run: bash ./scripts/git-commit.sh terraform/environments
-      # - run: bash ./scripts/git-pull-request.sh terraform/environments
-      #   env:
-      #     SECRET: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit changes to GitHub
+        run: bash ./core-repo/scripts/git-setup.sh ./modernisation-platform-environments
+      - run: bash ./core-repo/scripts/git-commit.sh terraform/environments ./modernisation-platform-environments
+        env:  
+          TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+      - run: bash ./core-repo/scripts/git-pull-request.sh terraform/environments ./modernisation-platform-environments
+        env:
+          TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}

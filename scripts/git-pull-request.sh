@@ -1,5 +1,13 @@
 #!/bin/bash
 
+if [ ! -z "$2" ]; then
+  GIT_DIR=$2
+  cd $GIT_DIR
+  GITHUB_REPOSITORY=$(basename `git rev-parse --show-toplevel`)
+  GITHUB_REPOSITORY="ministryofjustice/$GITHUB_REPOSITORY"
+  SECRET=$TERRAFORM_GITHUB_TOKEN
+fi
+
 # Define: repository URL, branch, title, and PR body
 repository_url="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls"
 pull_request_branch=$(git branch --show-current)

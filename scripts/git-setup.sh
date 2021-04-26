@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ ! -z "$1" ]; then
+  GIT_DIR=$1
+fi
+
 name=$(git config --get user.name)
 email=$(git config --get user.email)
 
