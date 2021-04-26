@@ -8,6 +8,6 @@ terraform {
     encrypt              = true
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
-    workspace_key_prefix = "environments/analytical-platform-management" # This will store the object as environments/analytical-platform-management/${workspace}/terraform.tfstate
+    workspace_key_prefix = "environments/accounts/analytical-platform-management" # This will store the object as environments/analytical-platform-management/${workspace}/terraform.tfstate
   }
 }

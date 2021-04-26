@@ -8,6 +8,6 @@ terraform {
     encrypt              = true
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
-    workspace_key_prefix = "environments/core-vpc" # This will store the object as environments/core-vpc/${workspace}/terraform.tfstate
+    workspace_key_prefix = "environments/accounts/core-vpc" # This will store the object as environments/core-vpc/${workspace}/terraform.tfstate
   }
 }
