@@ -1,0 +1,32 @@
+---
+title: Repositories
+last_reviewed_on: 2021-04-28
+review_in: 3 months
+---
+
+# <%= current_page.data.title %>
+
+## Introduction
+
+There are two main repositories for the Modernisation Platform:
+
+### modernisation-platform
+
+[modernisation-platform](https://github.com/ministryofjustice/modernisation-platform)
+
+This contains our core infrastructure, Architecture Decision Record (ADR), user guidance, user environment creation and networking definitions and core workflows.
+
+### modernisation-platform-environments
+
+[modernisation-platform-environments](https://github.com/ministryofjustice/modernisation-platform-environments)
+
+This contains user environment resources and workflows. We have this repo so that users can easily find and amend there infrastructure from one place, and we can clearly separate user and core code and workflows.
+
+### Other repositories
+
+We also have repositories for [Terraform modules](https://www.terraform.io/docs/language/modules/develop/index.html), these modules are an easy way to build up your infrastructure with sensible defaults and we would encourage you to use these where possible.
+You can see a full list of these repositories on the main [modernisation-platform](https://github.com/ministryofjustice/modernisation-platform) readme.
+
+## Diagram
+
+![Repository Structure](../../images/repository-structure.png "Repository Structure")

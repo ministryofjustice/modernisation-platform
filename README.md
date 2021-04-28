@@ -15,6 +15,7 @@ This repository currently holds the Modernisation Platform's:
 | Name | Description |
 |-|-|
 | [Modernisation Platform](https://github.com/ministryofjustice/modernisation-platform) (this one) | Our repository for core work, including our ADR and infrastructure as code |
+| [Modernisation Platform Environments](https://github.com/ministryofjustice/modernisation-platform-environments) | The repository for user application infrastructure as code and deployment workflows |
 
 ### Terraform modules
 | Name | Description |
