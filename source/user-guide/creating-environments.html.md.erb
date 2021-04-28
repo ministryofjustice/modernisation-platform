@@ -1,6 +1,6 @@
 ---
 title: Creating environments in the Modernisation Platform
-last_reviewed_on: 2021-01-13
+last_reviewed_on: 2021-04-27
 review_in: 3 months
 ---
 
@@ -8,34 +8,68 @@ review_in: 3 months
 
 ## Overview
 
-In the Modernisation Platform, you can define environments via a JSON file in the [environments](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments) directory of the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform).
+In the Modernisation Platform, we define environments (AWS accounts) via a JSON file in the [environments](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments) directory of the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform).
 
-To provision new environments, create a new JSON file and submit a pull request to the Modernisation Platform repository.
 
-When this is merged, the Modernisation Platform will automatically provision your environments. Each environment defined represents an AWS account, see the [example](#blank-example) below for more information.
+When we recieve your request we will create a new JSON file and submit a pull request to the Modernisation Platform repository. On merging the Modernisation Platform will automatically provision your environments. Each environment defined represents an AWS account, see the [example](#blank-example) below for more information.
+
+## Requesting an environment
+
+To request a new environment, simply [create an issue](https://github.com/ministryofjustice/modernisation-platform/issues/new/choose) using the `New Modernisation Platform Environment` template. 
+
+This will ask you for the following information:
+
+### Application name
+
+Please follow MoJ guidance for [naming things](https://ministryofjustice.github.io/technical-guidance/documentation/standards/naming-things.html#naming-things)
+
+### Github team slug
+
+This is the name of your Github team that will be accessing the environment. Environments are accessed via single sign on (SSO), so to give people permissions to access your environment you just have to add them to your Github team.
+
+### Environments
+
+Which environments you wish to use, we provide [core networking](creating-networking.html) for up to 4 accounts as standard.
+Usually two environments per application will be enough, a production account and a non production account.
+
+* development
+* test
+* preproduction
+* production
+
+As these environments are identical, and controlled via code, we would recommend you try to use as few environments as possible. We can provide more environments if there is a genuine need for them.
+
+### Tags
+
+These will be used to tag your AWS resources, for further guidance on tagging please see [here](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use)
+
+The is-production tag will be inferred if the environment is production.
+
+tag | value
+--- | ---
+application | Find a solicitor
+business-unit | LAA
+owner | find-a-solicitor@ministryofjustice.gov.uk
+
+Valid business-unit values
+HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE,Probation
+
+### Additional features
+
+In addition to the core networking provided, you can request bastion access, additional VPC endpoints and extended DNS zones.
+
+See [creating networking](creating-networking.html) for more information on additional features.
 
 ### Architecture
 
 You can view our architecture for Environments (AWS accounts) on the [dedicated Environments (AWS accounts) architecture page](../concepts/environments/architecture.html), which also explains what you get by doing this.
 
-## Our recommendations
-- Your JSON filename _must_ represent the application name
-- Tags _must_ follow the [Ministry of Justice Security Guidance for Tagging](https://ministryofjustice.github.io/security-guidance/baseline-aws-accounts/#tagging), though this doesn't automatically tag resources you configure in your provisioned accounts. It is used to tag the account itself.
-- Usually two environments per application, namely `non-production` and `production`
-
-## Steps
-1. `git clone` the Modernisation Platform repository: `git clone https://github.com/ministryofjustice/modernisation-platform.git`
-2. Create a new JSON file in `environments/`
-3. Fill out the JSON file template below
-4. Submit a pull request
-5. On merging your pull request, we will provision your AWS accounts
-
-## JSON files
+## Example JSON files
 
 ### Schema
-- `name` key is now deprecated. We now use the JSON file name instead.
-- `environments` should be an array of objects for environments required. If you require a production environment, please use the keyword `production`, as we use it to determine retention periods, backup frequency, and similar that will be different compared to non-production environments
-  - the `name` key and `access` object are required, see: (Another example)(#another-example)
+- `account-type` determines if this is a core modernisation platform account or a user member account
+- `environments` should be an array of objects for environments required. If the environment is `production`, retention periods, backup frequency, and similar will be different compared to non-production environments
+- the `name` key and `access` object are required, see: [Another example](#another-example)
 - `tags` should be an object of the mandatory tags defined in the MoJ [Tagging Guidance](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tagging-your-infrastructure). You can omit `is-production` as we infer this from the environment name
 
 ### Blank example
@@ -44,12 +78,13 @@ You can view our architecture for Environments (AWS accounts) on the [dedicated 
 
 ```json
 {
+  "account-type": "",
   "environments": [
     {
-      "name": "production"
+      "name": ""
       "access": {
-        "github_slug": "modernisation-platform",
-        "access": "application-team"
+        "github_slug": "",
+        "access": ""
       }
     }
   ],
@@ -63,15 +98,16 @@ You can view our architecture for Environments (AWS accounts) on the [dedicated 
 
 ### Another example
 
-An JSON definition for an nonsensical application called [`glados`](https://en.wikipedia.org/wiki/GLaDOS), that needs two environments: `non-production` and `production`, and want to give the GitHub team `glados-team` access to each environment.
+An JSON definition for an nonsensical application called [`glados`](https://en.wikipedia.org/wiki/GLaDOS), that needs two environments: `development` and `production`, and want to give the GitHub team `glados-team` access to each environment.
 
 `filename`: `glados.json`
 
 ```json
 {
+  "account-type": "member",
   "environments": [
     {
-      "name": "non-production",
+      "name": "development",
       "access": {
         "github_slug": "glados-team",
         "access": "application-team"
@@ -81,7 +117,7 @@ An JSON definition for an nonsensical application called [`glados`](https://en.w
       "name": "production",
       "access": {
         "github_slug": "glados-team",
-        "access": "application-team"
+        "access": "developer"
       }
     }
   ],
