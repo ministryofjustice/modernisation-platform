@@ -54,9 +54,6 @@ provision_environment_directories() {
 
       mkdir -p "$directory"
       copy_templates "$directory" "$application_name"
-
-
-
     fi
 
     # This filters and reshapes networking_definitions to only include the business units and subnet sets for $APPLICATION_NAME
@@ -99,7 +96,13 @@ copy_templates() {
       sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
       if [ ${filename} == "backend.tf" ]
       then
-        sed -i "s/environments\//environments\/members\//g" "$1/$filename"
+        if [ `uname` = "Linux" ]
+        then
+          sed -i "s/environments\//environments\/members\//g" "$1/$filename"
+        else
+          # This must be a Mac
+          sed -i '' "s/environments\//environments\/members\//g" "$1/$filename"
+        fi
       fi
     fi
   done
