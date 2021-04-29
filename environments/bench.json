@@ -1,7 +1,7 @@
 {
 	"account-type": "member",
 	"environments": [
-		{
+	{
       "name": "production",
       "access": []
     },
