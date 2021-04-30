@@ -2,16 +2,19 @@ name: "Terraform: New environment"
 
 on:
   push:
+    branches:
+      - main
     paths:
       - 'environments/**.json'
       - 'terraform/environments/bootstrap/**'
       - '.github/workflows/new-environment.yml'
-    branches:
-      - main
   pull_request:
     branches:
       - main
     types: [opened, edited, reopened, synchronize]
+    paths:
+      - '.github/workflows/new-environment.yml'
+      - 'terraform/environments/*.tf'
   workflow_dispatch:
 
 env:
@@ -22,6 +25,43 @@ defaults:
     shell: bash
 
 jobs:
+  tf-environments-deployment-plan:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID:  ${{ secrets.PRIVILEGED_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY:  ${{ secrets.PRIVILEGED_AWS_SECRET_ACCESS_KEY }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v1.3.2
+        with:
+          terraform_version: 0.14.4
+          terraform_wrapper: false
+
+      - name: Run terraform plan for root terraform/environments
+        run: |
+          # Test if this is a PR or PULL event
+
+          #USE IF RUNNING IN GITHUB ACTIONS
+          if [ ! -z ${{ github.event.pull_request.number }} ]
+          then
+
+          #USE IF USING ACT
+          # if [ ! -z ${PULL_REQUEST_NUMBER} ]
+          # then
+
+          #CONFIGURE TERRAFORM
+          bash scripts/terraform-init.sh terraform/environments
+
+          #RUN TERRAFORM PLAN
+          PLAN=`bash scripts/terraform-plan.sh terraform/environments | tee /dev/stderr | grep '^Plan: \|^No changes.'`
+          PLAN="> TERRAFORM PLAN RESULT - root-environments-tf -
+          ${PLAN}"
+          bash scripts/update-pr-comments.sh "${PLAN}"
+          fi
+        env:
+          SECRET: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
+          PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
   create-environment:
     runs-on: ubuntu-latest
     env:
