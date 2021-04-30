@@ -18,7 +18,7 @@ defaults:
     shell: bash
 
 jobs:
-  plan:
+  github-plan-and-apply:
     runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}

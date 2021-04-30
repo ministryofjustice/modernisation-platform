@@ -25,7 +25,7 @@ defaults:
     shell: bash
 
 jobs:
-  tf-environments-deployment-plan:
+  check-environments-deployment-plan:
     runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID:  ${{ secrets.PRIVILEGED_AWS_ACCESS_KEY_ID }}
