@@ -45,7 +45,7 @@ resource "github_branch_protection" "default" {
   require_signed_commits = false
 
   required_status_checks {
-    strict = true
+    strict   = true
     contexts = ["format-code"] # format-code is from the template repository
   }
 
