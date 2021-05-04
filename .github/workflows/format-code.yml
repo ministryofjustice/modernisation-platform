@@ -1,3 +1,4 @@
+name: "Format Code: ensure code formatting guidelines are met"
 on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
