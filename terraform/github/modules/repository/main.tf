@@ -45,21 +45,8 @@ resource "github_branch_protection" "default" {
   require_signed_commits = false
 
   required_status_checks {
-    strict = true
-    contexts = ["format-code", # format-code is from the template repository
-      "core-vpc-development-deployment-plan",
-      "core-vpc-test-deployment-plan",
-      "core-vpc-preproduction-deployment-plan",
-      "core-vpc-production-deployment-plan",
-      "run-opa-policy-tests",
-      "check-environments-deployment-plan",
-      "check-links",
-      "github-plan-and-apply",
-      "core-logging-deployment-plan",
-      "core-network-services-deployment-plan",
-      "core-security-deployment-plan",
-      "core-shared-services-deployment-plan"
-    ]
+    strict   = true
+    contexts = ["format-code"] # format-code is from the template repository
   }
 
   required_pull_request_reviews {
