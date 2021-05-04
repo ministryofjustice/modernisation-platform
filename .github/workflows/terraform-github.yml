@@ -4,13 +4,13 @@ on:
   push:
     paths:
       - 'terraform/github/**'
-      - './github/workflows/terraform-github.yml'
+      - '.github/workflows/terraform-github.yml'
     branches:
       - main
   pull_request:
     paths:
       - 'terraform/github/**'
-      - './github/workflows/terraform-github.yml'
+      - '.github/workflows/terraform-github.yml'
     branches:
       - main
     types: [opened, edited, reopened, synchronize]
