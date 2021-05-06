@@ -7,8 +7,9 @@
     }
 	],
 	"tags": {
-		"application": "modernisation-platform",
-		"business-unit": "Platforms",
-		"owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
+		"application": "performance-hub",
+		"business-unit": "hmpps",
+		"infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+		"owner": "modernisation-platform@digital.justice.gov.uk"
 	}
 }
