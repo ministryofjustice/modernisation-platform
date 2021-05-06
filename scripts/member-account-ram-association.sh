@@ -14,8 +14,8 @@ setup_ram_share_association() {
     select_workspace=`terraform -chdir=$basedir/$account workspace select $account-$environment`
 
     if [[ $select_workspace ]]; then
-        
-       echo "Terraform init" 
+
+       echo "Terraform init"
       ./scripts/terraform-init.sh "$basedir/$account"
 
         # Run terraform plan
@@ -24,9 +24,8 @@ setup_ram_share_association() {
 
       # Run terraform apply
       ./scripts/terraform-apply.sh $basedir/$account
-    fi 
+    fi
     echo "Finished running terraform across new account: $account-$environment"
-}
 }
 
 setup_ram_share_association

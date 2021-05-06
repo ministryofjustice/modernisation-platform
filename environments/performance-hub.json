@@ -1,0 +1,15 @@
+{
+	"account-type": "member",
+	"environments": [
+		{
+      "name": "preproduction",
+      "access": []
+    }
+	],
+	"tags": {
+		"application": "performance-hub",
+		"business-unit": "HMPPS",
+		"infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+		"owner": "hubusers@justice.gov.uk"
+	}
+}
