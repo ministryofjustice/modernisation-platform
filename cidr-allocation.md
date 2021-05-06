@@ -35,7 +35,7 @@ Only half of the capacity of this /16 address has been used
 | 10.232.2.0      | /23  | LAB ONLY development - house          |
 | 10.232.4.0      | /23  | LAB ONLY production - garden          |
 | 10.232.6.0      | /23  | LAB ONLY production - house           |
-| 10.232.8.0      | /23  |                                       |
+| 10.232.8.0      | /23  | preproduction - hmpps                                    |
 | 10.232.10.0     | /23  |                                       |
 | 10.232.12.0     | /23  |                                       |
 | 10.232.14.0     | /23  |                                       |
@@ -169,7 +169,7 @@ Only half of the capacity of this /16 address has been used
 | 10.233.0.64     | /26  | LAB ONLY development - house          |
 | 10.233.0.128    | /26  | LAB ONLY production - garden          |
 | 10.233.0.192    | /26  | LAB ONLY production - house           |
-| 10.233.1.0      | /26  |                                       |  
+| 10.233.1.0      | /26  | preproduction - hmpps                                     |
 | 10.233.1.64     | /26  |                                       |        
 | 10.233.1.128    | /26  |                                       |         
 | 10.233.1.192    | /26  |                                       |         
@@ -376,7 +376,7 @@ Only half of the capacity of this /16 address has been used
 
 | CIDR            | mask | allocated to  |
 | :---------------| :--  | :----------------------------------- |
-| 10.236.0.0      | /21  | -                                    |
+| 10.236.0.0      | /21  | hmpps - general                      |
 | 10.236.8.0      | /21  | -                                    |
 | 10.236.16.0     | /21  | -                                    |
 | 10.236.24.0     | /21  | -                                    |
@@ -410,7 +410,7 @@ Only half of the capacity of this /16 address has been used
 | 10.236.248.0    | /21  | -                                    |
 |||
 
-### Production /21s for member subnet-sets
+### production /21s for member subnet-sets
 
 | CIDR            | mask | allocated to  |
 | :---------------| :--  | :----------------------------------- |
