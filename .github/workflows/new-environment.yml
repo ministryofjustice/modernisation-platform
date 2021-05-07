@@ -15,6 +15,7 @@ on:
     paths:
       - '.github/workflows/new-environment.yml'
       - 'terraform/environments/*.tf'
+      - 'environments/**.json'
   workflow_dispatch:
 
 env:
@@ -27,6 +28,7 @@ defaults:
 jobs:
   check-environments-deployment-plan:
     runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main' && github.event_name != 'workflow_dispatch'
     env:
       AWS_ACCESS_KEY_ID:  ${{ secrets.PRIVILEGED_AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY:  ${{ secrets.PRIVILEGED_AWS_SECRET_ACCESS_KEY }}
@@ -54,7 +56,7 @@ jobs:
 
           #RUN TERRAFORM PLAN
           PLAN=`bash scripts/terraform-plan.sh terraform/environments | tee /dev/stderr | grep '^Plan: \|^No changes.'`
-          PLAN="> TERRAFORM PLAN RESULT - root-environments-tf -
+          PLAN="> TERRAFORM PLAN RESULT - ACCOUNTS-TO-CREATE/MODIFY/DELETE -
           ${PLAN}"
           bash scripts/update-pr-comments.sh "${PLAN}"
           fi
@@ -64,6 +66,7 @@ jobs:
           PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
   create-environment:
     runs-on: ubuntu-latest
+    if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     env:
       AWS_ACCESS_KEY_ID:  ${{ secrets.PRIVILEGED_AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY:  ${{ secrets.PRIVILEGED_AWS_SECRET_ACCESS_KEY }}
@@ -78,11 +81,10 @@ jobs:
       - name: Run terraform plan in terraform/environments
         run: bash scripts/terraform-plan.sh terraform/environments
       - name: Run terraform apply in terraform/environments
-        if: github.event.ref == 'refs/heads/main'
         run: bash scripts/terraform-apply.sh terraform/environments
   provision-workspaces:
     runs-on: ubuntu-latest
-    if: github.event.ref == 'refs/heads/main'
+    if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [create-environment]
     env:
       AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -105,7 +107,7 @@ jobs:
         run: bash scripts/provision-terraform-workspaces.sh all-environments
   delegate-access:
     runs-on: ubuntu-latest
-    if: github.event.ref == 'refs/heads/main'
+    if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [provision-workspaces]
     env:
       AWS_ACCESS_KEY_ID:  ${{ secrets.PRIVILEGED_AWS_ACCESS_KEY_ID }}
@@ -121,7 +123,7 @@ jobs:
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access apply
   secure-baselines:
     runs-on: ubuntu-latest
-    if: github.event.ref == 'refs/heads/main'
+    if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [delegate-access]
     env:
       AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -137,7 +139,7 @@ jobs:
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines apply
   single-sign-on:
     runs-on: ubuntu-latest
-    if: github.event.ref == 'refs/heads/main'
+    if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [provision-workspaces]
     env:
       AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
