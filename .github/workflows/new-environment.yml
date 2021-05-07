@@ -76,12 +76,12 @@ jobs:
         with:
           terraform_version: 0.14.6
           terraform_wrapper: false
-      # - name: Run terraform init in terraform/environments
-      #   run: bash scripts/terraform-init.sh terraform/environments
-      # - name: Run terraform plan in terraform/environments
-      #   run: bash scripts/terraform-plan.sh terraform/environments
-      # - name: Run terraform apply in terraform/environments
-      #   run: bash scripts/terraform-apply.sh terraform/environments
+      - name: Run terraform init in terraform/environments
+        run: bash scripts/terraform-init.sh terraform/environments
+      - name: Run terraform plan in terraform/environments
+        run: bash scripts/terraform-plan.sh terraform/environments
+      - name: Run terraform apply in terraform/environments
+        run: bash scripts/terraform-apply.sh terraform/environments
   provision-workspaces:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
@@ -101,10 +101,10 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
-      # - name: Provision workspaces in terraform/environments/bootstrap/*
-      #   run: bash scripts/provision-terraform-workspaces.sh bootstrap
-      # - name: Provision workspaces in terraform/environments/*
-      #   run: bash scripts/provision-terraform-workspaces.sh all-environments
+      - name: Provision workspaces in terraform/environments/bootstrap/*
+        run: bash scripts/provision-terraform-workspaces.sh bootstrap
+      - name: Provision workspaces in terraform/environments/*
+        run: bash scripts/provision-terraform-workspaces.sh all-environments
   delegate-access:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
@@ -134,9 +134,9 @@ jobs:
         with:
           terraform_version: 0.14.6
           terraform_wrapper: false
-      # - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
-      # - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines plan
-      # - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines apply
+      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
+      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines plan
+      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines apply
   single-sign-on:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
@@ -150,6 +150,6 @@ jobs:
         with:
           terraform_version: 0.14.6
           terraform_wrapper: false
-      # - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
-      # - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on plan
-      # - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on apply
+      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
+      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on plan
+      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on apply
