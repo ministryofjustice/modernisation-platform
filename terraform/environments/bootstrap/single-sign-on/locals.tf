@@ -2,8 +2,8 @@ locals {
 
   app_name = try(regex("^bichard*.", terraform.workspace), replace(terraform.workspace, "/-([[:alnum:]]+)$/", ""))
 
-  #app_name = replace("${terraform.workspace}", "/-([[:alnum:]]+)$/", "")
-  env_name = replace("${terraform.workspace}", "${local.app_name}-", "")
+  #app_name = replace(terraform.workspace, "/-([[:alnum:]]+)$/", "")
+  env_name = replace(terraform.workspace, "${local.app_name}-", "")
 
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 
