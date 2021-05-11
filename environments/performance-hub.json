@@ -4,15 +4,8 @@
 		{
       "name": "preproduction",
       "access": [{
-		"github_slug": "",
-		"level": ""
-	  }]
-    },
-	{
-		"name": "development",
-		"access": [{
-		  "github_slug": "modernisation-platform-engineers",
-		  "level": "developer"
+		"github_slug": "modernisation-platform-engineers",
+		"level": "developer"
 		}]
 	  }
 	],
