@@ -3,8 +3,11 @@
 	"environments": [
 		{
       "name": "preproduction",
-      "access": []
-    }
+      "access": [{
+		"github_slug": "modernisation-platform-engineers",
+		"level": "developer"
+		}]
+	  }
 	],
 	"tags": {
 		"application": "performance-hub",
