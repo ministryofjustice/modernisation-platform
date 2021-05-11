@@ -72,12 +72,12 @@ resource "aws_ssoadmin_account_assignment" "developer" {
 
   for_each = {
 
-    for sso_assignment in local.sso_data[local.env_name][*]:
+    for sso_assignment in local.sso_data[local.env_name][*] :
 
     "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
 
-    if( "${sso_assignment.level}" == "development" )
-   }
+    if("${sso_assignment.level}" == "development")
+  }
 
   provider = aws.sso-management
 
@@ -97,12 +97,12 @@ resource "aws_ssoadmin_account_assignment" "administator" {
 
   for_each = {
 
-    for sso_assignment in local.sso_data[local.env_name][*]:
+    for sso_assignment in local.sso_data[local.env_name][*] :
 
     "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
 
-    if( "${sso_assignment.level}" == "administrator" )
-   }
+    if("${sso_assignment.level}" == "administrator")
+  }
 
   provider = aws.sso-management
 
