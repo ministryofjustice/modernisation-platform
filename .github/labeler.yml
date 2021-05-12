@@ -1,8 +1,10 @@
 onboarding:
   - "environments/**"
+  - "environments-networks/**"
 
 documentation:
   - "source/**"
+  - "architecture-decision-record/**"
 
 dependencies:
   - "terraform/**/*.lock.hcl"
@@ -13,6 +15,13 @@ github-workflow:
 networking:
   - "terraform/environments/core-vpc/**"
   - "terraform/environments/core-network-services/**"
+  - "cidr-allocation.md"
 
 core:
   - "terraform/environments/core-*/**"
+
+security:
+  - "terraform/environments/core-security/**"
+
+testing:
+  - "policies/**"
