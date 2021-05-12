@@ -8,6 +8,7 @@
         "accounts": [
           "performance-hub-preproduction"
         ]
+      }
     }
   },
   "options": {
@@ -16,5 +17,4 @@
     "dns_zone_extend": []
   },
   "nacl": []
-}
 }
