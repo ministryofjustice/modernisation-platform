@@ -1,7 +1,7 @@
 ---
 name: core-vpc-production-deployment
 
-on: 
+on:
   push:
     branches:
       - main
@@ -33,7 +33,7 @@ jobs:
         with:
           terraform_version: 0.14.4
           terraform_wrapper: false
- 
+
       - name: Run core-vpc terraform plan
         run: |
           # Test if this is a PR or PULL event
@@ -51,7 +51,7 @@ jobs:
           terraform -chdir="terraform/environments/core-vpc" workspace select "core-vpc-${TF_ENV}"
 
           #RUN TERRAFORM PLAN
-          PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-vpc | tee /dev/stderr | grep '^Plan: \|^No changes.'`
+          PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-vpc -target=module.vpc | tee /dev/stderr | grep '^Plan: \|^No changes.'`
           PLAN="> TERRAFORM PLAN RESULT - core-vpc - ${TF_ENV}
           ${PLAN}"
           bash scripts/update-pr-comments.sh "${PLAN}"
@@ -76,9 +76,11 @@ jobs:
         run: |
           bash scripts/terraform-init.sh terraform/environments/core-vpc
           terraform -chdir="terraform/environments/core-vpc" workspace select "core-vpc-${TF_ENV}"
+          bash scripts/terraform-apply.sh terraform/environments/core-vpc -target=module.vpc
+          echo "Target apply finished"
           bash scripts/terraform-apply.sh terraform/environments/core-vpc
           echo "Terraform apply finished"
-    
+
   member-account-ram-associaton:
     runs-on: [ubuntu-latest]
     if: github.event.ref == 'refs/heads/main'

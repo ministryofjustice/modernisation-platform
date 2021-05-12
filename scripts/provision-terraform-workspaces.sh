@@ -64,21 +64,6 @@ do
   [ -d "${git_dir}/tmp" ] && rm -r "${git_dir}/tmp"
   mkdir "${git_dir}/tmp"
 
-  # Copy files to emulation folder
-  sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/backend.tf" > "${git_dir}/tmp/backend.tf"
-  sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/locals.tf" > "${git_dir}/tmp/locals.tf"
-  cp "${git_dir}/terraform/templates/providers.tf" "${git_dir}/tmp/providers.tf"
-  cp "${git_dir}/terraform/templates/secrets.tf" "${git_dir}/tmp/secrets.tf"
-  cp "${git_dir}/terraform/templates/versions.tf" "${git_dir}/tmp/versions.tf"
-  if [ `uname` = "Linux" ]
-  then
-    sed -i "s/environments\//environments\/members\//g" "${git_dir}/tmp/backend.tf"
-  else
-    # This must be a Mac
-    sed -i '' "s/environments\//environments\/members\//g" "${git_dir}/tmp/backend.tf"
-  fi
-
- 
   # Loop through each environment for specific application to check if state file exists in S3
   for ENV in `cat "${JSON_FILE}" | jq -r --arg FILENAME "${APPLICATION}" '.environments[].name'`
   do
@@ -88,10 +73,23 @@ do
      # Check if state file exists in S3 for modernisation-platform-environments repository
       aws s3api head-object --bucket modernisation-platform-terraform-state --key "environments/members/${APPLICATION}/${APPLICATION}-${ENV}/terraform.tfstate" > /dev/null 2>&1 
       RETURN_CODE_MEMBER_REPO="${?}"
-    
-    TERRAFORM_PATH="${git_dir}/tmp"
 
+  # Copy files to emulation folder
+  sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/backend.tf" > "${git_dir}/tmp/backend.tf"
+  sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/locals.tf" > "${git_dir}/tmp/locals.tf"
+  cp "${git_dir}/terraform/templates/providers.tf" "${git_dir}/tmp/providers.tf"
+  cp "${git_dir}/terraform/templates/secrets.tf" "${git_dir}/tmp/secrets.tf"
+  cp "${git_dir}/terraform/templates/versions.tf" "${git_dir}/tmp/versions.tf"
+  if [ `uname` = "Linux" ]
+  then
+    sed -i "s/environments\//environments\/accounts\//g" "${git_dir}/tmp/backend.tf"
+  else
+    # This must be a Mac
+    sed -i '' "s/environments\//environments\/accounts\//g" "${git_dir}/tmp/backend.tf"
+  fi 
+  
     # Creating MEMBER account state file for modernisation-platform if it does not exist
+    TERRAFORM_PATH="${git_dir}/tmp"
     if [[ "${RETURN_CODE_CORE_REPO}" -ne 0 ]]
     then
       echo -en "MEMBER ACCOUNT IN CORE REPO      - ${APPLICATION}-${ENV} - ${YELLOW}CREATING${NORMAL}\n"
@@ -100,7 +98,15 @@ do
     else
       echo -en "MEMBER ACCOUNT IN CORE REPO      - ${APPLICATION}-${ENV} - ${GREEN}EXISTS${NORMAL}\n"
     fi
-
+    
+    
+    if [ `uname` = "Linux" ]
+    then
+      sed -i "s/environments\/accounts\//environments\/member\//g" "${git_dir}/tmp/backend.tf"
+    else
+      # This must be a Mac
+      sed -i '' "s/environments\/accounts\//environments\/member\//g" "${git_dir}/tmp/backend.tf"
+    fi
     # Creating MEMBER account state file for modernisation-platform-environments if it does not exist
     ACCOUNT_TYPE=$(jq -r '."account-type"' ${JSON_FILE})
     if [[ "${RETURN_CODE_MEMBER_REPO}" -ne 0 && "${ACCOUNT_TYPE}" != "core" ]]

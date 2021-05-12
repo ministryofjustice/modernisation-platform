@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+set -o pipefail
 
 environments() {
   jq -n -c -r '[ inputs | . + { filename: input_filename } ]' environments/*.json | conftest test -p policies/environments -
