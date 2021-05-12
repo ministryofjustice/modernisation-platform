@@ -7,7 +7,7 @@
         "cidr": "10.236.0.0/21",
         "accounts": [
           "performance-hub-preproduction"
-        ]      
+        ]
     }
   },
   "options": {
@@ -16,4 +16,5 @@
     "dns_zone_extend": []
   },
   "nacl": []
+}
 }
