@@ -9,12 +9,12 @@
           "performance-hub-preproduction"
         ]
     }
-  },
+  }
+},
   "options": {
     "bastion_linux": true,
     "additional_endpoints": [],
     "dns_zone_extend": []
   },
   "nacl": []
-}
 }
