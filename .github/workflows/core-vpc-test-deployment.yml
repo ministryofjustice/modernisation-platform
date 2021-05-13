@@ -89,11 +89,11 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2.3.4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
       - name: get changed files
         id: new_account
         run: |
-          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r HEAD^..HEAD | awk '{print $1}' | grep "terraform/environments-networks/*" | grep "${TF_ENV}" | uniq | xargs jq  ".cidr.subnet_sets[].accounts[]" | xargs)"
+          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep "terraform/environments-networks/*" | grep "${TF_ENV}" | uniq | xargs jq  ".cidr.subnet_sets[].accounts[]" | xargs)"
       - name: Set RAM assocation for member account
         run: |
           if [ ! -n ${{ steps.new_account.outputs.files }} ]
