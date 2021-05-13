@@ -8,8 +8,6 @@ on:
     paths:
       - "source/**"
       - "config/**"
-    paths-ignore:
-      - "docs/**"
 
 jobs:
   run:
