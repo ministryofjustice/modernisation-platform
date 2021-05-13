@@ -94,6 +94,8 @@ jobs:
         id: new_account
         run: |
           echo "::set-output name=files::$(git diff --no-commit-id --name-only -r HEAD^..HEAD | awk '{print $1}' | grep "terraform/environments-networks/*" | grep "${TF_ENV}" | uniq | xargs jq  ".cidr.subnet_sets[].accounts[]" | xargs)"
+          echo "Output:  ${{ steps.new_account.outputs.files }}"
+          git diff --no-commit-id --name-only -r HEAD^..HEAD | awk '{print $1}' | grep "terraform/environments-networks/*"
       - name: Set RAM assocation for member account
         run: |
           if [ ! -n ${{ steps.new_account.outputs.files }} ]
