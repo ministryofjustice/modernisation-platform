@@ -7,7 +7,6 @@ environment=${2}
 setup_ram_share_association() {
 
     #Runs a Terraform plan/apply in the member-vpc workspace to setup the RAM association
-
     echo "Running terraform across workspace $account"
 
     # Select workspace
