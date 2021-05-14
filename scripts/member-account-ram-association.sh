@@ -1,10 +1,8 @@
 #!/bin/bash
 
 basedir=terraform/environments
-account=$1
-environment=$2
-
-account=`echo ${account} | sed -e "s/-${environment}//g"`
+account=`echo ${1} | sed -e "s/-${environment}//g"`
+environment=${2}
 
 setup_ram_share_association() {
 
@@ -13,7 +11,7 @@ setup_ram_share_association() {
     echo "Running terraform across workspace $account"
 
     # Select workspace
-    select_workspace=`terraform -chdir=$basedir/$account workspace select $account`
+    select_workspace=`terraform -chdir=$basedir/$account workspace select $account-$environment`
 
     if [[ $select_workspace ]]; then
 
