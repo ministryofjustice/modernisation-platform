@@ -4,6 +4,8 @@ basedir=terraform/environments
 account=$1
 environment=$2
 
+account=`echo ${account} | sed -e "s/-${environment}//g"`
+
 setup_ram_share_association() {
 
     #Runs a Terraform plan/apply in the member-vpc workspace to setup the RAM association
