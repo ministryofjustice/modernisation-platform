@@ -93,13 +93,13 @@ jobs:
       - name: get changed files
         id: new_account
         run: |
-          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep "terraform/environments-networks/*" | grep "${TF_ENV}" | uniq | xargs jq  ".cidr.subnet_sets[].accounts[]" | xargs)"
+          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep "environments-networks/*" | grep "${TF_ENV}" | uniq | xargs jq  ".cidr.subnet_sets[].accounts[]" | xargs)"
       - name: Set RAM assocation for member account
         run: |
           accounts=(${{ steps.new_account.outputs.files }})
           if [ ! -z ${accounts} ]
           then
-          for i in ${{ steps.new_account.outputs.files }}
+          for i in "${accounts[@]}"
           do
           echo "[+] Setting up RAM asocation for ${i}"
           bash scripts/member-account-ram-association.sh ${i} ${TF_ENV}
