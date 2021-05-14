@@ -1,8 +1,8 @@
 #!/bin/bash
 
 basedir=terraform/environments
-account=`echo ${1} | sed -e "s/-${environment}$//g"`
 environment=${2}
+account=`echo ${1} | sed -e "s/-${environment}//g"`
 
 echo "Environment: ${environment}"
 echo "Account: ${account}"
