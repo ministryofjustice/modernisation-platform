@@ -1,0 +1,18 @@
+{
+	"account-type": "member",
+	"environments": [
+		{
+      "name": "development",
+      "access": [{
+		"github_slug": "operations-engineering",
+		"level": "administrator"
+		}]
+	  }
+	],
+	"tags": {
+		"application": "ops-engineering",
+		"business-unit": "Platforms",
+		"infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+		"owner": "operations-engineering@digital.justice.gov.uk"
+	}
+}
