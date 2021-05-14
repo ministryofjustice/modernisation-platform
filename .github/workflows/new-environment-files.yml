@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'environments/**.json'
+      - 'environments-networks/**.json'
     branches:
       - main
   workflow_dispatch:
