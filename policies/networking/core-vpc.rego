@@ -54,10 +54,10 @@ deny[msg] {
   msg := sprintf("`%v` is missing the `options` key", [input.filename])
 }
 
-deny[msg] {
-  not has_field(input.options, "bastion_linux")
-  msg := sprintf("`%v` is missing the `bastion_linux` key", [input.filename])
-}
+# deny[msg] {
+#   not has_field(input.options, "bastion_linux")
+#   msg := sprintf("`%v` is missing the `bastion_linux` key", [input.filename])
+# }
 
 deny[msg] {
   not has_field(input.options, "additional_endpoints")
