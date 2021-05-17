@@ -5,7 +5,7 @@ set -o pipefail
 
 get-diff() {
   diff=`comm <(tr ' ' '\n' <<<"$1" | sort) <(tr ' ' '\n' <<<"$2" | sort)`
-  echo "$(tput setaf 1)Diff: $diff$(tput sgr0)"
+  echo "$(tput -T xterm setaf 1)Diff: $diff$(tput -T xterm sgr0)"
 }
 
 check-environment-files-present() {
