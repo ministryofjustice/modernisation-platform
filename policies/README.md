@@ -9,7 +9,7 @@ We use [Conftest](https://www.conftest.dev/) and [Open Policy Agent (OPA)](https
 
 This runs the OPA tests against each json file in the [environments](../environments) and [environments-networks](../environments-networks) folder against the relevant policy folder.
 
-[scripts/tests/validate/opa.sh](../scripts/tests/validate/opa.sh)
+[scripts/tests/validate/run-opa-tests.sh](../scripts/tests/validate/run-opa-tests.sh)
 
 ## Run the test unit tests
 
