@@ -1,6 +1,6 @@
 package main
 
-expected = 
+expected =
 {
   "accounts": [
     "analytical-platform-management",
@@ -17,6 +17,7 @@ expected =
     "justice-on-the-web",
     "performance-hub",
     "remote-supervision",
-    "sprinkler"
-  ]
+    "sprinkler",
+    "ops-engineering"
+    ]
 }
