@@ -12,8 +12,7 @@ check-environment-files-present() {
   test_data=`cat policies/environments/expected.rego | sed '1,3d'`
   accounts=`jq -rn --argjson DATA "${test_data}" '$DATA.accounts[]' | sort | tr -s '\n' ' '`
   files=`ls -d environments/*.json | sed 's/environments\///g' | sed 's/.json//g' | sort | tr -s '\n' ' '`
-  echo "Test data: $accounts"
-  echo "File data: $files"
+  
   if [[ "$files" == "$accounts" ]]
   then
     echo "$(tput -T xterm setaf 2)PASS - Environment files check$(tput -T xterm sgr0)"
