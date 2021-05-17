@@ -1,17 +1,20 @@
 package main
 
-expected = {
+expected = 
+  {
   "transit_gateway": {
     "garden-development": "10.233.0.0/26",
     "house-development": "10.233.0.64/26",
     "garden-production": "10.233.0.128/26",
-    "house-production": "10.233.0.192/26"
+    "house-production": "10.233.0.192/26",
+    "hmpps-preproduction": "10.233.1.0/26"
   },
   "protected": {
     "garden-development": "10.232.0.0/23",
     "house-development": "10.232.2.0/23",
     "garden-production": "10.232.4.0/23",
-    "house-production": "10.232.6.0/23"
+    "house-production": "10.232.6.0/23",
+    "hmpps-preproduction": "10.232.8.0/23"
   },
   "subnet_sets": {
     "garden-development": {
@@ -57,6 +60,14 @@ expected = {
         "cidr": "10.237.16.0/21",
         "accounts": [
           "cooker-production"
+        ]
+      }
+    },
+    "hmpps-preproduction": {
+      "general": {
+        "cidr": "10.236.0.0/21",
+        "accounts": [
+          "performance-hub-preproduction"
         ]
       }
     }
