@@ -12,12 +12,11 @@ check-environment-files-present() {
   test_data=`cat policies/environments/expected.rego | sed '1,3d'`
   accounts=`jq -rn --argjson DATA "${test_data}" '$DATA.accounts[]' | tr -s '\n' ' '`
   files=`ls -d environments/*.json | sed 's/environments\///g' | sed 's/.json//g' | sort | tr -s '\n' ' '`
-
   if [[ "$files" == "$accounts" ]]
   then
-    echo "$(tput setaf 2)PASS - Environment files check$(tput sgr0)"
+    echo "$(tput -T xterm setaf 2)PASS - Environment files check$(tput -T xterm sgr0)"
   else
-    echo "$(tput setaf 1)FAILED - Extra or missing environments/*.json files$(tput sgr0)"
+    echo "$(tput -T xterm setaf 1)FAILED - Extra or missing environments/*.json files$(tput -T xterm sgr0)"
     get-diff "$accounts" "$files"
     exit 1
   fi
@@ -30,9 +29,9 @@ check-network-files-present() {
 
   if [[ "$files" == "$business_units" ]]
   then
-    echo "$(tput setaf 2)PASS - Environment network files check$(tput sgr0)"
+    echo "$(tput -T xterm setaf 2)PASS - Environment network files check$(tput -T xterm sgr0)"
   else
-    echo "$(tput setaf 1)FAILED - Extra of missing environments-network/*.json files$(tput sgr0)"
+    echo "$(tput -T xterm setaf 1)FAILED - Extra of missing environments-network/*.json files$(tput -T xterm sgr0)"
     get-diff "$business_units" "$files"
     exit 1
   fi
