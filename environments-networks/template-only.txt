@@ -14,9 +14,9 @@
     "options": {
         "bastion_linux": true,
         "additional_endpoints": [
-            "one",
-            "two"
-        ]
+            "com.amazonaws.eu-west-2.elasticfilesystem",
+            "com.amazonaws.eu-west-2.sqs"
+        ],
     },
     "nacl": [
         {

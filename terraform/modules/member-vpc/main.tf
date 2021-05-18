@@ -3,27 +3,6 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
-# VPC Endpoints
-# EC2
-data "aws_vpc_endpoint_service" "ec2" {
-  service = "ec2"
-}
-
-# EC2 Messages
-data "aws_vpc_endpoint_service" "ec2messages" {
-  service = "ec2messages"
-}
-
-# SSM
-data "aws_vpc_endpoint_service" "ssm" {
-  service = "ssm"
-}
-
-# SSM Messages
-data "aws_vpc_endpoint_service" "ssmmessages" {
-  service = "ssmmessages"
-}
-
 locals {
   availability_zones = sort(data.aws_availability_zones.available.names)
 
@@ -174,23 +153,17 @@ locals {
 
   # SSM Endpoints (Systems Session Manager)
   ssm_endpoints = [
-    data.aws_vpc_endpoint_service.ec2.service_name,
-    data.aws_vpc_endpoint_service.ec2messages.service_name,
-    data.aws_vpc_endpoint_service.ssm.service_name,
-    data.aws_vpc_endpoint_service.ssmmessages.service_name
+    "com.amazonaws.eu-west-2.ec2",
+    "com.amazonaws.eu-west-2.ec2messages",
+    "com.amazonaws.eu-west-2.ssm",
+    "com.amazonaws.eu-west-2.ssmmessages",
   ]
-  ssm_endpoints_expanded = flatten([
-    for app_key, app in var.subnet_sets : [
-      for key, endpoint in local.ssm_endpoints : {
-        app_name = app_key
-        endpoint = endpoint
-      }
-    ]
-  ])
-  expanded_ssm_endpoints_with_keys = {
-    for item in local.ssm_endpoints_expanded :
-    "${item.app_name}-${item.endpoint}" => item
-  }
+
+  # Merge SSM endpoints with VPC requested endpoints
+  merged_endpoint_list = concat(
+    local.ssm_endpoints,
+    var.additional_endpoints
+  )
 
 }
 
@@ -544,7 +517,7 @@ resource "aws_security_group_rule" "endpoints_ingress_1" {
 }
 # SSM Endpoints
 resource "aws_vpc_endpoint" "ssm_interfaces" {
-  for_each = toset(local.ssm_endpoints)
+  for_each = toset(local.merged_endpoint_list)
 
   vpc_id            = aws_vpc.vpc.id
   service_name      = each.value
