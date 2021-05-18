@@ -1,0 +1,39 @@
+---
+title: Accessing the AWS Console
+last_reviewed_on: 2021-05-17
+review_in: 3 months
+---
+
+# <%= current_page.data.title %>
+
+You can view your infrastructure via the AWS console, you will also need access to the AWS console to create and configure your [AWS Credentials (access keys)](configuring-aws-credentials.html)
+
+## Logging in
+
+Logging in to the AWS console is done via single sign on.  As part of the environment creation, you would have provided the name of a team in Github. Any member of this team will have access to the environment.
+
+Click on the single sign on url - [https://moj.awsapps.com/start](https://moj.awsapps.com/start)
+
+You will see the single sign on screen, click on `Continue with GitHub` and sign in with Github to continue.
+
+![Single sign on](../images/single-sign-on-screen.png)
+
+Next authorise Github
+
+![Authorise Github](../images/authorise-github.png)
+
+You are now logged in to the single sign on. 
+
+Click on `AWS Account` to view a list of the accounts you have available to you.
+
+![SSO main menu](../images/sso-main-menu.png)
+
+![SSO account options](../images/sso-account-options.png)
+
+Expand the account you wish to access and click on the `Management console` link. You may have different levels of access, choose the one you need.
+
+![SSO Authorisation choice](../images/sso-authorisation-choice.png)
+
+### Next steps
+
+[Configure your AWS credentials](configuring-aws-credentials.html) to get [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html) access or to [run a Terraform plan locally](running-a-terraform-plan-locally.html)
