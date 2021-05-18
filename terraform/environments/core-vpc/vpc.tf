@@ -88,7 +88,7 @@ module "vpc" {
 
   subnet_sets = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
   protected   = each.value.cidr.protected
-  vpc_cidr    = each.value.cidr.transit_gateway
+  transit     = each.value.cidr.transit_gateway
 
   bastion_linux = each.value.options.bastion_linux
   #bastion_windows = each.value.options.bastion_windows

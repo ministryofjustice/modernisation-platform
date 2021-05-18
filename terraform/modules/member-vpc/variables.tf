@@ -1,4 +1,4 @@
-variable "vpc_cidr" {
+variable "transit" {
   type = string
 }
 
