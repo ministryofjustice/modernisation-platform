@@ -47,7 +47,7 @@ locals {
 
   # Transit Gateway subnets
   expanded_tgw_subnets = [
-    for index, cidr in cidrsubnets(var.vpc_cidr, 2, 2, 2) : {
+    for index, cidr in cidrsubnets(var.transit, 2, 2, 2) : {
       key  = "transit-gateway"
       cidr = cidr
       az   = local.availability_zones[index]
@@ -196,7 +196,7 @@ locals {
 
 # VPC
 resource "aws_vpc" "vpc" {
-  cidr_block = var.vpc_cidr
+  cidr_block = var.transit
 
   enable_dns_support   = true
   enable_dns_hostnames = true
