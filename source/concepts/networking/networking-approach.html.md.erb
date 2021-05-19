@@ -8,7 +8,7 @@ review_in: 3 months
 
 ### What we're trying to fix
 
-Networking is hard, setting up a landing zone, a VPC, subnets, endpoints, peering, NACLS, gateways etc etc is both complex and time consuming.
+Networking is hard, setting up a landing zone, a VPC, subnets, endpoints, peering, NACLS, gateways, etc, is both complex and time consuming.
 We want to take care of this so that users can focus on what is important to them - their application.
 
 ### What we investigated
@@ -34,9 +34,9 @@ These VPCs are then shared via [RAM](https://docs.aws.amazon.com/ram/latest/user
 
 For example the production LAA VPC may be shared to multiple LAA application accounts, this enables LAA applications to communicate with each other without the need for [VPC peering](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-peering.html) as they are using the same VPC.
 
-Connection to other VPCs, for example if an LAA application needs to communicate with a HMPPS application, is done through a [Transit Gateway](https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html).
+Connection to other VPCs, for example if an LAA application needs to communicate with a HMPPS application, is done through the [Transit Gateway](#what-we-decided-transit-gateway), [NACLs](#nacls) can be opened to allow access, and [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html) from other accounts can be referenced.
 
-The Transit Gateway also enables connection to third parties external to the MoJ via a [VPN](https://docs.aws.amazon.com/vpc/latest/userguide/vpn-connections.html).
+
 
 #### Subnets
 
@@ -52,7 +52,7 @@ The subnet sets contain three types of subnet:
  * Private (for private resources such as application servers)
  * Data (for data resources such as databases)
 
-Each of the different subnet types are spread across all three availability zones (eu-west-2a, eu-west-2b, eu-west2c), making a total of nine subnets.
+Each of the different subnet types are spread across all three London region [availability zones](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones) (eu-west-2a, eu-west-2b and eu-west2c), making a total of nine subnets.
 
 For more information on the subnet ranges, see the [subnet allocation](subnet-allocation.html) page.
 
@@ -67,17 +67,23 @@ Protected subnets are created per account and used for [VPC endpoints](https://d
 
 ##### Transit Gateway
 
-The [transit gateway](https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html) subnets are created per account to allow access to other accounts and services via the transit gateway.
+The [transit gateway](#what-we-decided-transit-gateway) subnets are created per account to allow access to other accounts and services via the transit gateway.
 
 #### NACLs
 
-Access to the subnets is controlled with [Network ACLs (NACLs)](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html).
+Access to the subnet sets is controlled with [Network ACLs (NACLs)](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html).
 
 By default these NACLs are locked down, allowing only egress and ingress to the public subnets.  We can add additional rules to allow your application to talk to services in different subnet sets as needed.
 
+Egress traffic is allowed by a centralised NAT in network services account.
+
+NACLs are not applied to Transit Gateway subnets, traffic is controlled at the subnet set level.
+
+NACLs to the protected subnets only allow access from the private subnet sets over HTTPS to access endports.
+
 #### Other VPCs
 
-There are other VPCs in the Modernisation Platform core infrastructure accounts, these are connected to the transit gateway as well.
+There are other VPCs in the Modernisation Platform core infrastructure accounts, these are connected to the [transit gateway](#what-we-decided-transit-gateway) as well.
 
 Examples of some of these that you will connect to are:
 
@@ -85,6 +91,13 @@ Examples of some of these that you will connect to are:
 * shared-services
 * logging
 * security
+
+#### Transit Gateway
+
+The [transit gateway](https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html) allows us to interconnect the different VPCs to enable communication between business units. The Transit Gateway also enables connection to third parties external to the MoJ via a [VPN](https://docs.aws.amazon.com/vpc/latest/userguide/vpn-connections.html).
+Routing is split into production and non production data for data protection.
+
+![Transit Gatway](../../images/transit-gateway.png)
 
 ### Diagram
 
