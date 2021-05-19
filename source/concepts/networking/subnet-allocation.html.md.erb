@@ -1,0 +1,31 @@
+---
+title: Subnet Allocation
+last_reviewed_on: 2021-05-18
+review_in: 3 months
+---
+
+# <%= current_page.data.title %>
+
+When we set up a VPC for an environment (AWS account) we provide subnets for transit gateway connection, protected reources such as VPC endpoints, along with a general subnet set.
+See the [subnets](networking-approach.html/#subnets) section for more information.
+
+Here we go into a bit more detail on how the [CIDR ranges](https://github.com/ministryofjustice/modernisation-platform/blob/main/cidr-allocation.md) have been created and how they are allocated.
+
+## Transit Gateway and Protected subnets allocation
+
+![Subnets allocation](../../images/subnets-allocation.png)
+
+## Subnet Sets
+
+![Subnet sets allocation](../../images/subnet-sets-allocation.png)
+
+## How have we decided the ranges?
+
+Research was done on the existing MoJ network infrastructure to ensure that we didn't clash with any existing ranges.
+The modernisation platform [CIDR ranges](https://github.com/ministryofjustice/modernisation-platform/blob/main/cidr-allocation.md) are documented here.  By predefining IP ranges it makes it easier for us to onboard new applications.
+
+## Example
+
+Below is an example of how CIDR ranges would be assigned. In this example there are 2 additional subnet sets for this VPC, but normally we would expect the general set to be enough for a business area.
+
+![Subnets example](../../images/subnets-example.png)

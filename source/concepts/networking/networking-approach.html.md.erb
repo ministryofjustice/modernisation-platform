@@ -1,0 +1,93 @@
+---
+title: Networking Approach
+last_reviewed_on: 2021-05-18
+review_in: 3 months
+---
+
+# <%= current_page.data.title %>
+
+### What we're trying to fix
+
+Networking is hard, setting up a landing zone, a VPC, subnets, endpoints, peering, NACLS, gateways etc etc is both complex and time consuming.
+We want to take care of this so that users can focus on what is important to them - their application.
+
+### What we investigated
+
+We looked into having a [VPC](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) per account. Although this provides good network isolation, because we have one account per application environment, it would mean a lot of VPC peering would be required to connect one application to another if needed.
+
+### What we decided
+
+#### VPCs
+
+Instead of creating a VPC in each account, we have created separate environment accounts, and have one VPC per business unit, per environment.
+
+So we have the following environment accounts:
+
+* production
+* preproduction
+* test
+* development
+
+Within these environment accounts there is a VPC per business unit.  For example one VPC for the LAA, and one for HMPPS.
+
+These VPCs are then shared via [RAM](https://docs.aws.amazon.com/ram/latest/userguide/what-is.html) to the application accounts.
+
+For example the production LAA VPC may be shared to multiple LAA application accounts, this enables LAA applications to communicate with each other without the need for [VPC peering](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-peering.html) as they are using the same VPC.
+
+Connection to other VPCs, for example if an LAA application needs to communicate with a HMPPS application, is done through a [Transit Gateway](https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html).
+
+The Transit Gateway also enables connection to third parties external to the MoJ via a [VPN](https://docs.aws.amazon.com/vpc/latest/userguide/vpn-connections.html).
+
+#### Subnets
+
+##### General
+
+Each VPC will have a general subnet set - a set of subnets that can be used for most of the application accounts. These are shared to the application accounts using RAM.
+
+For most business areas, the general subset set will be enough, but we can always create more subnet sets if needed.
+
+The subnet sets contain three types of subnet:
+
+ * Public (for public resources such as load balancers)
+ * Private (for private resources such as application servers)
+ * Data (for data resources such as databases)
+
+Each of the different subnet types are spread across all three availability zones (eu-west-2a, eu-west-2b, eu-west2c), making a total of nine subnets.
+
+For more information on the subnet ranges, see the [subnet allocation](subnet-allocation.html) page.
+
+##### Protected
+
+Protected subnets are created per account and used for [VPC endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html). We provide the following VPC endpoints as standard, and can add additional ones as required:
+
+* SSM Messages
+* S3
+* EC2
+* EC2 Messages
+
+##### Transit Gateway
+
+The [transit gateway](https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html) subnets are created per account to allow access to other accounts and services via the transit gateway.
+
+#### NACLs
+
+Access to the subnets is controlled with [Network ACLs (NACLs)](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html).
+
+By default these NACLs are locked down, allowing only egress and ingress to the public subnets.  We can add additional rules to allow your application to talk to services in different subnet sets as needed.
+
+#### Other VPCs
+
+There are other VPCs in the Modernisation Platform core infrastructure accounts, these are connected to the transit gateway as well.
+
+Examples of some of these that you will connect to are:
+
+* network-services (where the transit gateway lives)
+* shared-services
+* logging
+* security
+
+### Diagram
+
+![Shared VPC Diagram](../../images/shared-vpc.png)
+
+For more information on how the VPC sharing fits into the bigger networking picture, see the main [networking diagram](networking-diagram.html) 
