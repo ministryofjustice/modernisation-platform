@@ -1,0 +1,20 @@
+---
+title: Instance Access and Bastions
+last_reviewed_on: 2021-05-18
+review_in: 3 months
+---
+
+# <%= current_page.data.title %>
+
+## Accessing Instances
+
+For most EC2 running modern Linux operating systems, [SSH](https://en.wikipedia.org/wiki/Secure_Shell_Protocol) access will be via [AWS Systems Manager Session Manager (SSM)](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
+
+This provides secure and auditable access to EC2s without the need to expose ports or use a bastion. This can also be used for port forwarding to access private web consoles, [RDS databases](https://aws.amazon.com/rds/) or Windows [RDP](https://en.wikipedia.org/wiki/Remote_Desktop_Protocol).
+
+## Bastions
+
+For instances running older versions of Linux where the [SSM Agent](https://docs.aws.amazon.com/systems-manager/latest/userguide/ssm-agent.html) can't be installed, we can provide a [bastion host](https://en.wikipedia.org/wiki/Bastion_host).
+
+The bastion will be preconfigured with the relevant security and network connectivity required.
+You can then securely connect to this bastion host via Systems Manager, and then on to your instance.

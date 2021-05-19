@@ -1,0 +1,34 @@
+---
+title: DNS
+last_reviewed_on: 2021-05-18
+review_in: 3 months
+---
+
+# <%= current_page.data.title %>
+
+DNS is centralised in the networking services account. 
+
+There are public and private [hosted zones](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zones-working-with.html) for the Modernisation Platform.
+
+![DNS Zones](../../images/dns.png)
+
+## DNS naming
+
+DNS entries for applications will be created in the relevant zone following the naming conventions below.
+
+### Public
+
+`<application>`.`<department>`-`<environment>`.modernisation-platform.service.justice.gov.uk
+
+#### Example
+
+ccr.laa-production.modernisation-platform.service.justice.gov.uk
+
+### Private
+
+`<application>`.`<department>`-`<environment>`.modernisation-platform.internal
+
+#### Example
+
+admin-console.ccr.laa-production.modernisation-platform.internal
+
