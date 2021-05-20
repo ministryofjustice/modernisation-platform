@@ -1,0 +1,21 @@
+---
+title: Certificate Services
+last_reviewed_on: 2021-05-18
+review_in: 3 months
+---
+
+# <%= current_page.data.title %>
+
+## Public Certificates
+
+All environments can create their own public certificates using [AWS Certificate Manager](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html).
+
+## Private Certificates
+
+We provide a [Private root Certificate Authority (CA)](https://docs.aws.amazon.com/acm-pca/latest/userguide/PcaWelcome.html) in the [network services account and VPC](networking-approach.html#other-vpcs), along with subordinate production and non production CAs.
+
+The subordinate CA's are then shared to the application environments via a [RAM](https://docs.aws.amazon.com/ram/latest/userguide/what-is.html) share (either production or non production depending on the environment).
+
+Certificates can then be created using the Private subordinate CA, the certificates remain local to the application environment.
+
+![Certificate Services](../../images/certificate-services.png)
