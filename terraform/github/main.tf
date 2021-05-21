@@ -151,3 +151,10 @@ module "aws-team" {
 
   parent_team_id = module.core-team.team_id
 }
+
+# Give write access to org on the environments repo (access to merge to main is restricted by codeowners file)
+resource "github_team_repository" "modernisation-platform-environments" {
+  team_id    = "all-org-members"
+  repository = module.modernisation-platform-environments.repository.id
+  permission = "push"
+}
