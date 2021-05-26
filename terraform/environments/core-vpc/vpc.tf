@@ -91,7 +91,7 @@ module "vpc" {
   transit     = each.value.cidr.transit_gateway
 
 
-  additional_endpoints = each.value.options.additional_endpoints 
+  additional_endpoints = each.value.options.additional_endpoints
   bastion_linux        = each.value.options.bastion_linux
   #bastion_windows = each.value.options.bastion_windows
 
@@ -188,12 +188,13 @@ module "dns-zone" {
   for_each = local.vpcs[terraform.workspace]
   source   = "../../modules/dns-zone"
 
-  dns_zone         = each.key
-  vpc_id           = module.vpc[each.key].vpc_id
-  public_dns_zone  = data.aws_route53_zone.public
-  private_dns_zone = data.aws_route53_zone.private
-  accounts         = { for key, account in each.value.cidr.subnet_sets : key => account.accounts }
-  environments     = local.environment_management
+  dns_zone                       = each.key
+  vpc_id                         = module.vpc[each.key].vpc_id
+  public_dns_zone                = data.aws_route53_zone.public
+  private_dns_zone               = data.aws_route53_zone.private
+  accounts                       = { for key, account in each.value.cidr.subnet_sets : key => account.accounts }
+  modernisation_platform_account = data.aws_caller_identity.modernisation-platform.account_id
+  environments                   = local.environment_management
 
   # Tags
   tags_common = local.tags

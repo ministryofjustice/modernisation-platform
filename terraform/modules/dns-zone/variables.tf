@@ -9,6 +9,10 @@ variable "accounts" {
   type = map(any)
 }
 
+variable "modernisation_platform_account" {
+}
+
+
 variable "environments" {
 }
 
