@@ -4,6 +4,7 @@ basedir=modernisation-platform-environments/terraform/environments
 networkdir=core-repo/environments-networks
 templates=core-repo/terraform/templates/*.tf
 environment_json_dir=core-repo/environments
+codeowners_file=modernisation-platform-environments/.github/CODEOWNERS
 
 provision_environment_directories() {
   # This reshapes the JSON for subnet sets to include the business unit, pulled from the filename; and the set name from the key of the object:
@@ -110,4 +111,37 @@ copy_templates() {
   echo "Finished copying templates."
 }
 
+generate_codeowners() {
+# Creates a codeowners file in the environments repo to ensure only teams can approve PRs referencing their code
+  cat > $codeowners_file << EOL
+# This file is auto-generated here, do not manually amend. 
+# https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/provision-member-directories.sh
+
+* @modernisation-platform
+EOL
+
+  for file in $environment_json_dir/*.json; do
+    application_name=$(basename "$file" .json)
+    directory=/terraform/environments/$application_name
+    account_type=$(jq -r '."account-type"' ${environment_json_dir}/${application_name}.json)
+    github_slugs=$(jq -r '.environments[].access[].github_slug' ${environment_json_dir}/${application_name}.json | uniq)
+    
+    if [ "$account_type" != "core" ]; then
+      for slug in $github_slugs; do
+        echo "$directory @$slug @modernisation-platform" >> $codeowners_file
+      done
+    fi    
+
+  done
+
+  cat >> $codeowners_file << EOL
+**/providers.tf @modernisation-platform
+**/backend.tf @modernisation-platform
+**/subnet_share.tf @modernisation-platform
+**/networking.auto.tfvars.json @modernisation-platform
+EOL
+
+}
+
 provision_environment_directories
+generate_codeowners
