@@ -10,10 +10,12 @@ locals {
   account_names  = [for key, account in var.accounts : account]
   environment_id = { for key, env in var.environments : key => env }
 
-  account_numbers = flatten([
+  account_numbers = concat(flatten([
     for value in flatten(local.account_names) :
     local.environment_id.account_ids[value]
-  ])
+    ]),
+    [var.modernisation_platform_account]
+  )
 
 }
 
