@@ -3,7 +3,7 @@ module "iam" {
   account_alias = "moj-modernisation-platform"
 }
 
-# CI User
+# Core CI User
 # IAM policy that denies:
 # - changing IAM passwords for anyone
 # - creating console login profiles
@@ -72,6 +72,45 @@ resource "aws_iam_user_group_membership" "ci-ci" {
 # NOTE: These are extremely sensitive keys. Do not output these anywhere publicly accessible.
 resource "aws_iam_access_key" "ci" {
   user = aws_iam_user.ci.name
+
+  # Setting the meta lifecycle argument allows us to periodically run `terraform taint aws_iam_access_key.ci`, and run
+  # terraform apply to create new keys before these ones are destroyed.
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+# Member CI User
+
+# Create a member CI group to attach the policy to
+resource "aws_iam_group" "member-ci" {
+  name = "member-ci"
+}
+
+# Attach DenyLockoutActions to the group
+resource "aws_iam_group_policy_attachment" "member-ci-deny-specific-actions" {
+  group      = aws_iam_group.member-ci.id
+  policy_arn = aws_iam_policy.deny-specific-actions.id
+}
+
+# Create a member CI user
+resource "aws_iam_user" "member-ci" {
+  name = "member-ci"
+  tags = local.tags
+}
+
+# Add the member CI user to the CI group
+resource "aws_iam_user_group_membership" "member-ci" {
+  user = aws_iam_user.member-ci.name
+  groups = [
+    aws_iam_group.member-ci.name
+  ]
+}
+
+# Create access keys for the CI user
+# NOTE: These are extremely sensitive keys. Do not output these anywhere publicly accessible.
+resource "aws_iam_access_key" "member-ci" {
+  user = aws_iam_user.member-ci.name
 
   # Setting the meta lifecycle argument allows us to periodically run `terraform taint aws_iam_access_key.ci`, and run
   # terraform apply to create new keys before these ones are destroyed.
