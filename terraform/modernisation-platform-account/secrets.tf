@@ -1,3 +1,4 @@
+# Core CI User
 resource "aws_secretsmanager_secret" "ci_iam_user_keys" {
   name        = "ci_iam_user_keys"
   description = "Access keys for the CI user, this secret is used by GitHub to set the correct repository secrets."
@@ -9,5 +10,20 @@ resource "aws_secretsmanager_secret_version" "ci_iam_user_keys" {
   secret_string = jsonencode({
     AWS_ACCESS_KEY_ID     = aws_iam_access_key.ci.id
     AWS_SECRET_ACCESS_KEY = aws_iam_access_key.ci.secret
+  })
+}
+
+# Member CI user
+resource "aws_secretsmanager_secret" "member_ci_iam_user_keys" {
+  name        = "member_ci_iam_user_keys"
+  description = "Access keys for the CI user, this secret is used by GitHub to set the correct repository secrets."
+  tags        = local.tags
+}
+
+resource "aws_secretsmanager_secret_version" "member_ci_iam_user_keys" {
+  secret_id = aws_secretsmanager_secret.member_ci_iam_user_keys.id
+  secret_string = jsonencode({
+    AWS_ACCESS_KEY_ID     = aws_iam_access_key.member-ci.id
+    AWS_SECRET_ACCESS_KEY = aws_iam_access_key.member-ci.secret
   })
 }
