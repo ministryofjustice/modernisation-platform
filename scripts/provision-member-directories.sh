@@ -112,6 +112,7 @@ copy_templates() {
 }
 
 generate_codeowners() {
+echo "Writing codeowners file"
 # Creates a codeowners file in the environments repo to ensure only teams can approve PRs referencing their code
   cat > $codeowners_file << EOL
 # This file is auto-generated here, do not manually amend. 
@@ -128,6 +129,7 @@ EOL
     
     if [ "$account_type" != "core" ]; then
       for slug in $github_slugs; do
+        echo "Adding $directory @$slug @modernisation-platform to codeowners"
         echo "$directory @$slug @modernisation-platform" >> $codeowners_file
       done
     fi    
