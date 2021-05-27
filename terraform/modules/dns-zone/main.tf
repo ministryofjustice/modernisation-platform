@@ -123,7 +123,7 @@ resource "aws_iam_role_policy" "dns" {
           "route53:DeleteHealthCheck",
           "route53:List*",
           "route53:Get*"
-      ],
+        ],
         "Resource" : "*"
       },
       {
