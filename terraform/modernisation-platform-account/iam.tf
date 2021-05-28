@@ -91,9 +91,12 @@ data "aws_iam_policy_document" "member-ci-policy" {
   }
 
   statement {
-    effect    = "Allow"
-    actions   = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*"]
+    effect  = "Allow"
+    actions = ["s3:GetObject"]
+    resources = [
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/*",
+      "arn:aws:s3:::modernisation-platform-terraform-state/terraform.tfstate"
+    ]
   }
 
   statement {
