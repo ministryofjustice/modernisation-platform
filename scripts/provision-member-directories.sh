@@ -91,7 +91,7 @@ copy_templates() {
   for file in $templates; do
     filename=$(basename "$file")
 
-    if [ ${filename} != "subnet_share.tf" ]
+    if [ ${filename} != "subnet_share.tf" ] && [ ${filename} != "providers.tf" ]
     then
       echo "Copying $file to $1, replacing application_name with $application_name"
       sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
@@ -107,6 +107,9 @@ copy_templates() {
       fi
     fi
   done
+
+  # Rename member providers file
+  mv $1/member-providers.tf $1/providers.tf
 
   echo "Finished copying templates."
 }

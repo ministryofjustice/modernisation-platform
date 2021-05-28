@@ -110,22 +110,19 @@ resource "aws_iam_role_policy" "dns" {
       {
         "Effect" : "Allow",
         "Action" : [
-          "route53:ListReusableDelegationSets",
-          "route53:ListTrafficPolicyInstances",
-          "route53:GetTrafficPolicyInstanceCount",
+          "route53:ChangeResourceRecordSets",
           "route53:CreateTrafficPolicy",
-          "route53:TestDNSAnswer",
-          "route53:ListHostedZones",
-          "route53:ListHostedZonesByName",
-          "route53:GetAccountLimit",
-          "route53:GetCheckerIpRanges",
-          "route53:ListHealthChecks",
+          "route53:DeleteTrafficPolicy",
+          "route53:CreateTrafficPolicyInstance",
+          "route53:CreateTrafficPolicyVersion",
+          "route53:UpdateTrafficPolicyInstance",
+          "route53:UpdateTrafficPolicyComment",
+          "route53:DeleteTrafficPolicyInstance",
           "route53:CreateHealthCheck",
-          "route53:ListTrafficPolicies",
-          "route53:GetGeoLocation",
-          "route53:ListGeoLocations",
-          "route53:GetHostedZoneCount",
-          "route53:GetHealthCheckCount"
+          "route53:UpdateHealthCheck",
+          "route53:DeleteHealthCheck",
+          "route53:List*",
+          "route53:Get*"
         ],
         "Resource" : "*"
       },
