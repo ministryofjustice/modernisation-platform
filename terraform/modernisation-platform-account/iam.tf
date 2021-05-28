@@ -82,6 +82,45 @@ resource "aws_iam_access_key" "ci" {
 
 # Member CI User
 
+# Member CI policy
+data "aws_iam_policy_document" "member-ci-policy" {
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:ListBucket"]
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state"]
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:GetObject"]
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*"]
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "secretsmanager:GetResourcePolicy",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecretVersionIds",
+      "secretsmanager:ListSecrets"
+    ]
+    resources = ["arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.current.account_id}:secret:environment_management-??????"]
+  }
+}
+
+resource "aws_iam_policy" "member-ci-policy" {
+  name        = "MemberCiAllowActions"
+  description = "Allowed actions for the member-ci Group"
+  policy      = data.aws_iam_policy_document.member-ci-policy.json
+}
+
 # Create a member CI group to attach the policy to
 resource "aws_iam_group" "member-ci" {
   name = "member-ci"
@@ -91,6 +130,12 @@ resource "aws_iam_group" "member-ci" {
 resource "aws_iam_group_policy_attachment" "member-ci-deny-specific-actions" {
   group      = aws_iam_group.member-ci.id
   policy_arn = aws_iam_policy.deny-specific-actions.id
+}
+
+# Attach Member CI Policy to the group
+resource "aws_iam_group_policy_attachment" "member-ci-policy" {
+  group      = aws_iam_group.member-ci.id
+  policy_arn = aws_iam_policy.member-ci-policy.id
 }
 
 # Create a member CI user
