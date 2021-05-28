@@ -13,9 +13,7 @@
   },
   "options": {
     "bastion_linux": false,
-    "additional_endpoints": [
-      "com.amazonaws.us-east-1.ecr.dkr"
-    ],
+    "additional_endpoints": [],
     "dns_zone_extend": []
   },
   "nacl": []
