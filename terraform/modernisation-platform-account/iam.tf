@@ -86,6 +86,12 @@ resource "aws_iam_access_key" "ci" {
 data "aws_iam_policy_document" "member-ci-policy" {
   statement {
     effect    = "Allow"
+    actions   = ["sts:AssumeRole"]
+    resources = ["*"]
+  }
+
+  statement {
+    effect    = "Allow"
     actions   = ["s3:ListBucket"]
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state"]
   }
