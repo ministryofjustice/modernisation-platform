@@ -37,15 +37,15 @@ resource "aws_iam_role_policy" "dns" {
     Statement = [
       {
         "Effect" : "Allow",
-        "Action" : ["route53:GetChange"],
+        "Action" : [
+          "route53:Get*",
+          "route53:List*"
+        ],
         "Resource" : "*"
       },
       {
         Effect = "Allow",
-        Action = [
-          "route53:ListResourceRecordSets",
-          "route53:ChangeResourceRecordSets"
-        ],
+        Action = ["route53:ChangeResourceRecordSets"],
         Resource = [
           "arn:aws:route53:::hostedzone/${aws_route53_zone.modernisation-platform.id}",
           "arn:aws:route53:::hostedzone/${aws_route53_zone.modernisation-platform-internal.id}"
