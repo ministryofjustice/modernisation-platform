@@ -110,6 +110,14 @@ resource "aws_iam_role_policy" "dns" {
       {
         "Effect" : "Allow",
         "Action" : [
+          "route53:List*",
+          "route53:Get*"
+        ],
+        "Resource" : "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
           "route53:ChangeResourceRecordSets",
           "route53:CreateTrafficPolicy",
           "route53:DeleteTrafficPolicy",
@@ -120,15 +128,8 @@ resource "aws_iam_role_policy" "dns" {
           "route53:DeleteTrafficPolicyInstance",
           "route53:CreateHealthCheck",
           "route53:UpdateHealthCheck",
-          "route53:DeleteHealthCheck",
-          "route53:List*",
-          "route53:Get*"
+          "route53:DeleteHealthCheck"
         ],
-        "Resource" : "*"
-      },
-      {
-        Action = ["route53:ChangeResourceRecordSets"]
-        Effect = "Allow"
         Resource = [
           "arn:aws:route53:::hostedzone/${aws_route53_zone.public.id}",
           "arn:aws:route53:::hostedzone/${aws_route53_zone.private.id}"
