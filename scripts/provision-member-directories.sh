@@ -55,6 +55,10 @@ provision_environment_directories() {
 
       mkdir -p "$directory"
       copy_templates "$directory" "$application_name"
+      
+      # Create workflow file
+      echo "Creating workflow file"
+      sed "s/\$application_name/$application_name/g" "core-repo/.github/workflows/templates/workflow-template.yml" > "modernisation-platform-environments/.github/workflows/$application_name.yml"
     fi
 
     # This filters and reshapes networking_definitions to only include the business units and subnet sets for $APPLICATION_NAME
