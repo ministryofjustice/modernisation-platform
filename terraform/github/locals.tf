@@ -36,7 +36,8 @@ locals {
     "jackstockley89",
     "jakemulley",
     "philhorrocks",
-    "zuriguardiola"
+    "zuriguardiola",
+    "stevelinden"
   ]
 
   # All members
