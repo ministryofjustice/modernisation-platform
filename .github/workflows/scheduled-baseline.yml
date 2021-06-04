@@ -1,21 +1,8 @@
-name: "Terraform: New environment"
+name: "Terraform: scheduled baseline"
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'environments/**.json'
-      - 'terraform/environments/bootstrap/**'
-      - '.github/workflows/new-environment.yml'
-  pull_request:
-    branches:
-      - main
-    types: [opened, edited, reopened, synchronize]
-    paths:
-      - '.github/workflows/new-environment.yml'
-      - 'terraform/environments/*.tf'
-      - 'environments/**.json'
+  schedule:
+    - cron: "0 23 * * 6"
   workflow_dispatch:
 
 env:
@@ -42,18 +29,14 @@ jobs:
       - name: Run terraform plan for root terraform/environments
         run: |
           # Test if this is a PR or PULL event
-
           #USE IF RUNNING IN GITHUB ACTIONS
           if [ ! -z ${{ github.event.pull_request.number }} ]
           then
-
           #USE IF USING ACT
           # if [ ! -z ${PULL_REQUEST_NUMBER} ]
           # then
-
           #CONFIGURE TERRAFORM
           bash scripts/terraform-init.sh terraform/environments
-
           #RUN TERRAFORM PLAN
           PLAN=`bash scripts/terraform-plan.sh terraform/environments | tee /dev/stderr | grep '^Plan: \|^No changes.'`
           PLAN="> TERRAFORM PLAN RESULT - ACCOUNTS-TO-CREATE/MODIFY/DELETE -
@@ -110,7 +93,7 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [provision-workspaces]
     env:
-      AWS_ACCESS_KEY_ID:  ${{ secrets.PRIVIecho "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep "environments-networks/*" | grep "${TF_ENV}" | uniqLEGED_AWS_ACCESS_KEY_ID }}
+      AWS_ACCESS_KEY_ID:  ${{ secrets.PRIVILEGED_AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY:  ${{ secrets.PRIVILEGED_AWS_SECRET_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v2.3.4
@@ -118,25 +101,9 @@ jobs:
         with:
           terraform_version: 0.14.6
           terraform_wrapper: false
-      - name: get new account(s)
-        id: new_account
-        run: |
-          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep "environments/*" | uniq)"
-      - name: Run delegate access
-        run: |
-          accounts=(${{ steps.new_account.outputs.files }})
-          if [ ! -z ${accounts} ]
-          then
-          for i in "${accounts[@]}"
-          do
-          echo "[+] Running delegate-access bootstrap baseline for account for ${i}"
-          bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
-          bash scripts/setup-baseline.sh terraform/environments/bootstrap/delegate-access ${i} plan
-          bash scripts/setup-baseline.sh terraform/environments/bootstrap/delegate-access ${i} apply
-          done
-          else
-          echo "[+] There were no AWS member accounts to process"
-          fi
+      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
+      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access plan
+      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access apply
   secure-baselines:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
@@ -150,25 +117,9 @@ jobs:
         with:
           terraform_version: 0.14.6
           terraform_wrapper: false
-         - name: get new account(s)
-        id: new_account
-        run: |
-          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep "environments/*" | uniq)"
-      - name: Run delegate access
-        run: |
-          accounts=(${{ steps.new_account.outputs.files }})
-          if [ ! -z ${accounts} ]
-          then
-          for i in "${accounts[@]}"
-          do
-          echo "[+] Running delegate-access bootstrap baseline for account for ${i}"
-          bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
-          bash scripts/setup-baseline.sh terraform/environments/bootstrap/secure-baselines ${i} plan
-          bash scripts/setup-baseline.sh terraform/environments/bootstrap/secure-baselines ${i} apply
-          done
-          else
-          echo "[+] There were no AWS member accounts to process"
-          fi
+      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
+      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines plan
+      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines apply
   single-sign-on:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
@@ -182,22 +133,6 @@ jobs:
         with:
           terraform_version: 0.14.6
           terraform_wrapper: false
-           - name: get new account(s)
-        id: new_account
-        run: |
-          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep "environments/*" | uniq)"
-      - name: Run delegate access
-        run: |
-          accounts=(${{ steps.new_account.outputs.files }})
-          if [ ! -z ${accounts} ]
-          then
-          for i in "${accounts[@]}"
-          do
-          echo "[+] Running delegate-access bootstrap baseline for account for ${i}"
-          bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
-          bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on ${i} plan
-          bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on ${i} apply
-          done
-          else
-          echo "[+] There were no AWS member accounts to process"
-          fi
+      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
+      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on plan
+      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on apply
