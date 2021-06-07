@@ -1,0 +1,204 @@
+---
+name: $application_name
+on:
+  push:
+    branches: 
+      - main
+    paths:
+      - 'terraform/environments/$application_name/**'
+      - '.github/workflows/$application_name.yml'
+  pull_request:
+    branches:
+      - main
+    types: [opened, edited, reopened, synchronize]
+    paths:
+      - 'terraform/environments/$application_name/**'
+      - '.github/workflows/$application_name.yml'
+  workflow_dispatch:
+env:
+  AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  TF_IN_AUTOMATION: true
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  
+  # These jobs run when creating a pull request
+  plan-development:
+    name: Plan Development - $application_name
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2.3.4
+      - name: Load and Configure Terraform
+        uses: hashicorp/setup-terraform@v1.3.2
+        with:
+          terraform_version: 0.14.6
+          terraform_wrapper: false
+      - name: Terraform plan - development
+        run: |
+          echo "Terraform plan - ${TF_ENV}"
+          bash scripts/terraform-init.sh terraform/environments/$application_name
+          terraform -chdir="terraform/environments/$application_name" workspace select "$application_name-${TF_ENV}"
+          bash scripts/terraform-plan.sh terraform/environments/$application_name
+        env:
+          TF_ENV: development
+
+  deploy-development:
+    name: Deploy Development - $application_name
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main'
+    environment:
+      name: $application_name-development
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2.3.4
+      - name: Load and Configure Terraform
+        uses: hashicorp/setup-terraform@v1.3.2
+        with:
+          terraform_version: 0.14.6
+          terraform_wrapper: false
+      - name: Terraform apply - development
+        run: |
+          echo "Terraform apply - ${TF_ENV}"
+          bash scripts/terraform-init.sh terraform/environments/$application_name
+          terraform -chdir="terraform/environments/$application_name" workspace select "$application_name-${TF_ENV}"
+          bash scripts/terraform-apply.sh terraform/environments/$application_name
+        env:
+          TF_ENV: development
+
+  plan-test:
+    name: Plan Test - $application_name
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2.3.4
+      - name: Load and Configure Terraform
+        uses: hashicorp/setup-terraform@v1.3.2
+        with:
+          terraform_version: 0.14.6
+          terraform_wrapper: false
+      - name: Terraform plan - test
+        run: |
+          echo "Terraform plan - ${TF_ENV}"
+          bash scripts/terraform-init.sh terraform/environments/$application_name
+          terraform -chdir="terraform/environments/$application_name" workspace select "$application_name-${TF_ENV}"
+          bash scripts/terraform-plan.sh terraform/environments/$application_name
+        env:
+          TF_ENV: test
+
+  deploy-test:
+    name: Deploy Test - $application_name
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main'
+    environment:
+      name: $application_name-test
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2.3.4
+      - name: Load and Configure Terraform
+        uses: hashicorp/setup-terraform@v1.3.2
+        with:
+          terraform_version: 0.14.6
+          terraform_wrapper: false
+      - name: Terraform apply - test
+        run: |
+          echo "Terraform apply - ${TF_ENV}"
+          bash scripts/terraform-init.sh terraform/environments/$application_name
+          terraform -chdir="terraform/environments/$application_name" workspace select "$application_name-${TF_ENV}"
+          bash scripts/terraform-apply.sh terraform/environments/$application_name
+        env:
+          TF_ENV: test
+
+  # These jobs run after merging to main
+  plan-preproduction:
+    name: Plan Preproduction - $application_name
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2.3.4
+      - name: Load and Configure Terraform
+        uses: hashicorp/setup-terraform@v1.3.2
+        with:
+          terraform_version: 0.14.6
+          terraform_wrapper: false
+      - name: Terraform plan - preproduction
+        run: |
+          echo "Terraform plan - ${TF_ENV}"
+          bash scripts/terraform-init.sh terraform/environments/$application_name
+          terraform -chdir="terraform/environments/$application_name" workspace select "$application_name-${TF_ENV}"
+          bash scripts/terraform-plan.sh terraform/environments/$application_name
+        env:
+          TF_ENV: preproduction
+
+  deploy-preproduction:
+    name: Deploy Preproduction - $application_name
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: $application_name-preproduction
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2.3.4
+      - name: Load and Configure Terraform
+        uses: hashicorp/setup-terraform@v1.3.2
+        with:
+          terraform_version: 0.14.6
+          terraform_wrapper: false
+      - name: Terraform apply - preproduction
+        run: |
+          echo "Terraform apply - ${TF_ENV}"
+          bash scripts/terraform-init.sh terraform/environments/$application_name
+          terraform -chdir="terraform/environments/$application_name" workspace select "$application_name-${TF_ENV}"
+          bash scripts/terraform-apply.sh terraform/environments/$application_name
+        env:
+          TF_ENV: preproduction
+  
+  plan-production:
+    name: Plan Production - $application_name
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2.3.4
+      - name: Load and Configure Terraform
+        uses: hashicorp/setup-terraform@v1.3.2
+        with:
+          terraform_version: 0.14.6
+          terraform_wrapper: false
+      - name: Terraform plan - production
+        run: |
+          echo "Terraform plan - ${TF_ENV}"
+          bash scripts/terraform-init.sh terraform/environments/$application_name
+          terraform -chdir="terraform/environments/$application_name" workspace select "$application_name-${TF_ENV}"
+          bash scripts/terraform-plan.sh terraform/environments/$application_name
+        env:
+          TF_ENV: production
+
+  deploy-production:
+    name: Deploy Production - $application_name
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: $application_name-production
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2.3.4
+      - name: Load and Configure Terraform
+        uses: hashicorp/setup-terraform@v1.3.2
+        with:
+          terraform_version: 0.14.6
+          terraform_wrapper: false
+      - name: Terraform apply - production
+        run: |
+          echo "Terraform apply - ${TF_ENV}"
+          bash scripts/terraform-init.sh terraform/environments/$application_name
+          terraform -chdir="terraform/environments/$application_name" workspace select "$application_name-${TF_ENV}"
+          bash scripts/terraform-apply.sh terraform/environments/$application_name
+        env:
+          TF_ENV: production
