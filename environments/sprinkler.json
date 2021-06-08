@@ -1,18 +1,28 @@
 {
-	"account-type": "member",
-	"environments": [
-		{
+  "account-type": "member",
+  "environments": [
+    {
       "name": "production",
-      "access": []
+      "access": [
+        {
+          "github_slug": "modernisation-platform",
+          "level": "developer"
+        }
+      ]
     },
     {
       "name": "development",
-      "access": []
+      "access": [
+        {
+          "github_slug": "modernisation-platform",
+          "level": "developer"
+        }
+      ]
     }
-	],
-	"tags": {
-		"application": "modernisation-platform",
-		"business-unit": "Platforms",
-		"owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
-	}
+  ],
+  "tags": {
+    "application": "modernisation-platform",
+    "business-unit": "Platforms",
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
+  }
 }
