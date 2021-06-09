@@ -1,0 +1,78 @@
+---
+title: User Workflow (CI/CD)
+last_reviewed_on: 2021-06-07
+review_in: 3 months
+---
+
+# <%= current_page.data.title %>
+
+## Introduction
+
+We use [trunk base development](https://www.atlassian.com/continuous-delivery/continuous-integration/trunk-based-development) in the Modernisation Platform, with all user application infrastructure stored in the [modernisation-platform-environments](https://github.com/ministryofjustice/modernisation-platform-environments) repository.
+
+## Environments
+
+There are as standard up to four different environments that can be used per application:
+
+ - development
+ - test
+ - preproduction
+ - production
+
+In order to avoid having duplicate Terraform code for each environment, we use [Terraform Workspaces](https://www.terraform.io/docs/language/state/workspaces.html).
+This allows us to store the Terraform [state](https://www.terraform.io/docs/language/state/index.html) for each of those environments separately and deploy to the relevant environment by switching the workspace.
+
+You can choose which environments you want for your application with multiple configurations possible.
+
+![Environment configurations](../../images/environment-configurations.png)
+
+## Deploying Infrastructure
+
+For our CI/CD pipelines we use [Github actions](https://docs.github.com/en/actions).
+
+Workflow files are found [here](https://github.com/ministryofjustice/modernisation-platform-environments/tree/main/.github/workflows) and are named after your application.
+They are generated as part of the [initial environment set up workflow](core-workflow.html) and based off of a [template](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/templates/workflow-template.yml)
+
+Environment workflow:
+
+![Environment Workflow](../../images/environment-workflow.png)
+
+We use [Github Environments](https://docs.github.com/en/actions/reference/environments) to create a manual approval gate before each deployment.
+This gives you chance to review the Terraform plan before approving the deployment.  The Github environments are automatically created by the [git-create-environments-script.sh](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/git-create-environments.sh) using your Github team as the reviewer, as part of the initial account creation process.
+
+After approving, the infrastructure is deployed with the [Terraform apply](https://www.terraform.io/docs/cli/commands/apply.html) command.
+
+### Permissions
+
+The code and AWS account is protected in a few different ways which work together to ensure that your AWS account is only modified by a member of your Github team or a Modernisation Platform engineer.
+
+#### CODEOWNERS
+
+Your Github team will be assigned as a [codeowner](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-code-owners) for your application folder, so someone in your team or the Modernisation Platform team will be required to review any pull requests before they can be merged.
+
+#### Github Environments
+
+Github environments prevents any workflow being deployed to your environments unless it is approved by a member of your Github team.
+
+#### AWS IAM (Identity and Access Management)
+
+Each account has an IAM role `ModernisationPlatformAccess` which allows the AWS CI user `member-ci` to create resources in each AWS account.
+Each application workflow will use the role for the relevant account, ensuring one account can't create resources in another.
+
+For modifying DNS entries a role `dns-<business-unit>-<environment>` is used, allowing only changes the DNS hosted zone for your business unit.
+
+For creating certificates, a role `modify-dns-records` in the core-network-services account is used to create DNS validation records.
+
+#### AWS SCPs (Service Control Policies)
+
+SCPs prevent certain actions from running which may have a detrimental effect on the platform.
+
+These are applied at a higher OU (organisational unit) level and are inherited by the application OUs.
+
+## Deploying Applications
+
+![Under construction](../../images/under-construction.gif)
+
+## Diagram
+
+![Member CI/CD](../../images/member-ci-cd.png)
