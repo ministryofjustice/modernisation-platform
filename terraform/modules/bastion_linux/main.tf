@@ -8,7 +8,7 @@ provider "aws" {
 
 # get shared subnet-set vpc object
 data "aws_vpc" "shared_vpc" {
-  provider = aws.share-host
+  #provider = aws.share-host
   tags = {
     Name = "${var.business_unit}-${var.environment}"
   }
@@ -25,31 +25,31 @@ data "aws_subnet" "local_account" {
 
 # get shared subnet-set private (az (a) subnet)
 data "aws_subnet" "private_az_a" {
-  provider = aws.share-host
+  #provider = aws.share-host
   tags = {
     Name = "${var.business_unit}-${var.environment}-${var.subnet_set}-private-${var.region}a"
   }
 }
 
 # get core_vpc account protected subnets security group
-data "aws_security_group" "core_vpc_protected" {
-  provider = aws.share-host
+# data "aws_security_group" "core_vpc_protected" {
+#   #provider = aws.share-host
 
-  tags = {
-    Name = "${var.business_unit}-${var.environment}-int-endpoint"
-  }
-}
+#   tags = {
+#     Name = "${var.business_unit}-${var.environment}-int-endpoint"
+#   }
+# }
 
 # get core_vpc account S3 endpoint
-data "aws_vpc_endpoint" "s3" {
-  provider     = aws.share-host
-  vpc_id       = data.aws_vpc.shared_vpc.id
-  service_name = "com.amazonaws.${var.region}.s3"
-  tags = {
-    Name = "${var.business_unit}-${var.environment}-com.amazonaws.${var.region}.s3"
-  }
+# data "aws_vpc_endpoint" "s3" {
+#   #provider     = aws.share-host
+#   vpc_id       = data.aws_vpc.shared_vpc.id
+#   service_name = "com.amazonaws.${var.region}.s3"
+#   tags = {
+#     Name = "${var.business_unit}-${var.environment}-com.amazonaws.${var.region}.s3"
+#   }
 
-}
+# }
 
 data "template_file" "user_data" {
   template = file("${path.module}/user_data.sh")
@@ -211,27 +211,27 @@ resource "aws_security_group_rule" "basion_linux_egress_3" {
   cidr_blocks = [for s in data.aws_subnet.local_account : s.cidr_block]
 }
 
-resource "aws_security_group_rule" "basion_linux_egress_4" {
-  security_group_id = aws_security_group.bastion_linux.id
+# resource "aws_security_group_rule" "basion_linux_egress_4" {
+#   security_group_id = aws_security_group.bastion_linux.id
 
-  description              = "bastion_linux_egress_to_inteface_endpoints"
-  type                     = "egress"
-  from_port                = "443"
-  to_port                  = "443"
-  protocol                 = "TCP"
-  source_security_group_id = data.aws_security_group.core_vpc_protected.id
-}
+#   description              = "bastion_linux_egress_to_inteface_endpoints"
+#   type                     = "egress"
+#   from_port                = "443"
+#   to_port                  = "443"
+#   protocol                 = "TCP"
+#   #source_security_group_id = data.aws_security_group.core_vpc_protected.id
+# }
 
-resource "aws_security_group_rule" "bastion_linux_egress_5" {
-  security_group_id = aws_security_group.bastion_linux.id
+# resource "aws_security_group_rule" "bastion_linux_egress_5" {
+#   security_group_id = aws_security_group.bastion_linux.id
 
-  description     = "bastion_linux_egress_to_s3_endpoint"
-  type            = "egress"
-  from_port       = "443"
-  to_port         = "443"
-  protocol        = "TCP"
-  prefix_list_ids = [data.aws_vpc_endpoint.s3.prefix_list_id]
-}
+#   description     = "bastion_linux_egress_to_s3_endpoint"
+#   type            = "egress"
+#   from_port       = "443"
+#   to_port         = "443"
+#   protocol        = "TCP"
+#   #prefix_list_ids = [data.aws_vpc_endpoint.s3.prefix_list_id]
+# }
 
 
 # IAM
