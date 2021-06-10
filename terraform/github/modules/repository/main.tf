@@ -46,7 +46,7 @@ resource "github_branch_protection" "default" {
 
   required_status_checks {
     strict   = true
-    contexts = ["format-code"] # format-code is from the template repository
+    contexts = concat(["format-code"], var.required_checks) # format-code is from the template repository
   }
 
   required_pull_request_reviews {
