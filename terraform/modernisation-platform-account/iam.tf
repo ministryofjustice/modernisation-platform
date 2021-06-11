@@ -85,8 +85,8 @@ resource "aws_iam_access_key" "ci" {
 # Member CI policy
 data "aws_iam_policy_document" "member-ci-policy" {
   statement {
-    effect    = "Allow"
-    actions   = ["sts:AssumeRole"]
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
     resources = [
       "arn:aws:iam::*:role/ModernisationPlatformAccess",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-development"]}:role/member-delegation-*-development",
@@ -98,8 +98,8 @@ data "aws_iam_policy_document" "member-ci-policy" {
   }
 
   statement {
-    effect    = "Deny"
-    actions   = ["sts:AssumeRole"]
+    effect  = "Deny"
+    actions = ["sts:AssumeRole"]
     resources = [
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-development"]}:role/ModernisationPlatformAccess",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-test"]}:role/ModernisationPlatformAccess",
