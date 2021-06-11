@@ -72,69 +72,9 @@ resource "aws_route53_record" "mod-ns-private" {
   records  = aws_route53_zone.private.name_servers
 }
 
-# IAM Section ----------------
-
-# DNS IAM
-resource "aws_iam_role" "dns" {
-  name = "dns-${var.dns_zone}"
-  assume_role_policy = jsonencode(
-    {
-      "Version" : "2012-10-17",
-      "Statement" : [
-        {
-          "Effect" : "Allow",
-          "Principal" : {
-            "AWS" : local.account_numbers
-          },
-          "Action" : "sts:AssumeRole",
-          "Condition" : {}
-        }
-      ]
-  })
-
-  tags = merge(
-    var.tags_common,
-    {
-      Name = "${var.tags_prefix}-dns-role"
-    },
-  )
+output "zone_public" {
+  value = aws_route53_zone.public.id
 }
-
-resource "aws_iam_role_policy" "dns" {
-  name = "dns-${var.dns_zone}"
-  role = aws_iam_role.dns.id
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "route53:List*",
-          "route53:Get*"
-        ],
-        "Resource" : "*"
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "route53:ChangeResourceRecordSets",
-          "route53:CreateTrafficPolicy",
-          "route53:DeleteTrafficPolicy",
-          "route53:CreateTrafficPolicyInstance",
-          "route53:CreateTrafficPolicyVersion",
-          "route53:UpdateTrafficPolicyInstance",
-          "route53:UpdateTrafficPolicyComment",
-          "route53:DeleteTrafficPolicyInstance",
-          "route53:CreateHealthCheck",
-          "route53:UpdateHealthCheck",
-          "route53:DeleteHealthCheck"
-        ],
-        Resource = [
-          "arn:aws:route53:::hostedzone/${aws_route53_zone.public.id}",
-          "arn:aws:route53:::hostedzone/${aws_route53_zone.private.id}"
-        ]
-      },
-    ]
-  })
+output "zone_private" {
+  value = aws_route53_zone.private.id
 }
