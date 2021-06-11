@@ -67,21 +67,21 @@ locals {
 
   }
 
-  account_numbers  = flatten([
-    for dept, data in local.vpcs[terraform.workspace]: {
+  account_numbers = flatten([
+    for dept, data in local.vpcs[terraform.workspace] : {
       key = dept
       account_nos = flatten([
-        for subnet_set in data.cidr.subnet_sets: [
-          for account in subnet_set.accounts:
-            local.environment_management.account_ids["${account}"]
+        for subnet_set in data.cidr.subnet_sets : [
+          for account in subnet_set.accounts :
+          local.environment_management.account_ids["${account}"]
         ]
       ])
     }
   ])
 
   expanded_account_numbers_with_keys = {
-    for data in local.account_numbers:
-      "${data.key}" => data.account_nos
+    for data in local.account_numbers :
+    "${data.key}" => data.account_nos
   }
 
   non-tgw-vpc-subnet = flatten([
@@ -245,7 +245,7 @@ resource "aws_iam_role" "member-delegation" {
             "AWS" : concat(
               local.expanded_account_numbers_with_keys[each.key],
               tolist([data.aws_caller_identity.modernisation-platform.account_id])
-  )
+            )
           },
           "Action" : "sts:AssumeRole",
           "Condition" : {}
