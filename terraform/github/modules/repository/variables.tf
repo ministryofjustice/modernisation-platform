@@ -36,3 +36,9 @@ variable "visibility" {
   description = "Visibility type: `public`, `internal`, `private`"
   default     = "public"
 }
+
+variable "required_checks" {
+  type        = list(string)
+  description = "List of required checks"
+  default     = []
+}

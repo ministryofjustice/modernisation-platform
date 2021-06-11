@@ -5,13 +5,13 @@ locals {
   maintainers = toset([
     for user in var.maintainers :
     user
-    if contains(var.members, user) && ! contains(var.ci, user)
+    if contains(var.members, user) && !contains(var.ci, user)
   ])
   # Only set someone as a member if they're not already a maintainer or already a CI user
   members = toset([
     for user in var.members :
     user
-    if ! contains(var.maintainers, user) && ! contains(var.ci, user)
+    if !contains(var.maintainers, user) && !contains(var.ci, user)
   ])
 }
 
