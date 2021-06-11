@@ -67,6 +67,23 @@ locals {
 
   }
 
+  account_numbers  = flatten([
+    for dept, data in local.vpcs[terraform.workspace]: {
+      key = dept
+      account_nos = flatten([
+        for subnet_set in data.cidr.subnet_sets: [
+          for account in subnet_set.accounts:
+            local.environment_management.account_ids["${account}"]
+        ]
+      ])
+    }
+  ])
+
+  expanded_account_numbers_with_keys = {
+    for data in local.account_numbers:
+      "${data.key}" => data.account_nos
+  }
+
   non-tgw-vpc-subnet = flatten([
     for key, vpc in module.vpc : [
       for set in keys(module.vpc[key].non_tgw_subnet_arns_by_subnetset) : {
@@ -212,4 +229,79 @@ module "dns_zone_extend" {
   zone_id     = { for key, zone in each.value.options.dns_zone_extend : key => zone }
   vpc_id      = module.vpc[each.key].vpc_id
   dns_domain  = ".modernisation-platform.internal"
+}
+
+resource "aws_iam_role" "member-delegation" {
+  for_each = local.vpcs[terraform.workspace]
+
+  name = "member-delegation-${each.key}"
+  assume_role_policy = jsonencode(
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Effect" : "Allow",
+          "Principal" : {
+            "AWS" : concat(
+              local.expanded_account_numbers_with_keys[each.key],
+              tolist([data.aws_caller_identity.modernisation-platform.account_id])
+  )
+          },
+          "Action" : "sts:AssumeRole",
+          "Condition" : {}
+        }
+      ]
+  })
+
+  tags = merge(
+    local.tags,
+    {
+      Name = "${each.key}-member-delegation-role"
+    },
+  )
+}
+
+resource "aws_iam_role_policy" "member-delegation" {
+  for_each = local.vpcs[terraform.workspace]
+
+  name = "member-delegation-${each.key}"
+  role = aws_iam_role.member-delegation[each.key].id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "route53:List*",
+          "route53:Get*",
+          "ec2:DescribeSecurityGroupReferences",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeVpcEndpoints",
+          "ec2:DescribePrefixLists"
+        ],
+        "Resource" : "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "route53:ChangeResourceRecordSets",
+          "route53:CreateTrafficPolicy",
+          "route53:DeleteTrafficPolicy",
+          "route53:CreateTrafficPolicyInstance",
+          "route53:CreateTrafficPolicyVersion",
+          "route53:UpdateTrafficPolicyInstance",
+          "route53:UpdateTrafficPolicyComment",
+          "route53:DeleteTrafficPolicyInstance",
+          "route53:CreateHealthCheck",
+          "route53:UpdateHealthCheck",
+          "route53:DeleteHealthCheck"
+        ],
+        Resource = [
+          "arn:aws:route53:::hostedzone/${module.dns-zone[each.key].zone_public}",
+          "arn:aws:route53:::hostedzone/${module.dns-zone[each.key].zone_private}"
+        ]
+      },
+    ]
+  })
 }
