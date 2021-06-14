@@ -8,7 +8,7 @@ provider "aws" {
 
 # get shared subnet-set vpc object
 data "aws_vpc" "shared_vpc" {
-  provider = aws.share-host
+  # provider = aws.share-host
   tags = {
     Name = "${var.business_unit}-${var.environment}"
   }
@@ -25,7 +25,7 @@ data "aws_subnet" "local_account" {
 
 # get shared subnet-set private (az (a) subnet)
 data "aws_subnet" "private_az_a" {
-  provider = aws.share-host
+  # provider = aws.share-host
   tags = {
     Name = "${var.business_unit}-${var.environment}-${var.subnet_set}-private-${var.region}a"
   }
