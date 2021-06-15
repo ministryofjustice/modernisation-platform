@@ -193,7 +193,7 @@ jobs:
           then
           for i in "${accounts[@]}"
           do
-          echo "[+] Running single sign-on baseline for account for ${i}"
+          echo "[+] Running single sign on baseline for account for ${i}"
           bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
           bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on ${i} plan
           bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on ${i} apply
