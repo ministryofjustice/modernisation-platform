@@ -7,6 +7,10 @@ terraform {
     encrypt              = true
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
+<<<<<<< HEAD
     workspace_key_prefix = "environments/bootstrap/iam-baselines" # This will store the object as environments/bootstrap/delegate-access/${workspace}/terraform.tfstate
+=======
+    workspace_key_prefix = "environments/bootstrap/iam-baseline" # This will store the object as environments/bootstrap/delegate-access/${workspace}/terraform.tfstate
+>>>>>>> 4fcf9eb7868f61fb07c0d408d88f6d34ef215ce6
   }
 }
