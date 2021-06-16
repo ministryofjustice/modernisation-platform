@@ -22,7 +22,7 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias = "modernisation-platform-access"
+  alias  = "modernisation-platform-access"
   region = "eu-west-2"
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
