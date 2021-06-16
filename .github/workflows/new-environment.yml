@@ -118,9 +118,25 @@ jobs:
         with:
           terraform_version: 0.14.6
           terraform_wrapper: false
-      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access plan
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access apply
+      - name: get new account(s)
+        id: new_account
+        run: |
+          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')"
+      - name: Run delegate access
+        run: |
+          accounts=(${{ steps.new_account.outputs.files }})
+          if [ ! -z ${accounts} ]
+          then
+          for i in "${accounts[@]}"
+          do
+          echo "[+] Running delegate-access baseline for account for ${i}"
+          bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
+          bash scripts/setup-baseline.sh terraform/environments/bootstrap/delegate-access ${i} plan
+          bash scripts/setup-baseline.sh terraform/environments/bootstrap/delegate-access ${i} apply
+          done
+          else
+          echo "[+] There were no AWS member accounts to process"
+          fi
   secure-baselines:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
@@ -134,9 +150,25 @@ jobs:
         with:
           terraform_version: 0.14.6
           terraform_wrapper: false
-      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines plan
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines apply
+         - name: get new account(s)
+        id: new_account
+        run: |
+          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')"
+      - name: Run delegate access
+        run: |
+          accounts=(${{ steps.new_account.outputs.files }})
+          if [ ! -z ${accounts} ]
+          then
+          for i in "${accounts[@]}"
+          do
+          echo "[+] Running secure baseline for account for ${i}"
+          bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
+          bash scripts/setup-baseline.sh terraform/environments/bootstrap/secure-baselines ${i} plan
+          bash scripts/setup-baseline.sh terraform/environments/bootstrap/secure-baselines ${i} apply
+          done
+          else
+          echo "[+] There were no AWS member accounts to process"
+          fi
   single-sign-on:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
@@ -150,6 +182,22 @@ jobs:
         with:
           terraform_version: 0.14.6
           terraform_wrapper: false
-      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on plan
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on apply
+           - name: get new account(s)
+        id: new_account
+        run: |
+          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')"
+      - name: Run delegate access
+        run: |
+          accounts=(${{ steps.new_account.outputs.files }})
+          if [ ! -z ${accounts} ]
+          then
+          for i in "${accounts[@]}"
+          do
+          echo "[+] Running single sign on baseline for account for ${i}"
+          bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
+          bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on ${i} plan
+          bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on ${i} apply
+          done
+          else
+          echo "[+] There were no AWS member accounts to process"
+          fi
