@@ -19,34 +19,34 @@ resource "aws_iam_policy" "policy" {
     Statement = [
       {
         NotAction = [
-            "iam:*",
-            "organizations:*",
-            "account:*",
-            "ec2:DeleteNetworkAcl",
-            "ec2:DeleteNetworkAclEntry",
-            "ec2:DeleteRoute",
-            "ec2:DeleteRouteTable",
-            "ec2:CreateCustomerGateway",
-            "ec2:CreateTransitGatewayConnect",
-            "ec2:CreateTransitGatewayConnectPeer",
-            "ec2:CreateTransitGatewayRoute",
-            "ec2:CreateTransitGatewayVpcAttachment",
-            "ec2:CreateDefaultVpc",
-            "ec2:CreateSubnet",
-            "ec2:CreateDefaultSubnet",
-            "ec2:CreateVpnConnection",
-            "ec2:CreateNatGateway",
-            "ec2:CreateVpcEndpoint",
-            "ec2:DeleteVpc",
-            "ec2:DeleteVpcEndpoints",
-            "ec2:DeleteNetworkAcl",
-            "ec2:DeleteTransitGateway",
-            "ec2:DeleteTransitGatewayVpcAttachment",
-            "ec2:DeleteSubnet",
-            "ec2:DisassociateTransitGatewayRouteTable",
-            "ec2:DisassociateSubnetCidrBlock",
-            "ec2:DisassociateRouteTable",
-            "ec2:DisassociateIamInstanceProfile"
+          "iam:*",
+          "organizations:*",
+          "account:*",
+          "ec2:DeleteNetworkAcl",
+          "ec2:DeleteNetworkAclEntry",
+          "ec2:DeleteRoute",
+          "ec2:DeleteRouteTable",
+          "ec2:CreateCustomerGateway",
+          "ec2:CreateTransitGatewayConnect",
+          "ec2:CreateTransitGatewayConnectPeer",
+          "ec2:CreateTransitGatewayRoute",
+          "ec2:CreateTransitGatewayVpcAttachment",
+          "ec2:CreateDefaultVpc",
+          "ec2:CreateSubnet",
+          "ec2:CreateDefaultSubnet",
+          "ec2:CreateVpnConnection",
+          "ec2:CreateNatGateway",
+          "ec2:CreateVpcEndpoint",
+          "ec2:DeleteVpc",
+          "ec2:DeleteVpcEndpoints",
+          "ec2:DeleteNetworkAcl",
+          "ec2:DeleteTransitGateway",
+          "ec2:DeleteTransitGatewayVpcAttachment",
+          "ec2:DeleteSubnet",
+          "ec2:DisassociateTransitGatewayRouteTable",
+          "ec2:DisassociateSubnetCidrBlock",
+          "ec2:DisassociateRouteTable",
+          "ec2:DisassociateIamInstanceProfile"
         ]
         Effect   = "Allow"
         Resource = "*"
@@ -56,7 +56,7 @@ resource "aws_iam_policy" "policy" {
 }
 
 resource "aws_iam_group_policy_attachment" "aws_config_attach" {
-  group      = "${aws_iam_group.cicd_member_group}"
+  group      = aws_iam_group.cicd_member_group
   policy_arn = aws_iam_policy.policy.arn
 }
 
