@@ -138,6 +138,7 @@ bootstrap)
   iterate_environments_bootstrap "delegate-access"
   iterate_environments_bootstrap "secure-baselines"
   iterate_environments_bootstrap "single-sign-on"
+  iterate_environments_bootstrap "iam_baselines"
   ;;
 *)
   # This must be an individual application, check if json file exists for it
