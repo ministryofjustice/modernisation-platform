@@ -1,3 +1,12 @@
+# AWS provider (Modernisation Platform): the Modernisation Platform account
+provider "aws" {
+  alias  = "modernisation-platform"
+  region = "eu-west-2"
+  assume_role {
+    role_arn = "arn:aws:iam::${local.modernisation_platform_account.id}:role/OrganizationAccountAccessRole"
+  }
+}
+
 # AWS providers
 provider "aws" {
   region = "ap-northeast-1"
