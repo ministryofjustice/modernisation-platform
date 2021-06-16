@@ -1,0 +1,56 @@
+---
+title: Deploying Your Infrastructure
+last_reviewed_on: 2021-06-8
+review_in: 3 months
+---
+
+# <%= current_page.data.title %>
+
+Once you have [defined your infrastructure as code](creating-resources.html) and pushed your changes to the repository you can now deploy your infrastructure.
+
+## Create a pull request
+
+The first step is to create a pull request this will trigger the [Github actions](https://docs.github.com/en/actions) workflow for your application.
+
+## Github Actions Workflow
+
+Workflow files are found [here](https://github.com/ministryofjustice/modernisation-platform-environments/tree/main/.github/workflows) and are named after your application.
+
+Depending on what [environments](creating-environments.html) you have, some jobs in the workflow may be commented out if they are not needed.  They can be uncommented if more enviroments are added or safely removed if not needed.
+
+Any changes to your workflow file will need approval from the Modernisation Platform team.
+
+Here is a high level diagram of what the workflow file does.
+
+![Environment Workflow](../images/environment-workflow.png)
+
+### Jobs on pull request
+
+ - a [Terraform plan](https://www.terraform.io/docs/cli/commands/plan.html) on the `development` and `test` environments (if you have them).
+ - a [Terraform apply](https://www.terraform.io/docs/cli/commands/apply.html) on the `development` and `test` environments (if you have them), which is held until a reviewer from your Github team approves the deployment.
+
+### Jobs on merging a pull request
+
+ - a [Terraform plan](https://www.terraform.io/docs/cli/commands/plan.html) on the `preproduction` and `production` environments (if you have them).
+ - a [Terraform apply](https://www.terraform.io/docs/cli/commands/apply.html) on the `preproduction` and `production` environments (if you have them), which is held until a reviewer from your Github team approves the deployment.
+
+### Viewing Terraform plans
+
+1. Navigate to the [Actions](https://github.com/ministryofjustice/modernisation-platform-environments/actions) tab in the environments repository.
+1. Find the relevant workflow run (the name is the name of your pull request or merge commit)
+1. Click on the `Plan <environment> - <application name>` job
+1. Expand the `Terraform plan - <environment>` drop down
+
+### Approving deployments
+
+The Modernisation Platform uses [Terraform Workspaces](https://www.terraform.io/docs/language/state/workspaces.html) and [Github Environments](https://docs.github.com/en/actions/reference/environments) for deployments and approvals to your different environments.
+
+1. Navigate to the [Actions](https://github.com/ministryofjustice/modernisation-platform-environments/actions) tab in the environments repository.
+1. Find the relevant workflow run (the name is the name of your pull request or merge commit)
+1. Click on the `Review deployments` button
+1. Tick the box and `Approve and deploy`
+1. The `Deploy <environment> - <application>` job will then run and deploy your infrastructure.  Any issues or failures can been seen in this job.
+
+## More information
+
+For more details information on the workflow and concepts behind it please see the [User Workflow](../concepts/sdlc/user-workflow.html) concepts guidance.

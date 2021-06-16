@@ -45,4 +45,13 @@ locals {
 
   # Everyone
   everyone = concat(local.all_maintainers, local.all_members)
+
+  # Modernisation platform application teams (need to give access to environments repo as needed for github environments)
+  # Hopefully we can get rid of this if this issue is resolved - https://github.com/ministryofjustice/operations-engineering/issues/139
+  # But if not we will need to automate the updating of this list based on slugs in the environment json files.
+  application_teams = [
+    "all-org-members",
+    "operations-engineering",
+    "performance-hub-developers"
+  ]
 }

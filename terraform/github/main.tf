@@ -108,6 +108,7 @@ module "modernisation-platform-environments" {
     "aws",
     "environments"
   ]
+  required_checks = ["run-opa-policy-tests"]
   secrets = merge(local.member_ci_iam_user_keys, {
     # Terraform GitHub token for the CI/CD user
     TERRAFORM_GITHUB_TOKEN = "This needs to be manually set in GitHub."
@@ -150,9 +151,10 @@ module "aws-team" {
   parent_team_id = module.core-team.team_id
 }
 
-# Give write access to org on the environments repo (access to merge to main is restricted by codeowners file)
-resource "github_team_repository" "modernisation-platform-environments" {
-  team_id    = "all-org-members"
+# Give write access to teams on the environments repo (access to merge to main is restricted by codeowners file)
+resource "github_team_repository" "modernisation-platform-environments-access" {
+  for_each   = { for team in local.application_teams : team => team }
+  team_id    = each.value
   repository = module.modernisation-platform-environments.repository.id
   permission = "push"
 }
