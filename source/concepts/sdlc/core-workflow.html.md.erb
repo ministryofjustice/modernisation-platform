@@ -6,5 +6,47 @@ review_in: 3 months
 
 # <%= current_page.data.title %>
 
-![Under construction](../../images/under-construction.gif)
+## Introduction
 
+We use [trunk base development](https://www.atlassian.com/continuous-delivery/continuous-integration/trunk-based-development) in the Modernisation Platform, with all platform infrastructure stored in the [modernisation-platform](https://github.com/ministryofjustice/modernisation-platform) repository.
+
+## CI/CD
+
+For our CI/CD pipelines we use [Github actions](https://docs.github.com/en/actions).
+
+Workflow files are found [here](https://github.com/ministryofjustice/modernisation-platform/tree/main/.github/workflows)
+
+### Terraform workflows
+
+Workflows which create terraform resources in our core accounts and creates new member accounts.
+
+Name | Description | Terraform location | Workflow file |
+---|---|---|---|
+Modernisation Platform account | Creates key resources such as S3 state buckets for the platform | `terraform/modernisation-platform-account` | Manually run
+Environment creation | Creates member OUs and accounts | `terraform/environments` | `new-environment.yml`
+Core Logging | Creates the core logging account resources | `terraform/environments/core-logging` | `core-logging-deployment.yml`
+Core Networking | Creates the core networking account resources | `terraform/environments/core-networking` | `core-networking-deployment.yml`
+Core Security | Creates the core security account resources | `terraform/environments/core-security` | `core-security-deployment.yml`
+Core Shared Services | Creates the core shared services account resources | `terraform/environments/shared-services` | `core-shared-services-deployment.yml`
+Core VPC | Creates the core VPC resources in the VPC accounts | `terraform/environments/core-vpc` | `core-vpc-development-deployment.yml`,`core-vpc-test-deployment.yml`,`core-vpc-preproduction-deployment.yml`,`core-vpc-production-deployment.yml`
+Github Terraform | Creates the Github teams and repositories in Github | `terraform/github` | `terraform-github.yml`
+
+### New member file creation workflows
+
+These workflows create the new files needed for new member accounts.
+
+Name | Description | Workflow file |
+|---|---|---|
+New environment files | Creates new files in the modernisation-platform repository | `new-environment-files`
+New member environment files | Creates new files in the modernisation-platform-environments repository, also creates the Github environments | `new-member-environment-files`
+
+### Other workflows
+
+Name | Description | Workflow file |
+|---|---|---|
+Check links | Checks links are valid in our Github pages user guidance | `check-links.yml`
+Publish | Publishes pages in `source` to our Github pages user guidance | `publish.yml`
+Format Code | Formats code and commits any changes to a pull request | `format-code.yml`
+Labeler | Adds labels to our pull requests depending on which folders are changed | `labeler.yml`
+OPA Policies | Runs Open Policy Agent validation tests against our json files | `opa-policies.yml`
+Sheduled Baseline | Runs the baseline code across all accounts ensuring security baselines are still in place | `scheduled-baseline.yml`
