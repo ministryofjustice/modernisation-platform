@@ -150,7 +150,7 @@ jobs:
         with:
           terraform_version: 0.14.6
           terraform_wrapper: false
-         - name: get new account(s)
+      - name: get new account(s)
         id: new_account
         run: |
           echo "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')"
