@@ -20,10 +20,8 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     resources = [module.state-bucket.bucket.arn]
 
     principals {
-      type = "AWS"
-      identifiers = [
-        "arn:aws:iam::${local.root_account.master_account_id}:user/ModernisationPlatformOrganisationManagement"
-      ]
+      type        = "AWS"
+      identifiers = local.root_users_with_state_access
     }
   }
 
@@ -36,10 +34,8 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     resources = ["${module.state-bucket.bucket.arn}/*"]
 
     principals {
-      type = "AWS"
-      identifiers = [
-        "arn:aws:iam::${local.root_account.master_account_id}:user/ModernisationPlatformOrganisationManagement"
-      ]
+      type        = "AWS"
+      identifiers = local.root_users_with_state_access
     }
   }
 
@@ -49,10 +45,8 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     resources = ["${module.state-bucket.bucket.arn}/*"]
 
     principals {
-      type = "AWS"
-      identifiers = [
-        "arn:aws:iam::${local.root_account.master_account_id}:user/ModernisationPlatformOrganisationManagement"
-      ]
+      type        = "AWS"
+      identifiers = local.root_users_with_state_access
     }
 
     condition {
