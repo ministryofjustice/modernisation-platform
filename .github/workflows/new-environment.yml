@@ -5,9 +5,10 @@ on:
     branches:
       - main
     paths:
+      - '.github/workflows/new-environment.yml'
+      - 'terraform/environments/*.tf'
       - 'environments/**.json'
       - 'terraform/environments/bootstrap/**'
-      - '.github/workflows/new-environment.yml'
   pull_request:
     branches:
       - main
