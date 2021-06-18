@@ -1,5 +1,5 @@
 #  Modernisation Platform Core ou SCP policy
-data "aws_iam_policy_document" scp_mp_core_ou {
+data "aws_iam_policy_document" "scp_mp_core_ou" {
   version = "2012-10-17"
 
   statement {

@@ -1,14 +1,14 @@
 #  Modernisation Platform Member ou SCP policy
-data "aws_iam_policy_document" scp_mp_member_ou {
+data "aws_iam_policy_document" "scp_mp_member_ou" {
   version = "2012-10-17"
 
   statement {
-    effect    = "Deny"
-    actions   = [
+    effect = "Deny"
+    actions = [
       "ec2:CreateVpc",
       "ec2:CreateSubnet",
       "ec2:CreateVpcPeeringConnection"
-      ]
+    ]
     resources = ["*"]
   }
 }

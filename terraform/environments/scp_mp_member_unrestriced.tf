@@ -1,5 +1,5 @@
 #  Modernisation Platform Member Unrestriced ou SCP policy
-data "aws_iam_policy_document" scp_mp_member_unrestriced_ou {
+data "aws_iam_policy_document" "scp_mp_member_unrestriced_ou" {
   version = "2012-10-17"
 
   statement {

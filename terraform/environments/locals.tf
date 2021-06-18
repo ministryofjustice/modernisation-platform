@@ -11,5 +11,5 @@ locals {
   }
   root_account                   = data.aws_organizations_organization.root_account
   modernisation_platform_account = local.root_account.accounts[index(local.root_account.accounts[*].email, "aws+modernisation-platform@digital.justice.gov.uk")]
-  github_repository = "github.com:ministryofjustice/modernisation-platform.git"
+  github_repository              = "github.com:ministryofjustice/modernisation-platform.git"
 }
