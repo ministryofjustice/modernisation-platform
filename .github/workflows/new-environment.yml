@@ -121,7 +121,7 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ -- | awk '{print $1}' | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')"
+          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r HEAD^..HEAD | awk '{print $1}' | grep ".json" | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')"
       - name: Run delegate access
         run: |
           accounts=(${{ steps.new_account.outputs.files }})
@@ -153,7 +153,7 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ -- | awk '{print $1}' | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')"
+          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r HEAD^..HEAD | awk '{print $1}' | grep ".json"  | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')"
       - name: Run delegate access
         run: |
           accounts=(${{ steps.new_account.outputs.files }})
@@ -185,7 +185,7 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ -- | awk '{print $1}' | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')"
+          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r HEAD^..HEAD | awk '{print $1}' | grep ".json" | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')"
       - name: Run delegate access
         run: |
           accounts=(${{ steps.new_account.outputs.files }})
