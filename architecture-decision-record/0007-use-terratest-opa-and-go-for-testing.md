@@ -1,4 +1,4 @@
-# 6. Use Terratest, Open Policy Agent and Go for testing
+# 7. Use Terratest, Open Policy Agent and Go for testing
 
 Date: 2021-04-15
 
