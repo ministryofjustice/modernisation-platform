@@ -1,5 +1,4 @@
 resource "aws_iam_user" "cicd_member_user" {
-
   name = "cicd-member-user"
 }
 
