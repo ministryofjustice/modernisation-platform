@@ -18,35 +18,20 @@ resource "aws_iam_policy" "policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        NotAction = [
-          "iam:*",
-          "organizations:*",
-          "account:*",
-          "ec2:DeleteNetworkAcl",
-          "ec2:DeleteNetworkAclEntry",
-          "ec2:DeleteRoute",
-          "ec2:DeleteRouteTable",
-          "ec2:CreateCustomerGateway",
-          "ec2:CreateTransitGatewayConnect",
-          "ec2:CreateTransitGatewayConnectPeer",
-          "ec2:CreateTransitGatewayRoute",
-          "ec2:CreateTransitGatewayVpcAttachment",
-          "ec2:CreateDefaultVpc",
-          "ec2:CreateSubnet",
-          "ec2:CreateDefaultSubnet",
-          "ec2:CreateVpnConnection",
-          "ec2:CreateNatGateway",
-          "ec2:CreateVpcEndpoint",
-          "ec2:DeleteVpc",
-          "ec2:DeleteVpcEndpoints",
-          "ec2:DeleteNetworkAcl",
-          "ec2:DeleteTransitGateway",
-          "ec2:DeleteTransitGatewayVpcAttachment",
-          "ec2:DeleteSubnet",
-          "ec2:DisassociateTransitGatewayRouteTable",
-          "ec2:DisassociateSubnetCidrBlock",
-          "ec2:DisassociateRouteTable",
-          "ec2:DisassociateIamInstanceProfile"
+        Action = [
+        "ecs:RegisterTaskDefinition",
+        "ecs:UpdateService",
+        "ecs:DescribeServices",
+        "ecr:GetAuthorizationToken",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:PutImage",
+        "ecr:InitiateLayerUpload",
+        "ecr:UploadLayerPart",
+        "ecr:CompleteLayerUpload",
+        "iam:PassRole"
+
         ]
         Effect   = "Allow"
         Resource = "*"

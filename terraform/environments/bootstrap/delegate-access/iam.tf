@@ -10,9 +10,9 @@ module "cross-account-access" {
   
 module "cicd-member-user" {
 
-  source = "../../modules/iam_baseline"
+  source = "../../../modules/iam_baseline"
 
-   providers = {
-    aws = aws.modernisation-platform-access
+  providers = {
+    aws = aws.workspace
   }
 }
