@@ -8,9 +8,9 @@ We use the following SCPs for the Modernisation Platform to restrict certain act
 
 SCP | Location | Description
 ---|---|---|
-Modernisation Platform Core | [`terraform/environments/scp_mp_core`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/scp_mp_core.tf) | SCP for accounts with the account type of "core"
-Modernisation Platform Member | [`terraform/environments/scp_mp_member`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/scp_mp_member.tf) | SCP for accounts with the account type of "member"
-Modernisation Platform Core | [`terraform/environments/scp_mp_core`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/scp_mp_member_unrestriced.tf) | SCP for accounts with the account type of "member-unrestricted"
+Modernisation Platform Core | [`terraform/environments/scp_mp_core.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/scp_mp_core.tf) | SCP for accounts with the account type of "core"
+Modernisation Platform Member | [`terraform/environments/scp_mp_member.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/scp_mp_member.tf) | SCP for accounts with the account type of "member"
+Modernisation Platform Member Unrestricted | [`terraform/environments/scp_mp_member_unrestricted.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/scp_mp_member_unrestriced.tf) | SCP for accounts with the account type of "member-unrestricted"
 
 The SCPs are modified in the `terraform/environments/` Terraform, however when this Terraform runs as part of the new environment workflow, it doesn't have permissions to modify SCPs.
 
