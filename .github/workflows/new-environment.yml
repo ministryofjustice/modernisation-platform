@@ -132,7 +132,7 @@ jobs:
           then
           for i in "${accounts[@]}"
           do
-          echo "[+] Running delegate-access baseline for account for ${i}"
+          echo "[+] Running delegate-access baseline for account ${i}"
           bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
           bash scripts/setup-baseline.sh terraform/environments/bootstrap/delegate-access ${i} plan
           bash scripts/setup-baseline.sh terraform/environments/bootstrap/delegate-access ${i} apply
@@ -166,7 +166,7 @@ jobs:
           then
           for i in "${accounts[@]}"
           do
-          echo "[+] Running secure baseline for account for ${i}"
+          echo "[+] Running secure baseline for account ${i}"
           bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
           bash scripts/setup-baseline.sh terraform/environments/bootstrap/secure-baselines ${i} plan
           bash scripts/setup-baseline.sh terraform/environments/bootstrap/secure-baselines ${i} apply
@@ -200,7 +200,7 @@ jobs:
           then
           for i in "${accounts[@]}"
           do
-          echo "[+] Running single sign on baseline for account for ${i}"
+          echo "[+] Running single sign on baseline for account ${i}"
           bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
           bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on ${i} plan
           bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on ${i} apply
