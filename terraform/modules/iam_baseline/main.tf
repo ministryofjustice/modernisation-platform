@@ -40,7 +40,7 @@ resource "aws_iam_policy" "policy" {
 }
 
 resource "aws_iam_group_policy_attachment" "aws_config_attach" {
-  group      = aws_iam_group.cicd_member_group
+  group      = aws_iam_group.cicd_member_group.name
   policy_arn = aws_iam_policy.policy.arn
 }
 
