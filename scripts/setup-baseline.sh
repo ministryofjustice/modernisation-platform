@@ -9,11 +9,14 @@ terraform_action="$3"
 
 #function to loop through the environment workspaces for the associated accounts
 run_terraform() {
-  echo "Running terraform for workspace in $directory"
+  echo "Running terraform for workspace in $directory for account: $account"
 
     workspaces=`terraform -chdir="$directory" workspace list | grep $account`
 
-    for i in workspaces
+    echo "[+] found workspaces: $workspaces"
+
+    for i in $workspaces
+    echo "[+] selecting workspace: $i"
     do 
       # Select workspace
       terraform -chdir="$directory" workspace select "$i"
