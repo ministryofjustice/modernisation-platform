@@ -11,7 +11,7 @@ terraform_action="$3"
 run_terraform() {
     echo "Running terraform for workspace in $directory for account: $account"
 
-    echo "[+] Terraform $terraform_action ====>"
+    echo "[+] Terraform $terraform_action =====>"
 
     workspaces=`terraform -chdir="$directory" workspace list | grep $account`
 
