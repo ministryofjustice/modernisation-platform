@@ -13,7 +13,8 @@ run_terraform() {
 
     workspaces=`terraform -chdir="$directory" workspace list | grep $account`
 
-    echo "[+] found workspaces: $workspaces"
+    echo "[+] found workspaces:"
+    echo $workspaces
 
     for i in $workspaces
     do 
@@ -22,8 +23,10 @@ run_terraform() {
 
       # Run terraform plan
       if [ "$terraform_action" = "plan" ]; then
+        echo "[+] running terraform plan for workspace: $i"
         ./scripts/terraform-plan.sh "$directory"
       elif [ "$terraform_action" = "apply" ]; then
+        echo "[+] running terraform apply for workspace: $i"
         ./scripts/terraform-apply.sh "$directory"
       else
         echo "Unknown terraform command: $terraform_action"
