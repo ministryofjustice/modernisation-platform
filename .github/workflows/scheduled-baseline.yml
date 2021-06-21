@@ -16,7 +16,6 @@ jobs:
   delegate-access:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
-    needs: [provision-workspaces]
     env:
       AWS_ACCESS_KEY_ID:  ${{ secrets.PRIVILEGED_AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY:  ${{ secrets.PRIVILEGED_AWS_SECRET_ACCESS_KEY }}
