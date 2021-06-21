@@ -22,12 +22,12 @@ run_terraform() {
       terraform -chdir="$directory" workspace select "$i"
 
       # Run terraform plan
-      if [ "$terraform_action" = "plan" ]; then
-        echo "[+] running terraform plan for workspace: $i"
-        ./scripts/terraform-plan.sh "$directory"
-      elif [ "$terraform_action" = "apply" ]; then
+      if [ "$terraform_action" = "apply" ]; then
         echo "[+] running terraform apply for workspace: $i"
         ./scripts/terraform-apply.sh "$directory"
+      # elif [ "$terraform_action" = "apply" ]; then
+      #   echo "[+] running terraform apply for workspace: $i"
+      #   ./scripts/terraform-apply.sh "$directory"
       else
         echo "Unknown terraform command: $terraform_action"
       fi
