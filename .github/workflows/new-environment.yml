@@ -115,6 +115,8 @@ jobs:
       AWS_SECRET_ACCESS_KEY:  ${{ secrets.PRIVILEGED_AWS_SECRET_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 0
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.14.6
@@ -122,7 +124,7 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only  -r HEAD^ -- | awk '{print $1}' | grep ".json" | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')"
+          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')"
       - name: Run delegate access
         run: |
           accounts=(${{ steps.new_account.outputs.files }})
@@ -147,6 +149,8 @@ jobs:
       AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 0
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.14.6
@@ -154,7 +158,7 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only  -r HEAD^ -- | awk '{print $1}' | grep ".json" | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')"
+          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')"
       - name: Run delegate access
         run: |
           accounts=(${{ steps.new_account.outputs.files }})
@@ -179,6 +183,8 @@ jobs:
       AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 0
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.14.6
@@ -186,7 +192,7 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only  -r HEAD^ -- | awk '{print $1}' | grep ".json" | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')"
+          echo "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')"
       - name: Run delegate access
         run: |
           accounts=(${{ steps.new_account.outputs.files }})
