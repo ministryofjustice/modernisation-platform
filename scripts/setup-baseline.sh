@@ -16,7 +16,6 @@ run_terraform() {
     echo "[+] found workspaces: $workspaces"
 
     for i in $workspaces
-    echo "[+] selecting workspace: $i"
     do 
       # Select workspace
       terraform -chdir="$directory" workspace select "$i"
