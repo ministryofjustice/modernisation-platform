@@ -7,3 +7,12 @@ module "cross-account-access" {
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
   role_name  = "ModernisationPlatformAccess"
 }
+
+module "cicd-member-user" {
+
+  source = "../../../modules/iam_baseline"
+
+  providers = {
+    aws = aws.workspace
+  }
+}
