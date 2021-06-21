@@ -13,6 +13,8 @@ run_terraform() {
 
     echo "[+] Terraform $terraform_action =====>"
 
+    terraform -chdir="$directory" workspace select default 
+
     workspace=`terraform -chdir="$directory" workspace list | grep $account`
     list=`terraform -chdir="$directory" workspace list`
     echo $list
