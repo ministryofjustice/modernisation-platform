@@ -14,7 +14,8 @@ run_terraform() {
     echo "[+] Terraform $terraform_action =====>"
 
     workspace=`terraform -chdir="$directory" workspace list | grep $account`
-
+    list=`terraform -chdir="$directory" workspace list`
+    echo $list
     echo "terraform -chdir="$directory" workspace list | grep $account"
 
     echo "[+] found workspaces:"
