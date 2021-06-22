@@ -17,7 +17,7 @@ module "cross-account-access" {
 }
 
 module "cicd-member-user" {
-  
+
   count = local.account_data.account-type == "member" ? 1 : 0
 
   source = "../../../modules/iam_baseline"
