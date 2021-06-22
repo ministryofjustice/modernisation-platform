@@ -1,8 +1,8 @@
 locals {
-  
-  environment=regex("-[^-]*$" ,terraform.workspace)
 
-  account_name=replace(terraform.workspace, local.environment, "")
+  environment = regex("-[^-]*$", terraform.workspace)
+
+  account_name = replace(terraform.workspace, local.environment, "")
 
   account_data = jsondecode(file("../../../../environments/${local.account_name}.json"))
 
@@ -19,7 +19,7 @@ module "cross-account-access" {
 }
 
 module "cicd-member-user" {
-  
+
   count = local.account_data.account-type == "member" ? 1 : 0
 
   source = "../../../modules/iam_baseline"
