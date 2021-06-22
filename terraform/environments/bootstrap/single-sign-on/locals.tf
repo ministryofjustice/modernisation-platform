@@ -1,6 +1,7 @@
 locals {
 
-  app_name = try(regex("^bichard*.", terraform.workspace), replace(terraform.workspace, "/-([[:alnum:]]+)$/", ""))
+  app_name = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, "/-([[:alnum:]]+)$/", ""))
+
 
   #app_name = replace(terraform.workspace, "/-([[:alnum:]]+)$/", "")
   env_name = replace(terraform.workspace, "${local.app_name}-", "")
