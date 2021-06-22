@@ -9,6 +9,8 @@ module "cross-account-access" {
 }
 
 module "cicd-member-user" {
+  
+  count = (contains([terraform.workspace], "core-")) ? 0 : 1
 
   source = "../../../modules/iam_baseline"
 
