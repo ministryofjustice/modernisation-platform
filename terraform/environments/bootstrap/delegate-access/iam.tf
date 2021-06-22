@@ -1,9 +1,10 @@
 locals {
+
   
   non_conventional_account=try(regex("^bichard*.", terraform.workspace), regex("^remote-supervisio*.", terraform.workspace))
 
   account_name=try(local.non_conventional_account, replace(terraform.workspace, regex("-[^-]*$" ,terraform.workspace), ""))
-
+  
   account_data = jsondecode(file("../../../../environments/${local.account_name}.json"))
 
 }
@@ -19,7 +20,7 @@ module "cross-account-access" {
 }
 
 module "cicd-member-user" {
-  
+
   count = local.account_data.account-type == "member" ? 1 : 0
 
   source = "../../../modules/iam_baseline"
