@@ -1,7 +1,7 @@
 locals {
 
-  
-  account_name=try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, regex("-[^-]*$" ,terraform.workspace), ""))
+
+  account_name = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, regex("-[^-]*$", terraform.workspace), ""))
 
 
   account_data = jsondecode(file("../../../../environments/${local.account_name}.json"))
