@@ -4,3 +4,4 @@
 .DS_Store
 tmp/
 .vscode/
+.terraform.lock.hcl
