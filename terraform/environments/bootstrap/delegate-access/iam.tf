@@ -1,3 +1,13 @@
+locals {
+  
+  environment=regex("-[^-]*$" ,terraform.workspace)
+
+  account_name=replace(terraform.workspace, local.environment, "")
+
+  account_data = jsondecode(file("../../../../environments/${local.account_name}.json"))
+
+}
+
 module "cross-account-access" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v1.0.0"
   providers = {
@@ -10,7 +20,7 @@ module "cross-account-access" {
 
 module "cicd-member-user" {
   
-  count = (contains([terraform.workspace], "core-")) ? 0 : 1
+  count = local.account_data.account-type != "core" || local.account_data.account-type != "member-unrestricted" ? 0 : 1
 
   source = "../../../modules/iam_baseline"
 
