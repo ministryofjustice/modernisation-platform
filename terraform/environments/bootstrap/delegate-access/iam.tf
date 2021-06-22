@@ -1,9 +1,8 @@
 locals {
 
 
-  non_conventional_account = try(regex("^bichard*.", terraform.workspace), regex("^remote-supervisio*.", terraform.workspace))
+  account_name = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, regex("-[^-]*$", terraform.workspace), ""))
 
-  account_name = try(local.non_conventional_account, replace(terraform.workspace, regex("-[^-]*$", terraform.workspace), ""))
 
   account_data = jsondecode(file("../../../../environments/${local.account_name}.json"))
 
