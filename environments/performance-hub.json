@@ -23,7 +23,8 @@
   "tags": {
     "application": "performance-hub",
     "business-unit": "HMPPS",
-    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk ",
+    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
     "owner": "hubusers@justice.gov.uk"
   }
+  
 }
