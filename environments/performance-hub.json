@@ -1,18 +1,29 @@
 {
-	"account-type": "member",
-	"environments": [
-		{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "modernisation-platform-engineers",
+          "level": "developer"
+        }
+      ]
+    },
+    {
       "name": "preproduction",
-      "access": [{
-		"github_slug": "modernisation-platform-engineers",
-		"level": "developer"
-		}]
-	  }
-	],
-	"tags": {
-		"application": "performance-hub",
-		"business-unit": "HMPPS",
-		"infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
-		"owner": "hubusers@justice.gov.uk"
-	}
+      "access": [
+        {
+          "github_slug": "modernisation-platform-engineers",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "performance-hub",
+    "business-unit": "HMPPS",
+    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "owner": "hubusers@justice.gov.uk"
+  }
 }
