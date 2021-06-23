@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "modernisation-platform-engineers",
+          "github_slug": "performance-hub-developers",
           "level": "developer"
         }
       ]
@@ -14,7 +14,7 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "modernisation-platform-engineers",
+          "github_slug": "performance-hub-developers",
           "level": "developer"
         }
       ]
