@@ -38,7 +38,7 @@ Only half of the capacity of this /16 address has been used
 | 10.233.0.192    | /26  | LAB ONLY production - house           |
 | 10.233.1.0      | /26  | preproduction - hmpps                 |
 | 10.233.1.64     | /26  | development - platforms               |        
-| 10.233.1.128    | /26  |                                       |         
+| 10.233.1.128    | /26  | development - hmpps                   |         
 | 10.233.1.192    | /26  |                                       |         
 | 10.233.2.0      | /26  |                                       |  
 | 10.233.2.64     | /26  |                                       |        
@@ -172,7 +172,7 @@ Only half of the capacity of this /16 address has been used
 | 10.232.6.0      | /23  | LAB ONLY production - house           |
 | 10.232.8.0      | /23  | preproduction - hmpps                 |
 | 10.232.10.0     | /23  | development - platforms               |
-| 10.232.12.0     | /23  |                                       |
+| 10.232.12.0     | /23  | development - hmpps                   |
 | 10.232.14.0     | /23  |                                       |
 | 10.232.16.0     | /23  |                                       |
 | 10.232.18.0     | /23  |                                       |
@@ -303,7 +303,7 @@ Only half of the capacity of this /16 address has been used
 | 10.234.8.0      | /21  | LAB ONLY garden - patio               |
 | 10.234.16.0     | /21  | LAB ONLY house - general              |
 | 10.234.24.0     | /21  | platforms - general                   |
-| 10.234.32.0     | /21  |                                       |
+| 10.234.32.0     | /21  | hmpps - general                       |
 | 10.234.40.0     | /21  |                                       |
 | 10.234.48.0     | /21  | -                                     |
 | 10.234.56.0     | /21  | -                                     |
