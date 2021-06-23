@@ -46,7 +46,7 @@ module "baselines" {
   enabled_ebs_encryption_regions = local.enabled_baseline_regions
 
   # Regions to enable GuardDuty in
-  enabled_guardduty_regions = local.enabled_baseline_regions
+  # Guard duty is now enabled for all new accounts by default
 
   # Regions to enable Security Hub in
   enabled_securityhub_regions = local.enabled_baseline_regions
