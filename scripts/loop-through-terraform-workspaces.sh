@@ -30,16 +30,22 @@ run_terraform() {
 
   # Loop over every workspace, and run Terraform plan
   while IFS= read -r line; do
-    # Select workspace
-    terraform -chdir="$1" workspace select "$line"
+    # Note - this is temporary until we delete default VPCs for all other accounts
+    # AP will fail as they have deleted their default VPC, we want to delete all default vpcs
+    # But are waiting for v4 of the aws provider which will allow us to do this via TF
+    if [ "$line" != "analytical-platform-management-production" ]; then
 
-    # Run terraform plan
-    if [ "$3" = "plan" ]; then
-      ./scripts/terraform-plan.sh "$1"
-    elif [ "$3" = "apply" ]; then
-      ./scripts/terraform-apply.sh "$1"
-    else
-      echo "Unknown terraform command: $3"
+      # Select workspace
+      terraform -chdir="$1" workspace select "$line"
+
+      # Run terraform plan
+      if [ "$3" = "plan" ]; then
+        ./scripts/terraform-plan.sh "$1"
+      elif [ "$3" = "apply" ]; then
+        ./scripts/terraform-apply.sh "$1"
+      else
+        echo "Unknown terraform command: $3"
+      fi
     fi
   done < "$TMP_DIR"/remote/"$directory_basename".txt
 
