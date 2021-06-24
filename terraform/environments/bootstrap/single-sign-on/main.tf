@@ -76,7 +76,7 @@ resource "aws_ssoadmin_account_assignment" "developer" {
 
     "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
 
-    if("${sso_assignment.level}" == "development")
+    if("${sso_assignment.level}" == "developer")
   }
 
   provider = aws.sso-management
