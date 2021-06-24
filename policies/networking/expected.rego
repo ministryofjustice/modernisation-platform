@@ -8,7 +8,8 @@ expected =
     "garden-production": "10.233.0.128/26",
     "house-production": "10.233.0.192/26",
     "hmpps-preproduction": "10.233.1.0/26",
-    "platforms-development": "10.233.1.64/26"
+    "platforms-development": "10.233.1.64/26",
+    "hmpps-development": "10.233.1.128/26"
 
   },
   "protected": {
@@ -17,7 +18,8 @@ expected =
     "garden-production": "10.232.4.0/23",
     "house-production": "10.232.6.0/23",
     "hmpps-preproduction": "10.232.8.0/23",
-    "platforms-development": "10.232.10.0/23"
+    "platforms-development": "10.232.10.0/23",
+    "hmpps-development": "10.232.12.0/23"
   },
   "subnet_sets": {
     "garden-development": {
@@ -79,6 +81,14 @@ expected =
         "cidr": "10.234.24.0/21",
         "accounts": [
           "ops-engineering-development"
+        ]
+      }
+    },
+    "hmpps-development": {
+      "general": {
+        "cidr": "10.234.32.0/21",
+        "accounts": [
+          "performance-hub-development"
         ]
       }
     }
