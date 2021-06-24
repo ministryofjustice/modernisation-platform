@@ -159,7 +159,7 @@ jobs:
         id: new_account
         run: |
           echo "::set-output name=files::$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')"
-      - name: Run delegate access
+      - name: Run secure baselines
         run: |
           accounts=(${{ steps.new_account.outputs.files }})
           if [ ! -z ${accounts} ]
