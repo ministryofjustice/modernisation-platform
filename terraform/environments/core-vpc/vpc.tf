@@ -73,7 +73,7 @@ locals {
       account_nos = flatten([
         for subnet_set in data.cidr.subnet_sets : [
           for account in subnet_set.accounts :
-          local.environment_management.account_ids["${account}"]
+          local.environment_management.account_ids[account]
         ]
       ])
     }
@@ -81,7 +81,7 @@ locals {
 
   expanded_account_numbers_with_keys = {
     for data in local.account_numbers :
-    "${data.key}" => data.account_nos
+    data.key => data.account_nos
   }
 
   non-tgw-vpc-subnet = flatten([
