@@ -63,8 +63,8 @@ data "aws_iam_policy_document" "member-access" {
       "kms:*",
       "lambda:*",
       "logs:*",
-      "organizations:Describe*", 
-      "organizations:List*", 
+      "organizations:Describe*",
+      "organizations:List*",
       "rds:*",
       "rds-db:*",
       "route53:*",
@@ -95,7 +95,7 @@ data "aws_iam_policy_document" "member-access" {
 }
 
 resource "aws_iam_policy" "member-access" {
-  count  = local.account_data.account-type == "member" ? 1 : 0
+  count    = local.account_data.account-type == "member" ? 1 : 0
   provider = aws.workspace
 
   name        = "MemberInfrastructureAccessActions"
