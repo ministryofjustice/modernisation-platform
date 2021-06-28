@@ -30,13 +30,13 @@ module "cicd-member-user" {
 }
 
 module "member-access" {
-  count = local.account_data.account-type == "member" ? 1 : 0
+  count  = local.account_data.account-type == "member" ? 1 : 0
   source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v1.0.0"
   providers = {
     aws = aws.workspace
   }
   account_id = local.modernisation_platform_account.id
-  policy_arn = aws_iam_policy.member-access.id
+  policy_arn = aws_iam_policy.member-access[0].id
   role_name  = "MemberInfrastructureAccess"
 }
 
@@ -90,6 +90,9 @@ data "aws_iam_policy_document" "member-access" {
 }
 
 resource "aws_iam_policy" "member-access" {
+  count  = local.account_data.account-type == "member" ? 1 : 0
+  provider = aws.workspace
+
   name        = "MemberInfrastructureAccessActions"
   description = "Restricted admin policy for member CI/CD to use"
   policy      = data.aws_iam_policy_document.member-access.json
