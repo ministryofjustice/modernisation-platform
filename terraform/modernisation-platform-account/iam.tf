@@ -88,7 +88,7 @@ data "aws_iam_policy_document" "member-ci-policy" {
     effect  = "Allow"
     actions = ["sts:AssumeRole"]
     resources = [
-      "arn:aws:iam::*:role/ModernisationPlatformAccess",
+      "arn:aws:iam::*:role/MemberInfrastructureAccess",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-development"]}:role/member-delegation-*-development",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-test"]}:role/member-delegation-*-test",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-preproduction"]}:role/member-delegation-*-preproduction",
