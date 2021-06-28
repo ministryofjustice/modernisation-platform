@@ -44,6 +44,8 @@ data "aws_iam_policy_document" "member-access" {
   statement {
     effect = "Allow"
     actions = [
+      "acm:*",
+      "application-autoscaling:*",
       "autoscaling:*",
       "cloudfront:*",
       "cloudwatch:*",
@@ -51,6 +53,7 @@ data "aws_iam_policy_document" "member-access" {
       "ebs:*",
       "ec2:*",
       "ecr:*",
+      "ecr-public:*",
       "ecs:*",
       "elasticfilesystem:*",
       "elasticloadbalancing:*",
@@ -60,6 +63,8 @@ data "aws_iam_policy_document" "member-access" {
       "kms:*",
       "lambda:*",
       "logs:*",
+      "organizations:Describe*", 
+      "organizations:List*", 
       "rds:*",
       "rds-db:*",
       "route53:*",
