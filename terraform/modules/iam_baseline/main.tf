@@ -2,10 +2,6 @@ resource "aws_iam_user" "cicd_member_user" {
   name = "cicd-member-user"
 }
 
-resource "aws_iam_access_key" "cicd_member_user_key" {
-  user = aws_iam_user.cicd_member_user.name
-}
-
 resource "aws_iam_group" "cicd_member_group" {
   name = "cicd-member-group"
 }
