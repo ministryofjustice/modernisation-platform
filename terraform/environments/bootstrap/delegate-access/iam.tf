@@ -28,3 +28,77 @@ module "cicd-member-user" {
     aws = aws.workspace
   }
 }
+
+module "member-access" {
+  count  = local.account_data.account-type == "member" ? 1 : 0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v1.0.0"
+  providers = {
+    aws = aws.workspace
+  }
+  account_id = local.modernisation_platform_account.id
+  policy_arn = aws_iam_policy.member-access[0].id
+  role_name  = "MemberInfrastructureAccess"
+}
+
+data "aws_iam_policy_document" "member-access" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "acm:*",
+      "application-autoscaling:*",
+      "autoscaling:*",
+      "cloudfront:*",
+      "cloudwatch:*",
+      "dynamodb:*",
+      "ebs:*",
+      "ec2:*",
+      "ecr:*",
+      "ecr-public:*",
+      "ecs:*",
+      "elasticfilesystem:*",
+      "elasticloadbalancing:*",
+      "glacier:*",
+      "guardduty:get*",
+      "iam:*",
+      "kms:*",
+      "lambda:*",
+      "logs:*",
+      "organizations:Describe*",
+      "organizations:List*",
+      "rds:*",
+      "rds-db:*",
+      "route53:*",
+      "s3:*",
+      "secretsmanager:*",
+      "ses:*",
+      "sns:*",
+      "sqs:*",
+      "ssm:*"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Deny"
+    actions = [
+      "ec2:CreateVpc",
+      "ec2:CreateSubnet",
+      "ec2:CreateVpcPeeringConnection",
+      "iam:CreateUser",
+      "iam:DeleteUser",
+      "iam:CreateGroup",
+      "iam:DeleteGroup",
+      "iam:DeleteGroupPolicy"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "member-access" {
+  count    = local.account_data.account-type == "member" ? 1 : 0
+  provider = aws.workspace
+
+  name        = "MemberInfrastructureAccessActions"
+  description = "Restricted admin policy for member CI/CD to use"
+  policy      = data.aws_iam_policy_document.member-access.json
+}
