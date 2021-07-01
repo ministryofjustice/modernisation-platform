@@ -16,6 +16,38 @@ locals {
   cidrs = cidrsubnets(var.vpc_cidr, 9, 9, 9, 4, 4, 4, 4, 4, 4, 4, 4, 4)
   types = ["transit-gateway", "data", "private", "public"]
 
+  # SAMPLE OUTPUT OF: types_and_az_and_cidrs
+
+  # data            = {
+  #     data-eu-west-2a = {
+  #         az   = "eu-west-2a"
+  #         cidr = "10.1.130.0/23"
+  #           }
+  #     data-eu-west-2b = {
+  #         az   = "eu-west-2b"
+  #         cidr = "10.1.132.0/23"
+  #           }
+  #     data-eu-west-2c = {
+  #         az   = "eu-west-2c"
+  #         cidr = "10.1.134.0/23"
+  #           }
+  #       }
+  # private         = {
+  #     private-eu-west-2a = {
+  #         az   = "eu-west-2a"
+  #         cidr = "10.1.136.0/23"
+  #           }
+  #     private-eu-west-2b = {
+  #         az   = "eu-west-2b"
+  #         cidr = "10.1.138.0/23"
+  #           }
+  #     private-eu-west-2c = {
+  #         az   = "eu-west-2c"
+  #         cidr = "10.1.140.0/23"
+  #           }
+  #       }
+
+
   types_and_azs_and_cidrs = {
     for index, type in local.types :
     type => {
