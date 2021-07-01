@@ -34,6 +34,16 @@ check_if_environment_exists() {
   echo "Environment $1 exists = ${environment_exists}"
 }
 
+check_if_change_to_application_json() {
+  echo "Checking if application $1 has changes..."
+  changed_envs=$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments/*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')
+  echo "Changed json files=$changed_envs"  
+  application_name=$(echo $1 | sed 's/-[^-]*$//')
+  echo "Application name: $application_name"
+  [[ $changed_envs =~ (^|[[:space:]])$application_name($|[[:space:]]) ]] && change_to_application_json="true" || change_to_application_json="false"
+  echo "Change to application json: $change_to_application_json"
+}
+
 create_environment() {
   environment_name=$1
   github_teams=$2
@@ -95,9 +105,12 @@ main() {
         # Check if environment exists and that if has a team associated with it
         environment_exists="false"
         check_if_environment_exists "${environment}"
-        if [ "${environment_exists}" = "true" ] || [ "${teams}" == "" ]
+        change_to_application_json="false"
+        check_if_change_to_application_json "${environment}"
+        
+        if ([ "${environment_exists}" == "true" ] || [ "${teams}" == "" ]) && [ "${change_to_application_json}" == "false" ]
         then
-          echo "${environment} already exists or no github team has been assigned, skipping..."
+          echo "${environment} already exists and there are no changes, or no github team has been assigned, skipping..."
         else
           echo "Creating environment ${environment}"
           # Get github team ids
