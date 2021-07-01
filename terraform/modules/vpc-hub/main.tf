@@ -17,7 +17,7 @@ locals {
   types = ["transit-gateway", "data", "private", "public"]
 
   # SAMPLE OUTPUT OF: types_and_az_and_cidrs
-  
+
   # data            = {
   #     data-eu-west-2a = {
   #         az   = "eu-west-2a"
