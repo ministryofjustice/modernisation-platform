@@ -1,11 +1,3 @@
-provider "aws" {
-  alias = "share-host" # Provider that holds the resource share
-}
-
-provider "aws" {
-  alias = "share-tenant" # Provider that wants to be shared with
-}
-
 # Get the VPC name from the share-host
 data "aws_vpc" "host" {
   provider = aws.share-host

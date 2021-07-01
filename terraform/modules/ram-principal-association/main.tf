@@ -1,14 +1,3 @@
-provider "aws" {
-  alias = "share-host" # Provider that holds the resource share
-}
-
-provider "aws" {
-  alias = "share-tenant" # Provider that wants to be shared with
-}
-
-provider "aws" {
-  alias = "share-acm" # Provider that wants to be shared with
-}
 
 data "aws_ram_resource_share" "default" {
   provider = aws.share-host

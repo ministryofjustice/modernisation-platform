@@ -1,14 +1,3 @@
-# Providers
-## Transit Gateway host
-provider "aws" {
-  alias = "transit-gateway-host"
-}
-
-## Transit Gateway tenant
-provider "aws" {
-  alias = "transit-gateway-tenant"
-}
-
 # Data lookups
 
 ## Look up RAM Resource Share in the host account
