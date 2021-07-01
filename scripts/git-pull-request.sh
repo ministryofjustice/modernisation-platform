@@ -16,6 +16,12 @@ pull_request_body="> This PR was automatically created via a GitHub action workf
 
 This PR commits new files under $1."
 
+# Check if changes to create PR
+if [ "$(git rev-parse main)" = "$(git rev-parse $pull_request_branch)" ]; then
+  echo "No difference in branches to create PR, exiting."
+  exit 0
+fi
+
 payload=$(echo "${pull_request_body}" | jq --arg branch "$pull_request_branch" --arg pr_title "$pull_request_title" -R --slurp '{ body: ., base: "main", head: $branch, title: $pr_title }')
 
 echo "${payload}" | curl \
@@ -26,6 +32,6 @@ echo "${payload}" | curl \
 ERRORCODE="${?}"
 if [ ${ERRORCODE} -ne 0 ]
 then
-  echo "ERROR: git_pull-request.sh exited with an error - Code:${ERRORCODE}"
+  echo "ERROR: git-pull-request.sh exited with an error - Code:${ERRORCODE}"
   exit 1
 fi
