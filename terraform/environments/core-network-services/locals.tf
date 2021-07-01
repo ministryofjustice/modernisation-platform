@@ -17,9 +17,3 @@ locals {
     owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
   }
 }
-
-variable "networking" {
-
-  type = list(any)
-
-}

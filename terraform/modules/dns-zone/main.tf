@@ -1,8 +1,4 @@
 
-provider "aws" {
-  alias = "core-network-services" # Provider that holds the resource share
-}
-
 locals {
   modernisation-platform-domain          = "modernisation-platform.service.justice.gov.uk"
   modernisation-platform-internal-domain = "modernisation-platform.internal"
