@@ -1,5 +1,5 @@
 provider "github" {
-  organization = "ministryofjustice"
+  owner = "ministryofjustice"
   token        = var.github_token
 }
 

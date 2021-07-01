@@ -10,12 +10,12 @@ module "core" {
     "aws",
     "documentation"
   ]
-  secrets = merge(local.ci_iam_user_keys, {
+  secrets = nonsensitive(merge(local.ci_iam_user_keys, {
     PRIVILEGED_AWS_ACCESS_KEY_ID     = "example"
     PRIVILEGED_AWS_SECRET_ACCESS_KEY = "example"
     # Terraform GitHub token for the CI/CD user
     TERRAFORM_GITHUB_TOKEN = "This needs to be manually set in GitHub."
-  })
+  }))
 }
 
 module "hello-world" {
@@ -109,10 +109,10 @@ module "modernisation-platform-environments" {
     "environments"
   ]
   required_checks = ["run-opa-policy-tests"]
-  secrets = merge(local.member_ci_iam_user_keys, {
+  secrets = nonsensitive(merge(local.member_ci_iam_user_keys, {
     # Terraform GitHub token for the CI/CD user
     TERRAFORM_GITHUB_TOKEN = "This needs to be manually set in GitHub."
-  })
+  }))
 }
 
 # Everyone, with access to the above repositories
