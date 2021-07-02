@@ -2,6 +2,11 @@
 # (when we want to assume a role in the MP, for instance)
 data "aws_organizations_organization" "root_account" {}
 
+# Get the environments file from the main repository
+data "http" "environments_file" {
+  url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/${local.application_name}.json"
+}
+
 locals {
 
   application_name = "heater"
@@ -15,12 +20,13 @@ locals {
   is-test          = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-test"
   is-development   = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-development"
 
-  tags = {
-    business-unit = "Platforms"
-    application   = "Modernisation Platform: ${terraform.workspace}"
-    is-production = local.is-production
-    owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
-  }
+  # Merge tags from the environment json file with additional ones
+  tags = merge(
+    jsondecode(data.http.environments_file.body).tags,
+    { "is-production" = local.is-production },
+    { "environment-name" = terraform.workspace },
+    { "source-code" = "https://github.com/ministryofjustice/modernisation-platform" }
+  )
 
   environment = trimprefix(terraform.workspace, "${var.networking[0].application}-")
   vpc_name    = var.networking[0].business-unit
