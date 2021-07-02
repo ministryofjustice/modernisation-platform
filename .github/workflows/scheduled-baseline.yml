@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v2.3.4
       - uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.14.6
+          terraform_version: 1.0.1 
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access plan

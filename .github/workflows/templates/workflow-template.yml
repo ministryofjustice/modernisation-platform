@@ -36,7 +36,7 @@ jobs:
       - name: Load and Configure Terraform
         uses: hashicorp/setup-terraform@v1.3.2
         with:
-          terraform_version: 0.14.6
+          terraform_version: 1.0.1
           terraform_wrapper: false
       - name: Terraform plan - development
         run: |
@@ -59,7 +59,7 @@ jobs:
       - name: Load and Configure Terraform
         uses: hashicorp/setup-terraform@v1.3.2
         with:
-          terraform_version: 0.14.6
+          terraform_version: 1.0.1
           terraform_wrapper: false
       - name: Terraform apply - development
         run: |
@@ -80,7 +80,7 @@ jobs:
       - name: Load and Configure Terraform
         uses: hashicorp/setup-terraform@v1.3.2
         with:
-          terraform_version: 0.14.6
+          terraform_version: 1.0.1
           terraform_wrapper: false
       - name: Terraform plan - test
         run: |
@@ -103,7 +103,7 @@ jobs:
       - name: Load and Configure Terraform
         uses: hashicorp/setup-terraform@v1.3.2
         with:
-          terraform_version: 0.14.6
+          terraform_version: 1.0.1
           terraform_wrapper: false
       - name: Terraform apply - test
         run: |
@@ -125,7 +125,7 @@ jobs:
       - name: Load and Configure Terraform
         uses: hashicorp/setup-terraform@v1.3.2
         with:
-          terraform_version: 0.14.6
+          terraform_version: 1.0.1
           terraform_wrapper: false
       - name: Terraform plan - preproduction
         run: |
@@ -148,7 +148,7 @@ jobs:
       - name: Load and Configure Terraform
         uses: hashicorp/setup-terraform@v1.3.2
         with:
-          terraform_version: 0.14.6
+          terraform_version: 1.0.1
           terraform_wrapper: false
       - name: Terraform apply - preproduction
         run: |
@@ -169,7 +169,7 @@ jobs:
       - name: Load and Configure Terraform
         uses: hashicorp/setup-terraform@v1.3.2
         with:
-          terraform_version: 0.14.6
+          terraform_version: 1.0.1
           terraform_wrapper: false
       - name: Terraform plan - production
         run: |
@@ -192,7 +192,7 @@ jobs:
       - name: Load and Configure Terraform
         uses: hashicorp/setup-terraform@v1.3.2
         with:
-          terraform_version: 0.14.6
+          terraform_version: 1.0.1
           terraform_wrapper: false
       - name: Terraform apply - production
         run: |
