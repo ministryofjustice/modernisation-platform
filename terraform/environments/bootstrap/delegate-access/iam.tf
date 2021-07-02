@@ -32,7 +32,7 @@ module "cicd-member-user" {
 module "member-access" {
   count  = local.account_data.account-type == "member" ? 1 : 0
   source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.0.0"
-providers = {
+  providers = {
     aws = aws.workspace
   }
   account_id = local.modernisation_platform_account.id
