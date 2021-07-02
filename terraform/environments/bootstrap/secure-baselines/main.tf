@@ -1,5 +1,5 @@
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=v2.0.1"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=v3.0.0"
   providers = {
     # Default and replication regions
     aws                    = aws.workspace-eu-west-2
