@@ -14,6 +14,8 @@ locals {
     application   = "Modernisation Platform: Environments Management"
     is-production = true
     owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
+    component     = "secure-baselines"
+    source-code   = "https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/bootstrap/secure-baselines"
   }
   root_account           = data.aws_organizations_organization.root_account
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
