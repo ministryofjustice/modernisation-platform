@@ -29,7 +29,7 @@ jobs:
   plan-development:
     name: Plan Development - $application_name
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/main'
+    if: github.ref != 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2.3.4
@@ -50,7 +50,7 @@ jobs:
   deploy-development:
     name: Deploy Development - $application_name
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/main'
+    if: github.ref != 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     environment:
       name: $application_name-development
     steps:
@@ -73,7 +73,7 @@ jobs:
   plan-test:
     name: Plan Test - $application_name
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/main'
+    if: github.ref != 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2.3.4
@@ -94,7 +94,7 @@ jobs:
   deploy-test:
     name: Deploy Test - $application_name
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/main'
+    if: github.ref != 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     environment:
       name: $application_name-test
     steps:
@@ -118,7 +118,7 @@ jobs:
   plan-preproduction:
     name: Plan Preproduction - $application_name
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2.3.4
