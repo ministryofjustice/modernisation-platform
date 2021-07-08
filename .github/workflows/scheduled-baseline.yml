@@ -27,6 +27,14 @@ jobs:
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access plan
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access apply
+      - uses: 8398a7/action-slack@v3
+        name: Slack failure notification
+        with:
+          status: ${{ job.status }}
+          fields: workflow,job,repo,commit,message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
   secure-baselines:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
@@ -43,6 +51,14 @@ jobs:
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines plan
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines apply
+      - uses: 8398a7/action-slack@v3
+        name: Slack failure notification
+        with:
+          status: ${{ job.status }}
+          fields: workflow,job,repo,commit,message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
   single-sign-on:
     runs-on: ubuntu-latest
     env:
@@ -57,3 +73,11 @@ jobs:
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on plan
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on apply
+      - uses: 8398a7/action-slack@v3
+        name: Slack failure notification
+        with:
+          status: ${{ job.status }}
+          fields: workflow,job,repo,commit,message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}

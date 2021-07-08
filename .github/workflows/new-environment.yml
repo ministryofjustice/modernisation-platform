@@ -83,6 +83,14 @@ jobs:
         run: bash scripts/terraform-plan.sh terraform/environments
       - name: Run terraform apply in terraform/environments
         run: bash scripts/terraform-apply.sh terraform/environments
+      - uses: 8398a7/action-slack@v3
+        name: Slack failure notification
+        with:
+          status: ${{ job.status }}
+          fields: workflow,job,repo,commit,message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
   provision-workspaces:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
@@ -106,6 +114,14 @@ jobs:
         run: bash scripts/provision-terraform-workspaces.sh bootstrap
       - name: Provision workspaces in terraform/environments/*
         run: bash scripts/provision-terraform-workspaces.sh all-environments
+      - uses: 8398a7/action-slack@v3
+        name: Slack failure notification
+        with:
+          status: ${{ job.status }}
+          fields: workflow,job,repo,commit,message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
   delegate-access:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
@@ -140,6 +156,14 @@ jobs:
           else
           echo "[+] There were no AWS member accounts to process"
           fi
+      - uses: 8398a7/action-slack@v3
+        name: Slack failure notification
+        with:
+          status: ${{ job.status }}
+          fields: workflow,job,repo,commit,message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
   secure-baselines:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
@@ -174,6 +198,14 @@ jobs:
           else
           echo "[+] There were no AWS member accounts to process"
           fi
+      - uses: 8398a7/action-slack@v3
+        name: Slack failure notification
+        with:
+          status: ${{ job.status }}
+          fields: workflow,job,repo,commit,message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
   single-sign-on:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
@@ -208,3 +240,11 @@ jobs:
           else
           echo "[+] There were no AWS member accounts to process"
           fi
+      - uses: 8398a7/action-slack@v3
+        name: Slack failure notification
+        with:
+          status: ${{ job.status }}
+          fields: workflow,job,repo,commit,message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
