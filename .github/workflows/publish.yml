@@ -18,3 +18,11 @@ jobs:
     - uses: actions/checkout@v2.3.4
     - name: Publish
       run: /publishing-scripts/publish.sh
+    - uses: 8398a7/action-slack@v3
+      name: Slack failure notification
+      with:
+        status: ${{ job.status }}
+        fields: workflow,job,repo,commit,message
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: ${{ failure() }}
