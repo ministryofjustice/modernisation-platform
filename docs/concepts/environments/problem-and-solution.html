@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en" class="govuk-template no-js">
+  <head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+    <title>Environments (AWS accounts) - Modernisation Platform</title>
+
+    <link href="../../stylesheets/manifest.css" rel="stylesheet" />
+
+    <link rel="canonical" href="https://ministryofjustice.github.io/modernisation-platform/concepts/environments/problem-and-solution.html">
+
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:domain" content="ministryofjustice.github.io" />
+      <meta name="twitter:image" content="https://ministryofjustice.github.io/modernisation-platform/images/govuk-large.png" />
+      <meta name="twitter:title" content="Environments (AWS accounts) - Modernisation Platform" />
+      <meta name="twitter:url" content="https://ministryofjustice.github.io/modernisation-platform/concepts/environments/problem-and-solution.html" />
+
+      <meta property="og:image" content="https://ministryofjustice.github.io/modernisation-platform/images/govuk-large.png" />
+      <meta property="og:site_name" content="Modernisation Platform" />
+      <meta property="og:title" content="Environments (AWS accounts)" />
+      <meta property="og:type" content="object" />
+      <meta property="og:url" content="https://ministryofjustice.github.io/modernisation-platform/concepts/environments/problem-and-solution.html" />
+
+    
+  </head>
+
+  <body class="govuk-template__body">
+    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+
+    <div class="app-pane">
+      <div class="app-pane__header toc-open-disabled">
+        <a href="#content" class="govuk-skip-link">Skip to main content</a>
+
+        <header class="govuk-header app-header" role="banner" data-module="govuk-header">
+  <div class="govuk-header__container govuk-header__container--full-width">
+    <div class="govuk-header__logo">
+      <a href="/modernisation-platform" class="govuk-header__link govuk-header__link--homepage">
+        <span class="govuk-header__logotype">
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            class="govuk-header__logotype-crown"
+            xmlns="http://www.w3.org/2000/svg"
+            viewbox="0 0 132 97"
+            height="30"
+            width="36"
+          >
+            <path
+              fill="currentColor" fill-rule="evenodd"
+              d="M25 30.2c3.5 1.5 7.7-.2 9.1-3.7 1.5-3.6-.2-7.8-3.9-9.2-3.6-1.4-7.6.3-9.1 3.9-1.4 3.5.3 7.5 3.9 9zM9 39.5c3.6 1.5 7.8-.2 9.2-3.7 1.5-3.6-.2-7.8-3.9-9.1-3.6-1.5-7.6.2-9.1 3.8-1.4 3.5.3 7.5 3.8 9zM4.4 57.2c3.5 1.5 7.7-.2 9.1-3.8 1.5-3.6-.2-7.7-3.9-9.1-3.5-1.5-7.6.3-9.1 3.8-1.4 3.5.3 7.6 3.9 9.1zm38.3-21.4c3.5 1.5 7.7-.2 9.1-3.8 1.5-3.6-.2-7.7-3.9-9.1-3.6-1.5-7.6.3-9.1 3.8-1.3 3.6.4 7.7 3.9 9.1zm64.4-5.6c-3.6 1.5-7.8-.2-9.1-3.7-1.5-3.6.2-7.8 3.8-9.2 3.6-1.4 7.7.3 9.2 3.9 1.3 3.5-.4 7.5-3.9 9zm15.9 9.3c-3.6 1.5-7.7-.2-9.1-3.7-1.5-3.6.2-7.8 3.7-9.1 3.6-1.5 7.7.2 9.2 3.8 1.5 3.5-.3 7.5-3.8 9zm4.7 17.7c-3.6 1.5-7.8-.2-9.2-3.8-1.5-3.6.2-7.7 3.9-9.1 3.6-1.5 7.7.3 9.2 3.8 1.3 3.5-.4 7.6-3.9 9.1zM89.3 35.8c-3.6 1.5-7.8-.2-9.2-3.8-1.4-3.6.2-7.7 3.9-9.1 3.6-1.5 7.7.3 9.2 3.8 1.4 3.6-.3 7.7-3.9 9.1zM69.7 17.7l8.9 4.7V9.3l-8.9 2.8c-.2-.3-.5-.6-.9-.9L72.4 0H59.6l3.5 11.2c-.3.3-.6.5-.9.9l-8.8-2.8v13.1l8.8-4.7c.3.3.6.7.9.9l-5 15.4v.1c-.2.8-.4 1.6-.4 2.4 0 4.1 3.1 7.5 7 8.1h.2c.3 0 .7.1 1 .1.4 0 .7 0 1-.1h.2c4-.6 7.1-4.1 7.1-8.1 0-.8-.1-1.7-.4-2.4V34l-5.1-15.4c.4-.2.7-.6 1-.9zM66 92.8c16.9 0 32.8 1.1 47.1 3.2 4-16.9 8.9-26.7 14-33.5l-9.6-3.4c1 4.9 1.1 7.2 0 10.2-1.5-1.4-3-4.3-4.2-8.7L108.6 76c2.8-2 5-3.2 7.5-3.3-4.4 9.4-10 11.9-13.6 11.2-4.3-.8-6.3-4.6-5.6-7.9 1-4.7 5.7-5.9 8-.5 4.3-8.7-3-11.4-7.6-8.8 7.1-7.2 7.9-13.5 2.1-21.1-8 6.1-8.1 12.3-4.5 20.8-4.7-5.4-12.1-2.5-9.5 6.2 3.4-5.2 7.9-2 7.2 3.1-.6 4.3-6.4 7.8-13.5 7.2-10.3-.9-10.9-8-11.2-13.8 2.5-.5 7.1 1.8 11 7.3L80.2 60c-4.1 4.4-8 5.3-12.3 5.4 1.4-4.4 8-11.6 8-11.6H55.5s6.4 7.2 7.9 11.6c-4.2-.1-8-1-12.3-5.4l1.4 16.4c3.9-5.5 8.5-7.7 10.9-7.3-.3 5.8-.9 12.8-11.1 13.8-7.2.6-12.9-2.9-13.5-7.2-.7-5 3.8-8.3 7.1-3.1 2.7-8.7-4.6-11.6-9.4-6.2 3.7-8.5 3.6-14.7-4.6-20.8-5.8 7.6-5 13.9 2.2 21.1-4.7-2.6-11.9.1-7.7 8.8 2.3-5.5 7.1-4.2 8.1.5.7 3.3-1.3 7.1-5.7 7.9-3.5.7-9-1.8-13.5-11.2 2.5.1 4.7 1.3 7.5 3.3l-4.7-15.4c-1.2 4.4-2.7 7.2-4.3 8.7-1.1-3-.9-5.3 0-10.2l-9.5 3.4c5 6.9 9.9 16.7 14 33.5 14.8-2.1 30.8-3.2 47.7-3.2z"
+            ></path>
+            <image src="/assets/images/govuk-logotype-crown.png" xlink:href="" class="govuk-header__logotype-crown-fallback-image" width="36" height="32"></image>
+          </svg>
+          <span class="govuk-header__logotype-text">
+            GOV.UK
+          </span>
+        </span>
+        <span class="govuk-header__product-name">
+          Modernisation Platform
+        </span>
+      </a>
+        <strong class="govuk-tag">Alpha</strong>
+    </div>
+    <div class="govuk-header__content">
+      <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
+      <nav>
+        <ul id="navigation" class="govuk-header__navigation govuk-header__navigation--end" aria-label="Top Level Navigation">
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="/modernisation-platform">Home</a>
+            </li>
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="https://github.com/ministryofjustice/modernisation-platform">GitHub</a>
+            </li>
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="https://mojdt.slack.com/archives/C01A7QK5VM1">Slack</a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+      </div>
+
+        <div id="toc-heading" class="toc-show fixedsticky">
+          <a href="#toc" class="toc-show__label js-toc-show" aria-controls="toc">
+            Table of contents <span class="toc-show__icon"></span>
+          </a>
+        </div>
+
+      <div class="app-pane__body" data-module="in-page-navigation">
+          <div class="app-pane__toc">
+            <div class="toc" data-module="table-of-contents">
+              <div class="search" data-module="search">
+  <form action="https://www.google.co.uk/search" method="get" role="search">
+    <input type="hidden" name="as_sitesearch" value="https://ministryofjustice.github.io/modernisation-platform"/>
+    <label class="govuk-label search__label" for="search">
+      Search (via Google)
+    </label>
+    <input class="govuk-input govuk-!-margin-bottom-4" id="search" name="q" type="text" aria-controls="search-results" placeholder="Search">
+  </form>
+  <div id="search-results" class="search-results" aria-hidden="true" role="dialog" aria-labelledby="search-results-title">
+    <div class="search-results__inner">
+      <button class="search-results__close">Close<span class="search-results__close-label"> search results</span></button>
+      <h2 id="search-results-title" class="search-results__title" aria-live="polite">Results</h2>
+      <div class="search-results__content"></div>
+    </div>
+  </div>
+</div>
+
+              <a href="#" class="toc__close js-toc-close" aria-controls="toc" aria-label="Hide table of contents"></a>
+              <nav id="toc" class="js-toc-list toc__list" aria-labelledby="toc-heading">
+                      <ul>
+  <li>
+    <a href="#environments-aws-accounts"><span>Environments (AWS accounts)</span></a>
+    <ul>
+      <li>
+        <a href="#what-we-39-re-trying-to-fix"><span>What we’re trying to fix</span></a>
+        <ul>
+          <li>
+            <a href="#issue-1-blast-radius"><span>Issue 1: blast radius</span></a>
+          </li>
+          <li>
+            <a href="#issue-2-team-isolation"><span>Issue 2: team isolation</span></a>
+          </li>
+          <li>
+            <a href="#issue-3-billing"><span>Issue 3: billing</span></a>
+          </li>
+          <li>
+            <a href="#issue-4-cloud-waste"><span>Issue 4: cloud waste</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#what-we-investigated"><span>What we investigated</span></a>
+        <ul>
+          <li>
+            <a href="#let-teams-decide"><span>Let teams decide</span></a>
+          </li>
+          <li>
+            <a href="#one-account-strong-attribute-based-access-controls"><span>One account, strong attribute-based access controls</span></a>
+          </li>
+          <li>
+            <a href="#separate-by-application-and-sdlc"><span>Separate by application and SDLC</span></a>
+          </li>
+          <li>
+            <a href="#separate-by-business-unit-and-sdlc"><span>Separate by business unit and SDLC</span></a>
+          </li>
+          <li>
+            <a href="#separate-everything"><span>Separate everything</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#what-we-decided"><span>What we decided</span></a>
+        <ul>
+          <li>
+            <a href="#overview"><span>Overview</span></a>
+          </li>
+          <li>
+            <a href="#logically-separate-applications"><span>Logically separate applications</span></a>
+          </li>
+          <li>
+            <a href="#more-accounts-aren-39-t-always-better"><span>More accounts aren’t always better</span></a>
+          </li>
+          <li>
+            <a href="#the-trade-off-for-complexity-is-probably-worth-it"><span>The trade-off for complexity is (probably) worth it</span></a>
+          </li>
+          <li>
+            <a href="#we-39-re-always-learning"><span>We’re always learning</span></a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#architecture"><span>Architecture</span></a>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+
+              </nav>
+            </div>
+          </div>
+
+        <div class="app-pane__content toc-open-disabled">
+          <main id="content" class="technical-documentation" data-module="anchored-headings">
+            <h1 id="environments-aws-accounts">Environments (AWS accounts)</h1><h2 id="what-we-39-re-trying-to-fix">What we&rsquo;re trying to fix</h2><p>Within the Ministry of Justice, AWS accounts and the applications that sit within them tend to be split by business unit and their <a href="https://en.wikipedia.org/wiki/Systems_development_life_cycle#Environments">software development lifecycle phase (SDLC)</a>.</p>
+<p>This means that for most business units, they will have a <code>production</code> AWS account, which holds all of their production applications. This tends to span across other SDLC phases such as <code>development</code>, <code>staging</code>, <code>test</code>, and so on.</p>
+<p>Whilst this works for business units working on their own applications with a finite number of cloud resources, scaling it into a platform for anyone within the Ministry of Justice to use raises some issues.</p>
+<p>For example, if we had an account for <code>fictional-business-unit-production</code> and some example applications:</p>
+<p><code>example-a</code>, which is an application with a database that holds sensitive <code>dataset A</code></p>
+<p><code>example-b</code>, which is an application with a database that holds sensitive <code>dataset B</code></p>
+<h3 id="issue-1-blast-radius">Issue 1: blast radius</h3><p>One of the risks of splitting AWS accounts at the granularity of business unit and their SDLC is the blast radius. By doing this, the blast radius has a much wider impact on the business and has a high probability of affecting other resources and applications that sit within an AWS account.</p>
+<p>The blast radius can be affected by anything, such as security, or an Availability Zone going offline.</p>
+<h4 id="security-example">Security example</h4><p>Access keys are leaked for an IAM user that is in <code>fictional-business-unit-production</code>. The IAM user has an <code>AdministratorAccess</code> policy attached. A malicious attacker with these keys now has the ability to access both sensitive datasets: <code>dataset A</code> and <code>dataset B</code>.</p>
+<h4 id="high-availability-example">High-availability example</h4><p><code>fictional-business-unit-production</code> had only ever configured their EC2 instances to run in one AZ. If this AZ goes down, all of their applications do too.</p>
+<h3 id="issue-2-team-isolation">Issue 2: team isolation</h3><p>Similar to Issue 1, team isolation becomes extremely difficult to maintain if all applications in their SDLC stage are within one account.</p>
+<p>Imagine <code>team-a</code> works on <code>example-a</code> and <code>team-b</code> works on <code>example-b</code>, both of which fall under <code>fictional-business-unit</code>.</p>
+<p>Everything <code>team-a</code> does can be seen by <code>team-b</code> even if you use a well-defined <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_attribute-based-access-control.html">attribute-based access control</a> (ABAC). Using ABAC requires resources to be tagged, and it has no effect on untagged resources. ABAC also doesn&rsquo;t work for all resources in AWS.</p>
+<p>If <code>team-a</code> forgets to tag something, or creates a resource that doesn&rsquo;t support tagging during creation, it&rsquo;s interactable by who has access to that AWS account.</p>
+<h4 id="an-extreme-misclicking-example">An extreme misclicking example</h4><p><code>team-a</code> notices an issue with one of their <code>production</code> EC2 instances. They try to terminate it, and notice that they&rsquo;ve just terminated a <code>production</code> instance that belonged to <code>team-b</code>, which disrupts <code>team-b</code>&lsquo;s workflow whilst they redeploy their application. It takes time and money to reprovision these resources.</p>
+<h3 id="issue-3-billing">Issue 3: billing</h3><p>In a shared AWS account for a business unit, untaggable billable items such as Data Transfer become impossible to attribute to an application.</p>
+<p>Billing granularity requires resource tagging, and it is useful to know how much an application costs to run to help prioritise the refactoring, replacement, or retirement of each application.</p>
+<p>Further to this, having more granular billing can expose expensive operations or misconfigured resources such as instances that require right-sizing.</p>
+<h4 id="example">Example</h4><p><code>example-a</code> stores 100TB of data in an S3 bucket and replicates it to another region, costing $2,048.00.</p>
+<p><code>example-b</code> stores 1TB of data in an S3 bucket and replicates it to another region, costing $20.48.</p>
+<p>Since Data Transfer isn&rsquo;t taggable, you can&rsquo;t easily trace it back to the originating S3 bucket.</p>
+<h3 id="issue-4-cloud-waste">Issue 4: cloud waste</h3><p>When holding all applications in a SDLC account, it becomes difficult to retire application infrastructure, even if they&rsquo;re covered by a good tagging policy. With cloud infrastructure, everything should be considered ephemeral and everything should be rebuildable from code.</p>
+<p>If you destroy the wrong infrastructure when retiring an application, it becomes costly to recreate. If you miss the deprovisioning of some infrastructure, you create cloud waste which is also costly.</p>
+<p>Unless you&rsquo;ve retired all applications within a shared AWS account, you can&rsquo;t close it, so there&rsquo;s always a chance there are some resources unaccounted for after an application has been refactored, replaced, or retired.</p>
+<h4 id="example-of-cloud-waste">Example of cloud waste</h4><p><code>example-a</code> has been retired, and is no longer of use. There are untagged resources that are thought to be part of <code>example-a</code>, but <code>team-a</code> is unsure, so they just leave it.</p>
+<h4 id="example-of-destroying-the-wrong-infrastructure">Example of destroying the wrong infrastructure</h4><p>See <a href="#an-extreme-misclicking-example">An extreme misclicking example</a>.</p>
+<h2 id="what-we-investigated">What we investigated</h2><h3 id="let-teams-decide">Let teams decide</h3><p>In the Modernisation Platform, we want to empower teams and give them the autonomy to do whatever they need to support their application and environments. One of the issues with delegating how their infrastructure is separated is that it:</p>
+
+<ul>
+<li>quickly becomes hard to track</li>
+<li>can become messy</li>
+<li>doesn&rsquo;t support the central alignment we&rsquo;re trying to achieve</li>
+<li>people tend to go for the easiest option, which creates technical debt further down the line</li>
+</ul>
+<p>Of that, there are some positives:</p>
+
+<ul>
+<li>teams truly have autonomy and empowerment to run their infrastructure in the way they believe is best</li>
+<li>teams can understand their own configuration as they are the ones who built it</li>
+</ul>
+<h3 id="one-account-strong-attribute-based-access-controls">One account, strong attribute-based access controls</h3><p>Having one account is by far the easiest setup to have. You can use VPCs out of the box to enable cross-resource communication, you only have to set up IAM users once, and you can easily see all resources in one place.</p>
+<p>Early on, we explored using strong <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_attribute-based-access-control.html">attribute-based access control</a> (ABAC) so teams can only view their own resources in an account, alongside strong IAM policies to stop cross-team resource interaction. Some of the issues with this is that:</p>
+
+<ul>
+<li>ABAC isn&rsquo;t supported on all AWS resources, and requires resources to be tagged (it doesn&rsquo;t work on untagged resources)</li>
+<li>finding the cost of an application becomes extremely hard to do, where billable items like Data Transfer aren&rsquo;t easily attributable directly to a source</li>
+<li>deprovisioning infrastructure or applications can become tricky if there are thousands of resources in one account</li>
+<li>resources aren&rsquo;t truly isolated, as they&rsquo;re all in one account</li>
+<li>the blast radius is huge</li>
+</ul>
+<h3 id="separate-by-application-and-sdlc">Separate by application and SDLC</h3><p>Separating accounts by application is the more granular middle-ground of either having <a href="#one-account-strong-attribute-based-access-controls">one account</a>, or <a href="#separate-everything">separating everything</a>. It&rsquo;s very similar to <a href="#separate-by-business-unit-and-sdlc">separating by business unit and SDLC</a> but goes a step further to provide granularity at an application level.</p>
+<p>It has some issues:</p>
+
+<ul>
+<li>it&rsquo;s not simple to do</li>
+<li>it&rsquo;s uncommon</li>
+<li>you probably need an essence of centralisation, such as for networking</li>
+<li>it has a higher risk of cloud waste, but is easier to track</li>
+</ul>
+<h3 id="separate-by-business-unit-and-sdlc">Separate by business unit and SDLC</h3><p>This is how most multi-account architectures are set up and it is recommended by most cloud providers to go to <em>at least</em> this level of granularity. Some issues with this are listed above in <a href="#what-we-39-re-trying-to-fix">What we&rsquo;re trying to fix</a>.</p>
+<p>It&rsquo;s not incorrect or wrong to do things this way, but the Modernisation Platform would like to improve on the Ministry of Justice&rsquo;s current working practices.</p>
+<p>It does have its benefits:</p>
+
+<ul>
+<li>there are a set number of SDLC stages a business unit will use</li>
+<li>it&rsquo;s easy to work with, since everything for each SDLC stage is in one place</li>
+<li>it logically separates business units from each other</li>
+</ul>
+<h3 id="separate-everything">Separate everything</h3><p>Theoretically and technically, you can separate <em>everything</em> into different accounts. You could have something like this:</p>
+<div class="highlight"><pre class="highlight plaintext"><code>example-a-api-production
+example-a-backend-production
+example-a-databases-production
+example-a-frontend-production
+example-a-api-development
+example-a-backend-development
+example-a-databases-development
+example-a-frontend-development
+example-a-landing-zone
+</code></pre></div><p>The issue with this is:</p>
+
+<ul>
+<li>it becomes incredibly complex to maintain</li>
+<li>it becomes difficult to track</li>
+<li>it causes exponential growth in the number of AWS accounts</li>
+<li>it becomes hard to sensibly group things, i.e. what makes up the <code>frontend</code> group, what needs to go into <code>backend</code> group</li>
+<li>it is impossible to sustain as an approach as more teams are on-boarded onto the Modernisation Platform</li>
+<li>most legacy applications aren&rsquo;t microservices, so splitting things out is hard</li>
+<li>huge room for error in cross-account sharing, if required</li>
+</ul>
+<p>The benefits of this are:</p>
+
+<ul>
+<li>it becomes easy to track costs per application and layer (frontend, backend)</li>
+<li>it has a tiny blast radius</li>
+</ul>
+<h2 id="what-we-decided">What we decided</h2><h3 id="overview">Overview</h3><p>We decided to use separate AWS accounts per application as a middle-ground between <a href="#separate-everything">separating everything</a> and using <a href="#one-account-strong-attribute-based-access-controls">one account with strong attribute-based access controls</a>.</p>
+<p>Whilst there is a trade-off to more complexity, we feel it&rsquo;s outweighed by the benefits of doing this.</p>
+<p>Some of the biggest benefits are:</p>
+
+<ul>
+<li>granular isolation at an application level</li>
+<li>better cost management</li>
+<li>increased autonomy for teams</li>
+<li>reduced cloud waste</li>
+</ul>
+<h3 id="logically-separate-applications">Logically separate applications</h3><p>The Modernisation Platform is going to host a number of applications, which are built in different ways. One of our goals is to modernise these applications, and that can be anything from moving away from on-premise hosted databases into managed services such as AWS <a href="https://aws.amazon.com/rds/">Relational Database Service</a>; or moving away from bastion hosts to <a href="https://aws.amazon.com/about-aws/whats-new/2018/09/introducing-aws-systems-manager-session-manager/">agent-based instance management</a>.</p>
+<p>Whilst that is our goal, we&rsquo;re also aware it won&rsquo;t happen straight away, or can&rsquo;t happen for some legacy applications.</p>
+<p>By separating applications out into their own AWS accounts we can:</p>
+
+<ul>
+<li>allow autonomy for all environments, including production, with more confidence due to a reduced blast radius</li>
+<li>isolate different team workloads from each other</li>
+<li>manage and control costs at an application level</li>
+<li>reduce cloud waste by building test suites for application infrastructure, rather than for a whole platform</li>
+<li>retire whole applications easily, by closing their AWS account</li>
+<li>sensibly group applications without having to worry about which layer (frontend, backend) it sits in</li>
+<li>separate legacy infrastructure from more modern infrastructure, and move them into the <a href="https://user-guide.cloud-platform.service.justice.gov.uk/#cloud-platform-user-guide">Cloud Platform</a> when suitable</li>
+<li>use <a href="https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html">Service Control Policies</a> attached to single accounts to restrict centrally-managed actions on an application-by-application basis</li>
+<li>utilise <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones">independently mapped Availability Zones</a> so if one AZ goes down, it will have less of an impact in other accounts</li>
+</ul>
+<h3 id="more-accounts-aren-39-t-always-better">More accounts aren&rsquo;t always better</h3><p>The risk of separating everything, down to layer (frontend, backend, database, etc) is too complex to maintain sensibly. It is easy to get carried away with splitting applications down into layers, and most of our hosted applications will be legacy, which are unlikely to be split into microservices. This makes it difficult or impossible to be cost efficient with migrations, especially if they are likely to be retired or rebuilt in the near future.</p>
+<p>Whilst more accounts come at a free monetary cost, the time cost of defining, and maintaining them, becomes high.</p>
+<h3 id="the-trade-off-for-complexity-is-probably-worth-it">The trade-off for complexity is (probably) worth it</h3><p>Logically separating applications into their own AWS accounts isn&rsquo;t an easy task, and can become complex.</p>
+<p>The trade-off of having a smaller blast radius for legacy applications, better cost analysis, less cloud waste, and greater team isolation is worthwhile for the confidence we will have as a team to make infrastructure changes.</p>
+<h3 id="we-39-re-always-learning">We&rsquo;re always learning</h3><p>Where there&rsquo;s complexity, there&rsquo;s an opportunity to learn and that will help us make the right decisions with our infrastructure.</p>
+<p>We might find issues with this structure or find that it doesn&rsquo;t work for our scale, and that&rsquo;s OK, because we&rsquo;ll have learnt exactly why by trying it.</p>
+<h2 id="architecture">Architecture</h2><p>You can view our architecture for Environments (AWS accounts) on the <a href="architecture.html">dedicated Environments (AWS accounts) architecture page</a>.</p>
+
+              <div data-module='page-expiry' data-last-reviewed-on="2021-07-28">
+    <div class='page-expiry--not-expired'>
+      This page was last reviewed on 28 April 2021.
+
+        It needs to be reviewed again on 28 July 2021
+        by the page owner <a href="https://mojdt.slack.com/messages/modernisation-platform">#modernisation-platform</a>
+        .
+    </div>
+
+    <div class='page-expiry--expired'>
+      This page was set to be reviewed before 28 July 2021
+       by the page owner <a href="https://mojdt.slack.com/messages/modernisation-platform">#modernisation-platform</a>.
+      This might mean the content is out of date.
+    </div>
+  </div>
+
+          </main>
+
+          <aside>
+              <ul class="contribution-banner">
+                <li><a href="https://github.com/ministryofjustice/modernisation-platform/blob/main/source/concepts/environments/problem-and-solution.html.md.erb">View source</a></li>
+                <li><a href="https://github.com/ministryofjustice/modernisation-platform/issues/new?labels=bug&amp;title=Re:%20'Environments%20(AWS%20accounts)'&amp;body=Problem%20with%20'Environments%20(AWS%20accounts)'%20(https://ministryofjustice.github.io/modernisation-platform/concepts/environments/problem-and-solution.html)">Report problem</a></li>
+                <li><a href="https://github.com/ministryofjustice/modernisation-platform">GitHub Repo</a></li>
+              </ul>
+          </aside>
+
+          <footer class="govuk-footer app-footer" role="contentinfo">
+  <div class="govuk-footer__meta">
+    <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+
+
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        class="govuk-footer__licence-logo"
+        xmlns="http://www.w3.org/2000/svg"
+        viewbox="0 0 483.2 195.7"
+        height="17"
+        width="41"
+      >
+        <path
+          fill="currentColor"
+          d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145"
+        />
+      </svg>
+      <span class="govuk-footer__licence-description">
+        All content is available under the
+        <a
+          class="govuk-footer__link"
+          href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+          rel="license"
+        >Open Government Licence v3.0</a>, except where otherwise stated
+      </span>
+    </div>
+    <div class="govuk-footer__meta-item">
+      <a
+        class="govuk-footer__link govuk-footer__copyright-logo"
+        href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/"
+      >© Crown copyright</a>
+    </div>
+  </div>
+</footer>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <script src="../../javascripts/application.js"></script>
+  </body>
+</html>
