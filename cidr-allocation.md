@@ -25,6 +25,9 @@ Only half of the capacity of this /16 address has been used
 | 10.231.32.0     | /19  | core-shared-services non_live_data   |
 | 10.231.128.0    | /19  | core-security live_data              |
 | 10.231.160.0    | /19  | core-security non_live_data          |
+|-----------------|------|--------------------------------------|
+| 10.230.64.0     | /19  | TEMPORARY-TGW routing VPC - live     |
+| 10.230.96.0     | /19  | TEMPORARY-TGW routing VPC - non-live |
 |||
 
 ### Transit Gateway Subnets /26s
