@@ -15,6 +15,8 @@ module "core" {
     PRIVILEGED_AWS_SECRET_ACCESS_KEY = "example"
     # Terraform GitHub token for the CI/CD user
     TERRAFORM_GITHUB_TOKEN = "This needs to be manually set in GitHub."
+    # Slack app webhook url
+    SLACK_WEBHOOK_URL = "This needs to be manually set in GitHub."
   }))
 }
 
