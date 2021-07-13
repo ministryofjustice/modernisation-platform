@@ -43,11 +43,11 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail" {
 module "s3-bucket-cloudtrail" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v2.0.0"
 
-  providers = {
-    aws.bucket-replication = aws.core-logging
-  }
+   providers = {
+     aws.bucket-replication = aws
+   }
 
-  bucket_policy        = data.aws_iam_policy_document.cloudtrail_bucket_policy
+  bucket_policy        = data.aws_iam_policy_document.cloudtrail_bucket_policy.json
   bucket_name          = "modernisation-platform-cloudtrail-logs"
   replication_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSS3BucketReplication"
   tags                 = local.tags
@@ -73,7 +73,7 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
     sid    = "AllowOnlyEncryptedObjects"
     effect = "Deny"
     actions = ["s3:PutObject"]
-    resources = [module.s3-bucket-cloudtrail.bucket.arn]
+    resources = ["${module.s3-bucket-cloudtrail.bucket.arn}/*"]
 
     principals {
       type        = "Service"
@@ -95,7 +95,7 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
     sid = "DenyUnencryptedData"
     effect    = "Allow"
     actions   = ["s3:PutObject"]
-    resources = [module.s3-bucket-cloudtrail.bucket.arn]
+    resources = ["${module.s3-bucket-cloudtrail.bucket.arn}/*"]
     
     principals {
       type        = "Service"
