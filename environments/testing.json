@@ -1,0 +1,19 @@
+{
+	"account-type": "member",
+	"environments": [
+    {
+      "name": "test",
+      "access": [
+        {
+          "github_slug": "modernisation-platform",
+          "level": "developer"
+        }
+      ]
+    }
+	],
+	"tags": {
+		"application": "testing",
+		"business-unit": "Platforms",
+		"owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
+	}
+}
