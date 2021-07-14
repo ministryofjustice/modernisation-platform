@@ -82,6 +82,14 @@ jobs:
           echo "Target apply finished"
           bash scripts/terraform-apply.sh terraform/environments/core-vpc
           echo "Terraform apply finished"
+      - uses: 8398a7/action-slack@v3
+        name: Slack failure notification
+        with:
+          status: ${{ job.status }}
+          fields: workflow,job,repo,commit,message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
 
   member-account-ram-associaton:
     runs-on: [ubuntu-latest]
@@ -109,3 +117,11 @@ jobs:
           else
           echo "[+] There were no AWS member accounts to process"
           fi
+      - uses: 8398a7/action-slack@v3
+        name: Slack failure notification
+        with:
+          status: ${{ job.status }}
+          fields: workflow,job,repo,commit,message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}

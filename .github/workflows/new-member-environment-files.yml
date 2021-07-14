@@ -37,6 +37,15 @@ jobs:
       - run: bash ./core-repo/scripts/git-pull-request.sh terraform/environments ./modernisation-platform-environments
         env:
           TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+      - uses: 8398a7/action-slack@v3
+        name: Slack failure notification
+        with:
+          status: ${{ job.status }}
+          fields: workflow,job,repo,commit,message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
+
   create-github-environments:
     runs-on: ubuntu-latest
     steps:
@@ -45,3 +54,12 @@ jobs:
         run: bash ./scripts/git-create-environments.sh
         env:
           TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+      - uses: 8398a7/action-slack@v3
+        name: Slack failure notification
+        with:
+          status: ${{ job.status }}
+          fields: workflow,job,repo,commit,message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
+
