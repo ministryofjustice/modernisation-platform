@@ -18,6 +18,7 @@ expected =
     "performance-hub",
     "remote-supervision",
     "sprinkler",
-    "ops-engineering"
+    "ops-engineering",
+    "testing"
     ]
 }
