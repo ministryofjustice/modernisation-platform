@@ -39,7 +39,7 @@ Only half of the capacity of this /16 address has been used
 | 10.233.1.0      | /26  | preproduction - hmpps                 |
 | 10.233.1.64     | /26  | development - platforms               |        
 | 10.233.1.128    | /26  | development - hmpps                   |         
-| 10.233.1.192    | /26  |                                       |         
+| 10.233.1.192    | /26  | test - platforms                      |         
 | 10.233.2.0      | /26  |                                       |  
 | 10.233.2.64     | /26  |                                       |        
 | 10.233.2.128    | /26  |                                       |         
@@ -173,7 +173,7 @@ Only half of the capacity of this /16 address has been used
 | 10.232.8.0      | /23  | preproduction - hmpps                 |
 | 10.232.10.0     | /23  | development - platforms               |
 | 10.232.12.0     | /23  | development - hmpps                   |
-| 10.232.14.0     | /23  |                                       |
+| 10.232.14.0     | /23  | test - platforms                      |
 | 10.232.16.0     | /23  |                                       |
 | 10.232.18.0     | /23  |                                       |
 | 10.232.20.0     | /23  |                                       |
@@ -337,7 +337,7 @@ Only half of the capacity of this /16 address has been used
 
 | CIDR            | mask | allocated to  |
 | :---------------| :--  | :----------------------------------- |
-| 10.235.0.0      | /21  | -                                    |
+| 10.235.0.0      | /21  | platforms - general                  |
 | 10.235.8.0      | /21  | -                                    |
 | 10.235.16.0     | /21  | -                                    |
 | 10.235.24.0     | /21  | -                                    |
