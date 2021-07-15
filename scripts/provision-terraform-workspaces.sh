@@ -50,29 +50,10 @@ APPLICATION=`basename "${JSON_FILE}" .json`
 done
 }
 
-
-iterate_environments_member() {
-# set friendly Parameter names
-ENVIRONMENT_TYPE="${1}"  # this value can equal (* or an application name)
-
-# Loop through each application json file
-for JSON_FILE in ${git_dir}/environments/${ENVIRONMENT_TYPE}.json
-do
-  APPLICATION=`basename "${JSON_FILE}" .json`
-
+create_tmp_terraform_files() {
   # Build temporary folder to emulate real folder
   [ -d "${git_dir}/tmp" ] && rm -r "${git_dir}/tmp"
   mkdir "${git_dir}/tmp"
-
-  # Loop through each environment for specific application to check if state file exists in S3
-  for ENV in `cat "${JSON_FILE}" | jq -r --arg FILENAME "${APPLICATION}" '.environments[].name'`
-  do
-    # Check if state file exists in S3 for modernisation-platform repository
-      aws s3api head-object --bucket modernisation-platform-terraform-state --key "environments/accounts/${APPLICATION}/${APPLICATION}-${ENV}/terraform.tfstate" > /dev/null 2>&1
-      RETURN_CODE_CORE_REPO="${?}"
-     # Check if state file exists in S3 for modernisation-platform-environments repository
-      aws s3api head-object --bucket modernisation-platform-terraform-state --key "environments/members/${APPLICATION}/${APPLICATION}-${ENV}/terraform.tfstate" > /dev/null 2>&1
-      RETURN_CODE_MEMBER_REPO="${?}"
 
   # Copy files to emulation folder
   sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/backend.tf" > "${git_dir}/tmp/backend.tf"
@@ -87,6 +68,28 @@ do
     # This must be a Mac
     sed -i '' "s/environments\//environments\/accounts\//g" "${git_dir}/tmp/backend.tf"
   fi
+}
+
+iterate_environments_member() {
+# set friendly Parameter names
+ENVIRONMENT_TYPE="${1}"  # this value can equal (* or an application name)
+
+# Loop through each application json file
+for JSON_FILE in ${git_dir}/environments/${ENVIRONMENT_TYPE}.json
+do
+  APPLICATION=`basename "${JSON_FILE}" .json`
+
+  # Loop through each environment for specific application to check if state file exists in S3
+  for ENV in `cat "${JSON_FILE}" | jq -r --arg FILENAME "${APPLICATION}" '.environments[].name'`
+  do
+    # Check if state file exists in S3 for modernisation-platform repository
+      aws s3api head-object --bucket modernisation-platform-terraform-state --key "environments/accounts/${APPLICATION}/${APPLICATION}-${ENV}/terraform.tfstate" > /dev/null 2>&1
+      RETURN_CODE_CORE_REPO="${?}"
+     # Check if state file exists in S3 for modernisation-platform-environments repository
+      aws s3api head-object --bucket modernisation-platform-terraform-state --key "environments/members/${APPLICATION}/${APPLICATION}-${ENV}/terraform.tfstate" > /dev/null 2>&1
+      RETURN_CODE_MEMBER_REPO="${?}"
+
+    create_tmp_terraform_files
 
     # Creating MEMBER account state file for modernisation-platform if it does not exist
     TERRAFORM_PATH="${git_dir}/tmp"
@@ -99,7 +102,10 @@ do
       echo -en "MEMBER ACCOUNT IN CORE REPO      - ${APPLICATION}-${ENV} - ${GREEN}EXISTS${NORMAL}\n"
     fi
 
+    # Creating MEMBER account state file for modernisation-platform-environments if it does not exist
+    create_tmp_terraform_files
 
+    # substitute backend state file location from accounts to members
     if [ `uname` = "Linux" ]
     then
       sed -i "s/environments\/accounts\//environments\/members\//g" "${git_dir}/tmp/backend.tf"
@@ -107,7 +113,7 @@ do
       # This must be a Mac
       sed -i '' "s/environments\/accounts\//environments\/members\//g" "${git_dir}/tmp/backend.tf"
     fi
-    # Creating MEMBER account state file for modernisation-platform-environments if it does not exist
+
     ACCOUNT_TYPE=$(jq -r '."account-type"' ${JSON_FILE})
     if [[ "${RETURN_CODE_MEMBER_REPO}" -ne 0 && "${ACCOUNT_TYPE}" == "member" ]]
     then
