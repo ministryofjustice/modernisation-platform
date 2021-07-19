@@ -104,10 +104,18 @@ copy_templates() {
         if [ `uname` = "Linux" ]
         then
           sed -i "s/environments\//environments\/members\//g" "$1/$filename"
-          sed -i "s/github\.com\/ministryofjustice\/modernisation-platform/github\.com\/ministryofjustice\/modernisation-platform-environments/g" "$1/$filename"
         else
           # This must be a Mac
           sed -i '' "s/environments\//environments\/members\//g" "$1/$filename"
+        fi
+      fi
+      if [ ${filename} == "locals.tf" ]
+      then
+        if [ `uname` = "Linux" ]
+        then
+          sed -i "s/github\.com\/ministryofjustice\/modernisation-platform/github\.com\/ministryofjustice\/modernisation-platform-environments/g" "$1/$filename"
+        else
+          # This must be a Mac
           sed -i '' "s/github\.com\/ministryofjustice\/modernisation-platform/github\.com\/ministryofjustice\/modernisation-platform-environments/g" "$1/$filename"
         fi
       fi
