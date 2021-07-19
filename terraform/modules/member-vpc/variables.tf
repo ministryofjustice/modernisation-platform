@@ -32,7 +32,7 @@ variable "transit_gateway_id" {
 
 variable "additional_endpoints" {
   description = "additional endpoints required for VPC"
-  type        = list
+  type        = list(any)
 }
 
 variable "bastion_linux" {
