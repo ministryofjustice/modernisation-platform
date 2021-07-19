@@ -91,11 +91,18 @@ locals {
     if subnet.key != "transit-gateway"
   ])
 
-  # Distinct subnets by key type not including Transit Gateway or data subnets
-  distinct_subnets_by_key_type_excluding_data = distinct([
+# Distinct subnets by key type - Private
+  distinct_subnets_by_key_type_private = distinct([
     for subnet in local.all_subnets_with_keys :
     "${subnet.key}-${subnet.type}"
-    if subnet.key != "transit-gateway" && subnet.type != "data"
+    if subnet.type == "private"
+  ])
+
+# Distinct subnets by key type - Public
+  distinct_subnets_by_key_type_public = distinct([
+    for subnet in local.all_subnets_with_keys :
+    "${subnet.key}-${subnet.type}"
+    if subnet.type == "public"
   ])
 
   all_distinct_route_tables_with_keys = {
@@ -333,25 +340,66 @@ resource "aws_network_acl_rule" "allow_vpc_endpoint_egress" {
   cidr_block     = var.protected
 }
 
-resource "aws_network_acl_rule" "allow_internet_egress" {
-  for_each = toset(local.distinct_subnets_by_key_type_excluding_data)
+resource "aws_network_acl_rule" "allow_internet_egress_private_1" {
+  for_each = toset(local.distinct_subnets_by_key_type_private)
 
   network_acl_id = aws_network_acl.default[each.value].id
   rule_number    = 910
   egress         = true
-  protocol       = "-1"
+  protocol       = "tcp"
   rule_action    = "allow"
+  from_port      = 80
+  to_port        = 80
   cidr_block     = "0.0.0.0/0"
 }
 
-resource "aws_network_acl_rule" "allow_internet_ingress" {
-  for_each = toset(local.distinct_subnets_by_key_type_excluding_data)
+resource "aws_network_acl_rule" "allow_internet_egress_private_2" {
+  for_each = toset(local.distinct_subnets_by_key_type_private)
+
+  network_acl_id = aws_network_acl.default[each.value].id
+  rule_number    = 915
+  egress         = true
+  protocol       = "tcp"
+  rule_action    = "allow"
+  from_port      = 443
+  to_port        = 443
+  cidr_block     = "0.0.0.0/0"
+}
+
+resource "aws_network_acl_rule" "allow_internet_ingress_private" {
+  for_each = toset(local.distinct_subnets_by_key_type_private)
 
   network_acl_id = aws_network_acl.default[each.value].id
   rule_number    = 910
   egress         = false
-  protocol       = "-1"
+  protocol       = "tcp"
   rule_action    = "allow"
+  from_port      = 1024
+  to_port        = 65535
+  cidr_block     = "0.0.0.0/0"
+}
+
+resource "aws_network_acl_rule" "allow_internet_egress_public" {
+  for_each = toset(local.distinct_subnets_by_key_type_public)
+
+  network_acl_id = aws_network_acl.default[each.value].id
+  rule_number    = 910
+  egress         = true
+  protocol       = -1
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+}
+
+resource "aws_network_acl_rule" "allow_internet_ingress_public" {
+  for_each = toset(local.distinct_subnets_by_key_type_public)
+
+  network_acl_id = aws_network_acl.default[each.value].id
+  rule_number    = 910
+  egress         = false
+  protocol       = "tcp"
+  rule_action    = "allow"
+  from_port      = 443
+  to_port        = 443
   cidr_block     = "0.0.0.0/0"
 }
 
