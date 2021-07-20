@@ -6,7 +6,7 @@
       "access": [
         {
           "github_slug": "performance-hub-developers",
-          "level": "developer"
+          "level": "administrator"
         }
       ]
     },
@@ -15,7 +15,7 @@
       "access": [
         {
           "github_slug": "performance-hub-developers",
-          "level": "developer"
+          "level": "administrator"
         }
       ]
     }
