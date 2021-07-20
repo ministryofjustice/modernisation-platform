@@ -1,5 +1,5 @@
 module "state-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v2.0.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v3.0.0"
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
