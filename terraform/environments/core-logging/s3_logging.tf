@@ -25,7 +25,7 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail" {
       "kms:GenerateDataKey*",
       "kms:Encrypt*",
       "kms:Describe*",
-      "kms:Decrypt*"]
+    "kms:Decrypt*"]
     resources = ["*"]
     principals {
       type        = "Service"
@@ -38,15 +38,15 @@ module "s3-bucket-cloudtrail" {
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
-  bucket_policy          = data.aws_iam_policy_document.cloudtrail_bucket_policy.json
-  bucket_name            = "modernisation-platform-logs-cloudtrail"
-  replication_enabled    = true
+  bucket_policy       = data.aws_iam_policy_document.cloudtrail_bucket_policy.json
+  bucket_name         = "modernisation-platform-logs-cloudtrail"
+  replication_enabled = true
   lifecycle_rule = [
     {
       id      = "main"
       enabled = true
       prefix  = ""
-      tags = {}
+      tags    = {}
       transition = [
         {
           days          = 90
