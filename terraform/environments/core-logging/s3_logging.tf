@@ -73,7 +73,7 @@ module "s3-bucket-cloudtrail" {
       }
     }
   ]
-  log_bucket = module.s3-bucket-cloudtrail-logging.bucket.id
+  log_bucket           = module.s3-bucket-cloudtrail-logging.bucket.id
   replication_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSS3BucketReplication"
   tags                 = local.tags
 }
@@ -133,10 +133,10 @@ module "s3-bucket-cloudtrail-logging" {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
 
-  acl                  = "log-delivery-write"
-  bucket_name          = "modernisation-platform-logs-cloudtrail-logging"
-  replication_enabled  = true
-    lifecycle_rule = [
+  acl                 = "log-delivery-write"
+  bucket_name         = "modernisation-platform-logs-cloudtrail-logging"
+  replication_enabled = true
+  lifecycle_rule = [
     {
       id      = "main"
       enabled = true
