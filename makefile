@@ -1,4 +1,4 @@
-IMAGE := ministryofjustice/tech-docs-github-pages-publisher:1.3
+IMAGE := ministryofjustice/tech-docs-github-pages-publisher:1.4
 
 # Use this to run a local instance of the documentation site, while editing
 .PHONY: preview
