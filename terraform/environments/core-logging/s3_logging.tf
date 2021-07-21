@@ -73,6 +73,7 @@ module "s3-bucket-cloudtrail" {
       }
     }
   ]
+  log_bucket           = module.s3-bucket-cloudtrail-logging.bucket.id
   replication_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSS3BucketReplication"
   tags                 = local.tags
 }
@@ -124,4 +125,50 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
       values   = ["bucket-owner-full-control"]
     }
   }
+}
+
+module "s3-bucket-cloudtrail-logging" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v3.0.0"
+  providers = {
+    aws.bucket-replication = aws.modernisation-platform-eu-west-1
+  }
+
+  acl                 = "log-delivery-write"
+  bucket_name         = "modernisation-platform-logs-cloudtrail-logging"
+  replication_enabled = true
+  lifecycle_rule = [
+    {
+      id      = "main"
+      enabled = true
+      prefix  = ""
+      tags    = {}
+      transition = [
+        {
+          days          = 90
+          storage_class = "STANDARD_IA"
+          }, {
+          days          = 365
+          storage_class = "GLACIER"
+        }
+      ]
+      expiration = {
+        days = 730
+      }
+      noncurrent_version_transition = [
+        {
+          days          = 90
+          storage_class = "STANDARD_IA"
+          }, {
+          days          = 365
+          storage_class = "GLACIER"
+        }
+      ]
+      noncurrent_version_expiration = {
+        days = 730
+      }
+    }
+  ]
+
+  replication_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSS3BucketReplication"
+  tags                 = local.tags
 }
