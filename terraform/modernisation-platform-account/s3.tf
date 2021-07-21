@@ -1,5 +1,5 @@
 module "state-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v2.0.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v3.0.0"
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
@@ -7,6 +7,7 @@ module "state-bucket" {
   bucket_policy        = data.aws_iam_policy_document.allow-state-access-from-root-account.json
   bucket_name          = "modernisation-platform-terraform-state"
   replication_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSS3BucketReplication"
+  replication_enabled  = false
   tags                 = local.tags
 }
 
