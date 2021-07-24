@@ -27,10 +27,32 @@ Please follow MoJ guidance for [naming things](https://ministryofjustice.github.
 
 This is the name of your Github team that will be accessing the environment. Environments are accessed via single sign on (SSO), so to give people permissions to access your environment you just have to add them to your Github team.
 
-### Environments
+### Access
+
+This is the level of access for the Github team to the Modernisation Platform. The options are as follows:
+
+#### view-only
+
+ - Log into the console
+ - See resources and basic metadata. You cannot see the content of resources such as logs or S3 buckets.
+
+#### developer
+
+ - Log into the console
+ - Read only access to resources including things like logs and S3 buckets.
+ - View and Edit [Secrets Manager](https://aws.amazon.com/secrets-manager/) secrets and [Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) values
+ - Create and rotate access keys for the application deployment CI user
+
+#### administrator
+
+ - Full admin access
+
+This is a legacy role and will not be generally available
+
+### Environment name
 
 Which environments you wish to use, we provide [core networking](creating-networking.html) for up to 4 accounts as standard.
-Usually two environments per application will be enough, a production account and a non production account.
+Usually two environments per application will be enough, a production account and a development account.
 
 * development
 * test
@@ -112,14 +134,14 @@ An JSON definition for an nonsensical application called [`glados`](https://en.w
       "name": "development",
       "access": {
         "github_slug": "glados-team",
-        "access": "application-team"
+        "access": "developer"
       }
     },
     {
       "name": "production",
       "access": {
         "github_slug": "glados-team",
-        "access": "developer"
+        "access": "view-only"
       }
     }
   ],
@@ -131,4 +153,4 @@ An JSON definition for an nonsensical application called [`glados`](https://en.w
 }
 ```
 
-This will provision two AWS accounts, which will be called: `glados-non-production`, and `glados-production`.
+This will provision two AWS accounts, which will be called: `glados-development`, and `glados-production`.

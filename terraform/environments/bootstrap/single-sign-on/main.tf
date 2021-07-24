@@ -22,7 +22,14 @@ data "aws_ssoadmin_permission_set" "view-only" {
   provider = aws.sso-management
 
   instance_arn = local.sso_instance_arn
-  name         = "modernisation-platform-viewer"
+  name         = "ViewOnlyAccess"
+}
+
+data "aws_ssoadmin_permission_set" "developer" {
+  provider = aws.sso-management
+
+  instance_arn = local.sso_instance_arn
+  name         = "modernisation-platform-developer"
 }
 
 # Get Identity Store groups
@@ -39,7 +46,7 @@ data "aws_identitystore_group" "platform_admin" {
 
 
 # Get Identity Store groups
-data "aws_identitystore_group" "developer" {
+data "aws_identitystore_group" "member" {
 
   for_each = toset(local.sso_data[local.env_name][*].github_slug)
 
@@ -67,6 +74,28 @@ resource "aws_ssoadmin_account_assignment" "platform_admin" {
   target_type = "AWS_ACCOUNT"
 }
 
+resource "aws_ssoadmin_account_assignment" "view_only" {
+
+  for_each = {
+
+    for sso_assignment in local.sso_data[local.env_name][*] :
+
+    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+
+    if(sso_assignment.level == "view-only")
+  }
+
+  provider = aws.sso-management
+
+  instance_arn       = local.sso_instance_arn
+  permission_set_arn = data.aws_ssoadmin_permission_set.view-only.arn
+
+  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_type = "GROUP"
+
+  target_id   = local.environment_management.account_ids[terraform.workspace]
+  target_type = "AWS_ACCOUNT"
+}
 
 resource "aws_ssoadmin_account_assignment" "developer" {
 
@@ -82,9 +111,9 @@ resource "aws_ssoadmin_account_assignment" "developer" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.aws_ssoadmin_permission_set.view-only.arn
+  permission_set_arn = data.aws_ssoadmin_permission_set.developer.arn
 
-  principal_id   = data.aws_identitystore_group.developer[each.value.github_slug].group_id
+  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
@@ -109,7 +138,7 @@ resource "aws_ssoadmin_account_assignment" "administator" {
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.aws_ssoadmin_permission_set.administrator.arn
 
-  principal_id   = data.aws_identitystore_group.developer[each.value.github_slug].group_id
+  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
