@@ -43,7 +43,7 @@ module "member-access" {
 data "aws_iam_policy_document" "member-access" {
   statement {
     effect = "Allow"
-    actions = [
+    actions = [ #tfsec:ignore:AWS099
       "acm:*",
       "application-autoscaling:*",
       "autoscaling:*",
@@ -75,7 +75,7 @@ data "aws_iam_policy_document" "member-access" {
       "sqs:*",
       "ssm:*"
     ]
-    resources = ["*"]
+    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
 
   statement {

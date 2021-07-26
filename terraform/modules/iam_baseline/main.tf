@@ -9,7 +9,7 @@ resource "aws_iam_group" "cicd_member_group" {
 resource "aws_iam_policy" "policy" {
   name        = "cicd-member-policy"
   description = "IAM Policy for CICD member user"
-  policy = jsonencode({
+  policy = jsonencode({ #tfsec:ignore:AWS099
     Version = "2012-10-17"
     Statement = [
       {
