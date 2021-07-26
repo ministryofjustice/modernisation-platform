@@ -42,6 +42,11 @@ module "member-access" {
 
 data "aws_iam_policy_document" "member-access" {
   statement {
+    #checkov:skip=CKV_AWS_108
+    #checkov:skip=CKV_AWS_111
+    #checkov:skip=CKV_AWS_107
+    #checkov:skip=CKV_AWS_109
+    #checkov:skip=CKV_AWS_110
     effect = "Allow"
     actions = [ #tfsec:ignore:AWS099
       "acm:*",
@@ -84,11 +89,41 @@ data "aws_iam_policy_document" "member-access" {
       "ec2:CreateVpc",
       "ec2:CreateSubnet",
       "ec2:CreateVpcPeeringConnection",
-      "iam:CreateUser",
-      "iam:DeleteUser",
+      "iam:AddClientIDToOpenIDConnectProvider",
+      "iam:AddUserToGroup",
+      "iam:AttachGroupPolicy",
+      "iam:AttachUserPolicy",
+      "iam:CreateAccountAlias",
       "iam:CreateGroup",
+      "iam:CreateLoginProfile",
+      "iam:CreateOpenIDConnectProvider",
+      "iam:CreateSAMLProvider",
+      "iam:CreateUser",
+      "iam:CreateVirtualMFADevice",
+      "iam:DeactivateMFADevice",
+      "iam:DeleteAccountAlias",
+      "iam:DeleteAccountPasswordPolicy",
       "iam:DeleteGroup",
-      "iam:DeleteGroupPolicy"
+      "iam:DeleteGroupPolicy",
+      "iam:DeleteLoginProfile",
+      "iam:DeleteOpenIDConnectProvider",
+      "iam:DeleteSAMLProvider",
+      "iam:DeleteUser",
+      "iam:DeleteUserPermissionsBoundary",
+      "iam:DeleteUserPolicy",
+      "iam:DeleteVirtualMFADevice",
+      "iam:DetachGroupPolicy",
+      "iam:DetachUserPolicy",
+      "iam:EnableMFADevice",
+      "iam:RemoveClientIDFromOpenIDConnectProvider",
+      "iam:RemoveUserFromGroup",
+      "iam:ResyncMFADevice",
+      "iam:UpdateAccountPasswordPolicy",
+      "iam:UpdateGroup",
+      "iam:UpdateLoginProfile",
+      "iam:UpdateOpenIDConnectProviderThumbprint",
+      "iam:UpdateSAMLProvider",
+      "iam:UpdateUser"
     ]
     resources = ["*"]
   }
