@@ -2,7 +2,9 @@ name: Terraform Static Code Analysis
 
 on:
   workflow_dispatch:
-  pull_requests:
+  pull_request:
+    branches:
+      - main
     paths: 
       - 'terraform/**'
       - '.github/workflows/terraform-static-analysis.yml'
