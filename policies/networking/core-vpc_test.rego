@@ -44,7 +44,7 @@ test_no_options {
 }
 
 test_missing_options_keys {
-  deny["`example.json` is missing the `bastion_linux` key"] with input as { "filename": "example.json", "options": {} }
+  # deny["`example.json` is missing the `bastion_linux` key"] with input as { "filename": "example.json", "options": {} }
   deny["`example.json` is missing the `additional_endpoints` key"] with input as { "filename": "example.json", "options": {} }
   deny["`example.json` is missing the `dns_zone_extend` key"] with input as { "filename": "example.json", "options": {} }
 }

@@ -31,3 +31,11 @@ test_empty_values {
 test_unexpected_business_units {
   deny["`example.json` uses an unexpected business-unit: got `incorrect-business-unit`, expected one of: HQ, HMPPS, OPG, LAA, HMCTS, CICA, Platforms, CJSE, Probation"] with input as { "filename": "example.json", "tags": { "business-unit": "incorrect-business-unit" } }
 }
+
+test_business_units_length{
+  deny["`example.json` Business unit name does not meet requirements"] with input as { "filename": "example.json", "tags": { "business-unit": "example-this-is-too-long-for-a-business-unit" } }
+}
+
+test_business_units_character{
+  deny["`example.json` Business unit name does not meet requirements"] with input as { "filename": "example.json", "tags": { "business-unit": "Platforms4" } }
+}

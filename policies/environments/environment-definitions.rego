@@ -63,6 +63,11 @@ deny[msg] {
 }
 
 deny[msg] {
+  not regex.match("^[a-zA-Z-]{1,20}$", input.tags["business-unit"])
+  msg := sprintf("`%v` Business unit name does not meet requirements", [input.filename])
+}
+
+deny[msg] {
   not has_field(input.tags, "owner")
   msg := sprintf("`%v` is missing the `owner` tag", [input.filename])
 }
