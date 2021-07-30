@@ -1,6 +1,9 @@
+data "aws_organizations_organization" "moj_root_account" {}
+
 resource "aws_kms_key" "s3_logging_cloudtrail" {
   description             = "s3-logging-cloudtrail"
   policy                  = data.aws_iam_policy_document.kms_logging_cloudtrail.json
+  enable_key_rotation     = true
   deletion_window_in_days = 30
 }
 resource "aws_kms_alias" "s3_logging_cloudtrail" {
@@ -9,27 +12,64 @@ resource "aws_kms_alias" "s3_logging_cloudtrail" {
 }
 data "aws_iam_policy_document" "kms_logging_cloudtrail" {
   statement {
-    sid       = "Enable IAM User Permissions"
+    sid       = "Allow management access of the key to the logging account"
     effect    = "Allow"
-    actions   = ["kms:*"]
+    actions   = [
+      "kms:*"
+      ]
+    resources = [
+      "*"
+      ]
+    principals {
+      type        = "AWS"
+      identifiers = [
+        data.aws_caller_identity.current.account_id
+        
+        ]
+    }
+  }
+  statement {
+    sid       = "Enable decrypt access to accounts within the organisation"
+    effect    = "Allow"
+    actions   = [
+      "kms:Describe*",
+      "kms:Decrypt*"
+    ]
     resources = ["*"]
     principals {
       type        = "AWS"
-      identifiers = ["${data.aws_caller_identity.current.account_id}"]
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "StringEquals" 
+      variable = "aws:PrincipalOrgID"
+      values = [
+        data.aws_organizations_organization.moj_root_account.id
+      ]
     }
   }
   statement {
     sid    = "Allow use of the key"
     effect = "Allow"
-    actions = ["kms:ReEncrypt*",
+    actions = [
+      "kms:ReEncrypt*",
       "kms:GenerateDataKey*",
       "kms:Encrypt*",
       "kms:Describe*",
-    "kms:Decrypt*"]
+      "kms:Decrypt*"
+      ]
     resources = ["*"]
     principals {
       type        = "Service"
       identifiers = ["cloudtrail.amazonaws.com"]
+    }
+    principals {
+      type        = "Service"
+      identifiers = ["logs.amazonaws.com"]
+    }
+    principals {
+      type        = "Service"
+      identifiers = ["config.amazonaws.com"]
     }
   }
 }
@@ -123,6 +163,32 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
       test     = "StringEquals"
       variable = "s3:x-amz-acl"
       values   = ["bucket-owner-full-control"]
+    }
+  }
+  statement {
+    sid      = "allowReadListToLoggingAccount_1"
+    effect   = "Allow"
+    actions  = [
+      "s3:GetObject",
+      "s3:GetBucketTagging",
+      "s3:GetBucketLogging",
+      "s3:ListBucketVersions",
+      "s3:ListBucket",
+      "s3:GetBucketPolicy",
+      "s3:GetEncryptionConfiguration",
+      "s3:GetObjectTagging",
+      "s3:GetBucketVersioning",
+      "s3:GetBucketAcl",
+      "s3:GetBucketLocation",
+      "s3:GetObjectVersion"
+      ]
+    resources = [
+      "${module.s3-bucket-cloudtrail.bucket.arn}",
+      "${module.s3-bucket-cloudtrail.bucket.arn}/*"
+      ]
+    principals {
+      type        = "AWS"
+      identifiers = ["${data.aws_caller_identity.current.account_id}"]
     }
   }
 }

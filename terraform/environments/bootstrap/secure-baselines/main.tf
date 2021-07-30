@@ -1,5 +1,12 @@
+# cloudtrail kms key lookup
+data "aws_kms_key" "cloudtrail_key" {
+  provider = aws.core-logging
+  key_id   = "alias/s3-logging-cloudtrail"
+}
+
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=v3.0.1"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=v3.0.2"
+
   providers = {
     # Default and replication regions
     aws                    = aws.workspace-eu-west-2
@@ -54,6 +61,7 @@ module "baselines" {
   # Regions to enable default VPC configuration and VPC Flow Logs in
   enabled_vpc_regions = local.enabled_baseline_regions
 
-  root_account_id = local.root_account.master_account_id
-  tags            = local.environments
+  cloudtrail_kms_key = data.aws_kms_key.cloudtrail_key.arn
+  root_account_id    = local.root_account.master_account_id
+  tags               = local.environments
 }
