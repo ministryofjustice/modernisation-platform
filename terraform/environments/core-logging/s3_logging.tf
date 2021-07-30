@@ -12,26 +12,26 @@ resource "aws_kms_alias" "s3_logging_cloudtrail" {
 }
 data "aws_iam_policy_document" "kms_logging_cloudtrail" {
   statement {
-    sid       = "Allow management access of the key to the logging account"
-    effect    = "Allow"
-    actions   = [
+    sid    = "Allow management access of the key to the logging account"
+    effect = "Allow"
+    actions = [
       "kms:*"
-      ]
+    ]
     resources = [
       "*"
-      ]
+    ]
     principals {
-      type        = "AWS"
+      type = "AWS"
       identifiers = [
         data.aws_caller_identity.current.account_id
-        
-        ]
+
+      ]
     }
   }
   statement {
-    sid       = "Enable decrypt access to accounts within the organisation"
-    effect    = "Allow"
-    actions   = [
+    sid    = "Enable decrypt access to accounts within the organisation"
+    effect = "Allow"
+    actions = [
       "kms:Describe*",
       "kms:Decrypt*"
     ]
@@ -41,7 +41,7 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail" {
       identifiers = ["*"]
     }
     condition {
-      test     = "StringEquals" 
+      test     = "StringEquals"
       variable = "aws:PrincipalOrgID"
       values = [
         data.aws_organizations_organization.moj_root_account.id
@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail" {
       "kms:Encrypt*",
       "kms:Describe*",
       "kms:Decrypt*"
-      ]
+    ]
     resources = ["*"]
     principals {
       type        = "Service"
@@ -166,9 +166,9 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
     }
   }
   statement {
-    sid      = "allowReadListToLoggingAccount_1"
-    effect   = "Allow"
-    actions  = [
+    sid    = "allowReadListToLoggingAccount_1"
+    effect = "Allow"
+    actions = [
       "s3:GetObject",
       "s3:GetBucketTagging",
       "s3:GetBucketLogging",
@@ -181,11 +181,11 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
       "s3:GetBucketAcl",
       "s3:GetBucketLocation",
       "s3:GetObjectVersion"
-      ]
+    ]
     resources = [
       "${module.s3-bucket-cloudtrail.bucket.arn}",
       "${module.s3-bucket-cloudtrail.bucket.arn}/*"
-      ]
+    ]
     principals {
       type        = "AWS"
       identifiers = ["${data.aws_caller_identity.current.account_id}"]
