@@ -1,4 +1,4 @@
-
+#Secrets Manager role
 data "aws_iam_policy_document" "lambda_assume_role_policy" {
 
   provider = aws.modernisation-platform
@@ -44,6 +44,7 @@ resource "aws_iam_role" "lambda_secretsmanager_access" {
   }
 }
 
+#S3 Bucket for Athena temp SQL queries 
 resource "aws_s3_bucket" "athena_query" {
   bucket = "athena-cloudtrail-query"
   acl    = "private"
@@ -107,7 +108,7 @@ resource "aws_s3_bucket_public_access_block" "s3_block_public_access" {
   ignore_public_acls      = true
 }
 
-
+#IAM role for lambda access to athena
 data "aws_iam_policy_document" "athena_assume_role_policy" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -148,6 +149,7 @@ resource "aws_iam_role" "athena_lambda" {
   }
 }
 
+#Create ZIP archive and lambda
 data "archive_file" "lambda_zip" {
 
   depends_on = [module.s3-bucket-cloudtrail]
