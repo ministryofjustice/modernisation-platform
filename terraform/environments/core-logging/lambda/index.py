@@ -2,7 +2,6 @@
 import base64
 from botocore.exceptions import ClientError
 import json
-import time
 
 athena_client = boto3.client('athena', region_name='eu-west-2')
 sts_client = boto3.client('sts')
@@ -205,24 +204,27 @@ def create_athena_table(list_accounts):
  
 
 def lambda_handler(event, context):
-     
-    #Get list of accounts 
-    list_accounts = []
     
-    account = get_accounts()
+    try:
+        #Get list of accounts 
+        list_accounts = []
+        
+        account = get_accounts()
+        
+        data_object = json.loads(account['SecretString'])
+        data_json =  json.dumps(data_object['account_ids'])
+        
+        #Get AWS account values and add them to a list
+        for key, value in json.loads(data_json).items():
+            list_accounts.append(value)
+        
+        #creat athena database if it doesnt exist
+        create_athena_database()
+        
+        drop_athena_table()
+        
+        #Update Athena table and pass AWS account list as a parameter 
+        create_athena_table(','.join(map(str, list_accounts)))
     
-    data_object = json.loads(account['SecretString'])
-    data_json =  json.dumps(data_object['account_ids'])
-    
-    #Get AWS account values and add them to a list
-    for key, value in json.loads(data_json).items():
-        list_accounts.append(value)
-    
-    #creat athena database if it doesnt exist
-    create_athena_database()
-    
-    drop_athena_table()
-    
-    #Update Athena table and pass AWS account list as a parameter 
-    create_athena_table(','.join(map(str, list_accounts)))
-    
+    except ClientError as e:
+        print("Unexpected error: %s" % e)     

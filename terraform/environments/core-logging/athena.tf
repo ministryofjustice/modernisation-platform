@@ -175,9 +175,9 @@ resource "aws_lambda_function" "athena_table_update" {
 }
 
 resource "aws_cloudwatch_event_rule" "every_day" {
-    name = "every-five-minutes"
-    description = "Fires every five minutes"
-    schedule_expression = "cron(15 12 * * ? *)"
+    name = "run-daily"
+    description = "Runs daily at 12:15"
+    schedule_expression = "cron(15 0 * * ? *)"
 }
 
 resource "aws_cloudwatch_event_target" "trigger_lamber_every_day" {
