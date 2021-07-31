@@ -74,7 +74,7 @@ def get_accounts():
                 #res = json.loads(json.dumps(decoded_binary_secret, default=str))
                 return decoded_binary_secret
                 
-
+#Create AWS Athena database
 def create_athena_database():
     
     print("[+] Creating Athena database" + athena_db)
@@ -89,7 +89,7 @@ def create_athena_database():
     except ClientError as e:
         print("Unexpected error: %s" % e)     
 
-
+#Drop Athena table 
 def drop_athena_table():
     
     print("[+] Dropping Athena table")
@@ -110,8 +110,7 @@ def drop_athena_table():
         print("[!] Could not drop Athena table")
         print("Unexpected error: %s" % e)     
         
-        
-        
+#Create Athena table and add updated AWS accounts to Athena partition  
 def create_athena_table(list_accounts):
 
     print("[+] Updating Athena table")
@@ -207,7 +206,7 @@ def create_athena_table(list_accounts):
 
 def lambda_handler(event, context):
      
-    # #Get list of accounts 
+    #Get list of accounts 
     list_accounts = []
     
     account = get_accounts()
@@ -215,7 +214,7 @@ def lambda_handler(event, context):
     data_object = json.loads(account['SecretString'])
     data_json =  json.dumps(data_object['account_ids'])
     
-    #Get values for JSON 
+    #Get AWS account values and add them to a list
     for key, value in json.loads(data_json).items():
         list_accounts.append(value)
     
@@ -224,6 +223,6 @@ def lambda_handler(event, context):
     
     drop_athena_table()
     
-    #update Athena table 
+    #Update Athena table and pass AWS account list as a parameter 
     create_athena_table(','.join(map(str, list_accounts)))
     
