@@ -1,0 +1,43 @@
+---
+title: Deploying your application
+last_reviewed_on: 2021-08-03
+review_in: 3 months
+---
+
+# <%= current_page.data.title %>
+
+## Introduction
+
+Legacy applications often use "Click Ops" to make application deployments.  Whilst this is still possible on the Modernisation Platform, we encourage and can help people to build application deployment pipelines.
+
+To allow automated access to your AWS account we provide a "CI/CD (Continuous integration / continuous delivery)" user - `cicd-member-user`.
+
+This user has restricted access to your AWS account, with the minimum permissions needed to do things like push a new image to an ECR repo. If you find that your CI/CD user does not have enough permissions to do what you want it to do, please speak with the Modernisation Platform team.
+
+## Creating/Rotating CI/CD user AWS credentials
+
+You can create and rotate AWS credentials to add to your application deployment pipeline to allow access to your AWS account.
+
+1. [Log in to the AWS Console](accessing-the-aws-console.html). You will need to use the `modernisation-platform-developer` role
+
+1. In the search bar (the AWS console frame) search for IAM and select the service. This will take you to the “Identity and Access Management (IAM)” area within AWS.
+
+1. Click on “users” in the IAM Dashboard
+
+1. Click on the “cicd-member-user” user
+
+1. Click on the “security credentials” tab from the summary and you should see a list of options
+
+1. The modernisation-platform-developer role has permission to create a new AWS key for this user. To do this, click on “Create access key
+                    
+1. This will auto-generate a new AWS secret key for this user. This key allows for programmatic access to has access to this account. ( Note. This is key is your responsibility. Please do not store the key locally and make sure the .csv file is deleted once you have transferred the key over to your CI/CD tool ).
+
+1. Once you have the new key, please make the original key inactive by selecting the “make inactive” action next to the key pair
+
+The same process applies when you wish to rotate the key
+
+## Creating an application pipeline
+
+Creation of your application pipeline is your responsibility, you can choose whichever tools you wish to do this.
+
+In the Modernisation Platform we use Github Actions, and can provide advice and assistance in creating pipeline with Github Actions if needed.
