@@ -35,4 +35,8 @@ locals {
   is_live       = [substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production" || substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction" ? "live" : "non-live"]
   provider_name = "core-vpc-${local.environment}"
 
+  # environment specfic variables
+  # example usage:  
+  # example_data = local.application_data.accounts[local.environment].example_var
+  application_data = jsondecode(file("./application_variables.json"))
 }
