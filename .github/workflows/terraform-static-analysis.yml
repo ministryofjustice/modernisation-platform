@@ -20,12 +20,9 @@ jobs:
       with:
         fetch-depth: 0
     - name: Run Analysis
-      uses: davidkelliott/terraform-static-analysis@main
+      uses: ministryofjustice/github-actions/terraform-static-analysis@main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        TF_IN_AUTOMATION: true
       with:
         scan_type: changed
         tfsec_exclude: AWS095
@@ -40,12 +37,9 @@ jobs:
       with:
         fetch-depth: 0
     - name: Run Analysis
-      uses: davidkelliott/terraform-static-analysis@main
+      uses: ministryofjustice/github-actions/terraform-static-analysis@main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        TF_IN_AUTOMATION: true
       with:
         scan_type: full 
         tfsec_exclude: AWS095  
