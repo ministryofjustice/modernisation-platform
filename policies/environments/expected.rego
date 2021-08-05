@@ -19,6 +19,7 @@ expected =
     "remote-supervision",
     "sprinkler",
     "ops-engineering",
-    "testing"
+    "testing",
+    "nomis"
     ]
 }
