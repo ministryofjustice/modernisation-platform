@@ -10,7 +10,8 @@ expected =
     "hmpps-preproduction": "10.233.1.0/26",
     "platforms-development": "10.233.1.64/26",
     "hmpps-development": "10.233.1.128/26",
-    "platforms-test": "10.233.1.192/26"
+    "platforms-test": "10.233.1.192/26",
+    "hmpps-test": "10.233.2.0/26"
   },
   "protected": {
     "garden-development": "10.232.0.0/23",
@@ -20,7 +21,8 @@ expected =
     "hmpps-preproduction": "10.232.8.0/23",
     "platforms-development": "10.232.10.0/23",
     "hmpps-development": "10.232.12.0/23",
-    "platforms-test": "10.232.14.0/23"
+    "platforms-test": "10.232.14.0/23",
+    "hmpps-test": "10.232.16.0/23"
   },
   "subnet_sets": {
     "garden-development": {
@@ -93,11 +95,19 @@ expected =
         ]
       }
     },
-    "platforms-general": {
+    "platforms-test": {
       "general": {
         "cidr": "10.235.0.0/21",
         "accounts": [
           "testing-test"
+        ]
+      }
+    },
+    "hmpps-test": {
+      "nomis": {
+        "cidr": "10.235.8.0/21",
+        "accounts": [
+          "nomis-test"
         ]
       }
     }

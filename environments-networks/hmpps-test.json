@@ -1,0 +1,21 @@
+{
+  "cidr": {
+    "transit_gateway": "10.233.2.0/26",
+    "protected": "10.232.16.0/23",
+    "subnet_sets": {
+      "nomis": {
+        "cidr": "10.235.8.0/21",
+        "accounts": [
+          "nomis-test"
+        ]
+      }
+    }
+  },
+  "options": {
+    "bastion_linux": true,
+    "additional_endpoints": [],
+    "dns_zone_extend": []
+  },
+  "nacl": []
+}
+  
