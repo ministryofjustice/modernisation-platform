@@ -52,6 +52,7 @@ locals {
   application_teams = [
     "all-org-members",
     "operations-engineering",
-    "performance-hub-developers"
+    "performance-hub-developers",
+    "studio-webops"
   ]
 }
