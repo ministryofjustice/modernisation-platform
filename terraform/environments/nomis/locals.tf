@@ -38,5 +38,5 @@ locals {
   # environment specfic variables
   # example usage:  
   # example_data = local.application_data.accounts[local.environment].example_var
-  application_data = jsondecode(file("./application_variables.json"))
+  # application_data = jsondecode(file("./application_variables.json"))
 }
