@@ -5,7 +5,7 @@
         "name": "test",
         "access": [
           {
-            "github_slug": "modernisation-platform",
+            "github_slug": "studio-webops",
             "level": "developer"
           }
         ]
