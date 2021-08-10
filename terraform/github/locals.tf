@@ -5,6 +5,7 @@ locals {
   maintainers = [
     "ewastempel",
     "jakemulley",
+    "gfou-al", # George Fountopoulos
     "philhorrocks",
     "SteveMarshall"
   ]
@@ -37,7 +38,8 @@ locals {
     "jakemulley",
     "philhorrocks",
     "zuriguardiola",
-    "stevelinden"
+    "stevelinden",
+    "gfou-al" # George Fountopoulos
   ]
 
   # All members
