@@ -1,5 +1,6 @@
 data "aws_organizations_organization" "moj_root_account" {}
 
+# KMS Source
 resource "aws_kms_key" "s3_logging_cloudtrail" {
   description             = "s3-logging-cloudtrail"
   policy                  = data.aws_iam_policy_document.kms_logging_cloudtrail.json
@@ -24,7 +25,6 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail" {
       type = "AWS"
       identifiers = [
         data.aws_caller_identity.current.account_id
-
       ]
     }
   }
@@ -49,7 +49,7 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail" {
     }
   }
   statement {
-    sid    = "Allow use of the key"
+    sid    = "Allow use of the key including encryption"
     effect = "Allow"
     actions = [
       "kms:ReEncrypt*",
@@ -67,19 +67,95 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail" {
       type        = "Service"
       identifiers = ["logs.amazonaws.com"]
     }
+  }
+
+  statement {
+    sid    = "Allow key decryption to STS bucket replication roles"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt*"
+    ]
+    resources = ["*"]
     principals {
-      type        = "Service"
-      identifiers = ["config.amazonaws.com"]
+      type = "AWS"
+      identifiers = [
+        "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/AWSS3BucketReplication-cloudtrail/s3-replication",
+        "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/AWSS3BucketReplication-cloudtrail-logging/s3-replication",
+      ]
     }
   }
 }
+
+
+# KMS Destination
+resource "aws_kms_key" "s3_logging_cloudtrail_eu-west-1_replication" {
+  provider = aws.modernisation-platform-eu-west-1
+
+  description             = "s3-logging-cloudtrail-eu-west-1-replication"
+  policy                  = data.aws_iam_policy_document.kms_logging_cloudtrail_replication.json
+  enable_key_rotation     = true
+  deletion_window_in_days = 30
+}
+resource "aws_kms_alias" "s3_logging_cloudtrail_eu-west-1_replication" {
+  provider = aws.modernisation-platform-eu-west-1
+
+  name          = "alias/s3-logging-cloudtrail-eu-west-1-replication"
+  target_key_id = aws_kms_key.s3_logging_cloudtrail_eu-west-1_replication.id
+}
+data "aws_iam_policy_document" "kms_logging_cloudtrail_replication" {
+  statement {
+    sid    = "Allow management access of the key to the logging account"
+    effect = "Allow"
+    actions = [
+      "kms:*"
+    ]
+    resources = [
+      "*"
+    ]
+    principals {
+      type = "AWS"
+      identifiers = [
+        data.aws_caller_identity.current.account_id
+      ]
+    }
+  }
+  statement {
+    sid    = "Allow key decryption to STS bucket replication roles"
+    effect = "Allow"
+    actions = [
+      "kms:ReEncrypt*",
+      "kms:Encrypt*",
+      "kms:Describe*"
+    ]
+    resources = ["*"]
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/AWSS3BucketReplication-cloudtrail/s3-replication",
+        "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/AWSS3BucketReplication-cloudtrail-logging/s3-replication",
+      ]
+    }
+  }
+}
+
+module "cloudtrail-s3-replication-role" {
+  source      = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role?ref=v3.0.0"
+  buckets            = [module.s3-bucket-cloudtrail.bucket.arn]
+  replication_bucket = "modernisation-platform-logs-cloudtrail-replication"
+  suffix_name        = "-cloudtrail"
+  tags               = local.tags
+}
+
 module "s3-bucket-cloudtrail" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v3.0.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v4.0.0"
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
-  bucket_policy       = data.aws_iam_policy_document.cloudtrail_bucket_policy.json
-  bucket_name         = "modernisation-platform-logs-cloudtrail"
+  bucket_policy              = data.aws_iam_policy_document.cloudtrail_bucket_policy.json
+  bucket_name                = "modernisation-platform-logs-cloudtrail"
+  custom_kms_key             = aws_kms_key.s3_logging_cloudtrail.arn
+  custom_replication_kms_key = aws_kms_key.s3_logging_cloudtrail_eu-west-1_replication.arn
+
   replication_enabled = true
   lifecycle_rule = [
     {
@@ -114,7 +190,7 @@ module "s3-bucket-cloudtrail" {
     }
   ]
   log_bucket           = module.s3-bucket-cloudtrail-logging.bucket.id
-  replication_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSS3BucketReplication"
+  replication_role_arn = module.cloudtrail-s3-replication-role.role.arn
   tags                 = local.tags
 }
 # Allow access to the bucket from the MoJ root account
@@ -193,14 +269,22 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
   }
 }
 
+module "cloudtrail-s3-logging-replication-role" {
+  source      = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role?ref=v3.0.0"
+  buckets            = [module.s3-bucket-cloudtrail-logging.bucket.arn]
+  replication_bucket = "modernisation-platform-logs-cloudtrail-logging-replication"
+  suffix_name        = "-cloudtrail-logging"
+  tags               = local.tags
+}
+
 module "s3-bucket-cloudtrail-logging" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v3.0.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v4.0.0"
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
 
-  acl                 = "log-delivery-write"
-  bucket_name         = "modernisation-platform-logs-cloudtrail-logging"
+  acl         = "log-delivery-write"
+  bucket_name = "modernisation-platform-logs-cloudtrail-logging"
   replication_enabled = true
   lifecycle_rule = [
     {
@@ -235,6 +319,6 @@ module "s3-bucket-cloudtrail-logging" {
     }
   ]
 
-  replication_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSS3BucketReplication"
+  replication_role_arn = module.cloudtrail-s3-logging-replication-role.role.arn
   tags                 = local.tags
 }
