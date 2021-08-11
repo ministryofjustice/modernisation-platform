@@ -35,8 +35,7 @@ resource "aws_iam_role" "lambda_secretsmanager_access" {
           Effect = "Allow"
           Resource = [
 
-            "arn:aws:secretsmanager:eu-west-2:946070829339:secret:environment_management-BLRCDb",
-            "arn:aws:secretsmanager:eu-west-2:946070829339:secret:environment_management"
+            "arn:aws:secretsmanager:eu-west-2:946070829339:secret:environment_management-BLRCDb"
           ]
         },
       ]
@@ -51,9 +50,9 @@ module "s3-bucket-athena" {
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
-  bucket_policy              = data.aws_iam_policy_document.athena_bucket_policy.json
-  bucket_name                = "athena-cloudtrail-query"
-  custom_kms_key             = aws_kms_key.s3_logging_cloudtrail.arn
+  bucket_policy       = data.aws_iam_policy_document.athena_bucket_policy.json
+  bucket_name         = "athena-cloudtrail-query"
+  custom_kms_key      = aws_kms_key.s3_logging_cloudtrail.arn
   replication_enabled = false
   lifecycle_rule = [
     {
@@ -63,30 +62,30 @@ module "s3-bucket-athena" {
       tags    = {}
       expiration = {
         days = 7
-      }   
+      }
     }
   ]
-  tags                 = local.tags
+  tags = local.tags
 }
 
 
 data "aws_iam_policy_document" "athena_bucket_policy" {
   statement {
-    sid       = "AllowListBucketACL"
-    effect    = "Allow"
-    actions   = ["s3:PutObject",
-                 "s3:GetObject",
-                 "s3:GetBucketLogging",
-                 "s3:ListBucketVersions",
-                 "s3:ListBucket",
-                 "s3:GetEncryptionConfiguration",
-                 "s3:GetBucketAcl",
-                 "s3:GetBucketPolicy",
-                 "s3:PutBucketPolicy",
-                 "s3:*"
-                 ]
-    resources = [ "${module.s3-bucket-athena.bucket.arn}", 
-                  "${module.s3-bucket-athena.bucket.arn}/*" ]
+    sid    = "AllowListBucketACL"
+    effect = "Allow"
+    actions = ["s3:PutObject",
+      "s3:GetObject",
+      "s3:GetBucketLogging",
+      "s3:ListBucketVersions",
+      "s3:ListBucket",
+      "s3:GetEncryptionConfiguration",
+      "s3:GetBucketAcl",
+      "s3:GetBucketPolicy",
+      "s3:PutBucketPolicy"
+    
+    ]
+    resources = ["${module.s3-bucket-athena.bucket.arn}",
+    "${module.s3-bucket-athena.bucket.arn}/*"]
     principals {
       type        = "Service"
       identifiers = ["s3.amazonaws.com"]
@@ -143,7 +142,8 @@ resource "aws_iam_role" "athena_lambda" {
             "glue:CreateSchema",
             "glue:CreatePartition",
             "athena:*",
-            "glue:GetDatabases"]
+            "glue:GetDatabases"
+          ]
           Effect   = "Allow"
           Resource = "*"
         },
@@ -155,7 +155,7 @@ resource "aws_iam_role" "athena_lambda" {
 #Create ZIP archive and lambda
 data "archive_file" "lambda_zip" {
 
-  depends_on = [ module.s3-bucket-athena ]
+  depends_on = [module.s3-bucket-athena]
 
   type        = "zip"
   source_file = "lambda/index.py"
@@ -172,12 +172,12 @@ resource "aws_lambda_function" "athena_table_update" {
 
   ]
 
-  filename         = "lambda/lambda_function.zip"
-  function_name    = "athena_table_update"
-  role             = aws_iam_role.athena_lambda.arn
-  handler          = "index.lambda_handler"
-  source_code_hash = data.archive_file.lambda_zip.output_path
-  runtime          = "python3.7"
+  filename                       = "lambda/lambda_function.zip"
+  function_name                  = "athena_table_update"
+  role                           = aws_iam_role.athena_lambda.arn
+  handler                        = "index.lambda_handler"
+  source_code_hash               = data.archive_file.lambda_zip.output_path
+  runtime                        = "python3.8"
   reserved_concurrent_executions = 1
 }
 
