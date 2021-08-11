@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "account-type": "member",
   "environments": [
     {
@@ -19,25 +18,3 @@
     "owner": "digital-studio-operations-team@digital.justice.gov.uk"
   }
 }
-=======
-    "account-type": "member",
-    "environments": [
-      {
-        "name": "test",
-        "access": [
-          {
-            "github_slug": "studio-webops",
-            "level": "developer"
-          }
-        ]
-      }
-    ],
-    "tags": {
-      "application": "nomis",
-      "business-unit": "HMPPS",
-      "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
-      "owner": "digital-studio-operations-team@digital.justice.gov.uk"
-    }
-
-  }
->>>>>>> Update team slug
