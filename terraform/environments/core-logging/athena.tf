@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "lambda_assume_role_policy" {
 resource "aws_iam_role" "lambda_secretsmanager_access" {
 
   provider = aws.modernisation-platform
-  
+
   name = "lambda_secretsmanager_access"
 
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
@@ -28,11 +28,11 @@ resource "aws_iam_role" "lambda_secretsmanager_access" {
       Version = "2012-10-17"
       Statement = [
         {
-          Action   = [
-              "secretsmanager:GetSecretValue",
-              "secretsmanager:DescribeSecret"
+          Action = [
+            "secretsmanager:GetSecretValue",
+            "secretsmanager:DescribeSecret"
           ]
-          Effect   = "Allow"
+          Effect = "Allow"
           Resource = [
 
             "arn:aws:secretsmanager:eu-west-2:946070829339:secret:environment_management-BLRCDb",
@@ -65,8 +65,8 @@ resource "aws_athena_workgroup" "mod-platform" {
     result_configuration {
       output_location = "s3://${aws_s3_bucket.athena_query.bucket}/"
 
+    }
   }
- }
 }
 
 resource "aws_s3_bucket_policy" "athena_query_policy" {
@@ -79,11 +79,11 @@ resource "aws_s3_bucket_policy" "athena_query_policy" {
     Id      = "athenas3querypolicy"
     Statement = [
       {
-        Effect    = "Allow"
-        Principal =  {
-        "AWS": "*"
-      },
-        Action    = "s3:*"
+        Effect = "Allow"
+        Principal = {
+          "AWS" : "*"
+        },
+        Action = "s3:*"
         Resource = [
           aws_s3_bucket.athena_query.arn,
           "${aws_s3_bucket.athena_query.arn}/*",
@@ -95,15 +95,15 @@ resource "aws_s3_bucket_policy" "athena_query_policy" {
 }
 
 resource "aws_s3_bucket_public_access_block" "s3_block_public_access" {
-  
+
   depends_on = [
     aws_s3_bucket_policy.athena_query_policy
   ]
 
   bucket = aws_s3_bucket.athena_query.id
 
-  block_public_acls   = true
-  block_public_policy = true
+  block_public_acls       = true
+  block_public_policy     = true
   restrict_public_buckets = true
   ignore_public_acls      = true
 }
@@ -120,7 +120,7 @@ data "aws_iam_policy_document" "athena_assume_role_policy" {
   }
 }
 resource "aws_iam_role" "athena_lambda" {
-  
+
   name = "athena_lambda"
 
   assume_role_policy = data.aws_iam_policy_document.athena_assume_role_policy.json
@@ -132,15 +132,15 @@ resource "aws_iam_role" "athena_lambda" {
       Version = "2012-10-17"
       Statement = [
         {
-          Action   = [
-                "glue:GetDatabase",
-                "sts:AssumeRole",
-                "glue:CreateTable",
-                "glue:CreateDatabase",
-                "glue:CreateSchema",
-                "glue:CreatePartition",
-                "athena:*",
-                "glue:GetDatabases"]
+          Action = [
+            "glue:GetDatabase",
+            "sts:AssumeRole",
+            "glue:CreateTable",
+            "glue:CreateDatabase",
+            "glue:CreateSchema",
+            "glue:CreatePartition",
+            "athena:*",
+          "glue:GetDatabases"]
           Effect   = "Allow"
           Resource = "*"
         },
@@ -154,42 +154,42 @@ data "archive_file" "lambda_zip" {
 
   depends_on = [module.s3-bucket-cloudtrail]
 
-  type          = "zip"
+  type        = "zip"
   source_file = "lambda/index.py"
-  output_path   = "lambda/lambda_function.zip"
+  output_path = "lambda/lambda_function.zip"
 }
 
 resource "aws_lambda_function" "athena_table_update" {
 
   depends_on = [
     aws_s3_bucket.athena_query,
-   
+
   ]
 
-  filename      = "lambda/lambda_function.zip"
-  function_name = "athena_table_update"
-  role          = aws_iam_role.athena_lambda.arn
-  handler       = "index.lambda_handler"
+  filename         = "lambda/lambda_function.zip"
+  function_name    = "athena_table_update"
+  role             = aws_iam_role.athena_lambda.arn
+  handler          = "index.lambda_handler"
   source_code_hash = data.archive_file.lambda_zip.output_path
-  runtime = "python3.7"
+  runtime          = "python3.7"
 }
 
 resource "aws_cloudwatch_event_rule" "every_day" {
-    name = "run-daily"
-    description = "Runs daily at 12:15"
-    schedule_expression = "cron(15 0 * * ? *)"
+  name                = "run-daily"
+  description         = "Runs daily at 12:15"
+  schedule_expression = "cron(15 0 * * ? *)"
 }
 
 resource "aws_cloudwatch_event_target" "trigger_lamber_every_day" {
-    rule = "${aws_cloudwatch_event_rule.every_day.name}"
-    target_id = "athena_table_update"
-    arn = "${aws_lambda_function.athena_table_update.arn}"
+  rule      = aws_cloudwatch_event_rule.every_day.name
+  target_id = "athena_table_update"
+  arn       = aws_lambda_function.athena_table_update.arn
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_call_lambda" {
-    statement_id = "AllowExecutionFromCloudWatch"
-    action = "lambda:InvokeFunction"
-    function_name = "${aws_lambda_function.athena_table_update.function_name}"
-    principal = "events.amazonaws.com"
-    source_arn = "${aws_cloudwatch_event_rule.every_day.arn}"
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.athena_table_update.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.every_day.arn
 }

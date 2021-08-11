@@ -15,11 +15,14 @@
     "bastion_linux": true,
     "additional_endpoints": [],
 <<<<<<< HEAD
+<<<<<<< HEAD
     "dns_zone_extend": []
 =======
     "dns_zone_extend": [] 
 >>>>>>> 1732e0fb7a963160e93008ca4eabfd6f849fc5f6
+=======
+    "dns_zone_extend": [] 
+>>>>>>> 29822037c0cafa4edc6533fd48cfa9dbd25e72dd
   },
   "nacl": []
 }
-  
