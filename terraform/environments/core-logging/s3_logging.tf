@@ -1,5 +1,8 @@
 data "aws_organizations_organization" "moj_root_account" {}
 
+
+# If you need to rebuild aws_kms_key resource, you need to comment out line 9 below due to a circular dep on the first run.
+
 # KMS Source
 resource "aws_kms_key" "s3_logging_cloudtrail" {
   description             = "s3-logging-cloudtrail"
@@ -12,6 +15,10 @@ resource "aws_kms_alias" "s3_logging_cloudtrail" {
   target_key_id = aws_kms_key.s3_logging_cloudtrail.id
 }
 data "aws_iam_policy_document" "kms_logging_cloudtrail" {
+
+  # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_109: "role is resticted by limited actions in member account"
+
   statement {
     sid    = "Allow management access of the key to the logging account"
     effect = "Allow"
@@ -103,6 +110,10 @@ resource "aws_kms_alias" "s3_logging_cloudtrail_eu-west-1_replication" {
   target_key_id = aws_kms_key.s3_logging_cloudtrail_eu-west-1_replication.id
 }
 data "aws_iam_policy_document" "kms_logging_cloudtrail_replication" {
+
+  # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_109: "role is resticted by limited actions in member account"
+
   statement {
     sid    = "Allow management access of the key to the logging account"
     effect = "Allow"
