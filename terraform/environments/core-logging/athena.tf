@@ -82,7 +82,7 @@ data "aws_iam_policy_document" "athena_bucket_policy" {
       "s3:GetBucketAcl",
       "s3:GetBucketPolicy",
       "s3:PutBucketPolicy"
-    
+
     ]
     resources = ["${module.s3-bucket-athena.bucket.arn}",
     "${module.s3-bucket-athena.bucket.arn}/*"]
