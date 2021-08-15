@@ -117,6 +117,7 @@ jobs:
           done
           else
           echo "[+] There were no AWS member accounts to process"
+          exit 1
           fi
       - uses: 8398a7/action-slack@v3
         name: Slack failure notification
