@@ -166,6 +166,40 @@ module "core-team" {
   ]
 }
 
+# Repositories to give access to
+resource "github_team_repository" "default" {
+  for_each   = [
+    module.core.repository.id,
+    module.hello-world.repository.id,
+    module.terraform-module-baselines.repository.id,
+    module.terraform-module-cross-account-access.repository.id,
+    module.terraform-module-environments.repository.id,
+    module.terraform-module-iam-superadmins.repository.id,
+    module.terraform-module-s3-bucket-replication-role.repository.id,
+    module.terraform-module-s3-bucket.repository.id,
+    module.terraform-module-trusted-advisor.repository.id,
+    module.terraform-module-bastion-linux.repository.id,
+    module.modernisation-platform-environments.repository.id
+  ]
+  team_id    = github_team.default.id
+  repository = each.value
+  permission = "admin"
+
+  depends_on = [
+    module.core.repository,
+    module.hello-world.repository,
+    module.terraform-module-baselines.repository,
+    module.terraform-module-cross-account-access.repository,
+    module.terraform-module-environments.repository,
+    module.terraform-module-iam-superadmins.repository,
+    module.terraform-module-s3-bucket-replication-role.repository,
+    module.terraform-module-s3-bucket.repository,
+    module.terraform-module-trusted-advisor.repository,
+    module.terraform-module-bastion-linux.repository,
+    module.modernisation-platform-environments.repository
+  ]
+}
+
 # People who need full AWS access
 module "aws-team" {
   source      = "./modules/team"
