@@ -1,3 +1,3 @@
 output "repository" {
-  value = github_repository.default.repo_id
+  value = github_repository.default.id
 }
