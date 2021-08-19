@@ -142,7 +142,7 @@ module "core-team" {
 
 # Repositories to give access to
 resource "github_team_repository" "default" {
-  for_each   = [
+  for_each = [
     module.core.repository.id,
     module.hello-world.repository.id,
     module.terraform-module-baselines.repository.id,
