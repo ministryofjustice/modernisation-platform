@@ -133,37 +133,11 @@ module "core-team" {
   source      = "./modules/team"
   name        = "modernisation-platform"
   description = "Modernisation Platform team"
-  repositories = [
-    module.core.repository.id,
-    module.hello-world.repository.id,
-    module.terraform-module-baselines.repository.id,
-    module.terraform-module-cross-account-access.repository.id,
-    module.terraform-module-environments.repository.id,
-    module.terraform-module-iam-superadmins.repository.id,
-    module.terraform-module-s3-bucket-replication-role.repository.id,
-    module.terraform-module-s3-bucket.repository.id,
-    module.terraform-module-trusted-advisor.repository.id,
-    module.terraform-module-bastion-linux.repository.id,
-    module.modernisation-platform-environments.repository.id
-  ]
+  repositories = local.repositories
 
   maintainers = local.maintainers
   members     = local.everyone
   ci          = local.ci_users
-
-  depends_on = [
-    module.core.repository,
-    module.hello-world,
-    module.terraform-module-baselines,
-    module.terraform-module-cross-account-access,
-    module.terraform-module-environments,
-    module.terraform-module-iam-superadmins,
-    module.terraform-module-s3-bucket-replication-role,
-    module.terraform-module-s3-bucket,
-    module.terraform-module-trusted-advisor,
-    module.terraform-module-bastion-linux,
-    module.modernisation-platform-environments
-  ]
 }
 
 # People who need full AWS access
@@ -177,20 +151,6 @@ module "aws-team" {
   ci          = local.ci_users
 
   parent_team_id = module.core-team.team_id
-
-  depends_on = [
-    module.core.repository,
-    module.hello-world,
-    module.terraform-module-baselines,
-    module.terraform-module-cross-account-access,
-    module.terraform-module-environments,
-    module.terraform-module-iam-superadmins,
-    module.terraform-module-s3-bucket-replication-role,
-    module.terraform-module-s3-bucket,
-    module.terraform-module-trusted-advisor,
-    module.terraform-module-bastion-linux,
-    module.modernisation-platform-environments
-  ]
 }
 
 # Give write access to teams on the environments repo (access to merge to main is restricted by codeowners file)
