@@ -143,7 +143,7 @@ module "core-team" {
     module.terraform-module-s3-bucket-replication-role.repository.id,
     module.terraform-module-s3-bucket.repository.id,
     module.terraform-module-trusted-advisor.repository.id,
-    module.terraform-module-bastion-linux.repository,
+    module.terraform-module-bastion-linux.repository.id,
     module.modernisation-platform-environments.repository.id
   ]
 
