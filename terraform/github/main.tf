@@ -130,40 +130,14 @@ module "modernisation-platform-environments" {
 
 # Everyone, with access to the above repositories
 module "core-team" {
-  source      = "./modules/team"
-  name        = "modernisation-platform"
-  description = "Modernisation Platform team"
-  repositories = [
-    module.core.repository.id,
-    module.hello-world.repository.id,
-    module.terraform-module-baselines.repository.id,
-    module.terraform-module-cross-account-access.repository.id,
-    module.terraform-module-environments.repository.id,
-    module.terraform-module-iam-superadmins.repository.id,
-    module.terraform-module-s3-bucket-replication-role.repository.id,
-    module.terraform-module-s3-bucket.repository.id,
-    module.terraform-module-trusted-advisor.repository.id,
-    module.terraform-module-bastion-linux.repository.id,
-    module.modernisation-platform-environments.repository.id
-  ]
+  source       = "./modules/team"
+  name         = "modernisation-platform"
+  description  = "Modernisation Platform team"
+  repositories = local.repositories
 
   maintainers = local.maintainers
   members     = local.everyone
   ci          = local.ci_users
-
-  depends_on = [
-    module.core.repository,
-    module.hello-world.repository,
-    module.terraform-module-baselines.repository,
-    module.terraform-module-cross-account-access.repository,
-    module.terraform-module-environments.repository,
-    module.terraform-module-iam-superadmins.repository,
-    module.terraform-module-s3-bucket-replication-role.repository,
-    module.terraform-module-s3-bucket.repository,
-    module.terraform-module-trusted-advisor.repository,
-    module.terraform-module-bastion-linux.repository,
-    module.modernisation-platform-environments.repository
-  ]
 }
 
 # Repositories to give access to
