@@ -130,9 +130,9 @@ module "modernisation-platform-environments" {
 
 # Everyone, with access to the above repositories
 module "core-team" {
-  source      = "./modules/team"
-  name        = "modernisation-platform"
-  description = "Modernisation Platform team"
+  source       = "./modules/team"
+  name         = "modernisation-platform"
+  description  = "Modernisation Platform team"
   repositories = local.repositories
 
   maintainers = local.maintainers
