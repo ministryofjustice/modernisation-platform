@@ -143,12 +143,27 @@ module "core-team" {
     module.terraform-module-s3-bucket-replication-role.repository.id,
     module.terraform-module-s3-bucket.repository.id,
     module.terraform-module-trusted-advisor.repository.id,
+    module.terraform-module-bastion-linux.repository.id,
     module.modernisation-platform-environments.repository.id
   ]
 
   maintainers = local.maintainers
   members     = local.everyone
   ci          = local.ci_users
+
+  depends_on = [
+    module.core.repository,
+    module.hello-world.repository,
+    module.terraform-module-baselines.repository,
+    module.terraform-module-cross-account-access.repository,
+    module.terraform-module-environments.repository,
+    module.terraform-module-iam-superadmins.repository,
+    module.terraform-module-s3-bucket-replication-role.repository,
+    module.terraform-module-s3-bucket.repository,
+    module.terraform-module-trusted-advisor.repository,
+    module.terraform-module-bastion-linux.repository,
+    module.modernisation-platform-environments.repository
+  ]
 }
 
 # People who need full AWS access

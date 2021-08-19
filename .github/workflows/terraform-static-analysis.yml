@@ -26,6 +26,7 @@ jobs:
       with:
         scan_type: changed
         tfsec_exclude: AWS095
+        skip_check: CKV_GIT_1
 
   terraform-static-analysis-full-scan:
     name: Terraform Static Analysis - scan all directories
