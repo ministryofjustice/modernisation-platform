@@ -153,16 +153,16 @@ module "core-team" {
 
   depends_on = [
     module.core.repository,
-    module.hello-world.repository,
-    module.terraform-module-baselines.repository,
-    module.terraform-module-cross-account-access.repository,
-    module.terraform-module-environments.repository,
-    module.terraform-module-iam-superadmins.repository,
-    module.terraform-module-s3-bucket-replication-role.repository,
-    module.terraform-module-s3-bucket.repository,
-    module.terraform-module-trusted-advisor.repository,
-    module.terraform-module-bastion-linux.repository,
-    module.modernisation-platform-environments.repository
+    module.hello-world,
+    module.terraform-module-baselines,
+    module.terraform-module-cross-account-access,
+    module.terraform-module-environments,
+    module.terraform-module-iam-superadmins,
+    module.terraform-module-s3-bucket-replication-role,
+    module.terraform-module-s3-bucket,
+    module.terraform-module-trusted-advisor,
+    module.terraform-module-bastion-linux,
+    module.modernisation-platform-environments
   ]
 }
 
@@ -177,6 +177,20 @@ module "aws-team" {
   ci          = local.ci_users
 
   parent_team_id = module.core-team.team_id
+
+  depends_on = [
+    module.core.repository,
+    module.hello-world,
+    module.terraform-module-baselines,
+    module.terraform-module-cross-account-access,
+    module.terraform-module-environments,
+    module.terraform-module-iam-superadmins,
+    module.terraform-module-s3-bucket-replication-role,
+    module.terraform-module-s3-bucket,
+    module.terraform-module-trusted-advisor,
+    module.terraform-module-bastion-linux,
+    module.modernisation-platform-environments
+  ]
 }
 
 # Give write access to teams on the environments repo (access to merge to main is restricted by codeowners file)
