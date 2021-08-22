@@ -4,7 +4,7 @@ terraform {
   backend "s3" {
     bucket  = "modernisation-platform-terraform-state"
     encrypt = true
-    key     = "github/terraform.tfstate"
+    key     = "github/repository-access/terraform.tfstate"
     region  = "eu-west-2"
   }
 }
