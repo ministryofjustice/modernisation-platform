@@ -1,6 +1,6 @@
 # Everyone, with access to the above repositories
 module "core-team" {
-  source      = "./modules/team"
+  source      = "../modules/team"
   name        = "modernisation-platform"
   description = "Modernisation Platform team"
   repositories = [
@@ -24,7 +24,7 @@ module "core-team" {
 
 # People who need full AWS access
 module "aws-team" {
-  source      = "./modules/team"
+  source      = "../modules/team"
   name        = "modernisation-platform-engineers"
   description = "Modernisation Platform team: people who require AWS access"
 
