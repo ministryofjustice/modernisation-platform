@@ -1,6 +1,6 @@
 # Modernisation Platform - GitHub
 
-This directory creates and maintains GitHub the following for the Modernisation Platform:
+This directory creates and maintains the following GitHub resources for the Modernisation Platform:
   - repositories
   - team membership
   - team access to repositories
