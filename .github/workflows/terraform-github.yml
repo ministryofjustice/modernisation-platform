@@ -73,7 +73,7 @@ jobs:
   github-repository-add-access-plan:
     runs-on: ubuntu-latest
     if: github.ref != 'refs/heads/main' && github.event_name != 'workflow_dispatch'
-    needs: [github-repository-add-access-plan]
+    needs: [github-repository-create-apply]
     env:
       AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -92,7 +92,7 @@ jobs:
   github-repository-add-access-apply:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
-    needs: [github-repository-add-access-apply]
+    needs: [github-repository-add-access-plan]
     env:
       AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
