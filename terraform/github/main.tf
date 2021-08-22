@@ -1,6 +1,6 @@
 # Repositories
 module "core" {
-  source       = "../modules/repository"
+  source       = "./modules/repository"
   type         = "core"
   name         = "modernisation-platform"
   description  = "A place for the core work of the Modernisation Platform"
@@ -21,7 +21,7 @@ module "core" {
 }
 
 module "hello-world" {
-  source      = "../modules/repository"
+  source      = "./modules/repository"
   type        = "core"
   name        = "modernisation-platform-hello-world"
   description = "A sample application configuration within the Modernisation Platform"
@@ -29,7 +29,7 @@ module "hello-world" {
 }
 
 module "terraform-module-baselines" {
-  source      = "../modules/repository"
+  source      = "./modules/repository"
   name        = "modernisation-platform-terraform-baselines"
   description = "Module for enabling and configuring common baseline services such as SecurityHub"
   topics = [
@@ -40,7 +40,7 @@ module "terraform-module-baselines" {
 }
 
 module "terraform-module-cross-account-access" {
-  source      = "../modules/repository"
+  source      = "./modules/repository"
   name        = "modernisation-platform-terraform-cross-account-access"
   description = "Module for creating an IAM role that can be assumed from another account"
   topics = [
@@ -50,7 +50,7 @@ module "terraform-module-cross-account-access" {
 }
 
 module "terraform-module-environments" {
-  source      = "../modules/repository"
+  source      = "./modules/repository"
   name        = "modernisation-platform-terraform-environments"
   description = "Module for creating organizational units and accounts within AWS Organizations from JSON files"
   topics = [
@@ -60,7 +60,7 @@ module "terraform-module-environments" {
 }
 
 module "terraform-module-iam-superadmins" {
-  source      = "../modules/repository"
+  source      = "./modules/repository"
   name        = "modernisation-platform-terraform-iam-superadmins"
   description = "Module for creating defined IAM users as superadmins"
   topics = [
@@ -70,7 +70,7 @@ module "terraform-module-iam-superadmins" {
 }
 
 module "terraform-module-s3-bucket-replication-role" {
-  source      = "../modules/repository"
+  source      = "./modules/repository"
   name        = "modernisation-platform-terraform-s3-bucket-replication-role"
   description = "Module for creating an IAM role for S3 bucket replication"
   topics = [
@@ -82,7 +82,7 @@ module "terraform-module-s3-bucket-replication-role" {
 }
 
 module "terraform-module-s3-bucket" {
-  source      = "../modules/repository"
+  source      = "./modules/repository"
   name        = "modernisation-platform-terraform-s3-bucket"
   description = "Module for creating S3 buckets with sensible defaults e.g. replication, encryption"
   topics = [
@@ -93,7 +93,7 @@ module "terraform-module-s3-bucket" {
 }
 
 module "terraform-module-trusted-advisor" {
-  source      = "../modules/repository"
+  source      = "./modules/repository"
   name        = "modernisation-platform-terraform-trusted-advisor"
   description = "Module for refreshing Trusted Advisor every 60 minutes"
   topics = [
@@ -103,7 +103,7 @@ module "terraform-module-trusted-advisor" {
 }
 
 module "terraform-module-bastion-linux" {
-  source      = "../modules/repository"
+  source      = "./modules/repository"
   name        = "modernisation-platform-terraform-bastion-linux"
   description = "Module for creating Linux bastion servers in member AWS accounts"
   topics = [
@@ -114,7 +114,7 @@ module "terraform-module-bastion-linux" {
 }
 
 module "modernisation-platform-environments" {
-  source      = "../modules/repository"
+  source      = "./modules/repository"
   name        = "modernisation-platform-environments"
   description = "Modernisation platform environments"
   topics = [

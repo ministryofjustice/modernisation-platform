@@ -39,9 +39,9 @@ jobs:
           terraform_version: 1.0.1
           terraform_wrapper: false
       - name: terraform init
-        run: bash scripts/terraform-init.sh terraform/github/create-repositories
+        run: bash scripts/terraform-init.sh terraform/github
       - name: terraform plan
-        run: bash scripts/terraform-plan.sh terraform/github/create-repositories
+        run: bash scripts/terraform-plan.sh terraform/github
   github-repository-create-apply:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
@@ -57,11 +57,11 @@ jobs:
           terraform_version: 1.0.1
           terraform_wrapper: false
       - name: terraform init
-        run: bash scripts/terraform-init.sh terraform/github/create-repositories
+        run: bash scripts/terraform-init.sh terraform/github
       - name: terraform plan
-        run: bash scripts/terraform-plan.sh terraform/github/create-repositories
-      - name: terraform apply
-        run: bash scripts/terraform-apply.sh terraform/github/create-repositories
+        run: bash scripts/terraform-plan.sh terraform/github
+      # - name: terraform apply
+      #   run: bash scripts/terraform-apply.sh terraform/github
       - uses: 8398a7/action-slack@v3
         name: Slack failure notification
         with:
