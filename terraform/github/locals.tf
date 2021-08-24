@@ -36,9 +36,9 @@ locals {
     "jackstockley89",
     "jakemulley",
     "zuriguardiola",
-    "adeweetman-al",
     "stevelinden",
-    "gfou-al" # George Fountopoulos
+    "sobostion", #Seb Norris
+    "gfou-al"    # George Fountopoulos
   ]
 
   # All members
