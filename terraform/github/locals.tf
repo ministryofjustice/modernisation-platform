@@ -38,6 +38,7 @@ locals {
     "jakemulley",
     "philhorrocks",
     "zuriguardiola",
+    "adeweetman-al",
     "stevelinden",
     "gfou-al" # George Fountopoulos
   ]
