@@ -1,5 +1,5 @@
 module "iam" {
-  source        = "github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins?ref=v1.0.4"
+  source        = "github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins?ref=v1.0.5"
   account_alias = "moj-modernisation-platform"
 }
 
