@@ -6,7 +6,6 @@ locals {
     "ewastempel",
     "jakemulley",
     "gfou-al", # George Fountopoulos
-    "philhorrocks",
     "SteveMarshall"
   ]
 
@@ -36,8 +35,8 @@ locals {
     "ezman", # Fasih
     "jackstockley89",
     "jakemulley",
-    "philhorrocks",
     "zuriguardiola",
+    "adeweetman-al",
     "stevelinden",
     "gfou-al" # George Fountopoulos
   ]
