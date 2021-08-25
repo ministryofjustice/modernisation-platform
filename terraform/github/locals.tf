@@ -39,7 +39,8 @@ locals {
     "stevelinden",
     "sobostion", # Seb Norris
     "piotrAL",   # Piotr Grzeskowiak
-    "gfou-al"    # George Fountopoulos
+    "adeweetman-al",
+    "gfou-al" # George Fountopoulos
   ]
 
   # All members
