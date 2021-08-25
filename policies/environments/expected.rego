@@ -20,6 +20,7 @@ expected =
     "sprinkler",
     "ops-engineering",
     "testing",
-    "nomis"
+    "nomis",
+    "analytical-platform-data"
     ]
 }
