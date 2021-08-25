@@ -43,3 +43,4 @@ jobs:
       with:
         scan_type: full 
         tfsec_exclude: AWS095  
+        checkov_exclude: CKV_GIT_1
