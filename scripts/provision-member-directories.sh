@@ -124,6 +124,8 @@ copy_templates() {
 
   # Rename member providers file
   mv $1/member-providers.tf $1/providers.tf
+  # copy application variable file
+  cp core-repo/terraform/templates/application_variables.json $1
 
   echo "Finished copying templates."
 }
