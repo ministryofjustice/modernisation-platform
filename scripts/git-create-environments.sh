@@ -51,9 +51,9 @@ create_environment() {
   # echo "Teams for payload: ${github_teams}"
   if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]
   then
-    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${github_teams}]}"
+    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [{\"type\":\"Team\",\"id\":${modernisation_platform_id}},${github_teams}]}"
   else
-    payload="{\"reviewers\": [${github_teams}]}"
+    payload="{\"reviewers\": [{\"type\":\"Team\",\"id\":${modernisation_platform_id}},${github_teams}]}"
   fi
   # echo "Payload: $payload"
   echo "${payload}" | curl -s \
@@ -77,6 +77,11 @@ create_reviewers_json() {
   reviewers_json=`echo ${reviewers_json} | sed 's/,*$//g'`
   # echo "Reviewers json: ${reviewers_json}"
 }
+
+# get modernisation platform github ID
+team_ids=""
+get_github_team_id modernisation-platform
+modernisation_platform_id=$team_ids
 
 main() {
   #load existing github environments
