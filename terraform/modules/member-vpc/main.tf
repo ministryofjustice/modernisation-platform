@@ -192,8 +192,14 @@ resource "aws_vpc" "vpc" {
 
 
 # VPC Flow Logs
+resource "aws_kms_key" "default" {
+  description         = "Member VPC Flow Log Key"
+  enable_key_rotation = true
+}
+
 resource "aws_cloudwatch_log_group" "default" {
   name = "${var.tags_prefix}-vpc-flow-logs"
+  kms_key_id = aws_kms_key.default.arn
 }
 
 resource "aws_flow_log" "cloudwatch" {
