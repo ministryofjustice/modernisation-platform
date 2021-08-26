@@ -377,6 +377,10 @@ resource "aws_instance" "bastion_linux" {
   vpc_security_group_ids      = [aws_security_group.bastion_linux.id]
   subnet_id                   = data.aws_subnet.private_az_a.id
 
+  root_block_device {
+    encrypted = true
+  }
+
   user_data = base64encode(data.template_file.user_data.rendered)
 
   metadata_options {
