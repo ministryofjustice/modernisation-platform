@@ -56,6 +56,7 @@ data "template_file" "user_data" {
 
 # S3
 resource "aws_kms_key" "bastion_s3" {
+  enable_key_rotation = true
 
   tags = merge(
     var.tags_common,
