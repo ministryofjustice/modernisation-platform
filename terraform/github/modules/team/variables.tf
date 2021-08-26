@@ -8,12 +8,6 @@ variable "description" {
   type        = string
 }
 
-variable "repositories" {
-  description = "Repositories to give the team access to"
-  type        = set(string)
-  default     = []
-}
-
 variable "maintainers" {
   description = "GitHub team maintainers"
   type        = set(string)

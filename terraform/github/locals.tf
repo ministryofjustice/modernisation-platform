@@ -58,4 +58,19 @@ locals {
     "performance-hub-developers",
     "studio-webops"
   ]
+
+  repositories = [
+    module.core.repository.id,
+    module.hello-world.repository.id,
+    module.terraform-module-baselines.repository.id,
+    module.terraform-module-cross-account-access.repository.id,
+    module.terraform-module-environments.repository.id,
+    module.terraform-module-iam-superadmins.repository.id,
+    module.terraform-module-s3-bucket-replication-role.repository.id,
+    module.terraform-module-s3-bucket.repository.id,
+    module.terraform-module-trusted-advisor.repository.id,
+    module.terraform-module-bastion-linux.repository.id,
+    module.modernisation-platform-environments.repository.id
+  ]
+
 }

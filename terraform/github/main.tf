@@ -102,6 +102,17 @@ module "terraform-module-trusted-advisor" {
   ]
 }
 
+module "terraform-module-bastion-linux" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-bastion-linux"
+  description = "Module for creating Linux bastion servers in member AWS accounts"
+  topics = [
+    "aws",
+    "bastion",
+    "linux"
+  ]
+}
+
 module "modernisation-platform-environments" {
   source      = "./modules/repository"
   name        = "modernisation-platform-environments"
@@ -122,19 +133,6 @@ module "core-team" {
   source      = "./modules/team"
   name        = "modernisation-platform"
   description = "Modernisation Platform team"
-  repositories = [
-    module.core.repository.id,
-    module.hello-world.repository.id,
-    module.terraform-module-baselines.repository.id,
-    module.terraform-module-cross-account-access.repository.id,
-    module.terraform-module-environments.repository.id,
-    module.terraform-module-iam-superadmins.repository.id,
-    module.terraform-module-s3-bucket-replication-role.repository.id,
-    module.terraform-module-s3-bucket.repository.id,
-    module.terraform-module-trusted-advisor.repository.id,
-    module.modernisation-platform-environments.repository.id
-  ]
-
   maintainers = local.maintainers
   members     = local.everyone
   ci          = local.ci_users
@@ -151,6 +149,14 @@ module "aws-team" {
   ci          = local.ci_users
 
   parent_team_id = module.core-team.team_id
+}
+
+# Repositories to give access to
+resource "github_team_repository" "default" {
+  for_each   = local.repositories
+  team_id    = github_team.default.id
+  repository = each.value
+  permission = "admin"
 }
 
 # Give write access to teams on the environments repo (access to merge to main is restricted by codeowners file)
