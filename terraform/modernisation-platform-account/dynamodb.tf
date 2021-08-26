@@ -12,5 +12,9 @@ resource "aws_dynamodb_table" "state-lock" {
     enabled = true
   }
 
+  point_in_time_recovery {
+    enabled = true
+  }
+
   tags = local.tags
 }
