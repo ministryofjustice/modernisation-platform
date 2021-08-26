@@ -108,9 +108,9 @@ resource "aws_kms_key" "default" {
 }
 
 resource "aws_cloudwatch_log_group" "default" {
-  name = "${var.tags_prefix}-vpc-flow-logs"
+  name       = "${var.tags_prefix}-vpc-flow-logs"
   kms_key_id = aws_kms_key.default.arn
-  tags = var.tags_common
+  tags       = var.tags_common
 }
 
 resource "aws_flow_log" "cloudwatch" {
