@@ -12,8 +12,8 @@ resource "aws_kms_key" "dynamo_encryption" {
 
 data "aws_iam_policy_document" "dynamo_encryption" {
   statement {
-    effect    = "Allow"
-    actions   = ["kms:*"]
+    effect  = "Allow"
+    actions = ["kms:*"]
 
     resources = [
       "arn:aws:dynamodb:*"
@@ -37,7 +37,7 @@ resource "aws_dynamodb_table" "state-lock" {
   }
 
   server_side_encryption {
-    enabled = true
+    enabled     = true
     kms_key_arn = aws_kms_key.dynamo_encryption.arn
   }
 
