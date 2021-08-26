@@ -33,7 +33,7 @@ run_terraform() {
     # Note - this is temporary until we delete default VPCs for all other accounts
     # AP will fail as they have deleted their default VPC, we want to delete all default vpcs
     # But are waiting for v4 of the aws provider which will allow us to do this via TF
-    if [ "$line" != "analytical-platform-management-production" ]; then
+    if [[ "$line" != *"analytical-platform"* ]]; then
 
       # Select workspace
       terraform -chdir="$1" workspace select "$line"
