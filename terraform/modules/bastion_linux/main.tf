@@ -384,7 +384,9 @@ resource "aws_instance" "bastion_linux" {
   user_data = base64encode(data.template_file.user_data.rendered)
 
   metadata_options {
-    http_tokens = "required"
+    http_endpoint               = "enabled" # defaults to enabled but is required if http_tokens is specified
+    http_put_response_hop_limit = 1         # default is 1, value values are 1 through 64
+    http_tokens                 = "required"
   }
 
   tags = merge(
