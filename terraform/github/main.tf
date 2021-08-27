@@ -153,8 +153,8 @@ module "aws-team" {
 
 # Repositories to give access to
 resource "github_team_repository" "default" {
-  for_each   = local.repositories
-  team_id    = github_team.default.id
+  for_each   = {for repo in local.repositories : repo => repo }
+  team_id    = module.core-team.team_id
   repository = each.value
   permission = "admin"
 }
