@@ -102,6 +102,17 @@ module "terraform-module-trusted-advisor" {
   ]
 }
 
+module "terraform-module-bastion-linux" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-bastion-linux"
+  description = "Module for creating Linux bastion servers in member AWS accounts"
+  topics = [
+    "aws",
+    "bastion",
+    "linux"
+  ]
+}
+
 module "modernisation-platform-environments" {
   source      = "./modules/repository"
   name        = "modernisation-platform-environments"
@@ -132,6 +143,7 @@ module "core-team" {
     module.terraform-module-s3-bucket-replication-role.repository.id,
     module.terraform-module-s3-bucket.repository.id,
     module.terraform-module-trusted-advisor.repository.id,
+    module.terraform-module-bastion-linux.repository.id,
     module.modernisation-platform-environments.repository.id
   ]
 
