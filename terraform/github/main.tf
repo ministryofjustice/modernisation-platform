@@ -113,6 +113,18 @@ module "terraform-module-bastion-linux" {
   ]
 }
 
+module "terraform-module-ecs" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-ecs"
+  description = "Module for creating ECS cluster (Linux/Windows) solely for EC2 launch type"
+  topics = [
+    "aws",
+    "ecs",
+    "linux",
+    "windows"
+  ]
+}
+
 module "modernisation-platform-environments" {
   source      = "./modules/repository"
   name        = "modernisation-platform-environments"
@@ -144,6 +156,7 @@ module "core-team" {
     module.terraform-module-s3-bucket.repository.name,
     module.terraform-module-trusted-advisor.repository.name,
     module.terraform-module-bastion-linux.repository.name,
+    module.terraform-module-ecs.repository.name,
     module.modernisation-platform-environments.repository.name
   ]
 
