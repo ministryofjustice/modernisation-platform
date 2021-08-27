@@ -134,17 +134,17 @@ module "core-team" {
   name        = "modernisation-platform"
   description = "Modernisation Platform team"
   repositories = [
-    module.core.repository.id,
-    module.hello-world.repository.id,
-    module.terraform-module-baselines.repository.id,
-    module.terraform-module-cross-account-access.repository.id,
-    module.terraform-module-environments.repository.id,
-    module.terraform-module-iam-superadmins.repository.id,
-    module.terraform-module-s3-bucket-replication-role.repository.id,
-    module.terraform-module-s3-bucket.repository.id,
-    module.terraform-module-trusted-advisor.repository.id,
-    module.terraform-module-bastion-linux.repository.id,
-    module.modernisation-platform-environments.repository.id
+    module.core.repository.name,
+    module.hello-world.repository.name,
+    module.terraform-module-baselines.repository.name,
+    module.terraform-module-cross-account-access.repository.name,
+    module.terraform-module-environments.repository.name,
+    module.terraform-module-iam-superadmins.repository.name,
+    module.terraform-module-s3-bucket-replication-role.repository.name,
+    module.terraform-module-s3-bucket.repository.name,
+    module.terraform-module-trusted-advisor.repository.name,
+    module.terraform-module-bastion-linux.repository.name,
+    module.modernisation-platform-environments.repository.name
   ]
 
   maintainers = local.maintainers

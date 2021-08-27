@@ -53,9 +53,8 @@ resource "github_team_membership" "members" {
 
 # Repositories to give access to
 resource "github_team_repository" "default" {
-  count = length(var.repositories)
-
+  for_each   = var.repositories
   team_id    = github_team.default.id
-  repository = var.repositories[count.index]
+  repository = each.value
   permission = "admin"
 }
