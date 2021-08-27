@@ -120,7 +120,7 @@ module "terraform-module-ecs" {
   topics = [
     "aws",
     "ecs",
-    "linux"
+    "linux",
     "windows"
   ]
 }
