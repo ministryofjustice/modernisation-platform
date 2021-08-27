@@ -193,7 +193,8 @@ resource "aws_vpc" "vpc" {
 
 # VPC Flow Logs
 resource "aws_cloudwatch_log_group" "default" {
-  name = "${var.tags_prefix}-vpc-flow-logs"
+  name              = "${var.tags_prefix}-vpc-flow-logs"
+  retention_in_days = 0 # 0 = never expire
 }
 
 resource "aws_flow_log" "cloudwatch" {

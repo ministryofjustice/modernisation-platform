@@ -56,6 +56,7 @@ data "template_file" "user_data" {
 
 # S3
 resource "aws_kms_key" "bastion_s3" {
+  enable_key_rotation = true
 
   tags = merge(
     var.tags_common,
@@ -371,11 +372,20 @@ resource "aws_instance" "bastion_linux" {
   ami                         = data.aws_ami.linux_2_image.id
   associate_public_ip_address = false
   iam_instance_profile        = aws_iam_instance_profile.bastion_profile.id
+  ebs_optimized               = true
   monitoring                  = false
   vpc_security_group_ids      = [aws_security_group.bastion_linux.id]
   subnet_id                   = data.aws_subnet.private_az_a.id
 
+  root_block_device {
+    encrypted = true
+  }
+
   user_data = base64encode(data.template_file.user_data.rendered)
+
+  metadata_options {
+    http_tokens = "required"
+  }
 
   tags = merge(
     var.tags_common,
