@@ -38,7 +38,7 @@ locals {
     "zuriguardiola",
     "stevelinden",
     "sobostion", # Seb Norris
-    "piotrAL",   # Piotr Grzeskowiak
+    "pete-j-g",   # Piotr Grzeskowiak
     "adeweetman-al",
     "gfou-al" # George Fountopoulos
   ]
