@@ -254,8 +254,8 @@ resource "aws_kms_alias" "acm-alias" {
 
 data "aws_iam_policy_document" "kms-acm" {
   statement {
-    effect    = "Allow"
-    actions   = ["kms:*"]
+    effect  = "Allow"
+    actions = ["kms:*"]
 
     resources = [
       aws_s3_bucket.acm-pca.arn,
@@ -268,8 +268,8 @@ data "aws_iam_policy_document" "kms-acm" {
     }
   }
   statement {
-    effect    = "Allow"
-    actions   = ["kms:*"]
+    effect  = "Allow"
+    actions = ["kms:*"]
 
     resources = [
       aws_s3_bucket.acm-pca.arn,
