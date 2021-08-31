@@ -115,7 +115,7 @@ do
     fi
 
     ACCOUNT_TYPE=$(jq -r '."account-type"' ${JSON_FILE})
-    if [[ "${RETURN_CODE_MEMBER_REPO}" -ne 0 && "${ACCOUNT_TYPE}" == "member" ]]
+    if [[ "${RETURN_CODE_MEMBER_REPO}" -ne 0 && "${ACCOUNT_TYPE}" != "core" ]]
     then
       echo -en "MEMBER ACCOUNT IN ENVIRONMENTS REPO - ${APPLICATION}-${ENV} - ${YELLOW}CREATING${NORMAL}\n"
       terraform -chdir="${TERRAFORM_PATH}" init > /dev/null
