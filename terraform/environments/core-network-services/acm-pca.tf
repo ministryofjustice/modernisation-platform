@@ -83,7 +83,7 @@ resource "aws_s3_bucket_policy" "root" {
   policy = data.aws_iam_policy_document.acmpca_bucket_access.json
 }
 
-#Associates a certificate with an AWS Certificate Manager Private Certificate Authority 
+#Associates a certificate with an AWS Certificate Manager Private Certificate Authority
 resource "aws_acmpca_certificate_authority_certificate" "root" {
   certificate_authority_arn = aws_acmpca_certificate_authority.root.arn
 
@@ -233,7 +233,7 @@ resource "aws_acmpca_certificate_authority" "non-live_subordinate" {
   }
 }
 
-# Setup KMS key 
+# Setup KMS key
 resource "aws_kms_key" "acm" {
   description         = "ACM PCA (private certificate authority) encryption key"
   enable_key_rotation = true
@@ -256,7 +256,11 @@ data "aws_iam_policy_document" "kms-acm" {
   statement {
     effect    = "Allow"
     actions   = ["kms:*"]
-    resources = ["*"]
+
+    resources = [
+      aws_s3_bucket.acm-pca.arn,
+      "${aws_s3_bucket.acm-pca.arn}/*"
+    ]
 
     principals {
       type        = "Service"
@@ -266,7 +270,11 @@ data "aws_iam_policy_document" "kms-acm" {
   statement {
     effect    = "Allow"
     actions   = ["kms:*"]
-    resources = ["*"]
+
+    resources = [
+      aws_s3_bucket.acm-pca.arn,
+      "${aws_s3_bucket.acm-pca.arn}/*"
+    ]
 
     principals {
       type        = "AWS"
