@@ -193,6 +193,7 @@ resource "aws_vpc" "vpc" {
 
 # VPC Flow Logs
 resource "aws_cloudwatch_log_group" "default" {
+  #checkov:skip=CKV_AWS_158:Temporarily skip KMS encryption check while logging solution is being updated
   name              = "${var.tags_prefix}-vpc-flow-logs"
   retention_in_days = 0 # 0 = never expire
 }
