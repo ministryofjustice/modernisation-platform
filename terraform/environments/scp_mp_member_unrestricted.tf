@@ -1,12 +1,12 @@
 #  Modernisation Platform Member Unrestriced ou SCP policy
 data "aws_iam_policy_document" "scp_mp_member_unrestriced_ou" {
-#checkov:skip=CKV_AWS_1:Policy applied to a limited number of accounts
-#checkov:skip=CKV_AWS_49:Policy applied to a limited number of accounts
-#checkov:skip=CKV_AWS_107:Policy applied to a limited number of accounts
-#checkov:skip=CKV_AWS_108:Policy applied to a limited number of accounts
-#checkov:skip=CKV_AWS_109:Policy applied to a limited number of accounts
-#checkov:skip=CKV_AWS_110:Policy applied to a limited number of accounts
-#checkov:skip=CKV_AWS_111:Policy applied to a limited number of accounts
+  #checkov:skip=CKV_AWS_1:Policy applied to a limited number of accounts
+  #checkov:skip=CKV_AWS_49:Policy applied to a limited number of accounts
+  #checkov:skip=CKV_AWS_107:Policy applied to a limited number of accounts
+  #checkov:skip=CKV_AWS_108:Policy applied to a limited number of accounts
+  #checkov:skip=CKV_AWS_109:Policy applied to a limited number of accounts
+  #checkov:skip=CKV_AWS_110:Policy applied to a limited number of accounts
+  #checkov:skip=CKV_AWS_111:Policy applied to a limited number of accounts
   version = "2012-10-17"
 
   statement {
