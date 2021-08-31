@@ -258,8 +258,8 @@ data "aws_iam_policy_document" "kms-acm" {
     actions = ["kms:*"]
 
     resources = [
-      aws_s3_bucket.acm-pca.arn,
-      "${aws_s3_bucket.acm-pca.arn}/*"
+      "arn:aws:s3:::acm*",
+      "arn:aws:s3:::acm*/*"
     ]
 
     principals {
@@ -272,8 +272,8 @@ data "aws_iam_policy_document" "kms-acm" {
     actions = ["kms:*"]
 
     resources = [
-      aws_s3_bucket.acm-pca.arn,
-      "${aws_s3_bucket.acm-pca.arn}/*"
+      "arn:aws:s3:::acm*",
+      "arn:aws:s3:::acm*/*"
     ]
 
     principals {
