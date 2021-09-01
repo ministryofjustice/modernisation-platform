@@ -11,6 +11,7 @@ provider "aws" {
 # Ignore TFSEC warnings regarding not blocking all public access - this is required for CRL
 #tfsec:ignore:AWS098
 resource "aws_s3_bucket" "acm-pca" {
+  #checkov:skip=CKV2_AWS_6:Public access is required when S3 bucket used for acm pca CRL
 
   bucket_prefix = "acm"
 
