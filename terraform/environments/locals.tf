@@ -10,7 +10,7 @@ locals {
     is-production = true
     owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
   }
-  root_account                   = data.aws_organizations_organization.root_account
+  root_account = data.aws_organizations_organization.root_account
   root_users_with_state_access = [
     "arn:aws:iam::${local.root_account.master_account_id}:user/ModernisationPlatformOrganisationManagement",
     "arn:aws:iam::${local.root_account.master_account_id}:user/DavidElliott"
