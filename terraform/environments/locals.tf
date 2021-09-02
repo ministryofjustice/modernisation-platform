@@ -11,6 +11,11 @@ locals {
     owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
   }
   root_account                   = data.aws_organizations_organization.root_account
+  root_users_with_state_access = [
+    "arn:aws:iam::${local.root_account.master_account_id}:user/ModernisationPlatformOrganisationManagement",
+    "arn:aws:iam::${local.root_account.master_account_id}:user/DavidElliott"
+  ]
+
   modernisation_platform_account = local.root_account.accounts[index(local.root_account.accounts[*].email, "aws+modernisation-platform@digital.justice.gov.uk")]
   github_repository              = "github.com:ministryofjustice/modernisation-platform.git"
 }
