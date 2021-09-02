@@ -39,8 +39,19 @@ data "aws_iam_policy_document" "ci_iam_user_keys_policy" {
 resource "aws_kms_key" "ci_iam_user_keys_key" {
   enable_key_rotation = true
   policy              = data.aws_iam_policy_document.ci_iam_user_keys_policy.json
+
+  tags = merge(
+    local.tags,
+    {
+      Name = "dynamo_encryption"
+    }
+  )
 }
 
+resource "aws_kms_alias" "ci_iam_user_keys_key_alias" {
+  name          = "modplatform-ci_iam_user_key"
+  target_key_id = aws_kms_key.ci_iam_user_keys_key.key_id
+}
 
 resource "aws_secretsmanager_secret" "ci_iam_user_keys" {
   name        = "ci_iam_user_keys"
@@ -61,6 +72,18 @@ resource "aws_secretsmanager_secret_version" "ci_iam_user_keys" {
 resource "aws_kms_key" "member_ci_iam_user_keys_key" {
   enable_key_rotation = true
   policy              = data.aws_iam_policy_document.ci_iam_user_keys_policy.json
+
+  tags = merge(
+    local.tags,
+    {
+      Name = "dynamo_encryption"
+    }
+  )
+}
+
+resource "aws_kms_alias" "member_ci_iam_user_keys_key_alias" {
+  name          = "modplatform-member_ci_iam_user_key"
+  target_key_id = aws_kms_key.member_ci_iam_user_keys_key.key_id
 }
 
 resource "aws_secretsmanager_secret" "member_ci_iam_user_keys" {
