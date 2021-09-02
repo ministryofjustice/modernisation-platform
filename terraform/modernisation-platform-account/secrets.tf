@@ -43,7 +43,7 @@ resource "aws_kms_key" "ci_iam_user_keys_key" {
   tags = merge(
     local.tags,
     {
-      Name = "dynamo_encryption"
+      Name = "ci_iam_user_key_encryption_key"
     }
   )
 }
@@ -76,7 +76,7 @@ resource "aws_kms_key" "member_ci_iam_user_keys_key" {
   tags = merge(
     local.tags,
     {
-      Name = "dynamo_encryption"
+      Name = "member_ci_iam_user_key_encryption_key"
     }
   )
 }
