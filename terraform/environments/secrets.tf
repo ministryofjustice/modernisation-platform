@@ -24,6 +24,21 @@ data "aws_secretsmanager_secret_version" "environment_management" {
 
 resource "aws_kms_key" "environment_management_key" {
   enable_key_rotation = true
+  policy              = data.aws_iam_policy_document.environment_management_policy.json
+}
+
+data "aws_iam_policy_document" "environment_management_policy" {
+  statement {
+    effect  = "Allow"
+    actions = ["kms:*"]
+
+    resources = ["*"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["secretsmanager.amazonaws.com"]
+    }
+  }
 }
 
 locals {
