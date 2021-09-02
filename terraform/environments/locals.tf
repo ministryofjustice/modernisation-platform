@@ -1,6 +1,7 @@
 # This data sources allows us to get the Modernisation Platform account information for use elsewhere
 # (when we want to assume a role in the MP, for instance)
 data "aws_organizations_organization" "root_account" {}
+data "aws_caller_identity" "current" {}
 
 locals {
   environments = {
