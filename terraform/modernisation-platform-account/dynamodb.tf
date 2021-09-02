@@ -11,13 +11,15 @@ resource "aws_kms_key" "dynamo_encryption" {
 }
 
 data "aws_iam_policy_document" "dynamo_encryption" {
+
+  # checkov:skip=CKV_AWS_109: "Key policy requires asterisk resource"
+  # checkov:skip=CKV_AWS_111: "Key policy requires asterisk resource"
+
   statement {
     effect  = "Allow"
     actions = ["kms:*"]
 
-    resources = [
-      "arn:aws:dynamodb:*"
-    ]
+    resources = ["*"]
 
     principals {
       type        = "Service"
