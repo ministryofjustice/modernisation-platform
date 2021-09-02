@@ -25,6 +25,19 @@ data "aws_iam_policy_document" "dynamo_encryption" {
       type        = "Service"
       identifiers = ["dynamodb.amazonaws.com"]
     }
+
+    principals {
+      type        = "AWS"
+      identifiers = local.root_users_with_state_access
+    }
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        data.aws_caller_identity.current.account_id
+      ]
+    }
+
   }
 }
 
