@@ -38,6 +38,19 @@ data "aws_iam_policy_document" "environment_management_policy" {
       type        = "Service"
       identifiers = ["secretsmanager.amazonaws.com"]
     }
+
+    principals {
+      type        = "AWS"
+      identifiers = local.root_users_with_state_access
+    }
+
+    principals {
+      type = "AWS"
+      identifiers = [
+        data.aws_caller_identity.current.account_id
+      ]
+    }
+
   }
 }
 
