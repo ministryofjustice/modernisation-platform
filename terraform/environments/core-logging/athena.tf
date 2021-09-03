@@ -162,8 +162,8 @@ data "archive_file" "lambda_zip" {
   output_path = "lambda/lambda_function.zip"
 }
 
- #tfsec:ignore:aws-lambda-enable-tracing
- resource "aws_lambda_function" "athena_table_update" {
+#tfsec:ignore:aws-lambda-enable-tracing
+resource "aws_lambda_function" "athena_table_update" {
 
   # checkov:skip=CKV_AWS_50: "X-ray tracing is not required"
   # checkov:skip=CKV_AWS_117: "Lambda is not environment specific"
