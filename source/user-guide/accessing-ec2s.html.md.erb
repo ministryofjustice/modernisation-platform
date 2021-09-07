@@ -15,7 +15,7 @@ These steps outline the AWS and SSH configurations required for users to connect
 
 1) Ensure AWS CLI v2 is installed locally
 
-1) Add the following to your AWS configuration file. Give the profile name a relevant name for example ```profile nomis-test-developer``` and add the corresponding AWS account number:
+2) Add the following to your AWS configuration file. Give the profile name a relevant name for example ```profile nomis-test-developer``` and add the corresponding AWS account number:
 
 ```
 [profile nomis-test-developer]
@@ -28,7 +28,7 @@ output = json
 
 ```
 
-2) Add the following to your SSH configuration file. Give the host a relevant name, for example ```nomis-test-bastion```. Replace the ```User``` and the IdentityFile path (it will point to the corresponding private key of the public key added to the ```bastion_linux.json``` file set up as part of the [Modernisation Platform bastion module](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) build). Replace the ```target``` with the bastion instance ID in the corresponding AWS account and include the AWS profile created in the previous step:
+3) Add the following to your SSH configuration file. Give the host a relevant name, for example ```nomis-test-bastion```. Replace the ```User``` and the IdentityFile path (it will point to the corresponding private key of the public key added to the ```bastion_linux.json``` file set up as part of the [Modernisation Platform bastion module](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) build). Replace the ```target``` with the bastion instance ID in the corresponding AWS account and include the AWS profile created in the previous step:
 
 ```
 Host nomis-test-bastion
@@ -37,13 +37,13 @@ Host nomis-test-bastion
      ProxyCommand sh -c "aws ssm start-session --target i-123456789 --document-name AWS-StartSSHSession --parameters 'portNumber=%p' --profile nomis-test-developer --region eu-west-2"
 
 ```
-3) Log in to SSO using the following command:
+4) Log in to SSO using the following command:
  ```
  aws sso login --profile nomis-test-developer
 
  ```
 
-4) SSH to the bastion using the following command:
+5) SSH to the bastion using the following command:
 ```
 ssh nomis-test-bastion
 
