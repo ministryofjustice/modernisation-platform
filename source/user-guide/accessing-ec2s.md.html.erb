@@ -1,0 +1,50 @@
+---
+title: Accessing EC2s using bastions
+last_reviewed_on: 2021-09-06
+review_in: 3 months
+---
+
+# <%= current_page.data.title %>
+
+## Overview
+
+Member accounts can use the [Modernisation Platform bastion module](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) to build a bastion configured with user keys.
+These steps outline the AWS and SSH configurations required for users to connecto to the bastion and on to their desired EC2 within their environment.
+
+## Required configurations
+
+1) Ensure AWS CLI v2 is installed locally
+
+1) Add the following to your AWS configuration file. Give the profile name a relevant name for example ```profile nomis-test-developer``` and add the corresponding AWS account number:
+
+```
+[profile nomis-test-developer]
+sso_start_url = https://moj.awsapps.com/start
+sso_region = eu-west-2
+sso_account_id = 123456789
+sso_role_name = modernisation-platform-developer
+region = eu-west-2
+output = json
+
+```
+
+2) Add the following to your SSH configuration file. Give the host a relevant name, for example ```nomis-test-bastion```. Replace the ```User``` and the IdentityFile path (it will point to the corresponding private key of the public key added to the ```bastion_linux.json``` file set up as part of the [Modernisation Platform bastion module](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) build). Replace the ```target``` with the bastion instance ID in the corresponding AWS account and include the AWS profile created in the previous step:
+
+```
+Host nomis-test-bastion
+     IdentityFile ~/.ssh/id_rsa
+     User jane
+     ProxyCommand sh -c "aws ssm start-session --target i-123456789 --document-name AWS-StartSSHSession --parameters 'portNumber=%p' --profile nomis-test-developer --region eu-west-2"
+
+```
+3) Log in to SSO using the following command:
+ ```
+ aws sso login --profile nomis-test-developer
+
+ ```
+
+4) SSH to the bastion using the following command:
+```
+ssh nomis-test-bastion
+
+```
