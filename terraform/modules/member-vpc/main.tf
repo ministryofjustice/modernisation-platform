@@ -176,6 +176,7 @@ locals {
 
 # VPC
 resource "aws_vpc" "vpc" {
+  #checkov:skip=CKV2_AWS_12:Skip checking default SGs of every VPC restrict all traffic. Default SGs unused, better approach would be to delete when possible
   cidr_block = var.transit
 
   enable_dns_support   = true
