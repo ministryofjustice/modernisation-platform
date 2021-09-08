@@ -12,6 +12,7 @@ provider "aws" {
 #tfsec:ignore:AWS098
 resource "aws_s3_bucket" "acm-pca" {
   #checkov:skip=CKV2_AWS_6:Public access is required when S3 bucket used for acm pca CRL
+  #checkov:skip=CKV_AWS_144:Ignore lack of cross-regional replication - not required here - represents an overkill
 
   bucket_prefix = "acm"
 
