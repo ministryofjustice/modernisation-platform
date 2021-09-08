@@ -1,6 +1,6 @@
-# Core VPC Creation and Transit Gateway Provisioning
+# Transit Gateway EC2 Attachment
 
-Terraform module for creating core VPC that also provisions Transit Gateway subnets.
+Terraform module for creating Transit Gateway EC2 attachments.
 
 <!--- BEGIN_TF_DOCS --->
 

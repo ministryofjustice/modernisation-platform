@@ -1,6 +1,6 @@
-# Core VPC Creation and Transit Gateway Provisioning
+# VPC Transit Gateway Routes
 
-Terraform module for creating core VPC that also provisions Transit Gateway subnets.
+Terraform module for creating core VPC Transit Gateway Routes.
 
 <!--- BEGIN_TF_DOCS --->
 

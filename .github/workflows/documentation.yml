@@ -1,0 +1,36 @@
+name: Generate Terraform README docs
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '/terraform/modules/dns-zone/**.md'
+      - '/terraform/modules/ ec2-tgw-attachment/**.md'
+      - '/terraform/modules/member-vpc/**.md'
+      - '/terraform/modules/ram-principal-association vpc-hub/**.md'
+      - '/terraform/modules/vpc-tgw-routing/**.md'
+      - '/terraform/modules/core-vpc-tgw-routes/**.md'
+      - '/terraform/modules/dns-zone-extend/**.md'
+      - '/terraform/modules/iam_baseline/**.md'
+      - '/terraform/modules/ram-ec2-retagging/**.md'
+      - '/terraform/modules/ram-resource-share/**.md'
+      - '/terraform/modules/vpc-nacls/**.md'
+      - '/terraform/modules/vpc-tgw-routing/**.md'
+      - '.github/workflows/documentation.yml'
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - name: Render terraform docs and push changes back to PR
+      uses: terraform-docs/gh-actions@v0.10.0
+      with:
+        working-dir: .
+        output-file: README.md
+        output-method: inject
+        git-push: "true"

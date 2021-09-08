@@ -1,6 +1,6 @@
-# Core VPC Creation and Transit Gateway Provisioning
+# IAM Baselines
 
-Terraform module for creating core VPC that also provisions Transit Gateway subnets.
+Terraform module for creating IAM baselines
 
 <!--- BEGIN_TF_DOCS --->
 

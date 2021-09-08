@@ -1,6 +1,6 @@
-# Core VPC Creation and Transit Gateway Provisioning
+# Resource Access Manager Resource Share
 
-Terraform module for creating core VPC that also provisions Transit Gateway subnets.
+Terraform module for creating RAM sharing the Modernisation Platfor core networking to member accounts.
 
 <!--- BEGIN_TF_DOCS --->
 

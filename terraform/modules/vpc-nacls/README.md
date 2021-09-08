@@ -1,6 +1,6 @@
-# Core VPC Creation and Transit Gateway Provisioning
+# VPC NACL
 
-Terraform module for creating core VPC that also provisions Transit Gateway subnets.
+Terraform module for creating subnet NACLs
 
 <!--- BEGIN_TF_DOCS --->
 

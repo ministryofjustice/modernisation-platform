@@ -1,6 +1,6 @@
-# Core VPC Creation and Transit Gateway Provisioning
+# Resource Access Manager Principal Association
 
-Terraform module for creating core VPC that also provisions Transit Gateway subnets.
+Terraform module for creating principal associations required for RAM resource sharing.
 
 <!--- BEGIN_TF_DOCS --->
 

@@ -1,6 +1,6 @@
-# Core VPC Creation and Transit Gateway Provisioning
+# Resource Access Manager Resource Re-tagging
 
-Terraform module for creating core VPC that also provisions Transit Gateway subnets.
+Terraform module for retagging resources once they have been shared out to the member accounts.
 
 <!--- BEGIN_TF_DOCS --->
 
