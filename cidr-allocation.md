@@ -41,7 +41,7 @@ Only half of the capacity of this /16 address has been used
 | 10.233.1.128    | /26  | development - hmpps                   |         
 | 10.233.1.192    | /26  | test - platforms                      |         
 | 10.233.2.0      | /26  | test - hmpps                          |  
-| 10.233.2.64     | /26  |                                       |        
+| 10.233.2.64     | /26  | development - cica                    |        
 | 10.233.2.128    | /26  |                                       |         
 | 10.233.2.192    | /26  |                                       |         
 | 10.233.3.0      | /26  |                                       |  
@@ -175,7 +175,7 @@ Only half of the capacity of this /16 address has been used
 | 10.232.12.0     | /23  | development - hmpps                   |
 | 10.232.14.0     | /23  | test - platforms                      |
 | 10.232.16.0     | /23  | test - hmpps                          |
-| 10.232.18.0     | /23  |                                       |
+| 10.232.18.0     | /23  | development - cica                    |
 | 10.232.20.0     | /23  |                                       |
 | 10.232.22.0     | /23  |                                       |
 | 10.232.24.0     | /23  |                                       |
@@ -304,7 +304,7 @@ Only half of the capacity of this /16 address has been used
 | 10.234.16.0     | /21  | LAB ONLY house - general              |
 | 10.234.24.0     | /21  | platforms - general                   |
 | 10.234.32.0     | /21  | hmpps - general                       |
-| 10.234.40.0     | /21  |                                       |
+| 10.234.40.0     | /21  | cica - general                        |
 | 10.234.48.0     | /21  | -                                     |
 | 10.234.56.0     | /21  | -                                     |
 | 10.234.64.0     | /21  | -                                     |

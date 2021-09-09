@@ -1,0 +1,20 @@
+{
+  "cidr": {
+    "transit_gateway": "10.233.2.64/26",
+    "protected": "10.232.18.0/23",
+    "subnet_sets": {
+      "general": {
+        "cidr": "10.234.40.0/21",
+        "accounts": [
+          "tariff-development"
+        ]
+      }
+    }
+  },
+  "options": {
+    "bastion_linux": true,
+    "additional_endpoints": [],
+    "dns_zone_extend": []
+  },
+  "nacl": []
+}
