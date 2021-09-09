@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 basedir=terraform/environments
 environment=${2}
 account=`echo ${1} | sed -e "s/-${environment}//g"`
