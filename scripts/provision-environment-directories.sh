@@ -93,6 +93,11 @@ copy_templates() {
       then
         sed -i "s/environments\//environments\/accounts\//g" "$1/$filename"
       fi
+      if [ ${filename} == "locals.tf" ]
+      then
+        # we don't need the application data json in this repo so comment out
+        sed -i "application_data = " "# application_data = "
+      fi
     fi
   done
 
