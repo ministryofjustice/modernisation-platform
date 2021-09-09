@@ -21,6 +21,7 @@ expected =
     "ops-engineering",
     "testing",
     "nomis",
-    "analytical-platform-data"
+    "analytical-platform-data",
+    "tariff"
     ]
 }
