@@ -56,6 +56,7 @@ locals {
     "all-org-members",
     "operations-engineering",
     "performance-hub-developers",
-    "studio-webops"
+    "studio-webops",
+    "cica"
   ]
 }
