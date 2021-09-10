@@ -30,7 +30,7 @@ jobs:
     - name: Render terraform docs and push changes back to PR
       uses: terraform-docs/gh-actions@v0.10.0
       with:
-        working-dir: terraform/modules/dns-zone,terraform/modules/ec2-tgw-attachment,terraform/modules/member-vpc,terraform/modules/ram-principal-association,terraform/modules/vpc-tgw-routing,terraform/modules/core-vpc-tgw-routes,terraform/modules/iam_baseline,terraform/modules/ram-ec2-retagging,terraform/modules/ram-resource-share,terraform/modules/vpc-nacls,terraform/modules/vpc-tgw-routing,terraform/modules/vpc-hub,terraform/modules/dns-zone-extend
+        find-dir: terraform/modules
         output-file: README.md
         output-method: inject
         git-push: "true"
