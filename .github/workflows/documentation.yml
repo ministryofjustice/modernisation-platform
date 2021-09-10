@@ -5,7 +5,9 @@ on:
     branches:
       - main
     paths:
-      - '/terraform/modules/**/*.md'
+      - 'terraform/modules/**/*.md'
+      - '.github/workflows/documentation.yml'
+
 jobs:
   docs:
     runs-on: ubuntu-latest
