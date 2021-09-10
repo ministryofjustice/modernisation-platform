@@ -5,20 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '/terraform/modules/dns-zone/**.md'
-      - '/terraform/modules/ec2-tgw-attachment/**.md'
-      - '/terraform/modules/member-vpc/**.md'
-      - '/terraform/modules/ram-principal-association/**.md'
-      - '/terraform/modules/core-vpc-tgw-routes/**.md'
-      - '/terraform/modules/dns-zone-extend/**.md'
-      - '/terraform/modules/iam_baseline/**.md'
-      - '/terraform/modules/ram-ec2-retagging/**.md'
-      - '/terraform/modules/ram-resource-share/**.md'
-      - '/terraform/modules/vpc-nacls/**.md'
-      - '/terraform/modules/vpc-hub/**.md'
-      - '/terraform/modules/vpc-tgw-routing/**.md'
-      - '.github/workflows/documentation.yml'
-
+      - '/terraform/modules/**/**.md'
 jobs:
   docs:
     runs-on: ubuntu-latest
