@@ -1,4 +1,4 @@
-# DNS Zone creation
+# DNS Zone Extend creation
 
 Terraform module for creating core DNS zone extensions
 
