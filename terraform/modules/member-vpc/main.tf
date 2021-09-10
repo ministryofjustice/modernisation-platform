@@ -193,6 +193,9 @@ resource "aws_vpc" "vpc" {
 
 
 # VPC Flow Logs
+# TF sec exclusions
+# - Ignore warnings regarding log groups not encrypted using customer-managed KMS keys - following cost/benefit discussion and longer term plans for logging solution
+#tfsec:ignore:AWS089
 resource "aws_cloudwatch_log_group" "default" {
   #checkov:skip=CKV_AWS_158:Temporarily skip KMS encryption check while logging solution is being updated
   name              = "${var.tags_prefix}-vpc-flow-logs"
