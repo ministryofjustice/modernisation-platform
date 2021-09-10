@@ -1,6 +1,6 @@
 # Resource Access Manager Resource Share
 
-Terraform module for creating RAM sharing the Modernisation Platfor core networking to member accounts.
+Terraform module for creating RAM sharing the Modernisation Platform core networking to member accounts.
 
 <!--- BEGIN_TF_DOCS --->
 ## Requirements
