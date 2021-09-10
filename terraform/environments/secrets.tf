@@ -1,5 +1,10 @@
 # Environment Management
+# Tfsec ignore
+# - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
+#tfsec:ignore:AWS095
 resource "aws_secretsmanager_secret" "environment_management" {
+  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
+
   provider    = aws.modernisation-platform
   name        = "environment_management"
   description = "IDs for AWS-specific resources for environment management, such as organizational unit IDs"
