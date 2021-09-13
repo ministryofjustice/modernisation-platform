@@ -125,6 +125,18 @@ module "terraform-module-ecs" {
   ]
 }
 
+module "modernisation-platform-ami-builds" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-ami-builds"
+  description = "Modernisation platform AMI builds"
+  topics = [
+    "aws",
+    "ami",
+    "linux",
+    "windows"
+  ]
+}
+
 module "modernisation-platform-environments" {
   source      = "./modules/repository"
   name        = "modernisation-platform-environments"
@@ -157,6 +169,7 @@ module "core-team" {
     module.terraform-module-trusted-advisor.repository.name,
     module.terraform-module-bastion-linux.repository.name,
     module.terraform-module-ecs.repository.name,
+    module.modernisation-platform-ami-builds.repository.name,
     module.modernisation-platform-environments.repository.name
   ]
 
