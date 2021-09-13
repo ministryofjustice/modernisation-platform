@@ -259,29 +259,23 @@ resource "aws_kms_alias" "acm-alias" {
   target_key_id = aws_kms_key.acm.arn
 }
 
+# Static code analysis ignores:
+# - CKV_AWS_109 and CKV_AWS_111: Ignore warnings regarding resource = ["*"]. See https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html
+#   Specifically: "In a key policy, the value of the Resource element is "*", which means "this KMS key." The asterisk ("*") identifies the KMS key to which the key policy is attached."
 data "aws_iam_policy_document" "kms-acm" {
+  # checkov:skip=CKV_AWS_109: "Key policy requires asterisk resource - see note above"
+  # checkov:skip=CKV_AWS_111: "Key policy requires asterisk resource - see note above"
+
   statement {
     effect  = "Allow"
     actions = ["kms:*"]
 
-    resources = [
-      "arn:aws:s3:::acm*",
-      "arn:aws:s3:::acm*/*"
-    ]
+    resources = ["*"]
 
     principals {
       type        = "Service"
       identifiers = ["acm-pca.amazonaws.com"]
     }
-  }
-  statement {
-    effect  = "Allow"
-    actions = ["kms:*"]
-
-    resources = [
-      "arn:aws:s3:::acm*",
-      "arn:aws:s3:::acm*/*"
-    ]
 
     principals {
       type        = "AWS"
