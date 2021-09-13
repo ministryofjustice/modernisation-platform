@@ -9,7 +9,11 @@ data "aws_secretsmanager_secret_version" "environment_management" {
 }
 
 # Core CI User
+# Tfsec ignore
+# - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
+#tfsec:ignore:AWS095
 resource "aws_secretsmanager_secret" "ci_iam_user_keys" {
+  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
   name        = "ci_iam_user_keys"
   description = "Access keys for the CI user, this secret is used by GitHub to set the correct repository secrets."
   tags        = local.tags
@@ -24,7 +28,11 @@ resource "aws_secretsmanager_secret_version" "ci_iam_user_keys" {
 }
 
 # Member CI user
+# Tfsec ignore
+# - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
+#tfsec:ignore:AWS095
 resource "aws_secretsmanager_secret" "member_ci_iam_user_keys" {
+  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
   name        = "member_ci_iam_user_keys"
   description = "Access keys for the CI user, this secret is used by GitHub to set the correct repository secrets."
   tags        = local.tags
