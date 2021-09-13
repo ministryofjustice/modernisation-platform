@@ -17,7 +17,19 @@ This repository currently holds the Modernisation Platform's:
 | [Modernisation Platform](https://github.com/ministryofjustice/modernisation-platform) (this one) | Our repository for core work, including our ADR and infrastructure as code |
 | [Modernisation Platform Environments](https://github.com/ministryofjustice/modernisation-platform-environments) | The repository for user application infrastructure as code and deployment workflows |
 
-### Terraform modules
+### Terraform modules - for member account use
+
+Modernisation Platform users can use these modules in their infrastructure. They are designed to comply with best practices and to work with the platform, to make creating infrastructure quicker, easier and more secure.
+
+| Name | Description |
+|-|-|
+| [modernisation-platform-terraform-bastion-linux](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) | Module for creating Linux bastion servers in member AWS accounts |
+| [modernisation-platform-terraform-ecs](https://github.com/ministryofjustice/modernisation-platform-terraform-ecs) | Module for creating ECS cluster (Linux/Windows) solely for EC2 launch type |
+
+### Terraform modules - used core platform
+
+These modules are used by the Modernisation Platform's core infrastructure
+
 | Name | Description |
 |-|-|
 | [modernisation-platform-terraform-baselines](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines) | Module for enabling and configuring common baseline services such as SecurityHub |
@@ -27,5 +39,3 @@ This repository currently holds the Modernisation Platform's:
 | [modernisation-platform-terraform-s3-bucket-replication-role](https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role) | Module for creating an IAM role for S3 bucket replication |
 | [modernisation-platform-terraform-s3-bucket](https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket) | Module for creating S3 buckets with sensible defaults e.g. replication, encryption |
 | [modernisation-platform-terraform-trusted-advisor](https://github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor) | Module for refreshing Trusted Advisor every 60 minutes |
-| [modernisation-platform-terraform-bastion-linux](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) | Module for creating Linux bastion servers in member AWS accounts |
-| [modernisation-platform-terraform-ecs](https://github.com/ministryofjustice/modernisation-platform-terraform-ecs) | Module for creating ECS cluster (Linux/Windows) solely for EC2 launch type |
