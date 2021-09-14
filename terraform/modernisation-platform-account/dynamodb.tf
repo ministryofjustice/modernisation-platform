@@ -10,6 +10,11 @@ resource "aws_kms_key" "dynamo_encryption" {
   )
 }
 
+resource "aws_kms_alias" "dynamo_encryption" {
+  name          = "alias/dynamodb-state-lock"
+  target_key_id = aws_kms_key.dynamo_encryption.id
+}
+
 data "aws_iam_policy_document" "dynamo_encryption" {
 
   # checkov:skip=CKV_AWS_109: "Key policy requires asterisk resource"

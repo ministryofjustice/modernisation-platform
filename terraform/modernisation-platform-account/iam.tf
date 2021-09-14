@@ -133,6 +133,30 @@ data "aws_iam_policy_document" "member-ci-policy" {
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
   }
 
+  # Based on https://www.terraform.io/docs/language/settings/backends/s3.html#dynamodb-table-permissions
+  statement {
+    effect = "Allow"
+    actions = [
+      "dynamodb:GetItem",
+      "dynamodb:PutItem",
+      "dynamodb:DeleteItem"
+    ]
+    resources = ["${aws_dynamodb_table.state-lock.arn}"]
+  }
+
+  # Based on https://docs.amazonaws.cn/en_us/AmazonS3/latest/userguide/UsingKMSEncryption.htm
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:GenerateDataKey"
+    ]
+    resources = [
+      "${aws_kms_key.dynamo_encryption.arn}",
+      "${aws_kms_key.s3_state_bucket.arn}"
+    ]
+  }
+
   statement {
     effect = "Allow"
     actions = [
