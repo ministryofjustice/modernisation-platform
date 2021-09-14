@@ -191,6 +191,14 @@ module "aws-team" {
   parent_team_id = module.core-team.team_id
 }
 
+# Give write access to teams on the AMI builds repo (access to merge to main is restricted by codeowners file)
+resource "github_team_repository" "modernisation-platform-ami-builds-access" {
+  for_each   = { for team in local.application_teams : team => team }
+  team_id    = each.value
+  repository = module.modernisation-platform-ami-builds.repository.id
+  permission = "push"
+}
+
 # Give write access to teams on the environments repo (access to merge to main is restricted by codeowners file)
 resource "github_team_repository" "modernisation-platform-environments-access" {
   for_each   = { for team in local.application_teams : team => team }
