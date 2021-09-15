@@ -1,7 +1,9 @@
 # Ministry of Justice Modernisation Platform
 
 ## About this repository
-This is the Ministry of Justice [Modernisation Platform team](https://github.com/orgs/ministryofjustice/teams/modernisation-platform)'s repository for core work on the Modernisation Platform.
+This is the Ministry of Justice [Modernisation Platform team](https://github.com/orgs/ministryofjustice/teams/modernisation-platform)'s repository for core work on the Modernisation Platform. The Modernisation Platform team is a [platform engineering product team](https://www.thoughtworks.com/radar/techniques/platform-engineering-product-teams) which provides a hosting platform for Ministry of Justice applications which cannot be hosted on the [Cloud Platform](https://user-guide.cloud-platform.service.justice.gov.uk/#cloud-platform-user-guide).
+
+For more information on the Modernisation Platform please see the [user guidance](https://ministryofjustice.github.io/modernisation-platform).
 
 ## Contents
 This repository currently holds the Modernisation Platform's:
@@ -25,6 +27,8 @@ Modernisation Platform users can use these modules in their infrastructure. They
 |-|-|
 | [modernisation-platform-terraform-bastion-linux](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) | Module for creating Linux bastion servers in member AWS accounts |
 | [modernisation-platform-terraform-ecs](https://github.com/ministryofjustice/modernisation-platform-terraform-ecs) | Module for creating ECS cluster (Linux/Windows) solely for EC2 launch type |
+| [modernisation-platform-terraform-s3-bucket](https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket) | Module for creating S3 buckets with sensible defaults e.g. replication, encryption |
+| [modernisation-platform-terraform-s3-bucket-replication-role](https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role) | Module for creating an IAM role for S3 bucket replication |
 
 ### Terraform modules - used core platform
 
@@ -36,6 +40,4 @@ These modules are used by the Modernisation Platform's core infrastructure
 | [modernisation-platform-terraform-cross-account-access](https://github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access) | Module for creating an IAM role that can be assumed from another account |
 | [modernisation-platform-terraform-environments](https://github.com/ministryofjustice/modernisation-platform-terraform-environments) | Module for creating organizational units and accounts within AWS Organizations from JSON files |
 | [modernisation-platform-terraform-iam-superadmins](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins) | Module for creating defined IAM users as superadmins |
-| [modernisation-platform-terraform-s3-bucket-replication-role](https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role) | Module for creating an IAM role for S3 bucket replication |
-| [modernisation-platform-terraform-s3-bucket](https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket) | Module for creating S3 buckets with sensible defaults e.g. replication, encryption |
 | [modernisation-platform-terraform-trusted-advisor](https://github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor) | Module for refreshing Trusted Advisor every 60 minutes |
