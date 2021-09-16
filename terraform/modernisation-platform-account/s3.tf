@@ -27,9 +27,10 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     ]
     principals {
       type = "AWS"
-      identifiers = [
-        data.aws_caller_identity.current.account_id
-      ]
+      identifiers = concat(
+        [data.aws_caller_identity.current.account_id],
+        local.root_users_with_state_access
+      )
     }
   }
   statement {
