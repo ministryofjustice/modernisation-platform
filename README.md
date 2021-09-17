@@ -3,14 +3,14 @@
 ## About this repository
 This is the Ministry of Justice [Modernisation Platform team](https://github.com/orgs/ministryofjustice/teams/modernisation-platform)'s repository for core work on the Modernisation Platform. The Modernisation Platform team is a [platform engineering product team](https://www.thoughtworks.com/radar/techniques/platform-engineering-product-teams) which provides a hosting platform for Ministry of Justice applications which cannot be hosted on the [Cloud Platform](https://user-guide.cloud-platform.service.justice.gov.uk/#cloud-platform-user-guide).
 
-For more information on the Modernisation Platform please see the [user guidance](https://ministryofjustice.github.io/modernisation-platform).
+For more information on the Modernisation Platform please see the [user guidance](https://user-guide.modernisation-platform.service.justice.gov.uk).
 
 ## Contents
 This repository currently holds the Modernisation Platform's:
 - [Architecture Decision Record (ADR)](architecture-decision-record)
 - [Environment definitions](environments)
 - [Infrastructure as code](terraform)
-- [Source code for ministryofjustice.github.io/modernisation-platform](source)
+- [Source code for user-guide.modernisation-platform.service.justice.gov.uk](source)
 
 ## Other useful repositories
 ### Core repositories

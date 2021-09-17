@@ -4,7 +4,7 @@ module "core" {
   type         = "core"
   name         = "modernisation-platform"
   description  = "A place for the core work of the Modernisation Platform"
-  homepage_url = "https://ministryofjustice.github.io/modernisation-platform"
+  homepage_url = "https://user-guide.modernisation-platform.service.justice.gov.uk"
   topics = [
     "architecture-decisions",
     "aws",

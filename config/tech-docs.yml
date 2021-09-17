@@ -1,5 +1,5 @@
 # Host to use for canonical URL generation (without trailing slash)
-host: https://ministryofjustice.github.io/modernisation-platform
+host: https://user-guide.modernisation-platform.service.justice.gov.uk
 
 # Header-related options
 show_govuk_logo: true
