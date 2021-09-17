@@ -18,6 +18,15 @@
           "level": "developer"
         }
       ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "performance-hub-developers",
+          "level": "developer"
+        }
+      ]
     }
   ],
   "tags": {
