@@ -61,7 +61,7 @@ HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE,Probation
 
 <!-- 
 Please check any additional features required. For more information see here
-https://ministryofjustice.github.io/modernisation-platform/user-guide/creating-networking.html#certificate-services
+https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-networking.html#certificate-services
 -->
 
 - [ ] Bastion
