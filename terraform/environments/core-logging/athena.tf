@@ -34,8 +34,7 @@ resource "aws_iam_role" "lambda_secretsmanager_access" {
           ]
           Effect = "Allow"
           Resource = [
-
-            "arn:aws:secretsmanager:eu-west-2:946070829339:secret:environment_management-BLRCDb"
+            "${data.aws_secretsmanager_secret.environment_management.arn}"
           ]
         },
       ]
