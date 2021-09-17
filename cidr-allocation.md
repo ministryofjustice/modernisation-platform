@@ -42,7 +42,7 @@ Only half of the capacity of this /16 address has been used
 | 10.233.1.192    | /26  | test - platforms                      |         
 | 10.233.2.0      | /26  | test - hmpps                          |  
 | 10.233.2.64     | /26  | development - cica                    |        
-| 10.233.2.128    | /26  |                                       |         
+| 10.233.2.128    | /26  | production - hmpps                    |         
 | 10.233.2.192    | /26  |                                       |         
 | 10.233.3.0      | /26  |                                       |  
 | 10.233.3.64     | /26  |                                       |        
@@ -176,7 +176,7 @@ Only half of the capacity of this /16 address has been used
 | 10.232.14.0     | /23  | test - platforms                      |
 | 10.232.16.0     | /23  | test - hmpps                          |
 | 10.232.18.0     | /23  | development - cica                    |
-| 10.232.20.0     | /23  |                                       |
+| 10.232.20.0     | /23  | production - hmpps                    |
 | 10.232.22.0     | /23  |                                       |
 | 10.232.24.0     | /23  |                                       |
 | 10.232.26.0     | /23  |                                       |
@@ -416,7 +416,7 @@ Only half of the capacity of this /16 address has been used
 | 10.237.0.0      | /21  | LAB ONLY garden - general            |
 | 10.237.8.0      | /21  | LAB ONLY garden - patio              |
 | 10.237.16.0     | /21  | LAB ONLY house - general             |
-| 10.237.24.0     | /21  | -                                    |
+| 10.237.24.0     | /21  | hmpps - general                      |
 | 10.237.32.0     | /21  | -                                    |
 | 10.237.40.0     | /21  | -                                    |
 | 10.237.48.0     | /21  | -                                    |

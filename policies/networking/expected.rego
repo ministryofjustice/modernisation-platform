@@ -12,7 +12,8 @@ expected =
     "hmpps-development": "10.233.1.128/26",
     "platforms-test": "10.233.1.192/26",
     "hmpps-test": "10.233.2.0/26",
-    "cica-development": "10.233.2.64/26"
+    "cica-development": "10.233.2.64/26",
+    "hmpps-production": "10.233.2.128/26"
   },
   "protected": {
     "garden-development": "10.232.0.0/23",
@@ -24,7 +25,8 @@ expected =
     "hmpps-development": "10.232.12.0/23",
     "platforms-test": "10.232.14.0/23",
     "hmpps-test": "10.232.16.0/23",
-    "cica-development": "10.232.18.0/23"
+    "cica-development": "10.232.18.0/23",
+    "hmpps-production": "10.232.20.0/23"
   },
   "subnet_sets": {
     "garden-development": {
@@ -118,6 +120,14 @@ expected =
         "cidr": "10.234.40.0/21",
         "accounts": [
           "tariff-development"
+        ]
+      }
+    },
+    "hmpps-production": {
+      "general": {
+        "cidr": "10.237.24.0/21",
+        "accounts": [
+          "performance-hub-production"
         ]
       }
     }
