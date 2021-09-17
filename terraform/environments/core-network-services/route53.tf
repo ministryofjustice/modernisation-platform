@@ -62,3 +62,13 @@ resource "aws_route53_record" "bichard7" {
     "ns-836.awsdns-40.net."
   ]
 }
+
+# Github pages user guidance CNAME record
+
+resource "aws_route53_record" "github_pages" {
+  zone_id = aws_route53_zone.modernisation-platform.zone_id
+  name    = "user-guide"
+  type    = "CNAME"
+  ttl     = "30"
+  records = ["ministryofjustice.github.io"]
+}
