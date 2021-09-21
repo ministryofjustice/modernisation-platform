@@ -1,3 +1,7 @@
+data "aws_caller_identity" "mod-platform" {
+  provider = aws.modernisation-platform
+}
+
 #Secrets Manager role
 data "aws_iam_policy_document" "lambda_assume_role_policy" {
 
@@ -179,6 +183,11 @@ resource "aws_lambda_function" "athena_table_update" {
   source_code_hash               = data.archive_file.lambda_zip.output_path
   runtime                        = "python3.8"
   reserved_concurrent_executions = 1
+  environment {
+    variables = {
+      mod_account = data.aws_caller_identity.mod-platform.account_id
+    }
+  }
 }
 
 resource "aws_cloudwatch_event_rule" "every_day" {

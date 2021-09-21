@@ -14,7 +14,7 @@ def get_accounts():
         # Call the assume_role method of the STSConnection object and pass the role
         # ARN and a role session name.
         assumed_role_object=sts_client.assume_role(
-            RoleArn="arn:aws:iam::946070829339:role/lambda_secretsmanager_access",
+            RoleArn="arn:aws:iam::os.environ['mod-account']:role/lambda_secretsmanager_access",
             RoleSessionName="ListModPlatformAccounts"
         )
     
