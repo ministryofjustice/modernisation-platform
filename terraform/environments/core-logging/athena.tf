@@ -183,7 +183,7 @@ data "aws_iam_policy_document" "athena_logging" {
   # -- AWS - Documentation reference --
   # Resource – (Required) In a key policy, the value of the Resource element is "*", 
   # which means "this KMS key." The asterisk ("*") identifies the KMS key to which the key policy is attached. 
-  
+
   statement {
     sid    = "Allow management access of the key to the logging account"
     effect = "Allow"
