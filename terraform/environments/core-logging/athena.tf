@@ -1,3 +1,7 @@
+data "aws_caller_identity" "mod-platform" {
+  provider = aws.modernisation-platform
+}
+
 #Secrets Manager role
 data "aws_iam_policy_document" "lambda_assume_role_policy" {
 
@@ -162,6 +166,56 @@ data "archive_file" "lambda_zip" {
 }
 
 #tfsec:ignore:aws-lambda-enable-tracing
+
+resource "aws_kms_key" "athena_logging" {
+  enable_key_rotation = true
+  policy              = data.aws_iam_policy_document.athena_logging.json
+}
+
+resource "aws_kms_alias" "athena_logging" {
+  name          = "alias/athena-logging"
+  target_key_id = aws_kms_key.athena_logging.key_id
+}
+data "aws_iam_policy_document" "athena_logging" {
+  # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_109: "role is resticted by limited actions in member account"
+
+  # -- AWS - Documentation reference --
+  # Resource – (Required) In a key policy, the value of the Resource element is "*", 
+  # which means "this KMS key." The asterisk ("*") identifies the KMS key to which the key policy is attached. 
+
+  statement {
+    sid    = "Allow management access of the key to the logging account"
+    effect = "Allow"
+    actions = [
+      "kms:*"
+    ]
+    resources = [
+      "*"
+    ]
+    principals {
+      type = "AWS"
+      identifiers = [
+        data.aws_caller_identity.current.account_id
+      ]
+    }
+  }
+  statement {
+    sid    = "Allow use of the key including encryption"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt*"
+    ]
+    resources = [
+      "*"
+    ]
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+  }
+}
+
 resource "aws_lambda_function" "athena_table_update" {
 
   # checkov:skip=CKV_AWS_50: "X-ray tracing is not required"
@@ -179,6 +233,12 @@ resource "aws_lambda_function" "athena_table_update" {
   source_code_hash               = data.archive_file.lambda_zip.output_path
   runtime                        = "python3.8"
   reserved_concurrent_executions = 1
+  kms_key_arn                    = aws_kms_key.athena_logging.arn
+  environment {
+    variables = {
+      mod_account = data.aws_caller_identity.mod-platform.account_id
+    }
+  }
 }
 
 resource "aws_cloudwatch_event_rule" "every_day" {
