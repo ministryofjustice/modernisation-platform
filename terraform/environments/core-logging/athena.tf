@@ -49,7 +49,7 @@ resource "aws_iam_role" "lambda_secretsmanager_access" {
 #S3 Bucket for Athena temp SQL queries 
 
 module "s3-bucket-athena" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v4.0.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v5.0.0"
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
