@@ -289,7 +289,7 @@ module "cloudtrail-s3-logging-replication-role" {
 }
 
 module "s3-bucket-cloudtrail-logging" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v4.0.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v5.0.0"
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
