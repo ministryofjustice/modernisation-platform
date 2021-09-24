@@ -14,7 +14,7 @@ This is our architecture decision log, made during the design and build of the M
 1. ✅ [Use Secrets Manager for Secrets](0009-use-secrets-manager-for-secrets.md)
 1. ✅ [Terraform module strategy](0010-terraform-module-strategy.md)
 1. ❌ [Use VPC flow logs to gain insight into network state](0011-use-vpc-flow-logs-to-gain-insight-into-network-state.md)
-1. ❌ [Use Transit Gateway Route Analyzer to check desired state for route tables](0012-use-tgw–route–analyzer–to-check-desired–state-for-route-tables.md)
+1. ❌ [Use Transit Gateway Route Analyzer to check desired state for route tables](0012-use-tgw-route-analyzer-to-check-desired-state-for-route-tables.md)
 1. ❌ [Use IaC Network tester to test connectivity rules](0013-use-iac-network-tester-to-test-connectivity-rules.md)
 
 
