@@ -1,3 +1,4 @@
+# Create the CICD user in the member account which is used for application deployments
 resource "aws_iam_user" "cicd_member_user" {
   name = "cicd-member-user"
 }
@@ -26,8 +27,9 @@ resource "aws_iam_policy" "policy" {
           "ecr:InitiateLayerUpload",
           "ecr:UploadLayerPart",
           "ecr:CompleteLayerUpload",
-          "iam:PassRole"
-
+          "iam:PassRole",
+          "s3:ListBucket",
+          "s3:*Object*"
         ]
         Effect   = "Allow"
         Resource = "*"
