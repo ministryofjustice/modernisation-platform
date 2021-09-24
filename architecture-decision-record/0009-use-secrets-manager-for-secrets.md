@@ -1,4 +1,4 @@
-# 8. Use Secrets Manager for Secrets
+# 9. Use Secrets Manager for Secrets
 
 Date: 2021-06-18
 
