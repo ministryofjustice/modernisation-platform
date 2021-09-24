@@ -1,4 +1,4 @@
-# 8. Terraform Module Strategy
+# 10. Terraform Module Strategy
 
 Date: 2021-06-18
 
