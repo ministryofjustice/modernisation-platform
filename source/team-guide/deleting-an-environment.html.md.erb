@@ -63,7 +63,7 @@ To do this, `cd` into `terraform environments` and find the resource in the stat
 
 To remove it, run:
 
-- `terraform state remove <resource reference>`
+- `terraform state rm <resource reference>`
 
 For example, to remove the environment for `core-vpc-non-live-data`:
 
@@ -132,8 +132,17 @@ should become:
 
 Run `find-terraform-workspaces.sh <workspace name>` to quickly return where workspaces for an AWS account exist:
 
+This should be run from the modernisation platform root directory, using appropriate credetials (eg AWS Vault)
+
+Note, whilst this script will find all of the workspaces, it will take a while to run, currently most accounts will only have workspaces in the following locations:
+`modernisation-platform/terraform/environments/bootstrap/delegate-access`
+`modernisation-platform/terraform/environments/bootstrap/secure-baselines`
+`modernisation-platform/terraform/environments/bootstrap/single-sign-on`
+`modernisation-platform/terraform/environments/<application-name>`
+`modernisation-platform-environments/terraform/environments/<application-name>`
+
 ```bash
-$ sh scripts/internal/find-terraform-workspace.sh
+$ aws-vault exec modernisation-platform -- .scripts/internal/find-terraform-workspace.sh core-vpc-non-live-data
 Starting a `terraform workspace` search from ./modernisation-platform
 
 Searching for Terraform workspaces in ./terraform/environments
@@ -206,6 +215,11 @@ terraform workspace delete -force core-vpc-non-live-data
 ```
 
 >This will not delete the resources that are set up by the Terraform configuration. It will only delete the Terraform reference to the workspace. You will need to delete the AWS account properly.
+
+If you delete the last environment and there are no more environments for the application, you should delete all of the environment files in the following folders:
+`modernisation-platform/terraform/environments/<application-name>`
+`modernisation-platform-environments/terraform/environments/<application-name>`
+`modernisation-platform-environments/.github/workflows/<application-name>`
 
 ## Delete the actual AWS account
 

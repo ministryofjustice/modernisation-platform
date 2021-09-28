@@ -11,15 +11,6 @@
       ]
     },
     {
-      "name": "dev-next",
-      "access": [
-        {
-          "github_slug": "cjse-bichard7-next",
-          "level": "administrator"
-        }
-      ]
-    },
-    {
       "name": "test-current",
       "access": [
         {
