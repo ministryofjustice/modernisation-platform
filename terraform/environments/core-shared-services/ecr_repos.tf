@@ -11,9 +11,9 @@ module "performance_hub_ecr_repo" {
   ]
 
   pull_principals = [
-      local.environment_management.account_ids["performance-hub-development"],
-      local.environment_management.account_ids["performance-hub-preproduction"],
-      local.environment_management.account_ids["performance-hub-production"]
+    local.environment_management.account_ids["performance-hub-development"],
+    local.environment_management.account_ids["performance-hub-preproduction"],
+    local.environment_management.account_ids["performance-hub-production"]
   ]
 
   # Tags
