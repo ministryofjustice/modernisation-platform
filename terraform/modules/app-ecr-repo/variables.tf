@@ -8,8 +8,14 @@ variable "app_name" {
   type        = string
 }
 
-variable "account_arns" {
-  description = "accounts arns"
+variable "push_principals" {
+  description = "AWS principals which require access to push to the repository"
+  type        = list(string)
+  default     = []
+}
+
+variable "pull_principals" {
+  description = "AWS principals which require access to pull from the repository"
   type        = list(string)
   default     = []
 }

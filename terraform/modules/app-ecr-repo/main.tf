@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "ecr_repo_policy" {
     ]
     principals {
       type        = "AWS"
-      identifiers = var.account_arns
+      identifiers = var.push_principals
     }
   }
 
@@ -52,7 +52,7 @@ data "aws_iam_policy_document" "ecr_repo_policy" {
     ]
     principals {
       type        = "AWS"
-      identifiers = var.account_arns
+      identifiers = var.pull_principals
     }
   }
 }
