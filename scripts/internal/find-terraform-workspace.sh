@@ -8,6 +8,7 @@ loop_directories() {
     do
       echo "" # add spacing around the messages
       echo "$(tput setaf 4)Searching for Terraform workspaces in $directory$(tput sgr0)"
+      TF_IN_AUTOMATION=true terraform -chdir="$directory" init
       terraform -chdir="$directory" workspace select default
       terraform -chdir="$directory" workspace select "$1"
       echo "" # add spacing around the messages
