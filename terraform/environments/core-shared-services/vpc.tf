@@ -41,30 +41,30 @@ module "vpc" {
 
 locals {
   # Derive non_live_data vpc and private subnets for configuration setting up the vpc endpoints
-  non_live_data_vpc_id    = one([for k in module.vpc : k.vpc_id if k.vpc_cidr_block == local.networking.non_live_data])
-  private_subnet_ids      = flatten([for k in module.vpc : k.non_tgw_subnet_ids_map.private if k.vpc_cidr_block == local.networking.non_live_data])
+  non_live_data_vpc_id = one([for k in module.vpc : k.vpc_id if k.vpc_cidr_block == local.networking.non_live_data])
+  private_subnet_ids   = flatten([for k in module.vpc : k.non_tgw_subnet_ids_map.private if k.vpc_cidr_block == local.networking.non_live_data])
 
   # Get the private route table keys and values, then transform the values (the actual route table ids) into a list
   # i.e. transform 
-#   {
-#   "private" = {
-#     "non_live_data-private-eu-west-2a" = "rtb-aaa"
-#     "non_live_data-private-eu-west-2b" = "rtb-bbb"
-#     "non_live_data-private-eu-west-2c" = "rtb-ccc"
-#   },
-#   "data" = {
-#     "non_live_data-data-eu-west-2a" = "rtb-ddd"
-#     ...
-#   },
-#   {
-#   "transit-gateway" = {
-#     "non_live_data-transit-gateway-eu-west-2a" = "rtb-eee"
-#     ...
-#   }
-# }
-# to ["rtb-aaa", "rtb-bbb", "rtb-ccc"]
-  private_route_tables = { for k in module.vpc : "private" => k.private_route_tables_map.private if k.vpc_cidr_block == local.networking.non_live_data }
-  private_route_table_ids = [ for k,v in local.private_route_tables.private : v ]
+  #   {
+  #   "private" = {
+  #     "non_live_data-private-eu-west-2a" = "rtb-aaa"
+  #     "non_live_data-private-eu-west-2b" = "rtb-bbb"
+  #     "non_live_data-private-eu-west-2c" = "rtb-ccc"
+  #   },
+  #   "data" = {
+  #     "non_live_data-data-eu-west-2a" = "rtb-ddd"
+  #     ...
+  #   },
+  #   {
+  #   "transit-gateway" = {
+  #     "non_live_data-transit-gateway-eu-west-2a" = "rtb-eee"
+  #     ...
+  #   }
+  # }
+  # to ["rtb-aaa", "rtb-bbb", "rtb-ccc"]
+  private_route_tables    = { for k in module.vpc : "private" => k.private_route_tables_map.private if k.vpc_cidr_block == local.networking.non_live_data }
+  private_route_table_ids = [for k, v in local.private_route_tables.private : v]
 }
 
 # Create security group for vpc endpoints
