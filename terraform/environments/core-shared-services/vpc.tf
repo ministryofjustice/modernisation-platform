@@ -81,6 +81,7 @@ resource "aws_security_group" "interface_endpoint_security_group" {
 }
 
 resource "aws_security_group_rule" "interface_endpoint-security_group_rule" {
+  description       = "Permit secure traffic to this endpoint within the VPC"
   type              = "ingress"
   from_port         = 443
   to_port           = 443
