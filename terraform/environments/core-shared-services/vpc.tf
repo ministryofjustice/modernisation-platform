@@ -29,6 +29,8 @@ module "vpc" {
   #   none = no gateway for internal traffic
   gateway = "transit"
 
+  transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
+
   # VPC Flow Logs
   vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
 
