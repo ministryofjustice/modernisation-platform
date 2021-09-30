@@ -1,7 +1,7 @@
 {
   "cidr": {
     "transit_gateway": "10.233.2.0/26",
-    "protected": "10.232.16.0/23",
+    "protected": "10.238.16.0/23",
     "subnet_sets": {
       "nomis": {
         "cidr": "10.235.8.0/21",
