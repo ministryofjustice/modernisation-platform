@@ -16,17 +16,17 @@ expected =
     "hmpps-production": "10.233.2.128/26"
   },
   "protected": {
-    "garden-development": "10.232.0.0/23",
-    "house-development": "10.232.2.0/23",
-    "garden-production": "10.232.4.0/23",
-    "house-production": "10.232.6.0/23",
-    "hmpps-preproduction": "10.232.8.0/23",
-    "platforms-development": "10.232.10.0/23",
-    "hmpps-development": "10.232.12.0/23",
-    "platforms-test": "10.232.14.0/23",
-    "hmpps-test": "10.232.16.0/23",
-    "cica-development": "10.232.18.0/23",
-    "hmpps-production": "10.232.20.0/23"
+    "garden-development": "10.238.0.0/23",
+    "house-development": "10.238.2.0/23",
+    "garden-production": "10.238.4.0/23",
+    "house-production": "10.238.6.0/23",
+    "hmpps-preproduction": "10.238.8.0/23",
+    "platforms-development": "10.238.10.0/23",
+    "hmpps-development": "10.238.12.0/23",
+    "platforms-test": "10.238.14.0/23",
+    "hmpps-test": "10.238.16.0/23",
+    "cica-development": "10.238.18.0/23",
+    "hmpps-production": "10.238.20.0/23"
   },
   "subnet_sets": {
     "garden-development": {

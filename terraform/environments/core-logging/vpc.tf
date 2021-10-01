@@ -18,12 +18,20 @@ module "vpc" {
   #   none = no gateway for internal traffic
   gateway = "transit"
 
-  transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
-
   # VPC Flow Logs
   vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
 
   # Tags
   tags_common = local.tags
   tags_prefix = each.key
+}
+
+module "core-vpc-tgw-routes" {
+  for_each = local.networking
+  source   = "../../modules/core-vpc-tgw-routes"
+
+  transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
+  route_table_ids    = module.vpc[each.key].private_route_tables
+
+  depends_on = [module.vpc_attachment]
 }
