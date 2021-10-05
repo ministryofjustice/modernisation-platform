@@ -135,6 +135,7 @@ module "modernisation-platform-ami-builds" {
     "linux",
     "windows"
   ]
+  secrets = nonsensitive(local.ci_iam_user_keys)
 }
 
 module "modernisation-platform-environments" {
