@@ -305,3 +305,56 @@ resource "aws_iam_role_policy" "member-delegation" {
     ]
   })
 }
+
+# Read only role for developer sso plans
+resource "aws_iam_role" "member_delegation_read_only" {
+  name = "member-delegation-read-only"
+  assume_role_policy = jsonencode( # checkov:skip=CKV_AWS_60: "the policy is secured with the condition"
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Effect" : "Allow",
+          "Principal" : {
+            "AWS" : "*"
+          },
+          "Action" : "sts:AssumeRole",
+          "Condition": {
+                "ForAnyValue:StringLike": {
+                    "aws:PrincipalOrgPaths": ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+                }
+            }
+        }
+      ]
+  })
+
+  tags = merge(
+    local.tags,
+    {
+      Name = "member-delegation-read-only"
+    },
+  )
+}
+
+resource "aws_iam_role_policy" "member_delegation_read_only" {
+  name = "MemberDelegationReadOnly"
+  role = aws_iam_role.member_delegation_read_only.name
+
+  policy = jsonencode({ #tfsec:ignore:AWS099 - we need to be able to read across all hosted zones to have this as a generic role
+    Version = "2012-10-17"
+    Statement = [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "route53:List*",
+          "route53:Get*",
+          "ec2:DescribeSecurityGroupReferences",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeVpcEndpoints",
+          "ec2:DescribePrefixLists"
+        ],
+        "Resource" : "*"
+      },
+    ]
+  })
+}
