@@ -146,6 +146,6 @@ expected =
           "xhibit-portal-production"
         ]
       }
-    },
+    }
   }
 }
