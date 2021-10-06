@@ -130,6 +130,22 @@ expected =
           "performance-hub-production"
         ]
       }
-    }
+    },
+    "hmcts-development": {
+      "general": {
+        "cidr": "10.234.48.0/21",
+        "accounts": [
+          "xhibit-portal-development"
+        ]
+      }
+    },
+    "hmcts-production": {
+      "general": {
+        "cidr": "10.237.32.0/21",
+        "accounts": [
+          "xhibit-portal-production"
+        ]
+      }
+    },
   }
 }
