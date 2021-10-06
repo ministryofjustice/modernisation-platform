@@ -6,11 +6,11 @@ labels: bug
 
 ## Expected Behavior
 
-<!-- What is happening? -->
+<!-- What should happen? -->
 
 ## Actual Behavior
 
-<!-- What should happen? -->
+<!-- What is happening? -->
 
 ## Steps to Reproduce the Problem
 
