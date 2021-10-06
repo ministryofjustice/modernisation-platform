@@ -113,6 +113,12 @@ expected =
         "accounts": [
           "nomis-test"
         ]
+      },
+      "general": {
+        "cidr": "10.235.16.0/21",
+        "accounts": [
+          "nomis-test"
+        ]
       }
     },
     "cica-development": {
