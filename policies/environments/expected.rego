@@ -22,6 +22,7 @@ expected =
     "testing",
     "nomis",
     "analytical-platform-data",
-    "tariff"
+    "tariff",
+    "xhibit-portal"
     ]
 }
