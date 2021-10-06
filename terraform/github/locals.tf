@@ -57,6 +57,7 @@ locals {
     "operations-engineering",
     "performance-hub-developers",
     "studio-webops",
-    "cica"
+    "cica",
+    "xhibit-portal-dev"
   ]
 }
