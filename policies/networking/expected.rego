@@ -13,7 +13,9 @@ expected =
     "platforms-test": "10.233.1.192/26",
     "hmpps-test": "10.233.2.0/26",
     "cica-development": "10.233.2.64/26",
-    "hmpps-production": "10.233.2.128/26"
+    "hmpps-production": "10.233.2.128/26",
+    "hmcts-development": "10.233.2.192/26",
+    "hmcts-production": "10.233.3.0/26"
   },
   "protected": {
     "garden-development": "10.238.0.0/23",
@@ -26,7 +28,9 @@ expected =
     "platforms-test": "10.238.14.0/23",
     "hmpps-test": "10.238.16.0/23",
     "cica-development": "10.238.18.0/23",
-    "hmpps-production": "10.238.20.0/23"
+    "hmpps-production": "10.238.20.0/23",
+    "hmcts-development": "10.238.22.0/23",
+    "hmcts-production": "10.238.24.0/23"
   },
   "subnet_sets": {
     "garden-development": {
