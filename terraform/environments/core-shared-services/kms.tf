@@ -32,7 +32,8 @@ data "aws_iam_policy_document" "ebs_encryption_policy_doc" {
 
   # Allow all mod platform account to use this key so that they can launch ec2 instances based on AMIs backed by encrypted snapshots
   # Actions based on https://aws.amazon.com/blogs/security/how-to-share-encrypted-amis-across-accounts-to-launch-encrypted-ec2-instances/
-  # Condition based on approach taken for S3 example in https://aws.amazon.com/blogs/security/iam-share-aws-resources-groups-aws-accounts-aws-organizations/
+  # Conditions for principals is based on approach taken for S3 example in https://aws.amazon.com/blogs/security/iam-share-aws-resources-groups-aws-accounts-aws-organizations/
+  # Conditions for key grants is based on https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html#key-policy-service-integration
   statement {
     effect = "Allow"
     actions = [
@@ -43,11 +44,21 @@ data "aws_iam_policy_document" "ebs_encryption_policy_doc" {
     ]
 
     resources = ["*"]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
 
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalOrgPaths"
       values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+
+    condition {
+      test     = "Bool"
+      variable = "kms:GrantIsForAWSResource"
+      values   = ["true"]
     }
   }
 }
