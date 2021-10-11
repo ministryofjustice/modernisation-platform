@@ -23,11 +23,12 @@ data "aws_iam_policy_document" "ebs_encryption_policy_doc" {
 
     resources = ["*"] # Represents the key to which this policy is attached
 
+    # AWS should add the AWS account by default but adding here for visibility
+    # See https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html#key-policy-default-allow-root-enable-iam
     principals {
       type        = "AWS"
-      identifiers = concat(local.root_users_with_state_access, [data.aws_caller_identity.current.account_id])
+      identifiers = [data.aws_caller_identity.current.account_id] #
     }
-
   }
 
   # Allow all mod platform account to use this key so that they can launch ec2 instances based on AMIs backed by encrypted snapshots
