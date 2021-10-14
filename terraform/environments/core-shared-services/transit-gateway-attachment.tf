@@ -1,5 +1,3 @@
-data "aws_caller_identity" "current" {}
-
 data "aws_ec2_transit_gateway" "transit-gateway" {
   provider = aws.core-network-services
   filter {
