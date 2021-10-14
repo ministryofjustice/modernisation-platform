@@ -3,7 +3,11 @@
 # Description
 # Script to get security hub findings across the modernisation platform accounts and collect them into a single file for inspection
 # Generates a tsv file containing all the findings
+# Script assumes the same named role in each account to read security hub information
 # See https://docs.aws.amazon.com/cli/latest/reference/securityhub/get-findings.html#examples for info about the security hub findings filters
+
+# Parameters
+# - Name of the profile in your aws config file representing access to the mod platform account (this profile is most likely based on a role ARN that has sufficient permissions to be able to read secret values)
 
 # Dependencies
 # - Ensure this script can be run - chmod u+x get-security-hub-findings.sh
