@@ -68,11 +68,11 @@ resource "aws_iam_role" "read_dns" {
             "AWS" : "*"
           },
           "Action" : "sts:AssumeRole",
-          "Condition": {
-                "ForAnyValue:StringLike": {
-                    "aws:PrincipalOrgPaths": ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
-                }
+          "Condition" : {
+            "ForAnyValue:StringLike" : {
+              "aws:PrincipalOrgPaths" : ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
             }
+          }
         }
       ]
   })
@@ -101,7 +101,7 @@ resource "aws_iam_role_policy" "read_dns" {
         Resource = [
           "arn:aws:route53:::hostedzone/${aws_route53_zone.modernisation-platform.id}",
           "arn:aws:route53:::hostedzone/${aws_route53_zone.modernisation-platform-internal.id}"
-        ]      }
+      ] }
     ]
   })
 }

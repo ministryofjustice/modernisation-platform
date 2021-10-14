@@ -38,7 +38,7 @@ data "aws_iam_policy_document" "environment_management" {
     resources = ["*"]
 
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = ["*"]
     }
 
@@ -79,7 +79,7 @@ data "aws_iam_policy_document" "kms_environment_management" {
       "*"
     ]
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = [data.aws_caller_identity.current.account_id, local.modernisation_platform_account.id]
     }
   }
@@ -92,7 +92,7 @@ data "aws_iam_policy_document" "kms_environment_management" {
     ]
     resources = ["*"]
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = ["*"]
     }
     condition {

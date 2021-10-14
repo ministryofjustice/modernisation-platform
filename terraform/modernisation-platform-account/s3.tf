@@ -56,7 +56,7 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     resources = ["*"]
 
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = ["*"]
     }
 
@@ -154,17 +154,17 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       values   = ["bucket-owner-full-control"]
     }
   }
-    statement {
+  statement {
     sid    = "ReadOnlyFromModernisationPlatformOU"
     effect = "Allow"
     actions = [
       "s3:GetObject",
       "s3:ListBucket"
     ]
-    resources = [module.state-bucket.bucket.arn,"${module.state-bucket.bucket.arn}/*"]
+    resources = [module.state-bucket.bucket.arn, "${module.state-bucket.bucket.arn}/*"]
 
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = ["*"]
     }
     condition {

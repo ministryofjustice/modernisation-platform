@@ -319,11 +319,11 @@ resource "aws_iam_role" "member_delegation_read_only" {
             "AWS" : "*"
           },
           "Action" : "sts:AssumeRole",
-          "Condition": {
-                "ForAnyValue:StringLike": {
-                    "aws:PrincipalOrgPaths": ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
-                }
+          "Condition" : {
+            "ForAnyValue:StringLike" : {
+              "aws:PrincipalOrgPaths" : ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
             }
+          }
         }
       ]
   })
