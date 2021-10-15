@@ -28,7 +28,7 @@ data "aws_iam_policy_document" "kms_state_bucket" {
     principals {
       type = "AWS"
       identifiers = concat(
-        [data.aws_caller_identity.current.account_id],
+        ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"],
         local.root_users_with_state_access
       )
     }
@@ -45,6 +45,25 @@ data "aws_iam_policy_document" "kms_state_bucket" {
       identifiers = [
         "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/AWSS3BucketReplication-terraform-state/s3-replication"
       ]
+    }
+  }
+  statement {
+    sid    = "ReadOnlyFromModernisationPlatformOU"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt*"
+    ]
+    resources = ["*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
     }
   }
 }
@@ -133,6 +152,25 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       test     = "StringEquals"
       variable = "s3:x-amz-acl"
       values   = ["bucket-owner-full-control"]
+    }
+  }
+  statement {
+    sid    = "ReadOnlyFromModernisationPlatformOU"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:ListBucket"
+    ]
+    resources = [module.state-bucket.bucket.arn, "${module.state-bucket.bucket.arn}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
     }
   }
 }

@@ -137,3 +137,14 @@ resource "aws_iam_policy" "member-access" {
   description = "Restricted admin policy for member CI/CD to use"
   policy      = data.aws_iam_policy_document.member-access.json
 }
+
+# Create a parameter for the modernisation platform environment management secret ARN that can be used to gain
+# access to the environments parameter when running a tf plan locally
+
+resource "aws_ssm_parameter" "environment_management_arn" {
+  name  = "environment_management_arn"
+  type  = "SecureString"
+  value = data.aws_secretsmanager_secret.environment_management.arn
+
+  tags = local.environments
+}
