@@ -5,3 +5,4 @@
 tmp/
 .vscode/
 .terraform.lock.hcl
+*.tsv
