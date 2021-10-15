@@ -142,6 +142,8 @@ resource "aws_iam_policy" "member-access" {
 # access to the environments parameter when running a tf plan locally
 
 resource "aws_ssm_parameter" "environment_management_arn" {
+  provider = aws.workspace
+
   name  = "environment_management_arn"
   type  = "SecureString"
   value = data.aws_secretsmanager_secret.environment_management.arn
