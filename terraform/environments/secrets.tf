@@ -1,10 +1,5 @@
 # Environment Management
-# Tfsec ignore
-# - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
-#tfsec:ignore:AWS095
 resource "aws_secretsmanager_secret" "environment_management" {
-  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
-
   provider    = aws.modernisation-platform
   name        = "environment_management"
   description = "IDs for AWS-specific resources for environment management, such as organizational unit IDs"
@@ -87,8 +82,7 @@ data "aws_iam_policy_document" "kms_environment_management" {
     sid    = "Allow key decryption for modernisation platform ou members"
     effect = "Allow"
     actions = [
-      "kms:Decrypt*",
-      "kms:GenerateDataKey"
+      "kms:Decrypt*"
     ]
     resources = ["*"]
     principals {
@@ -103,7 +97,6 @@ data "aws_iam_policy_document" "kms_environment_management" {
   }
 }
 
-#data.aws_organizations_organizational_units.root_ous.children["modernistion-platform"].id
 data "aws_secretsmanager_secret_version" "environment_management" {
   provider  = aws.modernisation-platform
   secret_id = aws_secretsmanager_secret.environment_management.id
