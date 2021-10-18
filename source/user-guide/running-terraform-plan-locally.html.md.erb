@@ -1,0 +1,43 @@
+---
+title: Running Terraform Plan Locally
+last_reviewed_on: 2021-10-18
+review_in: 3 months
+---
+
+# <%= current_page.data.title %>
+
+Whilst it is possible to see the results of a Terraform plan when you [create a pull request](./deploying-your-infrastructure.html#jobs-on-pull-request), it is also possible to run a Terraform plan locally.
+Some engineers prefer this as it provides a quicker feedback loop to identify any issues with your infrastructure code.
+
+## Modify your providers.tf
+
+In the [modernisation-platform-environments repository](https://github.com/ministryofjustice/modernisation-platform-environments), in your application folder there is a file called `providers.tf`
+
+This file details the Terraform AWS providers used and which roles they use when running Terraform.
+
+The top part of the file details the provider configuration which is needed to run the Terraform on the Github Actions CI/CD pipelines. The second section, which is by default commented out, details provider configuration required if running a plan locally.
+
+
+To run a plan locally, you need to comment out the top section of the file, and uncomment the bottom section of the file.  Comments within the file show which sections.
+
+>Note do not check in to Github any modifications to the file, as this will cause the pipeline to stop working, these changes are only for running Terraform plans locally.
+
+## Enter your AWS SSO credentials
+
+Get your AWS SSO credentials as detailed [here](./getting-aws-credentials.html), choose option 1 and paste the credentials into the terminal window you are working from.
+
+>Please note that the credentials will expire after a period of 1 hour.
+
+## Install Terraform
+
+Follow the instructions [here](https://learn.hashicorp.com/tutorials/terraform/install-cli) to install the latest version of Terraform according to your platform.
+
+## Run Terraform plan
+
+1. Navigate to your application infrastructure code - `cd modernisation-platform-environments/terraform/environments/my-application`
+1. Run a Terraform init - `terraform init`
+1. View the workspaces (you have different workspaces for your different environment accounts) - `terraform workspace list`
+1. Select the required workspace - `terraform workspace select my-application-development`
+1. Run a Terraform plan - `terraform plan`
+
+>Running a plan locally has read only permissions, you will not be able to run an apply.
