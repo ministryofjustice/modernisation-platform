@@ -9,6 +9,14 @@ resource "aws_kms_alias" "ebs_encryption_cmk_alias" {
   target_key_id = aws_kms_key.ebs_encryption_cmk.id
 }
 
+output "ebs_encryption_cmk_id" {
+  value = aws_kms_key.ebs_encryption_cmk.id
+}
+
+output "ebs_encryption_cmk_alias_arn" {
+  value = aws_kms_alias.ebs_encryption_cmk_alias.arn
+}
+
 data "aws_iam_policy_document" "ebs_encryption_policy_doc" {
 
   # checkov:skip=CKV_AWS_109: "Key policy requires asterisk resource"
