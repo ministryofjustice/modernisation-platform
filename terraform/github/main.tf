@@ -113,18 +113,6 @@ module "terraform-module-bastion-linux" {
   ]
 }
 
-module "infrastructure-test" {
-  source      = "./modules/repository"
-  name        = "modernisation-platform-infrastructure-test"
-  description = "Infrastructure test tool based on Cucumber.js"
-  topics = [
-    "aws",
-    "networking",
-    "test",
-    "moj-security"
-  ]
-}
-
 module "terraform-module-ecs" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-ecs"
@@ -165,6 +153,18 @@ module "modernisation-platform-environments" {
   }))
 }
 
+module "modernisation-platform-infrastructure-test" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-infrastructure-test"
+  description = "Infrastructure test tool based on Cucumber.js"
+  topics = [
+    "aws",
+    "networking",
+    "test",
+    "moj-security"
+  ]
+}
+
 # Everyone, with access to the above repositories
 module "core-team" {
   source      = "./modules/team"
@@ -181,10 +181,10 @@ module "core-team" {
     module.terraform-module-s3-bucket.repository.name,
     module.terraform-module-trusted-advisor.repository.name,
     module.terraform-module-bastion-linux.repository.name,
-    module.infrastructure-test.repository.name,
     module.terraform-module-ecs.repository.name,
     module.modernisation-platform-ami-builds.repository.name,
-    module.modernisation-platform-environments.repository.name
+    module.modernisation-platform-environments.repository.name,
+    module.modernisation-platform-infrastructure-test.repository.name
   ]
 
   maintainers = local.maintainers
