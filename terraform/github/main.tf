@@ -153,6 +153,18 @@ module "modernisation-platform-environments" {
   }))
 }
 
+module "modernisation-platform-infrastructure-test" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-infrastructure-test"
+  description = "Infrastructure test tool based on Cucumber.js"
+  topics = [
+    "aws",
+    "networking",
+    "test",
+    "moj-security"
+  ]
+}
+
 # Everyone, with access to the above repositories
 module "core-team" {
   source      = "./modules/team"
@@ -171,7 +183,8 @@ module "core-team" {
     module.terraform-module-bastion-linux.repository.name,
     module.terraform-module-ecs.repository.name,
     module.modernisation-platform-ami-builds.repository.name,
-    module.modernisation-platform-environments.repository.name
+    module.modernisation-platform-environments.repository.name,
+    module.modernisation-platform-infrastructure-test.repository.name
   ]
 
   maintainers = local.maintainers
