@@ -50,6 +50,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 0 # or "2" To retrieve the preceding commit.
       - name: Create Github member environments
         run: bash ./scripts/git-create-environments.sh
         env:
