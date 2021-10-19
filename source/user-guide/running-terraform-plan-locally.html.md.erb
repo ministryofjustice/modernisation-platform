@@ -9,16 +9,16 @@ review_in: 3 months
 Whilst it is possible to see the results of a Terraform plan when you [create a pull request](./deploying-your-infrastructure.html#jobs-on-pull-request), it is also possible to run a Terraform plan locally.
 Some engineers prefer this as it provides a quicker feedback loop to identify any issues with your infrastructure code.
 
-## Modify your providers.tf
+## Modify your providers.tf and secrets.tf
 
-In the [modernisation-platform-environments repository](https://github.com/ministryofjustice/modernisation-platform-environments), in your application folder there is a file called `providers.tf`
+In the [modernisation-platform-environments repository](https://github.com/ministryofjustice/modernisation-platform-environments), in your application folder there are files called `providers.tf` and `secrets.tf`
 
-This file details the Terraform AWS providers used and which roles they use when running Terraform.
+These files detail the Terraform AWS providers used, which roles they use when running Terraform and details of the environments management secret.
 
-The top part of the file details the provider configuration which is needed to run the Terraform on the Github Actions CI/CD pipelines. The second section, which is by default commented out, details provider configuration required if running a plan locally.
+The top part of each file details the configuration which is needed to run the Terraform on the Github Actions CI/CD pipelines. The second section, which is by default commented out, details configuration required if running a plan locally.
 
 
-To run a plan locally, you need to comment out the top section of the file, and uncomment the bottom section of the file.  Comments within the file show which sections.
+To run a plan locally, you need to comment out the top section of both the files, and uncomment the bottom section of the files.  Comments within the file show which sections.
 
 >Note do not check in to Github any modifications to the file, as this will cause the pipeline to stop working, these changes are only for running Terraform plans locally.
 
