@@ -561,7 +561,7 @@ resource "aws_security_group" "endpoints" {
 resource "aws_security_group_rule" "endpoints_ingress_1" {
   for_each = var.subnet_sets
 
-  description = "Allow inbound HTTPS"
+  description       = "Allow inbound HTTPS"
   type              = "ingress"
   from_port         = 443
   to_port           = 443
