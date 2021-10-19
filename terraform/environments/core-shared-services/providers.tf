@@ -29,3 +29,8 @@ provider "aws" {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids["core-vpc-production"]}:role/ModernisationPlatformAccess"
   }
 }
+
+provider "aws" {
+  alias  = "bucket-replication"
+  region = "eu-west-1"
+}
