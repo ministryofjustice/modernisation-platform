@@ -232,19 +232,19 @@ Before the account can be deleted by the root user, a policy needs to be tempora
 To do this, complete the following steps, comprising AWS CLI commands.
 > Note, all of the following AWS CLI commands can only be run by a user that has access to the AWS Organizations Management account
 
-1. Identify the policy id 
+- Identify the policy id 
 
 ```bash
 aws organizations list-policies --filter SERVICE_CONTROL_POLICY --query "Policies[?Name=='Modernisation Platform Member OU SCP - Prevent Root'].[Id,Name]" --output text
 ```
 
-2. Identify the target id (an OU) associated with the policy, replacing \<policyId\> (starting "p-"), from the command above
+- Identify the target id (an OU) associated with the policy, replacing \<policyId\> (starting "p-"), from the command above
 
 ```bash
 aws organizations list-targets-for-policy --policy-id <policyId> --query "Targets[*].[Name,TargetId]" --output text
 ```
 
-3. Detach the policy preventing root access from the Modernisation Platform OU, replacing \<policyId\> with the policy id and \<targetId\> with the target id, both identified above
+- Detach the policy preventing root access from the Modernisation Platform OU, replacing \<policyId\> with the policy id and \<targetId\> with the target id, both identified above
 
 ```bash
 aws organizations detach-policy --policy-id <policyId> --target-id <targetId>
