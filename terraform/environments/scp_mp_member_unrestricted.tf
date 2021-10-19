@@ -60,7 +60,7 @@ resource "aws_organizations_policy" "scp_mp_member_unrestriced_ou" {
 
 # The policy preventing root access
 resource "aws_organizations_policy" "scp_mp_member_unrestricted_ou_prevent_root" {
-  name        = "Modernisation Platform Member Unrestriced OU SCP - Prevent Root"
+  name        = "Modernisation Platform Member Unrestricted OU SCP - Prevent Root"
   description = "Prevents root user access for all OUs and accounts under the Modernisation Platform Unrestricted OU"
   type        = "SERVICE_CONTROL_POLICY"
   content     = data.aws_iam_policy_document.scp_mp_member_unrestricted_ou_prevent_root.json
