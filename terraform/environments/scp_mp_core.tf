@@ -61,7 +61,7 @@ resource "aws_organizations_policy" "scp_mp_core_ou" {
 # The policy preventing root access
 resource "aws_organizations_policy" "scp_mp_core_ou_prevent_root" {
   name        = "Modernisation Platform Core OU SCP - Prevent Root"
-  description = "revents root user access for all OUs and accounts under the Modernisation Platform Core OU"
+  description = "Prevents root user access for all OUs and accounts under the Modernisation Platform Core OU"
   type        = "SERVICE_CONTROL_POLICY"
   content     = data.aws_iam_policy_document.scp_mp_core_ou_prevent_root.json
 
