@@ -83,9 +83,7 @@ data "aws_iam_policy_document" "athena_bucket_policy" {
       "s3:ListBucket",
       "s3:GetEncryptionConfiguration",
       "s3:GetBucketAcl",
-      "s3:GetBucketPolicy",
-      "s3:PutBucketPolicy"
-
+      "s3:GetBucketPolicy"
     ]
     resources = ["${module.s3-bucket-athena.bucket.arn}",
     "${module.s3-bucket-athena.bucket.arn}/*"]
