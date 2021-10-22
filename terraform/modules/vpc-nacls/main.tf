@@ -29,7 +29,7 @@ resource "aws_network_acl_rule" "custom_nacl_deployment" {
 }
 
 resource "aws_network_acl_rule" "open_endpoint_cidrs_for_data_subnets_egress" {
-  for_each = { 
+  for_each = {
     for key, data in var.cidrs_for_s3_endpoints :
     "${data.name}-${key}" => data
   }
@@ -44,7 +44,7 @@ resource "aws_network_acl_rule" "open_endpoint_cidrs_for_data_subnets_egress" {
 }
 
 resource "aws_network_acl_rule" "open_endpoint_cidrs_for_data_subnets_ingress" {
-  for_each = { 
+  for_each = {
     for key, data in var.cidrs_for_s3_endpoints :
     "${data.name}-${key}" => data
   }
