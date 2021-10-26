@@ -8,8 +8,7 @@ allowed_business_units := [
   "HMCTS",
   "CICA",
   "Platforms",
-  "CJSE",
-  "Probation"
+  "CJSE"
 ]
 
 deny[msg] {

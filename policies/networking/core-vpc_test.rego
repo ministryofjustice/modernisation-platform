@@ -18,7 +18,7 @@ test_mismatched_transit_gateway_cidr {
 }
 
 test_mismatched_protected_cidr {
-	deny["Protected CIDR mismatch: `1.1.1.1` should equal `10.232.0.0/23` for `garden-development`"] with input as sample_input
+	deny["Protected CIDR mismatch: `1.1.1.1` should equal `10.238.0.0/23` for `garden-development`"] with input as sample_input
 }
 
 test_mismatched_subnet_sets {
