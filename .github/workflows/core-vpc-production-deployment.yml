@@ -8,7 +8,7 @@ on:
     paths:
         - 'environments-networks/*-production.json'
         - '.github/workflows/core-vpc-production-deployment.yml'
-        - 'terraform/core-vpc/**'
+        - 'terraform/environments/core-vpc/**'
   pull_request:
     branches:
       - main
