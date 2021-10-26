@@ -34,8 +34,7 @@ output = json
 Host glados-test-bastion
      IdentityFile ~/.ssh/id_rsa
      User jane
-     ProxyCommand sh -c "aws ssm start-session --target i-123456789 --document-name AWS-StartSSHSession --parameters 'portNumber=%p' --profile glados-test-developer --region eu-west-2"
-
+     ProxyCommand sh -c "aws ssm start-session --target $(aws ec2 describe-instances --no-cli-pager --filters "Name=tag:Name,Values=bastion_linux" --query 'Reservations[0].Instances[0].InstanceId' --profile glados-test-developer) --document-name AWS-StartSSHSession --parameters 'portNumber=%p' --profile glados-test-developer --region eu-west-2"
 ```
 
 4) Log in to SSO using the following command:
