@@ -8,12 +8,14 @@ on:
     paths:
         - 'environments-networks/*-development.json'
         - '.github/workflows/core-vpc-development-deployment.yml'
-        - 'terraform/core-vpc/**'
+        - 'terraform/environments/core-vpc/**'
   pull_request:
     branches:
       - main
     paths:
         - 'environments-networks/*-development.json'
+        - '.github/workflows/core-vpc-development-deployment.yml'
+        - 'terraform/environments/core-vpc/**'
   workflow_dispatch:
 
 env:

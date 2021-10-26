@@ -176,7 +176,6 @@ locals {
 
 # VPC
 resource "aws_vpc" "vpc" {
-  #checkov:skip=CKV2_AWS_12:Skip checking default SGs of every VPC restrict all traffic. Default SGs unused, better approach would be to delete when possible
   cidr_block = var.transit
 
   enable_dns_support   = true
@@ -190,7 +189,41 @@ resource "aws_vpc" "vpc" {
   )
 }
 
+# Bring management of the default security group in the member vpc under terraform
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.vpc.id
 
+  # Block all inbound and outbound access to through this default security group
+  ingress = []
+  egress  = []
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-default"
+    }
+  )
+  # For reference, the following inline ingress and egress rules are the 'default' rules which we are effectively removing
+  # Uncomment these rules to restore an uncustomised, default security group back to what it was originally
+  # See https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/default-custom-security-groups.html#default-security-group for more info
+  # ingress = [
+  #   {
+  #     protocol  = -1
+  #     self      = true
+  #     from_port = 0
+  #     to_port   = 0
+  #   }
+  # ]
+
+  # egress = [
+  #   {
+  #     from_port   = 0
+  #     to_port     = 0
+  #     protocol    = "-1"
+  #     cidr_blocks = ["0.0.0.0/0"]
+  #   }
+  # ]
+}
 
 # VPC Flow Logs
 # TF sec exclusions
