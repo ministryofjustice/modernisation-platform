@@ -94,7 +94,7 @@ module "state-bucket-s3-replication-role" {
 }
 
 module "state-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v5.0.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v5.0.1"
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
@@ -103,6 +103,7 @@ module "state-bucket" {
   bucket_name                = "modernisation-platform-terraform-state"
   replication_role_arn       = module.state-bucket-s3-replication-role.role.arn
   replication_enabled        = true
+  replication_region         = "eu-west-1"
   custom_kms_key             = aws_kms_key.s3_state_bucket.arn
   custom_replication_kms_key = aws_kms_key.s3_state_bucket_eu-west-1_replication.arn
   tags                       = local.tags

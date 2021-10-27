@@ -12,3 +12,8 @@ variable "tags_prefix" {
   description = "Prefix for name tags"
   type        = string
 }
+
+variable "cidrs_for_s3_endpoints" {
+  description = "cidrs_for_s3_endpoints"
+  type        = list(any)
+}

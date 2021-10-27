@@ -152,11 +152,12 @@ module "vpc_tgw_routing" {
 }
 
 module "vpc_nacls" {
-  source      = "../../modules/vpc-nacls"
-  for_each    = local.vpcs[terraform.workspace]
-  nacl_config = each.value.nacl
-  nacl_refs   = module.vpc[each.key].nacl_refs
-  tags_prefix = each.key
+  source                 = "../../modules/vpc-nacls"
+  for_each               = local.vpcs[terraform.workspace]
+  nacl_config            = each.value.nacl
+  nacl_refs              = module.vpc[each.key].nacl_refs
+  cidrs_for_s3_endpoints = module.vpc[each.key].data_network_acl_for_endpoints
+  tags_prefix            = each.key
 }
 
 locals {

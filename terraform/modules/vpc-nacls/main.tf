@@ -27,3 +27,33 @@ resource "aws_network_acl_rule" "custom_nacl_deployment" {
   from_port      = each.value.from_port
   to_port        = each.value.to_port
 }
+
+resource "aws_network_acl_rule" "open_endpoint_cidrs_for_data_subnets_egress" {
+  for_each = {
+    for key, data in var.cidrs_for_s3_endpoints :
+    "${data.name}-${key}" => data
+  }
+  network_acl_id = each.value.id
+  rule_number    = each.value.cidr_index + 251
+  egress         = true
+  protocol       = "tcp"
+  rule_action    = "allow"
+  cidr_block     = each.value.cidr
+  from_port      = "443"
+  to_port        = "443"
+}
+
+resource "aws_network_acl_rule" "open_endpoint_cidrs_for_data_subnets_ingress" {
+  for_each = {
+    for key, data in var.cidrs_for_s3_endpoints :
+    "${data.name}-${key}" => data
+  }
+  network_acl_id = each.value.id
+  rule_number    = each.value.cidr_index + 251
+  egress         = false
+  protocol       = "tcp"
+  rule_action    = "allow"
+  cidr_block     = each.value.cidr
+  from_port      = "1024"
+  to_port        = "65535"
+}

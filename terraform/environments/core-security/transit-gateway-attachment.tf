@@ -23,10 +23,6 @@ resource "aws_ram_principal_association" "transit_gateway_association" {
   resource_share_arn = data.aws_ram_resource_share.transit-gateway-shared.arn
 }
 
-resource "time_sleep" "wait_60_seconds" {
-  create_duration = "60s"
-}
-
 # Attach the VPC to the central Transit Gateway
 module "vpc_attachment" {
   for_each = local.networking
