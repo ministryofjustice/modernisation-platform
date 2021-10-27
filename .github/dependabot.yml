@@ -53,10 +53,6 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
-    directory: "/terraform/environments/justice-on-the-web"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
     directory: "/terraform/environments/remote-supervision"
     schedule:
       interval: "daily"
