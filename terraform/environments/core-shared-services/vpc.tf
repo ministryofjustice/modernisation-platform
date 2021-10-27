@@ -70,7 +70,7 @@ locals {
   private_subnet_ids   = flatten([for k in module.vpc : k.non_tgw_subnet_ids_map.private if k.vpc_cidr_block == local.networking.non_live_data])
 
   # Get the private route table keys and values, then transform the values (the actual route table ids) into a list
-  # i.e. transform 
+  # i.e. transform
   #   {
   #   "private" = {
   #     "non_live_data-private-eu-west-2a" = "rtb-aaa"
@@ -146,3 +146,35 @@ resource "aws_vpc_endpoint" "vpc_gateway_endpoint_s3" {
   )
 }
 
+# Create security group for image builder
+resource "aws_security_group" "image_builder_security_group" {
+  name        = "${local.application_name}-image-builder"
+  description = "Security group for image builder"
+  vpc_id      = local.non_live_data_vpc_id
+  tags = merge(
+    local.tags,
+    {
+      Name = "${local.application_name}-image-builder"
+    }
+  )
+}
+
+resource "aws_security_group_rule" "image_builder_ingress" {
+  description       = "Allow traffic to image builder instances"
+  type              = "ingress"
+  from_port         = 0
+  to_port           = 65535
+  protocol          = "tcp"
+  self              = true
+  security_group_id = aws_security_group.image_builder_security_group.id
+}
+
+resource "aws_security_group_rule" "image_builder_egress_443" {
+  description       = "Allow traffic to image builder instances"
+  type              = "egress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.image_builder_security_group.id
+}
