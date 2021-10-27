@@ -14,7 +14,9 @@ on:
       - main
     paths:
         - 'environments-networks/*-production.json'
-    workflow_dispatch:
+        - '.github/workflows/core-vpc-production-deployment.yml'
+        - 'terraform/environments/core-vpc/**'
+  workflow_dispatch:
 
 env:
   AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}

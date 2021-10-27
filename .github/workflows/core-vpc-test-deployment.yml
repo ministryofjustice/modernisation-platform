@@ -14,6 +14,8 @@ on:
       - main
     paths:
         - 'environments-networks/*-test.json'
+        - '.github/workflows/core-vpc-test-deployment.yml'
+        - 'terraform/environments/core-vpc/**'
   workflow_dispatch:
 
 env:
