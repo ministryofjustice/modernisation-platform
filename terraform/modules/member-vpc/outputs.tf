@@ -56,10 +56,26 @@ locals {
       name = value.tags.Name
     }
   }
+
+  data_network_acl_for_endpoints = flatten([
+    for value in aws_network_acl.default : [
+      for cidr_index, cidr in aws_vpc_endpoint.ssm_s3.cidr_blocks : {
+        id         = value.id
+        name       = value.tags.Name
+        cidr       = cidr
+        cidr_index = cidr_index
+      }
+      if substr(value.tags.Name, -4, -1) == "data"
+    ]
+  ])
 }
 
 output "nacl_refs" {
   value = local.network_acl_refs
+}
+
+output "data_network_acl_for_endpoints" {
+  value = local.data_network_acl_for_endpoints
 }
 
 output "expanded_worker_subnets_assocation" {
