@@ -1,6 +1,6 @@
 ---
-title: Accessing EC2s using bastions
-last_reviewed_on: 2021-09-06
+title: Accessing EC2s
+last_reviewed_on: 2021-10-27
 review_in: 3 months
 ---
 
@@ -8,10 +8,10 @@ review_in: 3 months
 
 ## Overview
 
-Member accounts can use the [Modernisation Platform bastion module](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) to build a bastion configured with user and user SSH keys.
-These steps outline the AWS and SSH configurations required for users to connect to the bastion and on to their desired EC2 within their environment.
+To connect to EC2s on the Modernisation Platform, we use [AWS Systems Manager Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
+This enables us to connect to EC2s securely, via AWS SSO, without the need to open ports to the public.
 
-## Required configurations to connect to the bastion
+## Required configuration to connect via Session Manager
 
 1) Ensure AWS CLI v2 and Session Manager plugin are installed locally. For example, if you're using macOS, you can install the following brew packages:
 
@@ -31,7 +31,31 @@ output = json
 
 ```
 
-3) Add the example in this step to your `~/.ssh/config` file. Give the host a relevant name, for example `glados-test-bastion`. Replace the `User` and the `IdentityFile` path - it is the local path to the corresponding private key of the public key added to the `bastion_linux.json` file set up as part of the [Modernisation Platform bastion module](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) build. Replace the `target` with the bastion instance ID in the corresponding AWS account and include the AWS profile created in the previous step:
+3) Log in to SSO using the following command:
+
+ ```
+ aws sso login --profile glados-test-developer
+
+ ```
+
+## Connecting to AMI images with the SSM Agent installed
+
+Most modern AMIs will already have the SSM Agent installed.  You can connect to these instances directly with Session Manager.
+
+4) Start a basic Session Manager session
+
+```
+aws ssm start-session --target i-12345bc --profile glados-test-developer
+```
+
+## Using a bastion for older AMI images
+
+Older operating systems may not support installation of the SSM Agent, in this case a bastion can be used to forward connections on to the EC2.  Bastions can also be used for port forwarding to connect to databases or private configuration consoles.
+
+Member accounts can use the [Modernisation Platform bastion module](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) to build a bastion configured with user and user SSH keys.
+Once the bastion has been built in the environemnt, these steps outline the additional AWS and SSH configurations required for users to connect to the bastion and on to their desired EC2 within their environment.
+
+5) Add the example in this step to your `~/.ssh/config` file. Give the host a relevant name, for example `glados-test-bastion`. Replace the `User` and the `IdentityFile` path - it is the local path to the corresponding private key of the public key added to the `bastion_linux.json` file set up as part of the [Modernisation Platform bastion module](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) build. Replace the `target` with the bastion instance ID in the corresponding AWS account and include the AWS profile created in the previous step:
 
 ```
 Host glados-test-bastion
@@ -40,14 +64,7 @@ Host glados-test-bastion
      ProxyCommand sh -c "aws ssm start-session --target $(aws ec2 describe-instances --no-cli-pager --filters "Name=tag:Name,Values=bastion_linux" --query 'Reservations[0].Instances[0].InstanceId' --profile glados-test-developer) --document-name AWS-StartSSHSession --parameters 'portNumber=%p' --profile glados-test-developer --region eu-west-2"
 ```
 
-4) Log in to SSO using the following command:
-
- ```
- aws sso login --profile glados-test-developer
-
- ```
-
-5) SSH to the bastion using the following command:
+6) SSH to the bastion using the following command:
 
 ```
 ssh glados-test-bastion
