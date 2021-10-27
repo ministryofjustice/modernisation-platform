@@ -45,3 +45,16 @@ resource "aws_secretsmanager_secret_version" "member_ci_iam_user_keys" {
     AWS_SECRET_ACCESS_KEY = aws_iam_access_key.member-ci.secret
   })
 }
+
+# Slack channel modernisation-platform-notifications webhook url for sending notifications to slack
+# Not adding a secret version as this url is provided by slack and cannot be added programatically
+# Secret should be manually set in the console.
+# Tfsec ignore
+# - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
+#tfsec:ignore:AWS095
+resource "aws_secretsmanager_secret" "slack_webhook_url" {
+  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
+  name        = "slack_webhook_url"
+  description = "Slack channel modernisation-platform-notifications webhook url for sending notifications to slack"
+  tags        = local.tags
+}

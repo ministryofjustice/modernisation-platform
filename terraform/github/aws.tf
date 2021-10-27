@@ -19,3 +19,12 @@ locals {
   ci_iam_user_keys        = jsondecode(data.aws_secretsmanager_secret_version.ci_iam_user_keys.secret_string)
   member_ci_iam_user_keys = jsondecode(data.aws_secretsmanager_secret_version.member_ci_iam_user_keys.secret_string)
 }
+
+# Get the slack webhook url
+data "aws_secretsmanager_secret" "slack_webhook_url" {
+  name = "slack_webhook_url"
+}
+
+data "aws_secretsmanager_secret_version" "slack_webhook_url" {
+  secret_id = data.aws_secretsmanager_secret.slack_webhook_url.id
+}

@@ -16,7 +16,7 @@ module "core" {
     # Terraform GitHub token for the CI/CD user
     TERRAFORM_GITHUB_TOKEN = "This needs to be manually set in GitHub."
     # Slack app webhook url
-    SLACK_WEBHOOK_URL = "This needs to be manually set in GitHub."
+    SLACK_WEBHOOK_URL = data.aws_secretsmanager_secret_version.slack_webhook_url.secret_string
   }))
 }
 
