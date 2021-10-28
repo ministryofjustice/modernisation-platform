@@ -1,6 +1,6 @@
 ---
 title: Deleting an environment (AWS account)
-last_reviewed_on: 2021-05-13
+last_reviewed_on: 2021-10-27
 review_in: 3 month
 ---
 
@@ -128,6 +128,8 @@ should become:
 }
 ```
 
+Update the [OPA polices](https://github.com/ministryofjustice/modernisation-platform/tree/main/policies) to remove refernces to the environment.
+
 ## Find and delete the Terraform workspaces for the environment
 
 Run `find-terraform-workspaces.sh <workspace name>` to quickly return where workspaces for an AWS account exist:
@@ -135,10 +137,17 @@ Run `find-terraform-workspaces.sh <workspace name>` to quickly return where work
 This should be run from the modernisation platform root directory, using appropriate credetials (eg AWS Vault)
 
 Note, whilst this script will find all of the workspaces, it will take a while to run, currently most accounts will only have workspaces in the following locations:
+
 `modernisation-platform/terraform/environments/bootstrap/delegate-access`
+
 `modernisation-platform/terraform/environments/bootstrap/secure-baselines`
+
 `modernisation-platform/terraform/environments/bootstrap/single-sign-on`
+
 `modernisation-platform/terraform/environments/<application-name>`
+
+For the following workspaces, switch to the workspace and run a `terraform destroy` to ensure any resources such as DNS entries created in shared accounts are deleted and not orphaned.
+
 `modernisation-platform-environments/terraform/environments/<application-name>`
 
 ```bash
@@ -217,8 +226,11 @@ terraform workspace delete -force core-vpc-non-live-data
 >This will not delete the resources that are set up by the Terraform configuration. It will only delete the Terraform reference to the workspace. You will need to delete the AWS account properly.
 
 If you delete the last environment and there are no more environments for the application, you should delete all of the environment files in the following folders:
+
 `modernisation-platform/terraform/environments/<application-name>`
+
 `modernisation-platform-environments/terraform/environments/<application-name>`
+
 `modernisation-platform-environments/.github/workflows/<application-name>`
 
 ## Delete the actual AWS account
@@ -234,8 +246,19 @@ To do this, complete the following steps, comprising AWS CLI commands.
 
 - Identify the policy id 
 
+### Member accounts
 ```bash
 aws organizations list-policies --filter SERVICE_CONTROL_POLICY --query "Policies[?Name=='Modernisation Platform Member OU SCP - Prevent Root'].[Id,Name]" --output text
+```
+
+### Member unrestricted accounts
+```bash
+aws organizations list-policies --filter SERVICE_CONTROL_POLICY --query "Policies[?Name=='Modernisation Platform Member Unrestricted OU SCP - Prevent Root'].[Id,Name]" --output text
+```
+
+### Core accounts
+```bash
+aws organizations list-policies --filter SERVICE_CONTROL_POLICY --query "Policies[?Name=='Modernisation Platform Core OU SCP - Prevent Root'].[Id,Name]" --output text
 ```
 
 - Identify the target id (an OU) associated with the policy, replacing \<policyId\> (starting "p-"), from the command above
