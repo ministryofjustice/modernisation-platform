@@ -12,6 +12,7 @@ on:
       - main
     paths:
       - 'terraform/environments/core-shared-services/**'
+      - 'terraform/modules/vpc-hub/**'
   workflow_dispatch:
 
 env:
