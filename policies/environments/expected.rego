@@ -14,7 +14,6 @@ expected =
     "core-shared-services",
     "core-vpc",
     "heater",
-    "justice-on-the-web",
     "performance-hub",
     "remote-supervision",
     "sprinkler",
