@@ -35,3 +35,20 @@ module "core-vpc-tgw-routes" {
 
   depends_on = [module.vpc_attachment]
 }
+
+module "core-vpc-tgw-return-routes" {
+  for_each = local.networking
+  source   = "../../modules/core-vpc-tgw-return-routes"
+
+  providers = {
+    aws = aws.core-network-services
+  }
+
+  vpc_name           = each.key
+  vpc_cidr_range     = each.value
+  tgw_vpc_attachment = module.vpc_attachment[each.key].tgw_vpc_attachment
+  tgw_route_table    = module.vpc_attachment[each.key].tgw_route_table
+  tgw_id             = data.aws_ec2_transit_gateway.transit-gateway.id
+
+  depends_on = [module.vpc_attachment]
+}
