@@ -48,7 +48,7 @@ owner |
 
 <!-- 
 Valid business-unit values
-HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE,Probation
+HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE
 -->
 
 ## Networking options

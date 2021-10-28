@@ -14,6 +14,8 @@ on:
       - main
     paths:
         - 'environments-networks/*-development.json'
+        - '.github/workflows/core-vpc-development-deployment.yml'
+        - 'terraform/environments/core-vpc/**'
   workflow_dispatch:
 
 env:
@@ -116,7 +118,7 @@ jobs:
           done
           else
           echo "[+] There were no AWS member accounts to process"
-          exit 1
+          exit 0
           fi
       - uses: 8398a7/action-slack@v3
         name: Slack failure notification
