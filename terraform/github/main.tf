@@ -138,6 +138,18 @@ module "modernisation-platform-ami-builds" {
   secrets = nonsensitive(local.ci_iam_user_keys)
 }
 
+module "terraform-module-aws-vm-import" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-aws-vm-import"
+  description = "Module to import virtual machine (VM) images from your virtualization environment to Amazon EC2 as Amazon Machine Images (AMI)"
+  topics = [
+    "aws",
+    "vm",
+    "linux",
+    "windows"
+  ]
+}
+
 module "modernisation-platform-environments" {
   source      = "./modules/repository"
   name        = "modernisation-platform-environments"
@@ -182,6 +194,7 @@ module "core-team" {
     module.terraform-module-trusted-advisor.repository.name,
     module.terraform-module-bastion-linux.repository.name,
     module.terraform-module-ecs.repository.name,
+    module.terraform-module-aws-vm-import.name,
     module.modernisation-platform-ami-builds.repository.name,
     module.modernisation-platform-environments.repository.name,
     module.modernisation-platform-infrastructure-test.repository.name
