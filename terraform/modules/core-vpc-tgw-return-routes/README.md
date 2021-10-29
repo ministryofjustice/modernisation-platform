@@ -24,18 +24,20 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [aws_ec2_transit_gateway_route.example](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route) | resource |
+| [aws_ec2_transit_gateway_route.return_traffic](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route) | resource |
 | [aws_route.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
+| [aws_route_table.main-public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route_table) | data source |
+| [aws_vpc.main-public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | VPC name used to lookup routing tables | `string` | n/a | yes |
-| <a name="input_vpc_cidr_range"></a> [vpc\_cidr\_range](#input\_subnet\_sets) | VPC CIDR range to add to Transit Gateway routing table | `string` | n/a | yes |
-| <a name="input_tgw_vpc_attachment"></a> [tgw\_id](#input\_tgw\_vpc\_attachment) | Transit Gateway VPC attachment ID | `string` | n/a | yes |
+| <a name="input_tgw_id"></a> [tgw\_id](#input\_tgw\_id) | Transit Gateway ID | `string` | n/a | yes |
 | <a name="input_tgw_route_table"></a> [tgw\_route\_table](#input\_tgw\_route\_table) | Transit Gateway route table ID | `string` | n/a | yes |
-| <a name="input_tgw_id"></a> [tgw\_vpc\_attachment](#input\_tgw\_id) | Transit Gateway ID | `string` | n/a | yes |
+| <a name="input_tgw_vpc_attachment"></a> [tgw\_vpc\_attachment](#input\_tgw\_vpc\_attachment) | Transit Gateway VPC attachment ID | `string` | n/a | yes |
+| <a name="input_vpc_cidr_range"></a> [vpc\_cidr\_range](#input\_vpc\_cidr\_range) | VPC CIDR range to add to Transit Gateway routing table | `string` | n/a | yes |
+| <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | VPC name used to lookup routing tables | `string` | n/a | yes |
 
 ## Outputs
 

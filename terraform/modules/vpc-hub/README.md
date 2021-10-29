@@ -50,12 +50,9 @@ No modules.
 | [aws_network_acl_rule.transit-gateway-local-egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
 | [aws_network_acl_rule.transit-gateway-local-ingress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
 | [aws_route.data-nat](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
-| [aws_route.data-tgw](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.private-nat](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
-| [aws_route.private-tgw](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.public-internet-gateway](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.transit-gateway-nat](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
-| [aws_route.transit-gateway-tgw](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route_table.data](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
 | [aws_route_table.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
 | [aws_route_table.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
@@ -78,7 +75,6 @@ No modules.
 | <a name="input_gateway"></a> [gateway](#input\_gateway) | Type of gateway to use for environment | `string` | `"none"` | no |
 | <a name="input_tags_common"></a> [tags\_common](#input\_tags\_common) | Ministry of Justice required tags | `map(any)` | n/a | yes |
 | <a name="input_tags_prefix"></a> [tags\_prefix](#input\_tags\_prefix) | Prefix for name tags, e.g. "live\_data" | `string` | n/a | yes |
-| <a name="input_transit_gateway_id"></a> [transit\_gateway\_id](#input\_transit\_gateway\_id) | tgw ID | `string` | `""` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | CIDR range for the VPC | `string` | n/a | yes |
 | <a name="input_vpc_flow_log_iam_role"></a> [vpc\_flow\_log\_iam\_role](#input\_vpc\_flow\_log\_iam\_role) | VPC Flow Log IAM role ARN for VPC Flow Logs to CloudWatch | `string` | n/a | yes |
 
@@ -87,10 +83,13 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_non_tgw_subnet_ids"></a> [non\_tgw\_subnet\_ids](#output\_non\_tgw\_subnet\_ids) | Non-Transit Gateway subnet IDs (public, private, data) |
+| <a name="output_non_tgw_subnet_ids_map"></a> [non\_tgw\_subnet\_ids\_map](#output\_non\_tgw\_subnet\_ids\_map) | Map of subnet ids, with keys being the subnet types and values being the list of subnet ids |
 | <a name="output_private_route_tables"></a> [private\_route\_tables](#output\_private\_route\_tables) | Private route table keys and IDs |
+| <a name="output_private_route_tables_map"></a> [private\_route\_tables\_map](#output\_private\_route\_tables\_map) | Private route table keys and IDs, as a map organised by type |
 | <a name="output_public_igw_route"></a> [public\_igw\_route](#output\_public\_igw\_route) | Public Internet Gateway route |
 | <a name="output_public_route_tables"></a> [public\_route\_tables](#output\_public\_route\_tables) | Public route tables |
 | <a name="output_tgw_subnet_ids"></a> [tgw\_subnet\_ids](#output\_tgw\_subnet\_ids) | Transit Gateway subnet IDs |
+| <a name="output_vpc_cidr_block"></a> [vpc\_cidr\_block](#output\_vpc\_cidr\_block) | VPC CIDR block |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | VPC ID |
 
 <!--- END_TF_DOCS --->

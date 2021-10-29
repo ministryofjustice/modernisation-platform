@@ -25,11 +25,14 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_network_acl_rule.custom_nacl_deployment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
+| [aws_network_acl_rule.open_endpoint_cidrs_for_data_subnets_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
+| [aws_network_acl_rule.open_endpoint_cidrs_for_data_subnets_ingress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl_rule) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_cidrs_for_s3_endpoints"></a> [cidrs\_for\_s3\_endpoints](#input\_cidrs\_for\_s3\_endpoints) | cidrs\_for\_s3\_endpoints | `list(any)` | n/a | yes |
 | <a name="input_nacl_config"></a> [nacl\_config](#input\_nacl\_config) | List of maps of NACLs configurations | `list(any)` | n/a | yes |
 | <a name="input_nacl_refs"></a> [nacl\_refs](#input\_nacl\_refs) | Map of internal NACL references including arn, id, and name | `map(any)` | n/a | yes |
 | <a name="input_tags_prefix"></a> [tags\_prefix](#input\_tags\_prefix) | Prefix for name tags | `string` | n/a | yes |
