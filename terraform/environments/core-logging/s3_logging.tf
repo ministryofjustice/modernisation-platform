@@ -297,9 +297,13 @@ module "s3-bucket-cloudtrail-logging" {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
 
-  acl                                      = "log-delivery-write"
-  bucket_name                              = "modernisation-platform-logs-cloudtrail-logging"
+  acl                        = "log-delivery-write"
+  bucket_name                = "modernisation-platform-logs-cloudtrail-logging"
+  custom_kms_key             = aws_kms_key.s3_logging_cloudtrail.arn
+  custom_replication_kms_key = aws_kms_key.s3_logging_cloudtrail_eu-west-1_replication.arn
+
   replication_enabled                      = true
+  replication_region                       = "eu-west-1"
   versioning_enabled_on_replication_bucket = true
 
   lifecycle_rule = [
