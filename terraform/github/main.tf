@@ -194,7 +194,7 @@ module "core-team" {
     module.terraform-module-trusted-advisor.repository.name,
     module.terraform-module-bastion-linux.repository.name,
     module.terraform-module-ecs.repository.name,
-    module.terraform-module-aws-vm-import.name,
+    module.terraform-module-aws-vm-import.repository.name,
     module.modernisation-platform-ami-builds.repository.name,
     module.modernisation-platform-environments.repository.name,
     module.modernisation-platform-infrastructure-test.repository.name
