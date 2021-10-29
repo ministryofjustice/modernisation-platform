@@ -25,6 +25,7 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_cloudwatch_log_group.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
+| [aws_default_security_group.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_security_group) | resource |
 | [aws_flow_log.cloudwatch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/flow_log) | resource |
 | [aws_internet_gateway.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway) | resource |
 | [aws_network_acl.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl) | resource |
@@ -77,6 +78,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_data_network_acl_for_endpoints"></a> [data\_network\_acl\_for\_endpoints](#output\_data\_network\_acl\_for\_endpoints) | n/a |
 | <a name="output_expanded_worker_subnets_assocation"></a> [expanded\_worker\_subnets\_assocation](#output\_expanded\_worker\_subnets\_assocation) | n/a |
 | <a name="output_expanded_worker_subnets_with_keys"></a> [expanded\_worker\_subnets\_with\_keys](#output\_expanded\_worker\_subnets\_with\_keys) | n/a |
 | <a name="output_nacl_refs"></a> [nacl\_refs](#output\_nacl\_refs) | n/a |
