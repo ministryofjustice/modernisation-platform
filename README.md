@@ -41,3 +41,9 @@ These modules are used by the Modernisation Platform's core infrastructure
 | [modernisation-platform-terraform-environments](https://github.com/ministryofjustice/modernisation-platform-terraform-environments) | Module for creating organizational units and accounts within AWS Organizations from JSON files |
 | [modernisation-platform-terraform-iam-superadmins](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins) | Module for creating defined IAM users as superadmins |
 | [modernisation-platform-terraform-trusted-advisor](https://github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor) | Module for refreshing Trusted Advisor every 60 minutes |
+
+### Tools
+
+| Name | Description |
+|-|-|
+| [modernisation-platform-infrastructure-test](https://github.com/ministryofjustice/modernisation-platform-infrastructure-test) | Infrastructure test tool based on Cucumber.js |
