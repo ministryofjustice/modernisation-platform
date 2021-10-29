@@ -12,7 +12,7 @@ We use [trunk base development](https://www.atlassian.com/continuous-delivery/co
 
 ## CI/CD
 
-For our CI/CD pipelines we use [Github actions](https://docs.github.com/en/actions).
+For our CI/CD pipelines we use [GitHub actions](https://docs.github.com/en/actions).
 
 Workflow files are found [here](https://github.com/ministryofjustice/modernisation-platform/tree/main/.github/workflows)
 
@@ -29,7 +29,7 @@ Core Networking | Creates the core networking account resources | `terraform/env
 Core Security | Creates the core security account resources | `terraform/environments/core-security` | `core-security-deployment.yml`
 Core Shared Services | Creates the core shared services account resources | `terraform/environments/shared-services` | `core-shared-services-deployment.yml`
 Core VPC | Creates the core VPC resources in the VPC accounts | `terraform/environments/core-vpc` | `core-vpc-development-deployment.yml`,`core-vpc-test-deployment.yml`,`core-vpc-preproduction-deployment.yml`,`core-vpc-production-deployment.yml`
-Github Terraform | Creates the Github teams and repositories in Github | `terraform/github` | `terraform-github.yml`
+GitHub Terraform | Creates the GitHub teams and repositories in GitHub | `terraform/github` | `terraform-github.yml`
 
 ### New member file creation workflows
 
@@ -38,14 +38,14 @@ These workflows create the new files needed for new member accounts.
 Name | Description | Workflow file |
 |---|---|---|
 New environment files | Creates new files in the modernisation-platform repository | `new-environment-files`
-New member environment files | Creates new files in the modernisation-platform-environments repository, also creates the Github environments | `new-member-environment-files`
+New member environment files | Creates new files in the modernisation-platform-environments repository, also creates the GitHub environments | `new-member-environment-files`
 
 ### Other workflows
 
 Name | Description | Workflow file |
 |---|---|---|
-Check links | Checks links are valid in our Github pages user guidance | `check-links.yml`
-Publish | Publishes pages in `source` to our Github pages user guidance | `publish.yml`
+Check links | Checks links are valid in our GitHub pages user guidance | `check-links.yml`
+Publish | Publishes pages in `source` to our GitHub pages user guidance | `publish.yml`
 Format Code | Formats code and commits any changes to a pull request | `format-code.yml`
 Labeler | Adds labels to our pull requests depending on which folders are changed | `labeler.yml`
 OPA Policies | Runs Open Policy Agent validation tests against our json files | `opa-policies.yml`
