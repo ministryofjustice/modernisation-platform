@@ -50,6 +50,7 @@ data "aws_iam_policy_document" "member-access" {
     effect = "Allow"
     actions = [ #tfsec:ignore:AWS099
       "acm:*",
+      "acm-pca:*",
       "application-autoscaling:*",
       "autoscaling:*",
       "cloudfront:*",
