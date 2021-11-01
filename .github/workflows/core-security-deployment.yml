@@ -12,6 +12,7 @@ on:
       - main
     paths:
       - 'terraform/environments/core-security/**'
+      - 'terraform/modules/vpc-hub/**'
   workflow_dispatch:
 
 env:

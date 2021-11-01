@@ -12,6 +12,7 @@ on:
       - main
     paths:
       - 'terraform/environments/core-logging/**'
+      - 'terraform/modules/vpc-hub/**'
   workflow_dispatch:
 
 env:
