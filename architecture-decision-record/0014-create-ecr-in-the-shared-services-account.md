@@ -1,4 +1,4 @@
-# 13. Create Application Elastic Container Repositories (ECR) in the shared-services account 
+# 14. Create Application Elastic Container Repositories (ECR) in the shared-services account 
 
 Date: 2021-09-27
 
@@ -10,7 +10,8 @@ Date: 2021-09-27
 
 Applications using Docker will sometimes need an ECR repo to store their Docker images.  Since we use a separate AWS account for each application environment, this will need to be in a shared location.
 
-Some options which were considered - 
+Some options which were considered:
+
 * ECR repository per application in the shared services account
 * Use a service provided by Operations Engineering (there is only Docker Hub currently)
 * Use a hosted service such as Docker Hub
