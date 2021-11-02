@@ -28,7 +28,7 @@ You can choose which environments you want for your application with multiple co
 
 ## Deploying Infrastructure
 
-For our CI/CD pipelines we use [Github actions](https://docs.github.com/en/actions).
+For our CI/CD pipelines we use [GitHub actions](https://docs.github.com/en/actions).
 
 Workflow files are found [here](https://github.com/ministryofjustice/modernisation-platform-environments/tree/main/.github/workflows) and are named after your application.
 They are generated as part of the [initial environment set up workflow](core-workflow.html) and based off of a [template](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/templates/workflow-template.yml)
@@ -37,22 +37,22 @@ Environment workflow:
 
 ![Environment Workflow](../../images/environment-workflow.png)
 
-We use [Github Environments](https://docs.github.com/en/actions/reference/environments) to create a manual approval gate before each deployment.
-This gives you chance to review the Terraform plan before approving the deployment.  The Github environments are automatically created by the [git-create-environments-script.sh](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/git-create-environments.sh) using your Github team as the reviewer, as part of the initial account creation process.
+We use [GitHub Environments](https://docs.github.com/en/actions/reference/environments) to create a manual approval gate before each deployment.
+This gives you chance to review the Terraform plan before approving the deployment.  The GitHub environments are automatically created by the [git-create-environments-script.sh](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/git-create-environments.sh) using your GitHub team as the reviewer, as part of the initial account creation process.
 
 After approving, the infrastructure is deployed with the [Terraform apply](https://www.terraform.io/docs/cli/commands/apply.html) command.
 
 ### Permissions
 
-The code and AWS account is protected in a few different ways which work together to ensure that your AWS account is only modified by a member of your Github team or a Modernisation Platform engineer.
+The code and AWS account is protected in a few different ways which work together to ensure that your AWS account is only modified by a member of your GitHub team or a Modernisation Platform engineer.
 
 #### CODEOWNERS
 
-Your Github team will be assigned as a [codeowner](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-code-owners) for your application folder, so someone in your team or the Modernisation Platform team will be required to review any pull requests before they can be merged.
+Your GitHub team will be assigned as a [codeowner](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-code-owners) for your application folder, so someone in your team or the Modernisation Platform team will be required to review any pull requests before they can be merged.
 
-#### Github Environments
+#### GitHub Environments
 
-Github environments prevents any workflow being deployed to your environments unless it is approved by a member of your Github team.
+GitHub environments prevents any workflow being deployed to your environments unless it is approved by a member of your GitHub team.
 
 #### AWS IAM (Identity and Access Management)
 

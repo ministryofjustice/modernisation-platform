@@ -10,9 +10,9 @@ Once you have [defined your infrastructure as code](creating-resources.html) and
 
 ## Create a pull request
 
-The first step is to create a pull request this will trigger the [Github actions](https://docs.github.com/en/actions) workflow for your application.
+The first step is to create a pull request this will trigger the [GitHub actions](https://docs.github.com/en/actions) workflow for your application.
 
-## Github Actions Workflow
+## GitHub Actions Workflow
 
 Workflow files are found [here](https://github.com/ministryofjustice/modernisation-platform-environments/tree/main/.github/workflows) and are named after your application.
 
@@ -27,12 +27,12 @@ Here is a high level diagram of what the workflow file does.
 ### Jobs on pull request
 
  - a [Terraform plan](https://www.terraform.io/docs/cli/commands/plan.html) on the `development` and `test` environments (if you have them).
- - a [Terraform apply](https://www.terraform.io/docs/cli/commands/apply.html) on the `development` and `test` environments (if you have them), which is held until a reviewer from your Github team approves the deployment.
+ - a [Terraform apply](https://www.terraform.io/docs/cli/commands/apply.html) on the `development` and `test` environments (if you have them), which is held until a reviewer from your GitHub team approves the deployment.
 
 ### Jobs on merging a pull request
 
  - a [Terraform plan](https://www.terraform.io/docs/cli/commands/plan.html) on the `preproduction` and `production` environments (if you have them).
- - a [Terraform apply](https://www.terraform.io/docs/cli/commands/apply.html) on the `preproduction` and `production` environments (if you have them), which is held until a reviewer from your Github team approves the deployment.
+ - a [Terraform apply](https://www.terraform.io/docs/cli/commands/apply.html) on the `preproduction` and `production` environments (if you have them), which is held until a reviewer from your GitHub team approves the deployment.
 
 ### Viewing Terraform plans
 
@@ -43,7 +43,7 @@ Here is a high level diagram of what the workflow file does.
 
 ### Approving deployments
 
-The Modernisation Platform uses [Terraform Workspaces](https://www.terraform.io/docs/language/state/workspaces.html) and [Github Environments](https://docs.github.com/en/actions/reference/environments) for deployments and approvals to your different environments.
+The Modernisation Platform uses [Terraform Workspaces](https://www.terraform.io/docs/language/state/workspaces.html) and [GitHub Environments](https://docs.github.com/en/actions/reference/environments) for deployments and approvals to your different environments.
 
 1. Navigate to the [Actions](https://github.com/ministryofjustice/modernisation-platform-environments/actions) tab in the environments repository.
 1. Find the relevant workflow run (the name is the name of your pull request or merge commit)

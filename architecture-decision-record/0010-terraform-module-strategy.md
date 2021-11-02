@@ -14,7 +14,7 @@ The Modernisation Platform uses [Terraform](https://www.terraform.io/) for its i
 
 Modules used only by the Modernisation Platform core infrastructure will remain in the [terraform/modules](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules) folder where they are currently located. These modules are mainly single use modules but created to keep the code tidier and easier to maintain. Modules used only by the core which currently have their own repository will remain where they are.
 
-Modules used by users will have their own repository per module which we link to from the main repo. These modules will be versioned with Github releases, and tested with [Terratest](https://terratest.gruntwork.io/) against a test AWS account.
+Modules used by users will have their own repository per module which we link to from the main repo. These modules will be versioned with GitHub releases, and tested with [Terratest](https://terratest.gruntwork.io/) against a test AWS account.
 
 ## Consequences
 
@@ -29,7 +29,7 @@ Modules used by users will have their own repository per module which we link to
 
 ### Advantages
 
-* we can version user modules with Github releases to avoid breaking existing infrastructure when updating modules
+* we can version user modules with GitHub releases to avoid breaking existing infrastructure when updating modules
 * testing gives us confidence
 * keeping our core modules together makes it easier for us to navigate the platform code
 * we don't need to re-version core modules whenever we make a change to them

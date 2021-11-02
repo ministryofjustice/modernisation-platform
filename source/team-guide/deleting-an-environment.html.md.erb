@@ -128,7 +128,9 @@ should become:
 }
 ```
 
-Update the [OPA polices](https://github.com/ministryofjustice/modernisation-platform/tree/main/policies) to remove refernces to the environment.
+Update the [OPA polices](https://github.com/ministryofjustice/modernisation-platform/tree/main/policies) to remove references to the environment.
+
+Before merging in these changes, complete the rest of the steps in this document.
 
 ## Find and delete the Terraform workspaces for the environment
 
@@ -284,3 +286,12 @@ Run the following command.
 ```bash
 aws organizations attach-policy --policy-id <policyId> --target-id <targetId>
 ```
+
+## Move the account to the closed accounts organizational unit
+
+If the account is the last account for an application, you will need to move the account from the application organizational unit to the "Closed account" organizational unit, so that the application organizational unit can be deleted.
+Note that a user with root account permissions will need to do this.
+
+## Merge in your file changes
+
+Merging in your file changes will trigger Terraform to perform the remaining clean up needed.
