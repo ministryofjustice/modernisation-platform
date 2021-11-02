@@ -52,7 +52,7 @@ jobs:
       - uses: actions/checkout@v2.3.5
         with:
           fetch-depth: 0 # or "2" To retrieve the preceding commit.
-      - name: Create Github member environments
+      - name: Create GitHub member environments
         run: bash ./scripts/git-create-environments.sh
         env:
           TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}

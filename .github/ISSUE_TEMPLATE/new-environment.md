@@ -15,7 +15,7 @@ The name of your application, please follow MoJ guidance for naming things
 https://ministryofjustice.github.io/technical-guidance/documentation/standards/naming-things.html#naming-things
 -->
 
-### Github team slug
+### GitHub team slug
 
 <!-- The name of your github team for environment access, this github team must be part of the ministryofjustice github organisation -->
 
