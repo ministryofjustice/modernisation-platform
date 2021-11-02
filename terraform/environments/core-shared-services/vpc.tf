@@ -66,8 +66,8 @@ module "core-vpc-tgw-return-routes" {
 
 locals {
   # Derive non_live_data vpc and private subnets for configuration setting up the vpc endpoints
-  non_live_data_vpc_id = one([for k in module.vpc : k.vpc_id if k.vpc_cidr_block == local.networking.non_live_data])
-  non_live_private_subnet_ids   = flatten([for k in module.vpc : k.non_tgw_subnet_ids_map.private if k.vpc_cidr_block == local.networking.non_live_data])
+  non_live_data_vpc_id        = one([for k in module.vpc : k.vpc_id if k.vpc_cidr_block == local.networking.non_live_data])
+  non_live_private_subnet_ids = flatten([for k in module.vpc : k.non_tgw_subnet_ids_map.private if k.vpc_cidr_block == local.networking.non_live_data])
 
   # Get the private route table keys and values, then transform the values (the actual route table ids) into a list
   # i.e. transform
