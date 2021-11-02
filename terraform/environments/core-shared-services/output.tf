@@ -60,6 +60,6 @@ output "image_builder_security_group_id" {
   value = aws_security_group.image_builder_security_group.id
 }
 
-output "private_subnet_ids" {
-  value = local.private_subnet_ids
+output "non_live_private_subnet_ids" {
+  value = local.non_live_private_subnet_ids
 }
