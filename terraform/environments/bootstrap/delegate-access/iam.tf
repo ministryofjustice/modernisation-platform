@@ -79,8 +79,7 @@ data "aws_iam_policy_document" "member-access" {
       "ses:*",
       "sns:*",
       "sqs:*",
-      "ssm:*",
-      "sts:*"
+      "ssm:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
