@@ -49,8 +49,8 @@ data "aws_iam_policy_document" "member-access" {
     #checkov:skip=CKV_AWS_110
     effect = "Allow"
     actions = [ #tfsec:ignore:AWS099
-      "acm:*",
       "acm-pca:*",
+      "acm:*",
       "application-autoscaling:*",
       "autoscaling:*",
       "cloudfront:*",
@@ -58,8 +58,8 @@ data "aws_iam_policy_document" "member-access" {
       "dynamodb:*",
       "ebs:*",
       "ec2:*",
-      "ecr:*",
       "ecr-public:*",
+      "ecr:*",
       "ecs:*",
       "elasticfilesystem:*",
       "elasticloadbalancing:*",
@@ -71,8 +71,8 @@ data "aws_iam_policy_document" "member-access" {
       "logs:*",
       "organizations:Describe*",
       "organizations:List*",
-      "rds:*",
       "rds-db:*",
+      "rds:*",
       "route53:*",
       "s3:*",
       "secretsmanager:*",
