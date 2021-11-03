@@ -1,14 +1,6 @@
 {
 	"account-type": "member",
-	"environments": [
-		{
-      "name": "development",
-      "access": [{
-		"github_slug": "operations-engineering",
-		"level": "developer"
-		}]
-	  }
-	],
+	"environments": [],
 	"tags": {
 		"application": "ops-engineering",
 		"business-unit": "Platforms",
