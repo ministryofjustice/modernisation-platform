@@ -69,6 +69,7 @@ jobs:
     - uses: 8398a7/action-slack@v3
       name: Slack failure notification
       with:
+        job_name: Terraform Static Analysis - scheduled scan of all directories
         status: ${{ job.status }}
         fields: workflow,job,repo,commit,message
       env:
