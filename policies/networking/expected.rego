@@ -90,9 +90,7 @@ expected =
     "platforms-development": {
       "general": {
         "cidr": "10.234.24.0/21",
-        "accounts": [
-          "ops-engineering-development"
-        ]
+        "accounts": []
       }
     },
     "hmpps-development": {

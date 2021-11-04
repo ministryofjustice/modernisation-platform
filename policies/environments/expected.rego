@@ -17,7 +17,6 @@ expected =
     "performance-hub",
     "remote-supervision",
     "sprinkler",
-    "ops-engineering",
     "testing",
     "nomis",
     "analytical-platform-data",
