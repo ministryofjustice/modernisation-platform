@@ -28,7 +28,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         scan_type: changed
-        tfsec_exclude: AWS095,GIT001,AWS050
+        tfsec_exclude: AWS095,GIT001,AWS050,github-repositories-require-signed-commits
         checkov_exclude: CKV_GIT_1,CKV_AWS_126
 
   terraform-static-analysis-full-scan:
@@ -46,7 +46,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         scan_type: full 
-        tfsec_exclude: AWS095,GIT001,AWS050
+        tfsec_exclude: AWS095,GIT001,AWS050,github-repositories-require-signed-commits
         checkov_exclude: CKV_GIT_1,CKV_AWS_126
 
   terraform-static-analysis-scheduled-scan:
@@ -64,7 +64,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         scan_type: full
-        tfsec_exclude: AWS095,GIT001,AWS050
+        tfsec_exclude: AWS095,GIT001,AWS050,github-repositories-require-signed-commits
         checkov_exclude: CKV_GIT_1,CKV_AWS_126
     - uses: 8398a7/action-slack@v3
       name: Slack failure notification
