@@ -1,10 +1,6 @@
 {
 	"account-type": "member",
 	"environments": [
-		{
-      "name": "production",
-      "access": []
-    },
     {
       "name": "development",
       "access": []
