@@ -56,3 +56,10 @@ output "tgw_subnet_ids" {
   value = length(module.vpc["non_live_data"].tgw_subnet_ids)
 }
 
+output "image_builder_security_group_id" {
+  value = aws_security_group.image_builder_security_group.id
+}
+
+output "non_live_private_subnet_ids" {
+  value = local.non_live_private_subnet_ids
+}

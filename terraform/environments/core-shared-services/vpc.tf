@@ -66,11 +66,11 @@ module "core-vpc-tgw-return-routes" {
 
 locals {
   # Derive non_live_data vpc and private subnets for configuration setting up the vpc endpoints
-  non_live_data_vpc_id = one([for k in module.vpc : k.vpc_id if k.vpc_cidr_block == local.networking.non_live_data])
-  private_subnet_ids   = flatten([for k in module.vpc : k.non_tgw_subnet_ids_map.private if k.vpc_cidr_block == local.networking.non_live_data])
+  non_live_data_vpc_id        = one([for k in module.vpc : k.vpc_id if k.vpc_cidr_block == local.networking.non_live_data])
+  non_live_private_subnet_ids = flatten([for k in module.vpc : k.non_tgw_subnet_ids_map.private if k.vpc_cidr_block == local.networking.non_live_data])
 
   # Get the private route table keys and values, then transform the values (the actual route table ids) into a list
-  # i.e. transform 
+  # i.e. transform
   #   {
   #   "private" = {
   #     "non_live_data-private-eu-west-2a" = "rtb-aaa"
@@ -88,8 +88,8 @@ locals {
   #   }
   # }
   # to ["rtb-aaa", "rtb-bbb", "rtb-ccc"]
-  private_route_tables    = { for k in module.vpc : "private" => k.private_route_tables_map.private if k.vpc_cidr_block == local.networking.non_live_data }
-  private_route_table_ids = [for k, v in local.private_route_tables.private : v]
+  non_live_private_route_tables    = { for k in module.vpc : "private" => k.private_route_tables_map.private if k.vpc_cidr_block == local.networking.non_live_data }
+  non_live_private_route_table_ids = [for k, v in local.non_live_private_route_tables.private : v]
 }
 
 # Create security group for vpc endpoints
@@ -122,7 +122,7 @@ resource "aws_vpc_endpoint" "vpc_interface_endpoints" {
   service_name        = each.value
   vpc_endpoint_type   = "Interface"
   private_dns_enabled = true
-  subnet_ids          = local.private_subnet_ids
+  subnet_ids          = local.non_live_private_subnet_ids
   security_group_ids  = [aws_security_group.interface_endpoint_security_group.id]
   tags = merge(
     local.tags,
@@ -137,7 +137,7 @@ resource "aws_vpc_endpoint" "vpc_gateway_endpoint_s3" {
   vpc_endpoint_type = "Gateway"
   vpc_id            = local.non_live_data_vpc_id
   service_name      = each.value
-  route_table_ids   = local.private_route_table_ids
+  route_table_ids   = local.non_live_private_route_table_ids
   tags = merge(
     local.tags,
     {
@@ -146,3 +146,35 @@ resource "aws_vpc_endpoint" "vpc_gateway_endpoint_s3" {
   )
 }
 
+# Create security group for image builder
+resource "aws_security_group" "image_builder_security_group" {
+  name        = "${local.application_name}-image-builder"
+  description = "Security group for image builder"
+  vpc_id      = local.non_live_data_vpc_id
+  tags = merge(
+    local.tags,
+    {
+      Name = "${local.application_name}-image-builder"
+    }
+  )
+}
+
+resource "aws_security_group_rule" "image_builder_egress_443" {
+  description       = "Allow traffic from image builder instances"
+  type              = "egress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.image_builder_security_group.id
+}
+
+resource "aws_security_group_rule" "image_builder_egress_80" {
+  description       = "Allow traffic from image builder instances"
+  type              = "egress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.image_builder_security_group.id
+}
