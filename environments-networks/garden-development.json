@@ -6,14 +6,7 @@
       "general": {
         "cidr": "10.234.0.0/21",
         "accounts": [
-          "sprinkler-development",
-          "bench-development"
-        ]
-      },
-      "patio": {
-        "cidr": "10.234.8.0/21",
-        "accounts": [
-          "heater-development"
+          "sprinkler-development"
         ]
       }
     }
@@ -25,28 +18,6 @@
   },
   "nacl": [
     {
-        "subnet_set": "general",
-        "egress": false,
-        "subnet_type": "private",
-        "protocol": "tcp",
-        "rule_action": "allow",
-        "rule_number": 230,
-        "cidr_block": "10.234.8.0/21",
-        "from_port": "443",
-        "to_port": "443"
-    },
-    {
-      "subnet_set": "general",
-      "egress": true,
-      "subnet_type": "private",
-      "protocol": "tcp",
-      "rule_action": "allow",
-      "rule_number": 230,
-      "cidr_block": "10.234.8.0/21",
-      "from_port": "1024",
-      "to_port": "65535"
-    },
-    {
       "subnet_set": "general",
       "egress": false,
       "subnet_type": "private",
@@ -65,28 +36,6 @@
       "rule_action": "allow",
       "rule_number": 240,
       "cidr_block": "10.234.16.0/21",
-      "from_port": "1024",
-      "to_port": "65535"
-    },
-    {
-      "subnet_set": "patio",
-      "egress": true,
-      "subnet_type": "private",
-      "protocol": "tcp",
-      "rule_action": "allow",
-      "rule_number": 230,
-      "cidr_block": "10.234.0.0/21",
-      "from_port": "443",
-      "to_port": "443"
-    },
-    {
-      "subnet_set": "patio",
-      "egress": false,
-      "subnet_type": "private",
-      "protocol": "tcp",
-      "rule_action": "allow",
-      "rule_number": 230,
-      "cidr_block": "10.234.0.0/21",
       "from_port": "1024",
       "to_port": "65535"
     }

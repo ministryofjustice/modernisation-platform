@@ -35,8 +35,8 @@
 | :---------------| :--  | :------------------------------------ |
 | 10.233.0.0      | /26  | LAB ONLY development - garden         |
 | 10.233.0.64     | /26  | LAB ONLY development - house          |
-| 10.233.0.128    | /26  | LAB ONLY production - garden          |
-| 10.233.0.192    | /26  | LAB ONLY production - house           |
+| 10.233.0.128    | /26  |                                       |
+| 10.233.0.192    | /26  |                                       |
 | 10.233.1.0      | /26  | preproduction - hmpps                 |
 | 10.233.1.64     | /26  | development - platforms               |        
 | 10.233.1.128    | /26  | development - hmpps                   |         
@@ -169,8 +169,8 @@
 | :---------------| :--  | :------------------------------------ |
 | 10.238.0.0      | /23  | LAB ONLY development - garden         |
 | 10.238.2.0      | /23  | LAB ONLY development - house          |
-| 10.238.4.0      | /23  | LAB ONLY production - garden          |
-| 10.238.6.0      | /23  | LAB ONLY production - house           |
+| 10.238.4.0      | /23  |                                       |
+| 10.238.6.0      | /23  |                                       |
 | 10.238.8.0      | /23  | preproduction - hmpps                 |
 | 10.238.10.0     | /23  | development - platforms               |
 | 10.238.12.0     | /23  | development - hmpps                   |
@@ -301,7 +301,7 @@
 | CIDR            | mask | allocated to                          |
 | :---------------| :--  | :------------------------------------ |
 | 10.234.0.0      | /21  | LAB ONLY garden - general             |
-| 10.234.8.0      | /21  | LAB ONLY garden - patio               |
+| 10.234.8.0      | /21  |                                       |
 | 10.234.16.0     | /21  | LAB ONLY house - general              |
 | 10.234.24.0     | /21  | platforms - general                   |
 | 10.234.32.0     | /21  | hmpps - general                       |
@@ -414,9 +414,9 @@
 
 | CIDR            | mask | allocated to  |
 | :---------------| :--  | :----------------------------------- |
-| 10.237.0.0      | /21  | LAB ONLY garden - general            |
-| 10.237.8.0      | /21  | LAB ONLY garden - patio              |
-| 10.237.16.0     | /21  | LAB ONLY house - general             |
+| 10.237.0.0      | /21  |                                      |
+| 10.237.8.0      | /21  |                                      |
+| 10.237.16.0     | /21  |                                      |
 | 10.237.24.0     | /21  | hmpps - general                      |
 | 10.237.32.0     | /21  | hmcts - general                      |
 | 10.237.40.0     | /21  | -                                    |

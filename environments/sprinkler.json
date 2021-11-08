@@ -2,15 +2,6 @@
   "account-type": "member",
   "environments": [
     {
-      "name": "production",
-      "access": [
-        {
-          "github_slug": "modernisation-platform",
-          "level": "developer"
-        }
-      ]
-    },
-    {
       "name": "development",
       "access": [
         {

@@ -4,7 +4,6 @@ expected =
 {
   "accounts": [
     "analytical-platform-management",
-    "bench",
     "bichard7",
     "cooker",
     "core-logging",
@@ -13,7 +12,6 @@ expected =
     "core-security",
     "core-shared-services",
     "core-vpc",
-    "heater",
     "performance-hub",
     "remote-supervision",
     "sprinkler",
