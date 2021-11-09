@@ -148,7 +148,7 @@ resource "aws_vpc_endpoint" "vpc_gateway_endpoint_s3" {
 
 # Create security group for image builder
 resource "aws_security_group" "image_builder_security_group" {
-  name        = "${local.application_name}-image-builder"
+  name        = "${local.application_name}-image-builder" # checkov:skip=CKV2_AWS_5: "This will be attached to instances created via image builder"
   description = "Security group for image builder"
   vpc_id      = local.non_live_data_vpc_id
   tags = merge(
@@ -159,6 +159,7 @@ resource "aws_security_group" "image_builder_security_group" {
   )
 }
 
+# tfsec:ignore:aws-vpc-no-public-egress-sgr
 resource "aws_security_group_rule" "image_builder_egress_443" {
   description       = "Allow traffic from image builder instances"
   type              = "egress"
@@ -169,6 +170,7 @@ resource "aws_security_group_rule" "image_builder_egress_443" {
   security_group_id = aws_security_group.image_builder_security_group.id
 }
 
+# tfsec:ignore:aws-vpc-no-public-egress-sgr
 resource "aws_security_group_rule" "image_builder_egress_80" {
   description       = "Allow traffic from image builder instances"
   type              = "egress"
