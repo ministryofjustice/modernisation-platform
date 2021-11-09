@@ -159,6 +159,8 @@ resource "aws_security_group" "image_builder_security_group" {
   )
 }
 
+# tfsec:ignore:aws-vpc-no-public-egress-sgr
+
 resource "aws_security_group_rule" "image_builder_egress_443" {
   description       = "Allow traffic from image builder instances"
   type              = "egress"
