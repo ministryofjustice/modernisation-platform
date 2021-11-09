@@ -146,6 +146,8 @@ resource "aws_vpc_endpoint" "vpc_gateway_endpoint_s3" {
   )
 }
 
+#checkov:skip=CKV2_AWS_5:This will be attached to instances created via image builder
+
 # Create security group for image builder
 resource "aws_security_group" "image_builder_security_group" {
   name        = "${local.application_name}-image-builder"
