@@ -79,7 +79,9 @@ data "aws_iam_policy_document" "member-access" {
       "ses:*",
       "sns:*",
       "sqs:*",
-      "ssm:*"
+      "ssm:*",
+      "route53resolver:CreateResolverEndpoint",
+      "waf:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
