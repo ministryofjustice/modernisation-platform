@@ -276,6 +276,11 @@ resource "aws_iam_role_policy" "member-delegation" {
         "Action" : [
           "route53:List*",
           "route53:Get*",
+          "route53resolver:CreateResolverEndpoint",
+          "ec2:DescribeSubnets",
+          "ec2:CreateNetworkInterface",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:CreateNetworkInterfacePermission", 
           "ec2:DescribeSecurityGroupReferences",
           "ec2:DescribeSecurityGroups",
           "ec2:DescribeVpcEndpoints",
