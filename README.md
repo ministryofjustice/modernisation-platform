@@ -30,6 +30,7 @@ Modernisation Platform users can use these modules in their infrastructure. They
 | [modernisation-platform-terraform-s3-bucket](https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket) | Module for creating S3 buckets with sensible defaults e.g. replication, encryption |
 | [modernisation-platform-terraform-s3-bucket-replication-role](https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role) | Module for creating an IAM role for S3 bucket replication |
 | [modernisation-platform-terraform-aws-vm-import](https://github.com/ministryofjustice/modernisation-platform-terraform-aws-vm-import) | Module that creates s3 and roles needed to import virtual machine (VM) images from your virtualization environment to Amazon EC2 as Amazon Machine Images (AMI)   |
+| [modernisation-platform-terraform-lambda-scheduler-stop-start](https://github.com/ministryofjustice/modernisation-platform-terraform-lambda-scheduler-stop-start) | Module for stopping and starting instance, rds resources and autoscaling groups with lambda function |
 
 ### Terraform modules - used core platform
 
