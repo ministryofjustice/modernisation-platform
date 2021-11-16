@@ -287,6 +287,8 @@ resource "aws_iam_role_policy" "member-delegation" {
           "ec2:CreateNetworkInterfacePermission",
           "ec2:DescribeSecurityGroupReferences",
           "ec2:DescribeSecurityGroups",
+          "ec2:CreateSecurityGroup",
+          "ec2:DeleteSecurityGroup",
           "ec2:DescribeVpcEndpoints",
           "ec2:DescribePrefixLists"
         ],
