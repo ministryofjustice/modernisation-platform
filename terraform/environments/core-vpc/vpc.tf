@@ -282,6 +282,7 @@ resource "aws_iam_role_policy" "member-delegation" {
           "route53resolver:ListResolverEndpointIpAddresses",
           "route53resolver:CreateResolverRule",
           "ec2:DescribeSubnets",
+          "route53resolver:ListTagsForResource",
           "ec2:DescribeAvailabilityZones",
           "ec2:DescribeVpcs",
           "ec2:CreateNetworkInterface",
