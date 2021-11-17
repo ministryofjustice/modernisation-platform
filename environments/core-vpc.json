@@ -16,6 +16,10 @@
     {
       "name": "development",
       "access": []
+    },
+    {
+      "name": "sandbox",
+      "access": []
     }
   ],
   "tags": {
