@@ -3,8 +3,8 @@ package main
 expected =
   {
   "transit_gateway": {
-    "garden-development": "10.233.0.0/26",
-    "house-development": "10.233.0.64/26",
+    "garden-sandbox": "10.233.0.0/26",
+    "house-sandbox": "10.233.0.64/26",
     "hmpps-preproduction": "10.233.1.0/26",
     "platforms-development": "10.233.1.64/26",
     "hmpps-development": "10.233.1.128/26",
@@ -16,8 +16,8 @@ expected =
     "hmcts-production": "10.233.3.0/26"
   },
   "protected": {
-    "garden-development": "10.238.0.0/23",
-    "house-development": "10.238.2.0/23",
+    "garden-sandbox": "10.238.0.0/23",
+    "house-sandbox": "10.238.2.0/23",
     "hmpps-preproduction": "10.238.8.0/23",
     "platforms-development": "10.238.10.0/23",
     "hmpps-development": "10.238.12.0/23",
