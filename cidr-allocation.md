@@ -11,7 +11,7 @@
 | 10.236.0.0      | /16  | shared-vpcs preproduction               |
 | 10.237.0.0      | /16  | shared-vpcs production                  |
 | 10.238.0.0      | /16  | shared-vpcs used by protected subnets   |
-| 10.239.0.0      | /16  | spare                                   |
+| 10.239.0.0      | /16  | shared-vpcs sandbox (NOT ROUTEABLE)     | Use for local testing only
 |||
 
 # Core Accounts CIDR's
@@ -300,9 +300,9 @@
 
 | CIDR            | mask | allocated to                          |
 | :---------------| :--  | :------------------------------------ |
-| 10.234.0.0      | /21  | LAB ONLY garden - general             |
+| 10.234.0.0      | /21  |                                       |
 | 10.234.8.0      | /21  |                                       |
-| 10.234.16.0     | /21  | LAB ONLY house - general              |
+| 10.234.16.0     | /21  |                                       |
 | 10.234.24.0     | /21  | platforms - general                   |
 | 10.234.32.0     | /21  | hmpps - general                       |
 | 10.234.40.0     | /21  | cica - general                        |
@@ -446,4 +446,15 @@
 | 10.237.232.0    | /21  | -                                    |
 | 10.237.240.0    | /21  | -                                    |
 | 10.237.248.0    | /21  | -                                    |
+|||
+
+### sandbox /21s for member subnet-sets
+
+| CIDR            | mask | allocated to  |
+| :---------------| :--  | :----------------------------------- |
+| 10.239.0.0      | /21  | LAB ONLY garden - general            |
+| 10.239.8.0      | /21  | LAB ONLY house - general             |
+| 10.239.16.0     | /21  | -                                    |
+| 10.239.24.0     | /21  | -                                    |
+| 10.239.32.0     | /21  | -                                    |
 |||
