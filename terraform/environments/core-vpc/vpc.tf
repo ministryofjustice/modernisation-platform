@@ -67,8 +67,8 @@ locals {
 
     # VPCs that sit within the core vpc sandbox account
     core-vpc-sandbox = {
-    for file in fileset("../../../environments-networks", "*-sandbox.json") :
-    replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))
+      for file in fileset("../../../environments-networks", "*-sandbox.json") :
+      replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))
     }
 
   }
