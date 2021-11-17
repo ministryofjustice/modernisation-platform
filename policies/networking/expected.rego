@@ -29,18 +29,17 @@ expected =
     "hmcts-production": "10.238.24.0/23"
   },
   "subnet_sets": {
-    "garden-development": {
+    "garden-sandbox": {
       "general": {
-        "cidr": "10.234.0.0/21",
+        "cidr": "10.239.0.0/21",
         "accounts": [
-          "sprinkler-development",
-          "bench-development"
+          "sprinkler-development"
         ]
       }
     },
-    "house-development": {
+    "house-sandbox": {
       "general": {
-        "cidr": "10.234.16.0/21",
+        "cidr": "10.239.8.0/21",
         "accounts": [
           "cooker-development"
         ]
