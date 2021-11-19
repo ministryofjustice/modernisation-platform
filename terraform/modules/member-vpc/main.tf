@@ -545,18 +545,6 @@ resource "aws_route" "public_internet_gateway" {
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.default.id
 }
-# # resource "aws_route" "transit-gateway" {
-# #   for_each = {
-# #     for key, route_table in aws_route_table.route_tables :
-# #     key => route_table
-# #     if substr(key, length(key) - 6, length(key)) != "public"
-# #   }
-#
-#   transit_gateway_id     = var.transit_gateway_id
-#   route_table_id         = aws_route_table.route_tables[each.key].id
-#   destination_cidr_block = "0.0.0.0/0"
-# }
-
 
 resource "aws_route_table" "protected" {
 
@@ -652,33 +640,3 @@ output "private_route_tables" {
     if substr(key, length(key) - 6, length(key)) != "public"
   }
 }
-
-
-# # Bastion Security Groups
-# resource "aws_security_group" "bastion" {
-#   for_each = var.subnet_sets
-
-#   name        = "${each.key}_Bastion"
-#   description = "Control Bastion traffic"
-#   vpc_id            = aws_vpc.vpc.id
-
-#   tags = merge(
-#     var.tags_common,
-#     {
-#       Name = "${each.key}_Bastion"
-#     }
-#   )
-# }
-
-#   egress {
-#     from_port   = 0
-#     to_port     = 1024
-#     protocol    = "TCP"
-#     cidr_blocks = [each.value]
-#   }
-#   egress {
-#     from_port   = 0
-#     to_port     = 1024
-#     protocol    = "UDP"
-#     cidr_blocks = [each.value]
-#   }
