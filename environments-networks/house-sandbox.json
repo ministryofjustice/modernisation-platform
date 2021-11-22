@@ -16,5 +16,28 @@
     "additional_endpoints": [],
     "dns_zone_extend": ["garden"]
   },
-  "nacl": []
+  "nacl": [
+    {
+      "subnet_set": "general",
+      "egress": true,
+      "subnet_type": "private",
+      "protocol": "tcp",
+      "rule_action": "allow",
+      "rule_number": 230,
+      "cidr_block": "10.239.0.0/21",
+      "from_port": "443",
+      "to_port": "443"
+    },
+    {
+      "subnet_set": "general",
+      "egress": false,
+      "subnet_type": "private",
+      "protocol": "tcp",
+      "rule_action": "allow",
+      "rule_number": 230,
+      "cidr_block": "10.239.0.0/21",
+      "from_port": "1024",
+      "to_port": "65535"
+    }
+  ]
 }
