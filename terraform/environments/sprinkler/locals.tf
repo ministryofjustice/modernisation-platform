@@ -33,6 +33,6 @@ locals {
   subnet_set  = var.networking[0].set
 
   is_live       = [substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production" || substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction" ? "live" : "non-live"]
-  provider_name = "core-vpc-${local.environment}"
+  provider_name = "core-vpc-sandbox"
 
 }
