@@ -38,10 +38,11 @@ data "aws_iam_policy_document" "ebs_encryption_policy_doc" {
   statement {
     effect = "Allow"
     actions = [
-      "kms:DescribeKey",
-      "kms:ReEncrypt*",
       "kms:CreateGrant",
-      "kms:Decrypt"
+      "kms:Decrypt",
+      "kms:DescribeKey",
+      "kms:GenerateDataKey",
+      "kms:ReEncrypt*"
     ]
 
     resources = ["*"]
