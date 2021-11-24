@@ -24,8 +24,8 @@
 | 10.230.96.0     | /19  | core-shared-services non_live_data   |
 | 10.230.128.0    | /19  | core-logging live_data               |
 | 10.230.160.0    | /19  | core-logging non_live_data           |
-| 10.230.192.0    | /19  | core-security live_data              |
-| 10.230.224.0    | /19  | core-security non_live_data          |
+| 10.20.192.0     | /19  | core-security live_data              |
+| 10.20.224.0     | /19  | core-security non_live_data          |
 |||
 
 ### Transit Gateway Subnets /26s
