@@ -1,7 +1,7 @@
 locals {
   networking = {
-    live_data     = "10.230.192.0/19"
-    non_live_data = "10.230.224.0/19"
+    live_data     = "10.20.192.0/19"
+    non_live_data = "10.20.224.0/19"
   }
 }
 
