@@ -22,8 +22,8 @@
 | 10.230.32.0     | /19  | core-network-services non_live_data  |
 | 10.230.64.0     | /19  | core-shared-services live_data       |
 | 10.230.96.0     | /19  | core-shared-services non_live_data   |
-| 10.230.128.0    | /19  | core-logging live_data               |
-| 10.230.160.0    | /19  | core-logging non_live_data           |
+| 10.20.128.0     | /19  | core-logging live_data               |
+| 10.20.160.0     | /19  | core-logging non_live_data           |
 | 10.20.192.0     | /19  | core-security live_data              |
 | 10.20.224.0     | /19  | core-security non_live_data          |
 |||
