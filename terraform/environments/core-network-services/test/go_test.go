@@ -60,7 +60,7 @@ func TestTransitGateway(t *testing.T) {
 
 	//Check the correct CIDR address have been added
 	output5 := terraform.Output(t, terraformOptions, "vpc_cidrs")
-	assert.Equal(t, output5, "map[live_data:10.230.0.0/19 non_live_data:10.230.32.0/19]")
+	assert.Equal(t, output5, "map[live_data:10.20.0.0/19 non_live_data:10.20.32.0/19]")
 
 	//Check the transit gateway ram share is created
 	output6 := terraform.Output(t, terraformOptions, "transit_gateway_ram_share")
