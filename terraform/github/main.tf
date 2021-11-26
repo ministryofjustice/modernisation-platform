@@ -190,6 +190,17 @@ module "modernisation-platform-infrastructure-test" {
   ]
 }
 
+module "modernisation-platform-terraform-member-vpc" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-member-vpc"
+  description = "Module for member VPC accounts in the Modernisation Platform"
+  topics = [
+    "aws",
+    "platform",
+    "member-vpc"
+  ]
+}
+
 # Everyone, with access to the above repositories
 module "core-team" {
   source      = "./modules/team"
@@ -211,7 +222,8 @@ module "core-team" {
     module.terraform-module-lambda-scheduler-stop-start.repository.name,
     module.modernisation-platform-ami-builds.repository.name,
     module.modernisation-platform-environments.repository.name,
-    module.modernisation-platform-infrastructure-test.repository.name
+    module.modernisation-platform-infrastructure-test.repository.name,
+    module.modernisation-platform-terraform-member-vpc.repository.name
   ]
 
   maintainers = local.maintainers
