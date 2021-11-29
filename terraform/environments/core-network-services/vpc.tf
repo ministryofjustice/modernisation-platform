@@ -1,7 +1,7 @@
 locals {
   networking = {
-    live_data     = "10.230.0.0/19"
-    non_live_data = "10.230.32.0/19"
+    live_data     = "10.20.0.0/19"
+    non_live_data = "10.20.32.0/19"
   }
 
   useful_vpc_ids = {

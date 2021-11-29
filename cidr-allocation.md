@@ -2,9 +2,7 @@
 
 | CIDR            | mask | allocated to  |
 | :---------------| :--  | :-------------------------------------- |
-| 10.230.0.0      | /16  | used for vpcs in core accounts          |
-| 10.231.0.0      | /16  | DO NOT USE - Used by Mansfield-House    |
-| 10.232.0.0      | /16  | DO NOT USE - Used by Magistrates Courts |
+| 10.20.0.0       | /16  | used for vpcs in core accounts          |
 | 10.233.0.0      | /16  | shared-vpcs used by tgw subnets         |
 | 10.234.0.0      | /16  | shared-vpcs development                 |
 | 10.235.0.0      | /16  | shared-vpcs test                        |
@@ -18,8 +16,8 @@
 
 | CIDR            | mask | allocated to  |
 | :---------------| :--  | :----------------------------------- |
-| 10.230.0.0      | /19  | core-network-services live_data      |
-| 10.230.32.0     | /19  | core-network-services non_live_data  |
+| 10.20.0.0       | /19  | core-network-services live_data      |
+| 10.20.32.0      | /19  | core-network-services non_live_data  |
 | 10.20.64.0      | /19  | core-shared-services live_data       |
 | 10.20.96.0      | /19  | core-shared-services non_live_data   |
 | 10.20.128.0     | /19  | core-logging live_data               |
