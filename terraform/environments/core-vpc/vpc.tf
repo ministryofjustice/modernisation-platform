@@ -203,7 +203,9 @@ module "core-vpc-tgw-routes" {
 }
 
 module "dns-zone" {
-  depends_on = [module.vpc]
+  depends_on = [
+    module.vpc
+  ]
 
   providers = {
     aws.core-network-services = aws.core-network-services
@@ -227,6 +229,9 @@ module "dns-zone" {
 }
 
 module "dns_zone_extend" {
+  depends_on = [
+    module.dns-zone
+  ]
 
   for_each = local.vpcs[terraform.workspace]
 
