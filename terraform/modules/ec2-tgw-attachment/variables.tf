@@ -1,8 +1,3 @@
-variable "resource_share_name" {
-  description = "Resource Access Manager (RAM) resource share name to lookup the Transit Gateway Resource Share"
-  type        = string
-}
-
 variable "subnet_ids" {
   description = "Subnet IDs to attach to the Transit Gateway"
   type        = list(string)

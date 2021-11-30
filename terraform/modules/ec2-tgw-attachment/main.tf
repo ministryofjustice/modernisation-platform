@@ -1,12 +1,5 @@
 # Data lookups
 
-## Look up RAM Resource Share in the host account
-data "aws_ram_resource_share" "transit-gateway" {
-  provider = aws.transit-gateway-host
-
-  name           = var.resource_share_name
-  resource_owner = "SELF"
-}
 
 ## Look up Transit Gateway Route Tables in the host account to associate with
 data "aws_ec2_transit_gateway_route_table" "default" {
@@ -23,20 +16,7 @@ data "aws_ec2_transit_gateway_route_table" "default" {
   }
 }
 
-## Get the Transit Gateway tenant account ID
-data "aws_caller_identity" "transit-gateway-tenant" {
-  provider = aws.transit-gateway-tenant
-}
-
 # Resource creation
-
-## Add the tenant account to the Transit Gateway Resource Share
-resource "aws_ram_principal_association" "transit_gateway_association" {
-  provider = aws.transit-gateway-host
-
-  principal          = data.aws_caller_identity.transit-gateway-tenant.account_id
-  resource_share_arn = data.aws_ram_resource_share.transit-gateway.arn
-}
 
 ## Due to propagation in AWS, a RAM share will take up to 60 seconds to appear in an account,
 ## so we need to wait before attaching our tenant VPCs to it
@@ -66,7 +46,6 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "default" {
   })
 
   depends_on = [
-    aws_ram_principal_association.transit_gateway_association,
     time_sleep.wait_60_seconds
   ]
 }

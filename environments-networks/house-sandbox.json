@@ -4,7 +4,7 @@
     "protected": "10.238.2.0/23",
     "subnet_sets": {
       "general": {
-        "cidr": "10.239.8.0/21",
+        "cidr": "10.231.8.0/21",
         "accounts": [
           "cooker-development"
         ]
