@@ -69,21 +69,15 @@ expected =
     },
     "platforms-test": {
       "general": {
-        "cidr": "10.235.0.0/21",
+        "cidr": "10.26.0.0/21",
         "accounts": [
           "testing-test"
         ]
       }
     },
     "hmpps-test": {
-      "nomis": {
-        "cidr": "10.235.8.0/21",
-        "accounts": [
-          "nomis-test"
-        ]
-      },
       "general": {
-        "cidr": "10.235.16.0/21",
+        "cidr": "10.26.8.0/21",
         "accounts": [
           "nomis-test"
         ]
