@@ -19,6 +19,7 @@ expected =
     "nomis",
     "analytical-platform-data",
     "tariff",
-    "xhibit-portal"
+    "xhibit-portal",
+    "mi-platform"
     ]
 }
