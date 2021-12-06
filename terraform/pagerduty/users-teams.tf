@@ -4,20 +4,14 @@ resource "pagerduty_team" "modernisation_platform" {
 }
 
 resource "pagerduty_team_membership" "modernisation_platform_membership" {
-  for_each = pagerduty_user.modernisation_platform_users
+  for_each = toset(local.modernisation_platform_users[*].id)
   team_id  = pagerduty_team.modernisation_platform.id
-  user_id  = each.value.id
-}
-
-resource "pagerduty_team_membership" "modernisation_platform_membership_existing_users" {
-  for_each = toset(local.existing_users)
-  team_id  = pagerduty_team.modernisation_platform.id
-  user_id  = each.key
+  user_id  = each.value
 }
 
 #users
-resource "pagerduty_user" "modernisation_platform_users" {
-  for_each = { for k, v in local.modernisation_platform_team_members : k => v }
+resource "pagerduty_user" "pager_duty_users" {
+  for_each = { for k, v in local.pager_duty_users : k => v }
   name     = each.value.name
   email    = each.value.email
   lifecycle {
