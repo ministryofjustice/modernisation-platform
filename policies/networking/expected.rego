@@ -55,13 +55,13 @@ expected =
     },
     "platforms-development": {
       "general": {
-        "cidr": "10.234.24.0/21",
+        "cidr": "10.26.16.0/21",
         "accounts": []
       }
     },
     "hmpps-development": {
       "general": {
-        "cidr": "10.234.32.0/21",
+        "cidr": "10.26.24.0/21",
         "accounts": [
           "performance-hub-development"
         ]
@@ -85,7 +85,7 @@ expected =
     },
     "cica-development": {
       "general": {
-        "cidr": "10.234.40.0/21",
+        "cidr": "10.26.32.0/21",
         "accounts": [
           "tariff-development"
         ]
@@ -101,7 +101,7 @@ expected =
     },
     "hmcts-development": {
       "general": {
-        "cidr": "10.234.48.0/21",
+        "cidr": "10.26.40.0/21",
         "accounts": [
           "xhibit-portal-development"
         ]

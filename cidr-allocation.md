@@ -4,8 +4,7 @@
 | :---------------| :--  | :-------------------------------------- |
 | 10.20.0.0       | /16  | used for vpcs in core accounts          |
 | 10.233.0.0      | /16  | shared-vpcs used by tgw subnets         |
-| 10.234.0.0      | /16  | shared-vpcs development                 |
-| 10.26.0.0       | /16  | shared-vpcs test                        |
+| 10.26.0.0       | /16  | shared-vpcs development and test        |
 | 10.236.0.0      | /16  | shared-vpcs preproduction               |
 | 10.237.0.0      | /16  | shared-vpcs production                  |
 | 10.238.0.0      | /16  | shared-vpcs used by protected subnets   |
@@ -294,7 +293,7 @@
 | 10.238.252.0    | /23  |                                       |
 | 10.238.254.0    | /23  |                                       |
 
-### development   /21s for member subnet-sets
+### development   /21s for member subnet-sets TODO: OBSOLETE! PLEASE DELETE THIS SECTION DURING THE CLEAN-UP PHASE
 
 | CIDR            | mask | allocated to                          |
 | :---------------| :--  | :------------------------------------ |
@@ -336,12 +335,12 @@
 
 | CIDR            | mask | allocated to  |
 | :---------------| :--  | :----------------------------------- |
-| 10.26.0.0       | /21  | platforms - general                  |
-| 10.26.8.0       | /21  | hmpps - general                      |
-| 10.26.16.0      | /21  | -                                    |
-| 10.26.24.0      | /21  | -                                    |
-| 10.26.32.0      | /21  | -                                    |
-| 10.26.40.0      | /21  | -                                    |
+| 10.26.0.0       | /21  | platforms test - general             |
+| 10.26.8.0       | /21  | hmpps test - general                 |
+| 10.26.16.0      | /21  | platforms development - general      |
+| 10.26.24.0      | /21  | hmpps development - general          |
+| 10.26.32.0      | /21  | cica development - general           |
+| 10.26.40.0      | /21  | hmcts development - general          |
 | 10.26.48.0      | /21  | -                                    |
 | 10.26.56.0      | /21  | -                                    |
 | 10.26.64.0      | /21  | -                                    |
