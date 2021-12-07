@@ -47,7 +47,7 @@ expected =
     },
     "hmpps-preproduction": {
       "general": {
-        "cidr": "10.236.0.0/21",
+        "cidr": "10.27.0.0/21",
         "accounts": [
           "performance-hub-preproduction"
         ]

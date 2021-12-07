@@ -4,7 +4,7 @@
     "protected": "10.238.8.0/23",
     "subnet_sets": {
       "general": {
-        "cidr": "10.236.0.0/21",
+        "cidr": "10.27.0.0/21",
         "accounts": [
           "performance-hub-preproduction"
         ]
