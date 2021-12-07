@@ -93,6 +93,7 @@ data "aws_iam_policy_document" "member-ci-policy" {
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-test"]}:role/member-delegation-*-test",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-preproduction"]}:role/member-delegation-*-preproduction",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-production"]}:role/member-delegation-*-production",
+      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-sandbox"]}:role/member-delegation-*-sandbox",
       "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/modify-dns-records"
     ]
   }
