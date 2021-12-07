@@ -1,6 +1,6 @@
 resource "pagerduty_escalation_policy" "default" {
-  name  = "Default Modernisation Platform Policy"
-  teams = [pagerduty_team.modernisation_platform.id]
+  name      = "Default Modernisation Platform Policy"
+  teams     = [pagerduty_team.modernisation_platform.id]
   num_loops = 9
 
   rule {

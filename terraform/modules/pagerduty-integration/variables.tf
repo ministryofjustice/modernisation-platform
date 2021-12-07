@@ -1,5 +1,5 @@
 variable "sns_topics" {
-  type = list
+  type = list(any)
 }
 
 variable "pagerduty_integration_name" {

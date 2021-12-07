@@ -74,7 +74,7 @@ module "trusted-advisor-modernisation-platform" {
 }
 
 module "pagerduty" {
-  source        = "../modules/pagerduty-integration"
-  sns_topics = ["config","securityhub-alarms","cloudtrail"]
+  source                     = "../modules/pagerduty-integration"
+  sns_topics                 = ["config", "securityhub-alarms", "cloudtrail"]
   pagerduty_integration_name = "core_alerts_cloudwatch"
 }

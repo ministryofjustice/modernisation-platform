@@ -17,12 +17,12 @@ locals {
     data.pagerduty_user.jake_mulley,
   ]
 
-  modernisation_platform_users = concat(local.existing_users,[for user in pagerduty_user.pager_duty_users : user])
+  modernisation_platform_users = concat(local.existing_users, [for user in pagerduty_user.pager_duty_users : user])
 
   oncall_users = concat(
-      [
+    [
       local.modernisation_platform_users[index(local.modernisation_platform_users[*].name, "David Elliott")].id
-      ]
+    ]
   )
 
   tags = {
