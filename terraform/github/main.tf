@@ -17,6 +17,8 @@ module "core" {
     TERRAFORM_GITHUB_TOKEN = "This needs to be manually set in GitHub."
     # Slack app webhook url
     SLACK_WEBHOOK_URL = data.aws_secretsmanager_secret_version.slack_webhook_url.secret_string
+    # Pagerduty api token
+    PAGERDUTY_TOKEN = data.aws_secretsmanager_secret_version.pagerduty_token.secret_string
   }))
 }
 
