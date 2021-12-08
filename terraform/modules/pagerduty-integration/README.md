@@ -34,7 +34,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_pagerduty_integration_name"></a> [pagerduty\_integration\_name](#input\_pagerduty\_integration\_name) | n/a | `string` | n/a | yes |
-| <a name="input_sns_topics"></a> [sns\_topics](#input\_sns\_topics) | n/a | `list` | n/a | yes |
+| <a name="input_sns_topics"></a> [sns\_topics](#input\_sns\_topics) | n/a | `list(any)` | n/a | yes |
 
 ## Outputs
 
