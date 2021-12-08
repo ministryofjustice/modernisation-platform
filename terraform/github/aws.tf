@@ -28,3 +28,12 @@ data "aws_secretsmanager_secret" "slack_webhook_url" {
 data "aws_secretsmanager_secret_version" "slack_webhook_url" {
   secret_id = data.aws_secretsmanager_secret.slack_webhook_url.id
 }
+
+# Get the pagerduty api token
+data "aws_secretsmanager_secret" "pagerduty_token" {
+  name = "pagerduty_token"
+}
+
+data "aws_secretsmanager_secret_version" "pagerduty_token" {
+  secret_id = data.aws_secretsmanager_secret.pagerduty_token.id
+}
