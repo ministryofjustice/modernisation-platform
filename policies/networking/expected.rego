@@ -93,7 +93,7 @@ expected =
     },
     "hmpps-production": {
       "general": {
-        "cidr": "10.237.24.0/21",
+        "cidr": "10.27.8.0/21",
         "accounts": [
           "performance-hub-production"
         ]
@@ -109,7 +109,7 @@ expected =
     },
     "hmcts-production": {
       "general": {
-        "cidr": "10.237.32.0/21",
+        "cidr": "10.27.16.0/21",
         "accounts": [
           "xhibit-portal-production"
         ]

@@ -4,8 +4,7 @@
 | :---------------| :--  | :-------------------------------------- |
 | 10.20.0.0       | /16  | used for vpcs in core accounts          |
 | 10.26.0.0       | /16  | shared-vpcs development and test        |
-| 10.27.0.0       | /16  | shared-vpcs preproduction               |
-| 10.237.0.0      | /16  | shared-vpcs production                  |
+| 10.27.0.0       | /16  | shared-vpcs preproduction and production|
 | 10.233.0.0      | /16  | shared-vpcs used by tgw subnets         |
 | 10.238.0.0      | /16  | shared-vpcs used by protected subnets   |
 | 10.239.0.0      | /16  | shared-vpcs sandbox (NOT ROUTEABLE)     | Use for local testing only
@@ -374,8 +373,8 @@
 | CIDR            | mask | allocated to  |
 | :---------------| :--  | :----------------------------------- |
 | 10.27.0.0       | /21  | hmpps preproduction - general        |
-| 10.27.8.0       | /21  | -                                    |
-| 10.27.16.0      | /21  | -                                    |
+| 10.27.8.0       | /21  | hmpps production - general           |
+| 10.27.16.0      | /21  | hmcts production - general           |
 | 10.27.24.0      | /21  | -                                    |
 | 10.27.32.0      | /21  | -                                    |
 | 10.27.40.0      | /21  | -                                    |
@@ -414,8 +413,8 @@
 | 10.237.0.0      | /21  |                                      |
 | 10.237.8.0      | /21  |                                      |
 | 10.237.16.0     | /21  |                                      |
-| 10.237.24.0     | /21  | hmpps - general                      |
-| 10.237.32.0     | /21  | hmcts - general                      |
+| 10.237.24.0     | /21  |                                      |
+| 10.237.32.0     | /21  |                                      |
 | 10.237.40.0     | /21  | -                                    |
 | 10.237.48.0     | /21  | -                                    |
 | 10.237.56.0     | /21  | -                                    |
