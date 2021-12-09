@@ -30,8 +30,8 @@ module "vpc_attachment" {
     aws.transit-gateway-host   = aws.core-network-services
   }
 
-  transit_gateway_id  = data.aws_ec2_transit_gateway.transit-gateway.id
-  type                = each.key
+  transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
+  type               = each.key
 
   subnet_ids = module.vpc[each.key].tgw_subnet_ids
   vpc_id     = module.vpc[each.key].vpc_id
