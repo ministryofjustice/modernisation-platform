@@ -1,7 +1,5 @@
 {
   "cidr": {
-    "transit_gateway": "10.233.0.64/26",
-    "protected": "10.238.2.0/23",
     "subnet_sets": {
       "general": {
         "cidr": "10.231.8.0/21",
