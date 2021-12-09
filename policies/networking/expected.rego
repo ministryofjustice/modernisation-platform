@@ -31,7 +31,7 @@ expected =
   "subnet_sets": {
     "garden-sandbox": {
       "general": {
-        "cidr": "10.239.0.0/21",
+        "cidr": "10.231.0.0/21",
         "accounts": [
           "sprinkler-development"
         ]
@@ -39,7 +39,7 @@ expected =
     },
     "house-sandbox": {
       "general": {
-        "cidr": "10.239.8.0/21",
+        "cidr": "10.231.8.0/21",
         "accounts": [
           "cooker-development"
         ]
@@ -47,7 +47,7 @@ expected =
     },
     "hmpps-preproduction": {
       "general": {
-        "cidr": "10.236.0.0/21",
+        "cidr": "10.27.0.0/21",
         "accounts": [
           "performance-hub-preproduction"
         ]
@@ -55,13 +55,13 @@ expected =
     },
     "platforms-development": {
       "general": {
-        "cidr": "10.234.24.0/21",
+        "cidr": "10.26.16.0/21",
         "accounts": []
       }
     },
     "hmpps-development": {
       "general": {
-        "cidr": "10.234.32.0/21",
+        "cidr": "10.26.24.0/21",
         "accounts": [
           "performance-hub-development"
         ]
@@ -69,21 +69,15 @@ expected =
     },
     "platforms-test": {
       "general": {
-        "cidr": "10.235.0.0/21",
+        "cidr": "10.26.0.0/21",
         "accounts": [
           "testing-test"
         ]
       }
     },
     "hmpps-test": {
-      "nomis": {
-        "cidr": "10.235.8.0/21",
-        "accounts": [
-          "nomis-test"
-        ]
-      },
       "general": {
-        "cidr": "10.235.16.0/21",
+        "cidr": "10.26.8.0/21",
         "accounts": [
           "nomis-test"
         ]
@@ -91,7 +85,7 @@ expected =
     },
     "cica-development": {
       "general": {
-        "cidr": "10.234.40.0/21",
+        "cidr": "10.26.32.0/21",
         "accounts": [
           "tariff-development"
         ]
@@ -99,7 +93,7 @@ expected =
     },
     "hmpps-production": {
       "general": {
-        "cidr": "10.237.24.0/21",
+        "cidr": "10.27.8.0/21",
         "accounts": [
           "performance-hub-production"
         ]
@@ -107,7 +101,7 @@ expected =
     },
     "hmcts-development": {
       "general": {
-        "cidr": "10.234.48.0/21",
+        "cidr": "10.26.40.0/21",
         "accounts": [
           "xhibit-portal-development"
         ]
@@ -115,7 +109,7 @@ expected =
     },
     "hmcts-production": {
       "general": {
-        "cidr": "10.237.32.0/21",
+        "cidr": "10.27.16.0/21",
         "accounts": [
           "xhibit-portal-production"
         ]
