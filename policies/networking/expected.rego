@@ -31,7 +31,7 @@ expected =
   "subnet_sets": {
     "garden-sandbox": {
       "general": {
-        "cidr": "10.239.0.0/21",
+        "cidr": "10.231.0.0/21",
         "accounts": [
           "sprinkler-development"
         ]
@@ -39,7 +39,7 @@ expected =
     },
     "house-sandbox": {
       "general": {
-        "cidr": "10.239.8.0/21",
+        "cidr": "10.231.8.0/21",
         "accounts": [
           "cooker-development"
         ]
