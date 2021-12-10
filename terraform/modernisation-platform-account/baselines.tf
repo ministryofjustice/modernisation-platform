@@ -73,7 +73,7 @@ module "trusted-advisor-modernisation-platform" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor?ref=v2.1.0"
 }
 
-module "pagerduty" {
+module "pagerduty_core_alerts" {
   source                     = "../modules/pagerduty-integration"
   sns_topics                 = ["config", "securityhub-alarms", "cloudtrail"]
   pagerduty_integration_name = "core_alerts_cloudwatch"
