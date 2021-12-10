@@ -5,6 +5,37 @@ This is the Ministry of Justice [Modernisation Platform team](https://github.com
 
 For more information on the Modernisation Platform please see the [user guidance](https://user-guide.modernisation-platform.service.justice.gov.uk).
 
+## Modernisation Platform's advantages and trade-offs
+
+**Advantages**
+
+Out of the box functionality
+
+- GitOps
+- Static Code Analysis with suggestions for best practices
+- Dev/prod parity: https://12factor.net/dev-prod-parity
+- Infrastructure is easier to reproduce and replicate
+- Terraform modules with reasonable defaults tailored to maximise security and minimise costs
+
+Increased security
+
+- Deployments only through CI/CD, no direct deployments
+- Environment isolation, dev cannot access prod and vice versa
+- Each role has only the bare minimal access
+- Deny all access that is not explicitly allowed
+
+Flexibility: suitable for any kind of workloads
+
+- Cloud-native or not
+- Containerised or not
+- Legacy or greenfield
+
+**Trade-offs**
+
+- The platform has a reasonable **learning curve** to comply with best practices: [user guidance](https://user-guide.modernisation-platform.service.justice.gov.uk/#modernisation-platform)
+- The platform is focused on **production workloads**. For example, if you need a sandbox to quickly experiment with changes, the platform might get in your way because you will need to comply with best practices that might not be relevant to your imminent goal.
+- The platform is **relatively new** and not yet thoroughly tested. First prod environment (Performance Hub) was deployed on 17 Nov 2021.
+
 ## Contents
 This repository currently holds the Modernisation Platform's:
 - [Architecture Decision Record (ADR)](architecture-decision-record)
