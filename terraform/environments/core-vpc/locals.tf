@@ -5,8 +5,8 @@ data "aws_caller_identity" "modernisation-platform" {
 data "aws_organizations_organization" "root_account" {}
 
 locals {
-  application_name       = "core-vpc"
-  environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
+  application_name           = "core-vpc"
+  environment_management     = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
   pagerduty_integration_keys = jsondecode(data.aws_secretsmanager_secret_version.pagerduty_integration_keys.secret_string)
 
   # This takes the name of the Terraform workspace (e.g. core-vpc-production), strips out the application name (e.g. core-vpc), and checks if
