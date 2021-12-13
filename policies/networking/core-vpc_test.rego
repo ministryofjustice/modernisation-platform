@@ -34,8 +34,6 @@ test_cidr_present {
 }
 
 test_missing_cidr_keys {
-  deny["`example.json` is missing the `transit_gateway` key"] with input as { "filename": "example.json", "cidr": {} }
-  deny["`example.json` is missing the `protected` key"] with input as { "filename": "example.json", "cidr": {} }
   deny["`example.json` is missing the `subnet_sets` key"] with input as { "filename": "example.json", "cidr": {} }
 }
 
