@@ -3,8 +3,9 @@ data "aws_organizations_organization" "root_account" {}
 data "aws_caller_identity" "current" {}
 
 locals {
-  application_name       = "core-shared-services"
-  environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
+  application_name           = "core-shared-services"
+  environment_management     = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
+  pagerduty_integration_keys = jsondecode(data.aws_secretsmanager_secret_version.pagerduty_integration_keys.secret_string)
 
   root_account = data.aws_organizations_organization.root_account
 

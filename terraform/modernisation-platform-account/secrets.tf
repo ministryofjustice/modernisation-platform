@@ -58,3 +58,12 @@ resource "aws_secretsmanager_secret" "slack_webhook_url" {
   description = "Slack channel modernisation-platform-notifications webhook url for sending notifications to slack"
   tags        = local.tags
 }
+
+# Get the map of pagerduty integration keys
+data "aws_secretsmanager_secret" "pagerduty_integration_keys" {
+  name = "pagerduty_integration_keys"
+}
+
+data "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
+  secret_id = data.aws_secretsmanager_secret.pagerduty_integration_keys.id
+}
