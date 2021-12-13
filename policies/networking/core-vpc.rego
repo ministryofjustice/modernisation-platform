@@ -35,16 +35,6 @@ deny[msg] {
 }
 
 deny[msg] {
-  not has_field(input.cidr, "transit_gateway")
-  msg := sprintf("`%v` is missing the `transit_gateway` key", [input.filename])
-}
-
-deny[msg] {
-  not has_field(input.cidr, "protected")
-  msg := sprintf("`%v` is missing the `protected` key", [input.filename])
-}
-
-deny[msg] {
   not has_field(input.cidr, "subnet_sets")
   msg := sprintf("`%v` is missing the `subnet_sets` key", [input.filename])
 }
