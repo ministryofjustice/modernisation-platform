@@ -4,7 +4,7 @@ resource "pagerduty_service" "core_alerts" {
   name                    = "Modernisation Platform Core Alerts"
   description             = "Modernisation Platform Core Infrastructure Alerts"
   auto_resolve_timeout    = 14400
-  acknowledgement_timeout = 7200
+  acknowledgement_timeout = null
   escalation_policy       = pagerduty_escalation_policy.default.id
   alert_creation          = "create_alerts_and_incidents"
 }

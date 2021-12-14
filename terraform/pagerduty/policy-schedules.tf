@@ -1,7 +1,7 @@
 resource "pagerduty_escalation_policy" "default" {
-  name      = "Default Modernisation Platform Policy"
-  teams     = [pagerduty_team.modernisation_platform.id]
-  num_loops = 9
+  name  = "Default Modernisation Platform Policy"
+  teams = [pagerduty_team.modernisation_platform.id]
+  # num_loops = 9
 
   rule {
     escalation_delay_in_minutes = 10
@@ -10,13 +10,14 @@ resource "pagerduty_escalation_policy" "default" {
       id   = pagerduty_schedule.primary.id
     }
   }
-  rule {
-    escalation_delay_in_minutes = 10
-    target {
-      type = "schedule_reference"
-      id   = pagerduty_schedule.secondary.id
-    }
-  }
+  # Comment out until we have a proper on call rota
+  # rule {
+  #   escalation_delay_in_minutes = 10
+  #   target {
+  #     type = "schedule_reference"
+  #     id   = pagerduty_schedule.secondary.id
+  #   }
+  # }
 }
 
 resource "pagerduty_schedule" "primary" {
