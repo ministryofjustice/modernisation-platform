@@ -14,3 +14,33 @@ resource "pagerduty_service_integration" "cloudwatch" {
   service = pagerduty_service.core_alerts.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
+
+resource "pagerduty_service_event_rule" "mfa-console-access" {
+  service  = pagerduty_service.core_alerts.id
+  position = 0
+  disabled = "false"
+
+  conditions {
+    operator = "and"
+    subconditions {
+      operator = "contains"
+      parameter {
+        value = "sign-in-without-mfa"
+        path  = "summary"
+      }
+    }
+  }
+
+  actions {
+    severity {
+      value = "info"
+    }
+    annotate {
+      value = "Suppressed as triggered by SSO sign on"
+    }
+
+    suppress {
+      value = true
+    }
+  }
+}
