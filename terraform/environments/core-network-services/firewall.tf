@@ -1,9 +1,9 @@
 locals {
-    external_inspection_vpc             = "10.56.0.0/24"
-    external_inspection_subnet_in       = cidrsubnet(local.external_inspection_vpc,2,1)
-    external_inspection_subnet_out      = cidrsubnet(local.external_inspection_vpc,2,0)
-    external_inspection_in_subnets_map  = { for key, cidr in cidrsubnets(local.external_inspection_subnet_in, 2, 2, 2) : local.availability_zones[key] => cidr }
-    external_inspection_out_subnets_map = { for key, cidr in cidrsubnets(local.external_inspection_subnet_out, 2, 2, 2) : local.availability_zones[key] => cidr }
+  external_inspection_vpc             = "10.56.0.0/24"
+  external_inspection_subnet_in       = cidrsubnet(local.external_inspection_vpc, 2, 1)
+  external_inspection_subnet_out      = cidrsubnet(local.external_inspection_vpc, 2, 0)
+  external_inspection_in_subnets_map  = { for key, cidr in cidrsubnets(local.external_inspection_subnet_in, 2, 2, 2) : local.availability_zones[key] => cidr }
+  external_inspection_out_subnets_map = { for key, cidr in cidrsubnets(local.external_inspection_subnet_out, 2, 2, 2) : local.availability_zones[key] => cidr }
 
 }
 
@@ -112,12 +112,12 @@ resource "aws_subnet" "external_inspection_out" {
 # Ingress Inspection VPC Routing
 #################################
 resource "aws_route_table" "external_inspection_in" {
- for_each = local.external_inspection_in_subnets_map
+  for_each = local.external_inspection_in_subnets_map
 
   vpc_id = aws_vpc.external_inspection.id
 
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block      = "0.0.0.0/0"
     vpc_endpoint_id = element([for ss in tolist(aws_networkfirewall_firewall.external_inspection.firewall_status[0].sync_states) : ss.attachment[0].endpoint_id if ss.attachment[0].subnet_id == aws_subnet.external_inspection_out[each.key].id], 0)
   }
 
@@ -211,7 +211,7 @@ resource "aws_networkfirewall_rule_group" "global_protect" {
             actions = ["aws:pass"]
             match_attributes {
               source {
-                address_definition = "10.184.0.0/16"  # Global Protect
+                address_definition = "10.184.0.0/16" # Global Protect
               }
               source_port {
                 from_port = 1024
@@ -271,7 +271,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "external_inspection_in" {
 
 
   # Attach subnets to the Transit Gateway
-  vpc_id     = aws_vpc.external_inspection.id
+  vpc_id = aws_vpc.external_inspection.id
   subnet_ids = [
     for subnet in aws_subnet.external_inspection_in :
     subnet.id

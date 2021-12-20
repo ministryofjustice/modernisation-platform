@@ -40,7 +40,7 @@ data "aws_ec2_transit_gateway_route_table" "external_inspection_out" {
   provider = aws.core-network-services
 
   filter {
-    name = "tag:Name"
+    name   = "tag:Name"
     values = ["external-inspection-out"]
   }
 
@@ -120,7 +120,7 @@ module "vpc" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=v1.0.1"
 
   subnet_sets = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
-  
+
   additional_endpoints = each.value.options.additional_endpoints
   bastion_linux        = each.value.options.bastion_linux
   #bastion_windows = each.value.options.bastion_windows
