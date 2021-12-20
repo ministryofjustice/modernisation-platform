@@ -13,6 +13,11 @@ variable "tgw_route_table" {
   type        = string
 }
 
+variable "external_inspection_out" {
+  description = "Transit Gateway route table ID for internal-inspection-out"
+  type        = string
+}
+
 variable "route_table" {
   description = "Route Table"
 }
