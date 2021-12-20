@@ -13,3 +13,11 @@ resource "aws_route" "main" {
   destination_cidr_block = each.value
   transit_gateway_id     = var.tgw_id
 }
+
+resource "aws_ec2_transit_gateway_route" "external_inspection_out" {
+  for_each = tomap(var.subnet_sets)
+
+  destination_cidr_block         = each.value
+  transit_gateway_attachment_id  = var.tgw_vpc_attachment
+  transit_gateway_route_table_id = var.external_inspection_out
+}

@@ -36,6 +36,16 @@ data "aws_route_table" "main-public" {
   }
 }
 
+data "aws_ec2_transit_gateway_route_table" "external_inspection_out" {
+  provider = aws.core-network-services
+
+  filter {
+    name = "tag:Name"
+    values = ["external-inspection-out"]
+  }
+
+}
+
 locals {
 
   type = local.is-live_data ? "live_data" : "non_live_data"
@@ -110,7 +120,7 @@ module "vpc" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=v1.0.1"
 
   subnet_sets = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
-
+  
   additional_endpoints = each.value.options.additional_endpoints
   bastion_linux        = each.value.options.bastion_linux
   #bastion_windows = each.value.options.bastion_windows
@@ -145,11 +155,12 @@ module "vpc_tgw_routing" {
     aws = aws.core-network-services
   }
 
-  route_table        = data.aws_route_table.main-public
-  subnet_sets        = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
-  tgw_vpc_attachment = module.vpc_attachment[each.key].tgw_vpc_attachment
-  tgw_route_table    = module.vpc_attachment[each.key].tgw_route_table
-  tgw_id             = data.aws_ec2_transit_gateway.transit-gateway.id
+  route_table             = data.aws_route_table.main-public
+  subnet_sets             = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
+  tgw_vpc_attachment      = module.vpc_attachment[each.key].tgw_vpc_attachment
+  tgw_route_table         = module.vpc_attachment[each.key].tgw_route_table
+  tgw_id                  = data.aws_ec2_transit_gateway.transit-gateway.id
+  external_inspection_out = data.aws_ec2_transit_gateway_route_table.external_inspection_out.id
 
   depends_on = [module.vpc_attachment, module.vpc]
 }

@@ -89,42 +89,36 @@ resource "aws_ec2_transit_gateway_peering_attachment_accepter" "PTTP-Production"
 ######################
 # TGW Route tables
 ######################
-# Create Transit Gateway PTTP ingress routing table
-resource "aws_ec2_transit_gateway_route_table" "pttp_ingress" {
+# Create Transit Gateway external-inspection-in routing table
+resource "aws_ec2_transit_gateway_route_table" "external_inspection_in" {
   transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
 
   tags = merge(
     local.tags,
     {
-      Name = "pttp ingress"
+      Name = "external-inspection-in"
     }
   )
 }
-# add ingress routes for hmpps to pttp ingress tgw route table
+# Create Transit Gateway external-inspection-out routing table
+resource "aws_ec2_transit_gateway_route_table" "external_inspection_out" {
+  transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
 
-# resource "aws_ec2_transit_gateway_route" "tgw_pttp_ingress_routing_to_hmpps_development" {
-#   destination_cidr_block         = local.hmpps_general_development_subnet_set_cidr
-#   transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_vpc_attachment.hmpps-development.id
-#   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.pttp_ingress.id
-# }
-resource "aws_ec2_transit_gateway_route" "tgw_pttp_ingress_routing_to_hmpps_test" {
-  destination_cidr_block         = local.hmpps_general_test_subnet_set_cidr
-  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_vpc_attachment.hmpps-test.id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.pttp_ingress.id
+  tags = merge(
+    local.tags,
+    {
+      Name = "external-inspection-out"
+    }
+  )
 }
-# resource "aws_ec2_transit_gateway_route" "tgw_pttp_ingress_routing_to_hmpps_preproduction" {
-#   destination_cidr_block         = local.hmpps_general_preproduction_subnet_set_cidr
-#   transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_vpc_attachment.hmpps-preproduction.id
-#   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.pttp_ingress.id
-# }
-# resource "aws_ec2_transit_gateway_route" "tgw_pttp_ingress_routing_to_hmpps_production" {
-#   destination_cidr_block         = local.hmpps_general_production_subnet_set_cidr
-#   transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_vpc_attachment.hmpps-production.id
-#   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.pttp_ingress.id
-# }
 
+# add external_inspection_in route to push all external inspection traffic to AWS-Firewall
+resource "aws_ec2_transit_gateway_route" "external_ingress_in_to_inspection_vpc" {
+  destination_cidr_block         = "0.0.0.0/0"
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
+}
 # add egress routes for global protect for non-prod-data and prod-data tgw route tables
-
 resource "aws_ec2_transit_gateway_route" "tgw_egress_routing_non_live_data_to_global_protect" {
   destination_cidr_block         = local.global_protect_cidr
   transit_gateway_attachment_id  = local.pttp_production_transit_gateway_attachment
@@ -136,8 +130,14 @@ resource "aws_ec2_transit_gateway_route" "tgw_egress_routing_live_data_to_global
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["live_data"].id
 }
 
-# associate mp tgw routing table to routing vpc attachment
-resource "aws_ec2_transit_gateway_route_table_association" "mp_routing_tgw-non-live-data" {
+# associate tgw external-inspection-in routing table with PTTP peering attachment
+resource "aws_ec2_transit_gateway_route_table_association" "external_inspection_in" {
   transit_gateway_attachment_id  = local.pttp_production_transit_gateway_attachment
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.pttp_ingress.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
+}
+
+# associate tgw external-inspection-out routing table with external-inspection-in subnet
+resource "aws_ec2_transit_gateway_route_table_association" "external_inspection_out" {
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
