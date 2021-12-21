@@ -20,6 +20,7 @@ expected =
     "analytical-platform-data",
     "tariff",
     "xhibit-portal",
-    "mi-platform"
+    "mi-platform",
+    "dex-ta"
     ]
 }
