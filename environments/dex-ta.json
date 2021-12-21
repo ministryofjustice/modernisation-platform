@@ -1,0 +1,20 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "dex-ta",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "dex-ta",
+    "business-unit": "HMPPS",
+    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "owner": "Ian.anderson@digital.justice.gov.uk"
+  }
+}
