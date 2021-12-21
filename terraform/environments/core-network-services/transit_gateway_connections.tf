@@ -69,8 +69,14 @@ locals {
   hmpps_general_test_subnet_set_cidr = local.vpcs.core-vpc-test.hmpps-test.cidr.subnet_sets.general.cidr
   # hmpps_general_preproduction_subnet_set_cidr = local.vpcs.core-vpc-preproduction.hmpps-preproduction.cidr.subnet_sets.general.cidr
   # hmpps_general_production_subnet_set_cidr    = local.vpcs.core-vpc-production.hmpps-production.cidr.subnet_sets.general.cidr
-  global_protect_cidr = "10.184.0.0/16"
 
+  # To extend the below two data sections, just add additional lines with name and CIDR address to the relevant sections
+  egress_pttp_routing_cidrs_non_live_data = {
+    "global-protect" = "10.184.0.0/16"
+  }
+  egress_pttp_routing_cidrs_live_data = {
+    "global-protect" = "10.184.0.0/16"
+  }
 }
 
 ################
@@ -112,22 +118,28 @@ resource "aws_ec2_transit_gateway_route_table" "external_inspection_out" {
   )
 }
 
-# add external_inspection_in route to push all external inspection traffic to AWS-Firewall
+
+# add external egress routes for non-live-data TGW route table to PTTP attachment
+resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_non_live_data_to_PTTP" {
+  for_each = local.egress_pttp_routing_cidrs_non_live_data
+
+  destination_cidr_block         = each.value
+  transit_gateway_attachment_id  = local.pttp_production_transit_gateway_attachment
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["non_live_data"].id
+}
+# add external egress routes for live-data TGW route table to PTTP attachment
+resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_live_data_to_PTTP" {
+  for_each = local.egress_pttp_routing_cidrs_live_data
+
+  destination_cidr_block         = each.value
+  transit_gateway_attachment_id  = local.pttp_production_transit_gateway_attachment
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["live_data"].id
+}
+
 resource "aws_ec2_transit_gateway_route" "external_ingress_in_to_inspection_vpc" {
   destination_cidr_block         = "0.0.0.0/0"
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
-}
-# add egress routes for global protect for non-prod-data and prod-data tgw route tables
-resource "aws_ec2_transit_gateway_route" "tgw_egress_routing_non_live_data_to_global_protect" {
-  destination_cidr_block         = local.global_protect_cidr
-  transit_gateway_attachment_id  = local.pttp_production_transit_gateway_attachment
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["non_live_data"].id
-}
-resource "aws_ec2_transit_gateway_route" "tgw_egress_routing_live_data_to_global_protect" {
-  destination_cidr_block         = local.global_protect_cidr
-  transit_gateway_attachment_id  = local.pttp_production_transit_gateway_attachment
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["live_data"].id
 }
 
 # associate tgw external-inspection-in routing table with PTTP peering attachment
