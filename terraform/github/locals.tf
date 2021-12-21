@@ -58,6 +58,7 @@ locals {
     "performance-hub-developers",
     "studio-webops",
     "cica",
-    "xhibit-portal-dev"
+    "xhibit-portal-dev",
+    "dex-ta"
   ]
 }
