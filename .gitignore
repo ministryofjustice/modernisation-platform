@@ -6,3 +6,4 @@ tmp/
 .vscode/
 .terraform.lock.hcl
 *.tsv
+.idea/
