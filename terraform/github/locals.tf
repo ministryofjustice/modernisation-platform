@@ -31,7 +31,6 @@ locals {
   # GitHub usernames for engineers who need full AWS access
   engineers = [
     "davidkelliott",
-    "donmasters",
     "ezman", # Fasih
     "jackstockley89",
     "jakemulley",
@@ -40,7 +39,8 @@ locals {
     "sobostion", # Seb Norris
     "pete-j-g",  # Piotr Grzeskowiak
     "adeweetman-al",
-    "gfou-al" # George Fountopoulos
+    "gfou-al", # George Fountopoulos,
+    "dms1981"  # David Sibley
   ]
 
   # All members
