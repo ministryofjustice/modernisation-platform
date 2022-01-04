@@ -40,7 +40,7 @@ locals {
     "pete-j-g",  # Piotr Grzeskowiak
     "adeweetman-al",
     "gfou-al", # George Fountopoulos,
-    "dms1981" # Dave Sibley
+    "dms1981"  # Dave Sibley
   ]
 
   # All members
