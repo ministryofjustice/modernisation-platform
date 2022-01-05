@@ -4,6 +4,11 @@ locals {
       name  = "David Elliott"
       email = "david.elliott${local.digital_email_suffix}"
       role  = "manager"
+    },
+    {
+      name  = "David Sibley"
+      email = "david.sibley${local.digital_email_suffix}"
+      role  = "user"
     }
   ]
 
