@@ -2,7 +2,7 @@ name: "Terraform: scheduled baseline"
 
 on:
   schedule:
-    - cron: "0 23 * * 6"
+    - cron: "30 22 * * 6"
   workflow_dispatch:
 
 env:
