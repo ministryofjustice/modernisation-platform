@@ -49,8 +49,8 @@ In your local Modernisation Platform repository clone:
 
 - Update the module reference [sample PR](https://github.com/ministryofjustice/modernisation-platform/pull/389)
 - `cd` into [modernisation-platform/terraform/modernisation-platform-account](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modernisation-platform-account)
-- Run `terraform plan` to check they're going to be added
-- Run `terraform apply` as a `superadmin` to add an IAM user
+- Run `terraform plan` with your superuser credentials to check the new user will be successfully added
+- Complete a pull request to allow the CI workflow to conduct `terraform apply` and add the new IAM user.
 
 Once their IAM user has been created, log into the [AWS console](https://console.aws.amazon.com/billing/home?region=eu-west-2#/) yourself and:
 
