@@ -26,7 +26,7 @@ locals {
 
   oncall_users = concat(
     [
-      data.pagerduty_user.david_elliott.id
+      pagerduty_user.pager_duty_users["david_elliott"].id
     ]
   )
 
@@ -57,8 +57,4 @@ data "pagerduty_user" "jack_stockley" {
 
 data "pagerduty_user" "jake_mulley" {
   email = "jake.mulley${local.digital_email_suffix}"
-}
-
-data "pagerduty_user" "david_elliott" {
-  email = "david.elliott${local.digital_email_suffix}"
 }
