@@ -7,9 +7,6 @@ resource "pagerduty_team_membership" "modernisation_platform_membership" {
   for_each = local.modernisation_platform_users
   team_id  = pagerduty_team.modernisation_platform.id
   user_id  = each.value.id
-  depends_on = [
-    pagerduty_user.pager_duty_users
-  ]
 }
 
 #users
