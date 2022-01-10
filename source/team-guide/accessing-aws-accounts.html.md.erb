@@ -42,7 +42,8 @@ would be updated to reference this new tag.
 
 The relevant configuration for application accounts is also defined in code with a common module [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf#L11)
 
-This code defines a cross-account access role that can be assumed by an administrator.
+This code defines a cross-account access role that can be assumed by an administrator. It is applied as part of a common
+baseline for application accounts.
 
 ## References
 https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html
