@@ -1,59 +1,52 @@
 ---
 title: Accessing AWS accounts
-last_reviewed_on: 2021-05-18
-review_in: 2 months
+last_reviewed_on: 2022-01-10
+review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
 
-## What we manage in Terraform
+## How we access AWS accounts
 
-We currently manage the following in Terraform:
+We have two common methods for accessing AWS accounts:
 
-- GitHub resources, including teams, repositories, actions secrets, etc
-- AWS resources, such as
-  - [setting up new environments](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments)
-    - [bootstrapping environments](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/bootstrap), including the secure baselines and giving access to a role from the Modernisation Platform landing zone account
-    - [environment-specific infrastructure that we manage](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments), including the core accounts for the Modernisation Platform
-  - [the Modernisation Platform landing zone account](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modernisation-platform-account), including S3 state storage for all environments
+- Through a [common portal](https://moj.awsapps.com/start#/).
+- Through a [superuser account](https://user-guide.modernisation-platform.service.justice.gov.uk/team-guide/adding-a-new-team-member.html#adding-them-as-a-superadmin-in-our-aws-landing-zone).
 
-### Terraform workspaces
+### Common portal access
 
-We make use of Terraform workspaces to create the same resources in each environment. This allows you to interpolate `terraform.workspace` to configure different values, such as Autoscaling Group limits or tags, in different environments. For example:
+Using a web browser, an authenticated user can navigate to the [common portal](https://moj.awsapps.com/start#/) and select
+an AWS account. The portal will allow them to log in to the AWS console with read-only privileges, or to retrieve an
+access key and secret key for programmatic access.
 
-```
-resource "aws_instance" "example" {
-  count = "${terraform.workspace == "production" ? 5 : 1}"
+### Superuser account access
 
-  tags = {
-    environment = terraform.workspace
-    is-production = "${terraform.workspace == "production" ? true : false}"
-  }
-}
-```
+Using a web browser, a user with a superuser account can navigate to the [AWS console](https://console.aws.amazon.con) and
+log into the Modernisation Platform with their *firstname.lastname-superadmin* account. From here the user can assume an
+IAM role to escalate their privileges by clicking the *username @ account-id* dropdown and selecting *Switch Role*.
 
-When you are running Terraform, check your workspace is set correctly for where you want to deploy changes, e.g for `core-logging`:
+## How we use AWS accounts
 
-```bash
-$ cd terraform/environments/core-logging
-$ terraform workspace list
-* default
-  core-logging-production
-$ terraform workspace select core-logging-production
-$ terraform plan
-```
+We make use of our AWS accounts through web browsers, command line tools, and with CI automation. For command line access
+we prefer to use the tool [AWS Vault](https://github.com/99designs/aws-vault) for the secure storage of credentials and
+automatic role assumption.
 
-You will likely get an error if you haven't changed your workspace from `default`.
+## How privileged AWS roles are created
 
-### Permissions required for each directory in `terraform/`
+The relevant configuration for superuser accounts is defined in code [here](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins)
+and also [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf).
 
-Terraform doesn't look recursively for `.tf` files, so we utilise subdirectories to keep related infrastructure together. You need different permissions to run each directory, following the directory structure:
+In brief, a new user would be added to the [modernisation-platform-terraform-iam-superadmins](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins)
+project and a new tag would be created. Following this the [modernisation-platform-account/iam.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf)
+would be updated to reference this new tag.
 
-- `terraform/`
-  - `environments/` needs to be run with an MOJ organisational root account IAM user
-    - `bootstrap/` also needs to be run with an MOJ organisational root account IAM user
-    - any other subdirectory (e.g. `bichard7/`, `core-logging/` can be run using an Modernisation Platform landing zone account IAM user, after `bootstrap/` has been run for that environment
-  - `github/` can be run using an Modernisation Platform landing zone account IAM user, and requires a `GITHUB_TOKEN` to be set as an environment variable that has permissions to create repositories
-  - `modernisation-platform-account/` can be run using an Modernisation Platform landing zone account IAM user
+The relevant configuration for application accounts is also defined in code with a common module [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf#L11)
 
-We are looking at automating these in their entirety, so in the future all changes have to go through a GitHub pull request and you won't be able to apply changes locally.
+This code defines a cross-account access role that can be assumed by an administrator.
+
+## References
+https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html
+https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf
+https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins
+https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf
+https://github.com/99designs/aws-vault
