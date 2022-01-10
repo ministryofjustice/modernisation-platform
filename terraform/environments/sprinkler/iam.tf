@@ -1,7 +1,3 @@
-data "aws_iam_role" "vpc-flow-log" {
-  name = "AWSVPCFlowLog"
-}
-
 #read only role for health check
 module "iam_assumable_roles" {
   source               = "terraform-aws-modules/iam/aws//modules/iam-assumable-roles"

@@ -2,6 +2,10 @@ data "aws_organizations_organization" "root_account" {}
 
 data "aws_caller_identity" "current" {}
 
+data "aws_caller_identity" "modernisation-platform" {
+  provider = aws.modernisation-platform
+}
+
 locals {
   application_name           = "core-shared-services"
   environment_management     = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
