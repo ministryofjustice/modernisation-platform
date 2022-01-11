@@ -3,6 +3,11 @@ name: "Terraform: scheduled baseline"
 on:
   schedule:
     - cron: "30 22 * * 6"
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/scheduled-baseline.yml'
   workflow_dispatch:
 
 env:
@@ -37,7 +42,6 @@ jobs:
         if: ${{ failure() }}
   secure-baselines:
     runs-on: ubuntu-latest
-    if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [delegate-access]
     env:
       AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
