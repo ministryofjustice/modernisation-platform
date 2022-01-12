@@ -5,7 +5,7 @@ data "aws_iam_role" "vpc-flow-log" {
 #read only role for health check
 module "iam_assumable_roles" {
   source               = "terraform-aws-modules/iam/aws//modules/iam-assumable-roles"
-  version              = "~> 2.0"
+  version              = "~> 4.8"
   max_session_duration = 43200
 
   # Read-only role
