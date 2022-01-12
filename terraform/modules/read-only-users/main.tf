@@ -26,7 +26,7 @@ resource "time_sleep" "wait_30_seconds" {
 # Attach created users to a AWS IAM group, with several policies
 module "iam_group_readonly_with_policies" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-group-with-policies"
-  version = "~> 2.0"
+  version = "~> 4.8"
   name    = "readonly"
 
   group_users = [
