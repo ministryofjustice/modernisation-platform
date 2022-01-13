@@ -177,7 +177,7 @@ resource "aws_networkfirewall_firewall_policy" "external_inspection" {
 resource "aws_networkfirewall_rule_group" "stateless_rules" {
   description = "Stateless Rules"
   capacity    = 100
-  name        = "stateless_rules"
+  name        = "stateless-rules"
   type        = "STATELESS"
   rule_group {
     rules_source {
