@@ -169,15 +169,15 @@ resource "aws_networkfirewall_firewall_policy" "external_inspection" {
     stateless_fragment_default_actions = ["aws:drop"]
     stateless_rule_group_reference {
       priority     = 101
-      resource_arn = aws_networkfirewall_rule_group.global_protect.arn
+      resource_arn = aws_networkfirewall_rule_group.stateless_rules.arn
     }
   }
 }
 
-resource "aws_networkfirewall_rule_group" "global_protect" {
-  description = "Global_Protect"
+resource "aws_networkfirewall_rule_group" "stateless_rules" {
+  description = "Stateless Rules"
   capacity    = 100
-  name        = "global-protect"
+  name        = "stateless_rules"
   type        = "STATELESS"
   rule_group {
     rules_source {
@@ -228,10 +228,34 @@ resource "aws_networkfirewall_rule_group" "global_protect" {
             }
           }
         }
+        stateless_rule { # Azure NOMIS test to MP Nomis database
+          priority = 200
+          rule_definition {
+            actions = ["aws:pass"]
+            match_attributes {
+              source {
+                address_definition = "10.101.0.0/16" # Azure NOMIS Test
+              }
+              source_port {
+                from_port = 1024
+                to_port   = 65535
+              }
+              destination {
+                address_definition = "10.26.8.0/21" # Nomis-Test
+              }
+              destination_port {
+                from_port = 1521
+                to_port   = 1521
+              }
+              protocols = [6]
+            }
+          }
+        }
       }
     }
   }
 }
+
 
 resource "aws_networkfirewall_firewall" "external_inspection" {
   depends_on = [
