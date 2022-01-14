@@ -95,7 +95,7 @@
     {
       "subnet_set": "general",
       "egress": true,
-      "subnet_type": "private",
+      "subnet_type": "data",
       "protocol": "tcp",
       "rule_action": "allow",
       "rule_number": 240,
