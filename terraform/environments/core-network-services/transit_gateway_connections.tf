@@ -74,12 +74,12 @@ locals {
   egress_pttp_routing_cidrs_non_live_data = {
     "global-protect" = "10.184.0.0/16",
     "azure-nomis"    = "10.101.0.0/16",
-    "cloud-platform"    = "172.20.0.0/16"
+    "cloud-platform" = "172.20.0.0/16"
   }
   egress_pttp_routing_cidrs_live_data = {
     "global-protect" = "10.184.0.0/16",
     "azure-nomis"    = "10.101.0.0/16",
-    "cloud-platform"    = "172.20.0.0/16"
+    "cloud-platform" = "172.20.0.0/16"
   }
 }
 
