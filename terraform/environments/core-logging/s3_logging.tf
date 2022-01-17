@@ -68,6 +68,10 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail" {
     resources = ["*"]
     principals {
       type        = "Service"
+      identifiers = ["logging.s3.amazonaws.com"]
+    }
+    principals {
+      type        = "Service"
       identifiers = ["cloudtrail.amazonaws.com"]
     }
     principals {
