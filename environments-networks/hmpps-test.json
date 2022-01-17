@@ -102,6 +102,28 @@
       "cidr_block": "10.101.0.0/16",
       "from_port": "1024",
       "to_port": "65535"
+    },
+    {
+      "subnet_set": "general",
+      "egress": false,
+      "subnet_type": "data",
+      "protocol": "tcp",
+      "rule_action": "allow",
+      "rule_number": 245,
+      "cidr_block": "172.20.0.0/16",
+      "from_port": "1521",
+      "to_port": "1521"
+    },
+    {
+      "subnet_set": "general",
+      "egress": true,
+      "subnet_type": "data",
+      "protocol": "tcp",
+      "rule_action": "allow",
+      "rule_number": 245,
+      "cidr_block": "172.20.0.0/16",
+      "from_port": "1024",
+      "to_port": "65535"
     }
   ]
 }
