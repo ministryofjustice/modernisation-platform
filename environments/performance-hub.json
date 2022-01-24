@@ -2,15 +2,6 @@
   "account-type": "member",
   "environments": [
     {
-      "name": "development",
-      "access": [
-        {
-          "github_slug": "performance-hub-developers",
-          "level": "developer"
-        }
-      ]
-    },
-    {
       "name": "preproduction",
       "access": [
         {

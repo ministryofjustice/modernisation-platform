@@ -59,14 +59,6 @@ expected =
         "accounts": []
       }
     },
-    "hmpps-development": {
-      "general": {
-        "cidr": "10.26.24.0/21",
-        "accounts": [
-          "performance-hub-development"
-        ]
-      }
-    },
     "platforms-test": {
       "general": {
         "cidr": "10.26.0.0/21",

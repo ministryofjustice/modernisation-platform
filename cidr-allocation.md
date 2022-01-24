@@ -29,7 +29,7 @@
 | 10.26.0.0       | /21  | platforms test - general             |
 | 10.26.8.0       | /21  | hmpps test - general                 |
 | 10.26.16.0      | /21  | platforms development - general      |
-| 10.26.24.0      | /21  | hmpps development - general          |
+| 10.26.24.0      | /21  |                                      |
 | 10.26.32.0      | /21  | cica development - general           |
 | 10.26.40.0      | /21  | hmcts development - general          |
 | 10.26.48.0      | /21  | -                                    |
