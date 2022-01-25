@@ -38,7 +38,7 @@ locals {
   business_units = local.environment.business_units
 
   business_units_with_accounts = {
-    for business_unit in local.business_units :
+    for business_unit in local.environment.business_units :
     business_unit => [
       for member in local.environment.members : member.account_name
       if member.business_unit == business_unit
