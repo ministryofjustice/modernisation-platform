@@ -38,6 +38,7 @@ resource "aws_kms_alias" "rds" {
 
 data "aws_iam_policy_document" "kms" {
   # checkov:skip=CKV_AWS_109
+  # checkov:skip=CKV_AWS_111
   # Allow root users full management access to key
   statement {
     effect = "Allow"
