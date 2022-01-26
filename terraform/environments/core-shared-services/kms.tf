@@ -63,3 +63,13 @@ data "aws_iam_policy_document" "ebs_encryption_policy_doc" {
     }
   }
 }
+
+module "kms" {
+  source        = "../../modules/kms"
+  for_each      = local.business_units_with_accounts
+  business_unit = each.key
+  business_unit_account_ids = [
+    for value in each.value : local.environment_management.account_ids["${value}"]
+  ]
+  tags = local.tags
+}

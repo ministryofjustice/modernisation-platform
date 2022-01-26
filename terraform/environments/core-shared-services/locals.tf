@@ -17,6 +17,34 @@ locals {
   # the string leftover is `-production`, if it isn't (e.g. core-vpc-non-production => -non-production) then it sets the var to false.
   is-production = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production"
 
+  # This produces a distinct list of business units after reading all the JSON files in the environments directory
+  environment_files = [
+    for file in fileset("../../../environments", "*.json") :
+    merge({ name = replace(file, ".json", "") }, jsondecode(file("../../../environments/${file}")))
+  ]
+
+  environment = {
+    business_units = distinct([
+    for member in local.environment_files : lower(member.tags.business-unit)])
+    members = flatten([
+      for member in local.environment_files : [
+        for application in member.environments : {
+          account_name  = lower(format("%s-%s", member.name, application.name))
+          business_unit = lower(member.tags.business-unit)
+      }]
+    ])
+  }
+
+  business_units = local.environment.business_units
+
+  business_units_with_accounts = {
+    for business_unit in local.environment.business_units :
+    business_unit => [
+      for member in local.environment.members : member.account_name
+      if member.business_unit == business_unit
+    ]
+  }
+
   tags = {
     business-unit = "Platforms"
     application   = "Modernisation Platform: ${terraform.workspace}"
