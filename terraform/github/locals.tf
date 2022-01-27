@@ -59,6 +59,7 @@ locals {
     "studio-webops",
     "cica",
     "xhibit-portal-dev",
-    "dex-ta"
+    "dex-ta",
+    "ppud-replacement-devs"
   ]
 }
