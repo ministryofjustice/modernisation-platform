@@ -163,7 +163,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       "s3:ListBucket"
     ]
     resources = [
-      module.state-bucket.bucket.arn, 
+      module.state-bucket.bucket.arn,
       "${module.state-bucket.bucket.arn}/terraform.tfstate",
       "${module.state-bucket.bucket.arn}/environments/members/*"
     ]
