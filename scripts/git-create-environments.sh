@@ -6,11 +6,12 @@ github_org="ministryofjustice"
 repository="${github_org}/modernisation-platform-environments"
 secret=$TERRAFORM_GITHUB_TOKEN
 
+# TODO there is a max per page of 100, need to do pagination properly or probably easiest to rewrite in Ruby/Go etc
 get_existing_environments() {
   response=$(curl -s \
     -H "Accept: application/vnd.github.v3+json" \
     -H "Authorization: token ${secret}" \
-    https://api.github.com/repos/${repository}/environments
+    https://api.github.com/repos/${repository}/environments?per_page=100
     )
   github_environments=$(echo $response | jq -r '.environments[].name')
   echo "Existing github environments: $github_environments"

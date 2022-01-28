@@ -51,15 +51,21 @@ member() {
   jq -n -c -r '[ inputs | . + { filename: input_filename } | select( .["account-type"] == "member" ) ]' environments/*.json | conftest test -p policies/member -
 }
 
+collaborators(){
+    jq -n -c -r '[ inputs | . + { filename: input_filename } ]' collaborators.json | conftest test -p policies/collaborators -
+}
+
 main() {
   check-environment-files-present
   check-network-files-present
   environments & environments_outcome=$!
   networking & networking_outcome=$!
   member & member_outcome=$!
+  collaborators & collaborators_outcome=$!
   wait $environments_outcome
   wait $networking_outcome
   wait $member_outcome
+  wait $collaborators_outcome
 }
 
 main
