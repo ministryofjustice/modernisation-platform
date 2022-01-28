@@ -219,9 +219,3 @@ resource "aws_iam_access_key" "member-ci" {
     create_before_destroy = true
   }
 }
-
-# temporary users for healthcheck
-module "temporary_readonly_users" {
-  source        = "../modules/read-only-users"
-  account_alias = data.aws_caller_identity.current.account_id
-}
