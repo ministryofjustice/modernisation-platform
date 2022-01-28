@@ -9,6 +9,8 @@ on:
       - 'environments-networks/*-development.json'
       - '.github/workflows/core-vpc-development-deployment.yml'
       - 'terraform/environments/core-vpc/**'
+      - 'terraform/environments/**/networking.auto.tfvars.json'
+      - 'terraform/environments/**/subnet-share.tf'
   pull_request:
     branches:
       - main
@@ -16,6 +18,8 @@ on:
       - 'environments-networks/*-development.json'
       - '.github/workflows/core-vpc-development-deployment.yml'
       - 'terraform/environments/core-vpc/**'
+      - 'terraform/environments/**/networking.auto.tfvars.json'
+      - 'terraform/environments/**/subnet-share.tf'
   workflow_dispatch:
 
 env:
