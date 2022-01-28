@@ -214,8 +214,8 @@ data "aws_iam_policy_document" "athena_logging" {
   }
 }
 
+# tfsec:ignore:aws-lambda-enable-tracing
 resource "aws_lambda_function" "athena_table_update" {
-  # tfsec:ignore:aws-lambda-enable-tracing
   # checkov:skip=CKV_AWS_50: "X-ray tracing is not required"
   # checkov:skip=CKV_AWS_117: "Lambda is not environment specific"
   # checkov:skip=CKV_AWS_116: "DLQ not required"
