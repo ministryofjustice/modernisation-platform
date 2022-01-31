@@ -8,6 +8,9 @@ on:
     paths:
       - 'environments-networks/*-preproduction.json'
       - '.github/workflows/core-vpc-preproduction-deployment.yml'
+      - 'terraform/environments/**/networking.auto.tfvars.json'
+      - 'terraform/environments/**/subnet-share.tf'
+      - '!terraform/environments/core-*/**'
       - 'terraform/environments/core-vpc/**'
   pull_request:
     branches:
@@ -15,6 +18,9 @@ on:
     paths:
       - 'environments-networks/*-preproduction.json'
       - '.github/workflows/core-vpc-preproduction-deployment.yml'
+      - 'terraform/environments/**/networking.auto.tfvars.json'
+      - 'terraform/environments/**/subnet-share.tf'
+      - '!terraform/environments/core-*/**'
       - 'terraform/environments/core-vpc/**'
   workflow_dispatch:
 
