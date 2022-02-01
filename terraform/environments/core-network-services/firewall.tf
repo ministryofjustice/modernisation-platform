@@ -274,6 +274,29 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
             }
           }
         }
+        stateless_rule { # PSN PPUD to MP HMPPS
+          priority = 400
+          rule_definition {
+            actions = ["aws:pass"]
+            match_attributes {
+              source {
+                address_definition = "51.247.2.115/32" # PSN PPUD
+              }
+              source_port {
+                from_port = 443
+                to_port   = 443
+              }
+              destination {
+                address_definition = "10.27.8.0/21" # HMPPS Production
+              }
+              destination_port {
+                from_port = 1024
+                to_port   = 65535
+              }
+              protocols = [6]
+            }
+          }
+        }
       }
     }
   }
