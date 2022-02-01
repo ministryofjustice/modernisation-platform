@@ -21,28 +21,29 @@ This repository holds a Terraform module that creates set IAM accounts and assoc
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_iam_group_readonly_with_policies"></a> [iam\_group\_readonly\_with\_policies](#module\_iam\_group\_readonly\_with\_policies) | terraform-aws-modules/iam/aws//modules/iam-group-with-policies | ~> 2.0 |
 | <a name="module_iam_user"></a> [iam\_user](#module\_iam\_user) | terraform-aws-modules/iam/aws//modules/iam-user | ~> 2.0 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
+| [aws_iam_user_policy.user_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy) | resource |
 | [time_sleep.wait_30_seconds](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
-| [aws_iam_policy.ForceMFA](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy) | data source |
 | [aws_iam_policy_document.assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_account_alias"></a> [account\_alias](#input\_account\_alias) | AWS IAM account alias for this account | `string` | n/a | yes |
+| <a name="input_accounts"></a> [accounts](#input\_accounts) | List of accounts to give access to with access levels | `any` | n/a | yes |
+| <a name="input_environment_management"></a> [environment\_management](#input\_environment\_management) | Environment management json | `any` | n/a | yes |
+| <a name="input_username"></a> [username](#input\_username) | User name | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_user_passwords"></a> [user\_passwords](#output\_user\_passwords) | Map of users and PGP-encrypted passwords, e.g. { bob: 'abcdefg123456' } |
+| <a name="output_username"></a> [username](#output\_username) | n/a |
 
 <!--- END_TF_DOCS --->
 
