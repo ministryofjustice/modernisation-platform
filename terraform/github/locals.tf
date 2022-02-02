@@ -6,7 +6,8 @@ locals {
     "ewastempel",
     "jakemulley",
     "gfou-al", # George Fountopoulos
-    "SteveMarshall"
+    "SteveMarshall",
+    "davidkelliott"
   ]
 
   # GitHub usernames for CI users
@@ -21,9 +22,7 @@ locals {
   general_members = [
     "ewastempel",
     "kcbotsh",
-    "nishamoj",
     "seanprivett",
-    "SimonPPledger",
     "SteveMarshall",
     "christine-elliott",
   ]
