@@ -159,6 +159,9 @@ module "collaborator_readonly_role" {
   count                = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
   source               = "terraform-aws-modules/iam/aws//modules/iam-assumable-roles"
   version              = "~> 2.0"
+  providers = {
+    aws = aws.workspace
+  }
   max_session_duration = 43200
 
   # Read-only role
@@ -177,7 +180,9 @@ module "collaborator_developer_role" {
   count   = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 4"
-
+  providers = {
+    aws = aws.workspace
+  }
   trusted_role_arns = [
     local.modernisation_platform_account.id
   ]
@@ -195,6 +200,7 @@ module "collaborator_developer_role" {
 
 resource "aws_iam_policy" "developer" {
   count  = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
+  provider = aws.workspace
   name   = "developer_policy"
   path   = "/"
   policy = data.aws_iam_policy_document.developer-additional.json
