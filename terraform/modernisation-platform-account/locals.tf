@@ -10,6 +10,9 @@ locals {
     "arn:aws:iam::${local.root_account.master_account_id}:user/ModernisationPlatformOrganisationManagement",
     "arn:aws:iam::${local.root_account.master_account_id}:user/DavidElliott"
   ]
+
+  collaborators = jsondecode(file("../../collaborators.json"))
+
   tags = {
     business-unit = "Platforms"
     application   = "Modernisation Platform"

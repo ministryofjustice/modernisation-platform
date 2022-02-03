@@ -153,3 +153,113 @@ resource "aws_ssm_parameter" "environment_management_arn" {
 
   tags = local.environments
 }
+
+# read only role for collaborators
+module "collaborator_readonly_role" {
+  count                = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
+  source               = "terraform-aws-modules/iam/aws//modules/iam-assumable-roles"
+  version              = "~> 2.0"
+  max_session_duration = 43200
+
+  # Read-only role
+  create_readonly_role       = true
+  readonly_role_name         = "read-only"
+  readonly_role_requires_mfa = true
+
+  # Allow created users to assume these roles
+  trusted_role_arns = [
+    local.modernisation_platform_account.id
+  ]
+}
+
+# developer role for collaborators
+module "collaborator_developer_role" {
+  count   = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+  version = "~> 4"
+
+  trusted_role_arns = [
+    local.modernisation_platform_account.id
+  ]
+
+  create_role       = true
+  role_name         = "developer"
+  role_requires_mfa = true
+
+  custom_role_policy_arns = [
+    "arn:aws:iam::aws:policy/ReadOnlyAccess",
+    aws_iam_policy.developer[count.index].arn,
+  ]
+  number_of_custom_role_policy_arns = 2
+}
+
+resource "aws_iam_policy" "developer" {
+  count  = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
+  name   = "developer_policy"
+  path   = "/"
+  policy = data.aws_iam_policy_document.developer-additional.json
+}
+
+data "aws_iam_policy_document" "developer-additional" {
+  statement {
+    actions = [
+      "secretsmanager:GetResourcePolicy",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecretVersionIds",
+      "secretsmanager:PutSecretValue",
+      "secretsmanager:UpdateSecret",
+      "secretsmanager:RestoreSecret",
+      "ssm:*",
+      "kms:Decrypt*",
+      "ec2:StartInstances",
+      "ec2:StopInstances",
+      "ec2:RebootInstances",
+      "s3:PutObject",
+      "s3:DeleteObject"
+    ]
+
+    resources = ["*"]
+  }
+
+  statement {
+    actions = [
+      "sns:Publish"
+    ]
+
+    resources = ["arn:aws:sns:*:*:Automation*"]
+  }
+
+  statement {
+    actions = [
+      "lambda:InvokeFunction"
+    ]
+
+    resources = ["arn:aws:lambda:*:*:function:Automation*"]
+  }
+
+
+  statement {
+    actions = [
+      "iam:CreateAccessKey",
+      "iam:DeleteAccessKey",
+      "iam:GetAccessKeyLastUsed",
+      "iam:GetUser",
+      "iam:ListAccessKeys",
+      "iam:UpdateAccessKey"
+    ]
+
+    resources = ["arn:aws:iam::*:user/cicd-member-user"]
+  }
+
+  statement {
+    actions = [
+      "sts:AssumeRole"
+    ]
+
+    resources = [
+      "arn:aws:iam::*:role/read-dns-records",
+      "arn:aws:iam::*:role/member-delegation-read-only"
+    ]
+  }
+}

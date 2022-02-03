@@ -219,3 +219,30 @@ resource "aws_iam_access_key" "member-ci" {
     create_before_destroy = true
   }
 }
+
+### Collaborators
+
+# Attach created users to a AWS IAM group, with several policies
+module "collaborators_group" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-group-with-policies"
+  version = "~> 4.8"
+  name    = "collaborators"
+
+  group_users = [for user in module.collaborators : user.username]
+
+  custom_group_policy_arns = [
+    data.aws_iam_policy.ForceMFA.arn
+  ]
+}
+
+data "aws_iam_policy" "ForceMFA" {
+  name = "ForceMFA"
+}
+
+module "collaborators" {
+  source                 = "../modules/collaborators"
+  for_each               = { for user in local.collaborators.users : user.username => user.accounts }
+  username               = each.key
+  accounts               = each.value
+  environment_management = local.environment_management
+}
