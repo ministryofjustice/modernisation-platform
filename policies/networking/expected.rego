@@ -13,7 +13,8 @@ expected =
     "cica-development": "10.233.2.64/26",
     "hmpps-production": "10.233.2.128/26",
     "hmcts-development": "10.233.2.192/26",
-    "hmcts-production": "10.233.3.0/26"
+    "hmcts-production": "10.233.3.0/26",
+    "hmcts-preproduction": "10.233.3.64/26"
   },
   "protected": {
     "garden-sandbox": "10.238.0.0/23",
@@ -26,7 +27,8 @@ expected =
     "cica-development": "10.238.18.0/23",
     "hmpps-production": "10.238.20.0/23",
     "hmcts-development": "10.238.22.0/23",
-    "hmcts-production": "10.238.24.0/23"
+    "hmcts-production": "10.238.24.0/23",
+    "hmcts-preproduction": "10.238.26.0/23",
   },
   "subnet_sets": {
     "garden-sandbox": {
@@ -112,6 +114,14 @@ expected =
         "cidr": "10.27.16.0/21",
         "accounts": [
           "xhibit-portal-production"
+        ]
+      }
+    },
+    "hmcts-preproduction": {
+      "general": {
+        "cidr": "10.27.24.0/21",
+        "accounts": [
+          "xhibit-portal-preproduction"
         ]
       }
     }
