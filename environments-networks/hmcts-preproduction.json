@@ -1,0 +1,18 @@
+{
+  "cidr": {
+    "subnet_sets": {
+      "general": {
+        "cidr": "10.27.24.0/21",
+        "accounts": [
+          "xhibit-portal-preproduction"
+        ]
+      }
+    }
+  },
+  "options": {
+    "bastion_linux": false,
+    "additional_endpoints": [],
+    "dns_zone_extend": []
+  },
+  "nacl": []
+}
