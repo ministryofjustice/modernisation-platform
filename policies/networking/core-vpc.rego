@@ -2,25 +2,6 @@ package main
 
 nice_name := replace(replace(input.filename, ".json", ""), "environments-networks/", "")
 
-# Match cidrs against expected.rego
-deny[msg] {
-  input_cidr = input.cidr.transit_gateway
-  expected_cidr = expected["transit_gateway"][nice_name]
-
-  expected_cidr != input_cidr
-
-  msg := sprintf("Transit Gateway CIDR mismatch: `%v` should equal `%v` for `%v`", [input_cidr, expected_cidr, nice_name])
-}
-
-deny[msg] {
-  input_cidr = input.cidr.protected
-  expected_cidr = expected["protected"][nice_name]
-
-  expected_cidr != input_cidr
-
-  msg := sprintf("Protected CIDR mismatch: `%v` should equal `%v` for `%v`", [input_cidr, expected_cidr, nice_name])
-}
-
 deny[msg] {
   expected["subnet_sets"][nice_name][key].cidr != input.cidr.subnet_sets[key].cidr
 
@@ -44,11 +25,6 @@ deny[msg] {
   msg := sprintf("`%v` is missing the `options` key", [input.filename])
 }
 
-# deny[msg] {
-#   not has_field(input.options, "bastion_linux")
-#   msg := sprintf("`%v` is missing the `bastion_linux` key", [input.filename])
-# }
-
 deny[msg] {
   not has_field(input.options, "additional_endpoints")
   msg := sprintf("`%v` is missing the `additional_endpoints` key", [input.filename])
@@ -65,16 +41,6 @@ deny[msg] {
 }
 
 # Invalid type
-deny[msg] {
-  not is_string(input.cidr.transit_gateway)
-  msg := sprintf("`%v` invalid transit_gateway type - must be string", [input.filename])
-}
-
-deny[msg] {
-  not is_string(input.cidr.protected)
-  msg := sprintf("`%v` invalid protected type - must be string", [input.filename])
-}
-
 deny[msg] {
   not is_object(input.cidr.subnet_sets)
   msg := sprintf("`%v` invalid subnet_sets type - must be a object", [input.filename])
