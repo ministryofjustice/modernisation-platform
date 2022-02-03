@@ -11,6 +11,15 @@
       ]
     },
     {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "xhibit-portal-dev",
+          "level": "developer"
+        }
+      ]
+    },
+    {
       "name": "production",
       "access": [
         {
