@@ -88,6 +88,14 @@ expected =
           "xhibit-portal-production"
         ]
       }
+    },
+    "hmcts-preproduction": {
+      "general": {
+        "cidr": "10.27.24.0/21",
+        "accounts": [
+          "xhibit-portal-preproduction"
+        ]
+      }
     }
   }
 }
