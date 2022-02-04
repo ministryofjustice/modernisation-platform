@@ -67,7 +67,7 @@
 | 10.27.0.0       | /21  | hmpps preproduction - general        |
 | 10.27.8.0       | /21  | hmpps production - general           |
 | 10.27.16.0      | /21  | hmcts production - general           |
-| 10.27.24.0      | /21  |                                      |
+| 10.27.24.0      | /21  | hmcts preproduction - general        |
 | 10.27.32.0      | /21  | -                                    |
 | 10.27.40.0      | /21  | -                                    |
 | 10.27.48.0      | /21  | -                                    |
