@@ -243,7 +243,7 @@ data "aws_iam_policy" "ForceMFA" {
 resource "aws_iam_policy" "collaborator_local_plan" {
   name        = "collaborator-local-plan"
   description = "Permissions collaborators need to perform local Terraform plans"
-  policy = data.aws_iam_policy_document.collaborator_local_plan.json
+  policy      = data.aws_iam_policy_document.collaborator_local_plan.json
 }
 
 data "aws_iam_policy_document" "collaborator_local_plan" {
