@@ -5,7 +5,7 @@ resource "time_sleep" "wait_30_seconds" {
   create_duration = "30s"
 
   triggers = {
-    user = module.iam_user.this_iam_user_name
+    user = module.iam_user.iam_user_name
   }
 }
 
@@ -22,7 +22,7 @@ module "iam_user" {
 
 resource "aws_iam_user_policy" "user_policy" {
   name   = "assume-roles-${var.username}"
-  user   = module.iam_user.this_iam_user_name
+  user   = module.iam_user.iam_user_name
   policy = data.aws_iam_policy_document.assume_role.json
 }
 
