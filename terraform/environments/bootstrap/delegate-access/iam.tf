@@ -261,15 +261,4 @@ data "aws_iam_policy_document" "developer-additional" {
 
     resources = ["arn:aws:iam::*:user/cicd-member-user"]
   }
-
-  statement {
-    actions = [
-      "sts:AssumeRole"
-    ]
-
-    resources = [
-      "arn:aws:iam::*:role/read-dns-records",
-      "arn:aws:iam::*:role/member-delegation-read-only"
-    ]
-  }
 }
