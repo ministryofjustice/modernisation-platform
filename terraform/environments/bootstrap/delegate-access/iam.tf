@@ -208,9 +208,9 @@ resource "aws_iam_policy" "developer" {
 
 
 data "aws_iam_policy_document" "developer-additional" {
-#checkov:skip=CKV_AWS_108
-#checkov:skip=CKV_AWS_109
-#checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_111
   statement {
     actions = [
       "secretsmanager:GetResourcePolicy",
