@@ -90,4 +90,4 @@ data "terraform_remote_state" "core_network_services" {
     region  = "eu-west-2"
     encrypt = "true"
   }
-
+}
