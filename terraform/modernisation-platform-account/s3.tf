@@ -165,7 +165,8 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     resources = [
       module.state-bucket.bucket.arn,
       "${module.state-bucket.bucket.arn}/terraform.tfstate",
-      "${module.state-bucket.bucket.arn}/environments/members/*"
+      "${module.state-bucket.bucket.arn}/environments/members/*",
+      "${module.state-bucket.bucket.arn}/environments/accounts/core-network-services/*"
     ]
 
     principals {

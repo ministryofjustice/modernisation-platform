@@ -231,12 +231,48 @@ module "collaborators_group" {
   group_users = [for user in module.collaborators : user.username]
 
   custom_group_policy_arns = [
-    data.aws_iam_policy.ForceMFA.arn
+    data.aws_iam_policy.ForceMFA.arn,
+    aws_iam_policy.collaborator_local_plan.arn
   ]
 }
 
 data "aws_iam_policy" "ForceMFA" {
   name = "ForceMFA"
+}
+
+resource "aws_iam_policy" "collaborator_local_plan" {
+  name        = "collaborator-local-plan"
+  description = "Permissions collaborators need to perform local Terraform plans"
+  policy      = data.aws_iam_policy_document.collaborator_local_plan.json
+}
+
+data "aws_iam_policy_document" "collaborator_local_plan" {
+  statement {
+    sid    = "AssumeRole"
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
+    resources = [
+      "arn:aws:iam::*:role/read-dns-records",
+      "arn:aws:iam::*:role/member-delegation-read-only"
+    ]
+  }
+
+  statement {
+    sid = "TerraformStateAccess"
+    actions = [
+      "s3:ListBucket",
+      "s3:GetObject"
+    ]
+
+    resources = [
+      "arn:aws:s3:::modernisation-platform-terraform-state/terraform.tfstate",
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*",
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/core-network-services/*",
+      "arn:aws:s3:::modernisation-platform-terraform-state"
+    ]
+  }
 }
 
 module "collaborators" {
