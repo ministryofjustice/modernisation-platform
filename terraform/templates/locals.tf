@@ -28,9 +28,11 @@ locals {
     { "source-code" = "https://github.com/ministryofjustice/modernisation-platform" }
   )
 
-  environment = trimprefix(terraform.workspace, "${var.networking[0].application}-")
-  vpc_name    = var.networking[0].business-unit
-  subnet_set  = var.networking[0].set
+  environment     = trimprefix(terraform.workspace, "${var.networking[0].application}-")
+  vpc_name        = var.networking[0].business-unit
+  subnet_set      = var.networking[0].set
+  vpc_all         = "${local.vpc_name}-${local.environment}"
+  subnet_set_name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}"
 
   is_live       = [substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production" || substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction" ? "live" : "non-live"]
   provider_name = "core-vpc-${local.environment}"
@@ -39,4 +41,19 @@ locals {
   # example usage:  
   # example_data = local.application_data.accounts[local.environment].example_var
   application_data = fileexists("./application_variables.json") ? jsondecode(file("./application_variables.json")) : {}
+
+  domain_types = { for dvo in aws_acm_certificate.external.domain_validation_options : dvo.domain_name => {
+    name   = dvo.resource_record_name
+    record = dvo.resource_record_value
+    type   = dvo.resource_record_type
+    }
+  }
+
+  domain_name_main   = [for k, v in local.domain_types : v.name if k == "modernisation-platform.service.justice.gov.uk"]
+  domain_name_sub    = [for k, v in local.domain_types : v.name if k != "modernisation-platform.service.justice.gov.uk"]
+  domain_record_main = [for k, v in local.domain_types : v.record if k == "modernisation-platform.service.justice.gov.uk"]
+  domain_record_sub  = [for k, v in local.domain_types : v.record if k != "modernisation-platform.service.justice.gov.uk"]
+  domain_type_main   = [for k, v in local.domain_types : v.type if k == "modernisation-platform.service.justice.gov.uk"]
+  domain_type_sub    = [for k, v in local.domain_types : v.type if k != "modernisation-platform.service.justice.gov.uk"]
 }
+  
