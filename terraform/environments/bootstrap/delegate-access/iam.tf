@@ -146,7 +146,7 @@ data "aws_iam_policy_document" "member-access" {
       "iam:UpdateRoleDescription"
     ]
     condition {
-      test     = "StringNotEquals"
+      test     = "StringEquals"
       values   = [data.aws_iam_user.cicd_member_user.arn]
       variable = "aws:PrincipalARN"
     }
