@@ -38,6 +38,7 @@ resource "aws_iam_policy" "deny-specific-actions" {
 }
 
 # Create a CI group to attach the policy to
+#tfsec:ignore:aws-iam-enforce-mfa
 resource "aws_iam_group" "ci" {
   name = "ci"
 }
@@ -178,6 +179,7 @@ resource "aws_iam_policy" "member-ci-policy" {
 }
 
 # Create a member CI group to attach the policy to
+#tfsec:ignore:aws-iam-enforce-mfa
 resource "aws_iam_group" "member-ci" {
   name = "member-ci"
 }

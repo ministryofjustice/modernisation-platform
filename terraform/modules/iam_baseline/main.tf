@@ -3,6 +3,7 @@ resource "aws_iam_user" "cicd_member_user" {
   name = "cicd-member-user"
 }
 
+#tfsec:ignore:aws-iam-enforce-mfa
 resource "aws_iam_group" "cicd_member_group" {
   name = "cicd-member-group"
 }
