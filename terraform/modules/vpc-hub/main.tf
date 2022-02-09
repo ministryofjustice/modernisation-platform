@@ -214,6 +214,7 @@ resource "aws_network_acl" "public" {
 }
 
 # Public NACLs rules
+#tfsec:ignore:aws-vpc-no-public-ingress-acl tfsec:ignore:aws-vpc-no-excessive-port-access
 resource "aws_network_acl_rule" "public" {
   for_each = local.nacl_rules_expanded
 
@@ -227,6 +228,7 @@ resource "aws_network_acl_rule" "public" {
   to_port        = each.value.to_port
 }
 
+#tfsec:ignore:aws-vpc-no-excessive-port-access
 resource "aws_network_acl_rule" "public-local-ingress" {
   network_acl_id = aws_network_acl.public.id
   rule_number    = 210
@@ -236,6 +238,7 @@ resource "aws_network_acl_rule" "public-local-ingress" {
   cidr_block     = var.vpc_cidr
 }
 
+#tfsec:ignore:aws-vpc-no-excessive-port-access
 resource "aws_network_acl_rule" "public-local-egress" {
   network_acl_id = aws_network_acl.public.id
   rule_number    = 210
@@ -307,6 +310,7 @@ resource "aws_network_acl" "private" {
 }
 
 # Private NACLs rules
+#tfsec:ignore:aws-vpc-no-public-ingress-acl
 resource "aws_network_acl_rule" "private" {
   for_each = local.nacl_rules_expanded
 
@@ -320,6 +324,7 @@ resource "aws_network_acl_rule" "private" {
   to_port        = each.value.to_port
 }
 
+#tfsec:ignore:aws-vpc-no-excessive-port-access
 resource "aws_network_acl_rule" "private-local-ingress" {
   network_acl_id = aws_network_acl.private.id
   rule_number    = 210
@@ -329,6 +334,7 @@ resource "aws_network_acl_rule" "private-local-ingress" {
   cidr_block     = var.vpc_cidr
 }
 
+#tfsec:ignore:aws-vpc-no-excessive-port-access
 resource "aws_network_acl_rule" "private-local-egress" {
   network_acl_id = aws_network_acl.private.id
   rule_number    = 210
@@ -395,6 +401,7 @@ resource "aws_network_acl" "data" {
 }
 
 # Data NACLs rules
+#tfsec:ignore:aws-vpc-no-public-ingress-acl
 resource "aws_network_acl_rule" "data" {
   for_each = local.nacl_rules_expanded
 
@@ -408,6 +415,7 @@ resource "aws_network_acl_rule" "data" {
   to_port        = each.value.to_port
 }
 
+#tfsec:ignore:aws-vpc-no-excessive-port-access
 resource "aws_network_acl_rule" "data-local-ingress" {
   network_acl_id = aws_network_acl.data.id
   rule_number    = 210
@@ -417,6 +425,7 @@ resource "aws_network_acl_rule" "data-local-ingress" {
   cidr_block     = var.vpc_cidr
 }
 
+#tfsec:ignore:aws-vpc-no-excessive-port-access
 resource "aws_network_acl_rule" "data-local-egress" {
   network_acl_id = aws_network_acl.data.id
   rule_number    = 210
@@ -483,6 +492,7 @@ resource "aws_network_acl" "transit-gateway" {
 }
 
 # Transit Gateway NACLs rules
+#tfsec:ignore:aws-vpc-no-public-ingress-acl
 resource "aws_network_acl_rule" "transit-gateway" {
   for_each = local.nacl_rules_expanded
 
@@ -496,6 +506,7 @@ resource "aws_network_acl_rule" "transit-gateway" {
   to_port        = each.value.to_port
 }
 
+#tfsec:ignore:aws-vpc-no-excessive-port-access
 resource "aws_network_acl_rule" "transit-gateway-local-ingress" {
   network_acl_id = aws_network_acl.transit-gateway.id
   rule_number    = 210
@@ -505,6 +516,7 @@ resource "aws_network_acl_rule" "transit-gateway-local-ingress" {
   cidr_block     = var.vpc_cidr
 }
 
+#tfsec:ignore:aws-vpc-no-excessive-port-access
 resource "aws_network_acl_rule" "transit-gateway-local-egress" {
   network_acl_id = aws_network_acl.transit-gateway.id
   rule_number    = 210
