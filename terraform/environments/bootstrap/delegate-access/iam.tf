@@ -3,10 +3,6 @@ locals {
   account_data = jsondecode(file("../../../../environments/${local.account_name}.json"))
 }
 
-data "aws_iam_user" "cicd_member_user" {
-  user_name = "cicd-member-user"
-}
-
 module "cross-account-access" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.0.0"
   providers = {
@@ -144,7 +140,7 @@ data "aws_iam_policy_document" "member-access" {
       "iam:UpdateRole",
       "iam:UpdateRoleDescription"
     ]
-    resources = [data.aws_iam_user.cicd_member_user.arn]
+    resources = [module.cicd-member-user.cicd_user_arn]
   }
 }
 
