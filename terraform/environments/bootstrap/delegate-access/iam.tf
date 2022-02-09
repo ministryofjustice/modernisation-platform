@@ -94,7 +94,6 @@ data "aws_iam_policy_document" "member-access" {
       "iam:AddClientIDToOpenIDConnectProvider",
       "iam:AddUserToGroup",
       "iam:AttachGroupPolicy",
-      "iam:AttachRolePolicy",
       "iam:AttachUserPolicy",
       "iam:CreateAccountAlias",
       "iam:CreateGroup",
