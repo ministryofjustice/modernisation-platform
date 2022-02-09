@@ -25,6 +25,7 @@ locals {
     "seanprivett",
     "SteveMarshall",
     "christine-elliott",
+    "ScottSeaward",
   ]
 
   # GitHub usernames for engineers who need full AWS access
