@@ -52,3 +52,7 @@ resource "aws_iam_group_membership" "cicd-member" {
 
   group = aws_iam_group.cicd_member_group.name
 }
+
+output "cicd_user_arn" {
+  value = aws_iam_user.cicd_member_user.arn
+}
