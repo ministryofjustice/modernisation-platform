@@ -1,11 +1,10 @@
 locals {
-
-
   account_name = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, regex("-[^-]*$", terraform.workspace), ""))
-
-
   account_data = jsondecode(file("../../../../environments/${local.account_name}.json"))
+}
 
+data "aws_iam_user" "cicd_member_user" {
+  user_name = "cicd-member-user"
 }
 
 module "cross-account-access" {
@@ -131,6 +130,28 @@ data "aws_iam_policy_document" "member-access" {
     ]
     resources = ["*"]
   }
+
+  statement {
+    effect = "Deny"
+    actions = [
+      "iam:AttachRolePolicy",
+      "iam:DeleteRole",
+      "iam:DeleteRolePermissionsBoundary",
+      "iam:DeleteRolePolicy",
+      "iam:DetachRolePolicy",
+      "iam:PutRolePermissionsBoundary",
+      "iam:PutRolePolicy",
+      "iam:UpdateAssumeRolePolicy",
+      "iam:UpdateRole",
+      "iam:UpdateRoleDescription"
+    ]
+    condition {
+      test     = "StringNotEquals"
+      values   = [data.aws_iam_user.cicd_member_user.arn]
+      variable = "aws:PrincipalARN"
+    }
+    resources = [data.aws_iam_user.cicd_member_user.arn]
+  }
 }
 
 resource "aws_iam_policy" "member-access" {
@@ -207,7 +228,6 @@ resource "aws_iam_policy" "developer" {
   policy   = data.aws_iam_policy_document.developer-additional.json
 }
 
-
 data "aws_iam_policy_document" "developer-additional" {
   #checkov:skip=CKV_AWS_108
   #checkov:skip=CKV_AWS_109
@@ -248,7 +268,6 @@ data "aws_iam_policy_document" "developer-additional" {
 
     resources = ["arn:aws:lambda:*:*:function:Automation*"]
   }
-
 
   statement {
     actions = [
