@@ -140,7 +140,7 @@ data "aws_iam_policy_document" "member-access" {
       "iam:UpdateRole",
       "iam:UpdateRoleDescription"
     ]
-    resources = [module.cicd-member-user.cicd_user_arn]
+    resources = ["arn:aws:iam::*:user/cicd-member-user"]
   }
 }
 
