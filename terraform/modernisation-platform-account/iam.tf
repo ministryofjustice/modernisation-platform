@@ -84,12 +84,13 @@ resource "aws_iam_access_key" "ci" {
 # Member CI User
 
 # Member CI policy
+#tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "member-ci-policy" {
   statement {
     effect  = "Allow"
     actions = ["sts:AssumeRole"]
     resources = [
-      "arn:aws:iam::*:role/MemberInfrastructureAccess",
+      "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/MemberInfrastructureAccess",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-development"]}:role/member-delegation-*-development",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-test"]}:role/member-delegation-*-test",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-preproduction"]}:role/member-delegation-*-preproduction",
@@ -256,8 +257,12 @@ data "aws_iam_policy_document" "collaborator_local_plan" {
       "sts:AssumeRole"
     ]
     resources = [
-      "arn:aws:iam::*:role/read-dns-records",
-      "arn:aws:iam::*:role/member-delegation-read-only"
+      "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/read-dns-records",
+      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-development"]}:role/member-delegation-read-only",
+      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-test"]}:role/member-delegation-read-only",
+      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-preproduction"]}:role/member-delegation-read-only",
+      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-production"]}:role/member-delegation-read-only",
+      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-sandbox"]}:role/member-delegation-read-only",
     ]
   }
 
