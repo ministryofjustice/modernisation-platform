@@ -14,5 +14,17 @@
     "additional_endpoints": [],
     "dns_zone_extend": []
   },
-  "nacl": []
+  "nacl": [
+    {
+      "subnet_set": "general",
+      "egress": false,
+      "subnet_type": "public",
+      "protocol": "tcp",
+      "rule_action": "allow",
+      "rule_number": 240,
+      "cidr_block": "0.0.0.0/0",
+      "from_port": "1024",
+      "to_port": "65535"
+    }
+  ]
 }
