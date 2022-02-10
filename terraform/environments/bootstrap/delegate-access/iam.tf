@@ -90,7 +90,6 @@ data "aws_iam_policy_document" "member-access" {
       "iam:AddClientIDToOpenIDConnectProvider",
       "iam:AddUserToGroup",
       "iam:AttachGroupPolicy",
-      "iam:AttachRolePolicy",
       "iam:AttachUserPolicy",
       "iam:CreateAccountAlias",
       "iam:CreateGroup",
@@ -141,7 +140,7 @@ data "aws_iam_policy_document" "member-access" {
       "iam:UpdateRole",
       "iam:UpdateRoleDescription"
     ]
-    resources = [module.cicd-member-user.cicd_user_arn]
+    resources = ["arn:aws:iam::*:user/cicd-member-user"]
   }
 }
 
