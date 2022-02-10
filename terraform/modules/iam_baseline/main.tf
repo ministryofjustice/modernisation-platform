@@ -3,14 +3,16 @@ resource "aws_iam_user" "cicd_member_user" {
   name = "cicd-member-user"
 }
 
+#tfsec:ignore:aws-iam-enforce-mfa
 resource "aws_iam_group" "cicd_member_group" {
   name = "cicd-member-group"
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "policy" {
   name        = "cicd-member-policy"
   description = "IAM Policy for CICD member user"
-  policy = jsonencode({ #tfsec:ignore:AWS099
+  policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {

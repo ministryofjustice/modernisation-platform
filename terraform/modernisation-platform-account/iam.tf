@@ -38,6 +38,7 @@ resource "aws_iam_policy" "deny-specific-actions" {
 }
 
 # Create a CI group to attach the policy to
+#tfsec:ignore:aws-iam-enforce-mfa
 resource "aws_iam_group" "ci" {
   name = "ci"
 }
@@ -83,6 +84,7 @@ resource "aws_iam_access_key" "ci" {
 # Member CI User
 
 # Member CI policy
+#tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "member-ci-policy" {
   statement {
     effect  = "Allow"
@@ -178,6 +180,7 @@ resource "aws_iam_policy" "member-ci-policy" {
 }
 
 # Create a member CI group to attach the policy to
+#tfsec:ignore:aws-iam-enforce-mfa
 resource "aws_iam_group" "member-ci" {
   name = "member-ci"
 }
@@ -254,8 +257,12 @@ data "aws_iam_policy_document" "collaborator_local_plan" {
       "sts:AssumeRole"
     ]
     resources = [
-      "arn:aws:iam::*:role/read-dns-records",
-      "arn:aws:iam::*:role/member-delegation-read-only"
+      "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/read-dns-records",
+      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-development"]}:role/member-delegation-read-only",
+      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-test"]}:role/member-delegation-read-only",
+      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-preproduction"]}:role/member-delegation-read-only",
+      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-production"]}:role/member-delegation-read-only",
+      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-sandbox"]}:role/member-delegation-read-only",
     ]
   }
 
