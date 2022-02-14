@@ -11,7 +11,7 @@ provider "aws" {
 # TFSec ignores:
 # - AWS098: Ignore warnings regarding not blocking all public access - this is required for CRL
 # - AWS002: Ignore warnings regarding lack of s3 bucket server access logging - considered overkill given bucket purpose and restricted access to bucket
-#tfsec:ignore:AWS098 tfsec:ignore:AWS002
+#tfsec:ignore:AWS098 tfsec:ignore:AWS002 tfsec:ignore:aws-s3-block-public-acls
 resource "aws_s3_bucket" "acm-pca" {
   #checkov:skip=CKV2_AWS_6:Public access is required when S3 bucket used for acm pca CRL
   #checkov:skip=CKV_AWS_144:Ignore lack of cross-regional replication - not required here - represents an overkill
@@ -60,6 +60,14 @@ resource "aws_s3_bucket" "acm-pca" {
       Name = "acm-pca"
     },
   )
+}
+
+resource "aws_s3_bucket_public_access_block" "acm-pca" {
+  bucket = aws_s3_bucket.acm-pca.id
+  block_public_acls = true
+  block_public_policy = true
+  ignore_public_acls = true
+  restrict_public_buckets = true
 }
 
 #S3 bucket access policy
