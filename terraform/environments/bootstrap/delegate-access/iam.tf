@@ -35,6 +35,7 @@ module "member-access" {
   role_name  = "MemberInfrastructureAccess"
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "member-access" {
   statement {
     #checkov:skip=CKV_AWS_108
@@ -43,7 +44,7 @@ data "aws_iam_policy_document" "member-access" {
     #checkov:skip=CKV_AWS_109
     #checkov:skip=CKV_AWS_110
     effect = "Allow"
-    actions = [ #tfsec:ignore:AWS099
+    actions = [
       "acm-pca:*",
       "acm:*",
       "application-autoscaling:*",
@@ -218,6 +219,7 @@ resource "aws_iam_policy" "developer" {
   policy   = data.aws_iam_policy_document.developer-additional.json
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "developer-additional" {
   #checkov:skip=CKV_AWS_108
   #checkov:skip=CKV_AWS_109
