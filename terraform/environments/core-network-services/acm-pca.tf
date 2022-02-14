@@ -21,37 +21,6 @@ resource "aws_s3_bucket" "acm-pca" {
     prevent_destroy = true
   }
 
-  dynamic "lifecycle_rule" {
-    for_each = true ? [true] : []
-
-    content {
-      enabled = true
-
-      noncurrent_version_transition {
-        days          = 30
-        storage_class = "GLACIER"
-      }
-
-      transition {
-        days          = 30
-        storage_class = "GLACIER"
-      }
-    }
-  }
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm     = "aws:kms"
-        kms_master_key_id = aws_kms_key.acm.arn
-      }
-    }
-  }
-
-  versioning {
-    enabled = true
-  }
-
   tags = merge(
     local.tags,
     {
@@ -60,12 +29,48 @@ resource "aws_s3_bucket" "acm-pca" {
   )
 }
 
+resource "aws_s3_bucket_lifecycle_configuration" "acm-pca" {
+  bucket = aws_s3_bucket.acm-pca.bucket
+
+  rule {
+    id = "default"
+    status = "Enabled"
+
+    transition {
+      days          = 30
+      storage_class = "GLACIER"
+    }
+
+    noncurrent_version_transition {
+      noncurrent_days = 30
+      storage_class   = "GLACIER"
+    }
+  }
+}
+
 resource "aws_s3_bucket_public_access_block" "acm-pca" {
   bucket = aws_s3_bucket.acm-pca.id
   block_public_acls = true
   block_public_policy = true
   ignore_public_acls = true
   restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "acm-pca" {
+  bucket = aws_s3_bucket.acm-pca.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm     = "aws:kms"
+      kms_master_key_id = aws_kms_key.acm.arn
+    }
+  }
+}
+resource "aws_s3_bucket_versioning" "acm-pca" {
+  bucket = aws_s3_bucket.acm-pca.id
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
 #S3 bucket access policy
