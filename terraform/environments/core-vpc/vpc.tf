@@ -382,11 +382,13 @@ resource "aws_iam_role" "member_delegation_read_only" {
   )
 }
 
+#We need to be able to read across all hosted zones to have this as a generic role
+#tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_role_policy" "member_delegation_read_only" {
   name = "MemberDelegationReadOnly"
   role = aws_iam_role.member_delegation_read_only.name
 
-  policy = jsonencode({ #tfsec:ignore:AWS099 - we need to be able to read across all hosted zones to have this as a generic role
+  policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
