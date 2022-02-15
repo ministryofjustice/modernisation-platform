@@ -38,6 +38,11 @@ resource "aws_s3_bucket_lifecycle_configuration" "acm-pca" {
     id     = "default"
     status = "Enabled"
 
+    filter {
+      object_size_greater_than = 0
+      object_size_less_than    = 0
+    }
+
     transition {
       days          = 30
       storage_class = "GLACIER"
@@ -59,20 +64,24 @@ resource "aws_s3_bucket_public_access_block" "acm-pca" {
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "acm-pca" {
-  bucket = aws_s3_bucket.acm-pca.id
+  bucket                = aws_s3_bucket.acm-pca.id
+  expected_bucket_owner = local.environment_management.account_ids["core-network-services-production"]
 
   rule {
     apply_server_side_encryption_by_default {
       sse_algorithm     = "aws:kms"
       kms_master_key_id = aws_kms_key.acm.arn
     }
+    bucket_key_enabled = false
   }
 }
 
 resource "aws_s3_bucket_versioning" "acm-pca" {
-  bucket = aws_s3_bucket.acm-pca.id
+  bucket                = aws_s3_bucket.acm-pca.id
+  expected_bucket_owner = local.environment_management.account_ids["core-network-services-production"]
   versioning_configuration {
-    status = "Enabled"
+    mfa_delete = "Disabled"
+    status     = "Enabled"
   }
 }
 
