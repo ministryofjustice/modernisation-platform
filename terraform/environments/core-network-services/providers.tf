@@ -4,12 +4,10 @@ provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
   }
-  version = ">= 4.0.0, < 5.0.0"
 }
 
 # AWS provider for the Modernisation Platform, to get things from there if required
 provider "aws" {
   alias  = "modernisation-platform"
   region = "eu-west-2"
-  version = ">= 4.0.0, < 5.0.0"
 }
