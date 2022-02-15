@@ -11,4 +11,5 @@ provider "aws" {
 provider "aws" {
   alias  = "modernisation-platform"
   region = "eu-west-2"
+  version = ">= 4.0.0, < 5.0.0"
 }
