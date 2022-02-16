@@ -1,7 +1,7 @@
 ---
 title: Creating networking resources in the Modernisation Platform
-last_reviewed_on: 2021-08-03
-review_in: 3 months
+last_reviewed_on: 2022-02-16
+review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
@@ -42,12 +42,12 @@ Amazon issued public certificates and shared live and non live subordinate priva
 
 #### Connectivity to other VPCs or external parties
 
-As default your VPC is isolated, if you need connectivity to other VPCs with in the MoJ, or VPN ([Virtual private network](https://aws.amazon.com/vpn)) connections to external parties this can be created.
+As default your VPC is isolated, if you need connectivity to other VPCs [with in the MoJ](wider-moj-connectivity.html), or VPN ([Virtual private network](https://aws.amazon.com/vpn)) connections to external parties this can be created.
 
 #### Linux Bastion
 
 Connecting to servers should be done via [AWS Systems Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-sessions-start.html), but if it is not possible to install the SSM agent due to the age of the operating system, then a secure bastion server can be provisioned.
-A bastion can also be used for connecting locally to RDS databases via port forwarding.
+A bastion can also be used for connecting locally to RDS databases via port forwarding. We provide a [module](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) to create a bastion instance.
 
 #### Extended DNS
 
