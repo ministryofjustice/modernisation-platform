@@ -9,49 +9,18 @@ provider "aws" {
 
 #Create S3 bucket for ACM
 # TFSec ignores:
-# - AWS098: Ignore warnings regarding not blocking all public access - this is required for CRL
 # - AWS002: Ignore warnings regarding lack of s3 bucket server access logging - considered overkill given bucket purpose and restricted access to bucket
-#tfsec:ignore:AWS098 tfsec:ignore:AWS002
+#tfsec:ignore:AWS098 tfsec:ignore:AWS002 tfsec:ignore:aws-s3-block-public-acls tfsec:ignore:aws-s3-enable-bucket-encryption tfsec:ignore:aws-s3-enable-bucket-encryption tfsec:ignore:aws-s3-enable-versioning tfsec:ignore:aws-s3-encryption-customer-key
 resource "aws_s3_bucket" "acm-pca" {
-  #checkov:skip=CKV2_AWS_6:Public access is required when S3 bucket used for acm pca CRL
-  #checkov:skip=CKV_AWS_144:Ignore lack of cross-regional replication - not required here - represents an overkill
   #checkov:skip=CKV_AWS_18:Ignore warnings regarding lack of s3 bucket server access logging - considered overkill given bucket purpose and restricted access to bucket
-
+  #checkov:skip=CKV_AWS_19:Moved to new resource in 4.0 provider
+  #checkov:skip=CKV_AWS_21:Moved to new resource in 4.0 provider
+  #checkov:skip=CKV_AWS_144:Ignore lack of cross-regional replication - not required here - represents an overkill
+  #checkov:skip=CKV_AWS_145:Moved to new resource in 4.0 provider
   bucket_prefix = "acm"
 
   lifecycle {
     prevent_destroy = true
-  }
-
-  dynamic "lifecycle_rule" {
-    for_each = true ? [true] : []
-
-    content {
-      enabled = true
-
-      noncurrent_version_transition {
-        days          = 30
-        storage_class = "GLACIER"
-      }
-
-      transition {
-        days          = 30
-        storage_class = "GLACIER"
-      }
-    }
-  }
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm     = "aws:kms"
-        kms_master_key_id = aws_kms_key.acm.arn
-      }
-    }
-  }
-
-  versioning {
-    enabled = true
   }
 
   tags = merge(
@@ -60,6 +29,60 @@ resource "aws_s3_bucket" "acm-pca" {
       Name = "acm-pca"
     },
   )
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "acm-pca" {
+  bucket = aws_s3_bucket.acm-pca.bucket
+
+  rule {
+    id     = "default"
+    status = "Enabled"
+
+    filter {
+      object_size_greater_than = 0
+      object_size_less_than    = 0
+    }
+
+    transition {
+      days          = 30
+      storage_class = "GLACIER"
+    }
+
+    noncurrent_version_transition {
+      noncurrent_days = 30
+      storage_class   = "GLACIER"
+    }
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "acm-pca" {
+  bucket                  = aws_s3_bucket.acm-pca.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "acm-pca" {
+  bucket                = aws_s3_bucket.acm-pca.id
+  expected_bucket_owner = local.environment_management.account_ids["core-network-services-production"]
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm     = "aws:kms"
+      kms_master_key_id = aws_kms_key.acm.arn
+    }
+    bucket_key_enabled = false
+  }
+}
+
+resource "aws_s3_bucket_versioning" "acm-pca" {
+  bucket                = aws_s3_bucket.acm-pca.id
+  expected_bucket_owner = local.environment_management.account_ids["core-network-services-production"]
+  versioning_configuration {
+    mfa_delete = "Disabled"
+    status     = "Enabled"
+  }
 }
 
 #S3 bucket access policy
