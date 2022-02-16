@@ -80,7 +80,7 @@ locals {
     "global-protect" = "10.184.0.0/16",
     "azure-nomis"    = "10.101.0.0/16",
     "cloud-platform" = "172.20.0.0/16"
-    "ppud-psn"       = "51.247.2.115/32"
+    "ppud-psn"       = "51.247.0.0/16"
   }
 }
 
