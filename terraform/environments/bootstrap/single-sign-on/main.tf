@@ -32,6 +32,13 @@ data "aws_ssoadmin_permission_set" "developer" {
   name         = "modernisation-platform-developer"
 }
 
+data "aws_ssoadmin_permission_set" "platform_engineer" {
+  provider = aws.sso-management
+
+  instance_arn = local.sso_instance_arn
+  name         = "ModernisationPlatformEngineer"
+}
+
 # Get Identity Store groups
 data "aws_identitystore_group" "platform_admin" {
   provider = aws.sso-management
@@ -66,6 +73,20 @@ resource "aws_ssoadmin_account_assignment" "platform_admin" {
 
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.aws_ssoadmin_permission_set.administrator.arn
+
+  principal_id   = data.aws_identitystore_group.platform_admin.group_id
+  principal_type = "GROUP"
+
+  target_id   = local.environment_management.account_ids[terraform.workspace]
+  target_type = "AWS_ACCOUNT"
+}
+
+resource "aws_ssoadmin_account_assignment" "platform_engineer" {
+
+  provider = aws.sso-management
+
+  instance_arn       = local.sso_instance_arn
+  permission_set_arn = data.aws_ssoadmin_permission_set.platform_engineer.arn
 
   principal_id   = data.aws_identitystore_group.platform_admin.group_id
   principal_type = "GROUP"
