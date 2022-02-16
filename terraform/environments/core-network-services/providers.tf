@@ -8,6 +8,6 @@ provider "aws" {
 
 # AWS provider for the Modernisation Platform, to get things from there if required
 provider "aws" {
-  alias   = "modernisation-platform"
-  region  = "eu-west-2"
+  alias  = "modernisation-platform"
+  region = "eu-west-2"
 }
