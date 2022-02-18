@@ -5,37 +5,38 @@ import json
 
 athena_client = boto3.client('athena', region_name='eu-west-2')
 sts_client = boto3.client('sts')
+ssm_client = boto3.client('ssm', region_name='eu-west-2')
 query_location='s3://athena-cloudtrail-query'
 athena_db="mod_cloudtrail_logs"
+athena_table="cloudtrail_logs"
 
-#Gets secret from modernation platform account
+#Get account numbers from modernsation platform account
 def get_accounts():
 
-        # Call the assume_role method of the STSConnection object and pass the role
-        # ARN and a role session name.
-        assumed_role_object=sts_client.assume_role(
-            RoleArn="arn:aws:iam::os.environ['mod-account']:role/lambda_secretsmanager_access",
-            RoleSessionName="ListModPlatformAccounts"
-        )
+        # Get environment management secret ARN
+        parameter_name = "environment_management_arn"
     
-        # From the response that contains the assumed role, get the temporary 
-        # credentials that can be used to make subsequent API calls
-        credentials=assumed_role_object['Credentials']  
-    
-        secret_name = "environment_management"
+        try:
+            get_parameter_response = ssm_client.get_parameter (
+                Name=parameter_name,
+                WithDecryption=True
+            )
+            secret_arn=get_parameter_response['Parameter']['Value']
+
+        except ClientError as e:
+            print("Unexpected error: %s" % e)
+        
+        # get account numbers from environment management secret
         region_name = "eu-west-2"
-    
+        
         client = boto3.client(
             service_name='secretsmanager',
             region_name=region_name,
-            aws_access_key_id=credentials['AccessKeyId'],
-            aws_secret_access_key=credentials['SecretAccessKey'],
-            aws_session_token=credentials['SessionToken'],
         )
         
         try:
             get_secret_value_response = client.get_secret_value(
-                    SecretId=secret_name
+                    SecretId=secret_arn
             )
             res=json.loads(json.dumps(get_secret_value_response, default=str))
             
@@ -76,7 +77,7 @@ def get_accounts():
 #Create AWS Athena database
 def create_athena_database():
     
-    print("[+] Creating Athena database" + athena_db)
+    print("[+] Creating Athena database " + athena_db)
     
     try:
         response = athena_client.start_query_execution(
@@ -91,12 +92,12 @@ def create_athena_database():
 #Drop Athena table 
 def drop_athena_table():
     
-    print("[+] Dropping Athena table")
+    print("[+] Dropping Athena table " + athena_table)
     
     try:
         response = athena_client.start_query_execution(
            
-        QueryString='DROP DATABASE %s'  % athena_db,
+        QueryString='DROP TABLE %s'  % athena_table,
         
          QueryExecutionContext={
                 'Database': athena_db
@@ -112,7 +113,7 @@ def drop_athena_table():
 #Create Athena table and add updated AWS accounts to Athena partition  
 def create_athena_table(list_accounts):
 
-    print("[+] Updating Athena table")
+    print("[+] Updating Athena table " + athena_table)
     
     print("[+] Adding Mod accounts to Athena query: ")
     print(list_accounts)
@@ -218,7 +219,7 @@ def lambda_handler(event, context):
         for key, value in json.loads(data_json).items():
             list_accounts.append(value)
         
-        #creat athena database if it doesnt exist
+        #create athena database if it doesn't exist
         create_athena_database()
         
         drop_athena_table()
