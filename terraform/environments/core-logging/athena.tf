@@ -2,50 +2,6 @@ data "aws_caller_identity" "mod-platform" {
   provider = aws.modernisation-platform
 }
 
-#Secrets Manager role
-data "aws_iam_policy_document" "lambda_assume_role_policy" {
-
-  provider = aws.modernisation-platform
-
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/athena_lambda/athena_table_update"]
-    }
-  }
-}
-
-resource "aws_iam_role" "lambda_secretsmanager_access" {
-
-  provider = aws.modernisation-platform
-
-  name = "lambda_secretsmanager_access"
-
-  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
-
-  inline_policy {
-    name = "lambda_secretsmanager_access_policy"
-
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Action = [
-            "secretsmanager:GetSecretValue",
-            "secretsmanager:DescribeSecret"
-          ]
-          Effect = "Allow"
-          Resource = [
-            "${data.aws_secretsmanager_secret.environment_management.arn}"
-          ]
-        },
-      ]
-    })
-  }
-}
-
 #S3 Bucket for Athena temp SQL queries 
 
 module "s3-bucket-athena" {
@@ -76,7 +32,8 @@ data "aws_iam_policy_document" "athena_bucket_policy" {
   statement {
     sid    = "AllowListBucketACL"
     effect = "Allow"
-    actions = ["s3:PutObject",
+    actions = [
+      "s3:PutObject",
       "s3:GetObject",
       "s3:GetBucketLogging",
       "s3:ListBucketVersions",
@@ -90,6 +47,11 @@ data "aws_iam_policy_document" "athena_bucket_policy" {
     principals {
       type        = "Service"
       identifiers = ["s3.amazonaws.com"]
+    }
+
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
     }
   }
 }
@@ -136,18 +98,37 @@ resource "aws_iam_role" "athena_lambda" {
       Statement = [
         {
           Action = [
+            "athena:*",
+            "secretsmanager:GetSecretValue",
             "glue:GetDatabase",
-            "sts:AssumeRole",
+            "glue:GetTable",
+            "glue:GetTables",
             "glue:CreateTable",
             "glue:CreateDatabase",
             "glue:CreateSchema",
             "glue:CreatePartition",
-            "athena:*",
-            "glue:GetDatabases"
+            "glue:GetDatabases",
+            "glue:GetPartitions",
+            "glue:DeleteTable",
+            "kms:Decrypt*",
+            "kms:GenerateDataKey",
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+            "s3:GetBucketLocation",
+            "ssm:GetParameter"
           ]
           Effect   = "Allow"
           Resource = "*"
         },
+        {
+          Action = [
+            "s3:*Object",
+            "s3:List*"
+          ]
+          Effect   = "Allow"
+          Resource = "${module.s3-bucket-athena.bucket.arn}/*"
+        }
       ]
     })
   }
