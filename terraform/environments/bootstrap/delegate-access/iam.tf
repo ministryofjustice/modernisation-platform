@@ -188,6 +188,30 @@ module "collaborator_readonly_role" {
   ]
 }
 
+# security audit role for collaborators
+module "collaborator_security_audit_role" {
+  count   = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+  version = "~> 4"
+  providers = {
+    aws = aws.workspace
+  }
+  max_session_duration = 43200
+
+  create_role       = true
+  role_name         = "security-audit"
+  role_requires_mfa = true
+
+  custom_role_policy_arns = [
+    "arn:aws:iam::aws:policy/SecurityAudit"
+  ]
+
+  # Allow created users to assume these roles
+  trusted_role_arns = [
+    local.modernisation_platform_account.id
+  ]
+}
+
 # developer role for collaborators
 module "collaborator_developer_role" {
   count   = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0

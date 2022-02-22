@@ -2,7 +2,8 @@ package main
 
 allowed_access := [
   "read-only",
-  "developer"
+  "developer",
+  "security-audit"
 ]
 
 deny[msg] {
