@@ -1,7 +1,7 @@
 ---
 title: Deleting an environment (AWS account)
-last_reviewed_on: 2021-10-27
-review_in: 3 month
+last_reviewed_on: 2022-02-22
+review_in: 6 month
 ---
 
 # <%= current_page.data.title %>
@@ -23,6 +23,8 @@ Therefore, there are a few things to do to delete an environment, in this order:
 ## Getting the root IAM user's email address
 
 You need the root IAM user's email address to delete the AWS account in the last step, so note it down.
+
+You can get this from the SSO log on page if you have access to the account via SSO, if not it can be found in the Terraform state.
 
 To do this, `cd` into `terraform environments` and find the resource in the state:
 
@@ -235,62 +237,23 @@ If you delete the last environment and there are no more environments for the ap
 
 `modernisation-platform-environments/.github/workflows/<application-name>`
 
+After following the above steps, you need to move the account to the closed accounts OU before deleting the actual AWS account that the environment was linked to.
+
+## Move the account to the closed accounts organizational unit
+
+>Note that a user with root account permissions will need to do this.
+
+Log into the AWS Console and navigate to AWS Oraganizations, find the account and move it to the `Closed accounts` OU.
+
+Now the AWS account can be deleted.
+
 ## Delete the actual AWS account
 
 >This process cannot be undone. Proceed carefully.
 
-After following the above steps, you need to delete the actual AWS account that the environment was linked to.
-
-Before the account can be deleted by the root user, a policy needs to be temporarily detached that is designed to _prevent_ access from the root user.
-
-To do this, complete the following steps, comprising AWS CLI commands.
-> Note, all of the following AWS CLI commands can only be run by a user that has access to the AWS Organizations Management account
-
-- Identify the policy id 
-
-### Member accounts
-```bash
-aws organizations list-policies --filter SERVICE_CONTROL_POLICY --query "Policies[?Name=='Modernisation Platform Member OU SCP - Prevent Root'].[Id,Name]" --output text
-```
-
-### Member unrestricted accounts
-```bash
-aws organizations list-policies --filter SERVICE_CONTROL_POLICY --query "Policies[?Name=='Modernisation Platform Member Unrestricted OU SCP - Prevent Root'].[Id,Name]" --output text
-```
-
-### Core accounts
-```bash
-aws organizations list-policies --filter SERVICE_CONTROL_POLICY --query "Policies[?Name=='Modernisation Platform Core OU SCP - Prevent Root'].[Id,Name]" --output text
-```
-
-- Identify the target id (an OU) associated with the policy, replacing \<policyId\> (starting "p-"), from the command above
-
-```bash
-aws organizations list-targets-for-policy --policy-id <policyId> --query "Targets[*].[Name,TargetId]" --output text
-```
-
-- Detach the policy preventing root access from the Modernisation Platform OU, replacing \<policyId\> with the policy id and \<targetId\> with the target id, both identified above
-
-```bash
-aws organizations detach-policy --policy-id <policyId> --target-id <targetId>
-```
-
-Now the AWS account can be deleted.
 Follow the [AWS documentation on closing an AWS account](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_close.html). You will need:
 
 - access to the AWS account's root email address (_not_ the AWS Organizations root account)
-
-Finally, re-instate the policy (detached from the Modernisation Platform OU above), attaching it back to the Modernisation Platform OU.
-Run the following command.
-
-```bash
-aws organizations attach-policy --policy-id <policyId> --target-id <targetId>
-```
-
-## Move the account to the closed accounts organizational unit
-
-If the account is the last account for an application, you will need to move the account from the application organizational unit to the "Closed account" organizational unit, so that the application organizational unit can be deleted.
-Note that a user with root account permissions will need to do this.
 
 ## Merge in your file changes
 
