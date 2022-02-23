@@ -24,6 +24,18 @@
       "accounts": [
         {
           "account-name": "xhibit-portal-development",
+          "access": "read-only"
+        },
+        {
+          "account-name": "xhibit-portal-preproduction",
+          "access": "read-only"
+        },
+        {
+          "account-name": "xhibit-portal-production",
+          "access": "read-only"
+        },
+        {
+          "account-name": "xhibit-portal-development",
           "access": "security-audit"
         },
         {
@@ -40,6 +52,18 @@
       "username": "thomas.boyle",
       "github-username": "",
       "accounts": [
+        {
+          "account-name": "xhibit-portal-development",
+          "access": "read-only"
+        },
+        {
+          "account-name": "xhibit-portal-preproduction",
+          "access": "read-only"
+        },
+        {
+          "account-name": "xhibit-portal-production",
+          "access": "read-only"
+        },
         {
           "account-name": "xhibit-portal-development",
           "access": "security-audit"
@@ -60,6 +84,18 @@
       "accounts": [
         {
           "account-name": "xhibit-portal-development",
+          "access": "read-only"
+        },
+        {
+          "account-name": "xhibit-portal-preproduction",
+          "access": "read-only"
+        },
+        {
+          "account-name": "xhibit-portal-production",
+          "access": "read-only"
+        },
+        {
+          "account-name": "xhibit-portal-development",
           "access": "security-audit"
         },
         {
@@ -76,6 +112,18 @@
       "username": "matthew.smith",
       "github-username": "",
       "accounts": [
+        {
+          "account-name": "xhibit-portal-development",
+          "access": "read-only"
+        },
+        {
+          "account-name": "xhibit-portal-preproduction",
+          "access": "read-only"
+        },
+        {
+          "account-name": "xhibit-portal-production",
+          "access": "read-only"
+        },
         {
           "account-name": "xhibit-portal-development",
           "access": "security-audit"
