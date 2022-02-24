@@ -1,5 +1,7 @@
 ---
 title: Modifying Service Control Policies (SCPs)
+last_reviewed_on: 2022-02-24
+review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
@@ -8,12 +10,8 @@ We use the following SCPs for the Modernisation Platform to restrict certain act
 
 SCP | Location | Description
 ---|---|---|
-Modernisation Platform Core | [`terraform/environments/scp_mp_core.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/scp_mp_core.tf) | SCP for accounts with the account type of "core"
-Modernisation Platform Member | [`terraform/environments/scp_mp_member.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/scp_mp_member.tf) | SCP for accounts with the account type of "member"
-Modernisation Platform Member Unrestricted | [`terraform/environments/scp_mp_member_unrestricted.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/scp_mp_member_unrestricted.tf) | SCP for accounts with the account type of "member-unrestricted"
+Modernisation Platform Member | [`aws-root-account/management-account/terraform/organizations-policy-service-control.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control.tf#L251) | SCP for accounts with the account type of "member"
 
-The SCPs are modified in the `terraform/environments/` Terraform, however when this Terraform runs as part of the new environment workflow, it doesn't have permissions to modify SCPs.
+The SCPs are modified in the `management-account` Terraform of the [aws-root-account](https://github.com/ministryofjustice/aws-root-account).
 
-This is to ensure there is no way that SCPs can be accidentally or maliciously disabled.  If you want to modify an SCP you need to run the Terraform manually using a root user which is a member of the [ModernisationPlatformOrganisationManagementWithSCPs](https://github.com/ministryofjustice/aws-root-account/blob/main/terraform/iam-groups.tf#L62) group.
-
-Users in this group will also need to be give access to the S3 bucket for the state file, this is found [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/locals.tf#L7)
+To make changes to these SCPs please raise a pull request against the [aws-root-account](https://github.com/ministryofjustice/aws-root-account) repository.
