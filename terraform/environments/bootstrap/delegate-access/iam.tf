@@ -203,7 +203,8 @@ module "collaborator_security_audit_role" {
   role_requires_mfa = true
 
   custom_role_policy_arns = [
-    "arn:aws:iam::aws:policy/SecurityAudit"
+    "arn:aws:iam::aws:policy/SecurityAudit",
+    "arn:aws:iam::674345106521:policy/ithc_rdp"
   ]
 
   # Allow created users to assume these roles
