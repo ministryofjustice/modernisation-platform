@@ -5,14 +5,14 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "dex-ta",
+          "github_slug": "",
           "level": "developer"
         }
       ]
     }
   ],
   "tags": {
-    "application": "dex-ta",
+    "application": "",
     "business-unit": "HMPPS",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
     "owner": "ian.anderson@digital.justice.gov.uk"
