@@ -94,12 +94,13 @@ module "state-bucket-s3-replication-role" {
 }
 
 module "state-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v5.0.1"
+  #source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v5.0.1"
+  source = "../../../modernisation-platform-terraform-s3-bucket"
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
-  bucket_policy              = data.aws_iam_policy_document.allow-state-access-from-root-account.json
+  bucket_policy              = [data.aws_iam_policy_document.allow-state-access-from-root-account.json]
   bucket_name                = "modernisation-platform-terraform-state"
   replication_role_arn       = module.state-bucket-s3-replication-role.role.arn
   replication_enabled        = true
@@ -107,6 +108,39 @@ module "state-bucket" {
   custom_kms_key             = aws_kms_key.s3_state_bucket.arn
   custom_replication_kms_key = aws_kms_key.s3_state_bucket_eu-west-1_replication.arn
   tags                       = local.tags
+
+  lifecycle_rule = [
+    {
+      id      = "main"
+      enabled = "Enabled"
+      prefix  = ""
+      tags    = {}
+      transition = [
+        {
+          days          = 90
+          storage_class = "STANDARD_IA"
+          }, {
+          days          = 365
+          storage_class = "GLACIER"
+        }
+      ]
+      expiration = {
+        days = 730
+      }
+      noncurrent_version_transition = [
+        {
+          days          = 90
+          storage_class = "STANDARD_IA"
+          }, {
+          days          = 365
+          storage_class = "GLACIER"
+        }
+      ]
+      noncurrent_version_expiration = {
+        days = 730
+      }
+    }
+  ]
 }
 
 # Allow access to the bucket from the MoJ root account

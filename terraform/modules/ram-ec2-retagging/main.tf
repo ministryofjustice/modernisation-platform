@@ -16,11 +16,22 @@ resource "aws_ec2_tag" "vpc" {
 }
 
 # Get all subnet IDs in the associated principal account
-data "aws_subnet_ids" "associated" {
+#data "aws_subnet_ids" "associated" {
+#  provider = aws.share-host
+#
+#  vpc_id = data.aws_vpc.host.id
+#
+#  tags = {
+#    Name = "${var.vpc_name}-${var.subnet_set}*"
+#  }
+#}
+
+data "aws_subnets" "associated" {
   provider = aws.share-host
-
-  vpc_id = data.aws_vpc.host.id
-
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.host.id]
+  }
   tags = {
     Name = "${var.vpc_name}-${var.subnet_set}*"
   }
@@ -31,7 +42,7 @@ data "aws_subnet" "host" {
 
   provider = aws.share-host
 
-  for_each = data.aws_subnet_ids.associated.ids
+  for_each = toset(data.aws_subnets.associated.ids)
   id       = each.key
 
   tags = {

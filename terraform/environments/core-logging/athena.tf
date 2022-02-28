@@ -5,18 +5,19 @@ data "aws_caller_identity" "mod-platform" {
 #S3 Bucket for Athena temp SQL queries 
 
 module "s3-bucket-athena" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v5.0.1"
+  #source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v5.0.1"
+  source = "../../../../modernisation-platform-terraform-s3-bucket"
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
-  bucket_policy       = data.aws_iam_policy_document.athena_bucket_policy.json
+  bucket_policy       = [data.aws_iam_policy_document.athena_bucket_policy.json]
   bucket_name         = "athena-cloudtrail-query"
   custom_kms_key      = aws_kms_key.s3_logging_cloudtrail.arn
   replication_enabled = false
   lifecycle_rule = [
     {
       id      = "main"
-      enabled = true
+      enabled = "Enabled"
       prefix  = ""
       tags    = {}
       expiration = {
