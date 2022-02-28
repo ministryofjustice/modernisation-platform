@@ -35,6 +35,10 @@
           "access": "read-only"
         },
         {
+          "account-name": "xhibit-portal-production",
+          "access": "developer"
+        },
+        {
           "account-name": "xhibit-portal-development",
           "access": "security-audit"
         },
@@ -63,6 +67,10 @@
         {
           "account-name": "xhibit-portal-production",
           "access": "read-only"
+        },
+        {
+          "account-name": "xhibit-portal-production",
+          "access": "developer"
         },
         {
           "account-name": "xhibit-portal-development",
@@ -95,6 +103,10 @@
           "access": "read-only"
         },
         {
+          "account-name": "xhibit-portal-production",
+          "access": "developer"
+        },
+        {
           "account-name": "xhibit-portal-development",
           "access": "security-audit"
         },
@@ -123,6 +135,10 @@
         {
           "account-name": "xhibit-portal-production",
           "access": "read-only"
+        },
+        {
+          "account-name": "xhibit-portal-production",
+          "access": "developer"
         },
         {
           "account-name": "xhibit-portal-development",
