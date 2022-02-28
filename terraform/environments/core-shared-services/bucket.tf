@@ -13,7 +13,6 @@ module "imagebuilder_log_bucket" {
     {
       id      = "main"
       enabled = "Enabled"
-      prefix  = ""
       tags    = {}
       transition = [
         {

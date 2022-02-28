@@ -112,7 +112,6 @@ module "state-bucket" {
     {
       id      = "main"
       enabled = "Enabled"
-      prefix  = ""
       tags    = {}
       transition = [
         {

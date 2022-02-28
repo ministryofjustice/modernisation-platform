@@ -17,7 +17,6 @@ module "s3-bucket-athena" {
     {
       id      = "main"
       enabled = "Enabled"
-      prefix  = ""
       tags    = {}
       expiration = {
         days = 7

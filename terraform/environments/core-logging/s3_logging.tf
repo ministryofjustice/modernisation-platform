@@ -179,7 +179,6 @@ module "s3-bucket-cloudtrail" {
     {
       id      = "main"
       enabled = "Enabled"
-      prefix  = ""
       tags    = {}
       transition = [
         {
@@ -314,7 +313,6 @@ module "s3-bucket-cloudtrail-logging" {
     {
       id      = "main"
       enabled = "Enabled"
-      prefix  = ""
       tags    = {}
       transition = [
         {
