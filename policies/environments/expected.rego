@@ -21,7 +21,6 @@ expected =
     "tariff",
     "xhibit-portal",
     "mi-platform",
-    "dex-ta",
     "ppud"
     ]
 }
