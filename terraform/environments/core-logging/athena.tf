@@ -5,8 +5,7 @@ data "aws_caller_identity" "mod-platform" {
 #S3 Bucket for Athena temp SQL queries 
 
 module "s3-bucket-athena" {
-  #source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v5.0.1"
-  source = "../../../../modernisation-platform-terraform-s3-bucket"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.0.0"
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
