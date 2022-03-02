@@ -192,6 +192,18 @@ module "modernisation-platform-infrastructure-test" {
   ]
 }
 
+module "terraform-module-aws-loadbalancer" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-loadbalancer"
+  description = "Module that creates a loadbalancer in AWS with logging enabled"
+  topics = [
+    "aws",
+    "linux",
+    "loadbalancer",
+    "logging"
+  ]
+}
+
 module "modernisation-platform-terraform-member-vpc" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-member-vpc"
@@ -222,6 +234,7 @@ module "core-team" {
     module.terraform-module-ecs.repository.name,
     module.terraform-module-aws-vm-import.repository.name,
     module.terraform-module-lambda-scheduler-stop-start.repository.name,
+    module.terraform-module-aws-loadbalancer.repository.name,
     module.modernisation-platform-ami-builds.repository.name,
     module.modernisation-platform-environments.repository.name,
     module.modernisation-platform-infrastructure-test.repository.name,
