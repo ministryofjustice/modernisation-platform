@@ -38,11 +38,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "acm-pca" {
     id     = "default"
     status = "Enabled"
 
-    filter {
-      object_size_greater_than = 0
-      object_size_less_than    = 0
-    }
-
     transition {
       days          = 30
       storage_class = "GLACIER"
