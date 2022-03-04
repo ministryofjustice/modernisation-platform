@@ -267,7 +267,7 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
                 address_definition = "10.26.8.0/21" # Nomis-Test
               }
               destination_port {
-                
+
                 from_port = 1024
                 to_port   = 65535
               }
