@@ -251,6 +251,30 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
             }
           }
         }
+        stateless_rule { # Azure NOMIS test to MP Nomis database (return traffic)
+          priority = 210
+          rule_definition {
+            actions = ["aws:pass"]
+            match_attributes {
+              source {
+                address_definition = "10.101.0.0/16" # Azure NOMIS Test
+              }
+              source_port {
+                from_port = 1521
+                to_port   = 1521
+              }
+              destination {
+                address_definition = "10.26.8.0/21" # Nomis-Test
+              }
+              destination_port {
+                
+                from_port = 1024
+                to_port   = 65535
+              }
+              protocols = [6]
+            }
+          }
+        }
         stateless_rule { # Cloud Platform to MP Nomis database
           priority = 300
           rule_definition {
