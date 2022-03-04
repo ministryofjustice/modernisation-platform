@@ -1,0 +1,14 @@
+---
+title: Removing a Team Member
+last_reviewed_on: 2022-03-03
+review_in: 6 month
+---
+
+# <%= current_page.data.title %>
+
+There are a few things to do when a team member leaves:
+
+1. Remove them from the team page [source/team/team.html.md.erb](https://github.com/ministryofjustice/modernisation-platform/blob/main/source/team/team.html.md.erb)
+2. Remove them from our GitHub team [terraform/github/locals.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/github/locals.tf)
+3. Remove them as a superadmin to our AWS landing zone [superadmins/main.tf](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins/blob/main/main.tf#L5)
+4. Remove them from the Modernisation Platform SSO Groups (Note: Elevated privillages to the MoJ root account needed for this.)

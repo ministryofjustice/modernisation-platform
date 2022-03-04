@@ -1,6 +1,6 @@
 ---
 title: Deleting an environment (AWS account)
-last_reviewed_on: 2022-02-22
+last_reviewed_on: 2022-03-03
 review_in: 6 month
 ---
 
@@ -239,11 +239,13 @@ If you delete the last environment and there are no more environments for the ap
 
 After following the above steps, you need to move the account to the closed accounts OU before deleting the actual AWS account that the environment was linked to.
 
-## Move the account to the closed accounts organizational unit
+## Move the account to the root organizational unit
 
 >Note that a user with root account permissions will need to do this.
 
-Log into the AWS Console and navigate to AWS Oraganizations, find the account and move it to the `Closed accounts` OU.
+This is to move the account out of an organizational unit where there is an SCP preventing any actions by the root user.
+
+Log into the AWS Console and navigate to AWS Oraganizations, find the account and move it to the `root` OU.
 
 Now the AWS account can be deleted.
 
@@ -254,6 +256,12 @@ Now the AWS account can be deleted.
 Follow the [AWS documentation on closing an AWS account](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_close.html). You will need:
 
 - access to the AWS account's root email address (_not_ the AWS Organizations root account)
+
+## Move the account to the closed accounts organizational unit
+
+>Note that a user with root account permissions will need to do this.
+
+Log into the AWS Console and navigate to AWS Oraganizations, find the account and move it to the `Closed accounts` OU.
 
 ## Merge in your file changes
 
