@@ -21,7 +21,7 @@ This repository holds a Terraform module that creates set IAM accounts and assoc
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_iam_user"></a> [iam\_user](#module\_iam\_user) | terraform-aws-modules/iam/aws//modules/iam-user | ~> 2.0 |
+| <a name="module_iam_user"></a> [iam\_user](#module\_iam\_user) | terraform-aws-modules/iam/aws//modules/iam-user | ~> 4.11 |
 
 ## Resources
 

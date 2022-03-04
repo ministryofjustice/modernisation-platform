@@ -28,7 +28,7 @@ No modules.
 | [aws_ec2_tag.subnets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_tag) | resource |
 | [aws_ec2_tag.vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_tag) | resource |
 | [aws_subnet.host](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
-| [aws_subnet_ids.associated](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet_ids) | data source |
+| [aws_subnets.associated](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnets) | data source |
 | [aws_vpc.host](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
 
 ## Inputs
