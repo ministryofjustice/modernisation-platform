@@ -30,7 +30,7 @@ jobs:
       TF_VAR_pagerduty_token: ${{ secrets.PAGERDUTY_TOKEN }}
       TF_IN_AUTOMATION: true
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v1.3.2
         with:
           terraform_version: 1.0.1
