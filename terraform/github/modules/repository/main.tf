@@ -62,6 +62,7 @@ data "github_actions_public_key" "default" {
 }
 
 resource "github_actions_secret" "default" {
+  #checkov:skip=CKV_GIT_4:Although secrets are provided in plaintext, they are encrypted at rest
   for_each        = var.secrets
   repository      = github_repository.default.id
   secret_name     = each.key
