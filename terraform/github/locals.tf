@@ -31,7 +31,6 @@ locals {
   # GitHub usernames for engineers who need full AWS access
   engineers = [
     "davidkelliott",
-    "ezman", # Fasih
     "jackstockley89",
     "jakemulley",
     "zuriguardiola",
