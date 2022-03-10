@@ -4,10 +4,13 @@ data "aws_vpc" "shared" {
   }
 }
 
-data "aws_subnet_ids" "shared-data" {
-  vpc_id = data.aws_vpc.shared.id
+data "aws_subnets" "shared-data" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.shared.id]
+  }
   tags = {
-    "Name" = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-data*"
+    Name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-data*"
   }
 }
 
@@ -74,10 +77,13 @@ data "aws_route53_zone" "network-services" {
   private_zone = false
 }
 
-data "aws_subnet_ids" "shared-public" {
-  vpc_id = data.aws_vpc.shared.id
+data "aws_subnets" "shared-public" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.shared.id]
+  }
   tags = {
-    "Name" = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-public*"
+    Name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-public*"
   }
 }
 
