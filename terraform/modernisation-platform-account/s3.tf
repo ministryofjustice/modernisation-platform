@@ -152,11 +152,11 @@ module "state-bucket-access-logs" {
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
-  acl                        = "log-delivery-write"
-  bucket_name                = "modernisation-platform-state-bucket-access-logs"
-  custom_kms_key             = aws_kms_key.state_bucket_access_logs_kms_key.arn
+  acl            = "log-delivery-write"
+  bucket_name    = "modernisation-platform-state-bucket-access-logs"
+  custom_kms_key = aws_kms_key.state_bucket_access_logs_kms_key.arn
 
-  replication_enabled                      = false
+  replication_enabled = false
 
   lifecycle_rule = [
     {
@@ -167,7 +167,7 @@ module "state-bucket-access-logs" {
         {
           days          = 90
           storage_class = "STANDARD_IA"
-        }, {
+          }, {
           days          = 365
           storage_class = "GLACIER"
         }
@@ -179,7 +179,7 @@ module "state-bucket-access-logs" {
         {
           days          = 90
           storage_class = "STANDARD_IA"
-        }, {
+          }, {
           days          = 365
           storage_class = "GLACIER"
         }
@@ -189,7 +189,7 @@ module "state-bucket-access-logs" {
       }
     }
   ]
-  tags                 = local.tags
+  tags = local.tags
 }
 
 # KMS Source
