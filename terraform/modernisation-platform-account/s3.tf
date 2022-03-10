@@ -139,6 +139,93 @@ module "state-bucket" {
       }
     }
   ]
+  log_bucket = module.state-bucket-access-logs.bucket.id
+  log_prefix = "log/"
+}
+
+# A bucket used to store access logs for the state-bucket. For more details, refer to log_bucket and log_prefix
+# parameters from https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket
+module "state-bucket-access-logs" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.0.2"
+  # Since replication_enabled=false the following providers configuration is not actually used, however, is placed
+  # here so that terraform does not fail.
+  providers = {
+    aws.bucket-replication = aws.modernisation-platform-eu-west-1
+  }
+  acl            = "log-delivery-write"
+  bucket_name    = "modernisation-platform-state-bucket-access-logs"
+  custom_kms_key = aws_kms_key.state_bucket_access_logs_kms_key.arn
+
+  replication_enabled = false
+
+  lifecycle_rule = [
+    {
+      id      = "main"
+      enabled = "Enabled"
+      tags    = {}
+      transition = [
+        {
+          days          = 90
+          storage_class = "STANDARD_IA"
+          }, {
+          days          = 365
+          storage_class = "GLACIER"
+        }
+      ]
+      expiration = {
+        days = 730
+      }
+      noncurrent_version_transition = [
+        {
+          days          = 90
+          storage_class = "STANDARD_IA"
+          }, {
+          days          = 365
+          storage_class = "GLACIER"
+        }
+      ]
+      noncurrent_version_expiration = {
+        days = 730
+      }
+    }
+  ]
+  tags = local.tags
+}
+
+# KMS Source
+resource "aws_kms_key" "state_bucket_access_logs_kms_key" {
+  description             = "state-bucket-access-logs"
+  policy                  = data.aws_iam_policy_document.state_bucket_access_logs_kms_key_policy.json
+  enable_key_rotation     = true
+  deletion_window_in_days = 30
+}
+
+resource "aws_kms_alias" "state_bucket_access_logs_kms_key" {
+  name          = "alias/state-bucket-access-logs"
+  target_key_id = aws_kms_key.state_bucket_access_logs_kms_key.id
+}
+
+data "aws_iam_policy_document" "state_bucket_access_logs_kms_key_policy" {
+
+  # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_109: "role is resticted by limited actions in member account"
+
+  statement {
+    sid    = "Allow management access of the key to the logging account"
+    effect = "Allow"
+    actions = [
+      "kms:*"
+    ]
+    resources = [
+      "*"
+    ]
+    principals {
+      type = "AWS"
+      identifiers = [
+        data.aws_caller_identity.current.account_id
+      ]
+    }
+  }
 }
 
 # Allow access to the bucket from the MoJ root account
