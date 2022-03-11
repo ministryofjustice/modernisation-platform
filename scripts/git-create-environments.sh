@@ -101,9 +101,9 @@ main() {
       echo
       environment="${application}-${env}"
       echo "Processing environment: ${environment}"
-      # Check if not core repo
+      # Check it's a member environment
       account_type=$(jq -r '."account-type"' ${json_file})
-      if [ "${account_type}" != "core" ]
+      if [ "${account_type}" = "member" ]
       then
         # Get environment github team slugs
         teams=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .access[].github_slug' $json_file)

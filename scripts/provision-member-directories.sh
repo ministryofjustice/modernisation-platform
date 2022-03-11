@@ -42,11 +42,11 @@ provision_environment_directories() {
     echo "This is the directory: $directory"
     account_type=$(jq -r '."account-type"' ${environment_json_dir}/${application_name}.json)
 
-    if [ -d $directory ] || [ "$account_type" = "core" ]; then
+    if [ -d $directory ] || [ "$account_type" != "member" ]; then
 
       # Do nothing if a directory already exists
       echo ""
-      echo "Ignoring $directory, it already exists or is a core account"
+      echo "Ignoring $directory, it already exists or is a core account or unrestricted account"
       echo ""
     else
       # Create the directory and copy files if it doesn't exist
@@ -146,7 +146,7 @@ EOL
     account_type=$(jq -r '."account-type"' ${environment_json_dir}/${application_name}.json)
     github_slugs=$(jq -r '.environments[].access[].github_slug' ${environment_json_dir}/${application_name}.json | uniq)
     
-    if [ "$account_type" != "core" ]; then
+    if [ "$account_type" = "member" ]; then
       for slug in $github_slugs; do
         echo "Adding $directory @$slug @modernisation-platform to codeowners"
         echo "$directory @$slug @modernisation-platform" >> $codeowners_file
