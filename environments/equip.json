@@ -1,0 +1,30 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "modernisation-platform-engineers",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "modernisation-platform-engineers",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "equip",
+    "business-unit": "HMPPS",
+    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "owner": "kathy.anderson@justice.gov.uk"
+  }
+  
+}
