@@ -153,6 +153,34 @@
           "access": "security-audit"
         }
       ]
+    },
+    {
+      "username": "sergio.imperial",
+      "github-username": "simperialtd",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "ravi.vadisala",
+      "github-username": "vadisalar",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
     }
   ]
 }
