@@ -69,6 +69,21 @@ locals {
   nacl_rules_expanded = {
     for rule in local.nacl_rules : join("-", values(rule)) => rule
   }
+
+  # Private NACLs. Do not allow communicating with public internet addresses.
+  private_nacl_rules = [
+    { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 510, cidr = "10.0.0.0/8" },
+    { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 520, cidr = "172.16.0.0/12" },
+    { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 530, cidr = "192.168.0.0/16" },
+    { egress = true, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 540, cidr = "10.0.0.0/8" },
+    { egress = true, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 550, cidr = "172.16.0.0/12" },
+    { egress = true, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 560, cidr = "192.168.0.0/16" }
+  ]
+
+  # Private NACL rules with keys
+  private_nacl_rules_expanded = {
+    for rule in local.private_nacl_rules : join("-", values(rule)) => rule
+  }
 }
 
 #######
@@ -310,9 +325,8 @@ resource "aws_network_acl" "private" {
 }
 
 # Private NACLs rules
-#tfsec:ignore:aws-vpc-no-public-ingress-acl
 resource "aws_network_acl_rule" "private" {
-  for_each = local.nacl_rules_expanded
+  for_each = local.private_nacl_rules_expanded
 
   network_acl_id = aws_network_acl.private.id
   rule_number    = each.value.rule_num
@@ -401,9 +415,8 @@ resource "aws_network_acl" "data" {
 }
 
 # Data NACLs rules
-#tfsec:ignore:aws-vpc-no-public-ingress-acl
 resource "aws_network_acl_rule" "data" {
-  for_each = local.nacl_rules_expanded
+  for_each = local.private_nacl_rules_expanded
 
   network_acl_id = aws_network_acl.data.id
   rule_number    = each.value.rule_num
