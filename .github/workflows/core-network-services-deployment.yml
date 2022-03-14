@@ -7,12 +7,15 @@ on:
       - main
     paths:
       - 'terraform/environments/core-network-services/**'
+      - 'terraform/modules/vpc-hub/**'
+      - '.github/workflows/core-network-services-deployment.yml'
   pull_request:
     branches:
       - main
     paths:
       - 'terraform/environments/core-network-services/**'
       - 'terraform/modules/vpc-hub/**'
+      - '.github/workflows/core-network-services-deployment.yml'
   workflow_dispatch:
 
 env:
