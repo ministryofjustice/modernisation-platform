@@ -21,6 +21,7 @@ expected =
     "tariff",
     "xhibit-portal",
     "mi-platform",
-    "ppud"
+    "ppud",
+    "equip"
     ]
 }
