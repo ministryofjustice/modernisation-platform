@@ -37,7 +37,8 @@ expected =
       "general": {
         "cidr": "10.26.24.0/21",
         "accounts": [
-          "performance-hub-development"
+          "performance-hub-development",
+          "equip-development"
         ]
       }
     },
@@ -69,7 +70,9 @@ expected =
       "general": {
         "cidr": "10.27.8.0/21",
         "accounts": [
-          "performance-hub-production"
+          "performance-hub-production",
+          "ppud-production",
+          "equip-production"
         ]
       }
     },
