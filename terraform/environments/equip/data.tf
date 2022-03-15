@@ -1,3 +1,5 @@
+data "aws_region" "current" {}
+
 data "aws_vpc" "shared" {
   tags = {
     "Name" = "${var.networking[0].business-unit}-${local.environment}"
@@ -17,42 +19,42 @@ data "aws_subnets" "shared-data" {
 data "aws_subnet" "private_subnets_a" {
   vpc_id = data.aws_vpc.shared.id
   tags = {
-    "Name" = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-private-${local.app_data.accounts[local.environment].region}a"
+    "Name" = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-private-${data.aws_region.current.name}a"
   }
 }
 
 data "aws_subnet" "private_subnets_b" {
   vpc_id = data.aws_vpc.shared.id
   tags = {
-    "Name" = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-private-${local.app_data.accounts[local.environment].region}b"
+    "Name" = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-private-${data.aws_region.current.name}b"
   }
 }
 
 data "aws_subnet" "private_subnets_c" {
   vpc_id = data.aws_vpc.shared.id
   tags = {
-    "Name" = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-private-${local.app_data.accounts[local.environment].region}c"
+    "Name" = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-private-${data.aws_region.current.name}c"
   }
 }
 
 data "aws_subnet" "public_az_a" {
   vpc_id = data.aws_vpc.shared.id
   tags = {
-    Name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-public-${local.app_data.accounts[local.environment].region}a"
+    Name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-public-${data.aws_region.current.name}a"
   }
 }
 
 data "aws_subnet" "public_az_b" {
   vpc_id = data.aws_vpc.shared.id
   tags = {
-    Name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-public-${local.app_data.accounts[local.environment].region}b"
+    Name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-public-${data.aws_region.current.name}b"
   }
 }
 
 data "aws_subnet" "public_az_c" {
   vpc_id = data.aws_vpc.shared.id
   tags = {
-    Name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-public-${local.app_data.accounts[local.environment].region}c"
+    Name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-public-${data.aws_region.current.name}c"
   }
 }
 
