@@ -16,6 +16,10 @@ on:
       - 'terraform/environments/core-shared-services/**'
       - 'terraform/modules/vpc-hub/**'
       - '.github/workflows/core-shared-services-deployment.yml'
+  workflow_run:
+    workflows: ["Terraform: New environment"]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
 
 env:
