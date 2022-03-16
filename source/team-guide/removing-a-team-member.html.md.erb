@@ -6,10 +6,11 @@ review_in: 6 month
 
 # <%= current_page.data.title %>
 
-There are a few things to do when a team member leaves:
+Along with the standard [leavers form](https://leavers.form.service.justice.gov.uk/), there are a few things to do when a team member leaves to remove their access:
 
 1. Remove them from the team page [source/team/team.html.md.erb](https://github.com/ministryofjustice/modernisation-platform/blob/main/source/team/team.html.md.erb)
 1. Remove them from our GitHub team [terraform/github/locals.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/github/locals.tf)
 1. Remove them as a superadmin to our AWS landing zone [superadmins/main.tf](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins/blob/main/main.tf#L5)
 1. Run the modernisation-platform account Terraform for the above code change locally as a superuser (the CI user does not have permissions to delete users)
 1. Remove them from the Modernisation Platform SSO Groups (Note: Elevated privillages to the MoJ root account needed for this.)
+1. Remove them from the Modernisation Platform Google Group and Slack teams.
