@@ -181,6 +181,20 @@
           "access": "developer"
         }
       ]
+    },
+    {
+      "username": "john.broom",
+      "github-username": "hullcoastie",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
     }
   ]
 }
