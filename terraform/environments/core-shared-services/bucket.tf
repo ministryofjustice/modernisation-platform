@@ -1,5 +1,5 @@
 module "imagebuilder_log_bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.0.2"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.0.3"
 
   providers = {
     aws.bucket-replication = aws.bucket-replication
