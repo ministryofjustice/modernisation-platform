@@ -17,6 +17,7 @@ resource "aws_s3_bucket" "acm-pca" {
   #checkov:skip=CKV_AWS_21:Moved to new resource in 4.0 provider
   #checkov:skip=CKV_AWS_144:Ignore lack of cross-regional replication - not required here - represents an overkill
   #checkov:skip=CKV_AWS_145:Moved to new resource in 4.0 provider
+  #checkov:skip=CKV2_AWS_41:As noted above, logging considered overkill given bucket purpose
   bucket_prefix = "acm"
 
   lifecycle {
