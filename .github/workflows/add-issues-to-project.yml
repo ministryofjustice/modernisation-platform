@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Get project data
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_PROJECT_ACCESS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ORGANIZATION: ministryofjustice
           PROJECT_NUMBER: 17
         run: |
