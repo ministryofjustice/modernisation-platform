@@ -215,6 +215,17 @@ module "modernisation-platform-terraform-member-vpc" {
   ]
 }
 
+module "modernisation-platform-cp-network-test" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-cp-network-test"
+  description = "Simple network testing app to be deployed in Cloud Platform in order to test connectivity between the Cloud Platform and the Modernisation Platform"
+  topics = [
+    "aws",
+    "testing",
+    "networking"
+  ]
+}
+
 # Everyone, with access to the above repositories
 module "core-team" {
   source      = "./modules/team"
@@ -238,7 +249,8 @@ module "core-team" {
     module.modernisation-platform-ami-builds.repository.name,
     module.modernisation-platform-environments.repository.name,
     module.modernisation-platform-infrastructure-test.repository.name,
-    module.modernisation-platform-terraform-member-vpc.repository.name
+    module.modernisation-platform-terraform-member-vpc.repository.name,
+    module.modernisation-platform-cp-network-test.repository.name
   ]
 
   maintainers = local.maintainers
