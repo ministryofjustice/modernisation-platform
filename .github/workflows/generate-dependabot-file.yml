@@ -1,0 +1,38 @@
+name: Generate dependabot file 
+
+on:
+  schedule:
+    - cron: "40 22 * * 6"
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/generate-dependabot-file.yml'
+      - 'scripts/generate-dependabot-file.sh'
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  create-and-commit-dependabot-file:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Generate file
+        run: bash ./scripts/generate-dependabot-file.sh
+      - name: Commit changes to GitHub
+        run: bash ./scripts/git-setup.sh
+      - run: bash ./scripts/git-commit.sh .github
+      - run: bash ./scripts/git-pull-request.sh dependabot
+        env:
+          SECRET: ${{ secrets.GITHUB_TOKEN }}
+      - uses: 8398a7/action-slack@v3
+        name: Slack failure notification
+        with:
+          status: ${{ job.status }}
+          fields: workflow,job,repo,commit,message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
