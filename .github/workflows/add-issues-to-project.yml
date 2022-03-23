@@ -5,12 +5,11 @@ on:
       - opened
 jobs:
   track_issue:
-    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - name: Get project data
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
           ORGANIZATION: ministryofjustice
           PROJECT_NUMBER: 17
         run: |
@@ -34,7 +33,7 @@ jobs:
                     
       - name: Add issue to project
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
           ISSUE_ID: ${{ github.event.issue.node_id }}
         run: |
           item_id="$( gh api graphql -f query='
