@@ -1,0 +1,33 @@
+---
+title: Backups
+last_reviewed_on: 2022-03-24
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+We use [AWS Backup](https://aws.amazon.com/backup/) to automatically back up production resources accross all the Modernisation Platform environments.
+
+## What is backed up?
+
+Resource | Type of backup
+---|---|
+EC2 Instance | AMI
+EBS Volume | Snapshot
+RDS Instance | Snapshot
+
+Any of the above resources which are have the tag - `is-production = true` will be backed up.
+
+## Backup Schedule
+
+Backups are taken daily at 00:30.
+
+## Retention period
+
+Backups are retained for 4 months.  After one month they will be transferred to cold storage.
+
+## How to find your backups
+
+You can view your backups my navigating to AWS Backup in the AWS console and clicking "Backup vaults".
+
+You can also view backups via the normal methods for viewing snapshots and AMIs (eg. EC2, Elastic Block Store, Snapshots)
