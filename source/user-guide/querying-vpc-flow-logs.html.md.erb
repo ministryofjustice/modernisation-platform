@@ -1,0 +1,63 @@
+---
+title: Querying VPC Flow Logs
+last_reviewed_on: 2022-03-25
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+In the course of supporting a [Modernisation Platform customer](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/our-offer-to-you.html)
+you may need to investigate traffic flows in and our of Elastic Network Interfaces. You can do so by querying VPC flow logs.
+
+## Our shared VPC approach
+
+The Modernisation Platform provisions on a per-business unit and per-environment basis. This allows us to provision resources
+on a lean basis, shared between applications and service teams in the same business unit.
+
+## Viewing VPC flow logs
+
+As a result of our consolidate VPC approach you will not find the relevant customer flow logs by querying the customer account,
+but will instead need to access the relevant `core-vpc-$environment` account where they will be stored in an AWS CloudWatch log group.
+
+You can query the flow logs in a variety of ways; with [Amazon Athena](https://aws.amazon.com/athena/),
+though the [AWS CLI](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/logs/start-query.html), and in
+the [AWS Console](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#ViewingLogData) through a web browser.
+
+## Understanding log entries
+
+AWS VPC Flow logs are stored in log streams for each elastic network interface.
+
+If you are interested in traffic passing in and out of a particular EC2 instance or Elastic Load Balancer you will need
+the relevant Elastic Network Interface ID.
+
+Inside the log stream you will see, by default, fields showing the source ENI ID, source and destination IP addresses,
+and source and destination ports as well as if the traffic was accepted or rejected by an ACL or Security Group rule.
+
+### Viewing log entries through a web browser
+
+1. Sign into the appropriate `core-vpc-$environment` account through [https://moj.awsapps.com/start](https://moj.awsapps.com/start).
+1. Browse to `CloudWatch > Logs > Log Groups > $business-unit-$environment-vpc-flow-logs`.
+1. Select the ENI you wish to view logs from.
+1. Narrow down the timeframe of logs with logs you with to view, or apply filters as appropriate.
+
+### An Example of a VPC Flow Log entry
+
+```
+2 111111111111 eni-aaaaa111111111111 10.0.0.100 10.0.1.100 57442 443 6 7 311 1648219031 1648219031 ACCEPT OK
+```
+
+The above entry shows a Type 2 flow log entry, in account `111111111111` from `eni-aaaaa111111111111`. The source and
+destination addresses indicate a short HTTPS transaction that was accepted by network ACL and SG rules.
+
+```
+2 111111111111 eni-aaaaa111111111111 10.0.0.100 1.2.3.4 35535 22 6 3 180 1418530010 1418530070 REJECT OK
+```
+
+The above entry shows another Type 2 flow entry, from the same account and ENI. In this entry we see what looks like a
+failed attempt to make an SSH connection to a public IP address.
+
+## References
+
+[Accessing the AWS Console](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/accessing-the-aws-console.html)
+[Amazon Virtual Private Cloud: Working with flow logs](https://docs.aws.amazon.com/vpc/latest/userguide/working-with-flow-logs.html)
+[AWS VPC Flow Log fields](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html)
