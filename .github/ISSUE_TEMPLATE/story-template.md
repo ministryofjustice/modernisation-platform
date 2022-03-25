@@ -6,19 +6,33 @@ labels: enhancement
 
 ## User Story
 
-<!-- 
+<!--
 As a… [who is the user?] 
 I need/want/expect to… [what does the user want to do?]
 So that… [why does the user want to do this?] 
+-->
+
+## User Type(s)
+
+<!--
+Does this impact specific user types?
+Can it link to a persona? 
 -->
 
 ## Value
 
 <!-- Describe the value and purpose of the changes -->
 
-## Questions / Assumptions
+## Questions / Assumptions / Hypothesis
 
-<!-- Additional information to explain approach taken -->
+<!-- Additional information to explain approach taken
+HYpothesis 
+If we DO A THING
+Then THIS WILL HAPPEN
+A proposal that is something testable, don't worry whether it works or not, it's a place for ideas. 
+-->
+
+
 
 ## Definition of done
 
@@ -28,6 +42,7 @@ So that… [why does the user want to do this?]
 - [ ] user docs have been updated
 - [ ] another team member has reviewed
 - [ ] tests are green
+- [ ] UR test OR added to continual research plan
 
 ## Reference
 
