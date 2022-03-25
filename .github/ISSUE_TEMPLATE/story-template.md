@@ -26,9 +26,11 @@ Can it link to a persona?
 ## Questions / Assumptions / Hypothesis
 
 <!-- Additional information to explain approach taken
-HYpothesis 
-If we DO A THING
-Then THIS WILL HAPPEN
+### Hypothesis 
+If we... [do a thing]
+Then... [this will happ]
+
+### Proposal
 A proposal that is something testable, don't worry whether it works or not, it's a place for ideas. 
 -->
 
