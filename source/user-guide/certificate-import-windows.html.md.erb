@@ -1,5 +1,5 @@
 ---
-title: How to import SSL certificates into AWS Certificate Manager
+title: How to import SSL certificates into AWS Certificate Manager on Windows
 last_reviewed_on: 2022-03-24
 review_in: 3 months
 ---
@@ -23,33 +23,15 @@ The steps are:
 
 If you already have your exported SSL certificate in PFX format, skip direct to step 5 (certificate data extraction).
 
+This guide was written using Windows to generate a certificate signing request (CSR) and complete the request. For Mac / Linux, the process will be similar, but you will need to research the commands for creating and completing a CSR, and ideally raise a PR to update this documentation to help other users. 
+
 **There may be a better way**. If so, let us know!
 
 ## 1. Generate the CSR (Certificate Signing Request)
 
-On Windows, use PowerShell to execute the `certreq -new` command.
+Use PowerShell to execute the `certreq -new` command.
 
-[On Linux](https://www.tecmint.com/generate-csr-certificate-signing-request-in-linux/), you need the OpenSSL command line utility installed on your system, otherwise, run the following command to install it.
-
-```
-$ sudo apt install openssl  [On Debian/Ubuntu]
-$ sudo yum install openssl  [On CentOS/RHEL]
-$ sudo dnf install openssl  [On Fedora]
-```
-
-Then issue the following command to generate a CSR and the key that will protect your certificate.
-
-```
-$ openssl req -new -newkey rsa:2048 -nodes -keyout example.com.key -out example.com.csr
-```
-
-where:
-
-- req enables the part of OpenSSL that handles certificate requests signing.
-- **-newkey rsa:2048** creates a 2048-bit RSA key.
-- **-nodes** means "don't encrypt the key".
-- **-keyout example.com.key** specifies the filename to write on the created private key.
-- **-out example.com.csr** specifies the filename to write the CSR to.
+(The `performance-hub` repo has a PowerShell script which wraps the `certreq -new` command to generate a CSR and save it to a text file: `.\lib\generateCSR.ps1`)
 
 ## 2. Request certificate
 
@@ -59,7 +41,7 @@ Note these will be just text files with the certificate data - no private key, a
 
 ## 3. Local certificate import
 
-On Windows, use PowerShell to complete the certificate request, e.g.  `certreq -accept .\hmpps-your-app.service.justice.gov.uk.crt.txt`
+In PowerShell, complete the certificate request, e.g.  `certreq -accept .\hmpps-your-app.service.justice.gov.uk.crt.txt`
 
 You should see something like:
 
@@ -71,19 +53,6 @@ NotBefore: 21/03/2022 00:00
 NotAfter: 15/04/2023 23:59
 Thumbprint: fad171bxxxxxxxx27d40f
 ```
-
-[On Linux](https://support.kerioconnect.gfi.com/hc/en-us/articles/360015200119-Adding-Trusted-Root-Certificates-to-the-Server) (Debian/Ubuntu)
-
-- Copy your CA to dir `/usr/local/share/ca-certificates/`
-- Use command: `sudo cp hmpps-your-app.service.justice.gov.uk.crt.txt /usr/local/share/ca-certificates/hmpps-your-app.service.justice.gov.uk.crt`
-- Update the CA store: `sudo update-ca-certificates`
-
-On Linux (CentOS/RHEL)
-
-- Install the ca-certificates package: `yum install ca-certificates`
-- Enable the dynamic CA configuration feature: `update-ca-trust force-enable`
-- Add it as a new file to /etc/pki/ca-trust/source/anchors/: `cp hmpps-your-app.service.justice.gov.uk.crt.txt /etc/pki/ca-trust/source/anchors/hmpps-your-app.service.justice.gov.uk.crt`
-- Use command: `update-ca-trust extract`
 
 ## 4. Local certificate export
 
@@ -97,21 +66,9 @@ Use the Windows Certificate Manager MMC to export the certificate. It should be 
 
 **TODO** This step describes the GUI method. Investigate using PowerShell `Export-PfxCertificate` command (https://docs.microsoft.com/en-us/powershell/module/pki/export-pfxcertificate?view=windowsserver2022-ps)
 
-[On Linux](https://docs.oracle.com/cd/E54932_01/doc.705/e54936/cssg_create_ssl_cert.htm#CSVSG181)
-
-Export the certificate to a certificate file.
-
-    keytool -export -alias alias_name -keystore path_to_keystore_file -rfc -file path_to_certificate_file
-
-where:
-
-- **alias_name**: Specifies the same alias that was used to generate the certificate.
-- **path_to_keystore_file**: Specifies the same KeyStore path that was used to generate the certificate.
-- **path_to_certificate_file**: Specifies the exported certificate file, often given an extension of .cert.
-
 ## 5. Certificate data extraction to plaintext
 
-In a terminal, use this command to extract the certificate and private key: `openssl pkcs12 -in prod-2022.pfx -out prod-cert.txt -nodes`
+In a terminal, use this command to extract the certificate and private key: `Openssl pkcs12 -in prod-2022.pfx -out prod-cert.txt -nodes`
 
 Where "prod-2022.pfx" is the exported PFX file from the previous step, and "prod-cert.txt" is the output file containing plaintext certificate data. You will be prompted for the password you specified in the previous step.
 
@@ -123,7 +80,7 @@ In AWS Certificate Manager, import the certificate using the data in the exporte
 
 Regular Modernisation Platform AWS accounts do not have permission to import certificates, so a member of the core team will need to do this for you.
 
-You can use the AWS Parameter Store to share the cert and key data with the Modernisation Platform team. The total length of the private key, certificate and chain exceeds the 4096 character limit for parameters, so we suggest creating multiple parameters:
+You can use the AWS Parameter Store to share the cert and key data with the Modernisation Platform team. The total length of the private key, certificate and chain exceeeds the 4096 character limit for parameters, so we suggest creating multiple parameters:
 
 * One for the private key
 * One for your main certificate block
