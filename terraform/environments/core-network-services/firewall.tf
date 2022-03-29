@@ -65,6 +65,7 @@ resource "aws_flow_log" "external_inspection" {
   log_destination_type     = "cloud-watch-logs"
   max_aggregation_interval = "60"
   vpc_id                   = aws_vpc.external_inspection.id
+  log_format               = "$${version} $${account-id} $${interface-id} $${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${start} $${end} $${action} $${pkt-srcaddr} $${pkt-dstaddr} $${flow-direction} $${traffic-path}"
 
   tags = merge(
     local.tags,
