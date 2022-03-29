@@ -53,4 +53,4 @@ These modules are used by the Modernisation Platform's core infrastructure
 | Name | Description |
 |-|-|
 | [modernisation-platform-infrastructure-test](https://github.com/ministryofjustice/modernisation-platform-infrastructure-test) | Infrastructure test tool based on Cucumber.js |
-| [modernisation-platform-nettest](https://github.com/ministryofjustice/modernisation-platform-nettest) | Container bundled with utilities for network testing |
+| [modernisation-platform-cp-network-test](https://github.com/ministryofjustice/modernisation-platform-cp-network-test) | Container bundled with utilities for network testing |
