@@ -1,5 +1,5 @@
 ---
-title: How to import SSL certificates into AWS Certificate Manager on Windows
+title: How to import a public SSL certificate into AWS Certificate Manager on Windows
 last_reviewed_on: 2022-03-24
 review_in: 3 months
 ---
@@ -37,7 +37,7 @@ Use PowerShell to execute the `certreq -new` command.
 
 Email certificates@digital.justice.gov.uk with the CSR(s) and domain(s), and they will send the certificates.
 
-Note these will be just text files with the certificate data - no private key, and no certification chain (this is important later).
+Note these will be plain text files with the body of the PEM-formatted server certificate from your certificate authority - no private key, and no certification chain (this is important later). The body of the PEM-formatted server certificate is an identity certificate that has been digitally signed using the private key of the certificate authority.
 
 ## 3. Local certificate import
 
