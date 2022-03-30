@@ -123,6 +123,15 @@ resource "aws_ec2_transit_gateway_route_table" "external_inspection_out" {
   )
 }
 
+resource "aws_ec2_transit_gateway_route_table_propagation" "propagate-hmpps-test" {
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_vpc_attachment.hmpps-test.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
+}
+
+resource "aws_ec2_transit_gateway_route_table_propagation" "propagate-hmpps-prod" {
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_vpc_attachment.hmpps-production.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
+}
 
 # add external egress routes for non-live-data TGW route table to PTTP attachment
 resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_non_live_data_to_PTTP" {
