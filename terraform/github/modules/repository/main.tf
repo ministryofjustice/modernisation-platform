@@ -10,7 +10,7 @@ resource "github_repository" "default" {
   description            = join(" • ", [var.description, "This repository is defined and managed in Terraform"])
   homepage_url           = var.homepage_url
   visibility             = var.visibility
-  has_issues             = var.type == "core" ? true : false
+  has_issues             = true
   has_projects           = var.type == "core" ? true : false
   has_wiki               = var.type == "core" ? true : false
   has_downloads          = true

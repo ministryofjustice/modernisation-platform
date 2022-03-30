@@ -22,14 +22,6 @@ module "core" {
   }))
 }
 
-module "hello-world" {
-  source      = "./modules/repository"
-  type        = "core"
-  name        = "modernisation-platform-hello-world"
-  description = "A sample application configuration within the Modernisation Platform"
-  topics      = ["sample-code"]
-}
-
 module "terraform-module-baselines" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-baselines"
@@ -233,7 +225,6 @@ module "core-team" {
   description = "Modernisation Platform team"
   repositories = [
     module.core.repository.name,
-    module.hello-world.repository.name,
     module.terraform-module-baselines.repository.name,
     module.terraform-module-cross-account-access.repository.name,
     module.terraform-module-environments.repository.name,
