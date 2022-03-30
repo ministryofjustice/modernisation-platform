@@ -19,6 +19,7 @@ This is our architecture decision log, made during the design and build of the M
 1. ✅ [Create Application Elastic Container Repositories (ECR) in the shared-services account](0014-create-ecr-in-the-shared-services-account.md)
 1. ✅ [IP Address Allocation](0016-ip-address-range-allocation.md)
 1. ✅ [Monitoring and Alerting](0017-monitoring-and-alerting.md)
+1. ✅ [Use AWS Shield Advanced](0018-use-aws-shield-advanced.md)
 
 ## Statuses
 - ✅ Accepted
