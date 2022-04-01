@@ -2,7 +2,10 @@
 
 Terraform module for creating core VPC Transit Gateway Routes.
 
-<!--- BEGIN_TF_DOCS --->
+## Looking for issues?
+If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
+
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -36,8 +39,4 @@ No modules.
 ## Outputs
 
 No outputs.
-
-<!--- END_TF_DOCS --->
-
-## Looking for issues?
-If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
+<!-- END_TF_DOCS -->

@@ -2,7 +2,10 @@
 
 Terraform module for creating core DNS zones
 
-<!--- BEGIN_TF_DOCS --->
+## Looking for issues?
+If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
+
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -50,8 +53,4 @@ No modules.
 |------|-------------|
 | <a name="output_zone_private"></a> [zone\_private](#output\_zone\_private) | n/a |
 | <a name="output_zone_public"></a> [zone\_public](#output\_zone\_public) | n/a |
-
-<!--- END_TF_DOCS --->
-
-## Looking for issues?
-If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
+<!-- END_TF_DOCS -->

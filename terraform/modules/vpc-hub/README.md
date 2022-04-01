@@ -2,7 +2,10 @@
 
 Terraform module to create a multi-tiered, multi-AZ VPC for use with Transit Gateway.
 
-<!--- BEGIN_TF_DOCS --->
+## Looking for issues?
+If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
+
+<!-- BEGIN_TF_DOCS -->
 # modernisation-platform-terraform-vpc-hub
 
 Terraform module to create a multi-tiered VPC for use with Transit Gateway.
@@ -92,8 +95,4 @@ No modules.
 | <a name="output_tgw_subnet_ids"></a> [tgw\_subnet\_ids](#output\_tgw\_subnet\_ids) | Transit Gateway subnet IDs |
 | <a name="output_vpc_cidr_block"></a> [vpc\_cidr\_block](#output\_vpc\_cidr\_block) | VPC CIDR block |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | VPC ID |
-
-<!--- END_TF_DOCS --->
-
-## Looking for issues?
-If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
+<!-- END_TF_DOCS -->

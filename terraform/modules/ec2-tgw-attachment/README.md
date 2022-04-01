@@ -2,7 +2,10 @@
 
 Terraform module for creating Transit Gateway EC2 attachments.
 
-<!--- BEGIN_TF_DOCS --->
+## Looking for issues?
+If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
+
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -50,8 +53,4 @@ No modules.
 |------|-------------|
 | <a name="output_tgw_route_table"></a> [tgw\_route\_table](#output\_tgw\_route\_table) | n/a |
 | <a name="output_tgw_vpc_attachment"></a> [tgw\_vpc\_attachment](#output\_tgw\_vpc\_attachment) | n/a |
-
-<!--- END_TF_DOCS --->
-
-## Looking for issues?
-If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
+<!-- END_TF_DOCS -->
