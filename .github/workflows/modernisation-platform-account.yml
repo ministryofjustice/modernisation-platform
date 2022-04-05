@@ -32,7 +32,7 @@ jobs:
       TF_IN_AUTOMATION: true
     steps:
       - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v1.3.2
+      - uses: hashicorp/setup-terraform@v1.4.0
         with:
           terraform_version: 1.0.1
           terraform_wrapper: false
