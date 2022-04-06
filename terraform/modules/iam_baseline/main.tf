@@ -40,9 +40,14 @@ resource "aws_iam_policy" "policy" {
   })
 }
 
-resource "aws_iam_group_policy_attachment" "aws_config_attach" {
+resource "aws_iam_group_policy_attachment" "aws_cicd_member_attach" {
   group      = aws_iam_group.cicd_member_group.name
   policy_arn = aws_iam_policy.policy.arn
+}
+
+resource "aws_iam_group_policy_attachment" "aws_ec2_readonly_attach" {
+  group      = aws_iam_group.cicd_member_group.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
 }
 
 resource "aws_iam_group_membership" "cicd-member" {
