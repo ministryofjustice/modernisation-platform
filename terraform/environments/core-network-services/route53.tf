@@ -1,8 +1,13 @@
 locals {
   modernisation-platform-domain          = "modernisation-platform.service.justice.gov.uk"
   modernisation-platform-internal-domain = "modernisation-platform.internal"
+
+  application-zones = {
+    equip = "equip.service.justice.gov.uk"
+  }
 }
 
+# Main Modernisation Platform zones
 resource "aws_route53_zone" "modernisation-platform" {
   name = local.modernisation-platform-domain
   tags = local.tags
@@ -17,6 +22,20 @@ resource "aws_route53_zone" "modernisation-platform-internal" {
   }
 
   tags = local.tags
+}
+
+# Application hosted zones
+resource "aws_route53_zone" "application_zones" {
+  for_each = local.application-zones
+
+  name = each.value
+
+  tags = merge(
+    local.tags,
+    {
+      Name = "${each.key}-hosted-zone"
+    }
+  )
 }
 
 # Remote Supervision NS delegation
