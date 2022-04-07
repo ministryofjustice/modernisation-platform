@@ -4,7 +4,7 @@ locals {
 
   application-zones = {
     equip = "equip.service.justice.gov.uk"
-  }  
+  }
 }
 
 # Main Modernisation Platform zones
