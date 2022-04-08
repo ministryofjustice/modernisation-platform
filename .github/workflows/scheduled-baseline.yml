@@ -8,6 +8,7 @@ on:
       - main
     paths:
       - '.github/workflows/scheduled-baseline.yml'
+      - 'terraform/environments/bootstrap/**'
   workflow_dispatch:
 
 env:
@@ -27,7 +28,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v1.4.0
         with:
-          terraform_version: 1.0.1 
+          terraform_version: 1.0.1
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access plan
