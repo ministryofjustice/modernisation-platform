@@ -62,6 +62,7 @@ data "aws_iam_policy_document" "member-access" {
       "elasticloadbalancing:*",
       "events:*",
       "glacier:*",
+      "glue:*",
       "guardduty:get*",
       "iam:*",
       "kms:*",
