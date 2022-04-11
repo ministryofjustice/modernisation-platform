@@ -91,3 +91,12 @@ resource "aws_route53_record" "github_pages" {
   ttl     = "30"
   records = ["ministryofjustice.github.io"]
 }
+
+# Equip Gandit.net equip.service.justice.gov.uk certificate validation
+resource "aws_route53_record" "equip_gandi_cert" {
+  zone_id = aws_route53_zone.application_zones["equip"].zone_id
+  name    = "_E7E9D530A979475CFC138B93F39EBB64.equip.service.justice.gov.uk"
+  type    = "CNAME"
+  ttl     = "30"
+  records = ["0B110821D60C973C28FE6CDF265980C1.565B53721ADE2E107E3930744FCC947E.5f6371c9126149517d9b.sectigo.com."]
+}
