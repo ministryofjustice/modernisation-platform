@@ -252,6 +252,7 @@ data "aws_iam_policy_document" "developer-additional" {
   #checkov:skip=CKV_AWS_111
   statement {
     actions = [
+      "acm:ImportCertificate",
       "secretsmanager:GetResourcePolicy",
       "secretsmanager:GetSecretValue",
       "secretsmanager:DescribeSecret",
@@ -260,12 +261,19 @@ data "aws_iam_policy_document" "developer-additional" {
       "secretsmanager:UpdateSecret",
       "secretsmanager:RestoreSecret",
       "ssm:*",
+      "ssm-guiconnect:*",
       "kms:Decrypt*",
       "ec2:StartInstances",
       "ec2:StopInstances",
       "ec2:RebootInstances",
+      "ec2:CreateImage",
+      "ec2:CopySnapshot",
+      "ec2:CreateSnapshot",
+      "ec2:CreateSnapshots",
+      "ec2:CreateTags",
       "s3:PutObject",
-      "s3:DeleteObject"
+      "s3:DeleteObject",
+      "aws-marketplace:ViewSubscriptions"
     ]
 
     resources = ["*"]
