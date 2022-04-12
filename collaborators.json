@@ -59,6 +59,20 @@
           "access": "developer"
         }
       ]
+    },
+        {
+      "username": "andy.land",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
     }
   ]
 }
