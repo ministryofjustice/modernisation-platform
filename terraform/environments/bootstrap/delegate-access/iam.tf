@@ -262,7 +262,11 @@ data "aws_iam_policy_document" "developer-additional" {
       "secretsmanager:RestoreSecret",
       "ssm:*",
       "ssm-guiconnect:*",
-      "kms:Decrypt*",
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey",
       "ec2:StartInstances",
       "ec2:StopInstances",
       "ec2:RebootInstances",
@@ -273,7 +277,8 @@ data "aws_iam_policy_document" "developer-additional" {
       "ec2:CreateTags",
       "s3:PutObject",
       "s3:DeleteObject",
-      "aws-marketplace:ViewSubscriptions"
+      "aws-marketplace:ViewSubscriptions",
+      "support:*"
     ]
 
     resources = ["*"]
