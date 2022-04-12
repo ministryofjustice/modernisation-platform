@@ -65,6 +65,7 @@ data "aws_iam_policy_document" "member-access" {
       "glue:*",
       "guardduty:get*",
       "iam:*",
+      "iam:ListAccountAliases",
       "kms:*",
       "lambda:*",
       "logs:*",
