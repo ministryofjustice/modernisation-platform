@@ -230,6 +230,19 @@ module "modernisation-platform-terraform-module-template" {
   ]
 }
 
+module "modernisation-platform-terraform-pagerduty-integration" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-pagerduty-integration"
+  description = "Module for integrating SNS topics with Pagerduty Services"
+  topics = [
+    "aws",
+    "terraform",
+    "module",
+    "pagerduty",
+    "alerting"
+  ]
+}
+
 # Everyone, with access to the above repositories
 module "core-team" {
   source      = "./modules/team"
@@ -254,7 +267,8 @@ module "core-team" {
     module.modernisation-platform-infrastructure-test.repository.name,
     module.modernisation-platform-terraform-member-vpc.repository.name,
     module.modernisation-platform-cp-network-test.repository.name,
-    module.modernisation-platform-terraform-module-template.repository.name
+    module.modernisation-platform-terraform-module-template.repository.name,
+    module.modernisation-platform-terraform-pagerduty-integration.repository.name
   ]
 
   maintainers = local.maintainers

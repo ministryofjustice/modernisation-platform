@@ -27,7 +27,7 @@ resource "github_repository" "default" {
 
   template {
     owner      = "ministryofjustice"
-    repository = "template-repository"
+    repository = var.type == "module" ? "modernisation-platform-terraform-module-template" : "template-repository"
   }
 
   # The `pages.source` block doesn't support dynamic blocks in GitHub provider version 4.3.2,
