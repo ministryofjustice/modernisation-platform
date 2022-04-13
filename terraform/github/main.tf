@@ -218,6 +218,18 @@ module "modernisation-platform-cp-network-test" {
   ]
 }
 
+module "modernisation-platform-terraform-module-template" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-module-template"
+  type         = "template"
+  description = "Template repository for creating Terraform modules for use with the Modernisation Platform"
+  topics = [
+    "aws",
+    "terraform",
+    "module"
+  ]
+}
+
 # Everyone, with access to the above repositories
 module "core-team" {
   source      = "./modules/team"
@@ -241,7 +253,8 @@ module "core-team" {
     module.modernisation-platform-environments.repository.name,
     module.modernisation-platform-infrastructure-test.repository.name,
     module.modernisation-platform-terraform-member-vpc.repository.name,
-    module.modernisation-platform-cp-network-test.repository.name
+    module.modernisation-platform-cp-network-test.repository.name,
+    module.modernisation-platform-terraform-module-template.repository.name
   ]
 
   maintainers = local.maintainers
