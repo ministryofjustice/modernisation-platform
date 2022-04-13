@@ -14,7 +14,7 @@ resource "github_repository" "default" {
   has_projects           = var.type == "core" ? true : false
   has_wiki               = var.type == "core" ? true : false
   has_downloads          = true
-  is_template            = false
+  is_template            = var.type == "template" ? true : false
   allow_merge_commit     = true
   allow_squash_merge     = true
   allow_rebase_merge     = true
