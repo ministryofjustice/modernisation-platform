@@ -18,7 +18,8 @@ This repository currently holds the Modernisation Platform's:
 |-|-|
 | [Modernisation Platform](https://github.com/ministryofjustice/modernisation-platform) (this one) | Our repository for core work, including our ADR and infrastructure as code |
 | [Modernisation Platform Environments](https://github.com/ministryofjustice/modernisation-platform-environments) | The repository for user application infrastructure as code and deployment workflows |
-
+| [modernisation-platform-ami-builds](https://github.com/ministryofjustice/modernisation-platform-ami-builds) | Repository for creating pipelines to build AMIs for use on the platform |
+| [modernisation-platform-terraform-module-template](https://github.com/ministryofjustice/modernisation-platform-terraform-module-template) | Template repository used for creating other Terraform module repositories |
 ### Terraform modules - for member account use
 
 Modernisation Platform users can use these modules in their infrastructure. They are designed to comply with best practices and to work with the platform, to make creating infrastructure quicker, easier and more secure.
@@ -31,9 +32,9 @@ Modernisation Platform users can use these modules in their infrastructure. They
 | [modernisation-platform-terraform-s3-bucket-replication-role](https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role) | Module for creating an IAM role for S3 bucket replication |
 | [modernisation-platform-terraform-aws-vm-import](https://github.com/ministryofjustice/modernisation-platform-terraform-aws-vm-import) | Module that creates s3 and roles needed to import virtual machine (VM) images from your virtualization environment to Amazon EC2 as Amazon Machine Images (AMI)   |
 | [modernisation-platform-terraform-lambda-scheduler-stop-start](https://github.com/ministryofjustice/modernisation-platform-terraform-lambda-scheduler-stop-start) | Module for stopping and starting instance, rds resources and autoscaling groups with lambda function |
-| [modernisation-platform-ami-builds](https://github.com/ministryofjustice/modernisation-platform-ami-builds) | Repository for creating pipelines to build AMIs for use on the platform |
+| [modernisation-platform-terraform-pagerduty-integration](https://github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration) | Module associating an SNS topic with a PagerDuty service |
 
-### Terraform modules - used core platform
+### Terraform modules - used by the core platform
 
 These modules are used by the Modernisation Platform's core infrastructure
 
