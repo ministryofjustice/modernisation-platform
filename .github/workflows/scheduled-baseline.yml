@@ -26,7 +26,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY:  ${{ secrets.PRIVILEGED_AWS_SECRET_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v1.4.0
+      - uses: hashicorp/setup-terraform@v2.0.0
         with:
           terraform_version: 1.0.1
           terraform_wrapper: false
@@ -49,7 +49,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v1.4.0
+      - uses: hashicorp/setup-terraform@v2.0.0
         with:
           terraform_version: 1.0.1
           terraform_wrapper: false
@@ -71,7 +71,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v1.4.0
+      - uses: hashicorp/setup-terraform@v2.0.0
         with:
           terraform_version: 1.0.1
           terraform_wrapper: false
