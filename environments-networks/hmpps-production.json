@@ -6,7 +6,8 @@
         "accounts": [
           "performance-hub-production",
           "ppud-production",
-          "equip-production"
+          "equip-production",
+          "nomis-production"
         ]
       }
     }
