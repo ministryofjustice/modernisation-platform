@@ -9,6 +9,15 @@
           "level": "developer"
         }
       ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "production"
+        }
+      ]
     }
   ],
   "tags": {
