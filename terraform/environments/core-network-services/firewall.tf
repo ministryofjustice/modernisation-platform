@@ -299,6 +299,122 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
             }
           }
         }
+        stateless_rule {
+          priority = 100
+          rule_definition {
+            actions = ["aws:pass"]
+            match_attributes {
+              source {
+                address_definition = "10.40.0.0/18" # Global Protect
+              }
+              source_port {
+                from_port = 1024
+                to_port   = 65535
+              }
+              destination {
+                address_definition = "10.27.8.0/21" # Nomis-Production
+              }
+              destination_port {
+                from_port = 80
+                to_port   = 80
+              }
+              protocols = [6]
+            }
+          }
+        }
+        stateless_rule {
+          priority = 101
+          rule_definition {
+            actions = ["aws:pass"]
+            match_attributes {
+              source {
+                address_definition = "10.40.0.0/18" # Global Protect
+              }
+              source_port {
+                from_port = 1024
+                to_port   = 65535
+              }
+              destination {
+                address_definition = "10.27.8.0/21" # Nomis-Production
+              }
+              destination_port {
+                from_port = 443
+                to_port   = 443
+              }
+              protocols = [6]
+            }
+          }
+        }
+        stateless_rule { # Azure NOMIS Production to MP Nomis database
+          priority = 200
+          rule_definition {
+            actions = ["aws:pass"]
+            match_attributes {
+              source {
+                address_definition = "10.40.0.0/18" # Azure NOMIS Production ?
+              }
+              source_port {
+                from_port = 1024
+                to_port   = 65535
+              }
+              destination {
+                address_definition = "10.27.8.0/21" # Nomis-Production
+              }
+              destination_port {
+                from_port = 1521
+                to_port   = 1521
+              }
+              protocols = [6]
+            }
+          }
+        }
+        stateless_rule { # Azure NOMIS Production to MP Nomis database (return traffic)
+          priority = 210
+          rule_definition {
+            actions = ["aws:pass"]
+            match_attributes {
+              source {
+                address_definition = "10.40.0.0/18" # Azure NOMIS Production ?
+              }
+              source_port {
+                from_port = 1521
+                to_port   = 1521
+              }
+              destination {
+                address_definition = "10.27.8.0/21" # Nomis-Production
+              }
+              destination_port {
+
+                from_port = 1024
+                to_port   = 65535
+              }
+              protocols = [6]
+            }
+          }
+        }
+        stateless_rule { # Cloud Platform to MP Nomis database
+          priority = 300
+          rule_definition {
+            actions = ["aws:pass"]
+            match_attributes {
+              source {
+                address_definition = "172.20.0.0/16" # Cloud Platform
+              }
+              source_port {
+                from_port = 1024
+                to_port   = 65535
+              }
+              destination {
+                address_definition = "10.27.8.0/21" # Nomis-Production
+              }
+              destination_port {
+                from_port = 1521
+                to_port   = 1521
+              }
+              protocols = [6]
+            }
+          }
+        }
         stateless_rule { # PSN PPUD to MP HMPPS
           priority = 400
           rule_definition {
