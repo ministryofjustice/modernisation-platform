@@ -119,7 +119,7 @@ resource "aws_route_table" "external_inspection_in" {
 
   route {
     cidr_block      = "0.0.0.0/0"
-    vpc_endpoint_id = element([for ss in tolist(aws_network_.external_inspection._status[0].sync_states) : ss.attachment[0].endpoint_id if ss.attachment[0].subnet_id == aws_subnet.external_inspection_out[each.key].id], 0)
+    vpc_endpoint_id = element([for ss in tolist(aws_networkfirewall_firewall.external_inspection.firewall_status[0].sync_states) : ss.attachment[0].endpoint_id if ss.attachment[0].subnet_id == aws_subnet.external_inspection_out[each.key].id], 0)
   }
 
   tags = merge(
@@ -162,20 +162,20 @@ resource "aws_route_table_association" "external_inspection_out" {
 # 
 ##############################
 
-resource "aws_network__policy" "external_inspection" {
+resource "aws_networkfirewall_firewall_policy" "external_inspection" {
   name = "external"
 
-  _policy {
+  firewall_policy {
     stateless_default_actions          = ["aws:drop"]
     stateless_fragment_default_actions = ["aws:drop"]
     stateless_rule_group_reference {
       priority     = 101
-      resource_arn = aws_network_rule_group.stateless_rules.arn
+      resource_arn = aws_networkfirewall_rule_group.stateless_rules.arn
     }
   }
 }
 
-resource "aws_network_rule_group" "stateless_rules" {
+resource "aws_networkfirewall_rule_group" "stateless_rules" {
   description = "Stateless Rules"
   capacity    = 100
   name        = "stateless-rules"
@@ -444,13 +444,13 @@ resource "aws_network_rule_group" "stateless_rules" {
 }
 
 
-resource "aws_network_" "external_inspection" {
+resource "aws_networkfirewall_firewall" "external_inspection" {
   depends_on = [
     aws_subnet.external_inspection_out
   ]
 
   name                = "external-inspection"
-  _policy_arn = aws_network__policy.external_inspection.arn
+  firewall_policy_arn = aws_networkfirewall_firewall_policy.external_inspection.arn
   vpc_id              = aws_vpc.external_inspection.id
   subnet_mapping {
     subnet_id = aws_subnet.external_inspection_out["eu-west-2a"].id
