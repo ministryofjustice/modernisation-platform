@@ -1,12 +1,12 @@
 ---
-title: Auto Nuke
+title: Auto-nuke and redeploy development environments on weekly basis
 last_reviewed_on: 2022-04-21
 review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
 
-## Auto-nuke and redeploy development environments on weekly basis
+## Feature description
 
 This feature automatically nukes and recreates development environments on weekly basis. This is useful for environments with the sandbox permission, which allow users provisioning resources directly through the AWS web console as opposite to using terraform. In such cases, the auto-nuke will make sure the resources created manually will be cleared on weekly basis and only the ones created through terraform will be redeployed.
 
@@ -15,9 +15,20 @@ Every Sunday:
 - At 10.00pm the nuke.yml job is triggered. This job nukes all the configured development environments using the AWS Nuke tool (https://github.com/rebuy-de/aws-nuke).
 - At 12.00 noon the nuke-redeploy.yml job is triggered. This job redeploys all the nuked environments using terraform apply.
 
+A sketch of the algorithm is as follows:
+
+- For every directory under `terraform/environments`
+- Find the account ID for the development account
+- Assume the role MemberInfrastructureAccess under the account ID
+- Nuke the resources under the account ID
+- Perform terraform apply in order to recreate all resources from terraform
+
+## Configuration
+
 Configuration through env variables:
 
 - NUKE_ACCOUNT_IDS: JSON string of account IDs. For example,
+
 ```
 NUKE_ACCOUNT_IDS='
 {
@@ -28,24 +39,20 @@ NUKE_ACCOUNT_IDS='
   }
 }'
 ```
+
 - NUKE_SKIP_ENVIRONMENTS: A comma-separated list of directories or terraform workspaces to skip from nuking. For example, `NUKE_SKIP_ENVIRONMENTS=nomis,xhibit-portal-development,equip-development,tariff-development,`. As can be observed in the example, every directory or terraform workspace needs a leading comma, hence the last comma in the list.
 - NUKE_DO_NOT_RECREATE_ENVIRONMENTS: A comma-separated list of directories or terraform workspaces to skip from recreating through terraform after nuking. For example, `NUKE_DO_NOT_RECREATE_ENVIRONMENTS=performance-hub-development,example-development,sample-development,`.
 
-The `nuke-config-template.txt` holds the nuke configuration YAML with account IDs being abstracted away by variables. For example, during the actual execution, `$PERFORMANCE_HUB_DEVELOPMENT_ACCID` will be replaced by the corresponding account ID for performance-hub-development. That is because account IDs is sensitive data and cannot be committed into code. Notice the naming convention, which is important, where `performance-hub-development` account name and terraform workspace is matched to the variable `$PERFORMANCE_HUB_DEVELOPMENT_ACCID`. The account ID variable is derived from the account name converted to upper case, hyphens replaced by underscored, and suffixed by `_ACCID`.
+The `nuke-config-template.txt` holds the nuke configuration YAML with account IDs being abstracted away by variables. For example, during the actual execution, `$PERFORMANCE_HUB_DEVELOPMENT_ACCID` will be replaced by the corresponding account ID for performance-hub-development. That is because account IDs is sensitive data and cannot be committed into code. Notice the naming convention, which is important, where `performance-hub-development` account name and terraform workspace is matched to the variable `$PERFORMANCE_HUB_DEVELOPMENT_ACCID`. The account ID variable is derived from the account name converted to upper case, hyphens replaced by underscores, and suffixed by `_ACCID`.
 
-A sketch of the algorithm is as follows:
-
-- For every directory under `terraform/environments`
-- Find the account ID for the development account
-- Assume the role MemberInfrastructureAccess under the account ID
-- Nuke the resources under the account ID
-- Perform terraform apply in order to recreate all resources from terraform
+### When new development environment is onboarded
 
 When a new development environment is onboarded into the Modernisation Platform, we need to follow these steps:
 
 - Manually add the new account ID to the repository secret `NUKE_ACCOUNT_IDS` of the environments repository: https://github.com/ministryofjustice/modernisation-platform-environments/settings/secrets/actions Refer to the above documentation of NUKE_ACCOUNT_IDS for the format of the value.
 - Manually add the new account ID to the `accounts:` section inside `nuke-config-template.txt`.
 - AWS Nuke will require an account alias, which you can create as follows:
+
 ```
 aws iam list-account-aliases --profile sprinkler-development
 aws iam create-account-alias --profile sprinkler-development --account-alias sprinkler-development
