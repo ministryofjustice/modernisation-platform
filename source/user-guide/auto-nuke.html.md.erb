@@ -41,9 +41,14 @@ A sketch of the algorithm is as follows:
 - Nuke the resources under the account ID
 - Perform terraform apply in order to recreate all resources from terraform
 
-When a new development environment is onboarded into the Modernisation Platform, we need to manually add the new account ID to:
+When a new development environment is onboarded into the Modernisation Platform, we need to follow these steps:
 
-- The repository secret `NUKE_ACCOUNT_IDS` of the envrionments repository: https://github.com/ministryofjustice/modernisation-platform-environments/settings/secrets/actions Refer to the above documentation of NUKE_ACCOUNT_IDS for the format of the value.
-- The `accounts:` section inside `nuke-config-template.txt`.
+- Manually add the new account ID to the repository secret `NUKE_ACCOUNT_IDS` of the environments repository: https://github.com/ministryofjustice/modernisation-platform-environments/settings/secrets/actions Refer to the above documentation of NUKE_ACCOUNT_IDS for the format of the value.
+- Manually add the new account ID to the `accounts:` section inside `nuke-config-template.txt`.
+- AWS Nuke will require an account alias, which you can create as follows:
+```
+aws iam list-account-aliases --profile sprinkler-development
+aws iam create-account-alias --profile sprinkler-development --account-alias sprinkler-development
+```
 
 If either of the above is missed then the `nuke.yml` job will fail with a relevant error.
