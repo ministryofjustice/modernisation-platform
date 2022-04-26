@@ -58,3 +58,7 @@ data "pagerduty_user" "jack_stockley" {
 data "pagerduty_user" "jake_mulley" {
   email = "jake.mulley${local.digital_email_suffix}"
 }
+
+data "pagerduty_user" "platforms" {
+  email = "platforms${local.digital_email_suffix}"
+}
