@@ -73,6 +73,34 @@
           "access": "developer"
         }
       ]
+    },
+    {
+      "username": "james.ashton",
+      "github-username": "jamesashton-roc",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "helen.vickers",
+      "github-username": "helenvickers-roc",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
     }
   ]
 }
