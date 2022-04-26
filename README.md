@@ -33,7 +33,7 @@ Modernisation Platform users can use these modules in their infrastructure. They
 | [modernisation-platform-terraform-aws-vm-import](https://github.com/ministryofjustice/modernisation-platform-terraform-aws-vm-import) | Module that creates s3 and roles needed to import virtual machine (VM) images from your virtualization environment to Amazon EC2 as Amazon Machine Images (AMI)   |
 | [modernisation-platform-terraform-lambda-scheduler-stop-start](https://github.com/ministryofjustice/modernisation-platform-terraform-lambda-scheduler-stop-start) | Module for stopping and starting instance, rds resources and autoscaling groups with lambda function |
 | [modernisation-platform-terraform-pagerduty-integration](https://github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration) | Module associating an SNS topic with a PagerDuty service |
-[modernisation-platform-terraform-loadbalancer](https://github.com/ministryofjustice/modernisation-platform-terraform-loadbalancer) | Module that creates loadbalancer in AWS with logging enabled, s3 to store logs and Athena DB to query logs |
+[modernisation-platform-terraform-loadbalancer](https://github.com/ministryofjustice/modernisation-platform-terraform-loadbalancer) | Module that creates application loadbalancer in AWS with logging enabled, s3 to store logs and Athena DB to query logs |
 
 ### Terraform modules - used by the core platform
 
