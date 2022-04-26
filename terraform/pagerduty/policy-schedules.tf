@@ -1,5 +1,5 @@
-resource "pagerduty_escalation_policy" "default" {
-  name  = "Default Modernisation Platform Policy"
+resource "pagerduty_escalation_policy" "on_call" {
+  name  = "Modernisation Platform On Call Policy"
   teams = [pagerduty_team.modernisation_platform.id]
   # num_loops = 9
 
@@ -18,6 +18,20 @@ resource "pagerduty_escalation_policy" "default" {
   #     id   = pagerduty_schedule.secondary.id
   #   }
   # }
+}
+
+resource "pagerduty_escalation_policy" "low_priority" {
+  name  = "Modernisation Platform Low Priority Policy"
+  teams = [pagerduty_team.modernisation_platform.id]
+
+  rule {
+    escalation_delay_in_minutes = 10
+    target {
+      type = "user_reference"
+      id   = pagerduty_user.pager_duty_users["david_elliott"].id
+      #id   = pagerduty_user.platforms.id
+    }
+  }
 }
 
 resource "pagerduty_schedule" "primary" {

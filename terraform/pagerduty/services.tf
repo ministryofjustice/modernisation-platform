@@ -1,11 +1,45 @@
 
 # Note slack integrations for the service to the relevant channels must be done manually in pagerduty and slack
+
+### High priority alarms
+resource "pagerduty_service" "high_priority" {
+  name                    = "Modernisation Platform High Priority Alarms"
+  description             = "Modernisation Platform High Priority Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = null
+  escalation_policy       = pagerduty_escalation_policy.on_call.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "high_priority_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.high_priority.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+### Low priority alarms
+resource "pagerduty_service" "low_priority" {
+  name                    = "Modernisation Platform Low Priority Alarms"
+  description             = "Modernisation Platform Low Priority Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = null
+  escalation_policy       = pagerduty_escalation_policy.low_priority.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "low_priority_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.low_priority.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+### Low priority core alerts
 resource "pagerduty_service" "core_alerts" {
   name                    = "Modernisation Platform Core Alerts"
   description             = "Modernisation Platform Core Infrastructure Alerts"
   auto_resolve_timeout    = 14400
   acknowledgement_timeout = null
-  escalation_policy       = pagerduty_escalation_policy.default.id
+  escalation_policy       = pagerduty_escalation_policy.low_priority.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
