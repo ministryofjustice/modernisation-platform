@@ -1,0 +1,29 @@
+---
+title: Creating Automated Terraform Documentation
+last_reviewed_on: 2022-04-26
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Overview
+
+The Modernisation Platform use a [Documentation GitHub Workflow](https://github.com/ministryofjustice/modernisation-platform-terraform-loadbalancer/blob/initial-commit/.github/workflows/documentation.yml) to automate Terraform documentation.
+The workflow automatically searches then creates and populates tables using the variables, providers, modules, versions used in your Terraform code.
+
+## Configuration to run documentation workflow
+
+1) Ensure you have a copy of [`documentation.yml`](https://github.com/ministryofjustice/modernisation-platform-terraform-loadbalancer/blob/initial-commit/.github/workflows/documentation.yml) in your `.github/workflows/` directory.
+
+2) Create a top-level file called README.md in your repository.
+
+3) Add the following two lines to your README.md file:
+
+```
+<!--- BEGIN_TF_DOCS --->
+
+<!--- END_TF_DOCS --->
+```
+
+4) The GitHub workflow will create the automated documentation in between these two tags and commit them when a pull request is created.
+   You may include any custom markdown instructions outside of the tags.
