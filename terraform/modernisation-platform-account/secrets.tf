@@ -59,6 +59,17 @@ resource "aws_secretsmanager_secret" "slack_webhook_url" {
   tags        = local.tags
 }
 
+# Account IDs to be auto-nuked on weekly basis
+# Tfsec ignore
+# - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
+#tfsec:ignore:AWS095
+resource "aws_secretsmanager_secret" "nuke_account_ids" {
+  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
+  name        = "nuke_account_ids"
+  description = "Account IDs to be auto-nuked on weekly basis. CAUTION: Any account ID you add here will be automatically nuked! This secret is used by GitHub actions job nuke.yml inside the environments repo, to find the Account IDs to be nuked."
+  tags        = local.tags
+}
+
 # Get the map of pagerduty integration keys
 data "aws_secretsmanager_secret" "pagerduty_integration_keys" {
   name = "pagerduty_integration_keys"
