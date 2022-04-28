@@ -313,3 +313,21 @@ data "aws_iam_policy_document" "developer-additional" {
     resources = ["arn:aws:iam::*:user/cicd-member-user"]
   }
 }
+
+# AWS Shield Advanced SRT (Shield Response Team) support role
+module "shield_response_team_role" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+  version = "~> 4"
+  providers = {
+    aws = aws.workspace
+  }
+  trusted_role_services = [ "drt.shield.amazonaws.com" ]
+
+  create_role       = true
+  role_name         = "AWSSRTSupport"
+  role_requires_mfa = false
+
+  custom_role_policy_arns = [ "arn:aws:iam::aws:policy/service-role/AWSShieldDRTAccessPolicy" ]
+
+  number_of_custom_role_policy_arns = 1
+}
