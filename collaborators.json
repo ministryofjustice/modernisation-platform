@@ -33,20 +33,6 @@
       ]
     },
     {
-      "username": "ravi.vadisala",
-      "github-username": "vadisalar",
-      "accounts": [
-        {
-          "account-name": "equip-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "john.broom",
       "github-username": "hullcoastie",
       "accounts": [
