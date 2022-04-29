@@ -32,8 +32,8 @@ EOL
 for folder in $all_tf_folders
 do
 echo "Generating entry for ${folder}"
-echo "- package-ecosystem: \"terraform\"" >> $dependabot_file
-echo "  directory: \"/${folder}\"" >> $dependabot_file
-echo "  schedule:" >> $dependabot_file
-echo "    interval: \"daily\"" >> $dependabot_file
+echo "  - package-ecosystem: \"terraform\"" >> $dependabot_file
+echo "    directory: \"/${folder}\"" >> $dependabot_file
+echo "    schedule:" >> $dependabot_file
+echo "      interval: \"daily\"" >> $dependabot_file
 done
