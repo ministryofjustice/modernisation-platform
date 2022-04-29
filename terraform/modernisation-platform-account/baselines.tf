@@ -16,7 +16,7 @@ locals {
 
 # Secure baselines (GuardDuty, Config, SecurityHub, etc)
 module "baselines-modernisation-platform" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=v4.1.2"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=v4.1.4"
   providers = {
     # Default and replication regions
     aws                    = aws.modernisation-platform-eu-west-2
@@ -70,5 +70,5 @@ module "baselines-modernisation-platform" {
 
 # Trusted Advisor: refresh every 60 minutes
 module "trusted-advisor-modernisation-platform" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor?ref=v2.1.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor?ref=v2.1.1"
 }
