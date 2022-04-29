@@ -1,3 +1,4 @@
+# tfsec:ignore:aws-s3-enable-versioning
 module "imagebuilder_log_bucket" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.0.4"
 
