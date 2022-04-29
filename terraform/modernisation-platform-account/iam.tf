@@ -171,7 +171,8 @@ data "aws_iam_policy_document" "member-ci-policy" {
     ]
     resources = [
       "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.current.account_id}:secret:environment_management-??????",
-      "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.current.account_id}:secret:pagerduty_integration_keys-??????"
+      "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.current.account_id}:secret:pagerduty_integration_keys-??????",
+      "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.current.account_id}:secret:nuke_account_ids-??????"
     ]
   }
 }
