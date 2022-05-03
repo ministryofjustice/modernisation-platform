@@ -1,3 +1,4 @@
+# tfsec:ignore:aws-s3-enable-versioning tfsec:ignore:aws-s3-encryption-customer-key
 module "imagebuilder_log_bucket" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.0.5"
 
