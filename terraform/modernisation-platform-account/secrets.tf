@@ -59,6 +59,17 @@ resource "aws_secretsmanager_secret" "slack_webhook_url" {
   tags        = local.tags
 }
 
+# Account IDs to be excluded from auto-nuke
+# Tfsec ignore
+# - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
+#tfsec:ignore:AWS095
+resource "aws_secretsmanager_secret" "nuke_account_blocklist" {
+  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
+  name        = "nuke_account_blocklist"
+  description = "Account IDs to be excluded from auto-nuke. AWS-Nuke (https://github.com/rebuy-de/aws-nuke) requires at least one Account ID to be present in this blocklist, while it is recommended to add every production account to this blocklist."
+  tags        = local.tags
+}
+
 # Account IDs to be auto-nuked on weekly basis
 # Tfsec ignore
 # - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
