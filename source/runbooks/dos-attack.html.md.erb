@@ -1,0 +1,41 @@
+---
+title: DoS or DDoS Attack
+last_reviewed_on: 2022-05-05
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+This runbook outlines general steps to take in the event of a Denial of Service (DoS) or Distributed Denial of Service (DDoS) attack. 
+
+## Identification of an attack
+
+DDoS alarms should be configured for all production public facing interfaces, when these alarms are triggered they will send a notification through to the [#modernisation-platform-high-priority-alarms](https://mojdt.slack.com/archives/C03CY6451QT) channel.
+
+## Create an incident and follow the incident guidance
+
+Follow the [general incident guidance](general-incident.html) to record the incident and gather information.
+
+## DDoS Specific Actions
+
+### View information about the attack
+
+Detailed metrics on the type of DDoS attack can be found in Cloudwatch under the [DDoS metrics](https://docs.aws.amazon.com/waf/latest/developerguide/monitoring-cloudwatch.html) in the affected account.
+
+If the application has [automatic DDoS layer 7 mitigation](https://docs.aws.amazon.com/waf/latest/developerguide/ddos-automatic-app-layer-response.html) enabled, the attack may already be mitigated by this.  You can check this in the DDoS metrics or the [AWS Shield Events](https://us-east-1.console.aws.amazon.com/wafv2/shieldv2#/events) area in the console.
+
+### Report the attack to AWS
+
+If the attack is on going and you require assistance from the AWS Shield Response Team (SRT) to help create additional WAF mitigation rules, raise a [support case](https://docs.aws.amazon.com/waf/latest/developerguide/ddos-srt-contacting.html) in the application account.
+
+If the account has [proactive engagement](https://docs.aws.amazon.com/waf/latest/developerguide/ddos-srt-proactive-engagement.html) with Route53 health checks enabled AWS will contact the provided contacts.
+
+### Modify WAF rules
+
+If you are confident in modifying the WAF rules to mitigate the attack you can do this through the infrastructure code as per normal changes.
+
+Alternatively the SRT team can assist with creating these rules.
+
+## Notify users and security
+
+Follow the [general incident guidance](general-incident.html) to notify users and the security team.
