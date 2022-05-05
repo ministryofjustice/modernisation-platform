@@ -30,7 +30,9 @@ expected =
     "platforms-development": {
       "general": {
         "cidr": "10.26.16.0/21",
-        "accounts": []
+        "accounts": [
+          "example-development"
+        ]
       }
     },
     "hmpps-development": {
@@ -97,14 +99,6 @@ expected =
         "cidr": "10.27.24.0/21",
         "accounts": [
           "xhibit-portal-preproduction"
-        ]
-      }
-    },
-    "example-development": {
-      "general": {
-        "cidr": 10.26.16.0/21",
-        "accounts": [
-          "example-development"
         ]
       }
     }
