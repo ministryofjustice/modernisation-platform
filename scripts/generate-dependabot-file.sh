@@ -6,7 +6,7 @@ dependabot_file=.github/dependabot.yml
 
 # Get a list of Terraform folders
 all_tf_folders=`find . -type f -name '*.tf' | sed 's#/[^/]*$##' | sed 's/.\///'| sort | uniq`
-all_env_test_folders=`find ./terraform/environments/*/test -type f -name 'go.mod' | sed 's#/[^/]*$##' | sed 's/.\///'| sort | uniq`
+all_env_test_folders=`find . -type f -name 'go.mod' | sed 's#/[^/]*$##' | sed 's/.\///'| sort | uniq`
 echo
 echo "All TF folders"
 echo $all_tf_folders
