@@ -22,6 +22,7 @@ expected =
     "xhibit-portal",
     "mi-platform",
     "ppud",
-    "equip"
+    "equip",
+    "example"
     ]
 }
