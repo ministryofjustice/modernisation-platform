@@ -72,6 +72,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/example"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/mi-platform"
     schedule:
       interval: "daily"
@@ -189,5 +193,21 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/templates"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gomod"
+    directory: "/terraform/environments/core-logging/test"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gomod"
+    directory: "/terraform/environments/core-network-services/test"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gomod"
+    directory: "/terraform/environments/core-security/test"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gomod"
+    directory: "/terraform/environments/core-shared-services/test"
     schedule:
       interval: "daily"
