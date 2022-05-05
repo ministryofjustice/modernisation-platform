@@ -32,7 +32,7 @@
 | 10.26.24.0      | /21  | hmpps development - general          |
 | 10.26.32.0      | /21  | cica development - general           |
 | 10.26.40.0      | /21  | hmcts development - general          |
-| 10.26.48.0      | /21  | example development - general        |
+| 10.26.48.0      | /21  | -                                    |
 | 10.26.56.0      | /21  | -                                    |
 | 10.26.64.0      | /21  | -                                    |
 | 10.26.72.0      | /21  | -                                    |

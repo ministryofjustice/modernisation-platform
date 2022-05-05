@@ -102,7 +102,7 @@ expected =
     },
     "example-development": {
       "general": {
-        "cidr": 10.26.48.0/21",
+        "cidr": 10.26.16.0/21",
         "accounts": [
           "example-development"
         ]
