@@ -99,6 +99,14 @@ expected =
           "xhibit-portal-preproduction"
         ]
       }
+    },
+    "example-development": {
+      "general": {
+        "cidr": 10.26.48.0/21",
+        "accounts": [
+          "example-development"
+        ]
+      }
     }
   }
 }
