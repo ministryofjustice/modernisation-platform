@@ -12,7 +12,7 @@
     }
   ],
   "tags": {
-    "application": "modernisation-platform",
+    "application": "example",
     "business-unit": "Platforms",
     "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
     "name": "Example Code"
