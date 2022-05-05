@@ -137,7 +137,7 @@ echo "Writing codeowners file"
 # This file is auto-generated here, do not manually amend. 
 # https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/provision-member-directories.sh
 
-* @modernisation-platform
+* @ministryofjustice/modernisation-platform
 EOL
 
   for file in $environment_json_dir/*.json; do
@@ -148,18 +148,18 @@ EOL
     
     if [ "$account_type" = "member" ]; then
       for slug in $github_slugs; do
-        echo "Adding $directory @$slug @modernisation-platform to codeowners"
-        echo "$directory @$slug @modernisation-platform" >> $codeowners_file
+        echo "Adding $directory @ministryofjustice/$slug @modernisation-platform to codeowners"
+        echo "$directory @ministryofjustice/$slug @ministryofjustice/modernisation-platform" >> $codeowners_file
       done
     fi    
 
   done
 
   cat >> $codeowners_file << EOL
-**/providers.tf @modernisation-platform
-**/backend.tf @modernisation-platform
-**/subnet_share.tf @modernisation-platform
-**/networking.auto.tfvars.json @modernisation-platform
+**/providers.tf @ministryofjustice/modernisation-platform
+**/backend.tf @ministryofjustice/modernisation-platform
+**/subnet_share.tf @ministryofjustice/modernisation-platform
+**/networking.auto.tfvars.json @ministryofjustice/modernisation-platform
 EOL
 
 }
