@@ -10,7 +10,7 @@
     }
   },
   "options": {
-    "bastion_linux": false,
+    "bastion_linux": true,
     "additional_endpoints": [],
     "dns_zone_extend": []
   },
