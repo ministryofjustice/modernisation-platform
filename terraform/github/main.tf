@@ -221,7 +221,7 @@ module "modernisation-platform-cp-network-test" {
 module "modernisation-platform-terraform-module-template" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-module-template"
-  type         = "template"
+  type        = "template"
   description = "Template repository for creating Terraform modules for use with the Modernisation Platform"
   topics = [
     "aws",
