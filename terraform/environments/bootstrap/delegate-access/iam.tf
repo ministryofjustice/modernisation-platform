@@ -4,7 +4,7 @@ locals {
 }
 
 resource "aws_iam_account_alias" "alias" {
-  count         = local.account_data.account-type != "member-unrestricted" ? 1 : 0
+  count         = (local.account_data.account-type != "member-unrestricted") && !(contains(local.skip_alias, terraform.workspace)) ? 1 : 0
   provider      = aws.workspace
   account_alias = terraform.workspace
 }
