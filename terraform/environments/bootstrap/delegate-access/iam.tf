@@ -5,6 +5,7 @@ locals {
 
 resource "aws_iam_account_alias" "alias" {
   count         = local.account_data.account-type == "member" ? 1 : 0
+  provider      = aws.workspace
   account_alias = terraform.workspace
 }
 
