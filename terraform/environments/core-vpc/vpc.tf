@@ -217,6 +217,7 @@ module "dns-zone" {
 
   providers = {
     aws.core-network-services = aws.core-network-services
+    aws.aws-us-east-1         = aws.aws-us-east-1
   }
 
   for_each = local.vpcs[terraform.workspace]
@@ -229,6 +230,7 @@ module "dns-zone" {
   accounts                       = { for key, account in each.value.cidr.subnet_sets : key => account.accounts }
   modernisation_platform_account = data.aws_caller_identity.modernisation-platform.account_id
   environments                   = local.environment_management
+  monitoring_sns_topic           = aws_sns_topic.route53_monitoring.arn
 
   # Tags
   tags_common = local.tags

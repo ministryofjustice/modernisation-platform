@@ -74,3 +74,33 @@ output "zone_public" {
 output "zone_private" {
   value = aws_route53_zone.private.id
 }
+
+# Add shield advanced protection
+resource "aws_shield_protection" "public_hosted_zone" {
+  name         = "${var.tags_prefix}-public-hosted-zone"
+  resource_arn = aws_route53_zone.public.arn
+
+  tags = var.tags_common
+}
+
+# hosted zone DDoS monitoring
+resource "aws_cloudwatch_metric_alarm" "ddos_attack_public_hosted_zone" {
+  provider = aws.aws-us-east-1
+
+  alarm_name          = "DDoSDetected-${var.tags_prefix}-public-hosted-zone"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  datapoints_to_alarm = "1"
+  evaluation_periods  = "20"
+  metric_name         = "DDoSDetected"
+  namespace           = "AWS/DDoSProtection"
+  period              = "60"
+  statistic           = "Sum"
+  threshold           = "1"
+  alarm_description   = "Alarm for DDoS events detected on resource ${aws_route53_zone.public.arn}"
+  treat_missing_data  = "notBreaching"
+  alarm_actions       = [var.monitoring_sns_topic]
+  dimensions = {
+    ResourceArn = aws_route53_zone.public.arn
+  }
+  tags = var.tags_common
+}
