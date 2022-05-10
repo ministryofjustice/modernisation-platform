@@ -17,40 +17,38 @@ Every Sunday:
 
 A sketch of the algorithm is as follows:
 
-- For every directory under `terraform/environments`
-- Find the account ID for the development account
+- For every account ID stored in the nuke_account_ids secret
 - Assume the role MemberInfrastructureAccess under the account ID
 - Nuke the resources under the account ID
 - Perform terraform apply in order to recreate all resources from terraform
 
 ## Configuration
 
-Configuration through env variables:
+Auto-nuke uses the following secrets stored in the AWS secret manager inside the Modernisation Platform account:
 
-- NUKE_ACCOUNT_IDS: JSON string of account IDs. For example,
+- `nuke_account_blocklist`: Account IDs to be excluded from auto-nuke. AWS-Nuke (https://github.com/rebuy-de/aws-nuke) requires at least one Account ID to be present in this blocklist, while it is recommended to add every production account to this blocklist. For example:
 
 ```
-NUKE_ACCOUNT_IDS='
-{
-  "NUKE_ACCOUNT_IDS": {
-    "SPRINKLER_DEVELOPMENT_ACCID": "111111111111",
-    "COOKER_DEVELOPMENT_ACCID": "222222222222",
-    "PERFORMANCE_HUB_DEVELOPMENT_ACCID": "333333333333"
-  }
-}'
+aws secretsmanager put-secret-value --region eu-west-2 --secret-id nuke_account_blocklist --profile mod --secret-string '{"NUKE_ACCOUNT_BLOCKLIST":{"PERFORMANCE_HUB_PREPRODUCTION_ACCID":"111111111111","PERFORMANCE_HUB_PRODUCTION_ACCID":"222222222222"}}'
 ```
 
-- NUKE_SKIP_ENVIRONMENTS: A comma-separated list of directories or terraform workspaces to skip from nuking. For example, `NUKE_SKIP_ENVIRONMENTS=nomis,xhibit-portal-development,equip-development,tariff-development,`. As can be observed in the example, every directory or terraform workspace needs a leading comma, hence the last comma in the list.
-- NUKE_DO_NOT_RECREATE_ENVIRONMENTS: A comma-separated list of directories or terraform workspaces to skip from recreating through terraform after nuking. For example, `NUKE_DO_NOT_RECREATE_ENVIRONMENTS=performance-hub-development,example-development,sample-development,`.
+- `nuke_account_ids`: Account IDs to be auto-nuked on weekly basis. CAUTION: Any account ID you add here will be automatically nuked! This secret is used by GitHub actions job nuke.yml inside the environments repo, to find the Account IDs to be nuked. For example:
 
-The `nuke-config-template.txt` holds the nuke configuration YAML with account IDs being abstracted away by variables. For example, during the actual execution, `$PERFORMANCE_HUB_DEVELOPMENT_ACCID` will be replaced by the corresponding account ID for performance-hub-development. That is because account IDs is sensitive data and cannot be committed into code. Notice the naming convention, which is important, where `performance-hub-development` account name and terraform workspace is matched to the variable `$PERFORMANCE_HUB_DEVELOPMENT_ACCID`. The account ID variable is derived from the account name converted to upper case, hyphens replaced by underscores, and suffixed by `_ACCID`.
+```
+aws secretsmanager put-secret-value --region eu-west-2 --secret-id nuke_account_ids --profile mod --secret-string '{"NUKE_ACCOUNT_IDS":{"COOKER_DEVELOPMENT_ACCID":"111111111111","SPRINKLER_DEVELOPMENT_ACCID":"222222222222","PERFORMANCE_HUB_DEVELOPMENT_ACCID":"333333333333"}}'
+```
+
+The following configuration is passed as environment variable inside the `nuke-redeploy.yml` GitHub actions job:
+
+- NUKE_DO_NOT_RECREATE_ENVIRONMENTS: A comma-separated list of terraform workspaces to skip from recreating through terraform after nuking. For example, `NUKE_DO_NOT_RECREATE_ENVIRONMENTS: performance-hub-development,example-development,sample-development,`. As can be observed in the example, every terraform workspace needs a leading comma, hence the last comma in the list.
+
+The `nuke-config-template.txt` holds the nuke configuration YAML with account IDs being abstracted away by variables. For example, during the actual execution, `$accounts_str` will be replaced by the corresponding account IDs of the development environments that will be nuked. That is because account IDs is sensitive data and cannot be committed into code. Notice the naming convention, which is important, where `performance-hub-development` account name and terraform workspace is matched to the key `PERFORMANCE_HUB_DEVELOPMENT_ACCID` inside the JSON value of the `nuke_account_ids` secret. The key in this case is derived from the account name converted to upper case, hyphens replaced by underscores, and suffixed by `_ACCID`, hence `performance-hub-development` is converted to `PERFORMANCE_HUB_DEVELOPMENT_ACCID`.
 
 ### When new development environment is onboarded
 
-When a new development environment is onboarded into the Modernisation Platform, we need to follow these steps:
+When a new development environment is onboarded into the Modernisation Platform, we need to follow these steps, assuming the new account will be granted sandbox permissions and we want it to be auto-nuked on weekly basis:
 
-- Manually add the new account ID to the repository secret `NUKE_ACCOUNT_IDS` of the environments repository: https://github.com/ministryofjustice/modernisation-platform-environments/settings/secrets/actions Refer to the above documentation of NUKE_ACCOUNT_IDS for the format of the value.
-- Manually add the new account ID to the `accounts:` section inside `nuke-config-template.txt`.
+- Manually add the new account ID to the secret `nuke_account_ids` stored in the AWS secret manager inside the Modernisation Platform account. Refer to the above documentation of `nuke_account_ids` for the format of the value.
 - AWS Nuke will require an account alias, which you can create as follows:
 
 ```
@@ -58,4 +56,4 @@ aws iam list-account-aliases --profile sprinkler-development
 aws iam create-account-alias --profile sprinkler-development --account-alias sprinkler-development
 ```
 
-If either of the above is missed then the `nuke.yml` job will fail with a relevant error.
+If account alias is missing then the `nuke.yml` job will fail with a relevant error.
