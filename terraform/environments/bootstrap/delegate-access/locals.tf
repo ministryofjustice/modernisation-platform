@@ -15,4 +15,8 @@ locals {
     component     = "delegate-access"
     source-code   = "https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/bootstrap/delegate-access"
   }
+  # skip the following alias creation if the alias is used by another account (they are globally unique)
+  skip_alias = [
+    "nomis-production"
+  ]
 }
