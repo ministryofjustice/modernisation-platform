@@ -32,3 +32,6 @@ variable "tags_prefix" {
   description = "prefix for name tags"
   type        = string
 }
+
+variable "monitoring_sns_topic" {
+}
