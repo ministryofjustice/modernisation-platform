@@ -17,6 +17,7 @@ locals {
   }
   # skip the following alias creation if the alias is used by another account (they are globally unique)
   skip_alias = [
-    "nomis-production"
+    "nomis-production",
+    "testing-test"
   ]
 }
