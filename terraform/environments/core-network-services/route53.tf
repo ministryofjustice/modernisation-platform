@@ -38,6 +38,23 @@ resource "aws_route53_zone" "application_zones" {
   )
 }
 
+# Shield advanced protection
+resource "aws_shield_protection" "modernisation_platform_public_hosted_zone" {
+  name         = "modernisation-platform-public-hosted-zone"
+  resource_arn = aws_route53_zone.modernisation-platform.arn
+
+  tags = local.tags
+}
+
+resource "aws_shield_protection" "application_public_hosted_zone" {
+  for_each = aws_route53_zone.application_zones
+
+  name         = each.value.tags.Name
+  resource_arn = each.value.arn
+
+  tags = local.tags
+}
+
 # Remote Supervision NS delegation
 resource "aws_route53_record" "remote-supervision-production" {
   allow_overwrite = true

@@ -12,6 +12,13 @@ on:
       - 'terraform/environments/**/subnet-share.tf'
       - '!terraform/environments/core-*/**'
       - 'terraform/environments/core-vpc/**'
+      - 'terraform/modules/core-monitoring/**'
+      - 'terraform/modules/dns-zone/**'
+      - 'terraform/modules/dns-zone-extend/**'
+      - 'terraform/modules/vpc-tgw-routing/**'
+      - 'terraform/modules/vpc-nacls/**'
+      - 'terraform/modules/ram-resource-share/**'
+      - 'terraform/modules/core-vpc-tgw-routes/**'
   pull_request:
     branches:
       - main
@@ -22,6 +29,13 @@ on:
       - 'terraform/environments/**/subnet-share.tf'
       - '!terraform/environments/core-*/**'
       - 'terraform/environments/core-vpc/**'
+      - 'terraform/modules/core-monitoring/**'
+      - 'terraform/modules/dns-zone/**'
+      - 'terraform/modules/dns-zone-extend/**'
+      - 'terraform/modules/vpc-tgw-routing/**'
+      - 'terraform/modules/vpc-nacls/**'
+      - 'terraform/modules/ram-resource-share/**'
+      - 'terraform/modules/core-vpc-tgw-routes/**'
   workflow_dispatch:
 
 env:
