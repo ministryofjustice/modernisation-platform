@@ -1,15 +1,14 @@
 # SNS topics for high and low priority alarms
+# Encryption disabled as it doesn't work with pagerduty
 
-# tfsec:ignore:aws-sns-topic-encryption-use-cmk
+# tfsec:ignore:aws-sns-enable-topic-encryption
 resource "aws_sns_topic" "high_priority_alarms" {
   name              = "high_priority_alarms"
-  kms_master_key_id = "alias/aws/sns"
 }
 
-# tfsec:ignore:aws-sns-topic-encryption-use-cmk
+# tfsec:ignore:aws-sns-enable-topic-encryption
 resource "aws_sns_topic" "low_priority_alarms" {
   name              = "low_priority_alarms"
-  kms_master_key_id = "alias/aws/sns"
 }
 
 # subscribe to the sns topics the pagerduty service

@@ -5,11 +5,10 @@ module "core_monitoring" {
 }
 
 # SNS topic for Route53 Hosted Zone DDoS monitoring
-# tfsec:ignore:aws-sns-topic-encryption-use-cmk
+# tfsec:ignore:aws-sns-enable-topic-encryption
 resource "aws_sns_topic" "route53_monitoring" {
   provider          = aws.aws-us-east-1
   name              = "route53_monitoring"
-  kms_master_key_id = "alias/aws/sns"
 
   tags = local.tags
 }
