@@ -46,7 +46,7 @@
         }
       ]
     },
-        {
+    {
       "username": "andy.land",
       "github-username": "no-value-supplied",
       "accounts": [
@@ -62,6 +62,48 @@
     },
     {
       "username": "james.ashton",
+      "github-username": "jamesashton-roc",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "nigel.freeman",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "adam.gadsby",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "gavin.keane",
       "github-username": "jamesashton-roc",
       "accounts": [
         {
