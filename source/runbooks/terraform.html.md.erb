@@ -1,8 +1,8 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Terraform
-last_reviewed_on: 2021-05-18
-review_in: 2 months
+last_reviewed_on: 2022-05-13
+review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
@@ -17,6 +17,7 @@ We currently manage the following in Terraform:
     - [bootstrapping environments](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/bootstrap), including the secure baselines and giving access to a role from the Modernisation Platform landing zone account
     - [environment-specific infrastructure that we manage](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments), including the core accounts for the Modernisation Platform
   - [the Modernisation Platform landing zone account](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modernisation-platform-account), including S3 state storage for all environments
+- PagerDuty resources, including users, teams, services and schedules
 
 ### Terraform workspaces
 
@@ -55,6 +56,7 @@ Terraform doesn't look recursively for `.tf` files, so we utilise subdirectories
     - `bootstrap/` also needs to be run with an MOJ organisational root account IAM user
     - any other subdirectory (e.g. `bichard7/`, `core-logging/` can be run using an Modernisation Platform landing zone account IAM user, after `bootstrap/` has been run for that environment
   - `github/` can be run using an Modernisation Platform landing zone account IAM user, and requires a `GITHUB_TOKEN` to be set as an environment variable that has permissions to create repositories
+  - `pagerduty/` can be run using an Modernisation Platform landing zone account IAM user, and requires a `pagerduty_token` to be passed in as a Terraform variable with permissions to the MoJ PagerDuty account
   - `modernisation-platform-account/` can be run using an Modernisation Platform landing zone account IAM user
 
-We are looking at automating these in their entirety, so in the future all changes have to go through a GitHub pull request and you won't be able to apply changes locally.
+All of the Terraform on the platform is also run on GitHub Actions pipelines, so running locally is not required, but can be quicker for larger development tasks. Please note that running Terraform locally will need to be run using MFA, there are different ways to do this but we are using [AWS Vault](https://github.com/99designs/aws-vault).
