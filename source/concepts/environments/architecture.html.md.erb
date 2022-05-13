@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Environments (AWS accounts) architecture
-last_reviewed_on: 2021-05-18
+last_reviewed_on: 2022-05-13
 review_in: 3 months
 ---
 
@@ -9,7 +9,7 @@ review_in: 3 months
 
 ## Diagram
 
-<div class="mxgraph" style="max-width:100%;border:1px solid transparent;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;nav&quot;:true,&quot;resize&quot;:true,&quot;toolbar&quot;:&quot;zoom layers lightbox&quot;,&quot;edit&quot;:&quot;_blank&quot;,&quot;url&quot;:&quot;https://drive.google.com/uc?id=1g5i-Y-YJ3xZAi4Wk2_IBHoH7yakPTnJr&amp;export=download&quot;}"></div>
+![OUs and SCPs](../../images/ous-and-scps.png)
 
 ## Explanation
 
@@ -19,21 +19,27 @@ For example, LAA AWS accounts sit within the `LAA` OU, and OPG AWS accounts sit 
 
 OUs can be up to 5 levels deep within the AWS Organization.
 
-The Modernisation Platform has its own organisational unit, which all applications within the Modernisation Platform sit in. Our OU sits alongside the [Cloud Platform](https://user-guide.cloud-platform.service.justice.gov.uk/#cloud-platform-user-guide) OU and is a child of the Platforms &amp; Architecture OU.
+The Modernisation Platform has its own organization unit, which all applications within the Modernisation Platform sit in. Our OU sits alongside the [Cloud Platform](https://user-guide.cloud-platform.service.justice.gov.uk/#cloud-platform-user-guide) OU and is a child of the Platforms &amp; Architecture OU.
 
-When a [new environment is created](../../user-guide/creating-environments.html), the Modernisation Platform automatically creates a new OU for the application which holds all of the environments (AWS accounts), and it sits within the Modernisation Platform OU.
+Under the Modernisation Platform OU, we have 3 child OUs - 
+
+|Organization Unit | Description
+|---|---|
+|Modernisation Platform Core | This contains all of our core platform AWS accounts.
+|Modernisation Platform Member | This contains all of our member OUs and accounts.
+|Modernisation Platform Member Unrestricted | This is a legacy OU which will be removed as we move unrestricted AWS accounts across to member accounts.
+
+When a [new environment is created](../../user-guide/creating-environments.html), the Modernisation Platform automatically creates a new OU for the application which holds all of the environments (AWS accounts), and it sits within the Modernisation Platform Member OU.
 
 For example, if you had an application, `example-application`, that required 2 environments, `production` and `non-production`:
 
 - we'd automatically create an OU called `modernisation-platform-example-application`
-- `example-application-production` and `example-application-non-production` AWS accounts would sit within the `modernisation-platform-example-application` OU, as a child of the Modernisation Platform OU
+- `example-application-production` and `example-application-non-production` AWS accounts would sit within the `modernisation-platform-example-application` OU, as a child of the Modernisation Platform Member OU
 
-## Benefits of using organisation units
+## Benefits of using organization units
 
 We make use of OUs as they simplify the ability to use [service control policies (SCPs)](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html) and [tagging policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_tag-policies.html).
 
 This allows the Modernisation Platform team to build distinct SCPs or tagging policies that are scoped to only accounts that are part of the Modernisation Platform, or individual groups of accounts as OUs.
 
 For example, we could attach a SCP to the `modernisation-platform-example-application` to deny the usage of anything apart from the EC2 or RDS service, which will be inherited by all of the accounts for `example-application`.
-
-<script type="text/javascript" src="https://viewer.diagrams.net/embed2.js?&fetch=https%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1g5i-Y-YJ3xZAi4Wk2_IBHoH7yakPTnJr%26export%3Ddownload"></script>
