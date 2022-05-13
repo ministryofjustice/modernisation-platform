@@ -52,3 +52,11 @@ This needs to be done manually in the AWS console by a Modernisation Platform en
 1. Select "Next", review the configuration and click "Finish configuration"
 
 Once the configuration is complete, monitor the WAF metrics and Shield events for 1-2 weeks to ensure that there are no false positves with the new rules. Then return to the configuration, and change the "Count" to "Block" for the rate limit rule and for the automatic mitigation.
+
+## Route53 hosted zones
+
+Route53 hosted zones are protected and monitored by Shield Advanced with protections added through Terraform.
+
+The modernisation-platform domain and production application domains are protected [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/route53.tf#L41), and the core-vpc subdomains [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modules/dns-zone/main.tf#L78).
+
+Monitoring is enabled and alarms will go to the [#modernisation-platform-high-priority-alarms](https://mojdt.slack.com/archives/C03CY6451QT) channel for production alarms, and [#modernisation-platform-low-priority-alarms](https://mojdt.slack.com/archives/C02PFCG8M1R) for non production.
