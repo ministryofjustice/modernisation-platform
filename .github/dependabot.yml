@@ -136,6 +136,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/core-monitoring"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/core-vpc-tgw-return-routes"
     schedule:
       interval: "daily"
