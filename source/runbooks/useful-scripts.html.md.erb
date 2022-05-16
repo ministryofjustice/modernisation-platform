@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Useful scripts
-last_reviewed_on: 2021-01-13
+last_reviewed_on: 2022-05-16
 review_in: 2 months
 ---
 
@@ -22,7 +22,7 @@ The scripts prefixed `git-` are for running common `git` commands as part of CI/
 | [`git-commit.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/git-commit.sh) | Checks out a branch named `date-${epoch-time}` and commits files changed in the provided path | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml#L21) |
 | [`git-pull-request.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/git-pull-request.sh) | Creates a pull request back to `main` from the current checked out branch | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml#L21) |
 | [`update-pr-comments.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/update-pr-comments.sh) | Add a comment to a pull request | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/core-vpc-development-deployment.yml#L57) |
-
+| [`generate-dependatbot-file.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/generate-dependabot-file.sh) | Keeps `dependabot.yml` up to date with module dependencies | ✅ [example](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/core-vpc-development-deployment.yml#L34) |
 ## Terraform scripts
 
 The scripts prefixed `terraform-` are for running common `terraform` commands as part of CI/CD.
