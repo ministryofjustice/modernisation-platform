@@ -58,6 +58,7 @@ data "aws_iam_policy_document" "member-access" {
       "autoscaling:*",
       "cloudfront:*",
       "cloudwatch:*",
+      "dlm:*",
       "dynamodb:*",
       "ebs:*",
       "ec2:Describe*",
