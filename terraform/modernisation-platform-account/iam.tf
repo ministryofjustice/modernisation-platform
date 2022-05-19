@@ -233,7 +233,7 @@ resource "aws_iam_access_key" "member-ci" {
 # Attach created users to a AWS IAM group, with several policies
 module "collaborators_group" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-group-with-policies"
-  version = "~> 4.8"
+  version = "~> 5.0"
   name    = "collaborators"
 
   group_users = [for user in module.collaborators : user.username]

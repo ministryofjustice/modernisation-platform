@@ -13,7 +13,7 @@ resource "time_sleep" "wait_30_seconds" {
 # Create each user
 module "iam_user" {
   source                        = "terraform-aws-modules/iam/aws//modules/iam-user"
-  version                       = "~> 4.11"
+  version                       = "~> 5.0"
   name                          = var.username
   force_destroy                 = true
   create_iam_user_login_profile = false
