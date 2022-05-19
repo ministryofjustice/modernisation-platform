@@ -39,6 +39,13 @@ data "aws_ssoadmin_permission_set" "platform_engineer" {
   name         = "ModernisationPlatformEngineer"
 }
 
+data "aws_ssoadmin_permission_set" "sandbox" {
+  provider = aws.sso-management
+
+  instance_arn = local.sso_instance_arn
+  name         = "modernisation-platform-sandbox"
+}
+
 # Get Identity Store groups
 data "aws_identitystore_group" "platform_admin" {
   provider = aws.sso-management
@@ -133,6 +140,29 @@ resource "aws_ssoadmin_account_assignment" "developer" {
 
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.aws_ssoadmin_permission_set.developer.arn
+
+  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_type = "GROUP"
+
+  target_id   = local.environment_management.account_ids[terraform.workspace]
+  target_type = "AWS_ACCOUNT"
+}
+
+resource "aws_ssoadmin_account_assignment" "sandbox" {
+
+  for_each = {
+
+  for sso_assignment in local.sso_data[local.env_name][*] :
+
+  "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+
+  if(sso_assignment.level == "sandbox")
+  }
+
+  provider = aws.sso-management
+
+  instance_arn       = local.sso_instance_arn
+  permission_set_arn = data.aws_ssoadmin_permission_set.sandbox.arn
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
