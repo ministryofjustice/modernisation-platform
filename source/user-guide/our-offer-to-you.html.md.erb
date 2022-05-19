@@ -3,7 +3,7 @@ owner_slack: "#modernisation-platform"
 title: Our offer to you
 weight: 1
 last_reviewed_on: 2022-02-16
-review_in: 2 months
+review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
@@ -27,7 +27,7 @@ We offer the following, which are managed on your behalf by the [Modernisation P
 ## What we're exploring support for in the future
 
 Please see our [roadmap](https://app.productplan.com/pr/rY8sb6v1YYLZl4_dSKNSrUbasx2Ivzob) for what we are exploring in the future.
-A full list of issues and stories are in our [backlog](https://github.com/orgs/ministryofjustice/projects/17/views/1)
+A full list of issues and stories are in our [backlog](https://github.com/orgs/ministryofjustice/projects/17/views/1).
 
 If there you is a feature you would like to see on the Modernisation Platform, please add it as a new story in our backlog [here](https://github.com/ministryofjustice/modernisation-platform/issues/new?assignees=&labels=enhancement&template=story-template.md)
 
@@ -36,7 +36,8 @@ If there you is a feature you would like to see on the Modernisation Platform, p
 We don't offer the following, although we can help advise if you need it:
 
 - application related support, including responding to application specific alerts or failures, unless it is caused by the Modernisation Platform
-- any support for custom infrastructure or other tools deployed by yourselves that isn't managed by the Modernisation Platform
+- support and maintenance of application infrastructure
+- support for tools deployed by yourselves that aren't managed by the Modernisation Platform
 - application security
 - ongoing maintenance of the application, including patching the application, updating dependencies, and ensuring it remains deployable
 - user support for applications
@@ -46,8 +47,12 @@ We don't offer the following, although we can help advise if you need it:
 
 We expect application teams to:
 
-- monitor and manage the health of their applications and application-specific infrastructure, such as monitoring, logging, and alerts, as appropriate
-- keep their applications and application-specific infrastructure appropriately patched, up to date, and secure
+- monitor and manage the health of their applications and application infrastructure, such as monitoring, logging, and alerts, as appropriate
+- keep their applications and application infrastructure appropriately patched, up to date, and secure
 - ensure applications remain deployable end-to-end from their source code
 - regularly assess whether the service is still meeting user needs, and make appropriate efforts to improve, replace or decommission the service if not
 - provide their own specialist skills, such as DBAs, in their own teams, if required
+
+## Shared responsibility diagram
+
+![Shared Resposibility](../images/shared-responsibility-model.png)
