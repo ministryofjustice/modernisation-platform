@@ -199,7 +199,7 @@ resource "aws_ssm_parameter" "environment_management_arn" {
 module "collaborator_readonly_role" {
   count   = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-roles"
-  version = "~> 5.11"
+  version = "~> 5.0.0"
   providers = {
     aws = aws.workspace
   }
