@@ -8,8 +8,8 @@ module "core_monitoring" {
 # tfsec:ignore:aws-sns-enable-topic-encryption
 resource "aws_sns_topic" "route53_monitoring" {
   #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
-  provider          = aws.aws-us-east-1
-  name              = "route53_monitoring"
+  provider = aws.aws-us-east-1
+  name     = "route53_monitoring"
 
   tags = local.tags
 }

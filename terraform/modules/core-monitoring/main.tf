@@ -4,13 +4,13 @@
 # tfsec:ignore:aws-sns-enable-topic-encryption
 resource "aws_sns_topic" "high_priority_alarms" {
   #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
-  name              = "high_priority_alarms"
+  name = "high_priority_alarms"
 }
 
 # tfsec:ignore:aws-sns-enable-topic-encryption
 resource "aws_sns_topic" "low_priority_alarms" {
   #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
-  name              = "low_priority_alarms"
+  name = "low_priority_alarms"
 }
 
 # subscribe to the sns topics the pagerduty service

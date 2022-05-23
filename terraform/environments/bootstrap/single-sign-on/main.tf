@@ -152,11 +152,11 @@ resource "aws_ssoadmin_account_assignment" "sandbox" {
 
   for_each = {
 
-  for sso_assignment in local.sso_data[local.env_name][*] :
+    for sso_assignment in local.sso_data[local.env_name][*] :
 
-  "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
 
-  if(sso_assignment.level == "sandbox")
+    if(sso_assignment.level == "sandbox")
   }
 
   provider = aws.sso-management
