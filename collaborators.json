@@ -19,20 +19,6 @@
       ]
     },
     {
-      "username": "sergio.imperial",
-      "github-username": "simperialtd",
-      "accounts": [
-        {
-          "account-name": "equip-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "john.broom",
       "github-username": "hullcoastie",
       "accounts": [
