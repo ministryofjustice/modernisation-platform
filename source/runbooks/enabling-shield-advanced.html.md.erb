@@ -15,7 +15,7 @@ Shield advanced is enabled using [AWS Firewall Manager](https://aws.amazon.com/f
 
 All Modernisation Platform accounts have Shield Advanced [enabled by default](https://github.com/ministryofjustice/aws-root-account/blob/main/organisation-security/terraform/locals.tf#L40) with an auto remediation policy.
 
-When this happens, any external facing EC2 Elasitc IPs and Elastic Load Balancers will have a WAF automatically created for them if one does not already exist. This WAF has no rules, but is required to enable monitoring for DDoS attacks.
+When this happens, any external facing EC2 Elastic IPs and Elastic Load Balancers will have a WAF automatically created for them if one does not already exist. This WAF has no rules, but is required to enable monitoring for DDoS attacks.
 
 For production accounts, AWS Shield Response Team (SRT) access, and Automatic Layer 7 DDoS Mitigation can optionally be configured.
 
@@ -30,7 +30,7 @@ This needs to be done manually in the AWS console by a Modernisation Platform en
 
 1. Navigate to the [Shield Overview](https://us-east-1.console.aws.amazon.com/wafv2/shieldv2#/overview)
 1. Under the Shield Advanced setup, click step 3. "Edit SRT access"
-1. Uder SRT access setting, choose "Choose and existing role for the SRT to access my accounts"
+1. Under SRT access setting, choose "Choose and existing role for the SRT to access my accounts"
 1. Select the [AWSSRTSupport](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf#L317) role
 1. Click "Save"
 
@@ -51,7 +51,7 @@ This needs to be done manually in the AWS console by a Modernisation Platform en
 1. Select "Next", select the SNS topic created earlier for the alarms
 1. Select "Next", review the configuration and click "Finish configuration"
 
-Once the configuration is complete, monitor the WAF metrics and Shield events for 1-2 weeks to ensure that there are no false positves with the new rules. Then return to the configuration, and change the "Count" to "Block" for the rate limit rule and for the automatic mitigation.
+Once the configuration is complete, monitor the WAF metrics and Shield events for 1-2 weeks to ensure that there are no false positives with the new rules. Then return to the configuration, and change the "Count" to "Block" for the rate limit rule and for the automatic mitigation.
 
 ## Route53 hosted zones
 
