@@ -269,6 +269,11 @@ data "aws_iam_policy_document" "collaborator_local_plan" {
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-production"]}:role/member-delegation-read-only",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-sandbox"]}:role/member-delegation-read-only",
     ]
+    condition {
+      test     = "BoolIfExists"
+      variable = "aws:MultiFactorAuthPresent"
+      values   = ["true"]
+    }
   }
 
   statement {
@@ -284,6 +289,11 @@ data "aws_iam_policy_document" "collaborator_local_plan" {
       "arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/core-network-services/*",
       "arn:aws:s3:::modernisation-platform-terraform-state"
     ]
+    condition {
+      test     = "BoolIfExists"
+      variable = "aws:MultiFactorAuthPresent"
+      values   = ["true"]
+    }
   }
 }
 
