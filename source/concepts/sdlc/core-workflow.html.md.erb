@@ -1,8 +1,8 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Core Workflow (CI/CD)
-last_reviewed_on: 2021-08-03
-review_in: 3 months
+last_reviewed_on: 2022-05-24
+review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
@@ -31,6 +31,7 @@ Core Security | Creates the core security account resources | `terraform/environ
 Core Shared Services | Creates the core shared services account resources | `terraform/environments/shared-services` | `core-shared-services-deployment.yml`
 Core VPC | Creates the core VPC resources in the VPC accounts | `terraform/environments/core-vpc` | `core-vpc-development-deployment.yml`,`core-vpc-test-deployment.yml`,`core-vpc-preproduction-deployment.yml`,`core-vpc-production-deployment.yml`
 GitHub Terraform | Creates the GitHub teams and repositories in GitHub | `terraform/github` | `terraform-github.yml`
+PagerDuty | Creates PagerDuty teams, users, services and schedules | 'terraform/pagerduty' | `terraform-pagerduty.yml`
 
 ### New member file creation workflows
 
@@ -52,3 +53,6 @@ Labeler | Adds labels to our pull requests depending on which folders are change
 OPA Policies | Runs Open Policy Agent validation tests against our json files | `opa-policies.yml`
 Sheduled Baseline | Runs the baseline code across all accounts ensuring security baselines are still in place | `scheduled-baseline.yml`
 Terraform Static Code Analysis | Runs TFSEC, Checkov and TFlint against all Terraform code | `terraform-static-analysis.yml`
+Generate Dependabot File | Generates a new dependabot file to add any newly added Terraform folders | `generate-dependabot-file.yml`
+Add issues to project | On new modernisation-plaform repository issue creation adds the new issue to the Modernisation Platform project | `add-issues-to-project.yml`
+Terraform Documentation | Generates Terraform module documentation | `documentation.yml`
