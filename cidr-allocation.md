@@ -32,7 +32,7 @@
 | 10.26.24.0      | /21  | hmpps development - general          |
 | 10.26.32.0      | /21  | cica development - general           |
 | 10.26.40.0      | /21  | hmcts development - general          |
-| 10.26.48.0      | /21  | -                                    |
+| 10.26.48.0      | /21  | hq development - general             |
 | 10.26.56.0      | /21  | -                                    |
 | 10.26.64.0      | /21  | -                                    |
 | 10.26.72.0      | /21  | -                                    |
@@ -68,7 +68,7 @@
 | 10.27.8.0       | /21  | hmpps production - general           |
 | 10.27.16.0      | /21  | hmcts production - general           |
 | 10.27.24.0      | /21  | hmcts preproduction - general        |
-| 10.27.32.0      | /21  | -                                    |
+| 10.27.32.0      | /21  | hq production - general              |
 | 10.27.40.0      | /21  | -                                    |
 | 10.27.48.0      | /21  | -                                    |
 | 10.27.56.0      | /21  | -                                    |
