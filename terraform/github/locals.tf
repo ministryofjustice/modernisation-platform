@@ -59,6 +59,7 @@ locals {
     "studio-webops",
     "cica",
     "xhibit-portal-dev",
-    "ppud-replacement-devs"
+    "ppud-replacement-devs",
+    "threat-and-vulnerability-mgmt"
   ]
 }
