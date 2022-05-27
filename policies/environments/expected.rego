@@ -23,6 +23,7 @@ expected =
     "mi-platform",
     "ppud",
     "equip",
-    "example"
+    "example",
+    "threat-and-vulnerability-mgmt"
     ]
 }
