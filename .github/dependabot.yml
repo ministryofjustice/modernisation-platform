@@ -108,6 +108,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/threat-and-vulnerability-mgmt"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/xhibit-portal"
     schedule:
       interval: "daily"
