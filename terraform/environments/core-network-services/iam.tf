@@ -28,6 +28,7 @@ resource "aws_iam_role" "dns" {
   )
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_role_policy" "dns" {
   name = "modify-dns-records"
   role = aws_iam_role.dns.id
@@ -46,10 +47,13 @@ resource "aws_iam_role_policy" "dns" {
       {
         Effect = "Allow",
         Action = ["route53:ChangeResourceRecordSets"],
-        Resource = [
-          "arn:aws:route53:::hostedzone/${aws_route53_zone.modernisation-platform.id}",
-          "arn:aws:route53:::hostedzone/${aws_route53_zone.modernisation-platform-internal.id}"
-        ]
+        Resource = concat(
+          [for zone in aws_route53_zone.application_zones : format("arn:aws:route53:::hostedzone/%s", zone.id)],
+          [
+            "arn:aws:route53:::hostedzone/${aws_route53_zone.modernisation-platform.id}",
+            "arn:aws:route53:::hostedzone/${aws_route53_zone.modernisation-platform-internal.id}"
+          ]
+        )
       }
     ]
   })
@@ -85,6 +89,7 @@ resource "aws_iam_role" "read_dns" {
   )
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_role_policy" "read_dns" {
   name = "ReadDNSRecords"
   role = aws_iam_role.read_dns.id
@@ -98,10 +103,8 @@ resource "aws_iam_role_policy" "read_dns" {
           "route53:Get*",
           "route53:List*"
         ],
-        Resource = [
-          "arn:aws:route53:::hostedzone/${aws_route53_zone.modernisation-platform.id}",
-          "arn:aws:route53:::hostedzone/${aws_route53_zone.modernisation-platform-internal.id}"
-      ] }
+        "Resource" : "*"
+      }
     ]
   })
 }
