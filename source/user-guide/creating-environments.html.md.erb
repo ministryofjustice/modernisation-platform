@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating environments in the Modernisation Platform
-last_reviewed_on: 2022-02-16
+last_reviewed_on: 2022-05-24
 review_in: 6 months
 ---
 
@@ -47,11 +47,22 @@ This is the level of access for the GitHub team to the Modernisation Platform. T
  - View and Edit [Secrets Manager](https://aws.amazon.com/secrets-manager/) secrets and [Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) values
  - Create and rotate access keys for the application deployment CI user
 
+#### sandbox
+
+- Log into the console
+- Same console read and write permissions as the pipelines have
+- This permission can only be attached to development accounts
+- Once a week the account will be cleared with [AWS Nuke](../concepts/environments/auto-nuke.html) then rebuilt from Terraform
+
+The idea of sandbox access is that it gives you freedom to experiment and modify things in the console to assist with creating your Terraform code. 
+
+Anything not in code will be lost at the end of the week.
+
 #### administrator
 
  - Full admin access
 
-This is a legacy role and will not be generally available
+This is a legacy role and will not be generally available.
 
 ### Environment name
 

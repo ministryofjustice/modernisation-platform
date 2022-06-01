@@ -1,0 +1,37 @@
+---
+owner_slack: "#modernisation-platform"
+title: Viewing Core Account resources as a Member Account Developer
+last_reviewed_on: 2022-05-31
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Overview
+
+To view core account resources (that is resources created in a core account and shared to member accounts) developers can switch to Read-only roles to view their created resources.
+
+## Switching Roles
+
+1) Log in (to your member account) the AWS Console using SSO. Click the drop down menu at the top right and choose `Switch Role`.
+
+2) To view VPCs use the `member-delegation-<department>-<environment>` (for example: member-delegation-hmpps-development) role and use the account aliases for each Core VPC account:
+
+`core-vpc-development`
+`core-vpc-test`
+`core-vpc-preproduction`
+`core-vpc-production`
+
+![Switch roles to view VPC resources](../images/vpc-role-switch.png)
+
+3) To view DNS resources use the `modify-dns-records` role and use the account alias for the Core Network account:
+
+`core-network-services-production`
+
+![Switch roles to view DNS resources](../images/dns-role-switch.png)
+
+4) To view Shared Services resources i.e AMIs created and shared, use the `member-shared-services` role and use the account alias for the Shared Services account:
+
+`core-shared-services-production`
+
+![Switch roles to view Shared Services resources](../images/shared-services-role-switch.png)

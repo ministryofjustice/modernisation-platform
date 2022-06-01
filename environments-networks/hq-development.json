@@ -1,0 +1,18 @@
+{
+  "cidr": {
+    "subnet_sets": {
+      "general": {
+        "cidr": "10.26.48.0/21",
+        "accounts": [
+          "threat-and-vulnerability-mgmt-development"
+        ]
+      }
+    }
+  },
+  "options": {
+    "bastion_linux": true,
+    "additional_endpoints": [],
+    "dns_zone_extend": []
+  },
+  "nacl": []
+}

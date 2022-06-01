@@ -1,7 +1,7 @@
 package main
 
 expected =
-  {
+{
   "subnet_sets": {
     "garden-sandbox": {
       "general": {
@@ -99,6 +99,22 @@ expected =
         "cidr": "10.27.24.0/21",
         "accounts": [
           "xhibit-portal-preproduction"
+        ]
+      }
+    },
+    "hq-development": {
+      "general": {
+        "cidr": "10.26.48.0/21",
+        "accounts": [
+          "threat-and-vulnerability-mgmt-development"
+        ]
+      }
+    },
+    "hq-production": {
+      "general": {
+        "cidr": "10.27.32.0/21",
+        "accounts": [
+          "threat-and-vulnerability-mgmt-production"
         ]
       }
     }
