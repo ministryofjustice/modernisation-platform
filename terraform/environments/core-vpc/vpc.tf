@@ -330,7 +330,10 @@ resource "aws_iam_role_policy" "member-delegation" {
           "ec2:CreateSecurityGroup",
           "ec2:DeleteSecurityGroup",
           "ec2:DescribeVpcEndpoints",
-          "ec2:DescribePrefixLists"
+          "ec2:DescribePrefixLists",
+          "ec2:CreateSubnetCidrReservation",
+          "ec2:DeleteSubnetCidrReservation",
+          "ec2:GetSubnetCidrReservations"
         ],
         "Resource" : "*"
       },
