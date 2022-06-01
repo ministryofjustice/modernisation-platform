@@ -28,6 +28,7 @@ resource "aws_iam_role" "dns" {
   )
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_role_policy" "dns" {
   name = "modify-dns-records"
   role = aws_iam_role.dns.id
@@ -88,6 +89,7 @@ resource "aws_iam_role" "read_dns" {
   )
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_role_policy" "read_dns" {
   name = "ReadDNSRecords"
   role = aws_iam_role.read_dns.id
