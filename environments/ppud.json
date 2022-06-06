@@ -2,6 +2,15 @@
   "account-type": "member",
   "environments": [
     {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "modernisation-platform",
+          "level": "sandbox"
+        }
+      ]
+    },
+    {
       "name": "production",
       "access": [
         {
@@ -15,6 +24,6 @@
     "application": "ppud",
     "business-unit": "HMPPS",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
-    "owner": "ppud-replacement-tech@digital.justice.gov.uk"
+    "owner": "deepee.mann-basra@digital.justice.gov.uk"
   }
 }
