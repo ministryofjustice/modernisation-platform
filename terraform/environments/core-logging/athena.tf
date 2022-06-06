@@ -97,7 +97,7 @@ resource "aws_iam_role" "athena_lambda" {
       Statement = [
         {
           Action = [
-            "athena:*",
+            "athena:StartQueryExecution",
             "secretsmanager:GetSecretValue",
             "glue:GetDatabase",
             "glue:GetTable",
