@@ -40,7 +40,8 @@ expected =
         "cidr": "10.26.24.0/21",
         "accounts": [
           "performance-hub-development",
-          "equip-development"
+          "equip-development",
+          "ppud-development"
         ]
       }
     },
