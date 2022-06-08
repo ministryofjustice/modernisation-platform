@@ -10,9 +10,9 @@ review_in: 6 months
 Whilst it is possible to see the results of a Terraform plan when you [create a pull request](./deploying-your-infrastructure.html#jobs-on-pull-request), it is also possible to run a Terraform plan locally.
 Some engineers prefer this as it provides a quicker feedback loop to identify any issues with your infrastructure code.
 
-## Modify your providers.tf and secrets.tf
+## Modify your providers.tf and platform_secrets.tf
 
-In the [modernisation-platform-environments repository](https://github.com/ministryofjustice/modernisation-platform-environments), in your application folder there are files called `providers.tf` and `secrets.tf`
+In the [modernisation-platform-environments repository](https://github.com/ministryofjustice/modernisation-platform-environments), in your application folder there are files called `providers.tf` and `platform_secrets.tf`
 
 These files detail the Terraform AWS providers used, which roles they use when running Terraform and details of the environments management secret.
 

@@ -1,5 +1,18 @@
+# This data sources allows us to get the Modernisation Platform account information for use elsewhere
+# (when we want to assume a role in the MP, for instance)
+data "aws_organizations_organization" "root_account" {}
+
+# Get the environments file from the main repository
+data "http" "environments_file" {
+  url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/${local.application_name}.json"
+}
+
+# Current account data
 data "aws_region" "current" {}
 
+data "aws_caller_identity" "current" {}
+
+# VPC and subnet data
 data "aws_vpc" "shared" {
   tags = {
     "Name" = "${var.networking[0].business-unit}-${local.environment}"
@@ -13,6 +26,26 @@ data "aws_subnets" "shared-data" {
   }
   tags = {
     Name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-data*"
+  }
+}
+
+data "aws_subnets" "private-public" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.shared.id]
+  }
+  tags = {
+    Name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-private*"
+  }
+}
+
+data "aws_subnets" "shared-public" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.shared.id]
+  }
+  tags = {
+    Name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-public*"
   }
 }
 
@@ -79,6 +112,7 @@ data "aws_subnet" "public_subnets_c" {
   }
 }
 
+# Route53 DNS data
 data "aws_route53_zone" "external" {
   provider = aws.core-vpc
 
@@ -100,16 +134,7 @@ data "aws_route53_zone" "network-services" {
   private_zone = false
 }
 
-data "aws_subnets" "shared-public" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.shared.id]
-  }
-  tags = {
-    Name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}-public*"
-  }
-}
-
+# State for core-network-services resource information
 data "terraform_remote_state" "core_network_services" {
   backend = "s3"
   config = {
