@@ -74,7 +74,7 @@ module "terraform-module-s3-bucket-replication-role" {
     "iam"
   ]
   required_checks = ["Run Go Unit Tests"]
-  secrets = nonsensitive(local.testing_ci_iam_user_keys)
+  secrets         = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
 module "terraform-module-s3-bucket" {
