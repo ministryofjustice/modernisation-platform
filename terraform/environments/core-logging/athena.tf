@@ -2,6 +2,11 @@ data "aws_caller_identity" "mod-platform" {
   provider = aws.modernisation-platform
 }
 
+data "aws_kms_alias" "environment_management" {
+  provider = aws.modernisation-platform
+  name     = "alias/environment-management"
+}
+
 #S3 Bucket for Athena temp SQL queries 
 
 module "s3-bucket-athena" {
@@ -97,8 +102,6 @@ resource "aws_iam_role" "athena_lambda" {
       Statement = [
         {
           Action = [
-            "athena:*",
-            "secretsmanager:GetSecretValue",
             "glue:GetDatabase",
             "glue:GetTable",
             "glue:GetTables",
@@ -108,25 +111,79 @@ resource "aws_iam_role" "athena_lambda" {
             "glue:CreatePartition",
             "glue:GetDatabases",
             "glue:GetPartitions",
-            "glue:DeleteTable",
-            "kms:Decrypt*",
-            "kms:GenerateDataKey",
-            "logs:CreateLogGroup",
-            "logs:CreateLogStream",
-            "logs:PutLogEvents",
-            "s3:GetBucketLocation",
-            "ssm:GetParameter"
+            "glue:DeleteTable"
           ]
           Effect   = "Allow"
           Resource = "*"
         },
         {
           Action = [
-            "s3:*Object",
-            "s3:List*"
+            "athena:StartQueryExecution",
+          ]
+          Effect = "Allow"
+          Resource = [
+            "${aws_athena_workgroup.mod-platform.arn}",
+            "arn:aws:athena:eu-west-2:${data.aws_caller_identity.current.account_id}:workgroup/primary"
+          ]
+        },
+        {
+          Action = [
+            "secretsmanager:GetSecretValue",
           ]
           Effect   = "Allow"
-          Resource = "${module.s3-bucket-athena.bucket.arn}/*"
+          Resource = "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.modernisation-platform.account_id}:secret:environment_management*"
+        },
+        {
+          Action = [
+            "ssm:GetParameter"
+          ]
+          Effect   = "Allow"
+          Resource = "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/environment_management_arn"
+        },
+        {
+          Action = [
+            "kms:Decrypt*",
+            "kms:GenerateDataKey"
+          ]
+          Effect = "Allow"
+          Resource = [
+            aws_kms_key.s3_logging_cloudtrail.arn,
+            aws_kms_key.athena_logging.arn,
+            data.aws_kms_alias.environment_management.target_key_arn
+          ]
+        },
+        {
+          Action = [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+          ]
+          Effect   = "Allow"
+          Resource = "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/environment_management_arn"
+        },
+        {
+          Action = [
+            "s3:*Object",
+            "s3:GetBucketLocation",
+            "s3:List*"
+          ]
+          Effect = "Allow"
+          Resource = [
+            "${module.s3-bucket-athena.bucket.arn}/*",
+            module.s3-bucket-athena.bucket.arn
+          ]
+        },
+        {
+          Action = [
+            "s3:GetBucketLocation",
+            "s3:List*",
+            "s3:Get*"
+          ]
+          Effect = "Allow"
+          Resource = [
+            module.s3-bucket-cloudtrail-logging.bucket.arn,
+            "${module.s3-bucket-cloudtrail-logging.bucket.arn}/*"
+          ]
         }
       ]
     })

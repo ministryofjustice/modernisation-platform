@@ -59,7 +59,7 @@ create_tmp_terraform_files() {
   sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/backend.tf" > "${git_dir}/tmp/backend.tf"
   sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/locals.tf" > "${git_dir}/tmp/locals.tf"
   cp "${git_dir}/terraform/templates/providers.tf" "${git_dir}/tmp/providers.tf"
-  cp "${git_dir}/terraform/templates/secrets.tf" "${git_dir}/tmp/secrets.tf"
+  cp "${git_dir}/terraform/templates/platform_secrets.tf" "${git_dir}/tmp/platform_secrets.tf"
   cp "${git_dir}/terraform/templates/versions.tf" "${git_dir}/tmp/versions.tf"
   if [ `uname` = "Linux" ]
   then
