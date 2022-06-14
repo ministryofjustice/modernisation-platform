@@ -4,7 +4,7 @@ Date: 2020-11-19
 
 ## Status
 
-✅ Accepted
+⌛️ Superseded [0019](0019-use-bash-go-as-core-languages.md)
 
 ## Context
 
