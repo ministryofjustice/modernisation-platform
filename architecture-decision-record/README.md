@@ -6,7 +6,7 @@ This is our architecture decision log, made during the design and build of the M
 1. ✅ [Record architecture decisions](0001-record-architecture-decisions.md)
 1. ❌ [Use IAM Federated Access](0002-use-iam-federated-access.md)
 1. ✅ [Use AWS SSO](0003-use-aws-sso.md)
-1. ✅ [Use `bash`, `nodejs`, and `python` as core languages](0004-use-bash-node-python-as-core-languages.md)
+1. ⌛️ [Use `bash`, `nodejs`, and `python` as core languages](0004-use-bash-node-python-as-core-languages.md)
 1. ✅ [Use GitHub Actions as our CI/CD runner](0005-use-github-actions.md)
 1. ✅ [Use a multi-account strategy for applications](0006-use-a-multi-account-strategy-for-applications.md)
 1. ✅ [Use Terratest, OPA and Go for testing](0007-use-terratest-opa-and-go-for-testing.md)
@@ -20,8 +20,11 @@ This is our architecture decision log, made during the design and build of the M
 1. ✅ [IP Address Allocation](0016-ip-address-range-allocation.md)
 1. ✅ [Monitoring and Alerting](0017-monitoring-and-alerting.md)
 1. ✅ [Use AWS Shield Advanced](0018-use-aws-shield-advanced.md)
+1. ✅ [Use `bash` and `go` as core languages](0019-use-bash-g0-as-core-languages.md)
 
 ## Statuses
 - ✅ Accepted
 - ❌ Rejected
 - 🤔 Proposed
+- ⌛️ Superseded
+- ♻️ Amended
