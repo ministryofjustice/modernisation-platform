@@ -279,6 +279,7 @@ data "aws_iam_policy_document" "developer-additional" {
   statement {
     actions = [
       "acm:ImportCertificate",
+      "autoscaling:UpdateAutoScalingGroup",
       "secretsmanager:GetResourcePolicy",
       "secretsmanager:GetSecretValue",
       "secretsmanager:DescribeSecret",

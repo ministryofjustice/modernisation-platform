@@ -94,7 +94,7 @@ module "state-bucket-s3-replication-role" {
 }
 
 module "state-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.0.5"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.1.1"
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
@@ -146,7 +146,7 @@ module "state-bucket" {
 # A bucket used to store access logs for the state-bucket. For more details, refer to log_bucket and log_prefix
 # parameters from https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket
 module "state-bucket-access-logs" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.0.5"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.1.1"
   # Since replication_enabled=false the following providers configuration is not actually used, however, is placed
   # here so that terraform does not fail.
   providers = {
