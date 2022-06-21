@@ -19,6 +19,20 @@
       ]
     },
     {
+      "username": "james.ashton",
+      "github-username": "jamesashton-roc",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
       "username": "john.broom",
       "github-username": "hullcoastie",
       "accounts": [
@@ -33,7 +47,7 @@
       ]
     },
     {
-      "username": "andy.land",
+      "username": "howard.brown",
       "github-username": "no-value-supplied",
       "accounts": [
         {
@@ -47,8 +61,22 @@
       ]
     },
     {
-      "username": "james.ashton",
-      "github-username": "jamesashton-roc",
+      "username": "michael.bullen",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "mitul.dattani",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "equip-development",
@@ -89,7 +117,35 @@
       ]
     },
     {
+      "username": "craig.gordon",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
       "username": "gavin.keane",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "andy.land",
       "github-username": "no-value-supplied",
       "accounts": [
         {
