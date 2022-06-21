@@ -11,7 +11,10 @@
   },
   "options": {
     "bastion_linux": true,
-    "additional_endpoints": [],
+    "additional_endpoints": [
+      "com.amazonaws.eu-west-2.email",
+      "com.amazonaws.eu-west-2.email-smtp"
+    ],
     "dns_zone_extend": []
   },
   "nacl": []
