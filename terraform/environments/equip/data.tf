@@ -102,7 +102,7 @@ data "terraform_remote_state" "core_network_services" {
 
 data "aws_iam_policy_document" "email" {
   statement {
-    sid = "Allow sending of email"
+    sid = "AllowSendingOfEmail"
     actions = [
       "ses:SendEmail",
       "ses:SendRawEmail"
