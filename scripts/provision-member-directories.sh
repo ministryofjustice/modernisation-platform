@@ -42,7 +42,7 @@ provision_environment_directories() {
     echo "This is the directory: $directory"
     account_type=$(jq -r '."account-type"' ${environment_json_dir}/${application_name}.json)
 
-    if [ -d $directory ] || [ "$account_type" != "member" ]; then
+    if [ -d $directory ] || [ "$account_type" != "member" ] || [ "$application_name" == "testing" ]; then
 
       # Do nothing if a directory already exists
       echo ""
