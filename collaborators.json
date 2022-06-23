@@ -131,6 +131,16 @@
       ]
     },
     {
+      "username": "LeanneInglesonNPS",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
       "username": "gavin.keane",
       "github-username": "no-value-supplied",
       "accounts": [
@@ -152,6 +162,16 @@
           "account-name": "equip-development",
           "access": "developer"
         },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "sarah.lumsdon",
+      "github-username": "no-value-supplied",
+      "accounts": [
         {
           "account-name": "equip-production",
           "access": "developer"
