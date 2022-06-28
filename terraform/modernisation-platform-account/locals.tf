@@ -8,9 +8,7 @@ locals {
 
   root_users_with_state_access = [
     "arn:aws:iam::${local.root_account.master_account_id}:user/ModernisationPlatformOrganisationManagement",
-    "arn:aws:iam::${local.root_account.master_account_id}:user/DavidElliott",
-    "arn:aws:iam::${local.environment_management.account_ids["testing-test"]}:user/testing-ci",
-
+    "arn:aws:iam::${local.root_account.master_account_id}:user/DavidElliott"
   ]
 
   collaborators = jsondecode(file("../../collaborators.json"))

@@ -18,24 +18,17 @@ data "aws_iam_policy_document" "testing_ci_policy" {
   }
 
   statement {
-    effect    = "Allow"
-    actions   = ["s3:ListBucket"]
-    resources = ["arn:aws:s3:::modernisation-platform-terraform-state"]
-  }
-
-  statement {
-    effect  = "Allow"
-    actions = ["s3:GetObject"]
-    resources = [
-      "arn:aws:s3:::modernisation-platform-terraform-state/environments/*",
-      "arn:aws:s3:::modernisation-platform-terraform-state/terraform.tfstate"
+    effect = "Allow"
+    actions = [
+      "s3:ListBucket",
+      "s3:Get",
+      "s3:PutObject",
+      "s3:PutObjectAcl",
     ]
-  }
-
-  statement {
-    effect    = "Allow"
-    actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
+    resources = [
+      "arn:aws:s3:::modernisation-platform-terraform-state/terraform.tfstate",
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/testing/testing-test/terraform.tfstate"
+    ]
   }
 
   # Based on https://www.terraform.io/docs/language/settings/backends/s3.html#dynamodb-table-permissions
