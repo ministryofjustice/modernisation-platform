@@ -31,7 +31,7 @@ module "cicd-member-user" {
 }
 
 module "member-access" {
-  count  = local.account_data.account-type == "member" ? 1 : 0
+  count  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
   source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.0.0"
   providers = {
     aws = aws.workspace
@@ -180,6 +180,39 @@ resource "aws_iam_policy" "member-access" {
   name        = "MemberInfrastructureAccessActions"
   description = "Restricted admin policy for member CI/CD to use"
   policy      = data.aws_iam_policy_document.member-access.json
+}
+
+# Testing-test member access - separate as need the testing user created in the testing account to be able to access as well
+data "aws_iam_policy_document" "assume_role_policy" {
+  version = "2012-10-17"
+
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type = "AWS"
+      identifiers = ["arn:aws:iam::${local.modernisation_platform_account.id}:root",
+        "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"
+      ]
+    }
+  }
+}
+
+# IAM role to be assumed
+resource "aws_iam_role" "testing_member_infrastructure_access_role" {
+  count              = terraform.workspace == "testing-test" ? 1 : 0
+  provider           = aws.workspace
+  name               = "MemberInfrastructureAccess"
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
+}
+
+# IAM role attached policy
+resource "aws_iam_role_policy_attachment" "testing_member_infrastructure_access_role" {
+  count      = terraform.workspace == "testing-test" ? 1 : 0
+  provider   = aws.workspace
+  role       = aws_iam_role.testing_member_infrastructure_access_role[0].id
+  policy_arn = aws_iam_policy.member-access[0].arn
 }
 
 # Create a parameter for the modernisation platform environment management secret ARN that can be used to gain

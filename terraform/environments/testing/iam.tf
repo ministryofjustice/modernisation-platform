@@ -5,7 +5,7 @@ resource "aws_iam_user" "testing_ci" {
   tags = local.tags
 }
 
-# Add policy directly to the testing
+# Add policy directly to the testing user
 data "aws_iam_policy_document" "testing_ci_policy" {
   statement {
     effect  = "Allow"
@@ -49,7 +49,11 @@ data "aws_iam_policy_document" "testing_ci_policy" {
       "kms:Decrypt",
       "kms:GenerateDataKey"
     ]
-    resources = ["*"]
+    resources = [
+      "${data.aws_kms_key.s3_state_bucket.arn}",
+      "${data.aws_kms_key.dynamodb_state_lock.arn}",
+      "${data.aws_kms_key.environment_management.arn}"
+    ]
   }
 
   statement {
@@ -97,7 +101,6 @@ resource "aws_iam_access_key" "testing_ci" {
   }
 }
 
-# Testing CI user
 # Tfsec ignore
 # - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
 #tfsec:ignore:AWS095
