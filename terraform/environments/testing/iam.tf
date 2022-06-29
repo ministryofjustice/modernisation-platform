@@ -101,12 +101,10 @@ resource "aws_iam_access_key" "testing_ci" {
   }
 }
 
-# Tfsec ignore
-# - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
-#tfsec:ignore:AWS095
 resource "aws_secretsmanager_secret" "testing_ci_iam_user_keys" {
-  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
   name        = "testing_ci_iam_user_keys"
+  policy      = data.aws_iam_policy_document.testing_ci_iam_user_secrets_manager_policy.json
+  kms_key_id  = aws_kms_key.testing_ci_iam_user_kms_key.id
   description = "Access keys for the testing CI user, this secret is used by GitHub to set the correct repository secrets."
   tags        = local.tags
 }
@@ -117,4 +115,95 @@ resource "aws_secretsmanager_secret_version" "testing_ci_iam_user_keys" {
     AWS_ACCESS_KEY_ID     = aws_iam_access_key.testing_ci.id
     AWS_SECRET_ACCESS_KEY = aws_iam_access_key.testing_ci.secret
   })
+}
+
+# KMS Source
+resource "aws_kms_key" "testing_ci_iam_user_kms_key" {
+  description             = "testing-ci-user-access-key"
+  policy                  = data.aws_iam_policy_document.testing_ci_iam_user_kms_key_policy.json
+  enable_key_rotation     = true
+  deletion_window_in_days = 30
+}
+
+resource "aws_kms_alias" "testing_ci_iam_user_kms_key" {
+  name          = "alias/testing-ci-user-access-key"
+  target_key_id = aws_kms_key.testing_ci_iam_user_kms_key.id
+}
+
+data "aws_iam_policy_document" "testing_ci_iam_user_kms_key_policy" {
+
+  # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_109: "role is resticted by limited actions in member account"
+
+  statement {
+    sid    = "Allow management access of the key to the testing-test account"
+    effect = "Allow"
+    actions = [
+      "kms:*"
+    ]
+    resources = [
+      "*"
+    ]
+    principals {
+      type = "AWS"
+      identifiers = [
+        data.aws_caller_identity.current.account_id
+      ]
+    }
+  }
+  statement {
+    sid    = "Allow access to the key to the modernisation-platform account"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt*"
+    ]
+    resources = [
+      "*"
+    ]
+    principals {
+      type = "AWS"
+      identifiers = [
+        data.aws_caller_identity.modernisation_platform.id
+      ]
+    }
+  }
+}
+
+# Secrets manager policy to share the secret to the modernisation platform account
+data "aws_iam_policy_document" "testing_ci_iam_user_secrets_manager_policy" {
+  # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_109: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_108: "policy is directly related to the resource"
+  statement {
+    sid    = "Allow management access of the secret to the testing-test account"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:*"
+    ]
+    resources = [
+      "*"
+    ]
+    principals {
+      type = "AWS"
+      identifiers = [
+        data.aws_caller_identity.current.account_id
+      ]
+    }
+  }
+  statement {
+    sid    = "Allow access to the secret to the modernisation-platform account"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:GetSecretValue"
+    ]
+    resources = [
+      "*"
+    ]
+    principals {
+      type = "AWS"
+      identifiers = [
+        data.aws_caller_identity.modernisation_platform.id
+      ]
+    }
+  }
 }

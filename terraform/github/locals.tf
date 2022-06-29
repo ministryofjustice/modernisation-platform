@@ -1,4 +1,6 @@
 locals {
+  environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
+
   # GitHub usernames for the Modernisation Platform team maintainers
   # NB: Terraform shows a perputal difference in roles if someone is an organisation owner
   # and will attempt to change them from `maintainer` to `member`, so owners should go in here.

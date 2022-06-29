@@ -1,3 +1,14 @@
+# Get secret by name for environment management
+data "aws_secretsmanager_secret" "environment_management" {
+  name = "environment_management"
+}
+
+# Get latest secret value with ID from above. This secret stores account IDs for the Modernisation Platform sub-accounts
+data "aws_secretsmanager_secret_version" "environment_management" {
+  secret_id = data.aws_secretsmanager_secret.environment_management.id
+}
+
+
 # This gets the AWS access keys for Core CI/CD from AWS Secrets Manager to set as repository secrets.
 data "aws_secretsmanager_secret" "ci_iam_user_keys" {
   name = "ci_iam_user_keys"
@@ -18,10 +29,12 @@ data "aws_secretsmanager_secret_version" "member_ci_iam_user_keys" {
 
 # This gets the AWS access keys for Testing CI/CD from AWS Secrets Manager to set as repository secrets.
 data "aws_secretsmanager_secret" "testing_ci_iam_user_keys" {
-  name = "testing_ci_iam_user_keys"
+  provider = aws.testing-test
+  name     = "testing_ci_iam_user_keys"
 }
 
 data "aws_secretsmanager_secret_version" "testing_ci_iam_user_keys" {
+  provider  = aws.testing-test
   secret_id = data.aws_secretsmanager_secret.testing_ci_iam_user_keys.id
 }
 locals {
