@@ -298,4 +298,18 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
     }
   }
+  statement {
+    sid     = "AllowTestingCIUser"
+    effect  = "Allow"
+    actions = ["s3:PutObject"]
+    resources = [
+      "${module.state-bucket.bucket.arn}/terraform.tfstate",
+      "${module.state-bucket.bucket.arn}/environments/members/testing/testing-test/terraform.tfstate",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["testing-test"]}:user/testing-ci"]
+    }
+  }
 }

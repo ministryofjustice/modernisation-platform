@@ -2,9 +2,30 @@
 # (when we want to assume a role in the MP, for instance)
 data "aws_organizations_organization" "root_account" {}
 
+# Get the current account id
+data "aws_caller_identity" "testing_test" {}
+# Get modernisation plaftorm account ID
+data "aws_caller_identity" "modernisation_platform" {
+  provider = aws.modernisation-platform
+}
+
 # Get the environments file from the main repository
 data "http" "environments_file" {
   url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/${local.application_name}.json"
+}
+
+# Get the state S3 bucket, dynamodb and environment keys
+data "aws_kms_key" "s3_state_bucket" {
+  provider = aws.modernisation-platform
+  key_id   = "alias/s3-state-bucket"
+}
+data "aws_kms_key" "dynamodb_state_lock" {
+  provider = aws.modernisation-platform
+  key_id   = "alias/dynamodb-state-lock"
+}
+data "aws_kms_key" "environment_management" {
+  provider = aws.modernisation-platform
+  key_id   = "alias/environment-management"
 }
 
 locals {
