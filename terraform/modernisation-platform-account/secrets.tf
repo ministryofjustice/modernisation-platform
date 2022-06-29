@@ -46,7 +46,6 @@ resource "aws_secretsmanager_secret_version" "member_ci_iam_user_keys" {
   })
 }
 
-# Testing CI user
 # Tfsec ignore
 # - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
 #tfsec:ignore:AWS095
