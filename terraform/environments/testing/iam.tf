@@ -67,6 +67,7 @@ data "aws_iam_policy_document" "testing_ci_policy" {
     ]
     resources = [
       "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.modernisation_platform.account_id}:secret:environment_management-??????",
+      "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.modernisation_platform.account_id}:secret:pagerduty_integration_keys-??????"
     ]
   }
 }
