@@ -137,7 +137,7 @@ data "aws_iam_policy_document" "testing_ci_iam_user_kms_key_policy" {
   # checkov:skip=CKV_AWS_109: "role is resticted by limited actions in member account"
 
   statement {
-    sid    = "Allow management access of the key to the testing-test account"
+    sid    = "AllowTestingAccount"
     effect = "Allow"
     actions = [
       "kms:*"
@@ -153,7 +153,7 @@ data "aws_iam_policy_document" "testing_ci_iam_user_kms_key_policy" {
     }
   }
   statement {
-    sid    = "Allow access to the key to the modernisation-platform account"
+    sid    = "AllowModernisationPlatformAccount"
     effect = "Allow"
     actions = [
       "kms:Decrypt*"
@@ -176,7 +176,7 @@ data "aws_iam_policy_document" "testing_ci_iam_user_secrets_manager_policy" {
   # checkov:skip=CKV_AWS_109: "policy is directly related to the resource"
   # checkov:skip=CKV_AWS_108: "policy is directly related to the resource"
   statement {
-    sid    = "Allow management access of the secret to the testing-test account"
+    sid    = "AllowTestingAccount"
     effect = "Allow"
     actions = [
       "secretsmanager:*"
@@ -192,7 +192,7 @@ data "aws_iam_policy_document" "testing_ci_iam_user_secrets_manager_policy" {
     }
   }
   statement {
-    sid    = "Allow access to the secret to the modernisation-platform account"
+    sid    = "AllowModernisationPlatformAccount"
     effect = "Allow"
     actions = [
       "secretsmanager:GetSecretValue"
