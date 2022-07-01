@@ -1,15 +1,15 @@
 ---
 owner_slack: "#modernisation-platform"
 title: How to import a public SSL certificate into AWS Certificate Manager
-last_reviewed_on: 2022-03-24
-review_in: 3 months
+last_reviewed_on: 2022-07-01
+review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
 
 ## Introduction
 
-Public certificates are typically created in the member/application account that uses them. For example, if your application runs behind an `aws_lb_listener` in the preproduction environment and you need to configure a `certificate_arn`, you will create the certificate in the preproduction account.
+This assumes you have already read how to [configure DNS](how-to-configure-dns.html). Public certificates are typically created in the member/application account that uses them. For example, if your application runs behind an `aws_lb_listener` in the preproduction environment and you need to configure a `certificate_arn`, you will create the certificate in the preproduction account.
 
 The domain `modernisation-platform.service.justice.gov.uk` is managed by the modernisation-platform team. All environments under this domain, such as `my-application.nomis.hmpps-test.modernisation-platform.service.justice.gov.uk` can create their own public certificates using [AWS Certificate Manager](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html). For information on DNS naming conventions refer to [DNS naming](../concepts/networking/dns.html#dns).
 
