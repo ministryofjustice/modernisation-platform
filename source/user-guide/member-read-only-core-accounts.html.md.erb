@@ -15,7 +15,7 @@ To view core account resources (that is resources created in a core account and 
 
 1) Log in (to your member account) the AWS Console using SSO. Click the drop down menu at the top right and choose `Switch Role`.
 
-2) To view VPCs use the `member-delegation-<department>-<environment>` (for example: member-delegation-hmpps-development) role and use the account aliases for each Core VPC account:
+2) To view VPCs and lower level DNS resources (eg `hmpps-development.modernisation-platform.service.justice.gov.uk`) use the `member-delegation-read-only` role and use the account aliases for each Core VPC account:
 
 `core-vpc-development`
 `core-vpc-test`
@@ -24,7 +24,7 @@ To view core account resources (that is resources created in a core account and 
 
 ![Switch roles to view VPC resources](../images/vpc-role-switch.png)
 
-3) To view DNS resources use the `modify-dns-records` role and use the account alias for the Core Network account:
+3) To view higher level DNS resources (eg `modernisation-platform.service.justice.gov.uk`) use the `read-dns-records` role and use the account alias for the Core Network account:
 
 `core-network-services-production`
 
