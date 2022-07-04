@@ -27,6 +27,10 @@ data "aws_kms_key" "environment_management" {
   provider = aws.modernisation-platform
   key_id   = "alias/environment-management"
 }
+data "aws_kms_key" "pagerduty" {
+  provider = aws.modernisation-platform
+  key_id   = "alias/pagerduty-secret"
+}
 
 locals {
 
