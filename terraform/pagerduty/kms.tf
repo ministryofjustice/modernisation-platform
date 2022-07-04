@@ -1,7 +1,9 @@
 resource "aws_kms_key" "pagerduty" {
-  tags = local.tags
+  enable_key_rotation = true
+  tags                = local.tags
 }
 
 resource "aws_kms_alias" "pagerduty" {
+  name          = "pagerduty-secret"
   target_key_id = aws_kms_key.pagerduty.id
 }

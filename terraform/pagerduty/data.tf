@@ -21,7 +21,7 @@ data "aws_iam_policy_document" "pagerduty_secret" {
       identifiers = ["*"]
     }
     actions   = ["secretsmanager:GetSecretValue", "secretsmanager:GetResourcePolicy", "secretsmanager:DescribeSecret"]
-    resources = ["*"]
+    resources = [aws_secretsmanager_secret.pagerduty_integration_keys.arn]
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalOrgPaths"
