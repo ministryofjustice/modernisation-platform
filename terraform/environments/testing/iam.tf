@@ -52,7 +52,8 @@ data "aws_iam_policy_document" "testing_ci_policy" {
     resources = [
       "${data.aws_kms_key.s3_state_bucket.arn}",
       "${data.aws_kms_key.dynamodb_state_lock.arn}",
-      "${data.aws_kms_key.environment_management.arn}"
+      "${data.aws_kms_key.environment_management.arn}",
+      "${data.aws_kms_key.pagerduty.arn}"
     ]
   }
 
