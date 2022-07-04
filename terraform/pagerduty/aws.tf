@@ -5,9 +5,9 @@
 resource "aws_secretsmanager_secret" "pagerduty_integration_keys" {
   # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
   description = "Pager Duty integration keys"
-  kms_key_id  = data.aws_kms_alias.environment-management.target_key_id
+  kms_key_id  = aws_kms_key.pagerduty.id
   name        = "pagerduty_integration_keys"
-  policy      = data.aws_iam_policy_document.pagerduty.json
+  policy      = data.aws_iam_policy_document.pagerduty_secret.json
   tags        = local.tags
 }
 
