@@ -33,6 +33,8 @@ data "aws_iam_policy_document" "pagerduty_secret" {
 }
 
 data "aws_iam_policy_document" "pagerduty_kms" {
+  #cannot reference secret in resources for statement as this causes cyclic error
+  #checkov:skip=CKV_AWS_108
   statement {
     sid    = "AllowManagementAccountAccess"
     effect = "Allow"
@@ -41,7 +43,7 @@ data "aws_iam_policy_document" "pagerduty_kms" {
       identifiers = [data.aws_caller_identity.current.account_id, data.aws_organizations_organization.root_account.master_account_id]
     }
     actions   = ["kms:*"]
-    resources = [aws_kms_key.pagerduty.arn]
+    resources = ["*"]
   }
   statement {
     sid    = "AllowModernisationPlatformAccountsToDecrypt"
@@ -51,7 +53,7 @@ data "aws_iam_policy_document" "pagerduty_kms" {
       identifiers = ["*"]
     }
     actions   = ["kms:Decrypt*"]
-    resources = [aws_kms_key.pagerduty.arn]
+    resources = ["*"]
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalOrgPaths"
