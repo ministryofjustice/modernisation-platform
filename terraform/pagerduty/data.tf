@@ -15,3 +15,7 @@ data "aws_iam_policy_document" "pagerduty" {
     }
   }
 }
+
+data "aws_kms_alias" "environment-management" {
+  name = "alias/environment-management"
+}

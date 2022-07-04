@@ -4,9 +4,10 @@
 #tfsec:ignore:aws-ssm-secret-use-customer-key
 resource "aws_secretsmanager_secret" "pagerduty_integration_keys" {
   # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
+  description = "Pager Duty integration keys"
+  kms_key_id  = data.aws_kms_alias.environment-management.target_key_id
   name        = "pagerduty_integration_keys"
   policy      = data.aws_iam_policy_document.pagerduty.json
-  description = "Pager Duty integration keys"
   tags        = local.tags
 }
 
