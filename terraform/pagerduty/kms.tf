@@ -4,6 +4,6 @@ resource "aws_kms_key" "pagerduty" {
 }
 
 resource "aws_kms_alias" "pagerduty" {
-  name          = "pagerduty-secret"
+  name          = "alias/pagerduty-secret"
   target_key_id = aws_kms_key.pagerduty.id
 }

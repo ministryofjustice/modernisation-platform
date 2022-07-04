@@ -13,6 +13,8 @@ data "aws_secretsmanager_secret_version" "environment_management" {
 }
 
 data "aws_iam_policy_document" "pagerduty_secret" {
+  #cannot reference secret in resources for statement as this causes cyclic error
+  #checkov:skip=CKV_AWS_108
   statement {
     sid    = "ReadOnlyFromModernisationPlatformOU"
     effect = "Allow"
@@ -21,7 +23,7 @@ data "aws_iam_policy_document" "pagerduty_secret" {
       identifiers = ["*"]
     }
     actions   = ["secretsmanager:GetSecretValue", "secretsmanager:GetResourcePolicy", "secretsmanager:DescribeSecret"]
-    resources = [aws_secretsmanager_secret.pagerduty_integration_keys.arn]
+    resources = ["*"]
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalOrgPaths"
