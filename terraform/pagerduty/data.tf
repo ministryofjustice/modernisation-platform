@@ -4,7 +4,7 @@ data "aws_organizations_organization" "root_account" {}
 
 # Get secret by name for environment management
 data "aws_secretsmanager_secret" "environment_management" {
-  name     = "environment_management"
+  name = "environment_management"
 }
 
 # Get latest secret value with ID from above. This secret stores account IDs for the Modernisation Platform sub-accounts
@@ -32,13 +32,13 @@ data "aws_iam_policy_document" "pagerduty_secret" {
 
 data "aws_iam_policy_document" "pagerduty_kms" {
   statement {
-    sid = "AllowManagementAccountAccess"
+    sid    = "AllowManagementAccountAccess"
     effect = "Allow"
     principals {
       type        = "AWS"
       identifiers = [data.aws_caller_identity.current.account_id, data.aws_organizations_organization.root_account.master_account_id]
     }
-    actions = ["kms:*"]
+    actions   = ["kms:*"]
     resources = [aws_kms_key.pagerduty.arn]
   }
   statement {
