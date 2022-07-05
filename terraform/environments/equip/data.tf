@@ -100,8 +100,8 @@ data "terraform_remote_state" "core_network_services" {
   }
 }
 
-#checkov:skip:CKV_AWS_111
 data "aws_iam_policy_document" "email" {
+  #checkov:skip=CKV_AWS_111
   statement {
     sid = "AmazonSesSendingAccess"
     actions = [
