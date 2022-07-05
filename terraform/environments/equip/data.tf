@@ -101,16 +101,12 @@ data "terraform_remote_state" "core_network_services" {
 }
 
 data "aws_iam_policy_document" "email" {
+  #checkov:skip=CKV_AWS_111
   statement {
-    sid = "AllowSendingOfEmail"
+    sid = "AmazonSesSendingAccess"
     actions = [
-      "ses:SendEmail",
-      "ses:SendRawEmail"
+      "ses:SendEmail"
     ]
-    principals {
-      identifiers = [format("arn:aws:iam::%s:root", local.environment_management.account_ids[format("%s-production", local.application_name)])]
-      type        = "AWS"
-    }
-    resources = [format("arn:aws:ses:eu-west-2:%s:*:identity/*", data.aws_caller_identity.current.account_id)]
+    resources = ["*"]
   }
 }
