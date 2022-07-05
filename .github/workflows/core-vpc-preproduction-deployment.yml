@@ -55,11 +55,12 @@ jobs:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2.0.0
         with:
-          terraform_version: 1.0.1
+          terraform_version: "~1"
           terraform_wrapper: false
 
       - name: Run core-vpc terraform plan
         run: |
+          terraform --version
           # Test if this is a PR or PULL event
 
           #USE IF RUNNING IN GITHUB ACTIONS
@@ -93,11 +94,12 @@ jobs:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2.0.0
         with:
-          terraform_version: 1.0.1
+          terraform_version: "~1"
           terraform_wrapper: false
 
       - name: Run Terraform apply in terraform/environments/core-vpc
         run: |
+          terraform --version
           bash scripts/terraform-init.sh terraform/environments/core-vpc
           terraform -chdir="terraform/environments/core-vpc" workspace select "core-vpc-${TF_ENV}"
           bash scripts/terraform-apply.sh terraform/environments/core-vpc -target=module.vpc

@@ -34,7 +34,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2.0.0
         with:
-          terraform_version: 1.0.1
+          terraform_version: "~1"
           terraform_wrapper: false
       - name: terraform init
         run: bash scripts/terraform-init.sh terraform/modernisation-platform-account
