@@ -241,6 +241,26 @@
           "access": "developer"
         }
       ]
+    },
+    {
+      "username": "kofi.owusu",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "ppud-development",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "helen.stimpson",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "ppud-development",
+          "access": "developer"
+        }
+      ]
     }
   ]
 }
