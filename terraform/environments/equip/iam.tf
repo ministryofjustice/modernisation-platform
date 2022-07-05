@@ -11,6 +11,5 @@ resource "aws_iam_access_key" "email" {
 
 resource "aws_iam_user_policy" "email_policy" {
   name   = format("%s-%s-email_policy", local.application_name, local.environment)
-  policy = data.aws_iam_policy_document.email.json
   user   = aws_iam_user.email.name
 }
