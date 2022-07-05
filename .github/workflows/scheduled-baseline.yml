@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2.0.0
         with:
-          terraform_version: 1.0.1
+          terraform_version: "~1"
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access plan
@@ -51,7 +51,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2.0.0
         with:
-          terraform_version: 1.0.1
+          terraform_version: "~1"
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines plan
@@ -73,7 +73,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2.0.0
         with:
-          terraform_version: 1.0.1
+          terraform_version: "~1"
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on plan

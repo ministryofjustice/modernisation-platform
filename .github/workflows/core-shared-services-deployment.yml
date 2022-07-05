@@ -40,13 +40,13 @@ jobs:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2.0.0
         with:
-          terraform_version: 1.0.1
+          terraform_version: "~1"
           terraform_wrapper: false
  
       - name: Run terraform plan in terraform/environments/core-shared-services
         run: |
           git_dir=`git rev-parse --show-toplevel`
-
+          terraform --version
           # Test if this is a PR or PULL event
           if [ ! -z ${{ github.event.pull_request.number }} ]
           then
@@ -92,11 +92,12 @@ jobs:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2.0.0
         with:
-          terraform_version: 1.0.1
+          terraform_version: "~1"
           terraform_wrapper: false
 
       - name: Run Terraform apply in terraform/environments/core-shared-services
         run: |
+          terraform --version
           bash scripts/terraform-init.sh terraform/environments/core-shared-services
           terraform -chdir="terraform/environments/core-shared-services" workspace select core-shared-services-production
           bash scripts/terraform-apply.sh terraform/environments/core-shared-services

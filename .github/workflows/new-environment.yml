@@ -37,11 +37,12 @@ jobs:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2.0.0
         with:
-          terraform_version: 1.0.1
+          terraform_version: "~1"
           terraform_wrapper: false
 
       - name: Run terraform plan for root terraform/environments
         run: |
+          terraform --version
           # Test if this is a PR or PULL event
 
           #USE IF RUNNING IN GITHUB ACTIONS
@@ -75,7 +76,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2.0.0
         with:
-          terraform_version: 1.0.1
+          terraform_version: "~1"
           terraform_wrapper: false
       - name: Run terraform init in terraform/environments
         run: bash scripts/terraform-init.sh terraform/environments
@@ -102,7 +103,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2.0.0
         with:
-          terraform_version: 1.0.1
+          terraform_version: "~1"
           terraform_wrapper: false
       - name: configure aws
         uses: aws-actions/configure-aws-credentials@v1.6.1
@@ -135,7 +136,7 @@ jobs:
           fetch-depth: 0
       - uses: hashicorp/setup-terraform@v2.0.0
         with:
-          terraform_version: 1.0.1
+          terraform_version: "~1"
           terraform_wrapper: false
       - name: get new account(s)
         id: new_account
@@ -177,7 +178,7 @@ jobs:
           fetch-depth: 0
       - uses: hashicorp/setup-terraform@v2.0.0
         with:
-          terraform_version: 1.0.1
+          terraform_version: "~1"
           terraform_wrapper: false
       - name: get new account(s)
         id: new_account
@@ -219,7 +220,7 @@ jobs:
           fetch-depth: 0
       - uses: hashicorp/setup-terraform@v2.0.0
         with:
-          terraform_version: 1.0.1
+          terraform_version: "~1"
           terraform_wrapper: false
       - name: get new account(s)
         id: new_account
