@@ -10,6 +10,6 @@ resource "aws_iam_access_key" "email" {
 }
 
 resource "aws_iam_user_policy" "email_policy" {
-  name   = format("%s-%s-email_policy", local.application_name, local.environment)
-  user   = aws_iam_user.email.name
+  name = format("%s-%s-email_policy", local.application_name, local.environment)
+  user = aws_iam_user.email.name
 }
