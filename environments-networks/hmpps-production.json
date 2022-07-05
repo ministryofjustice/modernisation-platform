@@ -140,6 +140,17 @@
       "cidr_block": "0.0.0.0/0",
       "from_port": "443",
       "to_port": "443"
+    },
+    {
+      "subnet_set": "general",
+      "egress": false,
+      "subnet_type": "data",
+      "protocol": "tcp",
+      "rule_action": "allow",
+      "rule_number": 270,
+      "cidr_block": "10.40.0.0/16",
+      "from_port": "22",
+      "to_port": "22"
     }
   ]
 }
