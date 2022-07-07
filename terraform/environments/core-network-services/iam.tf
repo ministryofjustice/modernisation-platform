@@ -16,6 +16,14 @@ resource "aws_iam_role" "dns" {
           },
           "Action" : "sts:AssumeRole",
           "Condition" : {}
+        },
+        {
+          "Effect" : "Allow",
+          "Principal" : {
+            "AWS" : "arn:aws:iam::${local.environment_management.account_ids["testing-test"]}:user/testing-ci"
+          },
+          "Action" : "sts:AssumeRole",
+          "Condition" : {}
         }
       ]
   })
