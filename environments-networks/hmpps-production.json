@@ -3,20 +3,13 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.27.8.0/21",
-        "accounts": [
-          "performance-hub-production",
-          "ppud-production",
-          "equip-production",
-          "nomis-production"
-        ]
+        "accounts": ["performance-hub-production", "ppud-production", "equip-production", "nomis-production"]
       }
     }
   },
   "options": {
     "bastion_linux": false,
-    "additional_endpoints": [
-      "com.amazonaws.eu-west-2.email-smtp"
-    ],
+    "additional_endpoints": ["com.amazonaws.eu-west-2.email-smtp"],
     "dns_zone_extend": []
   },
   "nacl": [
@@ -64,7 +57,7 @@
       "from_port": "1521",
       "to_port": "1521"
     },
-{
+    {
       "subnet_set": "general",
       "egress": false,
       "subnet_type": "data",
@@ -151,6 +144,17 @@
       "cidr_block": "10.40.0.0/16",
       "from_port": "22",
       "to_port": "22"
+    },
+    {
+      "subnet_set": "general",
+      "egress": true,
+      "subnet_type": "data",
+      "protocol": "tcp",
+      "rule_action": "allow",
+      "rule_number": 280,
+      "cidr_block": "10.40.128.0/20",
+      "from_port": "1024",
+      "to_port": "65535"
     }
   ]
 }
