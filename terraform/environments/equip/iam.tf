@@ -11,7 +11,7 @@ resource "aws_iam_access_key" "email" {
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_user_policy" "email_policy" {
-  name = "AmazonSesSendingAccess"
-  user = aws_iam_user.email.name
+  name   = "AmazonSesSendingAccess"
+  user   = aws_iam_user.email.name
   policy = data.aws_iam_policy_document.email.json
 }
