@@ -19,6 +19,20 @@
       ]
     },
     {
+      "username": "gary.akhmetov",
+      "github-username": "no-username-supplied",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
       "username": "james.ashton",
       "github-username": "jamesashton-roc",
       "accounts": [
@@ -62,7 +76,7 @@
     },
     {
       "username": "michael.bullen",
-      "github-username": "no-value-supplied",
+      "github-username": "MMBRoc",
       "accounts": [
         {
           "account-name": "equip-development",
@@ -76,7 +90,7 @@
     },
     {
       "username": "mitul.dattani",
-      "github-username": "no-value-supplied",
+      "github-username": "md-roc",
       "accounts": [
         {
           "account-name": "equip-development",
@@ -118,22 +132,12 @@
     },
     {
       "username": "craig.gordon",
-      "github-username": "no-value-supplied",
+      "github-username": "craigygordon",
       "accounts": [
         {
           "account-name": "equip-development",
           "access": "developer"
         },
-        {
-          "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
-      "username": "LeanneInglesonNPS",
-      "github-username": "no-value-supplied",
-      "accounts": [
         {
           "account-name": "equip-production",
           "access": "developer"
@@ -156,7 +160,7 @@
     },
     {
       "username": "andy.land",
-      "github-username": "no-value-supplied",
+      "github-username": "andylandroc",
       "accounts": [
         {
           "account-name": "equip-development",
@@ -169,9 +173,41 @@
       ]
     },
     {
-      "username": "sarah.lumsdon",
-      "github-username": "no-value-supplied",
+      "username": "kam.mistry",
+      "github-username": "no-username-supplied",
       "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "joy.parokkaran",
+      "github-username": "parokkajadm",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "tom.rudley",
+      "github-username": "trudley",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
         {
           "account-name": "equip-production",
           "access": "developer"
@@ -181,6 +217,20 @@
     {
       "username": "helen.vickers",
       "github-username": "helenvickers-roc",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "tom.whiteley",
+      "github-username": "tom-whi",
       "accounts": [
         {
           "account-name": "equip-development",
