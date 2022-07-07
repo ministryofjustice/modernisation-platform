@@ -103,9 +103,8 @@ data "terraform_remote_state" "core_network_services" {
 data "aws_iam_policy_document" "email" {
   #checkov:skip=CKV_AWS_111
   statement {
-    sid = "AmazonSesSendingAccess"
     actions = [
-      "ses:SendEmail"
+      "ses:SendRawEmail"
     ]
     resources = ["*"]
   }

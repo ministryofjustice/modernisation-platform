@@ -13,16 +13,5 @@ resource "aws_iam_access_key" "email" {
 resource "aws_iam_user_policy" "email_policy" {
   name = "AmazonSesSendingAccess"
   user = aws_iam_user.email.name
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "ses:SendRawEmail",
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-    ]
-  })
+  policy = data.aws_iam_policy_document.email.json
 }
