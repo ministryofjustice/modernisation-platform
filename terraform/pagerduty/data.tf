@@ -35,6 +35,8 @@ data "aws_iam_policy_document" "pagerduty_secret" {
 data "aws_iam_policy_document" "pagerduty_kms" {
   #cannot reference secret in resources for statement as this causes cyclic error
   #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_109: "Constraint is via only mp ou condition"
+  #checkov:skip=CKV_AWS_111: "Constraint is via only mp ou condition"
   statement {
     sid    = "AllowManagementAccountAccess"
     effect = "Allow"

@@ -100,6 +100,8 @@ data "terraform_remote_state" "core_network_services" {
   }
 }
 
+# AWS Generated policy for role which is imported
+#tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "email" {
   #checkov:skip=CKV_AWS_111
   statement {
