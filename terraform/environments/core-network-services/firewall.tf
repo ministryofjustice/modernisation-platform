@@ -503,4 +503,8 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "external_inspection_in" {
       Name = "external-inspection-in"
     }
   )
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
