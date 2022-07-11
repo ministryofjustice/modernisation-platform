@@ -45,6 +45,10 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "default" {
     Name = "${var.vpc_name}-attachment"
   })
 
+  lifecycle {
+    prevent_destroy = true
+  }
+
   depends_on = [
     time_sleep.wait_60_seconds
   ]

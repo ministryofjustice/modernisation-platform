@@ -97,6 +97,10 @@ resource "aws_ec2_transit_gateway_peering_attachment_accepter" "PTTP-Production"
     Name = "PTTP-Transit-Gateway-attachment-accepter"
     Side = "Acceptor"
   }
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 ######################

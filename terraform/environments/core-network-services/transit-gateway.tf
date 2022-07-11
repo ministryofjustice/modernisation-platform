@@ -17,6 +17,10 @@ resource "aws_ec2_transit_gateway" "transit-gateway" {
       Name = "Modernisation Platform: Transit Gateway"
     },
   )
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 #########################
@@ -47,6 +51,10 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "attachments" {
       Name = each.key
     },
   )
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 #########################
@@ -64,6 +72,10 @@ resource "aws_ec2_transit_gateway_route_table" "route-tables" {
       Name = each.key
     },
   )
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 # Associate the route table with the VPC attachment
