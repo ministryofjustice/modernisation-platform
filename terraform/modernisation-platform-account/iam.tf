@@ -346,6 +346,18 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-policy" {
       format("arn:aws:logs:eu-west-2:%s:*", data.aws_caller_identity.current.account_id)
     ]
   }
+  statement {
+    sid    = "EC2StopAndStart"
+    effect = "Allow"
+    actions = [
+      "ec2:describetags",
+      "ec2:startinstances",
+      "ec2:stopinstances"
+    ]
+    resources = [
+      format("arn:aws:logs:eu-west-2:%s:*", data.aws_caller_identity.current.account_id)
+    ]  
+  }
 }
 
 resource "aws_iam_role" "instance-scheduler" {
