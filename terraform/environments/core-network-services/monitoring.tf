@@ -30,7 +30,7 @@ module "pagerduty_route53" {
 }
 
 # hosted zone DDoS monitoring
-resource "aws_cloudwatch_metric_alarm" "ddos_attack_modernisation_paltform_public_hosted_zone" {
+resource "aws_cloudwatch_metric_alarm" "ddos_attack_modernisation_platform_public_hosted_zone" {
   provider = aws.aws-us-east-1
 
   alarm_name          = "DDoSDetected-modernisation-platform-public-hosted-zone"
