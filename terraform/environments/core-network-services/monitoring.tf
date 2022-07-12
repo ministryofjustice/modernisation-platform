@@ -74,20 +74,25 @@ resource "aws_cloudwatch_metric_alarm" "ddos_attack_application_public_hosted_zo
 }
 
 ## Transit Gateway monitoring
-data "aws_ec2_transit_gateway_vpc_attachments" "transit-gateway" {
+data "aws_ec2_transit_gateway_vpc_attachments" "transit_gateway" {
   filter {
     name   = "state"
     values = ["available"]
   }
+  filter {
+    name = "tag:is-production"
+    values = ["true"]
+  }
 }
 
-data "aws_ec2_transit_gateway_vpc_attachment" "transit-gateway" {
-  for_each = toset(data.aws_ec2_transit_gateway_vpc_attachments.transit-gateway.ids)
+data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway" {
+  for_each = toset(data.aws_ec2_transit_gateway_vpc_attachments.transit_gateway.ids)
   id = each.key
 }
 
 resource "aws_cloudwatch_metric_alarm" "attachment_no_traffic_5_minutes" {
-  for_each            = data.aws_ec2_transit_gateway_vpc_attachment.transit-gateway
+  for_each            = merge(data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway, aws_ec2_transit_gateway_vpc_attachment.attachments)
+  alarm_actions       = [aws_sns_topic.tgw_monitoring.arn]
   alarm_description   = format("Low traffic detected for VPC attachment %s", each.value.tags.Name)
   alarm_name          = format("NoVPCAttachmentTraffic-%s", each.key)
   comparison_operator = "LessThanOrEqualToThreshold"
@@ -103,4 +108,12 @@ resource "aws_cloudwatch_metric_alarm" "attachment_no_traffic_5_minutes" {
   threshold          = "1"
   treat_missing_data = "notBreaching"
   tags               = local.tags
+}
+
+resource "aws_sns_topic" "tgw_monitoring" {
+  #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
+  provider = aws.aws-us-east-1
+  name     = "tgw_monitoring"
+
+  tags = local.tags
 }
