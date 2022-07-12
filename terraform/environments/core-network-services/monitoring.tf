@@ -81,9 +81,14 @@ data "aws_ec2_transit_gateway_vpc_attachments" "transit-gateway" {
   }
 }
 
+data "aws_ec2_transit_gateway_vpc_attachment" "transit-gateway" {
+  for_each = toset(data.aws_ec2_transit_gateway_vpc_attachments.transit-gateway.ids)
+  id = each.key
+}
+
 resource "aws_cloudwatch_metric_alarm" "attachment_no_traffic_5_minutes" {
-  for_each            = toset(data.aws_ec2_transit_gateway_vpc_attachments.transit-gateway.ids)
-  alarm_description   = format("Low traffic detected on VPC attachment %s", each.key)
+  for_each            = data.aws_ec2_transit_gateway_vpc_attachment.transit-gateway
+  alarm_description   = format("Low traffic detected for VPC attachment %s", each.value.tags.Name)
   alarm_name          = format("NoVPCAttachmentTraffic-%s", each.key)
   comparison_operator = "LessThanOrEqualToThreshold"
   datapoints_to_alarm = "1"
