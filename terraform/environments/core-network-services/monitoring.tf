@@ -74,14 +74,21 @@ resource "aws_cloudwatch_metric_alarm" "ddos_attack_application_public_hosted_zo
 }
 
 ## Transit Gateway monitoring
+data "aws_ec2_transit_gateway_vpc_attachments" "transit-gateway" {
+  filter {
+    name   = "state"
+    values = ["available"]
+  }
+}
+
 resource "aws_cloudwatch_metric_alarm" "attachment_no_traffic_5_minutes" {
-  for_each            = aws_ec2_transit_gateway_vpc_attachment.attachments
-  alarm_description   = format("Low traffic detected on VPC attachment %s", each.value.tags.Name)
-  alarm_name          = format("NoVPCAttachmentTraffic-%s", each.value.tags.Name)
+  for_each            = toset(data.aws_ec2_transit_gateway_vpc_attachments.transit-gateway.ids)
+  alarm_description   = format("Low traffic detected on VPC attachment %s", each.key)
+  alarm_name          = format("NoVPCAttachmentTraffic-%s", each.key)
   comparison_operator = "LessThanOrEqualToThreshold"
   datapoints_to_alarm = "1"
   dimensions = {
-    TransitGatewayAttachment = each.value.id
+    TransitGatewayAttachment = each.key
   }
   evaluation_periods = "5"
   metric_name        = "BytesIn"
