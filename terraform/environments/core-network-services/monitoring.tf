@@ -92,14 +92,14 @@ data "aws_ec2_transit_gateway_vpc_attachments" "transit_gateway_production" {
     values = ["available"]
   }
   filter {
-    name = "tag:is-production"
+    name   = "tag:is-production"
     values = ["true"]
   }
 }
 
 data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_production" {
   for_each = toset(data.aws_ec2_transit_gateway_vpc_attachments.transit_gateway_production.ids)
-  id = each.key
+  id       = each.key
 }
 
 resource "aws_cloudwatch_metric_alarm" "production_attachment_no_traffic_5_minutes" {
