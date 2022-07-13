@@ -30,9 +30,6 @@ module "pagerduty_route53" {
 }
 
 module "pagerduty_transit_gateway_production" {
-  providers = {
-    aws = aws.aws-us-east-1
-  }
   depends_on = [
     aws_sns_topic.tgw_monitoring_production
   ]
