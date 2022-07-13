@@ -39,5 +39,8 @@ module "vpc_attachment" {
   vpc_id     = module.vpc[each.key].vpc_id
   vpc_name   = "${each.key}-${terraform.workspace}"
 
-  tags = local.tags
+  tags = merge(
+    local.tags,
+    { "Name" = format("%s-%s-attachment", each.key, terraform.workspace) }
+  )
 }
