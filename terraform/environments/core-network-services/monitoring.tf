@@ -22,7 +22,7 @@ module "pagerduty_route53" {
     aws = aws.aws-us-east-1
   }
   depends_on = [
-    aws_sns_topic.route53_monitoring,
+    aws_sns_topic.route53_monitoring
   ]
   source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=v1.0.0"
   sns_topics                = [aws_sns_topic.route53_monitoring.name]
