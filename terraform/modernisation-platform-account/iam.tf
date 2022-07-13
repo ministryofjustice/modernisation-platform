@@ -350,13 +350,11 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-policy" {
     sid    = "EC2StopAndStart"
     effect = "Allow"
     actions = [
-      "ec2:describetags",
-      "ec2:startinstances",
-      "ec2:stopinstances"
+      "sts:AssumeRole"
     ]
     resources = [
-      format("arn:aws:logs:eu-west-2:%s:*", data.aws_caller_identity.current.account_id)
-    ]  
+      "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/developer"
+    ]
   }
 }
 
