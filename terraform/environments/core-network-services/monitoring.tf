@@ -29,8 +29,20 @@ module "pagerduty_route53" {
   pagerduty_integration_key = local.pagerduty_integration_keys["high_priority_alarms"]
 }
 
+module "pagerduty_transit_gateway_production" {
+  providers = {
+    aws = aws.aws-us-east-1
+  }
+  depends_on = [
+    aws_sns_topic.tgw_monitoring_production
+  ]
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=v1.0.0"
+  sns_topics                = [aws_sns_topic.tgw_monitoring_production.name]
+  pagerduty_integration_key = local.pagerduty_integration_keys["high_priority_alarms"]
+}
+
 # hosted zone DDoS monitoring
-resource "aws_cloudwatch_metric_alarm" "ddos_attack_modernisation_paltform_public_hosted_zone" {
+resource "aws_cloudwatch_metric_alarm" "ddos_attack_modernisation_platform_public_hosted_zone" {
   provider = aws.aws-us-east-1
 
   alarm_name          = "DDoSDetected-modernisation-platform-public-hosted-zone"
@@ -70,5 +82,51 @@ resource "aws_cloudwatch_metric_alarm" "ddos_attack_application_public_hosted_zo
   dimensions = {
     ResourceArn = each.value.arn
   }
+  tags = local.tags
+}
+
+## Transit Gateway monitoring
+data "aws_ec2_transit_gateway_vpc_attachments" "transit_gateway_production" {
+  filter {
+    name   = "state"
+    values = ["available"]
+  }
+  filter {
+    name   = "tag:is-production"
+    values = ["true"]
+  }
+}
+
+data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_production" {
+  for_each = toset(data.aws_ec2_transit_gateway_vpc_attachments.transit_gateway_production.ids)
+  id       = each.key
+}
+
+resource "aws_cloudwatch_metric_alarm" "production_attachment_no_traffic_5_minutes" {
+  for_each            = merge(data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_production, aws_ec2_transit_gateway_vpc_attachment.attachments)
+  alarm_actions       = [aws_sns_topic.tgw_monitoring_production.arn]
+  alarm_description   = format("Low traffic detected for VPC attachment %s", each.value.tags.Name)
+  alarm_name          = format("NoVPCAttachmentTraffic-%s", each.value.tags.Name)
+  comparison_operator = "LessThanOrEqualToThreshold"
+  datapoints_to_alarm = "1"
+  dimensions = {
+    TransitGatewayAttachment = each.key
+  }
+  evaluation_periods = "5"
+  metric_name        = "BytesIn"
+  namespace          = "AWS/TransitGateway"
+  period             = "60"
+  statistic          = "Sum"
+  threshold          = "1"
+  treat_missing_data = "notBreaching"
+  tags               = local.tags
+}
+
+# tfsec:ignore:aws-sns-enable-topic-encryption
+resource "aws_sns_topic" "tgw_monitoring_production" {
+  #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
+  provider = aws.aws-us-east-1
+  name     = "tgw_monitoring_production"
+
   tags = local.tags
 }
