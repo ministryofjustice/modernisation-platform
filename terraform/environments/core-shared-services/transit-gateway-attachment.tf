@@ -39,6 +39,6 @@ module "vpc_attachment" {
 
   tags = merge(
     local.tags,
-    format("%s-%s-attachment", each.key, terraform.workspace)
+    { "Name" = format("%s-%s-attachment", each.key, terraform.workspace) }
   )
 }
