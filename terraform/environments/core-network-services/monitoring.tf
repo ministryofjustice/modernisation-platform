@@ -122,6 +122,7 @@ resource "aws_cloudwatch_metric_alarm" "production_attachment_no_traffic_5_minut
   tags               = local.tags
 }
 
+# tfsec:ignore:aws-sns-enable-topic-encryption
 resource "aws_sns_topic" "tgw_monitoring_production" {
   #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
   provider = aws.aws-us-east-1
