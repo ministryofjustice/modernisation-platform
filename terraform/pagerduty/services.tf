@@ -78,3 +78,14 @@ resource "pagerduty_service_event_rule" "mfa-console-access" {
     }
   }
 }
+
+# contact-on-call-modernisation-platform email
+# note email integration must be configured manually in PagerDuty
+resource "pagerduty_service" "contact_on_call" {
+  name                    = "Contact On Call Email Address"
+  description             = "Emails received to the on call email address"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = null
+  escalation_policy       = pagerduty_escalation_policy.on_call.id
+  alert_creation          = "create_alerts_and_incidents"
+}
