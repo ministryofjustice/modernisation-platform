@@ -308,3 +308,67 @@ module "collaborators" {
   accounts               = each.value
   environment_management = local.environment_management
 }
+
+## Instance Scheduler Lambda
+data "aws_iam_policy_document" "instance-scheduler-assume-role" {
+  statement {
+    sid    = "AssumeRole"
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
+    principals {
+      identifiers = ["lambda.amazonaws.com"]
+      type        = "AWS"
+    }
+  }
+}
+
+data "aws_iam_policy_document" "instance-scheduler-lambda-policy" {
+  statement {
+    sid    = "AllowLambdaToCreateLogGroup"
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogGroup"
+    ]
+    resources = [
+      format("arn:aws:logs:eu-west-2:%s:*", data.aws_caller_identity.current.account_id)
+    ]
+  }
+  statement {
+    sid    = "AllowLambdaToWriteLogsToGroup"
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
+    resources = [
+      format("arn:aws:logs:eu-west-2:%s:*", data.aws_caller_identity.current.account_id)
+    ]
+  }
+  statement {
+    sid    = "EC2StopAndStart"
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
+    resources = [
+      "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/developer"
+    ]
+  }
+}
+
+resource "aws_iam_role" "instance-scheduler" {
+  assume_role_policy = data.aws_iam_policy_document.instance-scheduler-assume-role.json
+  name               = "LambdaInstanceSchedulerPolicy"
+  tags               = local.tags
+}
+
+resource "aws_iam_policy" "instance-scheduler" {
+  policy = data.aws_iam_policy_document.instance-scheduler-lambda-policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "instance-scheduler" {
+  policy_arn = aws_iam_policy.instance-scheduler.arn
+  role       = aws_iam_role.instance-scheduler.name
+}
