@@ -5,10 +5,16 @@ data "archive_file" "instance_scheduler_zip" {
 }
 
 resource "aws_lambda_function" "instance-scheduler" {
-  filename         = "golang-instance-scheduler.zip"
-  function_name    = "golang-instance-scheduler"
-  handler          = "main"
-  runtime          = "go1.x"
-  role             = aws_iam_role.instance-scheduler.arn
-  source_code_hash = data.archive_file.instance_scheduler_zip.output_base64sha256
+  #checkov:skip=CKV_AWS_116
+  #checkov:skip=CKV_AWS_117
+  filename                       = "golang-instance-scheduler.zip"
+  function_name                  = "golang-instance-scheduler"
+  handler                        = "main"
+  reserved_concurrent_executions = 0
+  runtime                        = "go1.x"
+  role                           = aws_iam_role.instance-scheduler.arn
+  source_code_hash               = data.archive_file.instance_scheduler_zip.output_base64sha256
+  tracing_config {
+    mode = "Active"
+  }
 }
