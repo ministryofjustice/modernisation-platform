@@ -115,7 +115,7 @@ resource "aws_cloudwatch_metric_alarm" "production_attachment_no_traffic_5_minut
   period             = "60"
   statistic          = "Sum"
   threshold          = "1"
-  treat_missing_data = "Breaching"
+  treat_missing_data = "breaching"
   tags               = local.tags
 }
 
