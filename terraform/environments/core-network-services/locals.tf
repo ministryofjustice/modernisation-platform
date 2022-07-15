@@ -28,6 +28,6 @@ locals {
     #"inspection-attachment",
     "hmcts-production-attachment",
     "hmpps-production-attachment",
-    #"live_data",
+    #"core-network-services-live_data-attachment",
   ]
 }
