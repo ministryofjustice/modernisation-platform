@@ -108,7 +108,7 @@ resource "aws_cloudwatch_metric_alarm" "production_attachment_no_traffic_5_minut
   datapoints_to_alarm = "1"
   dimensions = {
     TransitGateway           = aws_ec2_transit_gateway.transit-gateway.id
-    TransitGatewayAttachment = each.key
+    TransitGatewayAttachment = each.value["id"]
   }
   evaluation_periods = "5"
   metric_name        = "BytesIn"
