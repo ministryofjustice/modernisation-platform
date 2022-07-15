@@ -13,6 +13,11 @@ locals {
       email = "david.sibley${local.digital_email_suffix}"
       role  = "user"
     },
+    modernisation_platform = {
+      name  = "Modernisation Platform Team"
+      email = "modernisation-platform${local.digital_email_suffix}"
+      role  = "user"
+    },
   }
 
   digital_email_suffix = "@digital.justice.gov.uk"
@@ -60,8 +65,4 @@ data "pagerduty_user" "jack_stockley" {
 
 data "pagerduty_user" "jake_mulley" {
   email = "jake.mulley${local.digital_email_suffix}"
-}
-
-data "pagerduty_user" "platforms" {
-  email = "platforms${local.digital_email_suffix}"
 }
