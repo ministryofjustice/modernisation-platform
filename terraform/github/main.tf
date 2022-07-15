@@ -201,6 +201,8 @@ module "terraform-module-aws-loadbalancer" {
     "loadbalancer",
     "logging"
   ]
+  required_checks = ["Run Go Unit Tests"]
+  secrets         = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
 module "modernisation-platform-terraform-member-vpc" {
