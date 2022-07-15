@@ -39,6 +39,6 @@ module "vpc_attachment" {
 
   tags = merge(
     local.tags,
-    { "Name" = format("%s-attachment", each.key) }
+    { "Name" = format("%s-%s-attachment", local.application_name, each.key) }
   )
 }
