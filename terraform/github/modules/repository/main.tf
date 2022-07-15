@@ -11,7 +11,7 @@ resource "github_repository" "default" {
   homepage_url           = var.homepage_url
   visibility             = var.visibility
   has_issues             = true
-  has_projects           = var.type == "core" ? true : false
+  has_projects           = true
   has_wiki               = var.type == "core" ? true : false
   has_downloads          = true
   is_template            = var.type == "template" ? true : false
