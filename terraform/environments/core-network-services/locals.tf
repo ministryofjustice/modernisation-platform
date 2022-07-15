@@ -19,4 +19,17 @@ locals {
     is-production = local.is-production
     owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
   }
+
+  active_tgw_peering_attachments = [
+    "PTTP-Transit-Gateway-attachment-accepter"
+  ]
+
+  active_tgw_vpc_attachments = [
+    "core-logging-live_data-attachment",
+    "core-security-live_data-attachment",
+    "core-shared-services-live_data-attachment",
+    "hmcts-production-attachment",
+    "hmpps-production-attachment",
+    "live_data",
+  ]
 }
