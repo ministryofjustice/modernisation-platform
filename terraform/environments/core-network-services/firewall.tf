@@ -500,7 +500,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "external_inspection_in" {
   tags = merge(
     local.tags,
     {
-      Name = "external-inspection-in"
+      Name = "inspection-attachment"
     }
   )
 

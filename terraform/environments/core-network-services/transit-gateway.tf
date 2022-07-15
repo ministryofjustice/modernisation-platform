@@ -47,9 +47,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "attachments" {
 
   tags = merge(
     local.tags,
-    {
-      Name = each.key
-    },
+    { "Name" = format("%s-%s-attachment", local.application_name, each.key) }
   )
 
   lifecycle {

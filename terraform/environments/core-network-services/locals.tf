@@ -25,11 +25,9 @@ locals {
   ]
 
   active_tgw_vpc_attachments = [
-    "core-logging-live_data-attachment",
-    "core-security-live_data-attachment",
-    "core-shared-services-live_data-attachment",
+    #"inspection-attachment",
     "hmcts-production-attachment",
     "hmpps-production-attachment",
-    "live_data",
+    #"live_data",
   ]
 }
