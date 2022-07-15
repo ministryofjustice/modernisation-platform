@@ -83,24 +83,24 @@ resource "aws_cloudwatch_metric_alarm" "ddos_attack_application_public_hosted_zo
 }
 
 ## Transit Gateway monitoring
-data "aws_ec2_transit_gateway_vpc_attachments" "transit_gateway_production" {
+data "aws_ec2_transit_gateway_peering_attachment" "transit_gateway_production" {
+  for_each = toset(local.active_tgw_peering_attachments)
   filter {
-    name   = "state"
-    values = ["available"]
-  }
-  filter {
-    name   = "tag:is-production"
-    values = ["true"]
+    name   = "tag:Name"
+    values = [each.key]
   }
 }
 
 data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_production" {
-  for_each = toset(data.aws_ec2_transit_gateway_vpc_attachments.transit_gateway_production.ids)
-  id       = each.key
+  for_each = toset(local.active_tgw_vpc_attachments)
+  filter {
+    name   = "tag:Name"
+    values = [each.key]
+  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "production_attachment_no_traffic_5_minutes" {
-  for_each            = merge(data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_production, aws_ec2_transit_gateway_vpc_attachment.attachments)
+  for_each            = merge(data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_production, data.aws_ec2_transit_gateway_peering_attachment.transit_gateway_production)
   alarm_actions       = [aws_sns_topic.tgw_monitoring_production.arn]
   alarm_description   = format("Low traffic detected for VPC attachment %s", each.value.tags.Name)
   alarm_name          = format("NoVPCAttachmentTraffic-%s", each.value.tags.Name)
