@@ -89,7 +89,7 @@ resource "aws_iam_access_key" "ci" {
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "member-ci-policy" {
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = ["sts:AssumeRole"]
     resources = [
       "arn:aws:iam::*:role/MemberInfrastructureAccess",
