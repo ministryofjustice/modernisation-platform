@@ -32,11 +32,10 @@ locals {
 
   modernisation_platform_users = merge(local.existing_users, tomap(pagerduty_user.pager_duty_users))
 
-  oncall_users = concat(
-    [
-      pagerduty_user.pager_duty_users["david_elliott"].id
-    ]
-  )
+  # oncall users local shortcut to make schedules a bit neater
+  david_elliott  = pagerduty_user.pager_duty_users["david_elliott"].id
+  david_sibley   = pagerduty_user.pager_duty_users["david_sibley"].id
+  stephen_linden = data.pagerduty_user.stephen_linden.id
 
   tags = {
     business-unit = "Platforms"
