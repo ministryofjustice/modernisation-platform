@@ -25,7 +25,7 @@ locals {
   ]
 
   active_tgw_vpc_attachments = [
-    "inspection-attachment",
+    #"inspection-attachment",
     "hmcts-production-attachment",
     "hmpps-production-attachment",
     "core-network-services-live_data-attachment",
