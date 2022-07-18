@@ -89,8 +89,11 @@ resource "aws_iam_access_key" "ci" {
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "member-ci-policy" {
   statement {
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole",
+      "sts:AssumeRoleWithWebIdentity"
+    ]
     resources = [
       "arn:aws:iam::*:role/MemberInfrastructureAccess",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-development"]}:role/member-delegation-*-development",
