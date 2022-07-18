@@ -28,8 +28,7 @@ resource "pagerduty_escalation_policy" "low_priority" {
     escalation_delay_in_minutes = 10
     target {
       type = "user_reference"
-      id   = pagerduty_user.pager_duty_users["david_elliott"].id
-      #id   = pagerduty_user.platforms.id
+      id   = pagerduty_user.pager_duty_users["modernisation_platform"].id
     }
   }
 }
