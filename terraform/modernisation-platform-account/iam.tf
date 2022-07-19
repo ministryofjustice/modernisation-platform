@@ -322,7 +322,7 @@ data "aws_iam_policy_document" "instance-scheduler-assume-role" {
     ]
     principals {
       identifiers = ["lambda.amazonaws.com"]
-      type        = "AWS"
+      type        = "Service"
     }
   }
 }
