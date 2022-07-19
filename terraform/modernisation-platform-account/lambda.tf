@@ -1,13 +1,13 @@
 data "archive_file" "instance_scheduler_zip" {
   type        = "zip"
-  source_dir  = abspath("${path.module}/lambda/golang-instance-scheduler")
-  output_path = abspath("${path.module}/lambda/files/golang_instance_scheduler.zip")
+  source_dir  = "${path.module}/lambda/golang-instance-scheduler"
+  output_path = "golang-instance-scheduler.zip"
 }
 
 resource "aws_lambda_function" "instance-scheduler" {
   #checkov:skip=CKV_AWS_116
   #checkov:skip=CKV_AWS_117
-  filename                       = abspath("${path.module}/lambda/files/golang-instance-scheduler.zip")
+  filename                       = "golang-instance-scheduler.zip"
   function_name                  = "golang-instance-scheduler"
   handler                        = "main"
   reserved_concurrent_executions = 0
