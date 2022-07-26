@@ -148,7 +148,7 @@ data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_non_live_data" {
 data "aws_ec2_transit_gateway_vpc_attachments" "transit_gateway_all" {}
 
 data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_all" {
-  for_each = data.aws_ec2_transit_gateway_vpc_attachments.transit_gateway_all.id
+  for_each = toset(data.aws_ec2_transit_gateway_vpc_attachments.transit_gateway_all.ids)
   id = each.key
 }
 
