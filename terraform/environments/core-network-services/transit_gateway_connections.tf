@@ -147,6 +147,11 @@ data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_non_live_data" {
 
 data "aws_ec2_transit_gateway_vpc_attachments" "transit_gateway_all" {}
 
+data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_all" {
+  for_each = data.aws_ec2_transit_gateway_vpc_attachments.transit_gateway_all.id
+  id = each.key
+}
+
 resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_live_data" {
   for_each = data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_live_data
   transit_gateway_attachment_id  = each.value["id"]
