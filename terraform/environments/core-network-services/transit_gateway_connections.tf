@@ -127,25 +127,25 @@ resource "aws_ec2_transit_gateway_peering_attachment_accepter" "PTTP-Production"
 ######################
 # TGW Route tables
 ######################
-# Create Transit Gateway external-inspection-in routing table
+# Create Transit Gateway route table for ingress via external (non-MP) locations
 resource "aws_ec2_transit_gateway_route_table" "external_inspection_in" {
   transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
 
   tags = merge(
     local.tags,
     {
-      Name = "external-inspection-in"
+      Name = "external"
     }
   )
 }
-# Create Transit Gateway external-inspection-out routing table
+# Create Transit Gateway firewall VPC routing table
 resource "aws_ec2_transit_gateway_route_table" "external_inspection_out" {
   transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
 
   tags = merge(
     local.tags,
     {
-      Name = "external-inspection-out"
+      Name = "firewall"
     }
   )
 }
