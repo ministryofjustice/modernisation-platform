@@ -34,6 +34,13 @@ data "aws_ec2_transit_gateway_vpc_attachment" "hmpps-production" {
     values = ["hmpps-production-attachment"]
   }
 }
+
+data "aws_ec2_transit_gateway_vpc_attachments" "transit_gateway_all" {}
+
+data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_all" {
+  for_each = toset(data.aws_ec2_transit_gateway_vpc_attachments.transit_gateway_all.ids)
+  id       = each.key
+}
 locals {
 
   # Get all VPC definitions by type
@@ -84,6 +91,20 @@ locals {
     "ppud-psn"             = "51.247.0.0/16",
     "azure-noms-live"      = "10.40.0.0/18"
   }
+  tgw_live_data_attachments = {
+    for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => v.tags.Name if(
+      length(regexall(".*-production-attachment", v.tags.Name)) > 0 ||
+      length(regexall(".*-preproduction-attachment", v.tags.Name)) > 0 ||
+      length(regexall(".*-live_data-attachment", v.tags.Name)) > 0
+    )
+  }
+  tgw_non_live_data_attachments = {
+    for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => v.tags.Name if(
+      length(regexall(".*-development-attachment", v.tags.Name)) > 0 ||
+      length(regexall(".*-test-attachment", v.tags.Name)) > 0 ||
+      length(regexall(".*-non_live_data-attachment", v.tags.Name)) > 0
+    )
+  }
 }
 
 ################
@@ -127,13 +148,6 @@ resource "aws_ec2_transit_gateway_route_table" "external_inspection_out" {
       Name = "external-inspection-out"
     }
   )
-}
-
-data "aws_ec2_transit_gateway_vpc_attachments" "transit_gateway_all" {}
-
-data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_all" {
-  for_each = toset(data.aws_ec2_transit_gateway_vpc_attachments.transit_gateway_all.ids)
-  id       = each.key
 }
 
 resource "aws_ec2_transit_gateway_route_table_propagation" "propagate-hmpps-test" {
