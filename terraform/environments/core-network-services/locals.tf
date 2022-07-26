@@ -30,31 +30,4 @@ locals {
     "core-network-services-live_data-attachment",
   ]
 
-  live_tgw_vpc_attachments = [
-    "core-logging-live_data-attachment",
-    "core-network-services-live_data-attachment",
-    "core-security-live_data-attachment",
-    "core-shared-services-live_data-attachment",
-    "hmcts-preproduction-attachment",
-    "hmcts-production-attachment",
-    "hmpps-preproduction-attachment",
-    "hmpps-production-attachment",
-    "hq-production-attachment"
-  ]
-
-  non_live_tgw_vpc_attachments = [
-    "cica-development-attachment",
-    "core-logging-non_live_data-attachment",
-    "core-network-services-non_live_data-attachment",
-    "core-security-non_live_data-attachment",
-    "core-shared-services-non_live_data-attachment",
-    "garden-sandbox-attachment",
-    "hmcts-development-attachment",
-    "hmpps-development-attachment",
-    "hmpps-test-attachment",
-    "house-sandbox-attachment",
-    "hq-development-attachment",
-    "platforms-development-attachment",
-    "platforms-test-attachment"
-  ]
 }
