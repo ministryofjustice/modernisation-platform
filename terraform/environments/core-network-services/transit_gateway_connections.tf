@@ -160,6 +160,18 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "propagate-hmpps-prod
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
 }
 
+resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_live_data_vpcs" {
+  for_each = local.tgw_live_data_attachments
+  transit_gateway_attachment_id  = each.key
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["live_data"].id
+}
+
+resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_non_live_data_vpcs" {
+  for_each = local.tgw_non_live_data_attachments
+  transit_gateway_attachment_id  = each.key
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["non_live_data"].id
+}
+
 # add external egress routes for non-live-data TGW route table to PTTP attachment
 resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_non_live_data_to_PTTP" {
   for_each = local.egress_pttp_routing_cidrs_non_live_data
