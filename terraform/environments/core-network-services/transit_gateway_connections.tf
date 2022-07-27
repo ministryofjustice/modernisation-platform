@@ -161,19 +161,19 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "propagate-hmpps-prod
 }
 
 resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_live_data_vpcs" {
-  for_each = local.tgw_live_data_attachments
+  for_each                       = local.tgw_live_data_attachments
   transit_gateway_attachment_id  = each.key
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["live_data"].id
 }
 
 resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_non_live_data_vpcs" {
-  for_each = local.tgw_non_live_data_attachments
+  for_each                       = local.tgw_non_live_data_attachments
   transit_gateway_attachment_id  = each.key
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["non_live_data"].id
 }
 
 resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_firewall" {
-  for_each = data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all
+  for_each                       = data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all
   transit_gateway_attachment_id  = each.key
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
