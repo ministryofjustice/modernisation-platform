@@ -155,9 +155,9 @@ module "vpc_tgw_routing" {
     aws = aws.core-network-services
   }
 
-  route_table             = data.aws_route_table.main-public
-  subnet_sets             = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
-  tgw_id                  = data.aws_ec2_transit_gateway.transit-gateway.id
+  route_table = data.aws_route_table.main-public
+  subnet_sets = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
+  tgw_id      = data.aws_ec2_transit_gateway.transit-gateway.id
 
   depends_on = [module.vpc_attachment, module.vpc]
 }
