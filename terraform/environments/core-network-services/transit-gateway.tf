@@ -84,14 +84,6 @@ resource "aws_ec2_transit_gateway_route_table_association" "association" {
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables[each.key].id
 }
 
-# Propogate routes from the VPC attachment to the route table
-resource "aws_ec2_transit_gateway_route_table_propagation" "propagation" {
-  for_each = local.networking
-
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[each.key].id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables[each.key].id
-}
-
 #########################
 # Routes for VPC attachments
 #########################

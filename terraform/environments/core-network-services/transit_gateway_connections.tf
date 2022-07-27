@@ -34,6 +34,13 @@ data "aws_ec2_transit_gateway_vpc_attachment" "hmpps-production" {
     values = ["hmpps-production-attachment"]
   }
 }
+
+data "aws_ec2_transit_gateway_vpc_attachments" "transit_gateway_all" {}
+
+data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_all" {
+  for_each = toset(data.aws_ec2_transit_gateway_vpc_attachments.transit_gateway_all.ids)
+  id       = each.key
+}
 locals {
 
   # Get all VPC definitions by type
@@ -84,6 +91,20 @@ locals {
     "ppud-psn"             = "51.247.0.0/16",
     "azure-noms-live"      = "10.40.0.0/18"
   }
+  tgw_live_data_attachments = {
+    for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => v.tags.Name if(
+      length(regexall(".*-production-attachment", v.tags.Name)) > 0 ||
+      length(regexall(".*-preproduction-attachment", v.tags.Name)) > 0 ||
+      length(regexall(".*-live_data-attachment", v.tags.Name)) > 0
+    )
+  }
+  tgw_non_live_data_attachments = {
+    for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => v.tags.Name if(
+      length(regexall(".*-development-attachment", v.tags.Name)) > 0 ||
+      length(regexall(".*-test-attachment", v.tags.Name)) > 0 ||
+      length(regexall(".*-non_live_data-attachment", v.tags.Name)) > 0
+    )
+  }
 }
 
 ################
@@ -106,34 +127,27 @@ resource "aws_ec2_transit_gateway_peering_attachment_accepter" "PTTP-Production"
 ######################
 # TGW Route tables
 ######################
-# Create Transit Gateway external-inspection-in routing table
+# Create Transit Gateway route table for ingress via external (non-MP) locations
 resource "aws_ec2_transit_gateway_route_table" "external_inspection_in" {
   transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
 
   tags = merge(
     local.tags,
     {
-      Name = "external-inspection-in"
+      Name = "external"
     }
   )
 }
-# Create Transit Gateway external-inspection-out routing table
+# Create Transit Gateway firewall VPC routing table
 resource "aws_ec2_transit_gateway_route_table" "external_inspection_out" {
   transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
 
   tags = merge(
     local.tags,
     {
-      Name = "external-inspection-out"
+      Name = "firewall"
     }
   )
-}
-
-data "aws_ec2_transit_gateway_vpc_attachments" "transit_gateway_all" {}
-
-data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_all" {
-  for_each = toset(data.aws_ec2_transit_gateway_vpc_attachments.transit_gateway_all.ids)
-  id       = each.key
 }
 
 resource "aws_ec2_transit_gateway_route_table_propagation" "propagate-hmpps-test" {
@@ -144,6 +158,24 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "propagate-hmpps-test
 resource "aws_ec2_transit_gateway_route_table_propagation" "propagate-hmpps-prod" {
   transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_vpc_attachment.hmpps-production.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
+}
+
+resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_live_data_vpcs" {
+  for_each                       = local.tgw_live_data_attachments
+  transit_gateway_attachment_id  = each.key
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["live_data"].id
+}
+
+resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_non_live_data_vpcs" {
+  for_each                       = local.tgw_non_live_data_attachments
+  transit_gateway_attachment_id  = each.key
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["non_live_data"].id
+}
+
+resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_firewall" {
+  for_each                       = data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all
+  transit_gateway_attachment_id  = each.key
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
 # add external egress routes for non-live-data TGW route table to PTTP attachment
