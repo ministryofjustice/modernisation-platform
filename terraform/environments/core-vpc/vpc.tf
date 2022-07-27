@@ -41,7 +41,7 @@ data "aws_ec2_transit_gateway_route_table" "external_inspection_out" {
 
   filter {
     name   = "tag:Name"
-    values = ["external-inspection-out"]
+    values = ["firewall"]
   }
 
 }
