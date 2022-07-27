@@ -157,10 +157,7 @@ module "vpc_tgw_routing" {
 
   route_table             = data.aws_route_table.main-public
   subnet_sets             = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
-  tgw_vpc_attachment      = module.vpc_attachment[each.key].tgw_vpc_attachment
-  tgw_route_table         = module.vpc_attachment[each.key].tgw_route_table
   tgw_id                  = data.aws_ec2_transit_gateway.transit-gateway.id
-  external_inspection_out = data.aws_ec2_transit_gateway_route_table.external_inspection_out.id
 
   depends_on = [module.vpc_attachment, module.vpc]
 }
