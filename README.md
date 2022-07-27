@@ -34,7 +34,6 @@ Modernisation Platform users can use these modules in their infrastructure. They
 | [modernisation-platform-terraform-lambda-scheduler-stop-start](https://github.com/ministryofjustice/modernisation-platform-terraform-lambda-scheduler-stop-start) | Module for stopping and starting instance, rds resources and autoscaling groups with lambda function |
 | [modernisation-platform-terraform-pagerduty-integration](https://github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration) | Module associating an SNS topic with a PagerDuty service |
 [modernisation-platform-terraform-loadbalancer](https://github.com/ministryofjustice/modernisation-platform-terraform-loadbalancer) | Module that creates application loadbalancer in AWS with logging enabled, s3 to store logs and Athena DB to query logs |
-| [modernisation-platform-terraform-bastion-linux](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) | Module for creating Linux bastion servers in member AWS accounts |
 | [modernisation-platform-github-oidc-provider](https://github.com/ministryofjustice/modernisation-platform-github-oidc-provider) | Module for creating OIDC providers to use in GitHub Actions |
 
 ### Terraform modules - used by the core platform
