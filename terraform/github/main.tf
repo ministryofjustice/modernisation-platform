@@ -111,6 +111,19 @@ module "terraform-module-bastion-linux" {
   secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
+module "terraform-module-github-oidc-provider" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-github-oidc-provider"
+  description = "Module for creating OIDC providers to use in GitHub Actions"
+  topics = [
+    "aws",
+    "oidc",
+    "github",
+    "actions"
+  ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
+}
+
 module "terraform-module-ecs" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-ecs"
@@ -279,7 +292,8 @@ module "core-team" {
     module.modernisation-platform-terraform-member-vpc.repository.name,
     module.modernisation-platform-cp-network-test.repository.name,
     module.modernisation-platform-terraform-module-template.repository.name,
-    module.modernisation-platform-terraform-pagerduty-integration.repository.name
+    module.modernisation-platform-terraform-pagerduty-integration.repository.name,
+    module.terraform-module-github-oidc-provider.repository.name
   ]
 
   maintainers = local.maintainers
