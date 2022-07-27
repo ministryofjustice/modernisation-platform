@@ -3,21 +3,6 @@ variable "subnet_sets" {
   type        = map(any)
 }
 
-variable "tgw_vpc_attachment" {
-  description = "Transit Gateway VPC attachment ID"
-  type        = string
-}
-
-variable "tgw_route_table" {
-  description = "Transit Gateway route table ID"
-  type        = string
-}
-
-variable "external_inspection_out" {
-  description = "Transit Gateway route table ID for internal-inspection-out"
-  type        = string
-}
-
 variable "route_table" {
   description = "Route Table"
 }
