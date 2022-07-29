@@ -15,6 +15,6 @@
     "application": "apex",
     "business-unit": "LAA",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
-    "owner": "alan.terry@cica.gov.uk"
+    "owner": "laa-role-sre@digital.justice.gov.uk"
   }
 }
