@@ -4,7 +4,7 @@ expected =
 {
   "accounts": [
     "analytical-platform-management",
-    "apex"
+    "apex",
     "bichard7",
     "cooker",
     "core-logging",
