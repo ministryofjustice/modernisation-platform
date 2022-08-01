@@ -61,6 +61,7 @@ locals {
     "cica",
     "xhibit-portal-dev",
     "ppud-replacement-devs",
-    "threat-and-vulnerability-mgmt"
+    "threat-and-vulnerability-mgmt",
+    "laa-aws-infrastructure"
   ]
 }
