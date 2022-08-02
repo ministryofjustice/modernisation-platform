@@ -1,7 +1,7 @@
 #tfsec:ignore:aws-iam-no-policy-wildcards
 #tfsec:ignore:aws-iam-enforce-mfa
 module "iam" {
-  source        = "github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins?ref=v1.0.9"
+  source        = "github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins?ref=v1.0.10"
   account_alias = "moj-modernisation-platform"
 }
 
@@ -146,7 +146,7 @@ data "aws_iam_policy_document" "member-ci-policy" {
       "dynamodb:PutItem",
       "dynamodb:DeleteItem"
     ]
-    resources = ["${aws_dynamodb_table.state-lock.arn}"]
+    resources = [aws_dynamodb_table.state-lock.arn]
   }
 
   # Based on https://docs.amazonaws.cn/en_us/AmazonS3/latest/userguide/UsingKMSEncryption.htm
@@ -157,8 +157,8 @@ data "aws_iam_policy_document" "member-ci-policy" {
       "kms:GenerateDataKey"
     ]
     resources = [
-      "${aws_kms_key.dynamo_encryption.arn}",
-      "${aws_kms_key.s3_state_bucket.arn}"
+      aws_kms_key.dynamo_encryption.arn,
+      aws_kms_key.s3_state_bucket.arn
     ]
   }
 
