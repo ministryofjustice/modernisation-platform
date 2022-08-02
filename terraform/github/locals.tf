@@ -41,7 +41,8 @@ locals {
     "pete-j-g",  # Piotr Grzeskowiak
     "adeweetman-al",
     "gfou-al", # George Fountopoulos,
-    "dms1981"  # David Sibley
+    "dms1981", # David Sibley
+    "ep-93"    # Edward Proctor
   ]
 
   # All members
