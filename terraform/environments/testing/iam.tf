@@ -1,5 +1,6 @@
 ### Testing CI user - user to be used for automated tests, access limited to the testing account and essential core resources
 # Create a testing CI user
+#tfsec:ignore:aws-iam-no-user-attached-policies
 resource "aws_iam_user" "testing_ci" {
   name = "testing-ci"
   tags = local.tags
