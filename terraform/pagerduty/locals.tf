@@ -13,6 +13,11 @@ locals {
       email = "david.sibley${local.digital_email_suffix}"
       role  = "user"
     },
+    edward_proctor = {
+      name  = "Edward Proctor"
+      email = "edward.proctor${local.digital_email_suffix}"
+      role  = "user"
+    },
     modernisation_platform = {
       name  = "Modernisation Platform Team"
       email = "modernisation-platform${local.digital_email_suffix}"
@@ -24,7 +29,6 @@ locals {
 
   existing_users = {
     karen_botsh    = data.pagerduty_user.karen_botsh,
-    jack_stockley  = data.pagerduty_user.jack_stockley,
     jake_mulley    = data.pagerduty_user.jake_mulley,
     sean_privett   = data.pagerduty_user.sean_privett,
     stephen_linden = data.pagerduty_user.stephen_linden,
@@ -56,10 +60,6 @@ data "pagerduty_user" "sean_privett" {
 
 data "pagerduty_user" "karen_botsh" {
   email = "karen.botsh${local.digital_email_suffix}"
-}
-
-data "pagerduty_user" "jack_stockley" {
-  email = "jack.stockley${local.digital_email_suffix}"
 }
 
 data "pagerduty_user" "jake_mulley" {
