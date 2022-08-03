@@ -122,8 +122,8 @@ resource "aws_iam_role" "athena_lambda" {
           ]
           Effect = "Allow"
           Resource = [
-            "${aws_athena_workgroup.mod-platform.arn}",
-            "arn:aws:athena:eu-west-2:${data.aws_caller_identity.current.account_id}:workgroup/primary"
+            aws_athena_workgroup.mod-platform.arn,
+            format("arn:aws:athena:eu-west-2:%s:workgroup/primary", data.aws_caller_identity.current.account_id)
           ]
         },
         {

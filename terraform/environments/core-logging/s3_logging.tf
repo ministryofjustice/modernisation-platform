@@ -276,12 +276,12 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
       "s3:GetObjectVersion"
     ]
     resources = [
-      "${module.s3-bucket-cloudtrail.bucket.arn}",
-      "${module.s3-bucket-cloudtrail.bucket.arn}/*"
+      module.s3-bucket-cloudtrail.bucket.arn,
+      format("%s/*", module.s3-bucket-cloudtrail.bucket.arn)
     ]
     principals {
       type        = "AWS"
-      identifiers = ["${data.aws_caller_identity.current.account_id}"]
+      identifiers = [data.aws_caller_identity.current.account_id]
     }
   }
 }
