@@ -46,8 +46,8 @@ data "aws_iam_policy_document" "athena_bucket_policy" {
       "s3:GetBucketAcl",
       "s3:GetBucketPolicy"
     ]
-    resources = ["${module.s3-bucket-athena.bucket.arn}",
-    "${module.s3-bucket-athena.bucket.arn}/*"]
+    resources = [module.s3-bucket-athena.bucket.arn,
+    format("%s/*", module.s3-bucket-athena.bucket.arn)]
     principals {
       type        = "Service"
       identifiers = ["s3.amazonaws.com"]
