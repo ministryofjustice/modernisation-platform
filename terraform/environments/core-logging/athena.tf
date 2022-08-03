@@ -46,8 +46,8 @@ data "aws_iam_policy_document" "athena_bucket_policy" {
       "s3:GetBucketAcl",
       "s3:GetBucketPolicy"
     ]
-    resources = ["${module.s3-bucket-athena.bucket.arn}",
-    "${module.s3-bucket-athena.bucket.arn}/*"]
+    resources = [module.s3-bucket-athena.bucket.arn,
+    format("%s/*", module.s3-bucket-athena.bucket.arn)]
     principals {
       type        = "Service"
       identifiers = ["s3.amazonaws.com"]
@@ -122,8 +122,8 @@ resource "aws_iam_role" "athena_lambda" {
           ]
           Effect = "Allow"
           Resource = [
-            "${aws_athena_workgroup.mod-platform.arn}",
-            "arn:aws:athena:eu-west-2:${data.aws_caller_identity.current.account_id}:workgroup/primary"
+            aws_athena_workgroup.mod-platform.arn,
+            format("arn:aws:athena:eu-west-2:%s:workgroup/primary", data.aws_caller_identity.current.account_id)
           ]
         },
         {

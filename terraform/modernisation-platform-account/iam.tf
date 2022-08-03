@@ -301,6 +301,7 @@ data "aws_iam_policy_document" "collaborator_local_plan" {
   }
 }
 
+#tfsec:ignore:aws-iam-no-user-attached-policies
 module "collaborators" {
   source                 = "../modules/collaborators"
   for_each               = { for user in local.collaborators.users : user.username => user.accounts }

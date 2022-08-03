@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "assume_role" {
     resources = [for account in var.accounts :
       join("", [
         "arn:aws:iam::",
-        var.environment_management.account_ids["${account.account-name}"],
+        var.environment_management.account_ids[account.account-name],
         ":role/",
         account.access
     ])]
