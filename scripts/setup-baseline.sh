@@ -13,30 +13,33 @@ run_terraform() {
 
     echo "[+] Terraform $terraform_action =====>"
 
-    terraform -chdir="$directory" workspace select default 
+    terraform -chdir="$directory" workspace select default
 
-    workspace=`terraform -chdir="$directory" workspace list | grep $account`
-   
+    workspace="apex"
+
+    #workspace=`terraform -chdir="$directory" workspace list | grep $account`
+
     echo "[+] found workspaces:"
     echo $workspace
 
     for i in $workspace
-    do 
+    do
       # Select workspace
-      terraform -chdir="$directory" workspace select "$i"
+      #terraform -chdir="$directory" workspace select "$i"
+      terraform workspace select apex
 
       # Run terraform plan
       if [ "$terraform_action" = "plan" ]; then
         echo "[+] running terraform plan for workspace: $i"
-        ./scripts/terraform-plan.sh "$directory"
+        ./scripts/terraform-plan.sh terraform/environments/bootstrap/delegate-access
       elif [ "$terraform_action" = "apply" ]; then
         echo "[+] running terraform apply for workspace: $i"
-        ./scripts/terraform-apply.sh "$directory"
+        ./scripts/terraform-apply.sh terraform/environments/bootstrap/delegate-access
       else
         echo "Unknown terraform command: $terraform_action"
       fi
     done
- 
+
   echo "Finished running terraform for new workspace in $directory"
 }
 
