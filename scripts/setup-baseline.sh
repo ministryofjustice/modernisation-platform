@@ -26,7 +26,7 @@ run_terraform() {
     do
       # Select workspace
       #terraform -chdir="$directory" workspace select "$i"
-      terraform workspace select apex
+      terraform workspace select apex-development
 
       # Run terraform plan
       if [ "$terraform_action" = "plan" ]; then
