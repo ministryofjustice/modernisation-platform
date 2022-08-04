@@ -13,7 +13,7 @@ run_terraform() {
 
     echo "[+] Terraform $terraform_action =====>"
 
-    terraform -chdir="$directory" workspace select default
+    terraform -chdir=terraform/environments/bootstrap/delegate-access workspace select default
 
     workspace="apex-development"
 
@@ -25,8 +25,7 @@ run_terraform() {
     for i in $workspace
     do
       # Select workspace
-      #terraform -chdir="$directory" workspace select "$i"
-      terraform workspace select apex-development
+      terraform -chdir=terraform/environments/bootstrap/delegate-access workspace select apex-development
 
       # Run terraform plan
       if [ "$terraform_action" = "plan" ]; then
