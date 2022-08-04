@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail
+set -euxo pipefail
 
 #set parameters
 directory="$1"
@@ -13,30 +13,32 @@ run_terraform() {
 
     echo "[+] Terraform $terraform_action =====>"
 
-    terraform -chdir="$directory" workspace select default 
+    terraform -chdir=terraform/environments/bootstrap/delegate-access workspace select default
 
-    workspace=`terraform -chdir="$directory" workspace list | grep $account`
-   
+    workspace="apex-development"
+
+    #workspace=`terraform -chdir="$directory" workspace list | grep $account`
+
     echo "[+] found workspaces:"
     echo $workspace
 
     for i in $workspace
-    do 
+    do
       # Select workspace
-      terraform -chdir="$directory" workspace select "$i"
+      terraform -chdir=terraform/environments/bootstrap/delegate-access workspace select apex-development
 
       # Run terraform plan
       if [ "$terraform_action" = "plan" ]; then
         echo "[+] running terraform plan for workspace: $i"
-        ./scripts/terraform-plan.sh "$directory"
+        ./scripts/terraform-plan.sh terraform/environments/bootstrap/delegate-access
       elif [ "$terraform_action" = "apply" ]; then
         echo "[+] running terraform apply for workspace: $i"
-        ./scripts/terraform-apply.sh "$directory"
+        ./scripts/terraform-apply.sh terraform/environments/bootstrap/delegate-access
       else
         echo "Unknown terraform command: $terraform_action"
       fi
     done
- 
+
   echo "Finished running terraform for new workspace in $directory"
 }
 
