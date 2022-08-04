@@ -15,7 +15,7 @@ run_terraform() {
 
     terraform -chdir="$directory" workspace select default
 
-    workspace="apex"
+    workspace="apex-development"
 
     #workspace=`terraform -chdir="$directory" workspace list | grep $account`
 
