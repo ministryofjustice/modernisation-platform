@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 # This script runs terraform init with input set to false and no color outputs, suitable for running as part of a CI/CD pipeline.
 # You need to pass through a Terraform directory as an argument, e.g.
