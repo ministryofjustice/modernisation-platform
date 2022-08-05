@@ -118,6 +118,14 @@ expected =
           "threat-and-vulnerability-mgmt-production"
         ]
       }
+    },
+    "laa-development": {
+      "general": {
+        "cidr": "10.26.56.0/21",
+        "accounts": [
+          "apex-development"
+        ]
+      }
     }
   }
 }
