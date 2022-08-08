@@ -16,6 +16,17 @@ resource "aws_iam_role" "dns" {
           },
           "Action" : "sts:AssumeRole",
           "Condition" : {}
+        },{
+          "Effect" : "Allow",
+          "Principal" : {
+            "AWS" : "arn:aws:iam::*:role/github-actions"
+          },
+          "Action" : "sts:AssumeRole",
+          "Condition" : {
+            "ForAnyValue:StringLike" : {
+              "aws:PrincipalOrgPaths" : ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+            }
+          }
         },
         {
           "Effect" : "Allow",
