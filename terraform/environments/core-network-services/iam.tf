@@ -16,7 +16,7 @@ resource "aws_iam_role" "dns" {
           },
           "Action" : "sts:AssumeRole",
           "Condition" : {}
-        },{
+          }, {
           "Effect" : "Allow",
           "Principal" : {
             "AWS" : "arn:aws:iam::*:role/github-actions"
