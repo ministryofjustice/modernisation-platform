@@ -263,6 +263,7 @@ resource "aws_iam_role" "member-delegation" {
           "Principal" : {
             "AWS" : concat(
               local.expanded_account_numbers_with_keys[each.key],
+              format("%s:role/github-actions", local.expanded_account_numbers_with_keys[each.key]),
               tolist([data.aws_caller_identity.modernisation-platform.account_id])
             )
           },
