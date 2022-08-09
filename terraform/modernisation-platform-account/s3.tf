@@ -303,7 +303,6 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     effect  = "Allow"
     actions = ["s3:PutObject"]
     resources = [
-      "${module.state-bucket.bucket.arn}/terraform.tfstate",
       "${module.state-bucket.bucket.arn}/environments/members/testing/testing-test/terraform.tfstate",
     ]
 
