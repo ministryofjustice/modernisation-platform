@@ -1,10 +1,10 @@
 # CIDR allocation register
 
-| CIDR       | mask | allocated to                             |
+| CIDR       | mask | allocated to                             |                            |
 | :--------- | :--- | :--------------------------------------- | -------------------------- |
-| 10.20.0.0  | /16  | used for vpcs in core accounts           |
-| 10.26.0.0  | /16  | shared-vpcs development and test         |
-| 10.27.0.0  | /16  | shared-vpcs preproduction and production |
+| 10.20.0.0  | /16  | used for vpcs in core accounts           |                            |
+| 10.26.0.0  | /16  | shared-vpcs development and test         |                            |
+| 10.27.0.0  | /16  | shared-vpcs preproduction and production |                            |
 | 10.239.0.0 | /16  | shared-vpcs sandbox (NOT ROUTEABLE)      | Use for local testing only |
 |            |      |
 
