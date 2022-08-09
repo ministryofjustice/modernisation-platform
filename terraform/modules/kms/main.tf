@@ -61,6 +61,7 @@ data "aws_iam_policy_document" "kms" {
     effect = "Allow"
     actions = [
       "kms:CreateGrant",
+      "kms:ListGrants",
       "kms:Encrypt",
       "kms:Decrypt",
       "kms:ReEncrypt*",
