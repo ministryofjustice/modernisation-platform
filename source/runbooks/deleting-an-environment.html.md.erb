@@ -143,74 +143,15 @@ For the following workspaces, switch to the workspace and run a `terraform destr
 
 `modernisation-platform/terraform/environments/<application-name>`
 
-```bash
-$ aws-vault exec modernisation-platform -- .scripts/internal/find-terraform-workspace.sh core-vpc-non-live-data
-Starting a `terraform workspace` search from ./modernisation-platform
+After completing this, you will need to destroy any lingering terraform workspaces in the following:
 
-Searching for Terraform workspaces in ./terraform/environments
+`modernisation-platform/terraform/environments/bootstrap/delegate-access/<application-name>`
 
-Workspace "core-vpc-non-live-data" doesn't exist.
+`modernisation-platform/terraform/environments/bootstrap/secure-baselines/<application-name>`
 
-You can create this workspace with the "new" subcommand.
+`modernisation-platform/terraform/environments/bootstrap/single-sign-on/<application-name>`
 
-Finished searching for Terraform workspaces in ./terraform/environments
-
-...
-
-Searching for Terraform workspaces in ./terraform/environments/bootstrap/delegate-access
-Switched to workspace "default".
-Switched to workspace "core-vpc-non-live-data".
-
-Finished searching for Terraform workspaces in ./terraform/environments/bootstrap/delegate-access
-
-
-Searching for Terraform workspaces in ./terraform/environments/bootstrap/secure-baselines
-Switched to workspace "default".
-Switched to workspace "core-vpc-non-live-data".
-
-Finished searching for Terraform workspaces in ./terraform/environments/bootstrap/secure-baselines
-
-
-Searching for Terraform workspaces in ./terraform/environments/bootstrap/single-sign-on
-Switched to workspace "default".
-Switched to workspace "core-vpc-non-live-data".
-
-Finished searching for Terraform workspaces in ./terraform/environments/bootstrap/single-sign-on
-
-...
-
-Searching for Terraform workspaces in ./terraform/environments/core-vpc
-Switched to workspace "default".
-Switched to workspace "core-vpc-non-live-data".
-
-Finished searching for Terraform workspaces in ./terraform/environments/core-vpc
-
-...
-```
-
-If a workspace doesn't exist by that name, this script will return:
-
-```bash
-Searching for Terraform workspaces in ./terraform/modernisation-platform-account
-
-Workspace "core-vpc-non-live-data" doesn't exist.
-
-You can create this workspace with the "new" subcommand.
-
-Finished searching for Terraform workspaces in ./terraform/modernisation-platform-account
-```
-
-If a workspace does exist, this script will return:
-
-```bash
-Searching for Terraform workspaces in ./terraform/environments/bootstrap/delegate-access
-Switched to workspace "default".
-Switched to workspace "core-vpc-non-live-data".
-
-Finished searching for Terraform workspaces in ./terraform/environments/bootstrap/delegate-access
-```
-
-You need to go through all of the directories where the workspace appears and run:
+For example: 
 
 ```bash
 terraform workspace delete -force core-vpc-non-live-data
@@ -234,7 +175,7 @@ After following the above steps, you need to move the account to the closed acco
 
 This is to move the account out of an organizational unit where there is an SCP preventing any actions by the root user.
 
-Log into the AWS Console and navigate to AWS Oraganizations, find the account and move it to the `root` OU.
+Log into the AWS Console and navigate to AWS Organizations, find the account and move it to the `root` OU.
 
 Now the AWS account can be deleted.
 
