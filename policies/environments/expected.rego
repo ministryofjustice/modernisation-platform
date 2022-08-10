@@ -25,6 +25,7 @@ expected =
     "ppud",
     "equip",
     "example",
-    "threat-and-vulnerability-mgmt"
+    "threat-and-vulnerability-mgmt",
+    "data-and-insights-hub"
     ]
 }
