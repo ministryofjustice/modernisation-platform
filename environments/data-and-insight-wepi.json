@@ -1,0 +1,28 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "sandbox",
+      "access": [
+        {
+          "github_slug": "data-and-insight-hub",
+          "level": "sandbox"
+        }
+      ]
+    },
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "data-and-insight-hub",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "data-and-insight-wepi",
+    "business-unit": "HQ",
+    "owner": "Philip.cooke@justice.gov.uk"
+  }
+}
