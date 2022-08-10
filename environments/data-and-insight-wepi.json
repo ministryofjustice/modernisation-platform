@@ -2,7 +2,6 @@
   "account-type": "member",
   "environments": [
     {
-
       "name": "sandbox",
       "access": [
         {
