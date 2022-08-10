@@ -5,7 +5,7 @@
       "name": "sandbox",
       "access": [
         {
-          "github_slug": "data-and-insight-hub",
+          "github_slug": "data-and-insights-hub",
           "level": "sandbox"
         }
       ]
@@ -14,14 +14,14 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "data-and-insight-hub",
+          "github_slug": "data-and-insights-hub",
           "level": "developer"
         }
       ]
     }
   ],
   "tags": {
-    "application": "data-and-insight-wepi",
+    "application": "data-and-insights-wepi",
     "business-unit": "HQ",
     "owner": "Philip.cooke@justice.gov.uk"
   }
