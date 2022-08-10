@@ -63,6 +63,7 @@ locals {
     "xhibit-portal-dev",
     "ppud-replacement-devs",
     "threat-and-vulnerability-mgmt",
-    "laa-aws-infrastructure"
+    "laa-aws-infrastructure",
+    "data-and-insights-hub"
   ]
 }
