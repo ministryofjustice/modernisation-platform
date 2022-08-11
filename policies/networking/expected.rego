@@ -107,7 +107,8 @@ expected =
       "general": {
         "cidr": "10.26.48.0/21",
         "accounts": [
-          "threat-and-vulnerability-mgmt-development"
+          "threat-and-vulnerability-mgmt-development",
+          "data-and-insights-wepi"
         ]
       }
     },
