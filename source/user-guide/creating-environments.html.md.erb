@@ -11,7 +11,6 @@ review_in: 6 months
 
 In the Modernisation Platform, we define environments (AWS accounts) via a JSON file in the [environments](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments) directory of the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform).
 
-
 When we recieve your request we will create a new JSON file and submit a pull request to the Modernisation Platform repository. On merging the Modernisation Platform will automatically provision your environments. Each environment defined represents an AWS account, see the [example](#blank-example) below for more information.
 
 ## Requesting an environment
@@ -63,7 +62,7 @@ The sandbox access can only be used on a `development` environment account.
 - This permission can only be attached to development accounts
 - Once a week the account will be cleared with [AWS Nuke](../concepts/environments/auto-nuke.html) then rebuilt from Terraform
 
-The idea of sandbox access is that it gives you freedom to experiment and modify things in the console to assist with creating your Terraform code. 
+The idea of sandbox access is that it gives you freedom to experiment and modify things in the console to assist with creating your Terraform code.
 
 Anything not in code will be lost at the end of the week.
 
