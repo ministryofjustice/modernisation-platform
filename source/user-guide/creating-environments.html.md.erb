@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating environments in the Modernisation Platform
-last_reviewed_on: 2022-05-24
+last_reviewed_on: 2022-08-10
 review_in: 6 months
 ---
 
@@ -10,7 +10,6 @@ review_in: 6 months
 ## Overview
 
 In the Modernisation Platform, we define environments (AWS accounts) via a JSON file in the [environments](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments) directory of the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform).
-
 
 When we recieve your request we will create a new JSON file and submit a pull request to the Modernisation Platform repository. On merging the Modernisation Platform will automatically provision your environments. Each environment defined represents an AWS account, see the [example](#blank-example) below for more information.
 
@@ -43,18 +42,27 @@ This is the level of access for the GitHub team to the Modernisation Platform. T
 #### developer
 
  - Log into the console
- - Read only access to resources including things like logs and S3 buckets.
+ - Read only access to resources including things like logs and S3 buckets
  - View and Edit [Secrets Manager](https://aws.amazon.com/secrets-manager/) secrets and [Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) values
  - Create and rotate access keys for the application deployment CI user
+ - [Connect to instances via SSM](accessing-ec2s.html)
+ - Start, stop and reboot EC2 instances
+ - Create and copy Snapshots
+ - Put and delete S3 objects
+ - [Import certificates to ACM](certificate-import.html)
+ - [Switch roles to view shared resources](member-read-only-core-accounts.html)
+ - Raise AWS Support cases
 
 #### sandbox
+
+The sandbox access can only be used on a `development` environment account.
 
 - Log into the console
 - Same console read and write permissions as the pipelines have
 - This permission can only be attached to development accounts
 - Once a week the account will be cleared with [AWS Nuke](../concepts/environments/auto-nuke.html) then rebuilt from Terraform
 
-The idea of sandbox access is that it gives you freedom to experiment and modify things in the console to assist with creating your Terraform code. 
+The idea of sandbox access is that it gives you freedom to experiment and modify things in the console to assist with creating your Terraform code.
 
 Anything not in code will be lost at the end of the week.
 
