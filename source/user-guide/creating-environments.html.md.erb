@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating environments in the Modernisation Platform
-last_reviewed_on: 2022-05-24
+last_reviewed_on: 2022-08-10
 review_in: 6 months
 ---
 
@@ -43,11 +43,20 @@ This is the level of access for the GitHub team to the Modernisation Platform. T
 #### developer
 
  - Log into the console
- - Read only access to resources including things like logs and S3 buckets.
+ - Read only access to resources including things like logs and S3 buckets
  - View and Edit [Secrets Manager](https://aws.amazon.com/secrets-manager/) secrets and [Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) values
  - Create and rotate access keys for the application deployment CI user
+ - [Connect to instances via SSM](accessing-ec2s.html)
+ - Start, stop and reboot EC2 instances
+ - Create and copy Snapshots
+ - Put and delete S3 objects
+ - [Import certificates to ACM](certificate-import.html)
+ - [Switch roles to view shared resources](member-read-only-core-accounts.html)
+ - Raise AWS Support cases
 
 #### sandbox
+
+The sandbox access can only be used on a `development` environment account.
 
 - Log into the console
 - Same console read and write permissions as the pipelines have
