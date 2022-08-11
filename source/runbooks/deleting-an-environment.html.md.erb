@@ -7,7 +7,7 @@ review_in: 6 month
 
 # <%= current_page.data.title %>
 
->Note: This process is cannot be undone. All resources in an AWS account will be deleted.
+> Note: This process is cannot be undone. All resources in an AWS account will be deleted.
 
 In the Modernisation Platform, we run a pipeline to create AWS accounts using the `aws_organizations_account` Terraform resource.
 
@@ -157,7 +157,7 @@ For example:
 terraform workspace delete -force core-vpc-non-live-data
 ```
 
->This will not delete the resources that are set up by the Terraform configuration. It will only delete the Terraform reference to the workspace. You will need to delete the AWS account properly.
+> This will not delete the resources that are set up by the Terraform configuration. It will only delete the Terraform reference to the workspace. You will need to delete the AWS account properly.
 
 If you delete the last environment and there are no more environments for the application, you should delete all of the environment files in the following folders:
 
@@ -171,7 +171,7 @@ After following the above steps, you need to move the account to the closed acco
 
 ## Move the account to the root organizational unit
 
->Note that a user with root account permissions will need to do this.
+> Note that a user with root account permissions will need to do this.
 
 This is to move the account out of an organizational unit where there is an SCP preventing any actions by the root user.
 
@@ -181,7 +181,7 @@ Now the AWS account can be deleted.
 
 ## Delete the actual AWS account
 
->This process cannot be undone. Proceed carefully.
+> This process cannot be undone. Proceed carefully.
 
 Follow the [AWS documentation on closing an AWS account](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/close-account.html#closing-the-account). You will need:
 
@@ -190,7 +190,7 @@ Follow the [AWS documentation on closing an AWS account](https://docs.aws.amazon
 
 ## Move the account to the closed accounts organizational unit
 
->Note that a user with root account permissions will need to do this.
+> Note that a user with root account permissions will need to do this.
 
 Log into the AWS Console and navigate to AWS Oraganizations, find the account and move it to the `Closed accounts` OU.
 
