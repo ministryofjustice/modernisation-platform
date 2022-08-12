@@ -14,10 +14,10 @@ module "cross-account-access" {
   providers = {
     aws = aws.workspace
   }
-  account_id = local.modernisation_platform_account.id
+  account_id             = local.modernisation_platform_account.id
   additional_trust_roles = [format("arn:aws:iam::%s:role/github-actions", local.environment_management.account_ids[terraform.workspace])]
-  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
-  role_name  = "ModernisationPlatformAccess"
+  policy_arn             = "arn:aws:iam::aws:policy/AdministratorAccess"
+  role_name              = "ModernisationPlatformAccess"
 }
 
 module "cicd-member-user" {
