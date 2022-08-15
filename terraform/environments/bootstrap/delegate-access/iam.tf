@@ -226,15 +226,50 @@ data "aws_iam_policy_document" "instance-scheduler-access" {
   }
 
   statement {
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
-
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
     principals {
-      type = "AWS"
-      identifiers = ["arn:aws:iam::${local.modernisation_platform_account.id}:root",
-        "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"
-      ]
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
     }
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
+    resources = [
+      "arn:aws:iam::${local.modernisation_platform_account.id}:role/developer",
+      "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/developer"
+    ]
+  }
+
+  statement {
+    sid    = "AllowLambdaToCreateLogGroup"
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogGroup"
+    ]
+    resources = [
+      format("arn:aws:logs:eu-west-2:%s:*", local.modernisation_platform_account.id),
+      format("arn:aws:logs:eu-west-2:%s:*", local.environment_management.account_ids[terraform.workspace])
+    ]
+  }
+
+  statement {
+    sid    = "AllowLambdaToWriteLogsToGroup"
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
+    resources = [
+      format("arn:aws:logs:eu-west-2:%s:*", local.modernisation_platform_account.id),
+      format("arn:aws:logs:eu-west-2:%s:*", local.environment_management.account_ids[terraform.workspace])
+    ]
   }
 
   statement {
