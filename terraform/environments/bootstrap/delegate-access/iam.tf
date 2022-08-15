@@ -179,6 +179,131 @@ resource "aws_iam_policy" "member-access" {
   policy      = data.aws_iam_policy_document.member-access.json
 }
 
+module "instance-scheduler-access" {
+  count  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.2.0"
+  providers = {
+    aws = aws.workspace
+  }
+  account_id             = local.modernisation_platform_account.id
+  additional_trust_roles = [format("arn:aws:iam::%s:role/github-actions", local.environment_management.account_ids[terraform.workspace])]
+  policy_arn             = aws_iam_policy.instance-scheduler-access[0].id
+  role_name              = "InstanceSchedulerAccess"
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "instance-scheduler-access" {
+  statement {
+    #checkov:skip=CKV_AWS_108
+    #checkov:skip=CKV_AWS_111
+    #checkov:skip=CKV_AWS_107
+    #checkov:skip=CKV_AWS_109
+    #checkov:skip=CKV_AWS_110
+    effect = "Allow"
+    actions = [
+      "ec2:Describe*",
+      "ec2:*SecurityGroup*",
+      "ec2:*KeyPair*",
+      "ec2:*Tags*",
+      "ec2:*Volume*",
+      "ec2:*Snapshot*",
+      "ec2:*Ebs*",
+      "ec2:*NetworkInterface*",
+      "ec2:*Address*",
+      "ec2:*Image*",
+      "ec2:*Event*",
+      "ec2:*Instance*",
+      "ec2:*CapacityReservation*",
+      "ec2:*Fleet*",
+      "ec2:Get*",
+      "ec2:SendDiagnosticInterrupt",
+      "ec2:*LaunchTemplate*",
+      "ec2:*PlacementGroup*",
+      "ec2:*IdFormat*",
+      "ec2:*Spot*"
+    ]
+    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+  }
+
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type = "AWS"
+      identifiers = ["arn:aws:iam::${local.modernisation_platform_account.id}:root",
+        "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"
+      ]
+    }
+  }
+
+  statement {
+    effect = "Deny"
+    actions = [
+      "ec2:CreateVpc",
+      "ec2:CreateSubnet",
+      "ec2:CreateVpcPeeringConnection",
+      "iam:AddUserToGroup",
+      "iam:AttachGroupPolicy",
+      "iam:AttachUserPolicy",
+      "iam:CreateAccountAlias",
+      "iam:CreateGroup",
+      "iam:CreateLoginProfile",
+      "iam:CreateSAMLProvider",
+      "iam:CreateUser",
+      "iam:CreateVirtualMFADevice",
+      "iam:DeactivateMFADevice",
+      "iam:DeleteAccountAlias",
+      "iam:DeleteAccountPasswordPolicy",
+      "iam:DeleteGroup",
+      "iam:DeleteGroupPolicy",
+      "iam:DeleteLoginProfile",
+      "iam:DeleteSAMLProvider",
+      "iam:DeleteUser",
+      "iam:DeleteUserPermissionsBoundary",
+      "iam:DeleteUserPolicy",
+      "iam:DeleteVirtualMFADevice",
+      "iam:DetachGroupPolicy",
+      "iam:DetachUserPolicy",
+      "iam:EnableMFADevice",
+      "iam:RemoveUserFromGroup",
+      "iam:ResyncMFADevice",
+      "iam:UpdateAccountPasswordPolicy",
+      "iam:UpdateGroup",
+      "iam:UpdateLoginProfile",
+      "iam:UpdateSAMLProvider",
+      "iam:UpdateUser"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Deny"
+    actions = [
+      "iam:AttachRolePolicy",
+      "iam:DeleteRole",
+      "iam:DeleteRolePermissionsBoundary",
+      "iam:DeleteRolePolicy",
+      "iam:DetachRolePolicy",
+      "iam:PutRolePermissionsBoundary",
+      "iam:PutRolePolicy",
+      "iam:UpdateAssumeRolePolicy",
+      "iam:UpdateRole",
+      "iam:UpdateRoleDescription"
+    ]
+    resources = ["arn:aws:iam::*:user/cicd-member-user"]
+  }
+}
+
+resource "aws_iam_policy" "instance-scheduler-access" {
+  count    = local.account_data.account-type == "member" ? 1 : 0
+  provider = aws.workspace
+
+  name        = "InstanceSchedulerAccessActions"
+  description = "Restricted policy for use by the Instance Scheduler Lambda in member accounts"
+  policy      = data.aws_iam_policy_document.instance-scheduler-access.json
+}
+
 # Testing-test member access - separate as need the testing user created in the testing account to be able to access as well
 data "aws_iam_policy_document" "assume_role_policy" {
   version = "2012-10-17"
