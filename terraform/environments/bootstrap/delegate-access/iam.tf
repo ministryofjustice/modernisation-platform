@@ -21,7 +21,7 @@ module "cross-account-access" {
 }
 
 module "cicd-member-user" {
-  count = local.account_data.account-type == "member" ? 1 : 0
+  count  = local.account_data.account-type == "member" ? 1 : 0
   source = "../../../modules/iam_baseline"
   providers = {
     aws = aws.workspace
@@ -388,16 +388,14 @@ module "shield_response_team_role" {
 
 # Github OIDC provider
 module "github-oidc" {
-  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v1.0.1"
-  providers              = {
+  source = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v1.0.1"
+  providers = {
     aws = aws.workspace
   }
   additional_permissions = data.aws_iam_policy_document.oidc_assume_role.json
   github_repository      = "ministryofjustice/modernisation-platform-environments:*"
-  tags_common = merge(
-    local.tags,
-  { "Name" = format("%s-oidc", terraform.workspace) })
-  tags_prefix = ""
+  tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
+  tags_prefix            = ""
 }
 
 data "aws_iam_policy_document" "oidc_assume_role" {
@@ -406,7 +404,7 @@ data "aws_iam_policy_document" "oidc_assume_role" {
     effect = "Allow"
     resources = [
       format("arn:aws:iam::%s:role/github-actions", local.environment_management.account_ids[terraform.workspace]),
-      #format("arn:aws:iam::%s:role/member-delegation-%s", local.environment_management.account_ids[format("core-vpc-%s", local.environment)], local.vpc_name),
+      format("arn:aws:iam::%s:role/member-delegation-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], local.business_unit),
       format("arn:aws:iam::%s:role/modify-dns-records", local.environment_management.account_ids["core-network-services-production"])
     ]
     condition {
