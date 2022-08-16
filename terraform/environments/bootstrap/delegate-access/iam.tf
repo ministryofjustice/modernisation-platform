@@ -400,7 +400,7 @@ module "github-oidc" {
 }
 
 data "aws_iam_policy_document" "oidc_assume_role" {
-  count  = local.account_data.account-type == "member" ? 1 : 0
+  count = local.account_data.account-type == "member" ? 1 : 0
   statement {
     sid    = "AllowOIDCToAssumeRoles"
     effect = "Allow"
