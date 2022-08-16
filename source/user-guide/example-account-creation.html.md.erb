@@ -1,0 +1,48 @@
+---
+owner_slack: "#modernisation-platform"
+title: Creating AWS Accounts for Teams
+last_reviewed_on: 2022-08-18
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Overview
+
+Here’s an example of an account request, and the steps that were taken in order to create it.  There are links to pull requests and the stages they need to be opened and merged, as well as references and explanations as to why.
+
+## Information Required
+
+Customers will fill out the following form and supply the required information https://github.com/ministryofjustice/modernisation-platform/issues/new/choose
+
+### Application name
+The name must be in lowercase and a maximum of 30 characters. For our example we have `data-and-insights-wepi`
+### GitHub team slug
+This is the name of your GitHub team that will be accessing the environment. Environments are accessed via single sign on (SSO), so to give people permissions to access your environment you just have to add them to your GitHub team.
+### Access
+For our example, sandbox access has been requested. To read more about access levels, click [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#application-name)
+### Environment name
+### Tags
+Usually application, business-unit and owner are in tags, and they are used to tag your AWS resources inside of your account.
+### Additional features
+This example has no additional features, but things like bastion access, VPN endpoints and extended DNS zones are requestable.
+
+
+## New Environment Files
+
+Example commit [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml)
+
+The new-environment-files action has the following trigger:
+
+on:
+  push:
+    paths:
+      - 'environments/**.json'
+      - 'environments-networks/**.json'
+    branches:
+      - main
+
+
+So to kick off the environment creation process, we add `environments/$account-name.json` which causes our new-environment-files action to trigger.
+
+Example file [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#example-json-files)
