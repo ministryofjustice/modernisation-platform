@@ -393,13 +393,14 @@ module "github-oidc" {
   providers = {
     aws = aws.workspace
   }
-  additional_permissions = data.aws_iam_policy_document.oidc_assume_role.json
+  additional_permissions = data.aws_iam_policy_document.oidc_assume_role[0].json
   github_repository      = "ministryofjustice/modernisation-platform-environments:*"
   tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
   tags_prefix            = ""
 }
 
 data "aws_iam_policy_document" "oidc_assume_role" {
+  count  = local.account_data.account-type == "member" ? 1 : 0
   statement {
     sid    = "AllowOIDCToAssumeRoles"
     effect = "Allow"
