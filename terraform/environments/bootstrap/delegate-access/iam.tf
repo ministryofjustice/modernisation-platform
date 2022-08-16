@@ -35,7 +35,7 @@ module "member-access" {
     aws = aws.workspace
   }
   account_id             = local.modernisation_platform_account.id
-  additional_trust_roles = [module.github-oidc.github_actions_role]
+  additional_trust_roles = [module.github-oidc[0].github_actions_role]
   policy_arn             = aws_iam_policy.member-access[0].id
   role_name              = "MemberInfrastructureAccess"
 }
@@ -388,17 +388,19 @@ module "shield_response_team_role" {
 
 # Github OIDC provider
 module "github-oidc" {
+  count  = local.account_data.account-type == "member" ? 1 : 0
   source = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v1.1.0"
   providers = {
     aws = aws.workspace
   }
-  additional_permissions = data.aws_iam_policy_document.oidc_assume_role.json
+  additional_permissions = data.aws_iam_policy_document.oidc_assume_role[0].json
   github_repository      = "ministryofjustice/modernisation-platform-environments:*"
   tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
   tags_prefix            = ""
 }
 
 data "aws_iam_policy_document" "oidc_assume_role" {
+  count = local.account_data.account-type == "member" ? 1 : 0
   statement {
     sid    = "AllowOIDCToAssumeRoles"
     effect = "Allow"
