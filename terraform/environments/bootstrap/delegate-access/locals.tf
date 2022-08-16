@@ -12,7 +12,7 @@ locals {
   environment_management         = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
   application_name               = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, "/-([[:alnum:]]+)$/", ""))
   business_unit                  = jsondecode(data.http.environments_file.response_body).tags.business-unit
-  application_environment        = substr(terraform.workspace, length(local.application_name) + 1, -1)
+  application_environment        = length(regexall("^bichard*.|^remote-supervisio*.", terraform.workspace)) > 0 ? terraform.workspace : substr(terraform.workspace, length(local.application_name) + 1, -1)
 
   environments = {
     business-unit = "Platforms"
