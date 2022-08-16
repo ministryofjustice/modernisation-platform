@@ -180,7 +180,7 @@ resource "aws_iam_policy" "member-access" {
 }
 
 module "instance-scheduler-access" {
-  count  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
+  count  = local.account_data.account-type == "member" 1 : 0
   source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.2.0"
   providers = {
     aws = aws.workspace
