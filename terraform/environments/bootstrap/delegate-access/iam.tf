@@ -35,7 +35,7 @@ module "member-access" {
     aws = aws.workspace
   }
   account_id             = local.modernisation_platform_account.id
-  additional_trust_roles = [format("arn:aws:iam::%s:role/github-actions", local.environment_management.account_ids[terraform.workspace])]
+  additional_trust_roles = [module.github-oidc.github_actions_role]
   policy_arn             = aws_iam_policy.member-access[0].id
   role_name              = "MemberInfrastructureAccess"
 }
@@ -388,7 +388,7 @@ module "shield_response_team_role" {
 
 # Github OIDC provider
 module "github-oidc" {
-  source = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v1.0.1"
+  source = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v1.1.0"
   providers = {
     aws = aws.workspace
   }
