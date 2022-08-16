@@ -38,7 +38,8 @@ module "member-access" {
     aws = aws.workspace
   }
   account_id             = local.modernisation_platform_account.id
-  additional_trust_roles = [format("arn:aws:iam::%s:role/github-actions", local.environment_management.account_ids[terraform.workspace])]
+  additional_trust_roles = [format("arn:aws:iam::%s:role/github-actions", local.environment_management.account_ids[terraform.workspace]),
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["modernisation_platform_account_id"]}:function:golang-instance-scheduler"]
   policy_arn             = aws_iam_policy.member-access[0].id
   role_name              = "MemberInfrastructureAccess"
 }
@@ -201,132 +202,11 @@ data "aws_iam_policy_document" "instance-scheduler-access" {
     #checkov:skip=CKV_AWS_110
     effect = "Allow"
     actions = [
-      "ec2:Describe*",
-      "ec2:*SecurityGroup*",
-      "ec2:*KeyPair*",
-      "ec2:*Tags*",
-      "ec2:*Volume*",
-      "ec2:*Snapshot*",
-      "ec2:*Ebs*",
-      "ec2:*NetworkInterface*",
-      "ec2:*Address*",
-      "ec2:*Image*",
-      "ec2:*Event*",
-      "ec2:*Instance*",
-      "ec2:*CapacityReservation*",
-      "ec2:*Fleet*",
-      "ec2:Get*",
-      "ec2:SendDiagnosticInterrupt",
-      "ec2:*LaunchTemplate*",
-      "ec2:*PlacementGroup*",
-      "ec2:*IdFormat*",
-      "ec2:*Spot*"
+      "ec2:DescribeInstances",
+      "ec2:StartInstances",
+      "ec2:StopInstances"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
-  }
-
-  statement {
-    effect = "Allow"
-    actions = [
-      "sts:AssumeRole"
-    ]
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-  }
-
-  statement {
-    effect = "Allow"
-    actions = [
-      "sts:AssumeRole"
-    ]
-    resources = [
-      "arn:aws:iam::${local.modernisation_platform_account.id}:role/developer",
-      "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/developer"
-    ]
-  }
-
-  statement {
-    sid    = "AllowLambdaToCreateLogGroup"
-    effect = "Allow"
-    actions = [
-      "logs:CreateLogGroup"
-    ]
-    resources = [
-      format("arn:aws:logs:eu-west-2:%s:*", local.modernisation_platform_account.id),
-      format("arn:aws:logs:eu-west-2:%s:*", local.environment_management.account_ids[terraform.workspace])
-    ]
-  }
-
-  statement {
-    sid    = "AllowLambdaToWriteLogsToGroup"
-    effect = "Allow"
-    actions = [
-      "logs:CreateLogStream",
-      "logs:PutLogEvents"
-    ]
-    resources = [
-      format("arn:aws:logs:eu-west-2:%s:*", local.modernisation_platform_account.id),
-      format("arn:aws:logs:eu-west-2:%s:*", local.environment_management.account_ids[terraform.workspace])
-    ]
-  }
-
-  statement {
-    effect = "Deny"
-    actions = [
-      "ec2:CreateVpc",
-      "ec2:CreateSubnet",
-      "ec2:CreateVpcPeeringConnection",
-      "iam:AddUserToGroup",
-      "iam:AttachGroupPolicy",
-      "iam:AttachUserPolicy",
-      "iam:CreateAccountAlias",
-      "iam:CreateGroup",
-      "iam:CreateLoginProfile",
-      "iam:CreateSAMLProvider",
-      "iam:CreateUser",
-      "iam:CreateVirtualMFADevice",
-      "iam:DeactivateMFADevice",
-      "iam:DeleteAccountAlias",
-      "iam:DeleteAccountPasswordPolicy",
-      "iam:DeleteGroup",
-      "iam:DeleteGroupPolicy",
-      "iam:DeleteLoginProfile",
-      "iam:DeleteSAMLProvider",
-      "iam:DeleteUser",
-      "iam:DeleteUserPermissionsBoundary",
-      "iam:DeleteUserPolicy",
-      "iam:DeleteVirtualMFADevice",
-      "iam:DetachGroupPolicy",
-      "iam:DetachUserPolicy",
-      "iam:EnableMFADevice",
-      "iam:RemoveUserFromGroup",
-      "iam:ResyncMFADevice",
-      "iam:UpdateAccountPasswordPolicy",
-      "iam:UpdateGroup",
-      "iam:UpdateLoginProfile",
-      "iam:UpdateSAMLProvider",
-      "iam:UpdateUser"
-    ]
-    resources = ["*"]
-  }
-
-  statement {
-    effect = "Deny"
-    actions = [
-      "iam:AttachRolePolicy",
-      "iam:DeleteRole",
-      "iam:DeleteRolePermissionsBoundary",
-      "iam:DeleteRolePolicy",
-      "iam:DetachRolePolicy",
-      "iam:PutRolePermissionsBoundary",
-      "iam:PutRolePolicy",
-      "iam:UpdateAssumeRolePolicy",
-      "iam:UpdateRole",
-      "iam:UpdateRoleDescription"
-    ]
-    resources = ["arn:aws:iam::*:user/cicd-member-user"]
   }
 }
 
