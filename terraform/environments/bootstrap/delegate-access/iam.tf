@@ -203,6 +203,8 @@ data "aws_iam_policy_document" "instance-scheduler-access" {
     effect = "Allow"
     actions = [
       "ec2:DescribeInstances",
+      "ec2:DescribeInstanceStatus",
+      "ec2:DescribeTags",
       "ec2:StartInstances",
       "ec2:StopInstances"
     ]
