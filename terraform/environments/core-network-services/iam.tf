@@ -4,6 +4,7 @@ data "aws_iam_role" "vpc-flow-log" {
 
 # Role to allow ci/cd to update DNS records for ACM certificate validation
 resource "aws_iam_role" "dns" {
+  #checkov:skip=CKV_AWS_60:Wildcard constrained by condition checks
   name = "modify-dns-records"
   assume_role_policy = jsonencode(
     {
