@@ -34,13 +34,10 @@ resource "aws_iam_role" "dns" {
           "Condition" : {
             "ForAnyValue:StringLike" : {
               "aws:PrincipalOrgPaths" : ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
-            }
-          },
-          "Condition" : {
+            },
             "ForAnyValue:StringLike" : {
               "aws:PrincipalArn" : ["aws:arn:iam::*:role/github-actions"]
             }
-          }
         }
       ]
   })
