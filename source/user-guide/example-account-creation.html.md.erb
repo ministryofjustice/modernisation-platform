@@ -27,7 +27,6 @@ Usually application, business-unit and owner are in tags, and they are used to t
 ### Additional features
 This example has no additional features, but things like bastion access, VPN endpoints and extended DNS zones are requestable.
 
-
 ## New Environment Files
 
 Example commit [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml)
@@ -41,7 +40,6 @@ on:
       - 'environments-networks/**.json'
     branches:
       - main
-
 
 So to kick off the environment creation process, we add `environments/$account-name.json` which causes our new-environment-files action to trigger.
 
@@ -62,7 +60,6 @@ Add the `environments/networks`. Here's an example of a pull request for this [s
 #### Step three
 A pull request will then be raised automatically which looks like [this](https://github.com/ministryofjustice/modernisation-platform-environments/pull/805/files ). The pipeline will create this.
 
-
 ## Checking its creation
 
 You should be able to see the account or accounts created [here](https://moj.awsapps.com/start/#/)
@@ -70,5 +67,3 @@ You should be able to see the account or accounts created [here](https://moj.aws
 Logging into the account, you should be able to view the subnets, and be displayed with
 
 ![SSO main menu](../images/subnets.png)
-
-
