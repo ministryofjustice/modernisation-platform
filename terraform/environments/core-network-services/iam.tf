@@ -26,7 +26,7 @@ resource "aws_iam_role" "dns" {
           "Condition" : {}
         },
         {
-          "Effect": "Allow",
+          "Effect" : "Allow",
           "Principal" : {
             "AWS" : "*"
           },
