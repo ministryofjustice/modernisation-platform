@@ -33,11 +33,14 @@ resource "aws_iam_role" "dns" {
           "Action" : "sts:AssumeRole",
           "Condition" : {
             "ForAnyValue:StringLike" : {
-              "aws:PrincipalOrgPaths" : ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+              "aws:PrincipalOrgPaths" : [
+                "${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"
+              ]
             },
             "ForAnyValue:StringLike" : {
               "aws:PrincipalArn" : ["aws:arn:iam::*:role/github-actions"]
             }
+          }
         }
       ]
   })
