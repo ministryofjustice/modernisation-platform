@@ -38,8 +38,7 @@ module "member-access" {
     aws = aws.workspace
   }
   account_id             = local.modernisation_platform_account.id
-  additional_trust_roles = [format("arn:aws:iam::%s:role/github-actions", local.environment_management.account_ids[terraform.workspace]),
-    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["modernisation_platform_account_id"]}:function:golang-instance-scheduler"]
+  additional_trust_roles = [format("arn:aws:iam::%s:role/github-actions", local.environment_management.account_ids[terraform.workspace])]
   policy_arn             = aws_iam_policy.member-access[0].id
   role_name              = "MemberInfrastructureAccess"
 }
@@ -187,7 +186,8 @@ module "instance-scheduler-access" {
     aws = aws.workspace
   }
   account_id             = local.modernisation_platform_account.id
-  additional_trust_roles = [format("arn:aws:iam::%s:role/github-actions", local.environment_management.account_ids[terraform.workspace])]
+  additional_trust_roles = [format("arn:aws:iam::%s:role/github-actions", local.environment_management.account_ids[terraform.workspace]),
+                            format("arn:aws:iam::%s:role/LambdaInstanceSchedulerPolicy", local.environment_management.account_ids["modernisation_platform_account_id"])]
   policy_arn             = aws_iam_policy.instance-scheduler-access[0].id
   role_name              = "InstanceSchedulerAccess"
 }
