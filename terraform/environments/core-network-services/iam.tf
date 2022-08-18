@@ -4,6 +4,7 @@ data "aws_iam_role" "vpc-flow-log" {
 
 # Role to allow ci/cd to update DNS records for ACM certificate validation
 resource "aws_iam_role" "dns" {
+  #checkov:skip=CKV_AWS_60:Wildcard constrained by condition checks
   name = "modify-dns-records"
   assume_role_policy = jsonencode(
     {
@@ -24,6 +25,23 @@ resource "aws_iam_role" "dns" {
           },
           "Action" : "sts:AssumeRole",
           "Condition" : {}
+        },
+        {
+          "Effect" : "Allow",
+          "Principal" : {
+            "AWS" : "*"
+          },
+          "Action" : "sts:AssumeRole",
+          "Condition" : {
+            "ForAnyValue:StringLike" : {
+              "aws:PrincipalOrgPaths" : [
+                "${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"
+              ]
+            },
+            "ForAnyValue:StringLike" : {
+              "aws:PrincipalArn" : ["aws:arn:iam::*:role/github-actions"]
+            }
+          }
         }
       ]
   })
