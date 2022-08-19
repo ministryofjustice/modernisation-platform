@@ -19,7 +19,7 @@ We don't want to have to do identity management (joiners, movers, leavers) in th
 
 ### 1. SSO Auth0 GitHub authentication
 
- - Users access the SSO login portal via the link [https://moj.awsapps.com/start](https://moj.awsapps.com/start). This URL is hosted via the AWS SSO component. 
+ - Users access the SSO login portal via the link [https://moj.awsapps.com/start](https://moj.awsapps.com/start). This URL is hosted via the AWS SSO component.
  - AWS SSO is configured to use Auth0 as an application and sets the associated Application ACS URL. Auth0 will be the primary authentication endpoint providing the SSO with GitHub via SAML 2.0.
  - AWS SSO redirects users to an Auth0 SSO URL login page. Auth0 is configured to used GitHub as its IDP (Identity Provider) and prompts users to authenticate using their GitHub credentials. If authentication is successful (or if the user is already authenticated on Auth0, this step will be skipped) Auth0 sends an encoded SAML response to the browser.
  - The browser sends the SAML response (SAML Assertion) to AWS SSO (service provider for verification). Once verified, the user is able to login to the AWS SSO portal.
@@ -33,4 +33,4 @@ We don't want to have to do identity management (joiners, movers, leavers) in th
 ### 3. SSO Permission Sets
 
  - A permission set is a collection of administrator-defined policies that AWS SSO uses to determine a user's effective permissions to access a given AWS account. The root permissions sets are managed in the [sso-admin-permission-sets.tf](https://github.com/ministryofjustice/aws-root-account/blob/main/terraform/sso-admin-permission-sets.tf) file.
- - The permission set is [mapped](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/single-sign-on/main.tf#L56) using Terraform to the associated AWS account as part of the baseline workflow.  
+ - The permission set is [mapped](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/single-sign-on/main.tf#L56) using Terraform to the associated AWS account as part of the baseline workflow.
