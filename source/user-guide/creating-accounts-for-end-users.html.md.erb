@@ -13,7 +13,7 @@ Here’s an example of an account request, and the steps that were taken in orde
 
 ## Information Required
 
-Customers will fill out the following [form](https://github.com/ministryofjustice/modernisation-platform/issues/new/choose) and supply the required information.
+Customers will fill out the new-environment template via our public repository [here](https://github.com/ministryofjustice/modernisation-platform/issues/new/choose) and supply the required information.
 
 ### Application name
 The name must be in lowercase and a maximum of 30 characters. For our example we have `data-and-insights-wepi`
@@ -29,7 +29,7 @@ This example has no additional features, but things like bastion access, VPN end
 
 ## New Environment Files
 
-Example commit [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml)
+Example file [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml)
 
 The new-environment-files action has the following trigger:
 
@@ -41,7 +41,7 @@ on:
     branches:
       - main
 
-So to kick off the environment creation process, we add `environments/$account-name.json` which causes our new-environment-files action to trigger.
+To kick off the environment creation process, we add `environments/$account-name.json` which causes our new-environment-files action to trigger.
 
 Example file [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#example-json-files)
 
