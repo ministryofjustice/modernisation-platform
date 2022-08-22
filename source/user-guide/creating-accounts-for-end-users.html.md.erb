@@ -1,0 +1,70 @@
+---
+owner_slack: "#modernisation-platform"
+title: Creating AWS Accounts for Teams
+last_reviewed_on: 2022-08-18
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Overview
+
+Here’s an example of an account request, and the steps that were taken in order to create it.  There are links to pull requests and the stages they need to be opened and merged, as well as references and explanations as to why.
+
+## Information Required
+
+Customers will fill out the new-environment template via our public repository [here](https://github.com/ministryofjustice/modernisation-platform/issues/new/choose) and supply the required information.
+
+### Application name
+The name must be in lowercase and a maximum of 30 characters. For our example we have `data-and-insights-wepi`
+### GitHub team slug
+This is the name of your GitHub team that will be accessing the environment. Environments are accessed via single sign on (SSO), so to give people permissions to access your environment you just have to add them to your GitHub team.
+### Access
+For our example, sandbox access has been requested. To read more about access levels, click [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#application-name)
+### Environment name
+This is usually based on the team name, with a the corresponding environment after e.g. data-and-insights-wepi-development
+### Tags
+Usually application, business-unit and owner are in tags, and they are used to tag your AWS resources inside of your account.
+### Additional features
+This example has no additional features, but things like bastion access, VPN endpoints and extended DNS zones are requestable.
+
+## New Environment Files
+
+Example file [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml)
+
+The new-environment-files action has the following trigger:
+
+on:
+  push:
+    paths:
+      - 'environments/**.json'
+      - 'environments-networks/**.json'
+    branches:
+      - main
+
+To kick off the environment creation process, we add `environments/$account-name.json` which causes our new-environment-files action to trigger.
+
+Example file [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#example-json-files)
+
+** Submitting a PR here will kick off the new-environments workflow, which will run its check-environments-deployment-plan. This will report to the PR the outcome of that terraform plan.
+
+## Network Stage
+
+For this example, we will be joining an existing subnet-set. For new business units, work will need to be done beforehand, however that's not the standard procedure and usually a one off.
+
+#### Step one
+Add new files for the `terraform/environments` There's an example pull request [here](https://github.com/ministryofjustice/modernisation-platform/pull/2125).This stage does not kick off any actions.
+
+#### Step two
+Add the `environments/networks`. Here's an example of a pull request for this [stage](https://github.com/ministryofjustice/modernisation-platform/pull/2127/files ).
+
+#### Step three
+A pull request will then be raised automatically which looks like [this](https://github.com/ministryofjustice/modernisation-platform-environments/pull/805/files ). The pipeline will create this.
+
+## Checking its creation
+
+You should be able to see the account or accounts created [here](https://moj.awsapps.com/start/#/)
+
+Logging into the account, you should be able to view the subnets, and be displayed with
+
+![SSO main menu](../images/subnets.png)
