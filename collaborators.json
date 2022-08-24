@@ -311,26 +311,6 @@
           "access": "developer"
         }
       ]
-    },
-    {
-      "username": "andrew.gardner",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "data-and-insights-wepi-development",
-          "access": "developer"
-        }
-      ]
-    },
-    {
-      "username": "simona.treivase",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "data-and-insights-wepi-development",
-          "access": "developer"
-        }
-      ]
     }
   ]
 }
