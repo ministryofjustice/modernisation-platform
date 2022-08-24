@@ -6,7 +6,8 @@
         "accounts": [
           "performance-hub-development",
           "equip-development",
-          "ppud-development"
+          "ppud-development",
+          "refer-and-monitor"
         ]
       }
     }
