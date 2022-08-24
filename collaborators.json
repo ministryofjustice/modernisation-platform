@@ -317,7 +317,7 @@
       "github-username": "no-value-supplied",
       "accounts": [
         {
-          "account-name": "data-and-insights-wepi",
+          "account-name": "data-and-insights-wepi-development",
           "access": "developer"
         }
       ]
