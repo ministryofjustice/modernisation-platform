@@ -60,6 +60,9 @@ Once the bastion has been built in the environemnt, these steps outline the addi
 
 ```
 Host glados-test-bastion
+     StrictHostKeyChecking no
+     UserKnownHostsFile /dev/null
+     LogLevel QUIET
      IdentityFile ~/.ssh/id_rsa
      User jane
      ProxyCommand sh -c "aws ssm start-session --target $(aws ec2 describe-instances --no-cli-pager --filters "Name=tag:Name,Values=bastion_linux" --query 'Reservations[0].Instances[0].InstanceId' --profile glados-test-developer) --document-name AWS-StartSSHSession --parameters 'portNumber=%p' --profile glados-test-developer --region eu-west-2"
