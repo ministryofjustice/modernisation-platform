@@ -26,7 +26,6 @@ expected =
     "equip",
     "example",
     "threat-and-vulnerability-mgmt",
-    "data-and-insights-wepi",
-    "refer-and-monitor"
+    "data-and-insights-wepi"
     ]
 }
