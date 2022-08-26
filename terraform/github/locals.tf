@@ -64,7 +64,6 @@ locals {
     "ppud-replacement-devs",
     "threat-and-vulnerability-mgmt",
     "laa-aws-infrastructure",
-    "data-and-insights-hub",
-    "hmpps-interventions-dev"
+    "data-and-insights-hub"
   ]
 }
