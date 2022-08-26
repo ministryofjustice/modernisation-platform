@@ -104,7 +104,8 @@ data "aws_iam_policy_document" "member-access" {
       "sns:*",
       "sqs:*",
       "ssm:*",
-      "wafv2:*"
+      "wafv2:*",
+      "redshift:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
