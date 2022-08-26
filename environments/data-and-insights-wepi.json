@@ -6,7 +6,6 @@
       "access": [
         {
           "github_slug": "data-and-insights-hub",
-          "level": "developer",
           "level": "sandbox"
         }
       ]
