@@ -23,13 +23,17 @@ https://ministryofjustice.github.io/technical-guidance/documentation/standards/n
 
 <!-- 
 Which environments would you like for your application 
-(we recommend production and one non production environment if possible) 
+(we recommend production and one non production environment if possible)
+The access level determines what actions you can do in the AWS console, see here for more information:
+https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#access
 -->
 
-- [ ] Development
-- [ ] Test
-- [ ] Preproduction
-- [ ] Production
+| Environment 		| Access level |
+| --- 				| --- |
+|<ul><li>[ ] Development</li></ul>	| <ul><li>[ ] view-only</li><li>[ ] developer</li><li>[ ] sandbox</li></ul> |
+|<ul><li>[ ] Test</li></ul>			| <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
+|<ul><li>[ ] Preproduction</li></ul>| <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
+|<ul><li>[ ] Production</li></ul>	| <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
 
 ### Tags
 
@@ -60,7 +64,7 @@ HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE
 <!--Please choose one of the below, most applications will use the general subnet set for their business unit. This means that they will benefit from out of the box connectivity to other applications, most applications will use the general subnet.  If an application has highly sensitive data it may need to go into a subnet with limited connectivity. -->
 
 - [ ] General - this application will use the same subnet as other applications in your business unit
-- [ ] Isolated - this application has highly sensitive data which must have its own isolated subnet
+- [ ] Isolated - this application has highly sensitive data which must have its own isolated subnet with no network connectivity
 
 #### How do users connect to the application?
 
