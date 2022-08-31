@@ -13,4 +13,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: htmlproofer
-      run: /publishing-scripts/publish.sh no-repository-changes
+      run: /scripts/compile-and-create-artifact.sh no-repository-changes

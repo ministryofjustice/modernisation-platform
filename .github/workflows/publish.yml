@@ -23,7 +23,7 @@ jobs:
           #        Actions runner is implemented. Remove this workaround when
           #        GitHub comes up with a fundamental fix for this problem.
           git config --global --add safe.directory ${GITHUB_WORKSPACE}
-          /publishing-scripts/publish.sh
+          /scripts/compile-and-create-artifact.sh
     - uses: 8398a7/action-slack@v3
       name: Slack failure notification
       with:
