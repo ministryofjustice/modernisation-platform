@@ -184,7 +184,7 @@ module "instance-scheduler-access" {
     aws = aws.workspace
   }
   account_id             = local.modernisation_platform_account.id
-  additional_trust_roles = [format("arn:aws:iam::%s:role/LambdaInstanceSchedulerPolicy", local.environment_management.account_ids["modernisation_platform_account_id"])]
+  additional_trust_roles = [format("arn:aws:iam::%s:role/LambdaInstanceSchedulerPolicy", local.environment_management.modernisation_platform_account_id)]
   policy_arn             = aws_iam_policy.instance-scheduler-access[0].id
   role_name              = "InstanceSchedulerAccess"
 }
