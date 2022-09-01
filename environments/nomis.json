@@ -1,7 +1,7 @@
 {
   "account-type": "member",
   "environments": [
-        {
+    {
       "name": "development",
       "access": [
         {
@@ -19,7 +19,7 @@
         }
       ]
     },
-        {
+    {
       "name": "preproduction",
       "access": [
         {
