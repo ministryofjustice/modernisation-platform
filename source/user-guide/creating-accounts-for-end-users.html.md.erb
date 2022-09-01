@@ -34,13 +34,11 @@ Example file [here](https://github.com/ministryofjustice/modernisation-platform/
 
 The new-environment-files action has the following trigger on push:
 
-
     paths:
       - environments/**.json
       - environments-networks/**.json
     branches:
       - main
-
 
 To kick off the environment creation process, we add `environments/$account-name.json` which causes our new-environment-files action to trigger.
 
