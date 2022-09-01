@@ -4,7 +4,7 @@
       "general": {
         "cidr": "10.27.0.0/21",
         "accounts": [
-          "performance-hub-preproduction"
+          "performance-hub-preproduction", "nomis-production"
         ]
       }
     }
