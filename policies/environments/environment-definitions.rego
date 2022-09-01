@@ -11,6 +11,13 @@ allowed_business_units := [
   "CJSE"
 ]
 
+allowed_access := [
+  "view-only",
+  "developer",
+  "sandbox",
+  "administrator"
+]
+
 deny[msg] {
   without_filename := object.remove(input, ["filename"])
 
@@ -69,4 +76,10 @@ deny[msg] {
 deny[msg] {
   not has_field(input.tags, "owner")
   msg := sprintf("`%v` is missing the `owner` tag", [input.filename])
+}
+
+deny[msg] {
+  access:=input.environments[_].access[_].level
+  not array_contains(allowed_access, access)
+  msg := sprintf("`%v` uses an unexpected access level: got `%v`, expected one of: %v", [input.filename, access, concat(", ", allowed_access) ])
 }
