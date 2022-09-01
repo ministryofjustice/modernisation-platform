@@ -18,11 +18,11 @@ Customers will fill out the new-environment template via our public repository [
 ### Application name
 The name must be in lowercase and a maximum of 30 characters. For our example we have `data-and-insights-wepi`
 ### GitHub team slug
-This is the name of your GitHub team that will be accessing the environment. Environments are accessed via single sign on (SSO), so to give people permissions to access your environment you just have to add them to your GitHub team.
+This is the name of your GitHub team that will be accessing the environment. Environments are accessed via single sign on (SSO), so to give people permissions to access your environment you just have to add them to your GitHub team. The file containing them can be found [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/github/locals.tf)
 ### Access
 For our example, sandbox access has been requested. To read more about access levels, click [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#application-name)
 ### Environment name
-This is usually based on the team name, with a the corresponding environment after e.g. data-and-insights-wepi-development
+This is usually based on the team name, with a the corresponding environment after e.g. `data-and-insights-wepi-development`
 ### Tags
 Usually application, business-unit and owner are in tags, and they are used to tag your AWS resources inside of your account.
 ### Additional features
@@ -32,13 +32,11 @@ This example has no additional features, but things like bastion access, VPN end
 
 Example file [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml)
 
-The new-environment-files action has the following trigger:
+The new-environment-files action has the following trigger on push:
 
-on:
-  push:
     paths:
-      - 'environments/**.json'
-      - 'environments-networks/**.json'
+      - environments/**.json
+      - environments-networks/**.json
     branches:
       - main
 
@@ -46,20 +44,24 @@ To kick off the environment creation process, we add `environments/$account-name
 
 Example file [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#example-json-files)
 
-** Submitting a PR here will kick off the new-environments workflow, which will run its check-environments-deployment-plan. This will report to the PR the outcome of that terraform plan.
+** Submitting this PR will kick off the new-environments workflow, which will run its check-environments-deployment-plan. You can see what will change in the output from github actions
+
+** Merging this PR will generate two pull requests. One in the `modernisation-platform` repo which can be merged straight away, and one in the `modernisation-platform-environments` repo, which is merged last.
 
 ## Network Stage
 
 For this example, we will be joining an existing subnet-set. For new business units, work will need to be done beforehand, however that's not the standard procedure and usually a one off.
 
 #### Step one
-Add new files for the `terraform/environments` There's an example pull request [here](https://github.com/ministryofjustice/modernisation-platform/pull/2125).This stage does not kick off any actions.
+Check that you have completed the previous steps, so far you should have added the github-slug, the json files under environments, and merged the PR in modernisation-platform containing the terraform files.
 
 #### Step two
 Add the `environments/networks`. Here's an example of a pull request for this [stage](https://github.com/ministryofjustice/modernisation-platform/pull/2127/files ).
 
+This will then generate a PR for the ram share, merge this. An example can be found [here](https://github.com/ministryofjustice/modernisation-platform/pull/2203)
+
 #### Step three
-A pull request will then be raised automatically which looks like [this](https://github.com/ministryofjustice/modernisation-platform-environments/pull/805/files ). The pipeline will create this.
+Once complete, the pull request raised earlier in  `modernisation-platform-environments` can be merged. Example [here](https://github.com/ministryofjustice/modernisation-platform-environments/pull/805/files ). The pipeline will create this.
 
 ## Checking its creation
 
