@@ -26,7 +26,6 @@ locals {
     "kcbotsh",
     "seanprivett",
     "SteveMarshall",
-    "christine-elliott",
     "ScottSeaward"
   ]
 
