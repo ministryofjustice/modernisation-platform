@@ -5,7 +5,7 @@
         "cidr": "10.26.24.0/21",
         "accounts": [
           "performance-hub-development",
-          "digital-prison-reporting",
+          "digital-prison-reporting-development",
           "equip-development",
           "ppud-development",
           "refer-monitor-development",
