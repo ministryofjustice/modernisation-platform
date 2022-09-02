@@ -20,6 +20,7 @@ expected =
     "example",
     "mi-platform",
     "nomis",
+    "oasys",
     "performance-hub",
     "ppud",
     "refer-monitor",
