@@ -65,6 +65,7 @@ locals {
     "laa-aws-infrastructure",
     "data-and-insights-hub",
     "hmpps-digital-prison-reporting",
-    "hmpps-interventions-dev"
+    "hmpps-interventions-dev",
+    "interventions-reporting-discovery"
   ]
 }

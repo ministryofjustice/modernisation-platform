@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "hmpps-interventions-dev",
+          "github_slug": ["hmpps-interventions-dev", "interventions-reporting-discovery"],
           "level": "developer"
         }
       ]
