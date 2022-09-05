@@ -9,7 +9,8 @@
           "equip-development",
           "ppud-development",
           "refer-monitor-development",
-          "nomis-development"
+          "nomis-development",
+          "oasys-development"
         ]
       }
     }
