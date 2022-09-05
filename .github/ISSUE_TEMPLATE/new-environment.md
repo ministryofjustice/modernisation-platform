@@ -91,3 +91,10 @@ If you are not sure you can leave these blank and they can be added at a later d
 ## Other information
 
 <!-- Any other information you feel is relevant, please remember this is a public repository -->
+
+## Definition of done
+
+<!-- Checklist for definition of done and acceptance criteria, for example: -->
+
+- [ ] account created
+- [ ] customer informed
