@@ -23,7 +23,8 @@ expected =
       "general": {
         "cidr": "10.27.0.0/21",
         "accounts": [
-          "performance-hub-preproduction"
+          "performance-hub-preproduction",
+          "oasys-preproduction"
         ]
       }
     },
@@ -41,7 +42,8 @@ expected =
         "accounts": [
           "performance-hub-development",
           "equip-development",
-          "ppud-development"
+          "ppud-development",
+          "oasys-development"
         ]
       }
     },
@@ -57,7 +59,8 @@ expected =
       "general": {
         "cidr": "10.26.8.0/21",
         "accounts": [
-          "nomis-test"
+          "nomis-test",
+          "oasys-test"
         ]
       }
     },
@@ -75,7 +78,8 @@ expected =
         "accounts": [
           "performance-hub-production",
           "ppud-production",
-          "equip-production"
+          "equip-production",
+          "oasys-production"
         ]
       }
     },
