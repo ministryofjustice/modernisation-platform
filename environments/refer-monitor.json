@@ -5,7 +5,11 @@
       "name": "development",
       "access": [
         {
-          "github_slug": ["hmpps-interventions-dev", "interventions-reporting-discovery"],
+          "github_slug": "hmpps-interventions-dev",
+          "level": "developer"
+        },
+        {
+          "github_slug": "interventions-reporting-discovery",
           "level": "developer"
         }
       ]
