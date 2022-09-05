@@ -9,7 +9,7 @@ data "http" "environments_file" {
 
 locals {
 
-  application_name = "refer-and-monitor"
+  application_name = "digital-prison-reporting"
 
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 
