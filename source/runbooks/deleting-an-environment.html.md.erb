@@ -43,7 +43,7 @@ $ terraform state show 'module.environments.aws_organizations_account.accounts["
 
 resource "aws_organizations_account" "accounts" {
     ...
-    email                      = "..." <- This will be the email address for the root IAM user
+    email                      = "..." - This will be the email address for the root IAM user
     ...
     tags                       = {
         "application"      = "modernisation-platform"
