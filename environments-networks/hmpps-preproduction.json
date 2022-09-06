@@ -3,9 +3,7 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.27.0.0/21",
-        "accounts": [
-          "performance-hub-preproduction"
-        ]
+        "accounts": ["performance-hub-preproduction"]
       }
     }
   },
