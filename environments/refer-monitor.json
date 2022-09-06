@@ -6,11 +6,11 @@
       "access": [
         {
           "github_slug": "hmpps-interventions-dev",
-          "level": "developer"
+          "level": "sandbox"
         },
         {
           "github_slug": "interventions-reporting-discovery",
-          "level": "developer"
+          "level": "sandbox"
         }
       ]
     }
