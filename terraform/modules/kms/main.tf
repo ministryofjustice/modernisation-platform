@@ -60,7 +60,6 @@ data "aws_iam_policy_document" "kms" {
   statement {
     effect = "Allow"
     actions = [
-      "kms:CreateGrant",
       "kms:ListGrants",
       "kms:Encrypt",
       "kms:Decrypt",
@@ -75,6 +74,27 @@ data "aws_iam_policy_document" "kms" {
     principals {
       type        = "AWS"
       identifiers = var.business_unit_account_ids
+    }
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:CreateGrant",
+    ]
+
+    resources = ["*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = var.business_unit_account_ids
+    }
+
+    # ensure grants can only be created for AWS resources
+    condition {
+      test     = "Bool"
+      variable = "kms:GrantIsForAWSResource"
+      values   = ["true"]
     }
   }
 }
