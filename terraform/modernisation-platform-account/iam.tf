@@ -373,3 +373,48 @@ resource "aws_iam_role_policy_attachment" "instance-scheduler" {
   policy_arn = aws_iam_policy.instance-scheduler.arn
   role       = aws_iam_role.instance-scheduler.name
 }
+
+# GitHub Actions readonly role
+data "aws_iam_policy_document" "github_actions_assume_role_policy" {
+  version = "2012-10-17"
+
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.modernisation_platform_ou_id}/*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = [
+        "arn:aws:iam::*:role/github-actions",
+        "arn:aws:iam::${data.aws_caller_identity.current.id}:role/superadmin"
+      ]
+    }
+  }
+}
+
+# IAM role to be assumed
+resource "aws_iam_role" "github_actions_readonly" {
+  name                 = "githubReadOnly"
+  max_session_duration = 3600
+  assume_role_policy   = data.aws_iam_policy_document.github_actions_assume_role_policy.json
+
+  tags = local.tags
+}
+
+# IAM role attached policy
+resource "aws_iam_role_policy_attachment" "github_readonly" {
+  role       = aws_iam_role.github_actions_readonly.id
+  policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+}
