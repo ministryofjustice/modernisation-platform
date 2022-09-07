@@ -29,7 +29,7 @@ Under the data options you will not need to change the data source or database. 
 
 A sample of the data and columns in the table can be found using the following query
 
-SELECT * FROM "mod_cloudtrail_logs"."cloudtrail_logs" limit 10;
+** SELECT * FROM "mod_cloudtrail_logs"."cloudtrail_logs" limit 10; **
 
 This will list the first 10 rows found. It provides an idea of what is recorded, the accounts used etc.
 
@@ -43,9 +43,9 @@ There is a lot of data in the table so it’s best to avoid ending with the abov
 
 An example might be, if you want to see all the data from core-vps-production
 
-SELECT * FROM "mod_cloudtrail_logs"."cloudtrail_logs"
+** SELECT * FROM "mod_cloudtrail_logs"."cloudtrail_logs"
 where account = '278663825216'
-order by eventtime desc;
+order by eventtime desc; **
 
  Which produces a lot of results. Due to the width of the results I have not pasted details in here. Suffice to say, wherever possible do NOT select all columns.
 
@@ -57,10 +57,10 @@ As a note, account and eventtime can both be inside double quotes (“ ”) but 
 
 Another example, only selecting some columns (for data-and-insights-wepi-development) when there is an error in place.
 
-SELECT "eventsource", "eventtime", "eventname", "errorcode", "errormessage", "requestparameters", "responseelements" FROM mod_cloudtrail_logs.cloudtrail_logs
+** SELECT "eventsource", "eventtime", "eventname", "errorcode", "errormessage", "requestparameters", "responseelements" FROM mod_cloudtrail_logs.cloudtrail_logs
 where account = '289153439536'
 AND errorcode !=' '
-order by eventtime desc;
+order by eventtime desc; **
 
 This will select a lot of data but will help in finding errors. The columns were added from the table list (using the 3 dots next to the field) which automatically puts the quotes around them.
 
