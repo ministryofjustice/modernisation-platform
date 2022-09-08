@@ -3,8 +3,7 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.26.72.0/21",
-        "accounts": [
-        ]
+        "accounts": []
       }
     }
   },
