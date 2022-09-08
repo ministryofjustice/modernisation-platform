@@ -31,7 +31,7 @@ In the definition of done for every issue there is the following to remind peopl
 
 ### Diagrams
 
-Diagrams should be created in our [app.diagrams.net](https://app.diagrams.net/#G1w8dZs5vZOoy0dvCnRr5P6GHc3VQRdwLq) diagram, once they are complete they should be exported as a PNG and published on the user guidance website.  Any amendments to diagrams in app.diagrams.net should be updated on the guidance website.
+Diagrams should be created in our [app.diagrams.net](https://app.diagrams.net/#G1w8dZs5vZOoy0dvCnRr5P6GHc3VQRdwLq) diagram, once they are complete they should be exported as a PNG and published on the user guidance website. Any amendments to diagrams in app.diagrams.net should be updated on the guidance website.
 
 ### Guidance website sections
 
@@ -39,7 +39,7 @@ Diagrams should be created in our [app.diagrams.net](https://app.diagrams.net/#G
 
 The user guide section is for guidance to be used by platform users.
 
-The getting started section is used for a quick run through of the tasks needed to get an application up and running.  This should only include the most basic tasks which everyone must do.
+The getting started section is used for a quick run through of the tasks needed to get an application up and running. This should only include the most basic tasks which everyone must do.
 
 The how to guides provide information on other tasks which platform users may need to undertake, or more detailed information on basic tasks.
 
