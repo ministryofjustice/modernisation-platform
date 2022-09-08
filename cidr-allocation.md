@@ -25,7 +25,7 @@
 ### development and test /21s for member subnet-sets
 
 | CIDR        | mask | allocated to                    |
-| :---------- | :--- | :------------------------------ |
+| :---------- | :--- |:--------------------------------|
 | 10.26.0.0   | /21  | platforms test - general        |
 | 10.26.8.0   | /21  | hmpps test - general            |
 | 10.26.16.0  | /21  | platforms development - general |
@@ -34,8 +34,8 @@
 | 10.26.40.0  | /21  | hmcts development - general     |
 | 10.26.48.0  | /21  | hq development - general        |
 | 10.26.56.0  | /21  | laa development - general       |
-| 10.26.64.0  | /21  | -                               |
-| 10.26.72.0  | /21  | -                               |
+| 10.26.64.0  | /21  | opg test - general              |
+| 10.26.72.0  | /21  | opg development - general       |
 | 10.26.80.0  | /21  | -                               |
 | 10.26.88.0  | /21  | -                               |
 | 10.26.96.0  | /21  | -                               |

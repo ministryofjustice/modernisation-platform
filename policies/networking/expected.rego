@@ -136,6 +136,21 @@ expected =
           "apex-development"
         ]
       }
+    },
+    "opg-development": {
+      "general": {
+        "cidr": "10.26.72.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "opg-test": {
+      "general": {
+        "cidr": "10.26.64.0/21",
+        "accounts": [
+        ]
+      }
     }
+
   }
 }
