@@ -8,4 +8,4 @@ preview:
 		-v $$(pwd)/config:/app/config \
 		-v $$(pwd)/source:/app/source \
 		-p 4567:4567 \
-		-it $(IMAGE) /scripts/compile-and-create-artifact.sh
+		-it $(IMAGE) /scripts/preview.sh
