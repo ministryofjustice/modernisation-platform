@@ -24,7 +24,8 @@ expected =
         "cidr": "10.27.0.0/21",
         "accounts": [
           "performance-hub-preproduction",
-          "oasys-preproduction"
+          "oasys-preproduction",
+          "nomis-preproduction"
         ]
       }
     },
@@ -41,8 +42,11 @@ expected =
         "cidr": "10.26.24.0/21",
         "accounts": [
           "performance-hub-development",
+          "digital-prison-reporting-development",
           "equip-development",
           "ppud-development",
+          "refer-monitor-development",
+          "nomis-development",
           "oasys-development"
         ]
       }
@@ -79,7 +83,8 @@ expected =
           "performance-hub-production",
           "ppud-production",
           "equip-production",
-          "oasys-production"
+          "oasys-production",
+          "nomis-production"
         ]
       }
     },

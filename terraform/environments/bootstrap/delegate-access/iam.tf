@@ -408,6 +408,18 @@ data "aws_iam_policy_document" "developer-additional" {
 
     resources = ["arn:aws:iam::*:user/cicd-member-user"]
   }
+
+  statement {
+    actions = [
+      "kms:CreateGrant"
+    ]
+    resources = ["arn:aws:kms:*:${local.environment_management.account_ids["core-shared-services-production"]}:key/*"]
+    condition {
+      test     = "Bool"
+      variable = "kms:GrantIsForAWSResource"
+      values   = ["true"]
+    }
+  }
 }
 
 # AWS Shield Advanced SRT (Shield Response Team) support role
