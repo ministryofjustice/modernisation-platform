@@ -150,7 +150,48 @@ expected =
         "accounts": [
         ]
       }
+    },
+    "cjse-development": {
+      "general": {
+        "cidr": "10.26.80.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "cjse-test": {
+      "general": {
+        "cidr": "10.26.88.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "laa-test": {
+      "general": {
+        "cidr": "10.26.96.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "hmcts-test": {
+      "general": {
+        "cidr": "10.26.104.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "cica-test": {
+      "general": {
+        "cidr": "10.26.112.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "hq-test": {
+      "general": {
+        "cidr": "10.26.120.0/21",
+        "accounts": [
+        ]
+      }
     }
-
   }
 }
