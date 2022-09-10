@@ -121,6 +121,14 @@ expected =
         ]
       }
     },
+    "hq-test": {
+      "general": {
+        "cidr": "10.26.120.0/21",
+        "accounts": [
+          "threat-and-vulnerability-mgmt-production"
+        ]
+      }
+    },
     "hq-production": {
       "general": {
         "cidr": "10.27.32.0/21",
