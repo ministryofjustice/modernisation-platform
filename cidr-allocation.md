@@ -63,7 +63,7 @@
 ### preproduction and production /21s for member subnet-sets
 
 | CIDR        | mask | allocated to                      |
-| :---------- | :--- |:----------------------------------|
+| :---------- | :--- | :-------------------------------- |
 | 10.27.0.0   | /21  | hmpps preproduction - general     |
 | 10.27.8.0   | /21  | hmpps production - general        |
 | 10.27.16.0  | /21  | hmcts production - general        |
