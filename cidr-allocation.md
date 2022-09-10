@@ -70,16 +70,16 @@
 | 10.27.24.0  | /21  | hmcts preproduction - general     |
 | 10.27.32.0  | /21  | hq production - general           |
 | 10.27.40.0  | /21  | hq preproduction - general        |
-| 10.27.48.0  | /21  | opg-production - general          |
-| 10.27.56.0  | /21  | opg-preproduction - general       |
-| 10.27.64.0  | /21  | laa-production - general          |
-| 10.27.72.0  | /21  | laa-preproduction - general       |
-| 10.27.80.0  | /21  | cica-production - general         |
-| 10.27.88.0  | /21  | cica-preproduction - general      |
-| 10.27.96.0  | /21  | platforms-production - general    |
-| 10.27.104.0 | /21  | platforms-preproduction - general |
-| 10.27.112.0 | /21  | cjse-production - general         |
-| 10.27.120.0 | /21  | cjse-preproduction - general      |
+| 10.27.48.0  | /21  | opg production - general          |
+| 10.27.56.0  | /21  | opg preproduction - general       |
+| 10.27.64.0  | /21  | laa production - general          |
+| 10.27.72.0  | /21  | laa preproduction - general       |
+| 10.27.80.0  | /21  | cica production - general         |
+| 10.27.88.0  | /21  | cica preproduction - general      |
+| 10.27.96.0  | /21  | platforms production - general    |
+| 10.27.104.0 | /21  | platforms preproduction - general |
+| 10.27.112.0 | /21  | cjse production - general         |
+| 10.27.120.0 | /21  | cjse preproduction - general      |
 | 10.27.128.0 | /21  | -                                 |
 | 10.27.136.0 | /21  | -                                 |
 | 10.27.144.0 | /21  | -                                 |
