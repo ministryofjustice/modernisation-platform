@@ -186,7 +186,7 @@ expected =
         ]
       }
     },
-    "hq-prepdouction": {
+    "hq-preproduction": {
       "general": {
         "cidr": "10.27.40.0/21",
         "accounts": [
