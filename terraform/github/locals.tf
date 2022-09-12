@@ -40,7 +40,7 @@ locals {
     "adeweetman-al",
     "gfou-al", # George Fountopoulos,
     "dms1981", # David Sibley
-    "ep-93" ,   # Edward Proctor
+    "ep-93",   # Edward Proctor
     "julialawrence",
     "ewastempel"
   ]
