@@ -39,3 +39,7 @@ test_business_units_length{
 test_business_units_character{
   deny["`example.json` Business unit name does not meet requirements"] with input as { "filename": "example.json", "tags": { "business-unit": "Platforms4" } }
 }
+
+test_unexpected_access {
+  deny["`example.json` uses an unexpected access level: got `incorrect-access`, expected one of: view-only, developer, sandbox, administrator"] with input as { "filename": "example.json", "environments": [{"access": [{"level": "incorrect-access"}]}]}
+}

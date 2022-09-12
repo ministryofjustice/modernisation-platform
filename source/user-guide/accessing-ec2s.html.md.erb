@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Accessing EC2s
-last_reviewed_on: 2022-02-16
+last_reviewed_on: 2022-08-31
 review_in: 6 months
 ---
 
@@ -60,10 +60,15 @@ Once the bastion has been built in the environemnt, these steps outline the addi
 
 ```
 Host glados-test-bastion
+     StrictHostKeyChecking no
+     UserKnownHostsFile /dev/null
+     LogLevel QUIET
      IdentityFile ~/.ssh/id_rsa
      User jane
      ProxyCommand sh -c "aws ssm start-session --target $(aws ec2 describe-instances --no-cli-pager --filters "Name=tag:Name,Values=bastion_linux" --query 'Reservations[0].Instances[0].InstanceId' --profile glados-test-developer) --document-name AWS-StartSSHSession --parameters 'portNumber=%p' --profile glados-test-developer --region eu-west-2"
 ```
+
+>Note: The bastion server is re-created on daily basis which causes the host identification to change. When the user connects to the bastion using SSH, the SSH client warns about the host identification change. In the above, the configuration `StrictHostKeyChecking no`, `UserKnownHostsFile /dev/null` and `LogLevel QUIET` is added to prevent the `WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!` by the SSH client. If we didn't add the above, the user would have to manually remove the old host key from `~/.ssh/known_hosts` on daily basis, which could be annoying.
 
 6) SSH to the bastion using the following command:
 

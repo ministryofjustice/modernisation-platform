@@ -26,6 +26,7 @@ locals {
   skip_alias = sort([
     "apex-development",
     "nomis-production",
-    "testing-test"
+    "testing-test",
+    "nomis-development"
   ])
 }

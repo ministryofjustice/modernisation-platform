@@ -1,0 +1,16 @@
+{
+  "cidr": {
+    "subnet_sets": {
+      "general": {
+        "cidr": "10.26.112.0/21",
+        "accounts": []
+      }
+    }
+  },
+  "options": {
+    "bastion_linux": true,
+    "additional_endpoints": [],
+    "dns_zone_extend": []
+  },
+  "nacl": []
+}

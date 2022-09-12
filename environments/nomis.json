@@ -2,7 +2,25 @@
   "account-type": "member",
   "environments": [
     {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        }
+      ]
+    },
+    {
       "name": "test",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
       "access": [
         {
           "github_slug": "studio-webops",

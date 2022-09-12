@@ -20,9 +20,7 @@ resource "aws_vpc" "external_inspection" {
   # DNS
   enable_dns_support   = false
   enable_dns_hostnames = false
-  # ClassicLink
-  enable_classiclink             = false
-  enable_classiclink_dns_support = false
+
   # Turn off IPv6
   assign_generated_ipv6_cidr_block = false
 

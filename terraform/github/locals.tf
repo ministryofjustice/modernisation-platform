@@ -26,7 +26,6 @@ locals {
     "kcbotsh",
     "seanprivett",
     "SteveMarshall",
-    "christine-elliott",
     "ScottSeaward"
   ]
 
@@ -64,6 +63,9 @@ locals {
     "ppud-replacement-devs",
     "threat-and-vulnerability-mgmt",
     "laa-aws-infrastructure",
-    "data-and-insights-hub"
+    "data-and-insights-hub",
+    "hmpps-digital-prison-reporting",
+    "hmpps-interventions-dev",
+    "interventions-reporting-discovery"
   ]
 }

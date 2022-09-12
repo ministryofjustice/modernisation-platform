@@ -76,6 +76,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/digital-prison-reporting"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/equip"
     schedule:
       interval: "daily"
@@ -97,6 +101,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/ppud"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/environments/refer-monitor"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"

@@ -1,0 +1,47 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "oasys",
+    "business-unit": "HMPPS",
+    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "owner": "digital-studio-operations-team@digital.justice.gov.uk"
+  }
+}

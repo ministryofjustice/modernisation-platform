@@ -3,6 +3,7 @@ package main
 expected =
 {
   "accounts": [
+    "analytical-platform-data",
     "analytical-platform-management",
     "apex",
     "bichard7",
@@ -13,19 +14,21 @@ expected =
     "core-security",
     "core-shared-services",
     "core-vpc",
+    "data-and-insights-wepi",
+    "digital-prison-reporting",
+    "equip",
+    "example",
+    "mi-platform",
+    "nomis",
+    "oasys",
     "performance-hub",
+    "ppud",
+    "refer-monitor",
     "remote-supervision",
     "sprinkler",
     "testing",
-    "nomis",
-    "analytical-platform-data",
     "tariff",
-    "xhibit-portal",
-    "mi-platform",
-    "ppud",
-    "equip",
-    "example",
     "threat-and-vulnerability-mgmt",
-    "data-and-insights-wepi"
+    "xhibit-portal"
     ]
 }

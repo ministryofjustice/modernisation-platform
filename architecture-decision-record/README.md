@@ -3,6 +3,7 @@
 This is our architecture decision log, made during the design and build of the Modernisation Platform.
 
 ## Table of contents
+
 1. ✅ [Record architecture decisions](0001-record-architecture-decisions.md)
 1. ❌ [Use IAM Federated Access](0002-use-iam-federated-access.md)
 1. ✅ [Use AWS SSO](0003-use-aws-sso.md)
@@ -21,8 +22,10 @@ This is our architecture decision log, made during the design and build of the M
 1. ✅ [Monitoring and Alerting](0017-monitoring-and-alerting.md)
 1. ✅ [Use AWS Shield Advanced](0018-use-aws-shield-advanced.md)
 1. ✅ [Use `bash` and `go` as core languages](0019-use-bash-g0-as-core-languages.md)
+1. ✅ [How we create and maintain documentation](0020-how-we-create-and-maintain-documentation.md)
 
 ## Statuses
+
 - ✅ Accepted
 - ❌ Rejected
 - 🤔 Proposed

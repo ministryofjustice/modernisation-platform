@@ -1,0 +1,23 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "hmpps-interventions-dev",
+          "level": "sandbox"
+        },
+        {
+          "github_slug": "interventions-reporting-discovery",
+          "level": "sandbox"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "refer-monitor",
+    "business-unit": "HMPPS",
+    "owner": "tatiana.soaresdasilva@digital.justice.gov.uk"
+  }
+}
