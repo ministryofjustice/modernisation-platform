@@ -22,7 +22,6 @@ locals {
 
   # GitHub usernames for team members who don't need full AWS access
   general_members = [
-    "ewastempel",
     "kcbotsh",
     "seanprivett",
     "SteveMarshall",
@@ -41,7 +40,9 @@ locals {
     "adeweetman-al",
     "gfou-al", # George Fountopoulos,
     "dms1981", # David Sibley
-    "ep-93"    # Edward Proctor
+    "ep-93" ,   # Edward Proctor
+    "julialawrence",
+    "ewastempel"
   ]
 
   # All members
