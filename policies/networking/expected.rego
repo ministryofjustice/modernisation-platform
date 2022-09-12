@@ -121,6 +121,14 @@ expected =
         ]
       }
     },
+    "hq-test": {
+      "general": {
+        "cidr": "10.26.120.0/21",
+        "accounts": [
+          "threat-and-vulnerability-mgmt-production"
+        ]
+      }
+    },
     "hq-production": {
       "general": {
         "cidr": "10.27.32.0/21",
@@ -186,9 +194,79 @@ expected =
         ]
       }
     },
-    "hq-test": {
+    "hq-preproduction": {
       "general": {
-        "cidr": "10.26.120.0/21",
+        "cidr": "10.27.40.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "opg-production": {
+      "general": {
+        "cidr": "10.27.48.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "opg-preproduction": {
+      "general": {
+        "cidr": "10.27.56.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "laa-production": {
+      "general": {
+        "cidr": "10.27.64.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "laa-preproduction": {
+      "general": {
+        "cidr": "10.27.72.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "cica-production": {
+      "general": {
+        "cidr": "10.27.80.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "cica-preproduction": {
+      "general": {
+        "cidr": "10.27.88.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "platforms-production": {
+      "general": {
+        "cidr": "10.27.96.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "platforms-preproduction": {
+      "general": {
+        "cidr": "10.27.104.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "cjse-production": {
+      "general": {
+        "cidr": "10.27.112.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "cjse-preproduction": {
+      "general": {
+        "cidr": "10.27.120.0/21",
         "accounts": [
         ]
       }
