@@ -460,7 +460,7 @@ data "aws_iam_policy_document" "oidc_assume_role" {
     effect = "Allow"
     resources = [
       format("arn:aws:iam::%s:role/github-actions", local.environment_management.account_ids[terraform.workspace]),
-      format("arn:aws:iam::%s:role/member-delegation-%s-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], local.business_unit, local.application_environment),
+      format("arn:aws:iam::%s:role/member-delegation-%s-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], lower(local.business_unit), local.application_environment),
       format("arn:aws:iam::%s:role/modify-dns-records", local.environment_management.account_ids["core-network-services-production"]),
       format("arn:aws:iam::%s:role/githubReadOnly", local.environment_management.modernisation_platform_account_id)
 
