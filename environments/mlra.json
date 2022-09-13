@@ -1,0 +1,20 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "laa-aws-infrastructure",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "mlra",
+    "business-unit": "LAA",
+    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "owner": "laa-crime-apps@digital.justice.gov.uk"
+  }
+}

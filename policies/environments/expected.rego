@@ -20,6 +20,7 @@ expected =
     "equip",
     "example",
     "mi-platform",
+    "mlra",
     "nomis",
     "oasys",
     "performance-hub",
