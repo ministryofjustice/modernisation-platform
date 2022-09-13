@@ -66,6 +66,7 @@ locals {
     "data-and-insights-hub",
     "hmpps-digital-prison-reporting",
     "hmpps-interventions-dev",
-    "interventions-reporting-discovery"
+    "interventions-reporting-discovery",
+    "hmpps-migration"
   ]
 }
