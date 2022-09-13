@@ -460,8 +460,10 @@ data "aws_iam_policy_document" "oidc_assume_role" {
     effect = "Allow"
     resources = [
       format("arn:aws:iam::%s:role/github-actions", local.environment_management.account_ids[terraform.workspace]),
-      format("arn:aws:iam::%s:role/member-delegation-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], local.business_unit),
-      format("arn:aws:iam::%s:role/modify-dns-records", local.environment_management.account_ids["core-network-services-production"])
+      format("arn:aws:iam::%s:role/member-delegation-%s-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], local.business_unit, local.application_environment),
+      format("arn:aws:iam::%s:role/modify-dns-records", local.environment_management.account_ids["core-network-services-production"]),
+      format("arn:aws:iam::%s:role/githubReadOnly", local.environment_management.modernisation_platform_account_id)
+
     ]
     condition {
       test     = "StringEquals"
@@ -471,10 +473,11 @@ data "aws_iam_policy_document" "oidc_assume_role" {
     actions = ["sts:AssumeRole"]
   }
 
+  # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
   statement {
-    sid    = "AllowOIDCToDecryptKMS"
-    effect = "Allow"
+    sid       = "AllowOIDCToDecryptKMS"
+    effect    = "Allow"
     resources = ["*"]
-    actions = ["kms:Decrypt"]
+    actions   = ["kms:Decrypt"]
   }
 }
