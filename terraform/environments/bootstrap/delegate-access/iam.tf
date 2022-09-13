@@ -470,4 +470,11 @@ data "aws_iam_policy_document" "oidc_assume_role" {
     }
     actions = ["sts:AssumeRole"]
   }
+
+  statement {
+    sid    = "AllowOIDCToDecryptKMS"
+    effect = "Allow"
+    resources = ["*"]
+    actions = ["kms:Decrypt"]
+  }
 }
