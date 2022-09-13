@@ -47,7 +47,8 @@ expected =
           "ppud-development",
           "refer-monitor-development",
           "nomis-development",
-          "oasys-development"
+          "oasys-development",
+          "delius-iaps-development"
         ]
       }
     },
