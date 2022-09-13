@@ -15,6 +15,7 @@ expected =
     "core-shared-services",
     "core-vpc",
     "data-and-insights-wepi",
+    "delius-iaps",
     "digital-prison-reporting",
     "equip",
     "example",
