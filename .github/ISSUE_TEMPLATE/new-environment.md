@@ -11,13 +11,25 @@ labels: onboarding
 ### Application Name
 
 <!--
+The name must be in lowercase and a maximum of 30 characters
 The name of your application, please follow MoJ guidance for naming things
 https://ministryofjustice.github.io/technical-guidance/documentation/standards/naming-things.html#naming-things
 -->
 
+### Description of application
+
+<!--
+Brief description of the application and what it looks like.
+What does the application do?
+What technologies does it use?
+-->
+
 ### GitHub team slug
 
-<!-- The name of your github team for environment access, this github team must be part of the ministryofjustice github organisation -->
+<!-- 
+The name of your GitHub team for environment access, this github team must be part of the ministryofjustice github organisation.
+You can have multiple GitHub teams with different access levels if required.
+-->
 
 ### Environments
 
@@ -26,6 +38,7 @@ Which environments would you like for your application
 (we recommend production and one non production environment if possible)
 The access level determines what actions you can do in the AWS console, see here for more information:
 https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#access
+Choose one access level per environment.
 -->
 
 | Environment 		| Access level |
@@ -57,22 +70,20 @@ HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE
 
 ## Networking options
 
-### Connectivity
-
-#### Subnet sets
+### Subnet sets
 
 <!--Please choose one of the below, most applications will use the general subnet set for their business unit. This means that they will benefit from out of the box connectivity to other applications, most applications will use the general subnet.  If an application has highly sensitive data it may need to go into a subnet with limited connectivity. -->
 
 - [ ] General - this application will use the same subnet as other applications in your business unit
 - [ ] Isolated - this application has highly sensitive data which must have its own isolated subnet with no network connectivity
 
-#### How do users connect to the application?
+### How do users connect to the application?
 
 - [ ] Over the public internet
 - [ ] With a purple cabled device (please give details)
 - [ ] With a MoJ Official device
 
-#### Connectivity to other applications or external parties
+### Connectivity to other applications or external parties
 
 <!-- Please detail here and connectivity that your application needs, eg to other applications or external parties -->
 
