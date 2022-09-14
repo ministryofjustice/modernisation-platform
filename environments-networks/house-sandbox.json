@@ -11,7 +11,9 @@
   },
   "options": {
     "bastion_linux": true,
+    "additional_cidrs": ["10.239.0.0/21"],
     "additional_endpoints": [],
+    "additional_vpcs": [],
     "dns_zone_extend": ["garden"]
   },
   "nacl": [
