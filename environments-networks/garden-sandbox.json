@@ -3,9 +3,7 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.231.0.0/21",
-        "accounts": [
-          "sprinkler-development"
-        ]
+        "accounts": ["sprinkler-development"]
       }
     }
   },
