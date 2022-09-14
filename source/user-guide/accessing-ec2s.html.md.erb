@@ -26,10 +26,9 @@ This enables us to connect to EC2s securely, via AWS SSO, without the need to op
 sso_start_url = https://moj.awsapps.com/start
 sso_region = eu-west-2
 sso_account_id = 123456789
-sso_role_name = modernisation-platform-developer
+sso_role_name = modernisation-platform-sandbox
 region = eu-west-2
 output = json
-
 ```
 
 3) Log in to SSO using the following command:
@@ -65,7 +64,7 @@ Host glados-test-bastion
      LogLevel QUIET
      IdentityFile ~/.ssh/id_rsa
      User jane
-     ProxyCommand sh -c "aws ssm start-session --target $(aws ec2 describe-instances --no-cli-pager --filters "Name=tag:Name,Values=bastion_linux" --query 'Reservations[0].Instances[0].InstanceId' --profile glados-test-developer) --document-name AWS-StartSSHSession --parameters 'portNumber=%p' --profile glados-test-developer --region eu-west-2"
+     ProxyCommand sh -c "aws ssm start-session --target $(aws ec2 describe-instances --no-cli-pager --filters "Name=tag:Name,Values=bastion_linux" --query 'Reservations[0].Instances[0].InstanceId' --profile glados-test-developer | tr -d '"') --document-name AWS-StartSSHSession --parameters 'portNumber=%p' --profile glados-test-developer --region eu-west-2"
 ```
 
 >Note: The bastion server is re-created on daily basis which causes the host identification to change. When the user connects to the bastion using SSH, the SSH client warns about the host identification change. In the above, the configuration `StrictHostKeyChecking no`, `UserKnownHostsFile /dev/null` and `LogLevel QUIET` is added to prevent the `WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!` by the SSH client. If we didn't add the above, the user would have to manually remove the old host key from `~/.ssh/known_hosts` on daily basis, which could be annoying.
