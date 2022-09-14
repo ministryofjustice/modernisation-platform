@@ -23,3 +23,8 @@ provider "aws" {
     role_arn = "arn:aws:iam::${local.modernisation_platform_account.id}:role/OrganizationAccountAccessRole"
   }
 }
+
+provider "github" {
+  owner = "ministryofjustice"
+  token = var.github_token
+}
