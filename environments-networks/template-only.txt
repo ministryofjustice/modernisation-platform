@@ -13,10 +13,12 @@
     },
     "options": {
         "bastion_linux": true,
+        "additional_cidrs": [],
         "additional_endpoints": [
             "com.amazonaws.eu-west-2.elasticfilesystem",
             "com.amazonaws.eu-west-2.sqs"
         ],
+        "additional_vpcs": [],
     },
     "nacl": [
         {
