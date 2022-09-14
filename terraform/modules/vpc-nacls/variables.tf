@@ -1,11 +1,19 @@
-variable "nacl_config" {
-  description = "List of maps of NACLs configurations"
-  type        = list(any)
+variable "additional_vpcs" {
+  description = "A list of strings containing names of external MP VPCs needing access. EG. [\"platforms-development\"]"
+  type        = list(string)
+  default     = []
 }
 
-variable "nacl_refs" {
-  description = "Map of internal NACL references including arn, id, and name"
-  type        = map(any)
+variable "additional_cidrs" {
+  description = "A list of strings containing cidr blocks of external networks which require private connectivity such as PSN addresses."
+  type        = list(string)
+  default     = []
+}
+
+variable "tags" {
+  description = "A map of tags to add to network ACL resources"
+  type        = map(string)
+  default     = {}
 }
 
 variable "tags_prefix" {
@@ -13,7 +21,6 @@ variable "tags_prefix" {
   type        = string
 }
 
-variable "cidrs_for_s3_endpoints" {
-  description = "cidrs_for_s3_endpoints"
-  type        = list(any)
+variable "vpc_name" {
+  description = "Selected VPC for NACL creation"
 }
