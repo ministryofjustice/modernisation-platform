@@ -26,10 +26,12 @@ This enables us to connect to EC2s securely, via AWS SSO, without the need to op
 sso_start_url = https://moj.awsapps.com/start
 sso_region = eu-west-2
 sso_account_id = 123456789
-sso_role_name = modernisation-platform-sandbox
+sso_role_name = modernisation-platform-developer
 region = eu-west-2
 output = json
 ```
+
+>Note: If the development account has sandbox access, then use the `modernisation-platform-sandbox` for `sso_role_name` above.
 
 3) Log in to SSO using the following command:
 
@@ -68,6 +70,8 @@ Host glados-test-bastion
 ```
 
 >Note: The bastion server is re-created on daily basis which causes the host identification to change. When the user connects to the bastion using SSH, the SSH client warns about the host identification change. In the above, the configuration `StrictHostKeyChecking no`, `UserKnownHostsFile /dev/null` and `LogLevel QUIET` is added to prevent the `WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!` by the SSH client. If we didn't add the above, the user would have to manually remove the old host key from `~/.ssh/known_hosts` on daily basis, which could be annoying.
+
+>Note: If you're unable to connect, remove `LogLevel QUIET` from the above to see additional logs. If the `aws ssm` command reports the error `An error occurred (ForbiddenException) when calling the GetRoleCredentials operation: No access`, make sure the `sso_role_name` in the AWS SSO profile is correct (see the note for the AWS SSO `profile glados-test-developer` above).
 
 6) SSH to the bastion using the following command:
 
