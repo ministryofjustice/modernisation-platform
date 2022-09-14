@@ -142,7 +142,8 @@ expected =
       "general": {
         "cidr": "10.26.56.0/21",
         "accounts": [
-          "apex-development"
+          "apex-development",
+          "mlra-development"
         ]
       }
     },
