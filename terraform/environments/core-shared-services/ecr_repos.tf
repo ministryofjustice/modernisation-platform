@@ -19,3 +19,20 @@ module "performance_hub_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
+
+module "mlra_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "mlra"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["mlra-development"]}:user/cicd-member-user"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["mlra-development"]
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
