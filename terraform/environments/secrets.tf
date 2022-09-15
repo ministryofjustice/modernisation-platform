@@ -107,22 +107,12 @@ locals {
 }
 
 # Store environment management secret in Github secrets
-resource "github_actions_organization_secret" "environment_management" {
+resource "github_actions_secret" "environment_management" {
   # checkov:skip=CKV_SECRET_6: "secret_name is not a secret"
   secret_name = "MODERNISATION_PLATFORM_ENVIRONMENTS"
-  visibility  = "private"
+  repository  = "modernisation-platform-environments"
   plaintext_value = jsonencode(merge(
     local.environment_management,
     { account_ids : module.environments.environment_account_ids }
   ))
-}
-
-# Restrict access to the secret
-data "github_repository" "modernisation_platform_environments" {
-  full_name = "ministryofjustice/modernisation-platform-environments"
-}
-
-resource "github_actions_organization_secret_repositories" "org_secret_repos" {
-  secret_name             = "MODERNISATION_PLATFORM_ENVIRONMENTS"
-  selected_repository_ids = [data.github_repository.modernisation_platform_environments.repo_id]
 }
