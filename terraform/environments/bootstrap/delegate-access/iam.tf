@@ -95,6 +95,7 @@ data "aws_iam_policy_document" "member-access" {
       "logs:*",
       "organizations:Describe*",
       "organizations:List*",
+      "quicksight:*",
       "rds-db:*",
       "rds:*",
       "route53:*",
