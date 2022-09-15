@@ -1,59 +1,212 @@
-locals {
-  nacl_base = {
-    for value in var.nacl_config :
-    "${value.subnet_set}-${value.cidr_block}-${value.rule_number}-${value.egress}-${value.subnet_type}" => {
-      name        = value.subnet_set
-      cidr_block  = value.cidr_block
-      egress      = value.egress
-      protocol    = value.protocol
-      rule_action = value.rule_action
-      rule_number = value.rule_number
-      subnet_type = value.subnet_type
-      from_port   = value.from_port
-      to_port     = value.to_port
-    }
-  }
+resource "aws_network_acl" "general-public" {
+  vpc_id     = data.aws_vpc.current.id
+  subnet_ids = local.public_subnet_ids
+  tags = merge(
+    { "Name" = format("%s-public-nacl", var.tags_prefix) },
+    var.tags
+  )
 }
 
-resource "aws_network_acl_rule" "custom_nacl_deployment" {
-  for_each = local.nacl_base
+resource "aws_network_acl" "general-private" {
+  vpc_id     = data.aws_vpc.current.id
+  subnet_ids = local.private_subnet_ids
+  tags = merge(
+    { "Name" = format("%s-private-nacl", var.tags_prefix) },
+    var.tags
+  )
+}
 
-  network_acl_id = var.nacl_refs["${var.tags_prefix}-${each.value.name}-${each.value.subnet_type}"].id
-  rule_number    = each.value.rule_number
+resource "aws_network_acl" "general-data" {
+  vpc_id     = data.aws_vpc.current.id
+  subnet_ids = local.data_subnet_ids
+  tags = merge(
+    { "Name" = format("%s-data-nacl", var.tags_prefix) },
+    var.tags
+  )
+}
+
+resource "aws_network_acl" "protected" {
+  vpc_id     = data.aws_vpc.current.id
+  subnet_ids = local.protected_subnet_ids
+  tags = merge(
+    { "Name" = format("%s-protected-nacl", var.tags_prefix) },
+    var.tags
+  )
+}
+
+resource "aws_network_acl_rule" "data_subnet_static_rules" {
+  for_each       = local.static_acl_rules
+  cidr_block     = each.value.cidr_block
   egress         = each.value.egress
+  network_acl_id = aws_network_acl.general-data.id
   protocol       = each.value.protocol
   rule_action    = each.value.rule_action
+  rule_number    = each.value.rule_number
+}
+
+resource "aws_network_acl_rule" "private_subnet_static_rules" {
+  for_each       = local.static_acl_rules
   cidr_block     = each.value.cidr_block
+  egress         = each.value.egress
+  network_acl_id = aws_network_acl.general-private.id
+  protocol       = each.value.protocol
+  rule_action    = each.value.rule_action
+  rule_number    = each.value.rule_number
+}
+
+resource "aws_network_acl_rule" "public_subnet_static_rules" {
+  for_each       = local.static_acl_rules
+  cidr_block     = each.value.cidr_block
+  egress         = each.value.egress
+  network_acl_id = aws_network_acl.general-public.id
+  protocol       = each.value.protocol
+  rule_action    = each.value.rule_action
+  rule_number    = each.value.rule_number
+}
+
+resource "aws_network_acl_rule" "public_subnet_internet_access_rules" {
+  for_each       = local.public_access_acl_rules
+  cidr_block     = each.value.cidr_block
+  egress         = each.value.egress
   from_port      = each.value.from_port
+  network_acl_id = aws_network_acl.general-public.id
+  protocol       = each.value.protocol
+  rule_action    = each.value.rule_action
+  rule_number    = each.value.rule_number
   to_port        = each.value.to_port
 }
 
-resource "aws_network_acl_rule" "open_endpoint_cidrs_for_data_subnets_egress" {
-  for_each = {
-    for key, data in var.cidrs_for_s3_endpoints :
-    "${data.name}-${key}" => data
-  }
-  network_acl_id = each.value.id
-  rule_number    = each.value.cidr_index + 251
-  egress         = true
-  protocol       = "tcp"
-  rule_action    = "allow"
-  cidr_block     = each.value.cidr
-  from_port      = "443"
-  to_port        = "443"
+resource "aws_network_acl_rule" "protected_subnet_vpc_access_rules" {
+  for_each       = local.endpoint_access_rules
+  cidr_block     = each.value.cidr_block
+  egress         = each.value.egress
+  from_port      = each.value.from_port
+  network_acl_id = aws_network_acl.protected.id
+  protocol       = each.value.protocol
+  rule_action    = each.value.rule_action
+  rule_number    = each.value.rule_number
+  to_port        = each.value.to_port
 }
 
-resource "aws_network_acl_rule" "open_endpoint_cidrs_for_data_subnets_ingress" {
-  for_each = {
-    for key, data in var.cidrs_for_s3_endpoints :
-    "${data.name}-${key}" => data
-  }
-  network_acl_id = each.value.id
-  rule_number    = each.value.cidr_index + 251
+# Data subnet dynamic rules
+resource "aws_network_acl_rule" "data_subnet_dynamic_vpc_ingress_rules" {
+  for_each       = { for i, v in local.external_vpc_cidrs : i => v }
+  cidr_block     = each.value.cidr_block
   egress         = false
-  protocol       = "tcp"
+  network_acl_id = aws_network_acl.general-data.id
+  protocol       = "-1"
   rule_action    = "allow"
-  cidr_block     = each.value.cidr
-  from_port      = "1024"
-  to_port        = "65535"
+  rule_number    = (each.key * 100) + 2000
+}
+
+resource "aws_network_acl_rule" "data_subnet_dynamic_vpc_egress_rules" {
+  for_each       = { for i, v in local.external_vpc_cidrs : i => v }
+  cidr_block     = each.value.cidr_block
+  egress         = true
+  network_acl_id = aws_network_acl.general-data.id
+  protocol       = "-1"
+  rule_action    = "allow"
+  rule_number    = (each.key * 100) + 2000
+}
+
+resource "aws_network_acl_rule" "data_subnet_dynamic_range_ingress_rules" {
+  for_each       = { for i, v in local.external_range_cidrs : i => v }
+  cidr_block     = each.value.cidr_block
+  egress         = false
+  network_acl_id = aws_network_acl.general-data.id
+  protocol       = "-1"
+  rule_action    = "allow"
+  rule_number    = (each.key * 100) + 6000
+}
+
+resource "aws_network_acl_rule" "data_subnet_dynamic_range_egress_rules" {
+  for_each       = { for i, v in local.external_range_cidrs : i => v }
+  cidr_block     = each.value.cidr_block
+  egress         = true
+  network_acl_id = aws_network_acl.general-data.id
+  protocol       = "-1"
+  rule_action    = "allow"
+  rule_number    = (each.key * 100) + 6000
+}
+
+# Private subnet dynamic rules
+resource "aws_network_acl_rule" "private_subnet_dynamic_vpc_ingress_rules" {
+  for_each       = { for i, v in local.external_vpc_cidrs : i => v }
+  cidr_block     = each.value.cidr_block
+  egress         = false
+  network_acl_id = aws_network_acl.general-private.id
+  protocol       = "-1"
+  rule_action    = "allow"
+  rule_number    = (each.key * 100) + 2000
+}
+
+resource "aws_network_acl_rule" "private_subnet_dynamic_vpc_egress_rules" {
+  for_each       = { for i, v in local.external_vpc_cidrs : i => v }
+  cidr_block     = each.value.cidr_block
+  egress         = true
+  network_acl_id = aws_network_acl.general-private.id
+  protocol       = "-1"
+  rule_action    = "allow"
+  rule_number    = (each.key * 100) + 2000
+}
+
+resource "aws_network_acl_rule" "private_subnet_dynamic_range_ingress_rules" {
+  for_each       = { for i, v in local.external_range_cidrs : i => v }
+  cidr_block     = each.value.cidr_block
+  egress         = false
+  network_acl_id = aws_network_acl.general-private.id
+  protocol       = "-1"
+  rule_action    = "allow"
+  rule_number    = (each.key * 100) + 6000
+}
+
+resource "aws_network_acl_rule" "private_subnet_dynamic_range_egress_rules" {
+  for_each       = { for i, v in local.external_range_cidrs : i => v }
+  cidr_block     = each.value.cidr_block
+  egress         = true
+  network_acl_id = aws_network_acl.general-private.id
+  protocol       = "-1"
+  rule_action    = "allow"
+  rule_number    = (each.key * 100) + 6000
+}
+
+# Public subnet dynamic rules
+resource "aws_network_acl_rule" "public_subnet_dynamic_vpc_ingress_rules" {
+  for_each       = { for i, v in local.external_vpc_cidrs : i => v }
+  cidr_block     = each.value.cidr_block
+  egress         = false
+  network_acl_id = aws_network_acl.general-public.id
+  protocol       = "-1"
+  rule_action    = "allow"
+  rule_number    = (each.key * 100) + 2000
+}
+
+resource "aws_network_acl_rule" "public_subnet_dynamic_vpc_egress_rules" {
+  for_each       = { for i, v in local.external_vpc_cidrs : i => v }
+  cidr_block     = each.value.cidr_block
+  egress         = true
+  network_acl_id = aws_network_acl.general-public.id
+  protocol       = "-1"
+  rule_action    = "allow"
+  rule_number    = (each.key * 100) + 2000
+}
+
+resource "aws_network_acl_rule" "public_subnet_dynamic_range_ingress_rules" {
+  for_each       = { for i, v in local.external_range_cidrs : i => v }
+  cidr_block     = each.value.cidr_block
+  egress         = false
+  network_acl_id = aws_network_acl.general-public.id
+  protocol       = "-1"
+  rule_action    = "allow"
+  rule_number    = (each.key * 100) + 6000
+}
+
+resource "aws_network_acl_rule" "public_subnet_dynamic_range_egress_rules" {
+  for_each       = { for i, v in local.external_range_cidrs : i => v }
+  cidr_block     = each.value.cidr_block
+  egress         = true
+  network_acl_id = aws_network_acl.general-public.id
+  protocol       = "-1"
+  rule_action    = "allow"
+  rule_number    = (each.key * 100) + 6000
 }

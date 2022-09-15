@@ -3,16 +3,15 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.26.0.0/21",
-        "accounts": [
-          "testing-test"
-        ]
+        "accounts": ["testing-test"]
       }
     }
   },
   "options": {
     "bastion_linux": false,
+    "additional_cidrs": [],
     "additional_endpoints": [],
+    "additional_vpcs": [],
     "dns_zone_extend": []
-  },
-  "nacl": []
+  }
 }

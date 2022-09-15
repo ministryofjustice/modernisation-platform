@@ -117,7 +117,7 @@ locals {
 module "vpc" {
   for_each = local.vpcs[terraform.workspace]
 
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=v1.0.3"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=v1.2.0"
 
   subnet_sets = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
 
@@ -163,12 +163,13 @@ module "vpc_tgw_routing" {
 }
 
 module "vpc_nacls" {
-  source                 = "../../modules/vpc-nacls"
-  for_each               = local.vpcs[terraform.workspace]
-  nacl_config            = each.value.nacl
-  nacl_refs              = module.vpc[each.key].nacl_refs
-  cidrs_for_s3_endpoints = module.vpc[each.key].data_network_acl_for_endpoints
-  tags_prefix            = each.key
+  source           = "../../modules/vpc-nacls"
+  for_each         = local.vpcs[terraform.workspace]
+  additional_cidrs = each.value.options.additional_cidrs
+  additional_vpcs  = each.value.options.additional_vpcs
+  tags             = local.tags
+  tags_prefix      = each.key
+  vpc_name         = each.key
 }
 
 locals {
