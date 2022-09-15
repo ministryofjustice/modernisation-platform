@@ -77,10 +77,9 @@ Host glados-test-bastion
 
 ```
 ssh glados-test-bastion
-
 ```
 
->Note: If you re-generate your public SSH key, then you will also need to update it in the `bastion_linux.json` file inside the `modernisation-platform-environments` repository. Moreover, in order to SSH using your new key you will need to restart your ssh-agent.
+>Note: If you get the error `Permission denied (publickey,gssapi-keyex,gssapi-with-mic)`, check the `bastion_linux.json` file inside the `modernisation-platform-environments` repository includes your public SSH key. On the other hand, if you re-generate your public SSH key, then you will also need to update it in the `bastion_linux.json`. Moreover, in order to SSH using your newly generated key you will need to restart your ssh-agent.
 
 ## Using the Bastion as a jump server to access Linux EC2s
 
