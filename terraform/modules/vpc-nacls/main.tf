@@ -116,7 +116,7 @@ resource "aws_network_acl_rule" "data_subnet_dynamic_range_ingress_rules" {
   network_acl_id = aws_network_acl.general-data.id
   protocol       = "-1"
   rule_action    = "allow"
-  rule_number    = (each.key * 100) + 5000
+  rule_number    = (each.key * 100) + 6000
 }
 
 resource "aws_network_acl_rule" "data_subnet_dynamic_range_egress_rules" {
@@ -126,7 +126,7 @@ resource "aws_network_acl_rule" "data_subnet_dynamic_range_egress_rules" {
   network_acl_id = aws_network_acl.general-data.id
   protocol       = "-1"
   rule_action    = "allow"
-  rule_number    = (each.key * 100) + 5000
+  rule_number    = (each.key * 100) + 6000
 }
 
 # Private subnet dynamic rules
@@ -157,7 +157,7 @@ resource "aws_network_acl_rule" "private_subnet_dynamic_range_ingress_rules" {
   network_acl_id = aws_network_acl.general-private.id
   protocol       = "-1"
   rule_action    = "allow"
-  rule_number    = (each.key * 100) + 5000
+  rule_number    = (each.key * 100) + 6000
 }
 
 resource "aws_network_acl_rule" "private_subnet_dynamic_range_egress_rules" {
@@ -167,7 +167,7 @@ resource "aws_network_acl_rule" "private_subnet_dynamic_range_egress_rules" {
   network_acl_id = aws_network_acl.general-private.id
   protocol       = "-1"
   rule_action    = "allow"
-  rule_number    = (each.key * 100) + 5000
+  rule_number    = (each.key * 100) + 6000
 }
 
 # Public subnet dynamic rules
@@ -198,7 +198,7 @@ resource "aws_network_acl_rule" "public_subnet_dynamic_range_ingress_rules" {
   network_acl_id = aws_network_acl.general-public.id
   protocol       = "-1"
   rule_action    = "allow"
-  rule_number    = (each.key * 100) + 5000
+  rule_number    = (each.key * 100) + 6000
 }
 
 resource "aws_network_acl_rule" "public_subnet_dynamic_range_egress_rules" {
@@ -208,5 +208,5 @@ resource "aws_network_acl_rule" "public_subnet_dynamic_range_egress_rules" {
   network_acl_id = aws_network_acl.general-public.id
   protocol       = "-1"
   rule_action    = "allow"
-  rule_number    = (each.key * 100) + 5000
+  rule_number    = (each.key * 100) + 6000
 }

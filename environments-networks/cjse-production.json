@@ -13,6 +13,5 @@
     "additional_endpoints": [],
     "additional_vpcs": [],
     "dns_zone_extend": []
-  },
-  "nacl": []
+  }
 }

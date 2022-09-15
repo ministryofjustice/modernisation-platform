@@ -41,6 +41,14 @@ locals {
     cidr_block = v }
   ]) : []
 
+  # 1000 = intra-vpc traffic
+  # 2000 = inter-vpc traffic (dynamic rules)
+  # 3000 = deny east-west
+  # 4000 = private address ranges
+  # 5000 = https internet access
+  # 6000 = public address ranges (dynamic)
+  # 7000 = access from internet
+
   static_acl_rules = {
     allow_vpc_cidr_in = {
       cidr_block  = data.aws_vpc.current.cidr_block
@@ -112,6 +120,24 @@ locals {
       rule_action = "allow"
       rule_number = 4200
     },
+    allow_0-0-0-0_https_out = {
+      cidr_block  = "0.0.0.0/0"
+      egress      = true
+      from_port   = 443
+      protocol    = "tcp"
+      rule_action = "allow"
+      rule_number = 5000
+      to_port     = 443
+    },
+    allow_0-0-0-0_dynamic_tcp_in = {
+      cidr_block  = "0.0.0.0/0"
+      egress      = false
+      from_port   = 1024
+      protocol    = "tcp"
+      rule_action = "allow"
+      rule_number = 5100
+      to_port     = 65535
+    }
   }
 
   public_access_acl_rules = {
@@ -121,7 +147,7 @@ locals {
       from_port   = 443
       protocol    = "tcp"
       rule_action = "allow"
-      rule_number = 6000
+      rule_number = 7000
       to_port     = 443
     },
     allow_dynamic_tcp_in = {
@@ -130,7 +156,7 @@ locals {
       from_port   = 1024
       protocol    = "tcp"
       rule_action = "allow"
-      rule_number = 6100
+      rule_number = 7100
       to_port     = 65535
     },
     allow_dynamic_udp_in = {
@@ -139,7 +165,7 @@ locals {
       from_port   = 1024
       protocol    = "udp"
       rule_action = "allow"
-      rule_number = 6200
+      rule_number = 7200
       to_port     = 65535
     },
     allow_any_out = {
@@ -148,7 +174,7 @@ locals {
       from_port   = null
       protocol    = "-1"
       rule_action = "allow"
-      rule_number = 6000
+      rule_number = 7000
       to_port     = null
     }
   }

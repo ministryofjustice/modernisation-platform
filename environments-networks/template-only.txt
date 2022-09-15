@@ -19,18 +19,5 @@
             "com.amazonaws.eu-west-2.sqs"
         ],
         "additional_vpcs": [],
-    },
-    "nacl": [
-        {
-            "subnet_set": "general",
-            "egress": true,
-            "subnet_type": "public",
-            "protocol": -1,
-            "rule_action": "allow",
-            "rule_number": 100,
-            "cidr_block": "10.10.10.0/24",
-            "from_port": "0",
-            "to_port": "0"
-        }
-    ]
+    }
 }
