@@ -53,72 +53,92 @@ locals {
     allow_vpc_cidr_in = {
       cidr_block  = data.aws_vpc.current.cidr_block
       egress      = false
+      from_port   = null
       protocol    = "-1"
       rule_action = "allow"
       rule_number = 1000
+      to_port     = null
     },
     allow_vpc_cidr_out = {
       cidr_block  = data.aws_vpc.current.cidr_block
       egress      = true
+      from_port   = null
       protocol    = "-1"
       rule_action = "allow"
       rule_number = 1000
+      to_port     = null
     },
     deny_mp_cidr_in = {
       cidr_block  = "10.26.0.0/15"
       egress      = false
+      from_port   = null
       protocol    = "-1"
       rule_action = "deny"
       rule_number = 3000
+      to_port     = null
     },
     deny_mp_cidr_out = {
       cidr_block  = "10.26.0.0/15"
       egress      = true
+      from_port   = null
       protocol    = "-1"
       rule_action = "deny"
       rule_number = 3000
+      to_port     = null
     },
     allow_10-0-0-0_in = {
       cidr_block  = "10.0.0.0/8"
       egress      = false
+      from_port   = null
       protocol    = "-1"
       rule_action = "allow"
       rule_number = 4000
+      to_port     = null
     },
     allow_10-0-0-0_out = {
       cidr_block  = "10.0.0.0/8"
       egress      = true
+      from_port   = null
       protocol    = "-1"
       rule_action = "allow"
       rule_number = 4000
+      to_port     = null
     },
     allow_172-16-0-0_in = {
       cidr_block  = "172.16.0.0/12"
       egress      = false
+      from_port   = null
       protocol    = "-1"
       rule_action = "allow"
       rule_number = 4100
+      to_port     = null
     },
     allow_172-16-0-0_out = {
       cidr_block  = "172.16.0.0/12"
       egress      = true
+      from_port   = null
       protocol    = "-1"
       rule_action = "allow"
       rule_number = 4100
+      to_port     = null
     },
     allow_192-168-0-0_in = {
       cidr_block  = "192.168.0.0/16"
       egress      = false
+      from_port   = null
       protocol    = "-1"
       rule_action = "allow"
       rule_number = 4200
+      to_port     = null
     },
     allow_192-168-0-0_out = {
       cidr_block  = "192.168.0.0/16"
       egress      = true
+      from_port   = null
       protocol    = "-1"
       rule_action = "allow"
       rule_number = 4200
+      to_port     = null
     },
     allow_0-0-0-0_https_out = {
       cidr_block  = "0.0.0.0/0"

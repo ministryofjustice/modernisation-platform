@@ -38,30 +38,36 @@ resource "aws_network_acl_rule" "data_subnet_static_rules" {
   for_each       = local.static_acl_rules
   cidr_block     = each.value.cidr_block
   egress         = each.value.egress
+  from_port      = each.value.from_port != null ? each.value.from_port : null
   network_acl_id = aws_network_acl.general-data.id
   protocol       = each.value.protocol
   rule_action    = each.value.rule_action
   rule_number    = each.value.rule_number
+  to_port        = each.value.to_port != null ? each.value.to_port : null
 }
 
 resource "aws_network_acl_rule" "private_subnet_static_rules" {
   for_each       = local.static_acl_rules
   cidr_block     = each.value.cidr_block
   egress         = each.value.egress
+  from_port      = each.value.from_port != null ? each.value.from_port : null
   network_acl_id = aws_network_acl.general-private.id
   protocol       = each.value.protocol
   rule_action    = each.value.rule_action
   rule_number    = each.value.rule_number
+  to_port        = each.value.to_port != null ? each.value.to_port : null
 }
 
 resource "aws_network_acl_rule" "public_subnet_static_rules" {
   for_each       = local.static_acl_rules
   cidr_block     = each.value.cidr_block
   egress         = each.value.egress
+  from_port      = each.value.from_port != null ? each.value.from_port : null
   network_acl_id = aws_network_acl.general-public.id
   protocol       = each.value.protocol
   rule_action    = each.value.rule_action
   rule_number    = each.value.rule_number
+  to_port        = each.value.to_port != null ? each.value.to_port : null
 }
 
 resource "aws_network_acl_rule" "public_subnet_internet_access_rules" {
