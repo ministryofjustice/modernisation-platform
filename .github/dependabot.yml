@@ -76,6 +76,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/delius-iaps"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/digital-prison-reporting"
     schedule:
       interval: "daily"
@@ -89,6 +93,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/mi-platform"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/environments/mlra"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
