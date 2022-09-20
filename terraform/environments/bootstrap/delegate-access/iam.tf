@@ -90,6 +90,7 @@ data "aws_iam_policy_document" "member-access" {
       "glue:*",
       "guardduty:get*",
       "iam:*",
+      "kinesis:*",
       "kms:*",
       "lambda:*",
       "logs:*",
