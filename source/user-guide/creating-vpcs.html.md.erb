@@ -1,0 +1,61 @@
+---
+owner_slack: "#modernisation-platform"
+title: Creating VPCs in AWS
+last_reviewed_on: 2022-08-18
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Overview
+
+Following these steps will allow you to create a new VPC for a business unit. Previously, we created VPCs when they were needed as part of the account creation process, however to cut down the number of steps to make it easier, and reduce the chance of error.
+
+Example PR for this work [here](https://github.com/ministryofjustice/modernisation-platform/pull/2283/files#diff-5ee99e84753771a6c78bed0261809c2a8ab275d1e63c7fddbe222cf426a50927)
+
+## Information Required
+
+The only information that is required is the name of the business unit. From there we can create a VPC relating to the current environment, e.g. **hq-test.**
+
+Other information to build **extended DNS zones** and **NACLS** as well as any **additional endpoints** can be *useful*, but are not required at this stage. These things can be added after creation easily.
+
+## Files to Change.
+
+Firstly, a cidr range needs to be reserved. The cidr-allocation.md file contains the ranges that can be reserved, depending on your environment, pick the correct table and put the business unit next to your range.
+
+Secondly, the expected.rego file needs to be edited under environments/networks. In here, we add the accounts that will go in this VPC, or leave it empty if you are building the vpc ahead of account creation.
+
+Here's an example of what to add.
+
+        "opg-production": {
+      "general": {
+        "cidr": "10.27.48.0/21",
+        "accounts": [
+        ]
+      }
+    },
+
+## Files to Add
+
+Aside from the two files that need to be edited, a new file will be need to be added. This is done in the same pull request, and you will need a separate file for each VPC. For example if you are creating a development, test, preproduction and production VPC for OPG, you will need four separate files.
+
+Here’s an example of what one looks like
+
+    {
+      "cidr": {
+        "subnet_sets": {
+        "general": {
+            "cidr": "10.27.72.0/21",
+            "accounts": []
+            }
+        }
+    },
+    "options": {
+        "bastion_linux": false,
+        "additional_endpoints": [],
+        "dns_zone_extend": []
+    },
+    "nacl": []
+    }
+
+The file name is the business unit - environment. For example **laa-test.json**.
