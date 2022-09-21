@@ -224,4 +224,31 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       identifiers = ["arn:aws:iam::${local.environment_management.account_ids["testing-test"]}:user/testing-ci"]
     }
   }
+
+  statement {
+    sid     = "AllowGithubActionsRole"
+    effect  = "Allow"
+    actions = ["s3:PutObject"]
+    resources = [
+      "${module.state-bucket.bucket.arn}/environments/members/*",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values = [
+      "arn:aws:iam::*:role/github-actions"]
+    }
+  }
 }
