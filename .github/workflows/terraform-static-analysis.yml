@@ -8,7 +8,7 @@ on:
   pull_request:
     branches:
       - main
-    paths: 
+    paths:
       - 'terraform/**'
       - '.github/workflows/terraform-static-analysis.yml'
 
@@ -30,6 +30,7 @@ jobs:
         scan_type: changed
         tfsec_exclude: aws-ssm-secret-use-customer-key,github-repositories-private,aws-vpc-no-excessive-port-access,github-repositories-require-signed-commits
         checkov_exclude: CKV_GIT_1,CKV_AWS_126
+        tflint_exclude: terraform_unused_declarations
 
   terraform-static-analysis-full-scan:
     name: Terraform Static Analysis - scan all directories
@@ -45,7 +46,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        scan_type: full 
+        scan_type: full
         tfsec_exclude: aws-ssm-secret-use-customer-key,github-repositories-private,aws-vpc-no-excessive-port-access,github-repositories-require-signed-commits
         checkov_exclude: CKV_GIT_1,CKV_AWS_126
 
