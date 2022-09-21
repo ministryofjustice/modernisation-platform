@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Working as a Collaborator
-last_reviewed_on: 2022-03-15
+last_reviewed_on: 2022-09-21
 review_in: 6 months
 ---
 
@@ -9,12 +9,12 @@ review_in: 6 months
 
 Once you have been [set up as a collaborator](../runbooks/adding-collaborators.html) you can - 
 
-* [create infrastructure in the modernisation-platform-environments repository](creating-resources.html#creating-resources-in-the-modernisation-platform)
-* [deploy infrastrucutre via GitHub Actions workflows](deploying-your-infrastructure.html)
-* [view your accounts via the AWS console](#logging-in-to-the-aws-console)
-* [use AWS credentials](#getting-access-credentials)
-* [run Terraform plans locally](#running-a-terraform-plan-locally-as-a-collaborator)
-* [access EC2s and databases](#accessing-ec2s-as-a-collaborator)
+* [Create infrastructure in the modernisation-platform-environments repository](creating-resources.html#creating-resources-in-the-modernisation-platform)
+* [Deploy infrastrucutre via GitHub Actions workflows](deploying-your-infrastructure.html)
+* [View your accounts via the AWS console](#logging-in-to-the-aws-console)
+* [Use AWS credentials](#getting-access-credentials)
+* [Run Terraform plans locally](#running-a-terraform-plan-locally-as-a-collaborator)
+* [Access EC2s and databases](#accessing-ec2s-as-a-collaborator)
 
 ## Logging in to the AWS Console
 
@@ -118,3 +118,7 @@ Host bastion
 ```
   ssh -L 33389:<IP address of destination instance>:3389 bastion
 ```
+
+### Useful Tips
+
+AWS Vault is a useful tool, and can be found [here.](https://github.com/99designs/aws-vault) It can easily be installed via brew on mac, and may help.
