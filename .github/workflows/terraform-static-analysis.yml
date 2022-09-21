@@ -49,6 +49,7 @@ jobs:
         scan_type: full
         tfsec_exclude: aws-ssm-secret-use-customer-key,github-repositories-private,aws-vpc-no-excessive-port-access,github-repositories-require-signed-commits
         checkov_exclude: CKV_GIT_1,CKV_AWS_126
+        tflint_exclude: terraform_unused_declarations
 
   terraform-static-analysis-scheduled-scan:
     name: Terraform Static Analysis - scheduled scan of all directories
@@ -67,6 +68,7 @@ jobs:
         scan_type: full
         tfsec_exclude: aws-ssm-secret-use-customer-key,github-repositories-private,aws-vpc-no-excessive-port-access,github-repositories-require-signed-commits
         checkov_exclude: CKV_GIT_1,CKV_AWS_126
+        tflint_exclude: terraform_unused_declarations
     - uses: 8398a7/action-slack@v3
       name: Slack failure notification
       with:
