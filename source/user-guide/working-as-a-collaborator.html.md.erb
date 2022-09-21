@@ -7,7 +7,7 @@ review_in: 6 months
 
 # <%= current_page.data.title %>
 
-Once you have been [set up as a collaborator](../runbooks/adding-collaborators.html) you can - 
+Once you have been [set up as a collaborator](../runbooks/adding-collaborators.html) you can -
 
 * [Create infrastructure in the modernisation-platform-environments repository](creating-resources.html#creating-resources-in-the-modernisation-platform)
 * [Deploy infrastrucutre via GitHub Actions workflows](deploying-your-infrastructure.html)
@@ -81,8 +81,8 @@ You will need to have the `developer` access role in order to use SSM/Bastion.
 
 1. Download the [AWS CLI](https://aws.amazon.com/cli/)
 1. Ensure you have your [AWS credentials](#getting-access-credentials)
-1. In your terminal enter `aws configure` to set up credentials and enter the key and access key created in the previous step. 
-1. Open `~/.aws/config` in a text editor and enter the following to create your AWS profile: 
+1. In your terminal enter `aws configure` to set up credentials and enter the key and access key created in the previous step.
+1. Open `~/.aws/config` in a text editor and enter the following to create your AWS profile:
 
 ```
 [profile <my-application-account-name>]
@@ -109,7 +109,7 @@ Most modern AMIs will already have the SSM Agent installed. You can connect to t
 ```
 Host bastion
      IdentityFile ~/.ssh/id_rsa #local path to the public key provided in earlier
-     User <your user name> 
+     User <your user name>
      ProxyCommand sh -c "aws ssm start-session --target $(aws ec2 describe-instances --no-cli-pager --filters "Name=tag:Name,Values=bastion_linux" --query 'Reservations[0].Instances[0].InstanceId' --profile <my aws profile>) --document-name AWS-StartSSHSession --parameters 'portNumber=%p' --profile <my aws profile> --region eu-west-2"
 ```
 
