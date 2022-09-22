@@ -43,6 +43,7 @@ resource "github_branch_protection" "default" {
   repository_id          = github_repository.default.id
   pattern                = "main"
   enforce_admins         = true
+  #tfsec:ignore:github-branch_protections-require_signed_commits
   require_signed_commits = false
 
   required_status_checks {
