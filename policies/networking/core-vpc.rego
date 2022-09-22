@@ -35,11 +35,6 @@ deny[msg] {
   msg := sprintf("`%v` is missing the `dns_zone_extend` key", [input.filename])
 }
 
-deny[msg] {
-  not has_field(input, "nacl")
-  msg := sprintf("`%v` is missing the `nacl` key", [input.filename])
-}
-
 # Invalid type
 deny[msg] {
   not is_object(input.cidr.subnet_sets)
