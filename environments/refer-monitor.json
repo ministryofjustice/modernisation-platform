@@ -7,6 +7,10 @@
         {
           "github_slug": "hmpps-interventions-dev",
           "level": "sandbox"
+        },
+        {
+          "github_slug": "interventions-reporting-discovery",
+          "level": "sandbox"
         }
       ]
     }
