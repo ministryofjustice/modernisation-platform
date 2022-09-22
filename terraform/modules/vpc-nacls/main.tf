@@ -1,3 +1,4 @@
+#checkov:skip=CKV2_AWS_1:These are attacued to a subnet and a vpc
 resource "aws_network_acl" "general-public" {
   vpc_id     = data.aws_vpc.current.id
   subnet_ids = local.public_subnet_ids
