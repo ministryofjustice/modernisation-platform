@@ -1,5 +1,5 @@
-#checkov:skip=CKV2_AWS_1:These are attached to a subnet and a vpc
 resource "aws_network_acl" "general-public" {
+  #checkov:skip=CKV2_AWS_1:These are attached to a subnet and a vpc
   vpc_id     = data.aws_vpc.current.id
   subnet_ids = local.public_subnet_ids
   tags = merge(
@@ -7,9 +7,8 @@ resource "aws_network_acl" "general-public" {
     var.tags
   )
 }
-
-#checkov:skip=CKV2_AWS_1:These are attached to a subnet and a vpc
 resource "aws_network_acl" "general-private" {
+  #checkov:skip=CKV2_AWS_1:These are attached to a subnet and a vpc
   vpc_id     = data.aws_vpc.current.id
   subnet_ids = local.private_subnet_ids
   tags = merge(
@@ -17,9 +16,8 @@ resource "aws_network_acl" "general-private" {
     var.tags
   )
 }
-
-#checkov:skip=CKV2_AWS_1:These are attached to a subnet and a vpc
 resource "aws_network_acl" "general-data" {
+  #checkov:skip=CKV2_AWS_1:These are attached to a subnet and a vpc
   vpc_id     = data.aws_vpc.current.id
   subnet_ids = local.data_subnet_ids
   tags = merge(
@@ -27,9 +25,8 @@ resource "aws_network_acl" "general-data" {
     var.tags
   )
 }
-
-#checkov:skip=CKV2_AWS_1:These are attached to a subnet and a vpc
 resource "aws_network_acl" "protected" {
+  #checkov:skip=CKV2_AWS_1:These are attached to a subnet and a vpc
   vpc_id     = data.aws_vpc.current.id
   subnet_ids = local.protected_subnet_ids
   tags = merge(
