@@ -1,4 +1,5 @@
 resource "aws_network_acl" "general-public" {
+  #checkov:skip=CKV2_AWS_1:These are attached to a subnet and a vpc
   vpc_id     = data.aws_vpc.current.id
   subnet_ids = local.public_subnet_ids
   tags = merge(
@@ -6,8 +7,8 @@ resource "aws_network_acl" "general-public" {
     var.tags
   )
 }
-
 resource "aws_network_acl" "general-private" {
+  #checkov:skip=CKV2_AWS_1:These are attached to a subnet and a vpc
   vpc_id     = data.aws_vpc.current.id
   subnet_ids = local.private_subnet_ids
   tags = merge(
@@ -15,8 +16,8 @@ resource "aws_network_acl" "general-private" {
     var.tags
   )
 }
-
 resource "aws_network_acl" "general-data" {
+  #checkov:skip=CKV2_AWS_1:These are attached to a subnet and a vpc
   vpc_id     = data.aws_vpc.current.id
   subnet_ids = local.data_subnet_ids
   tags = merge(
@@ -24,8 +25,8 @@ resource "aws_network_acl" "general-data" {
     var.tags
   )
 }
-
 resource "aws_network_acl" "protected" {
+  #checkov:skip=CKV2_AWS_1:These are attached to a subnet and a vpc
   vpc_id     = data.aws_vpc.current.id
   subnet_ids = local.protected_subnet_ids
   tags = merge(
@@ -34,6 +35,7 @@ resource "aws_network_acl" "protected" {
   )
 }
 
+#tfsec:ignore:aws-vpc-no-excessive-port-access tfsec:ignore:aws-ec2-no-public-ingress-acl
 resource "aws_network_acl_rule" "data_subnet_static_rules" {
   for_each       = local.static_acl_rules
   cidr_block     = each.value.cidr_block
@@ -46,6 +48,7 @@ resource "aws_network_acl_rule" "data_subnet_static_rules" {
   to_port        = each.value.to_port != null ? each.value.to_port : null
 }
 
+#tfsec:ignore:aws-vpc-no-excessive-port-access tfsec:ignore:aws-ec2-no-public-ingress-acl
 resource "aws_network_acl_rule" "private_subnet_static_rules" {
   for_each       = local.static_acl_rules
   cidr_block     = each.value.cidr_block
@@ -58,6 +61,7 @@ resource "aws_network_acl_rule" "private_subnet_static_rules" {
   to_port        = each.value.to_port != null ? each.value.to_port : null
 }
 
+#tfsec:ignore:aws-vpc-no-excessive-port-access tfsec:ignore:aws-ec2-no-public-ingress-acl
 resource "aws_network_acl_rule" "public_subnet_static_rules" {
   for_each       = local.static_acl_rules
   cidr_block     = each.value.cidr_block
@@ -70,6 +74,7 @@ resource "aws_network_acl_rule" "public_subnet_static_rules" {
   to_port        = each.value.to_port != null ? each.value.to_port : null
 }
 
+#tfsec:ignore:aws-vpc-no-excessive-port-access tfsec:ignore:aws-ec2-no-public-ingress-acl
 resource "aws_network_acl_rule" "public_subnet_internet_access_rules" {
   for_each       = local.public_access_acl_rules
   cidr_block     = each.value.cidr_block

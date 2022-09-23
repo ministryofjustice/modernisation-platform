@@ -40,9 +40,10 @@ resource "github_repository" "default" {
 
 resource "github_branch_protection" "default" {
   #checkov:skip=CKV_GIT_6:"Following discussions with other teams we will not be enforcing signed commits currently"
-  repository_id          = github_repository.default.id
-  pattern                = "main"
-  enforce_admins         = true
+  repository_id  = github_repository.default.id
+  pattern        = "main"
+  enforce_admins = true
+  #tfsec:ignore:github-branch_protections-require_signed_commits
   require_signed_commits = false
 
   required_status_checks {
