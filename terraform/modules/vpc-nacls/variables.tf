@@ -23,4 +23,5 @@ variable "tags_prefix" {
 
 variable "vpc_name" {
   description = "Selected VPC for NACL creation"
+  type        = string
 }
