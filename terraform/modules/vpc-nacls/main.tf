@@ -35,6 +35,7 @@ resource "aws_network_acl" "protected" {
   )
 }
 
+#tfsec:ignore:aws-vpc-no-excessive-port-access tfsec:ignore:aws-ec2-no-public-ingress-acl
 resource "aws_network_acl_rule" "data_subnet_static_rules" {
   for_each       = local.static_acl_rules
   cidr_block     = each.value.cidr_block
@@ -47,6 +48,7 @@ resource "aws_network_acl_rule" "data_subnet_static_rules" {
   to_port        = each.value.to_port != null ? each.value.to_port : null
 }
 
+#tfsec:ignore:aws-vpc-no-excessive-port-access tfsec:ignore:aws-ec2-no-public-ingress-acl
 resource "aws_network_acl_rule" "private_subnet_static_rules" {
   for_each       = local.static_acl_rules
   cidr_block     = each.value.cidr_block
@@ -59,6 +61,7 @@ resource "aws_network_acl_rule" "private_subnet_static_rules" {
   to_port        = each.value.to_port != null ? each.value.to_port : null
 }
 
+#tfsec:ignore:aws-vpc-no-excessive-port-access tfsec:ignore:aws-ec2-no-public-ingress-acl
 resource "aws_network_acl_rule" "public_subnet_static_rules" {
   for_each       = local.static_acl_rules
   cidr_block     = each.value.cidr_block
@@ -71,6 +74,7 @@ resource "aws_network_acl_rule" "public_subnet_static_rules" {
   to_port        = each.value.to_port != null ? each.value.to_port : null
 }
 
+#tfsec:ignore:aws-vpc-no-excessive-port-access tfsec:ignore:aws-ec2-no-public-ingress-acl
 resource "aws_network_acl_rule" "public_subnet_internet_access_rules" {
   for_each       = local.public_access_acl_rules
   cidr_block     = each.value.cidr_block
