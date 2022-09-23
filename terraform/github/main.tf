@@ -163,10 +163,10 @@ module "terraform-module-aws-vm-import" {
   secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
-module "terraform-module-lambda-scheduler-stop-start" {
+module "modernisation-platform-instance-scheduler" {
   source      = "./modules/repository"
-  name        = "modernisation-platform-terraform-lambda-scheduler-stop-start"
-  description = "Module for stopping and starting instance, rds resources and autoscaling groups with lambda function"
+  name        = "modernisation-platform-instance-scheduler"
+  description = "A Go lambda function for stopping and starting instance, rds resources and autoscaling groups"
   topics = [
     "aws",
     "ec2",
@@ -296,7 +296,7 @@ module "core-team" {
     module.terraform-module-bastion-linux.repository.name,
     module.terraform-module-ecs.repository.name,
     module.terraform-module-aws-vm-import.repository.name,
-    module.terraform-module-lambda-scheduler-stop-start.repository.name,
+    module.modernisation-platform-instance-scheduler.repository.name,
     module.terraform-module-aws-loadbalancer.repository.name,
     module.modernisation-platform-ami-builds.repository.name,
     module.modernisation-platform-environments.repository.name,
