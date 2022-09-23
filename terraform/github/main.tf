@@ -1,8 +1,8 @@
 # Repositories
 module "core" {
   source       = "./modules/repository"
-  type         = "core"
   name         = "modernisation-platform"
+  type         = "core"
   description  = "A place for the core work of the Modernisation Platform"
   homepage_url = "https://user-guide.modernisation-platform.service.justice.gov.uk"
   topics = [
@@ -25,6 +25,7 @@ module "core" {
 module "terraform-module-baselines" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-baselines"
+  type        = "module"
   description = "Module for enabling and configuring common baseline services such as SecurityHub"
   topics = [
     "aws",
@@ -36,6 +37,7 @@ module "terraform-module-baselines" {
 module "terraform-module-cross-account-access" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-cross-account-access"
+  type        = "module"
   description = "Module for creating an IAM role that can be assumed from another account"
   topics = [
     "aws",
@@ -46,6 +48,7 @@ module "terraform-module-cross-account-access" {
 module "terraform-module-environments" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-environments"
+  type        = "module"
   description = "Module for creating organizational units and accounts within AWS Organizations from JSON files"
   topics = [
     "organizational-units",
@@ -56,6 +59,7 @@ module "terraform-module-environments" {
 module "terraform-module-iam-superadmins" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-iam-superadmins"
+  type        = "module"
   description = "Module for creating defined IAM users as superadmins"
   topics = [
     "aws",
@@ -66,6 +70,7 @@ module "terraform-module-iam-superadmins" {
 module "terraform-module-s3-bucket-replication-role" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-s3-bucket-replication-role"
+  type        = "module"
   description = "Module for creating an IAM role for S3 bucket replication"
   topics = [
     "aws",
@@ -80,6 +85,7 @@ module "terraform-module-s3-bucket-replication-role" {
 module "terraform-module-s3-bucket" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-s3-bucket"
+  type        = "module"
   description = "Module for creating S3 buckets with sensible defaults e.g. replication, encryption"
   topics = [
     "aws",
@@ -92,6 +98,7 @@ module "terraform-module-s3-bucket" {
 module "terraform-module-trusted-advisor" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-trusted-advisor"
+  type        = "module"
   description = "Module for refreshing Trusted Advisor every 60 minutes"
   topics = [
     "aws",
@@ -102,6 +109,7 @@ module "terraform-module-trusted-advisor" {
 module "terraform-module-bastion-linux" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-bastion-linux"
+  type        = "module"
   description = "Module for creating Linux bastion servers in member AWS accounts"
   topics = [
     "aws",
@@ -114,6 +122,7 @@ module "terraform-module-bastion-linux" {
 module "terraform-module-github-oidc-provider" {
   source      = "./modules/repository"
   name        = "modernisation-platform-github-oidc-provider"
+  type        = "module"
   description = "Module for creating OIDC providers to use in GitHub Actions"
   topics = [
     "aws",
@@ -127,6 +136,7 @@ module "terraform-module-github-oidc-provider" {
 module "terraform-module-ecs" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-ecs"
+  type        = "module"
   description = "Module for creating ECS cluster (Linux/Windows) solely for EC2 launch type"
   topics = [
     "aws",
@@ -140,6 +150,7 @@ module "terraform-module-ecs" {
 module "modernisation-platform-ami-builds" {
   source      = "./modules/repository"
   name        = "modernisation-platform-ami-builds"
+  type        = "core"
   description = "Modernisation platform AMI builds"
   topics = [
     "aws",
@@ -153,6 +164,7 @@ module "modernisation-platform-ami-builds" {
 module "terraform-module-aws-vm-import" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-aws-vm-import"
+  type        = "module"
   description = "Module to import virtual machine (VM) images from your virtualization environment to Amazon EC2 as Amazon Machine Images (AMI)"
   topics = [
     "aws",
@@ -166,8 +178,8 @@ module "terraform-module-aws-vm-import" {
 module "modernisation-platform-instance-scheduler" {
   source      = "./modules/repository"
   name        = "modernisation-platform-instance-scheduler"
-  description = "A Go lambda function for stopping and starting instance, rds resources and autoscaling groups"
   type        = "core"
+  description = "A Go lambda function for stopping and starting instance, rds resources and autoscaling groups"
   topics = [
     "aws",
     "ec2",
@@ -181,6 +193,7 @@ module "modernisation-platform-instance-scheduler" {
 module "modernisation-platform-environments" {
   source      = "./modules/repository"
   name        = "modernisation-platform-environments"
+  type        = "core"
   description = "Modernisation platform environments"
   topics = [
     "aws",
@@ -196,6 +209,7 @@ module "modernisation-platform-environments" {
 module "modernisation-platform-infrastructure-test" {
   source      = "./modules/repository"
   name        = "modernisation-platform-infrastructure-test"
+  type        = "core"
   description = "Infrastructure test tool based on Cucumber.js"
   topics = [
     "aws",
@@ -208,6 +222,7 @@ module "modernisation-platform-infrastructure-test" {
 module "terraform-module-aws-loadbalancer" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-loadbalancer"
+  type        = "module"
   description = "Module that creates a loadbalancer in AWS with logging enabled"
   topics = [
     "aws",
@@ -222,6 +237,7 @@ module "terraform-module-aws-loadbalancer" {
 module "modernisation-platform-terraform-member-vpc" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-member-vpc"
+  type        = "module"
   description = "Module for member VPC accounts in the Modernisation Platform"
   topics = [
     "aws",
@@ -233,6 +249,7 @@ module "modernisation-platform-terraform-member-vpc" {
 module "modernisation-platform-cp-network-test" {
   source      = "./modules/repository"
   name        = "modernisation-platform-cp-network-test"
+  type        = "core"
   description = "Simple network testing app to be deployed in Cloud Platform in order to test connectivity between the Cloud Platform and the Modernisation Platform"
   topics = [
     "aws",
@@ -256,6 +273,7 @@ module "modernisation-platform-terraform-module-template" {
 module "modernisation-platform-terraform-pagerduty-integration" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-pagerduty-integration"
+  type        = "module"
   description = "Module for integrating SNS topics with Pagerduty Services"
   topics = [
     "aws",
@@ -271,6 +289,7 @@ module "modernisation-platform-terraform-pagerduty-integration" {
 module "modernisation-platform-configuration-management" {
   source      = "./modules/repository"
   name        = "modernisation-platform-configuration-management"
+  type        = "core"
   description = "Repository for configuration management code used to manage and maintain ec2 infrastructure hosted in the Modernisation Platform"
   topics = [
     "aws",
