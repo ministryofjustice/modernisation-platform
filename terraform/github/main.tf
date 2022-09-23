@@ -306,7 +306,7 @@ module "core-team" {
     module.modernisation-platform-terraform-module-template.repository.name,
     module.modernisation-platform-terraform-pagerduty-integration.repository.name,
     module.terraform-module-github-oidc-provider.repository.name,
-    module.modernisation-platform-configuration-management
+    module.modernisation-platform-configuration-management.repository.name
   ]
 
   maintainers = local.maintainers
@@ -347,6 +347,6 @@ resource "github_team_repository" "modernisation-platform-environments-access" {
 resource "github_team_repository" "modernisation-platform-configuration-management-access" {
   for_each   = { for team in local.application_teams : team => team }
   team_id    = each.value
-  repository = module.modernisation-platform-environments.repository.id
+  repository = module.modernisation-platform-configuration-management.repository.id
   permission = "push"
 }
