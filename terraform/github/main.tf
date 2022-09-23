@@ -267,6 +267,18 @@ module "modernisation-platform-terraform-pagerduty-integration" {
   secrets         = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
+module "modernisation-platform-configuration-management" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-configuration-management"
+  description = "Repository for configuration management code used to manage and maintain ec2 infrastructure hosted in the Modernisation Platform"
+  topics = [
+    "aws",
+    "configuration-management",
+    "ansible",
+    "ec2"
+  ]
+}
+
 # Everyone, with access to the above repositories
 module "core-team" {
   source      = "./modules/team"
@@ -293,7 +305,8 @@ module "core-team" {
     module.modernisation-platform-cp-network-test.repository.name,
     module.modernisation-platform-terraform-module-template.repository.name,
     module.modernisation-platform-terraform-pagerduty-integration.repository.name,
-    module.terraform-module-github-oidc-provider.repository.name
+    module.terraform-module-github-oidc-provider.repository.name,
+    module.modernisation-platform-configuration-management.repository.name
   ]
 
   maintainers = local.maintainers
@@ -327,5 +340,13 @@ resource "github_team_repository" "modernisation-platform-environments-access" {
   for_each   = { for team in local.application_teams : team => team }
   team_id    = each.value
   repository = module.modernisation-platform-environments.repository.id
+  permission = "push"
+}
+
+# Give write access to teams on the configuration management repo (access to merge to main is restricted by codeowners file)
+resource "github_team_repository" "modernisation-platform-configuration-management-access" {
+  for_each   = { for team in local.application_teams : team => team }
+  team_id    = each.value
+  repository = module.modernisation-platform-configuration-management.repository.id
   permission = "push"
 }
