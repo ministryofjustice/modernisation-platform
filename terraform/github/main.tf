@@ -167,7 +167,7 @@ module "modernisation-platform-instance-scheduler" {
   source      = "./modules/repository"
   name        = "modernisation-platform-instance-scheduler"
   description = "A Go lambda function for stopping and starting instance, rds resources and autoscaling groups"
-type         = "core"
+  type        = "core"
   topics = [
     "aws",
     "ec2",
