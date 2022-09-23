@@ -270,7 +270,7 @@ module "modernisation-platform-terraform-pagerduty-integration" {
 module "modernisation-platform-configuration-management" {
   source      = "./modules/repository"
   name        = "modernisation-platform-configuration-management"
-  description = "Template repository for creating Terraform modules for use with the Modernisation Platform"
+  description = "Repository for configuration management code used to manage and maintain ec2 infrastructure hosted in the Modernisation Platform"
   topics = [
     "aws",
     "configuration-management",
