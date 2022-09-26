@@ -26,7 +26,7 @@ This repository currently holds the Modernisation Platform's:
 | [Modernisation Platform](https://github.com/ministryofjustice/modernisation-platform) (this one)                                          | Our repository for core work, including our ADR and infrastructure as code          |
 | [Modernisation Platform Environments](https://github.com/ministryofjustice/modernisation-platform-environments)                           | The repository for user application infrastructure as code and deployment workflows |
 | [modernisation-platform-ami-builds](https://github.com/ministryofjustice/modernisation-platform-ami-builds)                               | Repository for creating pipelines to build AMIs for use on the platform             |
-| [modernisation-platform-configuration-management](https://github.com/ministryofjustice/modernisation-platform-configuration-management)                               | Repository for configuration management code used on the platform             |
+| [modernisation-platform-configuration-management](https://github.com/ministryofjustice/modernisation-platform-configuration-management)   | Repository for configuration management code used on the platform                   |
 | [modernisation-platform-terraform-module-template](https://github.com/ministryofjustice/modernisation-platform-terraform-module-template) | Template repository used for creating other Terraform module repositories           |
 
 ### Terraform modules - for member account use
