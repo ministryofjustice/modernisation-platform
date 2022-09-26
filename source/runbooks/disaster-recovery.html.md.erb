@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Disaster Recovery
-last_reviewed_on: 2022-03-31
+last_reviewed_on: 2022-09-26
 review_in: 6 months
 ---
 
@@ -24,9 +24,9 @@ Other failures which will not affect the availability of an application, but wil
 * Loss of Github Actions
 * Loss of Github
 
-In the case of all of the above the Modernisation Platform Team is responsible for recovery or raising incidents 
+In the case of all of the above the Modernisation Platform Team is responsible for recovery or raising incidents
 
-*However, in the event of the loss of the platform or AWS account we may require Service Teams to redeploy their services. This includes redeploying applications, restoring from backups, and any further manual steps required.*  
+*However, in the event of the loss of the platform or AWS account we may require Service Teams to redeploy their services. This includes redeploying applications, restoring from backups, and any further manual steps required.*
 
 The Modernisation Platform Team is continually reviewing and identifying risks to our users and the platform. As each threat is identified we are testing and creating recovery plans.
 
@@ -37,7 +37,7 @@ The Modernisation Platform Team is continually reviewing and identifying risks t
 * Non production backups, or backups outside of the Modernisation Platform [backup coverage](../concepts/environments/backups.html).
 * Redeployment of applications - The Modernisation Platform doesn't manage member application deployment pipelines. If there is a need to deploy a service as part of any restoration you will be asked to do so by the Modernisation Platform Team.
 * Only retain AWS RDS Snapshots for as long as they are required. Please clean-up any snapshots regularly.
-* 3rd party managed services (e.g. Github, CircleCI, Sentry.io) - These 3rd party managed services will offer some form of back-up and recovery as part of their managed service, however these processes are out of the scope of recovery by the Modernisation Platform. If you need more information please contact [#ask-operations-engineering](https://mojdt.slack.com/archives/C01BUKJSZD4). 
+* 3rd party managed services (e.g. Github, CircleCI, Sentry.io) - These 3rd party managed services will offer some form of back-up and recovery as part of their managed service, however these processes are out of the scope of recovery by the Modernisation Platform. If you need more information please contact [#ask-operations-engineering](https://mojdt.slack.com/archives/C01BUKJSZD4).
 * Ensure your `owner` tag is kept up to date so that the Modernisation Platform Team knows how best to contact your team.
 * Ensure your team is added to the [#modernisation-platform-update](https://mojdt.slack.com/archives/C02L5MCJ12N) slack channel so that you can ensure you receive important messages from the Modernisation Platform Team.
 
