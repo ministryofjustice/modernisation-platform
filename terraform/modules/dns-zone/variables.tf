@@ -3,6 +3,7 @@ variable "dns_zone" {
 }
 
 variable "vpc_id" {
+  type = string
 }
 
 variable "accounts" {
@@ -10,16 +11,20 @@ variable "accounts" {
 }
 
 variable "modernisation_platform_account" {
+  type = string
 }
 
 
 variable "environments" {
+  type = any
 }
 
 variable "public_dns_zone" {
+  type = any
 }
 
 variable "private_dns_zone" {
+  type = any
 }
 
 #TAGS
@@ -34,4 +39,5 @@ variable "tags_prefix" {
 }
 
 variable "monitoring_sns_topic" {
+  type = string
 }

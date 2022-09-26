@@ -5,6 +5,7 @@ variable "subnet_sets" {
 
 variable "route_table" {
   description = "Route Table"
+  type        = any
 }
 
 variable "tgw_id" {
