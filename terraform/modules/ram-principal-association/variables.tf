@@ -5,12 +5,12 @@ variable "principal" {
 
 variable "vpc_name" {
   description = "Name for the VPC"
-  #type        = string
+  type        = string
 }
 
 variable "subnet_set" {
   description = "Subnet set to attach to"
-  #type        = string
+  type        = string
 }
 
 variable "acm_pca" {
