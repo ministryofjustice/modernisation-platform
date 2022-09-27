@@ -99,9 +99,9 @@ data "aws_iam_policy_document" "kms" {
     }
 
     condition {
-      test = "StringNotEquals"
+      test     = "StringNotEquals"
       variable = "kms:GranteePrincipal"
-      values = ["arn:aws:iam::*:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling"]
+      values   = ["arn:aws:iam::*:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling"]
 
     }
   }
