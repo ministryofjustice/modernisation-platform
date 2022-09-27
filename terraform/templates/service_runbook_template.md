@@ -33,6 +33,8 @@ _If you have any questions surroudning this page please post in the `#team-name`
 
 ### **Hosting environment:**
 
+Modernisation Platform
+
 <!-- If your service is hosted on another MOJ team’s infrastructure, link to their runbook. If your service has another arrangement or runs its own infrastructure, you should list the supplier of that infrastructure (ideally linking to your account’s login page) and describe, simply and briefly, how to raise an issue with them. -->
 
 ## Optional
