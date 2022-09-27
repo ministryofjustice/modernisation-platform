@@ -126,6 +126,10 @@ copy_templates() {
   mv $1/member-providers.tf $1/providers.tf
   # copy application variable file
   cp core-repo/terraform/templates/application_variables.json $1
+  # copy template file
+  cp core-repo/terraform/templates/service_runbook_template.md $1/service_runbook_template.md
+  # Rename template file to README.md
+  mv $1/member-service_runbook_template.md $1/README.md
 
   echo "Finished copying templates."
 }
