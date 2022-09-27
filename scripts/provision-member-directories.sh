@@ -129,7 +129,6 @@ copy_templates() {
   # copy template file
   cp core-repo/terraform/templates/service_runbook_template.md $1/README.md
   # Rename template file to README.md
-  mv $1/member-service_runbook_template.md $1/README.md
 
   echo "Finished copying templates."
 }
