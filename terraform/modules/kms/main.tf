@@ -66,6 +66,7 @@ data "aws_iam_policy_document" "kms" {
       "kms:ReEncrypt*",
       "kms:GenerateDataKey*",
       "kms:DescribeKey",
+      "kms:CreateGrant"
     ]
 
     resources = ["*"]
@@ -78,7 +79,7 @@ data "aws_iam_policy_document" "kms" {
   }
 
   statement {
-    effect = "Allow"
+    effect = "Deny"
     actions = [
       "kms:CreateGrant",
     ]
@@ -94,7 +95,14 @@ data "aws_iam_policy_document" "kms" {
     condition {
       test     = "Bool"
       variable = "kms:GrantIsForAWSResource"
-      values   = ["true"]
+      values   = ["false"]
+    }
+
+    condition {
+      test     = "StringNotEquals"
+      variable = "kms:GranteePrincipal"
+      values   = ["arn:aws:iam::*:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling"]
+
     }
   }
 }
