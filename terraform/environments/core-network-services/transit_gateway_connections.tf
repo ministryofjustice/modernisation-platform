@@ -35,6 +35,15 @@ data "aws_ec2_transit_gateway_vpc_attachment" "hmpps-production" {
   }
 }
 
+# Get TGW attachment id for LAA
+data "aws_ec2_transit_gateway_vpc_attachment" "laa-development" {
+
+  filter {
+    name   = "tag:Name"
+    values = ["laa-development-attachment"]
+  }
+}
+
 data "aws_ec2_transit_gateway_vpc_attachments" "transit_gateway_all" {}
 
 data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_all" {
@@ -158,6 +167,11 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "propagate-hmpps-test
 
 resource "aws_ec2_transit_gateway_route_table_propagation" "propagate-hmpps-prod" {
   transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_vpc_attachment.hmpps-production.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
+}
+
+resource "aws_ec2_transit_gateway_route_table_propagation" "propagate-laa-development" {
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_vpc_attachment.laa-development.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
 }
 
