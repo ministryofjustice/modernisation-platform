@@ -404,7 +404,7 @@ resource "aws_iam_role" "modernisation_account_limited_read" {
 }
 
 data "aws_iam_policy_document" "modernisation_account_limited_read" {
-    statement {
+  statement {
     effect = "Allow"
     actions = [
       "secretsmanager:GetResourcePolicy",
