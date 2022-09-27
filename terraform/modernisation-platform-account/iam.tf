@@ -374,8 +374,8 @@ resource "aws_iam_role_policy_attachment" "instance-scheduler" {
   role       = aws_iam_role.instance-scheduler.name
 }
 
-# GitHub Actions readonly role
-data "aws_iam_policy_document" "github_actions_assume_role_policy" {
+# Modernisation Platform Account Readonly Role
+data "aws_iam_policy_document" "modernisation_account_limited_read_assume_role" {
   version = "2012-10-17"
 
   statement {
@@ -392,29 +392,40 @@ data "aws_iam_policy_document" "github_actions_assume_role_policy" {
       variable = "aws:PrincipalOrgPaths"
       values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.modernisation_platform_ou_id}/*"]
     }
-
-    condition {
-      test     = "ForAnyValue:StringLike"
-      variable = "aws:PrincipalArn"
-      values = [
-        "arn:aws:iam::*:role/github-actions",
-        "arn:aws:iam::${data.aws_caller_identity.current.id}:role/superadmin"
-      ]
-    }
   }
 }
 
-# IAM role to be assumed
-resource "aws_iam_role" "github_actions_readonly" {
-  name                 = "githubReadOnly"
+resource "aws_iam_role" "modernisation_account_limited_read" {
+  name                 = "modernisation-account-limited-read-member-access"
   max_session_duration = 3600
-  assume_role_policy   = data.aws_iam_policy_document.github_actions_assume_role_policy.json
+  assume_role_policy   = data.aws_iam_policy_document.modernisation_account_limited_read_assume_role.json
 
   tags = local.tags
 }
 
-# IAM role attached policy
-resource "aws_iam_role_policy_attachment" "github_readonly" {
-  role       = aws_iam_role.github_actions_readonly.id
-  policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+data "aws_iam_policy_document" "modernisation_account_limited_read" {
+    statement {
+    effect = "Allow"
+    actions = [
+      "secretsmanager:GetResourcePolicy",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecretVersionIds",
+      "secretsmanager:ListSecrets"
+    ]
+    resources = [
+      "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.current.account_id}:secret:environment_management-??????",
+      "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.current.account_id}:secret:pagerduty_integration_keys-??????",
+    ]
+  }
+}
+resource "aws_iam_policy" "modernisation_account_limited_read" {
+  name        = "ModernisationAccountLimitedRead"
+  description = "Limited Read Access in MP Account for Members and CI"
+  policy      = data.aws_iam_policy_document.modernisation_account_limited_read.json
+}
+
+resource "aws_iam_role_policy_attachment" "modernisation_account_limited_read" {
+  role       = aws_iam_role.modernisation_account_limited_read.id
+  policy_arn = aws_iam_policy.modernisation_account_limited_read.arn
 }
