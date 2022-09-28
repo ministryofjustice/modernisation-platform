@@ -18,7 +18,6 @@ This file details the Terraform AWS providers used and which roles they use when
 
 The top part of the file details the configuration which is needed to run the Terraform on the GitHub Actions CI/CD pipelines. The second section, which is by default commented out, details configuration required if running a plan locally.
 
-
 To run a plan locally, you need to comment out the top section of `providers.tf`, and uncomment the bottom section of the file.  Comments within the file show which sections.
 
 >Note do not check in to GitHub any modifications to the file, as this will cause the pipeline to stop working, these changes are only for running Terraform plans locally.
