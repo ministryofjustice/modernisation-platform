@@ -7,6 +7,7 @@ data "archive_file" "instance_scheduler_zip" {
 resource "aws_lambda_function" "instance-scheduler" {
   #checkov:skip=CKV_AWS_116
   #checkov:skip=CKV_AWS_117
+  #checkov:skip=CKV_AWS_272 "Code signing not required"
   filename                       = "golang-instance-scheduler.zip"
   function_name                  = "golang-instance-scheduler"
   handler                        = "main"

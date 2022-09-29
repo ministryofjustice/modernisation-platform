@@ -256,6 +256,7 @@ resource "aws_lambda_function" "athena_table_update" {
   # checkov:skip=CKV_AWS_50: "X-ray tracing is not required"
   # checkov:skip=CKV_AWS_117: "Lambda is not environment specific"
   # checkov:skip=CKV_AWS_116: "DLQ not required"
+  # checkov:skip=CKV_AWS_272: "Code signing not required"
   depends_on = [
     module.s3-bucket-athena
 
