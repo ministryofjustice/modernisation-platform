@@ -515,6 +515,6 @@ data "aws_iam_policy_document" "oidc_assume_role" {
     effect    = "Allow"
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
     actions = ["s3:PutObject",
-    "s3:PutObjectAcl"]
+    "s3:PutObjectAcl", "s3:PutBucketAcl"]
   }
 }
