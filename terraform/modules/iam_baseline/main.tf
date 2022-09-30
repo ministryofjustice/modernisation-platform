@@ -30,6 +30,9 @@ resource "aws_iam_policy" "policy" {
           "ecr:UploadLayerPart",
           "ecr:CompleteLayerUpload",
           "iam:PassRole",
+          "kms:DescribeKey",
+          "kms:Decrypt",
+          "kms:GenerateDataKey",
           "s3:ListBucket",
           "s3:*Object*"
         ]
@@ -43,31 +46,6 @@ resource "aws_iam_policy" "policy" {
 resource "aws_iam_group_policy_attachment" "aws_cicd_member_attach" {
   group      = aws_iam_group.cicd_member_group.name
   policy_arn = aws_iam_policy.policy.arn
-}
-
-
-## Fix for DEFAULT KMS Key Error, Ref: https://github.com/hashicorp/terraform-provider-aws/issues/3450
-resource "aws_iam_policy" "default_kms_key_policy" {
-  name        = "cicd-member-kms-policy"
-  description = "IAM Policy for Default KMS Key, CICD member user"
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "kms:DescribeKey"
-        ]
-        Effect   = "Allow"
-        Resource = "arn:aws:kms:eu-west-2:771283872747:key/16234827-4f3c-479e-8000-7a3e75c6ed7e"
-      },
-    ]
-  })
-}
-
-## Fix for DEFAULT KMS Key Error, Ref: https://github.com/hashicorp/terraform-provider-aws/issues/3450
-resource "aws_iam_group_policy_attachment" "aws_cicd_member_attach" {
-  group      = aws_iam_group.cicd_member_group.name
-  policy_arn = aws_iam_policy.default_kms_key_policy.arn
 }
 
 resource "aws_iam_group_policy_attachment" "aws_ec2_readonly_attach" {
