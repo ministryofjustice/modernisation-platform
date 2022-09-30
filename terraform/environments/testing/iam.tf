@@ -13,6 +13,7 @@ data "aws_iam_policy_document" "testing_ci_policy" {
     actions = ["sts:AssumeRole"]
     resources = [
       "arn:aws:iam::${data.aws_caller_identity.testing_test.account_id}:role/MemberInfrastructureAccess",
+      "arn:aws:iam::${data.aws_caller_identity.testing_test.account_id}:role/ModernisationPlatformAccess",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-test"]}:role/member-delegation-*-test",
       "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/modify-dns-records"
     ]
