@@ -30,6 +30,9 @@ resource "aws_iam_policy" "policy" {
           "ecr:UploadLayerPart",
           "ecr:CompleteLayerUpload",
           "iam:PassRole",
+          "kms:DescribeKey",
+          "kms:Decrypt",
+          "kms:GenerateDataKey",
           "s3:ListBucket",
           "s3:*Object*"
         ]
