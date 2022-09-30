@@ -9,6 +9,7 @@ on:
     paths:
       - '.github/workflows/scheduled-baseline.yml'
       - 'terraform/environments/bootstrap/**'
+      - 'terraform/modules/iam_baseline/**'
   workflow_dispatch:
 
 env:
