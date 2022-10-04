@@ -310,7 +310,7 @@ module "collaborator_readonly_role" {
 module "collaborator_security_audit_role" {
   count   = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "~> 4"
+  version = "~> 5"
   providers = {
     aws = aws.workspace
   }
@@ -334,7 +334,7 @@ module "collaborator_security_audit_role" {
 module "collaborator_developer_role" {
   count   = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "~> 4"
+  version = "~> 5"
   providers = {
     aws = aws.workspace
   }
@@ -446,7 +446,7 @@ data "aws_iam_policy_document" "developer-additional" {
 # AWS Shield Advanced SRT (Shield Response Team) support role
 module "shield_response_team_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "~> 4"
+  version = "~> 5"
   providers = {
     aws = aws.workspace
   }
