@@ -15,7 +15,7 @@ data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_all" {
 
 data "aws_ec2_transit_gateway_peering_attachment" "pttp-tgw" {
   filter {
-    name = "tag:Name"
+    name   = "tag:Name"
     values = ["PTTP-Transit-Gateway-attachment-accepter"]
   }
 }
@@ -89,7 +89,6 @@ locals {
 ################
 
 resource "aws_ec2_transit_gateway_peering_attachment_accepter" "PTTP-Production" {
-
   transit_gateway_attachment_id = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
   tags = {
     Name = "PTTP-Transit-Gateway-attachment-accepter"
@@ -107,23 +106,17 @@ resource "aws_ec2_transit_gateway_peering_attachment_accepter" "PTTP-Production"
 # Create Transit Gateway route table for ingress via external (non-MP) locations
 resource "aws_ec2_transit_gateway_route_table" "external_inspection_in" {
   transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
-
   tags = merge(
     local.tags,
-    {
-      Name = "external"
-    }
+    { Name = "external" }
   )
 }
 # Create Transit Gateway firewall VPC routing table
 resource "aws_ec2_transit_gateway_route_table" "external_inspection_out" {
   transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
-
   tags = merge(
     local.tags,
-    {
-      Name = "firewall"
-    }
+    { Name = "firewall" }
   )
 }
 
@@ -153,6 +146,7 @@ resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_non_liv
   transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["non_live_data"].id
 }
+
 # add external egress routes for live-data TGW route table to PTTP attachment
 resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_live_data_to_PTTP" {
   for_each = local.egress_pttp_routing_cidrs_live_data
