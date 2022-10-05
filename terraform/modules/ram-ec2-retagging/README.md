@@ -38,8 +38,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_subnet_set"></a> [subnet\_set](#input\_subnet\_set) | n/a | `any` | n/a | yes |
-| <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | n/a | `any` | n/a | yes |
+| <a name="input_subnet_set"></a> [subnet\_set](#input\_subnet\_set) | n/a | `string` | n/a | yes |
+| <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | n/a | `string` | n/a | yes |
 
 ## Outputs
 

@@ -5,13 +5,16 @@ Terraform module used to create monitoring topics and pagerduty subscriptions fo
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.0 |
 
 ## Modules
 
@@ -32,7 +35,7 @@ No requirements.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_pagerduty_integration_keys"></a> [pagerduty\_integration\_keys](#input\_pagerduty\_integration\_keys) | Map of pagerduty integration keys | `any` | n/a | yes |
+| <a name="input_pagerduty_integration_keys"></a> [pagerduty\_integration\_keys](#input\_pagerduty\_integration\_keys) | Map of pagerduty integration keys | `map(any)` | n/a | yes |
 
 ## Outputs
 

@@ -8,13 +8,16 @@ If you're looking to raise an issue with this module, please create a new issue 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.0 |
 
 ## Modules
 
@@ -37,9 +40,9 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_business_unit"></a> [business\_unit](#input\_business\_unit) | String describing the business unit. EG, CJSE | `any` | n/a | yes |
-| <a name="input_business_unit_account_ids"></a> [business\_unit\_account\_ids](#input\_business\_unit\_account\_ids) | List of account IDs permitted to utilise key. | `any` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | Map of tags to apply to KMS keys. | `any` | n/a | yes |
+| <a name="input_business_unit"></a> [business\_unit](#input\_business\_unit) | String describing the business unit. EG, CJSE | `string` | n/a | yes |
+| <a name="input_business_unit_account_ids"></a> [business\_unit\_account\_ids](#input\_business\_unit\_account\_ids) | List of account IDs permitted to utilise key. | `list(any)` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | Map of tags to apply to KMS keys. | `map(any)` | n/a | yes |
 
 ## Outputs
 
