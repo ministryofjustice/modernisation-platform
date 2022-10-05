@@ -5,44 +5,6 @@
 data "aws_availability_zones" "available" {
   state = "available"
 }
-# Get TGW attachment id for HMPPS
-data "aws_ec2_transit_gateway_vpc_attachment" "hmpps-development" {
-
-  filter {
-    name   = "tag:Name"
-    values = ["hmpps-development-attachment"]
-  }
-}
-data "aws_ec2_transit_gateway_vpc_attachment" "hmpps-test" {
-
-  filter {
-    name   = "tag:Name"
-    values = ["hmpps-test-attachment"]
-  }
-}
-data "aws_ec2_transit_gateway_vpc_attachment" "hmpps-preproduction" {
-
-  filter {
-    name   = "tag:Name"
-    values = ["hmpps-preproduction-attachment"]
-  }
-}
-data "aws_ec2_transit_gateway_vpc_attachment" "hmpps-production" {
-
-  filter {
-    name   = "tag:Name"
-    values = ["hmpps-production-attachment"]
-  }
-}
-
-# Get TGW attachment id for LAA
-data "aws_ec2_transit_gateway_vpc_attachment" "laa-development" {
-
-  filter {
-    name   = "tag:Name"
-    values = ["laa-development-attachment"]
-  }
-}
 
 data "aws_ec2_transit_gateway_vpc_attachments" "transit_gateway_all" {}
 
@@ -50,6 +12,14 @@ data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_all" {
   for_each = toset(data.aws_ec2_transit_gateway_vpc_attachments.transit_gateway_all.ids)
   id       = each.key
 }
+
+data "aws_ec2_transit_gateway_peering_attachment" "pttp-tgw" {
+  filter {
+    name   = "tag:Name"
+    values = ["PTTP-Transit-Gateway-attachment-accepter"]
+  }
+}
+
 locals {
 
   # Get all VPC definitions by type
@@ -79,13 +49,6 @@ locals {
   }
   availability_zones = sort(data.aws_availability_zones.available.names)
 
-  pttp_production_transit_gateway_attachment = "tgw-attach-08374a4bae2939acb"
-
-  # hmpps_general_development_subnet_set_cidr   = local.vpcs.core-vpc-development.hmpps-development.cidr.subnet_sets.general.cidr
-  hmpps_general_test_subnet_set_cidr = local.vpcs.core-vpc-test.hmpps-test.cidr.subnet_sets.general.cidr
-  # hmpps_general_preproduction_subnet_set_cidr = local.vpcs.core-vpc-preproduction.hmpps-preproduction.cidr.subnet_sets.general.cidr
-  # hmpps_general_production_subnet_set_cidr    = local.vpcs.core-vpc-production.hmpps-production.cidr.subnet_sets.general.cidr
-
   # To extend the below two data sections, just add additional lines with name and CIDR address to the relevant sections
   egress_pttp_routing_cidrs_non_live_data = {
     "global-protect"  = "10.184.0.0/16",
@@ -93,6 +56,7 @@ locals {
     "cloud-platform"  = "172.20.0.0/16",
     "laa-development" = "10.202.0.0/20"
   }
+
   egress_pttp_routing_cidrs_live_data = {
     "global-protect"       = "10.184.0.0/16",
     "azure-noms-test"      = "10.101.0.0/16",
@@ -101,20 +65,23 @@ locals {
     "ppud-psn"             = "51.247.0.0/16",
     "azure-noms-live"      = "10.40.0.0/18"
   }
+
   tgw_live_data_attachments = {
     for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => v.tags.Name if(
-      length(regexall(".*-production-attachment", v.tags.Name)) > 0 ||
-      length(regexall(".*-preproduction-attachment", v.tags.Name)) > 0 ||
-      length(regexall(".*-live_data-attachment", v.tags.Name)) > 0
+      length(regexall("(?:production-attachment)", v.tags.Name)) > 0 ||
+      length(regexall("(?:preproduction-attachment)", v.tags.Name)) > 0 ||
+      length(regexall("(?:-live_data-attachment)", v.tags.Name)) > 0
     )
   }
+
   tgw_non_live_data_attachments = {
     for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => v.tags.Name if(
-      length(regexall(".*-development-attachment", v.tags.Name)) > 0 ||
-      length(regexall(".*-test-attachment", v.tags.Name)) > 0 ||
-      length(regexall(".*-non_live_data-attachment", v.tags.Name)) > 0
+      length(regexall("(?:development-attachment)", v.tags.Name)) > 0 ||
+      length(regexall("(?:test-attachment)", v.tags.Name)) > 0 ||
+      length(regexall("(?:-non_live_data-attachment)", v.tags.Name)) > 0
     )
   }
+
 }
 
 ################
@@ -122,8 +89,7 @@ locals {
 ################
 
 resource "aws_ec2_transit_gateway_peering_attachment_accepter" "PTTP-Production" {
-
-  transit_gateway_attachment_id = local.pttp_production_transit_gateway_attachment
+  transit_gateway_attachment_id = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
   tags = {
     Name = "PTTP-Transit-Gateway-attachment-accepter"
     Side = "Acceptor"
@@ -140,39 +106,18 @@ resource "aws_ec2_transit_gateway_peering_attachment_accepter" "PTTP-Production"
 # Create Transit Gateway route table for ingress via external (non-MP) locations
 resource "aws_ec2_transit_gateway_route_table" "external_inspection_in" {
   transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
-
   tags = merge(
     local.tags,
-    {
-      Name = "external"
-    }
+    { Name = "external" }
   )
 }
 # Create Transit Gateway firewall VPC routing table
 resource "aws_ec2_transit_gateway_route_table" "external_inspection_out" {
   transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
-
   tags = merge(
     local.tags,
-    {
-      Name = "firewall"
-    }
+    { Name = "firewall" }
   )
-}
-
-resource "aws_ec2_transit_gateway_route_table_propagation" "propagate-hmpps-test" {
-  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_vpc_attachment.hmpps-test.id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
-}
-
-resource "aws_ec2_transit_gateway_route_table_propagation" "propagate-hmpps-prod" {
-  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_vpc_attachment.hmpps-production.id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
-}
-
-resource "aws_ec2_transit_gateway_route_table_propagation" "propagate-laa-development" {
-  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_vpc_attachment.laa-development.id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
 }
 
 resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_live_data_vpcs" {
@@ -198,15 +143,16 @@ resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_non_liv
   for_each = local.egress_pttp_routing_cidrs_non_live_data
 
   destination_cidr_block         = each.value
-  transit_gateway_attachment_id  = local.pttp_production_transit_gateway_attachment
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["non_live_data"].id
 }
+
 # add external egress routes for live-data TGW route table to PTTP attachment
 resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_live_data_to_PTTP" {
   for_each = local.egress_pttp_routing_cidrs_live_data
 
   destination_cidr_block         = each.value
-  transit_gateway_attachment_id  = local.pttp_production_transit_gateway_attachment
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["live_data"].id
 }
 
@@ -218,7 +164,7 @@ resource "aws_ec2_transit_gateway_route" "external_ingress_in_to_inspection_vpc"
 
 # associate tgw external-inspection-in routing table with PTTP peering attachment
 resource "aws_ec2_transit_gateway_route_table_association" "external_inspection_in" {
-  transit_gateway_attachment_id  = local.pttp_production_transit_gateway_attachment
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
 }
 
