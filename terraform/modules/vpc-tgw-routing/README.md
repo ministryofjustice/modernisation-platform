@@ -27,20 +27,15 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [aws_ec2_transit_gateway_route.example](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route) | resource |
-| [aws_ec2_transit_gateway_route.external_inspection_out](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route) | resource |
 | [aws_route.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_external_inspection_out"></a> [external\_inspection\_out](#input\_external\_inspection\_out) | Transit Gateway route table ID for internal-inspection-out | `string` | n/a | yes |
 | <a name="input_route_table"></a> [route\_table](#input\_route\_table) | Route Table | `any` | n/a | yes |
 | <a name="input_subnet_sets"></a> [subnet\_sets](#input\_subnet\_sets) | Key, value map of subnet sets and their CIDR blocks | `map(any)` | n/a | yes |
 | <a name="input_tgw_id"></a> [tgw\_id](#input\_tgw\_id) | Transit Gateway ID | `string` | n/a | yes |
-| <a name="input_tgw_route_table"></a> [tgw\_route\_table](#input\_tgw\_route\_table) | Transit Gateway route table ID | `string` | n/a | yes |
-| <a name="input_tgw_vpc_attachment"></a> [tgw\_vpc\_attachment](#input\_tgw\_vpc\_attachment) | Transit Gateway VPC attachment ID | `string` | n/a | yes |
 
 ## Outputs
 

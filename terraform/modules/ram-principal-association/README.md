@@ -40,8 +40,8 @@ No modules.
 | <a name="input_acm_pca"></a> [acm\_pca](#input\_acm\_pca) | ACM certificate manager | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | environment | `string` | n/a | yes |
 | <a name="input_principal"></a> [principal](#input\_principal) | Principal to share with | `string` | n/a | yes |
-| <a name="input_subnet_set"></a> [subnet\_set](#input\_subnet\_set) | Subnet set to attach to | `any` | n/a | yes |
-| <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | Name for the VPC | `any` | n/a | yes |
+| <a name="input_subnet_set"></a> [subnet\_set](#input\_subnet\_set) | Subnet set to attach to | `string` | n/a | yes |
+| <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | Name for the VPC | `string` | n/a | yes |
 
 ## Outputs
 
