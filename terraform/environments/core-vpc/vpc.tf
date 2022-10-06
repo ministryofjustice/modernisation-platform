@@ -14,37 +14,6 @@ data "aws_route53_zone" "private" {
   private_zone = true
 }
 
-# lookups for routing
-
-data "aws_vpc" "selected" {
-  provider = aws.core-network-services
-
-  filter {
-    name   = "tag:Name"
-    values = [local.type]
-  }
-}
-
-data "aws_route_table" "main-public" {
-  provider = aws.core-network-services
-
-  vpc_id = data.aws_vpc.selected.id
-
-  filter {
-    name   = "tag:Name"
-    values = ["${local.type}-public"]
-  }
-}
-
-data "aws_ec2_transit_gateway_route_table" "external_inspection_out" {
-  provider = aws.core-network-services
-
-  filter {
-    name   = "tag:Name"
-    values = ["firewall"]
-  }
-
-}
 
 locals {
 
