@@ -33,7 +33,7 @@ jobs:
       matrix:
         include:
           - environment: development
-          # - environment: test
+          - environment: test
     name: Plan - ${{  matrix.environment }}
     runs-on: ubuntu-latest
     if: github.ref != 'refs/heads/main' || github.event_name == 'workflow_dispatch'
@@ -71,7 +71,7 @@ jobs:
       matrix:
         include:
           - environment: development
-          # - environment: test
+          - environment: test
     name: Apply - ${{  matrix.environment }}
     runs-on: ubuntu-latest
     env:
