@@ -14,37 +14,6 @@ data "aws_route53_zone" "private" {
   private_zone = true
 }
 
-# lookups for routing
-
-data "aws_vpc" "selected" {
-  provider = aws.core-network-services
-
-  filter {
-    name   = "tag:Name"
-    values = [local.type]
-  }
-}
-
-data "aws_route_table" "main-public" {
-  provider = aws.core-network-services
-
-  vpc_id = data.aws_vpc.selected.id
-
-  filter {
-    name   = "tag:Name"
-    values = ["${local.type}-public"]
-  }
-}
-
-data "aws_ec2_transit_gateway_route_table" "external_inspection_out" {
-  provider = aws.core-network-services
-
-  filter {
-    name   = "tag:Name"
-    values = ["firewall"]
-  }
-
-}
 
 locals {
 
@@ -144,22 +113,6 @@ module "vpc" {
   # Tags
   tags_common = local.tags
   tags_prefix = each.key
-}
-
-module "vpc_tgw_routing" {
-  source = "../../modules/vpc-tgw-routing"
-
-  for_each = local.vpcs[terraform.workspace]
-
-  providers = {
-    aws = aws.core-network-services
-  }
-
-  route_table = data.aws_route_table.main-public
-  subnet_sets = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
-  tgw_id      = data.aws_ec2_transit_gateway.transit-gateway.id
-
-  depends_on = [module.vpc_attachment, module.vpc]
 }
 
 module "vpc_nacls" {
