@@ -139,7 +139,7 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_firewall" 
 }
 
 ## Temporarily bypass MP NWFW
-resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_firewall" {
+resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_external-in" {
   for_each                       = data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all
   transit_gateway_attachment_id  = each.key
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
