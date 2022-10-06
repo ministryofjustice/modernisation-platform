@@ -146,22 +146,6 @@ module "vpc" {
   tags_prefix = each.key
 }
 
-module "vpc_tgw_routing" {
-  source = "../../modules/vpc-tgw-routing"
-
-  for_each = local.vpcs[terraform.workspace]
-
-  providers = {
-    aws = aws.core-network-services
-  }
-
-  route_table = data.aws_route_table.main-public
-  subnet_sets = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
-  tgw_id      = data.aws_ec2_transit_gateway.transit-gateway.id
-
-  depends_on = [module.vpc_attachment, module.vpc]
-}
-
 module "vpc_nacls" {
   source           = "../../modules/vpc-nacls"
   for_each         = local.vpcs[terraform.workspace]
