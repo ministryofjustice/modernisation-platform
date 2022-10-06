@@ -138,6 +138,13 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_firewall" 
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
+## Temporarily bypass MP NWFW
+resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_external-in" {
+  for_each                       = data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all
+  transit_gateway_attachment_id  = each.key
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
+}
+
 # add external egress routes for non-live-data TGW route table to PTTP attachment
 resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_non_live_data_to_PTTP" {
   for_each = local.egress_pttp_routing_cidrs_non_live_data
