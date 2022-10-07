@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Running Terraform Plan Locally
-last_reviewed_on: 2022-05-24
+last_reviewed_on: 2022-10-07
 review_in: 6 months
 ---
 
@@ -12,14 +12,13 @@ Some engineers prefer this as it provides a quicker feedback loop to identify an
 
 ## Modify your providers.tf and platform_secrets.tf
 
-In the [modernisation-platform-environments repository](https://github.com/ministryofjustice/modernisation-platform-environments), in your application folder there are files called `providers.tf` and `platform_secrets.tf`
+In the [modernisation-platform-environments repository](https://github.com/ministryofjustice/modernisation-platform-environments), in your application folder there is a file called `providers.tf`
 
-These files detail the Terraform AWS providers used, which roles they use when running Terraform and details of the environments management secret.
+This file details the Terraform AWS providers used and which roles they use when running Terraform.
 
-The top part of each file details the configuration which is needed to run the Terraform on the GitHub Actions CI/CD pipelines. The second section, which is by default commented out, details configuration required if running a plan locally.
+The top part of the file details the configuration which is needed to run the Terraform on the GitHub Actions CI/CD pipelines. The second section, which is by default commented out, details configuration required if running a plan locally.
 
-
-To run a plan locally, you need to comment out the top section of both the files, and uncomment the bottom section of the files.  Comments within the file show which sections.
+To run a plan locally, you need to comment out the top section of `providers.tf`, and uncomment the bottom section of the file.  Comments within the file show which sections.
 
 >Note do not check in to GitHub any modifications to the file, as this will cause the pipeline to stop working, these changes are only for running Terraform plans locally.
 
