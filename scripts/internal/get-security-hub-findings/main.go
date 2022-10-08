@@ -180,6 +180,20 @@ func main() {
 		return
 	}
 
+	// Services to get findings for
+	var services = []string{
+		"Security Hub",
+		"Config",
+		"Inspector",
+		"GuardDuty",
+		"Firewall Manager",
+		"Health",
+		"IAM Access Analyzer",
+		"Trusted Advisor",
+		"Macie",
+		"Systems Manager Patch Manager",
+	}
+
 	// Iterate through accounts
 	for accountName, accountId := range accounts {
 		log.Printf("Account: %s: %s", accountName, accountId)
@@ -188,9 +202,8 @@ func main() {
 		// Create client
 		client := securityhub.NewFromConfig(accountCfg)
 		// Get security hub findings
-		getFindings(client, accountName, "Security Hub")
-		getFindings(client, accountName, "Config")
-		getFindings(client, accountName, "Inspector")
-		getFindings(client, accountName, "GuardDuty")
+		for _, service := range services {
+			getFindings(client, accountName, service)
+		}
 	}
 }
