@@ -288,6 +288,27 @@ resource "aws_route" "public-internet-gateway" {
   route_table_id         = aws_route_table.public.id
 }
 
+resource "aws_route" "public_mp_10-20-0-0--16" {
+  count                  = var.gateway == "nat" ? 1 : 0
+  destination_cidr_block = "10.20.0.0/16"
+  route_table_id         = aws_route_table.public.id
+  transit_gateway_id     = var.transit_gateway_id
+}
+
+resource "aws_route" "public_mp_10-26-0-0--16" {
+  count                  = var.gateway == "nat" ? 1 : 0
+  destination_cidr_block = "10.26.0.0/16"
+  route_table_id         = aws_route_table.public.id
+  transit_gateway_id     = var.transit_gateway_id
+}
+
+resource "aws_route" "public_mp_10-27-0-0--16" {
+  count                  = var.gateway == "nat" ? 1 : 0
+  destination_cidr_block = "10.27.0.0/16"
+  route_table_id         = aws_route_table.public.id
+  transit_gateway_id     = var.transit_gateway_id
+}
+
 ###################
 # Private subnets #
 ###################
@@ -591,6 +612,8 @@ resource "aws_nat_gateway" "public" {
   )
 }
 
+# Route back to MP via TGW
+
 # Private Routes
 resource "aws_route" "private-nat" {
   for_each = (var.gateway == "nat") ? aws_route_table.private : {}
@@ -608,7 +631,7 @@ resource "aws_route" "private-tgw" {
   transit_gateway_id     = var.transit_gateway_id
 }
 
-# Data NAT routes
+# Data routes
 resource "aws_route" "data-nat" {
   for_each = (var.gateway == "nat") ? aws_route_table.data : {}
 
