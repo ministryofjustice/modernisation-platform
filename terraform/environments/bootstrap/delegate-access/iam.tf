@@ -463,7 +463,7 @@ module "shield_response_team_role" {
 
 # Github OIDC provider
 module "github-oidc" {
-  count  = local.account_data.account-type == "member" || terraform.workspace == "core-security" ? 1 : 0
+  count  = local.account_data.account-type == "member" || terraform.workspace == "core-security-production" ? 1 : 0
   source = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v1.1.0"
   providers = {
     aws = aws.workspace
@@ -475,7 +475,7 @@ module "github-oidc" {
 }
 
 data "aws_iam_policy_document" "oidc_assume_role_core" {
-  count = terraform.workspace == "core-security" ? 1 : 0
+  count = terraform.workspace == "core-security-production" ? 1 : 0
 
   statement {
     sid    = "AllowOIDCToAssumeRoles"
