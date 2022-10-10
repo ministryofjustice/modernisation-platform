@@ -86,29 +86,16 @@ locals {
 module "vpc" {
   for_each = local.vpcs[terraform.workspace]
 
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=v1.2.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=v1.3.0"
 
   subnet_sets = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
 
   additional_endpoints = each.value.options.additional_endpoints
-  bastion_linux        = each.value.options.bastion_linux
-  #bastion_windows = each.value.options.bastion_windows
 
   transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
 
   # VPC Flow Logs
   vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
-
-  # # CIDRs
-  # subnet_cidrs_by_type = each.value.cidr.subnets
-  # vpc_cidr             = each.value.cidr.vpc
-
-  # # NACL rules
-  # nacl_ingress = each.value.nacl.ingress
-  # nacl_egress  = each.value.nacl.egress
-
-  # # NAT Gateway
-  # enable_nat_gateway = false
 
   # Tags
   tags_common = local.tags
@@ -149,16 +136,6 @@ module "resource-share" {
   # Tags
   tags_common = local.tags
   tags_prefix = each.key
-}
-
-module "core-vpc-tgw-routes" {
-  for_each = local.vpcs[terraform.workspace]
-  source   = "../../modules/core-vpc-tgw-routes"
-
-  transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
-  route_table_ids    = module.vpc[each.key].private_route_tables
-
-  depends_on = [module.vpc_attachment]
 }
 
 module "dns-zone" {

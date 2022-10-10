@@ -172,10 +172,6 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/core-vpc-tgw-return-routes"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
     directory: "/terraform/modules/core-vpc-tgw-routes"
     schedule:
       interval: "daily"
@@ -217,10 +213,6 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/vpc-nacls"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/vpc-tgw-routing"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
