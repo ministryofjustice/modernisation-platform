@@ -27,3 +27,8 @@ variable "tags_prefix" {
   description = "Prefix for name tags, e.g. \"live_data\""
   type        = string
 }
+
+variable "transit_gateway_id" {
+  default = ""
+  type    = string
+}
