@@ -12,7 +12,7 @@ module "vpc" {
   # CIDRs
   vpc_cidr = each.value
 
-  # private gateway type
+  # Gateway type
   #   nat = Nat Gateway
   #   transit = Transit Gateway
   #   none = no gateway for internal traffic

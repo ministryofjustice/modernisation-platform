@@ -591,7 +591,7 @@ resource "aws_nat_gateway" "public" {
   )
 }
 
-# Private NAT routes
+# Private Routes
 resource "aws_route" "private-nat" {
   for_each = (var.gateway == "nat") ? aws_route_table.private : {}
 
