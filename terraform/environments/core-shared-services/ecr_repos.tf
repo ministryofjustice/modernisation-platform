@@ -40,7 +40,7 @@ module "mlra_ecr_repo" {
 module "instance_scheduler_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
-  app_name = "mlra"
+  app_name = "instance-scheduler"
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/github-actions"
