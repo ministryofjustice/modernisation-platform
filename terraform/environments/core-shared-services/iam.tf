@@ -88,3 +88,70 @@ resource "aws_iam_role_policy_attachment" "member_shared_services_readonly" {
   role       = aws_iam_role.member_shared_services.name
   policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
 }
+
+## BEGIN: IAM for Instance Scheduler Lambda Function
+
+data "aws_iam_policy_document" "instance-scheduler-lambda-function-assume-role" {
+  statement {
+    sid    = "AssumeRole"
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
+    principals {
+      identifiers = ["lambda.amazonaws.com"]
+      type        = "Service"
+    }
+  }
+}
+
+data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
+  statement {
+    sid    = "AllowLambdaToCreateLogGroup"
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogGroup"
+    ]
+    resources = [
+      format("arn:aws:logs:eu-west-2:%s:*", data.aws_caller_identity.current.account_id)
+    ]
+  }
+  statement {
+    sid    = "AllowLambdaToWriteLogsToGroup"
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
+    resources = [
+      format("arn:aws:logs:eu-west-2:%s:*", data.aws_caller_identity.current.account_id)
+    ]
+  }
+  statement {
+    sid    = "EC2StopAndStart"
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
+    resources = [
+      "arn:aws:iam::*:role/MemberInfrastructureAccess"
+    ]
+  }
+}
+
+resource "aws_iam_role" "instance-scheduler-lambda-function" {
+  assume_role_policy = data.aws_iam_policy_document.instance-scheduler-lambda-function-assume-role.json
+  name               = "InstanceSchedulerLambdaFunctionPolicy"
+  tags               = local.tags
+}
+
+resource "aws_iam_policy" "instance-scheduler-lambda-function" {
+  policy = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "instance-scheduler-lambda-function" {
+  policy_arn = aws_iam_policy.instance-scheduler-lambda-function.arn
+  role       = aws_iam_role.instance-scheduler-lambda-function.name
+}
+
+## END: IAM for Instance Scheduler Lambda Function
