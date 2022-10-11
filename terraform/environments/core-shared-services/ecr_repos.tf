@@ -36,3 +36,20 @@ module "mlra_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
+
+module "instance_scheduler_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "instance-scheduler"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/github-actions"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["core-shared-services-production"]
+  ]
+
+  # Tags
+  tags_common = local.tags
+}

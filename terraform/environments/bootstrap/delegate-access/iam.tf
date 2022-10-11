@@ -463,13 +463,13 @@ module "shield_response_team_role" {
 
 # Github OIDC provider
 module "github-oidc" {
-  count  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
+  count  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test") || terraform.workspace == "core-shared-services-production" ? 1 : 0
   source = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v1.1.0"
   providers = {
     aws = aws.workspace
   }
-  additional_permissions = data.aws_iam_policy_document.oidc_assume_role_member[0].json
-  github_repository      = "ministryofjustice/modernisation-platform-environments:*"
+  additional_permissions = local.account_data.account-type == "member" ? data.aws_iam_policy_document.oidc_assume_role_member[0].json : data.aws_iam_policy_document.oidc_assume_role_core[0].json
+  github_repository      = local.account_data.account-type == "member" ? "ministryofjustice/modernisation-platform-environments:*" : "ministryofjustice/modernisation-platform-instance-scheduler:*"
   tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
   tags_prefix            = ""
 }
@@ -516,5 +516,17 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
     actions = ["s3:PutObject",
     "s3:PutObjectAcl"]
+  }
+}
+
+data "aws_iam_policy_document" "oidc_assume_role_core" {
+  count = terraform.workspace == "core-shared-services-production" ? 1 : 0
+
+  # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
+  statement {
+    sid       = "AllowOIDCToDecryptKMS"
+    effect    = "Allow"
+    resources = ["*"]
+    actions   = ["kms:Decrypt"]
   }
 }
