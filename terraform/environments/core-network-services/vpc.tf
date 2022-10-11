@@ -30,6 +30,9 @@ module "vpc_hub" {
   # VPC Flow Logs
   vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
 
+  # Transit Gateway ID
+  transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
+
   # Tags
   tags_common = local.tags
   tags_prefix = each.key
