@@ -266,7 +266,7 @@ resource "aws_lambda_function" "athena_table_update" {
   function_name                  = "athena_table_update"
   role                           = aws_iam_role.athena_lambda.arn
   handler                        = "index.lambda_handler"
-  source_code_hash               = data.archive_file.lambda_zip.output_path
+  source_code_hash               = data.archive_file.lambda_zip.output_base64sha256
   runtime                        = "python3.8"
   reserved_concurrent_executions = 1
   kms_key_arn                    = aws_kms_key.athena_logging.arn
