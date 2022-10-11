@@ -463,61 +463,18 @@ module "shield_response_team_role" {
 
 # Github OIDC provider
 module "github-oidc" {
-  count  = local.account_data.account-type == "member" || terraform.workspace == "core-security-production" ? 1 : 0
+  count  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
   source = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v1.1.0"
   providers = {
     aws = aws.workspace
   }
-  additional_permissions = local.account_data.account-type == "member" ? data.aws_iam_policy_document.oidc_assume_role_member[0].json : data.aws_iam_policy_document.oidc_assume_role_core[0].json
-  github_repository      = local.account_data.account-type == "member" ? "ministryofjustice/modernisation-platform-environments:*" : "ministryofjustice/modernisation-platform:*"
+  additional_permissions = data.aws_iam_policy_document.oidc_assume_role_member[0].json
+  github_repository      = "ministryofjustice/modernisation-platform-environments:*"
   tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
   tags_prefix            = ""
 }
-
-data "aws_iam_policy_document" "oidc_assume_role_core" {
-  count = terraform.workspace == "core-security-production" ? 1 : 0
-
-  statement {
-    sid    = "AllowOIDCToAssumeRoles"
-    effect = "Allow"
-    resources = [
-      format("arn:aws:iam::%s:role/ModernisationPlatformAccess", local.environment_management.account_ids["core-network-services-production"]),
-      format("arn:aws:iam::%s:role/ModernisationPlatformAccess", local.environment_management.modernisation_platform_account_id)
-    ]
-    condition {
-      test     = "StringEquals"
-      variable = "aws:PrincipalOrgID"
-      values   = [data.aws_organizations_organization.root_account.id]
-    }
-    actions = ["sts:AssumeRole"]
-  }
-
-  # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
-  statement {
-    sid       = "AllowOIDCToDecryptKMS"
-    effect    = "Allow"
-    resources = ["*"]
-    actions   = ["kms:Decrypt"]
-  }
-
-  statement {
-    sid       = "AllowOIDCReadState"
-    effect    = "Allow"
-    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*", "arn:aws:s3:::modernisation-platform-terraform-state/"]
-    actions = ["s3:Get*",
-    "s3:List*"]
-  }
-
-  statement {
-    sid       = "AllowOIDCWriteState"
-    effect    = "Allow"
-    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/*"]
-    actions = ["s3:PutObject",
-    "s3:PutObjectAcl"]
-  }
-}
 data "aws_iam_policy_document" "oidc_assume_role_member" {
-  count = local.account_data.account-type == "member" ? 1 : 0
+  count = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
   statement {
     sid    = "AllowOIDCToAssumeRoles"
     effect = "Allow"
