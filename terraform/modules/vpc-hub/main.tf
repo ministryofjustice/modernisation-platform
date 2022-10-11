@@ -288,21 +288,21 @@ resource "aws_route" "public-internet-gateway" {
   route_table_id         = aws_route_table.public.id
 }
 
-resource "aws_route" "public_mp_10-20-0-0--16" {
+resource "aws_route" "public_mp_core" {
   count                  = var.gateway == "nat" ? 1 : 0
   destination_cidr_block = "10.20.0.0/16"
   route_table_id         = aws_route_table.public.id
   transit_gateway_id     = var.transit_gateway_id
 }
 
-resource "aws_route" "public_mp_10-26-0-0--16" {
+resource "aws_route" "public_mp_dev-test" {
   count                  = var.gateway == "nat" ? 1 : 0
   destination_cidr_block = "10.26.0.0/16"
   route_table_id         = aws_route_table.public.id
   transit_gateway_id     = var.transit_gateway_id
 }
 
-resource "aws_route" "public_mp_10-27-0-0--16" {
+resource "aws_route" "public_mp_prod-preprod" {
   count                  = var.gateway == "nat" ? 1 : 0
   destination_cidr_block = "10.27.0.0/16"
   route_table_id         = aws_route_table.public.id
