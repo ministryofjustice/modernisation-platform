@@ -108,9 +108,10 @@ locals {
 
 # Store environment management secret in Github secrets
 resource "github_actions_secret" "environment_management" {
+  for_each = toset(["modernisation-platform-environments", "modernisation-platform"])
   # checkov:skip=CKV_SECRET_6: "secret_name is not a secret"
   secret_name = "MODERNISATION_PLATFORM_ENVIRONMENTS"
-  repository  = "modernisation-platform-environments"
+  repository  = each.key
   plaintext_value = jsonencode(merge(
     local.environment_management,
     { account_ids : module.environments.environment_account_ids }
