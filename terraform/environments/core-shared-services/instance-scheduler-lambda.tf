@@ -16,6 +16,11 @@ data "external" "tags_of_most_recently_pushed_image" {
   ]
 }
 
+output "tags" {
+  description = ""
+  value       = jsondecode(data.external.tags_of_most_recently_pushed_image.result.tags)
+}
+
 resource "aws_lambda_function" "instance-scheduler-lambda-function" {
   #checkov:skip=CKV_AWS_116
   #checkov:skip=CKV_AWS_117
@@ -24,7 +29,7 @@ resource "aws_lambda_function" "instance-scheduler-lambda-function" {
   handler                        = "main"
   reserved_concurrent_executions = 0
   runtime                        = "go1.x"
-  image_uri                      = "${module.instance_scheduler_ecr_repo.ecr_repository_name}:${data.tags_of_most_recently_pushed_image[0]}"
+  image_uri                      = "${module.instance_scheduler_ecr_repo.ecr_repository_name}:${jsondecode(data.external.tags_of_most_recently_pushed_image.result.tags)}"
   package_type                   = "Image"
   role                           = aws_iam_role.instance-scheduler-lambda-function.arn
 }
