@@ -24,7 +24,7 @@ resource "aws_lambda_function" "instance-scheduler-lambda-function" {
   handler                        = "main"
   reserved_concurrent_executions = 0
   runtime                        = "go1.x"
-  image_uri                      = "${module.instance_scheduler_ecr_repo.ecr_repository_name}:${tags_of_most_recently_pushed_image[0]}"
+  image_uri                      = "${module.instance_scheduler_ecr_repo.ecr_repository_name}:${data.tags_of_most_recently_pushed_image[0]}"
   package_type                   = "Image"
   role                           = aws_iam_role.instance-scheduler-lambda-function.arn
 }
