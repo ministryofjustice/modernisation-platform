@@ -288,6 +288,27 @@ resource "aws_route" "public-internet-gateway" {
   route_table_id         = aws_route_table.public.id
 }
 
+resource "aws_route" "public_mp_core" {
+  count                  = var.gateway == "nat" ? 1 : 0
+  destination_cidr_block = "10.20.0.0/16"
+  route_table_id         = aws_route_table.public.id
+  transit_gateway_id     = var.transit_gateway_id
+}
+
+resource "aws_route" "public_mp_dev-test" {
+  count                  = var.gateway == "nat" ? 1 : 0
+  destination_cidr_block = "10.26.0.0/16"
+  route_table_id         = aws_route_table.public.id
+  transit_gateway_id     = var.transit_gateway_id
+}
+
+resource "aws_route" "public_mp_prod-preprod" {
+  count                  = var.gateway == "nat" ? 1 : 0
+  destination_cidr_block = "10.27.0.0/16"
+  route_table_id         = aws_route_table.public.id
+  transit_gateway_id     = var.transit_gateway_id
+}
+
 ###################
 # Private subnets #
 ###################
@@ -591,7 +612,9 @@ resource "aws_nat_gateway" "public" {
   )
 }
 
-# Private NAT routes
+# Route back to MP via TGW
+
+# Private Routes
 resource "aws_route" "private-nat" {
   for_each = (var.gateway == "nat") ? aws_route_table.private : {}
 
@@ -600,13 +623,29 @@ resource "aws_route" "private-nat" {
   nat_gateway_id         = aws_nat_gateway.public[replace(each.key, "private", "public")].id
 }
 
-# Data NAT routes
+resource "aws_route" "private-tgw" {
+  for_each = (var.gateway == "transit") ? aws_route_table.private : {}
+
+  route_table_id         = each.value.id
+  destination_cidr_block = "0.0.0.0/0"
+  transit_gateway_id     = var.transit_gateway_id
+}
+
+# Data routes
 resource "aws_route" "data-nat" {
   for_each = (var.gateway == "nat") ? aws_route_table.data : {}
 
   route_table_id         = each.value.id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.public[replace(each.key, "data", "public")].id
+}
+
+resource "aws_route" "data-tgw" {
+  for_each = (var.gateway == "transit") ? aws_route_table.data : {}
+
+  route_table_id         = each.value.id
+  destination_cidr_block = "0.0.0.0/0"
+  transit_gateway_id     = var.transit_gateway_id
 }
 
 # Transit Gateway NAT routes
@@ -616,4 +655,12 @@ resource "aws_route" "transit-gateway-nat" {
   route_table_id         = each.value.id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.public[replace(each.key, "transit-gateway", "public")].id
+}
+
+resource "aws_route" "transit-gateway-tgw" {
+  for_each = (var.gateway == "transit") ? aws_route_table.transit-gateway : {}
+
+  route_table_id         = each.value.id
+  destination_cidr_block = "0.0.0.0/0"
+  transit_gateway_id     = var.transit_gateway_id
 }
