@@ -478,7 +478,6 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "external_inspection_in" {
 
   transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
 
-
   # Attach subnets to the Transit Gateway
   vpc_id = aws_vpc.external_inspection.id
   subnet_ids = [
@@ -494,6 +493,9 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "external_inspection_in" {
 
   # Turn off IPv6 support
   ipv6_support = "disable"
+
+  # Enable appliance mode support
+  appliance_mode_support = "enable"
 
   tags = merge(
     local.tags,
