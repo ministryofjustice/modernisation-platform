@@ -433,12 +433,12 @@ resource "aws_iam_role_policy_attachment" "modernisation_account_limited_read" {
 # OIDC resources
 
 module "github-oidc" {
-  source = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v1.2.0"
-  additional_permissions = data.aws_iam_policy_document.oidc-deny-specific-actions.json
+  source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v1.2.0"
+  additional_permissions      = data.aws_iam_policy_document.oidc-deny-specific-actions.json
   additional_managed_policies = ["arn:aws:iam::aws:policy/AdministratorAccess"]
-  github_repository      = "ministryofjustice/modernisation-platform:*"
-  tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
-  tags_prefix            = ""
+  github_repository           = "ministryofjustice/modernisation-platform:*"
+  tags_common                 = { "Name" = format("%s-oidc", terraform.workspace) }
+  tags_prefix                 = ""
 }
 
 data "aws_iam_policy_document" "oidc-deny-specific-actions" {
