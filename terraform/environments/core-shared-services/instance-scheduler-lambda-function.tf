@@ -1,7 +1,3 @@
-variable "MyOutput" {
-  description = "The ECR repository to query"
-  type        = string
-}
 
 output "MyOutput" {
   description = ""
