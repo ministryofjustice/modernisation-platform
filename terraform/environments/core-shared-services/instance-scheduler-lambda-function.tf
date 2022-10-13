@@ -1,6 +1,6 @@
 output "my-output" {
   description = ""
-  value       = "${module.instance_scheduler_ecr_repo.ecr_repository_name}"
+  value       = module.instance_scheduler_ecr_repo.ecr_repository_name
 }
 
 # Terraform's AWS provider does not provide a mechanism to query the ecr repository.
