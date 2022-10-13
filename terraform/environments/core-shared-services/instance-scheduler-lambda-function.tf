@@ -14,7 +14,7 @@ data "external" "tags_of_most_recently_pushed_image" {
     "aws", "ecr", "describe-images",
     "--region", "eu-west-2",
     "--repository-name", module.instance_scheduler_ecr_repo.ecr_repository_name,
-    "--query", "{\"tags\": to_string(sort_by(imageDetails,& imagePushedAt)[-1].imageTags)}",
+    "--query", "{\"tags\": to_string(sort_by(imageDetails,& imagePushedAt)[-1])}",
   ]
 }
 
