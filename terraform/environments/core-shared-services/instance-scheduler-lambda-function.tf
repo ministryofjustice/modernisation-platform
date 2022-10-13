@@ -10,7 +10,7 @@
 # See also: https://github.com/hashicorp/terraform-provider-aws/issues/12798
 data "external" "tags_of_most_recently_pushed_image" {
   provider = aws
-  program  = [
+  program = [
     "aws", "ecr", "describe-images",
     "--region", "eu-west-2",
     "--repository-name", module.instance_scheduler_ecr_repo.ecr_repository_name,
