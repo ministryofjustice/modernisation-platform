@@ -1,3 +1,8 @@
+output "my-output" {
+  description = ""
+  value       = "${module.instance_scheduler_ecr_repo.ecr_repository_name}"
+}
+
 # Terraform's AWS provider does not provide a mechanism to query the ecr repository.
 #
 # We use an external data source, which can run any program that returns valid JSON, to run the AWS
