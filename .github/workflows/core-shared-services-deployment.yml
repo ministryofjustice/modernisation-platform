@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v2.0.0
+      - uses: hashicorp/setup-terraform@v2.0.2
         with:
           terraform_version: "~1"
           terraform_wrapper: false
@@ -91,7 +91,7 @@ jobs:
     needs: [core-shared-services-deployment-plan]
     steps:
       - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v2.0.0
+      - uses: hashicorp/setup-terraform@v2.0.2
         with:
           terraform_version: "~1"
           terraform_wrapper: false
