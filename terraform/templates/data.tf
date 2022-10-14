@@ -136,3 +136,13 @@ data "terraform_remote_state" "core_network_services" {
     encrypt = "true"
   }
 }
+
+# caller account information to instantiate aws.oidc provider
+data "aws_caller_identity" "oidc_session" {
+  provider = aws.oidc-session
+}
+
+# Get modernisation account id from ssm parameter
+data "aws_ssm_parameter" "modernisation_platform_account_id" {
+  name = "modernisation_platform_account_id"
+}
