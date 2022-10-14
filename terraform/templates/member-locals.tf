@@ -12,6 +12,11 @@ data "aws_caller_identity" "oidc_session" {
   provider = aws.oidc-session
 }
 
+# Get modernisation account id from ssm parameter
+data "aws_ssm_parameter" "modernisation_platform_account_id" {
+  name = "modernisation_platform_account_id"
+}
+
 # Retrieve information about the modernisation platform account
 data "aws_caller_identity" "modernisation_platform" {
   provider = aws.modernisation-platform
