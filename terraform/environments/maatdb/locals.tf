@@ -6,7 +6,6 @@ data "aws_organizations_organization" "root_account" {}
 data "http" "environments_file" {
   url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/${local.application_name}.json"
 }
-
 # Retrieve information about the modernisation platform account
 data "aws_caller_identity" "modernisation_platform" {
   provider = aws.modernisation-platform
@@ -15,7 +14,7 @@ data "aws_caller_identity" "modernisation_platform" {
 
 locals {
 
-  application_name = "$application_name"
+  application_name = "maatdb"
 
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 

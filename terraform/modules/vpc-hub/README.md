@@ -93,16 +93,16 @@ No modules.
 
 ## Outputs
 
-| Name                                                                                                        | Description                                                                                 |
-| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| <a name="output_non_tgw_subnet_ids"></a> [non_tgw_subnet_ids](#output_non_tgw_subnet_ids)                   | Non-Transit Gateway subnet IDs (public, private, data)                                      |
-| <a name="output_non_tgw_subnet_ids_map"></a> [non_tgw_subnet_ids_map](#output_non_tgw_subnet_ids_map)       | Map of subnet ids, with keys being the subnet types and values being the list of subnet ids |
-| <a name="output_private_route_tables"></a> [private_route_tables](#output_private_route_tables)             | Private route table keys and IDs                                                            |
-| <a name="output_private_route_tables_map"></a> [private_route_tables_map](#output_private_route_tables_map) | Private route table keys and IDs, as a map organised by type                                |
-| <a name="output_public_igw_route"></a> [public_igw_route](#output_public_igw_route)                         | Public Internet Gateway route                                                               |
-| <a name="output_public_route_tables"></a> [public_route_tables](#output_public_route_tables)                | Public route tables                                                                         |
-| <a name="output_tgw_subnet_ids"></a> [tgw_subnet_ids](#output_tgw_subnet_ids)                               | Transit Gateway subnet IDs                                                                  |
-| <a name="output_vpc_cidr_block"></a> [vpc_cidr_block](#output_vpc_cidr_block)                               | VPC CIDR block                                                                              |
-| <a name="output_vpc_id"></a> [vpc_id](#output_vpc_id)                                                       | VPC ID                                                                                      |
+| Name | Description |
+|------|-------------|
+| <a name="output_non_tgw_subnet_ids"></a> [non\_tgw\_subnet\_ids](#output\_non\_tgw\_subnet\_ids) | Non-Transit Gateway subnet IDs (public, private, data) |
+| <a name="output_non_tgw_subnet_ids_map"></a> [non\_tgw\_subnet\_ids\_map](#output\_non\_tgw\_subnet\_ids\_map) | Map of subnet ids, with keys being the subnet types and values being the list of subnet ids |
+| <a name="output_private_route_tables"></a> [private\_route\_tables](#output\_private\_route\_tables) | Private route table keys and IDs |
+| <a name="output_private_route_tables_map"></a> [private\_route\_tables\_map](#output\_private\_route\_tables\_map) | Private route table keys and IDs, as a map organised by type |
+| <a name="output_public_igw_route"></a> [public\_igw\_route](#output\_public\_igw\_route) | Public Internet Gateway route |
+| <a name="output_public_route_tables"></a> [public\_route\_tables](#output\_public\_route\_tables) | Public route tables |
+| <a name="output_tgw_subnet_ids"></a> [tgw\_subnet\_ids](#output\_tgw\_subnet\_ids) | Transit Gateway subnet IDs |
+| <a name="output_vpc_cidr_block"></a> [vpc\_cidr\_block](#output\_vpc\_cidr\_block) | VPC CIDR block |
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | VPC ID |
 
 <!-- END_TF_DOCS -->
