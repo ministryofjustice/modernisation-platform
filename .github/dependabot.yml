@@ -92,6 +92,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/maatdb"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/mi-platform"
     schedule:
       interval: "daily"
@@ -172,10 +176,6 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/core-vpc-tgw-routes"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
     directory: "/terraform/modules/dns-zone"
     schedule:
       interval: "daily"
@@ -221,6 +221,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/templates"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gomod"
+    directory: "/scripts/internal/get-security-hub-findings"
     schedule:
       interval: "daily"
   - package-ecosystem: "gomod"
