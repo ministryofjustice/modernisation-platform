@@ -1,0 +1,36 @@
+---
+owner_slack: "#modernisation-platform"
+title: Patching
+last_reviewed_on: 2022-10-14
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+The Modernisation Platform hosts much of the MoJs legacy infrastructure, like any software, this needs patching and updates to ensure the software stays secure.
+
+## Patching Policy
+
+The Modernisation Platform team are responsible for the patching and updating of the core platform infrastructure and any tools or pipelines that we provide.
+Please see [Our Offer](../../user-guide/our-offer-to-you.html) for details on our shared responsibility model.
+
+We expect application teams to keep their infrastructure and application platched and up-to-date.
+
+If we discover a high risk vulnerability and are unable to contact the application team, we reserve the right to apply patching, updates or take the application offline if we feel the platform or MoJ are at risk.
+
+## Patching and updating we currently do as a platform
+
+| Patch / Update | Method | Scope
+|---|---|---|
+| Github Actions | Dependabot | Platform and user code |
+| Terraform module dependancies | Dependabot | Platform and user code |
+| Golang Code | Dependabot | Platform code |
+| Terraform | Auto upgrades for minor releases, issues raised for major releases. | Platform and user code |
+| Terraform Providers | Ad-hoc as new versions released | Platform code |
+| Documentation | Daniel the manual spaniel Slack bot | Platform documentation |
+| SCA Tools | Always pull from latest | Platform and user code |
+| Platform Bastions | Whenever Terraform is run | User code |
+
+## More information
+
+Please see our [Patching ADR](https://github.com/ministryofjustice/modernisation-platform/blob/main/architecture-decision-record/0022-patching-strategy.md) or [contact us](../../getting-help) for more information on our patching plans.
