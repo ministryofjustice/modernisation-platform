@@ -9,5 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ministryofjustice/github-actions/code-formatter@main
+      with:
+          ignore-files: "README.md"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
