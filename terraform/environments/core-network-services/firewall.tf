@@ -160,22 +160,58 @@ resource "aws_route_table_association" "external_inspection_out" {
 # 
 ##############################
 
-variable firewalls {
-   default = {
-       "address_definition_v": "10.40.0.0/18",
-       "from_port_v": "4",
-       "to_port_v": "6",
-       "protocols_v": "8"
-   }
-   refer = {
-       "address_definition_v": "10.40.0.0/18",
-       "from_port_v": "4",
-       "to_port_v": "6",
-       "protocols_v": "8"
-   }
+# Get the json data and output it
+
+locals {
+    # get json 
+    address-data = jsondecode(file("wanted-firewalls.json"))
+
+    # # get all users
+    # location = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.IP-address]
+    # location-in = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.In-port]
+    details = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.details]
 }
+ 
+#  variable firewall-service {
+#    =split(",", local.details)[0]
+# }  
+# variable firewall-adress {
+#   ip-address = split(",", local.details)[1]
+# }  
 
+output "details" {
+     value = local.details
+    }
+output "service" {
+     value = "${element(split(",",local.details),0)}"
+    }
+output "ip-address" {
+     value = "${element(split(",",local.details),1)}"
+    }
+# output "address" {
+#     value = local.location
+#    }
+#    output "in" {
+#      value = local.location-in
+#    }
 
+# variable firewalls {
+
+#    default = {
+#        "address_definition_v": "10.40.0.0/18",
+#        "from_port_v": "4",
+#        "to_port_v": "6",
+#        "protocols_v": "8"
+#    }
+# }
+   
+  #    nomis =     {
+  #      "address_definition_v": "10.40.0.0/18",
+  #      "from_port_v": "4",
+  #      "to_port_v": "6",
+  #      "protocols_v": "8"
+  #  }
+  
 resource "aws_networkfirewall_firewall_policy" "external_inspection" {
   name = "external"
 
@@ -195,10 +231,10 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
   name        = "stateless-rules"
   type        = "STATELESS"
 
-provisioner "file" {
-  source      = templatefile("firewalls.tftpl", var.firewalls)
-  destination = "firewalls.json"
-}
+# provisioner "file" {
+#   source      = templatefile("firewalls.tftpl", var.firewalls)
+#   destination = "firewalls.json"
+# }
 
 
   rule_group {
@@ -210,11 +246,11 @@ provisioner "file" {
             actions = ["aws:pass"]
             match_attributes {
               source {
-                address_definition = var.firewalls.address_definition_v
+                address_definition = "10.40.0.0/18"  # var.firewalls.address_definition_v
               }
               source_port {
-                from_port = var.firewalls.from_port_v
-                to_port   = var.firewalls.to_port_v
+                from_port = "1"    # var.firewalls.from_port_v
+                to_port   = "2"    # var.firewalls.to_port_v
               }
               destination {
                 address_definition = "10.26.8.0/21" # Nomis-Test
