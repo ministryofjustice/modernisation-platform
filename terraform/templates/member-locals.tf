@@ -7,16 +7,6 @@ data "http" "environments_file" {
   url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/${local.application_name}.json"
 }
 
-# caller account information to instantiate aws.oidc provider
-data "aws_caller_identity" "oidc_session" {
-  provider = aws.oidc-session
-}
-
-# Get modernisation account id from ssm parameter
-data "aws_ssm_parameter" "modernisation_platform_account_id" {
-  name = "modernisation_platform_account_id"
-}
-
 # Retrieve information about the modernisation platform account
 data "aws_caller_identity" "modernisation_platform" {
   provider = aws.modernisation-platform
