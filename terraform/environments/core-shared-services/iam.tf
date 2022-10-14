@@ -105,6 +105,7 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-assume-role" 
   }
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
   statement {
     sid    = "AllowLambdaToCreateLogGroup"
