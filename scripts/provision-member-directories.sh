@@ -55,7 +55,7 @@ provision_environment_directories() {
 
       mkdir -p "$directory"
       copy_templates "$directory" "$application_name"
-      
+
       # Create workflow file
       echo "Creating workflow file"
       sed "s/\$application_name/$application_name/g" "core-repo/.github/workflows/templates/workflow-template.yml" > "modernisation-platform-environments/.github/workflows/$application_name.yml"
@@ -124,6 +124,9 @@ copy_templates() {
 
   # Rename member providers file
   mv $1/member-providers.tf $1/providers.tf
+
+    # Rename member locals file
+  mv $1/member-locals.tf $1/locals.tf
   # copy application variable file
   cp core-repo/terraform/templates/application_variables.json $1
   # copy template file
@@ -137,7 +140,7 @@ generate_codeowners() {
 echo "Writing codeowners file"
 # Creates a codeowners file in the environments repo to ensure only teams can approve PRs referencing their code
   cat > $codeowners_file << EOL
-# This file is auto-generated here, do not manually amend. 
+# This file is auto-generated here, do not manually amend.
 # https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/provision-member-directories.sh
 
 * @ministryofjustice/modernisation-platform
@@ -148,13 +151,13 @@ EOL
     directory=/terraform/environments/$application_name
     account_type=$(jq -r '."account-type"' ${environment_json_dir}/${application_name}.json)
     github_slugs=$(jq -r '.environments[].access[].github_slug' ${environment_json_dir}/${application_name}.json | uniq)
-    
+
     if [ "$account_type" = "member" ]; then
       for slug in $github_slugs; do
         echo "Adding $directory @ministryofjustice/$slug @modernisation-platform to codeowners"
         echo "$directory @ministryofjustice/$slug @ministryofjustice/modernisation-platform" >> $codeowners_file
       done
-    fi    
+    fi
 
   done
 
