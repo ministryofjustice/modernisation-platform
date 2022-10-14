@@ -12,7 +12,7 @@
     }
   ],
   "tags": {
-    "application": "mlra",
+    "application": "maatdb",
     "business-unit": "LAA",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
     "owner": "laa-crime-apps@digital.justice.gov.uk"
