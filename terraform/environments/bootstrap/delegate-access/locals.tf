@@ -2,7 +2,7 @@
 # (when we want to assume a role in the MP, for instance)
 data "aws_organizations_organization" "root_account" {}
 data "aws_iam_roles" "sso-admin-access" {
-  provider = aws.workspace
+  provider    = aws.workspace
   name_regex  = "AWSReservedSSO_AdministratorAccess_.*"
   path_prefix = "/aws-reserved/sso.amazonaws.com/"
 }

@@ -36,7 +36,7 @@ module "member-access" {
     aws = aws.workspace
   }
   account_id             = local.modernisation_platform_account.id
-  additional_trust_roles = [module.github-oidc[0].github_actions_role,one(data.aws_iam_roles.sso-admin-access.arns)]
+  additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access[0].id
   role_name              = "MemberInfrastructureAccess"
 }
