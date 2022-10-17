@@ -161,7 +161,7 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
       "secretsmanager:ListSecretVersionIds"
     ]
     resources = [
-      "*"
+      format("arn:aws:secretsmanager:eu-west-2:%s:secret:environment_management*", local.environment_management.modernisation_platform_account_id)
    ]
   }
 }
