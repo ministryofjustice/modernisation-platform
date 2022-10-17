@@ -1,8 +1,3 @@
-data "aws_iam_roles" "sso-admin-access" {
-  provider = aws.workspace
-  name_regex  = "AWSReservedSSO_AdministratorAccess_.*"
-  path_prefix = "/aws-reserved/sso.amazonaws.com/"
-}
 locals {
   account_name = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, regex("-[^-]*$", terraform.workspace), ""))
   account_data = jsondecode(file("../../../../environments/${local.account_name}.json"))
