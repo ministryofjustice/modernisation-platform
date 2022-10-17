@@ -1,7 +1,11 @@
 # This data sources allows us to get the Modernisation Platform account information for use elsewhere
 # (when we want to assume a role in the MP, for instance)
 data "aws_organizations_organization" "root_account" {}
-
+data "aws_iam_roles" "sso-admin-access" {
+  provider = aws.workspace
+  name_regex  = "AWSReservedSSO_AdministratorAccess_.*"
+  path_prefix = "/aws-reserved/sso.amazonaws.com/"
+}
 data "http" "environments_file" {
   url = format("https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/%s.json", local.application_name)
 }

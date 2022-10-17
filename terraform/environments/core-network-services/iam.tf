@@ -35,7 +35,7 @@ resource "aws_iam_role" "dns" {
           "Condition" : {
             "ForAnyValue:StringLike" : {
               "aws:PrincipalOrgPaths" : ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"],
-              "aws:PrincipalArn" : ["arn:aws:iam::*:role/github-actions"]
+              "aws:PrincipalArn" : ["arn:aws:iam::*:role/github-actions", "arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*"]
             }
           }
         }
