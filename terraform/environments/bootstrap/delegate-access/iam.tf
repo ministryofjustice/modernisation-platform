@@ -36,7 +36,7 @@ module "member-access" {
     aws = aws.workspace
   }
   account_id             = local.modernisation_platform_account.id
-  additional_trust_roles = [module.github-oidc[0].github_actions_role]
+  additional_trust_roles = [module.github-oidc[0].github_actions_role,format("arn:aws:iam::%s:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*",local.environment_management.account_ids[terraform.workspace])]
   policy_arn             = aws_iam_policy.member-access[0].id
   role_name              = "MemberInfrastructureAccess"
 }
