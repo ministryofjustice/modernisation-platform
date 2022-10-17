@@ -8,20 +8,6 @@ data "aws_secretsmanager_secret_version" "environment_management" {
   secret_id = data.aws_secretsmanager_secret.environment_management.id
 }
 
-# Create a resource share for the environment management secret
-resource "aws_ram_resource_share" "environment_management" {
-  name                      = "environment_management"
-  allow_external_principals = false
-
-  tags = local.tags
-}
-
-# Attach the environment management secret to the resource share
-resource "aws_ram_resource_association" "environment_management" {
-  resource_arn       = data.aws_secretsmanager_secret.environment_management.arn
-  resource_share_arn = aws_ram_resource_share.environment_management.id
-}
-
 # Core CI User
 # Tfsec ignore
 # - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key

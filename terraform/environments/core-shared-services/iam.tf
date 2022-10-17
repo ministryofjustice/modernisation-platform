@@ -138,6 +138,32 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
       "arn:aws:iam::*:role/MemberInfrastructureAccess"
     ]
   }
+  statement {
+    sid    = "AllowAccessParameter"
+    effect = "Allow"
+    actions = [
+      "ssm:DescribeParameters",
+      "ssm:GetParameter",
+      "ssm:GetParameters",
+      "ssm:GetParametersByPath"
+    ]
+    resources = [
+      format("arn:aws:ssm:*:%s:parameter/environment_management_arn", data.aws_caller_identity.current.account_id)
+    ]
+  }
+  statement {
+    sid    = "AllowAccessEnvironmentManagementSecret"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:GetResourcePolicy",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecretVersionIds"
+    ]
+    resources = [
+      "*"
+   ]
+  }
 }
 
 resource "aws_iam_role" "instance-scheduler-lambda-function" {
