@@ -58,7 +58,7 @@ locals {
   }
 
   egress_pttp_routing_cidrs_live_data = {
-    "azure-noms"      = "10.40.0.0/16",
+    "azure-fixngo"    = "10.40.0.0/16",
     "azure-noms-test" = "10.101.0.0/16",
     "azure-noms-mgmt" = "10.102.0.0/16",
     "global-protect"  = "10.184.0.0/16",
