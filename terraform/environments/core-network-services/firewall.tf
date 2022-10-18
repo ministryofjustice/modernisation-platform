@@ -155,7 +155,15 @@ resource "aws_route_table_association" "external_inspection_out" {
   route_table_id = aws_route_table.external_inspection_out.id
   subnet_id      = aws_subnet.external_inspection_out[each.key].id
 }
+#  variable service {
+#   type = string
+#   default="default"
+#  }
 
+#   variable details {
+#   type = string
+#   default="default"
+#  }
 ##############################
 # 
 ##############################
@@ -163,37 +171,29 @@ resource "aws_route_table_association" "external_inspection_out" {
 # Get the json data and output it
 
 locals {
-    # get json 
+    # get json ----- OR USE MAPS which may be a better approach.
     address-data = jsondecode(file("wanted-firewalls.json"))
+    json_rows = length(jsondecode(file("wanted-firewalls.json")))
+    # get firewall requirements
 
-    # # get all users
-    # location = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.IP-address]
-    # location-in = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.In-port]
-    details = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.details]
+    # for_each = to_set([ Wanted-Firewall in local.address-data.Wanted-Firewall.details ])
+   
+    # details = "${each.key}.local.each.value"
+    address_definition = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.address_definition]
+    from_port = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.from_port] 
+    to_port = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.to_port]
 }
- 
-#  variable firewall-service {
-#    =split(",", local.details)[0]
-# }  
-# variable firewall-adress {
-#   ip-address = split(",", local.details)[1]
-# }  
 
-output "details" {
-     value = local.details
+output "address_definition" {
+     value = "${element(split(",",local.address_definition[1]),0)}"
     }
-output "service" {
-     value = "${element(split(",",local.details),0)}"
+output "from-port" {
+     value = "${element(split(",",local.from_port[1]),2)}"
     }
-output "ip-address" {
-     value = "${element(split(",",local.details),1)}"
+output "to-port" {
+     value = "${element(split(",",local.to_port[1]),3)}"
     }
-# output "address" {
-#     value = local.location
-#    }
-#    output "in" {
-#      value = local.location-in
-#    }
+
 
 # variable firewalls {
 
@@ -265,6 +265,59 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
         }
       }
     }
+  }
+}
+
+resource "aws_networkfirewall_rule_group" "stateful_rules" {
+  description = "Stateful Rules"
+  capacity    = 100
+  name        = "example"
+  type        = "STATELESS"
+  rule_group {
+    rules_source {
+      stateless_rules_and_custom_actions {
+        custom_action {
+          action_definition {
+            publish_metric_action {
+              dimension {
+                value = "2"
+              }
+            }
+          }
+          action_name = "ExampleMetricsAction"
+        }
+        stateless_rule {
+          priority = 1
+          rule_definition {
+            actions = ["aws:pass", "ExampleMetricsAction"]
+            match_attributes {
+              source {
+                address_definition = "1.2.3.4/32"
+              }
+              source_port {
+                from_port = 443
+                to_port   = 443
+              }
+              destination {
+                address_definition = "124.1.1.5/32"
+              }
+              destination_port {
+                from_port = 443
+                to_port   = 443
+              }
+              protocols = [6]
+              tcp_flag {
+                flags = ["SYN"]
+                masks = ["SYN", "ACK"]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  tags = {
+    Name = "Stateful test"
   }
 }
 
