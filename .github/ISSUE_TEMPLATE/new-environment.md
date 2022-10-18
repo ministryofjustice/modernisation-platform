@@ -1,7 +1,7 @@
 ---
 name: New Modernisation Platform Environment
 about: Request a new Modernisation Platform Environment
-labels: onboarding
+labels: ["onboarding", "member request"]
 ---
 
 <!-- Please complete the following details and submit the new issue -->
