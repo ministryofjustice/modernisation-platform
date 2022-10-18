@@ -58,12 +58,12 @@ locals {
   }
 
   egress_pttp_routing_cidrs_live_data = {
-    "azure-fixngo"    = "10.40.0.0/16",
-    "azure-noms-test" = "10.101.0.0/16",
-    "azure-noms-mgmt" = "10.102.0.0/16",
-    "global-protect"  = "10.184.0.0/16",
-    "cloud-platform"  = "172.20.0.0/16",
-    "ppud-psn"        = "51.247.0.0/16",
+    "azure-fixngo-live" = "10.40.0.0/16",
+    "azure-noms-test"   = "10.101.0.0/16",
+    "azure-noms-mgmt"   = "10.102.0.0/16",
+    "global-protect"    = "10.184.0.0/16",
+    "cloud-platform"    = "172.20.0.0/16",
+    "ppud-psn"          = "51.247.0.0/16",
   }
 
   tgw_live_data_attachments = {
