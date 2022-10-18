@@ -271,49 +271,31 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
 resource "aws_networkfirewall_rule_group" "stateful_rules" {
   description = "Stateful Rules"
   capacity    = 100
-  name        = "example"
-  type        = "STATELESS"
+  name        = "stateful_rules"
+ type     = "STATEFUL"
   rule_group {
-    rules_source {
-      stateless_rules_and_custom_actions {
-        custom_action {
-          action_definition {
-            publish_metric_action {
-              dimension {
-                value = "2"
-              }
-            }
-          }
-          action_name = "ExampleMetricsAction"
-        }
-        stateless_rule {
-          priority = 1
-          rule_definition {
-            actions = ["aws:pass", "ExampleMetricsAction"]
-            match_attributes {
-              source {
-                address_definition = "1.2.3.4/32"
-              }
-              source_port {
-                from_port = 443
-                to_port   = 443
-              }
-              destination {
-                address_definition = "124.1.1.5/32"
-              }
-              destination_port {
-                from_port = 443
-                to_port   = 443
-              }
-              protocols = [6]
-              tcp_flag {
-                flags = ["SYN"]
-                masks = ["SYN", "ACK"]
-              }
-            }
-          }
+    rule_variables {
+      ip_sets {
+        key = "WEBSERVERS_HOSTS"
+        ip_set {
+          definition = ["10.0.0.0/16", "10.0.1.0/24", "192.168.0.0/16"]
         }
       }
+      ip_sets {
+        key = "EXTERNAL_HOST"
+        ip_set {
+          definition = ["1.2.3.4/32"]
+        }
+      }
+      port_sets {
+        key = "HTTP_PORTS"
+        port_set {
+          definition = ["443", "80"]
+        }
+      }
+    }
+    rules_source {
+    #  rules_string = file("suricata_rules_file")
     }
   }
   tags = {
