@@ -164,6 +164,27 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
       format("arn:aws:secretsmanager:eu-west-2:%s:secret:environment_management*", local.environment_management.modernisation_platform_account_id)
    ]
   }
+  statement {
+    sid    = "AllowECRImageRetrieval"
+    effect = "Allow"
+    actions = [
+      "ecr:SetRepositoryPolicy",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+      "ecr:CompleteLayerUpload",
+      "ecr:DescribeImages",
+      "ecr:DescribeRepositories",
+      "ecr:UploadLayerPart",
+      "ecr:ListImages",
+      "ecr:InitiateLayerUpload",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:GetRepositoryPolicy",
+      "ecr:PutImage"
+    ]
+    resources = [
+      format("arn:aws:ecr:eu-west-2:%s:repository/instance-scheduler-ecr-repo*", local.environment_management.modernisation_platform_account_id)
+    ]
+  }
 }
 
 resource "aws_iam_role" "instance-scheduler-lambda-function" {
