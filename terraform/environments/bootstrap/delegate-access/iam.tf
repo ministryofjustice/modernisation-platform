@@ -529,4 +529,12 @@ data "aws_iam_policy_document" "oidc_assume_role_core" {
     resources = ["*"]
     actions   = ["kms:Decrypt"]
   }
+
+  # This is for the Instance Scheduler Lambda Function workflow to be able to deploy the latest container image
+  statement {
+    sid       = "AllowOIDCToUpdateLambdaFunctionCode"
+    effect    = "Allow"
+    resources = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:function:instance-scheduler-lambda-function"]
+    actions   = ["lambda:UpdateFunctionCode"]
+  }
 }
