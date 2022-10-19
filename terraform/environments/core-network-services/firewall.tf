@@ -182,18 +182,34 @@ locals {
   address_definition = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.address_definition]
   from_port          = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.from_port]
   to_port            = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.to_port]
+  protocols          = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.protocols]
 }
 
-output "address_definition" {
+output "first_address_definition" {
+  value = element(split(",", local.address_definition[0]), 0)
+}
+output "first_from-port" {
+  value = element(split(",", local.from_port[0]), 2)
+}
+output "first_to-port" {
+  value = element(split(",", local.to_port[0]), 3)
+}
+output "first_protocol" {
+  value = element(split(",", local.protocols[0]), 0)
+}
+
+output "second_address_definition" {
   value = element(split(",", local.address_definition[1]), 0)
 }
-output "from-port" {
+output "second_from-port" {
   value = element(split(",", local.from_port[1]), 2)
 }
-output "to-port" {
+output "second_to-port" {
   value = element(split(",", local.to_port[1]), 3)
 }
-
+output "second_protocol" {
+  value = element(split(",", local.protocols[1]), 0)
+}
 
 # variable firewalls {
 
@@ -291,6 +307,12 @@ resource "aws_networkfirewall_rule_group" "stateful_rules" {
         key = "HTTP_PORTS"
         port_set {
           definition = ["443", "80"]
+        }
+      }
+      port_sets {
+        key = "TCP_PORTS"
+        port_set {
+          definition = ["1", "65536"]
         }
       }
     }
