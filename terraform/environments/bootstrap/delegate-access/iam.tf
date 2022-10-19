@@ -529,7 +529,7 @@ data "aws_iam_policy_document" "oidc_assume_role_core" {
     resources = ["*"]
     actions   = ["kms:Decrypt"]
   }
-  
+
   # checkov:skip=CKV_AWS_111: "There's no naming convention for lambda functions at the moment"
   statement {
     sid       = "AllowUpdateLambdaCode"
