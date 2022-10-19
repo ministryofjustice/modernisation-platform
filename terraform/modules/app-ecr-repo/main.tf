@@ -76,7 +76,7 @@ data "aws_iam_policy_document" "ecr_repo_policy" {
       condition {
         test     = "StringLike"
         variable = "aws:sourceArn"
-        values = var.enable_retrieval_policy_for_lambdas
+        values   = var.enable_retrieval_policy_for_lambdas
       }
     }
   }
