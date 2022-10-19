@@ -31,9 +31,9 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_app_name"></a> [app\_name](#input\_app\_name) | base name for ecr repo | `string` | n/a | yes |
+| <a name="input_enable_retrieval_policy_for_lambdas"></a> [enable\_retrieval\_policy\_for\_lambdas](#input\_enable\_retrieval\_policy\_for\_lambdas) | If set then it will add ECR Image Retrieval Policy for the given Lambda functions | `list(string)` | `[]` | no |
 | <a name="input_pull_principals"></a> [pull\_principals](#input\_pull\_principals) | AWS principals which require access to pull from the repository | `list(string)` | `[]` | no |
 | <a name="input_push_principals"></a> [push\_principals](#input\_push\_principals) | AWS principals which require access to push to the repository | `list(string)` | `[]` | no |
-| <a name="enable_retrieval_policy_for_lambdas"></a> [enable\_retrieval\_policy\_for\_lambdas](#enable\_retrieval\_policy\_for\_lambdas) | If set then it will add ECR Image Retrieval Policy for the given Lambda functions | `list(string)` | `[]` | no |
 | <a name="input_tags_common"></a> [tags\_common](#input\_tags\_common) | MOJ required tags | `map(string)` | n/a | yes |
 
 ## Outputs
