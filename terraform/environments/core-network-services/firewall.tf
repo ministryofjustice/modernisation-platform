@@ -180,19 +180,19 @@ locals {
 
   # details = "${each.key}.local.each.value"
   address_definition = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.address_definition]
-  from_port          = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.from_port]
-  to_port            = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.to_port]
+  source_port        = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.source_port]
+  destination_port   = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.destination_port]
   protocols          = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.protocols]
 }
 
 output "first_address_definition" {
   value = element(split(",", local.address_definition[0]), 0)
 }
-output "first_from-port" {
-  value = element(split(",", local.from_port[0]), 2)
+output "first_source-port" {
+  value = element(split(",", local.source_port[0]), 2)
 }
-output "first_to-port" {
-  value = element(split(",", local.to_port[0]), 3)
+output "first_destination-port" {
+  value = element(split(",", local.destination_port[0]), 3)
 }
 output "first_protocol" {
   value = element(split(",", local.protocols[0]), 0)
@@ -201,11 +201,11 @@ output "first_protocol" {
 output "second_address_definition" {
   value = element(split(",", local.address_definition[1]), 0)
 }
-output "second_from-port" {
-  value = element(split(",", local.from_port[1]), 2)
+output "second_source-port" {
+  value = element(split(",", local.source_port[1]), 2)
 }
-output "second_to-port" {
-  value = element(split(",", local.to_port[1]), 3)
+output "second_destination-port" {
+  value = element(split(",", local.destination_port[1]), 3)
 }
 output "second_protocol" {
   value = element(split(",", local.protocols[1]), 0)
@@ -215,8 +215,8 @@ output "second_protocol" {
 
 #    default = {
 #        "address_definition_v": "10.40.0.0/18",
-#        "from_port_v": "4",
-#        "to_port_v": "6",
+#        "source_port_v": "4",
+#        "destination_port_v": "6",
 #        "protocols_v": "8"
 #    }
 # }
@@ -224,7 +224,7 @@ output "second_protocol" {
 #    nomis =     {
 #      "address_definition_v": "10.40.0.0/18",
 #      "from_port_v": "4",
-#      "to_port_v": "6",
+#      "destination_port_v": "6",
 #      "protocols_v": "8"
 #  }
 
@@ -266,7 +266,7 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
               }
               source_port {
                 from_port = "1" # var.firewalls.from_port_v
-                to_port   = "2" # var.firewalls.to_port_v
+                to_port   = "2" # var.firewalls.destination_port_v
               }
               destination {
                 address_definition = "10.26.8.0/21" # Nomis-Test

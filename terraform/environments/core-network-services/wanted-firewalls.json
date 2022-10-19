@@ -1,6 +1,6 @@
 {
   "Wanted-Firewall": [
-    { "address_definition": "10.40.0.0/21", "from_port": 1521, "to_port": 1521, "protocols": "https" },
-    { "address_definition": "10.41.0.0/16", "from_port": 1521, "to_port": 1521, "protocols": "tcp" }
+    { "address_definition": "10.40.0.0/21", "source_port": 1521, "destination_port": 1521, "protocols": "https" },
+    { "address_definition": "10.41.0.0/16", "source_port": 1521, "destination_port": 1521, "protocols": "tcp" }
   ]
 }
