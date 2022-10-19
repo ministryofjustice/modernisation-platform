@@ -55,6 +55,33 @@ data "aws_iam_policy_document" "ecr_repo_policy" {
       identifiers = var.pull_principals
     }
   }
+
+  dynamic "statement" {
+    # The contents of the list below are arbitrary, but must be of length one.
+    # It is only used to determine whether or not to include this statement.
+    for_each = var.enable_lambda_retrieval_policy ? [1] : []
+
+    content {
+      sid    = "LambdaECRImageRetrievalPolicy"
+      effect = "Allow"
+      actions = [
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:SetRepositoryPolicy",
+        "ecr:DeleteRepositoryPolicy",
+        "ecr:GetRepositoryPolicy"
+      ]
+      principals {
+        type        = "Service"
+        identifiers = ["lambda.amazonaws.com"]
+      }
+      condition {
+        test     = "StringLike"
+        variable = "aws:sourceArn"
+        values   = ["arn:aws:lambda:eu-west-2:374269020027:function:*"]
+      }
+    }
+  }
 }
 
 resource "aws_ecr_repository_policy" "ecr_repository_policy" {
