@@ -102,7 +102,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3.1.0
       - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e --arg account_name '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
