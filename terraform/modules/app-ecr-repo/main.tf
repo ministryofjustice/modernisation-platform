@@ -55,6 +55,31 @@ data "aws_iam_policy_document" "ecr_repo_policy" {
       identifiers = var.pull_principals
     }
   }
+
+  dynamic "statement" {
+    for_each = length(var.enable_retrieval_policy_for_lambdas) > 0 ? [1] : []
+
+    content {
+      sid    = "LambdaECRImageRetrievalPolicy"
+      effect = "Allow"
+      actions = [
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:SetRepositoryPolicy",
+        "ecr:DeleteRepositoryPolicy",
+        "ecr:GetRepositoryPolicy"
+      ]
+      principals {
+        type        = "Service"
+        identifiers = ["lambda.amazonaws.com"]
+      }
+      condition {
+        test     = "StringLike"
+        variable = "aws:sourceArn"
+        values   = var.enable_retrieval_policy_for_lambdas
+      }
+    }
+  }
 }
 
 resource "aws_ecr_repository_policy" "ecr_repository_policy" {

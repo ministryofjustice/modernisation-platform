@@ -50,6 +50,8 @@ module "instance_scheduler_ecr_repo" {
     local.environment_management.account_ids["core-shared-services-production"]
   ]
 
+  enable_retrieval_policy_for_lambdas = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:function:*"]
+
   # Tags
   tags_common = local.tags
 }
