@@ -21,7 +21,7 @@ variable "pull_principals" {
 }
 
 variable "enable_retrieval_policy_for_lambdas" {
-  description = "If set then it will add Lambda ECR Image Retrieval Policy for the given account ID"
+  description = "If set then it will add ECR Image Retrieval Policy for the given Lambda functions"
   type        = list(string)
   default     = []
 }

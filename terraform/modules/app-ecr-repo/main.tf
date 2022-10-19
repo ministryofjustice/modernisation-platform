@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "ecr_repo_policy" {
   }
 
   dynamic "statement" {
-    for_each = var.enable_retrieval_policy_for_lambdas
+    for_each = length(var.enable_retrieval_policy_for_lambdas) > 0 ? [1] : []
 
     content {
       sid    = "LambdaECRImageRetrievalPolicy"
@@ -76,7 +76,7 @@ data "aws_iam_policy_document" "ecr_repo_policy" {
       condition {
         test     = "StringLike"
         variable = "aws:sourceArn"
-        values = statement.value
+        values = var.enable_retrieval_policy_for_lambdas
       }
     }
   }
