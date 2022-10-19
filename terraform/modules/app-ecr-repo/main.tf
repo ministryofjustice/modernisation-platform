@@ -57,9 +57,7 @@ data "aws_iam_policy_document" "ecr_repo_policy" {
   }
 
   dynamic "statement" {
-    # The contents of the list below are arbitrary, but must be of length one.
-    # It is only used to determine whether or not to include this statement.
-    for_each = var.enable_lambda_retrieval_policy ? [1] : []
+    for_each = var.enable_lambda_retrieval_policy_for_account_id
 
     content {
       sid    = "LambdaECRImageRetrievalPolicy"
@@ -78,7 +76,7 @@ data "aws_iam_policy_document" "ecr_repo_policy" {
       condition {
         test     = "StringLike"
         variable = "aws:sourceArn"
-        values   = ["arn:aws:lambda:eu-west-2:374269020027:function:*"]
+        values   = ["arn:aws:lambda:eu-west-2:${statement.value}:function:*"]
       }
     }
   }

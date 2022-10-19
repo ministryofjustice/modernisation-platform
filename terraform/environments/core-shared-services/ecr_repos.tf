@@ -50,7 +50,7 @@ module "instance_scheduler_ecr_repo" {
     local.environment_management.account_ids["core-shared-services-production"]
   ]
 
-  enable_lambda_retrieval_policy = true
+  enable_lambda_retrieval_policy_for_account_id = [local.environment_management.account_ids["core-shared-services-production"]]
 
   # Tags
   tags_common = local.tags

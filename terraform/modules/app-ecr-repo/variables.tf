@@ -20,8 +20,8 @@ variable "pull_principals" {
   default     = []
 }
 
-variable "enable_lambda_retrieval_policy" {
-  description = "If set to true, it will add Lambda ECR Image Retrieval Policy"
-  type   = bool
-  default = false
+variable "enable_lambda_retrieval_policy_for_account_id" {
+  description = "If set then it will add Lambda ECR Image Retrieval Policy for the given account ID"
+  type        = list(string)
+  default     = []
 }
