@@ -529,4 +529,10 @@ data "aws_iam_policy_document" "oidc_assume_role_core" {
     resources = ["*"]
     actions   = ["kms:Decrypt"]
   }
+  statement {
+    sid       = "AllowUpdateLambdaCode"
+    effect    = "Allow"
+    resources = ["*"]
+    actions   = ["lambda:UpdateFunctionCode"]
+  }
 }
