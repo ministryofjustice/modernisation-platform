@@ -26,8 +26,8 @@ env:
   ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
 
   permissions:
-    id-token: write # This is required for requesting the JWT
-    contents: read # This is required for actions/checkout
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
 
 defaults:
   run:
@@ -101,7 +101,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3.1.0
       - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e --arg account_name "core-security-production" '.account_ids[$account_name]' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e --arg account_name ".modernisation_platform_account_id" '.account_ids[$account_name]' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
