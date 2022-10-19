@@ -30,4 +30,5 @@ locals {
     "core-network-services-live_data-attachment",
   ]
 
+  firewall_rules = fileexists("./firewall_rules.json") ? jsondecode(file("./firewall_rules.json")) : {}
 }

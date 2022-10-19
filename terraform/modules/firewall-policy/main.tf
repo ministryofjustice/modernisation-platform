@@ -30,11 +30,13 @@ resource "aws_networkfirewall_rule_group" "stateful" {
             destination      = stateful_rule.value.destination_ip
             destination_port = stateful_rule.value.destination_port
             direction        = "ANY"
-            protocol         = "IP"
+            protocol         = stateful_rule.value.protocol
             source_port      = "ANY"
             source           = stateful_rule.value.source_ip
             }
-          rule_option {}
+          rule_option {
+            keyword = format("sid:%s", something-to-make-the-sid-random)
+          }
         }
       }
     }
