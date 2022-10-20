@@ -171,45 +171,51 @@ resource "aws_route_table_association" "external_inspection_out" {
 # Get the json data and output it
 
 locals {
-  # get json ----- OR USE MAPS which may be a better approach.
-  address-data = jsondecode(file("wanted-firewalls.json"))
-  json_rows    = length(jsondecode(file("wanted-firewalls.json")))
+  # get json 
+ address-data = jsondecode(file("wanted-firewalls.json"))
+  
   # get firewall requirements
 
   # for_each = to_set([ Wanted-Firewall in local.address-data.Wanted-Firewall.details ])
 
   # details = "${each.key}.local.each.value"
-  address_definition = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.address_definition]
-  source_port        = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.source_port]
-  destination_port   = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.destination_port]
-  protocols          = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.protocols]
-}
+ var.address_definition = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.address_definition]
+ var.source_port        = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.source_port]
+ var.destination_port   = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.destination_port]
+ var.protocols          = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.protocols]
+ 
+ }
+# data "get-incoming-IPs" "addresses" {
+#   var.address_definition = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.address_definition]
+#  var.source_port        = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.source_port]
+#  var.destination_port   = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.destination_port]
+#  var.protocols          = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.protocols]
+#  }
+# output "first_address_definition" {
+#   value = element(split(",", local.address_definition[0]), 0)
+# }
+# output "first_source-port" {
+#   value = element(split(",", local.source_port[0]), 2)
+# }
+# output "first_destination-port" {
+#   value = element(split(",", local.destination_port[0]), 3)
+# }
+# output "first_protocol" {
+#   value = element(split(",", local.protocols[0]), 0)
+# }
 
-output "first_address_definition" {
-  value = element(split(",", local.address_definition[0]), 0)
-}
-output "first_source-port" {
-  value = element(split(",", local.source_port[0]), 2)
-}
-output "first_destination-port" {
-  value = element(split(",", local.destination_port[0]), 3)
-}
-output "first_protocol" {
-  value = element(split(",", local.protocols[0]), 0)
-}
-
-output "second_address_definition" {
-  value = element(split(",", local.address_definition[1]), 0)
-}
-output "second_source-port" {
-  value = element(split(",", local.source_port[1]), 2)
-}
-output "second_destination-port" {
-  value = element(split(",", local.destination_port[1]), 3)
-}
-output "second_protocol" {
-  value = element(split(",", local.protocols[1]), 0)
-}
+# output "second_address_definition" {
+#   value = element(split(",", local.address_definition[1]), 0)
+# }
+# output "second_source-port" {
+#   value = element(split(",", local.source_port[1]), 2)
+# }
+# output "second_destination-port" {
+#   value = element(split(",", local.destination_port[1]), 3)
+# }
+# output "second_protocol" {
+#   value = element(split(",", local.protocols[1]), 0)
+# }
 
 # variable firewalls {
 
@@ -289,6 +295,9 @@ resource "aws_networkfirewall_rule_group" "stateful_rules" {
   capacity    = 100
   name        = "stateful_rules"
   type        = "STATEFUL"
+
+  for_each = element(local.address_definition,1)
+  IP-add = each.value
   rule_group {
     rule_variables {
       ip_sets {
