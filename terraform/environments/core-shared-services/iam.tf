@@ -162,7 +162,7 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
     ]
     resources = [
       format("arn:aws:secretsmanager:eu-west-2:%s:secret:environment_management*", local.environment_management.modernisation_platform_account_id)
-   ]
+    ]
   }
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
   statement {
