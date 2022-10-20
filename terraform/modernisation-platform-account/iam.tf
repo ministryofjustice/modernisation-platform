@@ -453,3 +453,43 @@ data "aws_iam_policy_document" "oidc-deny-specific-actions" {
     resources = ["*"]
   }
 }
+
+# Role for running terraform in MP without superadmin
+module "cross-account-access" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
+  account_id             = data.aws_caller_identity.current.account_id
+  policy_arn             = "arn:aws:iam::aws:policy/AdministratorAccess"
+  role_name              = "ModernisationPlatformAccess"
+  additional_trust_roles = []
+  additional_trust_statements = [data.aws_iam_policy_document.sso-administrator-access.json]
+
+}
+
+data "aws_iam_policy_document" "sso-administrator-access" {
+  statement {
+
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${local.root_account.id}/*/${local.modernisation_platform_ou_id}/*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values = [
+      "arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*"]
+    }
+
+  }
+}
+
+

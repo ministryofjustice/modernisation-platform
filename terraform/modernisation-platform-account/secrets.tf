@@ -8,6 +8,13 @@ data "aws_secretsmanager_secret_version" "environment_management" {
   secret_id = data.aws_secretsmanager_secret.environment_management.id
 }
 
+resource "aws_ssm_parameter" "environment_management_arn" {
+  name  = "environment_management_arn"
+  type  = "SecureString"
+  value = data.aws_secretsmanager_secret.environment_management.arn
+
+  tags = local.tags
+}
 # Core CI User
 # Tfsec ignore
 # - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
