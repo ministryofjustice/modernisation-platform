@@ -160,6 +160,40 @@ resource "aws_route_table_association" "external_inspection_out" {
 # 
 ##############################
 
+locals {
+  # get json 
+ address-data = jsondecode(file("wanted-firewalls.json"))
+
+  # get firewall requirements
+
+  # for_each = to_set([ Wanted-Firewall in local.address-data.Wanted-Firewall.details ])
+  # details = "${each.key}.local.each.value"
+
+ var.address_definition = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.address_definition]
+ var.source_port        = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.source_port]
+ var.destination_port   = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.destination_port]
+ var.protocols          = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.protocols]
+
+ }
+# data "get-incoming-IPs" "addresses" {
+#   var.address_definition = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.address_definition]
+#  var.source_port        = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.source_port]
+#  var.destination_port   = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.destination_port]
+#  var.protocols          = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.protocols]
+#  }
+# output "first_address_definition" {
+#   value = element(split(",", local.address_definition[0]), 0)
+# }
+# output "first_source-port" {
+#   value = element(split(",", local.source_port[0]), 2)
+# }
+# output "first_destination-port" {
+#   value = element(split(",", local.destination_port[0]), 3)
+# }
+# output "first_protocol" {
+#   value = element(split(",", local.protocols[0]), 0)
+# }
+
 resource "aws_networkfirewall_firewall_policy" "external_inspection" {
   name = "external"
 
@@ -181,13 +215,13 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
   rule_group {
     rules_source {
       stateless_rules_and_custom_actions {
-        stateless_rule {
-          priority = 100
+       stateless_rule { # Azure NOMIS test to MP Nomis database
+          priority = 1
           rule_definition {
             actions = ["aws:pass"]
             match_attributes {
               source {
-                address_definition = "10.184.0.0/16" # Global Protect
+                address_definition = "10.101.0.0/16" # Azure NOMIS Test
               }
               source_port {
                 from_port = 1024
@@ -204,243 +238,63 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
             }
           }
         }
-        stateless_rule {
-          priority = 101
-          rule_definition {
-            actions = ["aws:pass"]
-            match_attributes {
-              source {
-                address_definition = "10.184.0.0/16" # Global Protect
-              }
-              source_port {
-                from_port = 1024
-                to_port   = 65535
-              }
-              destination {
-                address_definition = "10.26.8.0/21" # Nomis-Test
-              }
-              destination_port {
-                from_port = 443
-                to_port   = 443
-              }
-              protocols = [6]
-            }
-          }
-        }
-        stateless_rule { # Azure NOMIS test to MP Nomis database
-          priority = 200
-          rule_definition {
-            actions = ["aws:pass"]
-            match_attributes {
-              source {
-                address_definition = "10.101.0.0/16" # Azure NOMIS Test
-              }
-              source_port {
-                from_port = 1024
-                to_port   = 65535
-              }
-              destination {
-                address_definition = "10.26.8.0/21" # Nomis-Test
-              }
-              destination_port {
-                from_port = 1521
-                to_port   = 1521
-              }
-              protocols = [6]
-            }
-          }
-        }
-        stateless_rule { # Azure NOMIS test to MP Nomis database (return traffic)
-          priority = 210
-          rule_definition {
-            actions = ["aws:pass"]
-            match_attributes {
-              source {
-                address_definition = "10.101.0.0/16" # Azure NOMIS Test
-              }
-              source_port {
-                from_port = 1521
-                to_port   = 1521
-              }
-              destination {
-                address_definition = "10.26.8.0/21" # Nomis-Test
-              }
-              destination_port {
+    }
+  }
+  }
+}
 
-                from_port = 1024
-                to_port   = 65535
+resource "aws_networkfirewall_rule_group" "stateful_rules" {
+  description = "Stateful Rules"
+  capacity    = 100
+  name        = "example"
+  type        = "STATELESS"
+  rule_group {
+    rules_source {
+      stateless_rules_and_custom_actions {
+        custom_action {
+          action_definition {
+            publish_metric_action {
+              dimension {
+                value = "2"
               }
-              protocols = [6]
             }
           }
-        }
-        stateless_rule { # Cloud Platform to MP Nomis database
-          priority = 300
-          rule_definition {
-            actions = ["aws:pass"]
-            match_attributes {
-              source {
-                address_definition = "172.20.0.0/16" # Cloud Platform
-              }
-              source_port {
-                from_port = 1024
-                to_port   = 65535
-              }
-              destination {
-                address_definition = "10.26.8.0/21" # Nomis-Test
-              }
-              destination_port {
-                from_port = 1521
-                to_port   = 1521
-              }
-              protocols = [6]
-            }
-          }
+          action_name = "ExampleMetricsAction"
         }
         stateless_rule {
-          priority = 410
+          priority = 1
           rule_definition {
-            actions = ["aws:pass"]
+            actions = ["aws:pass", "ExampleMetricsAction"]
             match_attributes {
               source {
-                address_definition = "10.40.0.0/18" # Global Protect
-              }
-              source_port {
-                from_port = 1024
-                to_port   = 65535
-              }
-              destination {
-                address_definition = "10.27.8.0/21" # Nomis-Production
-              }
-              destination_port {
-                from_port = 80
-                to_port   = 80
-              }
-              protocols = [6]
-            }
-          }
-        }
-        stateless_rule {
-          priority = 411
-          rule_definition {
-            actions = ["aws:pass"]
-            match_attributes {
-              source {
-                address_definition = "10.40.0.0/18" # Global Protect
-              }
-              source_port {
-                from_port = 1024
-                to_port   = 65535
-              }
-              destination {
-                address_definition = "10.27.8.0/21" # Nomis-Production
-              }
-              destination_port {
-                from_port = 443
-                to_port   = 443
-              }
-              protocols = [6]
-            }
-          }
-        }
-        stateless_rule { # Azure NOMIS Production to MP Nomis database
-          priority = 250
-          rule_definition {
-            actions = ["aws:pass"]
-            match_attributes {
-              source {
-                address_definition = "10.40.0.0/18" # Azure NOMIS Production ?
-              }
-              source_port {
-                from_port = 1024
-                to_port   = 65535
-              }
-              destination {
-                address_definition = "10.27.8.0/21" # Nomis-Production
-              }
-              destination_port {
-                from_port = 1521
-                to_port   = 1521
-              }
-              protocols = [6]
-            }
-          }
-        }
-        stateless_rule { # Azure NOMIS Production to MP Nomis database (return traffic)
-          priority = 251
-          rule_definition {
-            actions = ["aws:pass"]
-            match_attributes {
-              source {
-                address_definition = "10.40.0.0/18" # Azure NOMIS Production ?
-              }
-              source_port {
-                from_port = 1521
-                to_port   = 1521
-              }
-              destination {
-                address_definition = "10.27.8.0/21" # Nomis-Production
-              }
-              destination_port {
-
-                from_port = 1024
-                to_port   = 65535
-              }
-              protocols = [6]
-            }
-          }
-        }
-        stateless_rule { # Cloud Platform to MP Nomis database
-          priority = 350
-          rule_definition {
-            actions = ["aws:pass"]
-            match_attributes {
-              source {
-                address_definition = "172.20.0.0/16" # Cloud Platform
-              }
-              source_port {
-                from_port = 1024
-                to_port   = 65535
-              }
-              destination {
-                address_definition = "10.27.8.0/21" # Nomis-Production
-              }
-              destination_port {
-                from_port = 1521
-                to_port   = 1521
-              }
-              protocols = [6]
-            }
-          }
-        }
-        stateless_rule { # PSN PPUD to MP HMPPS
-          priority = 400
-          rule_definition {
-            actions = ["aws:pass"]
-            match_attributes {
-              source {
-                address_definition = "51.247.2.115/32" # PSN PPUD
+                address_definition = "1.2.3.4/32"
               }
               source_port {
                 from_port = 443
                 to_port   = 443
               }
               destination {
-                address_definition = "10.27.8.0/21" # HMPPS Production
+                address_definition = "124.1.1.5/32"
               }
               destination_port {
-                from_port = 1024
-                to_port   = 65535
+                from_port = 443
+                to_port   = 443
               }
               protocols = [6]
+              tcp_flag {
+                flags = ["SYN"]
+                masks = ["SYN", "ACK"]
+              }
             }
           }
         }
       }
     }
   }
+  tags = {
+    Name = "Stateful test"
+  }
 }
-
 
 resource "aws_networkfirewall_firewall" "external_inspection" {
   depends_on = [
