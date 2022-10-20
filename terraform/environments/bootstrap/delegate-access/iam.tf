@@ -35,7 +35,7 @@ data "aws_iam_policy_document" "sso-administrator-access" {
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalOrgPaths"
-      values   = ["${local.root_account.id}/*/${local.modernisation_platform_ou_id}/*"]
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
     }
 
     condition {
