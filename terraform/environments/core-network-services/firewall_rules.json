@@ -3,6 +3,7 @@
     "action": "PASS",
     "source_ip": "0.0.0.0/0",
     "destination_ip": "0.0.0.0/0",
-    "destination_port": "ANY"
+    "destination_port": "ANY",
+    "protocol": "IP"
   }
 }
