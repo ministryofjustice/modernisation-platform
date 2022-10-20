@@ -10,15 +10,42 @@ resource "aws_iam_account_alias" "alias" {
 }
 
 module "cross-account-access" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.2.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
   providers = {
     aws = aws.workspace
   }
   account_id             = local.modernisation_platform_account.id
   policy_arn             = "arn:aws:iam::aws:policy/AdministratorAccess"
   role_name              = "ModernisationPlatformAccess"
-  additional_trust_roles = concat(tolist(data.aws_iam_roles.sso-admin-access.arns), try([module.github-oidc[0].github_actions_role], []), terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : [])
+  additional_trust_roles = concat(try([module.github-oidc[0].github_actions_role], []), terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : [])
+  additional_trust_statements = [data.aws_iam_policy_document.sso-administrator-access.json]
+}
 
+data "aws_iam_policy_document" "sso-administrator-access" {
+  statement {
+
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${local.root_account.id}/*/${local.modernisation_platform_ou_id}/*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values = [
+      "arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*"]
+    }
+
+  }
 }
 
 module "cicd-member-user" {
@@ -31,7 +58,7 @@ module "cicd-member-user" {
 
 module "member-access" {
   count  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.2.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
   providers = {
     aws = aws.workspace
   }
@@ -187,7 +214,7 @@ resource "aws_iam_policy" "member-access" {
 
 module "instance-scheduler-access" {
   count  = local.account_data.account-type == "member" ? 1 : 0
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.2.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
   providers = {
     aws = aws.workspace
   }
