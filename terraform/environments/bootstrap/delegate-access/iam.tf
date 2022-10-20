@@ -10,7 +10,7 @@ resource "aws_iam_account_alias" "alias" {
 }
 
 module "cross-account-access" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.2.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
   providers = {
     aws = aws.workspace
   }
