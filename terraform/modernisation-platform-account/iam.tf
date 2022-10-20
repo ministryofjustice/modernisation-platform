@@ -456,11 +456,11 @@ data "aws_iam_policy_document" "oidc-deny-specific-actions" {
 
 # Role for running terraform in MP without superadmin
 module "cross-account-access" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
-  account_id             = data.aws_caller_identity.current.account_id
-  policy_arn             = "arn:aws:iam::aws:policy/AdministratorAccess"
-  role_name              = "ModernisationPlatformAccess"
-  additional_trust_roles = []
+  source                      = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
+  account_id                  = data.aws_caller_identity.current.account_id
+  policy_arn                  = "arn:aws:iam::aws:policy/AdministratorAccess"
+  role_name                   = "ModernisationPlatformAccess"
+  additional_trust_roles      = []
   additional_trust_statements = [data.aws_iam_policy_document.sso-administrator-access.json]
 
 }
