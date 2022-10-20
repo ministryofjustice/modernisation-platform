@@ -14,10 +14,10 @@ module "cross-account-access" {
   providers = {
     aws = aws.workspace
   }
-  account_id             = local.modernisation_platform_account.id
-  policy_arn             = "arn:aws:iam::aws:policy/AdministratorAccess"
-  role_name              = "ModernisationPlatformAccess"
-  additional_trust_roles = concat(try([module.github-oidc[0].github_actions_role], []), terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : [])
+  account_id                  = local.modernisation_platform_account.id
+  policy_arn                  = "arn:aws:iam::aws:policy/AdministratorAccess"
+  role_name                   = "ModernisationPlatformAccess"
+  additional_trust_roles      = concat(try([module.github-oidc[0].github_actions_role], []), terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : [])
   additional_trust_statements = [data.aws_iam_policy_document.sso-administrator-access.json]
 }
 
