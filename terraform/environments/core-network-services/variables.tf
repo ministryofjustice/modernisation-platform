@@ -19,3 +19,6 @@ variable "protocols" {
   description = "Protocol to be used"
   default = "VPC"
 }
+variable "fw_policy_name" {
+  default = "name"
+}
