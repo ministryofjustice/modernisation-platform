@@ -43,6 +43,7 @@ module "terraform-module-cross-account-access" {
     "aws",
     "iam"
   ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
 module "terraform-module-environments" {
