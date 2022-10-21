@@ -192,7 +192,7 @@ module "instance-scheduler-access" {
     aws = aws.workspace
   }
   account_id = local.environment_management.account_ids["core-shared-services-production"]
-  additional_trust_roles = [format("arn:aws:iam::%s:role/LambdaInstanceSchedulerPolicy", local.environment_management.account_ids["core-shared-services-production"]]
+  additional_trust_roles = [format("arn:aws:iam::%s:role/LambdaInstanceSchedulerPolicy", local.environment_management.account_ids["core-shared-services-production"])]
   policy_arn = aws_iam_policy.instance-scheduler-access[0].id
   role_name  = "InstanceSchedulerAccess"
 }
