@@ -273,7 +273,7 @@ resource "aws_networkfirewall_rule_group" "stateful_rules" {
       port_sets {
         key = "HTTP_PORTS"
         port_set {
-          definition = [each.value.source_port] 
+          definition = [each.value.source_port]
           #definition = ["443", "80"]
         }
       }
