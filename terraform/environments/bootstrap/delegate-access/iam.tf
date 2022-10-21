@@ -17,7 +17,7 @@ module "cross-account-access" {
   account_id             = local.modernisation_platform_account.id
   policy_arn             = "arn:aws:iam::aws:policy/AdministratorAccess"
   role_name              = "ModernisationPlatformAccess"
-  additional_trust_roles = concat(tolist(data.aws_iam_roles.sso-admin-access.arns), try([module.github-oidc[0].github_actions_role], []), terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : [])
+  additional_trust_roles = concat(tolist(data.aws_iam_roles.mp-sso-admin-access.arns), try([module.github-oidc[0].github_actions_role], []), terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : [])
 
 }
 
@@ -36,7 +36,7 @@ module "member-access" {
     aws = aws.workspace
   }
   account_id             = local.modernisation_platform_account.id
-  additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.sso-admin-access.arns)]
+  additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access[0].id
   role_name              = "MemberInfrastructureAccess"
 }
