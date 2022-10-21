@@ -1,6 +1,9 @@
 data "aws_organizations_organization" "root_account" {}
 data "aws_caller_identity" "current" {}
-
+data "aws_iam_roles" "sso-admin-access" {
+  name_regex  = "AWSReservedSSO_AdministratorAccess_.*"
+  path_prefix = "/aws-reserved/sso.amazonaws.com/"
+}
 locals {
   root_account                 = data.aws_organizations_organization.root_account
   environment_management       = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)

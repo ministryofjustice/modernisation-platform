@@ -10,14 +10,14 @@ resource "aws_iam_account_alias" "alias" {
 }
 
 module "cross-account-access" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.2.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
   providers = {
     aws = aws.workspace
   }
   account_id             = local.modernisation_platform_account.id
   policy_arn             = "arn:aws:iam::aws:policy/AdministratorAccess"
   role_name              = "ModernisationPlatformAccess"
-  additional_trust_roles = concat(tolist(data.aws_iam_roles.sso-admin-access.arns), try([module.github-oidc[0].github_actions_role], []), terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : [])
+  additional_trust_roles = concat(tolist(data.aws_iam_roles.mp-sso-admin-access.arns), try([module.github-oidc[0].github_actions_role], []), terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : [])
 
 }
 
@@ -31,12 +31,12 @@ module "cicd-member-user" {
 
 module "member-access" {
   count  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.2.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
   providers = {
     aws = aws.workspace
   }
   account_id             = local.modernisation_platform_account.id
-  additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.sso-admin-access.arns)]
+  additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access[0].id
   role_name              = "MemberInfrastructureAccess"
 }
@@ -187,7 +187,7 @@ resource "aws_iam_policy" "member-access" {
 
 module "instance-scheduler-access" {
   count  = local.account_data.account-type == "member" ? 1 : 0
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.2.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
   providers = {
     aws = aws.workspace
   }
@@ -534,7 +534,7 @@ data "aws_iam_policy_document" "oidc_assume_role_core" {
   statement {
     sid       = "AllowUpdateLambdaCode"
     effect    = "Allow"
-    resources = ["*"]
+    resources = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:function:*"]
     actions   = ["lambda:UpdateFunctionCode"]
   }
 }
