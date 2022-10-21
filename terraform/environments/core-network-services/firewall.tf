@@ -162,15 +162,15 @@ resource "aws_route_table_association" "external_inspection_out" {
 
 locals {
   # get json 
- address-data = jsondecode(file("wanted-firewalls.json"))
+  address-data = jsondecode(file("wanted-firewalls.json"))
   # get firewall requirements
 
- address_definition = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.address_definition]
- source_port        = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.source_port]
- destination_port   = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.destination_port]
- protocols          = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.protocols]
+  address_definition = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.address_definition]
+  source_port        = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.source_port]
+  destination_port   = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.destination_port]
+  protocols          = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.protocols]
 
-} 
+}
 
 output "first_address_definition" {
   value = var.address_definition
@@ -179,23 +179,23 @@ output "second_address_definition" {
   value = var.address_definition
 }
 output "first_source-port" {
-   value = var.source_port
- }
- output "second_source-port" {
-   value = var.source_port
- }
+  value = var.source_port
+}
+output "second_source-port" {
+  value = var.source_port
+}
 output "first_destination-port" {
-   value = var.destination_port
- }
- output "second_destination-port" {
-   value = var.destination_port
- }
+  value = var.destination_port
+}
+output "second_destination-port" {
+  value = var.destination_port
+}
 output "first_protocol" {
-   value = var.protocols
- }
+  value = var.protocols
+}
 output "second_protocol" {
-   value = var.protocols
- }
+  value = var.protocols
+}
 # output "first_protocol" {
 #   value = element(split(",", local.protocols[0]), 0)
 # }
@@ -255,7 +255,7 @@ resource "aws_networkfirewall_rule_group" "stateful_rules" {
   type     = "STATEFUL"
   for_each = var.address_definition
   rule_group {
-    
+
     rule_variables {
       ip_sets {
         key = "WEBSERVERS_HOSTS"
@@ -282,7 +282,7 @@ resource "aws_networkfirewall_rule_group" "stateful_rules" {
       # rules_string = file("suricata_rules_file")
     }
   }
-  }
+}
 
 
 resource "aws_networkfirewall_firewall" "external_inspection" {
