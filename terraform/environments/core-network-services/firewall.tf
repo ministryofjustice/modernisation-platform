@@ -163,38 +163,39 @@ resource "aws_route_table_association" "external_inspection_out" {
 locals {
   # get json 
  address-data = jsondecode(file("wanted-firewalls.json"))
-
   # get firewall requirements
 
-  # for_each = to_set([ Wanted-Firewall in local.address-data.Wanted-Firewall.details ])
-  # details = "${each.key}.local.each.value"
-
  address_definition = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.address_definition]
-#  var.source_port        = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.source_port]
-#  var.destination_port   = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.destination_port]
-#  var.protocols          = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.protocols]
+ source_port        = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.source_port]
+ destination_port   = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.destination_port]
+ protocols          = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.protocols]
 
 } 
-module "firewall_policy" {
-  source = "../../modules/firewall-policy"
-  fw_policy_name = "testname"
-  address_definition = local.address_definition
+
+output "first_address_definition" {
+  value = var.address_definition
 }
-# data "get-incoming-IPs" "addresses" {
-#   var.address_definition = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.address_definition]
-#  var.source_port        = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.source_port]
-#  var.destination_port   = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.destination_port]
-#  var.protocols          = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.protocols]
-#  }
-# output "first_address_definition" {
-#   value = element(split(",", local.address_definition[0]), 0)
-# }
-# output "first_source-port" {
-#   value = element(split(",", local.source_port[0]), 2)
-# }
-# output "first_destination-port" {
-#   value = element(split(",", local.destination_port[0]), 3)
-# }
+output "second_address_definition" {
+  value = var.address_definition
+}
+output "first_source-port" {
+   value = var.source_port
+ }
+ output "second_source-port" {
+   value = var.source_port
+ }
+output "first_destination-port" {
+   value = var.destination_port
+ }
+ output "second_destination-port" {
+   value = var.destination_port
+ }
+output "first_protocol" {
+   value = var.protocols
+ }
+output "second_protocol" {
+   value = var.protocols
+ }
 # output "first_protocol" {
 #   value = element(split(",", local.protocols[0]), 0)
 # }
@@ -249,57 +250,39 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
 }
 
 resource "aws_networkfirewall_rule_group" "stateful_rules" {
-  description = "Stateful Rules"
-  capacity    = 100
-  name        = "example"
-  type        = "STATELESS"
+  capacity = 100
+  name     = "example"
+  type     = "STATEFUL"
+  for_each = var.address_definition
   rule_group {
-    rules_source {
-      stateless_rules_and_custom_actions {
-        custom_action {
-          action_definition {
-            publish_metric_action {
-              dimension {
-                value = "2"
-              }
-            }
-          }
-          action_name = "ExampleMetricsAction"
+    
+    rule_variables {
+      ip_sets {
+        key = "WEBSERVERS_HOSTS"
+        ip_set {
+          definition = ["10.26.0.0/16", "10.27.1.0/16", "192.168.0.0/16"]
         }
-        stateless_rule {
-          priority = 1
-          rule_definition {
-            actions = ["aws:pass", "ExampleMetricsAction"]
-            match_attributes {
-              source {
-                address_definition = "1.2.3.4/32"
-              }
-              source_port {
-                from_port = 443
-                to_port   = 443
-              }
-              destination {
-                address_definition = "124.1.1.5/32"
-              }
-              destination_port {
-                from_port = 443
-                to_port   = 443
-              }
-              protocols = [6]
-              tcp_flag {
-                flags = ["SYN"]
-                masks = ["SYN", "ACK"]
-              }
-            }
-          }
+      }
+      ip_sets {
+        key = "EXTERNAL_HOST"
+        ip_set {
+          definition = ["var.address_definition"]
+        }
+      }
+      port_sets {
+        key = "HTTP_PORTS"
+        port_set {
+          definition = ["var.source_port"] #-----***** Invalid expression, var set to string
+          #definition = ["443", "80"]
         }
       }
     }
+    rules_source {
+      # rules_string = file("suricata_rules_file")
+    }
   }
-  tags = {
-    Name = "Stateful test"
   }
-}
+
 
 resource "aws_networkfirewall_firewall" "external_inspection" {
   depends_on = [
