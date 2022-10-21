@@ -1,6 +1,6 @@
 variable "address-data" {
   description = "JSON route data"
-  default = "routes"
+  default     = "routes"
 }
 variable "address_definition" {
   description = "IP address of accepted source"

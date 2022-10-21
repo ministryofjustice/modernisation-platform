@@ -221,7 +221,7 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
   rule_group {
     rules_source {
       stateless_rules_and_custom_actions {
-       stateless_rule { # Azure NOMIS test to MP Nomis database
+        stateless_rule { # Azure NOMIS test to MP Nomis database
           priority = 1
           rule_definition {
             actions = ["aws:pass"]
@@ -244,8 +244,8 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
             }
           }
         }
+      }
     }
-  }
   }
 }
 
