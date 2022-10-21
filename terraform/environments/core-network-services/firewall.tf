@@ -162,22 +162,22 @@ resource "aws_route_table_association" "external_inspection_out" {
 
 locals {
   # get json 
- address-data = jsondecode(file("wanted-firewalls.json"))
+  address-data = jsondecode(file("wanted-firewalls.json"))
 
   # get firewall requirements
 
   # for_each = to_set([ Wanted-Firewall in local.address-data.Wanted-Firewall.details ])
   # details = "${each.key}.local.each.value"
 
- address_definition = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.address_definition]
-#  var.source_port        = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.source_port]
-#  var.destination_port   = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.destination_port]
-#  var.protocols          = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.protocols]
+  address_definition = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.address_definition]
+  #  var.source_port        = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.source_port]
+  #  var.destination_port   = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.destination_port]
+  #  var.protocols          = [for Wanted-Firewall in local.address-data.Wanted-Firewall : Wanted-Firewall.protocols]
 
-} 
+}
 module "firewall_policy" {
-  source = "../../modules/firewall-policy"
-  fw_policy_name = "testname"
+  source             = "../../modules/firewall-policy"
+  fw_policy_name     = "testname"
   address_definition = local.address_definition
 }
 # data "get-incoming-IPs" "addresses" {
@@ -220,7 +220,7 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
   rule_group {
     rules_source {
       stateless_rules_and_custom_actions {
-       stateless_rule { # Azure NOMIS test to MP Nomis database
+        stateless_rule { # Azure NOMIS test to MP Nomis database
           priority = 1
           rule_definition {
             actions = ["aws:pass"]
@@ -243,8 +243,8 @@ resource "aws_networkfirewall_rule_group" "stateless_rules" {
             }
           }
         }
+      }
     }
-  }
   }
 }
 
