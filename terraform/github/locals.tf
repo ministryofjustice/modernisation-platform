@@ -62,6 +62,7 @@ locals {
     "data-and-insights-hub",
     "hmpps-digital-prison-reporting",
     "hmpps-interventions-dev",
-    "hmpps-migration"
+    "hmpps-migration",
+    "laa-ccms-migration-team"
   ]
 }
