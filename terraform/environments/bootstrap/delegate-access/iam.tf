@@ -534,7 +534,7 @@ data "aws_iam_policy_document" "oidc_assume_role_core" {
   statement {
     sid       = "AllowUpdateLambdaCode"
     effect    = "Allow"
-    resources = ["*"]
+    resources = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:function:*"]
     actions   = ["lambda:UpdateFunctionCode"]
   }
 }
