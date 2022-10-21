@@ -7,6 +7,7 @@ expected =
     "analytical-platform-management",
     "apex",
     "bichard7",
+    "ccms-ebs",
     "cooker",
     "core-logging",
     "core-network-services",
