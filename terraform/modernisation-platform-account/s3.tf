@@ -257,7 +257,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     effect  = "Allow"
     actions = ["s3:PutObject"]
     resources = [
-      "${module.state-bucket.bucket.arn}/environments/members/*",
+      "${module.state-bucket.bucket.arn}/environments/members/*"
     ]
 
     principals {
@@ -276,6 +276,19 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       variable = "aws:PrincipalArn"
       values = [
       "arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*"]
+    }
+  }
+  statement {
+    sid     = "AllowMPAdministratorAccessRole"
+    effect  = "Allow"
+    actions = ["s3:PutObject"]
+    resources = [
+      "${module.state-bucket.bucket.arn}/environments/accounts/*",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = tolist(data.aws_iam_roles.sso-admin-access.arns)
     }
   }
 }

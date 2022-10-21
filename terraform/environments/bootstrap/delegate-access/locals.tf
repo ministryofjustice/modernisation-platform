@@ -1,8 +1,17 @@
 # This data sources allows us to get the Modernisation Platform account information for use elsewhere
 # (when we want to assume a role in the MP, for instance)
 data "aws_organizations_organization" "root_account" {}
-data "aws_iam_roles" "sso-admin-access" {
+
+# to allow member account AdministratorAccessRole to do local plans/applies in modernisation-platform-environments repo
+data "aws_iam_roles" "member-sso-admin-access" {
   provider    = aws.workspace
+  name_regex  = "AWSReservedSSO_AdministratorAccess_.*"
+  path_prefix = "/aws-reserved/sso.amazonaws.com/"
+}
+
+# to allow Modernisation Platform AdministratorAccessRole to do local plans/applies in modernistion-platform repo
+data "aws_iam_roles" "mp-sso-admin-access" {
+  provider    = aws.modernisation-platform
   name_regex  = "AWSReservedSSO_AdministratorAccess_.*"
   path_prefix = "/aws-reserved/sso.amazonaws.com/"
 }
