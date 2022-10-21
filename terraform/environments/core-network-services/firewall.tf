@@ -260,19 +260,20 @@ resource "aws_networkfirewall_rule_group" "stateful_rules" {
       ip_sets {
         key = "WEBSERVERS_HOSTS"
         ip_set {
-          definition = ["10.26.0.0/16", "10.27.1.0/16", "192.168.0.0/16"]
+          definition = ["10.26.0.0/16", "10.27.1.0/16", "10.20.0.0/16"]
         }
       }
       ip_sets {
         key = "EXTERNAL_HOST"
         ip_set {
-          definition = ["var.address_definition"]
+          #definition = ["var.address_definition"]
+          definition = [each.value.address_definition]
         }
       }
       port_sets {
         key = "HTTP_PORTS"
         port_set {
-          definition = ["var.source_port"] #-----***** Invalid expression, var set to string
+          definition = [each.value.source_port] 
           #definition = ["443", "80"]
         }
       }
