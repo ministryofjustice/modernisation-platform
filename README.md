@@ -55,12 +55,12 @@ These modules are used by the Modernisation Platform's core infrastructure
 | [modernisation-platform-terraform-iam-superadmins](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins)                         | Module for creating defined IAM users as superadmins                                                 |
 | [modernisation-platform-terraform-trusted-advisor](https://github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor)                         | Module for refreshing Trusted Advisor every 60 minutes                                               |
 | [modernisation-platform-terraform-member-vpc](https://github.com/ministryofjustice/modernisation-platform-terraform-member-vpc)                                   | Module for member VPC accounts                                                                       |
-| [modernisation-platform-terraform-lambda-scheduler-stop-start](https://github.com/ministryofjustice/modernisation-platform-terraform-lambda-scheduler-stop-start) | Module for stopping and starting instance, rds resources and autoscaling groups with lambda function |
 | [modernisation-platform-github-oidc-provider](https://github.com/ministryofjustice/modernisation-platform-github-oidc-provider)                                   | Module for creating OIDC providers to use in GitHub Actions                                          |
 
 ### Tools
 
 | Name                                                                                                                          | Description                                          |
 | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| [modernisation-platform-instance-scheduler](https://github.com/ministryofjustice/modernisation-platform-instance-scheduler)   | A Go lambda function for stopping and starting instance, rds resources and autoscaling groups. The lambda is used by the core platform and can be reused outside of the platform with minimal changes |
 | [modernisation-platform-infrastructure-test](https://github.com/ministryofjustice/modernisation-platform-infrastructure-test) | Infrastructure test tool based on Cucumber.js        |
 | [modernisation-platform-cp-network-test](https://github.com/ministryofjustice/modernisation-platform-cp-network-test)         | Container bundled with utilities for network testing |
