@@ -191,12 +191,10 @@ module "instance-scheduler-access" {
   providers = {
     aws = aws.workspace
   }
-  # All roles under the core-shared-services, including the InstanceSchedulerLambdaFunctionPolicy, can assume the role
-  # InstanceSchedulerAccess in all member accounts, therefore, we don't need to explicitly specify
-  # InstanceSchedulerLambdaFunctionPolicy as part of the additional_trust_roles variable
-  account_id = local.environment_management.account_ids["core-shared-services-production"]
-  policy_arn = aws_iam_policy.instance-scheduler-access[0].id
-  role_name  = "InstanceSchedulerAccess"
+  account_id             = local.environment_management.account_ids["core-shared-services-production"]
+  additional_trust_roles = [format("arn:aws:iam::%s:role/LambdaInstanceSchedulerPolicy", local.environment_management.account_ids["core-shared-services-production"])]
+  policy_arn             = aws_iam_policy.instance-scheduler-access[0].id
+  role_name              = "InstanceSchedulerAccess"
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
