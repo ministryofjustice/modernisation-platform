@@ -7,7 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.17.9
 	github.com/aws/aws-sdk-go-v2/credentials v1.12.22
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.2
-	github.com/aws/aws-sdk-go-v2/service/securityhub v1.23.5
+	github.com/aws/aws-sdk-go-v2/service/securityhub v1.23.6
 	github.com/aws/aws-sdk-go-v2/service/sts v1.17.0
 )
 
