@@ -35,16 +35,10 @@ resource "aws_networkfirewall_rule_group" "stateful" {
             source           = stateful_rule.value.source_ip
           }
           rule_option {
-            keyword = format("sid:%s", random_integer.sid[stateful_rule.key].id)
+            keyword = format("sid:%s", index(keys(var.rules), stateful_rule.key)+1)
           }
         }
       }
     }
   }
-}
-
-resource "random_integer" "sid" {
-  for_each = var.rules
-  max      = 1
-  min      = 10000
 }
