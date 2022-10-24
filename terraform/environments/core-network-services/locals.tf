@@ -30,5 +30,9 @@ locals {
     "core-network-services-live_data-attachment",
   ]
 
-  firewall_rules = fileexists("./firewall_rules.json") ? jsondecode(file("./firewall_rules.json")) : {}
+  development_rules   = fileexists("./development_rules.json") ? jsondecode(file("./development_rules.json")) : {}
+  test_rules          = fileexists("./test_rules.json") ? jsondecode(file("./test_rules.json")) : {}
+  preproduction_rules = fileexists("./preproduction_rules.json") ? jsondecode(file("./preproduction_rules.json")) : {}
+  production_rules    = fileexists("./production_rules.json") ? jsondecode(file("./production_rules.json")) : {}
+  firewall_rules      = merge(local.development_rules, local.test_rules, local.preproduction_rules, local.production_rules)
 }
