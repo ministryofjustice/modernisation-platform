@@ -135,7 +135,7 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
       "sts:AssumeRole"
     ]
     resources = [
-      "arn:aws:iam::*:role/MemberInfrastructureAccess"
+      "arn:aws:iam::*:role/InstanceSchedulerAccess"
     ]
   }
   statement {
