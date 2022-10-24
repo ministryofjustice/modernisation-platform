@@ -5,7 +5,7 @@ resource "aws_networkfirewall_firewall_policy" "main" {
       rule_order = "STRICT"
     }
     stateful_rule_group_reference {
-      priority = 1
+      priority     = 1
       resource_arn = aws_networkfirewall_rule_group.stateful.arn
     }
     stateless_default_actions          = ["aws:pass"]
@@ -26,14 +26,14 @@ resource "aws_networkfirewall_rule_group" "stateful" {
         for_each = var.rules
         content {
           action = stateful_rule.value.action
-            header {
+          header {
             destination      = stateful_rule.value.destination_ip
             destination_port = stateful_rule.value.destination_port
             direction        = "ANY"
             protocol         = stateful_rule.value.protocol
             source_port      = "ANY"
             source           = stateful_rule.value.source_ip
-            }
+          }
           rule_option {
             keyword = format("sid:%s", random_integer.sid[stateful_rule.key].id)
           }
@@ -45,6 +45,6 @@ resource "aws_networkfirewall_rule_group" "stateful" {
 
 resource "random_integer" "sid" {
   for_each = var.rules
-  max = 1
-  min = 10000
+  max      = 1
+  min      = 10000
 }

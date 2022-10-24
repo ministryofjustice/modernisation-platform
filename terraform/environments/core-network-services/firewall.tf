@@ -160,11 +160,11 @@ resource "aws_route_table_association" "external_inspection_out" {
 # 
 ##############################
 module "firewall_policy" {
-  source = "../../modules/firewall-policy"
-  fw_policy_name = format("%s-fw_policy", local.application_name)
+  source            = "../../modules/firewall-policy"
+  fw_policy_name    = format("%s-fw_policy", local.application_name)
   fw_rulegroup_name = format("%s-fw_rulegroup", local.application_name)
-  rules = local.firewall_rules
-  tags = local.tags
+  rules             = local.firewall_rules
+  tags              = local.tags
 }
 
 resource "aws_networkfirewall_firewall" "external_inspection" {
