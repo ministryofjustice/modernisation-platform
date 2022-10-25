@@ -2,7 +2,7 @@ resource "aws_networkfirewall_firewall_policy" "main" {
   name = replace(title(var.fw_policy_name), "/-|_/", "")
   firewall_policy {
     stateful_engine_options {
-      rule_order = "STRICT"
+      rule_order = "STRICT_ORDER"
     }
     stateful_rule_group_reference {
       priority     = 1
@@ -21,6 +21,9 @@ resource "aws_networkfirewall_rule_group" "stateful" {
   type     = "STATEFUL"
 
   rule_group {
+    stateful_rule_options {
+      rule_order = "STRICT_ORDER"
+    }
     rules_source {
       dynamic "stateful_rule" {
         for_each = var.rules
