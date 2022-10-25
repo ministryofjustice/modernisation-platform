@@ -226,6 +226,48 @@ resource "aws_iam_policy" "instance-scheduler-access" {
   policy      = data.aws_iam_policy_document.instance-scheduler-access.json
 }
 
+# Used by Instance Scheduler Lambda Tests called from GH action
+module "instance-scheduler-describe-instance-access" {
+  count  = local.account_data.account-type == "member" ? 1 : 0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
+  providers = {
+    aws = aws.workspace
+  }
+  account_id             = local.environment_management.account_ids["core-shared-services-production"]
+  additional_trust_roles = [format("arn:aws:iam::%s:role/InstanceSchedulerLambdaFunctionTestPolicy", local.environment_management.account_ids["core-shared-services-production"])]
+  policy_arn             = aws_iam_policy.instance-scheduler-describe-instance-access[0].id
+  role_name              = "InstanceSchedulerTestAccess"
+}
+
+# Used by Instance Scheduler Lambda Tests called from GH action
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "instance-scheduler-describe-instance-access" {
+  statement {
+    #checkov:skip=CKV_AWS_108
+    #checkov:skip=CKV_AWS_111
+    #checkov:skip=CKV_AWS_107
+    #checkov:skip=CKV_AWS_109
+    #checkov:skip=CKV_AWS_110
+    effect = "Allow"
+    actions = [
+      "ec2:DescribeInstances",
+      "ec2:DescribeInstanceStatus",
+      "ec2:DescribeTags",
+    ]
+    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+  }
+}
+
+# Used by Instance Scheduler Lambda Tests called from GH action
+resource "aws_iam_policy" "instance-scheduler-describe-instance-access" {
+  count    = local.account_data.account-type == "member" ? 1 : 0
+  provider = aws.workspace
+
+  name        = "InstanceSchedulerTestAccessActions"
+  description = "Restricted policy for use by the Instance Scheduler Lambda Tests in member accounts"
+  policy      = data.aws_iam_policy_document.instance-scheduler-describe-instance-access.json
+}
+
 # Testing-test member access - separate as need the testing user created in the testing account to be able to access as well
 data "aws_iam_policy_document" "assume_role_policy" {
   version = "2012-10-17"
@@ -539,11 +581,61 @@ data "aws_iam_policy_document" "oidc_assume_role_core" {
   }
 
   # GH action: used with GO tests
-  # checkov:skip=CKV_AWS_111: "There's no naming convention for lambda functions at the moment"
   statement {
-    sid       = "AllowInvokeLambdaCode"
-    effect    = "Allow"
-    resources = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:function:*"]
-    actions   = ["lambda:Invoke"]
+    sid    = "AllowLambdaToCreateLogGroup"
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogGroup"
+    ]
+    resources = [
+      format("arn:aws:logs:eu-west-2:%s:*", local.environment_management.account_ids["core-shared-services-production"])
+    ]
+  }
+  statement {
+    sid    = "AllowLambdaToWriteLogsToGroup"
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
+    resources = [
+      format("arn:aws:logs:eu-west-2:%s:*", local.environment_management.account_ids["core-shared-services-production"])
+    ]
+  }
+  statement {
+    sid    = "AllowDescribeEC2AndTags"
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
+    resources = [
+      "arn:aws:iam::*:role/InstanceSchedulerTestAccess"
+    ]
+  }
+  statement {
+    sid    = "AllowAccessParameter"
+    effect = "Allow"
+    actions = [
+      "ssm:DescribeParameters",
+      "ssm:GetParameter",
+      "ssm:GetParameters",
+      "ssm:GetParametersByPath"
+    ]
+    resources = [
+      format("arn:aws:ssm:*:%s:parameter/environment_management_arn", local.environment_management.account_ids["core-shared-services-production"])
+    ]
+  }
+  statement {
+    sid    = "AllowAccessEnvironmentManagementSecret"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:GetResourcePolicy",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecretVersionIds"
+    ]
+    resources = [
+      format("arn:aws:secretsmanager:eu-west-2:%s:secret:environment_management*", local.environment_management.account_ids["modernisation-platform"])
+    ]
   }
 }
