@@ -1,5 +1,5 @@
 resource "aws_networkfirewall_firewall_policy" "main" {
-  name = var.fw_policy_name
+  name = replace(title(var.fw_policy_name), "/-|_/","")
   firewall_policy {
     stateful_engine_options {
       rule_order = "STRICT"
@@ -17,7 +17,7 @@ resource "aws_networkfirewall_firewall_policy" "main" {
 
 resource "aws_networkfirewall_rule_group" "stateful" {
   capacity = var.fw_rulegroup_capacity
-  name     = var.fw_rulegroup_name
+  name     = replace(title(var.fw_rulegroup_name), "/-|_/","")
   type     = "STATEFUL"
 
   rule_group {
