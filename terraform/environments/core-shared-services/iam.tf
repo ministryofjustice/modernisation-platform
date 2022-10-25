@@ -110,20 +110,20 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-assume-role" 
       "sts:AssumeRoleWithWebIdentity"
     ]
     condition {
-      test = "StringEquals"
-      values = ["sts.amazonaws.com"]
+      test     = "StringEquals"
+      values   = ["sts.amazonaws.com"]
       variable = "token.actions.githubusercontent.com:aud"
     }
     condition {
-      test = "StringEquals"
-      values = ["repo:ministryofjustice/modernisation-platform-instance-scheduler:*"]
+      test     = "StringEquals"
+      values   = ["repo:ministryofjustice/modernisation-platform-instance-scheduler:*"]
       variable = "token.actions.githubusercontent.com:sub"
     }
     principals {
       identifiers = [
         format("arn:aws:iam::%s:oidc-provider/token.actions.githubusercontent.com", data.aws_caller_identity.current.account_id)
       ]
-      type        = "Federated"
+      type = "Federated"
     }
   }
 }
