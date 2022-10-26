@@ -1,7 +1,10 @@
 # This data sources allows us to get the Modernisation Platform account information for use elsewhere
 # (when we want to assume a role in the MP, for instance)
 data "aws_organizations_organization" "root_account" {}
-
+data "aws_caller_identity" "current" {}
+data "aws_iam_session_context" "whoami" {
+  arn = data.aws_caller_identity.current.arn
+}
 # to allow member account AdministratorAccessRole to do local plans/applies in modernisation-platform-environments repo
 data "aws_iam_roles" "member-sso-admin-access" {
   provider    = aws.workspace
@@ -21,7 +24,7 @@ data "http" "environments_file" {
 
 locals {
   root_account                   = data.aws_organizations_organization.root_account
-  modernisation_platform_account = local.root_account.accounts[index(local.root_account.accounts[*].email, "aws+modernisation-platform@digital.justice.gov.uk")]
+  modernisation_platform_account = can(regex("superadmin", data.aws_iam_session_context.whoami.issuer_arn)) ? data.aws_caller_identity.current : local.root_account.accounts[index(local.root_account.accounts[*].email, "aws+modernisation-platform@digital.justice.gov.uk")]
   environment_management         = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
   application_name               = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, "/-([[:alnum:]]+)$/", ""))
   business_unit                  = jsondecode(data.http.environments_file.response_body).tags.business-unit
