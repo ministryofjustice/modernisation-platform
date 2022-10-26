@@ -221,7 +221,7 @@ data "aws_iam_policy_document" "oidc_assume_role_core" {
   statement {
     sid       = "AllowGoToRunLambda"
     effect    = "Allow"
-    resources = [aws_iam_role.instance-scheduler-lambda-function]
+    resources = [aws_iam_role.instance-scheduler-lambda-function.arn]
     actions   = ["sts:AssumeRole"]
   }
 }
