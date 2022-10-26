@@ -518,4 +518,3 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
     "s3:PutObjectAcl"]
   }
 }
-

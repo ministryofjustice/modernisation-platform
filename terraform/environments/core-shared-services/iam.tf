@@ -216,4 +216,12 @@ data "aws_iam_policy_document" "oidc_assume_role_core" {
     resources = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:function:*"]
     actions   = ["lambda:UpdateFunctionCode"]
   }
+
+  # GH action: used with GO tests
+  statement {
+    sid       = "AllowGoToRunLambda"
+    effect    = "Allow"
+    resources = [aws_iam_role.instance-scheduler-lambda-function.arn]
+    actions   = ["sts:AssumeRole"]
+  }
 }
