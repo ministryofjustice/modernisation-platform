@@ -219,9 +219,9 @@ data "aws_iam_policy_document" "oidc_assume_role_core" {
 
   # GH action: used with GO tests
   statement {
-    sid    = "AllowGoToRunLambda"
-    effect = "Allow"
+    sid       = "AllowGoToRunLambda"
+    effect    = "Allow"
     resources = [aws_iam_role.instance-scheduler-lambda-function]
-    actions = ["sts:AssumeRole"]
+    actions   = ["sts:AssumeRole"]
   }
 }
