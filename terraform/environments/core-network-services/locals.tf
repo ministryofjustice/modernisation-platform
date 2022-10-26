@@ -35,4 +35,11 @@ locals {
   preproduction_rules = fileexists("./preproduction_rules.json") ? jsondecode(file("./preproduction_rules.json")) : {}
   production_rules    = fileexists("./production_rules.json") ? jsondecode(file("./production_rules.json")) : {}
   firewall_rules      = merge(local.development_rules, local.test_rules, local.preproduction_rules, local.production_rules)
+
+  vpn_attachements = fileexists("./vpn_attachments.json") ? jsondecode(file("./vpn_attachments.json")) : {}
+
+  core-vpcs = {
+    for file in fileset("../../../environments-networks", "*.json") :
+    replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))
+  }
 }
