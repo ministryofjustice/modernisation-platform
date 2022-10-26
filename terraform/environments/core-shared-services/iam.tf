@@ -191,7 +191,6 @@ resource "aws_iam_role_policy_attachment" "instance-scheduler-lambda-function" {
 ## END: IAM for Instance Scheduler Lambda Function
 
 # OIDC Confiuration for core-shared-services
-#tfsec:ignore:aws-iam-no-policy-wildcards
 module "github-oidc" {
   source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v1.2.0"
   additional_permissions = data.aws_iam_policy_document.oidc_assume_role_core.json
@@ -199,6 +198,8 @@ module "github-oidc" {
   tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
   tags_prefix            = ""
 }
+#tfsec:ignore:aws-iam-no-policy-wildcards
+
 data "aws_iam_policy_document" "oidc_assume_role_core" {
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
   statement {
