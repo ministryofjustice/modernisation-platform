@@ -198,14 +198,14 @@ module "github-oidc" {
   tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
   tags_prefix            = ""
 }
-#tfsec:ignore:aws-iam-no-policy-wildcards
+
 
 data "aws_iam_policy_document" "oidc_assume_role_core" {
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
   statement {
     sid       = "AllowOIDCToDecryptKMS"
     effect    = "Allow"
-    resources = ["*"]
+    resources = ["*"] #tfsec:ignore:aws-iam-no-policy-wildcards
     actions   = ["kms:Decrypt"]
   }
 
