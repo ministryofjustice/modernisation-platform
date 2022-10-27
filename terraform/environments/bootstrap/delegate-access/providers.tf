@@ -8,7 +8,7 @@ provider "aws" {
   alias  = "workspace"
   region = "eu-west-2"
   assume_role {
-    role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/OrganizationAccountAccessRole"
+    role_arn = can(regex("superadmin|AdministratorAccess", data.aws_iam_session_context.whoami.issuer_arn)) ? "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess" : "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/OrganizationAccountAccessRole"
   }
 }
 
@@ -17,6 +17,6 @@ provider "aws" {
   alias  = "modernisation-platform"
   region = "eu-west-2"
   assume_role {
-    role_arn = "arn:aws:iam::${local.modernisation_platform_account.id}:role/OrganizationAccountAccessRole"
+    role_arn = can(regex("superadmin|AdministratorAccess", data.aws_iam_session_context.whoami.issuer_arn)) ? null : "arn:aws:iam::${local.modernisation_platform_account.id}:role/OrganizationAccountAccessRole"
   }
 }
