@@ -17,7 +17,7 @@ module "cross-account-access" {
   account_id             = local.modernisation_platform_account.id
   policy_arn             = "arn:aws:iam::aws:policy/AdministratorAccess"
   role_name              = "ModernisationPlatformAccess"
-  additional_trust_roles = concat(tolist(data.aws_iam_roles.mp-sso-admin-access.arns), try([module.github-oidc[0].github_actions_role], []), terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : [])
+  additional_trust_roles = concat(tolist(data.aws_iam_roles.mp-sso-admin-access.arns), terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : [])
 
 }
 
@@ -463,13 +463,13 @@ module "shield_response_team_role" {
 
 # Github OIDC provider
 module "github-oidc" {
-  count  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test") || terraform.workspace == "core-shared-services-production" ? 1 : 0
+  count  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test") ? 1 : 0
   source = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v1.2.0"
   providers = {
     aws = aws.workspace
   }
-  additional_permissions = local.account_data.account-type == "member" ? data.aws_iam_policy_document.oidc_assume_role_member[0].json : data.aws_iam_policy_document.oidc_assume_role_core[0].json
-  github_repository      = local.account_data.account-type == "member" ? "ministryofjustice/modernisation-platform-environments:*" : "ministryofjustice/modernisation-platform-instance-scheduler:*"
+  additional_permissions = data.aws_iam_policy_document.oidc_assume_role_member[0].json
+  github_repository      = "ministryofjustice/modernisation-platform-environments:*"
   tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
   tags_prefix            = ""
 }
@@ -516,25 +516,5 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
     actions = ["s3:PutObject",
     "s3:PutObjectAcl"]
-  }
-}
-
-data "aws_iam_policy_document" "oidc_assume_role_core" {
-  count = terraform.workspace == "core-shared-services-production" ? 1 : 0
-
-  # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
-  statement {
-    sid       = "AllowOIDCToDecryptKMS"
-    effect    = "Allow"
-    resources = ["*"]
-    actions   = ["kms:Decrypt"]
-  }
-
-  # checkov:skip=CKV_AWS_111: "There's no naming convention for lambda functions at the moment"
-  statement {
-    sid       = "AllowUpdateLambdaCode"
-    effect    = "Allow"
-    resources = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:function:*"]
-    actions   = ["lambda:UpdateFunctionCode"]
   }
 }
