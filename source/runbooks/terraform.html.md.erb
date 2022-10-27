@@ -46,6 +46,7 @@ $ terraform plan
 ```
 
 You will likely get an error if you haven't changed your workspace from `default`.
+
 ### Permissions required for `terraform/environments/` directory in [`modernisation-platform-environments`](https://github.com/ministryofjustice/modernisation-platform-environments) repo
 
 You can run `terraform plan` and `terraform apply` in customer directories using credentials for AdministratorAccess SSO role for the terraform workspace you're running against. For example, if you're want to run code in the `terraform/environments/nomis` directory in the `nomis-development` workspace, you will need to retrieve the [AWS SSO credentials](../user-guide/getting-aws-credentials.html) for the `nomis-development` account and paste them into your environment prior to running terraform commands.
@@ -61,7 +62,7 @@ $ terraform plan
 $ terraform apply
 ```
 
->If you encounter `Access Denied` errord, try running `rm -rf .terraform` and rerun `terraform init`
+>If you encounter `Access Denied` error, try running `rm -rf .terraform` and rerun `terraform init`
 
 ### Permissions required for each directory in `terraform/` in [`modernisation-platform`](https://github.com/ministryofjustice/modernisation-platform) repo
 
