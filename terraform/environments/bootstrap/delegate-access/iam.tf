@@ -1,7 +1,6 @@
 locals {
-  # tflint-ignore: aws_iam_policy_sid_invalid_characters
-  account_name = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, regex("-[^-]*$", terraform.workspace), ""))
-  account_data = jsondecode(file("../../../../environments/${local.account_name}.json"))
+  account_name = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, regex("-[^-]*$", terraform.workspace), "")) # tflint-ignore: aws_iam_policy_sid_invalid_characters
+  account_data = jsondecode(file("../../../../environments/${local.account_name}.json"))                                                                     # tflint-ignore: aws_iam_policy_sid_invalid_characters
 }
 
 resource "aws_iam_account_alias" "alias" {
