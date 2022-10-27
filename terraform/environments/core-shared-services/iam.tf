@@ -103,7 +103,7 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-assume-role" 
       type        = "Service"
     }
     principals {
-      identifiers = [module.github-oidc.aws_iam_role.github_actions.arn]
+      identifiers = [module.github-oidc.github_actions_role]
       type        = "Federated"
     }
   }
