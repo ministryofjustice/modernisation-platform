@@ -102,6 +102,10 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-assume-role" 
       identifiers = ["lambda.amazonaws.com"]
       type        = "Service"
     }
+    principals {
+      identifiers = [module.github-oidc.github_actions_role]
+      type        = "AWS"
+    }
   }
 }
 
