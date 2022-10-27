@@ -1,5 +1,6 @@
 locals {
-  account_name = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, regex("-[^-]*$", terraform.workspace), ""))   # tflint-ignore: all
+  # tflint-ignore: aws_iam_policy_sid_invalid_characters
+  account_name = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, regex("-[^-]*$", terraform.workspace), ""))
   account_data = jsondecode(file("../../../../environments/${local.account_name}.json"))
 }
 
