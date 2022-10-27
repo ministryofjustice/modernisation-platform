@@ -1,6 +1,5 @@
 locals {
-  # tflint-ignore: all
-  account_name = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, regex("-[^-]*$", terraform.workspace), ""))
+  account_name = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, regex("-[^-]*$", terraform.workspace), ""))   # tflint-ignore: all
   account_data = jsondecode(file("../../../../environments/${local.account_name}.json"))
 }
 
