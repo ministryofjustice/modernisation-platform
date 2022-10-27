@@ -10,6 +10,17 @@ review_in: 6 months
 Whilst it is possible to see the results of a Terraform plan when you [create a pull request](./deploying-your-infrastructure.html#jobs-on-pull-request), it is also possible to run a Terraform plan locally.
 Some engineers prefer this as it provides a quicker feedback loop to identify any issues with your infrastructure code.
 
+## Running local plans without file modifications
+
+We are currently trialing the ability to run local terraform plans without modifications to `providers.tf`. Please see [here](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/terraform/environments/example/providers.tf) for an example of `providers.tf` which supports this. If your environment has been converted, you will see
+```terraform
+data "aws_iam_session_context" "whoami" {
+  provider = aws.oidc-session
+  arn      = data.aws_caller_identity.oidc_session.arn
+}
+```
+in your `locals.tf`. If you would like to take part in the trial, please get in touch in our Slack channel [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) If you are part of the trial, you skip the next step of this guide and proceed to [Enter your AWS SSO credentials](#enter-your-aws-sso-credentials)
+
 ## Modify your providers.tf
 
 In the [modernisation-platform-environments repository](https://github.com/ministryofjustice/modernisation-platform-environments), in your application folder there is a file called `providers.tf`
