@@ -158,7 +158,7 @@ resource "aws_default_security_group" "default" {
 resource "aws_cloudwatch_log_group" "default" {
   #checkov:skip=CKV_AWS_158:Temporarily skip KMS encryption check while logging solution is being updated
   name              = "${var.tags_prefix}-vpc-flow-logs"
-  retention_in_days = 0 # 0 = never expire
+  retention_in_days = 365
   tags              = var.tags_common
 }
 
