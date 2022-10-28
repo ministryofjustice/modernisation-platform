@@ -161,7 +161,7 @@ resource "aws_route_table_association" "external_inspection_out" {
 ##############################
 module "firewall_policy" {
   source                    = "../../modules/firewall-policy"
-  cloudwatch_log_group_name = aws_cloudwatch_log_group.firewall_logs.name
+  cloudwatch_log_group_name = format("fw-%s-logs", aws_networkfirewall_firewall.external_inspection.name)
   fw_arn                    = aws_networkfirewall_firewall.external_inspection.arn
   fw_rulegroup_capacity     = "10000"
   fw_policy_name            = format("%s-fw_policy", local.application_name)
@@ -182,13 +182,6 @@ resource "aws_networkfirewall_firewall" "external_inspection" {
     local.tags,
     { Name = "external-inspection" }
   )
-}
-
-resource "aws_cloudwatch_log_group" "firewall_logs" {
-  #checkov:skip=CKV_AWS_158:Temporarily skip KMS encryption check while logging solution is being updated
-  name              = "external-inspection-firewall-logs"
-  retention_in_days = 365 # 0 = never expire
-  tags              = local.tags
 }
 
 #################################
