@@ -13,8 +13,65 @@ resource "aws_lambda_function" "instance-scheduler-lambda-function" {
   }
   environment {
     variables = {
-      "INSTANCE_SCHEDULING_ACTION"        = "Test"
       "INSTANCE_SCHEDULING_SKIP_ACCOUNTS" = "oasys-development,apex-development,data-and-insights-wepi-development,xhibit-portal-development,nomis-preproduction,testing-test,oasys-preproduction,tariff-development,mlra-development,nomis-development,example-development,performance-hub-preproduction,xhibit-portal-preproduction,delius-iaps-development,performance-hub-development,ppud-development,refer-monitor-development,digital-prison-reporting-development,oasys-test,equip-development,threat-and-vulnerability-mgmt-development,nomis-test,ccms-ebs-development,maatdb-development,"
     }
   }
 }
+
+## BEGIN: Stop trigger for Instance Scheduler Lambda Function
+
+resource "aws_cloudwatch_event_rule" "instance_scheduler_weekly_stop_at_night" {
+  name                = "instance_scheduler_weekly_stop_at_night"
+  description         = "Call Instance Scheduler with Stop action at 8:00 pm (UTC) every Monday through Friday"
+  schedule_expression = "cron(0 20 ? * MON-FRI *)"
+}
+
+resource "aws_cloudwatch_event_target" "instance_scheduler_weekly_stop_at_night" {
+  rule      = aws_cloudwatch_event_rule.instance_scheduler_weekly_stop_at_night.name
+  target_id = "instance-scheduler-lambda-function"
+  arn       = aws_lambda_function.instance-scheduler-lambda-function.arn
+  input = jsonencode(
+    {
+      action = "Stop"
+    }
+  )
+}
+
+resource "aws_lambda_permission" "allow_cloudwatch_to_call_instance_scheduler_weekly_stop_at_night" {
+  statement_id  = "AllowStopExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.instance-scheduler-lambda-function.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.instance_scheduler_weekly_stop_at_night.arn
+}
+
+## END: Stop trigger for Instance Scheduler Lambda Function
+
+## BEGIN: Start trigger for Instance Scheduler Lambda Function
+
+resource "aws_cloudwatch_event_rule" "instance_scheduler_weekly_start_in_the_morning" {
+  name                = "instance_scheduler_weekly_start_in_the_morning"
+  description         = "Call Instance Scheduler with Start action at 5:00 am (UTC) every Monday through Friday"
+  schedule_expression = "cron(0 5 ? * MON-FRI *)"
+}
+
+resource "aws_cloudwatch_event_target" "instance_scheduler_weekly_start_in_the_morning" {
+  rule      = aws_cloudwatch_event_rule.instance_scheduler_weekly_start_in_the_morning.name
+  target_id = "instance-scheduler-lambda-function"
+  arn       = aws_lambda_function.instance-scheduler-lambda-function.arn
+  input = jsonencode(
+    {
+      action = "Start"
+    }
+  )
+}
+
+resource "aws_lambda_permission" "allow_cloudwatch_to_call_instance_scheduler_weekly_start_in_the_morning" {
+  statement_id  = "AllowStartExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.instance-scheduler-lambda-function.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.instance_scheduler_weekly_start_in_the_morning.arn
+}
+
+## END: Start trigger for Instance Scheduler Lambda Function
