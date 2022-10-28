@@ -30,7 +30,7 @@ resource "aws_cloudwatch_event_target" "instance_scheduler_weekly_stop_at_night"
   rule      = aws_cloudwatch_event_rule.instance_scheduler_weekly_stop_at_night.name
   target_id = "instance-scheduler-lambda-function"
   arn       = aws_lambda_function.instance-scheduler-lambda-function.arn
-  input     = jsonencode(
+  input = jsonencode(
     {
       action = "Stop"
     }
@@ -59,7 +59,7 @@ resource "aws_cloudwatch_event_target" "instance_scheduler_weekly_start_in_the_m
   rule      = aws_cloudwatch_event_rule.instance_scheduler_weekly_start_in_the_morning.name
   target_id = "instance-scheduler-lambda-function"
   arn       = aws_lambda_function.instance-scheduler-lambda-function.arn
-  input     = jsonencode(
+  input = jsonencode(
     {
       action = "Start"
     }
