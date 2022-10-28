@@ -161,7 +161,7 @@ resource "aws_route_table_association" "external_inspection_out" {
 ##############################
 module "firewall_policy" {
   source                    = "../../modules/firewall-policy"
-  cloudwatch_log_group_name = aws_cloudwatch_log_group.external_inspection
+  cloudwatch_log_group_name = aws_cloudwatch_log_group.firewall_logs.name
   fw_arn                    = aws_networkfirewall_firewall.external_inspection.arn
   fw_rulegroup_capacity     = "10000"
   fw_policy_name            = format("%s-fw_policy", local.application_name)
