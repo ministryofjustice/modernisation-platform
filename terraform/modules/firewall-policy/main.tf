@@ -44,6 +44,9 @@ resource "aws_networkfirewall_rule_group" "stateful" {
       }
     }
   }
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_networkfirewall_logging_configuration" "main" {
