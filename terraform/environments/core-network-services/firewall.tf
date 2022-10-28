@@ -160,38 +160,35 @@ resource "aws_route_table_association" "external_inspection_out" {
 # 
 ##############################
 module "firewall_policy" {
-  source            = "../../modules/firewall-policy"
-  fw_policy_name    = format("%s-fw_policy", local.application_name)
-  fw_rulegroup_name = format("%s-fw_rulegroup", local.application_name)
-  rules             = local.firewall_rules
-  tags              = local.tags
+  source                    = "../../modules/firewall-policy"
+  cloudwatch_log_group_name = aws_cloudwatch_log_group.external_inspection
+  fw_arn                    = aws_networkfirewall_firewall.external_inspection.arn
+  fw_rulegroup_capacity     = "10000"
+  fw_policy_name            = format("%s-fw_policy", local.application_name)
+  fw_rulegroup_name         = format("%s-fw_rulegroup", local.application_name)
+  rules                     = local.firewall_rules
+  tags                      = local.tags
 }
 
 resource "aws_networkfirewall_firewall" "external_inspection" {
-  depends_on = [
-    aws_subnet.external_inspection_out
-  ]
-
+  depends_on          = [aws_subnet.external_inspection_out]
   name                = "external-inspection"
   firewall_policy_arn = module.firewall_policy.fw_policy_arn
   vpc_id              = aws_vpc.external_inspection.id
-  subnet_mapping {
-    subnet_id = aws_subnet.external_inspection_out["eu-west-2a"].id
-  }
-  subnet_mapping {
-    subnet_id = aws_subnet.external_inspection_out["eu-west-2b"].id
-  }
-  subnet_mapping {
-    subnet_id = aws_subnet.external_inspection_out["eu-west-2c"].id
-  }
-
+  subnet_mapping { subnet_id = aws_subnet.external_inspection_out["eu-west-2a"].id }
+  subnet_mapping { subnet_id = aws_subnet.external_inspection_out["eu-west-2b"].id }
+  subnet_mapping { subnet_id = aws_subnet.external_inspection_out["eu-west-2c"].id }
   tags = merge(
     local.tags,
-    {
-      Name = "external-inspection"
-    }
+    { Name = "external-inspection" }
   )
+}
 
+resource "aws_cloudwatch_log_group" "firewall_logs" {
+  #checkov:skip=CKV_AWS_158:Temporarily skip KMS encryption check while logging solution is being updated
+  name              = "external-inspection-firewall-logs"
+  retention_in_days = 365 # 0 = never expire
+  tags              = local.tags
 }
 
 #################################
