@@ -192,6 +192,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/firewall-policy"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/iam_baseline"
     schedule:
       interval: "daily"
