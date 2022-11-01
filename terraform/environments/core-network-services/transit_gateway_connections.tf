@@ -57,18 +57,21 @@ locals {
     "azure-studiohosting-dev1" = "10.247.0.0/20",
     "azure-studiohosting-ops1" = "10.247.32.0/20",
     "global-protect"           = "10.184.0.0/16",
+    "analytical-platform-dev"  = "172.24.0.0/16",
     "cloud-platform"           = "172.20.0.0/16",
     "laa-development"          = "10.202.0.0/20"
   }
 
   egress_pttp_routing_cidrs_live_data = {
-    "azure-fixngo-live"         = "10.40.0.0/16",
-    "azure-studiohosting-live1" = "10.244.0.0/20",
-    "azure-nomisapi-preprod"    = "10.47.0.64/26",
-    "azure-nomisapi-prod"       = "10.47.0.128/26",
-    "global-protect"            = "10.184.0.0/16",
-    "cloud-platform"            = "172.20.0.0/16",
-    "ppud-psn"                  = "51.247.0.0/16",
+    "azure-fixngo-live"           = "10.40.0.0/16",
+    "azure-studiohosting-live1"   = "10.244.0.0/20",
+    "azure-nomisapi-preprod"      = "10.47.0.64/26",
+    "azure-nomisapi-prod"         = "10.47.0.128/26",
+    "global-protect"              = "10.184.0.0/16",
+    "analytical-platform-preprod" = "172.25.0.0/16",
+    "analytical-platform-prod"    = "172.26.0.0/16",
+    "cloud-platform"              = "172.20.0.0/16",
+    "ppud-psn"                    = "51.247.0.0/16",
   }
 
   tgw_live_data_attachments = {
