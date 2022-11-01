@@ -95,7 +95,7 @@ copy_templates() {
   for file in $templates; do
     filename=$(basename "$file")
 
-    if [ ${filename} != "subnet_share.tf" ] && [ ${filename} != "providers.tf" ]
+    if [ ${filename} != "subnet_share.tf" ] && [ ${filename} != "providers.tf" ] && [ ${filename} != "locals.tf" ]
     then
       echo "Copying $file to $1, replacing application_name with $application_name"
       sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
@@ -109,22 +109,11 @@ copy_templates() {
           sed -i '' "s/environments\//environments\/members\//g" "$1/$filename"
         fi
       fi
-      if [ ${filename} == "locals.tf" ]
-      then
-        if [ `uname` = "Linux" ]
-        then
-          sed -i "s/github\.com\/ministryofjustice\/modernisation-platform/github\.com\/ministryofjustice\/modernisation-platform-environments/g" "$1/$filename"
-        else
-          # This must be a Mac
-          sed -i '' "s/github\.com\/ministryofjustice\/modernisation-platform/github\.com\/ministryofjustice\/modernisation-platform-environments/g" "$1/$filename"
-        fi
-      fi
     fi
   done
 
   # Rename member providers file
   mv $1/member-providers.tf $1/providers.tf
-
     # Rename member locals file
   mv $1/member-locals.tf $1/locals.tf
   # copy application variable file
