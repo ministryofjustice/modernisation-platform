@@ -211,56 +211,6 @@ resource "aws_subnet" "public" {
   )
 }
 
-# Public NACLs
-resource "aws_network_acl" "public" {
-  vpc_id = aws_vpc.default.id
-  subnet_ids = [
-    for subnet in aws_subnet.public : subnet.id
-  ]
-
-  tags = merge(
-    var.tags_common,
-    {
-      Name = "${var.tags_prefix}-public"
-    }
-  )
-}
-
-# Public NACLs rules
-#tfsec:ignore:aws-vpc-no-public-ingress-acl tfsec:ignore:aws-vpc-no-excessive-port-access
-resource "aws_network_acl_rule" "public" {
-  for_each = local.nacl_rules_expanded
-
-  network_acl_id = aws_network_acl.public.id
-  rule_number    = each.value.rule_num
-  egress         = each.value.egress
-  protocol       = each.value.protocol
-  rule_action    = each.value.action
-  cidr_block     = each.value.cidr
-  from_port      = each.value.from_port
-  to_port        = each.value.to_port
-}
-
-#tfsec:ignore:aws-vpc-no-excessive-port-access
-resource "aws_network_acl_rule" "public-local-ingress" {
-  network_acl_id = aws_network_acl.public.id
-  rule_number    = 210
-  egress         = false
-  protocol       = "-1"
-  rule_action    = "allow"
-  cidr_block     = var.vpc_cidr
-}
-
-#tfsec:ignore:aws-vpc-no-excessive-port-access
-resource "aws_network_acl_rule" "public-local-egress" {
-  network_acl_id = aws_network_acl.public.id
-  rule_number    = 210
-  egress         = true
-  protocol       = "-1"
-  rule_action    = "allow"
-  cidr_block     = var.vpc_cidr
-}
-
 # Public route table
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.default.id
@@ -328,56 +278,6 @@ resource "aws_subnet" "private" {
   )
 }
 
-# Private NACLs
-resource "aws_network_acl" "private" {
-  vpc_id = aws_vpc.default.id
-  subnet_ids = [
-    for subnet in aws_subnet.private : subnet.id
-  ]
-
-  tags = merge(
-    var.tags_common,
-    {
-      Name = "${var.tags_prefix}-private"
-    }
-  )
-}
-
-# Private NACLs rules
-#tfsec:ignore:aws-vpc-no-public-ingress-acl
-resource "aws_network_acl_rule" "private" {
-  for_each = local.private_nacl_rules_expanded
-
-  network_acl_id = aws_network_acl.private.id
-  rule_number    = each.value.rule_num
-  egress         = each.value.egress
-  protocol       = each.value.protocol
-  rule_action    = each.value.action
-  cidr_block     = each.value.cidr
-  from_port      = each.value.from_port
-  to_port        = each.value.to_port
-}
-
-#tfsec:ignore:aws-vpc-no-excessive-port-access
-resource "aws_network_acl_rule" "private-local-ingress" {
-  network_acl_id = aws_network_acl.private.id
-  rule_number    = 210
-  egress         = false
-  protocol       = "-1"
-  rule_action    = "allow"
-  cidr_block     = var.vpc_cidr
-}
-
-#tfsec:ignore:aws-vpc-no-excessive-port-access
-resource "aws_network_acl_rule" "private-local-egress" {
-  network_acl_id = aws_network_acl.private.id
-  rule_number    = 210
-  egress         = true
-  protocol       = "-1"
-  rule_action    = "allow"
-  cidr_block     = var.vpc_cidr
-}
-
 # Private route table
 resource "aws_route_table" "private" {
   for_each = aws_subnet.private
@@ -417,56 +317,6 @@ resource "aws_subnet" "data" {
       Name = "${var.tags_prefix}-${each.key}"
     }
   )
-}
-
-# Data NACLs
-resource "aws_network_acl" "data" {
-  vpc_id = aws_vpc.default.id
-  subnet_ids = [
-    for subnet in aws_subnet.data : subnet.id
-  ]
-
-  tags = merge(
-    var.tags_common,
-    {
-      Name = "${var.tags_prefix}-data"
-    }
-  )
-}
-
-# Data NACLs rules
-#tfsec:ignore:aws-vpc-no-public-ingress-acl
-resource "aws_network_acl_rule" "data" {
-  for_each = local.private_nacl_rules_expanded
-
-  network_acl_id = aws_network_acl.data.id
-  rule_number    = each.value.rule_num
-  egress         = each.value.egress
-  protocol       = each.value.protocol
-  rule_action    = each.value.action
-  cidr_block     = each.value.cidr
-  from_port      = each.value.from_port
-  to_port        = each.value.to_port
-}
-
-#tfsec:ignore:aws-vpc-no-excessive-port-access
-resource "aws_network_acl_rule" "data-local-ingress" {
-  network_acl_id = aws_network_acl.data.id
-  rule_number    = 210
-  egress         = false
-  protocol       = "-1"
-  rule_action    = "allow"
-  cidr_block     = var.vpc_cidr
-}
-
-#tfsec:ignore:aws-vpc-no-excessive-port-access
-resource "aws_network_acl_rule" "data-local-egress" {
-  network_acl_id = aws_network_acl.data.id
-  rule_number    = 210
-  egress         = true
-  protocol       = "-1"
-  rule_action    = "allow"
-  cidr_block     = var.vpc_cidr
 }
 
 # Data route table
