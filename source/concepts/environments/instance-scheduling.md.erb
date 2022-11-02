@@ -1,0 +1,23 @@
+---
+owner_slack: "#modernisation-platform"
+title: Instance Scheduling: automatically stop non-production instances overnight
+last_reviewed_on: 2022-11-01
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Feature description
+
+This feature automatically stops non-production EC2 instances overnight, in order to save on AWS costs and reduce environmental impact. Stopped instances don't incur charges, but Elastic IP addresses or EBS volumes attached to those instances do.
+
+The instances will be automatically stopped every weekday at 9pm night and started at 6am in the morning. By default, this includes every EC2 instance in every non-production environment (development, test, pre-production) without requiring any configuration from the end user. Users can customise the default behaviour by attaching the `instance-scheduling` tag to EC2 instances with one of the following values:
+
+* `default` - Automatically stop the instance overnight and start it in the morning. Absence of the `instance-scheduling` tag will have the same effect.
+* `skip-scheduling` - Skip auto scheduling for the instance 
+* `skip-auto-start` - Stop the instance at night, but skip starting it in the morning. This could be useful for the instances we want to make sure are automatically stopped every night, but we are happy to manually start when needed.
+* `skip-auto-stop` - Start the instance in the morning, but skip stopping it at night.
+
+## References
+
+1. https://github.com/ministryofjustice/modernisation-platform-instance-scheduler
