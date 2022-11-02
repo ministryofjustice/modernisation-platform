@@ -14,7 +14,7 @@ This feature automatically stops non-production EC2 instances overnight, in orde
 The instances will be automatically stopped every weekday at 9pm night and started at 6am in the morning. By default, this includes every EC2 instance in every non-production environment (development, test, pre-production) without requiring any configuration from the end user. Users can customise the default behaviour by attaching the `instance-scheduling` tag to EC2 instances with one of the following values:
 
 * `default` - Automatically stop the instance overnight and start it in the morning. Absence of the `instance-scheduling` tag will have the same effect.
-* `skip-scheduling` - Skip auto scheduling for the instance 
+* `skip-scheduling` - Skip auto scheduling for the instance
 * `skip-auto-start` - Stop the instance at night, but skip starting it in the morning. This could be useful for the instances we want to make sure are automatically stopped every night, but we are happy to manually start when needed.
 * `skip-auto-stop` - Start the instance in the morning, but skip stopping it at night.
 
