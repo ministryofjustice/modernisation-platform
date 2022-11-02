@@ -110,9 +110,9 @@ func getFindings(client *securityhub.Client, accountName string, productName str
 					*finding.AwsAccountId,
 					finding.Severity.Label,
 					*finding.ProductName,
-					*finding.Title,
+					strings.ReplaceAll(*finding.Title, "\n", ""),
 					*finding.Resources[0].Id,
-					*finding.Description,
+					strings.ReplaceAll(*finding.Description, "\n", ""),
 					*finding.Remediation.Recommendation.Text,
 					url,
 				)
@@ -122,7 +122,7 @@ func getFindings(client *securityhub.Client, accountName string, productName str
 					*finding.AwsAccountId,
 					finding.Severity.Label,
 					*finding.ProductName,
-					*finding.Title,
+					strings.ReplaceAll(*finding.Title, "\n", ""),
 					*finding.Resources[0].Id,
 				)
 			}
