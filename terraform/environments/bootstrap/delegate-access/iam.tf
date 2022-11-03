@@ -215,6 +215,16 @@ data "aws_iam_policy_document" "instance-scheduler-access" {
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
+  # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
+  statement {
+    sid       = "AllowToDecryptKMS"
+    effect    = "Allow"
+    resources = ["*"]
+    actions = [
+      "kms:Decrypt",
+      "kms:CreateGrant"
+    ]
+  }
 }
 
 resource "aws_iam_policy" "instance-scheduler-access" {
