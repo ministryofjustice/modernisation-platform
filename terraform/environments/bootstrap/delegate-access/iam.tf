@@ -395,7 +395,8 @@ data "aws_iam_policy_document" "developer-additional" {
       "s3:PutObject",
       "s3:DeleteObject",
       "aws-marketplace:ViewSubscriptions",
-      "support:*"
+      "support:*",
+      "rhelkb:GetRhelURL"
     ]
 
     resources = ["*"]
