@@ -394,6 +394,10 @@ data "aws_iam_policy_document" "developer-additional" {
       "ec2:CreateTags",
       "s3:PutObject",
       "s3:DeleteObject",
+      "rds:CopyDBSnapshot",
+      "rds:CopyDBClusterSnapshot",
+      "rds:CreateDBSnapshot",
+      "rds:CreateDBClusterSnapshot",
       "aws-marketplace:ViewSubscriptions",
       "support:*",
       "rhelkb:GetRhelURL"
