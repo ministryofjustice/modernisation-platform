@@ -173,7 +173,7 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
     sid       = "AllowToDecryptKMS"
     effect    = "Allow"
     resources = ["*"]
-    actions = ["kms:Decrypt"]
+    actions   = ["kms:Decrypt"]
   }
 }
 
