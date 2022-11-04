@@ -2,8 +2,8 @@ data "aws_iam_role" "vpc-flow-log" {
   name = "AWSVPCFlowLog"
 }
 
- resource "aws_iam_policy" "policy" {
-  name  = "s3_dynamo_access_policy"
+resource "aws_iam_policy" "policy" {
+  name        = "s3_dynamo_access_policy"
   path        = "/"
   description = "S3 and dynamo policy"
 
