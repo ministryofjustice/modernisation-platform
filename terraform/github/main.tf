@@ -371,3 +371,11 @@ resource "github_team_repository" "modernisation-platform-configuration-manageme
   repository = module.modernisation-platform-configuration-management.repository.id
   permission = "push"
 }
+
+# Give write access to teams on the loadbalancer module repo (access to merge to main is restricted by codeowners file)
+resource "github_team_repository" "modernisation-platform-terraform-loadbalancer-access" {
+  for_each   = { for team in local.application_teams : team => team }
+  team_id    = each.value
+  repository = module.terraform-module-aws-loadbalancer.repository.id
+  permission = "push"
+}
