@@ -221,8 +221,7 @@ data "aws_iam_policy_document" "instance-scheduler-access" {
     effect    = "Allow"
     resources = ["*"]
     actions = [
-      "kms:Decrypt",
-      "kms:CreateGrant"
+      "kms:Decrypt"
     ]
   }
 }
