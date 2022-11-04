@@ -20,18 +20,27 @@ resource "aws_iam_policy" "policy" {
       "Resource": "arn:aws:s3:::modernisation-platform-terraform-state"
     }
   ]
- "Version": "2012-10-17",
+  "Version": "2012-10-17",
   "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "dynamodb:DescribeTable",
-        "dynamodb:GetItem",
-        "dynamodb:PutItem",
-        "dynamodb:DeleteItem"
-      ],
-      "Resource": "arn:aws:dynamodb:*:*:table/mytable"
-    }
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "dynamodb:DeleteItem",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:Query",
+          "dynamodb:UpdateItem"
+        ],
+        "Resource" : ["arn:aws:dynamodb:eu-west-2:946070829339:table/modernisation-platform-terraform-state-lock"],
+        "Condition" : {
+          "ForAllValues:StringEquals" : {
+            "dynamodb:LeadingKeys" : [
+              "myorg-terraform-states/myapp/production/tfstate", // during a state lock the full state file is stored with this key
+              "myorg-terraform-states/myapp/production/tfstate-md5" // after the lock is released a hash of the statefile's contents are stored with this key
+            ]
+          }
+        }
+      }
   ]
 }
   ) 
