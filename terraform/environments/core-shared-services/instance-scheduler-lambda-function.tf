@@ -13,7 +13,8 @@ resource "aws_lambda_function" "instance-scheduler-lambda-function" {
   }
   environment {
     variables = {
-      "INSTANCE_SCHEDULING_SKIP_ACCOUNTS" = "oasys-development,apex-development,data-and-insights-wepi-development,xhibit-portal-development,nomis-preproduction,testing-test,oasys-preproduction,tariff-development,mlra-development,nomis-development,example-development,performance-hub-preproduction,xhibit-portal-preproduction,delius-iaps-development,performance-hub-development,ppud-development,refer-monitor-development,digital-prison-reporting-development,oasys-test,equip-development,threat-and-vulnerability-mgmt-development,nomis-test,ccms-ebs-development,maatdb-development,"
+      # Enable for: sprinkler-development,cooker-development,example-development,equip-development,performance-hub-development,performance-hub-preproduction
+      "INSTANCE_SCHEDULING_SKIP_ACCOUNTS" = "oasys-development,apex-development,data-and-insights-wepi-development,xhibit-portal-development,nomis-preproduction,testing-test,oasys-preproduction,tariff-development,mlra-development,nomis-development,xhibit-portal-preproduction,delius-iaps-development,ppud-development,refer-monitor-development,digital-prison-reporting-development,oasys-test,threat-and-vulnerability-mgmt-development,nomis-test,ccms-ebs-development,maatdb-development,"
     }
   }
 }
