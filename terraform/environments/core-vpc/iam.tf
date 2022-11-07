@@ -13,7 +13,7 @@ data "aws_iam_role" "vpc-flow-log" {
       {
         "Effect" : "Allow",
         "Action" : "s3:ListBucket",
-        "Resource" : "arn:aws:s3:::mybucket"
+        "Resource" : "arn:aws:s3:::modernisation-platform-terraform-state"
       },
       {
         "Effect" : "Allow",
