@@ -191,6 +191,19 @@ module "modernisation-platform-instance-scheduler" {
   secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
+module "terraform-module-lambda-function" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-lambda-function"
+  type        = "module"
+  description = "Module to deploy lambda functions in modernisation platform accounts"
+  topics = [
+    "aws",
+    "iam",
+    "lambda"
+  ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
+}
+
 module "modernisation-platform-environments" {
   source      = "./modules/repository"
   name        = "modernisation-platform-environments"
@@ -327,7 +340,8 @@ module "core-team" {
     module.modernisation-platform-terraform-module-template.repository.name,
     module.modernisation-platform-terraform-pagerduty-integration.repository.name,
     module.terraform-module-github-oidc-provider.repository.name,
-    module.modernisation-platform-configuration-management.repository.name
+    module.modernisation-platform-configuration-management.repository.name,
+    module.terraform-module-lambda-function.repository.name
   ]
 
   maintainers = local.maintainers
