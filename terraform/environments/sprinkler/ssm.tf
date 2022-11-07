@@ -44,7 +44,7 @@ JSON
 }
 
 resource "aws_ssm_patch_baseline" "patch-poc" {
-  name             = "patch-baseline"
+  name = "patch-baseline"
 
   approval_rule {
     approve_after_days = 7
