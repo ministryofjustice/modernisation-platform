@@ -19,15 +19,15 @@ resource "aws_iam_role" "ssm_ec2_instance_role" {
   assume_role_policy = data.aws_iam_policy_document.instance-assume-role-policy.json
 }
 
-resource "aws_iam_instance_profile" "poc_service_ssm" {
+resource "aws_iam_instance_profile" "ssm_ec2_instance_profile" {
   name = "service_ec2_ssm"
   role = aws_iam_role.ssm_ec2_instance_role.name
 }
 
+###### Resource Group  #####
 
 resource "aws_resourcegroups_group" "ssm_patch_group_dev" {
-  name = "poc"
-
+  name = "${local.application_name}-patch-group"
   resource_query {
     query = <<JSON
 {
@@ -43,8 +43,11 @@ JSON
   }
 }
 
-resource "aws_ssm_patch_baseline" "patch-poc" {
-  name = "patch-baseline"
+###### Approval rule #####
+
+resource "aws_ssm_patch_baseline" "patch-baseline-poc" {
+  name = "${local.application_name}-baseline"
+  operating_system = "${local.operating_system}"
 
   approval_rule {
     approve_after_days = 7
@@ -52,7 +55,18 @@ resource "aws_ssm_patch_baseline" "patch-poc" {
 
     patch_filter {
       key    = "CLASSIFICATION"
-      values = ["CriticalUpdates", "SecurityUpdates", "Updates"]
+      values = ["Security", "Bugfix"]
     }
+  }
+}
+
+###### s3 Bucket Patch Logs #####
+
+resource "aws_s3_bucket" "patching-log-bucket" {
+  bucket = "${local.application_name}-patching-logs"
+
+  tags = {
+    name = "${local.application_name}-patching-logs"
+    Environment = "${local.environment}"
   }
 }
