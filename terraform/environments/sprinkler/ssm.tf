@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 
 resource "aws_iam_role" "ssm_ec2_instance_role" {
-  name = "service-ec2-ssm"
+  name               = "service-ec2-ssm"
   assume_role_policy = ""
 }
 
@@ -34,7 +34,7 @@ JSON
 }
 
 resource "aws_ssm_patch_baseline" "patch-poc" {
-  name             = "patch-baseline"
+  name = "patch-baseline"
 
   approval_rule {
     approve_after_days = 7
