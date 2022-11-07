@@ -36,13 +36,13 @@ resource "aws_iam_policy" "policy" {
         "Condition" : {
           "ForAllValues:StringEquals" : {
             "dynamodb:LeadingKeys" : [
-              "myorg-terraform-states/myapp/production/tfstate",    // during a state lock the full state file is stored with this key
-              "myorg-terraform-states/myapp/production/tfstate-md5" // after the lock is released a hash of the statefile's contents are stored with this key
-            ]
-          }
-        }
-      }
+              "modernisation-platform-terraform-state/global-resources/terraform.tfstate",   // during a state lock the full state file is stored with this key
+              "modernisation-platform-terraform-state/global-resources/terraform.tfstate-md5" // after the lock is released a hash of the statefile's contents are stored with this key    
     ]
     }
+      }
+      }
+      ]
+      }
   )
 }
