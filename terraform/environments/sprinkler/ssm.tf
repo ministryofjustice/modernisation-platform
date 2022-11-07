@@ -2,9 +2,21 @@
 # Patching POC
 #------------------------------------------------------------------------------
 
+data "aws_iam_policy_document" "instance-assume-role-policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
 resource "aws_iam_role" "ssm_ec2_instance_role" {
-  name = "service-ec2-ssm"
-  assume_role_policy = ""
+  name               = "service-ec2-ssm"
+  path               = "/system/"
+  assume_role_policy = data.aws_iam_policy_document.instance-assume-role-policy.json
 }
 
 resource "aws_iam_instance_profile" "poc_service_ssm" {
@@ -19,15 +31,13 @@ resource "aws_resourcegroups_group" "ssm_patch_group_dev" {
   resource_query {
     query = <<JSON
 {
-  "ResourceTypeFilters": [
-    'AWS::EC2::Instance"
-  ],
-  "TagFilters": [
-    {
-      "Key": "Patching",
-      "Values": ["yes", "true"]
-    }
-  ]
+	"ResourceTypeFilters": [
+		"AWS::EC2::Instance"
+	],
+	"TagFilters": [{
+		"Key": "Patching",
+		"Values": ["yes", "true"]
+	}]
 }
 JSON
   }
