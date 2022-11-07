@@ -221,9 +221,20 @@ data "aws_iam_policy_document" "instance-scheduler-access" {
     effect    = "Allow"
     resources = ["*"]
     actions = [
-      "kms:Decrypt",
+      "kms:Decrypt"
+    ]
+  }
+  # checkov:skip=CKV_AWS_111: "Will need to potentially create grants on multiple keys"
+  statement {
+    actions = [
       "kms:CreateGrant"
     ]
+    resources = ["*"]
+    condition {
+      test     = "Bool"
+      variable = "kms:GrantIsForAWSResource"
+      values   = ["true"]
+    }
   }
 }
 
