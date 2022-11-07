@@ -8,6 +8,8 @@ resource "aws_lambda_function" "instance-scheduler-lambda-function" {
   image_uri                      = "${local.environment_management.account_ids[terraform.workspace]}.dkr.ecr.eu-west-2.amazonaws.com/${module.instance_scheduler_ecr_repo.ecr_repository_name}:latest"
   package_type                   = "Image"
   role                           = aws_iam_role.instance-scheduler-lambda-function.arn
+  # 600 seconds = 10 minutes
+  timeout = 600
   tracing_config {
     mode = "Active"
   }
