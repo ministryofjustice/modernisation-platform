@@ -47,7 +47,8 @@ module "instance_scheduler_ecr_repo" {
   ]
 
   pull_principals = [
-    local.environment_management.account_ids["core-shared-services-production"]
+    local.environment_management.account_ids["core-shared-services-production"],
+    local.environment_management.account_ids["testing-test"] # to enable terratest runs
   ]
 
   enable_retrieval_policy_for_lambdas = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:function:*"]
