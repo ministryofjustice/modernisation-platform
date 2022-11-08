@@ -63,7 +63,7 @@ resource "aws_ssm_patch_baseline" "patch-baseline-poc" {
 ###### ssm maintenance window #####
 
 resource "aws_ssm_maintenance_window" "poc-maintenance-window" {
-  name      = "${local.application_name}-maintenance-window"
+  name     = "${local.application_name}-maintenance-window"
   schedule = "cron(0 16 ? * TUE *)"
   duration = 3
   cutoff   = 1
