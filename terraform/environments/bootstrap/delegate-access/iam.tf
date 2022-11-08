@@ -191,12 +191,10 @@ module "instance-scheduler-access" {
   providers = {
     aws = aws.workspace
   }
-  account_id = local.environment_management.account_ids["core-shared-services-production"]
-  additional_trust_roles = concat(
-    [format("arn:aws:iam::%s:role/InstanceSchedulerLambdaFunctionPolicy", local.environment_management.account_ids["core-shared-services-production"])],
-  terraform.workspace == "testing-test" ? [format("arn:aws:iam::%s:role/InstanceSchedulerLambdaFunctionPolicy", local.environment_management.account_ids["testing-test"])] : [])
-  policy_arn = aws_iam_policy.instance-scheduler-access[0].id
-  role_name  = "InstanceSchedulerAccess"
+  account_id             = local.environment_management.account_ids["core-shared-services-production"]
+  additional_trust_roles = [format("arn:aws:iam::%s:role/InstanceSchedulerLambdaFunctionPolicy", local.environment_management.account_ids["core-shared-services-production"])]
+  policy_arn             = aws_iam_policy.instance-scheduler-access[0].id
+  role_name              = "InstanceSchedulerAccess"
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
