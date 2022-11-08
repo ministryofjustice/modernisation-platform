@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Auto-nuke and redeploy development environments on weekly basis
-last_reviewed_on: 2022-04-21
+last_reviewed_on: 2022-11-07
 review_in: 6 months
 ---
 
@@ -47,7 +47,7 @@ The `nuke-config-template.txt` holds the nuke configuration YAML with account ID
 
 ### When new development environment is onboarded
 
-When a new development environment is onboarded into the Modernisation Platform, we need to follow these steps, assuming the new account will be granted sandbox permissions and we want it to be auto-nuked on weekly basis:
+When a new development environment is onboarded into the Modernisation Platform, we need to follow these steps, assuming the new account will be granted sandbox permissions, and we want it to be auto-nuked on weekly basis:
 
 - Manually add the new account ID to the secret `nuke_account_ids` stored in the AWS secret manager inside the Modernisation Platform account. Refer to the above documentation of `nuke_account_ids` for the format of the value.
 - AWS Nuke will require an account alias, which you can create as follows:
@@ -58,3 +58,5 @@ aws iam create-account-alias --profile sprinkler-development --account-alias spr
 ```
 
 If account alias is missing then the `nuke.yml` job will fail with a relevant error.
+
+Note that with the latest platform enhancements the alias should be automatically created along with the account.
