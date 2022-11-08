@@ -11,3 +11,11 @@ terraform {
     workspace_key_prefix = "environments/accounts/core-vpc" # This will store the object as environments/core-vpc/${workspace}/terraform.tfstate
   }
 }
+data "terraform_remote_state" "network" {
+  backend = "s3"
+  config = {
+    bucket = "modernisation-platform-terraform-state"
+    key    = "environments/terraform.tfstate"
+    region = "eu-west-2"
+  }
+}
