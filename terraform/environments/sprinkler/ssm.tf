@@ -46,8 +46,8 @@ JSON
 ###### Approval rule #####
 
 resource "aws_ssm_patch_baseline" "patch-baseline-poc" {
-  name = "${local.application_name}-baseline"
-  operating_system = "${local.operating_system}"
+  name             = "${local.application_name}-baseline"
+  operating_system = local.operating_system
 
   approval_rule {
     approve_after_days = 7
@@ -75,7 +75,7 @@ resource "aws_s3_bucket" "patching-log-bucket" {
   bucket = "${local.application_name}-patching-logs"
 
   tags = {
-    name = "${local.application_name}-patching-logs"
+    name        = "${local.application_name}-patching-logs"
     Environment = "${local.environment}"
   }
 }
