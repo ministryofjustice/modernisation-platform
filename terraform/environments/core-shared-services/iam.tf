@@ -91,24 +91,6 @@ resource "aws_iam_role_policy_attachment" "member_shared_services_readonly" {
 
 ## BEGIN: IAM for Instance Scheduler Lambda Function
 
-data "aws_iam_policy_document" "instance-scheduler-lambda-function-assume-role" {
-  statement {
-    sid    = "AssumeRole"
-    effect = "Allow"
-    actions = [
-      "sts:AssumeRole"
-    ]
-    principals {
-      identifiers = ["lambda.amazonaws.com"]
-      type        = "Service"
-    }
-    principals {
-      identifiers = [module.github-oidc.github_actions_role]
-      type        = "AWS"
-    }
-  }
-}
-
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
   statement {
@@ -178,21 +160,6 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
   }
 }
 
-resource "aws_iam_role" "instance-scheduler-lambda-function" {
-  assume_role_policy = data.aws_iam_policy_document.instance-scheduler-lambda-function-assume-role.json
-  name               = "InstanceSchedulerLambdaFunctionPolicy"
-  tags               = local.tags
-}
-
-resource "aws_iam_policy" "instance-scheduler-lambda-function" {
-  policy = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
-}
-
-resource "aws_iam_role_policy_attachment" "instance-scheduler-lambda-function" {
-  policy_arn = aws_iam_policy.instance-scheduler-lambda-function.arn
-  role       = aws_iam_role.instance-scheduler-lambda-function.name
-}
-
 ## END: IAM for Instance Scheduler Lambda Function
 
 # OIDC Confiuration for core-shared-services
@@ -226,7 +193,7 @@ data "aws_iam_policy_document" "oidc_assume_role_core" {
   statement {
     sid       = "AllowGoToRunLambda"
     effect    = "Allow"
-    resources = [aws_iam_role.instance-scheduler-lambda-function.arn]
+    resources = [module.instance_scheduler.lambda_function_arn]
     actions   = ["sts:AssumeRole"]
   }
 }
