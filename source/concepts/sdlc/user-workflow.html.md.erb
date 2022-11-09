@@ -49,7 +49,7 @@ The code and AWS account is protected in a few different ways which work togethe
 
 #### CODEOWNERS
 
-Your GitHub team will be assigned as a [codeowner](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-code-owners) for your application folder, so someone in your team or the Modernisation Platform team will be required to review any pull requests before they can be merged. 
+Your GitHub team will be assigned as a [codeowner](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-code-owners) for your application folder, so someone in your team or the Modernisation Platform team will be required to review any pull requests before they can be merged.
 Your Github team will be able to approve a majority of pull requests. Approvals from the modernisation platform team members are only required in cases where a change might impact other customers or core platform components such as any files in the `.github` folder, as well as `providers.tf`, `backend.tf` and `networking.auto.tfvars.json` files in you application directory.
 
 #### GitHub Environments
@@ -77,7 +77,7 @@ Legacy applications often use "Click Ops" to make application deployments.  Whil
 
 To allow automated access to your AWS account we provide a "CI/CD (Continuous integration / continuous delivery)" user - `cicd-member-user`.
 
-This user has restricted access to your AWS account, with the minimum permissions needed to do things like push a new image to an ECR repo. 
+This user has restricted access to your AWS account, with the minimum permissions needed to do things like push a new image to an ECR repo.
 
 The application pipeline is the responsibility of the application owner, details on how to obtain AWS credentials for the `cicd-member-user` are detailed [here](../../user-guide/deploying-your-application.html)
 ## Diagram
