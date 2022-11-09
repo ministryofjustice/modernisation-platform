@@ -1,27 +1,3 @@
-# resource "aws_lambda_function" "instance-scheduler-lambda-function" {
-#   #checkov:skip=CKV_AWS_116
-#   #checkov:skip=CKV_AWS_117
-#   #checkov:skip=CKV_AWS_272 "Code signing not required"
-#   #checkov:skip=CKV_AWS_173 "These lambda envvars aren't sensitive and don't need a cmk. Default AWS KMS key is sufficient"
-#   function_name                  = "instance-scheduler-lambda-function"
-#   reserved_concurrent_executions = 1
-#   image_uri                      = "${local.environment_management.account_ids[terraform.workspace]}.dkr.ecr.eu-west-2.amazonaws.com/${module.instance_scheduler_ecr_repo.ecr_repository_name}:latest"
-#   package_type                   = "Image"
-#   role                           = aws_iam_role.instance-scheduler-lambda-function.arn
-#   # 600 seconds = 10 minutes
-#   timeout = 600
-#   tracing_config {
-#     mode = "Active"
-#   }
-#   environment {
-#     variables = {
-#       # Initially, enabled for: sprinkler-development,cooker-development,example-development,equip-development,performance-hub-development,performance-hub-preproduction
-#       # Subsequently, enabled for: oasys-development,data-and-insights-wepi-development,testing-test,oasys-preproduction,tariff-development,delius-iaps-development,ppud-development,refer-monitor-development,digital-prison-reporting-development,oasys-test,threat-and-vulnerability-mgmt-development,apex-development,ccms-ebs-development,maatdb-development,mlra-development,xhibit-portal-development,xhibit-portal-preproduction,nomis-development,nomis-test,
-#       "INSTANCE_SCHEDULING_SKIP_ACCOUNTS" = "nomis-preproduction,"
-#     }
-#   }
-# }
-
 module "instance_scheduler" {
   #checkov:skip=CKV_AWS_116
   #checkov:skip=CKV_AWS_117
