@@ -93,7 +93,7 @@ resource "aws_ssm_maintenance_window_target" "ssm-targets" {
 
 ###### ssm maintenance task #####
 resource "aws_ssm_maintenance_window_task" "ssm-maintenance-window-task" {
-  name          = "${local.application_name}-patching-task"
+  name            = "${local.application_name}-patching-task"
   max_concurrency = 2
   max_errors      = 1
   priority        = 1
@@ -109,9 +109,9 @@ resource "aws_ssm_maintenance_window_task" "ssm-maintenance-window-task" {
 
   task_invocation_parameters {
     run_command_parameters {
-      output_s3_bucket     = "${local.application_name}-patching-logs"
-      timeout_seconds      = 600
-      service_role_arn     = aws_iam_role.ssm_ec2_instance_role.arn
+      output_s3_bucket = "${local.application_name}-patching-logs"
+      timeout_seconds  = 600
+      service_role_arn = aws_iam_role.ssm_ec2_instance_role.arn
 
       # Install will perform a scan followed by an install on any missing packages. This is completed with a system
       # rebot. NOTE: Scan only can be used to output results to S3 log bucket and does not cause a rebot.
