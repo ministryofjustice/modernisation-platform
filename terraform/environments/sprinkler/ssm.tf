@@ -76,7 +76,7 @@ resource "aws_ssm_maintenance_window" "ssm-maintenance-window" {
 
 ###### ssm maintenance target #####
 
-resource "aws_ssm_maintenance_window_target" "target1" {
+resource "aws_ssm_maintenance_window_target" "ssm-targets" {
   window_id     = aws_ssm_maintenance_window.ssm-maintenance-window.id
   name          = "maintenance-window-target"
   description   = "This is a maintenance window target"
@@ -92,30 +92,36 @@ resource "aws_ssm_maintenance_window_target" "target1" {
 
 
 ###### ssm maintenance task #####
-#resource "aws_ssm_maintenance_window_task" "ssm-maintenance-window-task" {
-#  max_concurrency = 2
-#  max_errors      = 1
-#  priority        = 1
-#  task_arn        = "AWS-PatchAsgInstance"
-#  task_type       = "AUTOMATION"
-#  window_id       = aws_ssm_maintenance_window.ssm-maintenance-window.id
-#
-#  targets {
-#    key    = "${local.application_name}-patch-group"
-#    values = []
-#  }
-#
-#  task_invocation_parameters {
-#    automation_parameters {
-#      document_version = "$LATEST"
-#
-#      parameter {
-#        name   = "InstanceId"
-#        values = [aws_resourcegroups_group.ssm_patch_group_dev.id]
-#      }
-#    }
-#  }
-#}
+resource "aws_ssm_maintenance_window_task" "ssm-maintenance-window-task" {
+  name          = "${local.application_name}-patching-task"
+  max_concurrency = 2
+  max_errors      = 1
+  priority        = 1
+  task_arn        = "AWS-PatchAsgInstance"
+  task_type       = "RUN_COMMAND"
+  window_id       = aws_ssm_maintenance_window.ssm-maintenance-window.id
+
+
+  targets {
+    key    = "WindowTargetIds"
+    values = aws_ssm_maintenance_window_target.ssm-targets.*.id
+  }
+
+  task_invocation_parameters {
+    run_command_parameters {
+      output_s3_bucket     = "${local.application_name}-patching-logs"
+      timeout_seconds      = 600
+      service_role_arn     = aws_iam_role.ssm_ec2_instance_role.arn
+
+      # Install will perform a scan followed by an install on any missing packages. This is completed with a system
+      # rebot. NOTE: Scan only can be used to output results to S3 log bucket and does not cause a rebot.
+      parameter {
+        name   = "Operation"
+        values = ["Scan"]
+      }
+    }
+  }
+}
 
 ###### ssm automation doc #####
 
