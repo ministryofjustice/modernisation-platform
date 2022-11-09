@@ -68,7 +68,7 @@ resource "aws_ssm_patch_baseline" "patch-baseline-poc" {
 
 resource "aws_ssm_maintenance_window" "ssm-maintenance-window" {
   name     = "${local.application_name}-maintenance-window"
-  schedule = "cron(0 16 ? * TUE *)"
+  schedule = "cron(0 15 ? * WED *)"
   duration = 3
   cutoff   = 1
 }
@@ -92,12 +92,12 @@ resource "aws_ssm_maintenance_window_target" "ssm-targets" {
 
 
 ###### ssm maintenance task #####
-resource "aws_ssm_maintenance_window_task" "ssm-maintenance-window-task" {
-  name          = "${local.application_name}-patching-task"
+resource "aws_ssm_maintenance_window_task" "ssm-maintenance-window-command-task" {
+  name          = "${local.application_name}-command-patching-task"
   max_concurrency = 2
   max_errors      = 1
   priority        = 1
-  task_arn        = "AWS-PatchAsgInstance"
+  task_arn        = "AWS-RunPatchBaseline"
   task_type       = "RUN_COMMAND"
   window_id       = aws_ssm_maintenance_window.ssm-maintenance-window.id
 
@@ -110,7 +110,7 @@ resource "aws_ssm_maintenance_window_task" "ssm-maintenance-window-task" {
   task_invocation_parameters {
     run_command_parameters {
       output_s3_bucket     = "${local.application_name}-patching-logs"
-      timeout_seconds      = 600
+      timeout_seconds      = 6000
       service_role_arn     = aws_iam_role.ssm_ec2_instance_role.arn
 
       # Install will perform a scan followed by an install on any missing packages. This is completed with a system
@@ -123,152 +123,33 @@ resource "aws_ssm_maintenance_window_task" "ssm-maintenance-window-task" {
   }
 }
 
-###### ssm automation doc #####
 
-resource "aws_ssm_document" "patching-automation" {
-  name          = "${local.application_name}-patching-doc"
-  document_type = "Automation"
+resource "aws_ssm_maintenance_window_task" "ssm-maintenance-window-automation-task" {
+  name          = "${local.application_name}-automation-patching-task"
+  max_concurrency = 2
+  max_errors      = 1
+  priority        = 1
+  task_type       = "AUTOMATION"
+  task_arn        = "AWS-PatchAsgInstance"
+  window_id       = aws_ssm_maintenance_window.ssm-maintenance-window.id
 
-  content = <<DOC
-{
-	"description": "Systems Manager Automation - Patch instances in an Auto Scaling Group",
-	"schemaVersion": "0.3",
-	"assumeRole": "{{AutomationAssumeRole}}",
-	"parameters": {
-		"InstanceId": {
-			"type": "String",
-			"description": "(Required) ID of the Instance to patch. Only specify when not running from Maintenance Windows."
-		},
-		"WaitForReboot": {
-			"type": "String",
-			"description": "(Optional) How long Automation should sleep for, to allow a patched instance to reboot",
-			"default": "PT5M"
-		},
-		"WaitForInstance": {
-			"type": "String",
-			"description": "(Optional) How long Automation should sleep for, to allow the instance come back into service",
-			"default": "PT2M"
-		},
-		"LambdaRoleArn": {
-			"default": "",
-			"type": "String",
-			"description": "(Optional) The ARN of the role that allows Lambda created by Automation to perform the actions on your behalf. If not specified a transient role will be created to execute the Lambda function."
-		},
-		"AutomationAssumeRole": {
-			"type": "String",
-			"description": "(Optional) The ARN of the role that allows Automation to perform the actions on your behalf.",
-			"default": ""
-		}
-	},
-	"mainSteps": [{
-			"name": "createPatchGroupTags",
-			"action": "aws:createTags",
-			"maxAttempts": 1,
-			"onFailure": "Continue",
-			"inputs": {
-				"ResourceType": "EC2",
-				"ResourceIds": [
-					"{{InstanceId}}"
-				],
-				"Tags": [{
-					"Key": "AutoPatchInstanceInASG",
-					"Value": "InProgress"
-				}]
-			}
-		},
-		{
-			"name": "EnterStandby",
-			"action": "aws:executeAutomation",
-			"maxAttempts": 1,
-			"timeoutSeconds": 300,
-			"onFailure": "Abort",
-			"inputs": {
-				"DocumentName": "AWS-ASGEnterStandby",
-				"RuntimeParameters": {
-					"InstanceId": [
-						"{{InstanceId}}"
-					],
-					"LambdaRoleArn": [
-						"{{LambdaRoleArn}}"
-					],
-					"AutomationAssumeRole": [
-						"{{AutomationAssumeRole}}"
-					]
-				}
-			}
-		},
-		{
-			"name": "installMissingOSUpdates",
-			"action": "aws:runCommand",
-			"maxAttempts": 1,
-			"onFailure": "Continue",
-			"isCritical": true,
-			"inputs": {
-				"DocumentName": "AWS-RunPatchBaseline",
-				"InstanceIds": [
-					"{{InstanceId}}"
-				],
-				"Parameters": {
-					"Operation": "Install"
-				}
-			}
-		},
-		{
-			"name": "SleepToCompleteInstall",
-			"action": "aws:sleep",
-			"inputs": {
-				"Duration": "{{WaitForReboot}}"
-			}
-		},
-		{
-			"name": "ExitStandby",
-			"action": "aws:executeAutomation",
-			"maxAttempts": 1,
-			"timeoutSeconds": 300,
-			"onFailure": "Abort",
-			"inputs": {
-				"DocumentName": "AWS-ASGExitStandby",
-				"RuntimeParameters": {
-					"InstanceId": [
-						"{{InstanceId}}"
-					],
-					"LambdaRoleArn": [
-						"{{LambdaRoleArn}}"
-					],
-					"AutomationAssumeRole": [
-						"{{AutomationAssumeRole}}"
-					]
-				}
-			}
-		},
-		{
-			"name": "CompletePatchGroupTags",
-			"action": "aws:createTags",
-			"maxAttempts": 1,
-			"onFailure": "Continue",
-			"inputs": {
-				"ResourceType": "EC2",
-				"ResourceIds": [
-					"{{InstanceId}}"
-				],
-				"Tags": [{
-					"Key": "AutoPatchInstanceInASG",
-					"Value": "Completed"
-				}]
-			}
-		},
-		{
-			"name": "SleepBeforeNextInstance",
-			"action": "aws:sleep",
-			"inputs": {
-				"Duration": "{{WaitForInstance}}"
-			}
-		}
-	]
+
+  targets {
+    key    = "WindowTargetIds"
+    values = aws_ssm_maintenance_window_target.ssm-targets.*.id
+  }
+
+  task_invocation_parameters {
+    automation_parameters {
+      document_version = "$LATEST"
+
+      parameter {
+        name   = "InstanceId"
+        values = aws_ssm_maintenance_window_target.ssm-targets.*.id
+      }
+    }
+  }
 }
-DOC
-}
-
 
 ###### s3 Bucket Patch Logs #####
 
