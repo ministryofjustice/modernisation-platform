@@ -186,7 +186,7 @@ resource "aws_iam_policy" "member-access" {
 }
 
 module "instance-scheduler-access" {
-  count  = local.account_data.account-type == "member" ? 1 : 0
+  count  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
   source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
   providers = {
     aws = aws.workspace
@@ -278,6 +278,18 @@ resource "aws_iam_role_policy_attachment" "testing_member_infrastructure_access_
   provider   = aws.workspace
   role       = aws_iam_role.testing_member_infrastructure_access_role[0].id
   policy_arn = aws_iam_policy.member-access[0].arn
+}
+
+module "testing_instance-scheduler-access" {
+  count  = terraform.workspace == "testing-test" ? 1 : 0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
+  providers = {
+    aws = aws.workspace
+  }
+  account_id             = local.environment_management.account_ids["core-shared-services-production"]
+  additional_trust_roles = [format("arn:aws:iam::%s:role/InstanceSchedulerLambdaFunctionPolicy", local.environment_management.account_ids["core-shared-services-production"]), format("arn:aws:iam::%s:root", local.environment_management.account_ids["testing-test"])]
+  policy_arn             = aws_iam_policy.instance-scheduler-access[0].id
+  role_name              = "InstanceSchedulerAccess"
 }
 
 # Create a parameter for the modernisation platform environment management secret ARN that can be used to gain
