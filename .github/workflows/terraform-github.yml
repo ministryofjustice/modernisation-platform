@@ -20,20 +20,38 @@ defaults:
   run:
     shell: bash
 
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+ 
 jobs:
   github-plan-and-apply:
     runs-on: ubuntu-latest
     env:
-      AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       TF_VAR_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
       TF_IN_AUTOMATION: true
+      AWS_REGION: "eu-west-2"
+      ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v2.0.3
+      - name: Checkout Repository
+        uses: actions/checkout@v3.1.0
+
+      - name: Set Account Number
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2.0.3
         with:
           terraform_version: "~1"
           terraform_wrapper: false
+         
       - name: terraform init
         run: bash scripts/terraform-init.sh terraform/github
       - name: terraform plan
@@ -41,8 +59,8 @@ jobs:
       - name: terraform apply
         if: github.event.ref == 'refs/heads/main'
         run: bash scripts/terraform-apply.sh terraform/github
-      - uses: 8398a7/action-slack@v3
-        name: Slack failure notification
+      - name: Slack failure notification
+        uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
           fields: workflow,job,repo,commit,message
