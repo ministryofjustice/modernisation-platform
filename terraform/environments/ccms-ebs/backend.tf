@@ -9,6 +9,6 @@ terraform {
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
     workspace_key_prefix = "environments/accounts/ccms-ebs" # This will store the object as environments/accounts/ccms-ebs/${workspace}/terraform.tfstate
-    dynamodb_table       = "modernisation-platform-terraform-state-lock" 
-    }
+    dynamodb_table       = "modernisation-platform-terraform-state-lock"
+  }
 }

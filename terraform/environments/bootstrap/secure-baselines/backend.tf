@@ -7,6 +7,12 @@ terraform {
     encrypt              = true
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
+<<<<<<< HEAD
     workspace_key_prefix = "environments/bootstrap/secure-baselines" # This will store the object as environments/bootstrap/secure-baselines/${workspace}/terraform.tfstate 
     }
+=======
+    workspace_key_prefix = "environments/bootstrap/secure-baselines" # This will store the object as environments/bootstrap/secure-baselines/${workspace}/terraform.tfstate
+    dynamodb_table       = "modernisation-platform-terraform-state-lock"
+  }
+>>>>>>> faa458c47ae0293fc568898dd55111b53964a7ce
 }
