@@ -51,7 +51,6 @@ locals {
   # But if not we will need to automate the updating of this list based on slugs in the environment json files.
   application_teams = [
     "all-org-members",
-    "operations-engineering",
     "performance-hub-developers",
     "studio-webops",
     "cica",
