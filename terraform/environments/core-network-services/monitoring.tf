@@ -105,7 +105,7 @@ resource "aws_cloudwatch_metric_alarm" "production_attachment_no_traffic_5_minut
   alarm_description   = format("Low traffic detected for VPC attachment %s", each.value.tags.Name)
   alarm_name          = format("NoVPCAttachmentTraffic-%s", each.value.tags.Name)
   comparison_operator = "LessThanOrEqualToThreshold"
-  datapoints_to_alarm = "1"
+  datapoints_to_alarm = "3"
   dimensions = {
     TransitGateway           = aws_ec2_transit_gateway.transit-gateway.id
     TransitGatewayAttachment = each.value["id"]
