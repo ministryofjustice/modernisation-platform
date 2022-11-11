@@ -14,7 +14,8 @@ module "instance_scheduler" {
   reserved_concurrent_executions = 1
   additional_trust_roles         = [module.github-oidc.github_actions_role]
   environment_variables = {
-    "INSTANCE_SCHEDULING_SKIP_ACCOUNTS" = "nomis-preproduction,"
+    # Only nomis-preproduction is a member account having the InstanceSchedulerAccess role
+    "INSTANCE_SCHEDULING_SKIP_ACCOUNTS" = "nomis-preproduction,mi-platform-development,analytical-platform-data-development,bichard7-test-next,bichard7-sandbox-shared,core-vpc-development,bichard7-sandbox-a,bichard7-shared,bichard7-test-current,bichard7-sandbox-c,core-vpc-sandbox,core-vpc-test,bichard7-sandbox-b,core-vpc-preproduction,core-sandbox-dev,"
   }
   image_uri    = "${local.environment_management.account_ids[terraform.workspace]}.dkr.ecr.eu-west-2.amazonaws.com/${module.instance_scheduler_ecr_repo.ecr_repository_name}:latest"
   timeout      = 600
