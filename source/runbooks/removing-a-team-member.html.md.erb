@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Removing a Team Member
-last_reviewed_on: 2022-09-21
+last_reviewed_on: 2022-11-11
 review_in: 6 month
 ---
 
@@ -13,5 +13,4 @@ Along with the standard [leavers form](https://leavers.form.service.justice.gov.
 1. Remove them from our GitHub team [terraform/github/locals.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/github/locals.tf)
 1. Remove them as a superadmin to our AWS landing zone [superadmins/main.tf](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins/blob/main/main.tf#L5)
 1. Run the modernisation-platform account Terraform for the above code change locally as a superuser (the CI user does not have permissions to delete users)
-1. Remove them from the Modernisation Platform SSO Groups (Note: Elevated privillages to the MoJ root account needed for this.)
 1. Remove them from the Modernisation Platform Google Group and Slack teams.
