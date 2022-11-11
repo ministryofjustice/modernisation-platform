@@ -9,5 +9,6 @@ terraform {
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
     workspace_key_prefix = "environments/accounts/data-and-insights-wepi" # This will store the object as environments/accounts/data-and-insights-wepi/${workspace}/terraform.tfstate
-  }
+    dynamodb_table       = "modernisation-platform-terraform-state-lock"  
+   }
 }
