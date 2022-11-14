@@ -8,5 +8,5 @@ terraform {
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
     workspace_key_prefix = "environments/bootstrap/delegate-access" # This will store the object as environments/bootstrap/delegate-access/${workspace}/terraform.tfstate
-    }
   }
+}

@@ -9,5 +9,5 @@ terraform {
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
     workspace_key_prefix = "environments/accounts/mi-platform" # This will store the object as environments/accounts/mi-platform/${workspace}/terraform.tfstate
-    }
+  }
 }
