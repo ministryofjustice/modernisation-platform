@@ -5,6 +5,7 @@ import (
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
+	"regexp"
 )
 
 func TestTransitGateway(t *testing.T) {
@@ -58,4 +59,24 @@ func TestTransitGateway(t *testing.T) {
 	output5 := terraform.Output(t, terraformOptions, "vpc_cidrs")
 	assert.Equal(t, output5, "map[live_data:10.20.64.0/19 non_live_data:10.20.96.0/19]")
 
+}
+
+func TestInstanceSchedulerLambda(t *testing.T) {
+	t.Parallel()
+
+	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+		TerraformDir: "./test_terraform",
+	})
+
+	// defer terraform.Destroy(t, terraformOptions)
+
+	terraform.InitAndApply(t, terraformOptions)
+
+	functionName := terraform.Output(t, terraformOptions, "function_name")
+	resultCode := terraform.Output(t, terraformOptions, "execution_result")
+	// memberList := terraform.Output(t, terraformOptions, "member_account")
+
+	assert.Regexp(t, regexp.MustCompile(`^instance-scheduler-lambda-function*`), functionName)
+	assert.Regexp(t, regexp.MustCompile(`^200*`), resultCode)
+	// assert.Regexp(t, regexp.MustCompile(`^testing-test*`), memberList)
 }
