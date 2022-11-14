@@ -9,10 +9,5 @@ terraform {
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
     workspace_key_prefix = "environments/accounts/analytical-platform-management" # This will store the object as environments/analytical-platform-management/${workspace}/terraform.tfstate
-<<<<<<< HEAD
      }
-=======
-    dynamodb_table       = "modernisation-platform-terraform-state-lock"
-  }
->>>>>>> faa458c47ae0293fc568898dd55111b53964a7ce
 }
