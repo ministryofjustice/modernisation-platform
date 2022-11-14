@@ -16,6 +16,10 @@ on:
     types: [opened, edited, reopened, synchronize]
   workflow_dispatch:
 
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
 defaults:
   run:
     shell: bash
@@ -29,10 +33,6 @@ jobs:
       TF_IN_AUTOMATION: true
       AWS_REGION: "eu-west-2"
       ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-
-    permissions:
-      id-token: write # This is required for requesting the JWT
-      contents: read # This is required for actions/checkout
 
     steps:
       - name: Checkout Repository
