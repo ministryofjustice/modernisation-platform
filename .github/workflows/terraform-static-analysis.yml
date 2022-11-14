@@ -12,8 +12,13 @@ on:
       - 'terraform/**'
       - '.github/workflows/terraform-static-analysis.yml'
 
+permissions:
+  contents: read
+
 jobs:
   terraform-static-analysis:
+    permissions:
+      pull-requests: write
     name: Terraform Static Analysis
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch' && github.event_name != 'schedule'

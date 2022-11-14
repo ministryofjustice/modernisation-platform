@@ -12,6 +12,9 @@ on:
       - 'environments/**.json'
       - '.github/workflows/opa-policies.yml'
 
+permissions:
+  contents: read
+
 defaults:
   run:
     shell: bash

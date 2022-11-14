@@ -8,6 +8,10 @@ on:
       - 'terraform/modules/**/*.md'
       - '.github/workflows/documentation.yml'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   docs:
     runs-on: ubuntu-latest

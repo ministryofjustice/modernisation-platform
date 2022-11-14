@@ -9,6 +9,9 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 defaults:
   run:
     shell: bash
@@ -33,7 +36,7 @@ jobs:
         run: bash ./core-repo/scripts/git-setup.sh ./modernisation-platform-environments
       - run: bash ./core-repo/scripts/git-commit.sh . ./modernisation-platform-environments
         env:  
-          TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+          TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }} # use this token as writing to a different repo
       - run: bash ./core-repo/scripts/git-pull-request.sh terraform/environments ./modernisation-platform-environments
         env:
           TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}

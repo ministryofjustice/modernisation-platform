@@ -11,6 +11,10 @@ on:
       - 'scripts/generate-dependabot-file.sh'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pull-requests: write
+
 defaults:
   run:
     shell: bash

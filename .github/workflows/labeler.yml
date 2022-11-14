@@ -4,6 +4,10 @@ on:
   pull_request_target:
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   triage:
     runs-on: ubuntu-latest
