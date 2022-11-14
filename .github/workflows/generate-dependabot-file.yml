@@ -11,9 +11,7 @@ on:
       - 'scripts/generate-dependabot-file.sh'
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 defaults:
   run:
@@ -21,6 +19,9 @@ defaults:
 
 jobs:
   create-and-commit-dependabot-file:
+    permissions:
+      contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

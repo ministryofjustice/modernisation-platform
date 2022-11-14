@@ -3,11 +3,12 @@ on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
 
-permissions:
-  contents: write
+permissions: {}
 
 jobs:
   format-code:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
