@@ -41,7 +41,7 @@ jobs:
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access plan
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access apply
       - name: Slack failure notification
-        uses: 8398a7/action-slack@v3
+        uses: 8398a7/action-slack@a189acbf0b7ea434558662ae25a0de71df69a435 # v3.14.0
         with:
           status: ${{ job.status }}
           fields: workflow,job,repo,commit,message
@@ -69,7 +69,7 @@ jobs:
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines plan
       - name: Slack failure notification
-        uses: 8398a7/action-slack@v3
+        uses: 8398a7/action-slack@a189acbf0b7ea434558662ae25a0de71df69a435 # v3.14.0
         with:
           status: ${{ job.status }}
           fields: workflow,job,repo,commit,message
@@ -97,7 +97,7 @@ jobs:
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines apply
       - name: Slack failure notification
-        uses: 8398a7/action-slack@v3
+        uses: 8398a7/action-slack@a189acbf0b7ea434558662ae25a0de71df69a435 # v3.14.0
         with:
           status: ${{ job.status }}
           fields: workflow,job,repo,commit,message
@@ -125,7 +125,7 @@ jobs:
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on plan
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on apply
       - name: Slack failure notification
-        uses: 8398a7/action-slack@v3
+        uses: 8398a7/action-slack@a189acbf0b7ea434558662ae25a0de71df69a435 # v3.14.0
         with:
           status: ${{ job.status }}
           fields: workflow,job,repo,commit,message
