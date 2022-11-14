@@ -25,6 +25,7 @@ This is our architecture decision log, made during the design and build of the M
 1. ✅ [How we create and maintain documentation](0020-how-we-create-and-maintain-documentation.md)
 1. ✅ [Use a Go Lambda for instance scheduling](0021-use-a-go-lambda-for-instance-scheduling.md)
 1. ✅ [Patching Strategy](0022-patching-strategy.md)
+1. ✅ [Backup Strategy](0023-backup-strategy.md)
 
 ## Statuses
 
