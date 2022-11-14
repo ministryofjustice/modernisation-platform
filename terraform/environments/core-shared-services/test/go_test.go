@@ -68,7 +68,7 @@ func TestInstanceSchedulerLambda(t *testing.T) {
 		TerraformDir: "./test_terraform",
 	})
 
-	// defer terraform.Destroy(t, terraformOptions)
+	defer terraform.Destroy(t, terraformOptions)
 
 	terraform.InitAndApply(t, terraformOptions)
 
