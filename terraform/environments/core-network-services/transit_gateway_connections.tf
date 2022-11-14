@@ -50,13 +50,13 @@ locals {
   availability_zones = sort(data.aws_availability_zones.available.names)
 
   # To extend the below two data sections, just add additional lines with name and CIDR address to the relevant sections
-  egress_pttp_routing_cidrs_non_live_data = {
+  non_live_data_static_routes = {
     "rfc-1918-10.0.0.0/8"     = "10.0.0.0/8",
     "rfc-1918-172.16.0.0/12"  = "172.16.0.0/12",
     "rfc-1918-192.168.0.0/16" = "192.168.0.0/16",
   }
 
-  egress_pttp_routing_cidrs_live_data = {
+  live_data_static_routes = {
     "azure-fixngo-live"           = "10.40.0.0/16",
     "azure-studiohosting-live1"   = "10.244.0.0/20",
     "azure-nomisapi-preprod"      = "10.47.0.64/26",
@@ -157,16 +157,16 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_external-i
 
 # add external egress routes for non-live-data TGW route table to PTTP attachment
 resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_non_live_data_to_PTTP" {
-  for_each = local.egress_pttp_routing_cidrs_non_live_data
+  for_each = local.non_live_data_static_routes
 
   destination_cidr_block         = each.value
-  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["non_live_data"].id
 }
 
 # add external egress routes for live-data TGW route table to PTTP attachment
 resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_live_data_to_PTTP" {
-  for_each = local.egress_pttp_routing_cidrs_live_data
+  for_each = local.live_data_static_routes
 
   destination_cidr_block         = each.value
   transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
