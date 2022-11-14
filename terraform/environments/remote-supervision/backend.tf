@@ -8,11 +8,6 @@ terraform {
     encrypt              = true
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
-    workspace_key_prefix = "environments/accounts/remote-supervision" # This will store the object as environments/remote-supervision/${workspace}/terraform.tfstate
-<<<<<<< HEAD
-    }
-=======
-    dynamodb_table       = "modernisation-platform-terraform-state-lock"
+    workspace_key_prefix = "environments/accounts/remote-supervision" # This will store the object as environments/remote-supervision/${workspace}/terraform.tfstate    }
   }
->>>>>>> faa458c47ae0293fc568898dd55111b53964a7ce
 }
