@@ -31,7 +31,7 @@ jobs:
       - run: bash ./scripts/git-pull-request.sh terraform/environments
         env:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
-      - uses: 8398a7/action-slack@v3
+      - uses: 8398a7/action-slack@a189acbf0b7ea434558662ae25a0de71df69a435 # v3.14.0
         name: Slack failure notification
         with:
           status: ${{ job.status }}

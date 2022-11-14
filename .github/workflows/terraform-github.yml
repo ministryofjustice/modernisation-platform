@@ -60,7 +60,7 @@ jobs:
         if: github.event.ref == 'refs/heads/main'
         run: bash scripts/terraform-apply.sh terraform/github
       - name: Slack failure notification
-        uses: 8398a7/action-slack@v3
+        uses: 8398a7/action-slack@a189acbf0b7ea434558662ae25a0de71df69a435 # v3.14.0
         with:
           status: ${{ job.status }}
           fields: workflow,job,repo,commit,message
