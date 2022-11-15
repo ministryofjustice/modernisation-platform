@@ -50,19 +50,13 @@ locals {
   availability_zones = sort(data.aws_availability_zones.available.names)
 
   # To extend the below two data sections, just add additional lines with name and CIDR address to the relevant sections
-  egress_pttp_routing_cidrs_non_live_data = {
-    "azure-noms-test"          = "10.101.0.0/16",
-    "azure-noms-mgmt"          = "10.102.0.0/16",
-    "azure-nomisapi-t3"        = "10.47.0.0/26",
-    "azure-studiohosting-dev1" = "10.247.0.0/20",
-    "azure-studiohosting-ops1" = "10.247.32.0/20",
-    "global-protect"           = "10.184.0.0/16",
-    "analytical-platform-dev"  = "172.24.0.0/16",
-    "cloud-platform"           = "172.20.0.0/16",
-    "laa-development"          = "10.202.0.0/20"
+  non_live_data_static_routes = {
+    "rfc-1918-10.0.0.0/8"     = "10.0.0.0/8",
+    "rfc-1918-172.16.0.0/12"  = "172.16.0.0/12",
+    "rfc-1918-192.168.0.0/16" = "192.168.0.0/16",
   }
 
-  egress_pttp_routing_cidrs_live_data = {
+  live_data_static_routes = {
     "azure-fixngo-live"           = "10.40.0.0/16",
     "azure-studiohosting-live1"   = "10.244.0.0/20",
     "azure-nomisapi-preprod"      = "10.47.0.64/26",
@@ -72,6 +66,14 @@ locals {
     "analytical-platform-prod"    = "172.26.0.0/16",
     "cloud-platform"              = "172.20.0.0/16",
     "ppud-psn"                    = "51.247.0.0/16",
+  }
+
+  external_static_routes = {
+    "modernisation-platform-non-live" = "10.26.0.0/16"
+  }
+
+  inspection_static_routes = {
+    "default" = "0.0.0.0/0"
   }
 
   tgw_live_data_attachments = {
@@ -124,7 +126,7 @@ resource "aws_ec2_transit_gateway_route_table" "external_inspection_out" {
   transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
   tags = merge(
     local.tags,
-    { Name = "firewall" }
+    { Name = "inspection" }
   )
 }
 
@@ -148,23 +150,23 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_firewall" 
 
 ## Temporarily bypass MP NWFW
 resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_external-in" {
-  for_each                       = data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all
+  for_each                       = local.tgw_live_data_attachments
   transit_gateway_attachment_id  = each.key
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
 }
 
 # add external egress routes for non-live-data TGW route table to PTTP attachment
 resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_non_live_data_to_PTTP" {
-  for_each = local.egress_pttp_routing_cidrs_non_live_data
+  for_each = local.non_live_data_static_routes
 
   destination_cidr_block         = each.value
-  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["non_live_data"].id
 }
 
 # add external egress routes for live-data TGW route table to PTTP attachment
 resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_live_data_to_PTTP" {
-  for_each = local.egress_pttp_routing_cidrs_live_data
+  for_each = local.live_data_static_routes
 
   destination_cidr_block         = each.value
   transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
@@ -175,6 +177,20 @@ resource "aws_ec2_transit_gateway_route" "external_ingress_in_to_inspection_vpc"
   destination_cidr_block         = "0.0.0.0/0"
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
+}
+
+resource "aws_ec2_transit_gateway_route" "external_static_routes" {
+  for_each                       = local.external_static_routes
+  destination_cidr_block         = each.value
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
+}
+
+resource "aws_ec2_transit_gateway_route" "inspection_static_routes" {
+  for_each                       = local.inspection_static_routes
+  destination_cidr_block         = each.value
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
 # associate tgw external-inspection-in routing table with PTTP peering attachment
