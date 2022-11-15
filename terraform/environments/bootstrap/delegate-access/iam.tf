@@ -59,6 +59,7 @@ data "aws_iam_policy_document" "member-access" {
       "cloudfront:*",
       "cloudwatch:*",
       "dlm:*",
+      "dms:CreateEndpoint",
       "dynamodb:*",
       "ebs:*",
       "ec2:Describe*",
