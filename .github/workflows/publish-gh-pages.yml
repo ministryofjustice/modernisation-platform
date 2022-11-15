@@ -32,7 +32,7 @@ jobs:
         run: |
           /scripts/compile-and-create-artifact.sh
       - name: Upload artifact to be published
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
         with:
           name: github-pages
           path: artifact.tar
@@ -54,10 +54,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Pages
-        uses: actions/configure-pages@v2
+        uses: actions/configure-pages@d875fa8dc18209f310fe6999f4cfbc96ee372c2b # v2.1.2
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@main
+        uses: actions/deploy-pages@69a62cdfa4c32e0d925268597986261876cac577 # v1.2.2
       - name: Slack failure notification
         uses: 8398a7/action-slack@a189acbf0b7ea434558662ae25a0de71df69a435 # v3.14.0
         with:
