@@ -8,7 +8,7 @@ resource "aws_networkfirewall_firewall_policy" "main" {
       priority     = 1
       resource_arn = aws_networkfirewall_rule_group.stateful.arn
     }
-    stateless_default_actions          = ["aws:pass"]
+    stateless_default_actions          = ["aws:forward_to_sfe"]
     stateless_fragment_default_actions = ["aws:drop"]
   }
 
