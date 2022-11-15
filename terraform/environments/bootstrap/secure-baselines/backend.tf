@@ -7,6 +7,6 @@ terraform {
     encrypt              = true
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
-    workspace_key_prefix = "environments/bootstrap/secure-baselines" # This will store the object as environments/bootstrap/secure-baselines/${workspace}/terraform.tfstate
+    workspace_key_prefix = "environments/bootstrap/secure-baselines" # This will store the object as environments/bootstrap/secure-baselines/${workspace}/terraform.tfstate 
   }
 }
