@@ -9,6 +9,7 @@ on:
       - 'terraform/environments/core-network-services/**'
       - 'terraform/modules/vpc-hub/**'
       - 'terraform/modules/core-monitoring/**'
+      - 'terraform/modules/firewall-policy/**'
       - '.github/workflows/core-network-services-deployment.yml'
   pull_request:
     branches:
