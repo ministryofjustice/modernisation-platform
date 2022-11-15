@@ -109,8 +109,7 @@ expected =
       "general": {
         "cidr": "10.27.24.0/21",
         "accounts": [
-          "xhibit-portal-preproduction",
-          "data-and-insights-wepi-preproduction"
+          "xhibit-portal-preproduction"
         ]
       }
     },
@@ -136,7 +135,6 @@ expected =
         "cidr": "10.27.32.0/21",
         "accounts": [
           "threat-and-vulnerability-mgmt-production",
-          "data-and-insights-wepi-production"
         ]
       }
     },
