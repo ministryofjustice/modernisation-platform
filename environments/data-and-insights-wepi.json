@@ -9,6 +9,24 @@
           "level": "sandbox"
         }
       ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "data-and-insights-hub",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "data-and-insights-hub",
+          "level": "developer"
+        }
+      ]
     }
   ],
   "tags": {
