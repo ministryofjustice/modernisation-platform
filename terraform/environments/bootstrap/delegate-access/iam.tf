@@ -504,12 +504,12 @@ module "shield_response_team_role" {
 # Github OIDC provider
 module "github-oidc" {
   count  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test") ? 1 : 0
-  source = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v1.2.0"
+  source = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v2.0.0"
   providers = {
     aws = aws.workspace
   }
   additional_permissions = data.aws_iam_policy_document.oidc_assume_role_member[0].json
-  github_repository      = "ministryofjustice/modernisation-platform-environments:*"
+  github_repositories    = ["ministryofjustice/modernisation-platform-environments:*"]
   tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
   tags_prefix            = ""
 }

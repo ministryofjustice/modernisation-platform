@@ -164,9 +164,9 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
 
 # OIDC Confiuration for core-shared-services
 module "github-oidc" {
-  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v1.2.0"
+  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v2.0.0"
   additional_permissions = data.aws_iam_policy_document.oidc_assume_role_core.json
-  github_repository      = "ministryofjustice/modernisation-platform-instance-scheduler:*"
+  github_repositories    = ["ministryofjustice/modernisation-platform-instance-scheduler:*"]
   tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
   tags_prefix            = ""
 }
