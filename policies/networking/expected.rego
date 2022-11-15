@@ -134,7 +134,8 @@ expected =
       "general": {
         "cidr": "10.27.32.0/21",
         "accounts": [
-          "threat-and-vulnerability-mgmt-production"
+          "threat-and-vulnerability-mgmt-production",
+          "data-and-insights-wepi-production"
         ]
       }
     },
@@ -201,8 +202,7 @@ expected =
     "hq-preproduction": {
       "general": {
         "cidr": "10.27.40.0/21",
-        "accounts": [
-        ]
+        "accounts": ["data-and-insights-wepi-preproduction"]
       }
     },
     "opg-production": {
