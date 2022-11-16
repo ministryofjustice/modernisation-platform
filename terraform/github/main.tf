@@ -134,6 +134,20 @@ module "terraform-module-github-oidc-provider" {
   secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
+module "terraform-module-github-oidc-role" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-github-oidc-role"
+  type        = "module"
+  description = "Module for creating additional roles assumable via the OIDC provider for use in Github Actions"
+  topics = [
+    "aws",
+    "oidc",
+    "github",
+    "actions"
+  ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
+}
+
 module "terraform-module-ecs" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-ecs"
@@ -340,6 +354,7 @@ module "core-team" {
     module.modernisation-platform-terraform-module-template.repository.name,
     module.modernisation-platform-terraform-pagerduty-integration.repository.name,
     module.terraform-module-github-oidc-provider.repository.name,
+    module.terraform-module-github-oidc-role.repository.name,
     module.modernisation-platform-configuration-management.repository.name,
     module.terraform-module-lambda-function.repository.name
   ]
