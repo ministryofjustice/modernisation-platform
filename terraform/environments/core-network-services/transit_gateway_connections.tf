@@ -66,7 +66,7 @@ locals {
     "analytical-platform-prod"    = "172.26.0.0/16",
     "cloud-platform"              = "172.20.0.0/16",
     "ppud-psn"                    = "51.247.0.0/16",
-    "SMTP-relay"                  = "10.180.0.0/16",
+    "smtp-relay"                  = "10.180.0.0/16",
   }
 
   external_static_routes = {
