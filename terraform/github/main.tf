@@ -205,6 +205,20 @@ module "modernisation-platform-instance-scheduler" {
   secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
+module "terraform-module-ssm-patching" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-ssm-patching"
+  type        = "module"
+  description = "Module to automate the patching of ec2 instances in each account"
+  topics = [
+    "aws",
+    "iam",
+    "ssm",
+    "moj-security"
+  ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
+}
+
 module "terraform-module-lambda-function" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-lambda-function"
@@ -356,7 +370,8 @@ module "core-team" {
     module.terraform-module-github-oidc-provider.repository.name,
     module.terraform-module-github-oidc-role.repository.name,
     module.modernisation-platform-configuration-management.repository.name,
-    module.terraform-module-lambda-function.repository.name
+    module.terraform-module-lambda-function.repository.name,
+    module.terraform-module-ssm-patching.repository.name
   ]
 
   maintainers = local.maintainers
