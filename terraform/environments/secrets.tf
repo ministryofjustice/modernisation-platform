@@ -108,7 +108,7 @@ locals {
 
 # Store environment management secret in Github secrets
 resource "github_actions_secret" "environment_management" {
-  for_each = toset(["modernisation-platform-environments", "modernisation-platform"])
+  for_each = toset(["modernisation-platform-environments", "modernisation-platform", "modernisation-platform-ami-builds"])
   # checkov:skip=CKV_SECRET_6: "secret_name is not a secret"
   secret_name = "MODERNISATION_PLATFORM_ENVIRONMENTS"
   repository  = each.key
