@@ -33,6 +33,8 @@ traffic from exiting a VPC.
 It is unlikely to cause traffic to be blocked from entering a VPC as the transit gateway endpoint subnets have fixed
 permissive NACLs.
 
+Outputs to **#modernisation-platform-low-priority-alarms**.
+
 ### network-gateway-changes
 
 This alarm triggers when an API call is made to create, delete, or attach an Internet Gateway or Customer Gateway. As
@@ -47,6 +49,8 @@ As we make all durable changes through code, this should show you the cause of t
 with the `nacl-changes` it ought to be legitimate in all cases. It is likely to affect customer traffic coming into a 
 service from the internet in the case of an Internet Gateway. In the case of a Customer Gateway this will be seen
 alongside a VPN tunnel moving to a `down` state.
+
+Outputs to **#modernisation-platform-low-priority-alarms**.
 
 ### NpVPCAttachmentTraffic
 
@@ -67,6 +71,16 @@ It is possible that a change to route tables, network access control lists, or t
 legitimate triggering of this alarm. In short, anything that is involved in traffic leaving the VPC via the Transit
 Gateway is in scope for investigation.
 
+An example of an illegitimate alert would be a dip in traffic over the alarm period that resolves itself without any 
+action from either the Modernisation Platform team, or a customer team - taking a service down for maintenance, for 
+example, and causing a legitimate cessation of traffic could cause this.
+
+An example of a legitimate alert would be a dip in traffic over the alarm period that does not resolve itself, and can
+be traced back to an unanticipated consequence of an action; restricting traffic through an access control list, for 
+example.
+
+Outputs to **#modernisation-platform-high-priority-alarms**.
+
 ### route-table-changes
 
 This alarm triggers when an API call is made to carry out a route-table related action; creating, replacing, or deleting
@@ -81,6 +95,8 @@ relevant account.
 Changes to route tables will affect the flow of traffic. As routes are selected on a most-specific-route basis, it is 
 possible that the impact of a route change will have limited effects.
 
+Outputs to **#modernisation-platform-low-priority-alarms**.
+
 ### vpc-changes
 
 This alarm triggers when an API call is made to create, delete, or update a VPC. As we have existing VPCs created on a
@@ -91,6 +107,8 @@ Should this alarm trigger you should confirm the VPC in question and find the ca
 correspond to the triggered alarms.
 
 As we make all durable changes through code, this should show you the cause of the `network-gateway-changes` alert.
+
+Outputs to **#modernisation-platform-low-priority-alarms**.
 
 ### Viewing metric filters
 
