@@ -1,14 +1,30 @@
 {
   "northgate_development": {
-    "customer_gateway_ip": "111.111.111.111",
+    "customer_gateway_ip": "31.210.246.15",
     "bpg_asn": "64678",
-    "tunnel1_inside_cidr": "169.254.8.0/30",
-    "tunnel2_inside_cidr": "169.254.9.0/30",
-    "modernisation_platform_vpc": "laa-development"
+    "modernisation_platform_vpc": "laa-development",
+    "dx_gateway_id": "",
+    "dx_gateway_owner_account_id": ""
   },
   "northgate_uat": {
-    "customer_gateway_ip": "111.111.111.112",
+    "customer_gateway_ip": "31.210.246.12",
     "bpg_asn": "64678",
-    "modernisation_platform_vpc": "laa-test"
+    "modernisation_platform_vpc": "laa-test",
+    "dx_gateway_id": "",
+    "dx_gateway_owner_account_id": ""
+  },
+  "northgate_stage": {
+    "customer_gateway_ip": "31.210.246.12",
+    "bpg_asn": "64678",
+    "modernisation_platform_vpc": "laa-preproduction",
+    "dx_gateway_id": "",
+    "dx_gateway_owner_account_id": ""
+  },
+  "northgate_prod": {
+    "customer_gateway_ip": "31.210.246.12",
+    "bpg_asn": "64678",
+    "modernisation_platform_vpc": "laa-production",
+    "dx_gateway_id": "",
+    "dx_gateway_owner_account_id": ""
   }
 }

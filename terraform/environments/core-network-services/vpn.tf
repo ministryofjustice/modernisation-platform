@@ -47,8 +47,19 @@ resource "aws_ec2_transit_gateway_route_table_association" "vpn_attachments" {
 }
 
 resource "aws_cloudwatch_log_group" "vpn_attachments" {
+# checkov:skip=CKV_AWS_158: "logs will not be shared so standard encryption fine"
   for_each          = local.vpn_attachments
   name              = "${replace(each.key, "_", "-")}-vpn-attachment-logs"
   retention_in_days = 365
   tags              = local.tags
+}
+
+resource "aws_dx_gateway_association_proposal" "this" {
+  for_each                    = {
+    for k, v in local.vpn_attachments : k => v 
+    if try((v.dx_gateway_id != ""), false)
+  }
+  dx_gateway_id               = try(each.value.dx_gateway_id, null)
+  dx_gateway_owner_account_id = try(each.value.dx_gateway_owner_account_id, null)
+  associated_gateway_id       = aws_customer_gateway.this[each.key].id
 }
