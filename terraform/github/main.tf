@@ -355,7 +355,8 @@ module "core-team" {
     module.modernisation-platform-terraform-pagerduty-integration.repository.name,
     module.terraform-module-github-oidc-provider.repository.name,
     module.modernisation-platform-configuration-management.repository.name,
-    module.terraform-module-lambda-function.repository.name
+    module.terraform-module-lambda-function.repository.name,
+    module.terraform-module-ssm-patching
   ]
 
   maintainers = local.maintainers
