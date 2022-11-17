@@ -64,4 +64,9 @@ locals {
     "hmpps-migration",
     "laa-ccms-migration-team"
   ]
+
+  # Create a list of repositories that we want our customers to be able to contribute to
+  modernisation_platform_repositories = [
+    for s in data.github_repositories.modernisation-platform-repositories.names : s if startswith(s, "modernisation-platform-")
+  ]
 }
