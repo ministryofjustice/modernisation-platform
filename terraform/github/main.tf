@@ -392,34 +392,9 @@ module "aws-team" {
   parent_team_id = module.core-team.team_id
 }
 
-# Give write access to teams on the AMI builds repo (access to merge to main is restricted by codeowners file)
-resource "github_team_repository" "modernisation-platform-ami-builds-access" {
-  for_each   = { for team in local.application_teams : team => team }
-  team_id    = each.value
-  repository = module.modernisation-platform-ami-builds.repository.id
-  permission = "push"
-}
-
-# Give write access to teams on the environments repo (access to merge to main is restricted by codeowners file)
-resource "github_team_repository" "modernisation-platform-environments-access" {
-  for_each   = { for team in local.application_teams : team => team }
-  team_id    = each.value
-  repository = module.modernisation-platform-environments.repository.id
-  permission = "push"
-}
-
-# Give write access to teams on the configuration management repo (access to merge to main is restricted by codeowners file)
-resource "github_team_repository" "modernisation-platform-configuration-management-access" {
-  for_each   = { for team in local.application_teams : team => team }
-  team_id    = each.value
-  repository = module.modernisation-platform-configuration-management.repository.id
-  permission = "push"
-}
-
-# Give write access to teams on the loadbalancer module repo (access to merge to main is restricted by codeowners file)
-resource "github_team_repository" "modernisation-platform-terraform-loadbalancer-access" {
-  for_each   = { for team in local.application_teams : team => team }
-  team_id    = each.value
-  repository = module.terraform-module-aws-loadbalancer.repository.id
-  permission = "push"
+module "contributor-access" {
+  for_each          = toset(local.modernisation_platform_repositories)
+  source            = "./modules/contributor"
+  application_teams = local.application_teams
+  repository_id     = each.key
 }

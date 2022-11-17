@@ -6,7 +6,7 @@ This directory creates and maintains the following GitHub items for the Modernis
   - team membership
   - team access to repositories
 
-The state is stored in S3, as defined in [main.tf](main.tf).
+The state is stored in S3, as defined in [backend.tf](backend.tf).
 
 ## How to create a new repository for a terraform module
 
