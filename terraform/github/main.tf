@@ -19,6 +19,8 @@ module "core" {
     SLACK_WEBHOOK_URL = data.aws_secretsmanager_secret_version.slack_webhook_url.secret_string
     # Pagerduty api token
     PAGERDUTY_TOKEN = data.aws_secretsmanager_secret_version.pagerduty_token.secret_string
+    # Org Account Id
+    AWS_ORG_MASTER_ACCOUNT_ID = data.aws_organizations_organization.root_account.master_account_id
   }))
 }
 

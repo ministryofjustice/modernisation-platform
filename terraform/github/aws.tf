@@ -60,3 +60,5 @@ data "aws_secretsmanager_secret" "pagerduty_token" {
 data "aws_secretsmanager_secret_version" "pagerduty_token" {
   secret_id = data.aws_secretsmanager_secret.pagerduty_token.id
 }
+# Organizations root acct
+data "aws_organizations_organization" "root_account" {}
