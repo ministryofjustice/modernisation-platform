@@ -156,6 +156,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/github/modules/contributor"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/github/modules/repository"
     schedule:
       interval: "daily"
