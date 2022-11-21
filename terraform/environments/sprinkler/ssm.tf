@@ -29,6 +29,7 @@ resource "aws_iam_policy" "ssm-admin-iam-policy" {
 resource "aws_iam_role" "ssm-admin-role" {
   name        = "ssm-admin-role-new"
   assume_role_policy = jsonencode({
+<<<<<<< HEAD
   "Version": "2012-10-17",
   "Statement": [
     {
@@ -45,6 +46,22 @@ resource "aws_iam_role" "ssm-admin-role" {
     }
   ]
 })
+=======
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : [
+            "ssm.amazonaws.com",
+            "iam.amazonaws.com"
+          ]
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
+>>>>>>> 8e2ccbecae70082269690ae63235dad7def0d954
 }
 
 resource "aws_iam_role_policy_attachment" "ssm-admin-automation" {
@@ -114,6 +131,7 @@ resource "aws_ssm_maintenance_window_target" "ssm-targets" {
 ###### ssm automation task #####
 
 resource "aws_ssm_maintenance_window_task" "ssm-maintenance-window-automation-task" {
+<<<<<<< HEAD
   name            = "${local.application_name}-automation-patching-task"
   max_concurrency = 20
   max_errors      = 10
@@ -121,6 +139,15 @@ resource "aws_ssm_maintenance_window_task" "ssm-maintenance-window-automation-ta
   task_type       = "AUTOMATION"
   task_arn        = "AWS-PatchInstanceWithRollback"
   window_id       = aws_ssm_maintenance_window.ssm-maintenance-window.id
+=======
+  name             = "${local.application_name}-automation-patching-task"
+  max_concurrency  = 20
+  max_errors       = 10
+  priority         = 1
+  task_type        = "AUTOMATION"
+  task_arn         = "AWS-PatchAsgInstance"
+  window_id        = aws_ssm_maintenance_window.ssm-maintenance-window.id
+>>>>>>> 8e2ccbecae70082269690ae63235dad7def0d954
   service_role_arn = aws_iam_role.ssm-admin-role.arn
 
   targets {
@@ -140,6 +167,18 @@ resource "aws_ssm_maintenance_window_task" "ssm-maintenance-window-automation-ta
         name   = "ReportS3Bucket"
         values = ["sprinkler-patching-logs"]
       }
+<<<<<<< HEAD
+=======
+      #      parameter {
+      #        name   = "ReportS3Bucket"
+      #        values = ["${local.application_name}-patching-logs"]
+      #      }
+      #      parameter {
+      #        name   = "AutomationAssumeRole"
+      #        values = [aws_iam_role.ssm_ec2_instance_role.arn]
+      #      }
+
+>>>>>>> 8e2ccbecae70082269690ae63235dad7def0d954
     }
   }
 }
