@@ -85,7 +85,8 @@ expected =
           "ppud-production",
           "equip-production",
           "oasys-production",
-          "nomis-production"
+          "nomis-production",
+          "delius-iaps-production"
         ]
       }
     },
