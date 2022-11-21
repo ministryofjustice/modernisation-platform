@@ -9,6 +9,15 @@
           "level": "sandbox"
         }
       ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "hmpps-migration",
+          "level": "developer"
+        }
+      ]
     }
   ],
   "tags": {
