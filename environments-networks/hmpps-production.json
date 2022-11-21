@@ -3,7 +3,7 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.27.8.0/21",
-        "accounts": ["performance-hub-production", "ppud-production", "equip-production", "nomis-production", "oasys-production"]
+        "accounts": ["performance-hub-production", "ppud-production", "equip-production", "nomis-production", "oasys-production", "delius-iaps-production"]
       }
     }
   },
