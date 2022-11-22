@@ -70,7 +70,8 @@ locals {
   }
 
   external_static_routes = {
-    "modernisation-platform-non-live" = "10.26.0.0/16"
+    "modernisation-platform-non-live" = "10.26.0.0/16",
+    "modernisation-platform-live" = "10.27.0.0/16"
   }
 
   inspection_static_routes = {
