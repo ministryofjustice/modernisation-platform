@@ -57,21 +57,14 @@ locals {
   }
 
   live_data_static_routes = {
-    "azure-fixngo-live"           = "10.40.0.0/16",
-    "azure-studiohosting-live1"   = "10.244.0.0/20",
-    "azure-nomisapi-preprod"      = "10.47.0.64/26",
-    "azure-nomisapi-prod"         = "10.47.0.128/26",
-    "global-protect"              = "10.184.0.0/16",
-    "analytical-platform-preprod" = "172.25.0.0/16",
-    "analytical-platform-prod"    = "172.26.0.0/16",
-    "cloud-platform"              = "172.20.0.0/16",
-    "ppud-psn"                    = "51.247.0.0/16",
-    "smtp-relay"                  = "10.180.0.0/16",
+    "rfc-1918-10.0.0.0/8"     = "10.0.0.0/8",
+    "rfc-1918-172.16.0.0/12"  = "172.16.0.0/12",
+    "rfc-1918-192.168.0.0/16" = "192.168.0.0/16",
   }
 
   external_static_routes = {
     "modernisation-platform-non-live" = "10.26.0.0/16",
-    "modernisation-platform-live" = "10.27.0.0/16"
+    "modernisation-platform-live"     = "10.27.0.0/16"
   }
 
   inspection_static_routes = {
@@ -171,7 +164,7 @@ resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_live_da
   for_each = local.live_data_static_routes
 
   destination_cidr_block         = each.value
-  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["live_data"].id
 }
 
