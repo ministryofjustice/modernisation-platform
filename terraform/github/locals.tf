@@ -7,7 +7,6 @@ locals {
   maintainers = [
     "ewastempel",
     "jakemulley",
-    "gfou-al", # George Fountopoulos
     "SteveMarshall",
     "davidkelliott"
   ]
@@ -33,7 +32,6 @@ locals {
     "davidkelliott",
     "jakemulley",
     "stevelinden",
-    "gfou-al", # George Fountopoulos,
     "dms1981", # David Sibley
     "ep-93",   # Edward Proctor
     "julialawrence",
