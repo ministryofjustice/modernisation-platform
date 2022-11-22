@@ -57,7 +57,7 @@ jobs:
         uses: actions/configure-pages@d875fa8dc18209f310fe6999f4cfbc96ee372c2b # v2.1.2
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@69a62cdfa4c32e0d925268597986261876cac577 # v1.2.2
+        uses: actions/deploy-pages@20a4baa1095bad40ba7d6ca0d9abbc220b76603f # v1.2.3
       - name: Slack failure notification
         uses: 8398a7/action-slack@a189acbf0b7ea434558662ae25a0de71df69a435 # v3.14.0
         with:
