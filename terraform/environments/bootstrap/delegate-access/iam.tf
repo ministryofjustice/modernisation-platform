@@ -429,6 +429,9 @@ data "aws_iam_policy_document" "developer-additional" {
       "ec2:CreateSnapshot",
       "ec2:CreateSnapshots",
       "ec2:CreateTags",
+      "ec2:DescribeVolumes",
+      "ec2:DescribeInstances",
+      "ec2:DescribeInstanceTypes",
       "s3:PutObject",
       "s3:DeleteObject",
       "rds:CopyDBSnapshot",
@@ -437,7 +440,10 @@ data "aws_iam_policy_document" "developer-additional" {
       "rds:CreateDBClusterSnapshot",
       "aws-marketplace:ViewSubscriptions",
       "support:*",
-      "rhelkb:GetRhelURL"
+      "rhelkb:GetRhelURL",
+      "cloudwatch:PutDashboard",
+      "cloudwatch:ListMetrics",
+      "cloudwatch:DeleteDashboards"
     ]
 
     resources = ["*"]
