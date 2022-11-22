@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Our ways of working
-last_reviewed_on: 2022-11-18
+last_reviewed_on: 2022-11-21
 review_in: 3 months
 ---
 
@@ -12,9 +12,13 @@ review_in: 3 months
 [GitHub projects](https://github.com/orgs/ministryofjustice/projects/17) are used to manage our workload.
 We use a scrum board to help us visualise the work delivery progress and we work in two week sprints to deliver milestones.
 
-The board allows a task to be in one of four stages. When a ticket is read to work on, it will be displayed under __To Do__ stage column.
+When a task aka GitHub issue is created it will appear in a backlog of the project or in a backlog of a sprint that it was assigned to.
+While it is OK to create a placeholder task with a minimum description in a backlog, once it is planned in a certain sprint, the information in the task must be populated to meet the Definition of Ready (DoR).
+Make sure to update a task description before a refinement session or do not assign it to a sprint.
+
+Once the tasks are selected for development in the coming sprint, the board allows a task to be in one of four stages. When a ticket is read to work on, it will be displayed under __To Do__ stage column.
 When a ticket gets picked up by a team member it gets assigned to that team member and it is moved to the __In Progress__ stage.
-When the ticket gets implemented and tested, it is further moved the __Done__ stage.
+When a ticket gets implemented and tested, it is further moved to the __Done__ stage.
 
 Occasionally there are situations that work on a ticket gets blocked, the __Blocked__ stage is for such occasions.
 
@@ -24,7 +28,7 @@ As a team we have agreed to do the following for each stage:
     * Tasks are roughly prioritised during a sprint planning session, but we are not obliged to take the one from the top.
     We have the freedom of picking a task that we want to work on and we do not pre-assign team members to a task prior the start of a sprint.
     * Tasks that are selected for a sprint should have all the necessary information in the task description, including a Definition of Done (DoD).
-    If it is not clear what is asked in the task, it does not meet the Definition of Ready (DoR) and should be taken out of the sprint.
+    If it is not clear what is asked in the task, then it does not meet the DoR and therefore should be taken out of the sprint.
 
 * __In Progress__
     * Adding progress notes to a task as we reach a milestone rather than daily updates.
@@ -38,3 +42,24 @@ As a team we have agreed to do the following for each stage:
 * __Done__
     * Tasks can be closed when they have been implemented, tested and reviewed.
     * Closing an issue moves a task to __Done__, where moving an issue to __Done__ does not close it, hence close it, rather than move it.
+
+## Working with Git and GitHub
+
+There is a number of things we can do to make collaborating on code seamless.
+Although we do not want to impose too many rules on our team members, the following list is what we agreed as a team to do as a minimum:
+
+* Keeping a good git hygiene `git fetch`/`git pull` in `main` before branching out when starting on a new task. Merging `main` regularly into your branch on local and resolving the merge conflicts before committing and pushing to remote.
+* Adding meaningful messages when committing, such as what have you achieved in this step.
+* Running tests, verifying if the tests/SCA has passed and that the `terraform plan` and the pipeline runs clean before creating a PR.
+* Providing enough information in the PR description so that another team member has enough context to be able to understand the change and to review it.
+Adding explanation on what is implemented with the PR and why. Adding information on tests if they were run outside of the GitHub actions pipeline and other useful links or references that help to understand the changes (e.g. a link to the issue or a doc).
+* Not approving PRs that do not have a good description or commit messages.
+* Approving only PRs that you understand (it applies to PRs created within and outside the team), limiting reviews to the platform code only.
+* Verifying the pipeline run clean post merge.
+* Using `major.minor.patch` for tags/releases.
+
+We also think it is good to:
+
+* use a meaningful branch naming, using prefixes such as `feature/`, `bug/`, including an issue number and making it a summary of what your goal is (e.g. `feature/2563-usingOIDC-in-base`),
+* squash commits before committing to remote, so that each commit represents a step in the implementation (combining  planned changes with fixes to errors),
+* ... and/or squash commits when merging a remote branch with the `main`.
