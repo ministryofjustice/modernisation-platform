@@ -43,7 +43,7 @@ resource "pagerduty_service" "core_alerts" {
   alert_creation          = "create_alerts_and_incidents"
 }
 
-resource "pagerduty_service_integration" "cloudwatch" {
+resource "pagerduty_service_integration" "core_alerts_cloudwatch" {
   name    = data.pagerduty_vendor.cloudwatch.name
   service = pagerduty_service.core_alerts.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
