@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Networking Approach
-last_reviewed_on: 2022-05-19
+last_reviewed_on: 2022-11-24
 review_in: 6 months
 ---
 
@@ -36,8 +36,6 @@ These VPCs are then shared via [RAM](https://docs.aws.amazon.com/ram/latest/user
 For example the production LAA VPC may be shared to multiple LAA application accounts, this enables LAA applications to communicate with each other without the need for [VPC peering](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-peering.html) as they are using the same VPC.
 
 Connection to other VPCs, for example if an LAA application needs to communicate with a HMPPS application, is done through the [Transit Gateway](#what-we-decided-transit-gateway), [NACLs](#nacls) can be opened to allow access, and [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html) from other accounts can be referenced.
-
-
 
 #### Subnets
 
@@ -74,13 +72,9 @@ The [transit gateway](#what-we-decided-transit-gateway) subnets are created per 
 
 Access to the subnet sets is controlled with [Network ACLs (NACLs)](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html).
 
-By default these NACLs are locked down, allowing only egress and ingress to the public subnets.  We can add additional rules to allow your application to talk to services in different subnet sets as needed.
+NACLs allow traffic in and out of the Modernisation Platform (North/South), but prevent traffic from traversion business unit VPCs (East/West).
 
-Egress traffic is allowed by a centralised NAT in network services account.
-
-NACLs are not applied to Transit Gateway subnets, traffic is controlled at the subnet set level.
-
-NACLs to the protected subnets only allow access from the private subnet sets over HTTPS to access endpoints.
+Traffic within a VPC is not restricted.
 
 #### Other VPCs
 
@@ -104,4 +98,4 @@ Routing is split into production and non production data for data protection.
 
 ![Shared VPC Diagram](../../images/shared-vpc.png)
 
-For more information on how the VPC sharing fits into the bigger networking picture, see the main [networking diagram](networking-diagram.html) 
+For more information on how the VPC sharing fits into the bigger networking picture, see the main [networking diagram](networking-diagram.html)
