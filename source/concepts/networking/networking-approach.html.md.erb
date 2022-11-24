@@ -37,8 +37,6 @@ For example the production LAA VPC may be shared to multiple LAA application acc
 
 Connection to other VPCs, for example if an LAA application needs to communicate with a HMPPS application, is done through the [Transit Gateway](#what-we-decided-transit-gateway), [NACLs](#nacls) can be opened to allow access, and [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html) from other accounts can be referenced.
 
-
-
 #### Subnets
 
 ##### General
@@ -100,4 +98,4 @@ Routing is split into production and non production data for data protection.
 
 ![Shared VPC Diagram](../../images/shared-vpc.png)
 
-For more information on how the VPC sharing fits into the bigger networking picture, see the main [networking diagram](networking-diagram.html) 
+For more information on how the VPC sharing fits into the bigger networking picture, see the main [networking diagram](networking-diagram.html)
