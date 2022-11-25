@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Core Workflow (CI/CD)
-last_reviewed_on: 2022-05-24
+last_reviewed_on: 2022-11-25
 review_in: 6 months
 ---
 
@@ -56,3 +56,4 @@ Terraform Static Code Analysis | Runs TFSEC, Checkov and TFlint against all Terr
 Generate Dependabot File | Generates a new dependabot file to add any newly added Terraform folders | `generate-dependabot-file.yml`
 Add issues to project | On new modernisation-plaform repository issue creation adds the new issue to the Modernisation Platform project | `add-issues-to-project.yml`
 Terraform Documentation | Generates Terraform module documentation | `documentation.yml`
+Scorecards | Generates [OSSF scorecard](https://github.com/ossf/scorecard) security findings and publishes them on the repository security tab in GitHub | `scorecards.yml`

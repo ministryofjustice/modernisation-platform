@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Adding Wider Connectivity to the Modernisation Platform
-last_reviewed_on: 2022-05-24
+last_reviewed_on: 2022-11-25
 review_in: 6 month
 ---
 
@@ -19,7 +19,9 @@ Whilst we could directly connect things to our Modernisation Transit Gateway, th
 
 ### Egress from the MP TGW to PTTP TGW
 
-An egress route out of the platform must be added [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/transit_gateway_connections.tf#L73) to the appropriate non_live or live map.
+All private traffic that is not destined for a Modernisation Platform VPC is routed through to the PTTP TGW.
+
+Additional non private IP ranges that need to be routed through to the PTTP TGW should be added [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/transit_gateway_connections.tf#L52)
 
 ### From PTTP TGW to the new connectivity location
 
@@ -55,5 +57,4 @@ A high level diagram of the wider MoJ networking can be found [here](https://dri
 Remember to do the following in addition to the above in the Modernisation Platform to allow traffic:
 
 - Add appropriate Firewall rules
-- Open appropriate NACLs for the business unit subnet sets per relevant environment
 - Add allow rules to the appropriate Security Groups
