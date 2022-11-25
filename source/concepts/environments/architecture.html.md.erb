@@ -1,8 +1,8 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Environments (AWS accounts) architecture
-last_reviewed_on: 2022-08-19
-review_in: 3 months
+last_reviewed_on: 2022-11-25
+review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
@@ -31,10 +31,10 @@ Under the Modernisation Platform OU, we have 3 child OUs -
 
 When a [new environment is created](../../user-guide/creating-environments.html), the Modernisation Platform automatically creates a new OU for the application which holds all of the environments (AWS accounts), and it sits within the Modernisation Platform Member OU.
 
-For example, if you had an application, `example-application`, that required 2 environments, `production` and `non-production`:
+For example, if you had an application, `example-application`, that required 2 environments, `production` and `development`:
 
 - we'd automatically create an OU called `modernisation-platform-example-application`
-- `example-application-production` and `example-application-non-production` AWS accounts would sit within the `modernisation-platform-example-application` OU, as a child of the Modernisation Platform Member OU
+- `example-application-production` and `example-application-development` AWS accounts would sit within the `modernisation-platform-example-application` OU, as a child of the Modernisation Platform Member OU
 
 ## Benefits of using organization units
 
