@@ -14,7 +14,6 @@ data "aws_caller_identity" "modernisation-platform" {
 locals {
 
   application_name = "sprinkler"
-  operating_system = "CENTOS"
 
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 
