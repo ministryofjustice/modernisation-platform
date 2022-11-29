@@ -1,4 +1,39 @@
 {
+  "gp_to_mp_nomis_production_http": {
+    "action": "PASS",
+    "source_ip": "10.40.0.0/18",
+    "destination_ip": "10.27.8.0/21",
+    "destination_port": "80",
+    "protocol": "TCP"
+  },
+  "gp_to_mp_nomis_production_https": {
+    "action": "PASS",
+    "source_ip": "10.40.0.0/18",
+    "destination_ip": "10.27.8.0/21",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
+  "azure_noms_to_mp_nomis_production_db": {
+    "action": "PASS",
+    "source_ip": "10.40.0.0/16",
+    "destination_ip": "10.27.8.0/21",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "cp_to_mp_nomis_production_db": {
+    "action": "PASS",
+    "source_ip": "172.20.0.0/16",
+    "destination_ip": "10.27.8.0/21",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "mp_ppud_production_to_psn_ppud": {
+    "action": "PASS",
+    "source_ip": "10.27.8.0/21",
+    "destination_ip": "51.247.2.115/32",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "default_open": {
     "action": "PASS",
     "source_ip": "0.0.0.0/0",

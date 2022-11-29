@@ -1,0 +1,30 @@
+{
+  "gp_to_nomis_test_http": {
+    "action": "PASS",
+    "source_ip": "10.184.0.0/16",
+    "destination_ip": "10.26.8.0/21",
+    "destination_port": "80",
+    "protocol": "TCP"
+  },
+  "gp_to_nomis_test_https": {
+    "action": "PASS",
+    "source_ip": "10.101.0.0/16",
+    "destination_ip": "10.26.8.0/21",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
+  "az_noms_test_to_mp_nomis_test_db": {
+    "action": "PASS",
+    "source_ip": "10.101.0.0/16",
+    "destination_ip": "10.26.8.0/21",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "cp_to_mp_nomis_test_db": {
+    "action": "PASS",
+    "source_ip": "172.20.0.0/16",
+    "destination_ip": "10.26.8.0/21",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  }
+}
