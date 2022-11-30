@@ -21,15 +21,17 @@ resource "aws_vpn_connection" "this" {
 
   tunnel1_log_options {
     cloudwatch_log_options {
-      log_enabled   = true
-      log_group_arn = aws_cloudwatch_log_group.vpn_attachments[each.key].arn
+      log_enabled       = true
+      log_group_arn     = aws_cloudwatch_log_group.vpn_attachments[each.key].arn
+      log_output_format = "json"
     }
   }
 
   tunnel2_log_options {
     cloudwatch_log_options {
-      log_enabled   = true
-      log_group_arn = aws_cloudwatch_log_group.vpn_attachments[each.key].arn
+      log_enabled       = true
+      log_group_arn     = aws_cloudwatch_log_group.vpn_attachments[each.key].arn
+      log_output_format = "json"
     }
   }
 
