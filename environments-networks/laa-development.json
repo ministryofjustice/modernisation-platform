@@ -8,9 +8,6 @@
           "ccms-ebs-development",
           "maatdb-development",
           "mlra-development",
-          "mlra-test",
-          "mlra-preproduction",
-          "mlra-production"
         ]
       }
     }
