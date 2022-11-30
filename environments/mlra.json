@@ -20,6 +20,15 @@
       ]
     },
     {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "laa-aws-infrastructure",
+          "level": "developer"
+        }
+      ]
+    },
+    {
       "name": "production",
       "access": [
         {
