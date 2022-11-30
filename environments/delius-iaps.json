@@ -18,6 +18,15 @@
           "level": "developer"
         }
       ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "hmpps-migration",
+          "level": "developer"
+        }
+      ]
     }
   ],
   "tags": {
