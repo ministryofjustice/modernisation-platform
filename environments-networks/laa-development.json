@@ -3,12 +3,7 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.26.56.0/21",
-        "accounts": [
-          "apex-development",
-          "ccms-ebs-development",
-          "maatdb-development",
-          "mlra-development",
-        ]
+        "accounts": ["apex-development", "ccms-ebs-development", "maatdb-development", "mlra-development"]
       }
     }
   },
