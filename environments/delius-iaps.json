@@ -20,7 +20,7 @@
       ]
     },
     {
-      "name": "pre-production",
+      "name": "preproduction",
       "access": [
         {
           "github_slug": "hmpps-migration",
