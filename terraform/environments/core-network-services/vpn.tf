@@ -23,6 +23,7 @@ resource "aws_vpn_connection" "this" {
     cloudwatch_log_options {
       log_enabled   = true
       log_group_arn = aws_cloudwatch_log_group.vpn_attachments[each.key].arn
+      log_output_format = "json"
     }
   }
 
@@ -30,6 +31,7 @@ resource "aws_vpn_connection" "this" {
     cloudwatch_log_options {
       log_enabled   = true
       log_group_arn = aws_cloudwatch_log_group.vpn_attachments[each.key].arn
+      log_output_format = "json"
     }
   }
 
