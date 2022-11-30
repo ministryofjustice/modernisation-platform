@@ -151,30 +151,6 @@ expected =
         ]
       }
     },
-    "laa-test": {
-      "general": {
-        "cidr": "10.26.96.0/21",
-        "accounts": [
-          "mlra-test"
-        ]
-      }
-    },
-    "laa-preproduction": {
-      "general": {
-        "cidr": "10.27.72.0/21",
-        "accounts": [
-        "mlra-preproduction"
-        ]
-      }
-    },
-     "laa-production": {
-      "general": {
-        "cidr": "10.27.64.0/21",
-        "accounts": [
-        "mlra-production"
-        ]
-      }
-    },
     "opg-development": {
       "general": {
         "cidr": "10.26.72.0/21",
@@ -207,6 +183,7 @@ expected =
       "general": {
         "cidr": "10.26.96.0/21",
         "accounts": [
+          "mlra-test"
         ]
       }
     },
@@ -248,6 +225,7 @@ expected =
       "general": {
         "cidr": "10.27.64.0/21",
         "accounts": [
+          "mlra-production"
         ]
       }
     },
@@ -255,6 +233,7 @@ expected =
       "general": {
         "cidr": "10.27.72.0/21",
         "accounts": [
+          "mlra-preproduction"
         ]
       }
     },
