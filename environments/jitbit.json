@@ -1,0 +1,37 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "hmpps-migration",
+          "level": "sandbox"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "hmpps-migration",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "hmpps-migration",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "delius-integrated-accredited-programmes-system",
+    "business-unit": "HMPPS",
+    "owner": "Probation WebOps: probation-webops@digital.justice.gov.uk"
+  }
+}
