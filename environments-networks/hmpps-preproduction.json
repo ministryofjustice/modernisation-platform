@@ -3,7 +3,7 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.27.0.0/21",
-        "accounts": ["performance-hub-preproduction", "nomis-preproduction", "oasys-preproduction"]
+        "accounts": ["performance-hub-preproduction", "nomis-preproduction", "oasys-preproduction", "delius-iaps-preproduction"]
       }
     }
   },

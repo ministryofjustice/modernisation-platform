@@ -25,7 +25,8 @@ expected =
         "accounts": [
           "performance-hub-preproduction",
           "oasys-preproduction",
-          "nomis-preproduction"
+          "nomis-preproduction",
+          "delius-iaps-preproduction"
         ]
       }
     },
