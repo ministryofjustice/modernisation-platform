@@ -11,7 +11,8 @@
           "refer-monitor-development",
           "nomis-development",
           "oasys-development",
-          "delius-iaps-development"
+          "delius-iaps-development",
+          "delius-jitbit-development"
         ]
       }
     }
