@@ -1,6 +1,6 @@
 resource "aws_customer_gateway" "this" {
   for_each   = local.vpn_attachments
-  bgp_asn    = each.value.bpg_asn
+  bgp_asn    = each.value.bgp_asn
   ip_address = each.value.customer_gateway_ip
   type       = "ipsec.1"
 
