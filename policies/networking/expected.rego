@@ -26,7 +26,8 @@ expected =
           "performance-hub-preproduction",
           "oasys-preproduction",
           "nomis-preproduction",
-          "delius-iaps-preproduction"
+          "delius-iaps-preproduction",
+          "delius-jitbit-preproduction"
         ]
       }
     },
@@ -49,7 +50,8 @@ expected =
           "refer-monitor-development",
           "nomis-development",
           "oasys-development",
-          "delius-iaps-development"
+          "delius-iaps-development",
+          "delius-jitbit-development"
         ]
       }
     },
@@ -87,7 +89,8 @@ expected =
           "equip-production",
           "oasys-production",
           "nomis-production",
-          "delius-iaps-production"
+          "delius-iaps-production",
+          "delius-jitbit-production"
         ]
       }
     },

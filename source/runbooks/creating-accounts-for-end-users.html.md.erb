@@ -58,9 +58,9 @@ For this example, we will be joining an existing subnet-set. For new business un
 Check that you have completed the previous steps, so far you should have added the github-slug, the json files under environments, updated the `policies/environments/expected.rego` file and merged the PR in modernisation-platform containing the terraform files.
 
 #### Step two
-Add the `environments/networks`. Here's an example of a pull request for this [stage](https://github.com/ministryofjustice/modernisation-platform/pull/2127/files ).
+Add the subnets in `environments/networks`. Update the [`policies/networking/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/networking/expected.rego) to include newly added subnets (similarly to like you did for environments). This is to ensure that none of the subnets get accidentally deleted. Here's an example of a pull request for this [stage](https://github.com/ministryofjustice/modernisation-platform/pull/2127/files ).
 
-This will then generate a PR for the ram share, merge this. An example can be found [here](https://github.com/ministryofjustice/modernisation-platform/pull/2203)
+This will then kick off `core-vpc-<env>-demployment` pipelines and run `terraform plan`, `terraform apply` and the `scripts/member-account-ram-association.sh` script for the RAM share. If the RAM share script fails to run on the merge, it will have to be run manually.
 
 #### Step three
 Once complete, the pull request raised earlier in  `modernisation-platform-environments` can be merged. Example [here](https://github.com/ministryofjustice/modernisation-platform-environments/pull/805/files ). The pipeline will create this.
