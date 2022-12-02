@@ -170,14 +170,14 @@ jobs:
       - name: Get list of accounts in changed environments-networking files
         id: new_account
         run: |
-          echo "::set-output name=files::$(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep "environments-networks/.*.json" | xargs -I {} cat {} | jq '.cidr.subnet_sets[].accounts[]' -r | grep "\-${TF_ENV}" | uniq)"
+          echo "::set-output name=files::$(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep "environments-networks/.*.json" | xargs -I {} cat {} | jq '.cidr.subnet_sets[].accounts[]' -r | grep "\-${TF_ENV}" | uniq | tr \\n ,)"
 
       - name: Set RAM association for member account
         run: |
           accounts=(${{ steps.new_account.outputs.files }})
-          if [ ! -z ${accounts} ]
+          if [ ! -z "${accounts}" ]
           then
-          for i in "${accounts[@]}"
+          for i in ${accounts}
           do
           echo "[+] Setting up RAM association for ${i}"
           bash scripts/member-account-ram-association.sh ${i} ${TF_ENV}
