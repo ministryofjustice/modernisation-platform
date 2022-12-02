@@ -9,7 +9,8 @@
           "equip-production",
           "nomis-production",
           "oasys-production",
-          "delius-iaps-production"
+          "delius-iaps-production",
+          "delius-jitbit-production"
         ]
       }
     }
