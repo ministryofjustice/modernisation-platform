@@ -44,6 +44,8 @@ To kick off the environment creation process, we add `environments/$account-name
 
 Example file [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#example-json-files)
 
+Additionally, the [expected.rego](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/environments/expected.rego) file must be updated with the newly added account name. This is to make sure that none of the json files gets accidentally deleted. This is going to be validated with the [opa-policies](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/opa-policies.yml) GH actions workflow.
+
 ** Submitting this PR will kick off the new-environments workflow, which will run its check-environments-deployment-plan. You can see what will change in the output from github actions
 
 ** Merging this PR will generate two pull requests. One in the `modernisation-platform` repo which can be merged straight away, and one in the `modernisation-platform-environments` repo, which is merged last.
