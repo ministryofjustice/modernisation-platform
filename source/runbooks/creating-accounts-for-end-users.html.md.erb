@@ -62,6 +62,8 @@ Add the subnets in `environments/networks`. Update the [`policies/networking/exp
 
 This will then kick off `core-vpc-<env>-demployment` pipelines and run `terraform plan`, `terraform apply` and the `scripts/member-account-ram-association.sh` script for the RAM share. If the RAM share script fails to run on the merge, it will have to be run manually.
 
+The pipeline will also generate a PR for the ram share, merge this. An example can be found [here](https://github.com/ministryofjustice/modernisation-platform/pull/2203)
+
 #### Step three
 Once complete, the pull request raised earlier in  `modernisation-platform-environments` can be merged. Example [here](https://github.com/ministryofjustice/modernisation-platform-environments/pull/805/files ). The pipeline will create this.
 
