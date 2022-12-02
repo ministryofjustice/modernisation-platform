@@ -43,7 +43,7 @@ Modernisation Platform users can use these modules in their infrastructure. They
 | [modernisation-platform-terraform-pagerduty-integration](https://github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration)           | Module associating an SNS topic with a PagerDuty service                                                                                                        |
 | [modernisation-platform-terraform-loadbalancer](https://github.com/ministryofjustice/modernisation-platform-terraform-loadbalancer)                             | Module that creates application loadbalancer in AWS with logging enabled, s3 to store logs and Athena DB to query logs                                          |
 | [modernisation-platform-terraform-ssm-patching](https://github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching)                             | Module that automates the patching of ec2 instances via ssm. It creates an s3 bucket for log storage, and maintnance windows, tasks, as well as resource groups and patch baselines.
-             |
+             
 
 ### Terraform modules - used by the core platform
 
