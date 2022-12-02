@@ -110,6 +110,7 @@ data "aws_iam_policy_document" "member-access" {
       "sqs:*",
       "ssm:*",
       "wafv2:*",
+      "resource-groups:*",
       "redshift:*",
       "redshift-data:*",
       "redshift-serverless:*"
