@@ -20,7 +20,7 @@
       ]
     },
     {
-      "name": "development",
+      "name": "production",
       "access": [
         {
           "github_slug": "hmpps-migration",
@@ -30,7 +30,7 @@
     }
   ],
   "tags": {
-    "application": "delius-integrated-accredited-programmes-system",
+    "application": "delius-jitbit",
     "business-unit": "HMPPS",
     "owner": "Probation WebOps: probation-webops@digital.justice.gov.uk"
   }
