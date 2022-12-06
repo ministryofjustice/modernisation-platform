@@ -6,7 +6,8 @@
       "access": [
         {
           "github_slug": "data-and-insights-hub",
-          "level": "sandbox"
+          "level": "sandbox",
+          "nuke": "rebuild"
         }
       ]
     },
