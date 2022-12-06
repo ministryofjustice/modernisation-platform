@@ -54,6 +54,7 @@ data "aws_iam_policy_document" "member-access" {
       "acm-pca:*",
       "acm:*",
       "application-autoscaling:*",
+      "applicationinsights:*",
       "athena:*",
       "autoscaling:*",
       "cloudfront:*",
