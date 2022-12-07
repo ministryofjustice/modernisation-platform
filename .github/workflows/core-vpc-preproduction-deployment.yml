@@ -167,25 +167,8 @@ jobs:
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Get list of accounts in changed environments-networking files
-        id: new_account
-        run: |
-          echo "::set-output name=files::$(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep "environments-networks/.*.json" | xargs -I {} cat {} | jq '.cidr.subnet_sets[].accounts[]' -r | grep "\-${TF_ENV}" | uniq | tr \\n " ")"
-
-      - name: Set RAM association for member account
-        run: |
-          accounts=(${{ steps.new_account.outputs.files }})
-          if [ ! -z "${accounts}" ]
-          then
-          for i in ${accounts}
-          do
-          echo "[+] Setting up RAM association for ${i}"
-          bash scripts/member-account-ram-association.sh ${i} ${TF_ENV}
-          done
-          else
-          echo "[+] There were no AWS member accounts to process"
-          exit 0
-          fi
+      - name: Run RAM association if needed
+        run: bash scripts/get-applications-and-run-ram.sh ${TF_ENV}
 
       - name: Slack failure notification
         uses: 8398a7/action-slack@a189acbf0b7ea434558662ae25a0de71df69a435 # v3.14.0
