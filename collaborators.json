@@ -268,7 +268,7 @@
       "accounts": [
         {
           "account-name": "ppud-development",
-          "access": "developer"
+          "access": "sandbox"
         }
       ]
     },
@@ -278,7 +278,7 @@
       "accounts": [
         {
           "account-name": "ppud-development",
-          "access": "developer"
+          "access": "sandbox"
         }
       ]
     },
@@ -288,7 +288,7 @@
       "accounts": [
         {
           "account-name": "ppud-development",
-          "access": "developer"
+          "access": "sandbox"
         }
       ]
     },
