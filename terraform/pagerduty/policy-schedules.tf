@@ -32,6 +32,19 @@ resource "pagerduty_escalation_policy" "low_priority" {
   }
 }
 
+resource "pagerduty_escalation_policy" "member_policy" {
+  name  = "Modernisation Platform Member Policy"
+  teams = [pagerduty_team.modernisation_platform.id]
+
+  rule {
+    escalation_delay_in_minutes = 10
+    target {
+      type = "user_reference"
+      id   = pagerduty_user.pager_duty_users["modernisation_platform"].id
+    }
+  }
+}
+
 resource "pagerduty_schedule" "primary" {
   name      = "Modernisation Platform (primary)"
   time_zone = "Europe/London"
