@@ -27,5 +27,5 @@ test_empty_values {
 }
 
 test_unexpected_access {
-  deny["`example.json` uses an unexpected access: got `incorrect-access`, expected one of: read-only, developer, security-audit"] with input as { "filename": "example.json", "users" :[{"accounts": [{"access": "incorrect-access"}]}] }
+  deny["`example.json` uses an unexpected access: got `incorrect-access`, expected one of: read-only, developer, security-audit, sandbox"] with input as { "filename": "example.json", "users" :[{"accounts": [{"access": "incorrect-access"}]}] }
 }
