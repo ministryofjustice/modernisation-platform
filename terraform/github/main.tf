@@ -242,7 +242,7 @@ module "modernisation-platform-environments" {
     "environments"
   ]
   required_checks = ["run-opa-policy-tests"]
-  secrets = nonsensitive(merge(local.member_ci_iam_user_keys, {
+  secrets = nonsensitive(merge(local.member_ci_iam_user_keys, local.testing_ci_iam_user_keys, {
     # Terraform GitHub token for the CI/CD user
     TERRAFORM_GITHUB_TOKEN = "This needs to be manually set in GitHub."
   }))
