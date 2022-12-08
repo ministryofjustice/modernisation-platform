@@ -51,7 +51,7 @@ resource "aws_ec2_transit_gateway_route_table_association" "vpn_attachments" {
 resource "aws_ec2_transit_gateway_route_table_propagation" "vpn_attachments" {
   for_each                       = local.vpn_attachments
   transit_gateway_attachment_id  = aws_vpn_connection.this[each.key].transit_gateway_attachment_id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
 resource "aws_cloudwatch_log_group" "vpn_attachments" {
