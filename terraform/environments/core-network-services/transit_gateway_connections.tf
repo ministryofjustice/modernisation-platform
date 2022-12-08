@@ -64,6 +64,7 @@ locals {
   }
 
   external_static_routes = {
+    "modernisation-platform-core"     = "10.20.0.0/16"
     "modernisation-platform-non-live" = "10.26.0.0/16",
     "modernisation-platform-live"     = "10.27.0.0/16"
   }
@@ -160,12 +161,6 @@ resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_live_da
   destination_cidr_block         = each.value
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["live_data"].id
-}
-
-resource "aws_ec2_transit_gateway_route" "external_ingress_in_to_inspection_vpc" {
-  destination_cidr_block         = "0.0.0.0/0"
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
 }
 
 resource "aws_ec2_transit_gateway_route" "external_static_routes" {
