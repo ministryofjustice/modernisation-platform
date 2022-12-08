@@ -69,7 +69,7 @@ data "aws_iam_policy_document" "member-access" {
       "ds:CreateComputer",
       "ds:CreateAlias",
       "ds:CreateDirectory",
-      "ds:CreateLogSubscrption",
+      "ds:CreateLogSubscription",
       "ds:CreateMicrosoftAD",
       "ds:CreateSnapshot",
       "ds:DeleteDirectory",
