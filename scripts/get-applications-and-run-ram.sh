@@ -1,6 +1,6 @@
 #/bin/bash
 
-set -Eeo pipefail
+set -Ee
 
 environment=$1
 
