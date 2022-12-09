@@ -35,7 +35,8 @@
     "modernisation_platform_vpc": "hmpps-development",
     "remote_ipv4_network_cidr": "0.0.0.0/0",
     "tunnel1_inside_cidr": "169.254.21.0/30",
-    "tunnel2_inside_cidr": "169.254.22.0/30"
+    "tunnel2_inside_cidr": "169.254.22.0/30",
+    "tunnel_startup_action": "start"
   },
 
   "NOMS-Transit-Live-DR-VPN-VNG_2": {
@@ -45,6 +46,7 @@
     "dx_gateway_owner_account_id": "",
     "modernisation_platform_vpc": "hmpps-development",
     "tunnel1_inside_cidr": "169.254.21.4/30",
-    "tunnel2_inside_cidr": "169.254.22.4/30"
+    "tunnel2_inside_cidr": "169.254.22.4/30",
+    "tunnel_startup_action": "start"
   }
 }
