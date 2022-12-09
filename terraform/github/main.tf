@@ -10,7 +10,7 @@ module "core" {
     "aws",
     "documentation"
   ]
-  secrets = nonsensitive(merge(local.ci_iam_user_keys, {
+  secrets = {
     PRIVILEGED_AWS_ACCESS_KEY_ID     = "example"
     PRIVILEGED_AWS_SECRET_ACCESS_KEY = "example"
     # Terraform GitHub token for the CI/CD user
@@ -19,7 +19,7 @@ module "core" {
     SLACK_WEBHOOK_URL = data.aws_secretsmanager_secret_version.slack_webhook_url.secret_string
     # Pagerduty api token
     PAGERDUTY_TOKEN = data.aws_secretsmanager_secret_version.pagerduty_token.secret_string
-  }))
+  }
 }
 
 module "terraform-module-baselines" {
@@ -173,7 +173,6 @@ module "modernisation-platform-ami-builds" {
     "linux",
     "windows"
   ]
-  secrets = nonsensitive(local.ci_iam_user_keys)
 }
 
 module "terraform-module-aws-vm-import" {
