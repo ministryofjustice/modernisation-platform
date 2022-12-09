@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating environments in the Modernisation Platform
-last_reviewed_on: 2022-08-10
+last_reviewed_on: 2022-12-09
 review_in: 6 months
 ---
 
@@ -117,6 +117,7 @@ Here are some examples of the environments JSON file that the Modernisation Plat
 - `account-type` determines if this is a core modernisation platform account or a user member account
 - `environments` should be an array of objects for environments required. If the environment is `production`, retention periods, backup frequency, and similar will be different compared to non-production environments
 - the `name` key and `access` object are required, see: [Another example](#another-example)
+- the `nuke` key is optional and is only read if the `access.level` is `sandbox`
 - `tags` should be an object of the mandatory tags defined in the MoJ [Tagging Guidance](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tagging-your-infrastructure). You can omit `is-production` as we infer this from the environment name
 
 ### Blank example
@@ -131,7 +132,8 @@ Here are some examples of the environments JSON file that the Modernisation Plat
       "name": ""
       "access": {
         "github_slug": "",
-        "access": ""
+        "level": "",
+        "nuke": ""
       }
     }
   ],
@@ -145,7 +147,7 @@ Here are some examples of the environments JSON file that the Modernisation Plat
 
 ### Another example
 
-An JSON definition for an nonsensical application called [`glados`](https://en.wikipedia.org/wiki/GLaDOS), that needs two environments: `development` and `production`, and want to give the GitHub team `glados-team` access to each environment.
+An JSON definition for an nonsensical application called [`glados`](https://en.wikipedia.org/wiki/GLaDOS), that needs two environments: `development` with `sandbox` permissions and `production`, and want to give the GitHub team `glados-team` access to each environment. If a develoment account with sandbox permissions has no `nuke` key defined, it will automatically be [wiped on a weekly basis](../concepts/environments/auto-nuke.html). The `nuke` value of `rebuild` indicates that the development account will be automatically rebuilt from code after it is nuked.
 
 `filename`: `glados.json`
 
@@ -157,14 +159,15 @@ An JSON definition for an nonsensical application called [`glados`](https://en.w
       "name": "development",
       "access": {
         "github_slug": "glados-team",
-        "access": "developer"
+        "level": "sandbox",
+        "nuke": "rebuild"
       }
     },
     {
       "name": "production",
       "access": {
         "github_slug": "glados-team",
-        "access": "view-only"
+        "level": "view-only"
       }
     }
   ],

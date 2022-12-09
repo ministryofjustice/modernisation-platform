@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Auto-nuke and redeploy development environments on weekly basis
-last_reviewed_on: 2022-11-07
+last_reviewed_on: 2022-12-09
 review_in: 6 months
 ---
 
@@ -9,54 +9,32 @@ review_in: 6 months
 
 ## Feature description
 
-This feature automatically nukes and recreates development environments on weekly basis. This is useful for environments with the sandbox permission, which allow users provisioning resources directly through the AWS web console as opposite to using terraform. In such cases, the auto-nuke will make sure the resources created manually will be cleared on weekly basis and only the ones created through terraform will be redeployed.
+This feature automatically nukes and optionally recreates development environments on weekly basis. This is useful for environments with the sandbox permission, which allow users provisioning resources directly through the AWS web console as opposite to using terraform. In such cases, the auto-nuke will make sure the resources created manually will be cleared on weekly basis. If requested, the resources defined in terraform will then be recreated.
 
 Every Sunday:
 
-- At 10.00pm the nuke.yml job is triggered. This job nukes all the configured development environments using the AWS Nuke tool (https://github.com/rebuy-de/aws-nuke).
-- At 12.00 noon the nuke-redeploy.yml job is triggered. This job redeploys all the nuked environments using terraform apply.
+- At 10.00pm the awsnuke.yml workflow is triggered. This workflow nukes all the configured development environments using the AWS Nuke tool (https://github.com/rebuy-de/aws-nuke).
+- At 12.00 noon the nuke-redeploy.yml workflow is triggered. If requested, this workflow redeploys the nuked environment using terraform apply.
 
 A sketch of the algorithm is as follows:
 
-- For every account ID stored in the nuke_account_ids secret
+- For every account in a dynamically generated list of all sandbox accounts
 - Assume the role MemberInfrastructureAccess under the account ID
 - Nuke the resources under the account ID
-- Perform terraform apply in order to recreate all resources from terraform
+- (Optionally) Perform terraform apply in order to recreate all resources from terraform
 
 ## Configuration
 
-Auto-nuke uses the following secrets stored in the AWS secret manager inside the Modernisation Platform account:
+Auto-nuke consumes the following dynamically generated Github secrets stored in the Modernisation Platorm Environments repository:
 
-- `nuke_account_blocklist`: Account IDs to be excluded from auto-nuke. AWS-Nuke (https://github.com/rebuy-de/aws-nuke) requires at least one Account ID to be present in this blocklist, while it is recommended to add every production account to this blocklist. For example:
+- `MODERNISATION_PLATFORM_AUTONUKE_BLOCKLIST`: Account aliases to always exclude from auto-nuke. This takes precedence over all other configuration options. Due to the destructive nature of the tool, AWS-Nuke (https://github.com/rebuy-de/aws-nuke) requires at least one Account ID in the configured blocklist. Our blocklist contains all production. preproduction and core accounts.
 
-```
-aws secretsmanager put-secret-value --region eu-west-2 --secret-id nuke_account_blocklist --profile mod --secret-string '{"NUKE_ACCOUNT_BLOCKLIST":{"PERFORMANCE_HUB_PREPRODUCTION_ACCID":"111111111111","PERFORMANCE_HUB_PRODUCTION_ACCID":"222222222222"}}'
-```
+- `MODERNISATION_PLATFORM_AUTONUKE`: Account aliases of sandbox accounts to be auto-nuked on weekly basis.
 
-- `nuke_account_ids`: Account IDs to be auto-nuked on weekly basis. CAUTION: Any account ID you add here will be automatically nuked! This secret is used by GitHub actions job nuke.yml inside the environments repo, to find the Account IDs to be nuked. For example:
+- `MODERNISATION_PLATFORM_AUTONUKE_REBUILD`: Accounts to be rebuilt after auto-nuke runs. This secret is consumed by the `nuke-redeploy.yml` workflow.
 
-```
-aws secretsmanager put-secret-value --region eu-west-2 --secret-id nuke_account_ids --profile mod --secret-string '{"NUKE_ACCOUNT_IDS":{"COOKER_DEVELOPMENT_ACCID":"111111111111","SPRINKLER_DEVELOPMENT_ACCID":"222222222222","PERFORMANCE_HUB_DEVELOPMENT_ACCID":"333333333333"}}'
-```
+The `nuke-config-template.txt` is populated with account and blocklist information during the runtime of the `awsnuke.yml` workflow, to produce a valid aws-nuke configuration file.
 
-The following configuration is passed as environment variable inside the `nuke-redeploy.yml` GitHub actions job:
+### When new sandbox development environment is onboarded
 
-- NUKE_DO_NOT_RECREATE_ENVIRONMENTS: A comma-separated list of terraform workspaces to skip from recreating through terraform after nuking. For example, `NUKE_DO_NOT_RECREATE_ENVIRONMENTS: performance-hub-development,example-development,sample-development,`. As can be observed in the example, every terraform workspace needs a leading comma, hence the last comma in the list.
-
-The `nuke-config-template.txt` holds the nuke configuration YAML with account IDs being abstracted away by variables. For example, during the actual execution, `$accounts_str` will be replaced by the corresponding account IDs of the development environments that will be nuked. That is because account IDs is sensitive data and cannot be committed into code. Notice the naming convention, which is important, where `performance-hub-development` account name and terraform workspace is matched to the key `PERFORMANCE_HUB_DEVELOPMENT_ACCID` inside the JSON value of the `nuke_account_ids` secret. The key in this case is derived from the account name converted to upper case, hyphens replaced by underscores, and suffixed by `_ACCID`, hence `performance-hub-development` is converted to `PERFORMANCE_HUB_DEVELOPMENT_ACCID`.
-
-### When new development environment is onboarded
-
-When a new development environment is onboarded into the Modernisation Platform, we need to follow these steps, assuming the new account will be granted sandbox permissions, and we want it to be auto-nuked on weekly basis:
-
-- Manually add the new account ID to the secret `nuke_account_ids` stored in the AWS secret manager inside the Modernisation Platform account. Refer to the above documentation of `nuke_account_ids` for the format of the value.
-- AWS Nuke will require an account alias, which you can create as follows:
-
-```
-aws iam list-account-aliases --profile sprinkler-development
-aws iam create-account-alias --profile sprinkler-development --account-alias sprinkler-development
-```
-
-If account alias is missing then the `nuke.yml` job will fail with a relevant error.
-
-Note that with the latest platform enhancements the alias should be automatically created along with the account.
+When Modernisation Platform onboards a new sandbox development environment or converts an existing development environment to a sandbox it is automatically added to the autonuke account list and will be nuked as part of the regular scheduled workflow run. Customers can optionally request to have their environment rebuilt after nuke and, in some exceptional circumstances, excluded from nuke. Please contact us in [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) channel for details.
