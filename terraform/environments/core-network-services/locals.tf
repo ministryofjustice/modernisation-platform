@@ -36,7 +36,14 @@ locals {
   production_rules    = fileexists("./production_rules.json") ? jsondecode(file("./production_rules.json")) : {}
   firewall_rules      = merge(local.development_rules, local.test_rules, local.preproduction_rules, local.production_rules)
 
-  vpn_attachments = fileexists("./vpn_attachments.json") ? jsondecode(file("./vpn_attachments.json")) : {}
+  vpn_attachments         = fileexists("./vpn_attachments.json") ? jsondecode(file("./vpn_attachments.json")) : {}
+  noms_vpn_static_routes = [
+      "10.40.64.0/18",
+      "10.40.144.0/20",
+      "10.40.176.0/20",
+      "10.111.0.0/16",
+      "10.112.0.0/16"
+  ]
 
   core-vpcs = {
     for file in fileset("../../../environments-networks", "*.json") :

@@ -50,9 +50,10 @@ resource "aws_ec2_transit_gateway_route_table_association" "vpn_attachments" {
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
 }
 
-resource "aws_ec2_transit_gateway_route_table_propagation" "vpn_attachments" {
-  for_each                       = local.vpn_attachments
-  transit_gateway_attachment_id  = aws_vpn_connection.this[each.key].transit_gateway_attachment_id
+resource "aws_ec2_transit_gateway_route" "noms_routes" {
+  for_each                       = toset(local.noms_vpn_static_routes)
+  destination_cidr_block         = each.key
+  transit_gateway_attachment_id  = aws_vpn_connection.this["NOMS-Transit-Live-DR-VPN-VNG_1"].transit_gateway_attachment_id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
