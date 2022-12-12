@@ -241,12 +241,12 @@ module "modernisation-platform-environments" {
     "environments"
   ]
   required_checks = ["run-opa-policy-tests"]
-  secrets = nonsensitive(merge(local.member_ci_iam_user_keys, {
+  secrets = merge({
     # Terraform GitHub token for the CI/CD user
     TERRAFORM_GITHUB_TOKEN        = "This needs to be manually set in GitHub.",
     TESTING_AWS_ACCESS_KEY_ID     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     TESTING_AWS_SECRET_ACCESS_KEY = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
-  }))
+  })
 }
 
 module "modernisation-platform-infrastructure-test" {
