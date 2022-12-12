@@ -16,8 +16,10 @@ resource "aws_vpn_connection" "this" {
   customer_gateway_id      = aws_customer_gateway.this[each.key].id
   type                     = "ipsec.1"
   tunnel1_inside_cidr      = try(each.value.tunnel1_inside_cidr, null)
+  tunnel1_startup_action   = try(each.value.tunnel_startup_action, null)
   tunnel2_inside_cidr      = try(each.value.tunnel2_inside_cidr, null)
-  remote_ipv4_network_cidr = local.core-vpcs[each.value.modernisation_platform_vpc].cidr.subnet_sets["general"].cidr
+  tunnel2_startup_action   = try(each.value.tunnel_startup_action, null)
+  remote_ipv4_network_cidr = try(each.value.remote_ipv4_network_cidr, local.core-vpcs[each.value.modernisation_platform_vpc].cidr.subnet_sets["general"].cidr)
 
   tunnel1_log_options {
     cloudwatch_log_options {
@@ -46,6 +48,13 @@ resource "aws_ec2_transit_gateway_route_table_association" "vpn_attachments" {
   for_each                       = local.vpn_attachments
   transit_gateway_attachment_id  = aws_vpn_connection.this[each.key].transit_gateway_attachment_id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
+}
+
+resource "aws_ec2_transit_gateway_route" "noms_routes" {
+  for_each                       = toset(local.noms_vpn_static_routes)
+  destination_cidr_block         = each.key
+  transit_gateway_attachment_id  = aws_vpn_connection.this["NOMS-Transit-Live-DR-VPN-VNG_1"].transit_gateway_attachment_id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
 resource "aws_cloudwatch_log_group" "vpn_attachments" {

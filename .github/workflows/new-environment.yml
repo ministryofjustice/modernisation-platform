@@ -105,7 +105,7 @@ jobs:
         run: bash scripts/terraform-plan.sh terraform/environments
       - name: Run terraform apply in terraform/environments
         run: bash scripts/terraform-apply.sh terraform/environments
-      - uses: 8398a7/action-slack@a189acbf0b7ea434558662ae25a0de71df69a435 # v3.14.0
+      - uses: 8398a7/action-slack@bdc6f9de222d3b7518e6cf99c4f3410f653cfde3 # v3.15.0
         name: Slack failure notification
         with:
           status: ${{ job.status }}
@@ -136,7 +136,7 @@ jobs:
         run: bash scripts/provision-terraform-workspaces.sh bootstrap
       - name: Provision workspaces in terraform/environments/*
         run: bash scripts/provision-terraform-workspaces.sh all-environments
-      - uses: 8398a7/action-slack@a189acbf0b7ea434558662ae25a0de71df69a435 # v3.14.0
+      - uses: 8398a7/action-slack@bdc6f9de222d3b7518e6cf99c4f3410f653cfde3 # v3.15.0
         name: Slack failure notification
         with:
           status: ${{ job.status }}
@@ -183,7 +183,7 @@ jobs:
           else
           echo "[+] There were no AWS member accounts to process"
           fi
-      - uses: 8398a7/action-slack@a189acbf0b7ea434558662ae25a0de71df69a435 # v3.14.0
+      - uses: 8398a7/action-slack@bdc6f9de222d3b7518e6cf99c4f3410f653cfde3 # v3.15.0
         name: Slack failure notification
         with:
           status: ${{ job.status }}
@@ -231,7 +231,7 @@ jobs:
           else
           echo "[+] There were no AWS member accounts to process"
           fi
-      - uses: 8398a7/action-slack@a189acbf0b7ea434558662ae25a0de71df69a435 # v3.14.0
+      - uses: 8398a7/action-slack@bdc6f9de222d3b7518e6cf99c4f3410f653cfde3 # v3.15.0
         name: Slack failure notification
         with:
           status: ${{ job.status }}
@@ -279,7 +279,7 @@ jobs:
           else
           echo "[+] There were no AWS member accounts to process"
           fi
-      - uses: 8398a7/action-slack@a189acbf0b7ea434558662ae25a0de71df69a435 # v3.14.0
+      - uses: 8398a7/action-slack@bdc6f9de222d3b7518e6cf99c4f3410f653cfde3 # v3.15.0
         name: Slack failure notification
         with:
           status: ${{ job.status }}

@@ -10,7 +10,7 @@ module "core" {
     "aws",
     "documentation"
   ]
-  secrets = nonsensitive(merge(local.ci_iam_user_keys, {
+  secrets = {
     PRIVILEGED_AWS_ACCESS_KEY_ID     = "example"
     PRIVILEGED_AWS_SECRET_ACCESS_KEY = "example"
     # Terraform GitHub token for the CI/CD user
@@ -19,7 +19,7 @@ module "core" {
     SLACK_WEBHOOK_URL = data.aws_secretsmanager_secret_version.slack_webhook_url.secret_string
     # Pagerduty api token
     PAGERDUTY_TOKEN = data.aws_secretsmanager_secret_version.pagerduty_token.secret_string
-  }))
+  }
 }
 
 module "terraform-module-baselines" {
@@ -173,7 +173,6 @@ module "modernisation-platform-ami-builds" {
     "linux",
     "windows"
   ]
-  secrets = nonsensitive(local.ci_iam_user_keys)
 }
 
 module "terraform-module-aws-vm-import" {
@@ -242,10 +241,12 @@ module "modernisation-platform-environments" {
     "environments"
   ]
   required_checks = ["run-opa-policy-tests"]
-  secrets = nonsensitive(merge(local.member_ci_iam_user_keys, {
+  secrets = merge({
     # Terraform GitHub token for the CI/CD user
-    TERRAFORM_GITHUB_TOKEN = "This needs to be manually set in GitHub."
-  }))
+    TERRAFORM_GITHUB_TOKEN        = "This needs to be manually set in GitHub.",
+    TESTING_AWS_ACCESS_KEY_ID     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
+    TESTING_AWS_SECRET_ACCESS_KEY = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
+  })
 }
 
 module "modernisation-platform-infrastructure-test" {
