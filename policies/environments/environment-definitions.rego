@@ -18,6 +18,12 @@ allowed_access := [
   "administrator"
 ]
 
+allowed_nuke := [
+  "include",
+  "exclude",
+  "rebuild"
+]
+
 deny[msg] {
   without_filename := object.remove(input, ["filename"])
 
@@ -82,4 +88,10 @@ deny[msg] {
   access:=input.environments[_].access[_].level
   not array_contains(allowed_access, access)
   msg := sprintf("`%v` uses an unexpected access level: got `%v`, expected one of: %v", [input.filename, access, concat(", ", allowed_access) ])
+}
+
+deny[msg] {
+  nuke:=input.environments[_].access[_].nuke
+  not array_contains(allowed_nuke, nuke)
+  msg := sprintf("`%v` uses an unexpected nuke value: got `%v`, expected one of: %v", [input.filename, nuke, concat(", ", allowed_nuke) ])
 }
