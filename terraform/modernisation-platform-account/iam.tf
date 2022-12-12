@@ -39,50 +39,6 @@ resource "aws_iam_policy" "deny-specific-actions" {
   policy      = data.aws_iam_policy_document.deny-specific-actions.json
 }
 
-# Create a CI group to attach the policy to
-#tfsec:ignore:aws-iam-enforce-mfa
-resource "aws_iam_group" "ci" {
-  name = "ci"
-}
-
-# Attach AdministratorAccess to the group
-resource "aws_iam_group_policy_attachment" "administrator-access" {
-  group      = aws_iam_group.ci.id
-  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
-}
-
-# Attach DenyLockoutActions to the group
-resource "aws_iam_group_policy_attachment" "deny-specific-actions" {
-  group      = aws_iam_group.ci.id
-  policy_arn = aws_iam_policy.deny-specific-actions.id
-}
-
-# Create a CI user
-resource "aws_iam_user" "ci" {
-  name = "ci"
-  tags = local.tags
-}
-
-# Add the CI user to the CI group
-resource "aws_iam_user_group_membership" "ci-ci" {
-  user = aws_iam_user.ci.name
-  groups = [
-    aws_iam_group.ci.name
-  ]
-}
-
-# Create access keys for the CI user
-# NOTE: These are extremely sensitive keys. Do not output these anywhere publicly accessible.
-resource "aws_iam_access_key" "ci" {
-  user = aws_iam_user.ci.name
-
-  # Setting the meta lifecycle argument allows us to periodically run `terraform taint aws_iam_access_key.ci`, and run
-  # terraform apply to create new keys before these ones are destroyed.
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
 # Member CI User
 
 # Member CI policy
