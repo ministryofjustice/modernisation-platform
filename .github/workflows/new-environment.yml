@@ -40,7 +40,7 @@ jobs:
       TF_VAR_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
 
     steps:
-      - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
       - name: Set Account Number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: Configure AWS Credentials
@@ -86,7 +86,7 @@ jobs:
     env:
       TF_VAR_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
       - name: Set Account Number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: Configure AWS Credentials
@@ -118,7 +118,7 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [create-environment]
     steps:
-      - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
       - name: Set Account Number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
 
@@ -149,7 +149,7 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [provision-workspaces]
     steps:
-      - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
         with:
           fetch-depth: 0
       - name: Set Account Number
@@ -196,7 +196,7 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [delegate-access]
     steps:
-      - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
         with:
           fetch-depth: 0
       - name: Set Account Number
@@ -244,7 +244,7 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [provision-workspaces]
     steps:
-      - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
         with:
           fetch-depth: 0
       - name: Set Account Number
