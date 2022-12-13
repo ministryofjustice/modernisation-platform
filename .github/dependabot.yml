@@ -72,6 +72,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/core-shared-services/test/test_terraform"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/core-vpc"
     schedule:
       interval: "daily"
