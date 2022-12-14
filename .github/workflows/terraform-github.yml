@@ -5,12 +5,14 @@ on:
     paths:
       - 'terraform/github/**'
       - '.github/workflows/terraform-github.yml'
+      - 'environments/**.json'
     branches:
       - main
   pull_request:
     paths:
       - 'terraform/github/**'
       - '.github/workflows/terraform-github.yml'
+      - 'environments/**.json'
     branches:
       - main
     types: [opened, edited, reopened, synchronize]
