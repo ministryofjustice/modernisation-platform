@@ -33,7 +33,6 @@ expected =
     "sprinkler",
     "testing",
     "tariff",
-    "threat-and-vulnerability-mgmt",
     "xhibit-portal"
     ]
 }
