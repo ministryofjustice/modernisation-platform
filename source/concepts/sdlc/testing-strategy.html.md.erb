@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Testing Strategy
-last_reviewed_on: 2022-06-14
+last_reviewed_on: 2022-12-14
 review_in: 6 months
 ---
 
@@ -24,7 +24,11 @@ All other tests should be written in Go and should use the standard Go [testing 
 
 The AWS account testing-test should be used to run Terratest code into.  This account is empty but configured the same as a member account.
 
-Copy the unit test folder from another modules Terratest to get the inital code which sets the backend, providers etc.
+When creating a new repo with the `module` type, empty unit tests and workflow will be present to complete.
+
+Run tests locally using the testing-test account Admin SSO credentials.
+
+Tests running in GitHub actions use the `testing-ci` user.
 
 ## Testing areas
 

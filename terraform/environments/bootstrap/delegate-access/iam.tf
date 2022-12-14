@@ -295,7 +295,8 @@ data "aws_iam_policy_document" "assume_role_policy" {
     principals {
       type = "AWS"
       identifiers = ["arn:aws:iam::${local.modernisation_platform_account.id}:root",
-        "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"
+        "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci",
+        one(data.aws_iam_roles.member-sso-admin-access.arns)
       ]
     }
   }
