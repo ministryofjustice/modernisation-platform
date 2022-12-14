@@ -55,7 +55,6 @@ locals {
     "cica",
     "xhibit-portal-dev",
     "ppud-replacement-devs",
-    "threat-and-vulnerability-mgmt",
     "laa-aws-infrastructure",
     "data-and-insights-hub",
     "hmpps-digital-prison-reporting",
