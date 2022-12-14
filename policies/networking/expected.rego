@@ -122,7 +122,6 @@ expected =
       "general": {
         "cidr": "10.26.48.0/21",
         "accounts": [
-          "threat-and-vulnerability-mgmt-development",
           "data-and-insights-wepi-development"
         ]
       }
@@ -139,7 +138,6 @@ expected =
       "general": {
         "cidr": "10.27.32.0/21",
         "accounts": [
-          "threat-and-vulnerability-mgmt-production",
           "data-and-insights-wepi-production"
         ]
       }
