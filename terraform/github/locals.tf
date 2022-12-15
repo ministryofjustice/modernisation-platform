@@ -68,4 +68,7 @@ locals {
   modernisation_platform_repositories = [
     for s in data.github_repositories.modernisation-platform-repositories.names : s if startswith(s, "modernisation-platform-")
   ]
+
+
+  tags = { "source-code" = "https://github.com/ministryofjustice/modernisation-platform" }
 }

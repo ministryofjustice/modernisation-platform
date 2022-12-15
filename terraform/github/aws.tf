@@ -8,18 +8,8 @@ data "aws_secretsmanager_secret_version" "environment_management" {
   secret_id = data.aws_secretsmanager_secret.environment_management.id
 }
 
-# This gets the AWS access keys for Testing CI/CD from AWS Secrets Manager to set as repository secrets.
-data "aws_secretsmanager_secret" "testing_ci_iam_user_keys" {
-  provider = aws.testing-test
-  name     = "testing_ci_iam_user_keys"
-}
-
-data "aws_secretsmanager_secret_version" "testing_ci_iam_user_keys" {
-  provider  = aws.testing-test
-  secret_id = data.aws_secretsmanager_secret.testing_ci_iam_user_keys.id
-}
 locals {
-  testing_ci_iam_user_keys = jsondecode(data.aws_secretsmanager_secret_version.testing_ci_iam_user_keys.secret_string)
+  testing_ci_iam_user_keys = jsondecode(aws_secretsmanager_secret_version.testing_ci_iam_user_keys.secret_string)
 }
 
 # Get the slack webhook url
