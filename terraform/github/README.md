@@ -5,6 +5,7 @@ This directory creates and maintains the following GitHub items for the Modernis
   - repositories
   - team membership
   - team access to repositories
+  - rotation of `testing-ci` AWS keys and updates to corresponding [Github secrets](testing-ci.tf) 
 
 The state is stored in S3, as defined in [backend.tf](backend.tf).
 
