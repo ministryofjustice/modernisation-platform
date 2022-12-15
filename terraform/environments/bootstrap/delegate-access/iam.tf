@@ -28,7 +28,7 @@ module "ssm-cross-account-access" {
   }
   account_id             = local.modernisation_platform_account.id
   policy_arn             = "arn:aws:iam::aws:policy/AdministratorAccess"
-  role_name              = "AWS-SystemsManager-AutomationExecutionRole"
+  role_name              = "AWS-SSM-AutomationExecutionRole"
   additional_trust_roles = data.aws_iam_policy_document.ssm-patching-trust-policy.json
 }
 
@@ -41,7 +41,7 @@ data "aws_iam_policy_document" "ssm-patching-trust-policy" {
 		{
 			"Effect": "Allow",
 			"Principal": {
-				"AWS": "arn:aws:iam::763252494486:role/AWS-SystemsManager-AutomationAdministrationRole"
+				"AWS": "arn:aws:iam::763252494486:role/AWS-SSM-AutomationAdministrationRole"
 			},
 			"Action": "sts:AssumeRole"
 		},
