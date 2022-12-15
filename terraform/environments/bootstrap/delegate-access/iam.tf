@@ -17,9 +17,47 @@ module "cross-account-access" {
   account_id             = local.modernisation_platform_account.id
   policy_arn             = "arn:aws:iam::aws:policy/AdministratorAccess"
   role_name              = "ModernisationPlatformAccess"
-  additional_trust_roles = concat(tolist(data.aws_iam_roles.mp-sso-admin-access.arns), terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : [])
+  additional_trust_statements = concat(tolist(data.aws_iam_roles.mp-sso-admin-access.arns), terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : [])
 
 }
+
+module "ssm-cross-account-access" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
+  providers = {
+    aws = aws.workspace
+  }
+  account_id             = local.modernisation_platform_account.id
+  policy_arn             = "arn:aws:iam::aws:policy/AdministratorAccess"
+  role_name              = "AWS-SystemsManager-AutomationExecutionRole"
+  additional_trust_roles = data.aws_iam_policy_document.ssm-patching-trust-policy.json
+}
+
+data "aws_iam_policy_document" "ssm-patching-trust-policy" {
+  resource_query {
+    query = <<JSON
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Principal": {
+				"AWS": "arn:aws:iam::763252494486:role/AWS-SystemsManager-AutomationAdministrationRole"
+			},
+			"Action": "sts:AssumeRole"
+		},
+		{
+			"Effect": "Allow",
+			"Principal": {
+				"Service": "ssm.amazonaws.com"
+			},
+			"Action": "sts:AssumeRole"
+		}
+	]
+}
+JSON
+  }
+}
+
 
 module "cicd-member-user" {
   count  = local.account_data.account-type == "member" ? 1 : 0
