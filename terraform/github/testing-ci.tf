@@ -116,7 +116,7 @@ resource "aws_iam_access_key" "testing_ci" {
 # create a rotation period for the access keys
 
 resource "time_rotating" "key_rotate_period" {
-  rotation_minutes = 30
+  rotation_days = 7
 }
 
 # When rotate period of time_rotate expires, it is removed from the state, and terraform treats it as a new resource.
