@@ -2,8 +2,9 @@
 # Create a testing CI user
 #tfsec:ignore:aws-iam-no-user-attached-policies
 resource "aws_iam_user" "testing_ci" {
-  name = "testing-ci"
-  tags = local.tags
+  provider = aws.testing-test
+  name     = "testing-ci"
+  tags     = local.tags
 }
 
 # Add policy directly to the testing user
@@ -76,6 +77,7 @@ data "aws_iam_policy_document" "testing_ci_policy" {
 }
 
 resource "aws_iam_policy" "testing_ci_policy" {
+  provider    = aws.testing-test
   name        = "TestingCiActions"
   description = "Allowed actions for the testing_ci user"
   policy      = data.aws_iam_policy_document.testing_ci_policy.json
@@ -83,12 +85,14 @@ resource "aws_iam_policy" "testing_ci_policy" {
 
 resource "aws_iam_user_policy_attachment" "testing_ci_attach" {
   # checkov:skip=CKV_AWS_40: "policy is only used for this user"
+  provider   = aws.testing-test
   user       = aws_iam_user.testing_ci.name
   policy_arn = aws_iam_policy.testing_ci_policy.arn
 }
 
 resource "aws_iam_user_policy_attachment" "testing_ci_read_only" {
   # checkov:skip=CKV_AWS_40: "policy is only used for this user"
+  provider   = aws.testing-test
   user       = aws_iam_user.testing_ci.name
   policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
 }
@@ -96,16 +100,35 @@ resource "aws_iam_user_policy_attachment" "testing_ci_read_only" {
 # Create access keys for the CI user
 # NOTE: These are extremely sensitive keys. Do not output these anywhere publicly accessible.
 resource "aws_iam_access_key" "testing_ci" {
-  user = aws_iam_user.testing_ci.name
+  provider = aws.testing-test
+  user     = aws_iam_user.testing_ci.name
 
   # Setting the meta lifecycle argument allows us to periodically run `terraform taint aws_iam_access_key.ci`, and run
   # terraform apply to create new keys before these ones are destroyed.
   lifecycle {
     create_before_destroy = true
+    replace_triggered_by = [
+      time_static.key_rotate_period
+    ]
   }
 }
 
+# create a rotation period for the access keys
+
+resource "time_rotating" "key_rotate_period" {
+  rotation_minutes = 30
+}
+
+# When rotate period of time_rotate expires, it is removed from the state, and terraform treats it as a new resource.
+# Deletion/creation doesn't trigger replace_triggered_by https://github.com/hashicorp/terraform-provider-time/issues/118
+# Thus a secondary dependent time_static resource is needed to actually trigger the recreation of the keys.
+
+resource "time_static" "key_rotate_period" {
+  rfc3339 = time_rotating.key_rotate_period.rfc3339
+}
+
 resource "aws_secretsmanager_secret" "testing_ci_iam_user_keys" {
+  provider    = aws.testing-test
   name        = "testing_ci_iam_user_keys"
   policy      = data.aws_iam_policy_document.testing_ci_iam_user_secrets_manager_policy.json
   kms_key_id  = aws_kms_key.testing_ci_iam_user_kms_key.id
@@ -114,6 +137,7 @@ resource "aws_secretsmanager_secret" "testing_ci_iam_user_keys" {
 }
 
 resource "aws_secretsmanager_secret_version" "testing_ci_iam_user_keys" {
+  provider  = aws.testing-test
   secret_id = aws_secretsmanager_secret.testing_ci_iam_user_keys.id
   secret_string = jsonencode({
     AWS_ACCESS_KEY_ID     = aws_iam_access_key.testing_ci.id
@@ -123,6 +147,7 @@ resource "aws_secretsmanager_secret_version" "testing_ci_iam_user_keys" {
 
 # KMS Source
 resource "aws_kms_key" "testing_ci_iam_user_kms_key" {
+  provider                = aws.testing-test
   description             = "testing-ci-user-access-key"
   policy                  = data.aws_iam_policy_document.testing_ci_iam_user_kms_key_policy.json
   enable_key_rotation     = true
@@ -130,6 +155,7 @@ resource "aws_kms_key" "testing_ci_iam_user_kms_key" {
 }
 
 resource "aws_kms_alias" "testing_ci_iam_user_kms_key" {
+  provider      = aws.testing-test
   name          = "alias/testing-ci-user-access-key"
   target_key_id = aws_kms_key.testing_ci_iam_user_kms_key.id
 }
@@ -151,7 +177,7 @@ data "aws_iam_policy_document" "testing_ci_iam_user_kms_key_policy" {
     principals {
       type = "AWS"
       identifiers = [
-        data.aws_caller_identity.current.account_id
+        data.aws_caller_identity.testing_test.account_id
       ]
     }
   }
@@ -190,7 +216,7 @@ data "aws_iam_policy_document" "testing_ci_iam_user_secrets_manager_policy" {
     principals {
       type = "AWS"
       identifiers = [
-        data.aws_caller_identity.current.account_id
+        data.aws_caller_identity.testing_test.account_id
       ]
     }
   }
@@ -211,3 +237,4 @@ data "aws_iam_policy_document" "testing_ci_iam_user_secrets_manager_policy" {
     }
   }
 }
+
