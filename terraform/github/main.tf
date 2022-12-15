@@ -394,6 +394,6 @@ module "aws-team" {
 module "contributor-access" {
   for_each          = toset(local.modernisation_platform_repositories)
   source            = "./modules/contributor"
-  application_teams = local.application_teams
+  application_teams = local.application_github_slugs
   repository_id     = each.key
 }

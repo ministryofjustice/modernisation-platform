@@ -45,23 +45,24 @@ locals {
   # Everyone
   everyone = concat(local.all_maintainers, local.all_members)
 
-  # Modernisation platform application teams (need to give access to environments repo as needed for github environments)
-  # Hopefully we can get rid of this if this issue is resolved - https://github.com/ministryofjustice/operations-engineering/issues/139
-  # But if not we will need to automate the updating of this list based on slugs in the environment json files.
-  application_teams = [
-    "all-org-members",
-    "performance-hub-developers",
-    "studio-webops",
-    "cica",
-    "xhibit-portal-dev",
-    "ppud-replacement-devs",
-    "laa-aws-infrastructure",
-    "data-and-insights-hub",
-    "hmpps-digital-prison-reporting",
-    "hmpps-interventions-dev",
-    "hmpps-migration",
-    "laa-ccms-migration-team"
+  environments_json = [
+    for file in fileset("../../environments/", "*.json") : merge({
+      name = replace(file, ".json", "")
+    }, jsondecode(file("../../environments/${file}")))
   ]
+
+  application_github_slugs = concat(
+    ["all-org-members"],
+    distinct(flatten([
+      for application in local.environments_json : [
+        for environment in application.environments : [
+          for access in environment.access :
+          access.github_slug
+          if application.account-type == "member" && !contains(["modernisation-platform", "modernisation-platform-engineers"], access.github_slug)
+        ]
+      ]
+    ]))
+  )
 
   # Create a list of repositories that we want our customers to be able to contribute to
   modernisation_platform_repositories = [
