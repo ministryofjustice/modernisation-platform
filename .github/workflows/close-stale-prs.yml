@@ -1,11 +1,10 @@
-name: Close stale PRs
-
-permissions: {}
-
 name: 'Close stale PRs'
+
 on:
   schedule:
     - cron: '17 1 * * *'
+
+permissions: {}
 
 jobs:
   stale:
