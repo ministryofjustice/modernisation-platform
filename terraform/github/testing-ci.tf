@@ -4,7 +4,7 @@
 resource "aws_iam_user" "testing_ci" {
   provider = aws.testing-test
   name     = "testing-ci"
-  tags     = local.tags
+  tags     = local.testing_tags
 }
 
 # Add policy directly to the testing user
@@ -81,6 +81,7 @@ resource "aws_iam_policy" "testing_ci_policy" {
   name        = "TestingCiActions"
   description = "Allowed actions for the testing_ci user"
   policy      = data.aws_iam_policy_document.testing_ci_policy.json
+  tags        = local.testing_tags
 }
 
 resource "aws_iam_user_policy_attachment" "testing_ci_attach" {
@@ -133,7 +134,7 @@ resource "aws_secretsmanager_secret" "testing_ci_iam_user_keys" {
   policy      = data.aws_iam_policy_document.testing_ci_iam_user_secrets_manager_policy.json
   kms_key_id  = aws_kms_key.testing_ci_iam_user_kms_key.id
   description = "Access keys for the testing CI user, this secret is used by GitHub to set the correct repository secrets."
-  tags        = local.tags
+  tags        = local.testing_tags
 }
 
 resource "aws_secretsmanager_secret_version" "testing_ci_iam_user_keys" {
@@ -152,6 +153,7 @@ resource "aws_kms_key" "testing_ci_iam_user_kms_key" {
   policy                  = data.aws_iam_policy_document.testing_ci_iam_user_kms_key_policy.json
   enable_key_rotation     = true
   deletion_window_in_days = 30
+  tags                    = local.testing_tags
 }
 
 resource "aws_kms_alias" "testing_ci_iam_user_kms_key" {
