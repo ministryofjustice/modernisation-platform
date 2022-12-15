@@ -1,4 +1,11 @@
+# Adding information tags about resources created in the testing-test account but managed in this terraform project.
+
+data "http" "environments_file" {
+  url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/${local.testing_application_name}.json"
+}
 locals {
+  testing_application_name = "testing"
+
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 
   # GitHub usernames for the Modernisation Platform team maintainers
@@ -70,5 +77,7 @@ locals {
   ]
 
 
-  tags = { "source-code" = "https://github.com/ministryofjustice/modernisation-platform" }
+  testing_tags = merge(
+    jsondecode(data.http.environments_file.response_body).tags,
+  { "source-code" = "https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/github" })
 }

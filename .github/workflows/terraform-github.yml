@@ -16,6 +16,10 @@ on:
     branches:
       - main
     types: [opened, edited, reopened, synchronize]
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    # trigger every Saturday at 12:00am
+    - cron: '0 12 * * 6'
   workflow_dispatch:
 
 defaults:
@@ -25,7 +29,7 @@ defaults:
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
- 
+
 jobs:
   github-plan-and-apply:
     runs-on: ubuntu-latest
@@ -53,7 +57,7 @@ jobs:
         with:
           terraform_version: "~1"
           terraform_wrapper: false
-         
+
       - name: terraform init
         run: bash scripts/terraform-init.sh terraform/github
       - name: terraform plan
