@@ -9,7 +9,10 @@ data "aws_secretsmanager_secret_version" "environment_management" {
 }
 
 locals {
-  testing_ci_iam_user_keys = jsondecode(aws_secretsmanager_secret_version.testing_ci_iam_user_keys.secret_string)
+  testing_ci_iam_user_keys = sensitive({
+    AWS_ACCESS_KEY_ID     = aws_iam_access_key.testing_ci.id
+    AWS_SECRET_ACCESS_KEY = aws_iam_access_key.testing_ci.secret
+  })
 }
 
 # Get the slack webhook url
