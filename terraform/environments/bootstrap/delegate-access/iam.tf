@@ -57,6 +57,7 @@ data "aws_iam_policy_document" "member-access" {
       "applicationinsights:*",
       "athena:*",
       "autoscaling:*",
+      "backup:*",
       "cloudfront:*",
       "cloudwatch:*",
       "dlm:*",
