@@ -26,9 +26,9 @@ module "ssm-cross-account-access" {
   providers = {
     aws = aws.workspace
   }
-  account_id             = "763252494486:role/AWS-SSM-AutomationAdministrationRole"
-  policy_arn             = "arn:aws:iam::aws:policy/AdministratorAccess"
-  role_name              = "AWS-SSM-AutomationExecutionRole"
+  account_id                  = "763252494486:role/AWS-SSM-AutomationAdministrationRole"
+  policy_arn                  = "arn:aws:iam::aws:policy/AdministratorAccess"
+  role_name                   = "AWS-SSM-AutomationExecutionRole"
   additional_trust_statements = [data.aws_iam_policy_document.ssm-patching-trust-policy.json]
 
 }
@@ -43,9 +43,9 @@ data "aws_iam_policy_document" "ssm-patching-trust-policy" {
       "arn:aws:iam::763252494486:role/AWS-SSM-AutomationAdministrationRole"
     ]
 
-      principals {
-    type        = "Service"
-    identifiers = ["ssm.amazonaws.com"]
+    principals {
+      type        = "Service"
+      identifiers = ["ssm.amazonaws.com"]
     }
   }
 
