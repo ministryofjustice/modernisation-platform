@@ -147,7 +147,7 @@ jobs:
   delegate-access:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
-    needs: [provision-workspaces]
+    needs: [single-sign-on]
     steps:
       - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
         with:
