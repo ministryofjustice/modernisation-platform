@@ -26,6 +26,7 @@ setup_ram_share_association() {
       ./scripts/terraform-apply.sh $basedir/$application
     fi
     echo "Finished running ram share association for application: ${application}"
+    exit 0
 }
 
 setup_ram_share_association
