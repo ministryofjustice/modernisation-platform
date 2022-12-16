@@ -27,31 +27,110 @@ module "ssm-cross-account-access" {
     aws = aws.workspace
   }
   account_id             = "763252494486:role/AWS-SSM-AutomationAdministrationRole"
-  policy_arn             = "arn:aws:iam::aws:policy/AdministratorAccess"
+  policy_arn             = data.aws_iam_policy_document.execution-combined-policy.json
   role_name              = "AWS-SSM-AutomationExecutionRole"
-  additional_trust_statements = [data.aws_iam_policy_document.ssm-patching-trust-policy.json]
+  additional_trust_statements = [data.aws_iam_policy_document.trust-relationship-policy.json]
 
 }
 
-data "aws_iam_policy_document" "ssm-patching-trust-policy" {
+data "aws_iam_policy_document" "SSM-Automation-Policy" {
   statement {
+    sid       = ""
+    effect    = "Allow"
+    resources = ["arn:aws:lambda:*:*:function:Automation*"]
+    actions   = ["lambda:InvokeFunction"]
+  }
+
+  statement {
+    sid       = ""
+    effect    = "Allow"
+    resources = ["*"]
+
     actions = [
-      "sts:AssumeRole"
+      "ec2:CreateImage",
+      "ec2:CopyImage",
+      "ec2:DeregisterImage",
+      "ec2:DescribeImages",
+      "ec2:DeleteSnapshot",
+      "ec2:StartInstances",
+      "ec2:RunInstances",
+      "ec2:StopInstances",
+      "ec2:TerminateInstances",
+      "ec2:DescribeInstanceStatus",
+      "ec2:CreateTags",
+      "ec2:DeleteTags",
+      "ec2:DescribeTags",
+      "cloudformation:CreateStack",
+      "cloudformation:DescribeStackEvents",
+      "cloudformation:DescribeStacks",
+      "cloudformation:UpdateStack",
+      "cloudformation:DeleteStack",
     ]
+  }
 
-    resources = [
-      "arn:aws:iam::763252494486:role/AWS-SSM-AutomationAdministrationRole"
+  statement {
+    sid       = ""
+    effect    = "Allow"
+    resources = ["*"]
+    actions   = ["ssm:*"]
+  }
+
+  statement {
+    sid       = ""
+    effect    = "Allow"
+    resources = ["arn:aws:sns:*:*:Automation*"]
+    actions   = ["sns:Publish"]
+  }
+}
+
+data "aws_iam_policy_document" "execution-policy" {
+  statement {
+    sid       = ""
+    effect    = "Allow"
+    resources = ["*"]
+
+    actions = [
+      "resource-groups:ListGroupResources",
+      "tag:GetResources",
+      "ec2:DescribeInstances",
     ]
+  }
 
-      principals {
-    type        = "Service"
-    identifiers = ["ssm.amazonaws.com"]
+  statement {
+    sid       = ""
+    effect    = "Allow"
+    resources = [format("arn:aws:iam::%s:role/AWS-SSM-AutomationExecutionRole", local.environment_management.account_ids["core-shared-services-production"])]
+    actions   = ["iam:PassRole"]
+  }
+}
+
+data "aws_iam_policy_document" "trust-relationship-policy" {
+  statement {
+    sid     = ""
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::763252494486:role/AWS-SSM-AutomationAdministrationRole"]
     }
   }
 
+  statement {
+    sid     = ""
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
 
+    principals {
+      type        = "Service"
+      identifiers = ["ssm.amazonaws.com"]
+    }
+  }
 }
 
+data "aws_iam_policy_document" "execution-combined-policy" {
+  source_policy_documents = concat([data.aws_iam_policy_document.SSM-Automation-Policy.json, data.aws_iam_policy_document.execution-policy.json])
+}
 
 
 module "cicd-member-user" {
