@@ -112,7 +112,7 @@ data "aws_iam_policy_document" "trust-relationship-policy" {
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::763252494486:role/AWS-SSM-AutomationAdministrationRole"]
+      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/AWS-SSM-AutomationAdministrationRole"]
     }
   }
 
