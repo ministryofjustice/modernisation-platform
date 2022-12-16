@@ -21,6 +21,118 @@ module "cross-account-access" {
 
 }
 
+module "ssm-cross-account-access" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
+  providers = {
+    aws = aws.workspace
+  }
+  account_id                  = local.environment_management.account_ids["core-shared-services-production"]
+  policy_arn                  = data.aws_iam_policy_document.execution-combined-policy.json
+  role_name                   = "AWS-SSM-AutomationExecutionRole"
+  additional_trust_statements = [data.aws_iam_policy_document.trust-relationship-policy.json]
+
+}
+
+data "aws_iam_policy_document" "SSM-Automation-Policy" {
+  statement {
+    sid       = ""
+    effect    = "Allow"
+    resources = ["arn:aws:lambda:*:*:function:Automation*"]
+    actions   = ["lambda:InvokeFunction"]
+  }
+
+  statement {
+    sid       = ""
+    effect    = "Allow"
+    resources = ["*"]
+
+    actions = [
+      "ec2:CreateImage",
+      "ec2:CopyImage",
+      "ec2:DeregisterImage",
+      "ec2:DescribeImages",
+      "ec2:DeleteSnapshot",
+      "ec2:StartInstances",
+      "ec2:RunInstances",
+      "ec2:StopInstances",
+      "ec2:TerminateInstances",
+      "ec2:DescribeInstanceStatus",
+      "ec2:CreateTags",
+      "ec2:DeleteTags",
+      "ec2:DescribeTags",
+      "cloudformation:CreateStack",
+      "cloudformation:DescribeStackEvents",
+      "cloudformation:DescribeStacks",
+      "cloudformation:UpdateStack",
+      "cloudformation:DeleteStack",
+    ]
+  }
+
+  statement {
+    sid       = ""
+    effect    = "Allow"
+    resources = ["*"]
+    actions   = ["ssm:*"]
+  }
+
+  statement {
+    sid       = ""
+    effect    = "Allow"
+    resources = ["arn:aws:sns:*:*:Automation*"]
+    actions   = ["sns:Publish"]
+  }
+}
+
+data "aws_iam_policy_document" "execution-policy" {
+  statement {
+    sid       = ""
+    effect    = "Allow"
+    resources = ["*"]
+
+    actions = [
+      "resource-groups:ListGroupResources",
+      "tag:GetResources",
+      "ec2:DescribeInstances",
+    ]
+  }
+
+  statement {
+    sid       = ""
+    effect    = "Allow"
+    resources = ["arn:aws:iam::*:role/AWS-SSM-AutomationExecutionRole"]
+    actions   = ["iam:PassRole"]
+  }
+}
+
+data "aws_iam_policy_document" "trust-relationship-policy" {
+  statement {
+    sid     = ""
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/AWS-SSM-AutomationAdministrationRole"]
+    }
+  }
+
+  statement {
+    sid     = ""
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ssm.amazonaws.com"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "execution-combined-policy" {
+  source_policy_documents = concat([data.aws_iam_policy_document.SSM-Automation-Policy.json, data.aws_iam_policy_document.execution-policy.json])
+}
+
+
 module "cicd-member-user" {
   count  = local.account_data.account-type == "member" ? 1 : 0
   source = "../../../modules/iam_baseline"
