@@ -26,37 +26,31 @@ module "ssm-cross-account-access" {
   providers = {
     aws = aws.workspace
   }
-  account_id             = local.modernisation_platform_account.id
+  account_id             = "763252494486:role/AWS-SSM-AutomationAdministrationRole"
   policy_arn             = "arn:aws:iam::aws:policy/AdministratorAccess"
   role_name              = "AWS-SSM-AutomationExecutionRole"
-  additional_trust_statements = data.aws_iam_policy_document.ssm-patching-trust-policy.json
+  additional_trust_statements = [data.aws_iam_policy_document.ssm-patching-trust-policy.json]
 }
 
 data "aws_iam_policy_document" "ssm-patching-trust-policy" {
-  resource_query {
-    query = <<JSON
-{
-	"Version": "2012-10-17",
-	"Statement": [
-		{
-			"Effect": "Allow",
-			"Principal": {
-				"AWS": "arn:aws:iam::763252494486:role/AWS-SSM-AutomationAdministrationRole"
-			},
-			"Action": "sts:AssumeRole"
-		},
-		{
-			"Effect": "Allow",
-			"Principal": {
-				"Service": "ssm.amazonaws.com"
-			},
-			"Action": "sts:AssumeRole"
-		}
-	]
-}
-JSON
+  statement {
+    actions = [
+      "sts:AssumeRole"
+    ]
+
+    resources = [
+      "arn:aws:iam::763252494486:role/AWS-SSM-AutomationAdministrationRole"
+    ]
+
+      principals {
+    type        = "Service"
+    identifiers = ["ssm.amazonaws.com"]
+    }
   }
+
+
 }
+
 
 
 module "cicd-member-user" {
