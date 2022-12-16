@@ -99,7 +99,7 @@ data "aws_iam_policy_document" "execution-policy" {
   statement {
     sid       = ""
     effect    = "Allow"
-    resources = "arn:aws:iam::*:role/AWS-SSM-AutomationExecutionRole"
+    resources = ["arn:aws:iam::*:role/AWS-SSM-AutomationExecutionRole"]
     actions   = ["iam:PassRole"]
   }
 }
