@@ -229,7 +229,7 @@ data "aws_iam_policy_document" "SSM-Automation-Admin-Policy-Trust-Relationship" 
 }
 
 module "ssm-cross-account-access-admin" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
+  source                      = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
   account_id                  = local.environment_management.account_ids["core-shared-services-production"]
   policy_arn                  = data.aws_iam_policy_document.SSM-Automation-Admin-Policy.json
   role_name                   = "AWS-SSM-AutomationAdministrationRole"
