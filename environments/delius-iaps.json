@@ -7,7 +7,7 @@
         {
           "github_slug": "hmpps-migration",
           "level": "sandbox",
-          "nuke": "include"
+          "nuke": "exclude"
         }
       ]
     },
