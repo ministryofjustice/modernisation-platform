@@ -111,7 +111,7 @@ data "aws_iam_policy_document" "trust-relationship-policy" {
     actions = ["sts:AssumeRole"]
 
     principals {
-      type        = "AWS"
+      type        = "Federated"
       identifiers = ["arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/AWS-SSM-AutomationAdministrationRole"]
     }
   }
