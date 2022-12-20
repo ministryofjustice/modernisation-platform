@@ -228,15 +228,15 @@ data "aws_iam_policy_document" "AWSSystemsManagerAutomationExecutionRoleTrustRel
 }
 
 resource "aws_iam_policy" "administration-combined-policy" {
-    name        = "SSM-Automation-Execution-Combined-Policy"
-    path        = "/"
-    description = "Combined policy for SSM Automation Execution"
-    policy      = data.aws_iam_policy_document.AssumeRole-AWSSystemsManagerAutomationExecutionRole.json
+  name        = "SSM-Automation-Execution-Combined-Policy"
+  path        = "/"
+  description = "Combined policy for SSM Automation Execution"
+  policy      = data.aws_iam_policy_document.AssumeRole-AWSSystemsManagerAutomationExecutionRole.json
 }
 
 
 module "ssm-cross-account-access-admin" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
+  source                      = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
   account_id                  = local.environment_management.account_ids["core-shared-services-production"]
   policy_arn                  = aws_iam_policy.administration-combined-policy.arn
   role_name                   = "AWS-SSM-AutomationAdminRole"
