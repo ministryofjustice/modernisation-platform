@@ -27,7 +27,7 @@ module "ssm-cross-account-access" {
     aws = aws.workspace
   }
   account_id                  = local.environment_management.account_ids["core-shared-services-production"]
-  policy_arn                  = data.aws_iam_policy_document.execution-combined-policy.json
+  policy_arn                  = aws_iam_policy.execution-combined-policy.arn
   role_name                   = "AWS-SSM-AutomationExecutionRole"
   additional_trust_statements = [data.aws_iam_policy_document.trust-relationship-policy.json]
 
@@ -128,8 +128,15 @@ data "aws_iam_policy_document" "trust-relationship-policy" {
   }
 }
 
-data "aws_iam_policy_document" "execution-combined-policy" {
+data "aws_iam_policy_document" "execution-combined-policy-doc" {
   source_policy_documents = concat([data.aws_iam_policy_document.SSM-Automation-Policy.json, data.aws_iam_policy_document.execution-policy.json])
+}
+
+resource "aws_iam_policy" "execution-combined-policy" {
+    name        = "SSM-Automation-Execution-Combined-Policy"
+    path        = "/"
+    description = "Combined policy for SSM Automation Execution"
+    policy      = data.aws_iam_policy_document.execution-combined-policy-doc.json
 }
 
 
