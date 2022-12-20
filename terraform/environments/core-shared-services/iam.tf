@@ -229,10 +229,10 @@ data "aws_iam_policy_document" "AWS-SSMAutomationExecutionRole-TrustRelationship
 }
 
 resource "aws_iam_policy" "ssm-cross-account-admin-policy" {
-    name        = "SSM-Automation-Execution-Combined-Policy"
-    path        = "/"
-    description = "Combined policy for SSM Automation Execution"
-    policy      = data.aws_iam_policy_document.AWS-SSMAutomationExecutionRoleAdmin.json
+  name        = "SSM-Automation-Execution-Combined-Policy"
+  path        = "/"
+  description = "Combined policy for SSM Automation Execution"
+  policy      = data.aws_iam_policy_document.AWS-SSMAutomationExecutionRoleAdmin.json
 }
 
 module "ssm-cross-account-access-admin" {
