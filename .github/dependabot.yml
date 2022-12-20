@@ -152,10 +152,6 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
-    directory: "/terraform/environments/threat-and-vulnerability-mgmt"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
     directory: "/terraform/environments/xhibit-portal"
     schedule:
       interval: "daily"
@@ -245,10 +241,6 @@ updates:
       interval: "daily"
   - package-ecosystem: "gomod"
     directory: "/scripts/internal/get-security-hub-findings"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "gomod"
-    directory: "/scripts/internal/get-testing-ci-user-creds"
     schedule:
       interval: "daily"
   - package-ecosystem: "gomod"
