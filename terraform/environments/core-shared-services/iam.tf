@@ -200,7 +200,7 @@ data "aws_iam_policy_document" "oidc_assume_role_core" {
 
 ##### Cross Account Roles Admin #####
 
-data "aws_iam_policy_document" "AWS-SSMAutomationExecutionRoleAdmin" {
+data "aws_iam_policy_document" "ssm-automation-execution-policy" {
   statement {
     sid       = ""
     effect    = "Allow"
@@ -215,7 +215,7 @@ data "aws_iam_policy_document" "AWS-SSMAutomationExecutionRoleAdmin" {
     actions   = ["organizations:ListAccountsForParent"]
   }
 }
-data "aws_iam_policy_document" "AWS-SSMAutomationExecutionRole-TrustRelationship" {
+data "aws_iam_policy_document" "ssm-automation-execution-policy-trust-relationship" {
   statement {
     sid     = ""
     effect  = "Allow"
@@ -229,10 +229,10 @@ data "aws_iam_policy_document" "AWS-SSMAutomationExecutionRole-TrustRelationship
 }
 
 resource "aws_iam_policy" "ssm-cross-account-admin-policy" {
-    name        = "SSM-Automation-Execution-Combined-Policy"
+    name        = "SSM-Automation-Execution-Policy"
     path        = "/"
-    description = "Combined policy for SSM Automation Execution"
-    policy      = data.aws_iam_policy_document.AWS-SSMAutomationExecutionRoleAdmin.json
+    description = "Policy for SSM Automation Execution on the admin account"
+    policy      = data.aws_iam_policy_document.ssm-automation-execution-policy.json
 }
 
 module "ssm-cross-account-access-admin" {
@@ -240,7 +240,7 @@ module "ssm-cross-account-access-admin" {
   account_id                  = local.environment_management.account_ids["core-shared-services-production"]
   policy_arn                  = aws_iam_policy.ssm-cross-account-admin-policy.arn
   role_name                   = "AWS-SSM-AutomationAdminRole"
-  additional_trust_statements = [data.aws_iam_policy_document.AWS-SSMAutomationExecutionRole-TrustRelationship.json]
+  additional_trust_statements = [data.aws_iam_policy_document.ssm-automation-execution-policy-trust-relationship.json]
 
 }
 

@@ -29,7 +29,7 @@ module "ssm-cross-account-access" {
   account_id                  = local.environment_management.account_ids["core-shared-services-production"]
   policy_arn                  = aws_iam_policy.execution-combined-policy.arn
   role_name                   = "AWS-SSM-AutomationExecutionRole"
-  additional_trust_statements = [data.aws_iam_policy_document.trust-relationship-policy.json]
+  additional_trust_statements = [data.aws_iam_policy_document.ssm-trust-relationship-policy.json]
 
 }
 
@@ -104,7 +104,7 @@ data "aws_iam_policy_document" "execution-policy" {
   }
 }
 
-data "aws_iam_policy_document" "trust-relationship-policy" {
+data "aws_iam_policy_document" "ssm-trust-relationship-policy" {
   statement {
     sid     = ""
     effect  = "Allow"
