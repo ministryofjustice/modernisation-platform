@@ -229,11 +229,13 @@ data "aws_iam_policy_document" "ssm-automation-execution-policy-trust-relationsh
 }
 
 resource "aws_iam_policy" "ssm-cross-account-admin-policy" {
-    name        = "SSM-Automation-Execution-Policy"
-    path        = "/"
-    description = "Policy for SSM Automation Execution on the admin account"
-    policy      = data.aws_iam_policy_document.ssm-automation-execution-policy.json
+
+  name        = "SSM-Automation-Execution-Policy"
+  path        = "/"
+  description = "Policy for SSM Automation Execution on the admin account"
+  policy      = data.aws_iam_policy_document.ssm-automation-execution-policy.json
 }
+
 
 module "ssm-cross-account-access-admin" {
   source                      = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
