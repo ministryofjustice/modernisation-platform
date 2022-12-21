@@ -59,12 +59,7 @@ data "aws_iam_policy_document" "SSM-Automation-Policy" {
       "ec2:DescribeInstanceStatus",
       "ec2:CreateTags",
       "ec2:DeleteTags",
-      "ec2:DescribeTags",
-      "cloudformation:CreateStack",
-      "cloudformation:DescribeStackEvents",
-      "cloudformation:DescribeStacks",
-      "cloudformation:UpdateStack",
-      "cloudformation:DeleteStack",
+      "ec2:DescribeTags"
     ]
   }
 
