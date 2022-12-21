@@ -1,5 +1,5 @@
 resource "aws_ssm_document" "cross-account-single-patching-automation" {
-  name = "cross-account-single-patching-automation"
+  name          = "cross-account-single-patching-automation"
   document_type = "Automation"
 
   content = <<DOC
