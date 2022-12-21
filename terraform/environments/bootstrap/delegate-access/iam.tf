@@ -128,6 +128,7 @@ data "aws_iam_policy_document" "execution-combined-policy-doc" {
 }
 
 resource "aws_iam_policy" "execution-combined-policy" {
+  provider    = aws.workspace
   name        = "SSM-Automation-Execution-Combined-Policy"
   path        = "/"
   description = "Combined policy for SSM Automation Execution"
