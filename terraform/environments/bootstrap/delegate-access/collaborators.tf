@@ -88,3 +88,25 @@ module "collaborator_sandbox_role" {
   ]
   number_of_custom_role_policy_arns = 2
 }
+
+module "collaborator_migration_role" {
+  count   = local.account_data.account-type == "member" ? 1 : 0
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+  version = "~> 5"
+  providers = {
+    aws = aws.workspace
+  }
+  trusted_role_arns = [
+    local.modernisation_platform_account.id
+  ]
+
+  create_role       = true
+  role_name         = "migration"
+  role_requires_mfa = true
+
+  custom_role_policy_arns = [
+    "arn:aws:iam::aws:policy/ReadOnlyAccess",
+    aws_iam_policy.migration.arn,
+  ]
+  number_of_custom_role_policy_arns = 2
+}
