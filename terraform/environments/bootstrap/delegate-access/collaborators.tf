@@ -61,7 +61,7 @@ module "collaborator_developer_role" {
 
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
-    aws_iam_policy.developer[count.index].arn,
+    aws_iam_policy.developer.arn,
   ]
   number_of_custom_role_policy_arns = 2
 }
@@ -84,7 +84,7 @@ module "collaborator_sandbox_role" {
 
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
-    aws_iam_policy.sandbox[count.index].arn,
+    aws_iam_policy.sandbox.arn,
   ]
   number_of_custom_role_policy_arns = 2
 }
