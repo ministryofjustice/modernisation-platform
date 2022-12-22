@@ -2,7 +2,6 @@
 
 # developer policy - member SSO and collaborators
 resource "aws_iam_policy" "developer" {
-  count    = local.account_data.account-type == "member" ? 1 : 0
   provider = aws.workspace
   name     = "developer_policy"
   path     = "/"
@@ -115,7 +114,6 @@ data "aws_iam_policy_document" "developer_additional" {
 
 # sandbox policy - member SSO and collaborators, development accounts only
 resource "aws_iam_policy" "sandbox" {
-  count    = local.account_data.account-type == "member" && local.application_environment == "development" ? 1 : 0
   provider = aws.workspace
   name     = "sandbox_policy"
   path     = "/"
