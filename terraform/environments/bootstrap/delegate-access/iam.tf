@@ -547,23 +547,3 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
     "s3:PutObjectAcl"]
   }
 }
-
-# testing sso_admin_customer_managed_policy
-
-data "aws_iam_policy_document" "sso_customer_managed_policy_engineer" {
-  statement {
-    sid       = "SSOCustomerManagedPolicyEngineer"
-    effect    = "Allow"
-    resources = ["*"]
-    actions   = ["ec2:CreateTags"]
-  }
-}
-
-resource "aws_iam_policy" "sso_customer_managed_policy_engineer" {
-  provider = aws.workspace
-
-  name        = "SSOCustomerManagedPolicyEngineer"
-  path        = "/"
-  description = "Restricted policy for use for the testing of customer managed SSO policies"
-  policy      = data.aws_iam_policy_document.sso_customer_managed_policy_engineer.json
-}
