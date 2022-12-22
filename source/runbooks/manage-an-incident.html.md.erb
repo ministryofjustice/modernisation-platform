@@ -1,0 +1,131 @@
+---
+owner_slack: "#modernisation-platform"
+title: Incident Process
+last_reviewed_on: 2022-12-19
+review_in: 3 months
+---
+
+# Incident Process
+
+This document describes our incident handling process.
+
+## 1. Confirm that the event constitutes an incident
+
+> If this is a security breach, also report it [here](https://goo.gl/forms/frsB1h8AGv3Zefwq2)
+
+We define an incident as an event which:
+
+* is unplanned, and
+* impacts end users, or
+* degrades user-facing services, or
+* increases risk to production services
+
+If this event does not constitute an incident, the appropriate response is probably to [raise an issue](https://github.com/ministryofjustice/modernisation-platform/issues/new/choose) in our GitHub repository.
+
+Once you are confident that you have an incident, declare it as such.
+
+## 2. Declare the incident
+
+From any channel in Slack you can use the Modernisation Platform incident slack tool to declare an incident.
+
+`/modernisation-platform-incident Something's happened`
+
+Declaring the incident will launch a form for you to complete. Once the form is saved, in the `#modernisation-platform-incidents` channel, click the `Create comms channel` button to create a dedicated Slack channel for this incident.
+
+At your discretion, you may also wish to notify users now via [ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) and/or [modernisation-platform-update](https://mojdt.slack.com/archives/C02L5MCJ12N), however you may prefer to leave this until later in the process, when more information is available.
+
+## 3. Assign roles
+
+The two roles which **must** be filled for every incident are the **Incident Lead** and the **Scribe**.
+
+> In rare cases, the same person might fill both roles, but this is discouraged because it generally leads to poor record keeping.
+
+To fill these roles, ask for volunteers from the team, either verbally or via #modernisation-platform. In the unlikely event that you don't get any volunteers, appoint someone.
+
+### 3.1 Incident Lead
+
+**Responsibilities**:
+
+* coordinate our response to the incident
+* decide on any additional roles required (e.g. a communications lead may be required)
+* ensure that all required roles are filled
+* ensure that all tasks which need to be handled are being done
+* make the final decision whenever we need to choose a course of action
+* set the schedule for any regular team check-ins, if those are deemed necessary
+* declare the incident closed, when appropriate
+* ensure that the post-incident process is followed
+
+> NB: The incident lead needs to ensure that things **are being done**, not try to do everything themselves
+
+The incident lead can be assigned in the incident form in the #modernisation-platform-incidents channel or using the command `/modernisation-platform-incident lead @slack-handle` in the incident comms channel.
+
+### 3.2 Scribe
+
+**Responsibilities**:
+
+The scribe is responsible for keeping a log of the incident, including:
+
+* important events
+* discussion topics
+* decisions
+* actions
+* results of actions/investigations
+
+> NB: this log is not intended to be a verbatim transcript of discussions. Rather, things like "xxx suggested the disk might be full. yyy to investigate and report back"
+
+Entries in the log are automatically created from any Slack message pinned in the comms channel.
+
+Key actions should be captured in the log using the `@modernisation-platform-incident action [text]` command in the dedicated comms channel.
+
+### 3.3 Communications Lead
+
+Depending on the impact/duration/panic-level of an incident, it *may* be desirable to appoint a communications lead.
+
+**Responsibilities**:
+
+* communicate the incident out to those who are impacted
+* decide what, how and how often to issue updates
+* give updates at regular intervals
+* field enquiries so the team can focus on fixing the incident without interruptions
+* disseminate a post-incident report
+
+People to update:
+
+* Users who are affected by the problem - via #ask-modernisation-platform, #modernisation-platform-update and the affected team’s own slack channels.
+* Team members for awareness or because they might be able to help - via #modernisation-platform
+* People in the team who manage communication with senior leadership in MoJ - Service Owner, Delivery Manager, Product Manager
+
+In the case of high-priority user-impacting incidents there is a need to keep the MoJ Incident Management Team aware. This is done by posting updates in the private **#p1s** slack channel (only the Service Owner and #ask-operations-engineering can do this), and via email to **[MoJdtincidentmanagement@justice.gov.uk](mailto:MoJdtincidentmanagement@justice.gov.uk)**
+
+### Transferring roles
+
+It may be necessary to transfer roles from one team member to another, e.g. during long-running incidents. In this case, it is the responsibility of whoever is in a role to ensure that someone else takes it over.
+
+Whoever assumes a role should announce it in the incident slack thread, so that the team is aware.
+
+## 4. Fix the problem
+
+Please bear in mind that not every incident requires the whole team to be involved (even if they all *want* to join in).
+
+## 5. End the incident
+
+When work on the problem has ceased, either because the problem has been resolved or because resolution is blocked until a later date,
+the **incident lead** should use the slack tool in the incident comms channel to close the incident:
+
+`@modernisation-platform-incident`
+
+This marks the official end of the incident. If users were notified of the incident, an appropriate message should go out via the same channels
+to tell them it's over.
+
+## 6. Post-incident procedure
+
+After the incident is resolved:
+
+* The scribe should ensure all appropriate messages have been pinned in the comms channel, thereby adding them to the incident log
+* The scribe should also ensure that any follow-up actions are recorded using the following command:
+`@modernisation-platform-incident action [some text]`
+* A blameless post mortem meeting should be scheduled to identify any processes that need to be improved
+* A [runbook] for how to fix this issue **should** be published
+
+[runbook]: https://github.com/ministryofjustice/modernisation-platform/tree/main/source/runbooks
+[raise a ticket]: http://goo.gl/msfGiS
