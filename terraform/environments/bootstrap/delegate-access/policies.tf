@@ -110,6 +110,19 @@ data "aws_iam_policy_document" "developer_additional" {
       values   = ["true"]
     }
   }
+
+  statement {
+    actions = [
+      "sts:AssumeRole"
+    ]
+
+    resources = [
+      "arn:aws:iam::*:role/read-dns-records",
+      "arn:aws:iam::*:role/member-delegation-read-only",
+      "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/member-shared-services",
+      "arn:aws:iam::${local.modernisation_platform_account.id}:role/modernisation-account-limited-read-member-access"
+    ]
+  }
 }
 
 # sandbox policy - member SSO and collaborators, development accounts only
@@ -293,5 +306,18 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "iam:UpdateRoleDescription"
     ]
     resources = ["arn:aws:iam::*:user/cicd-member-user"]
+  }
+
+  statement {
+    actions = [
+      "sts:AssumeRole"
+    ]
+
+    resources = [
+      "arn:aws:iam::*:role/read-dns-records",
+      "arn:aws:iam::*:role/member-delegation-read-only",
+      "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/member-shared-services",
+      "arn:aws:iam::${local.modernisation_platform_account.id}:role/modernisation-account-limited-read-member-access"
+    ]
   }
 }
