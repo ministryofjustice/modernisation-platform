@@ -151,6 +151,7 @@ EOL
   done
 
   cat >> $codeowners_file << EOL
+terraform/modules @ministryofjustice/studio-webops @ministryofjustice/modernisation-platform
 **/providers.tf @ministryofjustice/modernisation-platform
 **/backend.tf @ministryofjustice/modernisation-platform
 **/subnet_share.tf @ministryofjustice/modernisation-platform
