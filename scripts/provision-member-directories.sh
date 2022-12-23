@@ -155,6 +155,7 @@ EOL
 **/backend.tf @ministryofjustice/modernisation-platform
 **/subnet_share.tf @ministryofjustice/modernisation-platform
 **/networking.auto.tfvars.json @ministryofjustice/modernisation-platform
+/terraform/modules
 EOL
 
 }
