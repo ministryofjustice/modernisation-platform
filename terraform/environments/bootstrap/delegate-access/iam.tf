@@ -175,6 +175,8 @@ data "aws_iam_policy_document" "member-access" {
       "backup:*",
       "cloudfront:*",
       "cloudwatch:*",
+      "codebuild:*",
+      "codepipeline:*",
       "dlm:*",
       "dms:*",
       "ds:CheckAlias",
