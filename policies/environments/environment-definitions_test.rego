@@ -41,7 +41,7 @@ test_business_units_character{
 }
 
 test_unexpected_access {
-  deny["`example.json` uses an unexpected access level: got `incorrect-access`, expected one of: view-only, developer, sandbox, administrator"] with input as { "filename": "example.json", "environments": [{"access": [{"level": "incorrect-access"}]}]}
+  deny["`example.json` uses an unexpected access level: got `incorrect-access`, expected one of: view-only, developer, sandbox, administrator, migration"] with input as { "filename": "example.json", "environments": [{"access": [{"level": "incorrect-access"}]}]}
 }
 
 test_unexpected_nuke {

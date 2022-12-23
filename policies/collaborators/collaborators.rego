@@ -4,7 +4,8 @@ allowed_access := [
   "read-only",
   "developer",
   "security-audit",
-  "sandbox"
+  "sandbox",
+  "migration"
 ]
 
 deny[msg] {

@@ -15,7 +15,8 @@ allowed_access := [
   "view-only",
   "developer",
   "sandbox",
-  "administrator"
+  "administrator",
+  "migration"
 ]
 
 allowed_nuke := [
