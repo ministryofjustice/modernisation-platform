@@ -17,6 +17,7 @@ resource "aws_iam_policy" "policy" {
     Statement = [
       {
         Action = [
+          "codebuild:Start*",
           "ecs:RegisterTaskDefinition",
           "ecs:UpdateService",
           "ecs:DescribeServices",
