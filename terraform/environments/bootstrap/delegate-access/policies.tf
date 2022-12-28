@@ -4,7 +4,7 @@
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "common_statements" {
   statement {
-    sid    = "deny-permissions"
+    sid    = "denyPermissions"
     effect = "Deny"
     actions = [
       "ec2:CreateVpc",
@@ -50,7 +50,7 @@ data "aws_iam_policy_document" "common_statements" {
   }
 
   statement {
-    sid    = "deny-on-cicd-member-user"
+    sid    = "denyOnCicdMemberUser"
     effect = "Deny"
     actions = [
       "iam:AttachRolePolicy",
@@ -68,7 +68,7 @@ data "aws_iam_policy_document" "common_statements" {
   }
 
   statement {
-    sid = "assume-roles-in-shared-accounts"
+    sid = "assumeRolesInSharedAccounts"
     actions = [
       "sts:AssumeRole"
     ]
@@ -96,7 +96,7 @@ data "aws_iam_policy_document" "developer_additional" {
   #checkov:skip=CKV_AWS_111
   source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
-    sid    = "developer-allow"
+    sid    = "developerAllow"
     effect = "Allow"
     actions = [
       "acm:ImportCertificate",
@@ -154,7 +154,7 @@ data "aws_iam_policy_document" "developer_additional" {
   }
 
   statement {
-    sid    = "sns-allow"
+    sid    = "snsAllow"
     effect = "Allow"
     actions = [
       "sns:Publish"
@@ -163,7 +163,7 @@ data "aws_iam_policy_document" "developer_additional" {
   }
 
   statement {
-    sid    = "lambda-allow"
+    sid    = "lambdaAllow"
     effect = "Allow"
     actions = [
       "lambda:InvokeFunction"
@@ -172,7 +172,7 @@ data "aws_iam_policy_document" "developer_additional" {
   }
 
   statement {
-    sid    = "iam-on-cicd-member-allow"
+    sid    = "iamOnCicdMemberAllow"
     effect = "Allow"
     actions = [
       "iam:CreateAccessKey",
@@ -186,7 +186,7 @@ data "aws_iam_policy_document" "developer_additional" {
   }
 
   statement {
-    sid    = "core-shared-services-create-grant-allow"
+    sid    = "coreSharedServicesCreateGrantAllow"
     effect = "Allow"
     actions = [
       "kms:CreateGrant"
@@ -217,7 +217,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
   #checkov:skip=CKV_AWS_110
   source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
-    sid    = "sandbox-allow"
+    sid    = "sandboxAllow"
     effect = "Allow"
     actions = [
       "acm-pca:*",
@@ -343,7 +343,7 @@ data "aws_iam_policy_document" "migration_additional" {
   source_policy_documents   = [data.aws_iam_policy_document.developer_additional.json]
   override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
-    sid    = "migration-allow"
+    sid    = "migrationAllow"
     effect = "Allow"
     actions = [
       "dms:*",
