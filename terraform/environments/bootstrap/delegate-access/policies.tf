@@ -1,5 +1,86 @@
 # IAM policies used for SSO and collaborator roles
 
+# common policy statements
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "common_statements" {
+  statement {
+    sid    = "deny-permissions"
+    effect = "Deny"
+    actions = [
+      "ec2:CreateVpc",
+      "ec2:CreateSubnet",
+      "ec2:CreateVpcPeeringConnection",
+      "iam:AddClientIDToOpenIDConnectProvider",
+      "iam:AddUserToGroup",
+      "iam:AttachGroupPolicy",
+      "iam:AttachUserPolicy",
+      "iam:CreateAccountAlias",
+      "iam:CreateGroup",
+      "iam:CreateLoginProfile",
+      "iam:CreateOpenIDConnectProvider",
+      "iam:CreateSAMLProvider",
+      "iam:CreateUser",
+      "iam:CreateVirtualMFADevice",
+      "iam:DeactivateMFADevice",
+      "iam:DeleteAccountAlias",
+      "iam:DeleteAccountPasswordPolicy",
+      "iam:DeleteGroup",
+      "iam:DeleteGroupPolicy",
+      "iam:DeleteLoginProfile",
+      "iam:DeleteOpenIDConnectProvider",
+      "iam:DeleteSAMLProvider",
+      "iam:DeleteUser",
+      "iam:DeleteUserPermissionsBoundary",
+      "iam:DeleteUserPolicy",
+      "iam:DeleteVirtualMFADevice",
+      "iam:DetachGroupPolicy",
+      "iam:DetachUserPolicy",
+      "iam:EnableMFADevice",
+      "iam:RemoveClientIDFromOpenIDConnectProvider",
+      "iam:RemoveUserFromGroup",
+      "iam:ResyncMFADevice",
+      "iam:UpdateAccountPasswordPolicy",
+      "iam:UpdateGroup",
+      "iam:UpdateLoginProfile",
+      "iam:UpdateOpenIDConnectProviderThumbprint",
+      "iam:UpdateSAMLProvider",
+      "iam:UpdateUser"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "deny-on-cicd-member-user"
+    effect = "Deny"
+    actions = [
+      "iam:AttachRolePolicy",
+      "iam:DeleteRole",
+      "iam:DeleteRolePermissionsBoundary",
+      "iam:DeleteRolePolicy",
+      "iam:DetachRolePolicy",
+      "iam:PutRolePermissionsBoundary",
+      "iam:PutRolePolicy",
+      "iam:UpdateAssumeRolePolicy",
+      "iam:UpdateRole",
+      "iam:UpdateRoleDescription"
+    ]
+    resources = ["arn:aws:iam::*:user/cicd-member-user"]
+  }
+
+  statement {
+    sid = "assume-roles-in-shared-accounts"
+    actions = [
+      "sts:AssumeRole"
+    ]
+    resources = [
+      "arn:aws:iam::*:role/read-dns-records",
+      "arn:aws:iam::*:role/member-delegation-read-only",
+      "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/member-shared-services",
+      "arn:aws:iam::${local.modernisation_platform_account.id}:role/modernisation-account-limited-read-member-access"
+    ]
+  }
+}
+
 # developer policy - member SSO and collaborators
 resource "aws_iam_policy" "developer" {
   provider = aws.workspace
@@ -13,7 +94,10 @@ data "aws_iam_policy_document" "developer_additional" {
   #checkov:skip=CKV_AWS_108
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_111
+  source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
+    sid    = "developer-allow"
+    effect = "Allow"
     actions = [
       "acm:ImportCertificate",
       "autoscaling:UpdateAutoScalingGroup",
@@ -66,27 +150,30 @@ data "aws_iam_policy_document" "developer_additional" {
       "ssm-guiconnect:*",
       "support:*"
     ]
-
     resources = ["*"]
   }
 
   statement {
+    sid    = "sns-allow"
+    effect = "Allow"
     actions = [
       "sns:Publish"
     ]
-
     resources = ["arn:aws:sns:*:*:Automation*"]
   }
 
   statement {
+    sid    = "lambda-allow"
+    effect = "Allow"
     actions = [
       "lambda:InvokeFunction"
     ]
-
     resources = ["arn:aws:lambda:*:*:function:Automation*"]
   }
 
   statement {
+    sid    = "iam-on-cicd-member-allow"
+    effect = "Allow"
     actions = [
       "iam:CreateAccessKey",
       "iam:DeleteAccessKey",
@@ -95,11 +182,12 @@ data "aws_iam_policy_document" "developer_additional" {
       "iam:ListAccessKeys",
       "iam:UpdateAccessKey"
     ]
-
     resources = ["arn:aws:iam::*:user/cicd-member-user"]
   }
 
   statement {
+    sid    = "core-shared-services-create-grant-allow"
+    effect = "Allow"
     actions = [
       "kms:CreateGrant"
     ]
@@ -109,19 +197,6 @@ data "aws_iam_policy_document" "developer_additional" {
       variable = "kms:GrantIsForAWSResource"
       values   = ["true"]
     }
-  }
-
-  statement {
-    actions = [
-      "sts:AssumeRole"
-    ]
-
-    resources = [
-      "arn:aws:iam::*:role/read-dns-records",
-      "arn:aws:iam::*:role/member-delegation-read-only",
-      "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/member-shared-services",
-      "arn:aws:iam::${local.modernisation_platform_account.id}:role/modernisation-account-limited-read-member-access"
-    ]
   }
 }
 
@@ -135,12 +210,14 @@ resource "aws_iam_policy" "sandbox" {
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "sandbox_additional" {
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_107
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_110
+  source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
-    #checkov:skip=CKV_AWS_108
-    #checkov:skip=CKV_AWS_111
-    #checkov:skip=CKV_AWS_107
-    #checkov:skip=CKV_AWS_109
-    #checkov:skip=CKV_AWS_110
+    sid    = "sandbox-allow"
     effect = "Allow"
     actions = [
       "acm-pca:*",
@@ -245,84 +322,10 @@ data "aws_iam_policy_document" "sandbox_additional" {
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
-
-  statement {
-    effect = "Deny"
-    actions = [
-      "ec2:CreateVpc",
-      "ec2:CreateSubnet",
-      "ec2:CreateVpcPeeringConnection",
-      "iam:AddClientIDToOpenIDConnectProvider",
-      "iam:AddUserToGroup",
-      "iam:AttachGroupPolicy",
-      "iam:AttachUserPolicy",
-      "iam:CreateAccountAlias",
-      "iam:CreateGroup",
-      "iam:CreateLoginProfile",
-      "iam:CreateOpenIDConnectProvider",
-      "iam:CreateSAMLProvider",
-      "iam:CreateUser",
-      "iam:CreateVirtualMFADevice",
-      "iam:DeactivateMFADevice",
-      "iam:DeleteAccountAlias",
-      "iam:DeleteAccountPasswordPolicy",
-      "iam:DeleteGroup",
-      "iam:DeleteGroupPolicy",
-      "iam:DeleteLoginProfile",
-      "iam:DeleteOpenIDConnectProvider",
-      "iam:DeleteSAMLProvider",
-      "iam:DeleteUser",
-      "iam:DeleteUserPermissionsBoundary",
-      "iam:DeleteUserPolicy",
-      "iam:DeleteVirtualMFADevice",
-      "iam:DetachGroupPolicy",
-      "iam:DetachUserPolicy",
-      "iam:EnableMFADevice",
-      "iam:RemoveClientIDFromOpenIDConnectProvider",
-      "iam:RemoveUserFromGroup",
-      "iam:ResyncMFADevice",
-      "iam:UpdateAccountPasswordPolicy",
-      "iam:UpdateGroup",
-      "iam:UpdateLoginProfile",
-      "iam:UpdateOpenIDConnectProviderThumbprint",
-      "iam:UpdateSAMLProvider",
-      "iam:UpdateUser"
-    ]
-    resources = ["*"]
-  }
-
-  statement {
-    effect = "Deny"
-    actions = [
-      "iam:AttachRolePolicy",
-      "iam:DeleteRole",
-      "iam:DeleteRolePermissionsBoundary",
-      "iam:DeleteRolePolicy",
-      "iam:DetachRolePolicy",
-      "iam:PutRolePermissionsBoundary",
-      "iam:PutRolePolicy",
-      "iam:UpdateAssumeRolePolicy",
-      "iam:UpdateRole",
-      "iam:UpdateRoleDescription"
-    ]
-    resources = ["arn:aws:iam::*:user/cicd-member-user"]
-  }
-
-  statement {
-    actions = [
-      "sts:AssumeRole"
-    ]
-
-    resources = [
-      "arn:aws:iam::*:role/read-dns-records",
-      "arn:aws:iam::*:role/member-delegation-read-only",
-      "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/member-shared-services",
-      "arn:aws:iam::${local.modernisation_platform_account.id}:role/modernisation-account-limited-read-member-access"
-    ]
-  }
 }
 
 # migration policy - member SSO and collaborators
+# developer role plus additional migration permissions
 resource "aws_iam_policy" "migration" {
   provider = aws.workspace
   name     = "migration_policy"
@@ -332,144 +335,22 @@ resource "aws_iam_policy" "migration" {
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "migration_additional" {
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_107
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_110
+  source_policy_documents   = [data.aws_iam_policy_document.developer_additional.json]
+  override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
-    #checkov:skip=CKV_AWS_108
-    #checkov:skip=CKV_AWS_111
-    #checkov:skip=CKV_AWS_107
-    #checkov:skip=CKV_AWS_109
-    #checkov:skip=CKV_AWS_110
+    sid    = "migration-allow"
     effect = "Allow"
     actions = [
-      "acm:ImportCertificate",
-      "autoscaling:UpdateAutoScalingGroup",
-      "aws-marketplace:ViewSubscriptions",
-      "cloudwatch:PutDashboard",
-      "cloudwatch:ListMetrics",
-      "cloudwatch:DeleteDashboards",
       "dms:*",
       "drs:*",
-      "ds:*Tags*",
-      "ds:*Snapshot*",
-      "ec2:StartInstances",
-      "ec2:StopInstances",
-      "ec2:RebootInstances",
-      "ec2:ModifyImageAttribute",
-      "ec2:ModifySnapshotAttribute",
-      "ec2:CopyImage",
-      "ec2:CreateImage",
-      "ec2:CopySnapshot",
-      "ec2:CreateSnapshot",
-      "ec2:CreateSnapshots",
-      "ec2:CreateTags",
-      "ec2:DescribeVolumes",
-      "ec2:DescribeInstances",
-      "ec2:DescribeInstanceTypes",
-      "ecs:StartTask",
-      "ecs:StopTask",
-      "kms:Decrypt*",
-      "kms:Encrypt",
-      "kms:ReEncrypt*",
-      "kms:GenerateDataKey*",
-      "kms:DescribeKey",
-      "lambda:InvokeFunction",
-      "lambda:UpdateFunctionCode",
       "mgn:*",
-      "mgh:*",
-      "rds:CopyDBSnapshot",
-      "rds:CopyDBClusterSnapshot",
-      "rds:CreateDBSnapshot",
-      "rds:CreateDBClusterSnapshot",
-      "rds:RebootDB*",
-      "rhelkb:GetRhelURL",
-      "s3:PutObject",
-      "s3:DeleteObject",
-      "secretsmanager:GetResourcePolicy",
-      "secretsmanager:GetSecretValue",
-      "secretsmanager:DescribeSecret",
-      "secretsmanager:ListSecretVersionIds",
-      "secretsmanager:PutSecretValue",
-      "secretsmanager:UpdateSecret",
-      "secretsmanager:RestoreSecret",
-      "secretsmanager:RotateSecret",
-      "ssm:*",
-      "ssm-guiconnect:*",
-      "support:*"
+      "mgh:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
-  }
-
-  statement {
-    effect = "Deny"
-    actions = [
-      "ec2:CreateVpc",
-      "ec2:CreateSubnet",
-      "ec2:CreateVpcPeeringConnection",
-      "iam:AddClientIDToOpenIDConnectProvider",
-      "iam:AddUserToGroup",
-      "iam:AttachGroupPolicy",
-      "iam:AttachUserPolicy",
-      "iam:CreateAccountAlias",
-      "iam:CreateGroup",
-      "iam:CreateLoginProfile",
-      "iam:CreateOpenIDConnectProvider",
-      "iam:CreateSAMLProvider",
-      "iam:CreateUser",
-      "iam:CreateVirtualMFADevice",
-      "iam:DeactivateMFADevice",
-      "iam:DeleteAccountAlias",
-      "iam:DeleteAccountPasswordPolicy",
-      "iam:DeleteGroup",
-      "iam:DeleteGroupPolicy",
-      "iam:DeleteLoginProfile",
-      "iam:DeleteOpenIDConnectProvider",
-      "iam:DeleteSAMLProvider",
-      "iam:DeleteUser",
-      "iam:DeleteUserPermissionsBoundary",
-      "iam:DeleteUserPolicy",
-      "iam:DeleteVirtualMFADevice",
-      "iam:DetachGroupPolicy",
-      "iam:DetachUserPolicy",
-      "iam:EnableMFADevice",
-      "iam:RemoveClientIDFromOpenIDConnectProvider",
-      "iam:RemoveUserFromGroup",
-      "iam:ResyncMFADevice",
-      "iam:UpdateAccountPasswordPolicy",
-      "iam:UpdateGroup",
-      "iam:UpdateLoginProfile",
-      "iam:UpdateOpenIDConnectProviderThumbprint",
-      "iam:UpdateSAMLProvider",
-      "iam:UpdateUser"
-    ]
-    resources = ["*"]
-  }
-
-  statement {
-    effect = "Deny"
-    actions = [
-      "iam:AttachRolePolicy",
-      "iam:DeleteRole",
-      "iam:DeleteRolePermissionsBoundary",
-      "iam:DeleteRolePolicy",
-      "iam:DetachRolePolicy",
-      "iam:PutRolePermissionsBoundary",
-      "iam:PutRolePolicy",
-      "iam:UpdateAssumeRolePolicy",
-      "iam:UpdateRole",
-      "iam:UpdateRoleDescription"
-    ]
-    resources = ["arn:aws:iam::*:user/cicd-member-user"]
-  }
-
-  statement {
-    actions = [
-      "sts:AssumeRole"
-    ]
-
-    resources = [
-      "arn:aws:iam::*:role/read-dns-records",
-      "arn:aws:iam::*:role/member-delegation-read-only",
-      "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/member-shared-services",
-      "arn:aws:iam::${local.modernisation_platform_account.id}:role/modernisation-account-limited-read-member-access"
-    ]
   }
 }
