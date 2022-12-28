@@ -59,9 +59,11 @@ data "aws_identitystore_group" "platform_admin" {
 
   identity_store_id = local.sso_identity_store_id
 
-  filter {
-    attribute_path  = "DisplayName"
-    attribute_value = "modernisation-platform-engineers"
+  alternate_identifier {
+    unique_attribute {
+      attribute_path  = "DisplayName"
+      attribute_value = "modernisation-platform-engineers"
+    }
   }
 }
 
@@ -75,9 +77,11 @@ data "aws_identitystore_group" "member" {
 
   identity_store_id = local.sso_identity_store_id
 
-  filter {
-    attribute_path  = "DisplayName"
-    attribute_value = try(each.value, null)
+  alternate_identifier {
+    unique_attribute {
+      attribute_path  = "DisplayName"
+      attribute_value = try(each.value, null)
+    }
   }
 }
 
