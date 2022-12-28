@@ -8,7 +8,6 @@ on:
       - 'terraform/environments/bootstrap/**'
       - 'terraform/modules/iam_baseline/**'
       - '.github/workflows/bootstrap-sprinkler-plan.yml'
-
   workflow_dispatch:
 
 env:
@@ -43,9 +42,9 @@ jobs:
           terraform_version: "~1"
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
-        run: bash scripts/terraform-plan.sh terraform/environments/bootstrap/delegate-access
+      - run: bash scripts/terraform-plan.sh terraform/environments/bootstrap/delegate-access
 
-   secure-baselines-plan:
+  secure-baselines-plan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
