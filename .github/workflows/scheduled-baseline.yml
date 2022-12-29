@@ -10,6 +10,7 @@ on:
       - '.github/workflows/scheduled-baseline.yml'
       - 'terraform/environments/bootstrap/**'
       - 'terraform/modules/iam_baseline/**'
+      - 'scripts/update-sso-permission-sets.sh'
   workflow_dispatch:
 
 env:
@@ -129,6 +130,37 @@ jobs:
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on plan
       - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on apply
+      - name: Slack failure notification
+        uses: 8398a7/action-slack@bdc6f9de222d3b7518e6cf99c4f3410f653cfde3 # v3.15.0
+        with:
+          status: ${{ job.status }}
+          fields: workflow,job,repo,commit,message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
+  update-permission-sets:
+    runs-on: ubuntu-latest
+    needs: [delegate-access,single-sign-on]
+    steps:
+      - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
+      - name: Set Account Number
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+      - name: Set Root Account Number
+        run: echo "ROOT_ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838 # v1.7.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Update permission sets
+        run: |
+          aws sts assume-role --role-arn "arn:aws:iam::${ROOT_ACCOUNT_NUMBER}:role/ModernisationPlatformSSOAdministrator" --role-session-name ssoadminrolesession > creds
+          $(echo "export AWS_ACCESS_KEY_ID=$(echo $(cat creds) | sed -n 's/.*"AccessKeyId": "\([^"]*\)".*/\1/p')")
+          $(echo "export AWS_SECRET_ACCESS_KEY=$(echo $(cat creds) | sed -n 's/.*"SecretAccessKey": "\([^"]*\)".*/\1/p')")
+          $(echo "export AWS_SESSION_TOKEN=$(echo $(cat creds) | sed -n 's/.*"SessionToken": "\([^"]*\)".*/\1/p')")
+          grep "ModernisationPlatformSSOAdministrator" <<< $(aws sts get-caller-identity) || { echo 'Failed to assume role' ; exit 1; }
+      - run: bash scripts/update-sso-permission-sets.sh
       - name: Slack failure notification
         uses: 8398a7/action-slack@bdc6f9de222d3b7518e6cf99c4f3410f653cfde3 # v3.15.0
         with:
