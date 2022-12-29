@@ -10,5 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Post to slack"
-        run: | 
-          curl -d '{"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":alert: Workflow Failure: :alert:\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.repository }} - ${{ github.workflow }}>"}}]}' -H "Content-Type: application/json" -X POST ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: curl -d '{"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":alert: Workflow Failure: :alert:\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.repository }} - ${{ github.workflow }}>"}}]}' -H "Content-Type: application/json" -X POST ${{ secrets.SLACK_WEBHOOK_URL }}
