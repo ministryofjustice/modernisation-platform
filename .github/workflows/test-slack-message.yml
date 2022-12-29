@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: "Post to slack"
         run: | 
-          curl -d '{"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Actions:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"},{"type": "mrkdwn","text": "*PR:*\n${{ github.event.pull_request.title }}"}]}]}' -H "Content-Type: application/json" -X POST ${{ secrets.SLACK_WEBHOOK_URL }}
+          curl -d '{"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}' -H "Content-Type: application/json" -X POST ${{ secrets.SLACK_WEBHOOK_URL }}
