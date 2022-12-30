@@ -15,40 +15,43 @@ Here’s an example of an account request, and the steps that were taken in orde
 
 Customers will fill out the new-environment template via our public repository [here](https://github.com/ministryofjustice/modernisation-platform/issues/new/choose) and supply the required information.
 
-### Application name
-The name must be in lowercase and a maximum of 30 characters. For our example we have `data-and-insights-wepi`
-### GitHub team slug
-This is the name of your GitHub team that will be accessing the environment. Environments are accessed via single sign on (SSO), so to give people permissions to access your environment you just have to add them to your GitHub team.
-### Access
-For our example, sandbox access has been requested. To read more about access levels, click [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#application-name)
-### Environment name
-This is usually based on the team name, with a the corresponding environment after e.g. `data-and-insights-wepi-development`
-### Tags
-Usually application, business-unit and owner are in tags, and they are used to tag your AWS resources inside of your account.
-### Additional features
-This example has no additional features, but things like bastion access, VPN endpoints and extended DNS zones are requestable.
+|Attribute|Description|
+---|---|
+|Application name (file name)|The name must be in lowercase and a maximum of 30 characters. For our example we have `data-and-insights-wepi`|
+|GitHub team slug|This is the name of your GitHub team that will be accessing the environment. Environments are accessed via single sign on (SSO), so to give people permissions to access your environment you just have to add them to your GitHub team.|
+|Access|For our example, sandbox access has been requested. To read more about access levels, click [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#application-name)|
+|Environment|This is one of the four valid environments, development, test, preproduction or production|
+|Tags| application, business-unit and owner are in tags, and they are used to tag your AWS resources inside of your account.|
+|Additional features| This example has no additional features, but things VPN endpoints and extended DNS zones are requestable.|
 
 ## New Environment Files
 
-Example file [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml)
+#### 1. Create a new environment file 
 
-The new-environment-files action has the following trigger on push:
+`environments/$account-name.json`
 
-    paths:
-      - environments/**.json
-      - environments-networks/**.json
-    branches:
-      - main
+See an example file [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#example-json-files).
 
-To kick off the environment creation process, we add `environments/$account-name.json` which causes our new-environment-files action to trigger.
+If you are adding an environment to an existing application you can add the new environment block to this file, you do not need to create another.
 
-Example file [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#example-json-files)
+#### 2. Update the `expected.rego`
 
-Additionally, the [expected.rego](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/environments/expected.rego) file must be updated with the newly added account name. This is to make sure that none of the json files gets accidentally deleted. This is going to be validated with the [opa-policies](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/opa-policies.yml) GH actions workflow.
+Update the [`expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/environments/expected.rego) file with the newly added account name.
 
-** Submitting this PR will kick off the new-environments workflow, which will run its check-environments-deployment-plan. You can see what will change in the output from github actions
+This is to make sure that none of the json files gets accidentally deleted. This is going to be validated with the [opa-policies](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/opa-policies.yml) GitHub Actions workflow.
 
-** Merging this PR will generate two pull requests. One in the `modernisation-platform` repo which can be merged straight away, and one in the `modernisation-platform-environments` repo, which is merged last (in the __Step 3__ of the __Network Stage__, NOTE: at this stage GH actions will most likely fail).
+#### 3. Create a pull request
+
+This will trigger the [`new-environment workflow`](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml), which will run its check-environments-deployment-plan. You can see what will change in the output from GitHub Actions.
+
+#### 4. Merge the pull request
+
+This will run the [`new-environment` workflow](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml) to create a new AWS account.
+
+This will also run the [`new-environment-files` workflow](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml) which generates two new pull requests:
+
+1. One in the `modernisation-platform` repo which can be merged straight away, 
+1. One in the `modernisation-platform-environments` repo, which is merged last (in the __Step 3__ of the __Network Stage__).
 
 ## Network Stage
 
