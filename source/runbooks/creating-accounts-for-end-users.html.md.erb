@@ -75,11 +75,11 @@ Business unit VPCs and subnet sets are already created for all the MoJ business 
 
 #### 1. Add the application to the relevant subnets
 
-Add the application to the subnet sets in [`environments/networks](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments-networks). 
+Add the application to the subnet sets in [`environments/networks](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments-networks).
 
 Most applications will be added to the `general` subnet set.  If they need something different see the above guidance on creating VPCs and subnet sets.
 
-#### 2. Update the OPA policies 
+#### 2. Update the OPA policies
 
 Update the [`policies/networking/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/networking/expected.rego) file to include newly added environments. This is to ensure that none of the subnets get accidentally deleted. Here's an example of a pull request for this [stage](https://github.com/ministryofjustice/modernisation-platform/pull/2127/files ).
 
