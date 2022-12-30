@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating AWS Accounts for Teams
-last_reviewed_on: 2022-12-14
+last_reviewed_on: 2022-12-30
 review_in: 6 months
 ---
 
@@ -32,7 +32,7 @@ Customers will fill out the new-environment template via our public repository [
 
 See an example file [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#example-json-files).
 
-If you are adding an environment to an existing application you can add the new environment block to this file, you do not need to create another.
+> Note - If you are adding an environment to an existing application you can add the new environment block to this file, you do not need to create another.
 
 #### 2. Update the `expected.rego`
 
@@ -40,7 +40,7 @@ Update the [`expected.rego`](https://github.com/ministryofjustice/modernisation-
 
 This is to make sure that none of the json files gets accidentally deleted. This is going to be validated with the [opa-policies](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/opa-policies.yml) GitHub Actions workflow.
 
-#### 3. Create a pull request
+#### 3. Create a pull request for the changes made in steps 1 and 2
 
 This will trigger the [`new-environment workflow`](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml), which will run its check-environments-deployment-plan. You can see what will change in the output from GitHub Actions.
 
@@ -48,27 +48,52 @@ This will trigger the [`new-environment workflow`](https://github.com/ministryof
 
 This will run the [`new-environment` workflow](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml) to create a new AWS account.
 
-This will also run the [`new-environment-files` workflow](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml) which generates two new pull requests:
+This will also run the [`new-environment-files` workflow](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml) which generates two new pull requests if this is the first environment of the new application:
 
-1. One in the `modernisation-platform` repo which can be merged straight away,
-1. One in the `modernisation-platform-environments` repo, which is merged last (in the __Step 3__ of the __Network Stage__).
+1. Creating application files in the `modernisation-platform` repo.
+1. Creating application files in the `modernisation-platform-environments` repo.
 
-## Network Stage
+> Note - These PRs are only created the first time an environment for an application is created, eg the first time you create a new application.json file. If you add to an existing environment the PRs will not be created.
 
-For this example, we will be joining an existing subnet-set. For new business units, work will need to be done beforehand, however that's not the standard procedure and usually a one off. If you are working with a new business unit, read about the steps required [here.](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/creating-vpcs.html)
+#### 5. Merge the pull request created in the modernisation-platform repo (step 4.1)
 
-#### Step one
-Check that you have completed the previous steps, so far you should have added the github-slug, the json files under environments, updated the `policies/environments/expected.rego` file and merged the PR in modernisation-platform containing the terraform files.
+#### 6. Edit the pull request created in the modernisation-platform-environments repo (step 4.2)
 
-#### Step two
-Add the subnets in `environments/networks`. Update the [`policies/networking/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/networking/expected.rego) to include newly added subnets (similarly to like you did for environments). This is to ensure that none of the subnets get accidentally deleted. Here's an example of a pull request for this [stage](https://github.com/ministryofjustice/modernisation-platform/pull/2127/files ).
+Edit the PR to comment out any environments that are not used in the GitHub Actions workflow file (there is a matrix for development/test and one for preproduction/production).
 
-This will then kick off `core-vpc-<env>-demployment` pipelines and run `terraform plan`, `terraform apply` and the `scripts/member-account-ram-association.sh` script for the RAM share. If the RAM share script fails to run on the merge, it will have to be run manually.
+See [here](https://github.com/ministryofjustice/modernisation-platform-environments/pull/1206/commits/1a8c006375fa5b7ae6ee2b9460e580ec0f645641) for an example.
 
-The pipeline will also generate a PR for the ram share, merge this. An example can be found [here](https://github.com/ministryofjustice/modernisation-platform/pull/2203)
+If the files already exist and no PR is created, create a new PR amending the exising application GitHub Actions file.
 
-#### Step three
-Once complete, the pull request raised earlier in  `modernisation-platform-environments` can be merged. Example [here](https://github.com/ministryofjustice/modernisation-platform-environments/pull/805/files ). The pipeline will create this.
+> Note - The plan will fail on these PRs due to the networking not yet being complete.  This is fine, the goal of these PRs is to create the necessary files, not make deployments.
+
+## Networking Stage
+
+This stage sets up [Resource Access Manager (RAM) sharing](https://docs.aws.amazon.com/ram/latest/userguide/what-is.html) to share the relevant business unit subnet sets to the application account.
+
+Business unit VPCs and subnet sets are already created for all the MoJ business units.  If an additional VPC or subnet set is needed, see guidance [here.](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/creating-vpcs.html).
+
+#### 1. Add the application to the relevant subnets
+
+Add the application to the subnet sets in [`environments/networks](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments-networks). 
+
+Most applications will be added to the `general` subnet set.  If they need something different see the above guidance on creating VPCs and subnet sets.
+
+#### 2. Update the OPA policies 
+
+Update the [`policies/networking/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/networking/expected.rego) file to include newly added environments. This is to ensure that none of the subnets get accidentally deleted. Here's an example of a pull request for this [stage](https://github.com/ministryofjustice/modernisation-platform/pull/2127/files ).
+
+> Note remember to add the full environment names, eg `data-and-insights-wepi-development` not just the application name.
+
+#### 3. Create a pull request for the changes in step 1 and 2
+
+This will then kick off `core-vpc-<env>-demployment` pipelines and run `terraform plan`, `terraform apply` and the `scripts/member-account-ram-association.sh` script for the RAM share.
+
+> If the RAM share script fails to run on the merge for any reason, it will have to be run manually in the relevant application folder [here](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments).
+
+The pipeline will also generate a PR for the ram share. An example can be found [here](https://github.com/ministryofjustice/modernisation-platform/pull/2203)
+
+#### 4. Merge in the generated PR from step 3
 
 ## Checking its creation
 

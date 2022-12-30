@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating VPCs in AWS
-last_reviewed_on: 2022-08-18
+last_reviewed_on: 2022-12-30
 review_in: 6 months
 ---
 
@@ -59,3 +59,7 @@ Here’s an example of what one looks like
     }
 
 The file name is the business unit - environment. For example **laa-test.json**.
+
+## Subnet sets
+
+All VPCs must have a `general` subnet set.  Additional subnet sets can be added if needed.  For more information on subnet sets see [subnet allocation](../concepts/networking/subnet-allocation.html)
