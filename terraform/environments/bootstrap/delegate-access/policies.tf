@@ -105,6 +105,8 @@ data "aws_iam_policy_document" "developer_additional" {
       "cloudwatch:PutDashboard",
       "cloudwatch:ListMetrics",
       "cloudwatch:DeleteDashboards",
+      "codebuild:ImportSourceCredentials",
+      "codebuild:PersistOAuthToken",
       "ds:*Tags*",
       "ds:*Snapshot*",
       "ec2:StartInstances",
@@ -123,6 +125,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "ec2:DescribeInstanceTypes",
       "ecs:StartTask",
       "ecs:StopTask",
+      "identitystore:DescribeUser",
       "kms:Decrypt*",
       "kms:Encrypt",
       "kms:ReEncrypt*",
@@ -148,6 +151,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "secretsmanager:RotateSecret",
       "ssm:*",
       "ssm-guiconnect:*",
+      "sso:ListDirectoryAssociations",
       "support:*"
     ]
     resources = ["*"]
