@@ -149,7 +149,8 @@ expected =
           "apex-development",
           "ccms-ebs-development",
           "maatdb-development",
-          "mlra-development"
+          "mlra-development",
+          "oas-development"
         ]
       }
     },
