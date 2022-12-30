@@ -27,8 +27,10 @@ defaults:
     shell: bash
 
 jobs:
-  delegate-access:
+  setup-prerequisites:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
       - name: Set Account Number
@@ -44,8 +46,33 @@ jobs:
           terraform_version: "~1"
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access plan
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/delegate-access apply
+      - id: set-matrix
+        name: Set Up Matrix
+        run: echo "matrix=$(terraform -chdir=terraform/environments/bootstrap/delegate-access workspace list | sed -e "s/*//" -e "s/^[[:space:]]*//" -e "/default/d" -e "/^$/d" | sort -u | jq -ncR '[inputs]')" >> $GITHUB_OUTPUT
+     
+  delegate-access:
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    needs: setup-prerequisites
+    steps:
+      - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
+      - name: Set Account Number
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838 # v1.7.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1 # v2.0.3
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
+      - run: bash scripts/terraform-apply.sh terraform/environments/bootstrap/delegate-access
       - name: Slack failure notification
         uses: slackapi/slack-github-action@007b2c3c751a190b6f0f040e47ed024deaa72844 # v1.23.0
         with:
@@ -55,14 +82,20 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
         if: ${{ failure() }}
-  secure-baselines-plan:
+    env:
+     TF_WORKSPACE: ${{ matrix.workspaces }}
+
+  secure-baselines:
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
     runs-on: ubuntu-latest
-    needs: [delegate-access]
+    needs: [setup-prerequisites, delegate-access]
     steps:
       - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
       - name: Set Account Number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838 # v1.7.0
         with:
@@ -74,7 +107,7 @@ jobs:
           terraform_version: "~1"
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines plan
+      - run: bash scripts/terraform-apply.sh terraform/environments/bootstrap/secure-baselines
       - name: Slack failure notification
         uses: slackapi/slack-github-action@007b2c3c751a190b6f0f040e47ed024deaa72844 # v1.23.0
         with:
@@ -84,37 +117,16 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
         if: ${{ failure() }}
-  secure-baselines-apply:
-    runs-on: ubuntu-latest
-    needs: [secure-baselines-plan]
-    steps:
-      - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
-      - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+    env:
+     TF_WORKSPACE: ${{ matrix.workspaces }}
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838 # v1.7.0
-        with:
-          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
-          role-session-name: githubactionsrolesession
-          aws-region: ${{ env.AWS_REGION }}
-      - uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1 # v2.0.3
-        with:
-          terraform_version: "~1"
-          terraform_wrapper: false
-      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/secure-baselines apply
-      - name: Slack failure notification
-        uses: slackapi/slack-github-action@007b2c3c751a190b6f0f040e47ed024deaa72844 # v1.23.0
-        with:
-          payload: |
-            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-        if: ${{ failure() }}
   single-sign-on:
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
     runs-on: ubuntu-latest
+    needs: [setup-prerequisites, delegate-access]
     steps:
       - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
       - name: Set Account Number
@@ -131,8 +143,7 @@ jobs:
           terraform_version: "~1"
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on plan
-      - run: bash scripts/loop-through-terraform-workspaces.sh terraform/environments/bootstrap/single-sign-on apply
+      - run: bash scripts/terraform-apply.sh terraform/environments/bootstrap/single-sign-on
       - name: Slack failure notification
         uses: slackapi/slack-github-action@007b2c3c751a190b6f0f040e47ed024deaa72844 # v1.23.0
         with:
@@ -142,6 +153,9 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
         if: ${{ failure() }}
+    env:
+     TF_WORKSPACE: ${{ matrix.workspaces }}
+
   update-permission-sets:
     runs-on: ubuntu-latest
     needs: [delegate-access,single-sign-on]
