@@ -8,7 +8,6 @@ resource "aws_ssm_document" "cross-account-single-patching-automation" {
         "runPatchBaseline.Output"
     ],
     "description": "Automation document to execute the Command document AWS-RunPatchBaseline",
-    "schemaVersion": "0.3",
     "assumeRole": "{{AutomationAssumeRole}}",
     "parameters": {
         "AutomationAssumeRole": {
