@@ -10,12 +10,12 @@ review_in: 6 months
 ## Requirements
 
 - A list of all account numbers that you want to run the patch on.
-- The specific patch and version, saved in a yaml format in the core-shared-services accounts s3 bucket.
+- The specific patch and version, saved in a yaml format in the core-shared-services accounts s3 bucket. (Bucket can be pre existing, but the module creates an s3 bucket if one is needed)
 
 ## Stages
 
 1. Login to the core-shared-services account.
-2. Create a yaml file in the s3 bucket with the format listewd below.
+2. Create a yaml file in the s3 bucket with the format listed below. (This will be used to run the patch on the accounts)
 3. From the Systems Manager page in the core-shared-services account, select automation.
 4. Select Run Automation, and select the document 'cross-account-single-patching-automation'
 5. Select Multi-account and Region option.
