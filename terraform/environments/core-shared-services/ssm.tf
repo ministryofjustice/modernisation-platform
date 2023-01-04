@@ -8,7 +8,6 @@ resource "aws_ssm_document" "cross-account-single-patching-automation" {
         "runPatchBaseline.Output"
     ],
     "description": "Automation document to execute the Command document AWS-RunPatchBaseline",
-    "schemaVersion": "0.3",
     "assumeRole": "{{AutomationAssumeRole}}",
     "parameters": {
         "AutomationAssumeRole": {
@@ -36,7 +35,7 @@ resource "aws_ssm_document" "cross-account-single-patching-automation" {
         },
         "InstallOverrideList": {
             "default": "",
-            "description": "(Optional) An https URL or an Amazon S3 path-style URL to the list of patches to be installed. This patch installation list overrides the patches specified by the default patch baseline.",
+            "description": "(Optional) An https URL or an Amazon S3 path-style URL to the list of patches to be installed. They need to be in a yaml format. This patch installation list overrides the patches specified by the default patch baseline.",
             "type": "String",
             "allowedPattern": "(^$)|^https://.+$|^s3://([^/]+)/(.*?([^/]+))$"
         }

@@ -1,0 +1,103 @@
+---
+owner_slack: "#modernisation-platform"
+title: Running an emergency patch
+last_reviewed_on: 2022-12-23
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Requirements
+
+- A list of all account numbers that you want to run the patch on.
+- The specific patch and version, saved in a yaml format in the core-shared-services accounts s3 bucket. (Bucket can be pre existing, but the module creates an s3 bucket if one is needed)
+
+## Stages
+
+1. Login to the core-shared-services account.
+2. Create a yaml file in the s3 bucket with the format listed below. (This will be used to run the patch on the accounts)
+3. From the Systems Manager page in the core-shared-services account, select automation.
+4. Select Run Automation, and select the document 'cross-account-single-patching-automation'
+5. Select Multi-account and Region option.
+6. Input the yaml file location you created in step 2, and also input the account numbers you want to run the patch on.
+7. Click run. This will run the patch on all the accounts you specified, with the patch you specified.
+
+## Finding the emergency patch doc
+
+- Login to the core-shared-services account. From here, go to AWS Systems Manager and select Automation.
+- Select the 'Automation' under 'Change Management' and select 'Execute Automation'.
+- Select the 'cross-account-single-patching-automation' document, which will be in 'Owned by me' section.
+
+## Cross-account-single-patching-automation
+
+- Select the 'cross-account-single-patching-automation' document, and click next.
+- Select the Multi-account and Region option.
+- Type in the accounts to run against, in the Target accounts and Regions field.
+
+## Parameters
+
+List of parameters and what they
+
+### Operation
+Usage: Required.
+- Select the operation you want to run. This will be 'Install' for an emergency patch.
+
+### AssociationId
+Usage: Optional.
+- AssociationId is the ID of an existing association in State Manager, a capability of AWS Systems Manager. It's used by Patch Manager to add compliance data to a specified association.
+
+### Snapshot ID
+Usage: Optional.
+- Snapshot ID is a unique ID (GUID) used by Patch Manager to ensure that a set of managed nodes that are patched in a single operation all have the exact same set of approved patches.
+
+### RebootOption
+Usage: Optional.
+- Fine with the default of Default: RebootIfNeeded, rahter than NoReboot.
+
+### BaselineOverride
+Usage: Optional.
+- You can define patching preferences at runtime using the BaselineOverride parameter. This baseline override is maintained as a JSON object in an S3 bucket. It ensures patching operations use the provided baselines that match the host operating system instead of applying the rules from the default patch baseline
+
+### Install Override List
+
+- This argument is required to specify the patch to run. This will be the location of the yaml file in the s3 bucket. Read more here. https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager-about-aws-runpatchbaseline.html#patch-manager-about-aws-runpatchbaseline-parameters-installoverridelist
+
+Sample patch lists
+
+```Amazon Linux
+
+patches:
+    -
+        id: 'kernel.x86_64'
+    -
+        id: 'bind*.x86_64'
+        title: '32:9.8.2-0.62.rc1.57.amzn1'
+    -
+        id: 'glibc*'
+    -
+        id: 'dhclient*'
+        title: '*12:4.1.1-53.P1.28.amzn1'
+    -
+        id: 'dhcp*'
+        title: '*10:3.1.1-50.P1.26.amzn1'
+CentOS
+
+patches:
+    -
+        id: 'kernel.x86_64'
+    -
+        id: 'bind*.x86_64'
+        title: '32:9.8.2-0.62.rc1.57.amzn1'
+    -
+        id: 'glibc*'
+    -
+        id: 'dhclient*'
+        title: '*12:4.1.1-53.P1.28.amzn1'
+    -
+        id: 'dhcp*'
+        title: '*10:3.1.1-50.P1.26.amzn1'
+```
+
+## References
+* https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager-about-aws-runpatchbaseline.html#patch-manager-about-aws-runpatchbaseline-parameters-installoverridelist
+* https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf
