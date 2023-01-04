@@ -39,6 +39,8 @@
     "modernisation_platform_vpc": "hmpps-development",
     "tunnel1_inside_cidr": "169.254.21.0/30",
     "tunnel2_inside_cidr": "169.254.22.0/30",
+    "tunnel_dpd_timeout_action": "restart",
+    "tunnel_dpd_timeout_seconds": "45",
     "tunnel_startup_action": "start"
   },
   "NOMS-Transit-Live-DR-VPN-VNG_2": {
@@ -49,6 +51,8 @@
     "modernisation_platform_vpc": "hmpps-development",
     "tunnel1_inside_cidr": "169.254.21.4/30",
     "tunnel2_inside_cidr": "169.254.22.4/30",
+    "tunnel_dpd_timeout_action": "restart",
+    "tunnel_dpd_timeout_seconds": "45",
     "tunnel_startup_action": "start"
   }
 }
