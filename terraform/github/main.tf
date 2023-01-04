@@ -340,6 +340,23 @@ module "modernisation-platform-configuration-management" {
   ]
 }
 
+module "modernisation-platform-incident-response" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-incident-response"
+  type        = "core"
+  description = "Repository for incident management code used to manage and document Modernisation Platform incidents. Originally forked from https://github.com/ministryofjustice/opg-incident-response"
+  topics = [
+    "incident-management",
+    "javascript",
+    "python",
+    "django",
+    "docker",
+    "kubernetes",
+    "helm"
+  ]
+}
+
+
 # Everyone, with access to the above repositories
 module "core-team" {
   source      = "./modules/team"
@@ -370,7 +387,8 @@ module "core-team" {
     module.terraform-module-github-oidc-role.repository.name,
     module.modernisation-platform-configuration-management.repository.name,
     module.terraform-module-lambda-function.repository.name,
-    module.terraform-module-ssm-patching.repository.name
+    module.terraform-module-ssm-patching.repository.name,
+    module.modernisation-platform-incident-response.repository.name,
   ]
 
   maintainers = local.maintainers
