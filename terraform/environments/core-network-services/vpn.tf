@@ -15,8 +15,12 @@ resource "aws_vpn_connection" "this" {
   transit_gateway_id       = aws_ec2_transit_gateway.transit-gateway.id
   customer_gateway_id      = aws_customer_gateway.this[each.key].id
   type                     = "ipsec.1"
+  tunnel1_dpd_timeout_action = try(each.value.tunnel_dpd_timeout_action, null)
+  tunnel1_dpd_timeout_seconds = try(each.value.tunnel_dpd_timeout_seconds, "30")
   tunnel1_inside_cidr      = try(each.value.tunnel1_inside_cidr, null)
   tunnel1_startup_action   = try(each.value.tunnel_startup_action, null)
+  tunnel2_dpd_timeout_action = try(each.value.tunnel_dpd_timeout_action, null)
+  tunnel2_dpd_timeout_seconds = try(each.value.tunnel_dpd_timeout_seconds, "30")
   tunnel2_inside_cidr      = try(each.value.tunnel2_inside_cidr, null)
   tunnel2_startup_action   = try(each.value.tunnel_startup_action, null)
   remote_ipv4_network_cidr = try(each.value.remote_ipv4_network_cidr, local.core-vpcs[each.value.modernisation_platform_vpc].cidr.subnet_sets["general"].cidr)
