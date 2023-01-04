@@ -45,7 +45,7 @@ locals {
   # 2000 = inter-vpc traffic (dynamic rules)
   # 3000 = deny east-west
   # 4000 = private address ranges
-  # 5000 = https internet access
+  # 5000 = internet access
   # 6000 = public address ranges (dynamic)
   # 7000 = access from internet
 
@@ -140,13 +140,22 @@ locals {
       rule_number = 4200
       to_port     = null
     },
+    allow_0-0-0-0_http_out = {
+      cidr_block  = "0.0.0.0/0"
+      egress      = true
+      from_port   = 80
+      protocol    = "tcp"
+      rule_action = "allow"
+      rule_number = 5000
+      to_port     = 80
+    },
     allow_0-0-0-0_https_out = {
       cidr_block  = "0.0.0.0/0"
       egress      = true
       from_port   = 443
       protocol    = "tcp"
       rule_action = "allow"
-      rule_number = 5000
+      rule_number = 5100
       to_port     = 443
     },
     allow_0-0-0-0_dynamic_tcp_in = {
