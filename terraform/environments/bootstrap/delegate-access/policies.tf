@@ -138,7 +138,6 @@ data "aws_iam_policy_document" "developer_additional" {
       "rds:CreateDBSnapshot",
       "rds:CreateDBClusterSnapshot",
       "rds:RebootDB*",
-      "rds:RestoreDBInstanceFromDBSnapshot",
       "rhelkb:GetRhelURL",
       "s3:PutObject",
       "s3:DeleteObject",
