@@ -23,6 +23,8 @@ resource "aws_iam_policy" "policy" {
           "ecs:UpdateService",
           "ecs:DescribeServices",
           "ecs:DescribeTaskDefinition",
+          "ecs:ListTasks",
+          "ecs:StopTask",
           "ecr:GetAuthorizationToken",
           "ecr:GetDownloadUrlForLayer",
           "ecr:BatchGetImage",
