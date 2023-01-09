@@ -231,6 +231,8 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "autoscaling:*",
       "cloudfront:*",
       "cloudwatch:*",
+      "codebuild:ImportSourceCredentials",
+      "codebuild:PersistOAuthToken",
       "dlm:*",
       "dynamodb:*",
       "dms:*",
@@ -322,7 +324,9 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "support:*",
       "ssm-guiconnect:*",
       "aws-marketplace:ViewSubscriptions",
-      "rhelkb:GetRhelURL"
+      "rhelkb:GetRhelURL",
+      "identitystore:DescribeUser",
+      "sso:ListDirectoryAssociations"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
