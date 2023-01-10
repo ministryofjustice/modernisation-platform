@@ -258,6 +258,7 @@ expected =
       "general": {
         "cidr": "10.27.96.0/21",
         "accounts": [
+          "long-term-storage-production"
         ]
       }
     },
