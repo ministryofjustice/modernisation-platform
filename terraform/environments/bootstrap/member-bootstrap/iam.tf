@@ -215,7 +215,6 @@ data "aws_iam_policy_document" "assume_role_policy" {
 # IAM role to be assumed
 resource "aws_iam_role" "testing_member_infrastructure_access_role" {
   count              = terraform.workspace == "testing-test" ? 1 : 0
-  provider           = aws.workspace
   name               = "MemberInfrastructureAccess"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
@@ -223,7 +222,6 @@ resource "aws_iam_role" "testing_member_infrastructure_access_role" {
 # IAM role attached policy
 resource "aws_iam_role_policy_attachment" "testing_member_infrastructure_access_role" {
   count      = terraform.workspace == "testing-test" ? 1 : 0
-  provider   = aws.workspace
   role       = aws_iam_role.testing_member_infrastructure_access_role[0].id
   policy_arn = aws_iam_policy.member-access[0].arn
 }
