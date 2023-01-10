@@ -1,4 +1,4 @@
-name: "Terraform: scheduled baseline"
+name: "Terraform: scheduled baseline-example-test"
 
 on:
   pull_request:
@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        workspaces: ["sprinkler-development"] 
+        workspaces: ["example-development"] 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
@@ -56,7 +56,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        workspaces: ["sprinkler-development"] 
+        workspaces: ["example-development"] 
     runs-on: ubuntu-latest
     needs: [delegate-access]
     steps:
@@ -91,7 +91,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        workspaces: ["sprinkler-development"] 
+        workspaces: ["example-development"] 
     runs-on: ubuntu-latest
     needs: [delegate-access]
     steps:
@@ -127,7 +127,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        workspaces: ["sprinkler-development"] 
+        workspaces: ["example-development"] 
     runs-on: ubuntu-latest
     needs: [single-sign-on]
     steps:
