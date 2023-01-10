@@ -1,0 +1,20 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "modernisation-platform",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "long-term-storage",
+    "business-unit": "Platforms",
+    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "owner": "hosting-leads@digital.justice.gov.uk"
+  }
+}

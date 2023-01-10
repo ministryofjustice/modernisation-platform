@@ -21,6 +21,7 @@ expected =
     "digital-prison-reporting",
     "equip",
     "example",
+    "long-term-storage",
     "mi-platform",
     "maatdb",
     "mlra",
