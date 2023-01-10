@@ -2,8 +2,21 @@
 # (when we want to assume a role in the MP, for instance)
 data "aws_organizations_organization" "root_account" {}
 data "aws_caller_identity" "current" {}
+data "aws_caller_identity" "modernisation-platform" {
+  provider = aws.modernisation-platform
+}
+
 data "aws_iam_session_context" "whoami" {
   arn = data.aws_caller_identity.current.arn
+}
+# to allow member account AdministratorAccessRole to do local plans/applies in modernisation-platform-environments repo
+data "aws_iam_roles" "member-sso-admin-access" {
+  name_regex  = "AWSReservedSSO_AdministratorAccess_.*"
+  path_prefix = "/aws-reserved/sso.amazonaws.com/"
+}
+
+data "aws_iam_roles" "github_actions_role" {
+  name_regex = "github-actions"
 }
 
 data "http" "environments_file" {
@@ -12,25 +25,18 @@ data "http" "environments_file" {
 
 locals {
   root_account                   = data.aws_organizations_organization.root_account
-  modernisation_platform_account = can(regex("superadmin|AdministratorAccess", data.aws_iam_session_context.whoami.issuer_arn)) ? data.aws_caller_identity.current : local.root_account.accounts[index(local.root_account.accounts[*].email, "aws+modernisation-platform@digital.justice.gov.uk")]
+  modernisation_platform_account = data.aws_caller_identity.modernisation-platform
   environment_management         = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
   application_name               = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, "/-([[:alnum:]]+)$/", ""))
   business_unit                  = jsondecode(data.http.environments_file.response_body).tags.business-unit
   application_environment        = length(regexall("^bichard*.|^remote-supervisio*.", terraform.workspace)) > 0 ? terraform.workspace : substr(terraform.workspace, length(local.application_name) + 1, -1)
 
-  environments = {
+  tags = {
     business-unit = "Platforms"
-    application   = "Modernisation Platform: Environments Management"
+    application   = "Modernisation Platform: Member Bootstrap"
     is-production = true
     owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
-    component     = "delegate-access"
-    source-code   = "https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/bootstrap/delegate-access"
+    component     = "member-bootstrap"
+    source-code   = "https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/bootstrap/member-bootstrap"
   }
-  # skip the following alias creation if the alias is used by another account (they are globally unique)
-  skip_alias = sort([
-    "apex-development",
-    "nomis-production",
-    "testing-test",
-    "nomis-development"
-  ])
 }

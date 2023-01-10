@@ -21,7 +21,7 @@
 
 iterate_environments_bootstrap() {
 # set friendly Parameter names
-BOOTSTRAP_TYPE="${1}"  # this value can equal (delegate-access, secure-baselines or single-sign-on)
+BOOTSTRAP_TYPE="${1}"  # this value can equal (delegate-access, secure-baselines, single-sign-on or member-bootstrap)
 
 
 # Loop through each application json file
@@ -144,6 +144,7 @@ bootstrap)
   iterate_environments_bootstrap "delegate-access"
   iterate_environments_bootstrap "secure-baselines"
   iterate_environments_bootstrap "single-sign-on"
+  iterate_environments_bootstrap "member-bootstrap"
   ;;
 *)
   # This must be an individual application, check if json file exists for it
