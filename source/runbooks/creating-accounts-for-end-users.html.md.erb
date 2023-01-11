@@ -28,7 +28,7 @@ Customers will fill out the new-environment template via our public repository [
 
 #### 1. Create a new environment file
 
-`environments/$account-name.json`
+`environments/$application-name.json`
 
 See an example file [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#example-json-files).
 
@@ -36,7 +36,7 @@ See an example file [here](https://user-guide.modernisation-platform.service.jus
 
 #### 2. Update the `expected.rego`
 
-Update the [`expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/environments/expected.rego) file with the newly added account name.
+Update the [`policies/environments/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/environments/expected.rego) file with the newly added account name.
 
 This is to make sure that none of the json files gets accidentally deleted. This is going to be validated with the [opa-policies](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/opa-policies.yml) GitHub Actions workflow.
 
@@ -67,6 +67,8 @@ If the files already exist and no PR is created, create a new PR amending the ex
 
 > Note - The plan will fail on these PRs due to the networking not yet being complete.  This is fine, the goal of these PRs is to create the necessary files, not make deployments.
 
+#### 7. Merge the pull request created in the modernisation-platform-environments repo (step 4.2)
+
 ## Networking Stage
 
 This stage sets up [Resource Access Manager (RAM) sharing](https://docs.aws.amazon.com/ram/latest/userguide/what-is.html) to share the relevant business unit subnet sets to the application account.
@@ -91,9 +93,11 @@ This will then kick off `core-vpc-<env>-demployment` pipelines and run `terrafor
 
 > If the RAM share script fails to run on the merge for any reason, it will have to be run manually in the relevant application folder [here](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments).
 
-The pipeline will also generate a PR for the ram share. An example can be found [here](https://github.com/ministryofjustice/modernisation-platform/pull/2203)
+The pipeline will also generate a PR for networking variables in both the modernisation-platform and modernisation-platform-environments repos. An example can be found [here](https://github.com/ministryofjustice/modernisation-platform/pull/2203)
 
-#### 4. Merge in the generated PR from step 3
+#### 4. Merge in the two generated PRs from step 3
+
+This will run the RAM share script again (it needs to run in the previous step as if adding an environment the networking files will already be there, it need to run in this step as this is the first time adding the networking files)
 
 ## Checking its creation
 
