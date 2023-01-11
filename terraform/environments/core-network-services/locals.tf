@@ -29,6 +29,50 @@ locals {
     "hmpps-production-attachment",
     "core-network-services-live_data-attachment",
   ]
+  
+  active_tgw_all_attachments = [
+    "cjse-production-attachment",
+    "hmcts-test-attachment",
+    "cjse-development-attachment",
+    "laa-preproduction-attachment",
+    "core-logging-live_data-attachment",
+    "core-shared-services-non_live_data-attachment",
+    "core-shared-services-live_data-attachment",
+    "hmpps-development-attachment",
+    "hmpps-test-attachment",
+    "opg-test-attachment",
+    "hq-production-attachment",
+    "opg-development-attachment",
+    "laa-test-attachment",
+    "platforms-development-attachment",
+    "laa-production-attachment",
+    "core-security-non_live_data-attachment",
+    "opg-production-attachment",
+    "hmcts-development-attachment",
+    "cica-production-attachment",
+    "cjse-test-attachment",
+    "core-logging-non_live_data-attachment",
+    "inspection-attachment",
+    "cjse-preproduction-attachment",
+    "platforms-test-attachment",
+    "platforms-preproduction-attachment",
+    "platforms-production-attachment",
+    "core-security-live_data-attachment",
+    "cica-development-attachment",
+    "opg-preproduction-attachment",
+    "core-network-services-non_live_data-attachment",
+    "hq-test-attachment",
+    "cica-preproduction-attachment",
+    "house-sandbox-attachment",
+    "hmcts-preproduction-attachment",
+    "hmcts-production-attachment",
+    "laa-development-attachment",
+    "hq-development-attachment",
+    "hq-preproduction-attachment",
+    "garden-sandbox-attachment",
+    "cica-test-attachment"
+
+  ]
 
   development_rules   = fileexists("./development_rules.json") ? jsondecode(file("./development_rules.json")) : {}
   test_rules          = fileexists("./test_rules.json") ? jsondecode(file("./test_rules.json")) : {}

@@ -188,7 +188,3 @@ resource "aws_ec2_transit_gateway_route_table_association" "external_inspection_
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
-
-######################
-# TGW Flow logs
-######################
