@@ -98,7 +98,7 @@ data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_production" {
     values = [each.key]
   }
 }
-data "aws_ec2_transit_gateway_vpc_attachment" "tranist_gateway_all"{
+data "aws_ec2_transit_gateway_vpc_attachment" "tranist_gateway_all" {
   for_each = toset(local.active_tgw_all_attachments)
   filter {
     name   = "tag:Name"

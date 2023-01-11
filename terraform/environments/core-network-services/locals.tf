@@ -29,7 +29,7 @@ locals {
     "hmpps-production-attachment",
     "core-network-services-live_data-attachment",
   ]
-  
+
   active_tgw_all_attachments = [
     "cjse-production-attachment",
     "hmcts-test-attachment",
