@@ -128,13 +128,13 @@ resource "aws_sns_topic" "tgw_monitoring_production" {
   tags = local.tags
 }
 
-resource "aws_cloudwatch_log_group" "transit_gateway_flowlog_group"{
+resource "aws_cloudwatch_log_group" "transit_gateway_flowlog_group" {
   name = "tgw_flowlogs"
 }
 
-resource "aws_flow_logs" "transit_gateway_flowlog"{
-  for_each = data.aws_ec2_transit_gateway_vpc_attachment
-  log_destination = aws_cloudwatch_log_group.transit_gateway_flowlog_group.arn
-  traffic_type = "ALL"
+resource "aws_flow_logs" "transit_gateway_flowlog" {
+  for_each                      = data.aws_ec2_transit_gateway_vpc_attachment
+  log_destination               = aws_cloudwatch_log_group.transit_gateway_flowlog_group.arn
+  traffic_type                  = "ALL"
   transit_gateway_attachment_id = each.value["id"]
 }
