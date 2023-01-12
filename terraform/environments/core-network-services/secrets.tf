@@ -23,7 +23,6 @@ data "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
 
 # Environment logging secret KMS key
 resource "aws_kms_key" "environment_logging" {
-  provider                = aws.modernisation-platform
   description             = "environment-logging"
   enable_key_rotation     = true
   deletion_window_in_days = 30
