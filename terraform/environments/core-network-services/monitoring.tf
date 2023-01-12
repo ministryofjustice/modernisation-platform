@@ -98,13 +98,6 @@ data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_production" {
     values = [each.key]
   }
 }
-data "aws_ec2_transit_gateway_vpc_attachment" "tranist_gateway_all"{
-  for_each = toset(local.active_tgw_all_attachments)
-  filter {
-    name   = "tag:Name"
-    values = [each.key]
-  }
-}
 
 resource "aws_cloudwatch_metric_alarm" "production_attachment_no_traffic_5_minutes" {
   for_each            = merge(data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_production, data.aws_ec2_transit_gateway_peering_attachment.transit_gateway_production)
@@ -140,7 +133,7 @@ resource "aws_cloudwatch_log_group" "transit_gateway_flowlog_group" {
 }
 
 resource "aws_flow_log" "transit_gateway_flowlog" {
-  for_each                      = merge(data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_production, data.aws_ec2_transit_gateway_peering_attachment.transit_gateway_production, data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all)
+  for_each                      = merge(data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all, data.aws_ec2_transit_gateway_peering_attachment.transit_gateway_production)
   log_destination               = aws_cloudwatch_log_group.transit_gateway_flowlog_group.arn
   traffic_type                  = "ALL"
   transit_gateway_attachment_id = each.value["id"]
