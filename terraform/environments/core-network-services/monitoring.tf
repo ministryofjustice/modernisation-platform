@@ -130,6 +130,7 @@ resource "aws_sns_topic" "tgw_monitoring_production" {
 
 resource "aws_cloudwatch_log_group" "transit_gateway_flowlog_group" {
   name = "tgw_flowlogs"
+  retention_in_days = "400"
 }
 
 resource "aws_flow_log" "transit_gateway_flowlog" {
