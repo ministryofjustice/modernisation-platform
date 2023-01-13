@@ -49,63 +49,18 @@ module "s3-bucket" {
 }
 
 # https://www.terraform.io/docs/backends/types/s3.html#s3-bucket-permissions
-data "aws_iam_policy_document" "allow-state-access-from-root-account" {
-  statement {
-    sid       = "AllowListBucketFromRootAccount"
-    effect    = "Allow"
-    actions   = ["s3:ListBucket"]
-    resources = [module.state-bucket.bucket.arn]
-
-    principals {
-      type        = "AWS"
-      identifiers = local.root_users_with_state_access
-    }
-  }
-
-  statement {
-    sid    = "AllowModifyObjectsFromRootAccount"
-    effect = "Allow"
-    actions = [
-      "s3:GetObject"
-    ]
-    resources = ["${module.state-bucket.bucket.arn}/*"]
-
-    principals {
-      type        = "AWS"
-      identifiers = local.root_users_with_state_access
-    }
-  }
-
-  statement {
-    effect    = "Allow"
-    actions   = ["s3:PutObject"]
-    resources = ["${module.state-bucket.bucket.arn}/*"]
-
-    principals {
-      type        = "AWS"
-      identifiers = local.root_users_with_state_access
-    }
-
-    condition {
-      test     = "StringEquals"
-      variable = "s3:x-amz-acl"
-      values   = ["bucket-owner-full-control"]
-    }
-  }
+data "aws_iam_policy_document" "s3-access-from-accounts" {
   statement {
     sid    = "ReadOnlyFromModernisationPlatformOU"
     effect = "Allow"
     actions = [
       "s3:GetObject",
-      "s3:ListBucket"
+      "s3:ListBucket",
+      "s3:s3:PutObject"
     ]
     resources = [
-      module.state-bucket.bucket.arn,
-      "${module.state-bucket.bucket.arn}/terraform.tfstate",
-      "${module.state-bucket.bucket.arn}/environments/members/*",
-      "${module.state-bucket.bucket.arn}/environments/accounts/core-network-services/*"
+      module.s3-bucket.bucket.arn
     ]
-
     principals {
       type        = "AWS"
       identifiers = ["*"]
@@ -115,85 +70,6 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       variable = "aws:PrincipalOrgPaths"
       values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
     }
-  }
-  statement {
-    sid     = "AllowTestingCIUser"
-    effect  = "Allow"
-    actions = ["s3:PutObject"]
-    resources = [
-      "${module.state-bucket.bucket.arn}/environments/members/testing/testing-test/terraform.tfstate",
-    ]
 
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["testing-test"]}:user/testing-ci"]
-    }
-  }
-
-  statement {
-    sid     = "AllowGithubActionsRole"
-    effect  = "Allow"
-    actions = ["s3:PutObject"]
-    resources = [
-      "${module.state-bucket.bucket.arn}/environments/members/*",
-    ]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-
-    condition {
-      test     = "ForAnyValue:StringLike"
-      variable = "aws:PrincipalOrgPaths"
-      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
-    }
-
-    condition {
-      test     = "ForAnyValue:StringLike"
-      variable = "aws:PrincipalArn"
-      values = [
-      "arn:aws:iam::*:role/github-actions"]
-    }
-  }
-
-  statement {
-    sid     = "AllowAdministratorAccessRole"
-    effect  = "Allow"
-    actions = ["s3:PutObject"]
-    resources = [
-      "${module.state-bucket.bucket.arn}/environments/members/*"
-    ]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-
-    condition {
-      test     = "ForAnyValue:StringLike"
-      variable = "aws:PrincipalOrgPaths"
-      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
-    }
-
-    condition {
-      test     = "ForAnyValue:StringLike"
-      variable = "aws:PrincipalArn"
-      values = [
-      "arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*"]
-    }
-  }
-  statement {
-    sid     = "AllowMPAdministratorAccessRole"
-    effect  = "Allow"
-    actions = ["s3:PutObject"]
-    resources = [
-      "${module.state-bucket.bucket.arn}/environments/accounts/*",
-    ]
-
-    principals {
-      type        = "AWS"
-      identifiers = tolist(data.aws_iam_roles.sso-admin-access.arns)
-    }
   }
 }
