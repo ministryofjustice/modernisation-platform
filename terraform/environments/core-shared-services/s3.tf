@@ -4,7 +4,7 @@ module "s3-bucket" {
   providers = {
     aws.bucket-replication = aws
   }
-  bucket_name       = "mod-platform-ami-bucket"
+  bucket_name         = "mod-platform-ami-bucket"
   replication_enabled = false
 
   lifecycle_rule = [
