@@ -127,3 +127,17 @@ resource "aws_sns_topic" "tgw_monitoring_production" {
 
   tags = local.tags
 }
+
+
+resource "aws_cloudwatch_log_group" "transit_gateway_flowlog_group" {
+  name              = "tgw_flowlogs"
+  retention_in_days = "400"
+  kms_key_id        = aws_kms_key.environment_logging.key_id
+}
+
+resource "aws_flow_log" "transit_gateway_flowlog" {
+  for_each                      = merge(data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all, data.aws_ec2_transit_gateway_peering_attachment.transit_gateway_production)
+  log_destination               = aws_cloudwatch_log_group.transit_gateway_flowlog_group.arn
+  traffic_type                  = "ALL"
+  transit_gateway_attachment_id = each.value["id"]
+}
