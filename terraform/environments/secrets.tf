@@ -125,8 +125,8 @@ resource "github_dependabot_secret" "environment_management" {
   secret_name = "MODERNISATION_PLATFORM_ENVIRONMENTS"
   repository  = each.key
   plaintext_value = jsonencode(merge(
-  local.environment_management,
-  { account_ids : module.environments.environment_account_ids }
+    local.environment_management,
+    { account_ids : module.environments.environment_account_ids }
   ))
 }
 
