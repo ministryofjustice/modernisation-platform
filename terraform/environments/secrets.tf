@@ -106,7 +106,7 @@ locals {
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 }
 
-# Store environment management secret in Github secrets
+# Store environment management secret in Github actions secrets
 resource "github_actions_secret" "environment_management" {
   for_each = toset(["modernisation-platform-environments", "modernisation-platform", "modernisation-platform-ami-builds"])
   # checkov:skip=CKV_SECRET_6: "secret_name is not a secret"
@@ -115,6 +115,18 @@ resource "github_actions_secret" "environment_management" {
   plaintext_value = jsonencode(merge(
     local.environment_management,
     { account_ids : module.environments.environment_account_ids }
+  ))
+}
+
+# Store environment management secret in Github dependabot secrets
+resource "github_dependabot_secret" "environment_management" {
+  for_each = toset(["modernisation-platform-environments", "modernisation-platform", "modernisation-platform-ami-builds"])
+  # checkov:skip=CKV_SECRET_6: "secret_name is not a secret"
+  secret_name = "MODERNISATION_PLATFORM_ENVIRONMENTS"
+  repository  = each.key
+  plaintext_value = jsonencode(merge(
+  local.environment_management,
+  { account_ids : module.environments.environment_account_ids }
   ))
 }
 
