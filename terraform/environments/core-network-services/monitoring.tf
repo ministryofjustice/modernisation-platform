@@ -132,7 +132,7 @@ resource "aws_sns_topic" "tgw_monitoring_production" {
 resource "aws_cloudwatch_log_group" "transit_gateway_flowlog_group" {
   name              = "tgw_flowlogs"
   retention_in_days = "400"
-  kms_key_id        = aws_kms_key.environment_logging.key_id
+  kms_key_id        = aws_kms_key.environment_logging.arn
 }
 
 resource "aws_flow_log" "transit_gateway_flowlog" {
