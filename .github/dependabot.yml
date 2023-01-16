@@ -36,6 +36,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/bootstrap/member-bootstrap"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/bootstrap/secure-baselines"
     schedule:
       interval: "daily"
@@ -101,6 +105,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/example"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/environments/long-term-storage"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
