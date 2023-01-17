@@ -128,16 +128,21 @@ resource "aws_sns_topic" "tgw_monitoring_production" {
   tags = local.tags
 }
 
-
-resource "aws_cloudwatch_log_group" "transit_gateway_flowlog_group" {
-  name              = "tgw_flowlogs"
-  retention_in_days = "400"
-  kms_key_id        = aws_kms_key.environment_logging.arn
+# TF sec exclusions
+# - Ignore warnings regarding log groups not encrypted using customer-managed KMS keys - following cost/benefit discussion and longer term plans for logging solution
+#tfsec:ignore:AWS089
+resource "aws_cloudwatch_log_group" "tgw_flowlog_group" {
+  #checkov:skip=CKV_AWS_158:Temporarily skip KMS encryption check while logging solution is being
+  name              = "tgw-flowlogs"
+  retention_in_days = 365 # 0 = never expire
+  #kms_key_id        = aws_kms_key.environment_logging.arn
+  tags = local.tags
 }
 
-resource "aws_flow_log" "transit_gateway_flowlog" {
+resource "aws_flow_log" "tgw_flowlog" {
   for_each                      = merge(data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all, data.aws_ec2_transit_gateway_peering_attachment.transit_gateway_production)
-  log_destination               = aws_cloudwatch_log_group.transit_gateway_flowlog_group.arn
+  log_destination               = aws_cloudwatch_log_group.tgw_flowlog_group.arn
   traffic_type                  = "ALL"
   transit_gateway_attachment_id = each.value["id"]
+  tags = local.tags
 }
