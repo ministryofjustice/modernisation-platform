@@ -24,7 +24,7 @@ The steps are:
 
 If you already have your exported SSL certificate in PFX format, skip direct to step 5 (certificate data extraction).
 
-This guide was written using Windows to generate a certificate signing request (CSR) and complete the request. For Mac / Linux, the process will be similar, but you will need to research the commands for creating and completing a CSR, and ideally raise a PR to update this documentation to help other users. 
+This guide was written using Windows to generate a certificate signing request (CSR) and complete the request. For Mac / Linux, the process will be similar, but you will need to research the commands for creating and completing a CSR, and ideally raise a PR to update this documentation to help other users.
 
 **There may be a better way**. If so, let us know!
 
@@ -57,7 +57,7 @@ Thumbprint: fad171bxxxxxxxx27d40f
 
 ## 4. Local certificate export
 
-Use the Windows Certificate Manager MMC to export the certificate. It should be in "Personal". 
+Use the Windows Certificate Manager MMC to export the certificate. It should be in "Personal".
 
   * Say "Yes" to export the private key
   * Use .PFX as the format
@@ -77,7 +77,7 @@ The certificate block in this file should match the certificate block from step 
 
 ## 6. AWS import
 
-In AWS Certificate Manager, import the certificate using the data in the exported plaintext file from the previous step (certificate body, certificate private key, and full certificate chain). 
+In AWS Certificate Manager, import the certificate using the data in the exported plaintext file from the previous step (certificate body, certificate private key, and full certificate chain).
 
 Regular Modernisation Platform AWS accounts do not have permission to import certificates, so a member of the core team will need to do this for you.
 
