@@ -7,6 +7,10 @@
         {
           "github_slug": "hmpps-interventions-dev",
           "level": "sandbox"
+        },
+        {
+          "github_slug": "hmpps-interventions-dashboard-access",
+          "level": "sandbox"
         }
       ]
     }
