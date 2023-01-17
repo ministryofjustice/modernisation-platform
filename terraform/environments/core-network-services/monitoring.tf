@@ -144,5 +144,5 @@ resource "aws_flow_log" "tgw_flowlog" {
   log_destination               = aws_cloudwatch_log_group.tgw_flowlog_group.arn
   traffic_type                  = "ALL"
   transit_gateway_attachment_id = each.value["id"]
-  tags = local.tags
+  tags                          = local.tags
 }
