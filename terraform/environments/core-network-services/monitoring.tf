@@ -140,11 +140,11 @@ resource "aws_cloudwatch_log_group" "tgw_flowlog_group" {
 }
 
 resource "aws_flow_log" "tgw_flowlog" {
-  depends_on = [aws_cloudwatch_log_group.tgw_flowlog_group]
+  depends_on                    = [aws_cloudwatch_log_group.tgw_flowlog_group]
   for_each                      = merge(data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all, data.aws_ec2_transit_gateway_peering_attachment.transit_gateway_production)
   log_destination               = aws_cloudwatch_log_group.tgw_flowlog_group.arn
   log_destination_type          = "cloud-watch-logs"
   traffic_type                  = "ALL"
   transit_gateway_attachment_id = each.value["id"]
-  tags = local.tags
+  tags                          = local.tags
 }
