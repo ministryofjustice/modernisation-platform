@@ -136,7 +136,7 @@ resource "aws_cloudwatch_log_group" "tgw_flowlog_group" {
   name              = "tgw-flowlogs"
   retention_in_days = 365 # 0 = never expire
   #kms_key_id        = aws_kms_key.environment_logging.arn
-  tags               = local.tags
+  tags = local.tags
 }
 
 resource "aws_flow_log" "tgw_flowlog" {
