@@ -66,7 +66,9 @@ resource "pagerduty_schedule" "primary" {
     users = [
       local.david_sibley,
       local.david_elliott,
-      local.stephen_linden
+      local.stephen_linden,
+      local.edward_proctor,
+      local.ewa_stempel
     ]
   }
 
@@ -92,7 +94,9 @@ resource "pagerduty_schedule" "secondary" {
     users = [
       local.david_elliott,
       local.stephen_linden,
-      local.david_sibley
+      local.david_sibley,
+      local.ewa_stempel,
+      local.edward_proctor
     ]
   }
 
