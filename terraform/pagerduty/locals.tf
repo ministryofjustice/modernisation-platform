@@ -46,7 +46,7 @@ locals {
   david_sibley   = pagerduty_user.pager_duty_users["david_sibley"].id
   stephen_linden = data.pagerduty_user.stephen_linden.id
   edward_proctor = pagerduty_user.pager_duty_users["edward_proctor"].id
-  ewa_stempel = pagerduty_user.pager_duty_users["ewa_stempel"].id
+  ewa_stempel    = pagerduty_user.pager_duty_users["ewa_stempel"].id
 
   tags = {
     business-unit = "Platforms"
