@@ -199,7 +199,7 @@ data "aws_iam_policy_document" "oidc_assume_role_core" {
 }
 
 ##### Cross Account Roles Admin #####
-
+#tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "ssm-automation-execution-policy" {
   statement {
     sid       = ""
