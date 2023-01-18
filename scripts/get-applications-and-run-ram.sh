@@ -1,7 +1,5 @@
 #/bin/bash
 
-set -Ee
-
 environment=$1
 
 # Check for changes in environments-networks
@@ -23,10 +21,8 @@ if [ ! -z "${accounts}" ]; then
       echo "[+] ${networking_file} does not exist, skipping RAM share."
     fi
   done
-  exit 0
 else
   echo "[+] There were no member accounts to process"
-  exit 0
 fi
 
 # check for changes to networking.auto.tfvars.json files
@@ -44,8 +40,8 @@ if [ ! -z "${changed_networking_files}" ]; then
     echo "[+] Starting up RAM association for application ${application}"
     bash scripts/member-account-ram-association.sh ${application} ${environment}
   done
-  exit 0
 else
   echo "[+] There were no networking.auto.tfvars.json changed files"
-  exit 0
 fi
+
+exit 0
