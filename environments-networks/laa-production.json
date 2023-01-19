@@ -3,7 +3,7 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.27.64.0/21",
-        "accounts": ["mlra-production"]
+        "accounts": ["mlra-production", "ccms-ebs-production"]
       }
     }
   },
