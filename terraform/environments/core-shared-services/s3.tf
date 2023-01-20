@@ -1,12 +1,14 @@
 module "s3-bucket" {
-  source = "git::https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.2.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.2.0"
 
   providers = {
-    aws.bucket-replication = aws
+    aws.bucket-replication = aws.bucket-replication
   }
-  bucket_name         = "mod-platform-ami-bucket"
+  bucket_prefix       = "mod-platform-ami-bucket"
+  bucket_policy       = [data.aws_iam_policy_document.bucket_policy.json]
   replication_enabled = false
-
+  versioning_enabled  = true
+  force_destroy       = false
   lifecycle_rule = [
     {
       id      = "main"
@@ -22,6 +24,9 @@ module "s3-bucket" {
         {
           days          = 90
           storage_class = "STANDARD_IA"
+          }, {
+          days          = 365
+          storage_class = "GLACIER"
         }
       ]
 
@@ -48,18 +53,16 @@ module "s3-bucket" {
   tags = local.tags
 }
 
-# https://www.terraform.io/docs/backends/types/s3.html#s3-bucket-permissions
-data "aws_iam_policy_document" "s3-access-from-accounts" {
+data "aws_iam_policy_document" "bucket_policy" {
   statement {
-    sid    = "ReadOnlyFromModernisationPlatformOU"
     effect = "Allow"
     actions = [
       "s3:GetObject",
-      "s3:ListBucket",
-      "s3:s3:PutObject"
+      "s3:PutObject"
     ]
+
     resources = [
-      module.s3-bucket.bucket.arn
+      "${module.s3-bucket.bucket.arn}/*"
     ]
     principals {
       type        = "AWS"
@@ -70,6 +73,6 @@ data "aws_iam_policy_document" "s3-access-from-accounts" {
       variable = "aws:PrincipalOrgPaths"
       values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
     }
-
   }
+
 }
