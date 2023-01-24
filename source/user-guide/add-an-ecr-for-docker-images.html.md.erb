@@ -1,0 +1,23 @@
+---
+owner_slack: "#modernisation-platform"
+title: How to add an ECR for shared Docker images
+last_reviewed_on: 2023-01-24
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Introduction
+
+You can create a shared [Amazon Elastic Container Registry (ECR)](https://aws.amazon.com/ecr/) in the Modernisation Platform to store your [Docker](https://www.docker.com/) container images.
+
+The ECR can then be shared to all of your application accounts.
+
+## Steps
+
+1. Clone the [modernisation-platform](https://github.com/ministryofjustice/modernisation-platform/) GitHub repository.
+1. Add your registry to [modernisation-platform/terraform/environments/core-shared-services/ecr_repos.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-shared-services/ecr_repos.tf)
+1. Do this by copying another teams registry code using the [ECR module](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/app-ecr-repo) and modify it accordingly.
+1. You will need to specify the `push_principals` (who do you want to be able to upload to the ECR) and `pull_principals` (who do you want to be able to download from the ECR)
+1. Raise a pull request and post in the [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) channel for a review.
+1. A Modernisation Engineer will review the pull request and merge.
