@@ -56,7 +56,7 @@
     "tunnel_startup_action": "start"
   },
   "NOMS-Transit-Live-VPN-VNG_1": {
-    "bgp_asn": "64532",
+    "bgp_asn": "64522",
     "customer_gateway_ip": "20.254.177.179",
     "dx_gateway_id": "",
     "dx_gateway_owner_account_id": "",
@@ -68,7 +68,7 @@
     "tunnel_startup_action": "start"
   },
   "NOMS-Transit-Live-VPN-VNG_2": {
-    "bgp_asn": "64532",
+    "bgp_asn": "64522",
     "customer_gateway_ip": "20.254.177.202",
     "dx_gateway_id": "",
     "dx_gateway_owner_account_id": "",
