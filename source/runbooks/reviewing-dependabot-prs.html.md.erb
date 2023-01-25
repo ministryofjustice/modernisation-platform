@@ -1,0 +1,34 @@
+---
+owner_slack: "#modernisation-platform"
+title: How to review Dependabot pull requests
+last_reviewed_on: 2023-01-25
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Introduction
+
+We use [Dependabot](https://github.com/dependabot) to keep our dependancies up-to-date.  We need to review, approve and merge these pull requests.
+
+At 09:00, 12:00 and 15:00 GitHub will post open pull requests from all of the repositories that the [modernisation-platform](https://github.com/orgs/ministryofjustice/teams/modernisation-platform) team is an admin of, into our main Slack channel.
+
+Click on the link in Slack to open the pull request.
+
+## Notes on reviewing
+
+1. [Semantic Versioning](https://semver.org/) is generally used, this means:
+
+- MAJOR version (X.0.0) will have incompatible API changes
+- MINOR version (0.X.0) will add functionality in a backwards compatible manner
+- PATCH version (0.0.X) will make backwards compatible bug fixes
+
+Keep this in mind when reviewing, major version changes will need a detailed code review to ensure the breaking changes do not affect our code or are resolved before approving and merging the pull request.
+
+2. GitHub checks (GitHub Actions workflows) will not have access to GitHub secrets, this means checks needing secrets will fail.  After reviewing the release notes and code for potential security issues, you can open an close the pull request to trigger the checks to run with secret access.
+
+3. Sometimes the pull request will need rebasing, Dependabot will usually do this for you but if not it can be done by commenting `@dependabot rebase`.
+
+4. Once the pull request has been reviewed and approved it can be merged. Keep an eye out on Slack for any failed workflows.
+
+5. Often lots of repositories will use the same dependancy, when this is the case it is usually safe to do one in depth review and then approve and merge all of them. (The exception to this would be major upgrades where you need to ensure the breaking changes don't affect anything).
