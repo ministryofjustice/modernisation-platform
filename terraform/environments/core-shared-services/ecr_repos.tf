@@ -57,3 +57,24 @@ module "instance_scheduler_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
+
+module "delius_jitbit_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "delius-jitbit"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-preproduction"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-production"]}:user/cicd-member-user"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["delius-jitbit-development"],
+    local.environment_management.account_ids["delius-jitbit-preproduction"],
+    local.environment_management.account_ids["delius-jitbit-production"]
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
