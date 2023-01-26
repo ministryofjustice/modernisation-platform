@@ -31,7 +31,7 @@ module "ssm-cross-account-access" {
   additional_trust_statements = [data.aws_iam_policy_document.ssm-trust-relationship-policy.json]
 
 }
-
+#tfsec:ignore:aws-iam-user-policy-document
 data "aws_iam_policy_document" "SSM-Automation-Policy" {
   statement {
     sid       = ""

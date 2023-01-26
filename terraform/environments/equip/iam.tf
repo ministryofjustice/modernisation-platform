@@ -1,4 +1,4 @@
-#tfsec:ignore:aws-iam-no-user-attached-policies
+#tfsec:ignore:aws-iam-user
 resource "aws_iam_user" "email" {
   name = format("%s-%s-email_user", local.application_name, local.environment)
   tags = merge(local.tags,

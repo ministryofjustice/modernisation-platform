@@ -11,3 +11,6 @@ provider "aws" {
   alias  = "modernisation-platform"
   region = "eu-west-2"
 }
+terraform {
+  required_version = ">= 1.0" 
+}

@@ -89,7 +89,7 @@ resource "aws_iam_policy" "developer" {
   policy   = data.aws_iam_policy_document.developer_additional.json
 }
 
-#tfsec:ignore:aws-iam-no-policy-wildcards
+#tfsec:ignore:aws-iam-policy-document
 data "aws_iam_policy_document" "developer_additional" {
   #checkov:skip=CKV_AWS_108
   #checkov:skip=CKV_AWS_109

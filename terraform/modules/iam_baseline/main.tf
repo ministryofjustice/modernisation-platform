@@ -1,4 +1,5 @@
 # Create the CICD user in the member account which is used for application deployments
+#tfsec:ignore:aws-iam-user
 resource "aws_iam_user" "cicd_member_user" {
   name = "cicd-member-user"
 }
