@@ -1,7 +1,7 @@
 ### Testing CI user - user to be used for automated tests, access limited to the testing account and essential core resources
 # Create a testing CI user
 #tfsec:ignore:aws-iam-no-user-attached-policies
-#tfsec:ignore:aws-iam-user
+#tfsec:ignore:AWS273
 resource "aws_iam_user" "testing_ci" {
   provider = aws.testing-test
   name     = "testing-ci"
