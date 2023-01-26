@@ -61,8 +61,8 @@
     "dx_gateway_id": "",
     "dx_gateway_owner_account_id": "",
     "remote_ipv4_network_cidr": "0.0.0.0/0",
-    "tunnel1_inside_cidr": "169.254.41.0/30",
-    "tunnel2_inside_cidr": "169.254.42.0/30",
+    "tunnel1_inside_cidr": "169.254.21.128/30",
+    "tunnel2_inside_cidr": "169.254.22.128/30",
     "tunnel_dpd_timeout_action": "restart",
     "tunnel_dpd_timeout_seconds": "45",
     "tunnel_startup_action": "start"
@@ -73,8 +73,8 @@
     "dx_gateway_id": "",
     "dx_gateway_owner_account_id": "",
     "remote_ipv4_network_cidr": "0.0.0.0/0",
-    "tunnel1_inside_cidr": "169.254.41.4/30",
-    "tunnel2_inside_cidr": "169.254.42.4/30",
+    "tunnel1_inside_cidr": "169.254.21.132/30",
+    "tunnel2_inside_cidr": "169.254.22.132/30",
     "tunnel_dpd_timeout_action": "restart",
     "tunnel_dpd_timeout_seconds": "45",
     "tunnel_startup_action": "start"
