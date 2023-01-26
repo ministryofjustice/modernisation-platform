@@ -1,8 +1,8 @@
 # Create user for MGN
 
 #tfsec:ignore:aws-iam-no-user-attached-policies
-#checkov:skip=CKV_AWS_273: "skipping"
 resource "aws_iam_user" "mgn_user" {
+  #checkov:skip=CKV_AWS_273: "Skipping"
   count = local.is-development == true ? 1 : 0
   name  = "MGN-Test"
   tags  = local.tags
