@@ -38,12 +38,19 @@ locals {
 
   vpn_attachments = fileexists("./vpn_attachments.json") ? jsondecode(file("./vpn_attachments.json")) : {}
 
-  noms_vpn_static_routes = [
+  noms_dr_vpn_static_routes = [
     "10.40.64.0/18",
     "10.40.144.0/20",
     "10.40.176.0/20",
     "10.111.0.0/16",
     "10.112.0.0/16"
+  ]
+  noms_live_vpn_static_routes = [
+    "10.40.0.0/18",
+    "10.40.128.0/20",
+    "10.40.160.0/20",
+    "10.101.0.0/16",
+    "10.102.0.0/16"
   ]
 
   sixdg_dev_vpn_static_routes   = ["10.221.0.0/16"]
