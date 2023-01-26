@@ -37,6 +37,7 @@ locals {
   firewall_rules      = merge(local.development_rules, local.test_rules, local.preproduction_rules, local.production_rules)
 
   vpn_attachments = fileexists("./vpn_attachments.json") ? jsondecode(file("./vpn_attachments.json")) : {}
+
   noms_vpn_static_routes = [
     "10.40.64.0/18",
     "10.40.144.0/20",
@@ -44,6 +45,12 @@ locals {
     "10.111.0.0/16",
     "10.112.0.0/16"
   ]
+
+  sixdg_dev_vpn_static_routes   = ["10.221.0.0/16"]
+  sixdg_test_vpn_static_routes  = ["10.224.0.0/16"]
+  sixdg_stage_vpn_static_routes = ["10.223.0.0/16"]
+  sixdg_uat_vpn_static_routes   = ["10.222.0.0/16"]
+  sixdg_prod_vpn_static_routes  = ["10.225.0.0/16"]
 
   core-vpcs = {
     for file in fileset("../../../environments-networks", "*.json") :
