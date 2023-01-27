@@ -19,16 +19,16 @@ module "ram-principal-association" {
 
 }
 
-data "aws_ami_ids" "example" {
-  owners     = ["self"]
-  name_regex = "(?!oracle-linux-5.11)*"
-  # filter {
-  #   name   = "name"
-  #   values = ["oracle-linux-5.11*"]
-  # }
+# data "aws_ami_ids" "example" {
+#   owners     = ["self"]
+#   name_regex = "(?!oracle-linux-5.11)*"
+#   # filter {
+#   #   name   = "name"
+#   #   values = ["oracle-linux-5.11*"]
+#   # }
 
-}
+# }
 
-output "amis" {
-  value = data.aws_ami_ids.example.ids
-}
+# output "amis" {
+#   value = data.aws_ami_ids.example.ids
+# }
