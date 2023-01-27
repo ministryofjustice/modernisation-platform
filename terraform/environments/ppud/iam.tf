@@ -8,7 +8,7 @@ resource "aws_iam_user" "mgn_user" {
   name  = "MGN-Test"
   tags  = local.tags
 }
-#tfsec:ignore:aws-iam-user-policy-attachment
+#tfsec:ignore:aws-iam-no-user-attached-policies
 resource "aws_iam_user_policy_attachment" "mgn_attach_policy" {
   #tfsec:ignore:aws-iam-no-user-attached-policies
   #checkov:skip=CKV_AWS_40: "Skipping as required"
