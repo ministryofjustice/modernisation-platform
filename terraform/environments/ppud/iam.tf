@@ -1,6 +1,7 @@
 # Create user for MGN
 
-#tfsec:ignore:aws-iam-no-user-attached-policies tfsec:ignore:AWS273
+#tfsec:ignore:aws-iam-no-user-attached-policies 
+#tfsec:ignore:AWS273
 resource "aws_iam_user" "mgn_user" {
   #checkov:skip=CKV_AWS_273: "Skipping"
   count = local.is-development == true ? 1 : 0

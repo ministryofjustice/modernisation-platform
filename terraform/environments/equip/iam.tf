@@ -1,4 +1,5 @@
-#tfsec:ignore:aws-iam-user-attached-policies tfsec:ignore:AWS273
+#tfsec:ignore:aws-iam-user-attached-policies 
+#tfsec:ignore:AWS273
 resource "aws_iam_user" "email" {
   #checkov:skip=CKV_AWS_273: "Skipping"
   name = format("%s-%s-email_user", local.application_name, local.environment)
