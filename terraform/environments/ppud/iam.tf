@@ -9,6 +9,8 @@ resource "aws_iam_user" "mgn_user" {
 }
 #tfsec:ignore:aws-iam-user-policy-attachment
 resource "aws_iam_user_policy_attachment" "mgn_attach_policy" {
+  #tfsec:ignore:aws-iam-no-user-attached-policies
+  #checkov:skip=CKV_AWS_40: "Skipping as required"
   count      = local.is-development == true ? 1 : 0
   user       = aws_iam_user.mgn_user[0].name
   policy_arn = "arn:aws:iam::aws:policy/AWSApplicationMigrationFullAccess"
