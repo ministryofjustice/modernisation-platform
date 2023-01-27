@@ -14,6 +14,7 @@ resource "aws_vpn_connection" "this" {
   for_each                    = local.vpn_attachments
   transit_gateway_id          = aws_ec2_transit_gateway.transit-gateway.id
   customer_gateway_id         = aws_customer_gateway.this[each.key].id
+  static_routes_only          = try(each.value.static_routes_only, false)
   type                        = "ipsec.1"
   tunnel1_dpd_timeout_action  = try(each.value.tunnel_dpd_timeout_action, null)
   tunnel1_dpd_timeout_seconds = try(each.value.tunnel_dpd_timeout_seconds, "30")
