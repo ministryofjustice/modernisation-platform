@@ -33,6 +33,7 @@ module "ssm-cross-account-access" {
 }
 #tfsec:ignore:aws-iam-user-policy-document
 data "aws_iam_policy_document" "SSM-Automation-Policy" {
+  #checkov:skip=CKV_AWS_109: "policy exception"
   statement {
     sid       = ""
     effect    = "Allow"

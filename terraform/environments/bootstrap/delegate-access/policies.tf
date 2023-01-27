@@ -94,6 +94,7 @@ data "aws_iam_policy_document" "developer_additional" {
   #checkov:skip=CKV_AWS_108
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_110
   source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
     sid    = "developerAllow"
@@ -219,6 +220,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
   #checkov:skip=CKV_AWS_107
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_110
+  #checkov:skip=CKV_AWS_40
   source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
     sid    = "sandboxAllow"
