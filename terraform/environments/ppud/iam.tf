@@ -17,7 +17,7 @@ resource "aws_iam_user_policy_attachment" "mgn_attach_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AWSApplicationMigrationFullAccess"
 }
 
-#tfsec:ignore:aws-iam-user
+#tfsec:ignore:aws-iam-no-user-attached-policies
 resource "aws_iam_user" "email" {
   #checkov:skip=CKV_AWS_273: "Skipping"
   name = format("%s-%s-email_user", local.application_name, local.environment)
