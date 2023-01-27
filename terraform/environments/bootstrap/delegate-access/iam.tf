@@ -31,7 +31,7 @@ module "ssm-cross-account-access" {
   additional_trust_statements = [data.aws_iam_policy_document.ssm-trust-relationship-policy.json]
 
 }
-#tfsec:ignore:aws-iam-user-policy-document
+#tfsec:ignore:aws-iam-user-policy-document tfsec:ignore:AWS109 tfsec:ignore:AWS108 tfsec:ignore:AWS111
 data "aws_iam_policy_document" "SSM-Automation-Policy" {
   #checkov:skip=CKV_AWS_109: "policy exception"
   #checkov:skip=CKV_AWS_108: "policy exception"
