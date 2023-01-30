@@ -1,6 +1,6 @@
 # Create the CICD user in the member account which is used for application deployments
 resource "aws_iam_user" "cicd_member_user" {
-  #checkov:skip=CKV_AWS_273: "Skipping"
+  #checkov:skip=CKV_AWS_273: "Skipping as tfsec check is also ignored"
   name = "cicd-member-user"
 }
 
