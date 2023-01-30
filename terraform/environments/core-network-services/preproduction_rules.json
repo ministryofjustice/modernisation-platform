@@ -1,0 +1,9 @@
+{
+    "laa_stage_to_mp_laa_preproduction_http_test": {
+        "action": "PASS",
+        "source_ip": "10.204.0.0/20",
+        "destination_ip": "10.27.72.0/21",
+        "destination_port": "80",
+        "protocol": "TCP"
+      }
+}
