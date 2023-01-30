@@ -213,7 +213,7 @@ resource "aws_iam_policy" "sandbox" {
   path     = "/"
   policy   = data.aws_iam_policy_document.sandbox_additional.json
 }
-
+##checks being skipped untill policy has been amended##
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "sandbox_additional" {
   #checkov:skip=CKV_AWS_108
