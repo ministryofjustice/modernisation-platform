@@ -3,10 +3,10 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_cloudwatch_log_group" "aws_route53_example_com" {
+resource "aws_cloudwatch_log_group" "aws_route53_logs_com" {
   provider = aws.us-east-1
 
-  name              = "aws_route53_zone.example_com.name"
+  name              = "aws_route53_zone.logs_com.name"
   retention_in_days = 365
 }
 # Example CloudWatch log resource policy to allow Route53 to write logs
@@ -37,13 +37,13 @@ resource "aws_cloudwatch_log_resource_policy" "route53-query-logging-policy" {
 
 # Example Route53 zone with query logging
 
-resource "aws_route53_zone" "example_com" {
-  name = "example.com"
+resource "aws_route53_zone" "logs_com" {
+  name = "logs.com"
 }
 
 resource "aws_route53_query_log" "example_com" {
   depends_on = [aws_cloudwatch_log_resource_policy.route53-query-logging-policy]
 
-  cloudwatch_log_group_arn = aws_cloudwatch_log_group.aws_route53_example_com.arn
-  zone_id                  = aws_route53_zone.example_com.zone_id
+  cloudwatch_log_group_arn = aws_cloudwatch_log_group.aws_route53_logs_com.arn
+  zone_id                  = aws_route53_zone.logs_com.zone_id
 }
