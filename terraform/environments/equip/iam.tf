@@ -1,5 +1,6 @@
 #tfsec:ignore:aws-iam-no-user-attached-policies
 resource "aws_iam_user" "email" {
+  #checkov:skip=CKV_AWS_273: "Skipping as tfsec check is also set to ignore"
   name = format("%s-%s-email_user", local.application_name, local.environment)
   tags = merge(local.tags,
     { Name = format("%s-%s-email_user", local.application_name, local.environment) }

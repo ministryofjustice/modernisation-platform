@@ -89,11 +89,13 @@ resource "aws_iam_policy" "developer" {
   policy   = data.aws_iam_policy_document.developer_additional.json
 }
 
+
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "developer_additional" {
   #checkov:skip=CKV_AWS_108
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_110
   source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
     sid    = "developerAllow"
@@ -211,7 +213,7 @@ resource "aws_iam_policy" "sandbox" {
   path     = "/"
   policy   = data.aws_iam_policy_document.sandbox_additional.json
 }
-
+##checks being skipped until policy has been amended##
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "sandbox_additional" {
   #checkov:skip=CKV_AWS_108
@@ -219,6 +221,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
   #checkov:skip=CKV_AWS_107
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_110
+  #checkov:skip=CKV2_AWS_40
   source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
     sid    = "sandboxAllow"

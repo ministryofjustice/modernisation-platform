@@ -2,6 +2,7 @@
 # Create a testing CI user
 #tfsec:ignore:aws-iam-no-user-attached-policies
 resource "aws_iam_user" "testing_ci" {
+  #checkov:skip=CKV_AWS_273: "This is a testing user"
   provider = aws.testing-test
   name     = "testing-ci"
   tags     = local.testing_tags
