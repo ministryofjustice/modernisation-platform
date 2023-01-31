@@ -1,0 +1,38 @@
+---
+owner_slack: "#modernisation-platform"
+title: Subnet Access
+last_reviewed_on: 2023-01-30
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+This page summerises which ports and routes are open to what on the subnet sets.
+
+## Allowed Traffic
+
+### All Subnets (Data, Private, Public)
+
+|Traffic type | Port ranges | Source/Destination |
+|---|---|---|
+|Ingress & Egress | All | Business unit VPC |
+|Ingress & Egress | All | Inter business unit VPCs where requested |
+|Ingress & Egress | All | Private address ranges which are not part of the Modernistation Platform (Note, these will be blocked by the Firewall unless appropriate rules are in place) |
+|Egress | 443 | 0.0.0.0/0 |
+|Ingress | 1024 - 65535| 0.0.0.0/0 |
+
+### Public Subnets
+
+|Traffic type | Port ranges | Source/Destination |
+|---|---|---|
+|Ingress | 443 | 0.0.0.0/0 |
+|Ingress | 1024 - 65535 | 0.0.0.0/0 |
+|Egress | All | 0.0.0.0/0 |
+
+### Protected Subnets (for VPC endpoints)
+
+|Traffic type | Port ranges | Source/Destination |
+|---|---|---|
+|Ingress | 443 | Business unit VPC |
+|Ingress | 587 | Business unit VPC |
+|Egress | 1024 - 65535 | Business unit VPC |
