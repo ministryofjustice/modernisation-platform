@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Pages
-        uses: actions/configure-pages@5992ce8fd557229bb0e98f78a89136a149cc9758 # v3.0.0
+        uses: actions/configure-pages@3c444c051bb5fc873069cfcc236eb93f78b5b0f5 # v3.0.1
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@20a4baa1095bad40ba7d6ca0d9abbc220b76603f # v1.2.3
