@@ -2,7 +2,7 @@ data "aws_organizations_organization" "root_account" {}
 
 locals {
   application_name       = "core-sandbox"
-  environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
+  environment_management     = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 
   environment   = trimprefix(terraform.workspace, "${var.networking[0].application}-")
   provider_name = "core-vpc-development"
