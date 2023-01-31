@@ -12,6 +12,7 @@ module "member-access" {
   role_name              = "MemberInfrastructureAccess"
 }
 
+# lots of SCA ignores and skips on this one as it is the main role allowing members to build most things in the platform
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "member-access" {
   statement {
@@ -20,6 +21,7 @@ data "aws_iam_policy_document" "member-access" {
     #checkov:skip=CKV_AWS_107
     #checkov:skip=CKV_AWS_109
     #checkov:skip=CKV_AWS_110
+    #checkov:skip=CKV_AWS_40
     effect = "Allow"
     actions = [
       "acm-pca:*",

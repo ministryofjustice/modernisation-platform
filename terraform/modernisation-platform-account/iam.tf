@@ -165,6 +165,7 @@ data "aws_iam_policy_document" "oidc-deny-specific-actions" {
   }
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "sso_customer_managed_policy_engineer" {
   statement {
     sid       = "SSOCustomerManagedPolicyEngineer"
