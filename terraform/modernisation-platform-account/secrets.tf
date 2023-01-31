@@ -21,6 +21,32 @@ resource "aws_secretsmanager_secret" "slack_webhook_url" {
   tags        = local.tags
 }
 
+# Github CI user PAT
+# Not adding a secret version as this url is generated in Github cannot be added programatically
+# Secret should be manually set in the console.
+# Tfsec ignore
+# - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
+#tfsec:ignore:AWS095
+resource "aws_secretsmanager_secret" "github_ci_user_pat" {
+  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
+  name        = "github_ci_user_pat"
+  description = "GitHub CI user PAT used for generated resources in GitHub via Terraform"
+  tags        = local.tags
+}
+
+# Github CI user password
+# Not adding a secret version as this url is generated in Github cannot be added programatically
+# Secret should be manually set in the console.
+# Tfsec ignore
+# - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
+#tfsec:ignore:AWS095
+resource "aws_secretsmanager_secret" "github_ci_user_password" {
+  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
+  name        = "github_ci_user_password"
+  description = "GitHub CI user password"
+  tags        = local.tags
+}
+
 # Account IDs to be excluded from auto-nuke
 # Tfsec ignore
 # - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
