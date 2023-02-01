@@ -1,11 +1,4 @@
 {
-    "mp_hmpps_development_to_hmpps": {
-      "action": "PASS",
-      "source_ip": "10.26.240/21",
-      "destination_ip": "10.83.2.29/32",
-      "destination_port": "3001",
-      "protocol": "TCP"
-    },
     "laa_development_to_mp_laa_development_http": {
         "action": "PASS",
         "source_ip": "10.202.0.0/20",
