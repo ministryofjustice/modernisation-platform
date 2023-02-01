@@ -1,0 +1,9 @@
+{
+  "laa_development_to_mp_laa_development_http": {
+    "action": "PASS",
+    "source_ip": "10.202.0.0/20",
+    "destination_ip": "10.26.56.0/21",
+    "destination_port": "80",
+    "protocol": "TCP"
+  }
+}

@@ -40,5 +40,12 @@
     "destination_ip": "0.0.0.0/0",
     "destination_port": "ANY",
     "protocol": "IP"
+  },
+  "laa_production_to_mp_laa_production_http": {
+    "action": "PASS",
+    "source_ip": "10.205.0.0/20",
+    "destination_ip": "10.27.64.0/21",
+    "destination_port": "80",
+    "protocol": "TCP"
   }
 }

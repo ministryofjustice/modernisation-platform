@@ -26,5 +26,12 @@
     "destination_ip": "10.26.8.0/21",
     "destination_port": "1521",
     "protocol": "TCP"
+  },
+  "laa_test_to_mp_laa_test_http": {
+    "action": "PASS",
+    "source_ip": "10.203.0.0/20",
+    "destination_ip": "10.26.96.0/21",
+    "destination_port": "80",
+    "protocol": "TCP"
   }
 }
