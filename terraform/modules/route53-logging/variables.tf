@@ -5,7 +5,7 @@
     # owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
 
 
-  variable "vpc_id" {
-  type = string
+variable "vpc_id" {
+  type        = string
   description = "VPC ID to turn on resolver logs"
 }
