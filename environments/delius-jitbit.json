@@ -6,7 +6,8 @@
       "access": [
         {
           "github_slug": "hmpps-migration",
-          "level": "sandbox"
+          "level": "sandbox",
+          "nuke": "exclude"
         }
       ]
     },
