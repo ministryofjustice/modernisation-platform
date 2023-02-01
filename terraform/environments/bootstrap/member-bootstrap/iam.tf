@@ -21,7 +21,7 @@ data "aws_iam_policy_document" "member-access" {
     #checkov:skip=CKV_AWS_107
     #checkov:skip=CKV_AWS_109
     #checkov:skip=CKV_AWS_110
-    #checkov:skip=CKV_AWS_40
+    #checkov:skip=CKV2_AWS_40
     effect = "Allow"
     actions = [
       "acm-pca:*",
