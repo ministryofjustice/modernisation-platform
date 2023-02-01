@@ -28,3 +28,7 @@ provider "aws" {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/ModernisationPlatformAccess"
   }
 }
+provider "aws" {
+  alias  = "eu-west-2"
+  region = "eu-west-2"
+}
