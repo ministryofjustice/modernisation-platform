@@ -15,4 +15,5 @@ jobs:
       - uses: ministryofjustice/github-actions/code-formatter@15729e214b8e626847cf4b4596c7635ddb6b1b0a # v10
         with:
             ignore-files: "README.md"
-            github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+        env:
+            GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}

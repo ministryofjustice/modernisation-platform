@@ -105,7 +105,7 @@ module "vpc" {
 module "vpc_nacls" {
   source           = "../../modules/vpc-nacls"
   for_each         = local.vpcs[terraform.workspace]
-  additional_cidrs      = each.value.options.additional_cidrs
+  additional_cidrs     = each.value.options.additional_cidrs
   additional_vpcs       = each.value.options.additional_vpcs
   tags             = local.tags
   tags_prefix      = each.key
