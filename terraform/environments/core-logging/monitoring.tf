@@ -4,12 +4,12 @@ module "core_monitoring" {
 }
 
 provider "aws" {
-  alias  = "us-east-1"
-  region = "us-east-1"
+  alias  = "eu-west-2"
+  region = "eu-west-2"
 }
 
 resource "aws_cloudwatch_log_group" "aws_route53_logs_com" {
-  provider = aws.us-east-1
+  provider = aws.eu-west-2
 
   name              = "aws_route53_zone.logs_com.name"
   retention_in_days = 365
