@@ -8,7 +8,7 @@ resource "aws_iam_user" "cicd_member_user" {
 resource "aws_iam_group" "cicd_member_group" {
   name = "cicd-member-group"
 }
-#Adding checkov skips into bellow but this will probably need to be looked at in a later story#
+
 #tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "policy" {
   #checkov:skip=CKV_AWS_289
