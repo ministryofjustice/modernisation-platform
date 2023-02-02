@@ -12,5 +12,5 @@ variable "vpc_id" {
 
 variable "tags_common" {
   description = "Ministry of Justice required tags"
-  type        = map(any)
+  type        = map(string)
 }
