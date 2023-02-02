@@ -3,7 +3,7 @@ module "core_monitoring" {
   pagerduty_integration_keys = local.pagerduty_integration_keys
 }
 resource "aws_cloudwatch_log_group" "aws_route53_logs_com" {
-  name              = "aws_route53_zone.logs_com.name"
+  name              = "aws_route53_logs"
   retention_in_days = 365
 }
 
