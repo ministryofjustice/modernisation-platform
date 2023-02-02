@@ -14,6 +14,7 @@ jobs:
       - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
         with:
             persist-credentials: false
+            token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
       - uses: ministryofjustice/github-actions/code-formatter@15729e214b8e626847cf4b4596c7635ddb6b1b0a # v10
         with:
             ignore-files: "README.md"
