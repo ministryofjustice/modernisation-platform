@@ -1,13 +1,3 @@
-# Get secret by name for environment management
-data "aws_secretsmanager_secret" "environment_management" {
-  name = "environment_management"
-}
-
-# Get latest secret value with ID from above. This secret stores account IDs for the Modernisation Platform sub-accounts
-data "aws_secretsmanager_secret_version" "environment_management" {
-  secret_id = data.aws_secretsmanager_secret.environment_management.id
-}
-
 # Slack channel modernisation-platform-notifications webhook url for sending notifications to slack
 # Not adding a secret version as this url is provided by slack and cannot be added programatically
 # Secret should be manually set in the console.
@@ -69,11 +59,11 @@ resource "aws_secretsmanager_secret" "nuke_account_ids" {
   tags        = local.tags
 }
 
-# Get the map of pagerduty integration keys
-data "aws_secretsmanager_secret" "pagerduty_integration_keys" {
-  name = "pagerduty_integration_keys"
-}
+# Reflection of what is in member accounts, needed here as well so that the same code works for collaborators
+resource "aws_ssm_parameter" "modernisation_platform_account_id" {
+  name  = "modernisation_platform_account_id"
+  type  = "SecureString"
+  value = data.aws_caller_identity.current.id
 
-data "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
-  secret_id = data.aws_secretsmanager_secret.pagerduty_integration_keys.id
+  tags = local.tags
 }

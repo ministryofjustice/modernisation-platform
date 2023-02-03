@@ -1,4 +1,10 @@
 # AWS providers
+
+# Default provider
+provider "aws" {
+  region = "eu-west-2"
+}
+
 provider "aws" {
   region = "ap-northeast-1"
   alias  = "modernisation-platform-ap-northeast-1"
