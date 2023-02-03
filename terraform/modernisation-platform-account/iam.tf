@@ -47,6 +47,7 @@ data "aws_iam_policy_document" "collaborator_local_plan" {
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-preproduction"]}:role/member-delegation-read-only",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-production"]}:role/member-delegation-read-only",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-sandbox"]}:role/member-delegation-read-only",
+      "arn:aws:iam::${data.aws_caller_identity.current.id}:role/modernisation-account-limited-read-member-access"
     ]
     condition {
       test     = "BoolIfExists"
@@ -67,6 +68,22 @@ data "aws_iam_policy_document" "collaborator_local_plan" {
       "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*",
       "arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/core-network-services/*",
       "arn:aws:s3:::modernisation-platform-terraform-state"
+    ]
+    condition {
+      test     = "BoolIfExists"
+      variable = "aws:MultiFactorAuthPresent"
+      values   = ["true"]
+    }
+  }
+
+  statement {
+    sid    = "ssmAccess"
+    effect = "Allow"
+    actions = [
+      "ssm:GetParameter"
+    ]
+    resources = [
+      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.id}:parameter/modernisation_platform_account_id"
     ]
     condition {
       test     = "BoolIfExists"
