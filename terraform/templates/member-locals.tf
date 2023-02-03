@@ -1,18 +1,3 @@
-# This data sources allows us to get the Modernisation Platform account information for use elsewhere
-# (when we want to assume a role in the MP, for instance)
-data "aws_organizations_organization" "root_account" {}
-
-# Get the environments file from the main repository
-data "http" "environments_file" {
-  url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/${local.application_name}.json"
-}
-
-# Retrieve information about the modernisation platform account
-data "aws_caller_identity" "modernisation_platform" {
-  provider = aws.modernisation-platform
-}
-
-
 locals {
 
   application_name = "$application_name"
