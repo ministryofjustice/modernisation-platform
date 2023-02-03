@@ -83,7 +83,7 @@ data "aws_iam_policy_document" "collaborator_local_plan" {
       "ssm:GetParameter"
     ]
     resources = [
-     "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.id}:parameter/modernisation_platform_account_id"
+      "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.id}:parameter/modernisation_platform_account_id"
     ]
     condition {
       test     = "BoolIfExists"
