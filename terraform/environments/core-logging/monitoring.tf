@@ -2,8 +2,8 @@ module "core_monitoring" {
   source                     = "../../modules/core-monitoring"
   pagerduty_integration_keys = local.pagerduty_integration_keys
 }
-resource "aws_cloudwatch_log_group" "aws_route53_logs_com" {
-  name              = "aws_route53_logs"
+resource "aws_cloudwatch_log_group" "modernisation-platform-r53-resolver-logs" {
+  name              = "modernisation-platform-r53-resolver-logs""
   retention_in_days = 365
 }
 
