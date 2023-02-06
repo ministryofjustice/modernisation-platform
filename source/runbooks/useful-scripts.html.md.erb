@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Useful scripts
-last_reviewed_on: 2022-07-20
+last_reviewed_on: 2023-02-06
 review_in: 6 months
 ---
 
@@ -59,4 +59,3 @@ The scripts prefixed `terraform-` are for running common `terraform` commands as
 |-|-|-|
 | [`internal/upgrade-terraform-providers.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/internal/upgrade-terraform-providers.sh) | This script looks for any directory that holds a `*.tf` file, unless it's a `.terraform` directory or is the `templates/` directory, and runs `terraform init -upgrade` within them. It's useful for bulk-updating all of the Terraform providers and modules in one go | ❌ |
 | [`internal/find-terraform-workspace.sh`](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/internal/find-terraform-workspace.sh) | This script finds terraform workspaces for an environment when it needs to be [deleted](deleting-an-environment.html) | ❌ |
-| [`internal/get-testing-ci-user-creds/get_testing_creds.go`](https://github.com/ministryofjustice/modernisation-platform/tree/main/scripts/internal/get-testing-ci-user-creds) | This script retrieves the testing-ci user credentials for use when running tests locally | ❌ |
