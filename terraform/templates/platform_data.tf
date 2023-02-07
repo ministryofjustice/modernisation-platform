@@ -158,13 +158,13 @@ data "aws_caller_identity" "modernisation_platform" {
 }
 
 # caller account information to instantiate aws.oidc provider
-data "aws_caller_identity" "oidc_session" {
-  provider = aws.oidc-session
+data "aws_caller_identity" "original_session" {
+  provider = aws.original-session
 }
 
 data "aws_iam_session_context" "whoami" {
-  provider = aws.oidc-session
-  arn      = data.aws_caller_identity.oidc_session.arn
+  provider = aws.original-session
+  arn      = data.aws_caller_identity.original_session.arn
 }
 
 # Get the environments file from the main repository

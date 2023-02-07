@@ -85,11 +85,11 @@ copy_templates() {
   for file in $templates; do
     filename=$(basename "$file")
 
-    if [ ${filename} != "member-locals.tf" ] && [ ${filename} != "member-providers.tf" ] && [ ${filename} != "data.tf" ]
+    if [ ${filename} != "platform_locals.tf" ] && [ ${filename} != "platform_providers.tf" ] && [ ${filename} != "platform_data.tf" ]
     then
       echo "Copying $file to $1, replacing application_name with $application_name"
       sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
-      if [ ${filename} == "backend.tf" ]
+      if [ ${filename} == "platform_backend.tf" ]
       then
         sed -i "s/environments\//environments\/accounts\//g" "$1/$filename"
       fi
