@@ -3,7 +3,9 @@ package main
 expected =
 {
   "accounts": [
+    "analytical-platform",
     "analytical-platform-data",
+    "analytical-platform-data-engineering",
     "analytical-platform-management",
     "apex",
     "bichard7",
