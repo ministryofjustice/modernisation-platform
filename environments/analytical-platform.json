@@ -11,10 +11,6 @@
         {
           "github_slug": "analytics-hq",
           "level": "view-only"
-        },
-        {
-          "github_slug": "data-engineering",
-          "level": "developer"
         }
       ]
     }
