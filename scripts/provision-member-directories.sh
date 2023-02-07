@@ -112,6 +112,12 @@ copy_templates() {
     fi
   done
 
+  # rename member data file to data.tf
+  mv $1/member_data.tf $1/data.tf
+  # rename member locals file to locals.tf
+  mv $1/member_data.tf $1/locals.tf
+  # rename member secrets file to secrets.tf
+  mv $1/member_data.tf $1/secrets.tf
   # copy application variable file
   cp core-repo/terraform/templates/application_variables.json $1
   # copy service runbook template file and rename it to README.md
