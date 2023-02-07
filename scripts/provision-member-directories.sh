@@ -153,10 +153,11 @@ EOL
 
   cat >> $codeowners_file << EOL
 **/providers.tf @ministryofjustice/modernisation-platform
-**/platform_backend.tf @ministryofjustice/modernisation-platform
+**/backend.tf @ministryofjustice/modernisation-platform
 **/subnet_share.tf @ministryofjustice/modernisation-platform
 **/networking.auto.tfvars.json @ministryofjustice/modernisation-platform
-/terraform/modules
+**/platform_*.tf @ministryofjustice/modernisation-platform
+/terraform/modules @ministryofjustice/modernisation-platform
 EOL
 
 }
