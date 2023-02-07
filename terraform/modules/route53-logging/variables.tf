@@ -14,3 +14,8 @@ variable "tags_common" {
   description = "Ministry of Justice required tags"
   type        = map(string)
 }
+
+variable "logging_destination_arn" {
+  type        = string
+  description = "Destination ARN for logs - eg, a CloudWatch Log Group ARN"
+}
