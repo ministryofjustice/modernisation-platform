@@ -2,7 +2,7 @@
 
 resource "aws_route53_resolver_query_log_config" "dns_logs" {
   name            = "dns_logs"
-  destination_arn = "arn:aws:logs:eu-west-2:${local.environment_management.account_ids[terraform.workspace]}:log-group:aws_route53_logs:*"
+  destination_arn = var.logging_destination_arn
 
   tags = var.tags_common
 }
