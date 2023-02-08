@@ -33,6 +33,7 @@ The rules files are broken down to environment and not account to make thing eas
 Rules are made up of a rule description an action which would ether be the DROP, PASS or ALERT action with would block, allow or monitor traffic based on the source ip or cidr range then a destination ip or cidr range, the port number is requird next finaily we have thr protocal used this can be ip or udp.
 Thes rules are formated in json format and a text example is shown bellow.
 
+```
 "<Descriptive name>": {
     "action": "<DROP,PASS, Alert ",
     " source_ip ": " cidr ip>",
@@ -40,6 +41,7 @@ Thes rules are formated in json format and a text example is shown bellow.
     "destination_port": "<port to allow but can also ne ANY>",
     "protocol": "<can be IP or UDP "
   }
+```
 
   To add a rules to the repo start by pulling down the latest copy of the repo using git pull then create a new branch and simply copy and paste the above code snippet in to the appropriate Json file for the environment you are dealing with changing the details for the description and other fields in the code snippet, to their appropriate values once this is complete save and commit your change then push do a git push to push it to the repo to create a pull request for the modernisation platform team to review.
 
