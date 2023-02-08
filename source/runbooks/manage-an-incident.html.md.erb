@@ -16,7 +16,7 @@ This document describes our incident handling process.
 We define an incident as an event which:
 
 * is unplanned, and
-* impacts end users, or
+* impacts end users or our direct users (developers and engineers), or
 * degrades user-facing services, or
 * increases risk to production services
 
@@ -76,6 +76,8 @@ The scribe is responsible for keeping a log of the incident, including:
 Entries in the log are automatically created from any Slack message pinned in the comms channel.
 
 Key actions should be captured in the log using the `@modernisation-platform-incident action [text]` command in the dedicated comms channel.
+
+This method should be used to record the scribe for an incident: `@modernisation-platform-incident action @slack-name-here is the scribe`
 
 ### 3.3 Communications Lead
 
