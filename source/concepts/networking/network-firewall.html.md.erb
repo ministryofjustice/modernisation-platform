@@ -7,7 +7,7 @@ review_in: 6 months
 
 # <%= current_page.data.title %>
 
-We currently have setup in our core-network account AWS Network Firewall to monitor and control network traffic on a layer 3 level for transit gateway connection and cross account vpcs to protect reources 
+We currently have setup in our core-network account AWS Network Firewall to monitor and control network traffic on a layer 3 level for transit gateway connection and cross account vpcs to protect reources
 such as EC2 instances, along with a general AWS resources
 
 ## What is an AWS network firewall
@@ -33,11 +33,11 @@ Rules are made up of a rule description an action which would ether be the DROP,
 Thes rules are formated in json format and a text example is shown bellow.
 
 "<Descriptive name>": {
-    "action": "<DROP,PASS, Alert",
-    "source_ip": "<source cidr/ip>",
-    "destination_ip": "<destination cidr/ip>",
+    "action": "<DROP,PASS, Alert ",
+    " source_ip ": " cidr ip>",
+    "destination_ip": "<destination cidr ip>",
     "destination_port": "<port to allow but can also ne ANY>",
-    "protocol": "<can be IP or UDP"
+    "protocol": "<can be IP or UDP "
   }
 
   To add a rules to the repo start by pulling down the latest copy of the repo using git pull then create a new branch and simply copy and paste the above code snippet in to the appropriate Json file for the environment you are dealing with changing the details for the description and other fields in the code snippet, to their appropriate values once this is complete save and commit your change then push do a git push to push it to the repo to create a pull request for the modernisation platform team to review.
