@@ -10,14 +10,14 @@ review_in: 6 months
 We currently have setup in our core-network account AWS Network Firewall to monitor and control network traffic on a layer 3 level for transit gateway connection and cross account vpcs to protect resources
 such as EC2 instances, along with a general AWS resources
 
-## What is an AWS network firewall
+### What is an AWS network firewall
 
-To learn more about AWS firewall please follow the link bellow
+To learn more about AWS firewall please follow the links bellow
 
-[AWS Firewall](https://aws.amazon.com/network-firewall/features/)
-[AWS Firewall Training](https://www.youtube.com/watch?v=WNFknf9zyZg)
+- [AWS Firewall](https://aws.amazon.com/network-firewall/features/)
+- [AWS Firewall Training](https://www.youtube.com/watch?v=WNFknf9zyZg)
 
-## Amending Rules
+### Amending Rules
 
 Rules can be amended by creating a pull request against the modernisation-platform repo and amending one of the following four file names from the core-network-services in the terrafrom environments folder.
 
@@ -45,7 +45,7 @@ Thes rules are formated in json format and a text example is shown bellow.
 
   To add a rules to the repo start by pulling down the latest copy of the repo using git pull then create a new branch and simply copy and paste the above code snippet in to the appropriate Json file for the environment you are dealing with changing the details for the description and other fields in the code snippet, to their appropriate values once this is complete save and commit your change then push do a git push to push it to the repo to create a pull request for the modernisation platform team to review.
 
-## Example
+### Example
 
 Below is an example of PR of how add rules. In this example there is one additional rule to be added for the network firewall.
 
