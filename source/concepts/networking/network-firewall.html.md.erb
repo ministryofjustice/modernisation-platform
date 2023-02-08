@@ -28,7 +28,7 @@ Rules can be amended by creating a pull request against the modernisation-platfo
 
 The rule files are broken down to environment and not account to make thing easier to keep track of, see below our CIDR ranges to help with forming new rules.
 
-[CIDR Ranges](https://github.com/ministryofjustice/modernisation-platform/blob/main/cidr-allocation.md)
+- [CIDR Ranges](https://github.com/ministryofjustice/modernisation-platform/blob/main/cidr-allocation.md)
 
 Rules are made up of a rule description and an action which would either be the DROP, PASS or ALERT, which would block, allow or monitor traffic based on the source IP or CIDR range then a destination IP or CIDR range, the port number is required next finally the protocol used. This can be IP or UPD.
 Thes rules are formated in json format and a text example is shown bellow.
@@ -43,10 +43,14 @@ Thes rules are formated in json format and a text example is shown bellow.
   }
 ```
 
-  To add a rules to the repo start by pulling down the latest copy of the repo using git pull then create a new branch and simply copy and paste the above code snippet in to the appropriate Json file for the environment you are dealing with changing the details for the description and other fields in the code snippet, to their appropriate values once this is complete save and commit your change then push do a git push to push it to the repo to create a pull request for the modernisation platform team to review.
+  To add a rule to the AWS network firewall start by pulling down the latest copy of the repo using git pull then create a new branch, then copy and paste the above code snippet in to the appropriate Json file for the environment you are dealing with. 
+  
+  Changing the details for the description and other fields in the code snippet to their appropriate values. 
+  
+  Once this is complete save and commit your change and then do a git push to the repo to create a pull request for the modernisation platform team to review.
 
 ### Example
 
 Below is an example of PR of how add rules. In this example there is one additional rule to be added for the network firewall.
 
-[Example PR](https://github.com/ministryofjustice/modernisation-platform/pull/3076/files#diff-f75678f3ed0ef5e79043a3eddc8fb56c2bea2471c91f5e8421a441ecc91a0e1c)
+- [Example PR](https://github.com/ministryofjustice/modernisation-platform/pull/3076/files#diff-f75678f3ed0ef5e79043a3eddc8fb56c2bea2471c91f5e8421a441ecc91a0e1c)
