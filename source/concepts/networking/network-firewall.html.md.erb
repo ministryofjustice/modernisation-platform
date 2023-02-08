@@ -26,7 +26,7 @@ Rules can be amended by creating a pull request against the modernisation-platfo
 - [preproduction_rules.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/preproduction_rules.json)
 - [production_rules.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/production_rules.json)
 
-The rule files are broken down to environment and not account to make thing easier to keep track of, see below our CIDR ranges to help with forming new rules.
+The rules files are broken down by environment and not account to make it easier to keep track of changes, see below our CIDR ranges to help with forming new rules.
 
 - [CIDR Ranges](https://github.com/ministryofjustice/modernisation-platform/blob/main/cidr-allocation.md)
 
@@ -35,7 +35,7 @@ Thes rules are formated in json format and a text example is shown bellow.
 
 ```
 "<Descriptive name>": {
-    "action": "<DROP,PASS, Alert ",
+    "action": "<DROP,PASS, ALERT",
     " source_ip ": " cidr ip>",
     "destination_ip": "<destination cidr ip>",
     "destination_port": "<port to allow but can also ne ANY>",
