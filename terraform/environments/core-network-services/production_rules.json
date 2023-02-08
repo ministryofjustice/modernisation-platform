@@ -47,12 +47,5 @@
     "destination_ip": "10.27.64.0/21",
     "destination_port": "80",
     "protocol": "TCP"
-  },
-  "default_open": {
-    "action": "DROP",
-    "source_ip": "0.0.0.0/0",
-    "destination_ip": "0.0.0.0/0",
-    "destination_port": "ANY",
-    "protocol": "IP"
   }
 }
