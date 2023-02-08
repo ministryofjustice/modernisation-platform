@@ -119,7 +119,7 @@ module "vpc_nacls" {
 
 module "route_53_resolver_logs" {
   source                  = "../../modules/r53-resolver-logs"
-  for_each                = toset([for key, value in module.vpc : value["vpc_id"]])
+  for_each                = { for key, value in module.vpc : key => value["vpc_id"] }
   logging_destination_arn = data.aws_cloudwatch_log_group.route_53_resolver_logs.arn
   tags_common             = local.tags
   vpc_id                  = each.value
