@@ -12,7 +12,7 @@ such as EC2 instances, along with a general AWS resources
 
 ## What is an AWS network firewall
 
-To learnmore about AWS firewall please follow the link bellow
+To learn more about AWS firewall please follow the link bellow
 
 [AWS Firewall](https://aws.amazon.com/network-firewall/features/)
 [AWS Firewall Training](https://www.youtube.com/watch?v=WNFknf9zyZg)
@@ -26,11 +26,11 @@ Rules can be amended by creating a pull request against the modernisation-platfo
 - [preproduction_rules.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/preproduction_rules.json)
 - [production_rules.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/production_rules.json)
 
-The rules files are broken down to environment and not account to make thing easier keep track of, to this end i have included a link to the MP cidr repo to help with forming new rules.
+The rule files are broken down to environment and not account to make thing easier to keep track of, see below our CIDR ranges to help with forming new rules.
 
 [CIDR Ranges](https://github.com/ministryofjustice/modernisation-platform/blob/main/cidr-allocation.md)
 
-Rules are made up of a rule description an action which would ether be the DROP, PASS or ALERT action with would block, allow or monitor traffic based on the source ip or cidr range then a destination ip or cidr range, the port number is requird next finaily we have thr protocal used this can be ip or udp.
+Rules are made up of a rule description and an action which would either be the DROP, PASS or ALERT, which would block, allow or monitor traffic based on the source IP or CIDR range then a destination IP or CIDR range, the port number is required next finally the protocol used. This can be IP or UPD.
 Thes rules are formated in json format and a text example is shown bellow.
 
 ```
@@ -47,6 +47,6 @@ Thes rules are formated in json format and a text example is shown bellow.
 
 ## Example
 
-Below is an example of PR of how add rules. In this example there is 1 additional rule to be added for the network firewall.
+Below is an example of PR of how add rules. In this example there is one additional rule to be added for the network firewall.
 
 [Example PR](https://github.com/ministryofjustice/modernisation-platform/pull/3076/files#diff-f75678f3ed0ef5e79043a3eddc8fb56c2bea2471c91f5e8421a441ecc91a0e1c)
