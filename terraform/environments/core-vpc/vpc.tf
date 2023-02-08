@@ -14,6 +14,11 @@ data "aws_route53_zone" "private" {
   private_zone = true
 }
 
+data "aws_cloudwatch_log_group" "route_53_resolver_logs" {
+  provider = aws.core-logging
+  name     = "modernisation-platform-r53-resolver-logs"
+}
+
 
 locals {
 
@@ -110,6 +115,14 @@ module "vpc_nacls" {
   tags             = local.tags
   tags_prefix      = each.key
   vpc_name         = each.key
+}
+
+module "route_53_resolver_logs" {
+  source                  = "../../modules/r53-resolver-logs"
+  for_each                = toset([for key, value in module.vpc : value["vpc_id"]])
+  logging_destination_arn = data.aws_cloudwatch_log_group.route_53_resolver_logs.arn
+  tags_common             = local.tags
+  vpc_id                  = each.value
 }
 
 locals {
