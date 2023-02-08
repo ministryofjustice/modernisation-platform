@@ -95,7 +95,7 @@ copy_templates() {
   for file in $templates; do
     filename=$(basename "$file")
 
-    if [ ${filename} != "subnet_share.tf" ] && [ ${filename} != "providers.tf" ] && [ ${filename} != "locals.tf" ]
+    if [ ${filename} != "subnet_share.tf" ] && [ ${filename} != "providers.tf" ] && [ ${filename} != "locals.tf" ] && [ ${filename} != "data.tf" ]
     then
       echo "Copying $file to $1, replacing application_name with $application_name"
       sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
@@ -157,7 +157,7 @@ EOL
 **/subnet_share.tf @ministryofjustice/modernisation-platform
 **/networking.auto.tfvars.json @ministryofjustice/modernisation-platform
 **/platform_*.tf @ministryofjustice/modernisation-platform
-/terraform/modules @ministryofjustice/modernisation-platform
+/terraform/modules
 EOL
 
 }

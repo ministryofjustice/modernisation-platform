@@ -8,7 +8,6 @@ terraform {
     encrypt              = true
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
-    workspace_key_prefix = "environments/accounts/example" # This will store the object as environments/accounts/example/${workspace}/terraform.tfstate
-    dynamodb_table       = "modernisation-platform-terraform-state-lock"
+    workspace_key_prefix = "environments/analytical-platform-data-engineering" # This will store the object as environments/analytical-platform-data-engineering/${workspace}/terraform.tfstate
   }
 }
