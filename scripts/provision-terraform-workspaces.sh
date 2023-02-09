@@ -56,17 +56,17 @@ create_tmp_terraform_files() {
   mkdir "${git_dir}/tmp"
 
   # Copy files to emulation folder
-  sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/backend.tf" > "${git_dir}/tmp/backend.tf"
+  sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/platform_backend.tf" > "${git_dir}/tmp/platform_backend.tf"
   sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/locals.tf" > "${git_dir}/tmp/locals.tf"
   cp "${git_dir}/terraform/templates/providers.tf" "${git_dir}/tmp/providers.tf"
   cp "${git_dir}/terraform/templates/platform_secrets.tf" "${git_dir}/tmp/platform_secrets.tf"
-  cp "${git_dir}/terraform/templates/versions.tf" "${git_dir}/tmp/versions.tf"
+  cp "${git_dir}/terraform/templates/platform_versions.tf" "${git_dir}/tmp/platform_versions.tf"
   if [ `uname` = "Linux" ]
   then
-    sed -i "s/environments\//environments\/accounts\//g" "${git_dir}/tmp/backend.tf"
+    sed -i "s/environments\//environments\/accounts\//g" "${git_dir}/tmp/platform_backend.tf"
   else
     # This must be a Mac
-    sed -i '' "s/environments\//environments\/accounts\//g" "${git_dir}/tmp/backend.tf"
+    sed -i '' "s/environments\//environments\/accounts\//g" "${git_dir}/tmp/platform_backend.tf"
   fi
 }
 
@@ -108,10 +108,10 @@ do
     # substitute backend state file location from accounts to members
     if [ `uname` = "Linux" ]
     then
-      sed -i "s/environments\/accounts\//environments\/members\//g" "${git_dir}/tmp/backend.tf"
+      sed -i "s/environments\/accounts\//environments\/members\//g" "${git_dir}/tmp/platform_backend.tf"
     else
       # This must be a Mac
-      sed -i '' "s/environments\/accounts\//environments\/members\//g" "${git_dir}/tmp/backend.tf"
+      sed -i '' "s/environments\/accounts\//environments\/members\//g" "${git_dir}/tmp/platform_backend.tf"
     fi
 
     ACCOUNT_TYPE=$(jq -r '."account-type"' ${JSON_FILE})

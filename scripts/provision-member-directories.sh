@@ -95,11 +95,11 @@ copy_templates() {
   for file in $templates; do
     filename=$(basename "$file")
 
-    if [ ${filename} != "subnet_share.tf" ] && [ ${filename} != "providers.tf" ] && [ ${filename} != "locals.tf" ]
+    if [ ${filename} != "subnet_share.tf" ] && [ ${filename} != "providers.tf" ] && [ ${filename} != "locals.tf" ] && [ ${filename} != "data.tf" ]
     then
       echo "Copying $file to $1, replacing application_name with $application_name"
       sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
-      if [ ${filename} == "backend.tf" ]
+      if [ ${filename} == "platform_backend.tf" ]
       then
         if [ `uname` = "Linux" ]
         then
@@ -112,15 +112,16 @@ copy_templates() {
     fi
   done
 
-  # Rename member providers file
-  mv $1/member-providers.tf $1/providers.tf
-    # Rename member locals file
-  mv $1/member-locals.tf $1/locals.tf
+  # rename member data file to data.tf
+  mv $1/member_data.tf $1/data.tf
+  # rename member locals file to locals.tf
+  mv $1/member_data.tf $1/locals.tf
+  # rename member secrets file to secrets.tf
+  mv $1/member_data.tf $1/secrets.tf
   # copy application variable file
   cp core-repo/terraform/templates/application_variables.json $1
-  # copy template file
+  # copy service runbook template file and rename it to README.md
   cp core-repo/terraform/templates/service_runbook_template.md $1/README.md
-  # Rename template file to README.md
 
   echo "Finished copying templates."
 }
@@ -155,6 +156,7 @@ EOL
 **/backend.tf @ministryofjustice/modernisation-platform
 **/subnet_share.tf @ministryofjustice/modernisation-platform
 **/networking.auto.tfvars.json @ministryofjustice/modernisation-platform
+**/platform_*.tf @ministryofjustice/modernisation-platform
 /terraform/modules
 EOL
 
