@@ -16,7 +16,8 @@ allowed_access := [
   "developer",
   "sandbox",
   "administrator",
-  "migration"
+  "migration",
+  "database-mgmt"
 ]
 
 allowed_nuke := [

@@ -53,6 +53,13 @@ data "aws_ssoadmin_permission_set" "migration" {
   name         = "modernisation-platform-migration"
 }
 
+data "aws_ssoadmin_permission_set" "database-mgmt" {
+  provider = aws.sso-management
+
+  instance_arn = local.sso_instance_arn
+  name         = "modernisation-platform-database-mgmt"
+}
+
 # Get Identity Store groups
 data "aws_identitystore_group" "platform_admin" {
   provider = aws.sso-management
@@ -221,6 +228,29 @@ resource "aws_ssoadmin_account_assignment" "administator" {
 
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.aws_ssoadmin_permission_set.administrator.arn
+
+  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_type = "GROUP"
+
+  target_id   = local.environment_management.account_ids[terraform.workspace]
+  target_type = "AWS_ACCOUNT"
+}
+
+resource "aws_ssoadmin_account_assignment" "database-mgmt" {
+
+  for_each = {
+
+    for sso_assignment in local.sso_data[local.env_name][*] :
+
+    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+
+    if(sso_assignment.level == "database-mgmt")
+  }
+
+  provider = aws.sso-management
+
+  instance_arn       = local.sso_instance_arn
+  permission_set_arn = data.aws_ssoadmin_permission_set.migration.arn
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"

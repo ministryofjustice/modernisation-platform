@@ -368,16 +368,16 @@ data "aws_iam_policy_document" "migration_additional" {
 
 
 # developer policy - member SSO and collaborators
-resource "aws_iam_policy" "database_mgmt" {
+resource "aws_iam_policy" "database-mgmt" {
   provider = aws.workspace
-  name     = "developer_policy"
+  name     = "database_mgmt_policy"
   path     = "/"
-  policy   = data.aws_iam_policy_document.developer_additional.json
+  policy   = data.aws_iam_policy_document.database-mgmt-document.json
 }
 
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
-data "aws_iam_policy_document" "database_mgmt_document" {
+data "aws_iam_policy_document" "database-mgmt-document" {
   #checkov:skip=CKV_AWS_108
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_111
