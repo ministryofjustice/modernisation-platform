@@ -13,6 +13,19 @@
           "level": "view-only"
         }
       ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "analytical-platform",
+          "level": "administrator"
+        },
+        {
+          "github_slug": "analytics-hq",
+          "level": "view-only"
+        }
+      ]
     }
   ],
   "tags": {
