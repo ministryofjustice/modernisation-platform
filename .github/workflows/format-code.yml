@@ -44,7 +44,7 @@ jobs:
         id: ml
         # You can override MegaLinter flavor used to have faster performances
         # More info at https://megalinter.io/flavors/
-        uses: oxsecurity/megalinter/flavors/terraform@8fd433c675d27ceca5a61ace53177c1bbfbf7f49
+        uses: oxsecurity/megalinter/flavors/terraform@8fd433c675d27ceca5a61ace53177c1bbfbf7f49 #v6.18.0
         env:
           # All available variables are described in documentation
           # https://megalinter.io/configuration/#shared-variables
