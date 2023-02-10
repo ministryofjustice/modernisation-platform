@@ -8,11 +8,6 @@ resource "aws_cloudwatch_log_group" "modernisation-platform-r53-resolver-logs" {
   retention_in_days = 365
 }
 
-provider "aws" {
-  alias  = "eu-west-2"
-  region = "eu-west-2"
-}
-
 resource "aws_cloudwatch_log_resource_policy" "route53-query-logging-policy" {
   policy_document = data.aws_iam_policy_document.route53-query-logging-policy.json
   policy_name     = "route53-query-logging-policy"
