@@ -123,12 +123,12 @@ module "collaborator_database_mgmt_role" {
   ]
 
   create_role       = true
-  role_name         = "database-mgmt"
+  role_name         = "instance-management"
   role_requires_mfa = true
 
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
-    aws_iam_policy.database-mgmt.arn,
+    aws_iam_policy.instance-management.arn,
   ]
   number_of_custom_role_policy_arns = 2
 }

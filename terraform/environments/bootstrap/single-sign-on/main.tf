@@ -53,11 +53,11 @@ data "aws_ssoadmin_permission_set" "migration" {
   name         = "modernisation-platform-migration"
 }
 
-data "aws_ssoadmin_permission_set" "database-mgmt" {
+data "aws_ssoadmin_permission_set" "instance-management" {
   provider = aws.sso-management
 
   instance_arn = local.sso_instance_arn
-  name         = "modernisation-platform-database-mgmt"
+  name         = "mp-instance-management"
 }
 
 # Get Identity Store groups
@@ -236,7 +236,7 @@ resource "aws_ssoadmin_account_assignment" "administator" {
   target_type = "AWS_ACCOUNT"
 }
 
-resource "aws_ssoadmin_account_assignment" "database-mgmt" {
+resource "aws_ssoadmin_account_assignment" "instance-management" {
 
   for_each = {
 
@@ -244,7 +244,7 @@ resource "aws_ssoadmin_account_assignment" "database-mgmt" {
 
     "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
 
-    if(sso_assignment.level == "database-mgmt")
+    if(sso_assignment.level == "instance-management")
   }
 
   provider = aws.sso-management

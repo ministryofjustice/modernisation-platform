@@ -368,16 +368,16 @@ data "aws_iam_policy_document" "migration_additional" {
 
 
 # developer policy - member SSO and collaborators
-resource "aws_iam_policy" "database-mgmt" {
+resource "aws_iam_policy" "instance-management" {
   provider = aws.workspace
   name     = "database_mgmt_policy"
   path     = "/"
-  policy   = data.aws_iam_policy_document.database-mgmt-document.json
+  policy   = data.aws_iam_policy_document.instance-management-document.json
 }
 
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
-data "aws_iam_policy_document" "database-mgmt-document" {
+data "aws_iam_policy_document" "instance-management-document" {
   #checkov:skip=CKV_AWS_108
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_111
@@ -387,16 +387,10 @@ data "aws_iam_policy_document" "database-mgmt-document" {
     sid    = "databaseAllow"
     effect = "Allow"
     actions = [
-      "acm:ImportCertificate",
-      "autoscaling:UpdateAutoScalingGroup",
       "aws-marketplace:ViewSubscriptions",
-      "cloudwatch:PutDashboard",
-      "cloudwatch:ListMetrics",
-      "cloudwatch:DeleteDashboards",
-      "codebuild:ImportSourceCredentials",
-      "codebuild:PersistOAuthToken",
       "ds:*Tags*",
       "ds:*Snapshot*",
+      "ds:ResetUserPassword",
       "ec2:StartInstances",
       "ec2:StopInstances",
       "ec2:RebootInstances",
@@ -411,32 +405,18 @@ data "aws_iam_policy_document" "database-mgmt-document" {
       "ec2:DescribeVolumes",
       "ec2:DescribeInstances",
       "ec2:DescribeInstanceTypes",
-      "ecs:StartTask",
-      "ecs:StopTask",
       "identitystore:DescribeUser",
       "kms:Decrypt*",
       "kms:Encrypt",
       "kms:ReEncrypt*",
       "kms:GenerateDataKey*",
       "kms:DescribeKey",
-      "lambda:InvokeFunction",
-      "lambda:UpdateFunctionCode",
       "rds:CopyDBSnapshot",
       "rds:CopyDBClusterSnapshot",
       "rds:CreateDBSnapshot",
       "rds:CreateDBClusterSnapshot",
       "rds:RebootDB*",
       "rhelkb:GetRhelURL",
-      "s3:PutObject",
-      "s3:DeleteObject",
-      "secretsmanager:GetResourcePolicy",
-      "secretsmanager:GetSecretValue",
-      "secretsmanager:DescribeSecret",
-      "secretsmanager:ListSecretVersionIds",
-      "secretsmanager:PutSecretValue",
-      "secretsmanager:UpdateSecret",
-      "secretsmanager:RestoreSecret",
-      "secretsmanager:RotateSecret",
       "ssm:*",
       "ssm-guiconnect:*",
       "sso:ListDirectoryAssociations",
@@ -461,20 +441,6 @@ data "aws_iam_policy_document" "database-mgmt-document" {
       "lambda:InvokeFunction"
     ]
     resources = ["arn:aws:lambda:*:*:function:Automation*"]
-  }
-
-  statement {
-    sid    = "iamOnCicdMemberAllow"
-    effect = "Allow"
-    actions = [
-      "iam:CreateAccessKey",
-      "iam:DeleteAccessKey",
-      "iam:GetAccessKeyLastUsed",
-      "iam:GetUser",
-      "iam:ListAccessKeys",
-      "iam:UpdateAccessKey"
-    ]
-    resources = ["arn:aws:iam::*:user/cicd-member-user"]
   }
 
   statement {
