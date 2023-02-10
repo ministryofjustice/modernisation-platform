@@ -1,3 +1,8 @@
+provider "aws" {
+  alias  = "us-east-1"
+  region = "us-east-1"
+}
+
 resource "aws_cloudwatch_log_group" "modernisation-platform-r53-resolver-logs" {
   name              = "modernisation-platform-r53-resolver-logs"
   retention_in_days = 365
