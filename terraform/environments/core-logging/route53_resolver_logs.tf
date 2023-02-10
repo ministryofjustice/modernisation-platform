@@ -15,10 +15,10 @@ data "aws_iam_policy_document" "route53-query-logging-policy" {
       "logs:PutLogEvents",
     ]
 
-    resources = ["arn:aws:logs:*:*:log-group:/aws/route53/*"]
+    resources = ["arn:aws:logs:*:*:log-group:modernisation-platform-r53-resolver-logs"]
 
     principals {
-      identifiers = ["route53.amazonaws.com"]
+      identifiers = ["route53resolver.amazonaws.com"]
       type        = "Service"
     }
   }
