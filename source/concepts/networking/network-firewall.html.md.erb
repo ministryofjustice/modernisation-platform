@@ -30,16 +30,17 @@ The rules files are broken down by environment and not account to make it easier
 
 - [CIDR Ranges](https://github.com/ministryofjustice/modernisation-platform/blob/main/cidr-allocation.md)
 
-Rules are made up of a rule description and an action which would either be the DROP, PASS or ALERT, which would block, allow or monitor traffic based on the source IP or CIDR range then a destination IP or CIDR range, the port number is required next finally the protocol used. This can be IP or UPD.
-Thes rules are formated in json format and a text example is shown bellow.
+Rules are made up of a rule description and an action which would either be the DROP, PASS or ALERT, which would block, allow or monitor traffic based on the source IP or CIDR range then a destination IP or CIDR range, the port number is required next finally the protocol used.
+
+These rules are formated in json format and a text example is shown below.
 
 ```
-"<Descriptive name>": {
-    "action": "<DROP,PASS, ALERT>",
-    " source_ip ": " <cidr ip>",
-    "destination_ip": "<destination cidr ip>",
-    "destination_port": "<port to allow but can also ne ANY>",
-    "protocol": "<can be IP or UDP> "
+"example_rule": {
+    "action": "PASS",
+    "source_ip": "10.200.0.0/19",
+    "destination_ip": "10.26.0.0/19",
+    "destination_port": "1621",
+    "protocol": "TCP"
   }
 ```
 
@@ -51,6 +52,9 @@ Thes rules are formated in json format and a text example is shown bellow.
 
 ### Example
 
-Below is an example of PR of how add rules. In this example there is one additional rule to be added for the network firewall.
+Below is a link to the HashiCorp Terraform site for the Terraform resource that describes the options that can be used with the resource.
 
+Also there is a link to an example of PR of how to add rules, in this example there is one additional rule that is added for the network firewall.
+
+- [Terraform Code](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/networkfirewall_rule_group#protocol)
 - [Example PR](https://github.com/ministryofjustice/modernisation-platform/pull/3076/files#diff-f75678f3ed0ef5e79043a3eddc8fb56c2bea2471c91f5e8421a441ecc91a0e1c)
