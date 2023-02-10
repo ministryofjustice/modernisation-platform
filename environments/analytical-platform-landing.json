@@ -2,19 +2,6 @@
   "account-type": "member-unrestricted",
   "environments": [
     {
-      "name": "development",
-      "access": [
-        {
-          "github_slug": "analytical-platform",
-          "level": "administrator"
-        },
-        {
-          "github_slug": "analytics-hq",
-          "level": "view-only"
-        }
-      ]
-    },
-    {
       "name": "production",
       "access": [
         {
@@ -23,13 +10,13 @@
         },
         {
           "github_slug": "analytics-hq",
-          "level": "view-only"
+          "level": "administrator"
         }
       ]
     }
   ],
   "tags": {
-    "application": "analytical-platform-data",
+    "application": "analytical-platform-landing",
     "business-unit": "Platforms",
     "owner": "Analytical Platform: analytical_platform@digital.justice.gov.uk"
   }

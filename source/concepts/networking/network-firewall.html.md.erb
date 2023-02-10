@@ -1,0 +1,60 @@
+---
+owner_slack: "#modernisation-platform"
+title: AWS Network Firewall
+last_reviewed_on: 2023-02-08
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+We currently have setup in our core-network account AWS Network Firewall to monitor and control network traffic on a layer 3-7 level for transit gateway connections and cross account VPCs to protect resources
+such as EC2 instances, along with general AWS resources
+
+### What is an AWS network firewall
+
+To learn more about AWS firewall please follow the links bellow
+
+- [AWS Firewall](https://aws.amazon.com/network-firewall/features/)
+- [AWS Firewall Training](https://www.youtube.com/watch?v=WNFknf9zyZg)
+
+### Amending Rules
+
+Rules can be amended by creating a pull request against the modernisation-platform repo and amending one of the following four file names in the terraform/environments/core-network-services directory.
+
+- [development_rules.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/development_rules.json)
+- [test_rules.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/test_rules.json)
+- [preproduction_rules.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/preproduction_rules.json)
+- [production_rules.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/production_rules.json)
+
+The rules files are broken down by environment and not account to make it easier to keep track of changes, see below our CIDR ranges to help with forming new rules.
+
+- [CIDR Ranges](https://github.com/ministryofjustice/modernisation-platform/blob/main/cidr-allocation.md)
+
+Rules are made up of a rule description and an action which would either be the DROP, PASS or ALERT, which would block, allow or monitor traffic based on the source IP or CIDR range then a destination IP or CIDR range, the port number is required next finally the protocol used.
+
+These rules are formated in json format and a text example is shown below.
+
+```
+"example_rule": {
+    "action": "PASS",
+    "source_ip": "10.200.0.0/19",
+    "destination_ip": "10.26.0.0/19",
+    "destination_port": "1621",
+    "protocol": "TCP"
+  }
+```
+
+  To add a rule to the AWS network firewall start by cloning the repository then create a new branch, then copy and paste the above code snippet in to the appropriate json file for the environment you are dealing with.
+
+  Change the details for the description and other fields in the code snippet to their appropriate values.
+
+  Once this is complete commit your change and create a pull request for the modernisation platform team to review.
+
+### Example
+
+Below is a link to the HashiCorp Terraform documentation for the Terraform resource that describes the options that can be used with the resource.
+
+Also there is a link to an example of PR of how to add rules, in this example there is one additional rule that is added for the network firewall.
+
+- [Terraform Code](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/networkfirewall_rule_group#protocol)
+- [Example PR](https://github.com/ministryofjustice/modernisation-platform/pull/3076/files#diff-f75678f3ed0ef5e79043a3eddc8fb56c2bea2471c91f5e8421a441ecc91a0e1c)
