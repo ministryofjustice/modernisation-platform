@@ -111,7 +111,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "codebuild:PersistOAuthToken",
       "ds:*Tags*",
       "ds:*Snapshot*",
-      "ec2:StartInstances",
+      "ec2:Start-s",
       "ec2:StopInstances",
       "ec2:RebootInstances",
       "ec2:ModifyImageAttribute",
@@ -367,7 +367,7 @@ data "aws_iam_policy_document" "migration_additional" {
 }
 
 
-# developer policy - member SSO and collaborators
+# instance management - member SSO and collaborators
 resource "aws_iam_policy" "instance-management" {
   provider = aws.workspace
   name     = "database_mgmt_policy"
