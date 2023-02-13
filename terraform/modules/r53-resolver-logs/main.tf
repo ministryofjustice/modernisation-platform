@@ -1,5 +1,3 @@
-data "aws_caller_identity" "current" {}
-
 resource "aws_route53_resolver_query_log_config" "main" {
   name            = format("%s-r53-resolver-logs", var.vpc_name)
   destination_arn = aws_cloudwatch_log_group.main.arn
