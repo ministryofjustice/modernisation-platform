@@ -21,15 +21,6 @@ provider "aws" {
   }
 }
 
-# AWS provider for core-logging, where consolidated CloudWatch logs live
-provider "aws" {
-  alias  = "core-logging"
-  region = "eu-west-2"
-  assume_role {
-    role_arn = "arn:aws:iam::${local.environment_management.account_ids["core-logging-production"]}:role/ModernisationPlatformAccess"
-  }
-}
-
 provider "aws" {
   alias  = "aws-us-east-1"
   region = "us-east-1"
