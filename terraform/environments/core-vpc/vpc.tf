@@ -112,10 +112,10 @@ module "vpc_nacls" {
 }
 
 module "route_53_resolver_logs" {
-  source                  = "../../modules/r53-resolver-logs"
-  for_each                = { for key, value in module.vpc : key => value["vpc_id"] }
-  tags_common             = local.tags
-  vpc_id                  = each.value
+  source      = "../../modules/r53-resolver-logs"
+  for_each    = { for key, value in module.vpc : key => value["vpc_id"] }
+  tags_common = local.tags
+  vpc_id      = each.value
 }
 
 locals {
