@@ -116,6 +116,7 @@ module "route_53_resolver_logs" {
   for_each    = { for key, value in module.vpc : key => value["vpc_id"] }
   tags_common = local.tags
   vpc_id      = each.value
+  vpc_name    = each.key
 }
 
 locals {
