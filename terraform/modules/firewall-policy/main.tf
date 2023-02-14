@@ -49,6 +49,21 @@ resource "aws_networkfirewall_rule_group" "stateful" {
   }
 }
 
+resource "aws_networkfirewall_rule_group" "fqdn-stateful" {
+  capacity = 100
+  name     = replace(title("FQDN${var.fw_rulegroup_name}"), "/-|_/", "")
+  type     = "STATEFUL"
+  rule_group {
+    rules_source {
+      rules_source_list {
+        generated_rules_type = "DENYLIST"
+        target_types         = ["HTTP_HOST"]
+        targets              = var.list_of_allowed_domain
+      }
+  }
+}
+}
+
 resource "aws_networkfirewall_logging_configuration" "main" {
   firewall_arn = var.fw_arn
   logging_configuration {
