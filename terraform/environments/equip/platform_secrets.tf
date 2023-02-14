@@ -1,4 +1,9 @@
-# Get secret by name for environment management
+# Get modernisation account id from ssm parameter
+data "aws_ssm_parameter" "modernisation_platform_account_id" {
+  name = "modernisation_platform_account_id"
+}
+
+# Get secret by arn for environment management
 data "aws_secretsmanager_secret" "environment_management" {
   provider = aws.modernisation-platform
   name     = "environment_management"
@@ -8,15 +13,4 @@ data "aws_secretsmanager_secret" "environment_management" {
 data "aws_secretsmanager_secret_version" "environment_management" {
   provider  = aws.modernisation-platform
   secret_id = data.aws_secretsmanager_secret.environment_management.id
-}
-
-# Get the map of pagerduty integration keys
-data "aws_secretsmanager_secret" "pagerduty_integration_keys" {
-  provider = aws.modernisation-platform
-  name     = "pagerduty_integration_keys"
-}
-
-data "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
-  provider  = aws.modernisation-platform
-  secret_id = data.aws_secretsmanager_secret.pagerduty_integration_keys.id
 }
