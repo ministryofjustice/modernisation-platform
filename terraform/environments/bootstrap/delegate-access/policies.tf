@@ -111,7 +111,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "codebuild:PersistOAuthToken",
       "ds:*Tags*",
       "ds:*Snapshot*",
-      "ec2:Start-s",
+      "ec2:StartInstances",
       "ec2:StopInstances",
       "ec2:RebootInstances",
       "ec2:ModifyImageAttribute",
