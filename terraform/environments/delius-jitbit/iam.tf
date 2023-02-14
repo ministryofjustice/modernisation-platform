@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "s3_user" {
       "s3:DeleteObject",
       "s3:ListBucket"
     ]
-    resources = ["${module.s3_bucket[0].aws_s3_bucket.default.arn}"]
+    resources = ["${module.s3_bucket[0].bucket.arn}"]
   }
 }
 
