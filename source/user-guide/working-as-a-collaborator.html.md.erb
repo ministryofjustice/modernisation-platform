@@ -35,6 +35,7 @@ Once you have been [set up as a collaborator](../runbooks/adding-collaborators.h
 |developer|Read only console plus other permissions such as the ability to set secrets,restart EC2s, raise support tickets.|Used by engineers working on the application infrastructure|
 |sandbox|Admin role to perform most AWS actions via the console| Used by engineers to make development easier in some situations, only allowed in the development account
 |migration|Role with developer and AWS migration services permissions| Used by engineers to migrate applications, will be removed before application goes into production
+|instance-management|Role for use by instance management with permissions for EC2 and RDS instances | Used by database or EC2 administrators  to migrate services and perform tasks.
 
 You can see the accounts and roles assigned to you [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/collaborators.json)
 
