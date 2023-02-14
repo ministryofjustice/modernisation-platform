@@ -111,7 +111,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "codebuild:PersistOAuthToken",
       "ds:*Tags*",
       "ds:*Snapshot*",
-      "ec2:StartInstances",
+      "ec2:Start-s",
       "ec2:StopInstances",
       "ec2:RebootInstances",
       "ec2:ModifyImageAttribute",
@@ -363,5 +363,97 @@ data "aws_iam_policy_document" "migration_additional" {
       "mgh:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+  }
+}
+
+
+# instance management - member SSO and collaborators
+resource "aws_iam_policy" "instance-management" {
+  provider = aws.workspace
+  name     = "database_mgmt_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.instance-management-document.json
+}
+
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "instance-management-document" {
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_110
+  source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
+  statement {
+    sid    = "databaseAllow"
+    effect = "Allow"
+    actions = [
+      "aws-marketplace:ViewSubscriptions",
+      "ds:*Tags*",
+      "ds:*Snapshot*",
+      "ds:ResetUserPassword",
+      "ec2:StartInstances",
+      "ec2:StopInstances",
+      "ec2:RebootInstances",
+      "ec2:ModifyImageAttribute",
+      "ec2:ModifySnapshotAttribute",
+      "ec2:CopyImage",
+      "ec2:CreateImage",
+      "ec2:CopySnapshot",
+      "ec2:CreateSnapshot",
+      "ec2:CreateSnapshots",
+      "ec2:CreateTags",
+      "ec2:DescribeVolumes",
+      "ec2:DescribeInstances",
+      "ec2:DescribeInstanceTypes",
+      "identitystore:DescribeUser",
+      "kms:Decrypt*",
+      "kms:Encrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey",
+      "rds:CopyDBSnapshot",
+      "rds:CopyDBClusterSnapshot",
+      "rds:CreateDBSnapshot",
+      "rds:CreateDBClusterSnapshot",
+      "rds:RebootDB*",
+      "rhelkb:GetRhelURL",
+      "ssm:*",
+      "ssm-guiconnect:*",
+      "sso:ListDirectoryAssociations",
+      "support:*"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "snsAllow"
+    effect = "Allow"
+    actions = [
+      "sns:Publish"
+    ]
+    resources = ["arn:aws:sns:*:*:Automation*"]
+  }
+
+  statement {
+    sid    = "lambdaAllow"
+    effect = "Allow"
+    actions = [
+      "lambda:InvokeFunction"
+    ]
+    resources = ["arn:aws:lambda:*:*:function:Automation*"]
+  }
+
+  statement {
+    sid    = "coreSharedServicesCreateGrantAllow"
+    effect = "Allow"
+    actions = [
+      "kms:CreateGrant"
+    ]
+    resources = ["arn:aws:kms:*:${local.environment_management.account_ids["core-shared-services-production"]}:key/*"]
+    condition {
+      test     = "Bool"
+      variable = "kms:GrantIsForAWSResource"
+      values   = ["true"]
+    }
   }
 }
