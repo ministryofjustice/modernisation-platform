@@ -26,3 +26,10 @@ data "aws_iam_policy_document" "s3_user" {
 resource "aws_iam_access_key" "s3_user" {
   user = aws_iam_user.s3_user.name
 }
+
+resource "aws_ssm_parameter" "s3_user" {
+  name        = "/s3_user_access_key"
+  description = "Access key for the S3 user"
+  type        = "SecureString"
+  value       = aws_iam_access_key.s3_user.encrypted_secret
+}
