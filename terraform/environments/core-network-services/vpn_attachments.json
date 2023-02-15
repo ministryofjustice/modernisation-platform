@@ -5,8 +5,7 @@
     "modernisation_platform_vpc": "laa-development",
     "dx_gateway_id": "",
     "dx_gateway_owner_account_id": "",
-    "static_routes_only": true,
-    "tunnel_startup_action": "start"
+    "static_routes_only": true
   },
   "sixdegrees_uat": {
     "customer_gateway_ip": "80.79.133.20",
@@ -14,8 +13,7 @@
     "modernisation_platform_vpc": "laa-test",
     "dx_gateway_id": "",
     "dx_gateway_owner_account_id": "",
-    "static_routes_only": true,
-    "tunnel_startup_action": "start"
+    "static_routes_only": true
   },
   "sixdegrees_stage": {
     "customer_gateway_ip": "82.147.30.124",
@@ -23,8 +21,7 @@
     "modernisation_platform_vpc": "laa-preproduction",
     "dx_gateway_id": "",
     "dx_gateway_owner_account_id": "",
-    "static_routes_only": true,
-    "tunnel_startup_action": "start"
+    "static_routes_only": true
   },
   "sixdegrees_prod": {
     "customer_gateway_ip": "82.147.39.116",
@@ -32,8 +29,7 @@
     "modernisation_platform_vpc": "laa-production",
     "dx_gateway_id": "",
     "dx_gateway_owner_account_id": "",
-    "static_routes_only": true,
-    "tunnel_startup_action": "start"
+    "static_routes_only": true
   },
   "NOMS-Transit-Live-DR-VPN-VNG_1": {
     "bgp_asn": "64532",
