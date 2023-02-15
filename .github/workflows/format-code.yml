@@ -66,7 +66,7 @@ jobs:
         run: |
           git add .
           git commit -m "Updates from GitHub Actions Format Code workflow"
-          git push -u origin $branch_name
+          git push --set-upstream origin $branch_name
 
       - name: Create pull request
         run: |
