@@ -64,9 +64,10 @@ jobs:
 
       - name: Commit and push changes
         run: |
+          git config --global push.autoSetupRemote true
           git add .
           git commit -m "Updates from GitHub Actions Format Code workflow"
-          git push --set-upstream origin $branch_name
+          git push
 
       - name: Create pull request
         run: |
