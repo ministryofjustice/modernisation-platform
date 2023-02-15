@@ -36,8 +36,8 @@ jobs:
 
       - name: Create new branch
         run: |
-          date=$(date +%Y-%m-%d)
-          branch_name="date-$date"
+          date=$(date +%Y_%m_%d)
+          branch_name="date_$date"
           git checkout -b $branch_name
 
       - name: Run linter
@@ -56,7 +56,7 @@ jobs:
 
       - name: Check for changes
         run: |
-          changes=$(git diff main...$branch_name --name-only)
+          changes=$(git diff origin/main...$branch_name --name-only)
            if [ -z "$changes" ]; then
              echo "No changes detected."
              exit 0
