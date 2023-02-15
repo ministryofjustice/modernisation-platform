@@ -51,12 +51,12 @@ resource "aws_networkfirewall_rule_group" "stateful" {
 
 resource "aws_networkfirewall_rule_group" "fqdn-stateful" {
   capacity = 100
-  name     = replace(title("FQDN${var.fw_rulegroup_name}"), "/-|_/", "")
+  name     = "egress_fqdn_rules_allow"
   type     = "STATEFUL"
   rule_group {
     rules_source {
       rules_source_list {
-        generated_rules_type = "DENYLIST"
+        generated_rules_type = "ALLOWLIST"
         target_types         = ["HTTP_HOST"]
         targets              = var.list_of_allowed_domain
       }
