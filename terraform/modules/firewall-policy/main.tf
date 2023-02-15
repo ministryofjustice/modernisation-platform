@@ -60,8 +60,8 @@ resource "aws_networkfirewall_rule_group" "fqdn-stateful" {
         ip_set {
           definition = var.fw_home_net_ips
         }
-       }
-    }
+      }
+    } 
     rules_source {
       rules_source_list {
         generated_rules_type = "ALLOWLIST"
