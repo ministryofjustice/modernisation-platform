@@ -36,8 +36,8 @@ jobs:
 
       - name: Create new branch
         run: |
-          date=$(date +%Y-%m-%d)
-          branch_name="date-$date"
+          date=$(date +%Y_%m_%d)
+          branch_name="date_$date"
           git checkout -b $branch_name
 
       - name: Run linter
@@ -49,13 +49,14 @@ jobs:
           # All available variables are described in documentation
           # https://megalinter.io/configuration/#shared-variables
           # ADD YOUR CUSTOM ENV VARIABLES HERE OR DEFINE THEM IN A FILE .mega-linter.yml AT THE ROOT OF YOUR REPOSITORY
+          ENABLE_LINTERS: JSON_PRETTIER, YAML_PRETTIER, TERRAFORM_TERRAFORM_FMT
           VALIDATE_ALL_CODEBASE: true
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
           EMAIL_REPORTER: false
 
       - name: Check for changes
         run: |
-          changes=$(git diff main...$branch_name --name-only)
+          changes=$(git diff origin/main...$branch_name --name-only)
            if [ -z "$changes" ]; then
              echo "No changes detected."
              exit 0
@@ -63,9 +64,10 @@ jobs:
 
       - name: Commit and push changes
         run: |
+          git config --global push.autoSetupRemote true
           git add .
           git commit -m "Updates from GitHub Actions Format Code workflow"
-          git push -u origin $branch_name
+          git push
 
       - name: Create pull request
         run: |
