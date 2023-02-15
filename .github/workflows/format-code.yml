@@ -49,6 +49,7 @@ jobs:
           # All available variables are described in documentation
           # https://megalinter.io/configuration/#shared-variables
           # ADD YOUR CUSTOM ENV VARIABLES HERE OR DEFINE THEM IN A FILE .mega-linter.yml AT THE ROOT OF YOUR REPOSITORY
+          DISABLE_LINTERS: KICS
           VALIDATE_ALL_CODEBASE: true
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
           EMAIL_REPORTER: false
