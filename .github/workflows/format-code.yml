@@ -70,11 +70,11 @@ jobs:
           git push
 
       - name: Create pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          pull_request=$(curl -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github+json" \
-            -d "{\"title\":\"GitHub Actions Code Formatter workflow\",\"head\":\"$branch_name\",\"base\":\"main\",\"body\":\"This pull request includes updates from the GitHub Actions Code Formatter workflow.\n\nPlease review the changes and merge if everything looks good.\",\"labels\":[\"code quality\"]}" \
-            https://api.github.com/repos/${{ github.repository }}/pulls)
-          pull_request_number=$(echo $pull_request | jq -r '.number')
-          echo "Created pull request: #$pull_request_number"
+          branch_name=$(git branch --show-current)
+          pr_head="${{ github.repository_owner }}:${branch_name}"
+          pr_base="main"
+          gh pr create --fill --head "$pr_head" --base "$pr_base" --label "code quality"
+      
