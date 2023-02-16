@@ -4,8 +4,8 @@
 #tfsec:ignore:AWS273
 resource "aws_iam_user" "mgn_user" {
   #checkov:skip=CKV_AWS_273: "Skipping as tfsec check is also set to ignore"
-  name  = "MGN-Test"
-  tags  = local.tags
+  name = "MGN-Test"
+  tags = local.tags
 }
 #tfsec:ignore:aws-iam-no-user-attached-policies
 resource "aws_iam_user_policy_attachment" "mgn_attach_policy" {
@@ -19,7 +19,7 @@ resource "aws_iam_user_policy_attachment" "mgn_attach_policy" {
 resource "aws_iam_user" "email" {
   #checkov:skip=CKV_AWS_273: "Skipping as tfsec check is also ignored"
   count = local.is-production == false ? 1 : 0
-  name = format("%s-%s-email_user", local.application_name, local.environment)
+  name  = format("%s-%s-email_user", local.application_name, local.environment)
   tags = merge(local.tags,
     { Name = format("%s-%s-email_user", local.application_name, local.environment) }
   )
@@ -27,12 +27,12 @@ resource "aws_iam_user" "email" {
 
 resource "aws_iam_access_key" "email" {
   count = local.is-production == false ? 1 : 0
-  user = aws_iam_user.email[0].name
+  user  = aws_iam_user.email[0].name
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_user_policy" "email_policy" {
-  count = local.is-production == false ? 1 : 0
+  count  = local.is-production == false ? 1 : 0
   name   = "AmazonSesSendingAccess"
   user   = aws_iam_user.email[0].name
   policy = data.aws_iam_policy_document.email.json
