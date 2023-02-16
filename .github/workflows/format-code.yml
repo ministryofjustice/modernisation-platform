@@ -61,10 +61,10 @@ jobs:
           changes=$(git diff origin/main...$branch_name --name-only)
           if [ -z "$changes" ]; then
             echo "No changes detected."
-            exit 0
+            exit 1
           else
             echo "Changes detected."
-            exit 1
+            exit 0
           fi
 
       - name: Commit and push changes
