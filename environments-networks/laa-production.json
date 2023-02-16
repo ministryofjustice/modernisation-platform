@@ -10,7 +10,10 @@
   "options": {
     "bastion_linux": false,
     "additional_cidrs": [],
-    "additional_endpoints": ["com.amazonaws.eu-west-2.xray", "com.amazonaws.eu-west-2.secretsmanager"],
+    "additional_endpoints": [
+      "com.amazonaws.eu-west-2.xray",
+      "com.amazonaws.eu-west-2.secretsmanager"
+    ],
     "additional_vpcs": [],
     "dns_zone_extend": []
   }

@@ -1,4 +1,4 @@
-# 14. Create Application Elastic Container Repositories (ECR) in the shared-services account 
+# 14. Create Application Elastic Container Repositories (ECR) in the shared-services account
 
 Date: 2021-09-27
 

@@ -12,7 +12,7 @@ A core part of the Modernisation Platform is its network topology and configurat
 
 ## Decision
 
-[IaC network tester](https://aws.amazon.com/blogs/networking-and-content-delivery/integrating-network-connectivity-testing-with-infrastructure-deployment/) is a programmatic wrapper around the [AWS Reachability Analyzer](https://docs.aws.amazon.com/vpc/latest/reachability/what-is-reachability-analyzer.html). It supports automated executions of the Reachability Analyzer, with feedback indicating if the network connectivity test was successful or not. Such a tool could allow us to automatically test network connectivity and take actions on the results. 
+[IaC network tester](https://aws.amazon.com/blogs/networking-and-content-delivery/integrating-network-connectivity-testing-with-infrastructure-deployment/) is a programmatic wrapper around the [AWS Reachability Analyzer](https://docs.aws.amazon.com/vpc/latest/reachability/what-is-reachability-analyzer.html). It supports automated executions of the Reachability Analyzer, with feedback indicating if the network connectivity test was successful or not. Such a tool could allow us to automatically test network connectivity and take actions on the results.
 
 ## Consequences
 
@@ -28,7 +28,7 @@ A core part of the Modernisation Platform is its network topology and configurat
 ### Disadvantages
 
 * the source and destination resources must be in the same VPC or in VPCs that are connected through a VPC peering connection. In the case of a shared VPC (as is the case within the Modernisation Platform), the resources must be owned by the same AWS account. This provides a limitation to what we can test, i.e. only connectivity within a VPC, i.e. within a business unit's VPC within a particular environment. We would be unable to test across VPC, e.g. across business units or across environments
-* application of the IaC Network Tester tool would depend on transforming outputs from our IaC tool of choice, Terraform, into a format capable of being parsed. 
+* application of the IaC Network Tester tool would depend on transforming outputs from our IaC tool of choice, Terraform, into a format capable of being parsed.
 
 ## Reason for rejection
 
