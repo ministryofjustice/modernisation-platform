@@ -269,6 +269,10 @@
         {
           "account-name": "ppud-development",
           "access": "sandbox"
+        },
+        {
+          "account-name": "ppud-preproduction",
+          "access": "migration"
         }
       ]
     },
@@ -279,6 +283,10 @@
         {
           "account-name": "ppud-development",
           "access": "sandbox"
+        },
+        {
+          "account-name": "ppud-preproduction",
+          "access": "migration"
         }
       ]
     },
@@ -289,6 +297,10 @@
         {
           "account-name": "ppud-development",
           "access": "sandbox"
+        },
+        {
+          "account-name": "ppud-preproduction",
+          "access": "migration"
         }
       ]
     },
