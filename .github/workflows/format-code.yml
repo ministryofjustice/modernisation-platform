@@ -62,6 +62,9 @@ jobs:
           if [ -z "$changes" ]; then
             echo "No changes detected."
             exit 0
+          else
+            echo "Changes detected."
+            exit 1
           fi
 
       - name: Commit and push changes
