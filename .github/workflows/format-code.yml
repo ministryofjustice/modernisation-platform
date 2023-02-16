@@ -73,8 +73,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          pr_title="GitHub Actions Code Formatter workflow"
+          pr_body="This pull request includes updates from the GitHub Actions Code Formatter workflow. Please review the changes and merge if everything looks good."
           branch_name=$(git branch --show-current)
           pr_head="${{ github.repository_owner }}:${branch_name}"
           pr_base="main"
-          gh pr create --fill --head "$pr_head" --base "$pr_base" --label "code quality"
+          gh pr create --title "$pr_title" --body "$pr_body" --head "$pr_head" --base "$pr_base" --label "code quality"
       
