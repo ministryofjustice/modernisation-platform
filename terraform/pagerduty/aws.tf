@@ -18,7 +18,7 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     high_priority_alarms   = pagerduty_service_integration.high_priority_cloudwatch.integration_key,
     low_priority_alarms    = pagerduty_service_integration.low_priority_cloudwatch.integration_key,
     nomis_alarms           = pagerduty_service_integration.nomis_cloudwatch.integration_key,
-    laa_alarms             = pagerduty_service_integration.laa_cloudwatch.integration_key
+    laa_oas_alarms         = pagerduty_service_integration.laa_oas_cloudwatch.integration_key
   })
 }
 
