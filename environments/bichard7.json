@@ -68,6 +68,7 @@
   "tags": {
     "application": "bichard7",
     "business-unit": "CJSE",
+    "infrastructure-support": "cjse@madetech.com",
     "owner": "cjse@madetech.com"
   }
 }

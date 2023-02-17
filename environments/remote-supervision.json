@@ -23,6 +23,7 @@
   "tags": {
     "application": "remote-supervision",
     "business-unit": "HMPPS",
+    "infrastructure-support": "remote.supervision+hosting@digital.justice.gov.uk",
     "owner": "Remote Supervision: remote.supervision+hosting@digital.justice.gov.uk"
   }
 }

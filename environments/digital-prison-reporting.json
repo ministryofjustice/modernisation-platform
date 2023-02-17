@@ -15,6 +15,7 @@
   "tags": {
     "application": "digital-prison-reporting",
     "business-unit": "HMPPS",
+    "infrastructure-support": "digitalprisonreporting@digital.justice.gov.uk",
     "owner": "digitalprisonreporting@digital.justice.gov.uk"
   }
 }
