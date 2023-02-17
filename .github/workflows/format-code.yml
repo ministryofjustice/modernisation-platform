@@ -49,19 +49,23 @@ jobs:
           # All available variables are described in documentation
           # https://megalinter.io/configuration/#shared-variables
           # ADD YOUR CUSTOM ENV VARIABLES HERE OR DEFINE THEM IN A FILE .mega-linter.yml AT THE ROOT OF YOUR REPOSITORY
-          ENABLE_LINTERS: JSON_PRETTIER, YAML_PRETTIER, TERRAFORM_TERRAFORM_FMT
-          VALIDATE_ALL_CODEBASE: true
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
           EMAIL_REPORTER: false
+          ENABLE_LINTERS: JSON_PRETTIER,YAML_PRETTIER,TERRAFORM_TERRAFORM_FMT,MARKDOWN_MARKDOWNLINT
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+          VALIDATE_ALL_CODEBASE: true
+          YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (.github/*)
 
       - name: Check for changes
         run: |
           branch_name=$(git branch --show-current)
           changes=$(git diff origin/main...$branch_name --name-only)
-           if [ -z "$changes" ]; then
-             echo "No changes detected."
-             exit 0
-           fi
+          if [ -z "$changes" ]; then
+            echo "No changes detected."
+            exit 1
+          else
+            echo "Changes detected."
+            exit 0
+          fi
 
       - name: Commit and push changes
         run: |
