@@ -1,12 +1,3 @@
-# This data sources allows us to get the Modernisation Platform account information for use elsewhere
-# (when we want to assume a role in the MP, for instance)
-data "aws_organizations_organization" "root_account" {}
-
-# Get the environments file from the main repository
-data "http" "environments_file" {
-  url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/${local.application_name}.json"
-}
-
 locals {
 
   application_name = "nomis"
@@ -28,15 +19,17 @@ locals {
     { "source-code" = "https://github.com/ministryofjustice/modernisation-platform" }
   )
 
-  environment = trimprefix(terraform.workspace, "${var.networking[0].application}-")
-  vpc_name    = var.networking[0].business-unit
-  subnet_set  = var.networking[0].set
+  environment     = trimprefix(terraform.workspace, "${var.networking[0].application}-")
+  vpc_name        = var.networking[0].business-unit
+  subnet_set      = var.networking[0].set
+  vpc_all         = "${local.vpc_name}-${local.environment}"
+  subnet_set_name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}"
 
   is_live       = [substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production" || substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction" ? "live" : "non-live"]
   provider_name = "core-vpc-${local.environment}"
 
   # environment specfic variables
-  # example usage:  
+  # example usage:
   # example_data = local.application_data.accounts[local.environment].example_var
-  # application_data = jsondecode(file("./application_variables.json"))
+  application_data = fileexists("./application_variables.json") ? jsondecode(file("./application_variables.json")) : {}
 }
