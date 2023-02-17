@@ -57,6 +57,7 @@ jobs:
 
       - name: Check for changes
         run: |
+          git add .
           branch_name=$(git branch --show-current)
           changes=$(git diff origin/main...$branch_name --name-only)
           if [ -z "$changes" ]; then
@@ -70,7 +71,6 @@ jobs:
       - name: Commit and push changes
         run: |
           git config --global push.autoSetupRemote true
-          git add .
           git commit -m "Updates from GitHub Actions Format Code workflow"
           git push
 
