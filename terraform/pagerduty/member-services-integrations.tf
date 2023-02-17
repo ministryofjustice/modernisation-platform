@@ -36,6 +36,24 @@ resource "pagerduty_service_integration" "nomis_cloudwatch" {
 
 # Slack channel: #dso_alerts_modernisation_platform
 
+# LAA MLRA
+resource "pagerduty_service" "laa_mlra" {
+  name                    = "Legal Aid Agency MLRA Application"
+  description             = "Legal Aid Agency MLRA Application Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = null
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "laa_mlra_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.laa_mlra.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+# # Slack channel: # TBC
+
 # LAA OAS
 resource "pagerduty_service" "laa_oas" {
   name                    = "Legal Aid Agency OAS Application"
