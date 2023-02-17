@@ -89,8 +89,8 @@ copy_templates() {
 
     if [ ${filename} != "platform_locals.tf" ] && [ ${filename} != "platform_providers.tf" ] && [ ${filename} != "platform_data.tf" ] && [[ "${filename}" !=  "member_"* ]]
     then
-      if [ ${filename} == "subnet_share.tf" ] && [ ${account_type} == "member-unrestricted" ]; then
-        echo "Skipping $file for $application_name as it is an unrestricted account."
+      if [ ${filename} == "subnet_share.tf" ] && ([ ${account_type} == "member-unrestricted" ] ||  [ ${account_type} == "core" ]); then
+        echo "Skipping $file for $application_name as it is an unrestricted or a core account."
       else
         echo "Copying $file to $1, replacing application_name with $application_name"
         sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
