@@ -40,5 +40,21 @@ resource "aws_secretsmanager_secret" "s3_user_access_key" {
 
 resource "aws_secretsmanager_secret_version" "s3_user_access_key" {
   secret_id     = aws_secretsmanager_secret.s3_user_access_key.id
-  secret_string = aws_iam_access_key.s3_user.encrypted_secret
+  secret_string = aws_iam_access_key.s3_user.id
+}
+
+resource "aws_secretsmanager_secret" "s3_user_secret_key" {
+  name                    = "${local.application_name}-s3-user-secret-key"
+  recovery_window_in_days = 0
+  tags = merge(
+    local.tags,
+    {
+      Name = "${local.application_name}-s3-user-secret-key"
+    }
+  )
+}
+
+resource "aws_secretsmanager_secret_version" "s3_user_secret_key" {
+  secret_id     = aws_secretsmanager_secret.s3_user_secret_key.id
+  secret_string = aws_iam_access_key.s3_user.secret
 }
