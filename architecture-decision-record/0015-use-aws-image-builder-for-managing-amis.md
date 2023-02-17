@@ -11,7 +11,7 @@ Date: 2021-11-02
 There is likely to  be a common requirement across Modernisation Platform consumers to utilise the benefits of using customised AMIs, such as managed consistency of configuration and speed of EC2 instance deployment.
 
 Some options to tackle AMI generation and management were considered
-* A custom approach - based on a reference architecture (see https://aws.amazon.com/blogs/awsmarketplace/announcing-the-golden-ami-pipeline/) that brings together a number of tools and techniques to manage AMIs through their lifecycle. This approach brings with it a fair amount of complexity and arguably extra operational overhead.
+* A custom approach - based on a reference architecture (see <https://aws.amazon.com/blogs/awsmarketplace/announcing-the-golden-ami-pipeline/>) that brings together a number of tools and techniques to manage AMIs through their lifecycle. This approach brings with it a fair amount of complexity and arguably extra operational overhead.
 * [Packer](https://www.packer.io/) - a common approach across private and public cloud platforms, using this Hashicorp tool to programmatically build AMIs. Such a solution would also need to manage the distribution of AMIs across accounts and lifecycle management of AMIs
 * [AWS Image Builder](https://docs.aws.amazon.com/imagebuilder/latest/userguide/what-is-image-builder.html) - a managed AWS service incorporating concepts such as pipelines, recipes and components, and even a marketplace of build and test components. Image builder is based on the use of AWS Systems Manager (so no ssh connections and exposed ports). A solution based on this (at the time of writing) would need to also handle the lifecycle management of AMIs (as it the case with Packer)
 

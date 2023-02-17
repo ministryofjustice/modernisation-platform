@@ -18,7 +18,7 @@ We completed a [spike](https://github.com/ministryofjustice/modernisation-platfo
 
 ### Option 1 - Use a third party Lambda
 
-We looked at a 3rd party Lambda written in Python and Terraform - https://github.com/diodonfrost/terraform-aws-lambda-scheduler-stop-start
+We looked at a 3rd party Lambda written in Python and Terraform - <https://github.com/diodonfrost/terraform-aws-lambda-scheduler-stop-start>
 
 |Pros|Cons|
 |---|---|

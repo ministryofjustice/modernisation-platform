@@ -8,7 +8,7 @@ Date: 2021-06-18
 
 ## Context
 
-The Modernisation Platform team and its users need a way to store secrets securely. There are several different methods currently used across the MoJ, including [Secrets Manager](https://aws.amazon.com/secrets-manager/), [Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html), [LastPass](https://www.lastpass.com/) and [Git-Crypt](https://github.com/AGWA/git-crypt). 
+The Modernisation Platform team and its users need a way to store secrets securely. There are several different methods currently used across the MoJ, including [Secrets Manager](https://aws.amazon.com/secrets-manager/), [Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html), [LastPass](https://www.lastpass.com/) and [Git-Crypt](https://github.com/AGWA/git-crypt).
 
 There are also other well known industry solutions such as [HashiCorp Vault](https://www.vaultproject.io/). We want to have a consistent solution across the Modernisation Platform.
 
