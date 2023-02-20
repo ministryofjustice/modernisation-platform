@@ -18,7 +18,7 @@ module "ram-principal-association" {
   vpc_name    = var.networking[0].business-unit
   subnet_set  = var.networking[0].set
   acm_pca     = "acm-pca-${local.is_live[0]}"
-  environment = "sandbox"
+  environment = local.environment
 
 }
 
@@ -34,7 +34,7 @@ module "ram-ec2-retagging" {
     aws.share-tenant = aws
   }
 
-  vpc_name   = "${var.networking[0].business-unit}-sandbox"
+  vpc_name   = "${var.networking[0].business-unit}-${local.environment}"
   subnet_set = var.networking[0].set
 
   depends_on = [module.ram-principal-association[0]]

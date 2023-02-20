@@ -19,14 +19,14 @@ locals {
     { "source-code" = "https://github.com/ministryofjustice/modernisation-platform" }
   )
 
-  environment     = trimprefix(terraform.workspace, "${var.networking[0].application}-")
+  environment     = "sandbox"
   vpc_name        = var.networking[0].business-unit
   subnet_set      = var.networking[0].set
   vpc_all         = "${local.vpc_name}-${local.environment}"
   subnet_set_name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}"
 
   is_live       = [substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production" || substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction" ? "live" : "non-live"]
-  provider_name = "core-vpc-sandbox"
+  provider_name = "core-vpc-${local.environment}"
 
   # environment specfic variables
   # example usage:
