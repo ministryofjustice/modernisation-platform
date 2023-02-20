@@ -10,8 +10,6 @@ permissions:
   contents: write
   pull-requests: write
 
-env:
-
 concurrency:
   group: '${{ github.ref }}-${{ github.workflow }}'
   cancel-in-progress: true
