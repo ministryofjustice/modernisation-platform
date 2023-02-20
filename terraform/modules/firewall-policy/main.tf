@@ -1,7 +1,9 @@
 resource "aws_networkfirewall_firewall_policy" "main" {
   name = replace(title(var.fw_policy_name), "/-|_/", "")
   firewall_policy {
-    
+    stateful_engine_options {
+      rule_order = "DEFAULT_ACTION_ORDER"
+    }
     stateful_rule_group_reference {
       priority     = 1
       resource_arn = aws_networkfirewall_rule_group.stateful.arn
@@ -18,7 +20,10 @@ resource "aws_networkfirewall_rule_group" "stateful" {
   name     = replace(title(var.fw_rulegroup_name), "/-|_/", "")
   type     = "STATEFUL"
 
-  rule_group {  
+  rule_group { 
+    stateful_rule_options {
+      rule_order = "DEFAULT_ACTION_ORDER"
+    } 
     rules_source {
       dynamic "stateful_rule" {
         for_each = var.rules
