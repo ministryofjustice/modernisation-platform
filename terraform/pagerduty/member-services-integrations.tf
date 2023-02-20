@@ -35,3 +35,75 @@ resource "pagerduty_service_integration" "nomis_cloudwatch" {
 }
 
 # Slack channel: #dso_alerts_modernisation_platform
+
+# LAA MLRA Non Prod
+resource "pagerduty_service" "laa_mlra_nonprod" {
+  name                    = "Legal Aid Agency MLRA Application Non Prod"
+  description             = "Legal Aid Agency MLRA Application Non Prod Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = null
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "laa_mlra_nonprod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.laa_mlra_nonprod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+# # Slack channel: # TBC
+
+# LAA MLRA Prod
+resource "pagerduty_service" "laa_mlra_prod" {
+  name                    = "Legal Aid Agency MLRA Application Production"
+  description             = "Legal Aid Agency MLRA Application Production Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = null
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "laa_mlra_prod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.laa_mlra_prod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+# # Slack channel: # TBC
+
+# LAA OAS - Non Prod
+resource "pagerduty_service" "laa_oas_nonprod" {
+  name                    = "Legal Aid Agency OAS Application Non Prod"
+  description             = "Legal Aid Agency OAS Application Non Prod Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = null
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "laa_oas_nonprod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.laa_oas_nonprod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+# # Slack channel: #laa-obiee-alerts-nonprod TBC
+
+# LAA OAS - Non Prod
+resource "pagerduty_service" "laa_oas_prod" {
+  name                    = "Legal Aid Agency OAS Application Production"
+  description             = "Legal Aid Agency OAS Application Production Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = null
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "laa_oas_prod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.laa_oas_prod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+# # Slack channel: #laa-obiee-alerts-prod TBC
