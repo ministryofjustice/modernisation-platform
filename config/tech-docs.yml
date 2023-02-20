@@ -39,4 +39,4 @@ github_branch: main
 
 # Slack
 owner_slack_workspace: mojdt
-default_owner_slack: '#modernisation-platform'
+default_owner_slack: "#modernisation-platform"

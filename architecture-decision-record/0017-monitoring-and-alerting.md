@@ -10,16 +10,16 @@ Date: 2021-12-08
 
 We need to monitor the Modernisation Platform infrastructure. This breaks down into the following areas:
 
- - core platform security baseline Cloudwatch alarms set up for GuardDuty, SecurityHub and Config
- - member account security baseline Cloudwatch alarms set up for GuardDuty, SecurityHub and Config
- - core platform additional alarms that we may want to config
- - member additional alarms that they may want to configure
- - metrics and alarms for ECS/Fargate
- - visualisation of metrics for the core platform
- - visualisation of metrics for member accounts
- - how do we get alerts
+- core platform security baseline Cloudwatch alarms set up for GuardDuty, SecurityHub and Config
+- member account security baseline Cloudwatch alarms set up for GuardDuty, SecurityHub and Config
+- core platform additional alarms that we may want to config
+- member additional alarms that they may want to configure
+- metrics and alarms for ECS/Fargate
+- visualisation of metrics for the core platform
+- visualisation of metrics for member accounts
+- how do we get alerts
 
-We have talked with the Cloud Platform team, there is currently limited capacity and adding additional metrics to their Prometheus stack is not a good option.  We have also discussed this with Operations Engineering who will be looking into centralised monitoring, but this work has not been started yet - https://github.com/ministryofjustice/operations-engineering/issues/147.
+We have talked with the Cloud Platform team, there is currently limited capacity and adding additional metrics to their Prometheus stack is not a good option.  We have also discussed this with Operations Engineering who will be looking into centralised monitoring, but this work has not been started yet - <https://github.com/ministryofjustice/operations-engineering/issues/147>.
 
 With this in mine, the Modernisation Platform will start to develop it's own solution, aligning technology choices with the other platform teams where possible.
 
@@ -65,7 +65,7 @@ We would like to be able to offer users easy to use out of the box alerting. We 
 
 Decision:
 
-We will not be doing this at this time. This will be covered in - https://github.com/ministryofjustice/modernisation-platform/issues/1332.
+We will not be doing this at this time. This will be covered in - <https://github.com/ministryofjustice/modernisation-platform/issues/1332>.
 
 ### Metrics and Alarms for ECS/Fargate applications
 
@@ -81,10 +81,10 @@ Other platform teams use [PagerDuty](https://moj-digital-tools.pagerduty.com/) a
 
 Decision:
 
-- We will create a Modernisation Platform team in PagerDuty and add our permanent staff to our team. https://github.com/ministryofjustice/modernisation-platform/issues/1312
-- We will integrate Slack with PagerDuty to push our alarms to Slack. https://github.com/ministryofjustice/modernisation-platform/issues/1312
-- We will integrate our existing alarms that we want to monitor with PagerDuty. https://github.com/ministryofjustice/modernisation-platform/issues/1334 and https://github.com/ministryofjustice/modernisation-platform/issues/1335
-- We will not yet consider an on-call rota, this will be decided here - https://github.com/ministryofjustice/modernisation-platform/issues/1333.
+- We will create a Modernisation Platform team in PagerDuty and add our permanent staff to our team. <https://github.com/ministryofjustice/modernisation-platform/issues/1312>
+- We will integrate Slack with PagerDuty to push our alarms to Slack. <https://github.com/ministryofjustice/modernisation-platform/issues/1312>
+- We will integrate our existing alarms that we want to monitor with PagerDuty. <https://github.com/ministryofjustice/modernisation-platform/issues/1334> and <https://github.com/ministryofjustice/modernisation-platform/issues/1335>
+- We will not yet consider an on-call rota, this will be decided here - <https://github.com/ministryofjustice/modernisation-platform/issues/1333>.
 
 ## Consequences
 

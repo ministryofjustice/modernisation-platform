@@ -29,37 +29,37 @@ The Modernisation Platform will end up hosting much of the MoJs legacy infrastru
 
 The bastions currently only update to the latest version when the Terraform is run. We want them to automatically update when they rebuild every night to the latest version.
 
-https://github.com/ministryofjustice/modernisation-platform/issues/1385
+<https://github.com/ministryofjustice/modernisation-platform/issues/1385>
 
 ### Terraform Providers
 
 We currently do this on an ad-hoc basis, we need a better way to make sure we are aware of and apply Terraform provider updates.
 
-https://github.com/ministryofjustice/modernisation-platform/issues/2410
+<https://github.com/ministryofjustice/modernisation-platform/issues/2410>
 
 ### EC2 Patching
 
 We want to be able to patch EC2s hosted on the platform at a platform level. We will start with identifying what patching should be done on instances and make this information available to application teams to fix or mitigate. We will reserve the right to patch users instances if we feel there is a significant risk which needs to be addressed immediately. We will support unpatched / old instances if there is a valid business case and the instance does not put the platform or the wider MoJ at risk.
 
-https://github.com/ministryofjustice/modernisation-platform/issues/2411
+<https://github.com/ministryofjustice/modernisation-platform/issues/2411>
 
 ### RDS Patching
 
 We want to be able to patch RDS instances hosted on the platform at a platform level. We will start with identifying what patching should be done on instances and make this information available to application teams to fix or mitigate. We will reserve the right to patch users instances if we feel there is a significant risk which needs to be addressed immediately. Users should note that minimum versions of RDS are required by AWS and must keep in line with this version or the instance will be automatically updated by AWS.
 
-https://github.com/ministryofjustice/modernisation-platform/issues/2412
+<https://github.com/ministryofjustice/modernisation-platform/issues/2412>
 
 ### ECS/EKS Nodes
 
 Where ECS or EKS use EC2 instances, we need to ensure that they are using the latest recommended versions. We will start with investigating how we find out the latest versions and make users aware of this, then how we make these upgrades at a platform level if needed.
 
-https://github.com/ministryofjustice/modernisation-platform/issues/2413
+<https://github.com/ministryofjustice/modernisation-platform/issues/2413>
 
 ### Hardened AMIs
 
 Look in to creating hardened base AMIs which are maintained at a platform level, users can then use these AMIs to build their own images.
 
-https://github.com/ministryofjustice/modernisation-platform/issues/2414
+<https://github.com/ministryofjustice/modernisation-platform/issues/2414>
 
 ## Consequences
 

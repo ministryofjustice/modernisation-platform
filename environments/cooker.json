@@ -1,14 +1,14 @@
 {
-	"account-type": "member",
-	"environments": [
+  "account-type": "member",
+  "environments": [
     {
       "name": "development",
       "access": []
     }
-	],
-	"tags": {
-		"application": "modernisation-platform",
-		"business-unit": "Platforms",
-		"owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
-	}
+  ],
+  "tags": {
+    "application": "modernisation-platform",
+    "business-unit": "Platforms",
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
+  }
 }
