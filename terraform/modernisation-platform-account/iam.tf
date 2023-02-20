@@ -161,7 +161,7 @@ resource "aws_iam_role_policy_attachment" "modernisation_account_limited_read" {
 # OIDC resources
 
 module "github-oidc" {
-  source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v2.0.0"
+  source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v2.1.0"
   additional_permissions      = data.aws_iam_policy_document.oidc-deny-specific-actions.json
   additional_managed_policies = ["arn:aws:iam::aws:policy/AdministratorAccess"]
   github_repositories         = ["ministryofjustice/modernisation-platform:*", "ministryofjustice/modernisation-platform-ami-builds:*"]
