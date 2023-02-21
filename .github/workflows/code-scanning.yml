@@ -1,0 +1,78 @@
+name: Secure Code Analysis
+on:
+  schedule:
+    - cron: '35 1 * * *'
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+jobs:
+  tflint:
+    runs-on: '${{ matrix.os }}'
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
+        with:
+          token: '${{ secrets.GITHUB_TOKEN }}'
+          fetch-depth: 0
+      - name: Cache plugin dir
+        uses: actions/cache@6998d139ddd3e68c71e9e398d8e40b71a2f39812 # v3.2.5
+        with:
+          path: ~/.tflint.d/plugins
+          key: '${{ matrix.os }}-tflint-${{ hashFiles(''.tflint.hcl'') }}'
+      - uses: terraform-linters/setup-tflint@ba6bb2989f94daf58a4cc6eac2c1ca7398a678bf # v3.0.0
+        name: Setup TFLint
+        with:
+          tflint_version: latest
+      - name: Init TFLint
+        run: tflint --init
+      - name: Run TFLint
+        run: tflint --format sarif --force > tflint.sarif
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@17573ee1cc1b9d061760f3a006fc4aac4f944fd5 # v2.2.4
+        with:
+          sarif_file: tflint.sarif
+  tfsec:
+    name: tfsec
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
+        with:
+          token: '${{ secrets.GITHUB_TOKEN }}'
+          fetch-depth: 0
+      - name: Run tfsec
+        uses: aquasecurity/tfsec-action@b466648d6e39e7c75324f25d83891162a721f2d6 # v1.0.3
+        with:
+          additional_args: '--format sarif --out tfsec.sarif'
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@17573ee1cc1b9d061760f3a006fc4aac4f944fd5 # v2.2.4
+        with:
+          sarif_file: tfsec.sarif
+  checkov:
+    name: checkov
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
+        with:
+          token: '${{ secrets.GITHUB_TOKEN }}'
+          fetch-depth: 0
+      - name: Run Checkov action
+        id: checkov
+        uses: bridgecrewio/checkov-action@d760887e9ca1a14f871195ab650988ac39c90a0a # v12.2138.0
+        with:
+          directory: ./
+          framework: terraform
+          output_file_path: ./checkov.sarif
+          output_format: sarif
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@17573ee1cc1b9d061760f3a006fc4aac4f944fd5 # v2.2.4
+        with:
+          sarif_file: ./checkov.sarif
