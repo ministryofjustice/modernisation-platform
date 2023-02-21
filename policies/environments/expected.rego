@@ -36,8 +36,9 @@ expected =
     "refer-monitor",
     "remote-supervision",
     "sprinkler",
-    "testing",
     "tariff",
+    "testing",
+    "tipstaff",
     "xhibit-portal"
     ]
 }
