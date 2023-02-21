@@ -32,7 +32,7 @@
   "tags": {
     "application": "ppud",
     "business-unit": "HMPPS",
-    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "infrastructure-support": "PPUDnotification@justice.gov.uk",
     "owner": "deepee.mann-basra@digital.justice.gov.uk"
   }
 }
