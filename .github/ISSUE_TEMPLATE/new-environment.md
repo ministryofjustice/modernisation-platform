@@ -41,12 +41,12 @@ https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/crea
 Choose one access level per environment.
 -->
 
-| Environment 		| Access level |
-| --- 				| --- |
-|<ul><li>[ ] Development</li></ul>	| <ul><li>[ ] view-only</li><li>[ ] developer</li><li>[ ] sandbox</li></ul> |
-|<ul><li>[ ] Test</li></ul>			| <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
+| Environment   | Access level |
+| ---     | --- |
+|<ul><li>[ ] Development</li></ul> | <ul><li>[ ] view-only</li><li>[ ] developer</li><li>[ ] sandbox</li></ul> |
+|<ul><li>[ ] Test</li></ul>   | <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
 |<ul><li>[ ] Preproduction</li></ul>| <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
-|<ul><li>[ ] Production</li></ul>	| <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
+|<ul><li>[ ] Production</li></ul> | <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
 
 ### Tags
 
@@ -59,9 +59,9 @@ The is-production tag will be inferred from the environment and is not needed he
 
 tag | value
 --- | ---
-application | 
-business-unit | 
-owner | 
+application |
+business-unit |
+owner |
 
 <!-- 
 Valid business-unit values
