@@ -1,5 +1,5 @@
 resource "random_id" "policy_id" {
-  length = 2
+  byte_length = 2
 }
 
 resource "aws_networkfirewall_firewall_policy" "main" {
