@@ -61,11 +61,14 @@ tag | value
 --- | ---
 application | 
 business-unit | 
+infrastructure-support |
 owner | 
 
 <!-- 
 Valid business-unit values
 HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE
+
+The infrastructure-support tag should be an email address which will receive AWS Health Operations emails.
 -->
 
 ## Networking options
