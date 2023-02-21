@@ -38,6 +38,7 @@ expected =
     "sprinkler",
     "testing",
     "tariff",
-    "xhibit-portal"
+    "xhibit-portal",
+    "tipstaff"
     ]
 }

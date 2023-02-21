@@ -1,0 +1,29 @@
+{
+    "account-type": "member",
+    "environments": [
+      {
+        "name": "development",
+        "access": [
+          {
+            "github_slug": "tipstaff-team",
+            "level": "sandbox",
+            "nuke": "rebuild"
+          }
+        ]
+      },
+           {
+        "name": "production",
+        "access": [
+          {
+            "github_slug": "tipstaff-team",
+            "level": "developer"
+          }
+        ]
+      }
+    ],
+    "tags": {
+      "application": "tipstaff",
+      "business-unit": "HMCTS",
+      "infrastructure-support": "dts-legacy-apps-support-team@hmcts.net",
+      "owner": "dts-legacy-apps-support-team@hmcts.net"
+    }
