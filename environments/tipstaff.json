@@ -5,7 +5,7 @@
         "name": "development",
         "access": [
           {
-            "github_slug": "tipstaff-team",
+            "github_slug": "dts-heritage-services",
             "level": "sandbox",
             "nuke": "rebuild"
           }
@@ -15,7 +15,7 @@
         "name": "production",
         "access": [
           {
-            "github_slug": "tipstaff-team",
+            "github_slug": "dts-heritage-services",
             "level": "developer"
           }
         ]
