@@ -1,5 +1,9 @@
+resource "random_id" "policy_id" {
+  length = 2
+}
+
 resource "aws_networkfirewall_firewall_policy" "main" {
-  name = replace(title(var.fw_policy_name), "/-|_/", "")
+  name = format("var.fw_policy_name), ${random_id.policy_id.id}")
   firewall_policy {
     stateful_engine_options {
       rule_order = "DEFAULT_ACTION_ORDER"
@@ -11,9 +15,13 @@ resource "aws_networkfirewall_firewall_policy" "main" {
     stateless_default_actions          = ["aws:forward_to_sfe"]
     stateless_fragment_default_actions = ["aws:drop"]
   }
-
+  lifecycle {
+    create_before_destroy = true
+  }
   tags = var.tags
 }
+
+
 
 resource "aws_networkfirewall_rule_group" "stateful" {
   capacity = var.fw_rulegroup_capacity
