@@ -3,7 +3,7 @@ resource "random_id" "policy_id" {
 }
 
 resource "aws_networkfirewall_firewall_policy" "main" {
-  name = format("var.fw_policy_name), ${random_id.policy_id.id}")
+  name = format("var.fw_policy_name, ${random_id.policy_id.id}")
   firewall_policy {
     stateful_engine_options {
       rule_order = "DEFAULT_ACTION_ORDER"
