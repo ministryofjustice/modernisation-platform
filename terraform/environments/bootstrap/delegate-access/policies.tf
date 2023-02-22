@@ -113,7 +113,6 @@ data "aws_iam_policy_document" "developer_additional" {
       "codebuild:PersistOAuthToken",
       "dms:CreateReplicationTask",
       "dms:DeleteReplicationTask",
-      "dms:DescribeReplicationTasks",
       "dms:ModifyReplicationTask",
       "dms:MoveReplicationTask",
       "ds:*Tags*",
