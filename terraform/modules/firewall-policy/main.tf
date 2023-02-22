@@ -25,7 +25,7 @@ resource "aws_networkfirewall_firewall_policy" "main" {
 
 resource "aws_networkfirewall_rule_group" "stateful" {
   capacity = var.fw_rulegroup_capacity
-  name     = replace(title(var.fw_rulegroup_name), "/-|_/", "")
+  name     = format("%s-%s",var.fw_rulegroup_name, random_id.policy_id.id)
   type     = "STATEFUL"
 
   rule_group { 
