@@ -29,6 +29,7 @@ expected =
     "maatdb",
     "mlra",
     "nomis",
+    "nomis-combined-reporting",
     "oas",
     "oasys",
     "performance-hub",
