@@ -33,6 +33,7 @@
   "tags": {
     "application": "delius-jitbit",
     "business-unit": "HMPPS",
+    "infrastructure-support": "probation-webops@digital.justice.gov.uk",
     "owner": "Probation WebOps: probation-webops@digital.justice.gov.uk"
   }
 }

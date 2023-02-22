@@ -14,8 +14,7 @@
   "tags": {
     "application": "apex",
     "business-unit": "LAA",
-    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
     "owner": "aws-webops-laa@digital.justice.gov.uk"
-  },
-  "debug-toggle": "true"
+  }
 }

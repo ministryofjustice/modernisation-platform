@@ -14,7 +14,7 @@
   "tags": {
     "application": "maatdb",
     "business-unit": "LAA",
-    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
     "owner": "laa-crime-apps@digital.justice.gov.uk"
   }
 }
