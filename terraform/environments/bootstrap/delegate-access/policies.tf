@@ -102,6 +102,8 @@ data "aws_iam_policy_document" "developer_additional" {
     effect = "Allow"
     actions = [
       "acm:ImportCertificate",
+      "athena:StartQueryExecution",
+      "athena:StopQueryExecution",
       "autoscaling:UpdateAutoScalingGroup",
       "aws-marketplace:ViewSubscriptions",
       "cloudwatch:PutDashboard",
@@ -109,6 +111,11 @@ data "aws_iam_policy_document" "developer_additional" {
       "cloudwatch:DeleteDashboards",
       "codebuild:ImportSourceCredentials",
       "codebuild:PersistOAuthToken",
+      "dms:CreateReplicationTask",
+      "dms:DeleteReplicationTask",
+      "dms:DescribeReplicationTasks",
+      "dms:ModifyReplicationTask",
+      "dms:MoveReplicationTask",
       "ds:*Tags*",
       "ds:*Snapshot*",
       "ec2:StartInstances",
