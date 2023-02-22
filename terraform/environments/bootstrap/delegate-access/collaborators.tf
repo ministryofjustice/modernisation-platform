@@ -106,6 +106,8 @@ module "collaborator_migration_role" {
 
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AWSApplicationMigrationFullAccess",
+    "arn:aws:iam::aws:policy/AWSDataSyncFullAccess",
     aws_iam_policy.migration.arn,
   ]
   number_of_custom_role_policy_arns = 2
