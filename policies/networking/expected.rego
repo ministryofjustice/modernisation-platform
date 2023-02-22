@@ -100,7 +100,7 @@ expected =
         "cidr": "10.26.40.0/21",
         "accounts": [
           "xhibit-portal-development",
-          "tipstaff.development"
+          "tipstaff-development"
         ]
       }
     },
@@ -109,7 +109,7 @@ expected =
         "cidr": "10.27.16.0/21",
         "accounts": [
           "xhibit-portal-production",
-          "tipstaff.production"
+          "tipstaff-production"
         ]
       }
     },
