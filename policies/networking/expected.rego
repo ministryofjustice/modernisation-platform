@@ -99,7 +99,8 @@ expected =
       "general": {
         "cidr": "10.26.40.0/21",
         "accounts": [
-          "xhibit-portal-development"
+          "xhibit-portal-development",
+          "tipstaff.development"
         ]
       }
     },
@@ -107,7 +108,8 @@ expected =
       "general": {
         "cidr": "10.27.16.0/21",
         "accounts": [
-          "xhibit-portal-production"
+          "xhibit-portal-production",
+          "tipstaff.production"
         ]
       }
     },
