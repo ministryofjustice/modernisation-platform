@@ -35,6 +35,7 @@ jobs:
       - name: Run TFLint
         run: tflint --format sarif --force > tflint.sarif
       - name: Upload SARIF file
+        if: success() || failure()
         uses: github/codeql-action/upload-sarif@17573ee1cc1b9d061760f3a006fc4aac4f944fd5 # v2.2.4
         with:
           sarif_file: tflint.sarif
@@ -52,6 +53,7 @@ jobs:
         with:
           additional_args: '--format sarif --out tfsec.sarif'
       - name: Upload SARIF file
+        if: success() || failure()
         uses: github/codeql-action/upload-sarif@17573ee1cc1b9d061760f3a006fc4aac4f944fd5 # v2.2.4
         with:
           sarif_file: tfsec.sarif
@@ -73,6 +75,7 @@ jobs:
           output_file_path: ./checkov.sarif
           output_format: sarif
       - name: Upload SARIF file
+        if: success() || failure()
         uses: github/codeql-action/upload-sarif@17573ee1cc1b9d061760f3a006fc4aac4f944fd5 # v2.2.4
         with:
           sarif_file: ./checkov.sarif
