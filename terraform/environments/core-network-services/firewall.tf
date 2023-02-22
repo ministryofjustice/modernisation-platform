@@ -164,8 +164,8 @@ module "firewall_policy" {
   cloudwatch_log_group_name = format("fw-%s-logs", aws_networkfirewall_firewall.external_inspection.name)
   fw_arn                    = aws_networkfirewall_firewall.external_inspection.arn
   fw_rulegroup_capacity     = "10000"
-  fw_policy_name            = format("%s-fw_policy", local.application_name)
-  fw_rulegroup_name         = format("%s-fw_rulegroup", local.application_name)
+  fw_policy_name            = format("%s-fw-policy", local.application_name)
+  fw_rulegroup_name         = format("%s-fw-rulegroup", local.application_name)
   rules                     = local.firewall_rules
   tags                      = local.tags
 }

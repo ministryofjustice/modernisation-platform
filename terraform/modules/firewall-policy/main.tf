@@ -3,7 +3,7 @@ resource "random_id" "policy_id" {
 }
 
 resource "aws_networkfirewall_firewall_policy" "main" {
-  name = format("%s-%s", var.fw_policy_name, random_id.policy_id.id)
+  name = replace(format("%s-%s", var.fw_policy_name, random_id.policy_id.id),"/-|_/", "")
   firewall_policy {
     stateful_engine_options {
       rule_order = "DEFAULT_ACTION_ORDER"
@@ -25,7 +25,7 @@ resource "aws_networkfirewall_firewall_policy" "main" {
 
 resource "aws_networkfirewall_rule_group" "stateful" {
   capacity = var.fw_rulegroup_capacity
-  name     = format("%s-%s",var.fw_rulegroup_name, random_id.policy_id.id)
+  name     = replace(format("%s-%s",var.fw_rulegroup_name, random_id.policy_id.id),"/-|_/", "")
   type     = "STATEFUL"
 
   rule_group { 
