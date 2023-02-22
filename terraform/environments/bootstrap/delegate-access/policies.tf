@@ -359,7 +359,6 @@ data "aws_iam_policy_document" "migration_additional" {
     actions = [
       "dms:*",
       "drs:*",
-      "mgn:*",
       "mgh:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
