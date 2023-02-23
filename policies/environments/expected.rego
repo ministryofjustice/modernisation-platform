@@ -25,6 +25,7 @@ expected =
     "equip",
     "example",
     "long-term-storage",
+    "laa-oem",
     "mi-platform",
     "maatdb",
     "mlra",
