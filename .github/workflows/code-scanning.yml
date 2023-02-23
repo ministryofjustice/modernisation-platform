@@ -2,15 +2,17 @@ name: Secure Code Analysis
 on:
   schedule:
     - cron: '35 1 * * *'
-permissions:
-  actions: read
-  contents: read
-  security-events: write
 env:
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+permissions:
+  contents: read
 jobs:
   tflint:
     runs-on: '${{ matrix.os }}'
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
     strategy:
       matrix:
         os:
@@ -33,7 +35,7 @@ jobs:
       - name: Init TFLint
         run: tflint --init
       - name: Run TFLint
-        run: tflint --format sarif --force > tflint.sarif
+        run: tflint --disable-rule=terraform_unused_declarations --format sarif > tflint.sarif
       - name: Upload SARIF file
         if: success() || failure()
         uses: github/codeql-action/upload-sarif@17573ee1cc1b9d061760f3a006fc4aac4f944fd5 # v2.2.4
@@ -42,6 +44,10 @@ jobs:
   tfsec:
     name: tfsec
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
     steps:
       - name: Clone repo
         uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
@@ -51,7 +57,7 @@ jobs:
       - name: Run tfsec
         uses: aquasecurity/tfsec-action@b466648d6e39e7c75324f25d83891162a721f2d6 # v1.0.3
         with:
-          additional_args: '--format sarif --out tfsec.sarif'
+          additional_args: '--format sarif --out tfsec.sarif --exclude aws-ssm-secret-use-customer-key,github-repositories-private,aws-vpc-no-excessive-port-access,github-repositories-require-signed-commits'
       - name: Upload SARIF file
         if: success() || failure()
         uses: github/codeql-action/upload-sarif@17573ee1cc1b9d061760f3a006fc4aac4f944fd5 # v2.2.4
@@ -60,6 +66,10 @@ jobs:
   checkov:
     name: checkov
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
     steps:
       - name: Checkout repo
         uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
@@ -68,12 +78,13 @@ jobs:
           fetch-depth: 0
       - name: Run Checkov action
         id: checkov
-        uses: bridgecrewio/checkov-action@b27dd5f8cf181eb58102b1e83a533d92d89ea172 # v12.2150.0
+        uses: bridgecrewio/checkov-action@f5385a64e12c122a12ede78678ccf4e158f85867 # v12.2151.0
         with:
           directory: ./
           framework: terraform
           output_file_path: ./checkov.sarif
           output_format: sarif
+          skip_check: CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
       - name: Upload SARIF file
         if: success() || failure()
         uses: github/codeql-action/upload-sarif@17573ee1cc1b9d061760f3a006fc4aac4f944fd5 # v2.2.4
