@@ -80,7 +80,7 @@ data "aws_iam_policy_document" "bucket_policy" {
 
 }
 
-module "s3-bucket" {
+module "s3-software-bucket" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.2.0"
 
   providers = {
