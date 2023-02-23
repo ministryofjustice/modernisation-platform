@@ -368,6 +368,7 @@ data "aws_iam_policy_document" "migration_additional" {
       "ec2:DescribeSecurityGroups",
       "ec2:DescribeStaleSecurityGroups",
       "ec2:ModifySecurityGroupRules",
+      "ec2:RunInstances",
       "ec2:RevokeSecurityGroupEgress",
       "ec2:RevokeSecurityGroupIngress",
       "ec2:UpdateSecurityGroupRuleDescriptionsEgress",
