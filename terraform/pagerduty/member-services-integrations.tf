@@ -43,6 +43,7 @@ resource "pagerduty_service" "nomis_nonprod" {
   description             = "Nomis Alarms Non Prod"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = null
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
