@@ -1,10 +1,17 @@
 #!/bin/bash
 
-basedir=modernisation-platform-environments/terraform/environments
-networkdir=core-repo/environments-networks
-templates=core-repo/terraform/templates/*.tf
-environment_json_dir=core-repo/environments
-codeowners_file=modernisation-platform-environments/.github/CODEOWNERS
+# To test the script locally, uncomment the following two lines
+#core_repo_dir=.
+#env_repo_dir=../modernisation-platform-environments
+
+# To test the script locally, comment out the following two lines
+core_repo_dir=core-repo
+env_repo_dir=modernisation-platform-environments
+basedir=$env_repo_dir/terraform/environments
+networkdir=$core_repo_dir/environments-networks
+templates=$core_repo_dir/terraform/templates/*.tf
+environment_json_dir=$core_repo_dir/environments
+codeowners_file=$env_repo_dir/.github/CODEOWNERS
 
 provision_environment_directories() {
   # This reshapes the JSON for subnet sets to include the business unit, pulled from the filename; and the set name from the key of the object:
@@ -31,7 +38,7 @@ provision_environment_directories() {
   #     ]
   #   }...
   # ]
-  networking_definitions=$(jq -n '[ inputs | { subnet_sets: .cidr.subnet_sets | to_entries | map_values(.value + { set: .key, "business-unit": input_filename | ltrimstr("core-repo/environments-networks/") | rtrimstr(".json") | split("-")[0] } ) } ]' "$networkdir"/*.json)
+  networking_definitions=$(jq -n '[ inputs | { subnet_sets: .cidr.subnet_sets | to_entries | map_values(.value + { set: .key, "business-unit": input_filename | ltrimstr("$core_repo_dir/environments-networks/") | rtrimstr(".json") | split("-")[0] } ) } ]' "$networkdir"/*.json)
 
   for file in $environment_json_dir/*.json; do
 
@@ -58,7 +65,7 @@ provision_environment_directories() {
 
       # Create workflow file
       echo "Creating workflow file"
-      sed "s/\$application_name/$application_name/g" "core-repo/.github/workflows/templates/workflow-template.yml" > "modernisation-platform-environments/.github/workflows/$application_name.yml"
+      sed "s/\$application_name/$application_name/g" "$core_repo_dir/.github/workflows/templates/workflow-template.yml" > "$env_repo_dir/.github/workflows/$application_name.yml"
     fi
 
     # This filters and reshapes networking_definitions to only include the business units and subnet sets for $APPLICATION_NAME
@@ -104,9 +111,11 @@ copy_templates() {
         if [ `uname` = "Linux" ]
         then
           sed -i "s/environments\//environments\/members\//g" "$1/$filename"
+          sed -i "/dynamodb_table/d" "$1/$filename"
         else
           # This must be a Mac
           sed -i '' "s/environments\//environments\/members\//g" "$1/$filename"
+          sed -i '' "/dynamodb_table/d" "$1/$filename"
         fi
       fi
     fi
@@ -119,9 +128,9 @@ copy_templates() {
   # rename member secrets file to secrets.tf
   mv $1/member_data.tf $1/secrets.tf
   # copy application variable file
-  cp core-repo/terraform/templates/application_variables.json $1
+  cp $core_repo_dir/terraform/templates/application_variables.json $1
   # copy service runbook template file and rename it to README.md
-  cp core-repo/terraform/templates/service_runbook_template.md $1/README.md
+  cp $core_repo_dir/terraform/templates/service_runbook_template.md $1/README.md
 
   echo "Finished copying templates."
 }
