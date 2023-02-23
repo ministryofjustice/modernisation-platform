@@ -11,6 +11,7 @@ expected =
     "apex",
     "bichard7",
     "ccms-ebs",
+    "ccms-oem",
     "cooker",
     "core-logging",
     "core-network-services",
