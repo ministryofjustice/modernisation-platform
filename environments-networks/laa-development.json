@@ -6,6 +6,7 @@
         "accounts": [
           "apex-development",
           "ccms-ebs-development",
+          "laa-oem-development",
           "maatdb-development",
           "mlra-development",
           "oas-development"

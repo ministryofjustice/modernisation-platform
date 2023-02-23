@@ -151,6 +151,7 @@ expected =
         "accounts": [
           "apex-development",
           "ccms-ebs-development",
+          "laa-oem-development",
           "maatdb-development",
           "mlra-development",
           "oas-development"
@@ -190,7 +191,8 @@ expected =
         "cidr": "10.26.96.0/21",
         "accounts": [
           "mlra-test",
-          "ccms-ebs-test"
+          "ccms-ebs-test",
+          "laa-oem-test"
         ]
       }
     },
