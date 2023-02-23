@@ -36,6 +36,24 @@ resource "pagerduty_service_integration" "nomis_cloudwatch" {
 
 # Slack channel: #dso_alerts_modernisation_platform
 
+# Nomis Non Prod
+
+resource "pagerduty_service" "nomis_nonprod" {
+  name                    = "Nomis Alarms Non Prod"
+  description             = "Nomis Alarms Non Prod"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = null
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "nomis_nonprod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.nomis_nonprod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+# Slack channel: #dso_alerts_devtest_modernisation_platform
+
 # LAA MLRA Non Prod
 resource "pagerduty_service" "laa_mlra_nonprod" {
   name                    = "Legal Aid Agency MLRA Application Non Prod"
