@@ -86,7 +86,7 @@ module "s3-bucket" {
   providers = {
     aws.bucket-replication = aws.bucket-replication
   }
-  bucket_prefix       = "mod-platform-image-software-bucket"
+  bucket_prefix       = "mod-platform-software-bucket"
   bucket_policy       = [data.aws_iam_policy_document.bucket_policy.json]
   replication_enabled = false
   versioning_enabled  = true
