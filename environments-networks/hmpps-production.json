@@ -10,7 +10,8 @@
           "nomis-production",
           "oasys-production",
           "delius-iaps-production",
-          "delius-jitbit-production"
+          "delius-jitbit-production",
+          "nomis-combined-reporting-production"
         ]
       }
     }
