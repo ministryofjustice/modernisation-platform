@@ -11,7 +11,7 @@
           }
         ]
       },
-           {
+      {
         "name": "test",
         "access": [
           {
@@ -27,4 +27,5 @@
       "infrastructure-support": "donovan.artz@digital.justice.gov.uk",
       "owner": "donovan.artz@digital.justice.gov.uk"
     }
-}
+  }
+  
