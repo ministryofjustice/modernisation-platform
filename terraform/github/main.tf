@@ -216,6 +216,35 @@ module "terraform-module-ssm-patching" {
   secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
+module "terraform-module-ec2-autoscaling-group" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-ec2-autoscaling-group"
+  type        = "module"
+  description = "Module for ec2 autoscaling"
+  topics = [
+    "aws",
+    "iam",
+    "ec2",
+    "moj-security"
+  ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
+}
+
+module "terraform-module-ec2-instance" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-ec2-instance"
+  type        = "module"
+  description = "Module for ec2 instances"
+  topics = [
+    "aws",
+    "iam",
+    "ec2",
+    "moj-security"
+  ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
+}
+
+
 module "terraform-module-lambda-function" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-lambda-function"
@@ -389,6 +418,8 @@ module "core-team" {
     module.terraform-module-lambda-function.repository.name,
     module.terraform-module-ssm-patching.repository.name,
     module.modernisation-platform-incident-response.repository.name,
+    module.terraform-module-ec2-instance.repository.name,
+    module.terraform-module-ec2-autoscaling-group.repository.name
   ]
 
   maintainers = local.maintainers
