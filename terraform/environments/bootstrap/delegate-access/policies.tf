@@ -359,20 +359,6 @@ data "aws_iam_policy_document" "migration_additional" {
     actions = [
       "dms:*",
       "drs:*",
-      "ec2:AuthorizeSecurityGroupEgress",
-      "ec2:AuthorizeSecurityGroupIngress",
-      "ec2:CreateSecurityGroup",
-      "ec2:DeleteSecurityGroup",
-      "ec2:DescribeSecurityGroupReferences",
-      "ec2:DescribeSecurityGroupRules",
-      "ec2:DescribeSecurityGroups",
-      "ec2:DescribeStaleSecurityGroups",
-      "ec2:ModifySecurityGroupRules",
-      "ec2:RunInstances",
-      "ec2:RevokeSecurityGroupEgress",
-      "ec2:RevokeSecurityGroupIngress",
-      "ec2:UpdateSecurityGroupRuleDescriptionsEgress",
-      "ec2:UpdateSecurityGroupRuleDescriptionsIngress",
       "mgh:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
