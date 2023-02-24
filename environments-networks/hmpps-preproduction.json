@@ -9,7 +9,8 @@
           "oasys-preproduction",
           "ppud-preproduction",
           "delius-iaps-preproduction",
-          "delius-jitbit-preproduction"
+          "delius-jitbit-preproduction",
+          "nomis-combined-reporting-preproduction"
         ]
       }
     }

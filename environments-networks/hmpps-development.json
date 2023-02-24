@@ -12,7 +12,8 @@
           "nomis-development",
           "oasys-development",
           "delius-iaps-development",
-          "delius-jitbit-development"
+          "delius-jitbit-development",
+          "nomis-combined-reporting-development"
         ]
       }
     }
