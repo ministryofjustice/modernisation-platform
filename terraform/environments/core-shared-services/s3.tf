@@ -65,9 +65,7 @@ data "aws_iam_policy_document" "bucket_policy" {
 
     resources = [
       "${module.s3-bucket.bucket.arn}/*",
-      module.s3-bucket.bucket.arn,
-      "${module.s3-software-bucket.bucket.arn}/*",
-      module.s3-software-bucket.bucket.arn
+      module.s3-bucket.bucket.arn
     ]
     principals {
       type        = "AWS"
@@ -89,7 +87,7 @@ module "s3-software-bucket" {
     aws.bucket-replication = aws.bucket-replication
   }
   bucket_prefix       = "modernisation-platform-software"
-  bucket_policy       = [data.aws_iam_policy_document.bucket_policy.json]
+  bucket_policy       = [data.aws_iam_policy_document.bucket_policy_software.json]
   replication_enabled = false
   versioning_enabled  = true
   force_destroy       = false
@@ -135,4 +133,31 @@ module "s3-software-bucket" {
   ]
 
   tags = local.tags
+}
+
+data "aws_iam_policy_document" "bucket_policy_software" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:DeleteObject",
+      "s3:ListBucket"
+    ]
+
+    resources = [
+      "${module.s3-software-bucket.bucket.arn}/*",
+      module.s3-software-bucket.bucket.arn
+    ]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+  }
+
 }
