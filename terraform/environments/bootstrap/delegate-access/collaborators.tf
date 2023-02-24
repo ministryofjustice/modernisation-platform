@@ -110,9 +110,10 @@ module "collaborator_migration_role" {
     "arn:aws:iam::aws:policy/AWSDataSyncFullAccess",
     "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
     "arn:aws:iam::aws:policy/ServerMigrationConnector",
+    "arn:aws:iam::aws:policy/AWSApplicationMigrationEC2Access",
     aws_iam_policy.migration.arn,
   ]
-  number_of_custom_role_policy_arns = 6
+  number_of_custom_role_policy_arns = 7
 }
 
 module "collaborator_database_mgmt_role" {
