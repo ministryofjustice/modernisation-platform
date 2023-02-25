@@ -120,6 +120,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/laa-oem"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/long-term-storage"
     schedule:
       interval: "daily"
@@ -137,6 +141,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/nomis"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/environments/nomis-combined-reporting"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
@@ -173,6 +181,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/testing"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/environments/tipstaff"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
