@@ -38,7 +38,7 @@ provision_environment_directories() {
   #     ]
   #   }...
   # ]
-  networking_definitions=$(jq -n '[ inputs | { subnet_sets: .cidr.subnet_sets | to_entries | map_values(.value + { set: .key, "business-unit": input_filename | ltrimstr("$core_repo_dir/environments-networks/") | rtrimstr(".json") | split("-")[0] } ) } ]' "$networkdir"/*.json)
+  networking_definitions=$(jq -n '[ inputs | { subnet_sets: .cidr.subnet_sets | to_entries | map_values(.value + { set: .key, "business-unit": input_filename | ltrimstr("'$core_repo_dir'/environments-networks/") | rtrimstr(".json") | split("-")[0] } ) } ]' "$networkdir"/*.json)
 
   for file in $environment_json_dir/*.json; do
 
@@ -124,9 +124,9 @@ copy_templates() {
   # rename member data file to data.tf
   mv $1/member_data.tf $1/data.tf
   # rename member locals file to locals.tf
-  mv $1/member_data.tf $1/locals.tf
+  mv $1/member_locals.tf $1/locals.tf
   # rename member secrets file to secrets.tf
-  mv $1/member_data.tf $1/secrets.tf
+  mv $1/member_secrets.tf $1/secrets.tf
   # copy application variable file
   cp $core_repo_dir/terraform/templates/application_variables.json $1
   # copy service runbook template file and rename it to README.md

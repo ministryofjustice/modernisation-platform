@@ -28,7 +28,8 @@ expected =
           "nomis-preproduction",
           "ppud-preproduction",
           "delius-iaps-preproduction",
-          "delius-jitbit-preproduction"
+          "delius-jitbit-preproduction",
+          "nomis-combined-reporting-preproduction"
         ]
       }
     },
@@ -52,7 +53,8 @@ expected =
           "nomis-development",
           "oasys-development",
           "delius-iaps-development",
-          "delius-jitbit-development"
+          "delius-jitbit-development",
+          "nomis-combined-reporting-development"
         ]
       }
     },
@@ -69,7 +71,8 @@ expected =
         "cidr": "10.26.8.0/21",
         "accounts": [
           "nomis-test",
-          "oasys-test"
+          "oasys-test",
+          "nomis-combined-reporting-test"
         ]
       }
     },
@@ -91,7 +94,8 @@ expected =
           "oasys-production",
           "nomis-production",
           "delius-iaps-production",
-          "delius-jitbit-production"
+          "delius-jitbit-production",
+          "nomis-combined-reporting-production"
         ]
       }
     },

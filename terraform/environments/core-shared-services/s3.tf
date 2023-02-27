@@ -135,6 +135,7 @@ module "s3-software-bucket" {
   tags = local.tags
 }
 
+
 data "aws_iam_policy_document" "software_bucket_policy" {
   statement {
     effect = "Allow"

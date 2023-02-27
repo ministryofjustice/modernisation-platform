@@ -1,11 +1,8 @@
 locals {
 
-  application_name = "$application_name"
+  application_name = "nomis-combined-reporting"
 
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
-
-  # Stores modernisation platform account id for setting up the modernisation-platform provider
-  modernisation_platform_account_id = data.aws_ssm_parameter.modernisation_platform_account_id.value
 
   # This takes the name of the Terraform workspace (e.g. core-vpc-production), strips out the application name (e.g. core-vpc), and checks if
   # the string leftover is `-production`, if it isn't (e.g. core-vpc-non-production => -non-production) then it sets the var to false.
@@ -19,7 +16,7 @@ locals {
     jsondecode(data.http.environments_file.response_body).tags,
     { "is-production" = local.is-production },
     { "environment-name" = terraform.workspace },
-    { "source-code" = "https://github.com/ministryofjustice/modernisation-platform-environments" }
+    { "source-code" = "https://github.com/ministryofjustice/modernisation-platform" }
   )
 
   environment     = trimprefix(terraform.workspace, "${var.networking[0].application}-")
@@ -34,5 +31,5 @@ locals {
   # environment specfic variables
   # example usage:
   # example_data = local.application_data.accounts[local.environment].example_var
-  application_data = fileexists("./application_variables.json") ? jsondecode(file("./application_variables.json")) : null
+  application_data = fileexists("./application_variables.json") ? jsondecode(file("./application_variables.json")) : {}
 }
