@@ -87,7 +87,7 @@ module "s3-software-bucket" {
     aws.bucket-replication = aws.bucket-replication
   }
   bucket_prefix       = "modernisation-platform-software"
-  bucket_policy       = [data.aws_iam_policy_document.bucket_policy_software.json]
+  bucket_policy       = [data.aws_iam_policy_document.software_bucket_policy.json]
   replication_enabled = false
   versioning_enabled  = true
   force_destroy       = false
@@ -135,7 +135,8 @@ module "s3-software-bucket" {
   tags = local.tags
 }
 
-data "aws_iam_policy_document" "bucket_policy_software" {
+
+data "aws_iam_policy_document" "software_bucket_policy" {
   statement {
     effect = "Allow"
     actions = [
