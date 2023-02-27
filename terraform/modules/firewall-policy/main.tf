@@ -16,7 +16,7 @@ resource "aws_networkfirewall_firewall_policy" "main" {
     stateless_fragment_default_actions = ["aws:drop"]
   }
   lifecycle {
-    create_before_destroy = false
+    create_before_destroy = true
   }
   tags = var.tags
 }
