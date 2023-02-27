@@ -15,6 +15,15 @@ on:
       - 'terraform/environments/$application_name/**'
       - '.github/workflows/$application_name.yml'
   workflow_dispatch:
+    inputs:
+      action:
+        description: 'Set either [deploy|destroy].'
+        default: 'deploy'
+        required: true
+        type: string
+        options:
+        - deploy
+        - destroy
 env:
   TF_IN_AUTOMATION: true
   AWS_REGION: "eu-west-2"
@@ -36,7 +45,7 @@ jobs:
           - environment: test
     name: Plan - ${{  matrix.environment }}
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    if: github.ref != 'refs/heads/main' || github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'deploy'
     env:
       TF_ENV: ${{ matrix.environment }}
     steps:
@@ -66,7 +75,7 @@ jobs:
   # These jobs run when creating a pull request
   deploy-dev-test:
     needs: plan-dev-test
-    if: success()
+    if: success() && github.event.inputs.action != 'destroy'
     strategy:
       matrix:
         include:
@@ -101,6 +110,79 @@ jobs:
           bash scripts/terraform-init.sh terraform/environments/$GITHUB_WORKFLOW
           terraform -chdir="terraform/environments/${GITHUB_WORKFLOW}" workspace select "${GITHUB_WORKFLOW}-${TF_ENV}"
           bash scripts/terraform-apply.sh terraform/environments/$GITHUB_WORKFLOW
+
+  destroy-plan-dev-test:
+    strategy:
+      matrix:
+        include:
+          - environment: development
+          - environment: test
+    name: Terraform destroy plan - ${{ github.workflow }} - ${{  matrix.environment }}
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy'
+    env:
+      TF_ENV: ${{ matrix.environment }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
+      - name: Set Account Number
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e --arg account_name "${GITHUB_WORKFLOW}-${TF_ENV}" '.account_ids[$account_name]' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838 # v1.7.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Load and Configure Terraform
+        uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1 # v2.0.3
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+      - name: Terraform destroy plan - ${{ github.workflow }} - ${{ matrix.environment }}
+        run: |
+          terraform --version
+          echo "Terraform destroy plan - ${TF_ENV}"
+          bash scripts/terraform-init.sh terraform/environments/$GITHUB_WORKFLOW
+          terraform -chdir="terraform/environments/${GITHUB_WORKFLOW}" workspace select "${GITHUB_WORKFLOW}-${TF_ENV}"
+          bash scripts/terraform-plan.sh terraform/environments/$GITHUB_WORKFLOW -destroy
+
+  destroy-apply-dev-test:
+    needs: destroy-plan-dev-test
+    if: success()
+    strategy:
+      matrix:
+        include:
+          - environment: development
+          - environment: test
+    name: Terraform destroy apply - ${{ github.workflow }} - ${{  matrix.environment }}
+    runs-on: ubuntu-latest
+    env:
+      TF_ENV: ${{ matrix.environment }}
+    environment:
+      name: ${{ github.workflow }}-${{ matrix.environment }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
+      - name: Set Account Number
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e --arg account_name "${GITHUB_WORKFLOW}-${TF_ENV}" '.account_ids[$account_name]' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838 # v1.7.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Load and Configure Terraform
+        uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1 # v2.0.3
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+      - name: Terraform destroy apply - ${{ github.workflow }} - ${{ matrix.environment }}
+        run: |
+          terraform --version
+          echo "Terraform destroy apply - ${TF_ENV}"
+          bash scripts/terraform-init.sh terraform/environments/$GITHUB_WORKFLOW
+          terraform -chdir="terraform/environments/${GITHUB_WORKFLOW}" workspace select "${GITHUB_WORKFLOW}-${TF_ENV}"
+          bash scripts/terraform-apply.sh terraform/environments/$GITHUB_WORKFLOW -destroy
 
 #  # Plan + deploy for pre-production and production environments, only from main
   plan-preprod-prod:
