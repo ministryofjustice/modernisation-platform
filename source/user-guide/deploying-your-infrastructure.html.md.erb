@@ -35,6 +35,13 @@ Here is a high level diagram of what the workflow file does.
  - a [Terraform plan](https://www.terraform.io/docs/cli/commands/plan.html) on the `preproduction` and `production` environments (if you have them).
  - a [Terraform apply](https://www.terraform.io/docs/cli/commands/apply.html) on the `preproduction` and `production` environments (if you have them), which is held until a reviewer from your GitHub team approves the deployment.
 
+### Jobs on a manual trigger
+
+ - a [Terraform plan](https://www.terraform.io/docs/cli/commands/plan.html) on the `development` and `test` environments (if you have them), if your action is manually triggered with the `deploy` action.
+ - a [Terraform apply](https://www.terraform.io/docs/cli/commands/apply.html) on the `development` and `test` environments (if you have them), if your action was manually triggered with the `deploy` action, which is held until a reviewer from your GitHub team approves the deployment.
+ - a [Terraform plan destroy](https://developer.hashicorp.com/terraform/cli/commands/plan#planning-modes) on the `development` and `test` environments (if you have them), if your action is manually triggered with the `destroy` action.
+ - a [Terraform apply destroy](https://developer.hashicorp.com/terraform/cli/commands/destroy) on the `development` and `test` environments (if you have them), if your action was manually triggered with the `destroy` action, which is held until a reviewer from your GitHub team approves the deployment.
+
 ### Viewing Terraform plans
 
 1. Navigate to the [Actions](https://github.com/ministryofjustice/modernisation-platform-environments/actions) tab in the environments repository.
