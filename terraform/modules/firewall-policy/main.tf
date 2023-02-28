@@ -9,7 +9,6 @@ resource "aws_networkfirewall_firewall_policy" "main" {
       rule_order = "DEFAULT_ACTION_ORDER"
     }
     stateful_rule_group_reference {
-      priority     = 1
       resource_arn = aws_networkfirewall_rule_group.stateful.arn
     }
     stateless_default_actions          = ["aws:forward_to_sfe"]
