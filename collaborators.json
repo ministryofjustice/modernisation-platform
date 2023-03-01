@@ -377,6 +377,60 @@
           "access": "instance-management"
         }
       ]
+    },
+    {
+      "username": "gemma.mills",
+      "github-username": "GemmaMills01",
+      "accounts": [
+        {
+          "account-name": "delius-iaps-development",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "delius-iaps-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "delius-iaps-production",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "ted.colver",
+      "github-username": "tedcolver01",
+      "accounts": [
+        {
+          "account-name": "delius-iaps-development",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "delius-iaps-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "delius-iaps-production",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "michaela.blowers",
+      "github-username": "MichaelaB21",
+      "accounts": [
+        {
+          "account-name": "delius-iaps-development",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "delius-iaps-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "delius-iaps-production",
+          "access": "instance-management"
+        }
+      ]
     }
   ]
 }
