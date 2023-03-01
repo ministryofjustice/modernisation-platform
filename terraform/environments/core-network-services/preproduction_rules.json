@@ -5,5 +5,12 @@
     "destination_ip": "10.27.72.0/21",
     "destination_port": "80",
     "protocol": "TCP"
+  },
+  "default_block_preprod_production_ingress": {
+    "action": "DROP",
+    "source_ip": "0.0.0.0/0",
+    "destination_ip": "10.27.0.0/16",
+    "destination_port": "ANY",
+    "protocol": "TCP"
   }
 }
