@@ -273,6 +273,10 @@
         {
           "account-name": "ppud-preproduction",
           "access": "migration"
+        },
+        {
+          "account-name": "ppud-production",
+          "access": "migration"
         }
       ]
     },
@@ -287,6 +291,10 @@
         {
           "account-name": "ppud-preproduction",
           "access": "migration"
+        },
+        {
+          "account-name": "ppud-production",
+          "access": "migration"
         }
       ]
     },
@@ -300,6 +308,10 @@
         },
         {
           "account-name": "ppud-preproduction",
+          "access": "migration"
+        },
+        {
+          "account-name": "ppud-production",
           "access": "migration"
         }
       ]
