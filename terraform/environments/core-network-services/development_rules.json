@@ -13,7 +13,7 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "analytics_platform_to_mp_dev_test" {
+  "analytics_platform_to_mp_dev_test": {
     "action": "PASS",
     "source_ip": "10.200.0.0/16",
     "destination_ip": "10.26.0.0/16",

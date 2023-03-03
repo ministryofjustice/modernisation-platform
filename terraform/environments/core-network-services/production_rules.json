@@ -88,5 +88,6 @@
    "source_ip": "10.47.0.128/26",
    "destination_ip": "10.27.0.0/16",
    "destination_port": "ANY",
-   "protocol": "TCP"
+   "protocol": "TCP" 
+}
 }
