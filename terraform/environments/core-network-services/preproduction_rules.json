@@ -14,11 +14,11 @@
     "protocol": "TCP"
   },
   "analytical_platform_to_mp_prod_preprod":{
-      "action": "PASS",
-      "source_ip": "10.201.0.0/16",
-      "destination_ip": "10.27.0.0/16",
-      "destination_port": "ANY",
-      "protocol": "TCP"
+    "action": "PASS",
+    "source_ip": "10.201.0.0/16",
+    "destination_ip": "10.27.0.0/16",
+    "destination_port": "ANY",
+    "protocol": "TCP"
   },
     "nomisapi_preprod_root_vnet_to_mp_prod_preprod": {
     "action": "PASS",

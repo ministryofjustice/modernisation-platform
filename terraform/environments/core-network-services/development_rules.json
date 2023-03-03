@@ -20,40 +20,39 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-    "noms_mgmt_vnet_to_mp_dev_test": {            
-      "action": "PASS",
-      "source_ip": "10.102.0.0/16",
-      "destination_ip": "10.26.0.0/16",
-      "destination_port": "ANY",
-      "protocol": "TCP"
+  "noms_mgmt_vnet_to_mp_dev_test": {
+    "action": "PASS",
+    "source_ip": "10.102.0.0/16",
+    "destination_ip": "10.26.0.0/16",
+    "destination_port": "ANY",
+    "protocol": "TCP"
   },
-    "noms_mgmt_dr_vnet_to_mp_dev_test": {
-      "action":"PASS",
-      "source_ip": "10.112.0.0/16",
-      "destination_ip": "10.26.0.0/16",
-      "destination_port": "ANY",
-      "protocol": "TCP"  
+  "noms_mgmt_dr_vnet_to_mp_dev_test": {
+    "action":"PASS",
+    "source_ip": "10.112.0.0/16",
+    "destination_ip": "10.26.0.0/16",
+    "destination_port": "ANY",
+    "protocol": "TCP"  
   },
-    "aks_studio_hosting_dev_1_vnet_to_mp_dev_test": {
-      "action":"PASS",
-      "source_ip": "10.247.0.0/20",
-      "destination_ip": "10.26.0.0/16",
-      "destination_port": "ANY",
-      "protocol": "TCP"
-    
+  "aks_studio_hosting_dev_1_vnet_to_mp_dev_test": {
+    "action":"PASS",
+    "source_ip": "10.247.0.0/20",
+    "destination_ip": "10.26.0.0/16",
+    "destination_port": "ANY",
+    "protocol": "TCP"
   },      
-    "nomisapi_t2_root_vnet_to_mp_dev_test": {
-      "action":"PASS",
-      "source_ip": "10.47.0.192/26",
-      "destination_ip": "10.26.0.0/16",
-      "destination_port": "ANY",
-      "protocol": "TCP"
+  "nomisapi_t2_root_vnet_to_mp_dev_test": {
+    "action":"PASS",
+    "source_ip": "10.47.0.192/26",
+    "destination_ip": "10.26.0.0/16",
+    "destination_port": "ANY",
+    "protocol": "TCP"
   },  
-    "nomisapi_t3_root_vnet_to_mp_dev_test": {
-      "action":"PASS",
-      "source_ip": "10.47.0.0/26",
-      "destination_ip": "10.26.0.0/16",
-      "destination_port": "ANY",
-      "protocol": "TCP"
+  "nomisapi_t3_root_vnet_to_mp_dev_test": {
+    "action":"PASS",
+    "source_ip": "10.47.0.0/26",
+    "destination_ip": "10.26.0.0/16",
+    "destination_port": "ANY",
+    "protocol": "TCP"
   }
 }
