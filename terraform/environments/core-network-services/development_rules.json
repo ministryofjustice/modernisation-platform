@@ -17,7 +17,7 @@
     "action": "PASS",
     "source_ip": "10.200.0.0/16",
     "destination_ip": "10.26.0.0/16",
-    "destination_port": "ANY",
+    "destination_port": "1521",
     "protocol": "TCP"
   },
   "noms_mgmt_vnet_to_mp_dev_test": {
@@ -38,21 +38,21 @@
     "action":"PASS",
     "source_ip": "10.247.0.0/20",
     "destination_ip": "10.26.0.0/16",
-    "destination_port": "ANY",
+    "destination_port": "1521",
     "protocol": "TCP"
   },      
   "nomisapi_t2_root_vnet_to_mp_dev_test": {
     "action":"PASS",
     "source_ip": "10.47.0.192/26",
     "destination_ip": "10.26.0.0/16",
-    "destination_port": "ANY",
+    "destination_port": "1521",
     "protocol": "TCP"
   },  
   "nomisapi_t3_root_vnet_to_mp_dev_test": {
     "action":"PASS",
     "source_ip": "10.47.0.0/26",
     "destination_ip": "10.26.0.0/16",
-    "destination_port": "ANY",
+    "destination_port": "1521",
     "protocol": "TCP"
   }
 }
