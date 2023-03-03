@@ -33,5 +33,19 @@
     "destination_ip": "10.26.96.0/21",
     "destination_port": "80",
     "protocol": "TCP"
+  },
+  "noms_test_dr_vnet_to_mp_test": {
+    "action": "PASS",
+    "source_ip": "10.111.0.0/16",
+    "destination_ip": "10.26.0.0/16",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "noms_test_vnet_to_mp_test": {
+    "action": "PASS",
+    "source_ip": "10.101.0.0/16",
+    "destination_ip": "10.26.0.0/16",
+    "destination_port": "ANY",
+    "protocol": "TCP"
   }
 }
