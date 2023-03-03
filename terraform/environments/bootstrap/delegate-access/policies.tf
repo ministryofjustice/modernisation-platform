@@ -104,6 +104,8 @@ data "aws_iam_policy_document" "developer_additional" {
       "acm:ImportCertificate",
       "autoscaling:UpdateAutoScalingGroup",
       "aws-marketplace:ViewSubscriptions",
+      "cloudwatch:DisableAlarmActions",
+      "cloudwatch:EnableAlarmActions",
       "cloudwatch:PutDashboard",
       "cloudwatch:ListMetrics",
       "cloudwatch:DeleteDashboards",
