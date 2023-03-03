@@ -7,7 +7,7 @@
     "protocol": "TCP"
   },
   "default_block_development_test_ingress": {
-    "action": "DROP",
+    "action": "ALERT",
     "source_ip": "0.0.0.0/0",
     "destination_ip": "10.26.0.0/16",
     "destination_port": "ANY",
