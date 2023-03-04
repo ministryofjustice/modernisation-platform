@@ -284,6 +284,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "gomod"
+    directory: "/scripts/internal/get-testing-ci-user-creds"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gomod"
     directory: "/terraform/environments/core-logging/test"
     schedule:
       interval: "daily"
