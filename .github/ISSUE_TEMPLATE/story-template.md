@@ -22,7 +22,7 @@ Can it link to a persona?
 
 <!-- Describe the value and purpose of the changes -->
 
-## Questions / Assumptions / Hypothesis
+## Assumptions / Hypothesis / Questions / Unknowns
 
 <!-- Additional information to explain approach taken
 ### Hypothesis 
@@ -31,9 +31,11 @@ Then... [this will happ]
 
 ### Proposal
 A proposal that is something testable, don't worry whether it works or not, it's a place for ideas. 
+
+### Unknowns
+Potential pitfalls that could cause the story to expand beyond its original scope. Ideally this section will remain blank.
+
 -->
-
-
 
 ## Definition of done
 
