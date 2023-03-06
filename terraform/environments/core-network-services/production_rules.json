@@ -103,5 +103,12 @@
    "destination_ip": "10.27.0.0/16",
    "destination_port": "1521",
    "protocol": "TCP"
+  },
+  "nomis_prod_monitoring_to_mp_prod": {    
+   "action": "PASS", 
+   "source_ip": "172.20.95.143/32",
+   "destination_ip": "10.27.8.153/32",
+   "destination_port": "9100",
+   "protocol": "TCP" 
   }
 }
