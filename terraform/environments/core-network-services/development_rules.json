@@ -1,31 +1,17 @@
 {
-  "laa_development_to_mp_laa_development_http": {
+  "laa_development_to_mp_laa_development": {
     "action": "PASS",
     "source_ip": "10.202.0.0/20",
     "destination_ip": "10.26.56.0/21",
-    "destination_port": "80",
-    "protocol": "TCP"
+    "destination_port": "ANY",
+    "protocol": "IP"
   },
-  "laa_shared_services_to_mp_laa_development_ssh": {
+  "laa_shared_services_to_mp_laa_development": {
     "action": "PASS",
-    "source_ip": "10.200.0.0/20",
+    "source_ip": "10.202.0.0/20",
     "destination_ip": "10.26.56.0/21",
-    "destination_port": "22",
-    "protocol": "TCP"
-  },
-  "laa_shared_services_to_mp_laa_development_http": {
-    "action": "PASS",
-    "source_ip": "10.200.0.0/20",
-    "destination_ip": "10.26.56.0/21",
-    "destination_port": "80",
-    "protocol": "TCP"
-  },
-  "laa_shared_services_to_mp_laa_development_https": {
-    "action": "PASS",
-    "source_ip": "10.200.0.0/20",
-    "destination_ip": "10.26.56.0/21",
-    "destination_port": "443",
-    "protocol": "TCP"
+    "destination_port": "ANY",
+    "protocol": "IP"
   },
   "default_block_development_test_ingress": {
     "action": "DROP",
