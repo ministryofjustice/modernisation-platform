@@ -21,6 +21,11 @@ resource "aws_iam_policy" "policy" {
     Statement = [
       {
         Action = [
+          "codebuild:Start*",
+          "codepipeline:StartPipelineExecution",
+          "ecs:RegisterTaskDefinition",
+          "ecs:UpdateService",
+          "ecs:DescribeServices",
           "kms:Decrypt",
           "secretsmanager:DescribeSecret",
           "s3:*Object*",
@@ -29,23 +34,18 @@ resource "aws_iam_policy" "policy" {
           "ecr:UploadLayerPart",
           "ecs:DescribeTaskDefinition",
           "ecs:ListServices",
-          "ecs:UpdateService",
           "iam:PassRole",
           "ecs:CreateService",
           "ecs:RunTask",
-          "codebuild:Start*",
           "ecs:ListTasks",
-          "ecs:RegisterTaskDefinition",
           "ecr:CompleteLayerUpload",
           "kms:DescribeKey",
           "ecs:StopTask",
-          "ecs:DescribeServices",
           "ecs:DescribeTasks",
           "ecr:BatchCheckLayerAvailability",
           "ecs:ListTaskDefinitions",
           "ecs:UpdateTaskSet",
           "ecs:CreateTaskSet",
-          "codepipeline:StartPipelineExecution",
           "ecr:GetDownloadUrlForLayer",
           "ecr:GetAuthorizationToken",
           "ecr:PutImage",
@@ -56,7 +56,10 @@ resource "aws_iam_policy" "policy" {
           "secretsmanager:ListSecrets",
           "iam:getRole",
           "iam:listRolePolicies",
-          "iam:getRolePolicy"
+          "iam:getRolePolicy",
+          "iam:listAttachedRolePolicies",
+          "ecs:deregisterTaskDefinition",
+          "iam:listInstanceProfilesForRole",
         ]
         Effect   = "Allow"
         Resource = "*"
