@@ -10,6 +10,16 @@
           "nuke": "exclude"
         }
       ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "github_slug": "hmpps-digital-prison-reporting",
+          "level": "developer"
+        
+        }
+      ]
     }
   ],
   "tags": {
