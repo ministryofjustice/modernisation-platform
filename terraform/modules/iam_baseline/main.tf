@@ -54,7 +54,8 @@ resource "aws_iam_policy" "policy" {
           "kms:GenerateDataKey",
           "ecr:InitiateLayerUpload",
           "secretsmanager:ListSecrets",
-          "iam:getRole"
+          "iam:getRole",
+          "iam:listRolePolicies"
         ]
         Effect   = "Allow"
         Resource = "*"
