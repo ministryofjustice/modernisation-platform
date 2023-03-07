@@ -46,6 +46,12 @@ locals {
     "ewastempel"
   ]
 
+  # Security engineers performing reviews on the platform or member accounts
+  security = [
+    "joelefejuku",
+    "isaacthomasMOJ"
+  ]
+
   # All members
   all_members = concat(local.general_members, local.engineers)
 
@@ -75,7 +81,6 @@ locals {
   modernisation_platform_repositories = [
     for s in data.github_repositories.modernisation-platform-repositories.names : s if startswith(s, "modernisation-platform-")
   ]
-
 
   testing_tags = merge(
     jsondecode(data.http.environments_file.response_body).tags,
