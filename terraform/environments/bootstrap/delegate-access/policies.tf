@@ -103,6 +103,7 @@ data "aws_iam_policy_document" "developer_additional" {
     actions = [
       "acm:ImportCertificate",
       "autoscaling:UpdateAutoScalingGroup",
+      "autoscaling:SetDesiredCapacity",
       "aws-marketplace:ViewSubscriptions",
       "cloudwatch:DisableAlarmActions",
       "cloudwatch:EnableAlarmActions",
