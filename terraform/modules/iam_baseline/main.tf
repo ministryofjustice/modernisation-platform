@@ -55,7 +55,8 @@ resource "aws_iam_policy" "policy" {
           "ecr:InitiateLayerUpload",
           "secretsmanager:ListSecrets",
           "iam:getRole",
-          "iam:listRolePolicies"
+          "iam:listRolePolicies",
+          "iam:getRolePolicy"
         ]
         Effect   = "Allow"
         Resource = "*"
