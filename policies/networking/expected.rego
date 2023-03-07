@@ -72,6 +72,7 @@ expected =
         "accounts": [
           "nomis-test",
           "oasys-test",
+          "digital-prison-reporting-test",
           "nomis-combined-reporting-test"
         ]
       }
