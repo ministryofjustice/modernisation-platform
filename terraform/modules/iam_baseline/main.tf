@@ -53,7 +53,8 @@ resource "aws_iam_policy" "policy" {
           "ecr:BatchGetImage",
           "kms:GenerateDataKey",
           "ecr:InitiateLayerUpload",
-          "secretsmanager:ListSecrets"
+          "secretsmanager:ListSecrets",
+          "iam:getRole"
         ]
         Effect   = "Allow"
         Resource = "*"
