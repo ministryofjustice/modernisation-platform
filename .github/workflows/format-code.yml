@@ -56,6 +56,7 @@ jobs:
       - name: Check for changes
         run: |
           git add .
+          git commit -m "Updates from GitHub Actions Format Code workflow"
           branch_name=$(git branch --show-current)
           changes=$(git diff origin/main...$branch_name --name-only)
           if [ -z "$changes" ]; then
@@ -66,10 +67,9 @@ jobs:
             exit 0
           fi
 
-      - name: Commit and push changes
+      - name: Push changes
         run: |
           git config --global push.autoSetupRemote true
-          git commit -m "Updates from GitHub Actions Format Code workflow"
           git push
 
       - name: Create pull request
