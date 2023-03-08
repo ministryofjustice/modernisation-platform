@@ -58,7 +58,7 @@ resource "aws_networkfirewall_rule_group" "stateful" {
 
 resource "aws_networkfirewall_rule_group" "fqdn-stateful" {
   capacity = var.fw_fqdn_rulegroup_capacity
-  name     = replace(format("%s-%s",var.fw_fqdn_rulegroup_name, random_id.policy_id.id),"/-|_/", "")
+  name     = replace(format("%s-%s", var.fw_fqdn_rulegroup_name, random_id.policy_id.id), "/-|_/", "")
   type     = "STATEFUL"
   rule_group {
     rule_variables {
@@ -68,15 +68,15 @@ resource "aws_networkfirewall_rule_group" "fqdn-stateful" {
           definition = var.fw_home_net_ips
         }
       }
-    } 
+    }
     rules_source {
       rules_source_list {
         generated_rules_type = "ALLOWLIST"
         target_types         = ["HTTP_HOST"]
         targets              = var.fw_allowed_domains
       }
+    }
   }
-}
 }
 
 resource "aws_networkfirewall_logging_configuration" "main" {

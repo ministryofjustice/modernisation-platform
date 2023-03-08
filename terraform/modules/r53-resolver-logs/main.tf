@@ -9,7 +9,9 @@ resource "aws_route53_resolver_query_log_config_association" "main" {
   resource_id                  = var.vpc_id
 }
 
+#tfsec:ignore:aws-cloudwatch-log-group-customer-key
 resource "aws_cloudwatch_log_group" "main" {
+  #checkov:skip=CKV_AWS_158:"Standard encryption is enough"
   name              = format("%s-r53-resolver-logs", var.vpc_name)
   retention_in_days = 365
 }
