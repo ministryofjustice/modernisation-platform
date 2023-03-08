@@ -42,7 +42,25 @@ resource "aws_iam_policy" "policy" {
           "kms:Decrypt",
           "kms:GenerateDataKey",
           "s3:ListBucket",
-          "s3:*Object*"
+          "s3:*Object*",
+          "secretsmanager:ListSecrets",
+          "iam:getRole",
+          "iam:listRolePolicies",
+          "iam:getRolePolicy",
+          "iam:listAttachedRolePolicies",
+          "ecs:deregisterTaskDefinition",
+          "iam:listInstanceProfilesForRole",
+          "secretsmanager:DescribeSecret",
+          "ecs:StartTask",
+          "ecr:UploadLayerPart",
+          "ecs:ListServices",
+          "ecs:CreateService",
+          "ecs:RunTask",
+          "ecs:DescribeTasks",
+          "ecs:ListTaskDefinitions",
+          "ecs:UpdateTaskSet",
+          "ecs:CreateTaskSet",
+          "secretsmanager:GetResourcePolicy"
         ]
         Effect   = "Allow"
         Resource = "*"
