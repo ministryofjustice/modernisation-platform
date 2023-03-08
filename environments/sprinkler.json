@@ -15,6 +15,7 @@
   "tags": {
     "application": "modernisation-platform",
     "business-unit": "Platforms",
-    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
+    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "owner": "Modernisation Platform : modernisation-platform@digital.justice.gov.uk"
   }
 }

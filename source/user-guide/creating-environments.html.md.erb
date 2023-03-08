@@ -76,6 +76,16 @@ The migration role is a temporary role, given to assist with AWS managed migrati
 
 Once the migration is complete for an environment this role should be removed.
 
+#### instance-management
+
+The instance-management role is a role given to assist database administrators.
+
+- Created so that you would have to assume a role to carry out database management tasks.
+- We didn't want to just bloat the developer role with permissions that would rarely be used.
+- The role contains mainly RDS and EC2 permissions.
+
+This is a new role created in Feb 2023, and if more permissions are required for database admins, we're happy to adjust the policy.
+
 #### administrator
 
  - Full admin access

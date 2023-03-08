@@ -1,6 +1,6 @@
 {
-	"account-type": "member",
-	"environments": [
+  "account-type": "member",
+  "environments": [
     {
       "name": "test",
       "access": [
@@ -10,10 +10,11 @@
         }
       ]
     }
-	],
-	"tags": {
-		"application": "testing",
-		"business-unit": "Platforms",
-		"owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
-	}
+  ],
+  "tags": {
+    "application": "testing",
+    "business-unit": "Platforms",
+    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
+  }
 }

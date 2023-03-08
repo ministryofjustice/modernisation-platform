@@ -3,6 +3,7 @@
 basedir=terraform/environments
 networkdir=environments-networks
 templates=terraform/templates/*.tf
+environments=environments
 
 provision_environment_directories() {
   # This reshapes the JSON for subnet sets to include the business unit, pulled from the filename; and the set name from the key of the object:
@@ -31,7 +32,7 @@ provision_environment_directories() {
   # ]
   networking_definitions=$(jq -n '[ inputs | { subnet_sets: .cidr.subnet_sets | to_entries | map_values(.value + { set: .key, "business-unit": input_filename | ltrimstr("environments-networks/") | rtrimstr(".json") | split("-")[0] } ) } ]' "$networkdir"/*.json)
 
-  for file in environments/*.json; do
+  for file in ${environments}/*.json; do
     application_name=$(basename "$file" .json)
     directory=$basedir/$application_name
 
@@ -84,19 +85,24 @@ copy_templates() {
 
   for file in $templates; do
     filename=$(basename "$file")
+    account_type=$(jq -r '."account-type"' ${environments}/${application_name}.json)
 
     if [ ${filename} != "platform_locals.tf" ] && [ ${filename} != "platform_providers.tf" ] && [ ${filename} != "platform_data.tf" ] && [[ "${filename}" !=  "member_"* ]]
     then
-      echo "Copying $file to $1, replacing application_name with $application_name"
-      sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
-      if [ ${filename} == "platform_backend.tf" ]
-      then
-        if [ `uname` = "Linux" ]
+      if [ ${filename} == "subnet_share.tf" ] && ([ ${account_type} == "member-unrestricted" ] ||  [ ${account_type} == "core" ]); then
+        echo "Skipping $file for $application_name as it is an unrestricted or a core account."
+      else
+        echo "Copying $file to $1, replacing application_name with $application_name"
+        sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
+        if [ ${filename} == "platform_backend.tf" ]
         then
-          sed -i "s/environments\//environments\/accounts\//g" "$1/$filename"
-        else
-          # This must be a Mac
-          sed -i '' "s/environments\//environments\/accounts\//g" "$1/$filename"
+          if [ `uname` = "Linux" ]
+          then
+            sed -i "s/environments\//environments\/accounts\//g" "$1/$filename"
+          else
+            # This must be a Mac
+            sed -i '' "s/environments\//environments\/accounts\//g" "$1/$filename"
+          fi
         fi
       fi
     fi

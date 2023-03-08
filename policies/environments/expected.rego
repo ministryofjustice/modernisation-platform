@@ -25,10 +25,12 @@ expected =
     "equip",
     "example",
     "long-term-storage",
+    "laa-oem",
     "mi-platform",
     "maatdb",
     "mlra",
     "nomis",
+    "nomis-combined-reporting",
     "oas",
     "oasys",
     "performance-hub",
@@ -36,8 +38,9 @@ expected =
     "refer-monitor",
     "remote-supervision",
     "sprinkler",
-    "testing",
     "tariff",
+    "testing",
+    "tipstaff",
     "xhibit-portal"
     ]
 }

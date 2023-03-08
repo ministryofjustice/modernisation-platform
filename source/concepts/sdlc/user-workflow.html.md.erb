@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: User Workflow (CI/CD)
-last_reviewed_on: 2022-11-09
+last_reviewed_on: 2023-02-28
 review_in: 6 months
 ---
 
@@ -51,6 +51,7 @@ The code and AWS account is protected in a few different ways which work togethe
 
 Your GitHub team will be assigned as a [codeowner](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-code-owners) for your application folder, so someone in your team or the Modernisation Platform team will be required to review any pull requests before they can be merged.
 Your Github team will be able to approve a majority of pull requests. Approvals from the modernisation platform team members are only required in cases where a change might impact other customers or core platform components such as any files in the `.github` folder, as well as `providers.tf`, `backend.tf` and `networking.auto.tfvars.json` files in your application directory. For specific rules please see the [CODEOWNERS](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/CODEOWNERS) file.
+For modernisation-platform-ami-builds (https://github.com/ministryofjustice/modernisation-platform-ami-builds) you will need to add your team to CODEOWNERS when you add a team to the list. See the file for examples.
 
 #### GitHub Environments
 

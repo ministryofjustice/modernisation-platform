@@ -26,8 +26,10 @@ expected =
           "performance-hub-preproduction",
           "oasys-preproduction",
           "nomis-preproduction",
+          "ppud-preproduction",
           "delius-iaps-preproduction",
-          "delius-jitbit-preproduction"
+          "delius-jitbit-preproduction",
+          "nomis-combined-reporting-preproduction"
         ]
       }
     },
@@ -51,7 +53,8 @@ expected =
           "nomis-development",
           "oasys-development",
           "delius-iaps-development",
-          "delius-jitbit-development"
+          "delius-jitbit-development",
+          "nomis-combined-reporting-development"
         ]
       }
     },
@@ -68,7 +71,9 @@ expected =
         "cidr": "10.26.8.0/21",
         "accounts": [
           "nomis-test",
-          "oasys-test"
+          "oasys-test",
+          "digital-prison-reporting-test",
+          "nomis-combined-reporting-test"
         ]
       }
     },
@@ -90,7 +95,8 @@ expected =
           "oasys-production",
           "nomis-production",
           "delius-iaps-production",
-          "delius-jitbit-production"
+          "delius-jitbit-production",
+          "nomis-combined-reporting-production"
         ]
       }
     },
@@ -98,7 +104,8 @@ expected =
       "general": {
         "cidr": "10.26.40.0/21",
         "accounts": [
-          "xhibit-portal-development"
+          "xhibit-portal-development",
+          "tipstaff-development"
         ]
       }
     },
@@ -106,7 +113,8 @@ expected =
       "general": {
         "cidr": "10.27.16.0/21",
         "accounts": [
-          "xhibit-portal-production"
+          "xhibit-portal-production",
+          "tipstaff-production"
         ]
       }
     },
@@ -148,6 +156,7 @@ expected =
         "accounts": [
           "apex-development",
           "ccms-ebs-development",
+          "laa-oem-development",
           "maatdb-development",
           "mlra-development",
           "oas-development"
@@ -187,7 +196,8 @@ expected =
         "cidr": "10.26.96.0/21",
         "accounts": [
           "mlra-test",
-          "ccms-ebs-test"
+          "ccms-ebs-test",
+          "laa-oem-test"
         ]
       }
     },

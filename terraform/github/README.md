@@ -2,10 +2,10 @@
 
 This directory creates and maintains the following GitHub items for the Modernisation Platform:
 
-  - repositories
-  - team membership
-  - team access to repositories
-  - rotation of `testing-ci` AWS keys and updates to corresponding [Github secrets](testing-ci.tf) 
+- repositories
+- team membership
+- team access to repositories
+- rotation of `testing-ci` AWS keys and updates to corresponding [Github secrets](testing-ci.tf)
 
 The state is stored in S3, as defined in [backend.tf](backend.tf).
 
@@ -40,7 +40,7 @@ module "core-team" {
 }
 ```
 
-Once the PR is merged, terraform will create the repository https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux
+Once the PR is merged, terraform will create the repository <https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux>
 
 Since the new repository you're creating is for a terraform module, please also consider adding the following:
 

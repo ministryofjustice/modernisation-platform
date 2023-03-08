@@ -1,12 +1,3 @@
-# This data sources allows us to get the Modernisation Platform account information for use elsewhere
-# (when we want to assume a role in the MP, for instance)
-data "aws_organizations_organization" "root_account" {}
-
-# Get the environments file from the main repository
-data "http" "environments_file" {
-  url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/${local.application_name}.json"
-}
-
 locals {
 
   application_name = "equip"
@@ -38,7 +29,7 @@ locals {
   provider_name = "core-vpc-${local.environment}"
 
   # environment specfic variables
-  # example usage:  
+  # example usage:
   # example_data = local.application_data.accounts[local.environment].example_var
   application_data = fileexists("./application_variables.json") ? jsondecode(file("./application_variables.json")) : {}
 }

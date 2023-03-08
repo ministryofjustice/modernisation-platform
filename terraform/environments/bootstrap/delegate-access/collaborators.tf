@@ -106,7 +106,34 @@ module "collaborator_migration_role" {
 
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AWSApplicationMigrationFullAccess",
+    "arn:aws:iam::aws:policy/AWSDataSyncFullAccess",
+    "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
+    "arn:aws:iam::aws:policy/ServerMigrationConnector",
+    "arn:aws:iam::aws:policy/AWSApplicationMigrationEC2Access",
     aws_iam_policy.migration.arn,
+  ]
+  number_of_custom_role_policy_arns = 7
+}
+
+module "collaborator_database_mgmt_role" {
+  count   = local.account_data.account-type == "member" ? 1 : 0
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+  version = "~> 5"
+  providers = {
+    aws = aws.workspace
+  }
+  trusted_role_arns = [
+    local.modernisation_platform_account.id
+  ]
+
+  create_role       = true
+  role_name         = "instance-management"
+  role_requires_mfa = true
+
+  custom_role_policy_arns = [
+    "arn:aws:iam::aws:policy/ReadOnlyAccess",
+    aws_iam_policy.instance-management.arn,
   ]
   number_of_custom_role_policy_arns = 2
 }

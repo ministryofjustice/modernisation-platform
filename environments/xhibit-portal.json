@@ -32,8 +32,7 @@
   "tags": {
     "application": "xhibit-portal",
     "business-unit": "HMCTS",
-    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
-    "owner": "george.cairns@digital.justice.gov.uk"
+    "infrastructure-support": "xpsupport@digital.justice.gov.uk",
+    "owner": "dom.tomkins@digital.justice.gov.uk"
   }
 }
-

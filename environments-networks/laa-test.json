@@ -3,14 +3,17 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.26.96.0/21",
-        "accounts": ["mlra-test", "ccms-ebs-test"]
+        "accounts": ["mlra-test", "ccms-ebs-test", "laa-oem-test"]
       }
     }
   },
   "options": {
     "bastion_linux": true,
     "additional_cidrs": [],
-    "additional_endpoints": ["com.amazonaws.eu-west-2.xray", "com.amazonaws.eu-west-2.secretsmanager"],
+    "additional_endpoints": [
+      "com.amazonaws.eu-west-2.xray",
+      "com.amazonaws.eu-west-2.secretsmanager"
+    ],
     "additional_vpcs": [],
     "dns_zone_extend": []
   }

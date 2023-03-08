@@ -10,11 +10,22 @@
           "nuke": "exclude"
         }
       ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "github_slug": "hmpps-digital-prison-reporting",
+          "level": "developer"
+        
+        }
+      ]
     }
   ],
   "tags": {
     "application": "digital-prison-reporting",
     "business-unit": "HMPPS",
+    "infrastructure-support": "digitalprisonreporting@digital.justice.gov.uk",
     "owner": "digitalprisonreporting@digital.justice.gov.uk"
   }
 }
