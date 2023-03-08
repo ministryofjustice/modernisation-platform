@@ -47,6 +47,7 @@ resource "aws_secretsmanager_secret_version" "s3_user_access_key" {
 }
 
 resource "aws_secretsmanager_secret" "s3_user_secret_key" {
+  # checkov:skip=CKV_AWS_149: "KMS key not required standard encryption is fine here"
   name                    = "${local.application_name}-s3-user-secret-key"
   recovery_window_in_days = 0
   tags = merge(
