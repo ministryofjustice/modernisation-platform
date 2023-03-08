@@ -3,8 +3,7 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.27.16.0/21",
-        "accounts": ["xhibit-portal-production",
-                     "tipstaff-production"]
+        "accounts": ["xhibit-portal-production", "tipstaff-production"]
       }
     }
   },

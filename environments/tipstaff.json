@@ -1,30 +1,30 @@
 {
-    "account-type": "member",
-    "environments": [
-      {
-        "name": "development",
-        "access": [
-          {
-            "github_slug": "dts-heritage-services",
-            "level": "sandbox",
-            "nuke": "rebuild"
-          }
-        ]
-      },
-           {
-        "name": "production",
-        "access": [
-          {
-            "github_slug": "dts-heritage-services",
-            "level": "developer"
-          }
-        ]
-      }
-    ],
-    "tags": {
-      "application": "tipstaff",
-      "business-unit": "HMCTS",
-      "infrastructure-support": "dts-legacy-apps-support-team@hmcts.net",
-      "owner": "dts-legacy-apps-support-team@hmcts.net"
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "dts-heritage-services",
+          "level": "sandbox",
+          "nuke": "rebuild"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "dts-heritage-services",
+          "level": "developer"
+        }
+      ]
     }
+  ],
+  "tags": {
+    "application": "tipstaff",
+    "business-unit": "HMCTS",
+    "infrastructure-support": "dts-legacy-apps-support-team@hmcts.net",
+    "owner": "dts-legacy-apps-support-team@hmcts.net"
+  }
 }
