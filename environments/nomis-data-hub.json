@@ -39,7 +39,7 @@
     }
   ],
   "tags": {
-    "application": "nomis",
+    "application": "nomis-data-hub",
     "business-unit": "HMPPS",
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
     "owner": "digital-studio-operations-team@digital.justice.gov.uk"
