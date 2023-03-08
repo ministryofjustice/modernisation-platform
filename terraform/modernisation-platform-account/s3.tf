@@ -94,7 +94,7 @@ module "state-bucket-s3-replication-role" {
 }
 
 module "state-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.2.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.3.0"
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
