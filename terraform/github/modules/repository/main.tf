@@ -47,7 +47,7 @@ resource "github_branch_protection" "default" {
   require_signed_commits = false
 
   required_status_checks {
-    strict   = true
+    strict   = false
     contexts = var.required_checks
   }
 
