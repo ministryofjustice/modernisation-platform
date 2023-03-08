@@ -29,7 +29,8 @@ expected =
           "ppud-preproduction",
           "delius-iaps-preproduction",
           "delius-jitbit-preproduction",
-          "nomis-combined-reporting-preproduction"
+          "nomis-combined-reporting-preproduction",
+          "nomis-data-hub-preproduction"
         ]
       }
     },
@@ -54,7 +55,8 @@ expected =
           "oasys-development",
           "delius-iaps-development",
           "delius-jitbit-development",
-          "nomis-combined-reporting-development"
+          "nomis-combined-reporting-development",
+          "nomis-data-hub-development"
         ]
       }
     },
@@ -73,7 +75,8 @@ expected =
           "nomis-test",
           "oasys-test",
           "digital-prison-reporting-test",
-          "nomis-combined-reporting-test"
+          "nomis-combined-reporting-test",
+          "nomis-data-hub-test"
         ]
       }
     },
@@ -96,7 +99,8 @@ expected =
           "nomis-production",
           "delius-iaps-production",
           "delius-jitbit-production",
-          "nomis-combined-reporting-production"
+          "nomis-combined-reporting-production",
+          "nomis-data-hub-production"
         ]
       }
     },
