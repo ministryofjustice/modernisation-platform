@@ -21,6 +21,10 @@ variable "fw_rulegroup_name" {
   type = string
 }
 
+variable "fw_fqdn_rulegroup_name" {
+  type = string  
+}
+
 variable "rules" {
   description = "A map of values supplied to create firewall rules"
   type        = map(any)
