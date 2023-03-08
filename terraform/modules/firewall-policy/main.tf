@@ -56,6 +56,29 @@ resource "aws_networkfirewall_rule_group" "stateful" {
   }
 }
 
+resource "aws_networkfirewall_rule_group" "fqdn-stateful" {
+  capacity = var.fw_fqdn_rulegroup_capacity
+  name     = "egress_fqdn_rules_allow"
+  type     = "STATEFUL"
+  rule_group {
+    rule_variables {
+      ip_sets {
+        key = "HOME_NET"
+        ip_set {
+          definition = var.fw_home_net_ips
+        }
+      }
+    } 
+    rules_source {
+      rules_source_list {
+        generated_rules_type = "ALLOWLIST"
+        target_types         = ["HTTP_HOST"]
+        targets              = var.fw_allowed_domains
+      }
+  }
+}
+}
+
 resource "aws_networkfirewall_logging_configuration" "main" {
   firewall_arn = var.fw_arn
   logging_configuration {
