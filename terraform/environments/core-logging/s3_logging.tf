@@ -171,9 +171,9 @@ module "s3-bucket-cloudtrail" {
   custom_kms_key             = aws_kms_key.s3_logging_cloudtrail.arn
   custom_replication_kms_key = aws_kms_key.s3_logging_cloudtrail_eu-west-1_replication.arn
 
-  replication_enabled                      = true
-  replication_region                       = "eu-west-1"
-  versioning_enabled_on_replication_bucket = true
+  replication_enabled = true
+  replication_region  = "eu-west-1"
+  versioning_enabled  = true
 
   lifecycle_rule = [
     {
