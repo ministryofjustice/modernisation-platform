@@ -31,7 +31,7 @@ expected =
     "mlra",
     "nomis",
     "nomis-combined-reporting",
-    "nomis-data-hub"
+    "nomis-data-hub",
     "oas",
     "oasys",
     "performance-hub",
