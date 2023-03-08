@@ -3,8 +3,7 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.26.40.0/21",
-        "accounts": ["xhibit-portal-development",
-                     "tipstaff-development"]
+        "accounts": ["xhibit-portal-development", "tipstaff-development"]
       }
     }
   },

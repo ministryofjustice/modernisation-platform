@@ -59,10 +59,10 @@ The is-production tag will be inferred from the environment and is not needed he
 
 tag | value
 --- | ---
-application | 
-business-unit | 
+application |
+business-unit |
 infrastructure-support |
-owner | 
+owner |
 
 
 <!-- 

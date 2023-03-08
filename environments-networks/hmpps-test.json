@@ -3,7 +3,12 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.26.8.0/21",
-        "accounts": ["nomis-test", "oasys-test", "digital-prison-reporting-test", "nomis-combined-reporting-test"]
+        "accounts": [
+          "nomis-test",
+          "oasys-test",
+          "digital-prison-reporting-test",
+          "nomis-combined-reporting-test"
+        ]
       }
     }
   },
