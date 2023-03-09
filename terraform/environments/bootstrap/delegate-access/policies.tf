@@ -476,7 +476,7 @@ data "aws_iam_policy_document" "instance-management-document" {
   }
 }
 
-# sandbox policy - member SSO and collaborators, development accounts only
+# us-east policy - for acm certs currently
 resource "aws_iam_policy" "us-east" {
   provider = aws.workspace-us-east
   name     = "us-east_policy"
