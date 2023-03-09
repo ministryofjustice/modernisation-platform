@@ -48,7 +48,8 @@ resource "aws_networkfirewall_rule_group" "stateful" {
             source           = stateful_rule.value.source_ip
           }
           rule_option {
-            keyword = format("sid:%s", index(keys(var.rules), stateful_rule.key) + 1)
+            keyword = "sid"
+            settings = [format("%s", index(keys(var.rules), stateful_rule.key) + 1)]
           }
         }
       }
