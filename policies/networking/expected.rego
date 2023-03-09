@@ -56,7 +56,8 @@ expected =
           "delius-iaps-development",
           "delius-jitbit-development",
           "nomis-combined-reporting-development",
-          "nomis-data-hub-development"
+          "nomis-data-hub-development",
+          "delius-core-development"
         ]
       }
     },
