@@ -81,6 +81,19 @@ The infrastructure-support tag should be an email address which will receive AWS
 - [ ] General - this application will use the same subnet as other applications in your business unit
 - [ ] Isolated - this application has highly sensitive data which must have its own isolated subnet with no network connectivity
 
+### Firewall rules
+
+<!-- The connectivity from outside the subnet/VPC your application is in will be blocked by the firewall. Please specify any firewall rules your application may require to allow access from other applications, tools or external parties. Firewall rules should be provided in a form of CIDR ranges and ports (see example below). If you specify an insecure port/service/protocol, you need to provide a business justification and make the service owner aware of its vulnerabilities. We will consider such requests, but there might time when we will not be able to implement it. -->
+    # Your firewall rules goes here
+    # e.g.
+    "cp_to_mp_nomis_test_db": {"
+      "action": "PASS",
+      "source_ip": "172.20.0.0/16",
+      "destination_ip": "10.26.8.0/21",
+      "destination_port": "1521",
+      "protocol": "TCP"
+    },
+
 ### How do users connect to the application?
 
 - [ ] Over the public internet
