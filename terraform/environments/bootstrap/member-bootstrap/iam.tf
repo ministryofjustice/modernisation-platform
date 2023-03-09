@@ -238,7 +238,7 @@ module "member-access-us-east" {
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
   account_id             = local.modernisation_platform_account.id
   additional_trust_roles = [one(data.aws_iam_roles.github_actions_role.arns), one(data.aws_iam_roles.member-sso-admin-access.arns)]
-  policy_arn             = aws_iam_policy.member-access[0].id
+  policy_arn             = aws_iam_policy.member-access-us-east[0].id
   role_name              = "MemberInfrastructureAccessUSEast"
 }
 
@@ -272,5 +272,5 @@ resource "aws_iam_policy" "member-access-us-east" {
   description = "Restricted policy for US East usage"
   policy      = data.aws_iam_policy_document.member-access-us-east.json
   provider    = aws.workspace-us-east
-
 }
+
