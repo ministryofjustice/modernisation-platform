@@ -271,4 +271,6 @@ resource "aws_iam_policy" "member-access-us-east" {
   name        = "MemberInfrastructureAccessUsEastActions"
   description = "Restricted policy for US East usage"
   policy      = data.aws_iam_policy_document.member-access-us-east.json
+  provider    = aws.workspace-us-east
+
 }

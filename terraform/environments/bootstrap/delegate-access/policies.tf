@@ -476,23 +476,3 @@ data "aws_iam_policy_document" "instance-management-document" {
   }
 }
 
-# us-east policy - for acm certs currently
-resource "aws_iam_policy" "us-east" {
-  provider = aws.workspace-us-east
-  name     = "us-east_policy"
-  path     = "/"
-  policy   = data.aws_iam_policy_document.us-east.json
-}
-##checks being skipped until policy has been amended##
-#tfsec:ignore:aws-iam-no-policy-wildcards
-data "aws_iam_policy_document" "us-east" {
-  statement {
-    sid    = "useastAllow"
-    effect = "Allow"
-    actions = [
-      "acm:*"
-    ]
-    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
-  }
-}
-
