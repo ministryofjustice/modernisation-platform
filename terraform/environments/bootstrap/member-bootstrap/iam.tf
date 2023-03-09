@@ -231,7 +231,6 @@ resource "aws_iam_role_policy_attachment" "testing_member_infrastructure_access_
   policy_arn = aws_iam_policy.member-access[0].arn
 }
 
-
 # MemberInfrastructureAccessUSEast
 module "member-access-us-east" {
   count                  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
