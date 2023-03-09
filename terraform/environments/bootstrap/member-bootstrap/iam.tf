@@ -230,3 +230,9 @@ resource "aws_iam_role_policy_attachment" "testing_member_infrastructure_access_
   role       = aws_iam_role.testing_member_infrastructure_access_role[0].id
   policy_arn = aws_iam_policy.member-access[0].arn
 }
+
+# IAM role to be assumed
+resource "aws_iam_role" "us_east_access_role" {
+  name               = "UsEastAccess"
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
+}
