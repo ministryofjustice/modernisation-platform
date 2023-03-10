@@ -3,7 +3,7 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.27.72.0/21",
-        "accounts": ["mlra-preproduction", "ccms-ebs-preproduction"]
+        "accounts": ["mlra-preproduction", "ccms-ebs-preproduction", "oas-preproduction"]
       }
     }
   },
