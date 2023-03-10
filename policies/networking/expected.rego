@@ -164,7 +164,8 @@ expected =
           "laa-oem-development",
           "maatdb-development",
           "mlra-development",
-          "oas-development"
+          "oas-development",
+          "portal-development"
         ]
       }
     },
@@ -203,7 +204,8 @@ expected =
           "mlra-test",
           "ccms-ebs-test",
           "laa-oem-test",
-          "oas-test"
+          "oas-test",
+          "portal-test"
         ]
       }
     },
@@ -247,7 +249,8 @@ expected =
         "accounts": [
           "mlra-production",
           "ccms-ebs-production",
-          "oas-production"
+          "oas-production",
+          "portal-production"
         ]
       }
     },
@@ -257,7 +260,8 @@ expected =
         "accounts": [
           "mlra-preproduction",
           "ccms-ebs-preproduction",
-          "oas-preproduction"
+          "oas-preproduction",
+          "portal-preproduction"
         ]
       }
     },
