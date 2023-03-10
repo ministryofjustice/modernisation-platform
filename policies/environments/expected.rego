@@ -36,6 +36,7 @@ expected =
     "oas",
     "oasys",
     "performance-hub",
+    "portal",
     "ppud",
     "refer-monitor",
     "remote-supervision",
