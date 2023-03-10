@@ -202,7 +202,8 @@ expected =
         "accounts": [
           "mlra-test",
           "ccms-ebs-test",
-          "laa-oem-test"
+          "laa-oem-test",
+          "oas-test"
         ]
       }
     },
@@ -245,7 +246,8 @@ expected =
         "cidr": "10.27.64.0/21",
         "accounts": [
           "mlra-production",
-          "ccms-ebs-production"
+          "ccms-ebs-production",
+          "oas-production"
         ]
       }
     },
@@ -254,7 +256,8 @@ expected =
         "cidr": "10.27.72.0/21",
         "accounts": [
           "mlra-preproduction",
-          "ccms-ebs-preproduction"
+          "ccms-ebs-preproduction",
+          "oas-preproduction"
         ]
       }
     },
