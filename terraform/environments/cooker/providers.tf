@@ -33,7 +33,7 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias  = "us-east"
+  alias  = "us-east-1"
   region = "us-east-1"
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[local.provider_name]}:role/MemberInfrastructureAccessUSEast"
