@@ -13,6 +13,13 @@
     "destination_port": "ANY",
     "protocol": "IP"
   },
+  "cp_to_mp_platforms_development": {
+    "action": "PASS",
+    "source_ip": "172.20.0.0/16",
+    "destination_ip": "10.26.16.0/21",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
   "default_block_development_test_ingress": {
     "action": "DROP",
     "source_ip": "0.0.0.0/0",
