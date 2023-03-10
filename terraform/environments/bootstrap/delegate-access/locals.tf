@@ -32,6 +32,7 @@ locals {
     "nomis-production",
     "testing-test",
     "nomis-development",
-    "oas-test"
+    "oas-test",
+    "portal-development"
   ])
 }
