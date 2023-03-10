@@ -31,6 +31,7 @@ locals {
     "apex-development",
     "nomis-production",
     "testing-test",
-    "nomis-development"
+    "nomis-development",
+    "oas-test"
   ])
 }
