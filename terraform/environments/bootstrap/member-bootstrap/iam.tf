@@ -259,8 +259,8 @@ data "aws_iam_policy_document" "member-access-us-east" {
   }
 
   statement {
-    effect = "Deny"
-    actions = ["*"]
+    effect    = "Deny"
+    actions   = ["*"]
     resources = ["*"]
   }
 }
