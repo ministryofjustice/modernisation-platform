@@ -50,6 +50,32 @@ These rules are formated in json format and a text example is shown below.
 
   Once this is complete commit your change and create a pull request for the modernisation platform team to review.
 
+### FQDN Firewall Rules
+
+We have now included a change to the firewall to be to include unblocking by dns names for egress connections by default we will be blocking all outbound dns requests based on the DNS name this is for http traffic only.
+
+To unblock a DNS name to allow traffic to that site a PR will need to be created and the following file will need to be updated
+
+- [FQDN Rules](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/fqdn_rules.json)
+
+Below is an example of what is in the file the only section that needs to be update is the fw_allowed_domains simply add the domain you want to allow to the list. This can be either the full dns name ie exmaple.com or if you want the root domain and the sub domains just put a full stop at the start like so .example.com
+
+```
+{
+  "fw_allowed_domains": [
+    "microsoft.com",
+    ".windowsupdate.microsoft.com",
+    ".update.microsoft.com",
+    ".windowsupdate.com",
+    ".download.windowsupdate.com",
+    "wustat.windows.com",
+    "ntservicepack.microsoft.com",
+    "stats.microsoft.com"
+  ],
+  "fw_home_net_ips": ["10.26.0.0/16", "10.27.0.0/16"]
+}
+```
+
 ### Example
 
 Below is a link to the HashiCorp Terraform documentation for the Terraform resource that describes the options that can be used with the resource.
