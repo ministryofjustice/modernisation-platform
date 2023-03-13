@@ -141,7 +141,7 @@ resource "pagerduty_service" "jitbit_nonprod" {
 
 resource "pagerduty_service_integration" "jitbit_nonprod_cloudwatch" {
    name    = data.pagerduty_vendor.cloudwatch.name
-   service = pagerduty_service.my_application.id
+   service = pagerduty_service.jitbit_nonprod.id
    vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
