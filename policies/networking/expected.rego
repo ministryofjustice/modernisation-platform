@@ -29,7 +29,8 @@ expected =
           "ppud-preproduction",
           "delius-iaps-preproduction",
           "delius-jitbit-preproduction",
-          "nomis-combined-reporting-preproduction"
+          "nomis-combined-reporting-preproduction",
+          "nomis-data-hub-preproduction"
         ]
       }
     },
@@ -54,7 +55,9 @@ expected =
           "oasys-development",
           "delius-iaps-development",
           "delius-jitbit-development",
-          "nomis-combined-reporting-development"
+          "nomis-combined-reporting-development",
+          "nomis-data-hub-development",
+          "delius-core-development"
         ]
       }
     },
@@ -73,7 +76,8 @@ expected =
           "nomis-test",
           "oasys-test",
           "digital-prison-reporting-test",
-          "nomis-combined-reporting-test"
+          "nomis-combined-reporting-test",
+          "nomis-data-hub-test"
         ]
       }
     },
@@ -96,7 +100,8 @@ expected =
           "nomis-production",
           "delius-iaps-production",
           "delius-jitbit-production",
-          "nomis-combined-reporting-production"
+          "nomis-combined-reporting-production",
+          "nomis-data-hub-production"
         ]
       }
     },
@@ -159,7 +164,8 @@ expected =
           "laa-oem-development",
           "maatdb-development",
           "mlra-development",
-          "oas-development"
+          "oas-development",
+          "portal-development"
         ]
       }
     },
@@ -197,7 +203,9 @@ expected =
         "accounts": [
           "mlra-test",
           "ccms-ebs-test",
-          "laa-oem-test"
+          "laa-oem-test",
+          "oas-test",
+          "portal-test"
         ]
       }
     },
@@ -240,7 +248,9 @@ expected =
         "cidr": "10.27.64.0/21",
         "accounts": [
           "mlra-production",
-          "ccms-ebs-production"
+          "ccms-ebs-production",
+          "oas-production",
+          "portal-production"
         ]
       }
     },
@@ -249,7 +259,9 @@ expected =
         "cidr": "10.27.72.0/21",
         "accounts": [
           "mlra-preproduction",
-          "ccms-ebs-preproduction"
+          "ccms-ebs-preproduction",
+          "oas-preproduction",
+          "portal-preproduction"
         ]
       }
     },

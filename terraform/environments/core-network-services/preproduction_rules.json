@@ -13,5 +13,4 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   }
-  
 }

@@ -3,13 +3,16 @@ resource "random_id" "policy_id" {
 }
 
 resource "aws_networkfirewall_firewall_policy" "main" {
-  name = replace(format("%s-%s", var.fw_policy_name, random_id.policy_id.id),"/-|_/", "")
+  name = replace(format("%s-%s", var.fw_policy_name, random_id.policy_id.id), "/-|_/", "")
   firewall_policy {
     stateful_engine_options {
       rule_order = "DEFAULT_ACTION_ORDER"
     }
     stateful_rule_group_reference {
       resource_arn = aws_networkfirewall_rule_group.stateful.arn
+    }
+    stateful_rule_group_reference {
+      resource_arn = aws_networkfirewall_rule_group.fqdn-stateful.arn
     }
     stateless_default_actions          = ["aws:forward_to_sfe"]
     stateless_fragment_default_actions = ["aws:drop"]
@@ -24,13 +27,13 @@ resource "aws_networkfirewall_firewall_policy" "main" {
 
 resource "aws_networkfirewall_rule_group" "stateful" {
   capacity = var.fw_rulegroup_capacity
-  name     = replace(format("%s-%s",var.fw_rulegroup_name, random_id.policy_id.id),"/-|_/", "")
+  name     = replace(format("%s-%s", var.fw_rulegroup_name, random_id.policy_id.id), "/-|_/", "")
   type     = "STATEFUL"
 
-  rule_group { 
+  rule_group {
     stateful_rule_options {
       rule_order = "DEFAULT_ACTION_ORDER"
-    } 
+    }
     rules_source {
       dynamic "stateful_rule" {
         for_each = var.rules
@@ -45,7 +48,8 @@ resource "aws_networkfirewall_rule_group" "stateful" {
             source           = stateful_rule.value.source_ip
           }
           rule_option {
-            keyword = format("sid:%s", index(keys(var.rules), stateful_rule.key) + 1)
+            keyword  = "sid"
+            settings = [format("%s", index(keys(var.rules), stateful_rule.key) + 1)]
           }
         }
       }
@@ -53,6 +57,29 @@ resource "aws_networkfirewall_rule_group" "stateful" {
   }
   lifecycle {
     create_before_destroy = true
+  }
+}
+
+resource "aws_networkfirewall_rule_group" "fqdn-stateful" {
+  capacity = var.fw_fqdn_rulegroup_capacity
+  name     = replace(format("%s-%s", var.fw_fqdn_rulegroup_name, random_id.policy_id.id), "/-|_/", "")
+  type     = "STATEFUL"
+  rule_group {
+    rule_variables {
+      ip_sets {
+        key = "HOME_NET"
+        ip_set {
+          definition = var.fw_home_net_ips
+        }
+      }
+    }
+    rules_source {
+      rules_source_list {
+        generated_rules_type = "ALLOWLIST"
+        target_types         = ["HTTP_HOST"]
+        targets              = var.fw_allowed_domains
+      }
+    }
   }
 }
 

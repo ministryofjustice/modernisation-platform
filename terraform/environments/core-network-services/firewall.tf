@@ -166,6 +166,9 @@ module "firewall_policy" {
   fw_rulegroup_capacity     = "10000"
   fw_policy_name            = format("%s-fw-policy", local.application_name)
   fw_rulegroup_name         = format("%s-fw-rulegroup", local.application_name)
+  fw_fqdn_rulegroup_name    = format("%s-fw-fqdn-rulegroup", local.application_name)
+  fw_allowed_domains        = local.fqdn_firewall_rules.fw_allowed_domains
+  fw_home_net_ips           = local.fqdn_firewall_rules.fw_home_net_ips
   rules                     = local.firewall_rules
   tags                      = local.tags
 }

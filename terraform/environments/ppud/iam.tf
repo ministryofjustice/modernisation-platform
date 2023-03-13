@@ -32,6 +32,7 @@ resource "aws_iam_access_key" "email" {
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_user_policy" "email_policy" {
+  # checkov:skip=CKV_AWS_40:"Directly attaching the policy makes more sense here"
   count  = local.is-production == false ? 1 : 0
   name   = "AmazonSesSendingAccess"
   user   = aws_iam_user.email[0].name

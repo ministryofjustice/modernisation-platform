@@ -9,7 +9,8 @@
           "laa-oem-development",
           "maatdb-development",
           "mlra-development",
-          "oas-development"
+          "oas-development",
+          "portal-development"
         ]
       }
     }

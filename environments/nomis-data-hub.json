@@ -1,0 +1,47 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "sandbox"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "nomis-data-hub",
+    "business-unit": "HMPPS",
+    "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
+    "owner": "digital-studio-operations-team@digital.justice.gov.uk"
+  }
+}

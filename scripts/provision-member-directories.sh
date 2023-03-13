@@ -149,13 +149,11 @@ EOL
     application_name=$(basename "$file" .json)
     directory=/terraform/environments/$application_name
     account_type=$(jq -r '."account-type"' ${environment_json_dir}/${application_name}.json)
-    github_slugs=$(jq -r '.environments[].access[].github_slug' ${environment_json_dir}/${application_name}.json | uniq)
+    github_slugs=$(jq -r '.environments[].access[].github_slug | "@ministryofjustice/" + .' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
 
     if [ "$account_type" = "member" ]; then
-      for slug in $github_slugs; do
-        echo "Adding $directory @ministryofjustice/$slug @modernisation-platform to codeowners"
-        echo "$directory @ministryofjustice/$slug @ministryofjustice/modernisation-platform" >> $codeowners_file
-      done
+      echo "Adding $directory $github_slugs@modernisation-platform to codeowners"
+      echo "$directory $github_slugs@ministryofjustice/modernisation-platform" >> $codeowners_file
     fi
 
   done

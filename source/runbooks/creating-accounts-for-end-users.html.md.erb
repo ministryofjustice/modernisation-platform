@@ -55,6 +55,8 @@ This will also run the [`new-environment-files` workflow](https://github.com/min
 
 > Note - These PRs are only created the first time an environment for an application is created, eg the first time you create a new application.json file. If you add to an existing environment the PRs will not be created.
 
+> The new-environment workflow may fail if the account alias is already in use.  If this happens, add the environment name to the [skip-alias local](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/locals.tf#L30). Merging this PR will run the required jobs again.
+
 #### 5. Merge the pull request created in the modernisation-platform repo (step 4.1)
 
 #### 6. Edit the pull request created in the modernisation-platform-environments repo (step 4.2)
@@ -91,13 +93,15 @@ Update the [`policies/networking/expected.rego`](https://github.com/ministryofju
 
 This will then kick off `core-vpc-<env>-demployment` pipelines and run `terraform plan`, `terraform apply` and the `scripts/member-account-ram-association.sh` script for the RAM share.
 
-> If the RAM share script fails to run on the merge for any reason, it will have to be run manually in the relevant application folder [here](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments).
+This will run the RAM share successfully if you are adding environments for an existing application.  If it is a new application the RAM share won't sucessfully run until the next step.
 
 The pipeline will also generate a PR for networking variables in both the modernisation-platform and modernisation-platform-environments repos. An example can be found [here](https://github.com/ministryofjustice/modernisation-platform/pull/2203)
 
 #### 4. Merge in the two generated PRs from step 3
 
 This will run the RAM share script again (it needs to run in the previous step as if adding an environment the networking files will already be there, it need to run in this step as this is the first time adding the networking files)
+
+> If the RAM share script fails to run on the merge for any reason, it will have to be run manually in the relevant application folder [here](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments).
 
 ## Checking its creation
 
