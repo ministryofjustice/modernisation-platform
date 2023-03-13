@@ -3,7 +3,13 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.26.96.0/21",
-        "accounts": ["mlra-test", "ccms-ebs-test", "laa-oem-test", "oas-test", "portal-test"]
+        "accounts": [
+          "mlra-test",
+          "ccms-ebs-test",
+          "laa-oem-test",
+          "oas-test",
+          "portal-test"
+        ]
       }
     }
   },
