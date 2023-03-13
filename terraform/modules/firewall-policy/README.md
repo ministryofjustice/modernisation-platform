@@ -35,6 +35,9 @@ No modules.
 | <a name="input_fw_policy_name"></a> [fw\_policy\_name](#input\_fw\_policy\_name) | n/a | `string` | n/a | yes |
 | <a name="input_fw_rulegroup_capacity"></a> [fw\_rulegroup\_capacity](#input\_fw\_rulegroup\_capacity) | n/a | `string` | `"10000"` | no |
 | <a name="input_fw_rulegroup_name"></a> [fw\_rulegroup\_name](#input\_fw\_rulegroup\_name) | n/a | `string` | n/a | yes |
+| <a name="input_fw_allowed_domains"></a> [fw\_allowed\_domains](#input\_fw\_allowed\_domains) | n/a | `string` | n/a | yes |
+| <a name="input_fw_fqdn_rulegroup_name"></a> [fw\_fqdn\_rulegroup\_name](#input\_fw\_fqdn\_rulegroup\_name) | n/a | `list` | n/a | yes |
+| <a name="input_fw_home_net_ips"></a> [fw\_home\_net\_ips](#input\_fw\_home\_net\_ips) | n/a | `list` | n/a | yes |
 | <a name="input_rules"></a> [rules](#input\_rules) | A map of values supplied to create firewall rules | `map(any)` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of keys and values used to create resource metadata tags | `map(any)` | n/a | yes |
 
@@ -43,4 +46,5 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_fw_policy_arn"></a> [fw\_policy\_arn](#output\_fw\_policy\_arn) | n/a |
+| <a name="output_fw_fqdn_policy_arn"></a> [fw\_fqdn\_policy\_arn](#output\_fw\_fdqn\_policy\_arn) | n/a |
 <!-- END_TF_DOCS -->
