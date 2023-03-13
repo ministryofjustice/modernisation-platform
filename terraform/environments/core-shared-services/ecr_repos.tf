@@ -31,6 +31,7 @@ module "mlra_ecr_repo" {
   ]
 
   pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["mlra-development"]}:user/cicd-member-user",
     local.environment_management.account_ids["mlra-development"],
     local.environment_management.account_ids["apex-development"]
   ]
