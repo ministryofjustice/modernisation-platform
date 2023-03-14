@@ -1,37 +1,5 @@
 
 # Note slack integrations for the service to the relevant channels must be done manually in pagerduty and slack
-resource "pagerduty_business_service" "modernisation_platform" {
-  name             = "Modernisation Platform"
-  description      = "Hosting plaform for non K8s workloads"
-  point_of_contact = "#ask-modernisation-platform"
-  team             = pagerduty_team.modernisation_platform.id
-}
-
-resource "pagerduty_service_dependency" "modernisation_platform" {
-    dependency {
-        dependent_service {
-            id = pagerduty_business_service.modernisation_platform.id
-            type = "service"
-        }
-        supporting_service {
-            id = pagerduty_service.high_priority.id
-            type = "service"
-        }
-        supporting_service {
-            id = pagerduty_service.low_priority.id
-            type = "service"
-        }
-        supporting_service {
-            id = pagerduty_service.core_alerts.id
-            type = "service"
-        }
-        supporting_service {
-            id = pagerduty_service.contact_on_call.id
-            type = "service"
-        }
-    }
-}
-
 ### High priority alarms
 resource "pagerduty_service" "high_priority" {
   name                    = "Modernisation Platform High Priority Alarms"
