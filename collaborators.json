@@ -459,6 +459,26 @@
           "access": "instance-management"
         }
       ]
-    }
+    },        
+    {
+      "username": "tony.joyce",
+      "github-username": "no-username-supplied",
+      "accounts": [
+        {
+          "account-name": "ppud-production",
+          "access": "developer"
+        }   
+      ]
+    },
+    {
+      "username": "edward.kirwin",
+      "github-username": "no-username-supplied",
+      "accounts": [
+        {
+          "account-name": "ppud-production",
+          "access": "developer"
+        }   
+      ]
+    }        
   ]
 }
