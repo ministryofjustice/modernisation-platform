@@ -5,7 +5,7 @@
 #   name                    = "My Application Alarms"
 #   description             = "My Application Alarms"
 #   auto_resolve_timeout    = 345600
-#   acknowledgement_timeout = null
+#   acknowledgement_timeout = "null"
 #   escalation_policy       = pagerduty_escalation_policy.member_policy.id
 #   alert_creation          = "create_alerts_and_incidents"
 # }
@@ -23,7 +23,7 @@ resource "pagerduty_service" "nomis" {
   name                    = "Nomis Alarms"
   description             = "Nomis Alarms"
   auto_resolve_timeout    = 345600
-  acknowledgement_timeout = null
+  acknowledgement_timeout = "null"
   escalation_policy       = pagerduty_escalation_policy.member_policy.id
   alert_creation          = "create_alerts_and_incidents"
 }
@@ -42,7 +42,7 @@ resource "pagerduty_service" "nomis_nonprod" {
   name                    = "Nomis Alarms Non Prod"
   description             = "Nomis Alarms Non Prod"
   auto_resolve_timeout    = 345600
-  acknowledgement_timeout = null
+  acknowledgement_timeout = "null"
   escalation_policy       = pagerduty_escalation_policy.member_policy.id
   alert_creation          = "create_alerts_and_incidents"
 }
@@ -60,7 +60,7 @@ resource "pagerduty_service" "laa_mlra_nonprod" {
   name                    = "Legal Aid Agency MLRA Application Non Prod"
   description             = "Legal Aid Agency MLRA Application Non Prod Alarms"
   auto_resolve_timeout    = 345600
-  acknowledgement_timeout = null
+  acknowledgement_timeout = "null"
   escalation_policy       = pagerduty_escalation_policy.member_policy.id
   alert_creation          = "create_alerts_and_incidents"
 }
@@ -78,7 +78,7 @@ resource "pagerduty_service" "laa_mlra_prod" {
   name                    = "Legal Aid Agency MLRA Application Production"
   description             = "Legal Aid Agency MLRA Application Production Alarms"
   auto_resolve_timeout    = 345600
-  acknowledgement_timeout = null
+  acknowledgement_timeout = "null"
   escalation_policy       = pagerduty_escalation_policy.member_policy.id
   alert_creation          = "create_alerts_and_incidents"
 }
@@ -96,7 +96,7 @@ resource "pagerduty_service" "laa_oas_nonprod" {
   name                    = "Legal Aid Agency OAS Application Non Prod"
   description             = "Legal Aid Agency OAS Application Non Prod Alarms"
   auto_resolve_timeout    = 345600
-  acknowledgement_timeout = null
+  acknowledgement_timeout = "null"
   escalation_policy       = pagerduty_escalation_policy.member_policy.id
   alert_creation          = "create_alerts_and_incidents"
 }
@@ -114,7 +114,7 @@ resource "pagerduty_service" "laa_oas_prod" {
   name                    = "Legal Aid Agency OAS Application Production"
   description             = "Legal Aid Agency OAS Application Production Alarms"
   auto_resolve_timeout    = 345600
-  acknowledgement_timeout = null
+  acknowledgement_timeout = "null"
   escalation_policy       = pagerduty_escalation_policy.member_policy.id
   alert_creation          = "create_alerts_and_incidents"
 }
@@ -134,7 +134,7 @@ resource "pagerduty_service" "jitbit_nonprod" {
   name                    = "Delius Jitbit Non Prod"
   description             = "Delius Jitbit Non Prod Alarms"
   auto_resolve_timeout    = 345600
-  acknowledgement_timeout = null
+  acknowledgement_timeout = "null"
   escalation_policy       = pagerduty_escalation_policy.member_policy.id
   alert_creation          = "create_alerts_and_incidents"
 }
