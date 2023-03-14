@@ -131,18 +131,18 @@ resource "pagerduty_service_integration" "laa_oas_prod_cloudwatch" {
 # Delius Jitbit - Non Prod
 
 resource "pagerduty_service" "jitbit_nonprod" {
-   name                    = "Delius Jitbit Non Prod"
-   description             = "Delius Jitbit Non Prod Alarms"
-   auto_resolve_timeout    = 345600
-   acknowledgement_timeout = null
-   escalation_policy       = pagerduty_escalation_policy.member_policy.id
-   alert_creation          = "create_alerts_and_incidents"
+  name                    = "Delius Jitbit Non Prod"
+  description             = "Delius Jitbit Non Prod Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = null
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
 }
 
 resource "pagerduty_service_integration" "jitbit_nonprod_cloudwatch" {
-   name    = data.pagerduty_vendor.cloudwatch.name
-   service = pagerduty_service.jitbit_nonprod.id
-   vendor  = data.pagerduty_vendor.cloudwatch.id
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.jitbit_nonprod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
 # # Slack channel: # TBC
