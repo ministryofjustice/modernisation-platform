@@ -1,0 +1,38 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "DTS Heritage Services",
+          "level": "sandbox"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "DTS Heritage Services",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "DTS Heritage Services",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "tribunals",
+    "business-unit": "HMCTS",
+    "infrastructure-support": "dts-legacy-apps-support-team@hmcts.net",
+    "owner": "dts-legacy-apps-support-team@hmcts.net"
+  }
+}
