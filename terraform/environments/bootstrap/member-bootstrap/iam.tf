@@ -34,6 +34,7 @@ data "aws_iam_policy_document" "member-access" {
       "cloudfront:*",
       "cloudwatch:*",
       "codebuild:*",
+      "codedeploy:*",
       "codepipeline:*",
       "dbqms:*",
       "dlm:*",
