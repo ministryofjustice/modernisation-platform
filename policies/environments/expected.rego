@@ -19,6 +19,7 @@ expected =
     "core-shared-services",
     "core-vpc",
     "data-and-insights-wepi",
+    "data-platform",
     "delius-core",
     "delius-iaps",
     "delius-jitbit",
