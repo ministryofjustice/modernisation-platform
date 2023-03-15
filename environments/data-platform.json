@@ -1,0 +1,20 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "data-platform-core-infra",
+          "level": "sandbox"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "data-platform",
+    "business-unit": "platforms",
+    "infrastructure-support": "dataplatform@digital.justice.gov.uk",
+    "owner": "dataplatform@digital.justice.gov.uk"
+  }
+}
