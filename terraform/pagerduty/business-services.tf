@@ -9,51 +9,51 @@ resource "pagerduty_business_service" "modernisation_platform" {
 }
 
 resource "pagerduty_service_dependency" "modernisation_platform_high_priority" {
-    dependency {
-        dependent_service {
-            id = pagerduty_business_service.modernisation_platform.id
-            type = "business_service"
-        }
-        supporting_service {
-            id = pagerduty_service.high_priority.id
-            type = "service"
-        }
+  dependency {
+    dependent_service {
+      id   = pagerduty_business_service.modernisation_platform.id
+      type = "business_service"
     }
+    supporting_service {
+      id   = pagerduty_service.high_priority.id
+      type = "service"
+    }
+  }
 }
 
 resource "pagerduty_service_dependency" "modernisation_platform_low_priority" {
-    dependency {
-        dependent_service {
-            id = pagerduty_business_service.modernisation_platform.id
-            type = "business_service"
-        }
-        supporting_service {
-            id = pagerduty_service.low_priority.id
-            type = "service"
-        }
+  dependency {
+    dependent_service {
+      id   = pagerduty_business_service.modernisation_platform.id
+      type = "business_service"
     }
+    supporting_service {
+      id   = pagerduty_service.low_priority.id
+      type = "service"
+    }
+  }
 }
 resource "pagerduty_service_dependency" "modernisation_platform_core_alerts" {
-    dependency {
-        dependent_service {
-            id = pagerduty_business_service.modernisation_platform.id
-            type = "business_service"
-        }
-        supporting_service {
-            id = pagerduty_service.core_alerts.id
-            type = "service"
-        }
+  dependency {
+    dependent_service {
+      id   = pagerduty_business_service.modernisation_platform.id
+      type = "business_service"
     }
+    supporting_service {
+      id   = pagerduty_service.core_alerts.id
+      type = "service"
+    }
+  }
 }
 resource "pagerduty_service_dependency" "modernisation_platform_on_call" {
-    dependency {
-        dependent_service {
-            id = pagerduty_business_service.modernisation_platform.id
-            type = "business_service"
-        }
-        supporting_service {
-            id = pagerduty_service.contact_on_call.id
-            type = "service"
-        }
+  dependency {
+    dependent_service {
+      id   = pagerduty_business_service.modernisation_platform.id
+      type = "business_service"
     }
+    supporting_service {
+      id   = pagerduty_service.contact_on_call.id
+      type = "service"
+    }
+  }
 }
