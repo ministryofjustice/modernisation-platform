@@ -60,7 +60,10 @@ resource "aws_iam_policy" "policy" {
           "ecs:ListTaskDefinitions",
           "ecs:UpdateTaskSet",
           "ecs:CreateTaskSet",
-          "secretsmanager:GetResourcePolicy"
+          "secretsmanager:GetResourcePolicy",
+          "codebuild:StartBuild",
+          "codebuild:BatchGetBuilds",
+          "logs:GetLogEvents"
         ]
         Effect   = "Allow"
         Resource = "*"
