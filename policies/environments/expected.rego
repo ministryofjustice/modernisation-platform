@@ -44,6 +44,7 @@ expected =
     "tariff",
     "testing",
     "tipstaff",
+    "tribunals",
     "xhibit-portal"
     ]
 }
