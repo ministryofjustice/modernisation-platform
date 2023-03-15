@@ -459,7 +459,7 @@
           "access": "instance-management"
         }
       ]
-    },        
+    },
     {
       "username": "tony.joyce",
       "github-username": "no-username-supplied",
@@ -467,7 +467,7 @@
         {
           "account-name": "ppud-production",
           "access": "developer"
-        }   
+        }
       ]
     },
     {
@@ -477,8 +477,8 @@
         {
           "account-name": "ppud-production",
           "access": "developer"
-        }   
+        }
       ]
-    }        
+    }
   ]
 }

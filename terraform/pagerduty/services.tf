@@ -9,7 +9,7 @@ resource "pagerduty_service" "high_priority" {
   escalation_policy       = pagerduty_escalation_policy.on_call.id
   alert_creation          = "create_alerts_and_incidents"
   incident_urgency_rule {
-    type = "constant"
+    type    = "constant"
     urgency = "high"
   }
 }
@@ -29,7 +29,7 @@ resource "pagerduty_service" "low_priority" {
   escalation_policy       = pagerduty_escalation_policy.low_priority.id
   alert_creation          = "create_alerts_and_incidents"
   incident_urgency_rule {
-    type = "constant"
+    type    = "constant"
     urgency = "low"
   }
 }
@@ -49,7 +49,7 @@ resource "pagerduty_service" "core_alerts" {
   escalation_policy       = pagerduty_escalation_policy.low_priority.id
   alert_creation          = "create_alerts_and_incidents"
   incident_urgency_rule {
-    type = "constant"
+    type    = "constant"
     urgency = "low"
   }
 }
@@ -100,7 +100,7 @@ resource "pagerduty_service" "contact_on_call" {
   escalation_policy       = pagerduty_escalation_policy.on_call.id
   alert_creation          = "create_alerts_and_incidents"
   incident_urgency_rule {
-    type = "constant"
+    type    = "constant"
     urgency = "high"
   }
 }
