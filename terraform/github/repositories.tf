@@ -160,6 +160,20 @@ module "terraform-module-ecs" {
   secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
+module "terraform-module-ecs-cluster" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-ecs-cluster"
+  type        = "module"
+  description = "Module for creating ECS cluster (Linux/Windows) not just for EC2 launch type"
+  topics = [
+    "aws",
+    "ecs",
+    "linux",
+    "windows"
+  ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
+}
+
 module "modernisation-platform-ami-builds" {
   source      = "./modules/repository"
   name        = "modernisation-platform-ami-builds"
