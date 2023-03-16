@@ -32,7 +32,7 @@ module "core-team" {
     module.modernisation-platform-incident-response.repository.name,
     module.terraform-module-ec2-instance.repository.name,
     module.terraform-module-ec2-autoscaling-group.repository.name,
-    module.terraform-module-ecs-cluster.repository.name     
+    module.terraform-module-ecs-cluster.repository.name
   ]
 
   maintainers = local.maintainers
