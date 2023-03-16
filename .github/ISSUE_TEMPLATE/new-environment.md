@@ -83,14 +83,14 @@ The infrastructure-support tag should be an email address which will receive AWS
 
 ### Firewall rules
 
-<!-- Modernisation Platform uses firewall for traffic coming in privately from the wider MoJ network (for applications that are not publicly accessible). Connectivity from outside the subnet/VPC your application is in will be blocked by default by the firewall. Please specify any firewall rules your application may require to allow access from other applications, tools or external parties. Firewall rules should be provided in a form of CIDR ranges, protocols and ports (see example below). If you specify an insecure port/service/protocol, you need to provide a business justification and make the service owner aware of its vulnerabilities. We will consider such requests, but there might be time when we will not be able to implement it. -->
-    # Your firewall rules goes here
+<!-- Modernisation Platform uses firewall for traffic coming in privately from the wider MoJ network (for applications that are not publicly accessible). Connectivity from outside the Modernisation Platform will be blocked by default by the firewall. Please specify any firewall rules your application may require to allow access from other applications, tools or external parties. Firewall rules should be provided in a form of CIDR ranges, protocols and ports (see example below). If you specify an insecure port/service/protocol, you will need to provide a business justification and make the service owner aware of its vulnerabilities. -->
+
     # e.g.
-    "cp_to_mp_nomis_test_db": {"
+    "cp_to_mp_hmpps_test": {"
       "action": "PASS",
       "source_ip": "172.20.0.0/16",
       "destination_ip": "10.26.8.0/21",
-      "destination_port": "1521",
+      "destination_port": "443",
       "protocol": "TCP"
     },
 
