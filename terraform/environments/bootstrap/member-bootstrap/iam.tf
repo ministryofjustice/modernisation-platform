@@ -252,13 +252,11 @@ data "aws_iam_policy_document" "member-access-us-east" {
     #checkov:skip=CKV_AWS_109
     #checkov:skip=CKV_AWS_110
     #checkov:skip=CKV2_AWS_40
-    effect = "Allow"
-    actions = [
-      "acm:*"
-    ]
+    effect  = "Allow"
+    actions = ["acm:*"]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
-statement {
+ statement {
     effect    = "Deny"
     actions   = [
       "iam:AddClientIDToOpenIDConnectProvider",
