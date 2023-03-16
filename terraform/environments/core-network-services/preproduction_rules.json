@@ -6,13 +6,6 @@
     "destination_port": "80",
     "protocol": "TCP"
   },
-  "psn_to_mp_hmpps_preproduction_http": {
-    "action": "PASS",
-    "source_ip": "51.0.0.0/8",
-    "destination_ip": "10.27.0.0/21",
-    "destination_port": "80",
-    "protocol": "TCP"
-  },
   "psn_to_mp_hmpps_preproduction_https": {
     "action": "PASS",
     "source_ip": "51.0.0.0/8",
@@ -20,25 +13,11 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "moj-core-azure-1_to_mp_hmpps_preproduction_http": {
-    "action": "PASS",
-    "source_ip": "10.50.25.0/27",
-    "destination_ip": "10.27.0.0/21",
-    "destination_port": "80",
-    "protocol": "TCP"
-  },
   "moj-core-azure-1_to_mp_hmpps_preproduction_https": {
     "action": "PASS",
     "source_ip": "10.50.25.0/27",
     "destination_ip": "10.27.0.0/21",
     "destination_port": "443",
-    "protocol": "TCP"
-  },
-  "moj-core-azure-2_to_mp_hmpps_preproduction_http": {
-    "action": "PASS",
-    "source_ip": "10.50.26.0/24",
-    "destination_ip": "10.27.0.0/21",
-    "destination_port": "80",
     "protocol": "TCP"
   },
   "moj-core-azure-2_to_mp_hmpps_preproduction_https": {
