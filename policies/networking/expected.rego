@@ -254,7 +254,8 @@ expected =
           "mlra-production",
           "ccms-ebs-production",
           "oas-production",
-          "portal-production"
+          "portal-production",
+          "laa-oem-production"
         ]
       }
     },
@@ -265,7 +266,8 @@ expected =
           "mlra-preproduction",
           "ccms-ebs-preproduction",
           "oas-preproduction",
-          "portal-preproduction"
+          "portal-preproduction",
+          "laa-oem-preproduction"
         ]
       }
     },
