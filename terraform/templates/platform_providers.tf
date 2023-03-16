@@ -38,6 +38,16 @@ provider "aws" {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/modify-dns-records"
   }
 }
+
+# AWS provider for the ACM usage in us-east-1
+provider "aws" {
+  alias  = "us-east-1"
+  region = "us-east-1"
+  assume_role {
+    role_arn = "arn:aws:iam::${data.aws_caller_identity.original_session.id}:role/MemberInfrastructureAccessUSEast"
+  }
+}
+
 ######################### Run Terraform via CICD ##################################
 
 
