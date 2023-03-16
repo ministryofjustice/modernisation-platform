@@ -3,7 +3,7 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.26.16.0/21",
-        "accounts": ["example-development"]
+        "accounts": ["example-development", "data-platform-development"]
       }
     }
   },
