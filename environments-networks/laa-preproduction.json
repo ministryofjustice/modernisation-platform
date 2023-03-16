@@ -7,7 +7,8 @@
           "mlra-preproduction",
           "ccms-ebs-preproduction",
           "oas-preproduction",
-          "portal-preproduction"
+          "portal-preproduction",
+          "laa-oem-preproduction"
         ]
       }
     }
