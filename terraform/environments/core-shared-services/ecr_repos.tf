@@ -84,7 +84,7 @@ module "delius_jitbit_ecr_repo" {
 module "delius_core_weblogic_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
-  app_name = "delius_core_weblogic"
+  app_name = "delius-core-weblogic"
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
@@ -101,7 +101,7 @@ module "delius_core_weblogic_ecr_repo" {
 module "delius_core_testing_db_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
-  app_name = "delius_core_testing_db"
+  app_name = "delius-core-testing-db"
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
