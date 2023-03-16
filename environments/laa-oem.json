@@ -19,6 +19,24 @@
           "level": "developer"
         }
       ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "laa-ccms-migration-team",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "laa-ccms-migration-team",
+          "level": "developer"
+        }
+      ]
     }
   ],
   "tags": {
