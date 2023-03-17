@@ -100,6 +100,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/data-platform"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/delius-core"
     schedule:
       interval: "daily"
@@ -197,6 +201,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/tipstaff"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/environments/tribunals"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
