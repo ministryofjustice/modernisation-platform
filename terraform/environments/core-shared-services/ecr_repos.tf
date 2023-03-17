@@ -91,6 +91,7 @@ module "delius_core_weblogic_ecr_repo" {
   ]
 
   pull_principals = [
+    local.environment_management.account_ids["delius-core-development"],
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
   ]
 
@@ -108,6 +109,7 @@ module "delius_core_testing_db_ecr_repo" {
   ]
 
   pull_principals = [
+    local.environment_management.account_ids["delius-core-development"],
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
   ]
 
