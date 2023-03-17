@@ -13,45 +13,6 @@
           "level": "view-only"
         }
       ]
-    },
-    {
-      "name": "test",
-      "access": [
-        {
-          "github_slug": "laa-ccms-migration-team",
-          "level": "developer"
-        },
-        {
-          "github_slug": "modernisation-platform-security",
-          "level": "view-only"
-        }
-      ]
-    },
-    {
-      "name": "preproduction",
-      "access": [
-        {
-          "github_slug": "laa-ccms-migration-team",
-          "level": "developer"
-        },
-        {
-          "github_slug": "modernisation-platform-security",
-          "level": "view-only"
-        }
-      ]
-    },
-    {
-      "name": "production",
-      "access": [
-        {
-          "github_slug": "laa-ccms-migration-team",
-          "level": "developer"
-        },
-        {
-          "github_slug": "modernisation-platform-security",
-          "level": "view-only"
-        }
-      ]
     }
   ],
   "tags": {
