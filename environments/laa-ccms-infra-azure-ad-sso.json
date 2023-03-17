@@ -1,0 +1,24 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "laa-ccms-migration-team",
+          "level": "sandbox"
+        },
+        {
+          "github_slug": "modernisation-platform-security",
+          "level": "view-only"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "laa-ccms-infra-azure-ad-sso",
+    "business-unit": "LAA",
+    "infrastructure-support": "donovan.artz@digital.justice.gov.uk",
+    "owner": "donovan.artz@digital.justice.gov.uk"
+  }
+}
