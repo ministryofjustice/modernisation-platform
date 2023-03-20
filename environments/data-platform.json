@@ -7,6 +7,10 @@
         {
           "github_slug": "data-platform-core-infra",
           "level": "sandbox"
+        },
+        {
+          "github_slug": "data-tech-archs",
+          "level": "sandbox"
         }
       ]
     }
