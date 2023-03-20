@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # To test the script locally, uncomment the following two lines
-#core_repo_dir=.
-#env_repo_dir=../modernisation-platform-environments
+# core_repo_dir=.
+# env_repo_dir=../modernisation-platform-environments
 
 # To test the script locally, comment out the following two lines
 core_repo_dir=core-repo
