@@ -23,7 +23,8 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     laa_mlra_prod_alarms    = pagerduty_service_integration.laa_mlra_prod_cloudwatch.integration_key,
     laa_oas_nonprod_alarms  = pagerduty_service_integration.laa_oas_nonprod_cloudwatch.integration_key,
     laa_oas_prod_alarms     = pagerduty_service_integration.laa_oas_prod_cloudwatch.integration_key,
-    jitbit_nonprod_alarms   = pagerduty_service_integration.jitbit_nonprod_cloudwatch.integration_key
+    jitbit_nonprod_alarms   = pagerduty_service_integration.jitbit_nonprod_cloudwatch.integration_key,
+    iaps_nonprod_alarms     = pagerduty_service_integration.iaps_nonprod_cloudwatch.integration_key
   })
 }
 
