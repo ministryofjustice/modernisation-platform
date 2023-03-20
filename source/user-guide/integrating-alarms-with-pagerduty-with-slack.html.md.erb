@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Integrating CloudWatch Alarms with PagerDuty and Slack
-last_reviewed_on: 2022-12-07
+last_reviewed_on: 2023-03-20
 review_in: 6 months
 ---
 
@@ -39,7 +39,7 @@ Once the above PR is merged, in PagerDuty, go to the new service and add and con
 
 The Modernisation Platform team can help with this if you do not have a PagerDuty user.
 
-### Link your SNS topic to your PagerDuty services
+### 5. Link your SNS topic to your PagerDuty services
 
 Add the following code to your application infrastructure in the modernisation platform environments repository, replacing as appropriate, a full example can be seen [here](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/terraform/environments/sprinkler/monitoring.tf)
 
@@ -69,4 +69,5 @@ module "pagerduty_core_alerts" {
   source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=v1.0.0"
   sns_topics                = [aws_sns_topic.<my sns topic>.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["<my integration key name>"]
+}
 ```
