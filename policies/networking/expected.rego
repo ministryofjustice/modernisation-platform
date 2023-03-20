@@ -165,6 +165,7 @@ expected =
         "accounts": [
           "apex-development",
           "ccms-ebs-development",
+          "laa-ccms-infra-azure-ad-sso",
           "laa-oem-development",
           "maatdb-development",
           "mlra-development",
