@@ -146,3 +146,20 @@ resource "pagerduty_service_integration" "jitbit_nonprod_cloudwatch" {
 }
 
 # # Slack channel: # TBC
+
+resource "pagerduty_service" "iaps_nonprod" {
+  name                    = "Delius IAPS Non Prod"
+  description             = "Delius IAPS Non Prod Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "iaps_nonprod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.iaps_nonprod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+# Slack channel: # TBC
