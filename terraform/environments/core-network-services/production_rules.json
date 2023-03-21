@@ -131,5 +131,12 @@
     "destination_ip": "10.27.8.0/21",
     "destination_port": "443",
     "protocol": "TCP"
+  },
+  "mp_nomis_production_to_noms_mgmt_live_vnet_dns": {
+    "action": "PASS",
+    "source_ip": "10.27.8.0/21",
+    "destination_ip": "10.40.128.0/20",
+    "destination_port": "53",
+    "protocol": "UDP"
   }
 }
