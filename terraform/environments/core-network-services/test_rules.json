@@ -92,7 +92,7 @@
   },
   "mp_dev_test_to_noms_dns": {
     "action": "PASS",
-    "source_ip": "10.47.0.0/26",
+    "source_ip": "10.27.0.0/26",
     "destination_ip": "10.102.0.0/16",
     "destination_port": "53",
     "protocol": "UDP"
