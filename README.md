@@ -58,6 +58,7 @@ These modules are used by the Modernisation Platform's core infrastructure
 | [modernisation-platform-terraform-trusted-advisor](https://github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor)                         | Module for refreshing Trusted Advisor every 60 minutes                                               |
 | [modernisation-platform-terraform-member-vpc](https://github.com/ministryofjustice/modernisation-platform-terraform-member-vpc)                                   | Module for member VPC accounts                                                                       |
 | [modernisation-platform-github-oidc-provider](https://github.com/ministryofjustice/modernisation-platform-github-oidc-provider)                                   | Module for creating OIDC providers to use in GitHub Actions                                          |
+| [modernisation-platform-terraform-ec2-instance](https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-instancer)                                   | Module for creating EC2 Instances                                          |
 
 ### Tools
 
