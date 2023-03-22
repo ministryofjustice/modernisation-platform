@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "github_slug": "laa-ccms-devs",
           "level": "sandbox"
         },
         {
