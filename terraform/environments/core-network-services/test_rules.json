@@ -96,5 +96,33 @@
     "destination_ip": "10.102.0.0/16",
     "destination_port": "53",
     "protocol": "UDP"
+  },
+  "laa_staging_to_mp_laa_test": {
+    "action": "PASS",
+    "source_ip": "10.204.0.0/20",
+    "destination_ip": "10.26.96.0/21",
+    "destination_port": "ANY",
+    "protocol": "IP"
+  },
+  "laa_uat_to_mp_laa_test": {
+    "action": "PASS",
+    "source_ip": "10.206.0.0/20",
+    "destination_ip": "10.26.96.0/21",
+    "destination_port": "ANY",
+    "protocol": "IP"
+  },
+  "laa_shared_services_nonprod_to_mp_laa_test": {
+    "action": "PASS",
+    "source_ip": "10.200.0.0/20",
+    "destination_ip": "10.26.96.0/21",
+    "destination_port": "ANY",
+    "protocol": "IP"
+  },
+  "laa_shared_services_prod_to_mp_laa_test": {
+    "action": "PASS",
+    "source_ip": "10.200.16.0/20",
+    "destination_ip": "10.26.96.0/21",
+    "destination_port": "ANY",
+    "protocol": "IP"
   }
 }
