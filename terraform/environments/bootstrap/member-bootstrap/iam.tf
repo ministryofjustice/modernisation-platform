@@ -149,7 +149,8 @@ data "aws_iam_policy_document" "member-access" {
       "servicediscovery:GetInstancesHealthStatus",
       "servicediscovery:UpdateInstanceCustomHealthStatus",
       "servicediscovery:GetOperation",
-      "servicediscovery:ListOperations"
+      "servicediscovery:ListOperations",
+      "servicediscovery:TagResource"
       #route53:* and ec2:Describe* are already allowed, but keeping the below for now, in case this is going to be moved elsewhere //TODO cleanup the permissions here
       //      "route53:CreateHostedZone",
       //      "route53:GetHostedZone",
