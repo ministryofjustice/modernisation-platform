@@ -11,6 +11,14 @@
         {
           "github_slug": "data-tech-archs",
           "level": "sandbox"
+        },
+        {
+          "github_slug": "data_platform_labs_members",
+          "level": "sandbox"
+        },
+        {
+          "github_slug": "data_platform_labs_maintainers",
+          "level": "sandbox"
         }
       ]
     }
