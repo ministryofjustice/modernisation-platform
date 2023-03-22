@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "LAA CCMS Devs",
+          "github_slug": "laa-ccms-devs",
           "level": "sandbox"
         },
         {
