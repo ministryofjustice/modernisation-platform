@@ -138,5 +138,19 @@
     "destination_ip": "10.40.128.0/20",
     "destination_port": "53",
     "protocol": "UDP"
+  },
+  "shared_services_management_to_moj-laa-oem-7799": {
+    "action": "PASS",
+    "source_ip": "10.200.16.0/20",
+    "destination_ip": "10.27.64.0/21",
+    "destination_port": "7799",
+    "protocol": "TCP" 
+  },
+  "shared_services_management_to_moj-laa-oem-7101": {
+    "action": "PASS",
+    "source_ip": "10.200.16.0/20",
+    "destination_ip": "10.27.64.0/21",
+    "destination_port": "7101",
+    "protocol": "TCP" 
   }
 }
