@@ -151,18 +151,18 @@ data "aws_iam_policy_document" "member-access" {
       "servicediscovery:GetOperation",
       "servicediscovery:ListOperations"
       #route53:* and ec2:Describe* are already allowed, but keeping the below for now, in case this is going to be moved elsewhere //TODO cleanup the permissions here
-//      "route53:CreateHostedZone",
-//      "route53:GetHostedZone",
-//      "route53:DeleteHostedZone",
-//      "route53:ListHostedZonesByName",
-//      "route53:CreateHealthCheck",
-//      "route53:GetHealthCheck",
-//      "route53:DeleteHealthCheck",
-//      "route53:UpdateHealthCheck",
-//      "route53:ChangeResourceRecordSets",
-//      "ec2:DescribeInstances",
-//      "ec2:DescribeVpcs",
-//      "ec2:DescribeRegions"
+      //      "route53:CreateHostedZone",
+      //      "route53:GetHostedZone",
+      //      "route53:DeleteHostedZone",
+      //      "route53:ListHostedZonesByName",
+      //      "route53:CreateHealthCheck",
+      //      "route53:GetHealthCheck",
+      //      "route53:DeleteHealthCheck",
+      //      "route53:UpdateHealthCheck",
+      //      "route53:ChangeResourceRecordSets",
+      //      "ec2:DescribeInstances",
+      //      "ec2:DescribeVpcs",
+      //      "ec2:DescribeRegions"
       # This is the end of permissions needed for the ServiceDiscovery and the AWS Cloud Map, see the doc: https://docs.aws.amazon.com/cloud-map/latest/dg/cloud-map-api-permissions-ref.html
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
