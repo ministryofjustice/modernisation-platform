@@ -136,6 +136,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "kms:ReEncrypt*",
       "kms:GenerateDataKey*",
       "kms:DescribeKey",
+      "kms:CreateGrant",
       "lambda:InvokeFunction",
       "lambda:UpdateFunctionCode",
       "rds:CopyDBSnapshot",
