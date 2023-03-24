@@ -67,3 +67,6 @@ These modules are used by the Modernisation Platform's core infrastructure
 | [modernisation-platform-instance-scheduler](https://github.com/ministryofjustice/modernisation-platform-instance-scheduler)   | A Go lambda function for stopping and starting instance, rds resources and autoscaling groups. The lambda is used by the core platform and can be reused outside of the platform with minimal changes |
 | [modernisation-platform-infrastructure-test](https://github.com/ministryofjustice/modernisation-platform-infrastructure-test) | Infrastructure test tool based on Cucumber.js        |
 | [modernisation-platform-cp-network-test](https://github.com/ministryofjustice/modernisation-platform-cp-network-test)         | Container bundled with utilities for network testing |
+| [modernisation-platform-terraform-ec2-instance](https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-instance)         | Module for creating an EC2 instance |
+| [modernisation-platform-terraform-ec2-autoscaling-group](https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-autoscaling-group)         | Module for creating an EC2 autoscaling group |
+| [modernisation-platform-terraform-ssm-patching](https://github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching)         | Module for automated patching on EC2 instances |
