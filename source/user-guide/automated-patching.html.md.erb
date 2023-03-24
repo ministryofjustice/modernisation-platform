@@ -7,10 +7,10 @@ review_in: 6 months
 
 # <%= current_page.data.title %>
 
-## Patching for EC2s
+## Patching for EC2 Instances
 
-You can use the [modernisation-platform-terraform-ssm-patching](https://github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching) module to create[AWS SSM Patch Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-patch.html) resources in your account.
+You can use the [modernisation-platform-terraform-ssm-patching](https://github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching) module to create [AWS SSM Patch Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-patch.html) resources in your account.
 
 The module creates an s3 bucket for log storage, as well as maintnance windows, tasks, resource groups, and patch baselines.
 
-Please see the module for guidance on how to implement.
+To use this module, you must have instances with the SSM agent installed (Comes as default with many AMIS), as well as have a tag of "Patching: Yes". Please be aware, if `patch_schedule` variable is not supplied, the default will power down instances at 10pm on a Monday. Please see the module for guidance on how to implement, and to raise any issues.
