@@ -39,6 +39,6 @@
     "source_ip": "10.200.0.0/20",
     "destination_ip": "10.27.72.0/21",
     "destination_port": "ANY",
-    "protocol": "TCP" 
+    "protocol": "TCP"
   }
 }
