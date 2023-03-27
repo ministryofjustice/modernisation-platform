@@ -144,6 +144,6 @@
     "source_ip": "10.200.16.0/20",
     "destination_ip": "10.27.64.0/21",
     "destination_port": "ANY",
-    "protocol": "TCP" 
+    "protocol": "TCP"
   }
 }
