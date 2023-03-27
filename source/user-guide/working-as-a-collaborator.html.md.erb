@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Working as a Collaborator
-last_reviewed_on: 2022-09-21
+last_reviewed_on: 2023-03-27
 review_in: 6 months
 ---
 
@@ -10,7 +10,7 @@ review_in: 6 months
 Once you have been [set up as a collaborator](../runbooks/adding-collaborators.html) you can -
 
 * [Create infrastructure in the modernisation-platform-environments repository](creating-resources.html#creating-resources-in-the-modernisation-platform)
-* [Deploy infrastrucutre via GitHub Actions workflows](deploying-your-infrastructure.html)
+* [Deploy infrastructure via GitHub Actions workflows](deploying-your-infrastructure.html)
 * [View your accounts via the AWS console](#logging-in-to-the-aws-console)
 * [Use AWS credentials](#getting-access-credentials)
 * [Run Terraform plans locally](#running-a-terraform-plan-locally-as-a-collaborator)
@@ -48,9 +48,9 @@ AWS provides credentials which can give you programatic access to your AWS accou
 
 ## Running a Terraform plan locally as a collaborator
 
-To run a Terraform locally as a collaborator, you will need to get your AWS credentials, and use [AWS Vault](https://github.com/99designs/aws-vault) or a similar tool to run Terraform using MFA.
+To run a Terraform locally as a collaborator, you will need to get your AWS credentials. These can be obtained from here[https://moj.awsapps.com/start#/] and selecting `Command line or programmatic access` and copy and pasting in the `Short-term credentials` to your terminal.
 
-You should follow the standard [running terraform plan locally](../user-guide/running-terraform-plan-locally.html) instructions, ignoring the SSO section, running Terraform using AWS Vault and making one further code change:
+Currently, you should follow the standard [running terraform plan locally](../user-guide/running-terraform-plan-locally.html) instructions, ignoring the SSO section, running Terraform using AWS Vault and making one further code change:
 
 Under the local plan section of the `providers.tf` file:
 
@@ -125,3 +125,5 @@ Host bastion
 ### Useful Tips
 
 AWS Vault is a useful tool, and can be found [here.](https://github.com/99designs/aws-vault) It can easily be installed via brew on mac, and may help.
+
+Making changes locally so terraform can be ran and applied locally is soon to be fixed, where no code changes will be necessary.
