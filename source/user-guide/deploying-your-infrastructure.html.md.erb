@@ -59,6 +59,8 @@ The Modernisation Platform uses [Terraform Workspaces](https://www.terraform.io/
 1. Tick the box and `Approve and deploy`
 1. The `Deploy <environment> - <application>` job will then run and deploy your infrastructure.  Any issues or failures can been seen in this job.
 
+> Warning: Once workflows have started please do not cancel them unless it's an emergency. GitHub actions cancels the workflow immediately, which can cause loss or corruption of the Terraform state leading to loss or duplication of infrastructure.
+
 ### Checks
 
 Some additional workflow checks will run when you create a pull request, this is to help ensure code on the Modernisation Platform meets the highest quality standards. Some of the checks are required which means you will not be able to merge the pull request until the issue is resolved.
