@@ -253,6 +253,7 @@ resource "aws_iam_role_policy" "member-delegation" {
           "ec2:DescribeNetworkInterfaces",
           "ec2:DeleteNetworkInterface",
           "ec2:CreateNetworkInterfacePermission",
+          "ec2:CreateTags",
           "ec2:DescribeSecurityGroupReferences",
           "ec2:DescribeSecurityGroups",
           "ec2:DescribeSecurityGroupRules",
