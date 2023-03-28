@@ -49,35 +49,34 @@ AWS provides credentials which can give you programatic access to your AWS accou
 
 ## Running a Terraform plan locally as a collaborator
 
-To run a Terraform locally as a collaborator, you will need to get your AWS credentials. These can be obtained from here[https://moj.awsapps.com/start#/] and selecting `Command line or programmatic access` and copy and pasting in the `Short-term credentials` to your terminal.
+### Set credentials
 
-Currently, you should follow the standard [running terraform plan locally](../user-guide/running-terraform-plan-locally.html) instructions, ignoring the SSO section, running Terraform using AWS Vault and making one further code change:
+To run a Terraform locally as a collaborator, you will need to get your AWS credentials. See above for creating and obtaining these, you will need use a tool such as [aws-vault](https://github.com/99designs/aws-vault) to handle MFA, or you can generate a session token using the AWS CLI. (Terraform does not support the use of MFA well when assuming roles.)
 
-Under the local plan section of the `providers.tf` file:
+### Set the role you assume
 
-```
-######################### Run Terraform Plan Locally Only ##################################
-# To run a Terraform Plan locally, uncomment this bottom section of code and comment out the top section
+There are different [access levels](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#access) that map to different roles that you can assume when running Terraform.
 
-provider "aws" {
-  region = "eu-west-2"
-}
-```
+By default if you do nothing the role you assume will be the `developer` role.
 
-Add in an assume role block for the main provider with the account number that local plan is for, for example:
+If you wish to assume another role, eg `migration` or `sandbox` you will need to set an environment variable:
 
-```
-######################### Run Terraform Plan Locally Only ##################################
-# To run a Terraform Plan locally, uncomment this bottom section of code and comment out the top section
+`export TF_VAR_collaborator_access=migration`
 
-provider "aws" {
-  region = "eu-west-2"
-  assume_role {
-    role_arn = "arn:aws:iam::<my-account-number>:role/developer"
-  }
-}
-```
-As with all local plan changes, please do not add these changes to version control or the CI/CD GitHub workflows will stop running.
+### Install Terraform
+
+Follow the instructions [here](https://learn.hashicorp.com/tutorials/terraform/install-cli) to install the latest version of Terraform according to your platform.
+
+### Run Terraform plan
+
+1. Navigate to your application infrastructure code - `cd modernisation-platform-environments/terraform/environments/my-application`
+1. Run a Terraform init - `terraform init`
+1. View the workspaces (you have different workspaces for your different environment accounts) - `terraform workspace list`
+1. Select the required workspace - `terraform workspace select my-application-development`
+1. Run a Terraform plan - `terraform plan`
+
+>Running a plan locally has read only permissions, you will not be able to run an apply, destroy or import.
+
 
 ## Accessing EC2s as a Collaborator
 
