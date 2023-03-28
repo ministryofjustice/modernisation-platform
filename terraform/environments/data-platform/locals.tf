@@ -32,4 +32,8 @@ locals {
   # example usage:
   # example_data = local.application_data.accounts[local.environment].example_var
   application_data = fileexists("./application_variables.json") ? jsondecode(file("./application_variables.json")) : {}
+
+  oidc_repositories        = ["ministryofjustice/data-platform-products:*"]
+  oidc_default_policy_arns = ["arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"]
+
 }
