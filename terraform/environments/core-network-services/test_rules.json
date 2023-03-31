@@ -6,9 +6,9 @@
     "destination_port": "80",
     "protocol": "TCP"
   },
-  "gp_to_nomis_test_https": {
+  "gp_to_hmpps_test_https": {
     "action": "PASS",
-    "source_ip": "10.101.0.0/16",
+    "source_ip": "10.184.0.0/16",
     "destination_ip": "10.26.8.0/21",
     "destination_port": "443",
     "protocol": "TCP"
