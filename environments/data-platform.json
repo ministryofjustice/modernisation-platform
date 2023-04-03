@@ -15,6 +15,10 @@
         {
           "github_slug": "data-platform-labs",
           "level": "sandbox"
+        },
+        {
+          "github_slug": "data-platform-security-and-auditors",
+          "level": "sandbox"
         }
       ]
     }

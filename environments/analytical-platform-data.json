@@ -28,6 +28,10 @@
         {
           "github_slug": "data-engineering-aws",
           "level": "developer"
+        },
+        {
+          "github_slug": "data-platform-security-and-auditors",
+          "level": "developer"
         }
       ]
     }
