@@ -19,7 +19,8 @@ allowed_access := [
   "migration",
   "instance-management",
   "read-only",
-  "security-audit"
+  "security-audit",
+  "data-engineer"
 ]
 
 allowed_nuke := [
