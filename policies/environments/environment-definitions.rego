@@ -17,7 +17,9 @@ allowed_access := [
   "sandbox",
   "administrator",
   "migration",
-  "instance-management"
+  "instance-management",
+  "read-only",
+  "security-audit"
 ]
 
 allowed_nuke := [
