@@ -32,6 +32,10 @@
         {
           "github_slug": "data-engineering",
           "level": "administrator"
+        },
+        {
+          "github_slug": "data-platform-security-and-auditors",
+          "level": "developer"
         }
       ]
     }
