@@ -52,6 +52,7 @@ jobs:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
           VALIDATE_ALL_CODEBASE: true
           YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (.github/*)
+          REPORT_OUTPUT_FOLDER: none
 
       - name: Check for changes
         run: |
