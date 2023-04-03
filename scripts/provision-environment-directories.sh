@@ -2,7 +2,7 @@
 
 basedir=terraform/environments
 networkdir=environments-networks
-templates=terraform/templates/*.tf
+templates=terraform/templates/modernisation-platform/*.*
 environments=environments
 
 provision_environment_directories() {
@@ -87,8 +87,6 @@ copy_templates() {
     filename=$(basename "$file")
     account_type=$(jq -r '."account-type"' ${environments}/${application_name}.json)
 
-    if [ ${filename} != "platform_locals.tf" ] && [ ${filename} != "platform_providers.tf" ] && [ ${filename} != "platform_data.tf" ] && [[ "${filename}" !=  "member_"* ]]
-    then
       if [ ${filename} == "subnet_share.tf" ] && ([ ${account_type} == "member-unrestricted" ] ||  [ ${account_type} == "core" ]); then
         echo "Skipping $file for $application_name as it is an unrestricted or a core account."
       else
@@ -105,7 +103,6 @@ copy_templates() {
           fi
         fi
       fi
-    fi
   done
 
   echo "Finished copying templates."

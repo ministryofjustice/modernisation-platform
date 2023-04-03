@@ -9,7 +9,7 @@ core_repo_dir=core-repo
 env_repo_dir=modernisation-platform-environments
 basedir=$env_repo_dir/terraform/environments
 networkdir=$core_repo_dir/environments-networks
-templates=$core_repo_dir/terraform/templates/*.tf
+templates=$core_repo_dir/terraform/templates/modernisation-platform-environments/*.*
 environment_json_dir=$core_repo_dir/environments
 codeowners_file=$env_repo_dir/.github/CODEOWNERS
 
@@ -98,40 +98,21 @@ provision_environment_directories() {
 }
 
 copy_templates() {
-
   for file in $templates; do
     filename=$(basename "$file")
-
-    if [ ${filename} != "subnet_share.tf" ] && [ ${filename} != "providers.tf" ] && [ ${filename} != "locals.tf" ] && [ ${filename} != "data.tf" ]
-    then
-      echo "Copying $file to $1, replacing application_name with $application_name"
-      sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
-      if [ ${filename} == "platform_backend.tf" ]
+    echo "Copying $file to $1, replacing application_name with $application_name"
+    sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
+    if [ ${filename} == "platform_backend.tf" ]
       then
         if [ `uname` = "Linux" ]
         then
           sed -i "s/environments\//environments\/members\//g" "$1/$filename"
-          sed -i "/dynamodb_table/d" "$1/$filename"
         else
           # This must be a Mac
           sed -i '' "s/environments\//environments\/members\//g" "$1/$filename"
-          sed -i '' "/dynamodb_table/d" "$1/$filename"
         fi
       fi
-    fi
   done
-
-  # rename member data file to data.tf
-  mv $1/member_data.tf $1/data.tf
-  # rename member locals file to locals.tf
-  mv $1/member_locals.tf $1/locals.tf
-  # rename member secrets file to secrets.tf
-  mv $1/member_secrets.tf $1/secrets.tf
-  # copy application variable file
-  cp $core_repo_dir/terraform/templates/application_variables.json $1
-  # copy service runbook template file and rename it to README.md
-  cp $core_repo_dir/terraform/templates/service_runbook_template.md $1/README.md
-
   echo "Finished copying templates."
 }
 
