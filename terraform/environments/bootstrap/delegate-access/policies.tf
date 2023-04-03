@@ -210,6 +210,60 @@ data "aws_iam_policy_document" "developer_additional" {
   }
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "data_engineering_additional" {
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_110
+  source_policy_documents = [data.aws_iam_policy_document.developer_additional.json] # this is a developer++ policy with additional permissions required for data engineering
+
+  statement {
+    sid    = "DataEngineeringAllow"
+    effect = "Allow"
+    actions = [
+      "athena:DeleteNamedQuery",
+      "glue:BatchCreatePartition",
+      "glue:BatchDeletePartition",
+      "glue:BatchDeleteTable",
+      "glue:CreateDatabase",
+      "glue:CreatePartition",
+      "glue:CreateTable",
+      "glue:DeleteDatabase",
+      "glue:DeletePartition",
+      "glue:DeleteTable",
+      "glue:UpdateDatabase",
+      "glue:UpdatePartition",
+      "glue:UpdateTable",
+      "glue:CreateUserDefinedFunction",
+      "glue:DeleteUserDefinedFunction",
+      "glue:UpdateUserDefinedFunction",
+      "glue:BatchStopJobRun",
+      "glue:CreateJob",
+      "glue:DeleteJob",
+      "glue:GetJob",
+      "glue:GetJobs",
+      "glue:GetJobRun",
+      "glue:GetJobRuns",
+      "glue:StartJobRun",
+      "glue:UpdateJob",
+      "glue:ListJobs",
+      "glue:BatchGetJobs",
+      "glue:GetJobBookmark"
+    ]
+    resources = ["*"]
+  }
+
+}
+
+# data engineerin policy (developer + glue + some athena)
+resource "aws_iam_policy" "data_engineering" {
+  provider = aws.workspace
+  name     = "data_engineering_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.data_engineering_additional.json
+}
+
 # sandbox policy - member SSO and collaborators, development accounts only
 resource "aws_iam_policy" "sandbox" {
   provider = aws.workspace
