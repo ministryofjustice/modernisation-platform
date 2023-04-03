@@ -264,7 +264,7 @@ resource "aws_ssoadmin_account_assignment" "instance-management" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.aws_ssoadmin_permission_set.migration.arn
+  permission_set_arn = data.aws_ssoadmin_permission_set.instance-management.arn
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
