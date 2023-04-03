@@ -92,16 +92,6 @@ copy_templates() {
       else
         echo "Copying $file to $1, replacing application_name with $application_name"
         sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
-        if [ ${filename} == "platform_backend.tf" ]
-        then
-          if [ `uname` = "Linux" ]
-          then
-            sed -i "s/environments\//environments\/accounts\//g" "$1/$filename"
-          else
-            # This must be a Mac
-            sed -i '' "s/environments\//environments\/accounts\//g" "$1/$filename"
-          fi
-        fi
       fi
   done
 
