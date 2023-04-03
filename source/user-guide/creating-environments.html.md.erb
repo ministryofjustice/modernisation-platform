@@ -39,6 +39,12 @@ This is the level of access for the GitHub team to the Modernisation Platform. T
  - Log into the console
  - See resources and basic metadata. You cannot see the content of resources such as logs or S3 buckets.
 
+#### read-only
+
+- Log into the console
+- Comprehensive read-only visibility of the AWS environment. As this role provides access to contents of S3 and others, it is designed for users for whom view-only is insufficient.
+- Role makes use of AWS ReadOnly managed policy and is not at present configurable beyond that.
+
 #### developer
 
  - Log into the console
@@ -85,6 +91,12 @@ The instance-management role is a role given to assist database administrators.
 - The role contains mainly RDS and EC2 permissions.
 
 This is a new role created in Feb 2023, and if more permissions are required for database admins, we're happy to adjust the policy.
+
+#### security-audit
+
+- Log into the console
+- See resources and metadata useful to security operations teams and security audit teams.
+- Makes use of AWS managed SecurityAudit policy and is not generally configurable beyond that.
 
 #### administrator
 
