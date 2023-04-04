@@ -30,7 +30,7 @@
     }
   ],
   "tags": {
-    "application": "laa-oem",
+    "application": "mojfin",
     "business-unit": "LAA",
     "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
     "owner": "william.moran@justice.gov.uk"
