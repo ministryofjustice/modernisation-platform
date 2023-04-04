@@ -1,0 +1,38 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "laa-aws-infrastructure",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "github_slug": "laa-aws-infrastructure",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "laa-aws-infrastructure",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "laa-oem",
+    "business-unit": "LAA",
+    "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
+    "owner": "william.moran@justice.gov.uk"
+  }
+}

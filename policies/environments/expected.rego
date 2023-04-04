@@ -32,6 +32,7 @@ expected =
     "mi-platform",
     "maatdb",
     "mlra",
+    "mojfin",
     "nomis",
     "nomis-combined-reporting",
     "nomis-data-hub",
