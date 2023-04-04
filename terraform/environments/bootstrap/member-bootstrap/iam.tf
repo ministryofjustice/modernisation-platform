@@ -31,6 +31,7 @@ data "aws_iam_policy_document" "member-access" {
       "athena:*",
       "autoscaling:*",
       "backup:*",
+      "backup-storage:MountCapsule",
       "cloudfront:*",
       "cloudwatch:*",
       "codebuild:*",
