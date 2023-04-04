@@ -77,7 +77,6 @@ module "terraform-module-s3-bucket-replication-role" {
     "s3-replication",
     "iam"
   ]
-  required_checks = ["Run Go Unit Tests"]
   secrets         = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
@@ -314,7 +313,6 @@ module "terraform-module-aws-loadbalancer" {
     "loadbalancer",
     "logging"
   ]
-  required_checks = ["Run Go Unit Tests"]
   secrets         = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
@@ -366,7 +364,6 @@ module "modernisation-platform-terraform-pagerduty-integration" {
     "pagerduty",
     "alerting"
   ]
-  required_checks = ["Run Go Unit Tests"]
   secrets         = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
