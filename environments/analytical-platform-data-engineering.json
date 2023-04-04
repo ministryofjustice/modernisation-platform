@@ -36,6 +36,10 @@
         {
           "github_slug": "data-platform-security-and-auditors",
           "level": "security-audit"
+        },
+        {
+          "github_slug": "data-platform-security-and-auditors",
+          "level": "read-only"
         }
       ]
     }
