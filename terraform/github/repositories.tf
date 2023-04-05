@@ -77,7 +77,7 @@ module "terraform-module-s3-bucket-replication-role" {
     "s3-replication",
     "iam"
   ]
-  secrets         = nonsensitive(local.testing_ci_iam_user_keys)
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
 module "terraform-module-s3-bucket" {
@@ -313,7 +313,7 @@ module "terraform-module-aws-loadbalancer" {
     "loadbalancer",
     "logging"
   ]
-  secrets         = nonsensitive(local.testing_ci_iam_user_keys)
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
 module "modernisation-platform-terraform-member-vpc" {
@@ -364,7 +364,7 @@ module "modernisation-platform-terraform-pagerduty-integration" {
     "pagerduty",
     "alerting"
   ]
-  secrets         = nonsensitive(local.testing_ci_iam_user_keys)
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
 module "modernisation-platform-configuration-management" {
