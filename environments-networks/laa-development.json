@@ -11,7 +11,8 @@
           "maatdb-development",
           "mlra-development",
           "oas-development",
-          "portal-development"
+          "portal-development",
+          "mojfin-development"
         ]
       }
     }

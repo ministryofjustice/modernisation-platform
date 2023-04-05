@@ -8,7 +8,8 @@
           "ccms-ebs-production",
           "oas-production",
           "portal-production",
-          "laa-oem-production"
+          "laa-oem-production",
+          "mojfin-production"
         ]
       }
     }
