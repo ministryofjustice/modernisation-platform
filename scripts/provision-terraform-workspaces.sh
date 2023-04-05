@@ -62,11 +62,11 @@ create_tmp_terraform_files() {
   then
     sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/modernisation-platform-environments/platform_backend.tf" > "${git_dir}/tmp/platform_backend.tf"
   else
-    sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/modernisation-platform/platform_backend.tf" > "${git_dir}/tmp/platform_backend.tf" 
+    sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/modernisation-platform/backend.tf" > "${git_dir}/tmp/backend.tf" 
   fi
   cp "${git_dir}/terraform/templates/modernisation-platform/providers.tf" "${git_dir}/tmp/providers.tf"
-  cp "${git_dir}/terraform/templates/modernisation-platform/platform_secrets.tf" "${git_dir}/tmp/platform_secrets.tf"
-  cp "${git_dir}/terraform/templates/modernisation-platform/platform_versions.tf" "${git_dir}/tmp/platform_versions.tf"
+  cp "${git_dir}/terraform/templates/modernisation-platform/secrets.tf" "${git_dir}/tmp/secrets.tf"
+  cp "${git_dir}/terraform/templates/modernisation-platform/versions.tf" "${git_dir}/tmp/versions.tf"
 }
 
 iterate_environments_member() {
