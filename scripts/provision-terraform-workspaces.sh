@@ -56,11 +56,11 @@ create_tmp_terraform_files() {
   mkdir "${git_dir}/tmp"
 
   # Copy files to emulation folder
-  sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/platform_backend.tf" > "${git_dir}/tmp/platform_backend.tf"
-  sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/locals.tf" > "${git_dir}/tmp/locals.tf"
-  cp "${git_dir}/terraform/templates/providers.tf" "${git_dir}/tmp/providers.tf"
-  cp "${git_dir}/terraform/templates/platform_secrets.tf" "${git_dir}/tmp/platform_secrets.tf"
-  cp "${git_dir}/terraform/templates/platform_versions.tf" "${git_dir}/tmp/platform_versions.tf"
+  sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/modernisation-platform/platform_backend.tf" > "${git_dir}/tmp/platform_backend.tf"
+  sed "s/\$application_name/${APPLICATION}/g" "${git_dir}/terraform/templates/modernisation-platform/locals.tf" > "${git_dir}/tmp/locals.tf"
+  cp "${git_dir}/terraform/templates/modernisation-platform/providers.tf" "${git_dir}/tmp/providers.tf"
+  cp "${git_dir}/terraform/templates/modernisation-platform/platform_secrets.tf" "${git_dir}/tmp/platform_secrets.tf"
+  cp "${git_dir}/terraform/templates/modernisation-platform/platform_versions.tf" "${git_dir}/tmp/platform_versions.tf"
   if [ `uname` = "Linux" ]
   then
     sed -i "s/environments\//environments\/accounts\//g" "${git_dir}/tmp/platform_backend.tf"
