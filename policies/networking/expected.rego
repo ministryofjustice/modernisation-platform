@@ -170,7 +170,8 @@ expected =
           "maatdb-development",
           "mlra-development",
           "oas-development",
-          "portal-development"
+          "portal-development",
+          "mojfin-development"
         ]
       }
     },
@@ -210,7 +211,8 @@ expected =
           "ccms-ebs-test",
           "laa-oem-test",
           "oas-test",
-          "portal-test"
+          "portal-test",
+          "mojfin-test"
         ]
       }
     },
@@ -256,7 +258,8 @@ expected =
           "ccms-ebs-production",
           "oas-production",
           "portal-production",
-          "laa-oem-production"
+          "laa-oem-production",
+          "mojfin-production"
         ]
       }
     },
