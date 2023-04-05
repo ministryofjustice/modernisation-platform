@@ -114,6 +114,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "codebuild:PersistOAuthToken",
       "ds:*Tags*",
       "ds:*Snapshot*",
+      "ds:ResetUserPassword",
       "ec2:StartInstances",
       "ec2:StopInstances",
       "ec2:RebootInstances",
