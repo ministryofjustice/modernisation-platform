@@ -10,31 +10,6 @@ review_in: 6 months
 Whilst it is possible to see the results of a Terraform plan when you [create a pull request](./deploying-your-infrastructure.html#jobs-on-pull-request), it is also possible to run a Terraform plan locally.
 Some engineers prefer this as it provides a quicker feedback loop to identify any issues with your infrastructure code.
 
-## Running local plans without file modifications
-
-We are currently trialing the ability to run local terraform plans without modifications to `platform_providers.tf`. Please see [here](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/terraform/environments/example/platform_providers.tf) for an example of `platform_providers.tf` which supports this. If your environment has been converted, you will see
-
-```
-data "aws_iam_session_context" "whoami" {
-  provider = aws.oidc-session
-  arn      = data.aws_caller_identity.oidc_session.arn
-}
-```
-
-in your `locals.tf`. If you would like to take part in the trial, please get in touch in our Slack channel [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) If you are part of the trial, you skip the next step of this guide and proceed to [Enter your AWS SSO credentials](#enter-your-aws-sso-credentials)
-
-## Modify your platform_providers.tf
-
-In the [modernisation-platform-environments repository](https://github.com/ministryofjustice/modernisation-platform-environments), in your application folder there is a file called `platform_providers.tf`
-
-This file details the Terraform AWS providers used and which roles they use when running Terraform.
-
-The top part of the file details the configuration which is needed to run the Terraform on the GitHub Actions CI/CD pipelines. The second section, which is by default commented out, details configuration required if running a plan locally.
-
-To run a plan locally, you need to comment out the top section of `platform_providers.tf`, and uncomment the bottom section of the file.  Comments within the file show which sections.
-
->Note do not check in to GitHub any modifications to the file, as this will cause the pipeline to stop working, these changes are only for running Terraform plans locally.
-
 ## Enter your AWS SSO credentials
 
 Get your AWS SSO credentials as detailed [here](./getting-aws-credentials.html), choose option 1 and paste the credentials into the terminal window you are working from.
@@ -53,4 +28,4 @@ Follow the instructions [here](https://learn.hashicorp.com/tutorials/terraform/i
 1. Select the required workspace - `terraform workspace select my-application-development`
 1. Run a Terraform plan - `terraform plan`
 
->Running a plan locally has read only permissions, you will not be able to run an apply.
+>Running a plan locally has read only permissions, you will not be able to run an apply, destroy or import.
