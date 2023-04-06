@@ -34,7 +34,7 @@ resource "pagerduty_escalation_policy" "low_priority" {
 
 resource "pagerduty_escalation_policy" "member_policy" {
   name  = "Modernisation Platform Member Policy"
-  teams = [pagerduty_team.modernisation_platform.id]
+  teams = [pagerduty_team.modernisation_platform_members.id]
 
   rule {
     escalation_delay_in_minutes = 10
