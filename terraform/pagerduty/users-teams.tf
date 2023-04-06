@@ -3,6 +3,10 @@ resource "pagerduty_team" "modernisation_platform" {
   name = "Modernisation Platform"
 }
 
+resource "pagerduty_team" "modernisation_platform_members" {
+  name = "Modernisation Platform Members"
+}
+
 resource "pagerduty_team_membership" "modernisation_platform_membership" {
   for_each = local.modernisation_platform_users
   team_id  = pagerduty_team.modernisation_platform.id
