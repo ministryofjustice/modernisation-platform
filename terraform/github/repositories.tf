@@ -395,3 +395,8 @@ module "modernisation-platform-incident-response" {
     "helm"
   ]
 }
+
+resource "github_repository" "modernisation-platform-terraform-ecs" {
+  name = "modernisation-platform-terraform-ecs"
+  archived = true
+}
