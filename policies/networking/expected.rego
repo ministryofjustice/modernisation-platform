@@ -58,7 +58,8 @@ expected =
           "delius-jitbit-development",
           "nomis-combined-reporting-development",
           "nomis-data-hub-development",
-          "delius-core-development"
+          "delius-core-development",
+          "hmpps-intelligence-management-development"
         ]
       }
     },
@@ -102,7 +103,8 @@ expected =
           "delius-iaps-production",
           "delius-jitbit-production",
           "nomis-combined-reporting-production",
-          "nomis-data-hub-production"
+          "nomis-data-hub-production",
+          "hmpps-intelligence-management-production"
         ]
       }
     },
