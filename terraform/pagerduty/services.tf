@@ -40,7 +40,7 @@ resource "pagerduty_service_integration" "low_priority_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
-### Low priority core alerts
+### Core platform security hub, config and cloudtrail alerts
 resource "pagerduty_service" "core_alerts" {
   name                    = "Core Alerts - Modernisation Platform"
   description             = "Core Infrastructure Alerts"
@@ -137,7 +137,7 @@ resource "pagerduty_service" "tgw" {
   }
 }
 
-resource "pagerduty_service_integration" "tgw" {
+resource "pagerduty_service_integration" "tgw_cloudwatch" {
   name    = data.pagerduty_vendor.cloudwatch.name
   service = pagerduty_service.tgw.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
