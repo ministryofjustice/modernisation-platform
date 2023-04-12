@@ -152,6 +152,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/mojfin"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/nomis"
     schedule:
       interval: "daily"
@@ -300,7 +304,11 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
-    directory: "/terraform/templates"
+    directory: "/terraform/templates/modernisation-platform"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/templates/modernisation-platform-environments"
     schedule:
       interval: "daily"
   - package-ecosystem: "gomod"
