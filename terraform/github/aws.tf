@@ -41,3 +41,12 @@ data "aws_secretsmanager_secret" "github_ci_user_token" {
 data "aws_secretsmanager_secret_version" "github_ci_user_token" {
   secret_id = data.aws_secretsmanager_secret.github_ci_user_token.id
 }
+
+# Get the GitHub CI user environments repo PAT
+data "aws_secretsmanager_secret" "github_ci_user_environments_repo_pat_token" {
+  name = "github_ci_user_environments_repo_pat"
+}
+
+data "aws_secretsmanager_secret_version" "github_ci_user_environments_repo_pat_token" {
+  secret_id = data.aws_secretsmanager_secret.github_ci_user_environments_repo_pat_token.id
+}

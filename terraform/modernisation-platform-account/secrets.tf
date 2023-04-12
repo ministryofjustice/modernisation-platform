@@ -24,6 +24,19 @@ resource "aws_secretsmanager_secret" "github_ci_user_pat" {
   tags        = local.tags
 }
 
+# Github CI user environments repo PAT
+# Not adding a secret version as this url is generated in Github cannot be added programatically
+# Secret should be manually set in the console.
+# Tfsec ignore
+# - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
+#tfsec:ignore:AWS095
+resource "aws_secretsmanager_secret" "github_ci_user_environments_repo_pat" {
+  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
+  name        = "github_ci_user_environments_repo_pat"
+  description = "This PAT token is used in reusable pipelines of the modernisation-platform-environments repository. This is so that the CI user can post comments in PRs, e.g. tf plan/apply output. Expires on Tue, Apr 9 2024."
+  tags        = local.tags
+}
+
 # Github CI user password
 # Not adding a secret version as this url is generated in Github cannot be added programatically
 # Secret should be manually set in the console.
