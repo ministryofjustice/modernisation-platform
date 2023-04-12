@@ -12,7 +12,8 @@
           "delius-iaps-production",
           "delius-jitbit-production",
           "nomis-combined-reporting-production",
-          "nomis-data-hub-production"
+          "nomis-data-hub-production",
+          "hmpps-intelligence-management-production"
         ]
       }
     }
