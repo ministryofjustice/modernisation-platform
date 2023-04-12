@@ -51,7 +51,7 @@ jobs:
       action: "${{ matrix.action }}"
     secrets:
       modernisation_platform_environments: "${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}"
-      pipeline_github_token: "${{ secrets.GITHUB_CI_USER_ENVIRONMENTS_REPO_PAT }}"
+      pipeline_github_token: "${{ secrets.MODERNISATION_PLATFORM_CI_USER_ENVIRONMENTS_REPO_PAT }}"
 
   destroy-development:
     if: inputs.action == 'destroy'
