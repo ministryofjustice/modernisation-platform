@@ -63,4 +63,4 @@ jobs:
       plan_apply_tfargs: "-destroy"
     secrets:
       modernisation_platform_environments: "${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}"
-      pipeline_github_token: "${{ secrets.DSO_GITHUB_AUTOMATION_PAT }}"
+      pipeline_github_token: "${{ secrets.MODERNISATION_PLATFORM_CI_USER_ENVIRONMENTS_REPO_PAT }}"
