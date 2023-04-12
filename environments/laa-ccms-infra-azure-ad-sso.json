@@ -6,7 +6,8 @@
       "access": [
         {
           "github_slug": "laa-ccms-devs",
-          "level": "sandbox"
+          "level": "sandbox",
+          "nuke": "exclude"
         },
         {
           "github_slug": "modernisation-platform-security",
