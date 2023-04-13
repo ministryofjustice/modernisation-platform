@@ -13,7 +13,6 @@ module "core-team" {
     module.terraform-module-s3-bucket.repository.name,
     module.terraform-module-trusted-advisor.repository.name,
     module.terraform-module-bastion-linux.repository.name,
-    module.terraform-module-ecs.repository.name,
     module.terraform-module-aws-vm-import.repository.name,
     module.modernisation-platform-instance-scheduler.repository.name,
     module.terraform-module-aws-loadbalancer.repository.name,

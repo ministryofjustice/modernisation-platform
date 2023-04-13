@@ -145,20 +145,6 @@ module "terraform-module-github-oidc-role" {
   secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
-module "terraform-module-ecs" {
-  source      = "./modules/repository"
-  name        = "modernisation-platform-terraform-ecs"
-  type        = "module"
-  description = "Module for creating ECS cluster (Linux/Windows) solely for EC2 launch type"
-  topics = [
-    "aws",
-    "ecs",
-    "linux",
-    "windows"
-  ]
-  secrets = nonsensitive(local.testing_ci_iam_user_keys)
-}
-
 module "terraform-module-ecs-cluster" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-ecs-cluster"
