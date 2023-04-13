@@ -145,5 +145,33 @@
     "destination_ip": "10.27.64.0/21",
     "destination_port": "ANY",
     "protocol": "TCP"
+  },
+  "gp_to_read_ims_extraction_data_mojvpn": {
+    "action": "PASS",
+    "source_ip": "81.134.202.29/32",
+    "destination_ip": "10.27.8.0/21",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
+  "go_to_read_ims_extraction_data_global-protect": {
+    "action": "PASS",
+    "source_ip": "35.176.93.186/32",
+    "destination_ip": "10.27.8.0/21",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
+  "mercury_to_upload_ims_extraction_data_NOMS-Live-PP-Mercury": {
+    "action": "PASS",
+    "source_ip": "10.40.54.0/24",
+    "destination_ip": "10.27.8.0/21",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
+  "mercury_to_upload_ims_extraction_data_NOMS-Live-PD-Mercury": {
+    "action": "PASS",
+    "source_ip": "10.40.55.0/24",
+    "destination_ip": "10.27.8.0/21",
+    "destination_port": "443",
+    "protocol": "TCP"
   }
 }
