@@ -37,6 +37,7 @@ locals {
     jake_mulley    = data.pagerduty_user.jake_mulley,
     sean_privett   = data.pagerduty_user.sean_privett,
     stephen_linden = data.pagerduty_user.stephen_linden,
+    simon_pledger = data.pagerduty_user.simon_pledger,
   }
 
   modernisation_platform_users = merge(local.existing_users, tomap(pagerduty_user.pager_duty_users))
@@ -71,4 +72,8 @@ data "pagerduty_user" "karen_botsh" {
 
 data "pagerduty_user" "jake_mulley" {
   email = "jake.mulley${local.digital_email_suffix}"
+}
+
+data "pagerduty_user" "simon_pledger" {
+  email = "simon.pledger${local.digital_email_suffix}"
 }
