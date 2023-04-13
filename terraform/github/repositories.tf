@@ -150,6 +150,7 @@ module "terraform-module-ecs" {
   name        = "modernisation-platform-terraform-ecs"
   type        = "module"
   description = "Module for creating ECS cluster (Linux/Windows) solely for EC2 launch type"
+  archived = true
   topics = [
     "aws",
     "ecs",
@@ -394,9 +395,4 @@ module "modernisation-platform-incident-response" {
     "kubernetes",
     "helm"
   ]
-}
-
-resource "github_repository" "modernisation-platform-terraform-ecs" {
-  name = "modernisation-platform-terraform-ecs"
-  archived = true
 }
