@@ -20,10 +20,10 @@ jobs:
   create-and-commit-files:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3.5.0
+      - uses: actions/checkout@83b7061638ee4956cf7545a6f7efe594e5ad0247 # v3.5.1
         with:
           path: core-repo
-      - uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3.5.0
+      - uses: actions/checkout@83b7061638ee4956cf7545a6f7efe594e5ad0247 # v3.5.1
         with:
           repository: ministryofjustice/modernisation-platform-environments
           path: modernisation-platform-environments
@@ -53,7 +53,7 @@ jobs:
   create-github-environments:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # v3.5.0
+      - uses: actions/checkout@83b7061638ee4956cf7545a6f7efe594e5ad0247 # v3.5.1
         with:
           fetch-depth: 0 # or "2" To retrieve the preceding commit.
       - name: Create GitHub member environments
