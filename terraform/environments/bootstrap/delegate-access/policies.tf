@@ -224,6 +224,10 @@ data "aws_iam_policy_document" "data_engineering_additional" {
     effect = "Allow"
     actions = [
       "athena:DeleteNamedQuery",
+      "athena:StartQueryExecution",
+      "athena:StopQueryExecution",
+      "dms:StartReplicationTask",
+      "dms:StopReplicationTask",
       "glue:BatchCreatePartition",
       "glue:BatchDeletePartition",
       "glue:BatchDeleteTable",
@@ -250,7 +254,8 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "glue:UpdateJob",
       "glue:ListJobs",
       "glue:BatchGetJobs",
-      "glue:GetJobBookmark"
+      "glue:GetJobBookmark",
+      "states:StartExecution"
     ]
     resources = ["*"]
   }
