@@ -15,6 +15,10 @@
         {
           "github_slug": "data-engineering-aws",
           "level": "data-engineer"
+        },
+        {
+          "github_slug": "data-engineering-aws-developers",
+          "level": "developer"
         }
       ]
     },
