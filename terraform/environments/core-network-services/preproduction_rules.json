@@ -6,6 +6,20 @@
     "destination_port": "80",
     "protocol": "TCP"
   },
+  "gp_to_hmpps_preproduction_http": {
+    "action": "PASS",
+    "source_ip": "10.184.0.0/16",
+    "destination_ip": "10.27.0.0/21",
+    "destination_port": "80",
+    "protocol": "TCP"
+  },
+  "gp_to_hmpps_preproduction_https": {
+    "action": "PASS",
+    "source_ip": "10.184.0.0/16",
+    "destination_ip": "10.27.0.0/21",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "psn_to_mp_hmpps_preproduction_https": {
     "action": "PASS",
     "source_ip": "51.0.0.0/8",
