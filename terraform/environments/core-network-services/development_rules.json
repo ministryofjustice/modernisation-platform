@@ -1,4 +1,18 @@
 {
+  "gp_to_hmpps_development_http": {
+    "action": "PASS",
+    "source_ip": "10.184.0.0/16",
+    "destination_ip": "10.26.24.0/21",
+    "destination_port": "80",
+    "protocol": "TCP"
+  },
+  "gp_to_hmpps_development_https": {
+    "action": "PASS",
+    "source_ip": "10.184.0.0/16",
+    "destination_ip": "10.26.24.0/21",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "laa_development_to_mp_laa_development": {
     "action": "PASS",
     "source_ip": "10.202.0.0/20",

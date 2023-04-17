@@ -1,14 +1,14 @@
 {
-  "gp_to_mp_nomis_production_http": {
+  "gp_to_mp_hmpps_production_http": {
     "action": "PASS",
-    "source_ip": "10.40.0.0/18",
+    "source_ip": "10.184.0.0/16",
     "destination_ip": "10.27.8.0/21",
     "destination_port": "80",
     "protocol": "TCP"
   },
-  "gp_to_mp_nomis_production_https": {
+  "gp_to_mp_hmpps_production_https": {
     "action": "PASS",
-    "source_ip": "10.40.0.0/18",
+    "source_ip": "10.184.0.0/16",
     "destination_ip": "10.27.8.0/21",
     "destination_port": "443",
     "protocol": "TCP"

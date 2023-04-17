@@ -1,5 +1,5 @@
 {
-  "gp_to_nomis_test_http": {
+  "gp_to_hmpps_test_http": {
     "action": "PASS",
     "source_ip": "10.184.0.0/16",
     "destination_ip": "10.26.8.0/21",
