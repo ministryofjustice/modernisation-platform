@@ -180,4 +180,4 @@ resource "pagerduty_service_integration" "laa_mojfin_prod_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
-# # Slack channel: #laa-obiee-alerts-prod TBC
+# # Slack channel: # TBC
