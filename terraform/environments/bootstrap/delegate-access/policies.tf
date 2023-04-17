@@ -251,11 +251,13 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "glue:GetJobRun",
       "glue:GetJobRuns",
       "glue:StartJobRun",
+      "glue:StopRun",
       "glue:UpdateJob",
       "glue:ListJobs",
       "glue:BatchGetJobs",
       "glue:GetJobBookmark",
-      "states:StartExecution"
+      "states:StartExecution",
+      "states:StopExecution"
     ]
     resources = ["*"]
   }
