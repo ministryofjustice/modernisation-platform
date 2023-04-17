@@ -251,7 +251,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "glue:GetJobRun",
       "glue:GetJobRuns",
       "glue:StartJobRun",
-      "glue:StopRun",
+      "glue:StopJobRun",
       "glue:UpdateJob",
       "glue:ListJobs",
       "glue:BatchGetJobs",
