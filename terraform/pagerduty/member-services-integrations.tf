@@ -71,7 +71,7 @@ resource "pagerduty_service_integration" "laa_mlra_nonprod_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
-# # Slack channel: # TBC
+# # Slack channel: # laa-alerts-mlra-non-prod
 
 # LAA MLRA Prod
 resource "pagerduty_service" "laa_mlra_prod" {
@@ -89,7 +89,7 @@ resource "pagerduty_service_integration" "laa_mlra_prod_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
-# # Slack channel: # TBC
+# # Slack channel: # laa-alerts-mlra-prod
 
 # LAA OAS - Non Prod
 resource "pagerduty_service" "laa_oas_nonprod" {
@@ -107,9 +107,9 @@ resource "pagerduty_service_integration" "laa_oas_nonprod_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
-# # Slack channel: #laa-obiee-alerts-nonprod TBC
+# # Slack channel: #laa-obiee-alerts-nonprod
 
-# LAA OAS - Non Prod
+# LAA OAS - Prod
 resource "pagerduty_service" "laa_oas_prod" {
   name                    = "Legal Aid Agency OAS Application Production"
   description             = "Legal Aid Agency OAS Application Production Alarms"
@@ -125,7 +125,7 @@ resource "pagerduty_service_integration" "laa_oas_prod_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
-# # Slack channel: #laa-obiee-alerts-prod TBC
+# # Slack channel: #laa-obiee-alerts-prod
 
 
 # Delius Jitbit - Non Prod
@@ -163,3 +163,21 @@ resource "pagerduty_service_integration" "iaps_nonprod_cloudwatch" {
 }
 
 # Slack channel: # TBC
+
+# LAA MojFin - Prod
+resource "pagerduty_service" "laa_mojfin_prod" {
+  name                    = "Legal Aid Agency MojFin Application Production"
+  description             = "Legal Aid Agency MojFin Application Production Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "laa_mojfin_prod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.laa_mojfin_prod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+# # Slack channel: #laa-alerts-mojfin-prod
