@@ -1,4 +1,4 @@
-# 23. Egress Traffic Inspection
+# 24. Egress Traffic Inspection
 
 Date: 2023-03-30
 
