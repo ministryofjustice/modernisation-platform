@@ -3,7 +3,7 @@ locals {
   modernisation-platform-internal-domain = "modernisation-platform.internal"
 
   application-zones = {
-    equip = "equip.service.justice.gov.uk",
+    equip    = "equip.service.justice.gov.uk",
     ccms-ebs = "ccms-ebs.service.justice.gov.uk"
   }
 }
