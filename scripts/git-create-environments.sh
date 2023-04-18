@@ -5,7 +5,6 @@ set -e
 github_org="ministryofjustice"
 repository="${github_org}/modernisation-platform-environments"
 secret=$TERRAFORM_GITHUB_TOKEN
-
 # TODO there is a max per page of 100, need to do pagination properly or probably easiest to rewrite in Ruby/Go etc
 get_existing_environments() {
   response=$(curl -s \
@@ -38,7 +37,7 @@ check_if_environment_exists() {
 check_if_change_to_application_json() {
   echo "Checking if application $1 has changes..."
   changed_envs=$(git diff --no-commit-id --name-only -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments//*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')
-  echo "Changed json files=$changed_envs"  
+  echo "Changed json files=$changed_envs"
   application_name=$(echo $1 | sed 's/-[^-]*$//')
   echo "Application name: $application_name"
   [[ $changed_envs =~ (^|[[:space:]])$application_name($|[[:space:]]) ]] && change_to_application_json="true" || change_to_application_json="false"
@@ -52,15 +51,17 @@ create_environment() {
   # echo "Teams for payload: ${github_teams}"
   if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]
   then
-    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [{\"type\":\"Team\",\"id\":${github_teams}]}"
+    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${github_teams}]}"
   else
-    payload="{\"reviewers\": [{\"type\":\"Team\",\"id\":${github_teams}]}"
+    payload="{\"reviewers\": [${github_teams}]}"
   fi
-  # echo "Payload: $payload"
-  echo "${payload}" | curl -s \
+  echo "Payload: $payload"
+  echo "Repository: ${repository}"
+  echo "${payload}" | curl -L -s \
   -X PUT \
-  -H "Accept: application/vnd.github.v3+json" \
-  -H "Authorization: token ${secret}" \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer ${secret}" \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
   https://api.github.com/repos/${repository}/environments/${environment_name}\
   -d @- > /dev/null 2>&1
 }
