@@ -23,7 +23,7 @@
   "tags": {
     "application": "equip",
     "business-unit": "HMPPS",
-    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "infrastructure-support": "equip.admin@justice.gov.uk",
     "owner": "kathy.anderson@justice.gov.uk"
   }
 }
