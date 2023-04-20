@@ -75,3 +75,6 @@ output "public_igw_route" {
   value       = aws_route.public-internet-gateway
 }
 
+output "types" {
+  value = local.types_and_azs_and_cidrs
+}

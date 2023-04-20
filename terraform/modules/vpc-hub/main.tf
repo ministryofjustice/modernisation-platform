@@ -13,8 +13,11 @@ data "aws_availability_zones" "available" {
 
 locals {
   az    = sort(data.aws_availability_zones.available.names)
-  cidrs = cidrsubnets(var.vpc_cidr, 9, 9, 9, 4, 4, 4, 4, 4, 4, 4, 4, 4)
-  types = ["transit-gateway", "data", "private", "public"]
+  cidrs = flatten([
+    cidrsubnets(var.vpc_cidr, 9, 9, 9, 4, 4, 4, 4, 4, 4, 4, 4, 4),
+    var.inline_inspection ? slice(cidrsubnets(var.vpc_cidr, 9, 9, 9, 9, 9, 9), 3, 6) : []
+  ])
+  types = ["transit-gateway", "data", "private", "public", var.inline_inspection ? "inspection" : ""]
 
   # SAMPLE OUTPUT OF: types_and_az_and_cidrs
 
