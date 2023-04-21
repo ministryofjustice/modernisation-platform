@@ -83,4 +83,53 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
+  "noms_live_vnet_to_mp_preprod": {
+    "action": "PASS",
+    "source_ip": "10.40.0.0/18",
+    "destination_ip": "10.27.0.0/21",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "noms_live_dr_vnet_to_mp_preprod": {
+    "action": "PASS",
+    "source_ip": "10.40.64.0/18",
+    "destination_ip": "10.27.0.0/21",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "noms_mgmt_live_vnet_to_mp_preprod": {
+    "action": "PASS",
+    "source_ip": "10.40.128.0/20",
+    "destination_ip": "10.27.0.0/21",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "noms_mgmt_live_dr_vnet_to_mp_preprod": {
+    "action": "PASS",
+    "source_ip": "10.40.144.0/20",
+    "destination_ip": "10.27.0.0/21",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "aks_studio_hosting_live_1_vnet_to_mp_preprod": {
+    "action": "PASS",
+    "source_ip": "10.244.0.0/20",
+    "destination_ip": "10.27.0.0/21",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "nomisapi_prod_root_vnet_to_mp_preprod": {
+    "action": "PASS",
+    "source_ip": "10.47.0.128/26",
+    "destination_ip": "10.27.0.0/21",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "analytical_platform_to_mp_prod_preprod": {
+    "action": "PASS",
+    "source_ip": "10.201.0.0/16",
+    "destination_ip": "10.27.0.0/21",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  }
 }
