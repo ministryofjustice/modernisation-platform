@@ -118,3 +118,42 @@ resource "pagerduty_service_dependency" "modernisation_platform_tgw" {
     }
   }
 }
+
+resource "pagerduty_service_dependency" "modernisation_platform_networking_general" {
+  dependency {
+    dependent_service {
+      id   = pagerduty_business_service.modernisation_platform_networking.id
+      type = "business_service"
+    }
+    supporting_service {
+      id   = pagerduty_service.networking.id
+      type = "service"
+    }
+  }
+}
+
+resource "pagerduty_service_dependency" "modernisation_platform_operations_general" {
+  dependency {
+    dependent_service {
+      id   = pagerduty_business_service.modernisation_platform_operations.id
+      type = "business_service"
+    }
+    supporting_service {
+      id   = pagerduty_service.operations.id
+      type = "service"
+    }
+  }
+}
+
+resource "pagerduty_service_dependency" "modernisation_platform_security_general" {
+  dependency {
+    dependent_service {
+      id   = pagerduty_business_service.modernisation_platform_security.id
+      type = "business_service"
+    }
+    supporting_service {
+      id   = pagerduty_service.security.id
+      type = "service"
+    }
+  }
+}
