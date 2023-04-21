@@ -15,8 +15,8 @@ variable "gateway" {
 
 variable "inline_inspection" {
   description = "Boolean value to allow the creation of inspection subnets for firewall endpoints"
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "tags_common" {

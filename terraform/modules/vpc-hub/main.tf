@@ -12,12 +12,10 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  az    = sort(data.aws_availability_zones.available.names)
-  cidrs = flatten([
-    cidrsubnets(var.vpc_cidr, 9, 9, 9, 4, 4, 4, 4, 4, 4, 4, 4, 4),
-    var.inline_inspection ? slice(cidrsubnets(var.vpc_cidr, 9, 9, 9, 9, 9, 9), 3, 6) : []
-  ])
-  types = ["transit-gateway", "data", "private", "public", var.inline_inspection ? "inspection" : ""]
+  az               = sort(data.aws_availability_zones.available.names)
+  cidrs            = cidrsubnets(var.vpc_cidr, 9, 9, 9, 4, 4, 4, 4, 4, 4, 4, 4, 4)
+  inspection_cidrs = var.inline_inspection ? slice(cidrsubnets(var.vpc_cidr, 9, 9, 9, 9, 9, 9), 3, 6) : []
+  types            = ["transit-gateway", "data", "private", "public"]
 
   # SAMPLE OUTPUT OF: types_and_az_and_cidrs
 
@@ -50,7 +48,6 @@ locals {
   #           }
   #       }
 
-
   types_and_azs_and_cidrs = {
     for index, type in local.types :
     type => {
@@ -61,6 +58,14 @@ locals {
       }
     }
   }
+
+  inspection = var.inline_inspection ? {
+    for index, cidr in local.inspection_cidrs :
+    "inspection-${local.az[index]}" => {
+      az   = local.az[index]
+      cidr = cidr
+    }
+  } : {}
 
   # NACLs
   nacl_rules = [
