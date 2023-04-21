@@ -629,7 +629,7 @@ resource "aws_network_acl" "inspection" {
 resource "aws_network_acl_rule" "inspection" {
   for_each = var.inline_inspection ? local.nacl_rules_expanded : {}
 
-  network_acl_id = aws_network_acl.transit-gateway.id
+  network_acl_id = aws_network_acl.inspection.id
   rule_number    = each.value.rule_num
   egress         = each.value.egress
   protocol       = each.value.protocol
