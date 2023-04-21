@@ -103,3 +103,42 @@ resource "pagerduty_service_integration" "tgw_cloudwatch" {
   service = pagerduty_service.tgw.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
+
+resource "pagerduty_service" "networking" {
+  name                    = "Networking - Modernisation Platform"
+  description             = "Generic service to raise networking issues against"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.on_call.id
+  alert_creation          = "create_alerts_and_incidents"
+  incident_urgency_rule {
+    type    = "constant"
+    urgency = "high"
+  }
+}
+
+resource "pagerduty_service" "operations" {
+  name                    = "Operations - Modernisation Platform"
+  description             = "Generic service to raise operations issues against"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.on_call.id
+  alert_creation          = "create_alerts_and_incidents"
+  incident_urgency_rule {
+    type    = "constant"
+    urgency = "high"
+  }
+}
+
+resource "pagerduty_service" "security" {
+  name                    = "Security - Modernisation Platform"
+  description             = "Generic service to raise security issues against"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.on_call.id
+  alert_creation          = "create_alerts_and_incidents"
+  incident_urgency_rule {
+    type    = "constant"
+    urgency = "high"
+  }
+}
