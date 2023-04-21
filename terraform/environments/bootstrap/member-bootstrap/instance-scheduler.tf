@@ -1,8 +1,8 @@
 # role for allowing the instance scheduler to shut down and start up instances in accounts
 
 module "instance-scheduler-access" {
-  count  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
+  count                  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
   account_id             = local.environment_management.account_ids["core-shared-services-production"]
   additional_trust_roles = [format("arn:aws:iam::%s:role/InstanceSchedulerLambdaFunctionPolicy", local.environment_management.account_ids["core-shared-services-production"])]
   policy_arn             = aws_iam_policy.instance-scheduler-access[0].id
@@ -51,15 +51,15 @@ data "aws_iam_policy_document" "instance-scheduler-access" {
 }
 
 resource "aws_iam_policy" "instance-scheduler-access" {
-  count    = local.account_data.account-type == "member" ? 1 : 0
+  count       = local.account_data.account-type == "member" ? 1 : 0
   name        = "InstanceSchedulerAccessActions"
   description = "Restricted policy for use by the Instance Scheduler Lambda in member accounts"
   policy      = data.aws_iam_policy_document.instance-scheduler-access.json
 }
 
 module "testing_instance-scheduler-access" {
-  count  = terraform.workspace == "testing-test" ? 1 : 0
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
+  count                  = terraform.workspace == "testing-test" ? 1 : 0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
   account_id             = local.environment_management.account_ids["core-shared-services-production"]
   additional_trust_roles = [format("arn:aws:iam::%s:role/InstanceSchedulerLambdaFunctionPolicy", local.environment_management.account_ids["core-shared-services-production"]), format("arn:aws:iam::%s:root", local.environment_management.account_ids["testing-test"])]
   policy_arn             = aws_iam_policy.instance-scheduler-access[0].id
