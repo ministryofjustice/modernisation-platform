@@ -74,4 +74,3 @@ output "public_igw_route" {
   description = "Public Internet Gateway route"
   value       = aws_route.public-internet-gateway
 }
-

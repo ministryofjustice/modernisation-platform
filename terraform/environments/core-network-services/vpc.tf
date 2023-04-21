@@ -33,6 +33,9 @@ module "vpc_hub" {
   # Transit Gateway ID
   transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
 
+  # Create inline firewall inspection endpoints
+  inline_inspection = true
+
   # Tags
   tags_common = local.tags
   tags_prefix = each.key

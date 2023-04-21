@@ -12,9 +12,10 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  az    = sort(data.aws_availability_zones.available.names)
-  cidrs = cidrsubnets(var.vpc_cidr, 9, 9, 9, 4, 4, 4, 4, 4, 4, 4, 4, 4)
-  types = ["transit-gateway", "data", "private", "public"]
+  az               = sort(data.aws_availability_zones.available.names)
+  cidrs            = cidrsubnets(var.vpc_cidr, 9, 9, 9, 4, 4, 4, 4, 4, 4, 4, 4, 4)
+  inspection_cidrs = slice(cidrsubnets(var.vpc_cidr, 9, 9, 9, 9, 9, 9), 3, 6)
+  types            = ["transit-gateway", "data", "private", "public"]
 
   # SAMPLE OUTPUT OF: types_and_az_and_cidrs
 
@@ -47,7 +48,6 @@ locals {
   #           }
   #       }
 
-
   types_and_azs_and_cidrs = {
     for index, type in local.types :
     type => {
@@ -58,6 +58,14 @@ locals {
       }
     }
   }
+
+  inspection_subnets = var.inline_inspection ? {
+    for index, cidr in local.inspection_cidrs :
+    "inspection-${local.az[index]}" => {
+      az   = local.az[index]
+      cidr = cidr
+    }
+  } : {}
 
   # NACLs
   nacl_rules = [
@@ -580,6 +588,99 @@ resource "aws_route_table_association" "transit-gateway" {
 
   subnet_id      = each.value.id
   route_table_id = aws_route_table.transit-gateway[each.key].id
+}
+
+######################
+# Inspection subnets #
+######################
+resource "aws_subnet" "inspection" {
+  for_each = var.inline_inspection ? tomap(local.inspection_subnets) : {}
+
+  vpc_id = aws_vpc.default.id
+
+  cidr_block        = each.value.cidr
+  availability_zone = each.value.az
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-${each.key}"
+    }
+  )
+}
+
+# Inspection NACLs
+resource "aws_network_acl" "inspection" {
+  count  = var.inline_inspection ? 1 : 0
+  vpc_id = aws_vpc.default.id
+  subnet_ids = [
+    for subnet in aws_subnet.inspection : subnet.id
+  ]
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-inspection"
+    }
+  )
+}
+
+# Inspection NACLs rules
+resource "aws_network_acl_rule" "inspection" {
+  for_each = var.inline_inspection ? local.nacl_rules_expanded : {}
+
+  network_acl_id = aws_network_acl.inspection[0].id
+  rule_number    = each.value.rule_num
+  egress         = each.value.egress
+  protocol       = each.value.protocol
+  rule_action    = each.value.action
+  cidr_block     = each.value.cidr
+  from_port      = each.value.from_port
+  to_port        = each.value.to_port
+}
+
+#tfsec:ignore:aws-vpc-no-excessive-port-access
+resource "aws_network_acl_rule" "inspection-local-ingress" {
+  count          = var.inline_inspection ? 1 : 0
+  network_acl_id = aws_network_acl.inspection[0].id
+  rule_number    = 210
+  egress         = false
+  protocol       = "-1"
+  rule_action    = "allow"
+  cidr_block     = var.vpc_cidr
+}
+
+#tfsec:ignore:aws-vpc-no-excessive-port-access
+resource "aws_network_acl_rule" "inspection-local-egress" {
+  count          = var.inline_inspection ? 1 : 0
+  network_acl_id = aws_network_acl.inspection[0].id
+  rule_number    = 210
+  egress         = true
+  protocol       = "-1"
+  rule_action    = "allow"
+  cidr_block     = var.vpc_cidr
+}
+
+# Inspection route table
+resource "aws_route_table" "inspection" {
+  for_each = aws_subnet.inspection
+
+  vpc_id = aws_vpc.default.id
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-${each.key}"
+    }
+  )
+}
+
+# Transit Gateway route table assocation with transit-gateway subnets
+resource "aws_route_table_association" "inspection" {
+  for_each = aws_subnet.inspection
+
+  subnet_id      = each.value.id
+  route_table_id = aws_route_table.inspection[each.key].id
 }
 
 ###############
