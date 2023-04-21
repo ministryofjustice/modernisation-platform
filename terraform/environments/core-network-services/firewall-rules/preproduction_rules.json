@@ -68,5 +68,19 @@
     "destination_ip": "10.27.72.0/21",
     "destination_port": "ANY",
     "protocol": "TCP"
-  }
+  },
+  "i2n_to_mp_hmpps_preproduction": {
+    "action": "PASS",
+    "source_ip": "10.110.0.0/16",
+    "destination_ip": "10.27.0.0/21",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "nomisapi_preprod_root_vnet_to_mp_preprod": {
+    "action": "PASS",
+    "source_ip": "10.47.0.64/26",
+    "destination_ip": "10.27.0.0/21",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
 }
