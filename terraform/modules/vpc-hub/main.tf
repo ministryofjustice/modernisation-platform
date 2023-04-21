@@ -14,7 +14,7 @@ data "aws_availability_zones" "available" {
 locals {
   az               = sort(data.aws_availability_zones.available.names)
   cidrs            = cidrsubnets(var.vpc_cidr, 9, 9, 9, 4, 4, 4, 4, 4, 4, 4, 4, 4)
-  inspection_cidrs = var.inline_inspection ? slice(cidrsubnets(var.vpc_cidr, 9, 9, 9, 9, 9, 9), 3, 6) : []
+  inspection_cidrs = slice(cidrsubnets(var.vpc_cidr, 9, 9, 9, 9, 9, 9), 3, 6)
   types            = ["transit-gateway", "data", "private", "public"]
 
   # SAMPLE OUTPUT OF: types_and_az_and_cidrs
@@ -594,7 +594,7 @@ resource "aws_route_table_association" "transit-gateway" {
 # Inspection subnets #
 ######################
 resource "aws_subnet" "inspection" {
-  for_each = tomap(local.inspection_subnets)
+  for_each = var.inline_inspection ? tomap(local.inspection_subnets) : {}
 
   vpc_id = aws_vpc.default.id
 
