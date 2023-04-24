@@ -105,4 +105,23 @@ data "aws_iam_policy_document" "kms" {
 
     }
   }
+  statement {
+    effect = "Allow"
+    principals {
+    service [
+      "cloudwatch.amazonaws.com"
+    ]
+    },
+    actions = [
+      "kms:Decrypt",
+      "kms:GenerateDataKey*"
+    ]
+    resources = ["*"]
+
+    # Feed in AWS account IDs
+    principals {
+      type        = "AWS"
+      identifiers = var.business_unit_account_ids
+    }
+  }  
 }
