@@ -119,3 +119,21 @@ module "delius_core_testing_db_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
+
+module "delius_core_openldap_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "delius-core-openldap"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["delius-core-development"],
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
