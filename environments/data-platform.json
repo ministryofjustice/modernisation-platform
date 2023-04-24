@@ -6,15 +6,18 @@
       "access": [
         {
           "github_slug": "data-platform-core-infra",
-          "level": "sandbox"
+          "level": "sandbox",
+          "nuke": "rebuild"
         },
         {
           "github_slug": "data-tech-archs",
-          "level": "sandbox"
+          "level": "sandbox",
+          "nuke": "rebuild"
         },
         {
           "github_slug": "data-platform-labs",
-          "level": "sandbox"
+          "level": "sandbox",
+          "nuke": "rebuild"
         },
         {
           "github_slug": "data-platform-security-and-auditors",
