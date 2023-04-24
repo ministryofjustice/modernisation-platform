@@ -1,3 +1,8 @@
+resource "random_string" "main" {
+  length  = 8
+  special = false
+}
+
 resource "aws_networkfirewall_logging_configuration" "main" {
   firewall_arn = var.fw_arn
   logging_configuration {
@@ -14,7 +19,7 @@ resource "aws_networkfirewall_logging_configuration" "main" {
 #tfsec:ignore:aws-cloudwatch-log-group-customer-key
 resource "aws_cloudwatch_log_group" "main" {
   #checkov:skip=CKV_AWS_158:Temporarily skip KMS encryption check while logging solution is being updated
-  name              = var.cloudwatch_log_group_name
+  name              = format("%s-%s", var.cloudwatch_log_group_name, random_string.main.result)
   retention_in_days = 365 # 0 = never expire
   tags              = var.tags
 }
