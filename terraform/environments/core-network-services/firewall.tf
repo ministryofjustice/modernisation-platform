@@ -110,6 +110,7 @@ resource "aws_subnet" "external_inspection_out" {
 #################################
 # Ingress Inspection VPC Routing
 #################################
+
 resource "aws_route_table" "external_inspection_in" {
   for_each = local.external_inspection_in_subnets_map
 
@@ -149,6 +150,7 @@ resource "aws_route_table" "external_inspection_out" {
     }
   )
 }
+
 resource "aws_route_table_association" "external_inspection_out" {
   for_each = local.external_inspection_in_subnets_map
 
@@ -156,20 +158,22 @@ resource "aws_route_table_association" "external_inspection_out" {
   subnet_id      = aws_subnet.external_inspection_out[each.key].id
 }
 
-##############################
-# 
-##############################
 module "firewall_policy" {
-  source                    = "../../modules/firewall-policy"
+  source                 = "../../modules/firewall-policy"
+  fw_rulegroup_capacity  = "10000"
+  fw_policy_name         = format("%s-fw-policy", local.application_name)
+  fw_rulegroup_name      = format("%s-fw-rulegroup", local.application_name)
+  fw_fqdn_rulegroup_name = format("%s-fw-fqdn-rulegroup", local.application_name)
+  fw_allowed_domains     = local.fqdn_firewall_rules.fw_allowed_domains
+  fw_home_net_ips        = local.fqdn_firewall_rules.fw_home_net_ips
+  rules                  = local.firewall_rules
+  tags                   = local.tags
+}
+
+module "firewall_logging" {
+  source                    = "../../modules/firewall-logging"
   cloudwatch_log_group_name = format("fw-%s-logs", aws_networkfirewall_firewall.external_inspection.name)
   fw_arn                    = aws_networkfirewall_firewall.external_inspection.arn
-  fw_rulegroup_capacity     = "10000"
-  fw_policy_name            = format("%s-fw-policy", local.application_name)
-  fw_rulegroup_name         = format("%s-fw-rulegroup", local.application_name)
-  fw_fqdn_rulegroup_name    = format("%s-fw-fqdn-rulegroup", local.application_name)
-  fw_allowed_domains        = local.fqdn_firewall_rules.fw_allowed_domains
-  fw_home_net_ips           = local.fqdn_firewall_rules.fw_home_net_ips
-  rules                     = local.firewall_rules
   tags                      = local.tags
 }
 
