@@ -56,7 +56,7 @@ func TestTransitGateway(t *testing.T) {
 
 	//Test non-tgw-subnets count. There should be 9
 	output4 := terraform.Output(t, terraformOptions, "non_tgw_subnet_ids")
-	assert.Equal(t, output4, "9")
+	assert.Equal(t, output4, "12")
 
 	//Check the correct CIDR address have been added
 	output5 := terraform.Output(t, terraformOptions, "vpc_cidrs")

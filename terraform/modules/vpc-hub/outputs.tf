@@ -24,6 +24,9 @@ output "non_tgw_subnet_ids" {
     ], [
     for subnet in aws_subnet.data :
     subnet.id
+    ], [
+    for subnet in aws_subnet.inspection :
+    subnet.id
   ])
 }
 
@@ -33,6 +36,7 @@ output "non_tgw_subnet_ids_map" {
     "public"  = [for subnet in aws_subnet.public : subnet.id]
     "private" = [for subnet in aws_subnet.private : subnet.id]
     "data"    = [for subnet in aws_subnet.data : subnet.id]
+    "inspection" = var.inline_inspection ? [for subnet in aws_subnet.inspection : subnet.id] : []
   }
 }
 
