@@ -1,0 +1,12 @@
+{
+  "allowed_domains": [
+    "microsoft.com",
+    ".windowsupdate.microsoft.com",
+    ".update.microsoft.com",
+    ".windowsupdate.com",
+    ".download.windowsupdate.com",
+    "wustat.windows.com",
+    "ntservicepack.microsoft.com",
+    "stats.microsoft.com"
+  ]
+}
