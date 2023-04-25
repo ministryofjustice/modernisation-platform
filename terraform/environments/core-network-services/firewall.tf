@@ -194,7 +194,7 @@ resource "aws_networkfirewall_firewall" "external_inspection" {
 
 resource "aws_networkfirewall_firewall" "inline_inspection" {
   for_each            = local.networking
-  name                = format("%s-inline-inspection", each.key)
+  name                = replace(format("%s-inline-inspection", each.key), "_", "-")
   firewall_policy_arn = module.inline_inspection_policy[each.key].fw_policy_arn
   vpc_id              = module.vpc_hub[each.key].vpc_id
   dynamic "subnet_mapping" {

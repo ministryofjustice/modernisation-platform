@@ -1,6 +1,7 @@
 resource "random_string" "main" {
   length  = 8
   special = false
+  upper   = false
 }
 
 resource "aws_networkfirewall_logging_configuration" "main" {
