@@ -1,50 +1,50 @@
 {
   "gp_to_hmpps_development_http": {
     "action": "PASS",
-    "source_ip": "10.184.0.0/16",
-    "destination_ip": "10.26.24.0/21",
+    "source_ip": "${global-protect}",
+    "destination_ip": "${hmpps-development}",
     "destination_port": "80",
     "protocol": "TCP"
   },
   "gp_to_hmpps_development_https": {
     "action": "PASS",
-    "source_ip": "10.184.0.0/16",
-    "destination_ip": "10.26.24.0/21",
+    "source_ip": "${global-protect}",
+    "destination_ip": "${hmpps-development}",
     "destination_port": "443",
     "protocol": "TCP"
   },
   "laa_development_to_mp_laa_development": {
     "action": "PASS",
-    "source_ip": "10.202.0.0/20",
-    "destination_ip": "10.26.56.0/21",
+    "source_ip": "${laa-lz-development}",
+    "destination_ip": "${laa-development}",
     "destination_port": "ANY",
     "protocol": "IP"
   },
   "laa_shared_services_to_mp_laa_development": {
     "action": "PASS",
-    "source_ip": "10.200.0.0/20",
-    "destination_ip": "10.26.56.0/21",
+    "source_ip": "${laa-lz-shared-services-nonprod}",
+    "destination_ip": "${laa-development}",
     "destination_port": "ANY",
     "protocol": "IP"
   },
   "cp_to_mp_platforms_development": {
     "action": "PASS",
-    "source_ip": "172.20.0.0/16",
-    "destination_ip": "10.26.16.0/21",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${platforms-development}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
   "cp_to_mp_laa_development": {
     "action": "PASS",
-    "source_ip": "172.20.0.0/16",
-    "destination_ip": "10.26.56.0/21",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${laa-development}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
   "default_block_development_test_ingress": {
     "action": "DROP",
     "source_ip": "0.0.0.0/0",
-    "destination_ip": "10.26.0.0/16",
+    "destination_ip": "${mp-development-test}",
     "destination_port": "ANY",
     "protocol": "IP"
   }

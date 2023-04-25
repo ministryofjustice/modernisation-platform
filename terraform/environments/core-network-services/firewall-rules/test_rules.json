@@ -1,127 +1,127 @@
 {
   "gp_to_hmpps_test_http": {
     "action": "PASS",
-    "source_ip": "10.184.0.0/16",
-    "destination_ip": "10.26.8.0/21",
+    "source_ip": "${global-protect}",
+    "destination_ip": "${hmpps-test}",
     "destination_port": "80",
     "protocol": "TCP"
   },
   "gp_to_hmpps_test_https": {
     "action": "PASS",
-    "source_ip": "10.184.0.0/16",
-    "destination_ip": "10.26.8.0/21",
+    "source_ip": "${global-protect}",
+    "destination_ip": "${hmpps-test}",
     "destination_port": "443",
     "protocol": "TCP"
   },
   "az_noms_test_to_mp_nomis_test_db": {
     "action": "PASS",
-    "source_ip": "10.101.0.0/16",
-    "destination_ip": "10.26.8.0/21",
+    "source_ip": "${noms-test-vnet}",
+    "destination_ip": "${hmpps-test}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
   "cp_to_mp_nomis_test_db": {
     "action": "PASS",
-    "source_ip": "172.20.0.0/16",
-    "destination_ip": "10.26.8.0/21",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-test}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
   "laa_test_to_mp_laa_test_http": {
     "action": "PASS",
-    "source_ip": "10.203.0.0/20",
-    "destination_ip": "10.26.96.0/21",
+    "source_ip": "${laa-lz-test}",
+    "destination_ip": "${laa-test}",
     "destination_port": "80",
     "protocol": "TCP"
   },
   "noms_test_dr_vnet_to_mp_test": {
     "action": "PASS",
-    "source_ip": "10.111.0.0/16",
-    "destination_ip": "10.26.0.0/16",
+    "source_ip": "${noms-test-dr-vnet}",
+    "destination_ip": "${mp-development-test}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
   "noms_test_vnet_to_mp_test": {
     "action": "PASS",
-    "source_ip": "10.101.0.0/16",
-    "destination_ip": "10.26.0.0/16",
+    "source_ip": "${noms-test-vnet}",
+    "destination_ip": "${mp-development-test}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
   "analytics_platform_to_mp_dev_test": {
     "action": "PASS",
-    "source_ip": "10.200.0.0/16",
-    "destination_ip": "10.26.0.0/16",
+    "source_ip": "${analytical-platform-airflow-dev}",
+    "destination_ip": "${mp-development-test}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
   "noms_mgmt_vnet_to_mp_dev_test": {
     "action": "PASS",
-    "source_ip": "10.102.0.0/16",
-    "destination_ip": "10.26.0.0/16",
+    "source_ip": "${noms-mgmt-vnet}",
+    "destination_ip": "${mp-development-test}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
   "noms_mgmt_dr_vnet_to_mp_dev_test": {
     "action": "PASS",
-    "source_ip": "10.112.0.0/16",
-    "destination_ip": "10.26.0.0/16",
+    "source_ip": "${noms-mgmt-dr-vnet}",
+    "destination_ip": "${mp-development-test}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
   "aks_studio_hosting_dev_1_vnet_to_mp_dev_test": {
     "action": "PASS",
-    "source_ip": "10.247.0.0/20",
-    "destination_ip": "10.26.0.0/16",
+    "source_ip": "${aks-studio-hosting-dev-1-vnet}",
+    "destination_ip": "${mp-development-test}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
   "nomisapi_t2_root_vnet_to_mp_dev_test": {
     "action": "PASS",
-    "source_ip": "10.47.0.192/26",
-    "destination_ip": "10.26.0.0/16",
+    "source_ip": "${nomisapi-t2-root-vnet}",
+    "destination_ip": "${mp-development-test}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
   "nomisapi_t3_root_vnet_to_mp_dev_test": {
     "action": "PASS",
-    "source_ip": "10.47.0.0/26",
-    "destination_ip": "10.26.0.0/16",
+    "source_ip": "${nomisapi-t3-root-vnet}",
+    "destination_ip": "${mp-development-test}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "mp_dev_test_to_noms_dns": {
+  "mp_dev_test_to_noms_mgmt_vnet_dns": {
     "action": "PASS",
-    "source_ip": "10.26.0.0/16",
-    "destination_ip": "10.102.0.0/16",
+    "source_ip": "${mp-development-test}",
+    "destination_ip": "${noms-mgmt-vnet}",
     "destination_port": "53",
     "protocol": "UDP"
   },
   "laa_staging_to_mp_laa_test": {
     "action": "PASS",
-    "source_ip": "10.204.0.0/20",
-    "destination_ip": "10.26.96.0/21",
+    "source_ip": "${laa-lz-staging}",
+    "destination_ip": "${laa-test}",
     "destination_port": "ANY",
     "protocol": "IP"
   },
   "laa_uat_to_mp_laa_test": {
     "action": "PASS",
-    "source_ip": "10.206.0.0/20",
-    "destination_ip": "10.26.96.0/21",
+    "source_ip": "${laa-lz-uat}",
+    "destination_ip": "${laa-test}",
     "destination_port": "ANY",
     "protocol": "IP"
   },
   "laa_shared_services_nonprod_to_mp_laa_test": {
     "action": "PASS",
-    "source_ip": "10.200.0.0/20",
-    "destination_ip": "10.26.96.0/21",
+    "source_ip": "${laa-lz-shared-services-nonprod}",
+    "destination_ip": "${laa-test}",
     "destination_port": "ANY",
     "protocol": "IP"
   },
   "laa_shared_services_prod_to_mp_laa_test": {
     "action": "PASS",
-    "source_ip": "10.200.16.0/20",
-    "destination_ip": "10.26.96.0/21",
+    "source_ip": "${laa-lz-shared-services-prod}",
+    "destination_ip": "${laa-test}",
     "destination_port": "ANY",
     "protocol": "IP"
   }
