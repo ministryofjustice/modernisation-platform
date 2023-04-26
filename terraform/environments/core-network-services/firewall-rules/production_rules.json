@@ -1,36 +1,36 @@
 {
   "gp_to_mp_hmpps_production_http": {
     "action": "PASS",
-    "source_ip": "10.184.0.0/16",
-    "destination_ip": "10.27.8.0/21",
+    "source_ip": "${global-protect}",
+    "destination_ip": "${hmpps-production}",
     "destination_port": "80",
     "protocol": "TCP"
   },
   "gp_to_mp_hmpps_production_https": {
     "action": "PASS",
-    "source_ip": "10.184.0.0/16",
-    "destination_ip": "10.27.8.0/21",
+    "source_ip": "${global-protect}",
+    "destination_ip": "${hmpps-production}",
     "destination_port": "443",
     "protocol": "TCP"
   },
   "azure_noms_to_mp_nomis_production_db": {
     "action": "PASS",
     "source_ip": "10.40.0.0/16",
-    "destination_ip": "10.27.8.0/21",
+    "destination_ip": "${hmpps-production}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
   "cp_to_mp_nomis_production_db": {
     "action": "PASS",
-    "source_ip": "172.20.0.0/16",
-    "destination_ip": "10.27.8.0/21",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-production}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
   "mp_ppud_production_to_psn_ppud": {
     "action": "PASS",
-    "source_ip": "10.27.8.0/21",
-    "destination_ip": "51.247.2.115/32",
+    "source_ip": "${hmpps-production}",
+    "destination_ip": "${psn-ppud}",
     "destination_port": "443",
     "protocol": "TCP"
   },
@@ -43,113 +43,113 @@
   },
   "laa_production_to_mp_laa_production_http": {
     "action": "PASS",
-    "source_ip": "10.205.0.0/20",
-    "destination_ip": "10.27.64.0/21",
+    "source_ip": "${laa-lz-production}",
+    "destination_ip": "${laa-production}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
   "noms_live_to_mp_hmpps_production": {
     "action": "PASS",
-    "source_ip": "10.40.0.0/18",
-    "destination_ip": "10.27.8.0/21",
+    "source_ip": "${noms-live-vnet}",
+    "destination_ip": "${hmpps-production}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
   "noms_live_dr_to_mp_hmpps_production": {
     "action": "PASS",
-    "source_ip": "10.40.64.0/18",
-    "destination_ip": "10.27.8.0/21",
+    "source_ip": "${noms-live-dr-vnet}",
+    "destination_ip": "${hmpps-production}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
   "noms_mgmt_live_to_mp_hmpps_production": {
     "action": "PASS",
-    "source_ip": "10.40.128.0/20",
-    "destination_ip": "10.27.8.0/21",
+    "source_ip": "${noms-mgmt-live-vnet}",
+    "destination_ip": "${hmpps-production}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
   "noms_mgmt_live_dr_to_mp_hmpps_production": {
     "action": "PASS",
-    "source_ip": "10.40.144.0/20",
-    "destination_ip": "10.27.8.0/21",
+    "source_ip": "${noms-mgmt-live-dr-vnet}",
+    "destination_ip": "${hmpps-production}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
   "aks_studio_hosting_live_1_to_mp_hmpps_production": {
     "action": "PASS",
-    "source_ip": "10.244.0.0/20",
-    "destination_ip": "10.27.8.0/21",
+    "source_ip": "${aks-studio-hosting-live-1-vnet}",
+    "destination_ip": "${hmpps-production}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
   "nomisapi_preprod_root_to_mp_hmpps_production": {
     "action": "PASS",
-    "source_ip": "10.47.0.64/26",
-    "destination_ip": "10.27.8.0/21",
+    "source_ip": "${nomisapi-preprod-root-vnet}",
+    "destination_ip": "${hmpps-production}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
   "nomisapi_prod_root_vnet_to_mp_hmpps_production": {
     "action": "PASS",
-    "source_ip": "10.47.0.128/26",
+    "source_ip": "${nomisapi-prod-root-vnet}",
     "destination_ip": "10.27.8.0/16",
     "destination_port": "1521",
     "protocol": "TCP"
   },
   "analytical_platform_to_mp_hmpps_production": {
     "action": "PASS",
-    "source_ip": "10.201.0.0/16",
-    "destination_ip": "10.27.8.0/21",
+    "source_ip": "${analytical-platform-airflow-prod}",
+    "destination_ip": "${hmpps-production}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
   "nomis_prod_monitoring_to_mp_hmpps_production": {
     "action": "PASS",
-    "source_ip": "172.20.0.0/16",
-    "destination_ip": "10.27.8.0/21",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-production}",
     "destination_port": "9100",
     "protocol": "TCP"
   },
   "psn_to_mp_hmpps_preproduction_https": {
     "action": "PASS",
     "source_ip": "51.0.0.0/8",
-    "destination_ip": "10.27.8.0/21",
+    "destination_ip": "${hmpps-production}",
     "destination_port": "443",
     "protocol": "TCP"
   },
   "moj-core-azure-1_to_mp_hmpps_production": {
     "action": "PASS",
     "source_ip": "10.50.25.0/27",
-    "destination_ip": "10.27.8.0/21",
+    "destination_ip": "${hmpps-production}",
     "destination_port": "443",
     "protocol": "TCP"
   },
   "moj-core-azure-2_to_mp_hmpps_production": {
     "action": "PASS",
     "source_ip": "10.50.26.0/24",
-    "destination_ip": "10.27.8.0/21",
+    "destination_ip": "${hmpps-production}",
     "destination_port": "443",
     "protocol": "TCP"
   },
   "mp_hmpps_production_to_noms_mgmt_live_vnet_dns": {
     "action": "PASS",
-    "source_ip": "10.27.8.0/21",
-    "destination_ip": "10.40.128.0/20",
+    "source_ip": "${hmpps-production}",
+    "destination_ip": "${noms-mgmt-live-vnet}",
     "destination_port": "53",
     "protocol": "UDP"
   },
   "laa_shared_services_to_mp_laa_production": {
     "action": "PASS",
-    "source_ip": "10.200.16.0/20",
-    "destination_ip": "10.27.64.0/21",
+    "source_ip": "${laa-lz-shared-services-prod}",
+    "destination_ip": "${laa-production}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
   "i2n_to_mp_hmpps_production": {
     "action": "PASS",
-    "source_ip": "10.110.0.0/16",
-    "destination_ip": "10.27.8.0/21",
+    "source_ip": "${i2n}",
+    "destination_ip": "${hmpps-production}",
     "destination_port": "ANY",
     "protocol": "TCP"
   }

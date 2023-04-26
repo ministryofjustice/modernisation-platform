@@ -30,12 +30,12 @@ locals {
     "core-network-services-live_data-attachment",
   ]
 
-  development_rules     = fileexists("./firewall-rules/development_rules.json") ? jsondecode(file("./firewall-rules/development_rules.json")) : {}
-  test_rules            = fileexists("./firewall-rules/test_rules.json") ? jsondecode(file("./firewall-rules/test_rules.json")) : {}
-  preproduction_rules   = fileexists("./firewall-rules/preproduction_rules.json") ? jsondecode(file("./firewall-rules/preproduction_rules.json")) : {}
-  production_rules      = fileexists("./firewall-rules/production_rules.json") ? jsondecode(file("./firewall-rules/production_rules.json")) : {}
+  development_rules     = fileexists("./firewall-rules/development_rules.json") ? jsondecode(templatefile("./firewall-rules/development_rules.json", local.all_cidr_ranges)) : {}
+  test_rules            = fileexists("./firewall-rules/test_rules.json") ? jsondecode(templatefile("./firewall-rules/test_rules.json", local.all_cidr_ranges)) : {}
+  preproduction_rules   = fileexists("./firewall-rules/preproduction_rules.json") ? jsondecode(templatefile("./firewall-rules/preproduction_rules.json", local.all_cidr_ranges)) : {}
+  production_rules      = fileexists("./firewall-rules/production_rules.json") ? jsondecode(templatefile("./firewall-rules/production_rules.json", local.all_cidr_ranges)) : {}
   fqdn_firewall_rules   = fileexists("./firewall-rules/fqdn_rules.json") ? jsondecode(file("./firewall-rules/fqdn_rules.json")) : {}
-  inline_firewall_rules = fileexists("./firewall-rules/inline_rules.json") ? jsondecode(file("./firewall-rules/inline_rules.json")) : {}
+  inline_firewall_rules = fileexists("./firewall-rules/inline_rules.json") ? jsondecode(templatefile("./firewall-rules/inline_rules.json", local.all_cidr_ranges)) : {}
   inline_fqdn_rules     = fileexists("./firewall-rules/inline_fqdn_rules.json") ? jsondecode(file("./firewall-rules/inline_fqdn_rules.json")) : {}
   firewall_rules        = merge(local.development_rules, local.test_rules, local.preproduction_rules, local.production_rules)
 
