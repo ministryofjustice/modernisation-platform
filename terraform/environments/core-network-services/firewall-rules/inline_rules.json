@@ -9,7 +9,7 @@
   "mp_dev_test_to_internet_https": {
     "action": "PASS",
     "source_ip": "10.26.0.0/16",
-    "destination_ip": "10.0.0.0/0",
+    "destination_ip": "0.0.0.0/0",
     "destination_port": "443",
     "protocol": "TCP"
   },
