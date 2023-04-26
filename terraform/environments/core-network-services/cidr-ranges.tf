@@ -4,6 +4,8 @@ locals {
     mp-preproduction-production = "10.27.0.0/16"
   }
 
+  # This will take the vpc CIDR ranges for each business/env general subnet set, from the environments-networks files
+  # e.g. `hmpps-development = "10.26.24.0/21"
   platform_general_set_cidr_ranges = {
     for key, value in local.core-vpcs : key => value.cidr.subnet_sets.general.cidr
   }
