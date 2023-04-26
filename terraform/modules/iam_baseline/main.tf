@@ -61,7 +61,7 @@ resource "aws_iam_policy" "policy" {
           "kms:DescribeKey",
           "kms:Decrypt",
           "kms:GenerateDataKey",
-          "logs:GetLogEvents"
+          "logs:GetLogEvents",
           "s3:GetBucketLocation",
           "s3:ListBucket",
           "s3:ListAllMyBuckets",
