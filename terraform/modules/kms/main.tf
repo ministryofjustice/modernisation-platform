@@ -15,7 +15,7 @@ resource "aws_kms_alias" "ebs" {
 resource "aws_kms_key" "general" {
   description         = format("General symmetric KMS key for %s", var.business_unit)
   enable_key_rotation = true
-  policy              = data.aws_iam_policy_document.kms.json
+  policy              = data.aws_iam_policy_document.combined-kms-general.json
   tags                = merge(var.tags, { Name = format("KMS-General-%s", var.business_unit) })
 }
 
@@ -105,6 +105,9 @@ data "aws_iam_policy_document" "kms" {
 
     }
   }
+}
+
+data "aws_iam_policy_document" "kms-general" {
   statement {
     effect = "Allow"
     actions = [
@@ -113,10 +116,16 @@ data "aws_iam_policy_document" "kms" {
     ]
     resources = ["*"]
 
-    # Feed in AWS account IDs
     principals {
       type        = "Service"
       identifiers = ["cloudwatch.amazonaws.com"]
     }
   }
+}
+
+data "aws_iam_policy_document" "combined-kms-general" {
+  source_policy_documents = [
+    data.aws_iam_policy_document.kms.json,
+    data.aws_iam_policy_document.kms-general.json
+  ]
 }
