@@ -115,7 +115,7 @@ data "aws_iam_policy_document" "kms" {
 
     # Feed in AWS account IDs
     principals {
-      service [
+      service = [
       "cloudwatch.amazonaws.com"
     ]
       type        = "AWS"
