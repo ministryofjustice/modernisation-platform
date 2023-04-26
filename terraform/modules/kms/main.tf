@@ -115,11 +115,8 @@ data "aws_iam_policy_document" "kms" {
 
     # Feed in AWS account IDs
     principals {
-      service = [
-      "cloudwatch.amazonaws.com"
-    ]
-      type        = "AWS"
-      identifiers = var.business_unit_account_ids
+      type        = "Service"
+      identifiers = ["cloudwatch.amazonaws.com"]
     }
   }
 }
