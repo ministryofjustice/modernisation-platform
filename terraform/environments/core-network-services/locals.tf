@@ -36,7 +36,7 @@ locals {
   production_rules      = fileexists("./firewall-rules/production_rules.json") ? jsondecode(file("./firewall-rules/production_rules.json")) : {}
   fqdn_firewall_rules   = fileexists("./firewall-rules/fqdn_rules.json") ? jsondecode(file("./firewall-rules/fqdn_rules.json")) : {}
   inline_firewall_rules = fileexists("./firewall-rules/inline_rules.json") ? jsondecode(file("./firewall-rules/inline_rules.json")) : {}
-  inline_fqdn_rules = fileexists("./firewall-rules/inline_fqdn_rules.json") ? jsondecode(file("./firewall-rules/inline_fqdn_rules.json")) : {}
+  inline_fqdn_rules     = fileexists("./firewall-rules/inline_fqdn_rules.json") ? jsondecode(file("./firewall-rules/inline_fqdn_rules.json")) : {}
   firewall_rules        = merge(local.development_rules, local.test_rules, local.preproduction_rules, local.production_rules)
 
   vpn_attachments = fileexists("./vpn_attachments.json") ? jsondecode(file("./vpn_attachments.json")) : {}
