@@ -22,7 +22,7 @@ resource "aws_iam_policy" "policy" {
       {
         Action = [
           "athena:StartQueryExecution",
-	  "athena:GetQueryExecution",
+          "athena:GetQueryExecution",
           "codebuild:Start*",
           "codebuild:StartBuild",
           "codebuild:BatchGetBuilds",
