@@ -15,7 +15,7 @@
   },
   "azure_noms_to_mp_nomis_production_db": {
     "action": "PASS",
-    "source_ip": "10.40.0.0/16",
+    "source_ip": "${noms-live-vnet}",
     "destination_ip": "${hmpps-production}",
     "destination_port": "1521",
     "protocol": "TCP"
@@ -93,7 +93,7 @@
   "nomisapi_prod_root_vnet_to_mp_hmpps_production": {
     "action": "PASS",
     "source_ip": "${nomisapi-prod-root-vnet}",
-    "destination_ip": "10.27.8.0/16",
+    "destination_ip": "${hmpps-production}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
@@ -113,21 +113,21 @@
   },
   "psn_to_mp_hmpps_preproduction_https": {
     "action": "PASS",
-    "source_ip": "51.0.0.0/8",
+    "source_ip": "${psn}",
     "destination_ip": "${hmpps-production}",
     "destination_port": "443",
     "protocol": "TCP"
   },
   "moj-core-azure-1_to_mp_hmpps_production": {
     "action": "PASS",
-    "source_ip": "10.50.25.0/27",
+    "source_ip": "${moj-core-azure-1}",
     "destination_ip": "${hmpps-production}",
     "destination_port": "443",
     "protocol": "TCP"
   },
   "moj-core-azure-2_to_mp_hmpps_production": {
     "action": "PASS",
-    "source_ip": "10.50.26.0/24",
+    "source_ip": "${moj-core-azure-2}",
     "destination_ip": "${hmpps-production}",
     "destination_port": "443",
     "protocol": "TCP"
