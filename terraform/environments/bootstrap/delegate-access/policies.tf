@@ -102,6 +102,7 @@ data "aws_iam_policy_document" "developer_additional" {
     effect = "Allow"
     actions = [
       "acm:ImportCertificate",
+      "acm.AddTagsToCertificate",
       "autoscaling:UpdateAutoScalingGroup",
       "autoscaling:SetDesiredCapacity",
       "aws-marketplace:ViewSubscriptions",
@@ -160,29 +161,6 @@ data "aws_iam_policy_document" "developer_additional" {
       "ssm-guiconnect:*",
       "sso:ListDirectoryAssociations",
       "support:*"
-    ]
-    resources = ["*"]
-  }
-  # Additional certificate permissions as per request 3555
-  statement {
-    sid    = "developerAllowCert"
-    effect = "Allow"
-    actions = [
-      "acm:*"
-    ]
-    resources = ["*"]
-  }
-  statement {
-    effect  = "Allow"
-    actions = ["iam:CreateServiceLinkedRole"]
-    resources = ["*"]
-  }
-  statement {
-    effect = "Allow"
-    actions = [
-      "iam:DeleteServiceLinkedRole",
-      "iam:GetServiceLinkedRoleDeletionStatus",
-      "iam:GetRole"
     ]
     resources = ["*"]
   }
