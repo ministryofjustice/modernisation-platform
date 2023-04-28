@@ -779,7 +779,7 @@ resource "aws_route" "data-tgw" {
 
 # Transit Gateway NAT routes
 resource "aws_route" "transit-gateway-nat" {
-  for_each = (var.gateway == "nat") ? aws_route_table.transit-gateway : {}
+  for_each = (var.gateway == "nat" && var.inline_inspection == false) ? aws_route_table.transit-gateway : {}
 
   route_table_id         = each.value.id
   destination_cidr_block = "0.0.0.0/0"
