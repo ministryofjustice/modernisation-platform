@@ -30,7 +30,7 @@ output "non_live_data_private_route_tables" {
 output "public_route_tables" {
   value = {
     for key, value in local.networking :
-    key => module.vpc_hub[key].public_route_tables.tags["Name"]
+    key => module.vpc_hub[key].public_route_tables
   }
 }
 

@@ -71,10 +71,16 @@ output "private_route_tables_map" {
 
 output "public_route_tables" {
   description = "Public route tables"
-  value       = aws_route_table.public
+  value = merge({
+    for key, route_table in aws_route_table.public :
+    "${var.tags_prefix}-${key}" => route_table.id
+    }, {
+    for key, route_table in aws_route_table.public-inspection :
+    "${var.tags_prefix}-${key}" => route_table.id
+  })
 }
 
 output "public_igw_route" {
   description = "Public Internet Gateway route"
-  value       = aws_route.public-internet-gateway
+  value = aws_route.public-internet-gateway.0
 }

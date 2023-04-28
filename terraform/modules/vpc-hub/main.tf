@@ -271,6 +271,7 @@ resource "aws_network_acl_rule" "public-local-egress" {
 
 # Public route table
 resource "aws_route_table" "public" {
+  count  = var.inline_inspection == false ? 1 : 0
   vpc_id = aws_vpc.default.id
 
   tags = merge(
@@ -281,39 +282,66 @@ resource "aws_route_table" "public" {
   )
 }
 
+resource "aws_route_table" "public-inspection" {
+  for_each = (var.inline_inspection == true) ? aws_subnet.public : {}
+  vpc_id = aws_vpc.default.id
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-${each.key}"
+    }
+  )
+}
+
 # Public route table assocation with public subnets
 resource "aws_route_table_association" "public" {
-  for_each = aws_subnet.public
+  for_each = (var.inline_inspection == false) ? aws_subnet.public : {}
 
   subnet_id      = each.value.id
-  route_table_id = aws_route_table.public.id
+  route_table_id = aws_route_table.public.0.id
+}
+
+resource "aws_route_table_association" "public-inspection" {
+  for_each = (var.inline_inspection == true) ? aws_subnet.public : {}
+
+  subnet_id      = each.value.id
+  route_table_id = aws_route_table.public-inspection[each.key].id
 }
 
 # Public route
 resource "aws_route" "public-internet-gateway" {
+  count                  = var.gateway == "nat" && var.inline_inspection == false ? 1 : 0
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.default.id
-  route_table_id         = aws_route_table.public.id
+  route_table_id         = aws_route_table.public.0.id
+}
+
+resource "aws_route" "public-internet-gateway-inspection" {
+  for_each = (var.inline_inspection == true) ? aws_subnet.public : {}
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.default.id
+  route_table_id         = aws_route_table.public-inspection[each.key].id
 }
 
 resource "aws_route" "public_mp_core" {
-  count                  = var.gateway == "nat" ? 1 : 0
+  count                  = var.gateway == "nat" && var.inline_inspection == false ? 1 : 0
   destination_cidr_block = "10.20.0.0/16"
-  route_table_id         = aws_route_table.public.id
+  route_table_id         = aws_route_table.public.0.id
   transit_gateway_id     = var.transit_gateway_id
 }
 
 resource "aws_route" "public_mp_dev-test" {
-  count                  = var.gateway == "nat" ? 1 : 0
+  count                  = var.gateway == "nat" && var.inline_inspection == false ? 1 : 0
   destination_cidr_block = "10.26.0.0/16"
-  route_table_id         = aws_route_table.public.id
+  route_table_id         = aws_route_table.public.0.id
   transit_gateway_id     = var.transit_gateway_id
 }
 
 resource "aws_route" "public_mp_prod-preprod" {
-  count                  = var.gateway == "nat" ? 1 : 0
+  count                  = var.gateway == "nat" && var.inline_inspection == false ? 1 : 0
   destination_cidr_block = "10.27.0.0/16"
-  route_table_id         = aws_route_table.public.id
+  route_table_id         = aws_route_table.public.0.id
   transit_gateway_id     = var.transit_gateway_id
 }
 
