@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: How to import a public SSL certificate into AWS Certificate Manager on Windows
-last_reviewed_on: 2023-01-13
+last_reviewed_on: 2023-04-28
 review_in: 6 months
 ---
 
@@ -79,7 +79,7 @@ The certificate block in this file should match the certificate block from step 
 
 In AWS Certificate Manager, import the certificate using the data in the exported plaintext file from the previous step (certificate body, certificate private key, and full certificate chain).
 
-Regular Modernisation Platform AWS accounts do not have permission to import certificates, so a member of the core team will need to do this for you.
+Developer access has permission to import certificates, so this can be done yourself through the console. Instructions on how to do this are in https://docs.aws.amazon.com/acm/latest/userguide/import-certificate-api-cli.html
 
 You can use the AWS Parameter Store to share the cert and key data with the Modernisation Platform team. The total length of the private key, certificate and chain exceeeds the 4096 character limit for parameters, so we suggest creating multiple parameters:
 
