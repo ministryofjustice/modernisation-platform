@@ -24,6 +24,17 @@ output "tgw_rtb_ids_and_azs" {
   }
 }
 
+output "public_rtb_ids_and_azs" {
+  description = "Supplies a map of transit gateway route table ids and associated availability zones"
+  value = var.inline_inspection == true ? {
+    for subnet_key, subnet_value in aws_subnet.public :
+      "${var.tags_prefix}-${subnet_key}" => {
+        route_table_id = aws_route_table.public-inspection[subnet_key].id
+        availability_zone = subnet_value.availability_zone
+      }
+  } : {}
+}
+
 output "non_tgw_subnet_ids" {
   description = "Non-Transit Gateway subnet IDs (public, private, data)"
   value = concat([

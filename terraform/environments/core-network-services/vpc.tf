@@ -12,7 +12,7 @@ locals {
     }
   }
 
-  non_live__data_firewall_endpoint_map = {
+  non_live_data_firewall_endpoint_map = {
     for sync_state in aws_networkfirewall_firewall.inline_inspection["non_live_data"].firewall_status[0].sync_states :
     sync_state.availability_zone => sync_state.attachment[0].endpoint_id
   }
@@ -57,12 +57,54 @@ resource "aws_route" "non_live_data-transit-to-inspection" {
   for_each               = module.vpc_hub["non_live_data"].tgw_rtb_ids_and_azs
   route_table_id         = each.value.route_table_id
   destination_cidr_block = "0.0.0.0/0"
-  vpc_endpoint_id        = local.non_live_firewall_endpoint_map[each.value.availability_zone]
+  vpc_endpoint_id        = local.non_live_data_firewall_endpoint_map[each.value.availability_zone]
 }
 
 resource "aws_route" "live_data-transit-to-inspection" {
   for_each               = module.vpc_hub["live_data"].tgw_rtb_ids_and_azs
   route_table_id         = each.value.route_table_id
   destination_cidr_block = "0.0.0.0/0"
-  vpc_endpoint_id        = local.live_firewall_endpoint_map[each.value.availability_zone]
+  vpc_endpoint_id        = local.live_data_firewall_endpoint_map[each.value.availability_zone]
+}
+
+resource "aws_route" "non_live_data-public-to-inspection-10-20-0-0" {
+  for_each               = module.vpc_hub["non_live_data"].public_rtb_ids_and_azs
+  route_table_id         = each.value.route_table_id
+  destination_cidr_block = "10.20.0.0/16"
+  vpc_endpoint_id        = local.non_live_data_firewall_endpoint_map[each.value.availability_zone]
+}
+
+resource "aws_route" "non_live_data-public-to-inspection-10-26-0-0" {
+  for_each               = module.vpc_hub["non_live_data"].public_rtb_ids_and_azs
+  route_table_id         = each.value.route_table_id
+  destination_cidr_block = "10.26.0.0/16"
+  vpc_endpoint_id        = local.non_live_data_firewall_endpoint_map[each.value.availability_zone]
+}
+
+resource "aws_route" "non_live_data-public-to-inspection-10-27-0-0" {
+  for_each               = module.vpc_hub["non_live_data"].public_rtb_ids_and_azs
+  route_table_id         = each.value.route_table_id
+  destination_cidr_block = "10.27.0.0/16"
+  vpc_endpoint_id        = local.non_live_data_firewall_endpoint_map[each.value.availability_zone]
+}
+
+resource "aws_route" "live_data-public-to-inspection-10-20-0-0" {
+  for_each               = module.vpc_hub["live_data"].public_rtb_ids_and_azs
+  route_table_id         = each.value.route_table_id
+  destination_cidr_block = "10.20.0.0/16"
+  vpc_endpoint_id        = local.live_data_firewall_endpoint_map[each.value.availability_zone]
+}
+
+resource "aws_route" "live_data-public-to-inspection-10-26-0-0" {
+  for_each               = module.vpc_hub["live_data"].public_rtb_ids_and_azs
+  route_table_id         = each.value.route_table_id
+  destination_cidr_block = "10.26.0.0/16"
+  vpc_endpoint_id        = local.live_data_firewall_endpoint_map[each.value.availability_zone]
+}
+
+resource "aws_route" "live_data-public-to-inspection-10-27-0-0" {
+  for_each               = module.vpc_hub["live_data"].public_rtb_ids_and_azs
+  route_table_id         = each.value.route_table_id
+  destination_cidr_block = "10.27.0.0/16"
+  vpc_endpoint_id        = local.live_data_firewall_endpoint_map[each.value.availability_zone]
 }
