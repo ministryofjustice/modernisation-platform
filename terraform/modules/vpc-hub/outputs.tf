@@ -82,5 +82,11 @@ output "public_route_tables" {
 
 output "public_igw_route" {
   description = "Public Internet Gateway route"
-  value = aws_route.public-internet-gateway.0
+  value = merge({
+    for key, route in aws_route.public-internet-gateway :
+    "${var.tags_prefix}-${key}" => route
+    }, {
+    for key, route in aws_route.public-internet-gateway-inspection :
+    "${var.tags_prefix}-${key}" => route
+  })
 }

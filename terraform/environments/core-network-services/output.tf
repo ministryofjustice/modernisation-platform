@@ -38,12 +38,12 @@ output "live_data_private_route_tables" {
   value = module.vpc_hub["live_data"].private_route_tables
 }
 
-output "public_igw_route" {
-  value = {
-    for key, value in local.networking :
-    key => module.vpc_hub[key].public_igw_route.destination_cidr_block
-  }
-}
+#output "public_igw_route" {
+#  value = {
+#    for key, value in local.networking :
+#    key => module.vpc_hub[key].public_igw_route.destination_cidr_block
+#  }
+#}
 
 output "non_tgw_subnet_ids" {
   value = length(module.vpc_hub["non_live_data"].non_tgw_subnet_ids)
