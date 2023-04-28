@@ -102,7 +102,7 @@ data "aws_iam_policy_document" "developer_additional" {
     effect = "Allow"
     actions = [
       "acm:ImportCertificate",
-      "acm.AddTagsToCertificate",
+      "acm:AddTagsToCertificate",
       "autoscaling:UpdateAutoScalingGroup",
       "autoscaling:SetDesiredCapacity",
       "aws-marketplace:ViewSubscriptions",
