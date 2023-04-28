@@ -13,6 +13,17 @@ output "tgw_subnet_ids" {
   value       = [for subnet in aws_subnet.transit-gateway : subnet.id]
 }
 
+output "tgw_rtb_ids_and_azs" {
+  description = "Supplies a map of transit gateway route table ids and associated availability zones"
+  value = {
+    for subnet_key, subnet_value in aws_subnet.transit-gateway :
+      "${var.tags_prefix}-${subnet_key}" => {
+        route_table_id = aws_route_table.transit-gateway[subnet_key].id
+        availability_zone = subnet_value.availability_zone
+      }
+  }
+}
+
 output "non_tgw_subnet_ids" {
   description = "Non-Transit Gateway subnet IDs (public, private, data)"
   value = concat([

@@ -11,6 +11,17 @@ locals {
       private_tgw_subnet_ids = module.vpc_hub[key].tgw_subnet_ids
     }
   }
+
+  non_live__data_firewall_endpoint_map = {
+    for sync_state in aws_networkfirewall_firewall.inline_inspection["non_live_data"].firewall_status[0].sync_states :
+    sync_state.availability_zone => sync_state.attachment[0].endpoint_id
+  }
+
+  live_data_firewall_endpoint_map = {
+    for sync_state in aws_networkfirewall_firewall.inline_inspection["live_data"].firewall_status[0].sync_states :
+    sync_state.availability_zone => sync_state.attachment[0].endpoint_id
+  }
+
 }
 
 module "vpc_hub" {
@@ -39,4 +50,19 @@ module "vpc_hub" {
   # Tags
   tags_common = local.tags
   tags_prefix = each.key
+}
+
+### Routes for inline_inspection = true
+resource "aws_route" "non_live_data-transit-to-inspection" {
+  for_each               = module.vpc_hub["non_live_data"].tgw_rtb_ids_and_azs
+  route_table_id         = each.value.route_table_id
+  destination_cidr_block = "0.0.0.0/0"
+  vpc_endpoint_id        = local.non_live_firewall_endpoint_map[each.value.availability_zone]
+}
+
+resource "aws_route" "live_data-transit-to-inspection" {
+  for_each               = module.vpc_hub["live_data"].tgw_rtb_ids_and_azs
+  route_table_id         = each.value.route_table_id
+  destination_cidr_block = "0.0.0.0/0"
+  vpc_endpoint_id        = local.live_firewall_endpoint_map[each.value.availability_zone]
 }
