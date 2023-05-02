@@ -12,6 +12,15 @@
       ]
     },
     {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "dts-heritage-services",
+          "level": "developer"
+        }
+      ]
+    },
+    {
       "name": "production",
       "access": [
         {
