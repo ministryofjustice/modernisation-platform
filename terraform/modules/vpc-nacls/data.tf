@@ -46,6 +46,8 @@ locals {
   # 3000 = deny east-west
   # 4000 = private address ranges
   # 5000 = https internet access
+  # 5100 = http internet access
+  # 5200 = tcp internet access on dynamic ports
   # 6000 = public address ranges (dynamic)
   # 7000 = access from internet
 
@@ -149,13 +151,22 @@ locals {
       rule_number = 5000
       to_port     = 443
     },
+    allow_0-0-0-0_http_out = {
+      cidr_block  = "0.0.0.0/0"
+      egress      = true
+      from_port   = 80
+      protocol    = "tcp"
+      rule_action = "allow"
+      rule_number = 5100
+      to_port     = 80
+    },
     allow_0-0-0-0_dynamic_tcp_in = {
       cidr_block  = "0.0.0.0/0"
       egress      = false
       from_port   = 1024
       protocol    = "tcp"
       rule_action = "allow"
-      rule_number = 5100
+      rule_number = 5200
       to_port     = 65535
     }
   }
