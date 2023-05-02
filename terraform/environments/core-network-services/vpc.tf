@@ -67,6 +67,20 @@ resource "aws_route" "live_data-transit-to-inspection" {
   vpc_endpoint_id        = local.live_data_firewall_endpoint_map[each.value.availability_zone]
 }
 
+resource "aws_route" "non_live_data-inspection-to-public" {
+  for_each               = module.vpc_hub["non_live_data"].inspection_rtb_ids_and_azs
+  route_table_id         = each.value.route_table_id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = module.vpc_hub["non_live_data"].nat_gateways[each.value.availability_zone].gateway_id
+}
+
+resource "aws_route" "live_data-inspection-to-public" {
+  for_each               = module.vpc_hub["live_data"].inspection_rtb_ids_and_azs
+  route_table_id         = each.value.route_table_id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = module.vpc_hub["live_data"].nat_gateways[each.value.availability_zone].gateway_id
+}
+
 resource "aws_route" "non_live_data-public-to-inspection-10-20-0-0" {
   for_each               = module.vpc_hub["non_live_data"].public_rtb_ids_and_azs
   route_table_id         = each.value.route_table_id

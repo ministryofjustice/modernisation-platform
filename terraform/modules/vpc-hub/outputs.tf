@@ -25,13 +25,33 @@ output "tgw_rtb_ids_and_azs" {
 }
 
 output "public_rtb_ids_and_azs" {
-  description = "Supplies a map of transit gateway route table ids and associated availability zones"
+  description = "Supplies a map of public-inspection route table ids and associated availability zones. "
   value = var.inline_inspection == true ? {
     for subnet_key, subnet_value in aws_subnet.public :
       "${var.tags_prefix}-${subnet_key}" => {
         route_table_id = aws_route_table.public-inspection[subnet_key].id
         availability_zone = subnet_value.availability_zone
       }
+  } : {}
+}
+
+output "inspection_rtb_ids_and_azs" {
+  description = "Supplies a map of inspection route table ids and associated availability zones. "
+  value = var.inline_inspection == true ? {
+    for subnet_key, subnet_value in aws_subnet.inspection :
+      "${var.tags_prefix}-${subnet_key}" => {
+        route_table_id = aws_route_table.inspection[subnet_key].id
+        availability_zone = subnet_value.availability_zone
+      }
+  } : {}
+}
+
+output "nat_gateways" {
+  value = (var.gateway == "nat") ? {
+    for name, gateway in aws_nat_gateway.public : substr(name, 7, -1) => {
+      "availability_zone" = substr(name, 7, -1)
+      "gateway_id"        = gateway.id
+    }
   } : {}
 }
 
