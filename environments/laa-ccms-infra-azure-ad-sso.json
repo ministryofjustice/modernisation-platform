@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-ccms-devs",
+          "github_slug": "laa-ccms-webops",
           "level": "sandbox",
           "nuke": "exclude"
         },
