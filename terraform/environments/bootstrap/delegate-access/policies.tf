@@ -226,6 +226,9 @@ data "aws_iam_policy_document" "data_engineering_additional" {
     sid    = "DataEngineeringAllow"
     effect = "Allow"
     actions = [
+      "airflow:ListEnvironments",
+      "airflow:GetEnvironment",
+      "airflow:ListTagsForResource",
       "athena:DeleteNamedQuery",
       "athena:StartQueryExecution",
       "athena:StopQueryExecution",
