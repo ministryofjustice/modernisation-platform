@@ -137,3 +137,22 @@ module "delius_core_openldap_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
+
+module "data_platform_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "data-platform"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    local.environment_management.account_ids["data-platform-development"]
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    local.environment_management.account_ids["data-platform-development"],
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
