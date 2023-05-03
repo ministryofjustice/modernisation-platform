@@ -20,7 +20,7 @@ data "aws_subnets" "shared-data" {
   }
 }
 
-data "aws_subnets" "private-public" {
+data "aws_subnets" "shared-private" {
   filter {
     name   = "vpc-id"
     values = [data.aws_vpc.shared.id]
