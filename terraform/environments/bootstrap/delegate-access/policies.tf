@@ -150,6 +150,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "rhelkb:GetRhelURL",
       "s3:PutObject",
       "s3:DeleteObject",
+      "s3:DeleteObjectVersion",
       "secretsmanager:GetResourcePolicy",
       "secretsmanager:GetSecretValue",
       "secretsmanager:DescribeSecret",
