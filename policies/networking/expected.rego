@@ -133,7 +133,7 @@ expected =
         "cidr": "10.27.24.0/21",
         "accounts": [
           "xhibit-portal-preproduction",
-           "tipstaff-preproduction",
+          "tipstaff-preproduction",
           "tribunals-preproduction"
         ]
       }
