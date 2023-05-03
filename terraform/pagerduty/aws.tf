@@ -14,18 +14,21 @@ resource "aws_secretsmanager_secret" "pagerduty_integration_keys" {
 resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
   secret_id = aws_secretsmanager_secret.pagerduty_integration_keys.id
   secret_string = jsonencode({
-    core_alerts_cloudwatch  = pagerduty_service_integration.core_alerts_cloudwatch.integration_key,
-    ddos_cloudwatch         = pagerduty_service_integration.ddos_cloudwatch.integration_key,
-    tgw_cloudwatch          = pagerduty_service_integration.tgw_cloudwatch.integration_key,
-    nomis_alarms            = pagerduty_service_integration.nomis_cloudwatch.integration_key,
-    nomis_nonprod_alarms    = pagerduty_service_integration.nomis_nonprod_cloudwatch.integration_key,
-    laa_mlra_nonprod_alarms = pagerduty_service_integration.laa_mlra_nonprod_cloudwatch.integration_key,
-    laa_mlra_prod_alarms    = pagerduty_service_integration.laa_mlra_prod_cloudwatch.integration_key,
-    laa_oas_nonprod_alarms  = pagerduty_service_integration.laa_oas_nonprod_cloudwatch.integration_key,
-    laa_oas_prod_alarms     = pagerduty_service_integration.laa_oas_prod_cloudwatch.integration_key,
-    jitbit_nonprod_alarms   = pagerduty_service_integration.jitbit_nonprod_cloudwatch.integration_key,
-    iaps_nonprod_alarms     = pagerduty_service_integration.iaps_nonprod_cloudwatch.integration_key,
-    laa_mojfin_prod_alarms  = pagerduty_service_integration.laa_mojfin_prod_cloudwatch.integration_key
+    core_alerts_cloudwatch       = pagerduty_service_integration.core_alerts_cloudwatch.integration_key,
+    ddos_cloudwatch              = pagerduty_service_integration.ddos_cloudwatch.integration_key,
+    tgw_cloudwatch               = pagerduty_service_integration.tgw_cloudwatch.integration_key,
+    nomis_alarms                 = pagerduty_service_integration.nomis_cloudwatch.integration_key,
+    nomis_nonprod_alarms         = pagerduty_service_integration.nomis_nonprod_cloudwatch.integration_key,
+    laa_mlra_nonprod_alarms      = pagerduty_service_integration.laa_mlra_nonprod_cloudwatch.integration_key,
+    laa_mlra_prod_alarms         = pagerduty_service_integration.laa_mlra_prod_cloudwatch.integration_key,
+    laa_oas_nonprod_alarms       = pagerduty_service_integration.laa_oas_nonprod_cloudwatch.integration_key,
+    laa_oas_prod_alarms          = pagerduty_service_integration.laa_oas_prod_cloudwatch.integration_key,
+    jitbit_nonprod_alarms        = pagerduty_service_integration.jitbit_nonprod_cloudwatch.integration_key,
+    iaps_nonprod_alarms          = pagerduty_service_integration.iaps_nonprod_cloudwatch.integration_key,
+    laa_mojfin_prod_alarms       = pagerduty_service_integration.laa_mojfin_prod_cloudwatch.integration_key,
+    hmpps_shef_dba_high_priority = pagerduty_service_integration.hmpps_shef_dba_high_priority.integration_key,
+    hmpps_shef_dba_low_priority  = pagerduty_service_integration.hmpps_shef_dba_low_priority.integration_key,
+    hmpps_shef_dba_non_prod      = pagerduty_service_integration.hmpps_shef_dba_non_prod.integration_key
   })
 }
 
