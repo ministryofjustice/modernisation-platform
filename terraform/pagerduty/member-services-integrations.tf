@@ -182,6 +182,7 @@ resource "pagerduty_service_integration" "laa_mojfin_prod_cloudwatch" {
 
 # # Slack channel: #laa-alerts-mojfin-prod
 
+# NOTE: Update escalation_policy once alarms have been tested
 resource "pagerduty_service" "hmpps_shef_dba_high_priority" {
   name                    = "HMPPS Sheffield DBA High Priority Alarms"
   description             = "Production alarms requiring immediate attention by Sheffield DBAs, i.e. worthy of overnight callout"
@@ -195,7 +196,7 @@ resource "pagerduty_service_integration" "hmpps_shef_dba_high_priority" {
   service = pagerduty_service.hmpps_shef_dba_high_priority.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
-# Slack channel: dba_alerts_prod
+# Slack channel: dba_alerts_prod
 
 resource "pagerduty_service" "hmpps_shef_dba_low_priority" {
   name                    = "HMPPS Sheffield DBA Low Priority Alarms"
@@ -210,7 +211,7 @@ resource "pagerduty_service_integration" "hmpps_shef_dba_low_priority" {
   service = pagerduty_service.hmpps_shef_dba_low_priority.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
-# Slack channel: dba_alerts_prod
+# Slack channel: dba_alerts_prod
 
 resource "pagerduty_service" "hmpps_shef_dba_non_prod" {
   name                    = "HMPPS Sheffield DBA Non-Production Alarms"
@@ -225,4 +226,4 @@ resource "pagerduty_service_integration" "hmpps_shef_dba_non_prod" {
   service = pagerduty_service.hmpps_shef_dba_non_prod.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
-# Slack channel: dba_alerts_devtest
+# Slack channel: dba_alerts_devtest
