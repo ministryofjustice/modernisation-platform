@@ -5,7 +5,7 @@ locals {
   application-zones = {
     equip    = "equip.service.justice.gov.uk",
     ccms-ebs = "ccms-ebs.service.justice.gov.uk",
-    mojfin   = "mojfin.service.justice.gov.uk",
+    mojfin   = "laa-finance-data.service.justice.gov.uk",
     mlra     = "mlra.service.justice.gov.uk"
   }
 }
