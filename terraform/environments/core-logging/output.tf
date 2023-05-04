@@ -13,10 +13,8 @@ output "non_live_data_private_route_tables" {
 }
 
 output "public_route_tables" {
-  value = {
-    for key, value in local.networking :
-    key => module.vpc[key].public_route_tables.tags["Name"]
-  }
+  value = { for key, value in local.networking :
+  key => [for az, rtb_id in module.vpc[key].public_rtb_ids_and_azs : rtb_id["route_table_id"]] }
 }
 
 output "live_data_private_route_tables" {

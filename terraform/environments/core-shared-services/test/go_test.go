@@ -39,9 +39,9 @@ func TestTransitGateway(t *testing.T) {
 		assert.Contains(t, output, element)
 	}
 
-	//Test public igw cidr
-	output7 := terraform.Output(t, terraformOptions, "public_route_tables")
-	assert.Equal(t, output7, "map[live_data:live_data-public non_live_data:non_live_data-public]")
+	//Check that one public route table is created
+    publicRouteTables := terraform.Output(t, terraformOptions, "public_route_tables")
+    assert.Regexp(t, `^map\[live_data:\[(rtb-[a-f0-9]+){1}\] non_live_data:\[(rtb-[a-f0-9]+){1}\]\]$`, publicRouteTables)
 
 	//Test public igw cidr
 	output1 := terraform.Output(t, terraformOptions, "public_igw_route")

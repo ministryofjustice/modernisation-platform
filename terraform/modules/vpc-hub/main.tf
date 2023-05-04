@@ -284,7 +284,7 @@ resource "aws_route_table" "public" {
 
 resource "aws_route_table" "public-inspection" {
   for_each = (var.inline_inspection == true) ? aws_subnet.public : {}
-  vpc_id = aws_vpc.default.id
+  vpc_id   = aws_vpc.default.id
 
   tags = merge(
     var.tags_common,
@@ -318,7 +318,7 @@ resource "aws_route" "public-internet-gateway" {
 }
 
 resource "aws_route" "public-internet-gateway-inspection" {
-  for_each = (var.inline_inspection == true) ? aws_subnet.public : {}
+  for_each               = (var.inline_inspection == true) ? aws_subnet.public : {}
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.default.id
   route_table_id         = aws_route_table.public-inspection[each.key].id

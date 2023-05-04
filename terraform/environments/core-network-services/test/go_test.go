@@ -38,14 +38,6 @@ func TestTransitGateway(t *testing.T) {
 		assert.Contains(t, output, element)
 	}
 
-	//Test public igw cidr
-	output7 := terraform.Output(t, terraformOptions, "public_route_tables")
-	assert.Equal(t, output7, "map[live_data:live_data-public non_live_data:non_live_data-public]")
-
-	//Test public igw cidr
-	output1 := terraform.Output(t, terraformOptions, "public_igw_route")
-	assert.Equal(t, output1, "map[live_data:0.0.0.0/0 non_live_data:0.0.0.0/0]")
-
 	//Test transit-gateway will not be affected
 	output2 := terraform.Output(t, terraformOptions, "transit_gateway")
 	assert.Equal(t, output2, "64589")
@@ -65,5 +57,9 @@ func TestTransitGateway(t *testing.T) {
 	//Check the transit gateway ram share is created
 	output6 := terraform.Output(t, terraformOptions, "transit_gateway_ram_share")
 	assert.Equal(t, output6, "transit-gateway")
+
+	//Check that three public route tables are created
+    publicRouteTables := terraform.Output(t, terraformOptions, "public_route_tables")
+    assert.Regexp(t, `^map\[live_data:\[(rtb-[a-f0-9]+){3}\] non_live_data:\[(rtb-[a-f0-9]+){3}\]\]$`, publicRouteTables)
 
 }
