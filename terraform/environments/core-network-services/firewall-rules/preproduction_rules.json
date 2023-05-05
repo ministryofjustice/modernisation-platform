@@ -131,5 +131,26 @@
     "destination_ip": "${hmpps-preproduction}",
     "destination_port": "1521",
     "protocol": "TCP"
+  },
+  "atos_arkc_ras_to_mp_hmpps_preproduction_https": {
+    "action": "PASS",
+    "source_ip": "${atos_arkc_ras}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
+  "atos_arkf_ras_to_mp_hmpps_preproduction_https": {
+    "action": "PASS",
+    "source_ip": "${atos_arkf_ras}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
+  "vodafone_wan_nicts_aggregate_to_mp_hmpps_preproduction_https": {
+    "action": "PASS",
+    "source_ip": "${vodafone_wan_nicts_aggregate}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "443",
+    "protocol": "TCP"
   }
 }
