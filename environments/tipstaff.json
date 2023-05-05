@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "dts-heritage-services",
+          "github_slug": "dts-legacy",
           "level": "sandbox",
           "nuke": "rebuild"
         }
@@ -15,7 +15,7 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "dts-heritage-services",
+          "github_slug": "dts-legacy",
           "level": "developer"
         }
       ]
@@ -24,7 +24,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "dts-heritage-services",
+          "github_slug": "dts-legacy",
           "level": "developer"
         }
       ]
