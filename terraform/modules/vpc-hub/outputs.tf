@@ -24,9 +24,6 @@ output "non_tgw_subnet_ids" {
     ], [
     for subnet in aws_subnet.data :
     subnet.id
-    ], [
-    for subnet in aws_subnet.inspection :
-    subnet.id
   ])
 }
 
