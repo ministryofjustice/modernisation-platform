@@ -310,7 +310,14 @@ resource "aws_route_table_association" "public-inspection" {
 }
 
 # Public route
-resource "aws_route" "public-internet-gateway" {
+resource "aws_route" "public-internet-gateway-transit" {
+  count                  = var.gateway == "transit" ? 1 : 0
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.default.id
+  route_table_id         = aws_route_table.public.0.id
+}
+
+resource "aws_route" "public-internet-gateway-nat" {
   count                  = var.gateway == "nat" && var.inline_inspection == false ? 1 : 0
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.default.id
