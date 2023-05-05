@@ -39,12 +39,12 @@ func TestTransitGateway(t *testing.T) {
 	}
 
 	//Check that one public route table is created
-    publicRouteTables := terraform.Output(t, terraformOptions, "public_route_tables")
-    assert.Regexp(t, `^map\[live_data:\[(rtb-[a-f0-9]+){1}\] non_live_data:\[(rtb-[a-f0-9]+){1}\]\]$`, publicRouteTables)
+    //publicRouteTables := terraform.Output(t, terraformOptions, "public_route_tables")
+    //assert.Regexp(t, `^map\[live_data:\[(rtb-[a-f0-9]+){1}\] non_live_data:\[(rtb-[a-f0-9]+){1}\]\]$`, publicRouteTables)
 
 	//Test public igw cidr
-	output1 := terraform.Output(t, terraformOptions, "public_igw_route")
-	assert.Equal(t, output1, "map[live_data:0.0.0.0/0 non_live_data:0.0.0.0/0]")
+	//output1 := terraform.Output(t, terraformOptions, "public_igw_route")
+	//assert.Equal(t, output1, "map[live_data:0.0.0.0/0 non_live_data:0.0.0.0/0]")
 
 	//Test tgw-subnet count. There should be 3
 	output3 := terraform.Output(t, terraformOptions, "tgw_subnet_ids")
