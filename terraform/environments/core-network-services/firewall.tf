@@ -192,48 +192,6 @@ resource "aws_networkfirewall_firewall" "external_inspection" {
   )
 }
 
-resource "aws_networkfirewall_firewall" "inline_inspection" {
-  for_each            = local.networking
-  name                = replace(format("%s-inline-inspection", each.key), "_", "-")
-  firewall_policy_arn = module.inline_inspection_policy[each.key].fw_policy_arn
-  vpc_id              = module.vpc_hub[each.key].vpc_id
-  dynamic "subnet_mapping" {
-    for_each = module.vpc_hub[each.key].non_tgw_subnet_ids_map["inspection"]
-    content {
-      subnet_id = subnet_mapping.value
-    }
-  }
-  tags = merge(
-    local.tags,
-    { Name = format("%s-inline-inspection", each.key) }
-  )
-}
-
-module "inline_inspection_policy" {
-  for_each               = local.networking
-  source                 = "../../modules/firewall-policy"
-  fw_rulegroup_capacity  = "10000"
-  fw_policy_name         = format("%s-inline-fw-policy", each.key)
-  fw_rulegroup_name      = format("%s-inline-fw-rulegroup", each.key)
-  fw_fqdn_rulegroup_name = format("%s-inlinefw-fqdn-rulegroup", each.key)
-  fw_allowed_domains     = local.inline_fqdn_rules.allowed_domains
-  fw_home_net_ips        = ["10.26.0.0/16", "10.27.0.0/16"]
-  rules                  = local.inline_firewall_rules
-
-  tags = merge(
-    local.tags,
-    { Name = format("%s-inline-fw-policy", each.key) }
-  )
-}
-
-module "inline_inspection_logging" {
-  for_each                  = local.networking
-  source                    = "../../modules/firewall-logging"
-  cloudwatch_log_group_name = format("fw-%s-logs", aws_networkfirewall_firewall.inline_inspection[each.key].name)
-  fw_arn                    = aws_networkfirewall_firewall.inline_inspection[each.key].arn
-  tags                      = local.tags
-}
-
 #################################
 # TGW attach inspection vpc
 #################################
