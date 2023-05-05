@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Instance Scheduling - automatically stop non-production instances overnight
-last_reviewed_on: 2022-11-03
+last_reviewed_on: 2023-05-03
 review_in: 6 months
 ---
 
@@ -18,7 +18,7 @@ The instances will be automatically stopped every weekday at 9pm night and start
 - `skip-auto-start` - Stop the instance at night, but skip starting it in the morning. This could be useful for the instances we want to make sure are automatically stopped every night, but we are happy to manually start when needed.
 - `skip-auto-stop` - Start the instance in the morning, but skip stopping it at night.
 
-Here's a Terraform example of how to add the relevant tag for any EC2 instance that should not be automatically stopped overnight
+Here's a Terraform example of how to add the relevant tag for any EC2 instance that should not be automatically stopped overnight.
 
 ```terraform
   tags = merge(
