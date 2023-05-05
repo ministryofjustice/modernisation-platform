@@ -20,6 +20,9 @@ locals {
     moj-core-azure-1                 = "10.50.25.0/27"
     moj-core-azure-2                 = "10.50.26.0/24"
     i2n                              = "10.110.0.0/16"
+    atos_arkc_ras                    = "10.175.0.0/16" # for DOM1 devices connected to Cisco RAS VPN
+    atos_arkf_ras                    = "10.176.0.0/16" # for DOM1 devices connected to Cisco RAS VPN
+    vodafone_wan_nicts_aggregate     = "10.80.0.0/12"  # for devices connected to Prison Networks
 
     # hmpps azure cidr ranges
     noms-live-vnet                 = "10.40.0.0/18"
