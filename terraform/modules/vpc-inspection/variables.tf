@@ -1,5 +1,9 @@
-variable "fw_policy_arn" {
-  description = "ARN of policy to be supplied to inline-inspection firewall"
+variable "fw_allowed_domains" {
+  description = "JSON map containing a list of allowed domains"
+}
+
+variable "fw_rules" {
+  description = "JSON map of maps containing stateless firewall rules"
 }
 
 variable "tags_common" {
