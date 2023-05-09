@@ -23,10 +23,10 @@ locals {
     sync_state.availability_zone => sync_state.attachment[0].endpoint_id
   }
 
-  nacl_rules = [
-    { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 910, cidr = "0.0.0.0/0" },
-    { egress = true, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 910, cidr = "0.0.0.0/0" }
-  ]
+  nacl_rules = {
+    inbound = { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 910, cidr = "0.0.0.0/0" },
+    outbound = { egress = true, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 910, cidr = "0.0.0.0/0" }
+  }
 
 }
 
@@ -97,9 +97,9 @@ resource "aws_route_table" "transit-gateway" {
 }
 
 resource "aws_route_table_association" "transit-gateway" {
-  for_each       = aws_route_table.transit-gateway
-  vpc_id         = aws_vpc.main.id
-  route_table_id = each.value.id
+  for_each       = aws_subnet.transit-gateway
+  route_table_id = aws_route_table.transit-gateway[each.key].id
+  subnet_id      = each.value.id
 }
 
 resource "aws_route" "transit-gateway-0-0-0-0" {
@@ -172,9 +172,9 @@ resource "aws_route_table" "inspection" {
 }
 
 resource "aws_route_table_association" "inspection" {
-  for_each       = aws_route_table.inspection
-  vpc_id         = aws_vpc.main.id
-  route_table_id = each.value.id
+  for_each       = aws_subnet.inspection
+  route_table_id = aws_route_table.inspection[each.key].id
+  subnet_id      = each.value.id
 }
 
 resource "aws_route" "inspection-0-0-0-0" {
@@ -246,9 +246,9 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_route_table_association" "public" {
-  for_each       = aws_route_table.public
-  vpc_id         = aws_vpc.main.id
-  route_table_id = each.value.id
+  for_each       = aws_subnet.public
+  route_table_id = aws_route_table.public[each.key].id
+  subnet_id      = each.value.id
 }
 
 resource "aws_route" "public-0-0-0-0" {

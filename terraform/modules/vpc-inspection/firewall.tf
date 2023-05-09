@@ -26,7 +26,7 @@ module "inline_inspection_policy" {
 
   tags = merge(
     var.tags_common,
-    { Name = format("%s-inline-fw-policy", each.key) }
+    { Name = format("%s-inline-fw-policy", var.tags_prefix) }
   )
 }
 
