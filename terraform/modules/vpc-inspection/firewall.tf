@@ -1,0 +1,38 @@
+resource "aws_networkfirewall_firewall" "inline_inspection" {
+  name                = format("%s-inline-inspection", var.tags_prefix)
+  firewall_policy_arn = module.inline_inspection_policy.fw_policy_arn
+  vpc_id              = aws_vpc.main.id
+  dynamic "subnet_mapping" {
+    for_each = aws_subnet.inspection
+    content {
+      subnet_id = subnet_mapping.value.id
+    }
+  }
+  tags = merge(
+    var.tags_common,
+    { Name = format("%s-inline-inspection", var.tags_prefix) }
+  )
+}
+
+module "inline_inspection_policy" {
+  source                 = "../../modules/firewall-policy"
+  fw_rulegroup_capacity  = "10000"
+  fw_policy_name         = format("%s-inline-fw-policy", var.tags_prefix)
+  fw_rulegroup_name      = format("%s-inline-fw-rulegroup", var.tags_prefix)
+  fw_fqdn_rulegroup_name = format("%s-inlinefw-fqdn-rulegroup", var.tags_prefix)
+  fw_allowed_domains     = var.fw_allowed_domains
+  fw_home_net_ips        = ["10.26.0.0/16", "10.27.0.0/16"]
+  rules                  = var.fw_rules
+
+  tags = merge(
+    var.tags_common,
+    { Name = format("%s-inline-fw-policy", var.tags_prefix) }
+  )
+}
+
+module "inline_inspection_logging" {
+  source                    = "../firewall-logging"
+  cloudwatch_log_group_name = format("fw-%s-logs", aws_networkfirewall_firewall.inline_inspection.name)
+  fw_arn                    = aws_networkfirewall_firewall.inline_inspection.arn
+  tags                      = var.tags_common
+}
