@@ -7,17 +7,17 @@
         {
           "github_slug": "data-platform-core-infra",
           "level": "sandbox",
-          "nuke": "rebuild"
+          "nuke": "exclude"
         },
         {
           "github_slug": "data-tech-archs",
           "level": "sandbox",
-          "nuke": "rebuild"
+          "nuke": "exclude"
         },
         {
           "github_slug": "data-platform-labs",
           "level": "sandbox",
-          "nuke": "rebuild"
+          "nuke": "exclude"
         },
         {
           "github_slug": "data-platform-security-and-auditors",
