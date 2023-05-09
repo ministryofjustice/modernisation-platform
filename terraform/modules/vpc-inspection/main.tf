@@ -23,6 +23,11 @@ locals {
     sync_state.availability_zone => sync_state.attachment[0].endpoint_id
   }
 
+  nacl_rules = [
+    { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 910, cidr = "0.0.0.0/0" },
+    { egress = true, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 910, cidr = "0.0.0.0/0" }
+  ]
+
 }
 
 ### VPC ###
@@ -119,6 +124,30 @@ resource "aws_route" "transit-gateway-10-27-0-0" {
   transit_gateway_id     = var.transit_gateway_id
 }
 
+resource "aws_network_acl" "transit-gateway" {
+  vpc_id = aws_vpc.main.id
+  subnet_ids = [ for subnet in aws_subnet.transit-gateway : subnet.id ]
+
+  tags = merge(
+    var.tags_common,
+    {  Name = format("%s-transit-gateway", var.tags_prefix) }
+  )
+}
+
+#tfsec:ignore:aws-vpc-no-public-ingress-acl
+resource "aws_network_acl_rule" "transit-gateway" {
+  for_each = local.nacl_rules
+
+  network_acl_id = aws_network_acl.transit-gateway.id
+  rule_number    = each.value.rule_num
+  egress         = each.value.egress
+  protocol       = each.value.protocol
+  rule_action    = each.value.action
+  cidr_block     = each.value.cidr
+  from_port      = each.value.from_port
+  to_port        = each.value.to_port
+}
+
 ### Inspection Subnets ###
 resource "aws_subnet" "inspection" {
   for_each          = tomap(local.types_and_azs_and_cidrs.inspection)
@@ -167,6 +196,30 @@ resource "aws_route" "inspection-10-27-0-0" {
   destination_cidr_block = "10.27.0.0/16"
   route_table_id         = each.value.id
   transit_gateway_id     = var.transit_gateway_id
+}
+
+resource "aws_network_acl" "inspection" {
+  vpc_id = aws_vpc.main.id
+  subnet_ids = [ for subnet in aws_subnet.inspection : subnet.id ]
+
+  tags = merge(
+    var.tags_common,
+    {  Name = format("%s-inspection", var.tags_prefix) }
+  )
+}
+
+#tfsec:ignore:aws-vpc-no-public-ingress-acl
+resource "aws_network_acl_rule" "inspection" {
+  for_each = local.nacl_rules
+
+  network_acl_id = aws_network_acl.inspection.id
+  rule_number    = each.value.rule_num
+  egress         = each.value.egress
+  protocol       = each.value.protocol
+  rule_action    = each.value.action
+  cidr_block     = each.value.cidr
+  from_port      = each.value.from_port
+  to_port        = each.value.to_port
 }
 
 ### Public Subnets ###
@@ -219,6 +272,30 @@ resource "aws_route" "public-10-27-0-0" {
   destination_cidr_block = "10.27.0.0/16"
   route_table_id         = each.value.id
   vpc_endpoint_id        = local.firewall_endpoint_map[aws_subnet.public[each.key].availability_zone]
+}
+
+resource "aws_network_acl" "public" {
+  vpc_id = aws_vpc.main.id
+  subnet_ids = [ for subnet in aws_subnet.public : subnet.id ]
+
+  tags = merge(
+    var.tags_common,
+    {  Name = format("%s-public", var.tags_prefix) }
+  )
+}
+
+#tfsec:ignore:aws-vpc-no-public-ingress-acl
+resource "aws_network_acl_rule" "public" {
+  for_each = local.nacl_rules
+
+  network_acl_id = aws_network_acl.public.id
+  rule_number    = each.value.rule_num
+  egress         = each.value.egress
+  protocol       = each.value.protocol
+  rule_action    = each.value.action
+  cidr_block     = each.value.cidr
+  from_port      = each.value.from_port
+  to_port        = each.value.to_port
 }
 
 ### AWS Gateways ###
