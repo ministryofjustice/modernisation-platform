@@ -105,7 +105,6 @@ data "aws_iam_policy_document" "developer_additional" {
       "acm:AddTagsToCertificate",
       "acm:RemoveTagsFromCertificate",
       "application-autoscaling:ListTagsForResource",
-      "application-autoscaling:ListTagsForResource",
       "autoscaling:UpdateAutoScalingGroup",
       "autoscaling:SetDesiredCapacity",
       "aws-marketplace:ViewSubscriptions",
