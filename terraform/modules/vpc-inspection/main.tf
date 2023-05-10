@@ -24,7 +24,7 @@ locals {
   }
 
   nacl_rules = {
-    inbound = { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 910, cidr = "0.0.0.0/0" },
+    inbound  = { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 910, cidr = "0.0.0.0/0" },
     outbound = { egress = true, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 910, cidr = "0.0.0.0/0" }
   }
 
@@ -125,12 +125,12 @@ resource "aws_route" "transit-gateway-10-27-0-0" {
 }
 
 resource "aws_network_acl" "transit-gateway" {
-  vpc_id = aws_vpc.main.id
-  subnet_ids = [ for subnet in aws_subnet.transit-gateway : subnet.id ]
+  vpc_id     = aws_vpc.main.id
+  subnet_ids = [for subnet in aws_subnet.transit-gateway : subnet.id]
 
   tags = merge(
     var.tags_common,
-    {  Name = format("%s-transit-gateway", var.tags_prefix) }
+    { Name = format("%s-transit-gateway", var.tags_prefix) }
   )
 }
 
@@ -199,12 +199,12 @@ resource "aws_route" "inspection-10-27-0-0" {
 }
 
 resource "aws_network_acl" "inspection" {
-  vpc_id = aws_vpc.main.id
-  subnet_ids = [ for subnet in aws_subnet.inspection : subnet.id ]
+  vpc_id     = aws_vpc.main.id
+  subnet_ids = [for subnet in aws_subnet.inspection : subnet.id]
 
   tags = merge(
     var.tags_common,
-    {  Name = format("%s-inspection", var.tags_prefix) }
+    { Name = format("%s-inspection", var.tags_prefix) }
   )
 }
 
@@ -275,12 +275,12 @@ resource "aws_route" "public-10-27-0-0" {
 }
 
 resource "aws_network_acl" "public" {
-  vpc_id = aws_vpc.main.id
-  subnet_ids = [ for subnet in aws_subnet.public : subnet.id ]
+  vpc_id     = aws_vpc.main.id
+  subnet_ids = [for subnet in aws_subnet.public : subnet.id]
 
   tags = merge(
     var.tags_common,
-    {  Name = format("%s-public", var.tags_prefix) }
+    { Name = format("%s-public", var.tags_prefix) }
   )
 }
 
