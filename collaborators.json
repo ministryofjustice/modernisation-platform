@@ -481,6 +481,20 @@
       ]
     },
     {
+      "username": "craig@fidusinfosec.com",
+      "github-username": "no-username-supplied",
+      "accounts": [
+        {
+          "account-name": "ppud-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "ppud-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
       "username": "edward.caren",
       "github-username": "EdwardTCaren",
       "accounts": [
