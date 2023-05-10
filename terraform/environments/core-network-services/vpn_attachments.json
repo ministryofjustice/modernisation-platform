@@ -82,5 +82,16 @@
     "tunnel_dpd_timeout_action": "restart",
     "tunnel_dpd_timeout_seconds": "45",
     "tunnel_startup_action": "start"
+  },
+  "Parole-Board-VPN": {
+    "bgp_asn": "65535",
+    "customer_gateway_ip": "51.140.46.165",
+    "remote_ipv4_network_cidr": "0.0.0.0/0",
+    "static_routes_only": true,
+    "tunnel1_inside_cidr": "169.254.6.0/30",
+    "tunnel2_inside_cidr": "169.254.6.4/30",
+    "tunnel_dpd_timeout_action": "restart",
+    "tunnel_dpd_timeout_seconds": "45",
+    "tunnel_startup_action": "start"
   }
 }
