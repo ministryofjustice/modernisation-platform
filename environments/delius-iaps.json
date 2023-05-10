@@ -8,6 +8,10 @@
           "github_slug": "hmpps-migration",
           "level": "sandbox",
           "nuke": "include"
+        },
+        {
+          "github_slug": "hmpps-dba",
+          "level": "instance-management"
         }
       ]
     },
@@ -17,6 +21,10 @@
         {
           "github_slug": "hmpps-migration",
           "level": "developer"
+        },
+        {
+          "github_slug": "hmpps-dba",
+          "level": "instance-management"
         }
       ]
     },
@@ -26,6 +34,10 @@
         {
           "github_slug": "hmpps-migration",
           "level": "developer"
+        },
+        {
+          "github_slug": "hmpps-dba",
+          "level": "instance-management"
         }
       ]
     }
