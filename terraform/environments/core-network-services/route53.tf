@@ -6,7 +6,7 @@ locals {
     equip    = "equip.service.justice.gov.uk",
     ccms-ebs = "ccms-ebs.service.justice.gov.uk",
     mojfin   = "laa-finance-data.service.justice.gov.uk",
-    mlra     = "mlra.service.justice.gov.uk"
+    mlra     = "maat-libra-administration-tool.service.justice.gov.uk"
   }
 }
 
@@ -102,6 +102,20 @@ resource "aws_route53_record" "bichard7" {
   ]
 }
 
+# MLRA/MAAT route
+resource "aws_route53_record" "mlra" {
+  allow_overwrite = true
+  name            = "maat-libra-administration-tool.service.justice.gov.uk"
+  ttl             = 30
+  type            = "NS"
+  zone_id         = aws_route53_zone.modernisation-platform.zone_id
+  records = [
+"ns-1347.awsdns-40.org.",
+"ns-508.awsdns-63.com.",
+"ns-641.awsdns-16.net.",
+"ns-1943.awsdns-50.co.uk."
+  ]
+}
 # Github pages user guidance CNAME record
 
 resource "aws_route53_record" "github_pages" {
