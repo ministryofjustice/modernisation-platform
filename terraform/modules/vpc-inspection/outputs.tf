@@ -34,21 +34,17 @@ output "subnet_attributes" {
   value = {
     transit_gateway = {
       for subnet_name, subnet_attrs in aws_subnet.transit-gateway :
-      subnet_name => subnet_attrs.*
+      subnet_name => subnet_attrs[*]
     },
     inspection = {
       for subnet_name, subnet_attrs in aws_subnet.inspection :
-      subnet_name => subnet_attrs.*
+      subnet_name => subnet_attrs[*]
     },
     public = {
       for subnet_name, subnet_attrs in aws_subnet.public :
-      subnet_name => subnet_attrs.*
+      subnet_name => subnet_attrs[*]
     },
   }
-}
-
-output "tgw_subnet_ids" {
-  value = [for subnet in aws_subnet.transit-gateway : subnet.id]
 }
 
 output "vpc_id" {
