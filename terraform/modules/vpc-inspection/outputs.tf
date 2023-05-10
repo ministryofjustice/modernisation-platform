@@ -2,6 +2,17 @@ output "firewall" {
   value = aws_networkfirewall_firewall.inline_inspection
 }
 
+output "internet_gateway" {
+  value = aws_internet_gateway.public
+}
+
+output "nat_gateway" {
+  value = {
+    for name, gateway in aws_nat_gateway.public :
+    name => gateway
+  }
+}
+
 output "route_table_ids" {
   value = {
     transit_gateway = {
@@ -36,13 +47,10 @@ output "subnet_attributes" {
   }
 }
 
-output "internet_gateway" {
-  value = aws_internet_gateway.public
+output "tgw_subnet_ids" {
+  value = [for subnet in aws_subnet.transit-gateway : subnet.id]
 }
 
-output "nat_gateway" {
-  value = {
-    for name, gateway in aws_nat_gateway.public :
-    name => gateway
-  }
+output "vpc_id" {
+  value = aws_vpc.main.id
 }

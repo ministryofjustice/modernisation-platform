@@ -1,9 +1,16 @@
 variable "fw_allowed_domains" {
-  description = "JSON map containing a list of allowed domains"
+  description = "List of strings containing allowed domains"
+  type        = list(string)
+}
+
+variable "fw_home_net_ips" {
+  description = "List of strings covering firewall HOME_NET values"
+  type        = list(string)
 }
 
 variable "fw_rules" {
   description = "JSON map of maps containing stateless firewall rules"
+  type        = map(any)
 }
 
 variable "tags_common" {

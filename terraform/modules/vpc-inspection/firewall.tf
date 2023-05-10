@@ -21,7 +21,7 @@ module "inline_inspection_policy" {
   fw_rulegroup_name      = format("%s-inline-fw-rulegroup", var.tags_prefix)
   fw_fqdn_rulegroup_name = format("%s-inlinefw-fqdn-rulegroup", var.tags_prefix)
   fw_allowed_domains     = var.fw_allowed_domains
-  fw_home_net_ips        = ["10.26.0.0/16", "10.27.0.0/16"]
+  fw_home_net_ips        = var.fw_home_net_ips
   rules                  = var.fw_rules
 
   tags = merge(

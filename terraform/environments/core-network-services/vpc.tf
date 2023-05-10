@@ -37,3 +37,22 @@ module "vpc_hub" {
   tags_common = local.tags
   tags_prefix = each.key
 }
+
+module "vpc_inspection" {
+  for_each = local.networking
+
+  source                = "../../modules/vpc-inspection"
+  fw_allowed_domains    = local.fqdn_firewall_rules.fw_allowed_domains
+  fw_home_net_ips       = local.fqdn_firewall_rules.fw_home_net_ips
+  fw_rules              = local.inline_firewall_rules
+  vpc_cidr              = each.value
+  vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
+  transit_gateway_id    = aws_ec2_transit_gateway.transit-gateway.id
+
+  # Tags
+  tags_common = merge(
+    local.tags,
+    { inline-inspection = "true" }
+  )
+  tags_prefix = each.key
+}
