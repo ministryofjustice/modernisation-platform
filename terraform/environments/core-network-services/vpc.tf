@@ -52,7 +52,7 @@ module "vpc_inspection" {
   # Tags
   tags_common = merge(
     local.tags,
-    { inline_inspection = "true" }
+    { inline-inspection = "true" }
   )
   tags_prefix = each.key
 }
