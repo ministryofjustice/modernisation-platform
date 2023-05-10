@@ -274,7 +274,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
     sid       = "AirflowUIAccess"
     effect    = "Allow"
     actions   = ["airflow:CreateWebLoginToken"]
-    resources = ["arn:aws:airflow:eu-west-1:${local.environment_management.account_ids["analytical-platform-data"]}:role/*/User"]
+    resources = ["arn:aws:airflow:eu-west-1:${local.environment_management.account_ids["analytical-platform-data-production"]}:role/*/User"]
   }
 
 }
