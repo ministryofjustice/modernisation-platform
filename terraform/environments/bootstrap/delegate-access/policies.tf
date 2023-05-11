@@ -465,7 +465,7 @@ data "aws_iam_policy_document" "migration_additional" {
 # instance management - member SSO and collaborators
 resource "aws_iam_policy" "instance-management" {
   provider = aws.workspace
-  name     = "database_mgmt_policy"
+  name     = "instance_management_policy"
   path     = "/"
   policy   = data.aws_iam_policy_document.instance-management-document.json
 }
