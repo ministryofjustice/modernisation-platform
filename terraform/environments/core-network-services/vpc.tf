@@ -3,14 +3,6 @@ locals {
     live_data     = "10.20.0.0/19"
     non_live_data = "10.20.32.0/19"
   }
-
-  useful_vpc_ids = {
-    for key in keys(local.networking) :
-    key => {
-      vpc_id                 = module.vpc_hub[key].vpc_id
-      private_tgw_subnet_ids = module.vpc_hub[key].tgw_subnet_ids
-    }
-  }
 }
 
 module "vpc_hub" {
@@ -42,6 +34,7 @@ module "vpc_inspection" {
   for_each = local.networking
 
   source                = "../../modules/vpc-inspection"
+  application_name      = local.application_name
   fw_allowed_domains    = local.fqdn_firewall_rules.fw_allowed_domains
   fw_home_net_ips       = local.fqdn_firewall_rules.fw_home_net_ips
   fw_rules              = local.inline_firewall_rules

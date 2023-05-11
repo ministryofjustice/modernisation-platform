@@ -1,3 +1,8 @@
+variable "application_name" {
+  description = "Application name, eg `core-shared-services` or `core-network-services"
+  type        = string
+}
+
 variable "fw_allowed_domains" {
   description = "List of strings containing allowed domains"
   type        = list(string)

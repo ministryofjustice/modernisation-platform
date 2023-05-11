@@ -8,7 +8,7 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "attachments-inspection" {
 
   tags = merge(
     var.tags_common,
-    { "Name" = format("%s-attachment", var.tags_prefix),
+    { "Name" = format("%s-%s-attachment", var.application_name, var.tags_prefix),
     "inline-inspection" = "true" }
   )
 
