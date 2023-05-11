@@ -84,6 +84,13 @@ resource "aws_ec2_transit_gateway_route_table_association" "association" {
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables[each.key].id
 }
 
+# Associate the Inspection VPC attachments with the relevant Transit Gateway route table
+resource "aws_ec2_transit_gateway_route_table_association" "inspection_association" {
+  for_each                       = local.networking
+  transit_gateway_attachment_id  = module.vpc_inspection[each.key].transit_gateway_attachment_id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables[each.key].id
+}
+
 #########################
 # Routes for VPC attachments
 #########################

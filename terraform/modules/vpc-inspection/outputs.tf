@@ -47,6 +47,10 @@ output "subnet_attributes" {
   }
 }
 
+output "transit_gateway_attachment_id" {
+  value = aws_ec2_transit_gateway_vpc_attachment.attachments-inspection.id
+}
+
 output "vpc_id" {
   value = aws_vpc.main.id
 }
