@@ -108,7 +108,7 @@ resource "aws_route53_record" "mrla" {
   name            = "maat-libra-administration-tool.service.justice.gov.uk"
   ttl             = 30
   type            = "NS"
-  zone_id         = aws_route53_zone.modernisation-platform.zone_id
+  zone_id         = aws_route53_zone.modernisation-platform.zone_id 
   records = [
     "ns-1347.awsdns-40.org.",
     "ns-508.awsdns-63.com.",
