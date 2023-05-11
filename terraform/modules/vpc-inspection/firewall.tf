@@ -1,5 +1,5 @@
 resource "aws_networkfirewall_firewall" "inline_inspection" {
-  name                = format("%s-inline-inspection", var.tags_prefix)
+  name                = replace(format("%s-inline-inspection", var.tags_prefix), "/_/", "-")
   firewall_policy_arn = module.inline_inspection_policy.fw_policy_arn
   vpc_id              = aws_vpc.main.id
   dynamic "subnet_mapping" {
