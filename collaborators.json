@@ -486,11 +486,11 @@
       "accounts": [
         {
           "account-name": "ppud-preproduction",
-          "access": "developer"
+          "access": "security-audit"
         },
         {
           "account-name": "ppud-production",
-          "access": "developer"
+          "access": "security-audit"
         }
       ]
     },
