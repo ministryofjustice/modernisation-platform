@@ -24,38 +24,6 @@ resource "aws_ec2_transit_gateway" "transit-gateway" {
 }
 
 #########################
-# Attach VPCs to the Transit Gateway
-#########################
-resource "aws_ec2_transit_gateway_vpc_attachment" "attachments" {
-  for_each = local.networking
-
-  transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
-
-  # Attach VPC and private subnets to the Transit Gateway
-  vpc_id     = local.useful_vpc_ids[each.key].vpc_id
-  subnet_ids = local.useful_vpc_ids[each.key].private_tgw_subnet_ids
-
-  # Turn off default route table association and propogation, as we're providing our own
-  transit_gateway_default_route_table_association = false
-  transit_gateway_default_route_table_propagation = false
-
-  # Enable DNS support
-  dns_support = "enable"
-
-  # Turn off IPv6 support
-  ipv6_support = "disable"
-
-  tags = merge(
-    local.tags,
-    { "Name" = format("%s-%s-attachment", local.application_name, each.key) }
-  )
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-#########################
 # Route table and routes
 #########################
 # Create a route table for each VPC attachment
@@ -74,14 +42,6 @@ resource "aws_ec2_transit_gateway_route_table" "route-tables" {
   lifecycle {
     prevent_destroy = true
   }
-}
-
-# Associate the route table with the VPC attachment
-resource "aws_ec2_transit_gateway_route_table_association" "association" {
-  for_each = local.networking
-
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[each.key].id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables[each.key].id
 }
 
 # Associate the Inspection VPC attachments with the relevant Transit Gateway route table
