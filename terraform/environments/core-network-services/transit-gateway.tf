@@ -94,10 +94,9 @@ resource "aws_ec2_transit_gateway_route_table_association" "inspection_associati
 #########################
 # Routes for VPC attachments
 #########################
-resource "aws_ec2_transit_gateway_route" "nat_route" {
-  for_each = local.networking
-
+resource "aws_ec2_transit_gateway_route" "inspection_route" {
+  for_each                       = local.networking
   destination_cidr_block         = "0.0.0.0/0"
-  transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.attachments[each.key].id
+  transit_gateway_attachment_id  = module.vpc_inspection[each.key].transit_gateway_attachment_id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables[each.key].id
 }
