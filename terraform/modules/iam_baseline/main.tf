@@ -59,6 +59,7 @@ resource "aws_iam_policy" "policy" {
           "ecr:UploadLayerPart",
           "ecr:CompleteLayerUpload",
           "ecr:UploadLayerPart",
+          "elasticfilesystem:DescribeFileSystems",
           "glue:GetJobRuns",
           "glue:StartJobRun",
           "glue:GetJobs",
