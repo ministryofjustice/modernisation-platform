@@ -481,6 +481,20 @@
       ]
     },
     {
+      "username": "craig.cockburn",
+      "github-username": "no-username-supplied",
+      "accounts": [
+        {
+          "account-name": "ppud-preproduction",
+          "access": "security-audit"
+        },
+        {
+          "account-name": "ppud-production",
+          "access": "security-audit"
+        }
+      ]
+    },
+    {
       "username": "edward.caren",
       "github-username": "EdwardTCaren",
       "accounts": [
