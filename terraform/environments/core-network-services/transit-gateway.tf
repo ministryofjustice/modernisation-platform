@@ -55,17 +55,6 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "attachments" {
   }
 }
 
-## Inline-inspection attachments
-resource "aws_ec2_transit_gateway_vpc_attachment" "attachments-inspection" {
-  for_each                                        = local.networking
-  appliance_mode_support                          = "enable"
-  transit_gateway_default_route_table_association = false
-  transit_gateway_default_route_table_propagation = false
-  transit_gateway_id                              = aws_ec2_transit_gateway.transit-gateway.id
-  vpc_id                                          = module.vpc_inspection[each.key].vpc_id
-  subnet_ids                                      = module.vpc_inspection[each.key].tgw_subnet_ids
-}
-
 #########################
 # Route table and routes
 #########################
