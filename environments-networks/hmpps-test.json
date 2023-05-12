@@ -6,6 +6,7 @@
         "accounts": [
           "nomis-test",
           "oasys-test",
+          "delius-jitbit-test",
           "digital-prison-reporting-test",
           "nomis-combined-reporting-test",
           "nomis-data-hub-test"
