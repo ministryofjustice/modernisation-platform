@@ -57,6 +57,7 @@ resource "random_string" "main" {
 
 resource "aws_cloudwatch_log_group" "main" {
   #checkov:skip=CKV_AWS_158:Temporarily skip KMS encryption check while logging solution is being updated
+  kms_key_id        = var.cloudwatch_kms_key_id > 1 ? var.cloudwatch_kms_key_id : null
   name              = format("%s-vpc-flow-logs-%s", var.tags_prefix, random_string.main.result)
   retention_in_days = 365
 

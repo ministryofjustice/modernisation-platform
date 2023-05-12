@@ -3,6 +3,11 @@ variable "application_name" {
   type        = string
 }
 
+variable "cloudwatch_kms_key_id" {
+  description = "Optional KMS key ID to use in encrypting VPC flow logs CloudWatch group."
+  type        = string
+}
+
 variable "fw_allowed_domains" {
   description = "List of strings containing allowed domains"
   type        = list(string)
