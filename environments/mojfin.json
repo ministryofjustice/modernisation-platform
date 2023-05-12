@@ -7,7 +7,11 @@
         {
           "github_slug": "laa-aws-infrastructure",
           "level": "developer"
-        }
+        },
+        {
+          "github_slug": "laa-mojfin-developers",
+          "level": "developer"
+        }        
       ]
     },
     {
@@ -16,7 +20,11 @@
         {
           "github_slug": "laa-aws-infrastructure",
           "level": "developer"
-        }
+        },
+        {
+          "github_slug": "laa-mojfin-developers",
+          "level": "developer"
+        }        
       ]
     },
     {
@@ -25,7 +33,11 @@
         {
           "github_slug": "laa-aws-infrastructure",
           "level": "developer"
-        }
+        },
+        {
+          "github_slug": "laa-mojfin-developers",
+          "level": "developer"
+        }        
       ]
     }
   ],
