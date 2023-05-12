@@ -382,3 +382,15 @@ module "modernisation-platform-incident-response" {
     "helm"
   ]
 }
+module "modernisation-platform-terraform-dns-certificates" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-dns-certificates"
+  type        = "module"
+  description = "Module for creating route 53 dns entries and certificates to go with them"
+  topics = [
+    "aws",
+    "dns",
+    "terraform",
+    "networking"
+  ]
+}
