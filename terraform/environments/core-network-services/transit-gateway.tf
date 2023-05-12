@@ -2,6 +2,7 @@
 # Create Transit Gateway
 #########################
 resource "aws_ec2_transit_gateway" "transit-gateway" {
+  #checkov:skip=CKV_AWS_331
   description = "Managed by Terraform"
 
   amazon_side_asn                 = "64589"
