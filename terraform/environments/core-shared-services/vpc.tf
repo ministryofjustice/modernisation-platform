@@ -5,8 +5,9 @@ locals {
   }
 
   vpc_interface_endpoint_service_names = toset([
-    "com.amazonaws.${data.aws_region.current_region.name}.imagebuilder",
     "com.amazonaws.${data.aws_region.current_region.name}.ec2messages",
+    "com.amazonaws.${data.aws_region.current_region.name}.imagebuilder",
+    "com.amazonaws.${data.aws_region.current_region.name}.logs",
     "com.amazonaws.${data.aws_region.current_region.name}.ssm",
     "com.amazonaws.${data.aws_region.current_region.name}.ssmmessages"
   ])
