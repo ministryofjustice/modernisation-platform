@@ -55,6 +55,43 @@ resource "pagerduty_service_integration" "nomis_nonprod_cloudwatch" {
 
 # Slack channel: #dso_alerts_devtest_modernisation_platform
 
+# OASys
+resource "pagerduty_service" "oasys" {
+  name                    = "OASys Alarms"
+  description             = "OASys Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "oasys_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.oasys.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+# Slack channel: #dso_alerts_modernisation_platform
+
+# OASys Non Prod
+
+resource "pagerduty_service" "oasys_nonprod" {
+  name                    = "OASys Alarms Non Prod"
+  description             = "OASys Alarms Non Prod"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "oasys_nonprod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.oasys_nonprod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+# Slack channel: #dso_alerts_devtest_modernisation_platform
+
 # LAA MLRA Non Prod
 resource "pagerduty_service" "laa_mlra_nonprod" {
   name                    = "Legal Aid Agency MLRA Application Non Prod"
