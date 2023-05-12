@@ -115,6 +115,13 @@ resource "aws_route" "transit-gateway-0-0-0-0" {
   vpc_endpoint_id        = local.firewall_endpoint_map[aws_subnet.transit-gateway[each.key].availability_zone]
 }
 
+resource "aws_route" "transit-gateway-10-20-0-0" {
+  for_each               = aws_route_table.transit-gateway
+  destination_cidr_block = "10.20.0.0/16"
+  route_table_id         = each.value.id
+  transit_gateway_id     = var.transit_gateway_id
+}
+
 resource "aws_route" "transit-gateway-10-26-0-0" {
   for_each               = aws_route_table.transit-gateway
   destination_cidr_block = "10.26.0.0/16"
@@ -189,6 +196,13 @@ resource "aws_route" "inspection-0-0-0-0" {
   nat_gateway_id         = aws_nat_gateway.public[replace(each.key, "inspection", "public")].id
 }
 
+resource "aws_route" "inspection-10-20-0-0" {
+  for_each               = aws_route_table.inspection
+  destination_cidr_block = "10.20.0.0/16"
+  route_table_id         = each.value.id
+  transit_gateway_id     = var.transit_gateway_id
+}
+
 resource "aws_route" "inspection-10-26-0-0" {
   for_each               = aws_route_table.inspection
   destination_cidr_block = "10.26.0.0/16"
@@ -261,6 +275,14 @@ resource "aws_route" "public-0-0-0-0" {
   destination_cidr_block = "0.0.0.0/0"
   route_table_id         = each.value.id
   gateway_id             = aws_internet_gateway.public.id
+}
+
+resource "aws_route" "public-10-20-0-0" {
+  depends_on             = [aws_networkfirewall_firewall.inline_inspection]
+  for_each               = aws_route_table.public
+  destination_cidr_block = "10.20.0.0/16"
+  route_table_id         = each.value.id
+  vpc_endpoint_id        = local.firewall_endpoint_map[aws_subnet.public[each.key].availability_zone]
 }
 
 resource "aws_route" "public-10-26-0-0" {

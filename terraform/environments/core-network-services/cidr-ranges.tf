@@ -1,5 +1,6 @@
 locals {
   mp_core_cidr_ranges = {
+    mp-core                     = "10.20.0.0/16"
     mp-development-test         = "10.26.0.0/16"
     mp-preproduction-production = "10.27.0.0/16"
   }
