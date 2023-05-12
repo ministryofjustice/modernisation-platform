@@ -16,6 +16,19 @@
       ]
     },
     {
+      "name": "test",
+      "access": [
+        {
+          "github_slug": "hmpps-migration",
+          "level": "developer"
+        },
+        {
+          "github_slug": "hmpps-delius-jitbit-devs",
+          "level": "read-only"
+        }
+      ]
+    },
+    {
       "name": "preproduction",
       "access": [
         {
