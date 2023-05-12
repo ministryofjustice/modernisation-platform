@@ -152,5 +152,19 @@
     "destination_ip": "${hmpps-preproduction}",
     "destination_port": "443",
     "protocol": "TCP"
+  },
+  "hmpps_preproduction_to_saas_agent_tcp": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "5721",
+    "protocol": "TCP"
+  },
+  "hmpps_preproduction_to_saas_agent_udp": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "5721",
+    "protocol": "UDP"
   }
 }
