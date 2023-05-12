@@ -78,6 +78,7 @@ expected =
           "nomis-test",
           "oasys-test",
           "digital-prison-reporting-test",
+          "delius-jitbit-test",
           "nomis-combined-reporting-test",
           "nomis-data-hub-test"
         ]
