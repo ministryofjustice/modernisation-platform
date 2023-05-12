@@ -124,5 +124,19 @@
     "destination_ip": "${laa-test}",
     "destination_port": "ANY",
     "protocol": "IP"
+  },
+  "hmpps_test_to_saas_agent_tcp": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "5721",
+    "protocol": "TCP"
+  },
+  "hmpps_test_to_saas_agent_udp": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "5721",
+    "protocol": "UDP"
   }
 }
