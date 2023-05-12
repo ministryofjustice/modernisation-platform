@@ -34,9 +34,12 @@ resource "aws_s3_bucket_lifecycle_configuration" "acm-pca" {
   bucket = aws_s3_bucket.acm-pca.bucket
 
   rule {
-    abort_incomplete_multipart_upload = "3"
     id     = "default"
     status = "Enabled"
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = "3"
+    }
 
     transition {
       days          = 30

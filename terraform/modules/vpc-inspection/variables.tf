@@ -4,6 +4,7 @@ variable "application_name" {
 }
 
 variable "cloudwatch_kms_key_id" {
+  default     = ""
   description = "Optional KMS key ID to use in encrypting VPC flow logs CloudWatch group."
   type        = string
 }
