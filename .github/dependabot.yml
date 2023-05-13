@@ -304,6 +304,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/vpc-inspection"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/vpc-nacls"
     schedule:
       interval: "daily"
