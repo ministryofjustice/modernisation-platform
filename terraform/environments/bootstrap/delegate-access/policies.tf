@@ -263,6 +263,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "glue:StopJobRun",
       "glue:UpdateJob",
       "glue:ListJobs",
+      "glue:ListSessions",
       "glue:BatchGetJobs",
       "glue:GetJobBookmark",
       "states:StartExecution",
