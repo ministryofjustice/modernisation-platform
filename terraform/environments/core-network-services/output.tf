@@ -53,3 +53,40 @@ output "tgw_subnet_ids" {
   value = length(module.vpc_hub["non_live_data"].tgw_subnet_ids)
 }
 
+###
+
+output "inspection_tgw_subnets" {
+  value = {
+    for vpc_key, vpc_value in local.networking : vpc_key => [
+      for subnet_key, subnet_value in module.vpc_inspection[vpc_key].subnet_attributes.transit_gateway : subnet_value[0].id
+    ]
+  }
+}
+
+output "inspection_inspection_subnets" {
+  value = {
+    for vpc_key, vpc_value in local.networking : vpc_key => [
+      for subnet_key, subnet_value in module.vpc_inspection[vpc_key].subnet_attributes.inspection : subnet_value[0].id
+    ]
+  }
+}
+
+output "inspection_public_subnets" {
+  value = {
+    for vpc_key, vpc_value in local.networking : vpc_key => [
+      for subnet_key, subnet_value in module.vpc_inspection[vpc_key].subnet_attributes.public : subnet_value[0].id
+    ]
+  }
+}
+
+output "firewall_arn" {
+  value = {
+    for vpc_key, vpc_value in local.networking : vpc_key => module.vpc_inspection[vpc_key].firewall.arn
+  }
+}
+
+output "inspection_vpc_ids" {
+  value = {
+    for vpc_key, vpc_value in local.networking : vpc_key => module.vpc_inspection[vpc_key].vpc_id
+  }
+}

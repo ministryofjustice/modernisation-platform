@@ -2,6 +2,7 @@ package test
 
 import (
 	"testing"
+	"regexp"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
@@ -66,4 +67,24 @@ func TestTransitGateway(t *testing.T) {
 	output6 := terraform.Output(t, terraformOptions, "transit_gateway_ram_share")
 	assert.Equal(t, output6, "transit-gateway")
 
+}
+
+func TestInspectionVPCs(t *testing.T) {
+	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+		TerraformDir: "../",
+	})
+
+	terraform.RunTerraformCommand(t, terraformOptions, "refresh")
+	terraform.Plan(t, terraformOptions)
+
+	// Retrieve the output values as a map
+    inspectionVPCs := terraform.OutputMap(t, terraformOptions, "inspection_vpc_ids")
+
+	// Define the regular expression pattern
+    vpcIDPattern := regexp.MustCompile(`^vpc-[0-9a-f]{17}$`)
+
+	// Assert that the vpc_id values match the regular expression pattern
+	// Assert that the vpc_id values in the map match the regular expression pattern
+	assert.Regexp(t, vpcIDPattern, inspectionVPCs["non_live_data"], "non_live_data vpc_id does not match the expected pattern")
+	assert.Regexp(t, vpcIDPattern, inspectionVPCs["live_data"], "live_data vpc_id does not match the expected pattern")
 }
