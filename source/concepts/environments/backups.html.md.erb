@@ -1,17 +1,17 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Backups
-last_reviewed_on: 2022-11-11
+last_reviewed_on: 2023-05-15
 review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
 
-We use [AWS Backup](https://aws.amazon.com/backup/) to automatically back up production resources accross all the Modernisation Platform environments.
+We use [AWS Backup](https://aws.amazon.com/backup/) to automatically back up production resources across all the Modernisation Platform environments.
 
 AWS Backup supports most common AWS resources, such as EC2 instances, EBS and EFS volumes, RDS and DynamoDB databases.
 
-For a full list of resources please see here - https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html
+For a full list of supported resources please see here - https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html
 
 Please note that some resources may need extra configuration and new services may require an additional opt in.  Please refer to the AWS documentation and if you have any questions please ask the [Modernisation Platform team](../../getting-help).
 
@@ -45,10 +45,10 @@ Backups are retained for 30 days.
 
 ## Custom backup plans
 
-If the above built in backup plans are not suitable, you can create your own backup plans via code in the environments repo.
+If the above built in backup plans are not suitable, you can create your own backup plans via code in the modernisation-platform-environments repository.
 
 ## How to find your backups
 
 You can view your backups my navigating to AWS Backup in the AWS console and clicking "Backup vaults".
 
-You can also view backups via the normal methods for viewing snapshots and AMIs (eg. EC2, Elastic Block Store, Snapshots)
+You can also view backups via the normal methods for viewing snapshots and AMIs (eg. EC2, Elastic Block Store, Snapshots).
