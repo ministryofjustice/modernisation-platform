@@ -90,3 +90,16 @@ output "inspection_vpc_ids" {
     for vpc_key, vpc_value in local.networking : vpc_key => module.vpc_inspection[vpc_key].vpc_id
   }
 }
+
+output "inspection_igw_id" {
+  value = {
+    for vpc_key, vpc_value in local.networking : vpc_key => module.vpc_inspection[vpc_key].internet_gateway.id
+  }
+}
+
+output "inspection_natgw_ids" {
+  value = {
+    for vpc_key, vpc_value in local.networking : vpc_key => length([
+      for key in module.vpc_inspection[vpc_key].nat_gateway : key.id])
+  }
+}

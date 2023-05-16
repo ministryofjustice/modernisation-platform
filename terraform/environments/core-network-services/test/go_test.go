@@ -102,11 +102,19 @@ func TestInspectionVPCs(t *testing.T) {
 	assert.Equal(t, inspectionInspectionSubnets["live_data"], "3")
 	assert.Equal(t, inspectionPublicSubnets["live_data"], "3")
 
-	//Retrieve firewall ARNs as a map
+	// Retrieve firewall ARNs as a map
 	inspectionFirewalls := terraform.OutputMap(t, terraformOptions, "firewall_arn")
 	// Define a regular expression pattern to match the VPC IDs
     firewallARNPattern := regexp.MustCompile(`^arn:aws:network-firewall:eu-west-2:[0-9]{12}:firewall/(live-data|non-live-data)-inline-inspection$`)
     // Assert that the firewall_arn values in the map match the regular expression pattern
 	assert.Regexp(t, firewallARNPattern, inspectionFirewalls["non_live_data"], "non_live_data firewall_arn does not match the expected pattern")
 	assert.Regexp(t, firewallARNPattern, inspectionFirewalls["live_data"], "live_data firewall_arn does not match the expected pattern")
+
+	// Retrieve Internet Gateway IDs
+	inspectionIGWs := terraform.OutputMap(t, terraformOptions, "inspection_igw_id")
+	// Define a regular expression pattern to match the VPC IDs
+    igwIDPattern := regexp.MustCompile(`^igw-[0-9a-f]{17}$`)
+	// Assert that both live_data and non_live_data have an IGW matching the regext
+	assert.Regexp(t, igwIDPattern, inspectionIGWs["non_live_data"], "non_live_data igw_id does not match the expected pattern")
+	assert.Regexp(t, igwIDPattern, inspectionIGWs["live_data"], "live_data igw_id does not match the expected pattern")
 }
