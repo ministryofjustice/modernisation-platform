@@ -19,7 +19,8 @@
     "additional_cidrs": [],
     "additional_endpoints": [
       "com.amazonaws.eu-west-2.xray",
-      "com.amazonaws.eu-west-2.secretsmanager"
+      "com.amazonaws.eu-west-2.secretsmanager",
+      "com.amazonaws.eu-west-2.email-smtp"
     ],
     "additional_vpcs": [],
     "dns_zone_extend": []
