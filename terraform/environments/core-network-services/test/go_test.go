@@ -117,4 +117,11 @@ func TestInspectionVPCs(t *testing.T) {
 	// Assert that both live_data and non_live_data have an IGW matching the regext
 	assert.Regexp(t, igwIDPattern, inspectionIGWs["non_live_data"], "non_live_data igw_id does not match the expected pattern")
 	assert.Regexp(t, igwIDPattern, inspectionIGWs["live_data"], "live_data igw_id does not match the expected pattern")
+
+	// Retrieve a map of NAT Gateway outputs
+	inspectionNATGWs := terraform.OutputMap(t, terraformOptions, "inspection_natgw_ids")
+
+    // Assert that each VPC has all of its NAT Gateways
+	assert.Equal(t, inspectionNATGWs["non_live_data"], "3")
+	assert.Equal(t, inspectionNATGWs["non_live_data"], "3")
 }
