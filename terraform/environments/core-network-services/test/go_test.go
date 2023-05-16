@@ -80,7 +80,7 @@ func TestInspectionVPCs(t *testing.T) {
 	// Retrieve the VPC output as a map
     inspectionVPCs := terraform.OutputMap(t, terraformOptions, "inspection_vpc_ids")
 
-	// Define the regular expression pattern
+	// Define a regular expression pattern to match the VPC IDs
     vpcIDPattern := regexp.MustCompile(`^vpc-[0-9a-f]{17}$`)
 
 	// Assert that the vpc_id values in the map match the regular expression pattern
@@ -101,4 +101,12 @@ func TestInspectionVPCs(t *testing.T) {
 	assert.Equal(t, inspectionTgwSubnets["live_data"], "3")
 	assert.Equal(t, inspectionInspectionSubnets["live_data"], "3")
 	assert.Equal(t, inspectionPublicSubnets["live_data"], "3")
+
+	//Retrieve firewall ARNs as a map
+	inspectionFirewalls := terraform.OutputMap(t, terraformOptions, "firewall_arn")
+	// Define a regular expression pattern to match the VPC IDs
+    firewallARNPattern := regexp.MustCompile(`^arn:aws:network-firewall:eu-west-2:[0-9]{12}:firewall/(live-data|non-live-data)-inline-inspection$`)
+    // Assert that the firewall_arn values in the map match the regular expression pattern
+	assert.Regexp(t, firewallARNPattern, inspectionFirewalls["non_live_data"], "non_live_data firewall_arn does not match the expected pattern")
+	assert.Regexp(t, firewallARNPattern, inspectionFirewalls["live_data"], "live_data firewall_arn does not match the expected pattern")
 }
