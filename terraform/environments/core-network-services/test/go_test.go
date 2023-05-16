@@ -77,14 +77,28 @@ func TestInspectionVPCs(t *testing.T) {
 	terraform.RunTerraformCommand(t, terraformOptions, "refresh")
 	terraform.Plan(t, terraformOptions)
 
-	// Retrieve the output values as a map
+	// Retrieve the VPC output as a map
     inspectionVPCs := terraform.OutputMap(t, terraformOptions, "inspection_vpc_ids")
 
 	// Define the regular expression pattern
     vpcIDPattern := regexp.MustCompile(`^vpc-[0-9a-f]{17}$`)
 
-	// Assert that the vpc_id values match the regular expression pattern
 	// Assert that the vpc_id values in the map match the regular expression pattern
 	assert.Regexp(t, vpcIDPattern, inspectionVPCs["non_live_data"], "non_live_data vpc_id does not match the expected pattern")
 	assert.Regexp(t, vpcIDPattern, inspectionVPCs["live_data"], "live_data vpc_id does not match the expected pattern")
+
+	// Retrieve the subnet outputs
+	inspectionTgwSubnets := terraform.OutputMap(t, terraformOptions, "inspection_tgw_subnets")
+	inspectionInspectionSubnets := terraform.OutputMap(t, terraformOptions, "inspection_inspection_subnets")
+	inspectionPublicSubnets := terraform.OutputMap(t, terraformOptions, "inspection_public_subnets")
+
+    // Assert that non_live_data has all of its subnets
+	assert.Equal(t, inspectionTgwSubnets["non_live_data"], "3")
+	assert.Equal(t, inspectionInspectionSubnets["non_live_data"], "3")
+	assert.Equal(t, inspectionPublicSubnets["non_live_data"], "3")
+
+    // Assert that live_data has all of its subnets
+	assert.Equal(t, inspectionTgwSubnets["live_data"], "3")
+	assert.Equal(t, inspectionInspectionSubnets["live_data"], "3")
+	assert.Equal(t, inspectionPublicSubnets["live_data"], "3")
 }
