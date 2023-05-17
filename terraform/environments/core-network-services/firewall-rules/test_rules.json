@@ -69,11 +69,18 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "aks_studio_hosting_dev_1_vnet_to_mp_dev_test": {
+  "aks_studio_hosting_dev_1_vnet_to_mp_dev_test_db": {
     "action": "PASS",
     "source_ip": "${aks-studio-hosting-dev-1-vnet}",
     "destination_ip": "${mp-development-test}",
     "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "aks_studio_hosting_dev_1_vnet_to_mp_dev_test_https": {
+    "action": "PASS",
+    "source_ip": "${aks-studio-hosting-dev-1-vnet}",
+    "destination_ip": "${mp-development-test}",
+    "destination_port": "443",
     "protocol": "TCP"
   },
   "nomisapi_t2_root_vnet_to_mp_dev_test": {
