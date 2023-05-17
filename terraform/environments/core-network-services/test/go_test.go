@@ -1,6 +1,7 @@
 package test
 
 import (
+    "encoding/json"
 	"testing"
 	"regexp"
 
@@ -124,4 +125,29 @@ func TestInspectionVPCs(t *testing.T) {
     // Assert that each VPC has all of its NAT Gateways
 	assert.Equal(t, inspectionNATGWs["non_live_data"], "3")
 	assert.Equal(t, inspectionNATGWs["non_live_data"], "3")
+
+	// Run `terraform output` to get the value of the output variable as a string
+	terraformOutput := terraform.OutputJson(t, terraformOptions, "inspection_default_routes")
+
+	// Parse the string value as JSON to obtain the map structure
+	var inspectionDefaultRoutes map[string]interface{}
+	err := json.Unmarshal([]byte(terraformOutput), &inspectionDefaultRoutes)
+	if err != nil {
+		t.Fatalf("Failed to parse inspection_default_routes output as JSON: %s", err)
+	}
+
+	// Check the number of keys in `inspection_default_routes`
+	liveDataRoutes, _ := inspectionDefaultRoutes["live_data"].(map[string]interface{})
+	nonLiveDataRoutes, _ := inspectionDefaultRoutes["non_live_data"].(map[string]interface{})
+
+	assert.Len(t, liveDataRoutes, 9)
+	assert.Len(t, nonLiveDataRoutes, 9)
+
+	// Check the values of the keys in `inspection_default_routes`
+	for _, value := range liveDataRoutes {
+		assert.Equal(t, "0.0.0.0/0", value)
+	}
+	for _, value := range nonLiveDataRoutes {
+		assert.Equal(t, "0.0.0.0/0", value)
+	}
 }
