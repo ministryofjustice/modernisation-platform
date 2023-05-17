@@ -53,3 +53,60 @@ output "tgw_subnet_ids" {
   value = length(module.vpc_hub["non_live_data"].tgw_subnet_ids)
 }
 
+###
+
+output "inspection_tgw_subnets" {
+  value = {
+    for vpc_key, vpc_value in local.networking : vpc_key => length([
+      for subnet_key, subnet_value in module.vpc_inspection[vpc_key].subnet_attributes.transit_gateway : subnet_value[0].id
+    ])
+  }
+}
+
+output "inspection_inspection_subnets" {
+  value = {
+    for vpc_key, vpc_value in local.networking : vpc_key => length([
+      for subnet_key, subnet_value in module.vpc_inspection[vpc_key].subnet_attributes.inspection : subnet_value[0].id
+    ])
+  }
+}
+
+output "inspection_public_subnets" {
+  value = {
+    for vpc_key, vpc_value in local.networking : vpc_key => length([
+      for subnet_key, subnet_value in module.vpc_inspection[vpc_key].subnet_attributes.public : subnet_value[0].id
+    ])
+  }
+}
+
+output "firewall_arn" {
+  value = {
+    for vpc_key, vpc_value in local.networking : vpc_key => module.vpc_inspection[vpc_key].firewall.arn
+  }
+}
+
+output "inspection_vpc_ids" {
+  value = {
+    for vpc_key, vpc_value in local.networking : vpc_key => module.vpc_inspection[vpc_key].vpc_id
+  }
+}
+
+output "inspection_igw_id" {
+  value = {
+    for vpc_key, vpc_value in local.networking : vpc_key => module.vpc_inspection[vpc_key].internet_gateway.id
+  }
+}
+
+output "inspection_natgw_ids" {
+  value = {
+    for vpc_key, vpc_value in local.networking : vpc_key => length([
+      for key in module.vpc_inspection[vpc_key].nat_gateway : key.id])
+  }
+}
+
+output "inspection_default_routes" {
+  value = {
+    live_data = { for key, value in data.aws_route.live_data : key => value.destination_cidr_block }
+    non_live_data = { for key, value in data.aws_route.non_live_data : key => value.destination_cidr_block }
+  }
+}
