@@ -60,5 +60,6 @@
     "business-unit": "LAA",
     "infrastructure-support": "donovan.artz@digital.justice.gov.uk",
     "owner": "donovan.artz@digital.justice.gov.uk"
-  }
+  },
+  "go-live-date": "2023-05-26"
 }
