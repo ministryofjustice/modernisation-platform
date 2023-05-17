@@ -17,7 +17,5 @@
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
     "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
   }
-  "live-application": {
-    "go-live-date": "1993-01-24"
-  }    
+  "live-application": "1993-01-24"
 }
