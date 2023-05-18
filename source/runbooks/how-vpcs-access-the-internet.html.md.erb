@@ -1,0 +1,30 @@
+---
+owner_slack: "#modernisation-platform"
+title: How VPCs Access The Internet
+last_reviewed_on: 2023-05-18
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+Our [Networking Diagram](../concepts/networking/networking-diagram.html.md.erb) shows a high level view of how shared
+VPCs are connected.
+
+Our [Networking Approach](../concepts/networking/networking-approach.html.md.erb) discusses and 
+contains a detailed view of our shared VPCs.
+
+This document discusses how these VPCs access the internet.
+
+## Traffic from the internet
+
+Our shared VPCs all have public subnets. Your application should have AWS load balancers (or an equivalent) in those 
+subnets to receive traffic from the internet, and act as a reverse proxy to your service on the Modernisation Platform.
+
+Public subnets have permissive Network Access Control Lists (NACLS) allowing traffic in from the internet, and route tables
+attached with default routes to the internet via a VPC Internet Gateway.
+
+## Traffic to the internet
+
+### Shared VPCs
+
+Our shared VPCs have private subnets and data subnets. These subnets have [restrictive NACLS]([Networking Approach](../concepts/networking/networking-approach.html.md.erb))
