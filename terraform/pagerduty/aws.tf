@@ -31,6 +31,7 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     hmpps_shef_dba_non_prod      = pagerduty_service_integration.hmpps_shef_dba_non_prod.integration_key,
     oasys_alarms                 = pagerduty_service_integration.oasys_cloudwatch.integration_key,
     oasys_nonprod_alarms         = pagerduty_service_integration.oasys_nonprod_cloudwatch.integration_key
+    test_alarms                  = pagerduty_service_integration.test_alarms.integration_key
   })
 }
 
