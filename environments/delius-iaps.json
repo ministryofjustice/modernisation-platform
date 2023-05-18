@@ -47,5 +47,6 @@
     "business-unit": "HMPPS",
     "infrastructure-support": "probation-webops@digital.justice.gov.uk",
     "owner": "probation-webops@digital.justice.gov.uk"
-  }
+  },
+  "go-live-date": "2023-05-15"
 }

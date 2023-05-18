@@ -34,5 +34,6 @@
     "business-unit": "HMPPS",
     "infrastructure-support": "PPUDnotification@justice.gov.uk",
     "owner": "deepee.mann-basra@digital.justice.gov.uk"
-  }
+  },
+  "go-live-date": "2023-06-10"
 }

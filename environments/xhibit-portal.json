@@ -34,5 +34,6 @@
     "business-unit": "HMCTS",
     "infrastructure-support": "xpsupport@digital.justice.gov.uk",
     "owner": "dom.tomkins@digital.justice.gov.uk"
-  }
+  },
+  "go-live-date": "2023-05-17"
 }
