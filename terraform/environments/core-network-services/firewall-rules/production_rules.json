@@ -117,7 +117,7 @@
     "destination_ip": "${hmpps-production}",
     "destination_port": "9100",
     "protocol": "TCP"
-  },  
+  },
   "psn_to_mp_hmpps_preproduction_https": {
     "action": "PASS",
     "source_ip": "${psn}",

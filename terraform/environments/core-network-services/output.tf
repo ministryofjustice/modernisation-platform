@@ -100,13 +100,13 @@ output "inspection_igw_id" {
 output "inspection_natgw_ids" {
   value = {
     for vpc_key, vpc_value in local.networking : vpc_key => length([
-      for key in module.vpc_inspection[vpc_key].nat_gateway : key.id])
+    for key in module.vpc_inspection[vpc_key].nat_gateway : key.id])
   }
 }
 
 output "inspection_default_routes" {
   value = {
-    live_data = { for key, value in data.aws_route.live_data : key => value.destination_cidr_block }
+    live_data     = { for key, value in data.aws_route.live_data : key => value.destination_cidr_block }
     non_live_data = { for key, value in data.aws_route.non_live_data : key => value.destination_cidr_block }
   }
 }
