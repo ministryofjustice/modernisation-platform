@@ -1,14 +1,15 @@
 ---
 owner_slack: "#modernisation-platform"
 title: AWS Network Firewall
-last_reviewed_on: 2023-02-08
+last_reviewed_on: 2023-05-18
 review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
 
-We currently have setup in our core-network account AWS Network Firewall to monitor and control network traffic on a layer 3-7 level for transit gateway connections and cross account VPCs to protect resources
-such as EC2 instances, along with general AWS resources
+We make use of AWS Network Firewalls in two ways. First, we use a centralised inspection VPC to control traffic entering
+and exiting the Modernisation Platform to and from internal Ministry of Justice services. Second, we use
+inline-inspection in our egress VPCs to control traffic exiting the Modernisation Platform to the internet.
 
 ### What is an AWS network firewall
 
@@ -32,7 +33,7 @@ The rules files are broken down by environment and not account to make it easier
 
 Rules are made up of a rule description and an action which would either be the DROP, PASS or ALERT, which would block, allow or monitor traffic based on the source IP or CIDR range then a destination IP or CIDR range, the port number is required next finally the protocol used.
 
-These rules are formated in json format and a text example is shown below.
+These rules are formatted in json format and a text example is shown below.
 
 ```
 "example_rule": {
@@ -56,9 +57,10 @@ We have now included a change to the firewall to be to include unblocking by dns
 
 To unblock a DNS name to allow traffic to that site a PR will need to be created and the following file will need to be updated
 
-- [FQDN Rules](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/fqdn_rules.json)
+- [Centralised FQDN Rules](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/fqdn_rules.json)
+- [Inline FQDN Rules](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/inline_fqdn_rules.json)
 
-Below is an example of what is in the file the only section that needs to be update is the fw_allowed_domains simply add the domain you want to allow to the list. This can be either the full dns name ie exmaple.com or if you want the root domain and the sub domains just put a full stop at the start like so .example.com
+Below is an example of the file contents. You can raise a pull request to add the domains to this list. This can be either the full dns name (eg. `example.com`) or if you want the root domain and any sub domains place a full stop at the beginning (eg. `.example.com`)
 
 ```
 {
