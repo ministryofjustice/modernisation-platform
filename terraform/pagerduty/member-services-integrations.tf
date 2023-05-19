@@ -265,18 +265,18 @@ resource "pagerduty_service_integration" "hmpps_shef_dba_non_prod" {
 }
 # Slack channel: dba_alerts_devtest
 
- resource "pagerduty_service" "test_alarms" {
-   name                    = "Modernisation Platform Test Alarms"
-   description             = "Pagerduty integration for test alarms"
-   auto_resolve_timeout    = 600
-   acknowledgement_timeout = 300
-   escalation_policy       = pagerduty_escalation_policy.low_priority.id
-   alert_creation          = "create_alerts_and_incidents"
- }
+resource "pagerduty_service" "test_alarms" {
+  name                    = "Modernisation Platform Test Alarms"
+  description             = "Pagerduty integration for test alarms"
+  auto_resolve_timeout    = 600
+  acknowledgement_timeout = 300
+  escalation_policy       = pagerduty_escalation_policy.low_priority.id
+  alert_creation          = "create_alerts_and_incidents"
+}
 
- resource "pagerduty_service_integration" "test_alarms" {
-   name    = data.pagerduty_vendor.cloudwatch.name
-   service = pagerduty_service.test_alarms.id
-   vendor  = data.pagerduty_vendor.cloudwatch.id
- }
+resource "pagerduty_service_integration" "test_alarms" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.test_alarms.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
 # Slack channel: modernisation-platform
