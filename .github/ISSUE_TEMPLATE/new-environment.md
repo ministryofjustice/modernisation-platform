@@ -81,19 +81,6 @@ The infrastructure-support tag should be an email address which will receive AWS
 - [ ] General - this application will use the same subnet as other applications in your business unit
 - [ ] Isolated - this application has highly sensitive data which must have its own isolated subnet with no network connectivity
 
-### Firewall rules
-
-<!-- Modernisation Platform uses firewall for traffic coming in privately from the wider MoJ network (for applications that are not publicly accessible). Connectivity from outside the Modernisation Platform will be blocked by default by the firewall. Please specify any firewall rules your application may require to allow access from other applications, tools or external parties. Firewall rules should be provided in a form of CIDR ranges, protocols and ports (see example below). If you specify an insecure port/service/protocol, you will need to provide a business justification and make the service owner aware of its vulnerabilities. -->
-
-    # e.g.
-    "cp_to_mp_hmpps_test": {"
-      "action": "PASS",
-      "source_ip": "172.20.0.0/16",
-      "destination_ip": "10.26.8.0/21",
-      "destination_port": "443",
-      "protocol": "TCP"
-    },
-
 ### How do users connect to the application?
 
 - [ ] Over the public internet
