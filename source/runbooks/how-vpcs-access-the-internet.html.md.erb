@@ -27,7 +27,7 @@ tables attached with default routes to the internet via a VPC Internet Gateway.
 
 ### Shared VPCs
 
-Our shared VPCs have private subnets and data subnets. These subnets have [restrictive NACLS](../concepts/networking/networking-approach.html.md.erb#nacls)
+Our shared VPCs have private subnets and data subnets. These subnets have [restrictive NACLS](../concepts/networking/networking-approach.html#nacls)
 which allow HTTP and HTTPS traffic out to the internet, and high ports in from the internet. The route tables attached 
 to the private and data subnets contain a default route to the internet via a [Transit Gateway](../concepts/networking/networking-approach.html.md.erb#what-we-decided-transit-gateway)
 attachment.
