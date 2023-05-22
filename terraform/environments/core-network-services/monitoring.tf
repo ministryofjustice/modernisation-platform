@@ -159,8 +159,7 @@ resource "aws_cloudwatch_metric_alarm" "firewall-traffic-drop-alarm" {
   namespace                 = "AWS/NetworkFirewall"
   period                    = 300
   evaluation_periods        = 1
-  threshold                 = 10
-  alarm_description         = "Request error rate has exceeded 10%"
+  alarm_description         = "Dropped packets alarm"
   alarm_actions             = []
   insufficient_data_actions = []
 }
