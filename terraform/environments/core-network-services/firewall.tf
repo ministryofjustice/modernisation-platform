@@ -162,6 +162,7 @@ resource "aws_route_table_association" "external_inspection_out" {
 module "firewall_policy" {
   source                 = "../../modules/firewall-policy"
   fw_rulegroup_capacity  = "10000"
+  fw_kms_arn             = data.aws_kms_key.general_shared.arn
   fw_policy_name         = format("%s-fw-policy", local.application_name)
   fw_rulegroup_name      = format("%s-fw-rulegroup", local.application_name)
   fw_fqdn_rulegroup_name = format("%s-fw-fqdn-rulegroup", local.application_name)
@@ -183,6 +184,11 @@ resource "aws_networkfirewall_firewall" "external_inspection" {
   name                = "external-inspection"
   firewall_policy_arn = module.firewall_policy.fw_policy_arn
   vpc_id              = aws_vpc.external_inspection.id
+  delete_protection   = true
+  encryption_configuration {
+    type = "CUSTOMER_KMS"
+    key_id = data.aws_kms_key.general_shared.arn
+  }
   subnet_mapping { subnet_id = aws_subnet.external_inspection_out["eu-west-2a"].id }
   subnet_mapping { subnet_id = aws_subnet.external_inspection_out["eu-west-2b"].id }
   subnet_mapping { subnet_id = aws_subnet.external_inspection_out["eu-west-2c"].id }

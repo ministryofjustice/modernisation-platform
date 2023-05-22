@@ -18,6 +18,11 @@ variable "fw_fqdn_rulegroup_name" {
   type = string
 }
 
+variable "fw_kms_arn" {
+  description = "ARN of KMS key used for encryption at rest"
+  type        = string
+}
+
 variable "fw_policy_name" {
   type = string
 }

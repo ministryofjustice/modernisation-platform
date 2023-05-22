@@ -2,6 +2,11 @@ resource "aws_networkfirewall_firewall" "inline_inspection" {
   name                = replace(format("%s-inline-inspection", var.tags_prefix), "/_/", "-")
   firewall_policy_arn = module.inline_inspection_policy.fw_policy_arn
   vpc_id              = aws_vpc.main.id
+  delete_protection   = var.fw_delete_protection
+  encryption_configuration {
+    type = "CUSTOMER_KMS"
+    key_id = var.fw_kms_arn
+  }
   dynamic "subnet_mapping" {
     for_each = aws_subnet.inspection
     content {
@@ -17,6 +22,7 @@ resource "aws_networkfirewall_firewall" "inline_inspection" {
 module "inline_inspection_policy" {
   source                 = "../../modules/firewall-policy"
   fw_rulegroup_capacity  = "10000"
+  fw_kms_arn             = var.fw_kms_arn
   fw_policy_name         = format("%s-inline-fw-policy", var.tags_prefix)
   fw_rulegroup_name      = format("%s-inline-fw-rulegroup", var.tags_prefix)
   fw_fqdn_rulegroup_name = format("%s-inlinefw-fqdn-rulegroup", var.tags_prefix)

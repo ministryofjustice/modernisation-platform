@@ -17,3 +17,7 @@ data "aws_route" "live_data" {
   route_table_id         = each.value
   destination_cidr_block = "0.0.0.0/0"
 }
+
+data "aws_kms_key" "general_shared" {
+  key_id = "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:alias/general-${var.networking[0].business-unit}"
+}

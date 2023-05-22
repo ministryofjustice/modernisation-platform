@@ -4,6 +4,10 @@ resource "random_id" "policy_id" {
 
 resource "aws_networkfirewall_firewall_policy" "main" {
   name = replace(format("%s-%s", var.fw_policy_name, random_id.policy_id.id), "/-|_/", "")
+  encryption_configuration {
+    type = "CUSTOMER_KMS"
+    key_id = var.fw_kms_arn
+  }
   firewall_policy {
     stateful_engine_options {
       rule_order = "DEFAULT_ACTION_ORDER"
