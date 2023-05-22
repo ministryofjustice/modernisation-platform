@@ -21,7 +21,7 @@ resource "aws_route53_zone" "modernisation-platform-internal" {
   name = local.modernisation-platform-internal-domain
 
   vpc {
-    vpc_id = module.vpc_hub["live_data"].vpc_id
+    vpc_id = module.vpc_inspection["live_data"].vpc_id
   }
 
   tags = local.tags
