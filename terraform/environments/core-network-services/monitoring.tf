@@ -150,3 +150,17 @@ resource "aws_flow_log" "tgw_flowlog" {
   transit_gateway_attachment_id = each.value["id"]
   tags                          = local.tags
 }
+
+
+resource "aws_cloudwatch_metric_alarm" "firewall-traffic-drop-alarm" {
+  alarm_name                = "traffic-dropped"
+  comparison_operator       = "GreaterThanThreshold"
+  metric_name               = "DroppedPackets"
+  namespace                 = "AWS/NetworkFirewall"
+  period                    = 300
+  evaluation_periods        = 1
+  threshold                 = 10
+  alarm_description         = "Request error rate has exceeded 10%"
+  alarm_actions             = []
+  insufficient_data_actions = []
+}
