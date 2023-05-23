@@ -1,4 +1,11 @@
 {
+  "default_block_preprod_production_ingress": {
+    "action": "DROP",
+    "source_ip": "0.0.0.0/0",
+    "destination_ip": "${mp-preproduction-production}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
   "laa_stage_to_mp_laa_preproduction_http": {
     "action": "PASS",
     "source_ip": "${laa-lz-staging}",
@@ -39,13 +46,6 @@
     "source_ip": "${moj-core-azure-2}",
     "destination_ip": "${hmpps-preproduction}",
     "destination_port": "443",
-    "protocol": "TCP"
-  },
-  "default_block_preprod_production_ingress": {
-    "action": "DROP",
-    "source_ip": "0.0.0.0/0",
-    "destination_ip": "${mp-preproduction-production}",
-    "destination_port": "ANY",
     "protocol": "TCP"
   },
   "laa_shared_services_to_mp_laa_preproduction": {
@@ -160,14 +160,14 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "hmpps_preproduction_to_saas_agent_tcp": {
+  "mp_hmpps_preproduction_to_saas_agent_tcp": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction}",
     "destination_ip": "0.0.0.0/0",
     "destination_port": "5721",
     "protocol": "TCP"
   },
-  "hmpps_preproduction_to_saas_agent_udp": {
+  "mp_hmpps_preproduction_to_saas_agent_udp": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction}",
     "destination_ip": "0.0.0.0/0",
