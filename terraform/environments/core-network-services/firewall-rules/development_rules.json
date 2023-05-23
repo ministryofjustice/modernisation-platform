@@ -1,4 +1,11 @@
 {
+  "default_block_development_test_ingress": {
+    "action": "DROP",
+    "source_ip": "0.0.0.0/0",
+    "destination_ip": "${mp-development-test}",
+    "destination_port": "ANY",
+    "protocol": "IP"
+  },
   "gp_to_hmpps_development_http": {
     "action": "PASS",
     "source_ip": "${global-protect}",
@@ -41,13 +48,6 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "default_block_development_test_ingress": {
-    "action": "DROP",
-    "source_ip": "0.0.0.0/0",
-    "destination_ip": "${mp-development-test}",
-    "destination_port": "ANY",
-    "protocol": "IP"
-  },
   "hmpps_development_to_saas_agent_tcp": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
@@ -60,6 +60,69 @@
     "source_ip": "${hmpps-development}",
     "destination_ip": "0.0.0.0/0",
     "destination_port": "5721",
+    "protocol": "UDP"
+  },
+  "noms_test_dr_vnet_to_mp_hmpps_development": {
+    "action": "PASS",
+    "source_ip": "${noms-test-dr-vnet}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "noms_test_vnet_to_mp_hmpps_development": {
+    "action": "PASS",
+    "source_ip": "${noms-test-vnet}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "noms_mgmt_vnet_to_mp_hmpps_development": {
+    "action": "PASS",
+    "source_ip": "${noms-mgmt-vnet}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "noms_mgmt_dr_vnet_to_mp_hmpps_developmemnt": {
+    "action": "PASS",
+    "source_ip": "${noms-mgmt-dr-vnet}",
+    "destination_ip": "${hmpps-test}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "aks_studio_hosting_dev_1_vnet_to_mp_hmpps_development_db": {
+    "action": "PASS",
+    "source_ip": "${aks-studio-hosting-dev-1-vnet}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "aks_studio_hosting_dev_1_vnet_to_mp_hmpps_development_https": {
+    "action": "PASS",
+    "source_ip": "${aks-studio-hosting-dev-1-vnet}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
+  "nomisapi_t2_root_vnet_to_mp_hmpps_development": {
+    "action": "PASS",
+    "source_ip": "${nomisapi-t2-root-vnet}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "nomisapi_t3_root_vnet_to_mp_hmpps_development": {
+    "action": "PASS",
+    "source_ip": "${nomisapi-t3-root-vnet}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "mp_hmpps_development_to_noms_mgmt_vnet_dns": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "53",
     "protocol": "UDP"
   }
 }
