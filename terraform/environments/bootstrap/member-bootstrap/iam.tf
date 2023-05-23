@@ -26,6 +26,7 @@ data "aws_iam_policy_document" "member-access" {
     actions = [
       "acm-pca:*",
       "acm:*",
+      "apigateway:*",
       "application-autoscaling:*",
       "applicationinsights:*",
       "athena:*",
