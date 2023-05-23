@@ -3,6 +3,7 @@
 # to push notifications to pagerduty.  Add any additional integrations to the json secret below
 #tfsec:ignore:aws-ssm-secret-use-customer-key
 resource "aws_secretsmanager_secret" "pagerduty_integration_keys" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
   description = "Pager Duty integration keys"
   kms_key_id  = aws_kms_key.pagerduty.id
@@ -40,6 +41,7 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
 #tfsec:ignore:aws-ssm-secret-use-customer-key
 resource "aws_secretsmanager_secret" "pagerduty_token" {
   # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "pagerduty_token"
   description = "PagerDuty api token"
   tags        = local.tags
