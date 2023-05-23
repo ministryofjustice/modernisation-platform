@@ -152,6 +152,23 @@ resource "aws_flow_log" "tgw_flowlog" {
 }
 
 
+# tfsec:ignore:aws-sns-enable-topic-encryption
+resource "aws_sns_topic" "firewall_dropped_packets_monitoring" {
+  #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
+  name = "firewall_dropped_packets_monitoring_production"
+  tags = local.tags
+}
+
+# subscribe to the sns topic to the pagerduty service
+#module "pagerduty_firewall_traffic_Drop" {
+#  depends_on = [
+#    aws_sns_topic.firewall_dropped_packets_monitoring
+#  ]
+#  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=v1.0.0"
+#  sns_topics                = [aws_sns_topic.firewall_dropped_packets_monitoring.name]
+#  pagerduty_integration_key = local.pagerduty_integration_keys["firewall_packets_dropped_cloudwatch"]
+#}
+
 resource "aws_cloudwatch_metric_alarm" "firewall-traffic-drop-alarm" {
   alarm_name                = "traffic-dropped"
   comparison_operator       = "GreaterThanThreshold"
@@ -160,6 +177,11 @@ resource "aws_cloudwatch_metric_alarm" "firewall-traffic-drop-alarm" {
   period                    = 300
   evaluation_periods        = 1
   alarm_description         = "Dropped packets alarm"
+  statistic                 = "Average"
   alarm_actions             = []
   insufficient_data_actions = []
+
+#  dimensions = {
+#    FirewallName = NameOfFirewall
+#  }
 }

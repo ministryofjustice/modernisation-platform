@@ -16,6 +16,7 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
   secret_string = jsonencode({
     core_alerts_cloudwatch       = pagerduty_service_integration.core_alerts_cloudwatch.integration_key,
     ddos_cloudwatch              = pagerduty_service_integration.ddos_cloudwatch.integration_key,
+    firewall_packets_dropped_cloudwatch  = pagerduty_service_integration.firewall_packets_dropped_cloudwatch.integration_key,
     tgw_cloudwatch               = pagerduty_service_integration.tgw_cloudwatch.integration_key,
     nomis_alarms                 = pagerduty_service_integration.nomis_cloudwatch.integration_key,
     nomis_nonprod_alarms         = pagerduty_service_integration.nomis_nonprod_cloudwatch.integration_key,

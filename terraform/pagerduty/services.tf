@@ -85,6 +85,12 @@ resource "pagerduty_service_integration" "ddos_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
+resource "pagerduty_service_integration" "firewall_packets_dropped_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.contact_on_call.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
 resource "pagerduty_service" "tgw" {
   name                    = "Transit Gateway - Modernisation Platform"
   description             = "Transit Gateway"
