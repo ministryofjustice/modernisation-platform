@@ -5,6 +5,9 @@ on:
   workflow_dispatch: null
   schedule:
     - cron: 45 4 * * 1-5
+  pull_request:
+    types:
+      - opened
 
 permissions:
   contents: write
@@ -62,18 +65,19 @@ jobs:
           changes=$(git diff origin/main...$branch_name --name-only)
           if [ -z "$changes" ]; then
             echo "No changes detected."
-            exit 1
           else
             echo "Changes detected."
-            exit 0
+            echo "changes=true" >> $GITHUB_ENV
           fi
 
       - name: Push changes
+        if: env.changes == 'true'
         run: |
           git config --global push.autoSetupRemote true
           git push
 
       - name: Create pull request
+        if: env.changes == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -83,4 +87,3 @@ jobs:
           pr_head="${{ github.repository_owner }}:${branch_name}"
           pr_base="main"
           gh pr create --title "$pr_title" --body "$pr_body" --head "$pr_head" --base "$pr_base" --label "code quality"
-      
