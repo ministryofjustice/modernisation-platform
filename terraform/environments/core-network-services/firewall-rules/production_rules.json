@@ -1,4 +1,11 @@
 {
+  "default_open": {
+    "action": "ALERT",
+    "source_ip": "0.0.0.0/0",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "ANY",
+    "protocol": "IP"
+  },
   "gp_to_mp_hmpps_production_http": {
     "action": "PASS",
     "source_ip": "${global-protect}",
@@ -33,13 +40,6 @@
     "destination_ip": "${psn-ppud}",
     "destination_port": "443",
     "protocol": "TCP"
-  },
-  "default_open": {
-    "action": "ALERT",
-    "source_ip": "0.0.0.0/0",
-    "destination_ip": "0.0.0.0/0",
-    "destination_port": "ANY",
-    "protocol": "IP"
   },
   "laa_production_to_mp_laa_production_http": {
     "action": "PASS",
@@ -181,14 +181,14 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "hmpps_production_to_saas_agent_tcp": {
+  "mp_hmpps_production_to_saas_agent_tcp": {
     "action": "PASS",
     "source_ip": "${hmpps-production}",
     "destination_ip": "0.0.0.0/0",
     "destination_port": "5721",
     "protocol": "TCP"
   },
-  "hmpps_production_to_saas_agent_udp": {
+  "mp_hmpps_production_to_saas_agent_udp": {
     "action": "PASS",
     "source_ip": "${hmpps-production}",
     "destination_ip": "0.0.0.0/0",
