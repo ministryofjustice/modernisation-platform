@@ -14,9 +14,19 @@ variable "fw_allowed_domains" {
   type        = list(string)
 }
 
+variable "fw_delete_protection" {
+  description = "Boolean to enable or disable firewall deletion protection"
+  default     = true
+}
+
 variable "fw_home_net_ips" {
   description = "List of strings covering firewall HOME_NET values"
   type        = list(string)
+}
+
+variable "fw_kms_arn" {
+  description = "KMS key ARN used for firewall encryption"
+  type        = string
 }
 
 variable "fw_rules" {
