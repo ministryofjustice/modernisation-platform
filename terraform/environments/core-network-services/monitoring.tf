@@ -170,7 +170,7 @@ resource "aws_sns_topic" "firewall_dropped_packets_monitoring" {
 #}
 
 resource "aws_cloudwatch_metric_alarm" "firewall-traffic-drop-alarm" {
-  alarm_name                = "traffic-dropped"
+  alarm_name                = "firewall-traffic-dropped"
   comparison_operator       = "GreaterThanThreshold"
   metric_name               = "DroppedPackets"
   namespace                 = "AWS/NetworkFirewall"
