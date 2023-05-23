@@ -186,7 +186,7 @@ resource "aws_networkfirewall_firewall" "external_inspection" {
   vpc_id              = aws_vpc.external_inspection.id
   delete_protection   = true
   encryption_configuration {
-    type = "CUSTOMER_KMS"
+    type   = "CUSTOMER_KMS"
     key_id = data.aws_kms_key.general_shared.arn
   }
   subnet_mapping { subnet_id = aws_subnet.external_inspection_out["eu-west-2a"].id }

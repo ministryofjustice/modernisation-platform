@@ -4,7 +4,7 @@ resource "aws_networkfirewall_firewall" "inline_inspection" {
   vpc_id              = aws_vpc.main.id
   delete_protection   = var.fw_delete_protection
   encryption_configuration {
-    type = "CUSTOMER_KMS"
+    type   = "CUSTOMER_KMS"
     key_id = var.fw_kms_arn
   }
   dynamic "subnet_mapping" {
