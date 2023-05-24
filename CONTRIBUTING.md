@@ -41,5 +41,20 @@ There are a number of areas where you can contribute to the modernisation platfo
 
 If you need additional items in the "platform" files the Modernisation Platform Team would prefer you to create another file. So, in the example above, create a data.tf alongside the platform-data.tf file.
 
-If you are generating new code which may be useful to others please contact the Modernisation Platform Team. It may be that the code you are suggesting or would like to amend should be created as a module that can be used in any environment. If this is the case a module can be created and values passed in to allow its use everywhere. The Modernisation Platform team can provide advice and create the module with you.
+## Modules 
+You may create code in a module under your particular folder in modernisation-platform-environments repository. To do this you should firstly create a folder called modules and then add additional folders as requiered. An example can be seen by clicking the link below.
+[Exmaple Module Folder](source/images/module-folder.png)
+
+Generally a module will contain a minimum of 2 files 
+- main.tf
+- variables.tf
+
+Additional files can be added as needed such as 
+- outputs.tf
+- iam.tf
+- versions.tf
+
+Once the files are built and tested (see Checking code above) they can be deployed.
+
+Thiscode could, possibly, prove useful to other teams in the future. If that is the case please contact the Modernisation Platform Team. It may be that the code you are suggesting or would like to amend should be created as a module that can be used in any environment. If this is the case a module can be created and values passed in to allow its use everywhere. The Modernisation Platform Team can provide advice and create the module with you.
 
