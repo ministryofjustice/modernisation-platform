@@ -130,7 +130,7 @@ resource "time_static" "key_rotate_period" {
 }
 
 resource "aws_secretsmanager_secret" "testing_ci_iam_user_keys" {
-   # checkov:skip=CKV2_AWS_57:Auto rotation done via Terraform
+  # checkov:skip=CKV2_AWS_57:Auto rotation done via Terraform
   provider    = aws.testing-test
   name        = "testing_ci_iam_user_keys"
   policy      = data.aws_iam_policy_document.testing_ci_iam_user_secrets_manager_policy.json

@@ -5,7 +5,7 @@ resource "random_id" "policy_id" {
 resource "aws_networkfirewall_firewall_policy" "main" {
   name = replace(format("%s-%s", var.fw_policy_name, random_id.policy_id.id), "/-|_/", "")
   encryption_configuration {
-    type = "CUSTOMER_KMS"
+    type   = "CUSTOMER_KMS"
     key_id = var.fw_kms_arn
   }
   firewall_policy {
@@ -32,11 +32,11 @@ resource "aws_networkfirewall_firewall_policy" "main" {
 resource "aws_networkfirewall_rule_group" "stateful" {
   capacity = var.fw_rulegroup_capacity
   encryption_configuration {
-    type = "CUSTOMER_KMS"
+    type   = "CUSTOMER_KMS"
     key_id = var.fw_kms_arn
   }
-  name     = replace(format("%s-%s", var.fw_rulegroup_name, random_id.policy_id.id), "/-|_/", "")
-  type     = "STATEFUL"
+  name = replace(format("%s-%s", var.fw_rulegroup_name, random_id.policy_id.id), "/-|_/", "")
+  type = "STATEFUL"
 
   rule_group {
     stateful_rule_options {
@@ -71,11 +71,11 @@ resource "aws_networkfirewall_rule_group" "stateful" {
 resource "aws_networkfirewall_rule_group" "fqdn-stateful" {
   capacity = var.fw_fqdn_rulegroup_capacity
   encryption_configuration {
-    type = "CUSTOMER_KMS"
+    type   = "CUSTOMER_KMS"
     key_id = var.fw_kms_arn
   }
-  name     = replace(format("%s-%s", var.fw_fqdn_rulegroup_name, random_id.policy_id.id), "/-|_/", "")
-  type     = "STATEFUL"
+  name = replace(format("%s-%s", var.fw_fqdn_rulegroup_name, random_id.policy_id.id), "/-|_/", "")
+  type = "STATEFUL"
   rule_group {
     rule_variables {
       ip_sets {
