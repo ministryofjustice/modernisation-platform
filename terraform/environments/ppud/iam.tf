@@ -42,6 +42,7 @@ resource "aws_iam_user_policy" "email_policy" {
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "email" {
   #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_356: Policy follows AWS guidance
   statement {
     actions = [
       "ses:SendRawEmail"

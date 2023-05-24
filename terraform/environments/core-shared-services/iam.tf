@@ -66,6 +66,7 @@ resource "aws_iam_role" "member_shared_services" {
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_role_policy" "member_shared_services" {
+  # checkov:skip=CKV_AWS_355: Resources are not known
   name = "MemberSharedServices"
   role = aws_iam_role.member_shared_services.id
 
@@ -174,6 +175,7 @@ module "github-oidc" {
 
 data "aws_iam_policy_document" "oidc_assume_role_core" {
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_356: Resource not known
   statement {
     sid       = "AllowOIDCToDecryptKMS"
     effect    = "Allow"
@@ -201,6 +203,7 @@ data "aws_iam_policy_document" "oidc_assume_role_core" {
 ##### Cross Account Roles Admin #####
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "ssm-automation-execution-policy" {
+# checkov:skip=CKV_AWS_356
   statement {
     sid       = ""
     effect    = "Allow"

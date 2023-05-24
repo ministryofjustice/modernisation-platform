@@ -17,6 +17,7 @@ data "aws_iam_policy_document" "instance-scheduler-access" {
     #checkov:skip=CKV_AWS_107
     #checkov:skip=CKV_AWS_109
     #checkov:skip=CKV_AWS_110
+    #checkov:skip=CKV_AWS_356: Resources not known in advance
     effect = "Allow"
     actions = [
       "ec2:DescribeInstances",

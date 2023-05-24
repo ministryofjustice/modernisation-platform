@@ -184,6 +184,7 @@ data "aws_iam_policy_document" "oidc-deny-specific-actions" {
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "sso_customer_managed_policy_engineer" {
+  #checkov:skip=CKV_AWS_356: Allows access to multiple unknown resources
   statement {
     sid       = "SSOCustomerManagedPolicyEngineer"
     effect    = "Allow"

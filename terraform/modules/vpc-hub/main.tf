@@ -243,6 +243,7 @@ resource "aws_network_acl_rule" "public" {
 
 #tfsec:ignore:aws-vpc-no-excessive-port-access
 resource "aws_network_acl_rule" "public-local-ingress" {
+  #checkov:skip=CKV_AWS_352: Open as intra vpc traffic
   network_acl_id = aws_network_acl.public.id
   rule_number    = 210
   egress         = false
@@ -360,6 +361,7 @@ resource "aws_network_acl_rule" "private" {
 
 #tfsec:ignore:aws-vpc-no-excessive-port-access
 resource "aws_network_acl_rule" "private-local-ingress" {
+  #checkov:skip=CKV_AWS_352: Open as intra vpc traffic
   network_acl_id = aws_network_acl.private.id
   rule_number    = 210
   egress         = false
@@ -451,6 +453,7 @@ resource "aws_network_acl_rule" "data" {
 
 #tfsec:ignore:aws-vpc-no-excessive-port-access
 resource "aws_network_acl_rule" "data-local-ingress" {
+  #checkov:skip=CKV_AWS_352: Open as intra vpc traffic
   network_acl_id = aws_network_acl.data.id
   rule_number    = 210
   egress         = false
@@ -542,6 +545,7 @@ resource "aws_network_acl_rule" "transit-gateway" {
 
 #tfsec:ignore:aws-vpc-no-excessive-port-access
 resource "aws_network_acl_rule" "transit-gateway-local-ingress" {
+  #checkov:skip=CKV_AWS_352: Open as intra vpc traffic
   network_acl_id = aws_network_acl.transit-gateway.id
   rule_number    = 210
   egress         = false
