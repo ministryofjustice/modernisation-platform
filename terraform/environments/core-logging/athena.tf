@@ -213,6 +213,7 @@ resource "aws_kms_alias" "athena_logging" {
 }
 data "aws_iam_policy_document" "athena_logging" {
   # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_356: "policy is directly related to the resource"
   # checkov:skip=CKV_AWS_109: "role is resticted by limited actions in member account"
 
   # -- AWS - Documentation reference --

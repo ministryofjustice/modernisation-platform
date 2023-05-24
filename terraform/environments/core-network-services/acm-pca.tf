@@ -286,6 +286,7 @@ resource "aws_kms_alias" "acm-alias" {
 data "aws_iam_policy_document" "kms-acm" {
   # checkov:skip=CKV_AWS_109: "Key policy requires asterisk resource - see note above"
   # checkov:skip=CKV_AWS_111: "Key policy requires asterisk resource - see note above"
+  # checkov:skip=CKV_AWS_356: "Key policy requires asterisk resource - see note above"
 
   statement {
     effect  = "Allow"

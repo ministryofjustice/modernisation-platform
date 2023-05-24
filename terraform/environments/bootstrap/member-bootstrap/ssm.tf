@@ -14,6 +14,7 @@ data "aws_iam_policy_document" "SSM-Automation-Policy" {
   #checkov:skip=CKV_AWS_109: "policy exception"
   #checkov:skip=CKV_AWS_108: "policy exception"
   #checkov:skip=CKV_AWS_111: "policy exception"
+  #checkov:skip=CKV_AWS_356: Resources not known in advance
   statement {
     sid       = ""
     effect    = "Allow"
@@ -59,6 +60,7 @@ data "aws_iam_policy_document" "SSM-Automation-Policy" {
 }
 
 data "aws_iam_policy_document" "execution-policy" {
+  #checkov:skip=CKV_AWS_356: Resources not known in advance
   statement {
     sid       = ""
     effect    = "Allow"
