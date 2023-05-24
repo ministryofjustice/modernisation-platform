@@ -37,7 +37,9 @@ For more information on the working in [Github](https://github.com/github/docs/b
 
 # "Platform" code
 
-There are a number of areas where you can contribute to the modernisation platform code. The majority of these pieces of code are in files in the modernisation-platform-environments repository and start with the word platform (e.g. platform-data). **We would prefer that these are not amended** but they can be if required. You must, however, follow our code standards as per the included code and included the in standards details above. Following these standards will provide consistency when the coding is examined.
+There are a number of areas where you can contribute to the modernisation platform code. The majority of these pieces of code are in files in the modernisation-platform-environments repository and start with the word platform (e.g. platform-data.tf). **We would prefer that these are not amended** but they can be if absolutely required. You must, however, follow our code standards as per the included code and included the in standards details above. Following these standards will provide consistency when the coding is examined.
+
+If you need additional items in the "platform" files the Modernisation Platform Team would prefer you to create another file. So, in the example above, create a data.tf alongside the platform-data.tf file.
 
 If you are generating new code which may be useful to others please contact the Modernisation Platform Team. It may be that the code you are suggesting or would like to amend should be created as a module that can be used in any environment. If this is the case a module can be created and values passed in to allow its use everywhere. The Modernisation Platform team can provide advice and create the module with you.
 
