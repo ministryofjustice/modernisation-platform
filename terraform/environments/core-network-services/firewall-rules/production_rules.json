@@ -194,5 +194,12 @@
     "destination_ip": "0.0.0.0/0",
     "destination_port": "5721",
     "protocol": "UDP"
+  },
+  "parole_board_to_ppud_production_https": {
+    "action": "PASS",
+    "source_ip": "${parole-board}",
+    "destination_ip": "${hmpps-production}",
+    "destination_port": "443",
+    "protocol": "TCP"
   }
 }

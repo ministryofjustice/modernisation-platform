@@ -92,6 +92,12 @@
     "tunnel2_inside_cidr": "169.254.6.4/30",
     "tunnel_dpd_timeout_action": "restart",
     "tunnel_dpd_timeout_seconds": "45",
+    "tunnel_phase1_dh_group_numbers": "14",
+    "tunnel_phase1_encryption_algorithms": "AES256",
+    "tunnel_phase1_integrity_algorithms": "SHA2-256",
+    "tunnel_phase2_dh_group_numbers": "14",
+    "tunnel_phase2_encryption_algorithms": "AES256",
+    "tunnel_phase2_integrity_algorithms": "SHA2-256",
     "tunnel_startup_action": "start"
   }
 }
