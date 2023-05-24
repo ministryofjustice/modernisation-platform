@@ -152,6 +152,7 @@ resource "aws_network_acl_rule" "transit-gateway" {
   #checkov:skip=CKV_AWS_230:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_231:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_232:NACL rules open as firewall applies controls
+  #checkov:skip=CKV_AWS_352:NACL rules open as firewall applies controls
   for_each = local.nacl_rules
 
   network_acl_id = aws_network_acl.transit-gateway.id
@@ -237,6 +238,7 @@ resource "aws_network_acl_rule" "inspection" {
   #checkov:skip=CKV_AWS_230:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_231:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_232:NACL rules open as firewall applies controls
+  #checkov:skip=CKV_AWS_352:NACL rules open as firewall applies controls
   for_each = local.nacl_rules
 
   network_acl_id = aws_network_acl.inspection.id
@@ -325,6 +327,7 @@ resource "aws_network_acl_rule" "public" {
   #checkov:skip=CKV_AWS_230:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_231:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_232:NACL rules open as firewall applies controls
+  #checkov:skip=CKV_AWS_352:NACL rules open as firewall applies controls
   for_each = local.nacl_rules
 
   network_acl_id = aws_network_acl.public.id
