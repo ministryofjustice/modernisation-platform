@@ -16,6 +16,7 @@ locals {
     analytical-platform-airflow-dev  = "10.200.0.0/16"
     analytical-platform-airflow-prod = "10.201.0.0/16"
     global-protect                   = "10.184.0.0/16"
+    parole-board                     = "10.50.0.0/16"
     psn                              = "51.0.0.0/8"
     psn-ppud                         = "51.247.2.115/32"
     moj-core-azure-1                 = "10.50.25.0/27"
