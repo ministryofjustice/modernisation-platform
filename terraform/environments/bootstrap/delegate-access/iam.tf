@@ -33,6 +33,7 @@ module "cicd-member-user" {
 # access to the environments parameter when running a tf plan locally
 
 resource "aws_ssm_parameter" "environment_management_arn" {
+  #checkov:skip=CKV_AWS_337: Standard key is fine here
   provider = aws.workspace
 
   name  = "environment_management_arn"
@@ -46,6 +47,7 @@ resource "aws_ssm_parameter" "environment_management_arn" {
 # by providers in member accounts to assume a role in MP
 
 resource "aws_ssm_parameter" "modernisation_platform_account_id" {
+#checkov:skip=CKV_AWS_337: Standard key is fine here
   provider = aws.workspace
 
   name  = "modernisation_platform_account_id"

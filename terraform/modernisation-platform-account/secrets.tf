@@ -80,6 +80,7 @@ resource "aws_secretsmanager_secret" "nuke_account_ids" {
 
 # Reflection of what is in member accounts, needed here as well so that the same code works for collaborators
 resource "aws_ssm_parameter" "modernisation_platform_account_id" {
+#checkov:skip=CKV_AWS_337: Standard key is fine here
   name  = "modernisation_platform_account_id"
   type  = "SecureString"
   value = data.aws_caller_identity.current.id
