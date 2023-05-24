@@ -17,6 +17,7 @@ variable "fw_allowed_domains" {
 variable "fw_delete_protection" {
   description = "Boolean to enable or disable firewall deletion protection"
   default     = true
+  type = bool
 }
 
 variable "fw_home_net_ips" {
