@@ -61,6 +61,8 @@ locals {
     "10.47.0.128/26"
   ]
 
+  parole_board_vpn_static_routes = ["10.50.0.0/16"]
+
   sixdg_dev_vpn_static_routes   = ["10.221.0.0/16"]
   sixdg_test_vpn_static_routes  = ["10.224.0.0/16"]
   sixdg_stage_vpn_static_routes = ["10.223.0.0/16"]
