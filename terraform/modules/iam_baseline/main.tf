@@ -90,6 +90,7 @@ resource "aws_iam_policy" "policy" {
           "secretsmanager:ListSecrets",
           "secretsmanager:DescribeSecret",
           "secretsmanager:GetResourcePolicy",
+          "ssm:GetParameter"
         ]
         Effect   = "Allow"
         Resource = "*"
