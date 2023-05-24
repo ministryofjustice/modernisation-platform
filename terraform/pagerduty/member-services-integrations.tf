@@ -280,3 +280,39 @@ resource "pagerduty_service_integration" "test_alarms" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 # Slack channel: modernisation-platform
+
+# LAA Portal - Non Prod
+resource "pagerduty_service" "laa_portal_nonprod" {
+  name                    = "Legal Aid Agency Portal Application Non Prod"
+  description             = "Legal Aid Agency Portal Application Non Prod Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "laa_portal_nonprod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.laa_portal_nonprod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+# # Slack channel: #laa-portal-alerts-nonprod
+
+# LAA Portal - Prod
+resource "pagerduty_service" "laa_portal_prod" {
+  name                    = "Legal Aid Agency Portal Application Production"
+  description             = "Legal Aid Agency Portal Application Production Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "laa_portal_prod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.laa_portal_prod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+# # Slack channel: #laa-portal-alerts-prod
