@@ -27,6 +27,13 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
+  "cp_to_mp_hmpps_test_jdbc": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-test}",
+    "destination_port": "5439",
+    "protocol": "TCP"
+  },
   "laa_test_to_mp_laa_test_http": {
     "action": "PASS",
     "source_ip": "${laa-lz-test}",
