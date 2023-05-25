@@ -96,7 +96,7 @@ data "aws_iam_policy_document" "developer_additional" {
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_111
   #checkov:skip=CKV_AWS_110
-  #checkov:skip=CKV_AWS_356
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
     sid    = "developerAllow"
@@ -225,7 +225,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_111
   #checkov:skip=CKV_AWS_110
-  #checkov:skip=CKV_AWS_356
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   source_policy_documents = [data.aws_iam_policy_document.developer_additional.json] # this is a developer++ policy with additional permissions required for data engineering
 
   statement {
@@ -307,7 +307,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV2_AWS_40
-  #checkov:skip=CKV_AWS_356
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
     sid    = "sandboxAllow"
@@ -443,7 +443,7 @@ data "aws_iam_policy_document" "migration_additional" {
   #checkov:skip=CKV_AWS_107
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_110
-  #checkov:skip=CKV_AWS_356
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   source_policy_documents   = [data.aws_iam_policy_document.developer_additional.json]
   override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
@@ -489,7 +489,7 @@ data "aws_iam_policy_document" "instance-management-document" {
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_111
   #checkov:skip=CKV_AWS_110
-  #checkov:skip=CKV_AWS_356
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
     sid    = "databaseAllow"
