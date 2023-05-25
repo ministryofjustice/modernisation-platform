@@ -503,6 +503,24 @@
           "access": "developer"
         }
       ]
+    },
+    {
+      "username": "simona.treivase",
+      "github-username": "simonytta",
+      "accounts": [
+        {
+          "account-name": "data-and-insights-wepi-development",
+          "access": "sandbox"
+        },
+        {
+          "account-name": "data-and-insights-wepi-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "data-and-insights-wepi-production",
+          "access": "developer"
+        }
+      ]
     }
   ]
 }
