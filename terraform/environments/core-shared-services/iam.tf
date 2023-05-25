@@ -153,6 +153,7 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
   }
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
   # checkov:skip=CKV_AWS_109: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
   statement {
     sid       = "AllowToDecryptKMS"
     effect    = "Allow"

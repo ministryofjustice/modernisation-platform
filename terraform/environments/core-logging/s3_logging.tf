@@ -17,6 +17,7 @@ resource "aws_kms_alias" "s3_logging_cloudtrail" {
 data "aws_iam_policy_document" "kms_logging_cloudtrail" {
 
   # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_356: "policy is directly related to the resource"
   # checkov:skip=CKV_AWS_109: "role is resticted by limited actions in member account"
 
   statement {
