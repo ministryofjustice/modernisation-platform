@@ -228,7 +228,7 @@ resource "aws_network_acl" "public" {
 # Public NACLs rules
 #tfsec:ignore:aws-vpc-no-public-ingress-acl tfsec:ignore:aws-vpc-no-excessive-port-access
 resource "aws_network_acl_rule" "public" {
-# checkov:skip=CKV_AWS_352:Ports need to be open
+  # checkov:skip=CKV_AWS_352:Ports need to be open
   for_each = local.nacl_rules_expanded
 
   network_acl_id = aws_network_acl.public.id
