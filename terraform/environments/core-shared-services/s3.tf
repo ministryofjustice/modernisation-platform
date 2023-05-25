@@ -9,6 +9,7 @@ module "s3-bucket" {
   replication_enabled = false
   versioning_enabled  = true
   force_destroy       = false
+  ownership_controls  = "BucketOwnerEnforced" # Disable all S3 bucket ACL to ensure that objects owner it the bucket with bucket policy IAM governing permissions
   lifecycle_rule = [
     {
       id      = "main"
