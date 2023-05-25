@@ -47,7 +47,7 @@ resource "aws_ssm_parameter" "environment_management_arn" {
 # by providers in member accounts to assume a role in MP
 
 resource "aws_ssm_parameter" "modernisation_platform_account_id" {
-#checkov:skip=CKV_AWS_337: Standard key is fine here
+  #checkov:skip=CKV_AWS_337: Standard key is fine here
   provider = aws.workspace
 
   name  = "modernisation_platform_account_id"
