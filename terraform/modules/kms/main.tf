@@ -108,8 +108,8 @@ data "aws_iam_policy_document" "kms" {
 }
 
 data "aws_iam_policy_document" "kms-general" {
-#checkov:skip=CKV_AWS_111: Policy needs to account for multiple keys
-#checkov:skip=CKV_AWS_356: Policy attached to resourece
+  #checkov:skip=CKV_AWS_111: Policy needs to account for multiple keys
+  #checkov:skip=CKV_AWS_356: Policy attached to resourece
   statement {
     effect = "Allow"
     actions = [
