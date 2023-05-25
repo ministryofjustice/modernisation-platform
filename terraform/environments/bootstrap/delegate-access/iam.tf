@@ -109,6 +109,7 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
   }
 
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
   statement {
     sid       = "AllowOIDCToDecryptKMS"
     effect    = "Allow"
