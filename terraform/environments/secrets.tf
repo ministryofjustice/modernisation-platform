@@ -23,6 +23,7 @@ data "aws_iam_policy_document" "environment_management" {
 
   # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
   # checkov:skip=CKV_AWS_108: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_356: "policy is directly related to the resource"
   statement {
     sid    = "ReadOnlyFromModernisationPlatformOU"
     effect = "Allow"
