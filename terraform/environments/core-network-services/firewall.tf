@@ -180,6 +180,7 @@ module "firewall_logging" {
 }
 
 resource "aws_networkfirewall_firewall" "external_inspection" {
+  # checkov:skip=CKV_AWS_63: Firewall logging is defined in module see call above
   depends_on          = [aws_subnet.external_inspection_out]
   name                = "external-inspection"
   firewall_policy_arn = module.firewall_policy.fw_policy_arn

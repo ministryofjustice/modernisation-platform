@@ -65,6 +65,7 @@ data "aws_iam_policy_document" "kms_environment_management" {
 
   # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
   # checkov:skip=CKV_AWS_109: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_356: "policy is directly related to the resource"
   statement {
     sid    = "Allow management access of the key to the root and modernisation platform account"
     effect = "Allow"
