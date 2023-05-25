@@ -75,34 +75,6 @@
       ]
     },
     {
-      "username": "michael.bullen",
-      "github-username": "MMBRoc",
-      "accounts": [
-        {
-          "account-name": "equip-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
-      "username": "mitul.dattani",
-      "github-username": "md-roc",
-      "accounts": [
-        {
-          "account-name": "equip-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "nigel.freeman",
       "github-username": "nigelf-roc",
       "accounts": [
@@ -217,20 +189,6 @@
     {
       "username": "helen.vickers",
       "github-username": "helenvickers-roc",
-      "accounts": [
-        {
-          "account-name": "equip-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
-      "username": "tom.whiteley",
-      "github-username": "tom-whi",
       "accounts": [
         {
           "account-name": "equip-development",
