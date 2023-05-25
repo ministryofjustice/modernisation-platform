@@ -48,6 +48,13 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
+  "cp_to_mp_hmpps_development_jdbc": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "5439",
+    "protocol": "TCP"
+  },
   "hmpps_development_to_saas_agent_tcp": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
