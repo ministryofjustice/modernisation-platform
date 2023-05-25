@@ -315,6 +315,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
     actions = [
       "acm-pca:*",
       "acm:*",
+      "apigateway:*",
       "application-autoscaling:*",
       "athena:*",
       "autoscaling:*",
