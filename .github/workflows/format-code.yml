@@ -57,7 +57,7 @@ jobs:
       - name: Check for changes
         run: |
           git add .
-          git commit -m "Updates from GitHub Actions Format Code workflow"
+          git commit -m "Updates from GitHub Actions Format Code workflow" || true
           branch_name=$(git branch --show-current)
           changes=$(git diff origin/main...$branch_name --name-only)
           if [ -z "$changes" ]; then
