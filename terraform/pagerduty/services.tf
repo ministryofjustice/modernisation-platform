@@ -117,6 +117,12 @@ resource "pagerduty_service" "networking" {
   }
 }
 
+resource "pagerduty_service_integration" "networking_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.networking.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
 resource "pagerduty_service" "operations" {
   name                    = "Operations - Modernisation Platform"
   description             = "Generic service to raise operations issues against"
@@ -130,6 +136,12 @@ resource "pagerduty_service" "operations" {
   }
 }
 
+resource "pagerduty_service_integration" "operations_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.operations.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
 resource "pagerduty_service" "security" {
   name                    = "Security - Modernisation Platform"
   description             = "Generic service to raise security issues against"
@@ -141,4 +153,10 @@ resource "pagerduty_service" "security" {
     type    = "constant"
     urgency = "high"
   }
+}
+
+resource "pagerduty_service_integration" "security_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.security.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
 }
