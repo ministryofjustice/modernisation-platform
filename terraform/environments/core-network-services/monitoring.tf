@@ -150,3 +150,23 @@ resource "aws_flow_log" "tgw_flowlog" {
   transit_gateway_attachment_id = each.value["id"]
   tags                          = local.tags
 }
+
+resource "aws_cloudwatch_metric_alarm" "firewall-traffic-drop-alarm" {
+  alarm_name                = "firewall-traffic-dropped"
+  comparison_operator       = "GreaterThanThreshold"
+  metric_name               = "DroppedPackets"
+  namespace                 = "AWS/NetworkFirewall"
+  period                    = 300
+  evaluation_periods        = 1
+  alarm_description         = "Dropped packets alarm"
+  statistic                 = "Maximum"
+  alarm_actions             = []
+  insufficient_data_actions = []
+
+  dimensions = {
+    AvailabilityZone = "eu-west-2"
+    Engine = "Stateless"
+    FirewallName = "FirewallName"
+    CustomAction = ""
+  }
+}
