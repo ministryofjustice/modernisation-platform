@@ -169,3 +169,24 @@ resource "aws_cloudwatch_metric_alarm" "firewall-traffic-drop-alarm" {
     FirewallName     = aws_networkfirewall_firewall.external_inspection.name
   }
 }
+
+resource "aws_sns_topic" "networking_general" {
+  #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
+  provider = aws.eu-west-2
+  name     = "networking_general"
+
+  tags = local.tags
+}
+
+# subscribe to the sns topic to the pagerduty service
+module "pagerduty_networking_general" {
+  providers = {
+    aws = aws.eu-west-2
+  }
+  depends_on = [
+    aws_sns_topic.networking_general
+  ]
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=v1.0.0"
+  sns_topics                = [aws_sns_topic.networking_general.name]
+  pagerduty_integration_key = local.pagerduty_integration_keys["networking_cloudwatch"]
+}
