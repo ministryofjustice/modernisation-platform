@@ -161,7 +161,7 @@ resource "aws_cloudwatch_metric_alarm" "firewall-traffic-drop-alarm" {
   alarm_description         = "Dropped packets alarm"
   statistic                 = "Sum"
   treat_missing_data        = "notBreaching"
-  alarm_actions             = []
+  alarm_actions             = [aws_sns_topic.networking_general.arn]
   # Will be populated with a sns topic however currently need to either create a new one or use tgw_monitoring_production or route53_monitoring
   insufficient_data_actions = []
   dimensions                = {
