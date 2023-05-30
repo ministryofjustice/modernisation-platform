@@ -164,7 +164,7 @@ resource "aws_cloudwatch_metric_alarm" "firewall-traffic-drop-alarm" {
   alarm_actions             = [aws_sns_topic.networking_general.arn]
   # Will be populated with a sns topic however currently need to either create a new one or use tgw_monitoring_production or route53_monitoring
   insufficient_data_actions = []
-  dimensions                = {
+  dimensions = {
     AvailabilityZone = "eu-west-2"
     FirewallName     = aws_networkfirewall_firewall.external_inspection.name
   }
