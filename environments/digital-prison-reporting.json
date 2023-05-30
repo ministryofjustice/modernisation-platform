@@ -19,6 +19,15 @@
           "level": "developer"
         }
       ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "hmpps-digital-prison-reporting",
+          "level": "developer"
+        }
+      ]
     }
   ],
   "tags": {
