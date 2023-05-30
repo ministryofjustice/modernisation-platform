@@ -40,7 +40,8 @@ expected =
         "cidr": "10.26.16.0/21",
         "accounts": [
           "example-development",
-          "data-platform-development"
+          "data-platform-development",
+          "data-platform-apps-and-tools-development"
         ]
       }
     },
