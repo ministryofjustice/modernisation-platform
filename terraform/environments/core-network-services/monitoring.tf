@@ -152,20 +152,36 @@ resource "aws_flow_log" "tgw_flowlog" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "firewall-traffic-drop-alarm" {
-  alarm_name          = "firewall-traffic-dropped"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  metric_name         = "DroppedPackets"
-  namespace           = "AWS/NetworkFirewall"
-  period              = 300
-  evaluation_periods  = 10
-  alarm_description   = "Dropped packets alarm"
-  statistic           = "Sum"
-  treat_missing_data  = "notBreaching"
-  alarm_actions       = []
+  alarm_name                = "firewall-traffic-dropped"
+  comparison_operator       = "GreaterThanOrEqualToThreshold"
+  metric_name               = "DroppedPackets"
+  namespace                 = "AWS/NetworkFirewall"
+  period                    = 300
+  evaluation_periods        = 10
+  alarm_description         = "Dropped packets alarm"
+  statistic                 = "Sum"
+  treat_missing_data        = "notBreaching"
+  alarm_actions             = [aws_sns_topic.networking_general.arn]
   # Will be populated with a sns topic however currently need to either create a new one or use tgw_monitoring_production or route53_monitoring
   insufficient_data_actions = []
   dimensions = {
     AvailabilityZone = "eu-west-2"
     FirewallName     = aws_networkfirewall_firewall.external_inspection.name
   }
+}
+
+resource "aws_sns_topic" "networking_general" {
+  #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
+  name     = "networking_general"
+  tags = local.tags
+}
+
+# subscribe to the sns topic to the pagerduty service
+module "pagerduty_networking_general" {
+  depends_on = [
+    aws_sns_topic.networking_general
+  ]
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=v1.0.0"
+  sns_topics                = [aws_sns_topic.networking_general.name]
+  pagerduty_integration_key = local.pagerduty_integration_keys["networking_cloudwatch"]
 }
