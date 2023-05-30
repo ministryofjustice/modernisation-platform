@@ -30,7 +30,8 @@ expected =
           "delius-iaps-preproduction",
           "delius-jitbit-preproduction",
           "nomis-combined-reporting-preproduction",
-          "nomis-data-hub-preproduction"
+          "nomis-data-hub-preproduction",
+          "digital-prison-reporting-preproduction"
         ]
       }
     },
