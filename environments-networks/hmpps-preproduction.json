@@ -13,7 +13,8 @@
           "nomis-combined-reporting-preproduction",
           "nomis-data-hub-preproduction",
           "digital-prison-reporting-preproduction",
-          "corporate-staff-rostering-preproduction"
+          "corporate-staff-rostering-preproduction",
+          "planetfm-preproduction"
         ]
       }
     }
