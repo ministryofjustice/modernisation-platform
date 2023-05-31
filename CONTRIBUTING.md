@@ -10,7 +10,7 @@ Please report unacceptable behavior to the maintainers or administrators.
 ## Standards
 
 We follow the [MoJ Technical Guidance](https://technical-guidance.service.justice.gov.uk/#moj-technical-guidance),
-which complements the Service Standard,
+which complements the [Service Standard](https://www.gov.uk/service-manual/service-standard) ,
 and also the MoJ [Cyber and Technical Security Guidance](https://security-guidance.service.justice.gov.uk/#cyber-and-technical-security-guidance).
 
 # Modernisation Platform Documentation
