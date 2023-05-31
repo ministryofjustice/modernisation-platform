@@ -13,7 +13,8 @@
           "delius-jitbit-production",
           "nomis-combined-reporting-production",
           "nomis-data-hub-production",
-          "hmpps-intelligence-management-production"
+          "hmpps-intelligence-management-production",
+          "corporate-staff-rostering-production"
         ]
       }
     }
