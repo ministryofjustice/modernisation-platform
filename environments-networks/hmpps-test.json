@@ -9,7 +9,8 @@
           "delius-jitbit-test",
           "digital-prison-reporting-test",
           "nomis-combined-reporting-test",
-          "nomis-data-hub-test"
+          "nomis-data-hub-test",
+          "corporate-staff-rostering-test"
         ]
       }
     }
