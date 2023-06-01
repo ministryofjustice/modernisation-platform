@@ -526,6 +526,8 @@ data "aws_iam_policy_document" "instance-management-document" {
       "rds:CreateDBClusterSnapshot",
       "rds:RebootDB*",
       "rhelkb:GetRhelURL",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecret*",
       "ssm:*",
       "ssm-guiconnect:*",
       "sso:ListDirectoryAssociations",
