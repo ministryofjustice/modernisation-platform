@@ -44,7 +44,8 @@ locals {
     "dms1981", # David Sibley
     "ep-93",   # Edward Proctor
     "julialawrence",
-    "ewastempel"
+    "ewastempel",
+    "ASTRobinson" # Aaron Robinson
   ]
 
   # Security engineers performing reviews on the platform or member accounts
