@@ -152,16 +152,16 @@ resource "aws_flow_log" "tgw_flowlog" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "firewall-traffic-drop-alarm" {
-  alarm_name                = "firewall-traffic-dropped"
-  comparison_operator       = "GreaterThanOrEqualToThreshold"
-  metric_name               = "DroppedPackets"
-  namespace                 = "AWS/NetworkFirewall"
-  period                    = 300
-  evaluation_periods        = 10
-  alarm_description         = "Dropped packets alarm"
-  statistic                 = "Sum"
-  treat_missing_data        = "notBreaching"
-  alarm_actions             = [aws_sns_topic.networking_general.arn]
+  alarm_name          = "firewall-traffic-dropped"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  metric_name         = "DroppedPackets"
+  namespace           = "AWS/NetworkFirewall"
+  period              = 300
+  evaluation_periods  = 10
+  alarm_description   = "Dropped packets alarm"
+  statistic           = "Sum"
+  treat_missing_data  = "notBreaching"
+  alarm_actions       = [aws_sns_topic.networking_general.arn]
   # Will be populated with a sns topic however currently need to either create a new one or use tgw_monitoring_production or route53_monitoring
   insufficient_data_actions = []
   dimensions = {
@@ -172,7 +172,7 @@ resource "aws_cloudwatch_metric_alarm" "firewall-traffic-drop-alarm" {
 
 resource "aws_sns_topic" "networking_general" {
   #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
-  name     = "networking_general"
+  name = "networking_general"
   tags = local.tags
 }
 
