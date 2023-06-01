@@ -170,6 +170,7 @@ resource "aws_cloudwatch_metric_alarm" "firewall-traffic-drop-alarm" {
   }
 }
 
+# tfsec:ignore:aws-sns-enable-topic-encryption as encrypted topics do not work with pagerduty subscription
 resource "aws_sns_topic" "networking_general" {
   #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
   name = "networking_general"
