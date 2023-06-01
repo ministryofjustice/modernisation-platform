@@ -9,7 +9,7 @@ phase:
 
 # Links to show on right-hand-side of header
 header_links:
-  Home: /modernisation-platform
+  Home: /
   GitHub: https://github.com/ministryofjustice/modernisation-platform
   Slack: https://mojdt.slack.com/archives/C01A7QK5VM1
 
