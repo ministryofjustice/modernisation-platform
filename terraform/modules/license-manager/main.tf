@@ -11,7 +11,7 @@ resource "aws_licensemanager_grant" "main" {
   name               = format("%s-%d", var.destination_grant_name, var.account_to_grant)
   allowed_operations = var.destination_grant_allowed_options
   license_arn        = data.aws_licensemanager_received_licenses.main.arns[0]
-  principal          = format("arn:aws:iam::%d:root", var.account_to_grant)
+  principal          = format("arn:aws:iam::%012s:root", var.account_to_grant)
 }
 
 resource "aws_licensemanager_grant_accepter" "main" {
