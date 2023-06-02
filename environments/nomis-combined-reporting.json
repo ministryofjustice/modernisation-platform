@@ -5,6 +5,11 @@
       "name": "development",
       "access": [
         {
+          "github_slug": "national-applications-reporting-team",
+          "level": "sandbox",
+          "nuke": "exclude"
+        },
+        {
           "github_slug": "studio-webops",
           "level": "sandbox",
           "nuke": "exclude"
@@ -15,6 +20,10 @@
       "name": "test",
       "access": [
         {
+          "github_slug": "national-applications-reporting-team",
+          "level": "developer"
+        },
+        {
           "github_slug": "studio-webops",
           "level": "developer"
         }
@@ -24,6 +33,10 @@
       "name": "preproduction",
       "access": [
         {
+          "github_slug": "national-applications-reporting-team",
+          "level": "developer"
+        },
+        {
           "github_slug": "studio-webops",
           "level": "developer"
         }
@@ -32,6 +45,10 @@
     {
       "name": "production",
       "access": [
+        {
+          "github_slug": "national-applications-reporting-team",
+          "level": "developer"
+        },
         {
           "github_slug": "studio-webops",
           "level": "developer"
