@@ -43,6 +43,8 @@ If you need additional items in the "platform" files the Modernisation Platform 
 
 Should you feel that there are missing items that may be useful to others please let us know. It may be that we need to raise these in a module (see befow) or they should be added to the current platform code. The Modernisation Team can help provide advice or suggest what should happen to this code.
 
+If you wish to raise a new issue, bug or request a new platform environment this can be done from [here](https://github.com/ministryofjustice/modernisation-platform/issues/new/choose).
+
 ## Modules 
 You may create code in a module under your particular folder in modernisation-platform-environments repository. To do this you should first create a folder called modules and then add additional folders as required. An example can be seen here.
 
