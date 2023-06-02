@@ -1,0 +1,64 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "sandbox"
+        },
+        {
+          "github_slug": "hmpps-migration",
+          "level": "sandbox"
+        }
+
+      ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        },
+        {
+          "github_slug": "hmpps-migration",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        },
+        {
+          "github_slug": "hmpps-migration",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        },
+        {
+          "github_slug": "hmpps-migration",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "hmpps-oem",
+    "business-unit": "HMPPS",
+    "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
+    "owner": "digital-studio-operations-team@digital.justice.gov.uk, probation-webops@digital.justice.gov.uk"
+  }
+}

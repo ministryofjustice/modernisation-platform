@@ -29,6 +29,7 @@ expected =
     "equip",
     "example",
     "hmpps-intelligence-management",
+    "hmpps-oem",
     "laa-ccms-infra-azure-ad-sso",
     "laa-oem",
     "long-term-storage",
