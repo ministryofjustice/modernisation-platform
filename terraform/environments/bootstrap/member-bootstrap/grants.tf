@@ -1,8 +1,8 @@
 module "grant-rhel-els" {
   source = "../../../modules/license-manager"
   providers = {
-    aws.modernisation-platform-environment = aws
-    aws.modernisation-platform-account     = aws.modernisation-platform
+    aws.modernisation-platform-environment = aws.modernisation-platform-environments-us-east-1
+    aws.modernisation-platform-account     = aws.modernisation-platform-us-east-1
   }
   account_to_grant       = local.environment_management.account_ids[terraform.workspace]
   destination_grant_name = "RHEL-6-ELS"

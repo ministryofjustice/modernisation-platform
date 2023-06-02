@@ -10,7 +10,6 @@ variable "destination_grant_allowed_options" {
     "CheckInLicense",
     "CheckoutLicense",
     "ExtendConsumptionLicense",
-    "CreateGrant",
     "CreateToken"
   ]
   type = list(string)
