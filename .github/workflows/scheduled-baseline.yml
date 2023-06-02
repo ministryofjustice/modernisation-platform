@@ -10,6 +10,7 @@ on:
       - '.github/workflows/scheduled-baseline.yml'
       - 'terraform/environments/bootstrap/**'
       - 'terraform/modules/iam_baseline/**'
+      - 'terraform/modules/license-manager/**'
       - 'scripts/update-sso-permission-sets.sh'
   workflow_dispatch:
 
