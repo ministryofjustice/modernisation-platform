@@ -88,7 +88,7 @@ resource "aws_networkfirewall_rule_group" "fqdn-stateful" {
     rules_source {
       rules_source_list {
         generated_rules_type = "ALLOWLIST"
-        target_types         = ["HTTP_HOST"]
+        target_types         = ["HTTP_HOST", "TLS_SNI"]
         targets              = var.fw_allowed_domains
       }
     }
