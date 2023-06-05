@@ -34,7 +34,7 @@ expected =
           "digital-prison-reporting-preproduction",
           "corporate-staff-rostering-preproduction",
           "planetfm-preproduction",
-          hmpps-oem-preproduction"
+          "hmpps-oem-preproduction"
         ]
       }
     },
