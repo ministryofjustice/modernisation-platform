@@ -20,6 +20,13 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
+  "cp_to_hmpps_development_https": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "laa_development_to_mp_laa_development": {
     "action": "PASS",
     "source_ip": "${laa-lz-development}",

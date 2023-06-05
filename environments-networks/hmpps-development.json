@@ -18,7 +18,8 @@
           "delius-core-development",
           "hmpps-intelligence-management-development",
           "corporate-staff-rostering-development",
-          "planetfm-development"
+          "planetfm-development",
+          "hmpps-oem"
         ]
       }
     }

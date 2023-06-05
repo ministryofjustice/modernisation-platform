@@ -14,7 +14,8 @@
           "nomis-data-hub-preproduction",
           "digital-prison-reporting-preproduction",
           "corporate-staff-rostering-preproduction",
-          "planetfm-preproduction"
+          "planetfm-preproduction",
+          "hmpps-oem"
         ]
       }
     }

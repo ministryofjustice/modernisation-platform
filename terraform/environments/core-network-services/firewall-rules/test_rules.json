@@ -152,5 +152,12 @@
     "destination_ip": "0.0.0.0/0",
     "destination_port": "5721",
     "protocol": "UDP"
+  },
+  "cp_to_hmpps_test_https": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-test}",
+    "destination_port": "443",
+    "protocol": "TCP"
   }
 }
