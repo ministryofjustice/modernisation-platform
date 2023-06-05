@@ -209,10 +209,10 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "cp_to_hmpps_prepreproduction_https": {
+  "cp_to_hmpps_preproduction_https": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
-    "destination_ip": "${hmpps-prepreproduction}",
+    "destination_ip": "${hmpps-preproduction}",
     "destination_port": "443",
     "protocol": "TCP"
   }

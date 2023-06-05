@@ -12,7 +12,7 @@
           "nomis-data-hub-test",
           "corporate-staff-rostering-test",
           "planetfm-test",
-          "hmpps-oem"
+          "hmpps-oem-test"
         ]
       }
     }
