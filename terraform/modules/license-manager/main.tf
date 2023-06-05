@@ -1,7 +1,7 @@
 data "aws_licensemanager_received_licenses" "main" {
   provider = aws.modernisation-platform-account
   filter {
-    name = "ProductSKU"
+    name   = "ProductSKU"
     values = [var.source_license_sku]
   }
 }
