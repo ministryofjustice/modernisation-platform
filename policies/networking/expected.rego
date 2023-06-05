@@ -33,7 +33,8 @@ expected =
           "nomis-data-hub-preproduction",
           "digital-prison-reporting-preproduction",
           "corporate-staff-rostering-preproduction",
-          "planetfm-preproduction"
+          "planetfm-preproduction",
+          "hmpps-oem-preproduction"
         ]
       }
     },
@@ -65,7 +66,8 @@ expected =
           "delius-core-development",
           "hmpps-intelligence-management-development",
           "corporate-staff-rostering-development",
-          "planetfm-development"
+          "planetfm-development",
+          "hmpps-oem-development"
         ]
       }
     },
@@ -88,7 +90,8 @@ expected =
           "nomis-combined-reporting-test",
           "nomis-data-hub-test",
           "corporate-staff-rostering-test",
-          "planetfm-test"
+          "planetfm-test",
+          "hmpps-oem-test"
         ]
       }
     },
@@ -115,7 +118,8 @@ expected =
           "nomis-data-hub-production",
           "hmpps-intelligence-management-production",
           "corporate-staff-rostering-production",
-          "planetfm-production"
+          "planetfm-production",
+          "hmpps-oem-production"
         ]
       }
     },

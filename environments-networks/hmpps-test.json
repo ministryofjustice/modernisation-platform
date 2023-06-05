@@ -11,7 +11,8 @@
           "nomis-combined-reporting-test",
           "nomis-data-hub-test",
           "corporate-staff-rostering-test",
-          "planetfm-test"
+          "planetfm-test",
+          "hmpps-oem-test"
         ]
       }
     }
