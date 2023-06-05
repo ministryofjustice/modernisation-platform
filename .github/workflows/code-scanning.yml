@@ -2,6 +2,7 @@ name: Secure Code Analysis
 on:
   schedule:
     - cron: '35 1 * * *'
+  workflow_dispatch:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 permissions:
@@ -84,6 +85,7 @@ jobs:
           framework: terraform
           output_file_path: ./checkov.sarif
           output_format: sarif
+          quiet: true
           skip_check: CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
       - name: Upload SARIF file
         if: success() || failure()
