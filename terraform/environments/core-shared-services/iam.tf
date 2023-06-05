@@ -67,6 +67,7 @@ resource "aws_iam_role" "member_shared_services" {
 #tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_role_policy" "member_shared_services" {
   # checkov:skip=CKV_AWS_355: Resources are not known
+  # checkov:skip=CKV_AWS_290: Resources are not known
   name = "MemberSharedServices"
   role = aws_iam_role.member_shared_services.id
 

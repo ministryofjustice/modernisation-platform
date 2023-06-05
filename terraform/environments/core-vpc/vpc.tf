@@ -220,6 +220,8 @@ resource "aws_iam_role" "member-delegation" {
 
 resource "aws_iam_role_policy" "member-delegation" {
   # checkov:skip=CKV_AWS_355: This create and manage on multiple resources which have not yet been defined
+  # checkov:skip=CKV_AWS_290: This create and manage on multiple resources which have not yet been defined
+  # checkov:skip=CKV_AWS_289: This create and manage on multiple resources which have not yet been defined
   for_each = local.vpcs[terraform.workspace]
 
   name = "member-delegation-${each.key}"
