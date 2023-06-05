@@ -96,11 +96,19 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/corporate-staff-rostering"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/data-and-insights-wepi"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/data-platform"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/environments/data-platform-apps-and-tools"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
@@ -181,6 +189,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/performance-hub"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/environments/planetfm"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
@@ -281,6 +293,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/kms"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/license-manager"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
