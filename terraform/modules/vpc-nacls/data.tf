@@ -45,11 +45,7 @@ locals {
   # 2000 = inter-vpc traffic (dynamic rules)
   # 3000 = deny east-west
   # 4000 = private address ranges
-  # 5000 = https internet access
-  # 5100 = http internet access
-  # 5200 = tcp internet access on dynamic ports
-  # 5300 = udp saas third party monitor agent
-  # 5400 = tcp saas third party monitor agent
+  # 5000 = internet access
   # 6000 = public address ranges (dynamic)
   # 7000 = access from internet
 
@@ -162,23 +158,14 @@ locals {
       rule_number = 5100
       to_port     = 80
     },
-    allow_0-0-0-0_dynamic_tcp_in = {
+    allow_0-0-0-0_smtp_submission_out = {
       cidr_block  = "0.0.0.0/0"
-      egress      = false
-      from_port   = 1024
+      egress      = true
+      from_port   = 587
       protocol    = "tcp"
       rule_action = "allow"
       rule_number = 5200
-      to_port     = 65535
-    },
-    allow_0-0-0-0_agent_udp_out = {
-      cidr_block  = "0.0.0.0/0"
-      egress      = true
-      from_port   = 5721
-      protocol    = "udp"
-      rule_action = "allow"
-      rule_number = 5300
-      to_port     = 5721
+      to_port     = 587
     },
     allow_0-0-0-0_agent_tcp_out = {
       cidr_block  = "0.0.0.0/0"
@@ -186,8 +173,17 @@ locals {
       from_port   = 5721
       protocol    = "tcp"
       rule_action = "allow"
-      rule_number = 5400
+      rule_number = 5300
       to_port     = 5721
+    },
+    allow_0-0-0-0_dynamic_tcp_in = {
+      cidr_block  = "0.0.0.0/0"
+      egress      = false
+      from_port   = 1024
+      protocol    = "tcp"
+      rule_action = "allow"
+      rule_number = 5400
+      to_port     = 65535
     }
   }
 
