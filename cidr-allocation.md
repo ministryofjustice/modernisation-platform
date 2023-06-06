@@ -8,7 +8,7 @@
 | 10.239.0.0 | /16  | shared-vpcs sandbox (NOT ROUTEABLE)      | Use for local testing only |
 |            |      |
 
-# Core Accounts CIDR's
+# Core Accounts CIDRs
 
 | CIDR        | mask | allocated to                        |
 | :---------- | :--- | :---------------------------------- |
@@ -80,7 +80,7 @@
 | 10.27.104.0 | /21  | platforms preproduction - general |
 | 10.27.112.0 | /21  | cjse production - general         |
 | 10.27.120.0 | /21  | cjse preproduction - general      |
-| 10.27.128.0 | /21  | -                                 |
+| 10.27.128.0 | /21  | data-platform common - networking |
 | 10.27.136.0 | /21  | -                                 |
 | 10.27.144.0 | /21  | -                                 |
 | 10.27.152.0 | /21  | -                                 |
