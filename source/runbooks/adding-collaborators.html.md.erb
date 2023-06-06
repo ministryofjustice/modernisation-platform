@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Adding collaborators to Modernisation Platform accounts
-last_reviewed_on: 2022-11-25
+last_reviewed_on: 2023-06-06
 review_in: 6 month
 ---
 
@@ -12,15 +12,15 @@ Users who are part of the organisation are added to the platform by joining a [G
 
 To enable collaborators to use the Modernisation Platform we need to give them the following access:
 
-- Access to our Github repositories
+- Access to our Github repositories (if needed)
 - Access to the relevant AWS accounts
-- Access to be able to approve deployments
+- Access to be able to approve deployments (if needed)
 
 ## Access to our Github repositories
 
 In order to create infrastructure, collaborators will need to have `push` permissions to the following repositories:
 
-- [modernisation-platform-environments](https://github.com/ministryofjustice/modernisation-platform-environments)
+- [modernisation-platform-environments](https://github.com/ministryofjustice/modernisation-platform-environments) (only needed if writing infrastructure code)
 - [modernisation-platform-ami-builds](https://github.com/ministryofjustice/modernisation-platform-ami-builds) (only needed if building AMIs)
 
 Please follow the instructions in the MoJ [github-collaborators](https://github.com/ministryofjustice/github-collaborators) repository on how to add them.
@@ -101,4 +101,4 @@ For this reason collaborator environment reviewers should be manually added to t
 
 To remove collaborators reverse the above steps.
 
-In order to remove the collaborator IAM user, the Terraform in `modernisation-platform/terraform/modernisation-platform-account` must be run locally as a `superadmin` user, as the pipelines do not have permissions to delete users.
+In order to remove the collaborator IAM user, the Terraform in `modernisation-platform/terraform/modernisation-platform-account` must be run locally as a `superadmin` user, as the pipelines do not have permissions to delete users. Alternatively the pipeline can be run, then when it fails delete the user and rerun the failed job. 
