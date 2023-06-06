@@ -34,14 +34,14 @@
     "destination_port": "80",
     "protocol": "TCP"
   },
-  "hmpps_preprod_to_internet_smtp_submission": {
+  "hmpps_preprod_to_internet_monitoring": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction}",
     "destination_ip": "0.0.0.0/0",
     "destination_port": "5721",
     "protocol": "TCP"
   },
-  "hmpps_prod_to_internet_smtp_submission": {
+  "hmpps_prod_to_internet_monitoring": {
     "action": "PASS",
     "source_ip": "${hmpps-production}",
     "destination_ip": "0.0.0.0/0",
@@ -62,14 +62,14 @@
     "destination_port": "587",
     "protocol": "TCP"
   },
-  "hmpps_development_to_internet_smtp_submission": {
+  "hmpps_development_to_internet_monitoring": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
     "destination_ip": "0.0.0.0/0",
     "destination_port": "5721",
     "protocol": "TCP"
   },
-  "hmpps_test_to_internet_smtp_submission": {
+  "hmpps_test_to_internet_monitoring": {
     "action": "PASS",
     "source_ip": "${hmpps-test}",
     "destination_ip": "0.0.0.0/0",
