@@ -6,18 +6,18 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "mp_dev_test_to_internet_https": {
-    "action": "PASS",
-    "source_ip": "${mp-development-test}",
-    "destination_ip": "0.0.0.0/0",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
   "mp_dev_test_to_internet_http": {
     "action": "PASS",
     "source_ip": "${mp-development-test}",
     "destination_ip": "0.0.0.0/0",
     "destination_port": "80",
+    "protocol": "TCP"
+  },
+  "mp_dev_test_to_internet_https": {
+    "action": "PASS",
+    "source_ip": "${mp-development-test}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "443",
     "protocol": "TCP"
   },
   "mp_preprod_prod_to_internet_http": {
