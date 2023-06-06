@@ -1,8 +1,8 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Adding Wider Connectivity to the Modernisation Platform
-last_reviewed_on: 2022-11-25
-review_in: 6 month
+last_reviewed_on: 2023-06-06
+review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
@@ -25,7 +25,7 @@ Additional non private IP ranges that need to be routed through to the PTTP TGW 
 
 ### From PTTP TGW to the new connectivity location
 
-A static route to the correct [TGW attachement](https://docs.aws.amazon.com/vpc/latest/tgw/working-with-transit-gateways.html) should be added under `attachment_static_routes` [here](https://github.com/ministryofjustice/deployment-tgw/blob/master/env/production/config.yml).
+A static route to the correct [TGW attachement](https://docs.aws.amazon.com/vpc/latest/tgw/working-with-transit-gateways.html) should be added under `attachment_static_routes` [here](https://github.com/ministryofjustice/deployment-tgw/blob/master/env/production/eu-west-2.yml).
 
 - `rtb_name` (route table name) should be `tgw-rtb-modplatform`. This is the route table associated with the MP TGW peering connection.
 - `destination` should be the CIDR range of the new connectivity location.
@@ -35,7 +35,7 @@ The TGW attachement may be a VPC, VPN, Direct Connect or another Transit Gateway
 
 ### From PTTP TGW back to the MP TGW
 
-A route to the MP TGW must be added in the relevant route table for the PTTP TGW attachement.  This should be added under `peering_static_routes` [here](https://github.com/ministryofjustice/deployment-tgw/blob/master/env/production/config.yml).
+A route to the MP TGW must be added in the relevant route table for the PTTP TGW attachement.  This should be added under `peering_static_routes` [here](https://github.com/ministryofjustice/deployment-tgw/blob/master/env/production/eu-west-2.yml).
 
 - `rtb_name` is the name of the relevant route table. This is the route table associated with the attachment.
 - `destination` should be the CIDR range of the Modernisation live or non live CIDR ranges.
@@ -43,11 +43,6 @@ A route to the MP TGW must be added in the relevant route table for the PTTP TGW
 
 Most PTTP TGW attachments come in to the `tgw-rtb-security` or the `tgw-rtb-probation` route tables, the Modernisation Platform ranges have been added to these already so there is no need to add them again, but new tables may be added in the future.
 
-## Cloud Platform Connectivity
-
-Connectivity through to the Cloud Platform goes through [additional Transit Gateways](https://github.com/ministryofjustice/transit-gateways).
-Along with the steps above routes were added [here](https://github.com/ministryofjustice/transit-gateways/pull/10/files).
-This has been done for the Modernisation Platform live and non live environments, so no further routing is needed to connect to the Cloud Plaform, only steps detailed [here](#other-steps).
 ## Diagram
 
 A high level diagram of the wider MoJ networking can be found [here](https://drive.google.com/file/d/1w8dZs5vZOoy0dvCnRr5P6GHc3VQRdwLq/view?usp=sharing).
@@ -56,5 +51,5 @@ A high level diagram of the wider MoJ networking can be found [here](https://dri
 
 Remember to do the following in addition to the above in the Modernisation Platform to allow traffic:
 
-- Add appropriate Firewall rules
+- Add appropriate [Firewall rules](../concepts/networking/network-firewall.html)
 - Add allow rules to the appropriate Security Groups

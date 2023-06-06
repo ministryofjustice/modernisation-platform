@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Core Workflow (CI/CD)
-last_reviewed_on: 2022-11-25
+last_reviewed_on: 2023-06-06
 review_in: 6 months
 ---
 
@@ -48,7 +48,7 @@ Name | Description | Workflow file |
 |---|---|---|
 Check links | Checks links are valid in our GitHub pages user guidance | `check-links.yml`
 Publish | Publishes pages in `source` to our GitHub pages user guidance | `publish.yml`
-Format Code | Formats code and commits any changes to a pull request | `format-code.yml`
+Format Code | Formats code once a week and raises a PR for review | `format-code.yml`
 Labeler | Adds labels to our pull requests depending on which folders are changed | `labeler.yml`
 OPA Policies | Runs Open Policy Agent validation tests against our json files | `opa-policies.yml`
 Sheduled Baseline | Runs the baseline code across all accounts ensuring security baselines are still in place | `scheduled-baseline.yml`
@@ -57,3 +57,4 @@ Generate Dependabot File | Generates a new dependabot file to add any newly adde
 Add issues to project | On new modernisation-plaform repository issue creation adds the new issue to the Modernisation Platform project | `add-issues-to-project.yml`
 Terraform Documentation | Generates Terraform module documentation | `documentation.yml`
 Scorecards | Generates [OSSF scorecard](https://github.com/ossf/scorecard) security findings and publishes them on the repository security tab in GitHub | `scorecards.yml`
+Code Scanning | Runs Static Code Analysis and uploads findings and publishes them on the repository code scanning tab in GitHub | `code-scanning.yml`
