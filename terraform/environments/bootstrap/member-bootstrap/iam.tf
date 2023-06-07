@@ -260,7 +260,7 @@ data "aws_iam_policy_document" "member-access-us-east" {
     #checkov:skip=CKV_AWS_356: Needs to access multiple resources
     effect    = "Allow"
     actions   = ["acm:*",
-      "log:*"
+      "logs:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
