@@ -9,4 +9,6 @@ module "smtp_vpc_endpoint_security_group" {
 
   ingress_cidr_blocks = [module.vpc.vpc_cidr_block]
   ingress_rules       = ["smtp-submission"]
+
+  tags = local.tags
 }
