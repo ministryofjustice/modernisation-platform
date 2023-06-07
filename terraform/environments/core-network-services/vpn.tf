@@ -94,34 +94,6 @@ resource "aws_ec2_transit_gateway_route" "noms_live_routes" {
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
-resource "aws_ec2_transit_gateway_route" "sixdg_dev_routes" {
-  for_each                       = toset(local.sixdg_dev_vpn_static_routes)
-  destination_cidr_block         = each.key
-  transit_gateway_attachment_id  = aws_vpn_connection.this["sixdegrees_development"].transit_gateway_attachment_id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
-}
-
-resource "aws_ec2_transit_gateway_route" "sixdg_uat_routes" {
-  for_each                       = toset(local.sixdg_uat_vpn_static_routes)
-  destination_cidr_block         = each.key
-  transit_gateway_attachment_id  = aws_vpn_connection.this["sixdegrees_uat"].transit_gateway_attachment_id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
-}
-
-resource "aws_ec2_transit_gateway_route" "sixdg_stage_routes" {
-  for_each                       = toset(local.sixdg_stage_vpn_static_routes)
-  destination_cidr_block         = each.key
-  transit_gateway_attachment_id  = aws_vpn_connection.this["sixdegrees_stage"].transit_gateway_attachment_id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
-}
-
-resource "aws_ec2_transit_gateway_route" "sixdg_prod_routes" {
-  for_each                       = toset(local.sixdg_prod_vpn_static_routes)
-  destination_cidr_block         = each.key
-  transit_gateway_attachment_id  = aws_vpn_connection.this["sixdegrees_prod"].transit_gateway_attachment_id
-  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
-}
-
 resource "aws_ec2_transit_gateway_route" "parole_board_routes" {
   for_each                       = toset(local.parole_board_vpn_static_routes)
   destination_cidr_block         = each.key
