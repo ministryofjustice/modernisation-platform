@@ -17,6 +17,10 @@
         {
           "github_slug": "studio-webops",
           "level": "developer"
+        },
+        {
+          "github_slug": "syscon-devs",
+          "level": "developer"
         }
       ]
     },
@@ -26,6 +30,10 @@
         {
           "github_slug": "studio-webops",
           "level": "developer"
+        },
+        {
+          "github_slug": "syscon-devs",
+          "level": "developer"
         }
       ]
     },
@@ -34,6 +42,10 @@
       "access": [
         {
           "github_slug": "studio-webops",
+          "level": "developer"
+        },
+        {
+          "github_slug": "syscon-devs",
           "level": "developer"
         }
       ]
