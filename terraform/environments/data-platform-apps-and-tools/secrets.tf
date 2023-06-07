@@ -21,6 +21,8 @@ resource "aws_secretsmanager_secret" "airflow_iam_access_key_id" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name       = "/${local.application_name}/${local.environment}/airflow/iam-access-key-id"
   kms_key_id = "alias/aws/secretsmanager"
+
+  tags = local.tags
 }
 
 resource "aws_secretsmanager_secret_version" "airflow_iam_access_key_id" {
@@ -34,6 +36,8 @@ resource "aws_secretsmanager_secret" "airflow_iam_access_key_ses_smtp_password" 
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name       = "/${local.application_name}/${local.environment}/airflow/iam-access-key-ses-smtp-password"
   kms_key_id = "alias/aws/secretsmanager"
+
+  tags = local.tags
 }
 
 resource "aws_secretsmanager_secret_version" "airflow_iam_access_key_ses_smtp_password" {
