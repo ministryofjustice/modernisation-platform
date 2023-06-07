@@ -11,7 +11,7 @@ module "airflow_ses_policy" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
   version = "5.20.0"
 
-  name   = "data-platform-${local.environment}-airflow-ses"
+  name   = "${local.application_name}-${local.environment}-airflow-ses"
   policy = data.aws_iam_policy_document.airflow_ses_policy.json
 
   tags = local.tags
