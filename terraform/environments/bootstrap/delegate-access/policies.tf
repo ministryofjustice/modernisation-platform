@@ -446,8 +446,9 @@ data "aws_iam_policy_document" "migration_additional" {
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   source_policy_documents   = [data.aws_iam_policy_document.developer_additional.json]
+  override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
-    sid    = "reportingOperationsAllow"
+    sid    = "migrationAllow"
     effect = "Allow"
     actions = [
       "dms:*",
@@ -585,7 +586,7 @@ data "aws_iam_policy_document" "reporting-operations" {
   source_policy_documents   = [data.aws_iam_policy_document.developer_additional.json]
   override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
-    sid    = "migrationAllow"
+    sid    = "reportingOperationsAllow"
     effect = "Allow"
     actions = [
       "dms:*",
