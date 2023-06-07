@@ -446,9 +446,8 @@ data "aws_iam_policy_document" "migration_additional" {
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   source_policy_documents   = [data.aws_iam_policy_document.developer_additional.json]
-  override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
-    sid    = "migrationAllow"
+    sid    = "reportingOperationsAllow"
     effect = "Allow"
     actions = [
       "dms:*",
@@ -567,3 +566,35 @@ data "aws_iam_policy_document" "instance-management-document" {
   }
 }
 
+# reporting-operations policy
+resource "aws_iam_policy" "reporting-operations" {
+  provider = aws.workspace
+  name     = "reporting_operations_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.reporting-operations.json
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "reporting-operations" {
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_107
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_110
+  #checkov:skip=CKV_AWS_356:
+  source_policy_documents   = [data.aws_iam_policy_document.developer_additional.json]
+  override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
+  statement {
+    sid    = "migrationAllow"
+    effect = "Allow"
+    actions = [
+      "dms:*",
+      "glue:*",
+      "athena:*",
+      "redshift:*",
+      "redshift-data:*",
+      "redshift-serverless:*"
+    ]
+    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+  }
+}
