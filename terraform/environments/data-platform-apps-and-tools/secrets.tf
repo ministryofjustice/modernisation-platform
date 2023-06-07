@@ -15,8 +15,11 @@ data "aws_secretsmanager_secret_version" "environment_management" {
   secret_id = data.aws_secretsmanager_secret.environment_management.id
 }
 
+#tfsec:ignore:AWS095
 resource "aws_secretsmanager_secret" "airflow_iam_access_key_id" {
-  name       = "/${local.environment}/airflow/iam-access-key-id"
+  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name       = "/${local.application_name}/${local.environment}/airflow/iam-access-key-id"
   kms_key_id = "alias/aws/secretsmanager"
 }
 
@@ -25,8 +28,11 @@ resource "aws_secretsmanager_secret_version" "airflow_iam_access_key_id" {
   secret_string = module.airflow_iam_user.iam_access_key_id
 }
 
+#tfsec:ignore:AWS095
 resource "aws_secretsmanager_secret" "airflow_iam_access_key_ses_smtp_password" {
-  name       = "/${local.environment}/airflow/iam-access-key-ses-smtp-password"
+  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name       = "/${local.application_name}/${local.environment}/airflow/iam-access-key-ses-smtp-password"
   kms_key_id = "alias/aws/secretsmanager"
 }
 
