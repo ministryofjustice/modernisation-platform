@@ -60,8 +60,12 @@ locals {
 
   # NACLs
   nacl_rules = [
-    { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 910, cidr = "0.0.0.0/0" },
-    { egress = true, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 910, cidr = "0.0.0.0/0" }
+    { egress = false, action = "allow", protocol = -1, from_port = 80, to_port = 80, rule_num = 910, cidr = "0.0.0.0/0" },
+    { egress = false, action = "allow", protocol = -1, from_port = 443, to_port = 443, rule_num = 920, cidr = "0.0.0.0/0" },
+    { egress = false, action = "allow", protocol = -1, from_port = 1024, to_port = 65535, rule_num = 930, cidr = "0.0.0.0/0" },
+    { egress = true, action = "allow", protocol = -1, from_port = 80, to_port = 80, rule_num = 910, cidr = "0.0.0.0/0" },
+    { egress = true, action = "allow", protocol = -1, from_port = 443, to_port = 443, rule_num = 920, cidr = "0.0.0.0/0" },
+    { egress = true, action = "allow", protocol = -1, from_port = 1024, to_port = 65535, rule_num = 930, cidr = "0.0.0.0/0" }
   ]
 
   # NACL rules with keys
@@ -75,8 +79,12 @@ locals {
     { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 520, cidr = "172.16.0.0/12" },
     { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 530, cidr = "192.168.0.0/16" },
     { egress = true, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 510, cidr = "10.0.0.0/8" },
-    { egress = true, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 520, cidr = "172.16.0.0/12" },
-    { egress = true, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 530, cidr = "192.168.0.0/16" },
+    { egress = true, action = "allow", protocol = -1, from_port = 80, to_port = 80, rule_num = 520, cidr = "172.16.0.0/12" },
+    { egress = true, action = "allow", protocol = -1, from_port = 443, to_port = 443, rule_num = 530, cidr = "172.16.0.0/12" },
+    { egress = true, action = "allow", protocol = -1, from_port = 1024, to_port = 65535, rule_num = 540, cidr = "172.16.0.0/12" },
+    { egress = true, action = "allow", protocol = -1, from_port = 80, to_port = 80, rule_num = 550, cidr = "192.168.0.0/16" },
+    { egress = true, action = "allow", protocol = -1, from_port = 443, to_port = 443, rule_num = 560, cidr = "192.168.0.0/16" },
+    { egress = true, action = "allow", protocol = -1, from_port = 1024, to_port = 65535, rule_num = 570, cidr = "192.168.0.0/16" },
     { egress = false, action = "allow", protocol = 6, from_port = 1024, to_port = 65535, rule_num = 910, cidr = "0.0.0.0/0" },
     { egress = true, action = "allow", protocol = 6, from_port = 443, to_port = 443, rule_num = 910, cidr = "0.0.0.0/0" }
   ]
