@@ -8,6 +8,11 @@
           "github_slug": "hmpps-migration",
           "level": "sandbox",
           "nuke": "exclude"
+        },
+        {
+          "github_slug": "hmpps-dba",
+          "level": "instance-management",
+          "nuke": "exclude"
         }
       ]
     }
