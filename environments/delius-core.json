@@ -12,7 +12,6 @@
         {
           "github_slug": "hmpps-dba",
           "level": "instance-management",
-          "nuke": "exclude"
         }
       ]
     }
