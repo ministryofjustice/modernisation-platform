@@ -25,6 +25,18 @@ resource "github_repository" "default" {
   vulnerability_alerts   = true
   topics                 = concat(local.topics, var.topics)
 
+  security_and_analysis {
+    advanced_security {
+      status = "enabled"
+    }
+    secret_scanning {
+      status = "enabled"
+    }
+    secret_scanning_push_protection {
+      status = "enabled"
+    }
+  }
+
   template {
     owner      = "ministryofjustice"
     repository = var.type == "module" ? "modernisation-platform-terraform-module-template" : "template-repository"
