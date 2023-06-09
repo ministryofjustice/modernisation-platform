@@ -175,7 +175,7 @@ module "data_platform_data_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
-  
+
 module "data_platform_athena_load_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
