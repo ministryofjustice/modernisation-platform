@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating environments in the Modernisation Platform
-last_reviewed_on: 2022-12-09
+last_reviewed_on: 2023-06-09
 review_in: 6 months
 ---
 
@@ -97,6 +97,20 @@ This is a new role created in Feb 2023, and if more permissions are required for
 - Log into the console
 - See resources and metadata useful to security operations teams and security audit teams.
 - Makes use of AWS managed SecurityAudit policy and is not generally configurable beyond that.
+
+#### reporting-operation
+
+Created so that SSM and the AWS CLI were not required to manage various components that would be better managed in the AWS console.
+
+- TBC June 2023
+
+#### data-engineering
+
+Created for data engineers to have developer permissions as well as glue and athena permissions all in one policy. 
+
+- Log into the console.
+- Data engineering permissions.
+- Didn't want to bloat the developer role.
 
 #### administrator
 
