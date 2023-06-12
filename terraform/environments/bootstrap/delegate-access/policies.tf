@@ -583,7 +583,6 @@ data "aws_iam_policy_document" "reporting-operations" {
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356:
-  source_policy_documents   = [data.aws_iam_policy_document.developer_additional.json]
   override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
     sid    = "reportingOperationsAllow"
