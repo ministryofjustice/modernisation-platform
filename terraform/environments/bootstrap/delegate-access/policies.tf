@@ -639,7 +639,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "ec2:DescribeInstanceTypes",
       "ec2:DescribeVpcs",
       "ec2:DescribeSubnets",
-      "ec2:DescribeSecurityGroups"
+      "ec2:DescribeSecurityGroups",
       "glue:GetTables",
       "glue:GetPartitions",
       "glue:BatchGetPartition",
@@ -648,7 +648,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "glue:GetDatabase",
       "glue:GetPartition",
       "logs:DescribeLogStreams",
-      "logs:GetLogEvents"
+      "logs:GetLogEvents",
       "dynamodb:BatchGet*",
       "dynamodb:DescribeStream",
       "dynamodb:DescribeTable",
