@@ -215,5 +215,12 @@
     "destination_ip": "${hmpps-preproduction}",
     "destination_port": "443",
     "protocol": "TCP"
+  },
+  "laa-appstream_to_laa_production": {
+    "action": "PASS",
+    "source_ip": "${laa-appstream-subnets}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
   }
 }

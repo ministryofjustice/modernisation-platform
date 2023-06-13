@@ -53,6 +53,7 @@ locals {
     laa-lz-production              = "10.205.0.0/20"
     laa-lz-shared-services-nonprod = "10.200.0.0/20"
     laa-lz-shared-services-prod    = "10.200.16.0/20"
+    laa-appstream-subnets          = "10.200.32.0/23"
 
   }
 
