@@ -567,3 +567,98 @@ data "aws_iam_policy_document" "instance-management-document" {
   }
 }
 
+# reporting-operations policy
+resource "aws_iam_policy" "reporting-operations" {
+  provider = aws.workspace
+  name     = "reporting_operations_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.reporting-operations.json
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "reporting-operations" {
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_107
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_110
+  #checkov:skip=CKV_AWS_356:
+  override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
+  statement {
+    sid    = "reportingOperationsAllow"
+    effect = "Allow"
+    actions = [
+      "dms:DescribeReplicationInstances",
+      "dms:DescribeReplicationTasks",
+      "dms:StartReplicationTaskAssessmentRun",
+      "dms:StartReplicationTask",
+      "dms:StopReplicationTask",
+      "dms:TestConnection",
+      "sqlworkbench:CreateFolder",
+      "sqlworkbench:PutTab",
+      "sqlworkbench:BatchDeleteFolder",
+      "sqlworkbench:DeleteTab",
+      "sqlworkbench:GenerateSession",
+      "sqlworkbench:GetAccountInfo",
+      "sqlworkbench:GetAccountSettings",
+      "sqlworkbench:GetUserInfo",
+      "sqlworkbench:GetUserWorkspaceSettings",
+      "sqlworkbench:PutUserWorkspaceSettings",
+      "sqlworkbench:ListConnections",
+      "sqlworkbench:ListFiles",
+      "sqlworkbench:ListTabs",
+      "sqlworkbench:UpdateFolder",
+      "sqlworkbench:ListRedshiftClusters",
+      "sqlworkbench:DriverExecute",
+      "sqlworkbench:ListTaggedResources",
+      "sqlworkbench:ListQueryExecutionHistory",
+      "sqlworkbench:GetQueryExecutionHistory",
+      "sqlworkbench:ListNotebooks",
+      "sqlworkbench:GetSchemaInference",
+      "athena:GetDatabase",
+      "athena:GetDataCatalog",
+      "athena:GetTableMetadata",
+      "athena:ListDatabases",
+      "athena:ListDataCatalogs",
+      "athena:ListTableMetadata",
+      "athena:ListWorkGroups",
+      "athena:GetQueryExecution",
+      "athena:GetQueryResults",
+      "athena:GetWorkGroup",
+      "athena:StartQueryExecution",
+      "athena:StopQueryExecution",
+      "s3:List*", 
+      "s3:Get*",
+      "kms:Encrypt*",
+      "kms:Decrypt*",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey",
+      "ec2:DescribeInstances",
+      "ec2:DescribeImages",
+      "ec2:DescribeInstanceTypes",
+      "ec2:DescribeVpcs",
+      "ec2:DescribeSubnets",
+      "ec2:DescribeSecurityGroups",
+      "glue:GetTables",
+      "glue:GetPartitions",
+      "glue:BatchGetPartition",
+      "glue:GetDatabases",
+      "glue:GetTable",
+      "glue:GetDatabase",
+      "glue:GetPartition",
+      "logs:DescribeLogStreams",
+      "logs:GetLogEvents",
+      "dynamodb:BatchGet*",
+      "dynamodb:DescribeStream",
+      "dynamodb:DescribeTable",
+      "dynamodb:Get*",
+      "dynamodb:Query",
+      "dynamodb:Scan",
+      "redshift:*",
+      "redshift-data:*",
+      "redshift-serverless:*"
+    ]
+    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+  }
+}
