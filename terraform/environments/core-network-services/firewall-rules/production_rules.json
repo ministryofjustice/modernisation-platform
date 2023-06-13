@@ -125,7 +125,7 @@
     "destination_port": "9100",
     "protocol": "TCP"
   },
-  "psn_to_mp_hmpps_preproduction_https": {
+  "psn_to_mp_hmpps_production_https": {
     "action": "PASS",
     "source_ip": "${psn}",
     "destination_ip": "${hmpps-production}",
@@ -209,11 +209,11 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "cp_to_hmpps_preproduction_https": {
+  "laa-appstream_to_mp_laa_production": {
     "action": "PASS",
-    "source_ip": "${cloud-platform}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "443",
+    "source_ip": "${laa-appstream-subnets}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "ANY",
     "protocol": "TCP"
   }
 }
