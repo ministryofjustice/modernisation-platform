@@ -273,6 +273,8 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "glue:GetTrigger",
       "glue:GetTriggers",
       "glue:UpdateTrigger",
+      "glue:ListTriggers",
+      "glue:StartTrigger",
       "states:StartExecution",
       "states:StopExecution"
     ]
