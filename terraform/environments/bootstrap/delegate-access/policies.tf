@@ -269,6 +269,10 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "glue:ListSessions",
       "glue:BatchGetJobs",
       "glue:GetJobBookmark",
+      "glue:StopTrigger",
+      "glue:GetTrigger",
+      "glue:GetTriggers",
+      "glue:UpdateTrigger",
       "states:StartExecution",
       "states:StopExecution"
     ]
@@ -627,7 +631,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "athena:GetWorkGroup",
       "athena:StartQueryExecution",
       "athena:StopQueryExecution",
-      "s3:List*", 
+      "s3:List*",
       "s3:Get*",
       "kms:Encrypt*",
       "kms:Decrypt*",
