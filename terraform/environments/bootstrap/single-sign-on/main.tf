@@ -85,7 +85,7 @@ data "aws_ssoadmin_permission_set" "reporting-operations" {
   provider = aws.sso-management
 
   instance_arn = local.sso_instance_arn
-  name         = "modernisation-platform-reporting-operations"
+  name         = "mp-reporting-operations"
 }
 
 # Get Identity Store groups
