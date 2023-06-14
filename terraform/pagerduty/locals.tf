@@ -29,6 +29,8 @@ locals {
       role  = "user"
     },
   }
+slack_workspace_id = "T02DYEB3A"
+  
 
   digital_email_suffix = "@digital.justice.gov.uk"
 
