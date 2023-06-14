@@ -351,7 +351,6 @@ resource "pagerduty_service_integration" "example_cloudwatch" {
 }
 
 
-
 resource "pagerduty_slack_connection" "example_connection" {
   source_id = pagerduty_service.example.id
   source_type = "service_reference"
