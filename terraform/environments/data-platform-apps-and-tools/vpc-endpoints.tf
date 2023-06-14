@@ -5,8 +5,8 @@ module "vpc_endpoints" {
   vpc_id = module.vpc.vpc_id
 
   endpoints = {
-    smtp = {
-      service             = "smtp"
+    email-smtp = {
+      service             = "email-smtp"
       subnet_ids          = module.vpc.private_subnets
       security_group_ids  = [module.smtp_vpc_endpoint_security_group.security_group_id]
       private_dns_enabled = true
