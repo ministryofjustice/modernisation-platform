@@ -374,7 +374,6 @@ resource "pagerduty_slack_connection" "example_connection" {
       "incident.status_update_published",
       "incident.reopened"
     ]
-
   }
 }
 
