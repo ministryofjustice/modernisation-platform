@@ -378,5 +378,4 @@ resource "pagerduty_slack_connection" "example_connection" {
 }
 
 
-
 # # Slack channel: #example
