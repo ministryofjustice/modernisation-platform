@@ -333,3 +333,52 @@ resource "pagerduty_service_integration" "laa_portal_prod_cloudwatch" {
 }
 
 # # Slack channel: #laa-portal-alerts-prod
+
+# Example - development
+resource "pagerduty_service" "example" {
+  name                    = "Pager Duty example on example"
+  description             = "Pager Duty example on example"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "example_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.example.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+
+
+resource "pagerduty_slack_connection" "example_connection" {
+  source_id = pagerduty_service.example.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C02CABCDAC9"
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+  
+
+  }
+}
+
+
+
+# # Slack channel: #example
