@@ -191,6 +191,8 @@ module "data_platform_athena_load_ecr_repo" {
     local.environment_management.account_ids["data-platform-development"],
   ]
 
+  enable_retrieval_policy_for_lambdas = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_athena_load*",
+  
   # Tags
   tags_common = local.tags
 }
