@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating AWS Accounts for Teams
-last_reviewed_on: 2022-12-30
+last_reviewed_on: 2023-06-15
 review_in: 6 months
 ---
 
@@ -50,6 +50,8 @@ This will run the [`new-environment` workflow](https://github.com/ministryofjust
 
 This will also run the [`new-environment-files` workflow](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment-files.yml) which generates two new pull requests if this is the first environment of the new application:
 
+If the environment is being created for an account type of member-unrestricted it will not create the PR in the modernisation-platform-environments repository and this step can be ignored.
+
 1. Creating application files in the `modernisation-platform` repo.
 1. Creating application files in the `modernisation-platform-environments` repo.
 
@@ -60,6 +62,8 @@ This will also run the [`new-environment-files` workflow](https://github.com/min
 #### 5. Merge the pull request created in the modernisation-platform repo (step 4.1)
 
 #### 6. Edit the pull request created in the modernisation-platform-environments repo (step 4.2)
+
+Do not do this if the account type is member-unrestricted - it is not required.
 
 Edit the PR to comment out any environments that are not used in the GitHub Actions workflow file (there is a matrix for development/test and one for preproduction/production).
 
@@ -77,9 +81,11 @@ This stage sets up [Resource Access Manager (RAM) sharing](https://docs.aws.amaz
 
 Business unit VPCs and subnet sets are already created for all the MoJ business units.  If an additional VPC or subnet set is needed, see guidance [here.](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/creating-vpcs.html).
 
+If the environment is being created for an account type of member-unrestricted this stage is not required and can be ignored.
+
 #### 1. Add the application to the relevant subnets
 
-Add the application to the subnet sets in [`environments/networks](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments-networks).
+Add the application to the subnet sets in [`environments-networks`](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments-networks).
 
 Most applications will be added to the `general` subnet set.  If they need something different see the above guidance on creating VPCs and subnet sets.
 
