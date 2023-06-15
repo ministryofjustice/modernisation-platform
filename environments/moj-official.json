@@ -1,0 +1,20 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "lmoj-official-techops",
+          "level": "administrator"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "moj-official",
+    "business-unit": "HQ",
+    "infrastructure-support": "MOJNOC@justice.gov.uk",
+    "owner": "chinyere.onuoha@justice.gov.uk"
+  }
+}
