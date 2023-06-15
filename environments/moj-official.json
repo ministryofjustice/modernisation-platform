@@ -1,5 +1,5 @@
 {
-  "account-type": "member",
+  "account-type": "member-unrestricted",
   "environments": [
     {
       "name": "preproduction",
