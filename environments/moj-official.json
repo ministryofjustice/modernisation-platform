@@ -5,7 +5,7 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "lmoj-official-techops",
+          "github_slug": "moj-official-techops",
           "level": "administrator"
         }
       ]
