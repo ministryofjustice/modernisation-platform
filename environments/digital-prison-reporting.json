@@ -8,7 +8,11 @@
           "github_slug": "hmpps-digital-prison-reporting",
           "level": "sandbox",
           "nuke": "exclude"
-        }
+        },
+        {
+          "github_slug": "hmpps-digital-prison-reporting",
+          "level": "reporting-operations"
+        }        
       ]
     },
     {
@@ -17,7 +21,11 @@
         {
           "github_slug": "hmpps-digital-prison-reporting",
           "level": "developer"
-        }
+        },
+        {
+          "github_slug": "hmpps-digital-prison-reporting",
+          "level": "reporting-operations"
+        }              
       ]
     },
     {
