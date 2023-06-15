@@ -353,6 +353,7 @@ resource "pagerduty_service_integration" "example_cloudwatch" {
 
 
 resource "pagerduty_slack_connection" "example_connection" {
+  provider = pagerduty.pagerduty_user_api
   source_id = pagerduty_service.example.id
   source_type = "service_reference"
   workspace_id = local.slack_workspace_id
