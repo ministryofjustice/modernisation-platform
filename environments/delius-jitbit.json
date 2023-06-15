@@ -11,7 +11,7 @@
         },
         {
           "github_slug": "hmpps-delius-jitbit-devs",
-          "level": "read-only"
+          "level": "instance-management"
         }
       ]
     },
@@ -24,7 +24,7 @@
         },
         {
           "github_slug": "hmpps-delius-jitbit-devs",
-          "level": "read-only"
+          "level": "instance-management"
         }
       ]
     },
