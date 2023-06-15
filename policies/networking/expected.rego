@@ -251,7 +251,8 @@ expected =
     "hq-preproduction": {
       "general": {
         "cidr": "10.27.40.0/21",
-        "accounts": ["data-and-insights-wepi-preproduction"]
+        "accounts": ["data-and-insights-wepi-preproduction",
+                     "moj-official-preproduction"]
       }
     },
     "opg-production": {
