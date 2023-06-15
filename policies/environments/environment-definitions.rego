@@ -20,7 +20,8 @@ allowed_access := [
   "instance-management",
   "read-only",
   "security-audit",
-  "data-engineer"
+  "data-engineer",
+  "reporting-operations"
 ]
 
 allowed_nuke := [
