@@ -152,5 +152,12 @@
     "destination_ip": "${laa-development}",
     "destination_port": "ANY",
     "protocol": "TCP"
+  },
+  "cp_to_mp_platforms_development_icmp": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${platforms-development}",
+    "destination_port": "ANY",
+    "protocol": "ICMP"
   }
 }
