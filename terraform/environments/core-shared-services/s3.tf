@@ -82,7 +82,7 @@ data "aws_iam_policy_document" "bucket_policy" {
 }
 
 module "s3-software-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.4.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v7.0.0"
 
   providers = {
     aws.bucket-replication = aws.bucket-replication
