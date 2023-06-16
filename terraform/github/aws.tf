@@ -34,13 +34,14 @@ data "aws_secretsmanager_secret_version" "pagerduty_token" {
 }
 
 # Get the pagerduty user api token
-data "aws_secretsmanager_secret" "pagerduty_token" {
-  name = "pagerduty_token"
+data "aws_secretsmanager_secret" "pagerduty_user_token" {
+  name = "pagerduty_userapi_token"
 }
 
-data "aws_secretsmanager_secret_version" "pagerduty_token" {
-  secret_id = data.aws_secretsmanager_secret.pagerduty_token.id
+data "aws_secretsmanager_secret_version" "pagerduty_user_token" {
+  secret_id = data.aws_secretsmanager_secret.pagerduty_userapi_token.id
 }
+
 
 # Get the GitHub CI user PAT
 data "aws_secretsmanager_secret" "github_ci_user_token" {
