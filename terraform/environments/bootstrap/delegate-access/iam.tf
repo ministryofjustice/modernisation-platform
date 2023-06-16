@@ -78,7 +78,7 @@ module "shield_response_team_role" {
 # Github OIDC provider
 module "github-oidc" {
   count  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test") ? 1 : 0
-  source = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v2.1.0"
+  source = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v3.0.0"
   providers = {
     aws = aws.workspace
   }
