@@ -30,6 +30,7 @@ jobs:
     env:
       TF_VAR_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
       TF_VAR_pagerduty_token: ${{ secrets.PAGERDUTY_TOKEN }}
+      TF_VAR_pagerduty_user_token: ${{ secrets.PAGERDUTY_USERAPI_TOKEN}}
       TF_IN_AUTOMATION: true
       AWS_REGION: "eu-west-2"
       ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
