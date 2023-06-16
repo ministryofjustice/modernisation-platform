@@ -635,6 +635,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "athena:StopQueryExecution",
       "s3:List*",
       "s3:Get*",
+      "s3:Put*",      
       "kms:Encrypt*",
       "kms:Decrypt*",
       "kms:ReEncrypt*",
