@@ -1,6 +1,6 @@
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "5.0.0"
+  version = "4.0.2"
 
   name            = "${local.application_name}-${local.environment}"
   azs             = slice(data.aws_availability_zones.available.names, 0, 3)

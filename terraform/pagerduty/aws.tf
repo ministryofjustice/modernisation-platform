@@ -38,8 +38,7 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     oasys_nonprod_alarms         = pagerduty_service_integration.oasys_nonprod_cloudwatch.integration_key
     test_alarms                  = pagerduty_service_integration.test_alarms.integration_key,
     laa_portal_nonprod_alarms    = pagerduty_service_integration.laa_portal_nonprod_cloudwatch.integration_key,
-    laa_portal_prod_alarms       = pagerduty_service_integration.laa_portal_prod_cloudwatch.integration_key,
-    example_cloudwatch           = pagerduty_service_integration.example_cloudwatch.integration_key
+    laa_portal_prod_alarms       = pagerduty_service_integration.laa_portal_prod_cloudwatch.integration_key
   })
 }
 

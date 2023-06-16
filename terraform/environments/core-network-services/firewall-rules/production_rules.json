@@ -222,5 +222,12 @@
     "destination_ip": "${laa-production}",
     "destination_port": "ANY",
     "protocol": "TCP"
+  },
+  "cp_to_mp_hmpps_production_icmp": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-production}",
+    "destination_port": "ANY",
+    "protocol": "ICMP"
   }
 }

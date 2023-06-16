@@ -359,6 +359,7 @@ resource "pagerduty_service_integration" "laa_portal_prod_cloudwatch" {
 
 # # Slack channel: #laa-portal-alerts-prod
 
+
 # Example
 resource "pagerduty_service" "example" {
   name                    = "Pager Duty example on example"
