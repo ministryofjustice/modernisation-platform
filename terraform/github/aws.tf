@@ -39,7 +39,7 @@ data "aws_secretsmanager_secret" "pagerduty_user_token" {
 }
 
 data "aws_secretsmanager_secret_version" "pagerduty_user_token" {
-  secret_id = data.aws_secretsmanager_secret.pagerduty_userapi_token.id
+  secret_id = data.aws_secretsmanager_secret.pagerduty_user_token.id
 }
 
 
