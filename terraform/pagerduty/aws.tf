@@ -41,7 +41,7 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     laa_portal_prod_alarms       = pagerduty_service_integration.laa_portal_prod_cloudwatch.integration_key,
     example_cloudwatch           = pagerduty_service_integration.example_cloudwatch.integration_key
   })
-} 
+}
 
 # Pagerduty token
 # Required for Terraform to make api calls to pagerduty, set in the console, new tokens available from #ops-engineering
@@ -60,7 +60,7 @@ resource "aws_secretsmanager_secret" "pagerduty_token" {
 resource "aws_secretsmanager_secret" "pagerduty_user_token" {
   # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
-  name        = "pagerduty_user_token"
+  name        = "pagerduty_userapi_token"
   description = "PagerDuty api user token"
   tags        = local.tags
 }

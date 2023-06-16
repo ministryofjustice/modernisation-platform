@@ -17,11 +17,10 @@
 # }
 
 # resource "pagerduty_slack_connection" "my_connection" {
-#   provider = pagerduty.pagerduty_user_api
-#   source_id = pagerduty_service.example.id
+#   source_id = pagerduty_service.my_application.id
 #   source_type = "service_reference"
 #   workspace_id = local.slack_workspace_id
-#   channel_id = "C02PFCG8M1R"  <--- Slack channel ID for the slack channel you what your alerts to go to
+#   channel_id = "C02PFCG8M1R"  <--- Slack channel ID for the slack channel you what pagerduty to use
 #   notification_type = "responder"
 #   config {
 #     events = [
@@ -39,11 +38,8 @@
 #       "incident.status_update_published",
 #       "incident.reopened"
 #     ]
-
-
 #   }
 # }
-
 
 # # Slack channel: #my-application-alarm-slack-channel
 
@@ -363,7 +359,7 @@ resource "pagerduty_service_integration" "laa_portal_prod_cloudwatch" {
 
 # # Slack channel: #laa-portal-alerts-prod
 
-# Example - development
+# Example
 resource "pagerduty_service" "example" {
   name                    = "Pager Duty example on example"
   description             = "Pager Duty example on example"
@@ -379,13 +375,11 @@ resource "pagerduty_service_integration" "example_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
-
-
 resource "pagerduty_slack_connection" "example_connection" {
-  source_id         = pagerduty_service.example.id
-  source_type       = "service_reference"
-  workspace_id      = local.slack_workspace_id
-  channel_id        = "C02PFCG8M1R"
+  source_id = pagerduty_service.example.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C02PFCG8M1R"
   notification_type = "responder"
   config {
     events = [
@@ -403,11 +397,7 @@ resource "pagerduty_slack_connection" "example_connection" {
       "incident.status_update_published",
       "incident.reopened"
     ]
-
-
   }
 }
-
-
 
 # # Slack channel: #example
