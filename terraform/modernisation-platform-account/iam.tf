@@ -1,7 +1,7 @@
 #tfsec:ignore:aws-iam-no-policy-wildcards
 #tfsec:ignore:aws-iam-enforce-mfa
 module "iam" {
-  source        = "github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins?ref=v1.0.15"
+  source        = "github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins?ref=v2.0.0"
   account_alias = "moj-modernisation-platform"
 }
 
