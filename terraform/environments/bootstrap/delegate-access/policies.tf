@@ -669,7 +669,11 @@ data "aws_iam_policy_document" "reporting-operations" {
       "iam:PassRole",
       "redshift:*",
       "redshift-data:*",
-      "redshift-serverless:*"
+      "redshift-serverless:*",
+      "kinesis:Get*",
+      "kinesis:DescribeStreamSummary",
+      "kinesis:ListStreams",
+      "kinesis:PutRecord"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
