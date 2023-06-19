@@ -182,7 +182,7 @@ module "pagerduty_networking_general" {
   depends_on = [
     aws_sns_topic.networking_general
   ]
-  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=v1.0.0"
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=v2.0.0"
   sns_topics                = [aws_sns_topic.networking_general.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["networking_cloudwatch"]
 }
