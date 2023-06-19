@@ -159,5 +159,12 @@
     "destination_ip": "${platforms-development}",
     "destination_port": "ANY",
     "protocol": "ICMP"
+  },
+  "delius_core_dev_to_delius_core_non_prod_icmp": {
+    "action": "PASS",
+    "source_ip": "${delius-core}",
+    "destination_ip": "${delius-core-nonprod}",
+    "destination_port": "ANY",
+    "protocol": "ICMP"
   }
 }
