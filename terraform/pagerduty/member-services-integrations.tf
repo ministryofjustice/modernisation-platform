@@ -35,9 +35,13 @@
 #       "incident.priority_updated",
 #       "incident.responder.added",
 #       "incident.responder.replied",
+#       "incident.action_invocation.created",
+#       "incident.action_invocation.terminated",
+#       "incident.action_invocation.updated",
 #       "incident.status_update_published",
 #       "incident.reopened"
 #     ]
+#     priorities = ["*"]
 #   }
 # }
 
@@ -59,6 +63,41 @@ resource "pagerduty_service_integration" "nomis_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
+resource "pagerduty_slack_connection" "nomis_connection" {
+  source_id = pagerduty_service.nomis.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C04E4FM3KS7"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    
+    priorities = ["*"]
+  }
+}
+
 # Slack channel: #dso_alerts_modernisation_platform
 
 # Nomis Non Prod
@@ -78,6 +117,40 @@ resource "pagerduty_service_integration" "nomis_nonprod_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
+resource "pagerduty_slack_connection" "nomis_nonprod_connection" {
+  source_id = pagerduty_service.nomis_nonprod.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C04QGQML68P"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
 # Slack channel: #dso_alerts_devtest_modernisation_platform
 
 # OASys
@@ -94,6 +167,40 @@ resource "pagerduty_service_integration" "oasys_cloudwatch" {
   name    = data.pagerduty_vendor.cloudwatch.name
   service = pagerduty_service.oasys.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "oasys_connection" {
+  source_id = pagerduty_service.oasys.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C04E4FM3KS7"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
 }
 
 # Slack channel: #dso_alerts_modernisation_platform
@@ -115,6 +222,40 @@ resource "pagerduty_service_integration" "oasys_nonprod_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
+resource "pagerduty_slack_connection" "oasys_nonprod_connection" {
+  source_id = pagerduty_service.oasys_nonprod.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C04QGQML68P"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
 # Slack channel: #dso_alerts_devtest_modernisation_platform
 
 # LAA MLRA Non Prod
@@ -131,6 +272,40 @@ resource "pagerduty_service_integration" "laa_mlra_nonprod_cloudwatch" {
   name    = data.pagerduty_vendor.cloudwatch.name
   service = pagerduty_service.laa_mlra_nonprod.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "laa_mlra_nonprod_connection" {
+  source_id = pagerduty_service.laa_mlra_nonprod.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C022CSULB1V"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
 }
 
 # # Slack channel: # laa-alerts-mlra-non-prod
@@ -151,6 +326,40 @@ resource "pagerduty_service_integration" "laa_mlra_prod_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
+resource "pagerduty_slack_connection" "laa_mlra_prod_connection" {
+  source_id = pagerduty_service.laa_mlra_prod.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C022ZQYR30C"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
 # # Slack channel: # laa-alerts-mlra-prod
 
 # LAA OAS - Non Prod
@@ -168,6 +377,7 @@ resource "pagerduty_service_integration" "laa_oas_nonprod_cloudwatch" {
   service = pagerduty_service.laa_oas_nonprod.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
+
 
 # # Slack channel: #laa-obiee-alerts-nonprod
 
@@ -207,6 +417,40 @@ resource "pagerduty_service_integration" "jitbit_nonprod_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
+resource "pagerduty_slack_connection" "jitbit_nonprod_connection" {
+  source_id = pagerduty_service.jitbit_nonprod.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C04U3GUMKRR"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
 # Slack channel: #hmpps-iaps-alerts-non-prod
 
 resource "pagerduty_service" "iaps_nonprod" {
@@ -222,6 +466,40 @@ resource "pagerduty_service_integration" "iaps_nonprod_cloudwatch" {
   name    = data.pagerduty_vendor.cloudwatch.name
   service = pagerduty_service.iaps_nonprod.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "iaps_nonprod_connection" {
+  source_id = pagerduty_service.iaps_nonprod.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C04UC2L4Z47"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
 }
 
 # Slack channel: #hmpps-iaps-alerts-prod
@@ -241,7 +519,41 @@ resource "pagerduty_service_integration" "iaps_prod_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
-# Slack channel: # TBC
+resource "pagerduty_slack_connection" "iaps_prod_connection" {
+  source_id = pagerduty_service.iaps_prod.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C0502MCCYTA"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
+# Slack channel: #hmpps-iaps-alerts-prod
 
 # LAA MojFin - Prod
 resource "pagerduty_service" "laa_mojfin_prod" {
@@ -257,6 +569,40 @@ resource "pagerduty_service_integration" "laa_mojfin_prod_cloudwatch" {
   name    = data.pagerduty_vendor.cloudwatch.name
   service = pagerduty_service.laa_mojfin_prod.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "laa_mojfin_prod_connection" {
+  source_id = pagerduty_service.laa_mojfin_prod.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C048QNJRWP3"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
 }
 
 # # Slack channel: #laa-alerts-mojfin-prod
@@ -275,6 +621,41 @@ resource "pagerduty_service_integration" "hmpps_shef_dba_high_priority" {
   service = pagerduty_service.hmpps_shef_dba_high_priority.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
+
+resource "pagerduty_slack_connection" "hmpps_shef_dba_high_priority_connection" {
+  source_id = pagerduty_service.hmpps_shef_dba_high_priority.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "CDLAJTGRG"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
 # Slack channel: dba_alerts_prod
 
 resource "pagerduty_service" "hmpps_shef_dba_low_priority" {
@@ -290,6 +671,41 @@ resource "pagerduty_service_integration" "hmpps_shef_dba_low_priority" {
   service = pagerduty_service.hmpps_shef_dba_low_priority.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
+
+resource "pagerduty_slack_connection" "hmpps_shef_dba_low_priority_connection" {
+  source_id = pagerduty_service.hmpps_shef_dba_low_priority.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "CDLAJTGRG"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
 # Slack channel: dba_alerts_prod
 
 resource "pagerduty_service" "hmpps_shef_dba_non_prod" {
@@ -305,6 +721,41 @@ resource "pagerduty_service_integration" "hmpps_shef_dba_non_prod" {
   service = pagerduty_service.hmpps_shef_dba_non_prod.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
+
+resource "pagerduty_slack_connection" "hmpps_shef_dba_non_prod_connection" {
+  source_id = pagerduty_service.hmpps_shef_dba_non_prod.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "CE7F6CQGH"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
 # Slack channel: dba_alerts_devtest
 
 resource "pagerduty_service" "test_alarms" {
@@ -358,47 +809,3 @@ resource "pagerduty_service_integration" "laa_portal_prod_cloudwatch" {
 }
 
 # # Slack channel: #laa-portal-alerts-prod
-
-
-# Example
-resource "pagerduty_service" "example" {
-  name                    = "Pager Duty example on example"
-  description             = "Pager Duty example on example"
-  auto_resolve_timeout    = 345600
-  acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
-  alert_creation          = "create_alerts_and_incidents"
-}
-
-resource "pagerduty_service_integration" "example_cloudwatch" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.example.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
-}
-
-resource "pagerduty_slack_connection" "example_connection" {
-  source_id         = pagerduty_service.example.id
-  source_type       = "service_reference"
-  workspace_id      = local.slack_workspace_id
-  channel_id        = "C02PFCG8M1R"
-  notification_type = "responder"
-  config {
-    events = [
-      "incident.triggered",
-      "incident.acknowledged",
-      "incident.escalated",
-      "incident.resolved",
-      "incident.reassigned",
-      "incident.annotated",
-      "incident.unacknowledged",
-      "incident.delegated",
-      "incident.priority_updated",
-      "incident.responder.added",
-      "incident.responder.replied",
-      "incident.status_update_published",
-      "incident.reopened"
-    ]
-  }
-}
-
-# # Slack channel: #example
