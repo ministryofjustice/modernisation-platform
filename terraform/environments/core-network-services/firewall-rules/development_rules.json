@@ -160,10 +160,10 @@
     "destination_port": "ANY",
     "protocol": "ICMP"
   },
-  "delius_core_dev_to_delius_core_non_prod_icmp": {
+  "hmpps_development_to_delius_core_development_icmp": {
     "action": "PASS",
-    "source_ip": "${delius-core}",
-    "destination_ip": "${delius-core-nonprod}",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-core-development}",
     "destination_port": "ANY",
     "protocol": "ICMP"
   }
