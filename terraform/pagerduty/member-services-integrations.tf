@@ -377,10 +377,10 @@ resource "pagerduty_service_integration" "example_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "example_connection" {
-  source_id = pagerduty_service.example.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C02PFCG8M1R"
+  source_id         = pagerduty_service.example.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C02PFCG8M1R"
   notification_type = "responder"
   config {
     events = [
