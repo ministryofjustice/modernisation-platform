@@ -1,6 +1,6 @@
 locals {
 
-  application_name = "moj-official"
+  application_name = "moj-network-operations-centre"
 
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 

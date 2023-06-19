@@ -119,7 +119,7 @@ module "state-bucket" {
           days          = 90
           storage_class = "STANDARD_IA"
           }, {
-          days          = 365
+          days          = 700
           storage_class = "GLACIER"
         }
       ]
@@ -131,7 +131,7 @@ module "state-bucket" {
           days          = 90
           storage_class = "STANDARD_IA"
           }, {
-          days          = 365
+          days          = 700
           storage_class = "GLACIER"
         }
       ]

@@ -37,6 +37,7 @@ expected =
     "maatdb",
     "mlra",
     "mojfin",
+    "moj-network-operations-centre",
     "nomis",
     "nomis-combined-reporting",
     "nomis-data-hub",

@@ -355,7 +355,7 @@ resource "aws_ssoadmin_account_assignment" "data_engineer" {
   target_id   = local.environment_management.account_ids[terraform.workspace]
   target_type = "AWS_ACCOUNT"
 }
-    
+
 resource "aws_ssoadmin_account_assignment" "reporting-operations" {
 
   for_each = {
@@ -377,4 +377,4 @@ resource "aws_ssoadmin_account_assignment" "reporting-operations" {
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
   target_type = "AWS_ACCOUNT"
-}    
+}
