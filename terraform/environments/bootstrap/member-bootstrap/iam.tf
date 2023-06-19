@@ -100,6 +100,7 @@ data "aws_iam_policy_document" "member-access" {
       "ec2:*PlacementGroup*",
       "ec2:*IdFormat*",
       "ec2:*Spot*",
+      "ec2:*VpcEndpointService*",
       "ecr-public:*",
       "ecr:*",
       "ecs:*",
