@@ -657,7 +657,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "glue:GetPartition",
       "glue:StartJobRun",
       "glue:BatchStopJobRun",
-      "glue:ResetJobBookmark",	
+      "glue:ResetJobBookmark",
       "logs:DescribeLogStreams",
       "logs:GetLogEvents",
       "dynamodb:BatchGet*",
