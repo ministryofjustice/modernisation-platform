@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Integrating CloudWatch Alarms with PagerDuty and Slack
-last_reviewed_on: 2023-03-20
+last_reviewed_on: 2023-06-20
 review_in: 6 months
 ---
 
@@ -27,19 +27,14 @@ Configure your alarms to notify your SNS topic created in step 1.
 
 1. In the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/) create a PagerDuty service [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/pagerduty/member-services-integrations.tf)
 
-1. Copy the top section of code to create a `pagerduty_service` and `pagerduty_service_integration` for your application.
+1. Copy the top section of code to create a `pagerduty_service`, `pagerduty_service_integration` and `pagerduty_slack_connection` if you want to connect you pager duty service to a slack channel for your application.
 
 1. Add the `pagerduty_service_integration` integration key [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/pagerduty/aws.tf#L14)
 
 1. Raise a PR for approval by the Modernisation Platform terraform.
 
-### 4. Link the PagerDuty service to your Slack channel
 
-Once the above PR is merged, in PagerDuty, go to the new service and add and configure the Slack integration on the "Integrations" tab.
-
-The Modernisation Platform team can help with this if you do not have a PagerDuty user.
-
-### 5. Link your SNS topic to your PagerDuty services
+### 4. Link your SNS topic to your PagerDuty services
 
 Add the following code to your application infrastructure in the modernisation platform environments repository, replacing as appropriate, a full example can be seen [here](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/terraform/environments/sprinkler/monitoring.tf)
 
