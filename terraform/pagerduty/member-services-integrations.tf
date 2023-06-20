@@ -64,10 +64,10 @@ resource "pagerduty_service_integration" "nomis_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "nomis_connection" {
-  source_id = pagerduty_service.nomis.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C04E4FM3KS7"
+  source_id         = pagerduty_service.nomis.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C04E4FM3KS7"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
@@ -93,7 +93,7 @@ resource "pagerduty_slack_connection" "nomis_connection" {
       "incident.status_update_published",
       "incident.reopened"
     ]
-    
+
     priorities = ["*"]
   }
 }
@@ -118,10 +118,10 @@ resource "pagerduty_service_integration" "nomis_nonprod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "nomis_nonprod_connection" {
-  source_id = pagerduty_service.nomis_nonprod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C04QGQML68P"
+  source_id         = pagerduty_service.nomis_nonprod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C04QGQML68P"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
@@ -170,10 +170,10 @@ resource "pagerduty_service_integration" "oasys_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "oasys_connection" {
-  source_id = pagerduty_service.oasys.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C04E4FM3KS7"
+  source_id         = pagerduty_service.oasys.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C04E4FM3KS7"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
@@ -223,10 +223,10 @@ resource "pagerduty_service_integration" "oasys_nonprod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "oasys_nonprod_connection" {
-  source_id = pagerduty_service.oasys_nonprod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C04QGQML68P"
+  source_id         = pagerduty_service.oasys_nonprod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C04QGQML68P"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
@@ -275,10 +275,10 @@ resource "pagerduty_service_integration" "laa_mlra_nonprod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "laa_mlra_nonprod_connection" {
-  source_id = pagerduty_service.laa_mlra_nonprod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C022CSULB1V"
+  source_id         = pagerduty_service.laa_mlra_nonprod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C022CSULB1V"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
@@ -327,10 +327,10 @@ resource "pagerduty_service_integration" "laa_mlra_prod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "laa_mlra_prod_connection" {
-  source_id = pagerduty_service.laa_mlra_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C022ZQYR30C"
+  source_id         = pagerduty_service.laa_mlra_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C022ZQYR30C"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
@@ -418,10 +418,10 @@ resource "pagerduty_service_integration" "jitbit_nonprod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "jitbit_nonprod_connection" {
-  source_id = pagerduty_service.jitbit_nonprod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C04U3GUMKRR"
+  source_id         = pagerduty_service.jitbit_nonprod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C04U3GUMKRR"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
@@ -469,10 +469,10 @@ resource "pagerduty_service_integration" "iaps_nonprod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "iaps_nonprod_connection" {
-  source_id = pagerduty_service.iaps_nonprod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C04UC2L4Z47"
+  source_id         = pagerduty_service.iaps_nonprod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C04UC2L4Z47"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
@@ -520,10 +520,10 @@ resource "pagerduty_service_integration" "iaps_prod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "iaps_prod_connection" {
-  source_id = pagerduty_service.iaps_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C0502MCCYTA"
+  source_id         = pagerduty_service.iaps_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C0502MCCYTA"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
@@ -572,10 +572,10 @@ resource "pagerduty_service_integration" "laa_mojfin_prod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "laa_mojfin_prod_connection" {
-  source_id = pagerduty_service.laa_mojfin_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C048QNJRWP3"
+  source_id         = pagerduty_service.laa_mojfin_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C048QNJRWP3"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
@@ -623,10 +623,10 @@ resource "pagerduty_service_integration" "hmpps_shef_dba_high_priority" {
 }
 
 resource "pagerduty_slack_connection" "hmpps_shef_dba_high_priority_connection" {
-  source_id = pagerduty_service.hmpps_shef_dba_high_priority.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "CDLAJTGRG"
+  source_id         = pagerduty_service.hmpps_shef_dba_high_priority.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "CDLAJTGRG"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
@@ -673,10 +673,10 @@ resource "pagerduty_service_integration" "hmpps_shef_dba_low_priority" {
 }
 
 resource "pagerduty_slack_connection" "hmpps_shef_dba_low_priority_connection" {
-  source_id = pagerduty_service.hmpps_shef_dba_low_priority.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "CDLAJTGRG"
+  source_id         = pagerduty_service.hmpps_shef_dba_low_priority.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "CDLAJTGRG"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
@@ -723,10 +723,10 @@ resource "pagerduty_service_integration" "hmpps_shef_dba_non_prod" {
 }
 
 resource "pagerduty_slack_connection" "hmpps_shef_dba_non_prod_connection" {
-  source_id = pagerduty_service.hmpps_shef_dba_non_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "CE7F6CQGH"
+  source_id         = pagerduty_service.hmpps_shef_dba_non_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "CE7F6CQGH"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
