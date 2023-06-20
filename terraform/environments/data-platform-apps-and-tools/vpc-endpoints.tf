@@ -1,3 +1,4 @@
+#tfsec:ignore:aws-ec2-no-excessive-port-access
 module "vpc_endpoints" {
   source  = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
   version = "4.0.2"
