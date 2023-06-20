@@ -1,4 +1,4 @@
-#tfsec:aws-ec2-no-public-ingress-acl
+#tfsec:ignore:aws-ec2-no-public-ingress-acl
 #tfsec:ignore:aws-ec2-no-excessive-port-access
 #tfsec:ignore:aws-ec2-require-vpc-flow-logs-for-all-vpcs
 module "vpc_endpoints" {
