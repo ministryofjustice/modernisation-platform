@@ -156,7 +156,7 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail_replication" {
 }
 
 module "cloudtrail-s3-replication-role" {
-  source             = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role?ref=v3.0.0"
+  source             = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role?ref=v4.0.0"
   buckets            = [module.s3-bucket-cloudtrail.bucket.arn]
   replication_bucket = "modernisation-platform-logs-cloudtrail-replication"
   suffix_name        = "-cloudtrail"
@@ -289,7 +289,7 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
 }
 
 module "cloudtrail-s3-logging-replication-role" {
-  source             = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role?ref=v3.0.0"
+  source             = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role?ref=v4.0.0"
   buckets            = [module.s3-bucket-cloudtrail-logging.bucket.arn]
   replication_bucket = "modernisation-platform-logs-cloudtrail-logging-replication"
   suffix_name        = "-cloudtrail-logging"
