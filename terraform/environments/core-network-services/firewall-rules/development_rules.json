@@ -138,5 +138,33 @@
     "destination_ip": "${noms-mgmt-vnet}",
     "destination_port": "53",
     "protocol": "UDP"
+  },
+  "laa_appstream_to_mp_laa_development": {
+    "action": "PASS",
+    "source_ip": "${laa-appstream-vpc}",
+    "destination_ip": "${laa-development}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "laa_appstream_additional_to_mp_laa_development": {
+    "action": "PASS",
+    "source_ip": "${laa-appstream-vpc_additional}",
+    "destination_ip": "${laa-development}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "cp_to_mp_platforms_development_icmp": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${platforms-development}",
+    "destination_port": "ANY",
+    "protocol": "ICMP"
+  },
+  "hmpps_development_to_delius_core_development_icmp": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-core-development}",
+    "destination_port": "ANY",
+    "protocol": "ICMP"
   }
 }

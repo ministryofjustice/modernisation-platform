@@ -5,7 +5,7 @@ locals {
 
 module "member-access" {
   count                  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v3.0.0"
   account_id             = local.modernisation_platform_account.id
   additional_trust_roles = [one(data.aws_iam_roles.github_actions_role.arns), one(data.aws_iam_roles.member-sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access[0].id
@@ -37,6 +37,10 @@ data "aws_iam_policy_document" "member-access" {
       "backup-storage:MountCapsule",
       "cloudfront:*",
       "cloudwatch:*",
+      "cloudtrail:AddTags",
+      "cloudtrail:CancelQuery",
+      "cloudtrail:Create*",
+      "cloudtrail:List*",
       "codebuild:*",
       "codedeploy:*",
       "codepipeline:*",
@@ -240,7 +244,7 @@ resource "aws_iam_role_policy_attachment" "testing_member_infrastructure_access_
 # MemberInfrastructureAccessUSEast
 module "member-access-us-east" {
   count                  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v3.0.0"
   account_id             = local.modernisation_platform_account.id
   additional_trust_roles = [one(data.aws_iam_roles.github_actions_role.arns), one(data.aws_iam_roles.member-sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access-us-east[0].id
@@ -258,8 +262,8 @@ data "aws_iam_policy_document" "member-access-us-east" {
     #checkov:skip=CKV_AWS_110
     #checkov:skip=CKV2_AWS_40
     #checkov:skip=CKV_AWS_356: Needs to access multiple resources
-    effect    = "Allow"
-    actions   = ["acm:*",
+    effect = "Allow"
+    actions = ["acm:*",
       "logs:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097

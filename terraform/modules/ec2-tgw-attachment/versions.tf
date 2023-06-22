@@ -1,12 +1,12 @@
 terraform {
   required_providers {
     aws = {
-      version               = ">= 3.47.0"
+      version               = "~> 5.0"
       source                = "hashicorp/aws"
       configuration_aliases = [aws.transit-gateway-host, aws.transit-gateway-tenant]
     }
     time = {
-      version = ">= 0.6.0"
+      version = ">= 0.9.1"
       source  = "hashicorp/time"
     }
   }

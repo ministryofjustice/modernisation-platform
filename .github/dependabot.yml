@@ -140,6 +140,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/hmpps-oem"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/laa-ccms-infra-azure-ad-sso"
     schedule:
       interval: "daily"
@@ -161,6 +165,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/mlra"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/environments/moj-network-operations-centre"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
@@ -293,10 +301,6 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/kms"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/license-manager"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"

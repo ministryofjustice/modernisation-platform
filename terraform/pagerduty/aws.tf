@@ -52,3 +52,14 @@ resource "aws_secretsmanager_secret" "pagerduty_token" {
   description = "PagerDuty api token"
   tags        = local.tags
 }
+
+# Pagerduty user token
+# Required for Terraform to make api calls to pagerduty, set in the console, new tokens available from #ops-engineering
+#tfsec:ignore:aws-ssm-secret-use-customer-key
+resource "aws_secretsmanager_secret" "pagerduty_user_token" {
+  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "pagerduty_userapi_token"
+  description = "PagerDuty api user token"
+  tags        = local.tags
+}

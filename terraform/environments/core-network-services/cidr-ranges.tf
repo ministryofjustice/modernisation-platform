@@ -44,6 +44,7 @@ locals {
     nomisapi-t3-root-vnet          = "10.47.0.0/26"
     nomisapi-preprod-root-vnet     = "10.47.0.64/26"
     nomisapi-prod-root-vnet        = "10.47.0.128/26"
+    delius-core-development        = "10.161.20.0/22"
 
     # laa landing zone cidr ranges
     laa-lz-development             = "10.202.0.0/20"
@@ -53,6 +54,8 @@ locals {
     laa-lz-production              = "10.205.0.0/20"
     laa-lz-shared-services-nonprod = "10.200.0.0/20"
     laa-lz-shared-services-prod    = "10.200.16.0/20"
+    laa-appstream-vpc              = "10.200.32.0/19"
+    laa-appstream-vpc_additional   = "10.200.68.0/22"
 
   }
 

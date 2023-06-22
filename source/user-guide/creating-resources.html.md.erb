@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating resources in the Modernisation Platform
-last_reviewed_on: 2023-03-03
+last_reviewed_on: 2023-06-20
 review_in: 6 months
 ---
 
@@ -39,3 +39,11 @@ These resources are preconfigured with a backend, providers etc, all that you ne
 
 ## Next Steps
 Once you have defined your infrastructure as code you can [deploy your infrastructure](deploying-your-infrastructure.html) to the Modernisation Platform.
+
+## Non Standard infrastructure
+
+In order to maintain security some actions are not allowed in the environments repository and do not have the relevant permissions, for example creating IAM users, or VPCs.
+
+However there are times when an application may reasonably want to create these resources, for example create a user for use with SES.
+
+If you need to create any infrastructure which is not allowed in the environments repository, it can be created here - [Modernisation Platform environments folders](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments), in the relevant application folder.  The Modernisation Platform team will need to approve any PRs adding code to this repository.

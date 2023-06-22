@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating environments in the Modernisation Platform
-last_reviewed_on: 2023-06-09
+last_reviewed_on: 2023-06-15
 review_in: 6 months
 ---
 
@@ -32,7 +32,9 @@ Users who are not part of the MoJ GitHub organisation will need to be added as c
 
 ### Access
 
-This is the level of access for the GitHub team to the Modernisation Platform. The options are as follows:
+This is the level of access for the GitHub team to the Modernisation Platform.
+A full list of permissions for the different access levels can be found [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/policies.tf)
+The options are as follows:
 
 #### view-only
 
@@ -86,23 +88,26 @@ Once the migration is complete for an environment this role should be removed.
 
 The instance-management role is a role given to assist database administrators.
 
-- Created so that you would have to assume a role to carry out database management tasks.
-- We didn't want to just bloat the developer role with permissions that would rarely be used.
-- The role contains mainly RDS and EC2 permissions.
-
-This is a new role created in Feb 2023, and if more permissions are required for database admins, we're happy to adjust the policy.
+- Log into the console
+- Read only access to resources including things like logs and S3 buckets
+- Start, stop and reboot EC2 instances
+- Create and copy Snapshots
+- [Connect to instances via SSM](accessing-ec2s.html)
+- Active Directory permissions
 
 #### security-audit
 
 - Log into the console
-- See resources and metadata useful to security operations teams and security audit teams.
-- Makes use of AWS managed SecurityAudit policy and is not generally configurable beyond that.
+- See resources and metadata useful to security operations teams and security audit teams
+- Makes use of AWS managed SecurityAudit policy
 
-#### reporting-operation
+#### reporting-operations
 
-Created so that SSM and the AWS CLI were not required to manage various components that would be better managed in the AWS console.
-
-- TBC June 2023
+- DMS Start, stop
+- SQL Workbench
+- Athena
+- Glue
+- Redshift
 
 #### data-engineering
 
@@ -110,7 +115,6 @@ Created for data engineers to have developer permissions as well as glue and ath
 
 - Log into the console.
 - Data engineering permissions.
-- Didn't want to bloat the developer role.
 
 #### administrator
 
