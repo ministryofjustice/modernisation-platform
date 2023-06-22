@@ -26,8 +26,11 @@ resource "github_repository" "default" {
   topics                 = concat(local.topics, var.topics)
 
   security_and_analysis {
-    advanced_security {
-      status = "enabled"
+    dynamic "advanced_security" {
+    for_each = var.visibility == "public" ? [] : [1]
+      content {
+        status = "enabled"
+      }
     }
     secret_scanning {
       status = "enabled"
