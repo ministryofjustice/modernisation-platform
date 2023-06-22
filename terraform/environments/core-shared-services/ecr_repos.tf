@@ -70,12 +70,14 @@ module "delius_jitbit_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-test"]}:user/cicd-member-user",
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-preproduction"]}:user/cicd-member-user",
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-production"]}:user/cicd-member-user"
   ]
 
   pull_principals = [
     local.environment_management.account_ids["delius-jitbit-development"],
+    local.environment_management.account_ids["delius-jitbit-test"],
     local.environment_management.account_ids["delius-jitbit-preproduction"],
     local.environment_management.account_ids["delius-jitbit-production"]
   ]
