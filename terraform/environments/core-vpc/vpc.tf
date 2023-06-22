@@ -233,7 +233,6 @@ resource "aws_iam_role_policy" "member-delegation" {
       {
         "Effect" : "Allow",
         "Action" : [
-          "route53:AssociateVPCWithHostedZone",
           "route53:List*",
           "route53:Get*",
           "route53resolver:CreateResolverEndpoint",
