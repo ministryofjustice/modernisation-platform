@@ -27,6 +27,13 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
+  "cp_to_hmpps_development_pgres": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "5432",
+    "protocol": "TCP"
+  },
   "laa_development_to_mp_laa_development": {
     "action": "PASS",
     "source_ip": "${laa-lz-development}",
@@ -75,6 +82,13 @@
     "destination_ip": "0.0.0.0/0",
     "destination_port": "5721",
     "protocol": "UDP"
+  },
+  "hmpps_development_to_pgres_tcp": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "5432",
+    "protocol": "TCP"
   },
   "noms_test_dr_vnet_to_mp_hmpps_development": {
     "action": "PASS",
