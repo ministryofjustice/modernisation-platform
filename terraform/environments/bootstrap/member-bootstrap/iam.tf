@@ -41,6 +41,7 @@ data "aws_iam_policy_document" "member-access" {
       "cloudtrail:CancelQuery",
       "cloudtrail:Create*",
       "cloudtrail:StartLogging",
+      "cloudtrail:PutEventSelectors",
       "cloudtrail:DescribeTrails",
       "cloudtrail:Get*",
       "cloudtrail:List*",
