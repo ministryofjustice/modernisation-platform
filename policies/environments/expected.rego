@@ -34,6 +34,7 @@ expected =
     "laa-oem",
     "long-term-storage",
     "mi-platform",
+    "maat",
     "maatdb",
     "mlra",
     "mojfin",
