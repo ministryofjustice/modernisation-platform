@@ -185,6 +185,7 @@ expected =
           "ccms-ebs-development",
           "laa-ccms-infra-azure-ad-sso",
           "laa-oem-development",
+          "maat-development",
           "maatdb-development",
           "mlra-development",
           "oas-development",
@@ -228,6 +229,7 @@ expected =
           "mlra-test",
           "ccms-ebs-test",
           "laa-oem-test",
+          "maat-test",
           "oas-test",
           "portal-test",
           "mojfin-test"
@@ -274,6 +276,7 @@ expected =
         "accounts": [
           "mlra-production",
           "ccms-ebs-production",
+          "maat-production",
           "oas-production",
           "portal-production",
           "laa-oem-production",
@@ -287,6 +290,7 @@ expected =
         "accounts": [
           "mlra-preproduction",
           "ccms-ebs-preproduction",
+          "maat-preproduction",
           "oas-preproduction",
           "portal-preproduction",
           "laa-oem-preproduction"

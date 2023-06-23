@@ -6,6 +6,7 @@
         "accounts": [
           "mlra-production",
           "ccms-ebs-production",
+          "maat-production",
           "oas-production",
           "portal-production",
           "laa-oem-production",
