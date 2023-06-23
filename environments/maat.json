@@ -23,7 +23,7 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "llaa-aws-infrastructure",
+          "github_slug": "laa-aws-infrastructure",
           "level": "developer"
          }
       ]
