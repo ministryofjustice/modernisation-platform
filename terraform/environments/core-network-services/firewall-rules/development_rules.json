@@ -174,11 +174,18 @@
     "destination_port": "ANY",
     "protocol": "ICMP"
   },
-  "hmpps_development_to_delius_core_development_icmp": {
+  "delius_core_dev_to_hmpps_development_ldap": {
     "action": "PASS",
-    "source_ip": "${hmpps-development}",
-    "destination_ip": "${delius-core-dev}",
-    "destination_port": "ANY",
-    "protocol": "ICMP"
+    "source_ip": "${delius-core-dev}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "389",
+    "protocol": "TCP"
+  },
+  "delius_mis_dev_to_hmpps_development_ldap": {
+    "action": "PASS",
+    "source_ip": "${delius-mis-dev}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "389",
+    "protocol": "TCP"
   }
 }
