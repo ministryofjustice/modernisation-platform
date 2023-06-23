@@ -6,6 +6,7 @@
         "accounts": [
           "mlra-preproduction",
           "ccms-ebs-preproduction",
+          "maat-preproduction",
           "oas-preproduction",
           "portal-preproduction",
           "laa-oem-preproduction"
