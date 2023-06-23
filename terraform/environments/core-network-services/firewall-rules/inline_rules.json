@@ -6,25 +6,11 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "mp_dev_test_to_internet_http": {
-    "action": "PASS",
-    "source_ip": "${mp-development-test}",
-    "destination_ip": "0.0.0.0/0",
-    "destination_port": "80",
-    "protocol": "TCP"
-  },
   "mp_dev_test_to_internet_https": {
     "action": "PASS",
     "source_ip": "${mp-development-test}",
     "destination_ip": "0.0.0.0/0",
     "destination_port": "443",
-    "protocol": "TCP"
-  },
-  "mp_preprod_prod_to_internet_http": {
-    "action": "PASS",
-    "source_ip": "${mp-preproduction-production}",
-    "destination_ip": "0.0.0.0/0",
-    "destination_port": "80",
     "protocol": "TCP"
   },
   "mp_preprod_prod_to_internet_https": {
@@ -34,28 +20,14 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "hmpps_development_to_internet_monitoring": {
+  "equip_development_to_internet_monitoring": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
     "destination_ip": "0.0.0.0/0",
     "destination_port": "5721",
     "protocol": "TCP"
   },
-  "hmpps_test_to_internet_monitoring": {
-    "action": "PASS",
-    "source_ip": "${hmpps-test}",
-    "destination_ip": "0.0.0.0/0",
-    "destination_port": "5721",
-    "protocol": "TCP"
-  },
-  "hmpps_preprod_to_internet_monitoring": {
-    "action": "PASS",
-    "source_ip": "${hmpps-preproduction}",
-    "destination_ip": "0.0.0.0/0",
-    "destination_port": "5721",
-    "protocol": "TCP"
-  },
-  "hmpps_prod_to_internet_monitoring": {
+  "equip_prod_to_internet_monitoring": {
     "action": "PASS",
     "source_ip": "${hmpps-production}",
     "destination_ip": "0.0.0.0/0",
