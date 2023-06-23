@@ -177,7 +177,7 @@
   "hmpps_development_to_delius_core_development_icmp": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
-    "destination_ip": "${delius-core-development}",
+    "destination_ip": "${delius-core-dev}",
     "destination_port": "ANY",
     "protocol": "ICMP"
   }
