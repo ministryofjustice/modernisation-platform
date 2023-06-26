@@ -34,7 +34,13 @@ resource "aws_kms_alias" "environment_logging" {
   target_key_id = aws_kms_key.environment_logging.key_id
 }
 
+# Static code analysis ignores:
+# - CKV_AWS_109 and CKV_AWS_111: Ignore warnings regarding resource = ["*"]. See https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html
+#   Specifically: "In a key policy, the value of the Resource element is "*", which means "this KMS key." The asterisk ("*") identifies the KMS key to which the key policy is attached."
 data "aws_iam_policy_document" "environment_logging" {
+  # checkov:skip=CKV_AWS_109: "Key policy requires asterisk resource"
+  # checkov:skip=CKV_AWS_111: "Key policy requires asterisk resource"
+  # checkov:skip=CKV_AWS_356: "Account root user requires full access"
   statement {
     sid    = "Enable IAM User Permissions"
     effect = "Allow"
