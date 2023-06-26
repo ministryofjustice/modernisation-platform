@@ -16,8 +16,8 @@
         {
           "github_slug": "laa-aws-infrastructure",
           "level": "developer"
-         }
-       ]
+        }
+      ]
     },
     {
       "name": "preproduction",
@@ -25,7 +25,7 @@
         {
           "github_slug": "laa-aws-infrastructure",
           "level": "developer"
-         }
+        }
       ]
     },
     {
