@@ -45,7 +45,7 @@ Modernisation Platform users can use these modules in their infrastructure. They
 | [modernisation-platform-terraform-ssm-patching](https://github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching)                             | Module that automates the patching of ec2 instances via ssm. It creates an s3 bucket for log storage, as well as maintnance windows, tasks, resource groups, and patch baselines.
 | [modernisation-platform-terraform-ec2-instance](https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-instance)         | Module for creating an EC2 instance |
 | [modernisation-platform-terraform-ec2-autoscaling-group](https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-autoscaling-group)         | Module for creating an EC2 autoscaling group |
-| [modernisation-platform-terraform-lambda-function](https://github.com/ministryofjustice/modernisation-platform-terraform-lambda-function)         | Module for creating an Lambda Functuction |
+| [modernisation-platform-terraform-lambda-function](https://github.com/ministryofjustice/modernisation-platform-terraform-lambda-function)         | Module for creating a Lambda Function |
 
 ### Terraform modules - used by the core platform
 
