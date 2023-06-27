@@ -170,7 +170,7 @@
   "hmpps_preproduction_to_pgres_tcp": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction}",
-    "destination_ip": "0.0.0.0/0",
+    "destination_ip": "${cloud-platform}",
     "destination_port": "5432",
     "protocol": "TCP"
   },  
