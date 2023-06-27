@@ -6,3 +6,11 @@ data "http" "environments_file" {
 data "aws_region" "current" {}
 
 data "aws_availability_zones" "available" {}
+
+##################################################
+# Data Platform Apps and Tools Airflow S3
+##################################################
+
+data "aws_s3_bucket" "airflow" {
+  bucket = local.environment_configuration.airflow_s3_bucket
+}
