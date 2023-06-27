@@ -55,6 +55,13 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
+  "cp_to_hmpps_development_oracle": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
   "cp_to_mp_laa_development": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
@@ -82,6 +89,13 @@
     "destination_ip": "0.0.0.0/0",
     "destination_port": "5721",
     "protocol": "UDP"
+  },
+  "hmpps_development_to_oracle_tcp": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "1521",
+    "protocol": "TCP"
   },
   "hmpps_development_to_pgres_tcp": {
     "action": "PASS",
