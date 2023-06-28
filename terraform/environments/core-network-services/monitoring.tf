@@ -24,7 +24,7 @@ module "pagerduty_route53" {
   depends_on = [
     aws_sns_topic.route53_monitoring
   ]
-  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=v2.0.0"
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4"
   sns_topics                = [aws_sns_topic.route53_monitoring.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["ddos_cloudwatch"]
 }
@@ -33,7 +33,7 @@ module "pagerduty_transit_gateway_production" {
   depends_on = [
     aws_sns_topic.tgw_monitoring_production
   ]
-  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=v2.0.0"
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4"
   sns_topics                = [aws_sns_topic.tgw_monitoring_production.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["tgw_cloudwatch"]
 }
@@ -182,7 +182,7 @@ module "pagerduty_networking_general" {
   depends_on = [
     aws_sns_topic.networking_general
   ]
-  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=v2.0.0"
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4"
   sns_topics                = [aws_sns_topic.networking_general.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["networking_cloudwatch"]
 }

@@ -2,7 +2,7 @@
 
 module "instance-scheduler-access" {
   count                  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v3.0.0"
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648"
   account_id             = local.environment_management.account_ids["core-shared-services-production"]
   additional_trust_roles = [format("arn:aws:iam::%s:role/InstanceSchedulerLambdaFunctionPolicy", local.environment_management.account_ids["core-shared-services-production"])]
   policy_arn             = aws_iam_policy.instance-scheduler-access[0].id
@@ -60,7 +60,7 @@ resource "aws_iam_policy" "instance-scheduler-access" {
 
 module "testing_instance-scheduler-access" {
   count                  = terraform.workspace == "testing-test" ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v3.0.0"
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648"
   account_id             = local.environment_management.account_ids["core-shared-services-production"]
   additional_trust_roles = [format("arn:aws:iam::%s:role/InstanceSchedulerLambdaFunctionPolicy", local.environment_management.account_ids["core-shared-services-production"]), format("arn:aws:iam::%s:root", local.environment_management.account_ids["testing-test"])]
   policy_arn             = aws_iam_policy.instance-scheduler-access[0].id

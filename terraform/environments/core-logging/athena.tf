@@ -10,7 +10,7 @@ data "aws_kms_alias" "environment_management" {
 #S3 Bucket for Athena temp SQL queries 
 
 module "s3-bucket-athena" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v7.0.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=bdef680d0a63fe54b0f503bf553c64f663ec3838"
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
