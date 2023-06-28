@@ -809,3 +809,40 @@ resource "pagerduty_service_integration" "laa_portal_prod_cloudwatch" {
 }
 
 # # Slack channel: #laa-portal-alerts-prod
+
+
+# LAA MAAT - Non Prod
+resource "pagerduty_service" "laa_maat_nonprod" {
+  name                    = "Legal Aid Agency MAAT Application Non Prod"
+  description             = "Legal Aid Agency MAAT Application Non Prod Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "laa_maat_nonprod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.laa_maat_nonprod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+# # Slack channel: #laa-alerts-maat-nonprod
+
+# LAA MAAT - Prod
+resource "pagerduty_service" "laa_maat_prod" {
+  name                    = "Legal Aid Agency MAAT Application Production"
+  description             = "Legal Aid Agency MAAT Application Production Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "laa_maat_prod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.laa_maat_prod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+# # Slack channel: #laa-alerts-maat-prod
