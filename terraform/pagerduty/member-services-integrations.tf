@@ -827,7 +827,7 @@ resource "pagerduty_service_integration" "laa_maat_nonprod_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
-# # Slack channel: #laa-alerts-maat-nonprod
+# Slack channel: #laa-alerts-maat-nonprod
 
 # LAA MAAT - Prod
 resource "pagerduty_service" "laa_maat_prod" {
@@ -845,4 +845,4 @@ resource "pagerduty_service_integration" "laa_maat_prod_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
-# # Slack channel: #laa-alerts-maat-prod
+# Slack channel: #laa-alerts-maat-prod
