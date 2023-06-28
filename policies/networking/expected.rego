@@ -119,7 +119,8 @@ expected =
           "hmpps-intelligence-management-production",
           "corporate-staff-rostering-production",
           "planetfm-production",
-          "hmpps-oem-production"
+          "hmpps-oem-production",
+          "digital-prison-reporting-production"
         ]
       }
     },
