@@ -40,7 +40,7 @@
           "level": "reporting-operations"
         }
       ]
-    }
+    },
     {
       "name": "production",
       "access": [
