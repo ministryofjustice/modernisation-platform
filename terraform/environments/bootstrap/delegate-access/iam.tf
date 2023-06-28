@@ -60,7 +60,7 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
 # AWS Shield Advanced SRT (Shield Response Team) support role
 module "shield_response_team_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "~> 5"
+  version = "2517eb98a39500897feecd27178994055ee2eb5e"
   providers = {
     aws = aws.workspace
   }
