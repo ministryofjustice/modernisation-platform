@@ -41,6 +41,19 @@
         }
       ]
     }
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "hmpps-digital-prison-reporting",
+          "level": "developer"
+        },
+        {
+          "github_slug": "hmpps-digital-prison-reporting",
+          "level": "reporting-operations"
+        }
+      ]
+    }
   ],
   "tags": {
     "application": "digital-prison-reporting",
