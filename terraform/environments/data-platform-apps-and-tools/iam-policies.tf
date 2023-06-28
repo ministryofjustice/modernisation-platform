@@ -9,7 +9,7 @@ data "aws_iam_policy_document" "airflow_ses_policy" {
 
 module "airflow_ses_policy" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
-  version = "2517eb98a39500897feecd27178994055ee2eb5e"
+  version = "c1e20a227ca5c8f2953c5827533a2dc46696d3bb"
 
   name   = "${local.application_name}-${local.environment}-airflow-ses"
   policy = data.aws_iam_policy_document.airflow_ses_policy.json

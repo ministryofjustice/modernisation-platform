@@ -2,7 +2,7 @@
 module "collaborator_readonly_role" {
   count   = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-roles"
-  version = "2517eb98a39500897feecd27178994055ee2eb5e"
+  version = "c1e20a227ca5c8f2953c5827533a2dc46696d3bb"
   providers = {
     aws = aws.workspace
   }
@@ -23,7 +23,7 @@ module "collaborator_readonly_role" {
 module "collaborator_security_audit_role" {
   count   = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "2517eb98a39500897feecd27178994055ee2eb5e"
+  version = "c1e20a227ca5c8f2953c5827533a2dc46696d3bb"
   providers = {
     aws = aws.workspace
   }
@@ -47,7 +47,7 @@ module "collaborator_security_audit_role" {
 module "collaborator_developer_role" {
   count   = local.account_data.account-type == "member" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "2517eb98a39500897feecd27178994055ee2eb5e"
+  version = "c1e20a227ca5c8f2953c5827533a2dc46696d3bb"
   providers = {
     aws = aws.workspace
   }
@@ -70,7 +70,7 @@ module "collaborator_developer_role" {
 module "collaborator_sandbox_role" {
   count   = local.account_data.account-type == "member" && local.application_environment == "development" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "2517eb98a39500897feecd27178994055ee2eb5e"
+  version = "c1e20a227ca5c8f2953c5827533a2dc46696d3bb"
   providers = {
     aws = aws.workspace
   }
@@ -92,7 +92,7 @@ module "collaborator_sandbox_role" {
 module "collaborator_migration_role" {
   count   = local.account_data.account-type == "member" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "2517eb98a39500897feecd27178994055ee2eb5e"
+  version = "c1e20a227ca5c8f2953c5827533a2dc46696d3bb"
   providers = {
     aws = aws.workspace
   }
@@ -119,7 +119,7 @@ module "collaborator_migration_role" {
 module "collaborator_database_mgmt_role" {
   count   = local.account_data.account-type == "member" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "2517eb98a39500897feecd27178994055ee2eb5e"
+  version = "c1e20a227ca5c8f2953c5827533a2dc46696d3bb"
   providers = {
     aws = aws.workspace
   }
