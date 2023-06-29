@@ -289,7 +289,7 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
 }
 
 module "cloudtrail-s3-logging-replication-role" {
-  source             = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=3b8a2945c1d266cc0ec2b21edb7f186b6574bda7"
+  source             = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role?ref=3b8a2945c1d266cc0ec2b21edb7f186b6574bda7"
   buckets            = [module.s3-bucket-cloudtrail-logging.bucket.arn]
   replication_bucket = "modernisation-platform-logs-cloudtrail-logging-replication"
   suffix_name        = "-cloudtrail-logging"
