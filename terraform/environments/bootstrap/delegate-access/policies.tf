@@ -641,7 +641,6 @@ data "aws_iam_policy_document" "reporting-operations" {
       "s3:List*",
       "s3:Get*",
       "s3:PutObject",
-      "secretsmanager:CreateSecret",
       "kms:Encrypt*",
       "kms:Decrypt*",
       "kms:ReEncrypt*",
