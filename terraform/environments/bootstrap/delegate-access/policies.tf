@@ -601,6 +601,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "dms:StartReplicationTask",
       "dms:StopReplicationTask",
       "dms:TestConnection",
+      "dms:ReloadTables",
       "sqlworkbench:CreateFolder",
       "sqlworkbench:PutTab",
       "sqlworkbench:BatchDeleteFolder",
@@ -640,6 +641,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "s3:List*",
       "s3:Get*",
       "s3:PutObject",
+      "secretsmanager:CreateSecret",
       "kms:Encrypt*",
       "kms:Decrypt*",
       "kms:ReEncrypt*",
@@ -669,6 +671,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "dynamodb:Get*",
       "dynamodb:Query",
       "dynamodb:Scan",
+      "dynamodb:DeleteItem",
       "iam:PassRole",
       "redshift:*",
       "redshift-data:*",
@@ -676,7 +679,9 @@ data "aws_iam_policy_document" "reporting-operations" {
       "kinesis:Get*",
       "kinesis:DescribeStreamSummary",
       "kinesis:ListStreams",
-      "kinesis:PutRecord"
+      "kinesis:PutRecord",
+      "kinesis:CreateStream",
+      "kinesis:DeleteStream"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
