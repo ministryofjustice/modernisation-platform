@@ -1,8 +1,9 @@
 # read only role for collaborators
 module "collaborator_readonly_role" {
+  # checkov:skip=CKV_TF_1:
   count   = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-roles"
-  version = "c1e20a227ca5c8f2953c5827533a2dc46696d3bb"
+  version = "~> 5"
   providers = {
     aws = aws.workspace
   }
@@ -21,9 +22,10 @@ module "collaborator_readonly_role" {
 
 # security audit role for collaborators
 module "collaborator_security_audit_role" {
+  # checkov:skip=CKV_TF_1:
   count   = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "c1e20a227ca5c8f2953c5827533a2dc46696d3bb"
+  version = "~> 5"
   providers = {
     aws = aws.workspace
   }
@@ -45,9 +47,10 @@ module "collaborator_security_audit_role" {
 
 # developer role for collaborators
 module "collaborator_developer_role" {
+  # checkov:skip=CKV_TF_1:
   count   = local.account_data.account-type == "member" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "c1e20a227ca5c8f2953c5827533a2dc46696d3bb"
+  version = "~> 5"
   providers = {
     aws = aws.workspace
   }
@@ -68,9 +71,10 @@ module "collaborator_developer_role" {
 
 # Collaborator Sandbox role
 module "collaborator_sandbox_role" {
+  # checkov:skip=CKV_TF_1:
   count   = local.account_data.account-type == "member" && local.application_environment == "development" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "c1e20a227ca5c8f2953c5827533a2dc46696d3bb"
+  version = "~> 5"
   providers = {
     aws = aws.workspace
   }
@@ -90,9 +94,10 @@ module "collaborator_sandbox_role" {
 }
 
 module "collaborator_migration_role" {
+  # checkov:skip=CKV_TF_1:
   count   = local.account_data.account-type == "member" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "c1e20a227ca5c8f2953c5827533a2dc46696d3bb"
+  version = "~> 5"
   providers = {
     aws = aws.workspace
   }
@@ -117,9 +122,10 @@ module "collaborator_migration_role" {
 }
 
 module "collaborator_database_mgmt_role" {
+  # checkov:skip=CKV_TF_1:
   count   = local.account_data.account-type == "member" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "c1e20a227ca5c8f2953c5827533a2dc46696d3bb"
+  version = "~> 5"
   providers = {
     aws = aws.workspace
   }

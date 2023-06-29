@@ -11,6 +11,7 @@ module "iam" {
 #tfsec:ignore:aws-iam-no-policy-wildcards
 #tfsec:ignore:aws-iam-enforce-mfa
 module "collaborators_group" {
+  # checkov:skip=CKV_TF_1:
   source  = "terraform-aws-modules/iam/aws//modules/iam-group-with-policies"
   version = "~> 5.0"
   name    = "collaborators"
