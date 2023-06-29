@@ -1,6 +1,6 @@
 module "airflow_execution_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "5.20.0"
+  version = "5.22.0"
 
   role_name         = "${local.application_name}-${local.environment}-airflow-execution"
   role_requires_mfa = false
