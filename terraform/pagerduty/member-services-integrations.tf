@@ -575,7 +575,7 @@ resource "pagerduty_slack_connection" "laa_mojfin_prod_connection" {
   source_id         = pagerduty_service.laa_mojfin_prod.id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
-  channel_id        = "C048QNJRWP3"
+  channel_id        = "C01JGH46Z97"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
