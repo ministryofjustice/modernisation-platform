@@ -1,5 +1,5 @@
 module "s3-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=bdef680d0a63fe54b0f503bf553c64f663ec3838"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=8688bc15a08fbf5a4f4eef9b7433c5a417df8df1"
 
   providers = {
     aws.bucket-replication = aws.bucket-replication
@@ -82,7 +82,7 @@ data "aws_iam_policy_document" "bucket_policy" {
 }
 
 module "s3-software-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=bdef680d0a63fe54b0f503bf553c64f663ec3838"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=8688bc15a08fbf5a4f4eef9b7433c5a417df8df1"
 
   providers = {
     aws.bucket-replication = aws.bucket-replication
