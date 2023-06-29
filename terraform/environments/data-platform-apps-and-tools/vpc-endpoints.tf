@@ -1,7 +1,7 @@
 
 module "vpc_endpoints" {
   source  = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
-  version = "2517eb98a39500897feecd27178994055ee2eb5e"
+  version = "~> 5"
 
   vpc_id = module.vpc.vpc_id
 
