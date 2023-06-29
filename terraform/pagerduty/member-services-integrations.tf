@@ -575,7 +575,7 @@ resource "pagerduty_slack_connection" "laa_mojfin_prod_connection" {
   source_id         = pagerduty_service.laa_mojfin_prod.id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
-  channel_id        = "C048QNJRWP3"
+  channel_id        = "C05DXKG5SQ2"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
@@ -605,7 +605,7 @@ resource "pagerduty_slack_connection" "laa_mojfin_prod_connection" {
   }
 }
 
-# # Slack channel: #laa-alerts-mojfin-prod
+# # Slack channel: #mp-laa-alerts-mojfin-prod
 
 # NOTE: Update escalation_policy once alarms have been tested
 resource "pagerduty_service" "hmpps_shef_dba_high_priority" {
