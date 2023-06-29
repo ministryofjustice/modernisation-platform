@@ -1,7 +1,7 @@
 # resources for patching via SSM
 
 module "ssm-cross-account-access" {
-  source                      = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648"
+  source                      = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
   account_id                  = local.environment_management.account_ids["core-shared-services-production"]
   policy_arn                  = aws_iam_policy.execution-combined-policy.arn
   role_name                   = "AWS-SSM-AutomationExecutionRole"
