@@ -626,6 +626,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "sqlworkbench:CreateAccount",
       "sqlworkbench:TagResource",
       "sqlworkbench:CreateConnection",
+      "sqlworkbench:GetConnection",
       "athena:GetDatabase",
       "athena:GetDataCatalog",
       "athena:GetTableMetadata",
