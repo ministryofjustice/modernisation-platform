@@ -3,7 +3,7 @@ module "instance_scheduler" {
   #checkov:skip=CKV_AWS_117
   #checkov:skip=CKV_AWS_272 "Code signing not required"
   #checkov:skip=CKV_AWS_173 "These lambda envvars aren't sensitive and don't need a cmk. Default AWS KMS key is sufficient"
-  source                         = "github.com/ministryofjustice/modernisation-platform-terraform-lambda-function?ref=v2.0.0"
+  source                         = "github.com/ministryofjustice/modernisation-platform-terraform-lambda-function?ref=20e0d9e27402d1e012159a41b474da908d74941b" #v2.0.0
   application_name               = local.application_name
   tags                           = local.tags
   description                    = "Lambda to automatically start and stop instances on member accounts"
