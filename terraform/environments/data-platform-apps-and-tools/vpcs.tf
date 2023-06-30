@@ -2,6 +2,7 @@
 #tfsec:ignore:aws-ec2-no-excessive-port-access
 #tfsec:ignore:aws-ec2-require-vpc-flow-logs-for-all-vpcs
 module "vpc" {
+  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 5"
 
