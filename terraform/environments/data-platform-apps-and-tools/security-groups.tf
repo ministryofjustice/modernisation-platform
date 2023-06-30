@@ -1,6 +1,6 @@
 module "smtp_vpc_endpoint_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "5.1.0"
+  version = "~> 5"
 
   name        = "${local.application_name}-${local.environment}-smtp-vpc-endpoint"
   description = "SMTP VPC Endpoint"

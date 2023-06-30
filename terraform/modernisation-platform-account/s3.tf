@@ -87,7 +87,7 @@ resource "aws_kms_alias" "s3_state_bucket_eu-west-1_replication" {
 }
 
 module "state-bucket-s3-replication-role" {
-  source             = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role?ref=v4.0.0"
+  source             = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role?ref=3b8a2945c1d266cc0ec2b21edb7f186b6574bda7" # v4.0.0
   buckets            = [module.state-bucket.bucket.arn]
   replication_bucket = "modernisation-platform-terraform-state-replication"
   suffix_name        = "-terraform-state"
@@ -95,7 +95,7 @@ module "state-bucket-s3-replication-role" {
 }
 
 module "state-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v7.0.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=8688bc15a08fbf5a4f4eef9b7433c5a417df8df1" # v7.0.0
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1

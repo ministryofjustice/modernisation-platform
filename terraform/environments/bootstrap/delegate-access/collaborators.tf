@@ -1,8 +1,9 @@
 # read only role for collaborators
 module "collaborator_readonly_role" {
+  # checkov:skip=CKV_TF_1:
   count   = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-roles"
-  version = "~> 5.0"
+  version = "~> 5"
   providers = {
     aws = aws.workspace
   }
@@ -21,6 +22,7 @@ module "collaborator_readonly_role" {
 
 # security audit role for collaborators
 module "collaborator_security_audit_role" {
+  # checkov:skip=CKV_TF_1:
   count   = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 5"
@@ -45,6 +47,7 @@ module "collaborator_security_audit_role" {
 
 # developer role for collaborators
 module "collaborator_developer_role" {
+  # checkov:skip=CKV_TF_1:
   count   = local.account_data.account-type == "member" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 5"
@@ -68,6 +71,7 @@ module "collaborator_developer_role" {
 
 # Collaborator Sandbox role
 module "collaborator_sandbox_role" {
+  # checkov:skip=CKV_TF_1:
   count   = local.account_data.account-type == "member" && local.application_environment == "development" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 5"
@@ -90,6 +94,7 @@ module "collaborator_sandbox_role" {
 }
 
 module "collaborator_migration_role" {
+  # checkov:skip=CKV_TF_1:
   count   = local.account_data.account-type == "member" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 5"
@@ -117,6 +122,7 @@ module "collaborator_migration_role" {
 }
 
 module "collaborator_database_mgmt_role" {
+  # checkov:skip=CKV_TF_1:
   count   = local.account_data.account-type == "member" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 5"
