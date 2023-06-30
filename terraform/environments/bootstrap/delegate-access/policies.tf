@@ -671,7 +671,6 @@ data "aws_iam_policy_document" "reporting-operations" {
       "dynamodb:Get*",
       "dynamodb:Query",
       "dynamodb:Scan",
-      "dynamodb:DeleteItem",
       "iam:PassRole",
       "redshift:*",
       "redshift-data:*",
