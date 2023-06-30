@@ -601,6 +601,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "dms:StartReplicationTask",
       "dms:StopReplicationTask",
       "dms:TestConnection",
+      "dms:ReloadTables",
       "sqlworkbench:CreateFolder",
       "sqlworkbench:PutTab",
       "sqlworkbench:BatchDeleteFolder",
@@ -625,6 +626,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "sqlworkbench:CreateAccount",
       "sqlworkbench:TagResource",
       "sqlworkbench:CreateConnection",
+      "sqlworkbench:GetConnection",
       "athena:GetDatabase",
       "athena:GetDataCatalog",
       "athena:GetTableMetadata",
@@ -676,7 +678,8 @@ data "aws_iam_policy_document" "reporting-operations" {
       "kinesis:Get*",
       "kinesis:DescribeStreamSummary",
       "kinesis:ListStreams",
-      "kinesis:PutRecord"
+      "kinesis:PutRecord",
+      "kinesis:CreateStream"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
