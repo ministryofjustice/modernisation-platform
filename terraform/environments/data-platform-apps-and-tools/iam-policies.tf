@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "airflow_ses_policy" {
 
 module "airflow_ses_policy" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
-  version = "5.22.0"
+  version = "~> 5.0"
 
   name   = "${local.application_name}-${local.environment}-airflow-ses"
   policy = data.aws_iam_policy_document.airflow_ses_policy.json
@@ -103,7 +103,7 @@ data "aws_iam_policy_document" "airflow_execution_policy" {
 
 module "airflow_execution_policy" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
-  version = "5.22.0"
+  version = "~> 5.0"
 
   name   = "${local.application_name}-${local.environment}-airflow-execution"
   policy = data.aws_iam_policy_document.airflow_execution_policy.json
