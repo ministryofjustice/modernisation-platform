@@ -147,7 +147,7 @@ module "data_platform_code_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/data-platform-github-actions",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/data-platform-gha",
     local.environment_management.account_ids["data-platform-development"]
   ]
 
@@ -167,7 +167,7 @@ module "data_platform_data_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/data-platform-github-actions",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/data-platform-gha",
     local.environment_management.account_ids["data-platform-development"]
   ]
 
@@ -187,7 +187,7 @@ module "data_platform_athena_load_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/data-platform-github-actions",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/data-platform-gha",
     local.environment_management.account_ids["data-platform-development"]
   ]
 
