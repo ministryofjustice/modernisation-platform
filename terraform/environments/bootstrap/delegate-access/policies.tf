@@ -535,6 +535,7 @@ data "aws_iam_policy_document" "instance-management-document" {
       "rhelkb:GetRhelURL",
       "secretsmanager:DescribeSecret",
       "secretsmanager:ListSecret*",
+      "secretsmanager:GetSecretValue",
       "ssm:*",
       "ssm-guiconnect:*",
       "sso:ListDirectoryAssociations",
