@@ -679,8 +679,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "kinesis:DescribeStreamSummary",
       "kinesis:ListStreams",
       "kinesis:PutRecord",
-      "kinesis:CreateStream",
-      "kinesis:DeleteStream"
+      "kinesis:CreateStream"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
