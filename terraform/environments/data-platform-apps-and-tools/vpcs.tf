@@ -4,7 +4,7 @@
 module "vpc" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5"
+  version = "~> 5.0"
 
   name            = "${local.application_name}-${local.environment}"
   azs             = slice(data.aws_availability_zones.available.names, 0, 3)
