@@ -3,7 +3,7 @@ data "aws_iam_policy_document" "airflow_ses_policy" {
     sid       = "AllowSESSendRawEmail"
     effect    = "Allow"
     actions   = ["ses:SendRawEmail"]
-    resources = ["arn:aws:ses:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:identity/${local.environment_configuration.ses_domain_identity}"]
+    resources = ["arn:aws:ses:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:identity/${local.ses_domain_identity}"]
     condition {
       test     = "StringEquals"
       variable = "ses:FromAddress"
@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "airflow_ses_policy" {
 module "airflow_ses_policy" {
   # checkov:skip=CKV_TF_1:
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
-  version = "~> 5"
+  version = "~> 5.0"
 
   name   = "${local.application_name}-${local.environment}-airflow-ses"
   policy = data.aws_iam_policy_document.airflow_ses_policy.json
@@ -98,7 +98,7 @@ data "aws_iam_policy_document" "airflow_execution_policy" {
     sid       = "AllowEKSDescribeCluster"
     effect    = "Allow"
     actions   = ["eks:DescribeCluster"]
-    resources = [local.environment_configuration.eks_cluster_arn]
+    resources = [local.environment_configuration.target_eks_cluster_arn]
   }
 }
 
