@@ -1,4 +1,5 @@
 module "smtp_vpc_endpoint_security_group" {
+  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source  = "terraform-aws-modules/security-group/aws"
   version = "~> 5.0"
 

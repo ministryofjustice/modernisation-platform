@@ -139,6 +139,13 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
+  "cp_to_hmpps_preproduction_pgres": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "5432",
+    "protocol": "TCP"
+  },
   "atos_arkc_ras_to_mp_hmpps_preproduction_https": {
     "action": "PASS",
     "source_ip": "${atos_arkc_ras}",
@@ -158,6 +165,13 @@
     "source_ip": "${vodafone_wan_nicts_aggregate}",
     "destination_ip": "${hmpps-preproduction}",
     "destination_port": "443",
+    "protocol": "TCP"
+  },
+  "hmpps_preproduction_to_pgres_tcp": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "5432",
     "protocol": "TCP"
   },
   "mp_hmpps_preproduction_to_saas_agent_tcp": {

@@ -18,6 +18,7 @@ locals {
 }
 
 module "vpc" {
+  #checkov:skip=CKV_TF_1:Local reference
   for_each = local.networking
   source   = "../../modules/vpc-hub"
 

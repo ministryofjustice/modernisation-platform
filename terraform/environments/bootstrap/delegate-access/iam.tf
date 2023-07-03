@@ -10,7 +10,7 @@ resource "aws_iam_account_alias" "alias" {
 }
 
 module "cross-account-access" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v3.0.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=ef80831bbc71e96733abb9ff32cc3f24bcc7e55f" #v3.0.0
   providers = {
     aws = aws.workspace
   }
@@ -59,6 +59,7 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
 
 # AWS Shield Advanced SRT (Shield Response Team) support role
 module "shield_response_team_role" {
+  # checkov:skip=CKV_TF_1:
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 5"
   providers = {
@@ -78,7 +79,7 @@ module "shield_response_team_role" {
 # Github OIDC provider
 module "github-oidc" {
   count  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test") ? 1 : 0
-  source = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v3.0.0"
+  source = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=82f546bd5f002674138a2ccdade7d7618c6758b3" # v3.0.0
   providers = {
     aws = aws.workspace
   }

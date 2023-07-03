@@ -1,7 +1,7 @@
 #tfsec:ignore:aws-iam-no-policy-wildcards
 #tfsec:ignore:aws-iam-enforce-mfa
 module "iam" {
-  source        = "github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins?ref=v2.0.0"
+  source        = "github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins?ref=2390874e4b8f1d01fd21c342d253345ec8a5b708" # v2.0.0
   account_alias = "moj-modernisation-platform"
 }
 
@@ -11,6 +11,7 @@ module "iam" {
 #tfsec:ignore:aws-iam-no-policy-wildcards
 #tfsec:ignore:aws-iam-enforce-mfa
 module "collaborators_group" {
+  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source  = "terraform-aws-modules/iam/aws//modules/iam-group-with-policies"
   version = "~> 5.0"
   name    = "collaborators"
@@ -161,7 +162,7 @@ resource "aws_iam_role_policy_attachment" "modernisation_account_limited_read" {
 # OIDC resources
 
 module "github-oidc" {
-  source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v3.0.0"
+  source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=82f546bd5f002674138a2ccdade7d7618c6758b3" # v3.0.0
   additional_permissions      = data.aws_iam_policy_document.oidc-deny-specific-actions.json
   additional_managed_policies = ["arn:aws:iam::aws:policy/AdministratorAccess"]
   github_repositories         = ["ministryofjustice/modernisation-platform:*", "ministryofjustice/modernisation-platform-ami-builds:*"]

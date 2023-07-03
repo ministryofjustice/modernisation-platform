@@ -167,7 +167,7 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
 
 # OIDC Confiuration for core-shared-services
 module "github-oidc" {
-  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=v3.0.0"
+  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=82f546bd5f002674138a2ccdade7d7618c6758b3" # v3.0.0
   additional_permissions = data.aws_iam_policy_document.oidc_assume_role_core.json
   github_repositories    = ["ministryofjustice/modernisation-platform-instance-scheduler:*"]
   tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
@@ -243,7 +243,7 @@ resource "aws_iam_policy" "ssm-cross-account-admin-policy" {
 
 
 module "ssm-cross-account-access-admin" {
-  source                      = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v3.0.0"
+  source                      = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
   account_id                  = local.environment_management.account_ids["core-shared-services-production"]
   policy_arn                  = aws_iam_policy.ssm-cross-account-admin-policy.arn
   role_name                   = "AWS-SSM-AutomationAdministrationRole"

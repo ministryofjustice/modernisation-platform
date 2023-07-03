@@ -13,8 +13,9 @@ data "aws_iam_policy_document" "airflow_ses_policy" {
 }
 
 module "airflow_ses_policy" {
+  # checkov:skip=CKV_TF_1:
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
-  version = "~> 5.0"
+  version = "~> 5"
 
   name   = "${local.application_name}-${local.environment}-airflow-ses"
   policy = data.aws_iam_policy_document.airflow_ses_policy.json

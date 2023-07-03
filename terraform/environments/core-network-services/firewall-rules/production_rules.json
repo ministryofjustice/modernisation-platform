@@ -243,5 +243,19 @@
     "destination_ip": "${hmpps-production}",
     "destination_port": "389",
     "protocol": "TCP"
+  },
+  "cp_to_hmpps_production_pgres": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-production}",
+    "destination_port": "5432",
+    "protocol": "TCP"
+  },
+  "hmpps_production_to_pgres_tcp": {
+    "action": "PASS",
+    "source_ip": "${hmpps-production}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "5432",
+    "protocol": "TCP"
   }
 }

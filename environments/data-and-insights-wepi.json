@@ -7,7 +7,7 @@
         {
           "github_slug": "data-and-insights-hub",
           "level": "sandbox",
-          "nuke": "rebuild"
+          "nuke": "exclude"
         }
       ]
     },

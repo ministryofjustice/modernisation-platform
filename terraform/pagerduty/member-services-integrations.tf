@@ -575,7 +575,7 @@ resource "pagerduty_slack_connection" "laa_mojfin_prod_connection" {
   source_id         = pagerduty_service.laa_mojfin_prod.id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
-  channel_id        = "C048QNJRWP3"
+  channel_id        = "C05DXKG5SQ2"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
@@ -605,7 +605,7 @@ resource "pagerduty_slack_connection" "laa_mojfin_prod_connection" {
   }
 }
 
-# # Slack channel: #laa-alerts-mojfin-prod
+# # Slack channel: #mp-laa-alerts-mojfin-prod
 
 # NOTE: Update escalation_policy once alarms have been tested
 resource "pagerduty_service" "hmpps_shef_dba_high_priority" {
@@ -809,3 +809,40 @@ resource "pagerduty_service_integration" "laa_portal_prod_cloudwatch" {
 }
 
 # # Slack channel: #laa-portal-alerts-prod
+
+
+# LAA MAAT - Non Prod
+resource "pagerduty_service" "laa_maat_nonprod" {
+  name                    = "Legal Aid Agency MAAT Application Non Prod"
+  description             = "Legal Aid Agency MAAT Application Non Prod Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "laa_maat_nonprod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.laa_maat_nonprod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+# Slack channel: #laa-alerts-maat-nonprod
+
+# LAA MAAT - Prod
+resource "pagerduty_service" "laa_maat_prod" {
+  name                    = "Legal Aid Agency MAAT Application Production"
+  description             = "Legal Aid Agency MAAT Application Production Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "laa_maat_prod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.laa_maat_prod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+# Slack channel: #laa-alerts-maat-prod

@@ -33,7 +33,8 @@ data "aws_iam_policy_document" "ecr_repo_policy" {
       "ecr:BatchCheckLayerAvailability",
       "ecr:PutImage",
       "ecr:InitiateLayerUpload",
-      "ecr:UploadLayerPart"
+      "ecr:UploadLayerPart",
+      "ecr:DescribeImages"
     ]
     principals {
       type        = "AWS"
