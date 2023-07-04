@@ -352,7 +352,7 @@ resource "aws_internet_gateway" "public" {
 
 resource "aws_eip" "public" {
   for_each = aws_subnet.public
-  vpc      = true
+  domain   = "vpc"
 
   tags = merge(
     var.tags_common,
