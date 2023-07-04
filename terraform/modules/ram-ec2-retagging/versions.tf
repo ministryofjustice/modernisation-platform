@@ -6,6 +6,6 @@ terraform {
       configuration_aliases = [aws.share-host, aws.share-tenant]
     }
   }
-  required_version = ">= 1.0.1"
+  required_version = "~> 1.0"
 }
 

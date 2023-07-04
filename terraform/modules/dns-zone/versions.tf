@@ -6,5 +6,5 @@ terraform {
       configuration_aliases = [aws.core-network-services, aws.aws-us-east-1]
     }
   }
-  required_version = ">= 1.0.1"
+  required_version = "~> 1.0"
 }
