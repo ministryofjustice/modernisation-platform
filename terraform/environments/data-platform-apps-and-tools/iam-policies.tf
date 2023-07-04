@@ -24,6 +24,7 @@ module "airflow_ses_policy" {
 }
 
 data "aws_iam_policy_document" "airflow_execution_policy" {
+  # checkov:skip=CKV_AWS_356:Policy in line with AWS documented recommendation
   statement {
     sid       = "AllowAirflowPublishMetrics"
     effect    = "Allow"
