@@ -146,6 +146,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "kms:CreateGrant",
       "lambda:InvokeFunction",
       "lambda:UpdateFunctionCode",
+      "rds:AddTagsToResource",
       "rds:CopyDBSnapshot",
       "rds:CopyDBClusterSnapshot",
       "rds:CreateDBSnapshot",
