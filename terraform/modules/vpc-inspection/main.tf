@@ -351,6 +351,7 @@ resource "aws_internet_gateway" "public" {
 }
 
 resource "aws_eip" "public" {
+  #checkov:skip=CKV2_AWS_19:EIPs are allocated to NAT gateways
   for_each = aws_subnet.public
   domain   = "vpc"
 
