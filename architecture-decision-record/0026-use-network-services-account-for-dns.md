@@ -14,7 +14,7 @@ One of the AWS accounts we maintain is our `core-network-services` account, whic
 
 ## Decision
 
-When customers request DNS zones, we will create them in our [core-network-services environment terraform](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-network-services).
+When customers request DNS zones, we will create them with our [core-network-services environment terraform](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-network-services).
 
 ## Consequences
 
