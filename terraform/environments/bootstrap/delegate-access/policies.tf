@@ -668,6 +668,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "glue:StartJobRun",
       "glue:BatchStopJobRun",
       "glue:ResetJobBookmark",
+      "glue:UpdateJob",
       "logs:DescribeLogStreams",
       "logs:GetLogEvents",
       "dynamodb:BatchGet*",
@@ -684,7 +685,9 @@ data "aws_iam_policy_document" "reporting-operations" {
       "kinesis:DescribeStreamSummary",
       "kinesis:ListStreams",
       "kinesis:PutRecord",
-      "kinesis:CreateStream"
+      "kinesis:CreateStream",
+      "cloudwatch:GetDashboard",
+      "cloudwatch:ListDashboards"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
