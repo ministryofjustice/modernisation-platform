@@ -278,7 +278,8 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "glue:ListTriggers",
       "glue:StartTrigger",
       "states:StartExecution",
-      "states:StopExecution"
+      "states:StopExecution",
+      "s3:PutBucketNotificationConfiguration",
     ]
     resources = ["*"]
   }
