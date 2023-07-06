@@ -258,7 +258,7 @@
     "destination_port": "5432",
     "protocol": "TCP"
   },
-  "fitzwan_to_ppud_production_https": {
+  "rfc_10-0-0-0-8_to_ppud_production_https": {
     "action": "PASS",
     "source_ip": "10.0.0.0/8",
     "destination_ip": "${hmpps-production}",
