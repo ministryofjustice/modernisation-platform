@@ -169,7 +169,10 @@ data "aws_iam_policy_document" "developer_additional" {
       "ssm:*",
       "ssm-guiconnect:*",
       "sso:ListDirectoryAssociations",
-      "support:*"
+      "support:*",
+      "wellarchitected:Get*",
+      "wellarchitected:List*",
+      "wellarchitected:ExportLens"
     ]
     resources = ["*"]
   }
