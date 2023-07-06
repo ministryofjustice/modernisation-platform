@@ -463,6 +463,26 @@
       ]
     },
     {
+      "username": "joe.beauchamp",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "digital-prison-reporting-preproduction",
+          "access": "read-only"
+        }
+      ]
+    },
+    {
+      "username": "shaun.dundavan",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "digital-prison-reporting-preproduction",
+          "access": "read-only"
+        }
+      ]
+    },
+    {
       "username": "simona.treivase",
       "github-username": "simonytta",
       "accounts": [
