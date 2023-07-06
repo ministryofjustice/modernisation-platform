@@ -63,6 +63,7 @@ module "instance_scheduler_ecr_repo" {
   tags_common = local.tags
 }
 
+# ECR repo holding the hmpps jitbit application container image
 module "delius_jitbit_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
@@ -86,6 +87,7 @@ module "delius_jitbit_ecr_repo" {
   tags_common = local.tags
 }
 
+# ECR repo holding the hmpps delius core weblogic container image
 module "delius_core_weblogic_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
@@ -104,6 +106,7 @@ module "delius_core_weblogic_ecr_repo" {
   tags_common = local.tags
 }
 
+# ECR repo holding the hmpps delius core database container image used for testing purposes
 module "delius_core_testing_db_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
@@ -122,6 +125,7 @@ module "delius_core_testing_db_ecr_repo" {
   tags_common = local.tags
 }
 
+# ECR repo holding the hmpps delius core openldap container image
 module "delius_core_openldap_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
@@ -197,6 +201,25 @@ module "data_platform_athena_load_ecr_repo" {
   ]
 
   enable_retrieval_policy_for_lambdas = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_athena_load*"]
+
+  # Tags
+  tags_common = local.tags
+}
+
+# ECR repo holding the hmpps delius core ansible aws automation container image
+module "delius_core_ansible_aws_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "delius-core-ansible-aws"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["delius-core-development"],
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+  ]
 
   # Tags
   tags_common = local.tags
