@@ -96,6 +96,12 @@ data "aws_iam_policy_document" "airflow_execution_policy" {
     resources = ["arn:aws:sqs:${data.aws_region.current.name}:*:airflow-celery-*"]
   }
   statement {
+    sid       = "AssumeRole"
+    effect    = "Allow"
+    actions   = ["sts:AssumeRole"]
+    resources = [local.environment_configuration.target_aws_role_arn]
+  }
+  statement {
     sid       = "AllowEKSDescribeCluster"
     effect    = "Allow"
     actions   = ["eks:DescribeCluster"]
