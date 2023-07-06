@@ -435,7 +435,10 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "aws-marketplace:ViewSubscriptions",
       "rhelkb:GetRhelURL",
       "identitystore:DescribeUser",
-      "sso:ListDirectoryAssociations"
+      "sso:ListDirectoryAssociations",
+      "wellarchitected:Get*",
+      "wellarchitected:List*",
+      "wellarchitected:ExportLens"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
