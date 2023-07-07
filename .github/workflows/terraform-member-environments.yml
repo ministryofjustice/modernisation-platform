@@ -60,11 +60,20 @@ jobs:
 
       - name: Populate list of changed directories
         id: directories
-        run: echo "CHANGED_DIRECTORIES=$(git --no-pager diff --name-only ${{ github.base_ref }} ${{ github.head_ref }} | awk '{print $1}' | grep ".tf" | grep -a "terraform/environments//*" | uniq | cut -f1-3 -d"/"" >> $GITHUB_OUTPUT
+        run: echo "CHANGED_DIRECTORIES=$(git --no-pager diff --name-only ${{ github.base_ref }} ${{ github.head_ref }} | awk '{print $1}' | grep ".tf" | grep -a "terraform/environments//*" | uniq | d" >> $GITHUB_OUTPUT
 
-      - name: Run Terraform
+      - name: Run Terraform Init
         run:
           for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
-          echo "Running 'terraform init' in $directory"
-          bash scripts/terraform-init.sh $directory
+            echo "Running 'terraform init' in $directory"
+            bash scripts/terraform-init.sh $directory
+          done
+
+      - name: Loop through Terraform Workspaces and Plan
+        run:
+          for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
+            environment=$(basename $directory)
+            bash scripts/terraform-workspace.sh $directory $environment-${{ matrix.environment }}
+            bash scripts/terraform-plan $directory
+            unset environment
           done
