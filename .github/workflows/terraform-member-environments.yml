@@ -6,14 +6,12 @@ on:
       - main
     paths:
       - 'terraform/environments/**/*.tf'
-    paths-ignore:
-      - 'terraform/environments/core-*'
+      - '!terraform/environments/core-*'
   pull_request:
     types: [opened, edited, reopened, synchronize]
     paths:
       - 'terraform/environments/**/*.tf'
-    paths-ignore:
-      - 'terraform/environments/core-*'
+      - '!terraform/environments/core-*'
 
 env:
   TF_IN_AUTOMATION: true
