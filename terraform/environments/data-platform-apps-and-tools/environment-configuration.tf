@@ -21,7 +21,6 @@ locals {
       }
       airflow_weekly_maintenance_window_start = "SAT:00:00"
       target_eks_cluster_arn                  = "arn:aws:eks:eu-west-1:525294151996:cluster/development-aWrhyc0m"
-      target_aws_role_arn                     = "arn:aws:iam::525294151996:role/data-platform-apps-and-tools-development-airflow"
       vpc_cidr                                = "10.27.128.0/23"
       vpc_private_subnets                     = ["10.27.128.0/26", "10.27.128.64/26", "10.27.128.128/26"]
       vpc_public_subnets                      = ["10.27.129.0/26", "10.27.129.64/26", "10.27.129.128/26"]
