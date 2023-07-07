@@ -436,9 +436,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "rhelkb:GetRhelURL",
       "identitystore:DescribeUser",
       "sso:ListDirectoryAssociations",
-      "wellarchitected:Get*",
-      "wellarchitected:List*",
-      "wellarchitected:ExportLens"
+      "wellarchitected:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
