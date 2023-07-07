@@ -118,6 +118,13 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
+  "analytical_platform_to_mp_laa_production": {
+    "action": "PASS",
+    "source_ip": "${analytical-platform-airflow-prod}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
   "nomis_prod_monitoring_to_mp_hmpps_production": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
