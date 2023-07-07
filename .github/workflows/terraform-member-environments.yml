@@ -13,16 +13,19 @@ on:
       - 'terraform/environments/**/*.tf'
       - '!terraform/environments/core-*'
       - '.github/workflows/terraform-member-environments.yml'
-  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
 
 env:
   TF_IN_AUTOMATION: true
   AWS_REGION: "eu-west-2"
   ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
 
-defaults:
-  run:
-    shell: bash
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
 
 jobs:
   terraform-plan:
