@@ -60,15 +60,10 @@ data "aws_iam_policy_document" "airflow_execution_policy" {
       "logs:GetLogEvents",
       "logs:GetLogRecord",
       "logs:GetLogGroupFields",
-      "logs:GetQueryResults"
+      "logs:GetQueryResults",
+      "logs:DescribeLogGroups"
     ]
     resources = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:airflow-${local.airflow_name}-*"]
-  }
-  statement {
-    sid       = "AllowCloudWatchLogGroupsDescribe"
-    effect    = "Allow"
-    actions   = ["logs:DescribeLogGroups"]
-    resources = ["*"]
   }
   statement {
     sid       = "AllowS3GetAccountPublicAccessBlock"
@@ -94,6 +89,22 @@ data "aws_iam_policy_document" "airflow_execution_policy" {
       "sqs:SendMessage"
     ]
     resources = ["arn:aws:sqs:${data.aws_region.current.name}:*:airflow-celery-*"]
+  }
+  statement {
+    sid    = "AllowKMS"
+    effect = "Allow"
+    actions = [
+      "kms:GenerateDataKey*",
+      "kms:Encrypt",
+      "kms:DescribeKey",
+      "kms:Decrypt"
+    ]
+    not_resources = ["arn:aws:kms:*:${data.aws_caller_identity.current.account_id}:key/*"]
+    condition {
+      test     = "StringLike"
+      variable = "kms:ViaService"
+      values   = ["sqs.${data.aws_region.current.name}.amazonaws.com"]
+    }
   }
   statement {
     sid       = "AllowEKSDescribeCluster"
