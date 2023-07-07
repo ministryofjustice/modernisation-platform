@@ -12,6 +12,7 @@ on:
     paths:
       - 'terraform/environments/**/*.tf'
       - '!terraform/environments/core-*'
+      - '.github/workflows/terraform-member-environments.yml'
 
 env:
   TF_IN_AUTOMATION: true
