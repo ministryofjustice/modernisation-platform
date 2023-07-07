@@ -608,23 +608,23 @@ resource "pagerduty_slack_connection" "laa_mojfin_prod_connection" {
 # # Slack channel: #mp-laa-alerts-mojfin-prod
 
 # LAA MojFin - Dev
-resource "pagerduty_service" "laa_mojfin_dev" {
-  name                    = "Legal Aid Agency MojFin Application Development"
-  description             = "Legal Aid Agency MojFin Application Development Alarms"
+resource "pagerduty_service" "laa_mojfin_non_prod" {
+  name                    = "Legal Aid Agency MojFin Application non-prod"
+  description             = "Legal Aid Agency MojFin Application non-prod Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
   escalation_policy       = pagerduty_escalation_policy.member_policy.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
-resource "pagerduty_service_integration" "laa_mojfin_dev_cloudwatch" {
+resource "pagerduty_service_integration" "laa_mojfin_non_prod_cloudwatch" {
   name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.laa_mojfin_dev.id
+  service = pagerduty_service.laa_mojfin_non_prod.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
-resource "pagerduty_slack_connection" "laa_mojfin_dev_connection" {
-  source_id         = pagerduty_service.laa_mojfin_dev.id
+resource "pagerduty_slack_connection" "laa_mojfin_non_prod_connection" {
+  source_id         = pagerduty_service.laa_mojfin_non_prod.id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
   channel_id        = "C05FU781K5G"
@@ -657,7 +657,7 @@ resource "pagerduty_slack_connection" "laa_mojfin_dev_connection" {
   }
 }
 
-# # Slack channel: #mp-laa-alerts-mojfin-dev
+# # Slack channel: #mp-laa-alerts-mojfin-non-prod
 
 
 # NOTE: Update escalation_policy once alarms have been tested
