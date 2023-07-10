@@ -1,0 +1,39 @@
+{
+    "account-type": "member",
+    "environments": [
+      {
+        "name": "development",
+        "access": [
+          {
+            "github_slug": "dts-heritage-services",
+            "level": "sandbox"
+          }
+        ]
+      },
+      {
+        "name": "preproduction",
+        "access": [
+          {
+            "github_slug": "dts-heritage-services",
+            "level": "developer"
+          }
+        ]
+      },
+      {
+        "name": "production",
+        "access": [
+          {
+            "github_slug": "dts-heritage-services",
+            "level": "developer"
+          }
+        ]
+      }
+    ],
+    "tags": {
+      "application": "ncas",
+      "business-unit": "HMCTS",
+      "infrastructure-support": "dts-legacy-apps-support-team@hmcts.net",
+      "owner": "dts-legacy-applications: dts-legacy-apps-support-team@hmcts.net"
+    }
+  }
+  
