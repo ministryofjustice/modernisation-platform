@@ -638,7 +638,6 @@ data "aws_iam_policy_document" "reporting-operations" {
       "sqlworkbench:TagResource",
       "sqlworkbench:CreateConnection",
       "sqlworkbench:GetConnection",
-      "sqlworkbench:GetConnection",
       "sqlworkbench:UpdateConnection",
       "secretsmanager:GetSecretValue",
       "secretsmanager:DescribeSecret",
