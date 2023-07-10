@@ -165,6 +165,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "secretsmanager:UpdateSecret",
       "secretsmanager:RestoreSecret",
       "secretsmanager:RotateSecret",
+      "servicequotas:*",
       "ses:PutAccountDetails",
       "ssm:*",
       "ssm-guiconnect:*",
