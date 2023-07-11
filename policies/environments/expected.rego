@@ -22,7 +22,7 @@ expected =
     "data-and-insights-wepi",
     "data-platform",
     "data-platform-apps-and-tools",
-    "dcap",
+    "dacp",
     "delius-core",
     "delius-iaps",
     "delius-jitbit",
