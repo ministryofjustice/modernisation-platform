@@ -45,6 +45,7 @@ expected =
     "oas",
     "oasys",
     "performance-hub",
+    "pra-register",
     "planetfm",
     "portal",
     "ppud",
