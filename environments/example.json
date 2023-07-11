@@ -17,5 +17,6 @@
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
     "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
   },
-  "go-live-date": ""
+  "go-live-date": "",
+  "github-oidc-team-name": ""
 }

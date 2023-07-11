@@ -322,3 +322,13 @@ resource "aws_iam_policy" "member-access-us-east" {
   policy      = data.aws_iam_policy_document.member-access-us-east.json
 }
 
+# Github OIDC role
+module "github_oidc_role" {
+  source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=a16117ed5fd373bc28011342b7b8117077a84f19" # v2.0.0
+  github_repositories         = ["ministryofjustice/modernisation-platform-configuration-management"]
+  role_name                   = "modernisation-platform-oidc-cicd"
+  policy_arns                 = [aws_iam_policy.member-access[0].id]
+  policy_jsons                = [data.aws_iam_policy_document.member-access.json]
+  tags                        = local.tags
+
+}
