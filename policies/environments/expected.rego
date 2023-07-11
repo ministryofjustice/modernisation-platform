@@ -19,6 +19,7 @@ expected =
     "core-shared-services",
     "core-vpc",
     "corporate-staff-rostering",
+    "dacp",
     "data-and-insights-wepi",
     "data-platform",
     "data-platform-apps-and-tools",
