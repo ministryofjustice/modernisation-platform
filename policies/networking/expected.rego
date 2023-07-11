@@ -130,7 +130,8 @@ expected =
         "accounts": [
           "xhibit-portal-development",
           "tipstaff-development",
-          "tribunals-development"
+          "tribunals-development",
+          "dacp-development"
         ]
       }
     },
@@ -140,7 +141,8 @@ expected =
         "accounts": [
           "xhibit-portal-production",
           "tipstaff-production",
-          "tribunals-production"
+          "tribunals-production",
+          "dacp-production"
         ]
       }
     },
@@ -150,7 +152,8 @@ expected =
         "accounts": [
           "xhibit-portal-preproduction",
           "tipstaff-preproduction",
-          "tribunals-preproduction"
+          "tribunals-preproduction",
+          "dacp-preproduction"
         ]
       }
     },
