@@ -54,6 +54,11 @@ locals {
     "isaacthomasMOJ"
   ]
 
+  # Members of the long term storage account team to acccess that account
+  long-term-storage = [
+    "davidkelliott"
+  ]
+
   # All members
   all_members = concat(local.general_members, local.engineers)
 
