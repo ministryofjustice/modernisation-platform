@@ -27,6 +27,8 @@ func main() {
 
 	// Variables to store the results
 	memberFiles := []string{}
+	memberUnrestrictedFiles := []string{}
+	coreFiles := []string{}
 	futureGoLiveFiles := []string{}
 	pastGoLiveFiles := []string{}
 
@@ -68,6 +70,14 @@ func main() {
 			memberFiles = append(memberFiles, application_name)
 		}
 
+		if env.AccountType == "member-unrestricted" && mpOwned == false {
+			memberUnrestrictedFiles = append(memberUnrestrictedFiles, application_name)
+		}
+
+		if env.AccountType == "core" || mpOwned == true {
+			coreFiles = append(coreFiles, application_name)
+		}
+
 		if env.GoLiveDate != "" {
 			parsedDate, err := time.Parse("2006-01-02", env.GoLiveDate)
 			if err != nil {
@@ -87,6 +97,16 @@ func main() {
 	// Output the results
 	fmt.Printf("Member applications (%d):\n", len(memberFiles))
 	for _, file := range memberFiles {
+		fmt.Println(file)
+	}
+
+	fmt.Printf("\nMember-unrestricted applications (%d):\n", len(memberFiles))
+	for _, file := range memberUnrestrictedFiles {
+		fmt.Println(file)
+	}
+
+	fmt.Printf("\nMP controlled applications (%d):\n", len(memberFiles))
+	for _, file := range coreFiles {
 		fmt.Println(file)
 	}
 
