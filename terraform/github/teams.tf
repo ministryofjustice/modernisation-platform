@@ -62,6 +62,15 @@ module "security-team" {
   members     = local.security
 }
 
+module "long-term-storage" {
+  source      = "./modules/team"
+  name        = "modernisation-platform-long-term-storage"
+  description = "Modernisation Platform long term storage team"
+
+  maintainers = local.maintainers
+  members     = local.long-term-storage
+}
+
 # Allow github users to contribute to our repos
 module "contributor-access" {
   for_each          = toset(local.modernisation_platform_repositories)

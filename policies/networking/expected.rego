@@ -131,7 +131,10 @@ expected =
           "xhibit-portal-development",
           "tipstaff-development",
           "tribunals-development",
-          "pra-register"
+
+          "pra-register",
+          "dacp-development"
+
         ]
       }
     },
@@ -142,7 +145,8 @@ expected =
           "xhibit-portal-production",
           "tipstaff-production",
           "tribunals-production",
-          "pra-register"
+          "pra-register",
+          "dacp-production"
         ]
       }
     },
@@ -153,7 +157,8 @@ expected =
           "xhibit-portal-preproduction",
           "tipstaff-preproduction",
           "tribunals-preproduction",
-          "pra-register"
+          "pra-register",
+          "dacp-preproduction"
         ]
       }
     },
