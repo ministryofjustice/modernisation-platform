@@ -6,7 +6,8 @@
         "accounts": [
           "xhibit-portal-preproduction",
           "tipstaff-preproduction",
-          "tribunals-preproduction"
+          "tribunals-preproduction",
+          "pra-register"
         ]
       }
     }

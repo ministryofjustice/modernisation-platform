@@ -6,7 +6,8 @@
         "accounts": [
           "xhibit-portal-production",
           "tipstaff-production",
-          "tribunals-production"
+          "tribunals-production",
+          "pra-register"
         ]
       }
     }

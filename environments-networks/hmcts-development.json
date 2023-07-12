@@ -6,7 +6,8 @@
         "accounts": [
           "xhibit-portal-development",
           "tipstaff-development",
-          "tribunals-development"
+          "tribunals-development",
+          "pra-register"
         ]
       }
     }
