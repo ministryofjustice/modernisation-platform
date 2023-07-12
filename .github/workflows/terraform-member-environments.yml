@@ -1,0 +1,82 @@
+name: "Terraform: Member environments"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'terraform/environments/**/*.tf'
+      - '!terraform/environments/core-*'
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+    paths:
+      - 'terraform/environments/**/*.tf'
+      - '!terraform/environments/core-*'
+      - '.github/workflows/terraform-member-environments.yml'
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  TF_IN_AUTOMATION: true
+  AWS_REGION: "eu-west-2"
+  ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+jobs:
+  terraform-plan:
+    environment: ${{ matrix.environment }}
+    name: 'Terraform Plan'
+    permissions:
+      pull-requests: write
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [development, test, preproduction, production]
+    env:
+      TF_IN_AUTOMATION: "true"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+
+      - name: Set Account Number
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@5fd3084fc36e372ff1fff382a39b10d03659f355 # v2.2.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1 # v2.0.3
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+
+      - name: Populate list of changed directories
+        id: directories
+        run: echo "CHANGED_DIRECTORIES=$(git --no-pager diff --name-only ${{ github.base_ref }} ${{ github.head_ref }} | awk '{print $1}' | grep ".tf" | grep -a "terraform/environments//*" | uniq | d" >> $GITHUB_OUTPUT
+
+      - name: Run Terraform Init
+        run:
+          for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
+            echo "Running 'terraform init' in $directory"
+            bash scripts/terraform-init.sh $directory
+          done
+
+      - name: Loop through Terraform Workspaces and Plan
+        run:
+          for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
+            environment=$(basename $directory)
+            bash scripts/terraform-workspace.sh $directory $environment-${{ matrix.environment }}
+            bash scripts/terraform-plan $directory
+            unset environment
+          done
