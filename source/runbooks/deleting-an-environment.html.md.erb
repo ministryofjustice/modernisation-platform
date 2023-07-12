@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Deleting an environment (AWS account)
-last_reviewed_on: 2023-06-16
+last_reviewed_on: 2023-07-12
 review_in: 6 month
 ---
 
@@ -131,7 +131,7 @@ should become:
 }
 ```
 
-Remove the accounts from the relevant `environments-networking/business-environment.json` file.
+Remove the accounts from the relevant `environments-networking/business-environment.json` file. (not required if non member account and not using shared networking)
 
 Update the [OPA polices](https://github.com/ministryofjustice/modernisation-platform/tree/main/policies) to remove references to the environment.
 
@@ -141,7 +141,7 @@ Before merging in these changes, complete the rest of the steps in this document
 
 For the following workspaces, switch to the workspace and run a `terraform destroy` to ensure any resources such as DNS entries created in shared accounts are deleted and not orphaned.
 
-`modernisation-platform-environments/terraform/environments/<application-name>`
+`modernisation-platform-environments/terraform/environments/<application-name>` (not required if non member account)
 
 `modernisation-platform/terraform/environments/<application-name>`
 
@@ -155,7 +155,7 @@ After completing this, you will need to delete the application terraform workspa
 
 `modernisation-platform/terraform/environments/bootstrap/member-bootstrap/`
 
-`modernisation-platform-environments/terraform/environments/<application-name>`
+`modernisation-platform-environments/terraform/environments/<application-name>` (not required if non member account)
 
 `modernisation-platform/terraform/environments/<application-name>`
 For example: 

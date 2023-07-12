@@ -51,7 +51,6 @@ expected =
     "ppud",
     "pra-register",
     "refer-monitor",
-    "remote-supervision",
     "sprinkler",
     "tariff",
     "testing",
