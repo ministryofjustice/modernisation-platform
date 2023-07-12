@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating AWS Accounts for Teams
-last_reviewed_on: 2023-06-15
+last_reviewed_on: 2023-07-12
 review_in: 6 months
 ---
 
@@ -36,7 +36,7 @@ See an example file [here](https://user-guide.modernisation-platform.service.jus
 
 #### 2. Update the `expected.rego`
 
-Update the [`policies/environments/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/environments/expected.rego) file with the newly added account name.
+Update the [`policies/environments/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/environments/expected.rego) file with the newly added application name.
 
 This is to make sure that none of the json files gets accidentally deleted. This is going to be validated with the [opa-policies](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/opa-policies.yml) GitHub Actions workflow.
 
@@ -61,19 +61,9 @@ If the environment is being created for an account type of member-unrestricted i
 
 #### 5. Merge the pull request created in the modernisation-platform repo (step 4.1)
 
-#### 6. Edit the pull request created in the modernisation-platform-environments repo (step 4.2)
-
-Do not do this if the account type is member-unrestricted - it is not required.
-
-Edit the PR to comment out any environments that are not used in the GitHub Actions workflow file (there is a matrix for development/test and one for preproduction/production).
-
-See [here](https://github.com/ministryofjustice/modernisation-platform-environments/pull/1206/commits/1a8c006375fa5b7ae6ee2b9460e580ec0f645641) for an example.
-
-If the files already exist and no PR is created, create a new PR amending the exising application GitHub Actions file.
+#### 6. Merge the pull request created in the modernisation-platform-environments repo (step 4.2)
 
 > Note - The plan will fail on these PRs due to the networking not yet being complete.  This is fine, the goal of these PRs is to create the necessary files, not make deployments.
-
-#### 7. Merge the pull request created in the modernisation-platform-environments repo (step 4.2)
 
 ## Networking Stage
 
