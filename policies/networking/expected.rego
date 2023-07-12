@@ -132,7 +132,7 @@ expected =
           "tipstaff-development",
           "tribunals-development",
           "dacp-development",
-          "pra-register"
+          "pra-registe-development"
         ]
       }
     },
@@ -144,7 +144,7 @@ expected =
           "tipstaff-production",
           "tribunals-production",
           "dacp-production",
-          "pra-register"
+          "pra-register-production"
         ]
       }
     },
@@ -156,7 +156,7 @@ expected =
           "tipstaff-preproduction",
           "tribunals-preproduction",
           "dacp-preproduction",
-          "pra-register"
+          "pra-register-preproduction"
         ]
       }
     },
