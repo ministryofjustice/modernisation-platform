@@ -7,8 +7,8 @@
           "xhibit-portal-development",
           "tipstaff-development",
           "tribunals-development",
-          "dacp-development",
-          "pra-register"
+          "pra-register",
+          "dacp-development"
         ]
       }
     }
