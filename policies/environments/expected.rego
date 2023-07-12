@@ -49,6 +49,7 @@ expected =
     "planetfm",
     "portal",
     "ppud",
+    "pra-register",
     "refer-monitor",
     "remote-supervision",
     "sprinkler",
