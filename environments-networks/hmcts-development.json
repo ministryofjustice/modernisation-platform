@@ -8,7 +8,8 @@
           "tipstaff-development",
           "tribunals-development",
           "dacp-development",
-          "pra-register-development"
+          "pra-register-development",
+          "ncas-development"
         ]
       }
     }
