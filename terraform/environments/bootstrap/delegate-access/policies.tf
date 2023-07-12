@@ -244,6 +244,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "athena:DeleteNamedQuery",
       "athena:StartQueryExecution",
       "athena:StopQueryExecution",
+      "ce:CreateReport",
       "dms:StartReplicationTask",
       "dms:StopReplicationTask",
       "glue:BatchCreatePartition",
