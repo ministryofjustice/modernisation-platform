@@ -57,6 +57,7 @@ expected =
     "testing",
     "tipstaff",
     "tribunals",
+    "wardship",
     "xhibit-portal"
     ]
 }
