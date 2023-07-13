@@ -40,13 +40,14 @@ Potential pitfalls that could cause the story to expand beyond its original scop
 
 ## Definition of done
 
-<!-- Checklist for definition of done and acceptance criteria, for example: -->
+<!-- Checklist for definition of done and acceptance criteria, for example: 
 
 - [ ] readme has been updated
 - [ ] user docs have been updated
 - [ ] another team member has reviewed
 - [ ] tests are green
-- [ ] UR test OR added to continual research plan
+
+-->
 
 ## Reference
 
