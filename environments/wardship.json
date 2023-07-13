@@ -30,7 +30,7 @@
     }
   ],
   "tags": {
-    "application": "dacp",
+    "application": "wardship",
     "business-unit": "HMCTS",
     "infrastructure-support": "DTS-ITServiceDesk@justice.gov.uk",
     "owner": "DTS-ITServiceDesk@justice.gov.uk"
