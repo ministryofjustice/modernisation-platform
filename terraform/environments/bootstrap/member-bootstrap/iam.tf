@@ -327,8 +327,98 @@ module "github_oidc_role" {
   source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=a16117ed5fd373bc28011342b7b8117077a84f19" # v2.0.0
   github_repositories         = ["ministryofjustice/modernisation-platform-configuration-management"]
   role_name                   = "modernisation-platform-oidc-cicd"
-  policy_arns                 = [aws_iam_policy.member-access[0].id]
-  policy_jsons                = [data.aws_iam_policy_document.member-access.json]
+#  policy_arns                 = [aws_iam_policy.member-access[0].id]
+  policy_jsons                = [data.aws_iam_policy_document.policy.json]
   tags                        = local.tags
 
+}
+
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "policy" {
+  #checkov:skip=CKV_AWS_289
+  #checkov:skip=CKV_AWS_288
+  #checkov:skip=CKV_AWS_290
+  #checkov:skip=CKV_AWS_355: Allows access to multiple unknown resources
+    Statement = [
+      {
+        Action = [
+          "athena:StartQueryExecution",
+          "athena:GetQueryExecution",
+          "codebuild:Start*",
+          "codebuild:StartBuild",
+          "codebuild:BatchGetBuilds",
+          "codepipeline:StartPipelineExecution",
+          "dms:StartReplicationTask",
+          "dms:StopReplicationTask",
+          "dms:TestConnection",
+          "dms:StartReplicationTaskAssessment",
+          "dms:StartReplicationTaskAssessmentRun",
+          "dms:DescribeEndpoints",
+          "dms:DescribeEndpointSettings",
+          "dms:RebootReplicationInstance",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "ecs:RegisterTaskDefinition",
+          "ecs:UpdateService",
+          "ecs:deregisterTaskDefinition",
+          "ecs:DescribeServices",
+          "ecs:DescribeTaskDefinition",
+          "ecs:ListTasks",
+          "ecs:StartTask",
+          "ecs:ListServices",
+          "ecs:CreateService",
+          "ecs:RunTask",
+          "ecs:DescribeTasks",
+          "ecs:ListTaskDefinitions",
+          "ecs:UpdateTaskSet",
+          "ecs:CreateTaskSet",
+          "ecs:StopTask",
+          "ecr:GetAuthorizationToken",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:PutImage",
+          "ecr:InitiateLayerUpload",
+          "ecr:UploadLayerPart",
+          "ecr:CompleteLayerUpload",
+          "ecr:UploadLayerPart",
+          "elasticfilesystem:DescribeFileSystems",
+          "glue:GetJobRuns",
+          "glue:StartJobRun",
+          "glue:GetJobs",
+          "glue:GetTable",
+          "glue:BatchGetJobs",
+          "glue:ListJobs",
+          "glue:StartJobRun",
+          "glue:StartTrigger",
+          "glue:StopSession",
+          "glue:StopTrigger",
+          "glue:BatchStopJobRun",
+          "glue:StopWorkflowRun",
+          "glue:UpdateJob",
+          "iam:getRole",
+          "iam:getRolePolicy",
+          "iam:listAttachedRolePolicies",
+          "iam:listInstanceProfilesForRole",
+          "iam:listRolePolicies",
+          "iam:PassRole",
+          "kinesis:PutRecord",
+          "kms:DescribeKey",
+          "kms:Decrypt",
+          "kms:GenerateDataKey",
+          "logs:GetLogEvents",
+          "s3:GetBucketLocation",
+          "s3:ListBucket",
+          "s3:ListAllMyBuckets",
+          "s3:*Object*",
+          "secretsmanager:ListSecrets",
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:GetResourcePolicy",
+          "ssm:GetParameter"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
 }
