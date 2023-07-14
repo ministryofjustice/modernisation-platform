@@ -88,6 +88,7 @@ module "github-oidc" {
   tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
   tags_prefix            = ""
 }
+
 data "aws_iam_policy_document" "oidc_assume_role_member" {
   count = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
   statement {
