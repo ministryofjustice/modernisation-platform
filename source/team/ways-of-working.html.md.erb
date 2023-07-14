@@ -1,22 +1,22 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Our ways of working
-last_reviewed_on: 2023-05-22
-review_in: 3 months
+last_reviewed_on: 2023-06-13
+review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
 
 ## Duty Tech
 
-We currently run a rota on support for the __#ask-modernisation-platform__ channel, offering support during working hours.
+We currently run a rota on support for the __#ask-modernisation-platform__ channel, offering support during working hours. For more information see the [Duty Rota](../runbooks/duty-rota.html) page.
 
 ## Work and tasks management
 
 [GitHub projects](https://github.com/orgs/ministryofjustice/projects/17) are used to manage our workload.
 We use a scrum board to help us visualise the work delivery progress and we work in two week sprints to deliver milestones.
 
-When a task aka GitHub issue is created it will appear in a backlog of the project or in a backlog of a sprint that it was assigned to.
+When a task or story (GitHub issue) is created it will appear in a backlog of the project or in a backlog of a sprint that it was assigned to.
 While it is OK to create a placeholder task with a minimum description in a backlog, once it is planned in a certain sprint, the information in the task must be populated to meet the Definition of Ready (DoR).
 Make sure to update a task description before a refinement session or do not assign it to a sprint.
 
@@ -52,7 +52,7 @@ As a team we have agreed to do the following for each stage:
 There is a number of things we can do to make collaborating on code seamless.
 Although we do not want to impose too many rules on our team members, the following list is what we agreed as a team to do as a minimum:
 
-* Keeping a good git hygiene `git fetch`/`git pull` in `main` before branching out when starting on a new task. Merging `main` regularly into your branch on local and resolving the merge conflicts before committing and pushing to remote.
+* Keeping a good git hygiene `git fetch`/`git pull` in `main` before branching out when starting on a new task. Merging `main` regularly into your branch on local and resolving the merge conflicts or rebasing before committing and pushing to remote.
 * Adding meaningful messages when committing, such as what have you achieved in this step.
 * Running tests, verifying if the tests/SCA has passed and that the `terraform plan` and the pipeline runs clean before creating a PR.
 * Providing enough information in the PR description so that another team member has enough context to be able to understand the change and to review it.
