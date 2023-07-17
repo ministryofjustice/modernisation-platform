@@ -79,7 +79,7 @@ jobs:
           for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
             environment=$(basename $directory)
             #scripts/terraform-workspace.sh $directory $environment-${{ matrix.environment }}
-            terraform --chdir=$directory workspace select $environment-${{ matrix.environment }} 
+            terraform -chdir=$directory workspace select $environment-${{ matrix.environment }} 
             scripts/terraform-plan $directory
             unset environment
           done
