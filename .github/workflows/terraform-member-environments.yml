@@ -71,15 +71,15 @@ jobs:
         run:
           for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
             echo "Running 'terraform init' in $directory"
-            bash scripts/terraform-init.sh $directory
+            scripts/terraform-init.sh $directory
           done
 
       - name: Terraform plan
         run:
           for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
             environment=$(basename $directory)
-            bash scripts/terraform-workspace.sh $directory $environment-${{ matrix.environment }}
-            bash scripts/terraform-plan $directory
+            scripts/terraform-workspace.sh $directory $environment-${{ matrix.environment }}
+            scripts/terraform-plan $directory
             unset environment
           done
 
@@ -137,15 +137,15 @@ jobs:
         run:
           for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
             echo "Running 'terraform init' in $directory"
-            bash scripts/terraform-init.sh $directory
+            scripts/terraform-init.sh $directory
           done
 
       - name: Terraform plan
         run:
           for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
             environment=$(basename $directory)
-            bash scripts/terraform-workspace.sh $directory $environment-${{ matrix.environment }}
-            bash scripts/terraform-plan $directory -out tfplan/$environment-${{ matrix.environment }}.tfplan
+            scripts/terraform-workspace.sh $directory $environment-${{ matrix.environment }}
+            scripts/terraform-plan $directory -out tfplan/$environment-${{ matrix.environment }}.tfplan
             unset environment
           done
 
