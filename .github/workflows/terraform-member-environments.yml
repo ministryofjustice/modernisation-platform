@@ -82,7 +82,7 @@ jobs:
             #scripts/terraform-workspace.sh $directory $environment-${{ matrix.environment }}
             terraform -chdir=$directory workspace select $environment-${{ matrix.environment }} 
             #scripts/terraform-plan $directory
-            terraform -chdir=$directory
+            terraform -chdir=$directory plan
             unset environment
           done
 
