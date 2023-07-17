@@ -147,8 +147,8 @@ jobs:
         run: |
           for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
             environment=$(basename $directory)
-            terraform workspace -chdir=$directory select $environment-${{ matrix.environment }}
-            scripts/terraform-plan $directory -out tfplan/$environment-${{ matrix.environment }}.tfplan
+            terraform -chdir=$directory workspace select $environment-${{ matrix.environment }}
+            terraform -chdir=$directory plan -out tfplan/$environment-${{ matrix.environment }}.tfplan
             unset environment
           done
 
