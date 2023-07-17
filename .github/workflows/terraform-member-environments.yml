@@ -100,7 +100,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' && needs.terraform-plan.result == 'success' }}
     needs: terraform-plan
     environment: ${{ matrix.environment }}
-    name: 'Terraform Plan'
+    name: 'Terraform Plan Development/Test'
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -147,7 +147,7 @@ jobs:
         run: |
           for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
             environment=$(basename $directory)
-            scripts/terraform-workspace.sh $directory $environment-${{ matrix.environment }}
+            terraform workspace -chdir=$directory select $environment-${{ matrix.environment }}
             scripts/terraform-plan $directory -out tfplan/$environment-${{ matrix.environment }}.tfplan
             unset environment
           done
