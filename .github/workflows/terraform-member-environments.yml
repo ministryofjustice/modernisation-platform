@@ -63,19 +63,19 @@ jobs:
 
       - name: Populate list of changed directories
         id: directories
-        run:
+        run: |
           branch_name=$(git branch --show-current)
           echo "CHANGED_DIRECTORIES=$(git diff origin/main...$branch_name --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | uniq | cut -f1-3 -d"/")" >> $GITHUB_OUTPUT
 
       - name: Terraform init
-        run:
+        run: |
           for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
-            echo "Running 'terraform init' in $directory"
+            echo "Running 'terraform init' in" $directory
             scripts/terraform-init.sh $directory
           done
 
       - name: Terraform plan
-        run:
+        run: |
           for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
             environment=$(basename $directory)
             scripts/terraform-workspace.sh $directory $environment-${{ matrix.environment }}
@@ -129,19 +129,19 @@ jobs:
 
       - name: Populate list of changed directories
         id: directories
-        run:
+        run: |
           branch_name=$(git branch --show-current)
           echo "CHANGED_DIRECTORIES=$(git diff origin/main...$branch_name --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | uniq | cut -f1-3 -d"/")" >> $GITHUB_OUTPUT
 
       - name: Terraform init
-        run:
+        run: |
           for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
-            echo "Running 'terraform init' in $directory"
+            echo "Running 'terraform init' in" $directory
             scripts/terraform-init.sh $directory
           done
 
       - name: Terraform plan
-        run:
+        run: |
           for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
             environment=$(basename $directory)
             scripts/terraform-workspace.sh $directory $environment-${{ matrix.environment }}
