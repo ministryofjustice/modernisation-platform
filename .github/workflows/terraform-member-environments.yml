@@ -61,7 +61,7 @@ jobs:
 
       - name: Populate list of changed directories
         id: directories
-        run: echo "CHANGED_DIRECTORIES=$(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | uniq | cut -f1-3 -d"/")" >> $GITHUB_OUTPUT
+        run: echo "CHANGED_DIRECTORIES=$(git --no-pager diff --name-only ${{ github.base_ref }} ${{ github.head_ref }} | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | uniq | cut -f1-3 -d"/")" >> $GITHUB_OUTPUT
 
       - name: Terraform init
         run:
@@ -123,7 +123,7 @@ jobs:
 
       - name: Populate list of changed directories
         id: directories
-        run: echo "CHANGED_DIRECTORIES=$(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | uniq | cut -f1-3 -d"/")" >> $GITHUB_OUTPUT
+        run: echo "CHANGED_DIRECTORIES=$(git --no-pager diff --name-only ${{ github.base_ref }} ${{ github.head_ref }} | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | uniq | cut -f1-3 -d"/")" >> $GITHUB_OUTPUT
 
       - name: Terraform init
         run:
