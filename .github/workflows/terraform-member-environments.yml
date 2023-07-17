@@ -31,8 +31,6 @@ permissions:
 
 jobs:
   terraform-plan:
-    if: ${{ github.event_name == 'pull_request' }}
-    environment: ${{ matrix.environment }}
     name: 'Terraform Plan'
     runs-on: ubuntu-latest
     strategy:
@@ -63,7 +61,7 @@ jobs:
 
       - name: Populate list of changed directories
         id: directories
-        run: echo "CHANGED_DIRECTORIES=$(git --no-pager diff --name-only ${{ github.base_ref }} ${{ github.head_ref }} | awk '{print $1}' | grep ".tf" | grep -a "terraform/environments//*" | uniq)" >> $GITHUB_OUTPUT
+        run: echo "CHANGED_DIRECTORIES=$(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | uniq | cut -f1-3 -d"/")" >> $GITHUB_OUTPUT
 
       - name: Terraform init
         run:
@@ -80,6 +78,77 @@ jobs:
             bash scripts/terraform-plan $directory
             unset environment
           done
+
+      - name: Slack failure notification
+        if: ${{ failure() }}
+        uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
+        with:
+          payload: |
+            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+  terraform-apply-dev-test:
+    if: ${{ github.event_name == 'pull_request' && needs.terraform-plan.result == 'success' }}
+    needs: terraform-plan
+    environment: ${{ matrix.environment }}
+    name: 'Terraform Plan'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [development, test]
+    env:
+      TF_IN_AUTOMATION: "true"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+
+      - name: Set account number
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@5fd3084fc36e372ff1fff382a39b10d03659f355 # v2.2.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1 # v2.0.3
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+
+      - name: Populate list of changed directories
+        id: directories
+        run: echo "CHANGED_DIRECTORIES=$(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | uniq | cut -f1-3 -d"/")" >> $GITHUB_OUTPUT
+
+      - name: Terraform init
+        run:
+          for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
+            echo "Running 'terraform init' in $directory"
+            bash scripts/terraform-init.sh $directory
+          done
+
+      - name: Terraform plan
+        run:
+          for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
+            environment=$(basename $directory)
+            bash scripts/terraform-workspace.sh $directory $environment-${{ matrix.environment }}
+            bash scripts/terraform-plan $directory -out tfplan/$environment-${{ matrix.environment }}.tfplan
+            unset environment
+          done
+
+#      - name: Terraform apply
+#        run:
+#          for directory in ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}; do
+#            environment=$(basename $directory)
+#            bash scripts/terraform-workspace.sh $directory $environment-${{ matrix.environment }}
+#            bash scripts/terraform-apply $directory tfplan/$environment-${{ matrix.environment }}.tfplan
+#            unset environment
+#          done
 
       - name: Slack failure notification
         if: ${{ failure() }}
