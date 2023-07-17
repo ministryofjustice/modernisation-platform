@@ -133,7 +133,8 @@ expected =
           "tribunals-development",
           "dacp-development",
           "pra-registe-development",
-          "ncas-development"
+          "ncas-development",
+          "wardship-development"
         ]
       }
     },
@@ -146,7 +147,8 @@ expected =
           "tribunals-production",
           "dacp-production",
           "pra-register-production",
-          "ncas-production"
+          "ncas-production",
+          "wardship-production"
         ]
       }
     },
@@ -159,7 +161,8 @@ expected =
           "tribunals-preproduction",
           "dacp-preproduction",
           "pra-register-preproduction",
-          "ncas-preproduction"
+          "ncas-preproduction",
+          "wardship-preproduction"
         ]
       }
     },

@@ -9,7 +9,8 @@
           "tribunals-development",
           "dacp-development",
           "pra-register-development",
-          "ncas-development"
+          "ncas-development",
+          "wardship-development"
         ]
       }
     }

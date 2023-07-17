@@ -9,7 +9,8 @@
           "tribunals-production",
           "dacp-production",
           "pra-register-production",
-          "ncas-production"
+          "ncas-production",
+          "wardship-production"
         ]
       }
     }
