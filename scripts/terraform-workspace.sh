@@ -28,4 +28,7 @@ if [ $# -ne 2 ]; then
   exit 1
 fi
 
+echo "Setting directory to" $1
+echo "Selecting workspace" $2
+
 terraform -chdir="$1" workspace select "$2" -input=false -no-color | ./scripts/redact-output.sh
