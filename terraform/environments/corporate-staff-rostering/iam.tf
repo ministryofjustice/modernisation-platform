@@ -8,10 +8,18 @@ resource "aws_iam_user" "mgn_user" {
   tags = local.tags
 }
 #tfsec:ignore:aws-iam-no-user-attached-policies
-resource "aws_iam_user_policy_attachment" "mgn_attach_policy" {
-  #tfsec:ignore:aws-iam-no-user-attached-policies
+resource "aws_iam_user_policy_attachment" "mgn_attach_policy_migration" {
+  #tfsec:ignore:aws-iam-no-user-attached-policies "This is a short lived user, so allowing IAM policies attached directly to a user."
   #checkov:skip=CKV_AWS_40: "Skipping as tfsec check is also ignored"
   user       = aws_iam_user.mgn_user.name
   policy_arn = "arn:aws:iam::aws:policy/AWSApplicationMigrationAgentInstallationPolicy"
+}
+
+#tfsec:ignore:aws-iam-no-user-attached-policies
+resource "aws_iam_user_policy_attachment" "mgn_attach_policy_discovery" {
+  #tfsec:ignore:aws-iam-no-user-attached-policies "This is a short lived user, so allowing IAM policies attached directly to a user."
+  #checkov:skip=CKV_AWS_40: "Skipping as tfsec check is also ignored"
+  user       = aws_iam_user.mgn_user.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSApplicationDiscoveryAgentAccess"
 }
 
