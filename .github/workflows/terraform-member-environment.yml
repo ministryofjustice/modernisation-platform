@@ -76,8 +76,17 @@ jobs:
           terraform_version: "~1"
           terraform_wrapper: false
       - name: Terraform init
+        id: init
         run: |
           for directory in $CHANGED_DIRECTORIES; do
             echo "Running 'terraform init' in" $directory
             scripts/terraform-init.sh $directory
           done
+      - name: Terraform plan
+        id: plan
+        run: |
+          for directory in $CHANGED_DIRECTORIES; do
+            application=$(basename $directory)
+            scripts/terraform-workspace.sh $directory $workspace-${{ matrix.environment }}
+          done
+          
