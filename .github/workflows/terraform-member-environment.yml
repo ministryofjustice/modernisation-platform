@@ -41,9 +41,9 @@ jobs:
         run:  |
           git fetch origin main
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            echo "CHANGED_DIRECTORIES=$(git diff HEAD origin/main -- ${{ github.event.pull_request.changes.paths }} --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | uniq | cut -f1-3 -d"/")"
+            echo "CHANGED_DIRECTORIES=$(git diff HEAD origin/main -- ${{ github.event.pull_request.changes.paths }} --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | cut -f1-3 -d"/" | uniq)"
           else
-            echo "CHANGED_DIRECTORIES=$(git diff HEAD HEAD~ -- ${{ github.event.changes.paths }} --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | uniq | cut -f1-3 -d"/")"
+            echo "CHANGED_DIRECTORIES=$(git diff HEAD HEAD~ -- ${{ github.event.changes.paths }} --name-only | | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | cut -f1-3 -d"/" | uniq)"
           fi >> $GITHUB_OUTPUT
       - name: Show changed directories
         run: echo ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}
