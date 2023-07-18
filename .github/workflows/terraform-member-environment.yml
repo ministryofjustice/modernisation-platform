@@ -92,7 +92,10 @@ jobs:
           done
       - name: Terraform plan
         id: plan
+        if: ${{ steps.workspace.conclusion == 'success' }}
         run: |
           for directory in $CHANGED_DIRECTORIES; do
             workspace="$(basename $directory)-${{ matrix.environment }}"
             scripts/terraform-plan.sh $directory
+            unset workspace
+          done
