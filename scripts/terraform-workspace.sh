@@ -23,4 +23,9 @@ if [ -z "$2" ]; then
   exit 1
 fi
 
+if [ $# -ne 2 ]; then
+  echo "Expected two arguments: <directory> <workspace>"
+  exit 1
+fi
+
 terraform -chdir="$1" workspace select "$2" -input=false -no-color | ./scripts/redact-output.sh
