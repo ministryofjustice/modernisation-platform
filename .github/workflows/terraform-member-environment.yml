@@ -87,7 +87,7 @@ jobs:
         run: |
           for directory in $CHANGED_DIRECTORIES; do
             workspace="$(basename $directory)-${{ matrix.environment }}"
-            scripts/terraform-workspace.sh "$directory" "$workspace"
+            scripts/terraform-workspace.sh "$directory" "\"$workspace""
             unset workspace
           done
           
