@@ -82,12 +82,17 @@ jobs:
             echo "Running 'terraform init' in" $directory
             scripts/terraform-init.sh $directory
           done
-      - name: Terraform plan
-        id: plan
+      - name: Terraform workspace
+        id: workspace
         run: |
           for directory in $CHANGED_DIRECTORIES; do
             workspace="$(basename $directory)-${{ matrix.environment }}"
             terraform -chdir="$directory" workspace select "$workspace"
             unset workspace
           done
-          
+      - name: Terraform plan
+        id: plan
+        run: |
+          for directory in $CHANGED_DIRECTORIES; do
+            workspace="$(basename $directory)-${{ matrix.environment }}"
+            scripts/terraform-plan.sh $directory
