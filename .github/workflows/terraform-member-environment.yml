@@ -108,3 +108,8 @@ jobs:
             scripts/terraform-plan.sh $directory
             unset workspace
           done
+      - name: Mark job skipped
+        if: ${{ steps.workspace.outputs.skip_plan == 'true' }}
+        run: |
+          echo "Plan was skipped for this job"
+          echo "::set-job-status name=Skipped::Plan was skipped due to missing workspace"
