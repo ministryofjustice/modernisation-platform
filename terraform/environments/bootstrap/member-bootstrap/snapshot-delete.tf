@@ -55,7 +55,7 @@ resource "aws_iam_policy" "snapshot-delete-access" {
   count       = local.account_data.account-type == "member" ? 1 : 0
   name        = "SnapshotDeleteAccessActions"
   description = "Restricted policy for use by the Instance Scheduler Lambda in member accounts"
-  policy      = data.aws_iam_policy_document.instance-scheduler-access.json
+  policy      = data.aws_iam_policy_document.snapshot-delete-access.json
 }
 
 module "testing_snapshot-delete-access" {

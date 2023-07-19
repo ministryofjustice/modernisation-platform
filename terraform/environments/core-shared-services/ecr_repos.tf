@@ -246,3 +246,23 @@ module "delius_core_ansible_aws_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
+
+module "snapshot_delete_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "snapshot-delete"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/github-actions"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["core-shared-services-production"],
+    local.environment_management.account_ids["testing-test"] # to enable terratest runs
+  ]
+
+  enable_retrieval_policy_for_lambdas = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:function:*", "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["testing-test"]}:function:*"]
+
+  # Tags
+  tags_common = local.tags
+}
