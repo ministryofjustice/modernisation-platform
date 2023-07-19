@@ -20,9 +20,12 @@ data "aws_iam_policy_document" "instance-scheduler-access" {
     #checkov:skip=CKV_AWS_356: Resources not known in advance
     effect = "Allow"
     actions = [
-      "ec2:DeleteSnapshot"
+      "ec2:DescribeInstances",
+      "ec2:DescribeInstanceStatus",
+      "ec2:DescribeTags",
+      "ec2:StartInstances"
     ]
-    resources = ["arn:aws:ec2:*::snapshot/*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
   statement {
