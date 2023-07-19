@@ -25,7 +25,7 @@
       "access": [
         {
           "github_slug": "studio-webops",
-          "level": "developer"
+          "level": "migration"
         }
       ]
     },
@@ -34,7 +34,7 @@
       "access": [
         {
           "github_slug": "studio-webops",
-          "level": "developer"
+          "level": "migration"
         }
       ]
     }
