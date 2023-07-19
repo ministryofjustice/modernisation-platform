@@ -228,6 +228,72 @@ module "data_platform_get_glue_metadata_ecr_repo" {
   tags_common = local.tags
 }
 
+module "data_platform_presigned_url_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "data-platform-presigned-url-lambda"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/data-platform-gha",
+    local.environment_management.account_ids["data-platform-development"]
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    local.environment_management.account_ids["data-platform-development"],
+  ]
+
+  enable_retrieval_policy_for_lambdas = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_presigned_url*"]
+
+  # Tags
+  tags_common = local.tags
+}
+
+module "data_platform_authorizer_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "data-platform-authorizer-lambda"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/data-platform-gha",
+    local.environment_management.account_ids["data-platform-development"]
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    local.environment_management.account_ids["data-platform-development"],
+  ]
+
+  enable_retrieval_policy_for_lambdas = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_authorizer*"]
+
+  # Tags
+  tags_common = local.tags
+}
+
+module "data_platform_docs_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "data-platform-docs-lambda"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/data-platform-gha",
+    local.environment_management.account_ids["data-platform-development"]
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    local.environment_management.account_ids["data-platform-development"],
+  ]
+
+  enable_retrieval_policy_for_lambdas = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_docs*"]
+
+  # Tags
+  tags_common = local.tags
+}
+
 # ECR repo holding the hmpps delius core ansible aws automation container image
 module "delius_core_ansible_aws_ecr_repo" {
   source = "../../modules/app-ecr-repo"
