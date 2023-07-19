@@ -111,5 +111,4 @@ jobs:
       - name: Mark job skipped
         if: ${{ steps.workspace.outputs.skip_plan == 'true' }}
         run: |
-          echo "Plan was skipped for this job"
-          echo "::set-job-status name=Skipped::Plan was skipped due to missing workspace"
+          echo "::warning ::Terraform plan was skipped as no valid workspace was found."
