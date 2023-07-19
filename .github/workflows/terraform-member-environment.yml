@@ -1,6 +1,5 @@
 ---
 name: "Terraform: Member environments"
-description: "Applies changes to member environments when bespoke additions are made."
 
 on:
   push:
