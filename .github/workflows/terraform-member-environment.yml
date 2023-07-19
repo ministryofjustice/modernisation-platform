@@ -92,7 +92,7 @@ jobs:
 
                 else
                   echo "Workspace '$workspace' does not exist, skipping further processing"  
-                  ::cancel::Workspace not found
+                  echo "skip_plan=true" >> $GITHUB_OUTPUT
                 fi
                 
                 echo "Selected $(terraform workspace show)"
@@ -101,7 +101,7 @@ jobs:
           done
       - name: Terraform plan
         id: plan
-        if: ${{ steps.workspace.conclusion == 'success' }}
+        if: ${{ steps.workspace.outputs.skip_plan != 'true' }}
         run: |
           for directory in $CHANGED_DIRECTORIES; do
             workspace="$(basename $directory)-${{ matrix.environment }}"
