@@ -54,7 +54,7 @@ jobs:
     needs: find-environments
     strategy:
       matrix:
-        environment: [development, test]
+        environment: [development]
     env:
       TF_IN_AUTOMATION: "true"
       CHANGED_DIRECTORIES: ${{ needs.find-environments.outputs.directories }}
@@ -87,11 +87,11 @@ jobs:
         run: |
           for directory in $CHANGED_DIRECTORIES; do
             workspace="$(basename $directory)-${{ matrix.environment }}"
-              echo "Selecting" $workspace
               if ! terraform -chdir="$directory" workspace list | grep -q "$workspace"; then
                 echo "Workspace does not exist, skipping further processing"
                 ::cancel::Workspace not found
               fi
+              echo "Selected" $(terraform workspace show)
             unset workspace
           done
       - name: Terraform plan
