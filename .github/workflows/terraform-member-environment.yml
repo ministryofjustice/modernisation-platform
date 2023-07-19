@@ -97,10 +97,9 @@ jobs:
                   echo "skip_plan=true" >> $GITHUB_OUTPUT
                 fi
                 
-                echo "Selected $(terraform workspace show)"
-                
                 unset workspace
           done
+          echo "Selected $(terraform -chdir="$directory" workspace show)"
       - name: Terraform plan
         id: plan
         if: ${{ steps.workspace.outputs.skip_plan != 'true' }}
