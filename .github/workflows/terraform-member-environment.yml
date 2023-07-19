@@ -89,7 +89,7 @@ jobs:
           for directory in $CHANGED_DIRECTORIES; do
                 workspace="$(basename $directory)-${{ matrix.environment }}"
                 
-                if terraform -chdir="$directory" workspace list | grep -q "$workspace"; then
+                if terraform -chdir="$directory" workspace list | grep "$workspace"; then
                   terraform -chdir="$directory" workspace select "$workspace"
 
                 else
