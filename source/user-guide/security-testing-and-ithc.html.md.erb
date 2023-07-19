@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Security Testing and ITHC
-last_reviewed_on: 2023-07-03
+last_reviewed_on: 2023-07-19
 review_in: 6 months
 ---
 # <%= current_page.data.title %>
@@ -17,13 +17,26 @@ We’ve written a guide based on one ITHC Scoping form, providing the division o
 - [ITHC scoping for service teams vs Modernisation Platform] (https://docs.google.com/spreadsheets/d/1HjIjSRuf_MBaE3eIMMwivyojK78vdD9yrKZ1IDnwohU/edit#gid=0)
 This spreadsheet is a work in progress and we invite questions and suggestions to improve it.
 
+## ITHC Tester access
+### Accessing the AWS console
+There are 2 ways this can be done:
+
+- 1. The Application team provides the tester with the same access as they have. The tester then accesses via SSO. 
+- 2. The Modernisation Platform team provides the tester with a ‘collaborator’ account. The tester will then log in directly to the AWS console.
+
+### Accessing the application
+The tester would be expected to access the application as the user community would. This might mean granting temporary access to the testers’ IP addresses.
+
+### Installing testing software
+Any testing software would be installed on, and run from, the 3rd Party’s own environment. We would not expect to install any additional software into the Modernisation Platform.
+
 ## Notifiable testing
 AWS requires you to contact them if you do security testing on AWS services outside a small [Permitted Services](https://aws.amazon.com/security/penetration-testing/#Permitted_Services) list. This permitted list includes a number of different elements - such as RDS and EC2. However, items not on this list require specific AWS agreement. In any case, in the first instance, please get in touch with the Modernisation Platform team [here](https://mojdt.slack.com/archives/C01A7QK5VM1) to coordinate with contacting AWS.
 
 ## Load / stress testing
 A test that sends a sustained high volume of traffic to your service may become an issue for the Platform’s DDOS monitoring, and degrade connectivity to other Modernisation Platform tenants. Please coordinate with the Modernisation Platform when planning these tests.
 In addition, please note the [Amazon EC2 testing policy](https://aws.amazon.com/ec2/testing/) that forbids network stress testing / load testing, where the traffic is:
-in aggregate, for more than 1 minute, over 1 Gbps (1 billion bits per second) or 1 Gpps (1 billion packets per second); generates traffic that appears to be abusive or malicious; or generates traffic that has the potential for impact to entities other than the anticipated target of the testing (such as routing or shared service infrastructure)
+> in aggregate, for more than 1 minute, over 1 Gbps (1 billion bits per second) or 1 Gpps (1 billion packets per second); generates traffic that appears to be abusive or malicious; or generates traffic that has the potential for impact to entities other than the anticipated target of the testing (such as routing or shared service infrastructure)
 
 ## Disallowed testing
 Some testing is not allowed, because it may affect other tenants on the Modernisation Platform, or due to the underlying cloud provider’s policies.
