@@ -55,7 +55,7 @@ jobs:
     needs: find-environments
     strategy:
       matrix:
-        environment: [development, test]
+        environment: [development, test, preproduction, production]
     env:
       TF_IN_AUTOMATION: "true"
       CHANGED_DIRECTORIES: ${{ needs.find-environments.outputs.directories }}
