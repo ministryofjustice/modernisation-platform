@@ -45,6 +45,8 @@ jobs:
           else
             echo "CHANGED_DIRECTORIES=$(git diff HEAD HEAD~ ${{ github.event.changes.paths }} --name-only | | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | cut -f1-3 -d"/" | uniq)"
           fi >> $GITHUB_OUTPUT
+      - name: Display changed directories
+        run: echo "Directories in scope:" ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}
     outputs:
       directories: ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}
 
