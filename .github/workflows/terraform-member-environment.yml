@@ -1,4 +1,3 @@
-#file: noinspection YAMLSchemaValidation
 ---
 name: "Terraform: Member environments"
 
@@ -86,13 +85,19 @@ jobs:
         id: workspace
         run: |
           for directory in $CHANGED_DIRECTORIES; do
-            workspace="$(basename $directory)-${{ matrix.environment }}"
-              if ! terraform -chdir="$directory" workspace list | grep -q "$workspace"; then
-                echo "Workspace does not exist, skipping further processing"
-                ::cancel::Workspace not found
-              fi
-              echo "Selected" $(terraform workspace show)
-            unset workspace
+                workspace="$(basename $directory)-${{ matrix.environment }}"
+                
+                if terraform -chdir="$directory" workspace list | grep -q "$workspace"; then
+                  terraform -chdir="$directory" workspace select "$workspace"
+
+                else
+                  echo "Workspace '$workspace' does not exist, skipping further processing"  
+                  ::cancel::Workspace not found
+                fi
+                
+                echo "Selected $(terraform workspace show)"
+                
+                unset workspace
           done
       - name: Terraform plan
         id: plan
