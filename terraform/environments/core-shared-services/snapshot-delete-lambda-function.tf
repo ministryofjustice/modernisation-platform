@@ -8,7 +8,7 @@ module "instance_scheduler" {
   tags                           = local.tags
   description                    = "Lambda to delete snapshots older than X number of days"
   role_name                      = "SnapshotDeleteLambdaFunctionPolicy"
-  policy_json                    = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
+  policy_json                    = data.aws_iam_policy_document.snapshot-delete-lambda-function-policy.json
   function_name                  = "snapshot-delete-lambda-function"
   create_role                    = true
   reserved_concurrent_executions = 1
