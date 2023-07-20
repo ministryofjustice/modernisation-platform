@@ -181,9 +181,9 @@ jobs:
           for directory in $CHANGED_DIRECTORIES; do
             workspace="$(basename $directory)-${{ matrix.environment }}"
             scripts/terraform-plan.sh $directory -out="$workspace".tfplan
-            ls | grep *.tfplan
             unset workspace
           done
+          grep -rl "*.tfplan" ./terraform/environments/
       - name: Mark job skipped
         if: ${{ steps.workspace.outputs.skip_plan == 'true' }}
         run: |
