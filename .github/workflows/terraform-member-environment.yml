@@ -120,7 +120,6 @@ jobs:
     strategy:
       matrix:
         environment: [development, test]
-    environment: ${{ matrix.environment }}
     env:
       TF_IN_AUTOMATION: "true"
       CHANGED_DIRECTORIES: ${{ needs.find-environments.outputs.directories }}
@@ -177,12 +176,13 @@ jobs:
       - name: Terraform apply
         id: apply
         if: ${{ steps.plan.conclusion == 'success' }}
+        env:
+          GITHUB_ENVIRONMENT: ${{ matrix.environment }}
         run: |
           for directory in $CHANGED_DIRECTORIES; do
             workspace="$(basename $directory)-${{ matrix.environment }}"
             scripts/terraform-plan.sh $directory
             unset workspace
-            ls -o $directory
           done
 
       - name: Mark job skipped
