@@ -1,6 +1,6 @@
 # role for allowing the instance scheduler to shut down and start up instances in accounts
 
-module "instance-scheduler-access" {
+module "snapshot-delete-access" {
   count                  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
   account_id             = local.environment_management.account_ids["core-shared-services-production"]
