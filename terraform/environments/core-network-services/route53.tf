@@ -9,6 +9,25 @@ locals {
     mojfin   = "laa-finance-data.service.justice.gov.uk",
     tipstaff = "tipstaff.service.justice.gov.uk"
   }
+  core-application_zones = {
+    
+  }
+}
+resource "aws_route53_zone" "application_private_zone" {
+
+  for_each = local.core-application_zones
+
+  name = each.value
+
+  vpc {
+    vpc_id = module.vpc_inspection["live_data"].vpc_id
+  }
+
+  lifecycle {
+    ignore_changes = [vpc]
+  }
+
+  tags = local.tags
 }
 
 # Main Modernisation Platform zones
