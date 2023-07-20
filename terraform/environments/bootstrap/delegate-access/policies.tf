@@ -137,6 +137,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "ecs:StartTask",
       "ecs:StopTask",
       "ecs:ListTagsForResource",
+      "ecr:*",
       "identitystore:DescribeUser",
       "kms:Decrypt*",
       "kms:Encrypt",
