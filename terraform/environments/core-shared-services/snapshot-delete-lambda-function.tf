@@ -1,4 +1,4 @@
-module "instance_scheduler" {
+module "snapshot_delete" {
   #checkov:skip=CKV_AWS_116
   #checkov:skip=CKV_AWS_117
   #checkov:skip=CKV_AWS_272 "Code signing not required"
