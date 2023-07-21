@@ -181,7 +181,7 @@ jobs:
         run: |
           for directory in $CHANGED_DIRECTORIES; do
             workspace="$(basename $directory)-${{ matrix.environment }}"
-            scripts/terraform-plan.sh $directory
+            scripts/terraform-apply.sh $directory "$workspace.tfplan"
             unset workspace
           done
 
@@ -257,7 +257,7 @@ jobs:
         run: |
           for directory in $CHANGED_DIRECTORIES; do
             workspace="$(basename $directory)-${{ matrix.environment }}"
-            scripts/terraform-plan.sh $directory
+            scripts/terraform-apply.sh $directory "$workspace.tfplan"
             unset workspace
           done
 
