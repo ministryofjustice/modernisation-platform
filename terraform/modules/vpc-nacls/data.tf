@@ -158,13 +158,22 @@ locals {
       rule_number = 5100
       to_port     = 80
     },
+    allow_0-0-0-0_smtp_submission_tcp_out = {
+      cidr_block  = "0.0.0.0/0"
+      egress      = true
+      from_port   = 587
+      protocol    = "tcp"
+      rule_action = "allow"
+      rule_number = 5300
+      to_port     = 587
+    },
     allow_0-0-0-0_agent_tcp_out = {
       cidr_block  = "0.0.0.0/0"
       egress      = true
       from_port   = 5721
       protocol    = "tcp"
       rule_action = "allow"
-      rule_number = 5200
+      rule_number = 5400
       to_port     = 5721
     },
     allow_0-0-0-0_dynamic_tcp_in = {
