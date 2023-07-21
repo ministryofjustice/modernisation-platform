@@ -68,14 +68,14 @@ resource "aws_secretsmanager_secret_version" "s3_user_secret_key" {
 #tfsec:ignore:aws-iam-no-user-attached-policies
 resource "aws_iam_user" "email" {
   #checkov:skip=CKV_AWS_273: "Skipping as tfsec check is also ignored"
-  name  = format("%s-%s-email_user", local.application_name, local.environment)
+  name = format("%s-%s-email_user", local.application_name, local.environment)
   tags = merge(local.tags,
     { Name = format("%s-%s-email_user", local.application_name, local.environment) }
   )
 }
 
 resource "aws_iam_access_key" "email" {
-  user  = aws_iam_user.email.name
+  user = aws_iam_user.email.name
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
