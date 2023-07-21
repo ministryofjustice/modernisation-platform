@@ -6,6 +6,7 @@ resource "aws_route53_vpc_association_authorization" "vpcauth" {
 }
 
 resource "aws_route53_zone_association" "extend" {
-  zone_id  = aws_route53_vpc_association_authorization.vpcauth.id
+  for_each = aws_route53_vpc_association_authorization.vpcauth.zone_id
+  zone_id  = each.value.id
   vpc_id   = aws_route53_vpc_association_authorization.vpcauth.vpc_id
 }

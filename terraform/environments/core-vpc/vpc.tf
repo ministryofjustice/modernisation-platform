@@ -187,31 +187,14 @@ module "dns_zone_extend" {
   vpc_id      = module.vpc[each.key].vpc_id
   dns_domain  = ".modernisation-platform.internal"
 }
-data "aws_route53_zone" "privatedns" {
-  provider = aws.core-network-services
-}
-# locals {
-#   excluded_zones = [equip.service.justice.gov.uk", "ccms-ebs.service.justice.gov.uk", "maat-libra-administration-tool.service.justice.gov.uk", "laa-finance-data.service.justice.gov.uk", "tipstaff.service.justice.gov.uk"]  # Add the IDs of zones you want to exclude from the map
-#   filtered_zones = [zone_id for zone_id in data.aws_route53_zone.private_zones.zone_ids if !(zone_id in local.excluded_zones)]
-  
-#   private_dns_zone_map = {
-#     for zone_id in local.filtered_zones : zone_id => aws_route53_zone.private_zones.zones[zone_id].name
-#   }
-# }
-output "private_dns_zones" {
-  value = data.aws_route53_zone.privatedns.private_zone
-}
 
 # module "private_dns_zone_extend" {
-  
 #   for_each = local.vpcs[terraform.workspace]
-
 #   source = "../../modules/private-dns-zone-extend"
 
 #   environment = trimprefix(terraform.workspace, "${var.networking[0].application}-")
 #   zone_id     = { for key, zone in each.value.options.dns_zone_extend : key => zone }
 #   vpc_id      = module.vpc[each.key].vpc_id
-# 
 # }
 
 resource "aws_iam_role" "member-delegation" {
