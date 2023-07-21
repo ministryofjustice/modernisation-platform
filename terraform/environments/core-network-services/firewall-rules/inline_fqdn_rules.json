@@ -9,6 +9,7 @@
     "ntservicepack.microsoft.com",
     "stats.microsoft.com",
     "saas40.kaseya.net",
-    ".dl.delivery.mp.microsoft.com"
+    ".dl.delivery.mp.microsoft.com",
+    "smtp.office365.com"
   ]
 }
