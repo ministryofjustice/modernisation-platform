@@ -12,6 +12,14 @@
         {
           "github_slug": "hmpps-digital-prison-reporting",
           "level": "reporting-operations"
+        },
+        {
+          "github_slug": "hmpps-digital-prison-reporting-non-cleared-team",
+          "level": "sandbox"
+        },
+        {
+          "github_slug": "hmpps-digital-prison-reporting-non-cleared-team",
+          "level": "reporting-operations"
         }
       ]
     },
@@ -24,6 +32,14 @@
         },
         {
           "github_slug": "hmpps-digital-prison-reporting",
+          "level": "reporting-operations"
+        },
+        {
+          "github_slug": "hmpps-digital-prison-reporting-non-cleared-team",
+          "level": "developer"
+        },
+        {
+          "github_slug": "hmpps-digital-prison-reporting-non-cleared-team",
           "level": "reporting-operations"
         }
       ]
