@@ -188,7 +188,7 @@ module "dns_zone_extend" {
   dns_domain  = ".modernisation-platform.internal"
 }
 locals {
-  core-application-zones = {
+  private-application-zones = {
       laa = "legalservices.interal",
       hmpps = "hmpps.internal"
     
@@ -200,7 +200,7 @@ module "private_dns_zone_extend" {
 
   source = "../../modules/private-dns-zone-extend"
   environment = trimprefix(terraform.workspace, "${var.networking[0].application}-")
-  business_unit_name     = local.core-application-zones
+  business_unit_name     = local.private-application-zones
   vpc_id      = module.vpc[each.key].vpc_id
 
 }

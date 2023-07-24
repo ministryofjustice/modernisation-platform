@@ -9,15 +9,15 @@ locals {
     mojfin   = "laa-finance-data.service.justice.gov.uk",
     tipstaff = "tipstaff.service.justice.gov.uk"
   }
-  core-application_zones = {
+  private-application-zones  = {
     laa = "legalservices.interal",
     hmpps = "hmpps.internal"
     
   }
 }
-resource "aws_route53_zone" "application_private_zone" {
+resource "aws_route53_zone" "private-application-zones" {
 
-  for_each = local.core-application_zones
+  for_each = local.private-application-zones 
 
   name = each.value
 
