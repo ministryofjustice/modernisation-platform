@@ -199,6 +199,7 @@ locals {
 module "private_dns_zone_extend" {
    providers = {
     aws.core-network-services = aws.core-network-services
+    aws.core-vpc  = aws.core-vpc
   }
   
   for_each = local.vpcs[terraform.workspace]
