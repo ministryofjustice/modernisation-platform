@@ -1,3 +1,8 @@
+provider "aws" {
+  alias = "core-network-services"
+  version = "~> 1.0"
+}
+
 
 data "aws_route53_zone" "private" {
  provider = aws.core-network-services
