@@ -10,6 +10,8 @@ locals {
     tipstaff = "tipstaff.service.justice.gov.uk"
   }
   core-application_zones = {
+    laa = "legalservices.interal",
+    hmpps = "hmpps.internal"
     
   }
 }

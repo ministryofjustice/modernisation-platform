@@ -48,7 +48,7 @@ locals {
       for file in fileset("../../../environments-networks", "*-sandbox.json") :
       replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))
     }
-
+    
   }
 
   account_numbers = flatten([
@@ -187,15 +187,23 @@ module "dns_zone_extend" {
   vpc_id      = module.vpc[each.key].vpc_id
   dns_domain  = ".modernisation-platform.internal"
 }
+locals {
+  core-application-zones = {
+      laa = "legalservices.interal",
+      hmpps = "hmpps.internal"
+    
+    }
+}
 
-# module "private_dns_zone_extend" {
-#   for_each = local.vpcs[terraform.workspace]
-#   source = "../../modules/private-dns-zone-extend"
+module "private_dns_zone_extend" {
+  for_each = local.vpcs[terraform.workspace]
 
-#   environment = trimprefix(terraform.workspace, "${var.networking[0].application}-")
-#   zone_id     = { for key, zone in each.value.options.dns_zone_extend : key => zone }
-#   vpc_id      = module.vpc[each.key].vpc_id
-# }
+  source = "../../modules/private-dns-zone-extend"
+  environment = trimprefix(terraform.workspace, "${var.networking[0].application}-")
+  business_unit_name     = local.core-application-zones
+  vpc_id      = module.vpc[each.key].vpc_id
+
+}
 
 resource "aws_iam_role" "member-delegation" {
   for_each = local.vpcs[terraform.workspace]

@@ -1,4 +1,4 @@
-variable "zone_id" {
+variable "business_unit_name" {
   type = map(any)
 }
 
