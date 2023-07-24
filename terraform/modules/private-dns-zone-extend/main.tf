@@ -12,7 +12,6 @@ zone_id  = data.aws_route53_zone.private.zone_id
 }
 
 resource "aws_route53_zone_association" "extend"  {
-provider = aws.core-vpc
 vpc_id   = aws_route53_vpc_association_authorization.vpcauth.zone_id
 zone_id  = aws_route53_vpc_association_authorization.vpcauth.vpc_id
 }
