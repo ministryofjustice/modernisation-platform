@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: AWS Network Firewall
-last_reviewed_on: 2023-05-18
+last_reviewed_on: 2023-07-24
 review_in: 6 months
 ---
 
@@ -53,9 +53,8 @@ These rules are formatted in json format and a text example is shown below.
 
 ### FQDN Firewall Rules
 
-We have now included a change to the firewall to be to include unblocking by dns names for egress connections by default we will be blocking all outbound dns requests based on the DNS name this is for http traffic only.
-
-To unblock a DNS name to allow traffic to that site a PR will need to be created and the following file will need to be updated
+We make use of FQDN-based inspection on the `HTTP_HOST` or `TLS_SNI` header values of packets. This allows us to permit traffic based on domain names, rather than combinations of IP address and destination port.
+This is primarily of interest to customers attempting to reach HTTP endpoints on the internet from resources in their Modernisation Platform accounts.
 
 - [Centralised FQDN Rules](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/fqdn_rules.json)
 - [Inline FQDN Rules](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/inline_fqdn_rules.json)
