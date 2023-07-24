@@ -1,0 +1,267 @@
+---
+name: "Terraform: Member environments"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'terraform/environments/**/*.tf'
+      - '!terraform/environments/core-*'
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+    branches-ignore:
+      - 'date*'
+    paths:
+      - 'terraform/environments/**/*.tf'
+      - '!terraform/environments/core-*'
+      - '.github/workflows/terraform-member-environment.yml'
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  TF_IN_AUTOMATION: true
+  AWS_REGION: "eu-west-2"
+  ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+jobs:
+  find-environments:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+      - name: Get changed directories
+        id:   directories
+        run:  |
+          git fetch origin main
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "CHANGED_DIRECTORIES=$(git diff HEAD origin/main ${{ github.event.pull_request.changes.paths }} --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | cut -f1-3 -d"/" | uniq)"
+          else
+            echo "CHANGED_DIRECTORIES=$(git diff HEAD HEAD~ ${{ github.event.changes.paths }} --name-only | | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | cut -f1-3 -d"/" | uniq)"
+          fi >> $GITHUB_OUTPUT
+      - name: Display changed directories
+        run: echo "Directories in scope:" ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}
+    outputs:
+      directories: ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}
+
+  terraform-plan:
+    runs-on: ubuntu-latest
+    needs: find-environments
+    strategy:
+      matrix:
+        environment: [development, test, preproduction, production]
+    env:
+      TF_IN_AUTOMATION: "true"
+      CHANGED_DIRECTORIES: ${{ needs.find-environments.outputs.directories }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+      - name: Set account number
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@5fd3084fc36e372ff1fff382a39b10d03659f355 # v2.2.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Setup Terraform
+        id: setup
+        uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1 # v2.0.3
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+      - name: Terraform init
+        id: init
+        run: |
+          for directory in $CHANGED_DIRECTORIES; do
+            echo "Running 'terraform init' in" $directory
+            scripts/terraform-init.sh $directory
+          done
+      - name: Terraform workspace
+        id: workspace
+        run: |
+          for directory in $CHANGED_DIRECTORIES; do
+                workspace="$(basename $directory)-${{ matrix.environment }}"
+                
+                if terraform -chdir="$directory" workspace list | grep "$workspace"; then
+                  terraform -chdir="$directory" workspace select "$workspace"
+
+                else
+                  echo "Workspace '$workspace' does not exist, skipping further processing"  
+                  echo "skip_plan=true" >> $GITHUB_OUTPUT
+                fi
+                
+                unset workspace
+          done
+          echo "Selected $(terraform -chdir="$directory" workspace show)"
+      - name: Terraform plan
+        id: plan
+        if: ${{ steps.workspace.outputs.skip_plan != 'true' }}
+        run: |
+          for directory in $CHANGED_DIRECTORIES; do
+            workspace="$(basename $directory)-${{ matrix.environment }}"
+            scripts/terraform-plan.sh $directory
+            unset workspace
+          done
+      - name: Mark job skipped
+        if: ${{ steps.workspace.outputs.skip_plan == 'true' }}
+        run: |
+          echo "::warning ::Terraform plan was skipped as no valid workspace was found."
+
+  terraform-apply-dev-test:
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    needs: [find-environments, terraform-plan]
+    strategy:
+      matrix:
+        environment: [development, test]
+    environment: ${{ matrix.environment }}
+    env:
+      TF_IN_AUTOMATION: "true"
+      CHANGED_DIRECTORIES: ${{ needs.find-environments.outputs.directories }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+      - name: Set account number
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@5fd3084fc36e372ff1fff382a39b10d03659f355 # v2.2.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Setup Terraform
+        id: setup
+        uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1 # v2.0.3
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+      - name: Terraform init
+        id: init
+        run: |
+          for directory in $CHANGED_DIRECTORIES; do
+            echo "Running 'terraform init' in" $directory
+            scripts/terraform-init.sh $directory
+          done
+      - name: Terraform workspace
+        id: workspace
+        run: |
+          for directory in $CHANGED_DIRECTORIES; do
+                workspace="$(basename $directory)-${{ matrix.environment }}"
+                
+                if terraform -chdir="$directory" workspace list | grep "$workspace"; then
+                  terraform -chdir="$directory" workspace select "$workspace"
+
+                else
+                  echo "Workspace '$workspace' does not exist, skipping further processing"  
+                  echo "skip_plan=true" >> $GITHUB_OUTPUT
+                fi
+                
+                unset workspace
+          done
+          echo "Selected $(terraform -chdir="$directory" workspace show)"
+      - name: Terraform plan
+        id: plan
+        if: ${{ steps.workspace.outputs.skip_plan != 'true' }}
+        run: |
+          for directory in $CHANGED_DIRECTORIES; do
+            workspace="$(basename $directory)-${{ matrix.environment }}"
+            scripts/terraform-plan.sh $directory -out="$workspace.tfplan"
+            unset workspace
+          done
+      - name: Terraform apply
+        id: apply
+        if: ${{ steps.plan.conclusion == 'success' }}
+        run: |
+          for directory in $CHANGED_DIRECTORIES; do
+            workspace="$(basename $directory)-${{ matrix.environment }}"
+            scripts/terraform-apply.sh $directory "$workspace.tfplan"
+            unset workspace
+          done
+
+      - name: Mark job skipped
+        if: ${{ steps.workspace.outputs.skip_plan == 'true' }}
+        run: |
+          echo "::warning ::Terraform plan was skipped as no valid workspace was found."
+
+  terraform-apply-preprod-prod:
+    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' }}
+    runs-on: ubuntu-latest
+    needs: [find-environments, terraform-plan]
+    strategy:
+      matrix:
+        environment: [preproduction, production]
+    environment: ${{ matrix.environment }}
+    env:
+      TF_IN_AUTOMATION: "true"
+      CHANGED_DIRECTORIES: ${{ needs.find-environments.outputs.directories }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+      - name: Set account number
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@5fd3084fc36e372ff1fff382a39b10d03659f355 # v2.2.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Setup Terraform
+        id: setup
+        uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1 # v2.0.3
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+      - name: Terraform init
+        id: init
+        run: |
+          for directory in $CHANGED_DIRECTORIES; do
+            echo "Running 'terraform init' in" $directory
+            scripts/terraform-init.sh $directory
+          done
+      - name: Terraform workspace
+        id: workspace
+        run: |
+          for directory in $CHANGED_DIRECTORIES; do
+                workspace="$(basename $directory)-${{ matrix.environment }}"
+                
+                if terraform -chdir="$directory" workspace list | grep "$workspace"; then
+                  terraform -chdir="$directory" workspace select "$workspace"
+
+                else
+                  echo "Workspace '$workspace' does not exist, skipping further processing"  
+                  echo "skip_plan=true" >> $GITHUB_OUTPUT
+                fi
+                
+                unset workspace
+          done
+          echo "Selected $(terraform -chdir="$directory" workspace show)"
+      - name: Terraform plan
+        id: plan
+        if: ${{ steps.workspace.outputs.skip_plan != 'true' }}
+        run: |
+          for directory in $CHANGED_DIRECTORIES; do
+            workspace="$(basename $directory)-${{ matrix.environment }}"
+            scripts/terraform-plan.sh $directory -out="$workspace.tfplan"
+            unset workspace
+          done
+      - name: Terraform apply
+        id: apply
+        if: ${{ steps.plan.conclusion == 'success' }}
+        run: |
+          for directory in $CHANGED_DIRECTORIES; do
+            workspace="$(basename $directory)-${{ matrix.environment }}"
+            scripts/terraform-apply.sh $directory "$workspace.tfplan"
+            unset workspace
+          done
+
+      - name: Mark job skipped
+        if: ${{ steps.workspace.outputs.skip_plan == 'true' }}
+        run: |
+          echo "::warning ::Terraform plan was skipped as no valid workspace was found."
