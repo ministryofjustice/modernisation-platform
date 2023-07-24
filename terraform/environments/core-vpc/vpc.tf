@@ -197,7 +197,10 @@ locals {
 
 
 module "private_dns_zone_extend" {
-  providers = aws.core-network-services
+   providers = {
+    aws.core-network-services = aws.core-network-services
+    aws.aws-us-east-1         = aws.aws-us-east-1
+  }
   
   for_each = local.vpcs[terraform.workspace]
   source = "../../modules/private-dns-zone-extend"
