@@ -1,6 +1,6 @@
 provider "aws" {
   alias = "core-network-services"
-  version = "~> 1.0"
+  version = "~> 2.0"
 }
 
 resource "aws_route53_vpc_association_authorization" "private_zone_vpc_auth" {

@@ -194,18 +194,21 @@ locals {
     
     }
 }
-data "aws_route53_zone" "private" {
+data "aws_route53_zone" "private_dns_lookup" {
  provider = aws.core-network-services
  name = local.private-application-zones[var.business_unit]
 }
 
 
 module "private_dns_zone_extend" {
+  providers = {
+    aws = aws.core-vpc
+  }
   for_each = local.vpcs[terraform.workspace]
   source = "../../modules/private-dns-zone-extend"
   name = each.key
   environment = trimprefix(terraform.workspace, "${var.networking[0].application}-")
-  business_unit_name     = data.aws_route53_zone.private.zone_id
+  business_unit_name     = data.aws_route53_zone.private_dns_lookup.zone_id
   vpc_id      = module.vpc[each.key].vpc_id
 
 }
