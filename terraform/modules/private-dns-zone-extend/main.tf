@@ -4,16 +4,16 @@ provider "aws" {
 }
 
 
-data "aws_route53_zone" "private" {
- provider = aws.core-network-services
- name = var.business_unit_name
-}
+# data "aws_route53_zone" "private" {
+#  provider = aws.core-network-services
+#  name = var.business_unit_name
+# }
 
 
 resource "aws_route53_vpc_association_authorization" "vpcauth" {
 provider = aws.core-network-services
 vpc_id   = var.vpc_id
-zone_id  = data.aws_route53_zone.private.zone_id
+zone_id  = var.business_unit_name
 }
 
 resource "aws_route53_zone_association" "extend"  {
