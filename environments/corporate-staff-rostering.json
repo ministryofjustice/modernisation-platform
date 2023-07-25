@@ -8,6 +8,10 @@
           "github_slug": "studio-webops",
           "level": "sandbox",
           "nuke": "exclude"
+        },
+        {
+          "github_slug": "studio-webops",
+          "level": "migration"
         }
       ]
     },
