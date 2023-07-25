@@ -9,15 +9,16 @@ locals {
     mojfin   = "laa-finance-data.service.justice.gov.uk",
     tipstaff = "tipstaff.service.justice.gov.uk"
   }
+  #locals for new private dns
   private-application-zones  = {
-
     
   }
 }
+
+#New resource for private dns zones
 resource "aws_route53_zone" "private-application-zones" {
 
   for_each = local.private-application-zones 
-
   name = each.value
 
   vpc {
@@ -27,7 +28,6 @@ resource "aws_route53_zone" "private-application-zones" {
   lifecycle {
     ignore_changes = [vpc]
   }
-
   tags = local.tags
 }
 

@@ -187,6 +187,7 @@ module "dns_zone_extend" {
   vpc_id      = module.vpc[each.key].vpc_id
   dns_domain  = ".modernisation-platform.internal"
 }
+#Locals needed for the private dns zone extend module
 locals {
   private-application-zones = {
       laa = "legalservices.interal",
