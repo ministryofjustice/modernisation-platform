@@ -255,7 +255,7 @@ locals {
       to_port     = 587
     },
     allow_redshift_in = {
-      cidr_block  = "10.184.0.0/16"
+      cidr_block  = data.aws_vpc.current.cidr_block
       egress      = false
       from_port   = 5439
       protocol    = "tcp"
