@@ -208,5 +208,12 @@
     "destination_ip": "${hmpps-development}",
     "destination_port": "389",
     "protocol": "TCP"
+  },
+  "global-protect_to_data-insights-hub_development_redshift": {
+    "action": "PASS",
+    "source_ip": "${global-protect}",
+    "destination_ip": "${hq-development}",
+    "destination_port": "5439",
+    "protocol": "TCP"
   }
 }

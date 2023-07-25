@@ -271,5 +271,12 @@
     "destination_ip": "${hmpps-production}",
     "destination_port": "443",
     "protocol": "TCP"
+  },
+  "global-protect_to_data-insights-hub_production_redshift": {
+    "action": "PASS",
+    "source_ip": "${global-protect}",
+    "destination_ip": "${hq-production}",
+    "destination_port": "5439",
+    "protocol": "TCP"
   }
 }
