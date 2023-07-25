@@ -208,5 +208,12 @@
     "destination_ip": "${hmpps-development}",
     "destination_port": "389",
     "protocol": "TCP"
+  },
+  "rfc_10-0-0-0-8_to_dih_development_redshift": {
+    "action": "PASS",
+    "source_ip": "10.0.0.0/8",
+    "destination_ip": "${hq-development}",
+    "destination_port": "5439",
+    "protocol": "TCP"
   }
 }

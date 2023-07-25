@@ -216,11 +216,18 @@
     "destination_port": "389",
     "protocol": "TCP"
   },
-  "rfc_10-0-0-0-8_to_ppud_production_https": {
+  "rfc_10-0-0-0-8_to_ppud_preproduction_https": {
     "action": "PASS",
     "source_ip": "10.0.0.0/8",
-    "destination_ip": "${hmpps-production}",
+    "destination_ip": "${hmpps-preproduction}",
     "destination_port": "443",
+    "protocol": "TCP"
+  },
+  "rfc_10-0-0-0-8_to_dih_preproduction_redshift": {
+    "action": "PASS",
+    "source_ip": "10.0.0.0/8",
+    "destination_ip": "${hq-preproduction}",
+    "destination_port": "5439",
     "protocol": "TCP"
   }
 }
