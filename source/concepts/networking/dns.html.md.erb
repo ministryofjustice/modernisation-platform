@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: DNS
-last_reviewed_on: 2023-03-30
+last_reviewed_on: 2023-07-24
 review_in: 6 months
 ---
 
@@ -9,7 +9,11 @@ review_in: 6 months
 
 DNS is centralised in the networking services account.
 
+We use AWS Route53 to provide and manage DNS records.
+
 There are public and private [hosted zones](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zones-working-with.html) for the Modernisation Platform.
+
+We also cater for application-specific public hosted zones.
 
 ![DNS Zones](../../images/dns.png)
 
@@ -23,7 +27,7 @@ DNS entries for applications will be created in the relevant zone following the 
 
 #### Example
 
-ccr.laa-preproduction.modernisation-platform.service.justice.gov.uk
+`ccr.laa-preproduction.modernisation-platform.service.justice.gov.uk`
 
 ### Private
 
@@ -35,9 +39,19 @@ ccr.laa-preproduction.modernisation-platform.service.justice.gov.uk
 
 `my-application.nomis.hmpps-test.modernisation-platform.service.justice.gov.uk`
 
+### Custom
+
+`ppud.justice.gov.uk`
+
+#### Example
+
+`www.ppud.justice.gov.uk`
+
+`wam.ppud.justice.gov.uk`
+
 ### Production DNS
 
-Public facing services must have a `service.justice.gov.uk` domain name.
+Public facing services must have a `service.justice.gov.uk` domain name, excluding exceptional cases.
 
 See the MoJ Technical guidance on [Naming domains](https://technical-guidance.service.justice.gov.uk/documentation/standards/naming-domains.html#naming-domains) for more information.
 
