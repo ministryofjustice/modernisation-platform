@@ -1,4 +1,3 @@
-#provider information for the module
 terraform {
   required_providers {
     aws = {
