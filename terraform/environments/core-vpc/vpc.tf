@@ -204,7 +204,7 @@ module "private_dns_zone_extend" {
   
   for_each = local.vpcs[terraform.workspace]
   source = "../../modules/private-dns-zone-extend"
-  business_unit_name     = local.private-application-zones
+  business_unit_name     = local.private-application-zones[each.key]
   vpc_id      = module.vpc[each.key].vpc_id
 
 }
