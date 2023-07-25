@@ -34,16 +34,58 @@
     "destination_port": "5721",
     "protocol": "TCP"
   },
-  "hmpps-development_to_internet_smtp465": {
+  "hmpps-development_to_internet_smtps": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
     "destination_ip": "0.0.0.0/0",
     "destination_port": "465",
     "protocol": "TCP"
   },
-  "hmpps-development_to_internet_smtp587": {
+  "hmpps-development_to_internet_smtp-submission": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "hmpps-test_to_internet_smtps": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "465",
+    "protocol": "TCP"
+  },
+  "hmpps-test_to_internet_smtp-submission": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "hmpps-preproduction_to_internet_smtps": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "465",
+    "protocol": "TCP"
+  },
+  "hmpps-preproduction_to_internet_smtp-submission": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "hmpps-production_to_internet_smtps": {
+    "action": "PASS",
+    "source_ip": "${hmpps-production}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "465",
+    "protocol": "TCP"
+  },
+  "hmpps-production_to_internet_smtp-submission": {
+    "action": "PASS",
+    "source_ip": "${hmpps-production}",
     "destination_ip": "0.0.0.0/0",
     "destination_port": "587",
     "protocol": "TCP"
