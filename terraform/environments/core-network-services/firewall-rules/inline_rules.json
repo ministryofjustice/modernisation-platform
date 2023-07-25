@@ -34,7 +34,7 @@
     "destination_port": "5721",
     "protocol": "TCP"
   },
-  "hmpps-development_to_internet_smtps5": {
+  "hmpps-development_to_internet_smtps": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
     "destination_ip": "0.0.0.0/0",
