@@ -33,5 +33,19 @@
     "destination_ip": "0.0.0.0/0",
     "destination_port": "5721",
     "protocol": "TCP"
+  },
+  "hmpps-development_to_internet_smtp465": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "465",
+    "protocol": "TCP"
+  },
+  "hmpps-development_to_internet_smtp587": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "587",
+    "protocol": "TCP"
   }
 }
