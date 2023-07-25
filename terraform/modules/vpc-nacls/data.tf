@@ -245,6 +245,15 @@ locals {
       rule_number = 1100
       to_port     = 587
     },
+    allow_redshift_in = {
+      cidr_block  = "10.184.0.0/16"
+      egress      = false
+      from_port   = 5439
+      protocol    = "tcp"
+      rule_action = "allow"
+      rule_number = 1200
+      to_port     = 5439
+    },
     allow_dynamic_tcp_out = {
       cidr_block  = data.aws_vpc.current.cidr_block
       egress      = true
