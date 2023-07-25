@@ -15,7 +15,7 @@ locals {
   }
 }
 
-resource "aws_route53_zone" "private-application-zones" {
+resource "aws_route53_zone" "private_application_zones" {
 
   for_each = local.private-application-zones 
   name = each.value
