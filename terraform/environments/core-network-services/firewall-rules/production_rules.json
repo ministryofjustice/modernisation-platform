@@ -272,9 +272,9 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "rfc_10-0-0-0-8_to_dih_production_redshift": {
+  "global-protect_to_dih_production_redshift": {
     "action": "PASS",
-    "source_ip": "10.0.0.0/8",
+    "source_ip": "${global-protect}",
     "destination_ip": "${hq-production}",
     "destination_port": "5439",
     "protocol": "TCP"
