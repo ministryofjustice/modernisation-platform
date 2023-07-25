@@ -12,6 +12,6 @@ zone_id  = each.key
 }
 
 resource "aws_route53_zone_association" "private_zone_assoc"  {
-vpc_id   = aws_route53_vpc_association_authorization.private_zone_vpc_auth.zone_id
-zone_id  = aws_route53_vpc_association_authorization.private_zone_vpc_auth.vpc_id
+vpc_id   = aws_route53_vpc_association_authorization.private_zone_vpc_auth.zone_id[each.key]
+zone_id  = aws_route53_vpc_association_authorization.private_zone_vpc_auth.vpc_id[each.key]
 }
