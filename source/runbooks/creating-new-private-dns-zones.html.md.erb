@@ -1,0 +1,61 @@
+---
+owner_slack: "#modernisation-platform"
+title: Creating new private DNS zones
+last_reviewed_on: 2023-07-26
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+Private DNS zones are created in the Modernisation Platform `core-network-services` account through Terraform.
+We provide `modernisation-platform.service.justice.gov.uk` and `modernisation-platform.internal` to customers on a per-business unit basis.
+
+This new service allows for the creation of custom private DNS zones. This has to be done in two pull requests the first one to create the zone and a second extend the zone to the VPCs
+
+## Creating new private zones
+
+New DNS zones are added in code [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/route53.tf).
+
+Using the example code below will create the new private DNS record but will not extend that to the VPCs
+
+In the pull request simply add a business name and supply the DNS name for the private zone you want to create
+
+#### Example
+
+```terraform
+  private-application-zones  = {
+    example = "example.gov.uk"
+    test    = "test.internal
+  }
+}
+```
+
+## Extending the newly created private DNS zone
+
+To extend DNS zones amend the code in [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-vpc/vpc.tf).
+
+If the below sections are already unhashed simply add in your business unit and DNS name to the locals section like what was done in the pr to create the DNS zone above. 
+
+#### Example
+
+```terraform
+# locals {
+#   private-application-zones = {
+
+#     }
+# }
+
+
+# module "private_dns_zone_extend" {
+#    providers = {
+#     aws.core-network-services = aws.core-network-services
+#     aws.core-vpc  = aws
+#   }
+
+#   for_each = local.vpcs[terraform.workspace]
+#   source = "../../modules/private-dns-zone-extend"
+#   business_unit_name     = local.private-application-zones[each.key]
+#   vpc_id      = module.vpc[each.key].vpc_id
+
+# }
+```
