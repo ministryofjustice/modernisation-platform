@@ -34,28 +34,28 @@ In the pull request simply add a business name and supply the DNS name for the p
 
 To extend DNS zones amend the code in [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-vpc/vpc.tf).
 
-If the below sections are already unhashed simply add in your business unit and DNS name to the locals section like what was done in the pr to create the DNS zone above. 
+local.private-application-zones should contain a mapping of business units to private Route53 hosted zones. This local is supplied to a module that configures the VPC-to-zone association.
 
 #### Example
 
 ```terraform
-# locals {
-#   private-application-zones = {
+ locals {
+   private-application-zones = {
 
-#     }
-# }
+    }
+}
 
 
-# module "private_dns_zone_extend" {
-#    providers = {
-#     aws.core-network-services = aws.core-network-services
-#     aws.core-vpc  = aws
-#   }
+module "private_dns_zone_extend" {
+   providers = {
+    aws.core-network-services = aws.core-network-services
+    aws.core-vpc  = aws
+  }
 
-#   for_each = local.vpcs[terraform.workspace]
-#   source = "../../modules/private-dns-zone-extend"
-#   business_unit_name     = local.private-application-zones[each.key]
-#   vpc_id      = module.vpc[each.key].vpc_id
+  for_each = local.vpcs[terraform.workspace]
+  source = "../../modules/private-dns-zone-extend"
+  business_unit_name     = local.private-application-zones[each.key]
+  vpc_id      = module.vpc[each.key].vpc_id
 
-# }
+}
 ```
