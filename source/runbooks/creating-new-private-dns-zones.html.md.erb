@@ -16,7 +16,7 @@ This new service allows for the creation of custom private DNS zones. This has t
 
 New DNS zones are added in code [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/route53.tf).
 
-Using the example code bellow will create the new private DNS record but will not extend that to the VPCs
+Using the example code below will create the new private DNS record but will not extend that to the VPCs
 
 In the pull request simply add a business name and supply the DNS name for the private zone you want to create
 
@@ -24,7 +24,7 @@ In the pull request simply add a business name and supply the DNS name for the p
 
 ```terraform
   private-application-zones  = {
-    example = "exmaple.gov.uk"
+    example = "example.gov.uk"
     test    = "test.internal
   }
 }
@@ -34,7 +34,7 @@ In the pull request simply add a business name and supply the DNS name for the p
 
 To extend DNS zones amend the code in [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-vpc/vpc.tf).
 
-If the bellow sections are already unhashed simply add in your business unit and DNS name to the locals section like what was done in the pr to create the DNS zone above. 
+If the below sections are already unhashed simply add in your business unit and DNS name to the locals section like what was done in the pr to create the DNS zone above. 
 
 #### Example
 
