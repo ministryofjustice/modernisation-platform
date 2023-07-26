@@ -474,7 +474,8 @@ data "aws_iam_policy_document" "migration_additional" {
       "drs:*",
       "mgh:*",
       "datasync:*",
-      "discovery:*"
+      "discovery:*",
+      "migrationhub-strategy:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
