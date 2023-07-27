@@ -94,7 +94,8 @@ resource "aws_iam_policy" "policy" {
           "secretsmanager:ListSecrets",
           "secretsmanager:DescribeSecret",
           "secretsmanager:GetResourcePolicy",
-          "ssm:GetParameter"
+          "ssm:GetParameter",
+          "ssm:SendCommand"
         ]
         Effect   = "Allow"
         Resource = "*"
@@ -102,6 +103,47 @@ resource "aws_iam_policy" "policy" {
     ]
   })
 }
+
+resource "aws_iam_policy" "ssm_policy" {
+  name        = "cicd-member-ssm-policy"
+  description = "IAM Policy for CICD member user"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ssm:StartSession",
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:eu-west-2:${data.aws_caller_identity.current.account_id}:instance/*}"
+      },
+    ]
+    Statement = [
+      {
+        Action = [
+          "ssm:DescribeSessions",
+          "ssm:GetConnectionStatus",
+          "ssm:DescribeInstanceInformation",
+          "ssm:DescribeInstanceProperties",
+          "ec2:DescribeInstances"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+    Statement = [
+      {
+        Action = [
+          "ssm:TerminateSession",
+          "ssm:ResumeSession"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:session/${aws_iam_user.cicd_member_user.name}"
+      },
+    ]
+  })
+}
+
 
 resource "aws_iam_group_policy_attachment" "aws_cicd_member_attach" {
   group      = aws_iam_group.cicd_member_group.name
