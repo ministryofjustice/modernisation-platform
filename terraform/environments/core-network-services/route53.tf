@@ -12,13 +12,13 @@ locals {
   }
 
   private-application-zones  = {
-    
+    portal-development = "aws.dev.legalservices.gov.uk"
   }
 }
 
 resource "aws_route53_zone" "private_application_zones" {
 
-  for_each = local.private-application-zones 
+  for_each = local.private-application-zones
   name = each.value
 
   vpc {
