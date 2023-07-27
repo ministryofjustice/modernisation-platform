@@ -138,7 +138,7 @@ resource "aws_iam_policy" "ssm_policy" {
           "ssm:ResumeSession"
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:session/${aws_iam_user.cicd_member_user.name}"
+        Resource = "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:session/${aws_iam_user.cicd_member_user.name}*"
       },
     ]
   })
