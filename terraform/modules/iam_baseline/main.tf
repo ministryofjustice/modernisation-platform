@@ -93,9 +93,7 @@ resource "aws_iam_policy" "policy" {
           "s3:*Object*",
           "secretsmanager:ListSecrets",
           "secretsmanager:DescribeSecret",
-          "secretsmanager:GetResourcePolicy",
-          "ssm:GetParameter",
-          "ssm:SendCommand"
+          "secretsmanager:GetResourcePolicy"
         ]
         Effect   = "Allow"
         Resource = "*"
@@ -125,6 +123,8 @@ resource "aws_iam_policy" "ssm_policy" {
           "ssm:GetConnectionStatus",
           "ssm:DescribeInstanceInformation",
           "ssm:DescribeInstanceProperties",
+          "ssm:GetParameter",
+          "ssm:SendCommand",
           "ec2:DescribeInstances"
         ]
         Effect   = "Allow"
