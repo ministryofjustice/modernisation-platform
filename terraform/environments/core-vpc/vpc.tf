@@ -191,7 +191,7 @@ module "dns_zone_extend" {
 locals {
   private-application-zones = {
     portal-development = "aws.dev.legalservices.gov.uk"
-
+    portal  = "aws.dev.legalservices.gov.uk"
     }
 }
 
