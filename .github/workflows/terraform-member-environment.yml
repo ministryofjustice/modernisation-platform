@@ -7,14 +7,14 @@ on:
       - main
     paths:
       - 'terraform/environments/**/*.tf'
-      - '!terraform/environments/core-*'
+      - '!terraform/environments/core-*/*.tf'
   pull_request:
     types: [opened, edited, reopened, synchronize]
     branches-ignore:
       - 'date*'
     paths:
       - 'terraform/environments/**/*.tf'
-      - '!terraform/environments/core-*'
+      - '!terraform/environments/core-*/*.tf'
       - '.github/workflows/terraform-member-environment.yml'
 
 defaults:
