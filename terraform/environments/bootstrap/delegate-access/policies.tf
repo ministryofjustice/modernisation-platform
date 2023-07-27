@@ -470,11 +470,12 @@ data "aws_iam_policy_document" "migration_additional" {
     sid    = "migrationAllow"
     effect = "Allow"
     actions = [
+      "datasync:*",
+      "discovery:*",
       "dms:*",
       "drs:*",
       "mgh:*",
-      "datasync:*",
-      "discovery:*",
+      "mgn:*",
       "migrationhub-strategy:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
