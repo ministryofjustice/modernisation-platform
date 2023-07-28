@@ -190,22 +190,22 @@ module "dns_zone_extend" {
 #Locals needed for the private dns zone extend module
 locals {
   private-application-zones = {
-    portal-development = "aws.dev.legalservices.gov.uk"
-
-    }
+    laa-development = "aws.dev.legalservices.gov.uk"
+    laa-production  = "aws.prd.legalservices.gov.uk"
+  }
 }
 
 
 module "private_dns_zone_extend" {
-   providers = {
+  providers = {
     aws.core-network-services = aws.core-network-services
-    aws.core-vpc  = aws
+    aws.core-vpc              = aws
   }
 
-  for_each = local.vpcs[terraform.workspace]
-  source = "../../modules/private-dns-zone-extend"
-  business_unit_name     = local.private-application-zones[each.key]
-  vpc_id      = module.vpc[each.key].vpc_id
+  for_each           = local.vpcs[terraform.workspace]
+  source             = "../../modules/private-dns-zone-extend"
+  business_unit_name = local.private-application-zones[each.key]
+  vpc_id             = module.vpc[each.key].vpc_id
 
 }
 
