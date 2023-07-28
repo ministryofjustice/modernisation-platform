@@ -27,6 +27,7 @@
       "com.amazonaws.eu-west-2.email-smtp",
       "com.amazonaws.eu-west-2.execute-api"
     ],
+    "additional_private_zones": [],
     "additional_vpcs": [],
     "dns_zone_extend": []
   }

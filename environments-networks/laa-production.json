@@ -23,6 +23,9 @@
       "com.amazonaws.eu-west-2.secretsmanager",
       "com.amazonaws.eu-west-2.email-smtp"
     ],
+    "additional_private_zones": [
+      "aws.prd.legalservices.gov.uk"
+    ],
     "additional_vpcs": [],
     "dns_zone_extend": []
   }
