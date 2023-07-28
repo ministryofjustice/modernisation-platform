@@ -208,7 +208,10 @@ data "aws_iam_policy_document" "developer_additional" {
       "iam:GetAccessKeyLastUsed",
       "iam:GetUser",
       "iam:ListAccessKeys",
-      "iam:UpdateAccessKey"
+      "iam:UpdateAccessKey",
+      "lambda:ListFunctions",
+      "lambda:InvokeFunction",
+      "lambda:InvokeFunctionUrl"
     ]
     resources = ["arn:aws:iam::*:user/cicd-member-user"]
   }
