@@ -5,13 +5,13 @@ locals {
   application-zones = {
     equip    = "equip.service.justice.gov.uk",
     ccms-ebs = "ccms-ebs.service.justice.gov.uk",
-    dacp     = "dacp.service.justice.gov.uk",
+    dacp     = "divorce-section-search.service.justice.gov.uk",
     mlra     = "maat-libra-administration-tool.service.justice.gov.uk",
     mojfin   = "laa-finance-data.service.justice.gov.uk",
     tipstaff = "tipstaff.service.justice.gov.uk"
   }
 
-  private-application-zones  = {
+  private-application-zones = {
     portal-development = "aws.dev.legalservices.gov.uk"
   }
 }
@@ -19,7 +19,7 @@ locals {
 resource "aws_route53_zone" "private_application_zones" {
 
   for_each = local.private-application-zones
-  name = each.value
+  name     = each.value
 
   vpc {
     vpc_id = module.vpc_inspection["live_data"].vpc_id

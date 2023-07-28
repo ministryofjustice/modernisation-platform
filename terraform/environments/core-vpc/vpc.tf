@@ -216,6 +216,7 @@ module "dns_zone_extend" {
 
 # }
 
+
 resource "aws_iam_role" "member-delegation" {
   for_each = local.vpcs[terraform.workspace]
 
