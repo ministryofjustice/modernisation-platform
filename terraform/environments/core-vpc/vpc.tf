@@ -192,13 +192,13 @@ locals {
   private-application-zones = {
     laa-development = "aws.dev.legalservices.gov.uk"
     laa-production  = "aws.prd.legalservices.gov.uk"
-    cjse-development = ""
-    platforms-development = ""
-    hq-development = ""
-    opg-development = ""
-    hmpps-development = ""
-    cica-development = ""
-    hmcts-development = ""
+    # cjse-development = ""
+    # platforms-development = ""
+    # hq-development = ""
+    # opg-development = ""
+    # hmpps-development = ""
+    # cica-development = ""
+    # hmcts-development = ""
     }
 }
 
