@@ -324,6 +324,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/private-dns-zone-extend"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/r53-resolver-logs"
     schedule:
       interval: "daily"
