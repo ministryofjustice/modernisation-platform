@@ -19,6 +19,7 @@
     "bastion_linux": false,
     "additional_cidrs": [],
     "additional_endpoints": [],
+    "additional_private_zones": [],
     "additional_vpcs": [],
     "dns_zone_extend": []
   }

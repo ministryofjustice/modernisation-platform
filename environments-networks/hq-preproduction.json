@@ -11,6 +11,7 @@
     "bastion_linux": false,
     "additional_cidrs": [],
     "additional_endpoints": ["com.amazonaws.eu-west-2.redshift-data"],
+    "additional_private_zones": [],
     "additional_vpcs": [],
     "dns_zone_extend": []
   }

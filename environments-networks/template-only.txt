@@ -18,6 +18,7 @@
             "com.amazonaws.eu-west-2.elasticfilesystem",
             "com.amazonaws.eu-west-2.sqs"
         ],
+        "additional_private_zones": [],
         "additional_vpcs": [],
     }
 }

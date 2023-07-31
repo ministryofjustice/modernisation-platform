@@ -22,6 +22,7 @@
       "com.amazonaws.eu-west-2.secretsmanager",
       "com.amazonaws.eu-west-2.email-smtp"
     ],
+    "additional_private_zones": [],
     "additional_vpcs": [],
     "dns_zone_extend": []
   }

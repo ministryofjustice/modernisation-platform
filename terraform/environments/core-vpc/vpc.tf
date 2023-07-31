@@ -187,26 +187,17 @@ module "dns_zone_extend" {
   vpc_id      = module.vpc[each.key].vpc_id
   dns_domain  = ".modernisation-platform.internal"
 }
-#Locals needed for the private dns zone extend module
-locals {
-  private-application-zones = {
-    laa-development = "aws.dev.legalservices.gov.uk"
-    laa-production  = "aws.prd.legalservices.gov.uk"
-  }
-}
 
-
-module "private_dns_zone_extend" {
+module "dns_zone_extend_private" {
+  source = "../../modules/dns-zone-extend-private"
   providers = {
     aws.core-network-services = aws.core-network-services
     aws.core-vpc              = aws
   }
 
-  for_each           = local.vpcs[terraform.workspace]
-  source             = "../../modules/private-dns-zone-extend"
-  business_unit_name = local.private-application-zones[each.key]
-  vpc_id             = module.vpc[each.key].vpc_id
-
+  for_each   = local.vpcs[terraform.workspace]
+  zone_name  = { for key, zone in each.value.options.additional_private_zones : key => zone }
+  vpc_id     = module.vpc[each.key].vpc_id
 }
 
 resource "aws_iam_role" "member-delegation" {
