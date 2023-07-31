@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
-title: Creating new private DNS zones
-last_reviewed_on: 2023-07-26
+title: Creating private Route53 DNS zones
+last_reviewed_on: 2023-07-31
 review_in: 6 months
 ---
 
@@ -10,52 +10,45 @@ review_in: 6 months
 Private DNS zones are created in the Modernisation Platform `core-network-services` account through Terraform.
 We provide `modernisation-platform.service.justice.gov.uk` and `modernisation-platform.internal` to customers on a per-business unit basis.
 
-This new service allows for the creation of custom private DNS zones. This has to be done in two pull requests the first one to create the zone and a second extend the zone to the VPCs
+This new service allows for the creation of custom private DNS zones. This has to be done in two pull requests the first one to create the zone and a second associate the zone with additional VPCs.
 
 ## Creating new private zones
 
 New DNS zones are added in code [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/route53.tf).
 
-Using the example code below will create the new private DNS record but will not extend that to the VPCs
+Using the example code below will create the new private DNS record.
 
-In the pull request simply add a business name and supply the DNS name for the private zone you want to create
+In the pull request add a name and supply the DNS name for the private zone you want to create.
 
 #### Example
 
 ```terraform
   private-application-zones  = {
     example = "example.gov.uk"
-    test    = "test.internal
+    test    = "development.internal"
   }
 }
 ```
 
 ## Extending the newly created private DNS zone
 
-To extend DNS zones amend the code in [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-vpc/vpc.tf).
+To extend DNS zones amend the options for the relevant `$business_unit-$environment.json` [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/environments-networks).
 
-local.private-application-zones should contain a mapping of business units to private Route53 hosted zones. This local is supplied to a module that configures the VPC-to-zone association.
+The new zone must be created first before adding it to the VPC options.
+
+The below example shows the configuration needed for the association of two private zones with a VPC.
 
 #### Example
 
-```terraform
- locals {
-   private-application-zones = {
-      platforms-development = "example.gov.uk"
-    }
-}
-
-
-module "private_dns_zone_extend" {
-   providers = {
-    aws.core-network-services = aws.core-network-services
-    aws.core-vpc  = aws
+```json
+ {
+  "cidr": {
+    ...
+  },
+  "options": {
+    ...
+    "additional_private_zones": ["example.gov.uk", "development.internal"],
+    ...
   }
-
-  for_each = local.vpcs[terraform.workspace]
-  source = "../../modules/private-dns-zone-extend"
-  business_unit_name     = local.private-application-zones[each.key]
-  vpc_id      = module.vpc[each.key].vpc_id
-
 }
 ```
