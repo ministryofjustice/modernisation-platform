@@ -34,6 +34,10 @@
         {
           "github_slug": "hmpps-migration",
           "level": "developer"
+        },
+        {
+          "github_slug": "hmpps-delius-jitbit-devs",
+          "level": "instance-management"
         }
       ]
     },
