@@ -195,9 +195,9 @@ module "dns_zone_extend_private" {
     aws.core-vpc              = aws
   }
 
-  for_each   = local.vpcs[terraform.workspace]
-  zone_name  = { for key, zone in each.value.options.additional_private_zones : key => zone }
-  vpc_id     = module.vpc[each.key].vpc_id
+  for_each  = local.vpcs[terraform.workspace]
+  zone_name = { for key, zone in each.value.options.additional_private_zones : key => zone }
+  vpc_id    = module.vpc[each.key].vpc_id
 }
 
 resource "aws_iam_role" "member-delegation" {
