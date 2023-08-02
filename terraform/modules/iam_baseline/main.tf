@@ -117,8 +117,9 @@ resource "aws_iam_policy" "ssm_policy" {
         Action = [
           "ssm:StartSession",
         ]
-        Effect   = "Allow"
-        Resource = "arn:aws:eu-west-2:${data.aws_caller_identity.current.account_id}:instance/*}"
+        Effect = "Allow"
+        Resource = ["arn:aws:ec2:eu-west-2:${data.aws_caller_identity.current.account_id}:instance/*",
+        "arn:aws:ssm:region:${data.aws_caller_identity.current.account_id}:document/SSM-SessionManagerRunShell"]
       },
       {
         Sid = "WildcardSSM"
