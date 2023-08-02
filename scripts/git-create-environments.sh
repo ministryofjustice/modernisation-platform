@@ -48,22 +48,38 @@ create_environment() {
   environment_name=$1
   github_teams=$2
   echo "Creating environment ${environment_name}..."
-  # echo "Teams for payload: ${github_teams}"
+  
+  # Fetch existing reviewers (if any) for the environment
+  existing_reviewers=$(curl -L -s \
+    -H "Accept: application/vnd.github.v3+json" \
+    -H "Authorization: Bearer ${secret}" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    https://api.github.com/repos/${repository}/environments/${environment_name} | jq -r '.reviewers | map(.login) | join(",")')
+
+  # Merge the new reviewers with the existing ones
+  updated_reviewers=""
+  if [ -n "$existing_reviewers" ]; then
+    updated_reviewers="${existing_reviewers},${github_teams}"
+  else
+    updated_reviewers="${github_teams}"
+  fi
+  
   if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]
   then
-    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${github_teams}]}"
+    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${updated_reviewers}]}"
   else
-    payload="{\"reviewers\": [${github_teams}]}"
+    payload="{\"reviewers\": [${updated_reviewers}]}"
   fi
+  
   echo "Payload: $payload"
   echo "Repository: ${repository}"
   echo "${payload}" | curl -L -s \
-  -X PUT \
-  -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer ${secret}" \
-  -H "X-GitHub-Api-Version: 2022-11-28" \
-  https://api.github.com/repos/${repository}/environments/${environment_name}\
-  -d @- > /dev/null 2>&1
+    -X PUT \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: Bearer ${secret}" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    https://api.github.com/repos/${repository}/environments/${environment_name}\
+    -d @- > /dev/null 2>&1
 }
 
 create_reviewers_json() {
