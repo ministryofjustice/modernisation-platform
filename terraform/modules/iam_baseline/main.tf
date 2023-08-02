@@ -93,7 +93,11 @@ resource "aws_iam_policy" "policy" {
           "s3:*Object*",
           "secretsmanager:ListSecrets",
           "secretsmanager:DescribeSecret",
-          "secretsmanager:GetResourcePolicy"
+          "secretsmanager:GetResourcePolicy",
+          "ssm:GetParameter",
+          "lambda:ListFunctions",
+          "lambda:InvokeFunction",
+          "lambda:InvokeFunctionUrl"
         ]
         Effect   = "Allow"
         Resource = "*"
