@@ -113,15 +113,15 @@ resource "aws_iam_policy" "ssm_policy" {
     Version = "2012-10-17"
     Statement = [
       {
+        Sid = "StartSession"
         Action = [
           "ssm:StartSession",
         ]
         Effect   = "Allow"
         Resource = "arn:aws:eu-west-2:${data.aws_caller_identity.current.account_id}:instance/*}"
       },
-    ]
-    Statement = [
       {
+        Sid = "WildcardSSM"
         Action = [
           "ssm:DescribeSessions",
           "ssm:GetConnectionStatus",
@@ -134,16 +134,15 @@ resource "aws_iam_policy" "ssm_policy" {
         Effect   = "Allow"
         Resource = "*"
       },
-    ]
-    Statement = [
       {
+        Sid = "SessionManagement"
         Action = [
           "ssm:TerminateSession",
           "ssm:ResumeSession"
         ]
         Effect   = "Allow"
         Resource = "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:session/${aws_iam_user.cicd_member_user.name}*"
-      },
+      }
     ]
   })
 }
