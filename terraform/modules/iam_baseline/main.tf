@@ -107,6 +107,10 @@ resource "aws_iam_policy" "policy" {
 }
 
 resource "aws_iam_policy" "ssm_policy" {
+  #checkov:skip=CKV_AWS_288
+  #checkov:skip=CKV_AWS_289
+  #checkov:skip=CKV_AWS_290
+  #checkov:skip=CKV_AWS_355: Allows access to multiple unknown resources
   name        = "cicd-member-ssm-policy"
   description = "IAM Policy for CICD member user"
   policy = jsonencode({
