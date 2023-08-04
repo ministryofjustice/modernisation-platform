@@ -312,3 +312,24 @@ module "delius_core_ansible_aws_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
+
+module "data_platform_python_base_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "data-platform-python-base"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/data-platform-gha",
+    local.environment_management.account_ids["data-platform-development"]
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/data-platform-gha",
+    local.environment_management.account_ids["data-platform-development"],
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
