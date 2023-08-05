@@ -304,6 +304,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/dns-zone-extend-private"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/ec2-tgw-attachment"
     schedule:
       interval: "daily"
