@@ -12,7 +12,7 @@ locals {
   }
 
   private-application-zones = {
-    portal-development = "aws.dev.legalservices.gov.uk"
+    portal-development = "dev.legalservices.gov.uk"
   }
 }
 
