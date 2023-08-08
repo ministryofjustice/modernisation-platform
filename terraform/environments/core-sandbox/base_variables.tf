@@ -20,6 +20,12 @@ variable "account_name" {
 variable "networking" {
 
   type    = list(any)
-  default = [{}]
+  default = [
+    {
+      "business-unit": "",
+      "set": "",
+      "application": ""
+    }
+  ]
 
 }
