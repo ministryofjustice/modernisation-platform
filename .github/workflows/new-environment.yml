@@ -169,7 +169,10 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          echo "files=$(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments//*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')" >> $GITHUB_OUTPUT
+          echo "files=$(cat <<EOF
+          $(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments//*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')
+          EOF
+          )" >> $GITHUB_OUTPUT
       - name: Run delegate access
         run: |
           accounts=(${{ steps.new_account.outputs.files }})
@@ -218,7 +221,10 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          echo "files=$(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments//*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')" >> $GITHUB_OUTPUT
+          echo "files=$(cat <<EOF
+          $(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments//*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')
+          EOF
+          )" >> $GITHUB_OUTPUT
       - name: Run secure baselines
         run: |
           accounts=(${{ steps.new_account.outputs.files }})
@@ -267,7 +273,10 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          echo "files=$(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments//*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')" >> $GITHUB_OUTPUT
+          echo "files=$(cat <<EOF
+          $(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments//*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')
+          EOF
+          )" >> $GITHUB_OUTPUT
       - name: Run single sign on
         run: |
           accounts=(${{ steps.new_account.outputs.files }})
@@ -316,7 +325,10 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          echo "files=$(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments//*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')" >> $GITHUB_OUTPUT
+          echo "files=$(cat <<EOF
+          $(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep ".json" | grep -a "environments//*"  | uniq | cut -f2-4 -d"/" | sed 's/.\{5\}$//')
+          EOF
+          )" >> $GITHUB_OUTPUT
       - name: Run secure baselines
         run: |
           accounts=(${{ steps.new_account.outputs.files }})
