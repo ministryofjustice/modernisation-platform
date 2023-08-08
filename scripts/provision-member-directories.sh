@@ -45,6 +45,8 @@ provision_environment_directories() {
     echo "This is file: $file"
     application_name=$(basename "$file" .json)
     echo "This is the application name: $application_name"
+    account_type=$(jq -r '."account-type"' "$file")
+    echo "This is a " $account_type " account"
     directory=$basedir/$application_name
     echo "This is the directory: $directory"
     account_type=$(jq -r '."account-type"' ${environment_json_dir}/${application_name}.json)
@@ -93,7 +95,10 @@ provision_environment_directories() {
       RAW_OUTPUT=`jq -n --arg APPLICATION_NAME "$application_name" '{ "business-unit": "", "set": "", "application": $APPLICATION_NAME }'`
     fi
     # wrap raw json output with a header and store the result in the applications folder
-    jq -rn --argjson DATA "${RAW_OUTPUT}" '{ networking: [ $DATA ] }' > "$directory"/networking.auto.tfvars.json
+    # Only populate networking.auto.tfvars.json if account type is not core
+    if [ "$account_type" != "core" ]; then
+      jq -rn --argjson DATA "${RAW_OUTPUT}" '{ networking: [ $DATA ] }' > "$directory"/networking.auto.tfvars.json
+    fi
   done
 }
 

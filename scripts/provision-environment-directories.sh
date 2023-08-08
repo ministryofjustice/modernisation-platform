@@ -33,6 +33,7 @@ provision_environment_directories() {
   networking_definitions=$(jq -n '[ inputs | { subnet_sets: .cidr.subnet_sets | to_entries | map_values(.value + { set: .key, "business-unit": input_filename | ltrimstr("environments-networks/") | rtrimstr(".json") | split("-")[0] } ) } ]' "$networkdir"/*.json)
 
   for file in ${environments}/*.json; do
+    account_type=$(jq -r '."account-type"' "$file")
     application_name=$(basename "$file" .json)
     directory=$basedir/$application_name
 
@@ -77,7 +78,10 @@ provision_environment_directories() {
       RAW_OUTPUT=`jq -n --arg APPLICATION_NAME "$application_name" '{ "business-unit": "", "set": "", "application": $APPLICATION_NAME }'`
     fi
     # wrap raw json output with a header and store the result in the applications folder
-    jq -rn --argjson DATA "${RAW_OUTPUT}" '{ networking: [ $DATA ] }' > "$directory"/networking.auto.tfvars.json
+    # Only populate networking.auto.tfvars.json if account type is not core
+    if [ "$account_type" != "core" ]; then
+      jq -rn --argjson DATA "${RAW_OUTPUT}" '{ networking: [ $DATA ] }' > "$directory"/networking.auto.tfvars.json
+    fi
   done
 }
 
