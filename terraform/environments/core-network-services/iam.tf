@@ -3,7 +3,6 @@ data "aws_iam_role" "vpc-flow-log" {
 }
 
 data "aws_route53_zone" "portal-development" {
-  provider     = aws.core-network-services
   name         = "dev.legalservices.gov.uk."
   private_zone = true
 }
