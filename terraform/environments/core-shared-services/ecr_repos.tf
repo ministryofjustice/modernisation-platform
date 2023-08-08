@@ -313,6 +313,25 @@ module "delius_core_ansible_aws_ecr_repo" {
   tags_common = local.tags
 }
 
+# ECR Repo for the ldap automation image
+module "delius_core_ldap_automation_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "delius-core-ldap-automation"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["delius-core-development"],
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
+
 module "data_platform_python_base_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
