@@ -1,7 +1,12 @@
 variable "networking" {
-
   type = list(any)
-
+  default = [
+    {
+      "business-unit": "",
+      "set": "",
+      "application": "core-shared-services"
+    }
+  ]
 }
 
 variable "app_name" {
