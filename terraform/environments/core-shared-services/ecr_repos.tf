@@ -314,7 +314,7 @@ module "delius_core_ansible_aws_ecr_repo" {
 }
 
 # ECR Repo for the ldap automation image
-module "delius_core_ansible_aws_ecr_repo" {
+module "delius_core_ldap_automation_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
   app_name = "delius-core-ldap-automation"
