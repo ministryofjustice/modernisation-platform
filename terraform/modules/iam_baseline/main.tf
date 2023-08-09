@@ -97,7 +97,8 @@ resource "aws_iam_policy" "policy" {
           "ssm:GetParameter",
           "lambda:ListFunctions",
           "lambda:InvokeFunction",
-          "lambda:InvokeFunctionUrl"
+          "lambda:InvokeFunctionUrl",
+          "lambda:UpdateFunctionCode"
         ]
         Effect   = "Allow"
         Resource = "*"
