@@ -15,7 +15,8 @@ locals {
     "ewastempel",
     "jakemulley",
     "SteveMarshall",
-    "davidkelliott"
+    "davidkelliott",
+    "connormaglynn"
   ]
 
   # GitHub usernames for CI users
@@ -45,7 +46,8 @@ locals {
     "ep-93",   # Edward Proctor
     "julialawrence",
     "ewastempel",
-    "ASTRobinson" # Aaron Robinson
+    "ASTRobinson", # Aaron Robinson,
+    "connormaglynn"
   ]
 
   # Security engineers performing reviews on the platform or member accounts
