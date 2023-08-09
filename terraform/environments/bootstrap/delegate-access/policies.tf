@@ -497,6 +497,16 @@ data "aws_iam_policy_document" "migration_additional" {
     ]
     resources = ["*"]
   }
+
+  statement {
+    sid    = "migrationPassRole"
+    effect = "Allow"
+    actions = [
+      "iam:GetRole",
+      "iam:PassRole"
+    ]
+    resources = ["arn:aws:iam::*:role/service-role/AWSApplicationMigrationConversionServerRole"]
+  }
 }
 
 
