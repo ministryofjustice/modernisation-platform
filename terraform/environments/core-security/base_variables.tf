@@ -2,9 +2,9 @@ variable "networking" {
   type = list(any)
   default = [
     {
-      "business-unit": "",
-      "set": "",
-      "application": "core-security"
+      "business-unit" : "",
+      "set" : "",
+      "application" : "core-security"
     }
   ]
 }
