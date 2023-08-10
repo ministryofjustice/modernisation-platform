@@ -14,12 +14,3 @@ data "aws_secretsmanager_secret_version" "environment_management" {
   provider  = aws.modernisation-platform
   secret_id = data.aws_secretsmanager_secret.environment_management.id
 }
-
-resource "aws_secretsmanager_secret" "ncas_tactical_products_db_secrets" {
-  name = "tactical-products-db-secrets"
-}
-
-resource "aws_secretsmanager_secret_version" "ncas_tactical_products_db_secrets_version" {
-  secret_id     = aws_secretsmanager_secret.ncas_tactical_products_db_secrets.id
-  secret_string = "{}"  # Empty JSON object as the secret value
-}
