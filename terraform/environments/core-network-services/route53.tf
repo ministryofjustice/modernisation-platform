@@ -8,7 +8,8 @@ locals {
     dacp     = "divorce-section-search.service.justice.gov.uk",
     mlra     = "maat-libra-administration-tool.service.justice.gov.uk",
     mojfin   = "laa-finance-data.service.justice.gov.uk",
-    tipstaff = "tipstaff.service.justice.gov.uk"
+    tipstaff = "tipstaff.service.justice.gov.uk",
+    ncas     = "neutral-citation-allocation.service.justice.gov.uk"
   }
 
   private-application-zones = {
