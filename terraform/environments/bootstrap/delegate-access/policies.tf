@@ -133,6 +133,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "ec2:CreateSnapshot",
       "ec2:CreateSnapshots",
       "ec2:CreateTags",
+      "ec2:CreateVpcEndpointServiceConfiguration",
       "ec2:DescribeVolumes",
       "ec2:DescribeInstances",
       "ec2:DescribeInstanceTypes",
