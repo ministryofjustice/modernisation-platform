@@ -84,6 +84,7 @@ data "aws_iam_policy_document" "member-access" {
       "ds:UpdateSettings",
       "dynamodb:*",
       "ebs:*",
+      "ec2:CreateVpcEndpointServiceConfiguration",
       "ec2:Describe*",
       "ec2:*SecurityGroup*",
       "ec2:*KeyPair*",
