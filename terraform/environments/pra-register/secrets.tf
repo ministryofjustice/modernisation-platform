@@ -21,5 +21,5 @@ resource "aws_secretsmanager_secret" "prareg_tactical_products_db_secrets" {
 
 resource "aws_secretsmanager_secret_version" "prareg_tactical_products_db_secrets_version" {
   secret_id     = aws_secretsmanager_secret.prareg_tactical_products_db_secrets.id
-  secret_string = "{}"  # Empty JSON object as the secret value
+  secret_string = "{}" # Empty JSON object as the secret value
 }
