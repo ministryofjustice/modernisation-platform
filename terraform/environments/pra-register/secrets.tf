@@ -16,6 +16,7 @@ data "aws_secretsmanager_secret_version" "environment_management" {
 }
 
 resource "aws_secretsmanager_secret" "tactical_products_db_secrets" {
+  # checkov:skip=CKV2_AWS_57:Secret rotation is a matter for the environment owner
   name       = "tactical-products-db-secrets"
   kms_key_id = data.aws_kms_alias.secretsmanager.id
 }
