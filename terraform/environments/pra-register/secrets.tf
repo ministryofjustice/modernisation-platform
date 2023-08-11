@@ -17,7 +17,7 @@ data "aws_secretsmanager_secret_version" "environment_management" {
 
 resource "aws_secretsmanager_secret" "tactical_products_db_secrets" {
   name       = "tactical-products-db-secrets"
-  kms_key_id = data.aws_kms_key.general_shared.id
+  kms_key_id = data.aws_kms_alias.secretsmanager.id
 }
 
 resource "aws_secretsmanager_secret_version" "tactical_products_db_secrets_version" {
