@@ -15,11 +15,18 @@ data "aws_secretsmanager_secret_version" "environment_management" {
   secret_id = data.aws_secretsmanager_secret.environment_management.id
 }
 
-resource "aws_secretsmanager_secret" "prareg_tactical_products_db_secrets" {
-  name = "tactical-products-db-secrets"
+resource "aws_secretsmanager_secret" "tactical_products_db_secrets" {
+  name       = "tactical-products-db-secrets"
+  kms_key_id = data.aws_kms_alias.secretsmanager.id
 }
 
-resource "aws_secretsmanager_secret_version" "prareg_tactical_products_db_secrets_version" {
-  secret_id     = aws_secretsmanager_secret.prareg_tactical_products_db_secrets.id
+resource "aws_secretsmanager_secret_version" "tactical_products_db_secrets_version" {
+  secret_id     = aws_secretsmanager_secret.tactical_products_db_secrets.id
   secret_string = "{}"  # Empty JSON object as the secret value
+  lifecycle {
+    ignore_changes = [
+      # Ignore changes to secret_strings as those are defined by customers
+      secret_string,
+    ]
+  }
 }
