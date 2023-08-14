@@ -89,7 +89,6 @@ resource "aws_iam_policy" "policy" {
           "kms:GenerateDataKey",
           "logs:GetLogEvents",
           "logs:FilterLogEvents",
-          "logs:GetLogEvents",
           "logs:DescribeLogStreams",
           "logs:DescribeLogGroups",
           "s3:GetBucketLocation",
