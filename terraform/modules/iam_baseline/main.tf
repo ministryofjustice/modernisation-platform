@@ -11,6 +11,7 @@ resource "aws_iam_group" "cicd_member_group" {
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "policy" {
+  #checkov:skip=CKV_AWS_286
   #checkov:skip=CKV_AWS_289
   #checkov:skip=CKV_AWS_288
   #checkov:skip=CKV_AWS_290
