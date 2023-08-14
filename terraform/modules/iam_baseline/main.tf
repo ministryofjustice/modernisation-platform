@@ -88,7 +88,6 @@ resource "aws_iam_policy" "policy" {
           "kms:Decrypt",
           "kms:GenerateDataKey",
           "logs:GetLogEvents",
-          "logs:DescribeLogStreams",
           "logs:FilterLogEvents",
           "logs:DescribeLogGroups",
           "logs:GetLogEvents",
