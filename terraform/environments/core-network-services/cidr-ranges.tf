@@ -37,8 +37,6 @@ locals {
     noms-mgmt-vnet                 = "10.102.0.0/16"
     noms-test-dr-vnet              = "10.111.0.0/16"
     noms-mgmt-dr-vnet              = "10.112.0.0/16"
-    noms-test-dev-vnet             = "10.102.1.79/28"
-    noms-test-prod-vnet            = "10.40.129.79/28"
     aks-studio-hosting-live-1-vnet = "10.244.0.0/20"
     aks-studio-hosting-dev-1-vnet  = "10.247.0.0/20"
     aks-studio-hosting-ops-1-vnet  = "10.247.32.0/20"
