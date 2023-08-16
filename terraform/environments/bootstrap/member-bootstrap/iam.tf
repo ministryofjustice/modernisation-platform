@@ -399,6 +399,7 @@ data "aws_iam_policy_document" "policy" {
       "ecr:CompleteLayerUpload",
       "ecr:UploadLayerPart",
       "elasticfilesystem:DescribeFileSystems",
+      "fsx:*",
       "glue:GetJobRuns",
       "glue:StartJobRun",
       "glue:GetJobs",
