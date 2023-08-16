@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: How to configure DNS for public services
-last_reviewed_on: 2023-01-16
+last_reviewed_on: 2023-08-16
 review_in: 6 months
 ---
 
@@ -27,11 +27,11 @@ Non production environments should use the [Modernisation Platform domain naming
 
 The following resources need to be created in different AWS accounts (see diagram above), the table details the resources and the AWS provider required for them.
 
-Resource | Terraform Resource | Terraform Provider | Description
----|---|---|---
-ACM Public Certificate | aws_acm_certificate | default | ACM Public certificate created in the application account. The domain name should equal the main modernisation-platform domain, "modernisation-platform.service.justice.gov.uk", the SAN (subject alternative name) should equal the DNS record name entry, eg "my-application.hmpps-test.modernisation-platform.service.justice.gov.uk"
-Route53 DNS record for certificate validation | aws_route53_record | aws.core-network-services | Created in the modernisation-platform hosted zone, this record validates the public certificate.
-Route53 DNS record for directing traffic to the service | aws_route53_record | aws.core-vpc | Created in the hosted zone for the environment and business unit, eg "my-application.hmpps-test.modernisation-platform.service.justice.gov.uk".
+| Resource                                                | Terraform Resource  | Terraform Provider        | Description                                                                                                                                                                                                                                                                                                                              |
+|---------------------------------------------------------|---------------------|---------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ACM Public Certificate                                  | aws_acm_certificate | default                   | ACM Public certificate created in the application account. The domain name should equal the main modernisation-platform domain, "modernisation-platform.service.justice.gov.uk", the SAN (subject alternative name) should equal the DNS record name entry, eg "my-application.hmpps-test.modernisation-platform.service.justice.gov.uk" |
+| Route53 DNS record for certificate validation           | aws_route53_record  | aws.core-network-services | Created in the modernisation-platform hosted zone, this record validates the public certificate.                                                                                                                                                                                                                                         |
+| Route53 DNS record for directing traffic to the service | aws_route53_record  | aws.core-vpc              | Created in the hosted zone for the environment and business unit, eg "my-application.hmpps-test.modernisation-platform.service.justice.gov.uk".                                                                                                                                                                                          |
 
 ### Production environments
 
@@ -42,11 +42,11 @@ The Modernisation Platform will need to request the delegation of the applicatio
 The Modernisation Platform team will then create a [hosted zone](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/route53.tf#L5) for your domain.
 Once this has been completed the following resources need to be created in different AWS accounts (see diagram above), the table details the resources and the AWS provider required for them.
 
-Resource | Terraform Resource | Terraform Provider | Description
----|---|---|---
-ACM Public Certificate | aws_acm_certificate | default | ACM Public certificate created in the application account. The domain name should equal the application domain, "my-application.service.justice.gov.uk"
-Route53 DNS record for certificate validation | aws_route53_record | aws.core-network-services | Created in the application hosted zone, this record validates the public certificate.
-Route53 DNS record for directing traffic to the service | aws_route53_record | aws.core-network-services | Created in the application hosted zone, eg "my-application.service.justice.gov.uk".
+| Resource                                                | Terraform Resource  | Terraform Provider        | Description                                                                                                                                             |
+|---------------------------------------------------------|---------------------|---------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ACM Public Certificate                                  | aws_acm_certificate | default                   | ACM Public certificate created in the application account. The domain name should equal the application domain, "my-application.service.justice.gov.uk" |
+| Route53 DNS record for certificate validation           | aws_route53_record  | aws.core-network-services | Created in the application hosted zone, this record validates the public certificate.                                                                   |
+| Route53 DNS record for directing traffic to the service | aws_route53_record  | aws.core-network-services | Created in the application hosted zone, eg "my-application.service.justice.gov.uk".                                                                     |
 
 ## DNS with Gandi.net certificate
 
@@ -65,10 +65,10 @@ The Modernisation Platform will need to request the delegation of the applicatio
 The Modernisation Platform team will then create a [hosted zone](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/route53.tf#L5) for your domain and a validation record for the Gandi.net certificate.
 Once this has been completed the following resources need to be created in different AWS accounts (see diagram above), the table details the resources and the AWS provider required for them.
 
-Resource | Terraform Resource | Terraform Provider | Description
----|---|---|---
-Gandi.net certificate in ACM | N/A | N/A | The new certificate should be [imported into ACM](certificate-import.html) in the application production account.
-Data look up for the certificate in ACM | aws_acm_certificate (data) | default | Data source to enable to imported certificate to be used by AWS services such as an elastic load balancer.
-Route53 DNS record for directing traffic to the service | aws_route53_record | aws.core-network-services | Created in the application hosted zone, eg "my-application.service.justice.gov.uk".
+| Resource                                                | Terraform Resource         | Terraform Provider        | Description                                                                                                       |
+|---------------------------------------------------------|----------------------------|---------------------------|-------------------------------------------------------------------------------------------------------------------|
+| Gandi.net certificate in ACM                            | N/A                        | N/A                       | The new certificate should be [imported into ACM](certificate-import.html) in the application production account. |
+| Data look up for the certificate in ACM                 | aws_acm_certificate (data) | default                   | Data source to enable to imported certificate to be used by AWS services such as an elastic load balancer.        |
+| Route53 DNS record for directing traffic to the service | aws_route53_record         | aws.core-network-services | Created in the application hosted zone, eg "my-application.service.justice.gov.uk".                               |
 
 The certificate should also be installed in the application as needed.
