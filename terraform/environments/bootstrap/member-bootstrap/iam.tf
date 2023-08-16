@@ -116,6 +116,7 @@ data "aws_iam_policy_document" "member-access" {
       "elasticfilesystem:*",
       "elasticloadbalancing:*",
       "events:*",
+      "fsx:*",
       "firehose:*",
       "glacier:*",
       "glue:*",
