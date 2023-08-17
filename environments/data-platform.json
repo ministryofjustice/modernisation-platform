@@ -33,6 +33,19 @@
           "level": "read-only"
         }
       ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "data-platform-core-infra",
+          "level": "developer"
+        },
+        {
+          "github_slug": "data-tech-archs",
+          "level": "developer"
+        }
+      ]
     }
   ],
   "tags": {
