@@ -14,3 +14,13 @@ data "aws_secretsmanager_secret_version" "environment_management" {
   provider  = aws.modernisation-platform
   secret_id = data.aws_secretsmanager_secret.environment_management.id
 }
+
+// Secret for the tactical products database access
+resource "aws_secretsmanager_secret" "rds_db_credentials" {
+  name                    = "tactical-products-db-secrets"
+  recovery_window_in_days = 0
+}
+resource "aws_secretsmanager_secret_version" "tactical_products_rds_credentials" {
+  secret_id     = aws_secretsmanager_secret.rds_db_credentials.id
+  secret_string = jsonencode({ "" : "" })
+}
