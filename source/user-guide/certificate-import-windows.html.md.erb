@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: How to import a public SSL certificate into AWS Certificate Manager on Windows
-last_reviewed_on: 2023-04-28
+last_reviewed_on: 2023-08-16
 review_in: 6 months
 ---
 
@@ -87,7 +87,7 @@ You can use the AWS Parameter Store to share the cert and key data with the Mode
 * One for your main certificate block
 * One parameter **each** for each block in the certificate chain
 
-If your are renewing an existing certificate, note that AWS Certificate Manager also allows you to re-import an existing certificate with new values. We suggest you avoid this in case something goes wrong. Importing a **new** certificate with the same domain as an existing certificate is allowed.
+If you are renewing an existing certificate, note that AWS Certificate Manager also allows you to re-import an existing certificate with new values. We suggest you avoid this in case something goes wrong. Importing a **new** certificate with the same domain as an existing certificate is allowed.
 
 When importing the certificate, AWS may tell you that the trust chain is optional, but it's not. All of the additional certificate blocks (except your "main" cert) must be pasted into this field.
 
