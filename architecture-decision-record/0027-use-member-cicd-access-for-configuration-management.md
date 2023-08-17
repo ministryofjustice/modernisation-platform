@@ -14,25 +14,59 @@ This configuration whilst sometimes manual often can be achieved via code, eg sc
 
 ## Options
 
-#### Run configuration management tools manually on servers
+### 1. Run configuration management tools manually on servers
 
-This works but is not best practice and runs the risk of things not being applied consistently.
+**Pros**
 
-#### Run configuration management from the environments repository pipeline
+- Works 
+- Access already in place
 
-Automated solution and keeps everything in one place, but begins to mix infrastructure with configuration which we do not want to do. The environments repository is already very large and this will add to this.
+**Cons** 
 
-#### Run configuration management with another platform managed repository
+- Not best practice
+- Risk of things not being applied consistently
+- Risk of errors
 
-Automated solution and keeps infrastructure and configuration separate, however this will be hard to create something which works with different configuration management tools.  Different applications have different requirements, with infrastructure it is simpler as it uses one tool - Terraform.  One application may required Ansible, another may need to make calls to an AWS API.  This solution will add considerable overhead to the Modernisation Platform team.
+### 2. Run configuration management from the environments repository pipeline
 
-#### Applications run configuration management using their own pipelines and tooling, MP provides access
+**Pros**
 
-This allows the application teams to run configuration management however they want to, using the CICD access provided by the Modernisation Platform. This is more work for application teams, but it has the greatest flexibility.
+- Automated solution 
+- Everything in one place
+
+**Cons** 
+
+- Mixes infrastructure with configuration 
+- Environments repository is already very large
+
+### 3. Run configuration management with another platform managed repository
+
+**Pros**
+
+- Automated solution 
+- Keeps infrastructure and configuration separate
+
+**Cons** 
+
+- Hard to create something which works with different configuration management tools
+- Different applications have different requirements, with infrastructure it is simpler as it uses one tool - Terraform.  One application may required Ansible, another may need to make calls to an AWS API 
+- Adds considerable overhead to the Modernisation Platform team
+
+### 4. Applications run configuration management using their own pipelines and tooling, MP provides access
+
+**Pros**
+
+- Flexibility for application teams to run configuration management however they want to
+- CICD access already present
+- Infrastructure and configuration management separate
+
+**Cons** 
+
+- More work for application teams
 
 ## Decision
 
-Applications will run configuration management using their own pipelines (not MP provided), accessing their accounts using the CICD access provided (currently the member-cicd user but soon to be changed to OIDC).
+Option 4. Applications will run configuration management using their own pipelines (not MP provided), accessing their accounts using the CICD access provided (currently the member-cicd user but soon to be changed to OIDC).
 
 ## Consequences
 
