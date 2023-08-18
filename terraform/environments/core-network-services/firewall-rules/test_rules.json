@@ -174,6 +174,13 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
+  "delius_eng_dev_to_hmpps_test_oracledb": {
+    "action": "PASS",
+    "source_ip": "${delius-eng-dev}",
+    "destination_ip": "${hmpps-test}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
   "delius_test_to_hmpps_test_ldap": {
     "action": "PASS",
     "source_ip": "${delius-test}",
