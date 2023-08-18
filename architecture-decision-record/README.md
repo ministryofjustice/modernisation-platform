@@ -29,6 +29,7 @@ This is our architecture decision log, made during the design and build of the M
 1. ✅ [Egress firewall inspection](0024-egress-traffic-inspection.md)
 1. ✅ [Non Standard User Infrastructure](0025-non-standard-user-infrastucture.md)
 1. ✅ [Use Network Services account for DNS resources](0026-use-network-services-account-for-dns.md)
+1. ✅ [Use Member CICD Access for Configuration Management](0027-use-member-cicd-access-for-configuration-management.md)
 
 ## Statuses
 
