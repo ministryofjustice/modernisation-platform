@@ -195,6 +195,13 @@
     "destination_port": "ANY",
     "protocol": "ICMP"
   },
+  "delius_eng_dev_to_hmpps_development_oracledb": {
+    "action": "PASS",
+    "source_ip": "${delius-eng-dev}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
   "delius_core_dev_to_hmpps_development_ldap": {
     "action": "PASS",
     "source_ip": "${delius-core-dev}",

@@ -46,6 +46,8 @@ locals {
     nomisapi-prod-root-vnet        = "10.47.0.128/26"
 
     # hmpps aws cidr ranges
+    delius-eng-dev  = "10.161.98.0/25"
+    delius-eng-prod = "10.160.98.0/25"
     delius-core-dev = "10.161.20.0/22"
     delius-mis-dev  = "10.162.32.0/20"
     delius-test     = "10.162.0.0/20"
