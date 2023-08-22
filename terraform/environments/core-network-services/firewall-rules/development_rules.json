@@ -236,5 +236,12 @@
     "destination_ip": "${hq-development}",
     "destination_port": "5439",
     "protocol": "TCP"
+  },
+  "alpha-vpn_to_data-insights-hub_development_redshift": {
+    "action": "PASS",
+    "source_ip": "${alpha-vpn}",
+    "destination_ip": "${hq-development}",
+    "destination_port": "5439",
+    "protocol": "TCP"
   }
 }
