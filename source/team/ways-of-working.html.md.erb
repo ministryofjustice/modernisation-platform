@@ -75,3 +75,19 @@ We also think it is good to:
 * use a meaningful branch naming, using prefixes such as `feature/`, `fix/`, `docs/` etc., including an issue number and making it a summary of what your goal is (e.g. `feature/2563-usingOIDC-in-base`),
 * squash commits before committing to remote, so that each commit represents a step in the implementation (combining  planned changes with fixes to errors),
 * ... and/or squash commits when merging a remote branch with the `main`.
+
+## Spikes
+
+Spikes are used to work out if an idea is feasible and if so how it should be implemented.
+
+When writing issues for spikes, use `SPIKE:` at the beginning of the issue title.
+
+All spikes should be timeboxed and last no longer than one sprint, the issue should state the timebox for the spike.
+
+The definition of done should include the following:
+
+ - details of research / information learned / options should be added to the issue comments
+ - output and options of the spike should be presented to the team so a decision on how to progress can be made, this decision should be recorded in the issue comments
+ - if it is decided to continue, issues should be created for the work required (linking back to the original spike)
+
+If the decision (to proceed or not) is of architectural significance an [ADR (architectural decision record)](https://github.com/ministryofjustice/modernisation-platform/tree/main/architecture-decision-record) should be created.
