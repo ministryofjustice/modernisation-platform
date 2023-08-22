@@ -1,0 +1,49 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "sandbox"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "hmpps-domain-services",
+    "business-unit": "HMPPS",
+    "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
+    "owner": "sean.privett@digital.justice.gov.uk"
+  },
+  "go-live-date": "",
+  "github-oidc-team-name": "github-oidc-repositories"
+}
