@@ -55,7 +55,7 @@
     "destination_port": "ANY",
     "protocol": "IP"
   },
-  "laa_shared_services_to_mp_laa_development_rdp": {
+  "laa_shared_services_to_mp_laa_development_rdp_temp": {
     "action": "PASS",
     "source_ip": "${laa-lz-shared-services-nonprod}",
     "destination_ip": "${laa-development}",
