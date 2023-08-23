@@ -19,7 +19,8 @@
           "hmpps-intelligence-management-development",
           "corporate-staff-rostering-development",
           "planetfm-development",
-          "hmpps-oem-development"
+          "hmpps-oem-development",
+          "hmpps-domain-services-development"
         ]
       }
     }

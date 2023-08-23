@@ -35,6 +35,7 @@ locals {
     "oas-test",
     "portal-development",
     "portal-production",
-    "portal-test"
+    "portal-test",
+    "data-platform-production"
   ])
 }

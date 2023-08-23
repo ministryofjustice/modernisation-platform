@@ -17,7 +17,8 @@
           "corporate-staff-rostering-production",
           "planetfm-production",
           "hmpps-oem-production",
-          "digital-prison-reporting-production"
+          "digital-prison-reporting-production",
+          "hmpps-domain-services-production"
         ]
       }
     }
