@@ -39,7 +39,7 @@
       "access": [
         {
           "github_slug": "data-platform-labs",
-          "level": "view-only"
+          "level": "developer"
         },
         {
           "github_slug": "data-platform-labs",
@@ -52,7 +52,7 @@
       "access": [
         {
           "github_slug": "data-platform-labs",
-          "level": "view-only"
+          "level": "developer"
         },
         {
           "github_slug": "data-platform-labs",
@@ -65,7 +65,7 @@
       "access": [
         {
           "github_slug": "data-platform-labs",
-          "level": "view-only"
+          "level": "developer"
         },
         {
           "github_slug": "data-platform-labs",
