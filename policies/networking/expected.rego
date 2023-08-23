@@ -77,6 +77,7 @@ expected =
       "general": {
         "cidr": "10.26.0.0/21",
         "accounts": [
+          "data-platform-test",
           "testing-test"
         ]
       }
@@ -332,6 +333,7 @@ expected =
       "general": {
         "cidr": "10.27.96.0/21",
         "accounts": [
+          "data-platform-production",
           "long-term-storage-production",
           "data-platform-apps-and-tools-production"
         ]
@@ -341,6 +343,7 @@ expected =
       "general": {
         "cidr": "10.27.104.0/21",
         "accounts": [
+          "data-platform-preproduction"
         ]
       }
     },
