@@ -3,7 +3,7 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.27.104.0/21",
-        "accounts": []
+        "accounts": ["data-platform-preproduction"]
       }
     }
   },
