@@ -31,6 +31,10 @@ locals {
   application_tags               = jsondecode(data.http.environments_file.response_body).tags
   business_unit                  = local.application_tags.business-unit
   application_environment        = length(regexall("^bichard*.|^remote-supervisio*.", terraform.workspace)) > 0 ? terraform.workspace : substr(terraform.workspace, length(local.application_name) + 1, -1)
+  environments_list = {
+      for file in fileset("../../../../environments", "*.json") :
+      replace(file, ".json", "") => jsondecode(file("../../../../environments/${file}"))
+  }
 
   tags = {
     business-unit = "Platforms"
