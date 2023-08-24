@@ -80,6 +80,30 @@ create_reviewers_json() {
   # echo "Reviewers json: ${reviewers_json}"
 }
 
+add_additional_reviewers() {
+  environment_name=$1
+  additional_reviewers=$2
+  echo "Adding additional reviewers to ${environment_name}..."
+  
+  # Construct reviewers JSON for additional reviewers
+  additional_reviewers_json=""
+  for reviewer in ${additional_reviewers}
+  do
+    raw_jq=`jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }'`
+    additional_reviewers_json="${raw_jq},${additional_reviewers_json}"
+  done
+  additional_reviewers_json=`echo ${additional_reviewers_json} | sed 's/,*$//g'`
+
+  # Update the environment on GitHub with additional reviewers
+  echo "{\"reviewers\": [${additional_reviewers_json}]}" | curl -L -s \
+    -X PATCH \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: Bearer ${secret}" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    https://api.github.com/repos/${repository}/environments/${environment_name}\
+    -d @- > /dev/null 2>&1
+}
+
 main() {
   #load existing github environments
   get_existing_environments
@@ -126,6 +150,14 @@ main() {
           reviewers_json=""
           create_reviewers_json "${team_ids}"
           create_environment ${environment} ${reviewers_json}
+          
+          additional_reviewers=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .additional_reviewers[]' $json_file)
+          echo "Additional reviewers for ${environment}: $additional_reviewers"
+
+          if [ "${additional_reviewers}" != "" ]
+          then
+            add_additional_reviewers ${environment} "${additional_reviewers}"
+          fi
         fi
       else
         echo "${environment} is a core environment, skipping..."
