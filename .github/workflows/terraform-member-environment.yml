@@ -6,18 +6,17 @@ on:
     branches:
       - main
     paths:
-      - '!terraform/environments/bootstrap/**'
+      - 'terraform/environments/*'
+      - '!terraform/environments/bootstrap'
       - '!terraform/environments/core-*'
-      - 'terraform/environments/**'
   pull_request:
     types: [opened, edited, reopened, synchronize]
     branches-ignore:
       - 'date*'
     paths:
-      - '!terraform/environments/bootstrap/**'
+      - 'terraform/environments/*'
+      - '!terraform/environments/bootstrap'
       - '!terraform/environments/core-*'
-      - 'terraform/environments/**'
-      - '.github/workflows/terraform-member-environment.yml'
 
 defaults:
   run:
