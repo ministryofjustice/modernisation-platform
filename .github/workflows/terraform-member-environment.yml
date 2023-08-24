@@ -17,7 +17,6 @@ on:
       - 'terraform/environments/*'
       - '!terraform/environments/bootstrap'
       - '!terraform/environments/core-*'
-      - '.github/workflows/terraform-member-environment.yml'
 
 defaults:
   run:
