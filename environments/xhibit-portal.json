@@ -35,5 +35,6 @@
     "infrastructure-support": "xpsupport@digital.justice.gov.uk",
     "owner": "dom.tomkins@digital.justice.gov.uk"
   },
-  "go-live-date": "2022-03-25"
+  "go-live-date": "2022-03-25",
+  "github-oidc-team-repositories": [""]
 }

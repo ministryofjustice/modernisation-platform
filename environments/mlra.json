@@ -59,5 +59,6 @@
     "business-unit": "LAA",
     "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
     "owner": "laa-crime-apps@digital.justice.gov.uk"
-  }
+  },
+  "github-oidc-team-repositories": [""]
 }

@@ -47,5 +47,6 @@
     "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
     "owner": "william.moran@justice.gov.uk"
   },
-  "go-live-date": "2023-07-05"
+  "go-live-date": "2023-07-05",
+  "github-oidc-team-repositories": [""]
 }

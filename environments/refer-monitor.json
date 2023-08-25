@@ -20,5 +20,6 @@
     "business-unit": "HMPPS",
     "infrastructure-support": "interventions-devs@digital.justice.gov.uk",
     "owner": "interventions-devs@digital.justice.gov.uk"
-  }
+  },
+  "github-oidc-team-repositories": [""]
 }

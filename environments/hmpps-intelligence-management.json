@@ -25,5 +25,6 @@
     "business-unit": "HMPPS",
     "infrastructure-support": "hmpps-ims@digital.justice.gov.uk",
     "owner": "dps"
-  }
+  },
+  "github-oidc-team-repositories": [""]
 }

@@ -44,5 +44,6 @@
     "business-unit": "HMPPS",
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
     "owner": "digital-studio-operations-team@digital.justice.gov.uk"
-  }
+  },
+  "github-oidc-team-repositories": [""]
 }
