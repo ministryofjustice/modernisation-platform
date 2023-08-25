@@ -85,7 +85,6 @@ resource "aws_iam_role_policy" "dns" {
             "arn:aws:route53:::hostedzone/${aws_route53_zone.modernisation-platform.id}",
             "arn:aws:route53:::hostedzone/${aws_route53_zone.modernisation-platform-internal.id}",
             format("arn:aws:route53:::hostedzone/%s", data.aws_route53_zone.portal-development.zone_id),
-          
             format("arn:aws:route53:::hostedzone/%s", data.aws_route53_zone.portal-development-aws.zone_id)
           ]
         )
