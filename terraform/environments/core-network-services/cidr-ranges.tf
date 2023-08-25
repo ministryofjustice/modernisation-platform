@@ -25,7 +25,7 @@ locals {
     parole-board                     = "10.50.0.0/16"
     psn                              = "51.0.0.0/8"
     psn-ppud                         = "51.247.2.115/32"
-    vodafone_wan_nicts_aggregate     = "10.80.0.0/12"  # for devices connected to Prison Networks
+    vodafone_wan_nicts_aggregate     = "10.80.0.0/12" # for devices connected to Prison Networks
 
     # hmpps azure cidr ranges
     noms-live-vnet                 = "10.40.0.0/18"
