@@ -10,17 +10,17 @@ If you're looking to raise an issue with this module, please create a new issue 
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.1 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.47.0 |
-| <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.6.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9.1 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws.transit-gateway-host"></a> [aws.transit-gateway-host](#provider\_aws.transit-gateway-host) | >= 3.47.0 |
-| <a name="provider_aws.transit-gateway-tenant"></a> [aws.transit-gateway-tenant](#provider\_aws.transit-gateway-tenant) | >= 3.47.0 |
-| <a name="provider_time"></a> [time](#provider\_time) | >= 0.6.0 |
+| <a name="provider_aws.transit-gateway-host"></a> [aws.transit-gateway-host](#provider\_aws.transit-gateway-host) | ~> 5.0 |
+| <a name="provider_aws.transit-gateway-tenant"></a> [aws.transit-gateway-tenant](#provider\_aws.transit-gateway-tenant) | ~> 5.0 |
+| <a name="provider_time"></a> [time](#provider\_time) | >= 0.9.1 |
 
 ## Modules
 

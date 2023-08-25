@@ -400,7 +400,7 @@ resource "pagerduty_service_integration" "laa_oas_prod_cloudwatch" {
 # # Slack channel: #laa-obiee-alerts-prod
 
 
-# Delius Jitbit - Non Prod
+# Delius Jitbit Non Prod: #hmpps-jitbit-alerts-nonprod
 
 resource "pagerduty_service" "jitbit_nonprod" {
   name                    = "Delius Jitbit Non Prod"
@@ -422,6 +422,57 @@ resource "pagerduty_slack_connection" "jitbit_nonprod_connection" {
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
   channel_id        = "C04U3GUMKRR"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
+# Delius Jitbit Prod: #hmpps-jitbit-alerts-prod
+
+resource "pagerduty_service" "jitbit_prod" {
+  name                    = "Delius Jitbit Prod"
+  description             = "Delius Jitbit Prod Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "jitbit_prod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.jitbit_prod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "jitbit_prod_connection" {
+  source_id         = pagerduty_service.jitbit_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C05P5QTTSUB"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
