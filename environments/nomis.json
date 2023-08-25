@@ -6,8 +6,15 @@
       "access": [
         {
           "github_slug": "studio-webops",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "developer"
+        },
+        {
+          "github_slug": "syscon-devs",
+          "level": "instance-management"
+        },
+        {
+          "github_slug": "syscon-nomis",
+          "level": "instance-management"
         }
       ]
     },
@@ -21,6 +28,10 @@
         {
           "github_slug": "syscon-devs",
           "level": "instance-management"
+        },
+        {
+          "github_slug": "syscon-nomis",
+          "level": "instance-management"
         }
       ]
     },
@@ -33,7 +44,11 @@
         },
         {
           "github_slug": "syscon-devs",
-          "level": "developer"
+          "level": "instance-management"
+        },
+        {
+          "github_slug": "syscon-nomis",
+          "level": "instance-management"
         }
       ]
     },
@@ -46,7 +61,11 @@
         },
         {
           "github_slug": "syscon-devs",
-          "level": "developer"
+          "level": "instance-management"
+        },
+        {
+          "github_slug": "syscon-nomis",
+          "level": "instance-management"
         }
       ]
     }

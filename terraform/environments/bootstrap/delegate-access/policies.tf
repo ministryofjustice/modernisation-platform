@@ -136,6 +136,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "ec2:DescribeVolumes",
       "ec2:DescribeInstances",
       "ec2:DescribeInstanceTypes",
+      "ec2-instance-connect:SendSerialConsoleSSHPublicKey",
       "ecr:DeleteRepository",
       "ecs:StartTask",
       "ecs:StopTask",
