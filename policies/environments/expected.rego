@@ -29,6 +29,7 @@ expected =
     "digital-prison-reporting",
     "equip",
     "example",
+    "hmpps-domain-services",
     "hmpps-intelligence-management",
     "hmpps-oem",
     "laa-ccms-infra-azure-ad-sso",
