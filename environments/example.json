@@ -18,5 +18,5 @@
     "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
   },
   "go-live-date": "",
-  "github-oidc-team-repositories": ["ministryofjustice/modernisation-platform-configuration-management:*"]
+  "github-oidc-team-repositories": [""]
 }

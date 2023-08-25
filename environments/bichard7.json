@@ -70,5 +70,6 @@
     "business-unit": "CJSE",
     "infrastructure-support": "cjse@madetech.com",
     "owner": "cjse@madetech.com"
-  }
+  },
+  "github-oidc-team-repositories": [""]
 }
