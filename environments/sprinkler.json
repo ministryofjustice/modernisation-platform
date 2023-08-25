@@ -17,5 +17,6 @@
     "business-unit": "Platforms",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
     "owner": "Modernisation Platform : modernisation-platform@digital.justice.gov.uk"
-  }
+  },
+  "github-oidc-team-repositories": [""]
 }
