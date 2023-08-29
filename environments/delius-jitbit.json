@@ -47,6 +47,10 @@
         {
           "github_slug": "hmpps-migration",
           "level": "developer"
+        },
+        {
+          "github_slug": "hmpps-delius-jitbit-devs",
+          "level": "instance-management"
         }
       ]
     }
@@ -57,5 +61,7 @@
     "infrastructure-support": "probation-webops@digital.justice.gov.uk",
     "owner": "Probation WebOps: probation-webops@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [
+    ""
+  ]
 }
