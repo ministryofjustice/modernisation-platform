@@ -2,13 +2,9 @@ data "aws_iam_role" "vpc-flow-log" {
   name = "AWSVPCFlowLog"
 }
 
-data "aws_route53_zone" "portal-development" {
-  name         = "dev.legalservices.gov.uk."
-  private_zone = true
-}
-
-data "aws_route53_zone" "portal-development-aws" {
-  name         = "aws.dev.legalservices.gov.uk."
+data "aws_route53_zone" "private-zones" {
+  for_each     = local.private-application-zones
+  name         = each.value
   private_zone = true
 }
 
@@ -81,11 +77,11 @@ resource "aws_iam_role_policy" "dns" {
         Action = ["route53:ChangeResourceRecordSets"],
         Resource = concat(
           [for zone in aws_route53_zone.application_zones : format("arn:aws:route53:::hostedzone/%s", zone.id)],
+          [for zone in data.aws_route53_zone.private-zones : format("arn:aws:route53:::hostedzone/%s", zone.id)],
           [
             "arn:aws:route53:::hostedzone/${aws_route53_zone.modernisation-platform.id}",
-            "arn:aws:route53:::hostedzone/${aws_route53_zone.modernisation-platform-internal.id}",
-            format("arn:aws:route53:::hostedzone/%s", data.aws_route53_zone.portal-development.zone_id),
-            format("arn:aws:route53:::hostedzone/%s", data.aws_route53_zone.portal-development-aws.zone_id)
+            "arn:aws:route53:::hostedzone/${aws_route53_zone.modernisation-platform-internal.id}"
+
           ]
         )
       }
