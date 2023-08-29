@@ -35,5 +35,6 @@
     "business-unit": "HQ",
     "infrastructure-support": "Philip.cooke@justice.gov.uk",
     "owner": "Philip.cooke@justice.gov.uk"
-  }
+  },
+  "github-oidc-team-repositories": [""]
 }

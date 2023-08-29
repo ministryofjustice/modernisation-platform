@@ -34,5 +34,7 @@
     "business-unit": "HMCTS",
     "infrastructure-support": "DTS-ITServiceDesk@justice.gov.uk",
     "owner": "DTS-ITServiceDesk@justice.gov.uk"
-  }
+  },
+  "github-oidc-team-repositories": [""]
 }
+
