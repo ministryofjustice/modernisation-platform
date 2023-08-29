@@ -35,6 +35,6 @@
     "infrastructure-support": "performance-hub@digital.justice.gov.uk",
     "owner": "hubusers@justice.gov.uk"
   },
-  "go-live-date": "2021-11-10",
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [""],
+  "go-live-date": "2021-11-10"
 }

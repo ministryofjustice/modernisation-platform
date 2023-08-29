@@ -35,6 +35,6 @@
     "infrastructure-support": "PPUDnotification@justice.gov.uk",
     "owner": "deepee.mann-basra@digital.justice.gov.uk"
   },
-  "go-live-date": "2023-07-24",
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [""],
+  "go-live-date": "2023-07-24"
 }
