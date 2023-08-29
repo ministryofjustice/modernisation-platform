@@ -79,5 +79,6 @@
     "business-unit": "Platforms",
     "infrastructure-support": "dataplatform@digital.justice.gov.uk",
     "owner": "dataplatform@digital.justice.gov.uk"
-  }
+  },
+  "github-oidc-team-repositories": [""]
 }

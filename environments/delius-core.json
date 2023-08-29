@@ -22,5 +22,6 @@
     "business-unit": "HMPPS",
     "infrastructure-support": "probation-webops@digital.justice.gov.uk",
     "owner": "probation-webops@digital.justice.gov.uk"
-  }
+  },
+  "github-oidc-team-repositories": [""]
 }

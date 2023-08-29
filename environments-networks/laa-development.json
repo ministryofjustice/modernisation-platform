@@ -26,7 +26,10 @@
       "com.amazonaws.eu-west-2.secretsmanager",
       "com.amazonaws.eu-west-2.email-smtp"
     ],
-    "additional_private_zones": ["dev.legalservices.gov.uk"],
+    "additional_private_zones": [
+      "dev.legalservices.gov.uk",
+      "aws.dev.legalservices.gov.uk"
+    ],
     "additional_vpcs": [],
     "dns_zone_extend": []
   }

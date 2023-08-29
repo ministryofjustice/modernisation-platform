@@ -16,5 +16,6 @@
     "business-unit": "HQ",
     "infrastructure-support": "MOJNOC@justice.gov.uk",
     "owner": "chinyere.onuoha@justice.gov.uk"
-  }
+  },
+  "github-oidc-team-repositories": [""]
 }
