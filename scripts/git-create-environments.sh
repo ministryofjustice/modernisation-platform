@@ -151,12 +151,14 @@ main() {
           create_reviewers_json "${team_ids}"
           create_environment ${environment} ${reviewers_json}
           
-          additional_reviewers=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .additional_reviewers[]' $json_file)
+          additional_reviewers=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .additional_reviewers[]' $json_file 2>/dev/null)
           echo "Additional reviewers for ${environment}: $additional_reviewers"
 
           if [ "${additional_reviewers}" != "" ]
           then
             add_additional_reviewers ${environment} "${additional_reviewers}"
+          else
+            echo "No additional reviewers specified for ${environment}."
           fi
         fi
       else
