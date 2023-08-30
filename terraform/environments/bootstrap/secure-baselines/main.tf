@@ -7,7 +7,7 @@ data "aws_kms_key" "cloudtrail_key" {
 module "baselines" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=ebcbdbad38f770c0c6488ccd68c93b387a68c2da" # v5.0.0
 
-  providers = {
+  providers = { 
     # Default and replication regions
     aws                    = aws.workspace-eu-west-2
     aws.replication-region = aws.workspace-eu-west-1
