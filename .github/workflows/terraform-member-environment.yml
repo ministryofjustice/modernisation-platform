@@ -6,17 +6,17 @@ on:
     branches:
       - main
     paths:
-      - 'terraform/environments/*'
-      - '!terraform/environments/bootstrap'
-      - '!terraform/environments/core-*'
+      - 'terraform/environments/*/*.tf'
+      - '!terraform/environments/bootstrap/*/*.tf'
+      - '!terraform/environments/core-*/*.tf'
   pull_request:
     types: [opened, edited, reopened, synchronize]
     branches-ignore:
       - 'date*'
     paths:
-      - 'terraform/environments/*'
-      - '!terraform/environments/bootstrap'
-      - '!terraform/environments/core-*'
+      - 'terraform/environments/*/*.tf'
+      - '!terraform/environments/bootstrap/*/*.tf'
+      - '!terraform/environments/core-*/*.tf'
 
 defaults:
   run:
