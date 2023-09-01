@@ -76,11 +76,11 @@ These are applied at a higher OU (organisational unit) level and are inherited b
 
 Legacy applications often use "Click Ops" to make application deployments.  Whilst this is still possible on the Modernisation Platform, we encourage and can help people to build application deployment pipelines.
 
-To allow automated access to your AWS account we provide a "CI/CD (Continuous integration / continuous delivery)" user - `cicd-member-user`.
+To allow automated access to your AWS account we provide a "OIDC CI/CD (Continuous integration / continuous delivery)" role - `modernisation-platform-oidc-cicd`.
 
 This user has restricted access to your AWS account, with the minimum permissions needed to do things like push a new image to an ECR repo.
 
-The application pipeline is the responsibility of the application owner, details on how to obtain AWS credentials for the `cicd-member-user` are detailed [here](../../user-guide/deploying-your-application.html)
+The application pipeline is the responsibility of the application owner, details on using the role are detailed [here](../../user-guide/deploying-your-application.html)
 ## Diagram
 
 ![Member CI/CD](../../images/member-ci-cd.png)

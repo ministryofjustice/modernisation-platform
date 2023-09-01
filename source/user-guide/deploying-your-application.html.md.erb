@@ -11,31 +11,24 @@ review_in: 6 months
 
 Legacy applications often use "Click Ops" to make application deployments.  Whilst this is still possible on the Modernisation Platform, we encourage and can help people to build application deployment pipelines.
 
-To allow automated access to your AWS account we provide a "CI/CD (Continuous integration / continuous delivery)" user - `cicd-member-user`.
+To allow automated access to your AWS account we provide a "OIDC CI/CD" role - `modernisation-platform-oidc-cicd`.
 
-This user has restricted access to your AWS account, with the minimum permissions needed to do things like push a new image to an ECR repo. If you find that your CI/CD user does not have enough permissions to do what you want it to do, please speak with the Modernisation Platform team.
+This role has restricted access to your AWS account, with the minimum permissions needed to do things like push a new image to an ECR repo. If you find that your CI/CD role does not have enough permissions to do what you want it to do, please speak with the Modernisation Platform team.
 
-## Creating/Rotating CI/CD user AWS credentials
+## Using OIDC in your application deployment pipeline
 
-You can create and rotate AWS credentials to add to your application deployment pipeline to allow access to your AWS account.
+To add a repository for your application deployment pipeline, follow the following steps.
 
-1. [Log in to the AWS Console](accessing-the-aws-console.html). You will need to use the `modernisation-platform-developer` role
+1. Find your teams environments.json file [here.](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments)
 
-1. In the search bar (the AWS console frame) search for IAM and select the service. This will take you to the “Identity and Access Management (IAM)” area within AWS.
+1. There will be an empty value for `github-oidc-team-repositories` which needs to be populated, here's an [example.](https://github.com/ministryofjustice/modernisation-platform/blob/main/environments/example.json#L20)
 
-1. Click on “users” in the IAM Dashboard
+1. Populate it with one or more repos, as can be seen [here.](https://github.com/ministryofjustice/modernisation-platform/blob/main/environments/data-platform.json#L83)
 
-1. Click on the “cicd-member-user” user
+1. Open a PR and have it merged by someone in the Modernisation Platform team.
 
-1. Click on the “security credentials” tab from the summary and you should see a list of options
+1. Once merged, to work you will need to reference the role in your repositories. Here's an [example.](https://github.com/ministryofjustice/data-platform/commit/df0c6781cb3a63298df167ba74cf0c72ef5c7eea)
 
-1. The modernisation-platform-developer role has permission to create a new AWS key for this user. To do this, click on “Create access key
-
-1. This will auto-generate a new AWS secret key for this user. This key allows for programmatic access to has access to this account. ( Note. This is key is your responsibility. Please do not store the key locally and make sure the .csv file is deleted once you have transferred the key over to your CI/CD tool ).
-
-1. Once you have the new key, please make the original key inactive by selecting the “make inactive” action next to the key pair
-
-The same process applies when you wish to rotate the key
 
 ## Creating an application pipeline
 
