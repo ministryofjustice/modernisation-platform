@@ -251,9 +251,9 @@
     "destination_port": "5439",
     "protocol": "TCP"
   },
-  "internal-network_to_data-insights-hub_development_redshift": {
+  "internal-networks_to_data-insights-hub_development_redshift": {
     "action": "PASS",
-    "source_ip": "10.56.0.0/16",
+    "source_ip": "10.0.0.0/8",
     "destination_ip": "${hq-development}",
     "destination_port": "5439",
     "protocol": "TCP"
