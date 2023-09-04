@@ -68,7 +68,9 @@ resource "pagerduty_schedule" "primary" {
       local.david_elliott,
       local.stephen_linden,
       local.edward_proctor,
-      local.ewa_stempel
+      local.ewa_stempel,
+      local.mark_roberts,
+      local.aaron_robinson
     ]
   }
 
@@ -96,7 +98,9 @@ resource "pagerduty_schedule" "secondary" {
       local.stephen_linden,
       local.david_sibley,
       local.ewa_stempel,
-      local.edward_proctor
+      local.edward_proctor,
+      local.aaron_robinson,
+      local.mark_roberts
     ]
   }
 
