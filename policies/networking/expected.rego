@@ -45,7 +45,8 @@ expected =
         "accounts": [
           "example-development",
           "data-platform-development",
-          "data-platform-apps-and-tools-development"
+          "data-platform-apps-and-tools-development",
+          "observability-platform-development"
         ]
       }
     },
@@ -335,7 +336,8 @@ expected =
         "accounts": [
           "data-platform-production",
           "long-term-storage-production",
-          "data-platform-apps-and-tools-production"
+          "data-platform-apps-and-tools-production",
+          "observability-platform-production"
         ]
       }
     },

@@ -6,7 +6,8 @@
         "accounts": [
           "long-term-storage-production",
           "data-platform-apps-and-tools-production",
-          "data-platform-production"
+          "data-platform-production",
+          "observability-platform-production"
         ]
       }
     }
