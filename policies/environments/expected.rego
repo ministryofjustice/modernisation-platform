@@ -47,6 +47,7 @@ expected =
     "nomis-data-hub",
     "oas",
     "oasys",
+    "observability-platform",
     "performance-hub",
     "planetfm",
     "portal",

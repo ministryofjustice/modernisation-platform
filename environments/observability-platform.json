@@ -1,0 +1,30 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "observability-platform",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "observability-platform",
+          "level": "view-only"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "observability-platform",
+    "business-unit": "Platforms",
+    "infrastructure-support": "hosting-leads@digital.justice.gov.uk",
+    "owner": "hosting-leads@digital.justice.gov.uk"
+  },
+  "github-oidc-team-repositories": [""]
+}
