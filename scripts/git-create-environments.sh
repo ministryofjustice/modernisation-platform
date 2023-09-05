@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+set -x
 
 github_org="ministryofjustice"
 repository="${github_org}/modernisation-platform-environments"
