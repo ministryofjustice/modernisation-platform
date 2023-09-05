@@ -38,6 +38,10 @@
       "name": "test",
       "access": [
         {
+          "github_slug": "data-platform-core-infra",
+          "level": "developer"
+        },
+        {
           "github_slug": "data-platform-labs",
           "level": "developer"
         },
@@ -51,6 +55,10 @@
       "name": "preproduction",
       "access": [
         {
+          "github_slug": "data-platform-core-infra",
+          "level": "developer"
+        },
+        {
           "github_slug": "data-platform-labs",
           "level": "developer"
         },
@@ -63,6 +71,10 @@
     {
       "name": "production",
       "access": [
+        {
+          "github_slug": "data-platform-core-infra",
+          "level": "developer"
+        },
         {
           "github_slug": "data-platform-labs",
           "level": "developer"
