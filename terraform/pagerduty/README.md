@@ -12,21 +12,21 @@ The state is stored in S3, as defined in [backend.tf](backend.tf).
 
 ## Adding a new team member to the Modernisation Platform on-call rota
 
-### User changes in `[locals.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/pagerduty/locals.tf)`
+### User changes in [`locals.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/pagerduty/locals.tf)
 
-If a new team already exists in the MoJ Pager Duty (PD) account, add `data "pagerduty_user"` in the `[locals.tf](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L66)` and reference them under the `[existing_users](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L37)` local variable.
-Otherwise, add a new user entry under `pager_duty_users` local variable in the `[locals.tf](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L5)`.
+If a new team already exists in the MoJ Pager Duty (PD) account, add `data "pagerduty_user"` in the [`locals.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L66) and reference them under the [`existing_users`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L37) local variable.
+Otherwise, add a new user entry under `pager_duty_users` local variable in the [`locals.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L5).
 
-Add a newly added user to the local shortcuts in the `[locals.tf](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L49)`.
+Add a newly added user to the local shortcuts in the [`locals.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L49).
 
-### Updating PagerDuty schedules in `[policy-schedules.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/pagerduty/policy-schedules.tf)`
+### Updating PagerDuty schedules in [`policy-schedules.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/pagerduty/policy-schedules.tf)
 
-Add a newly added user to the `[resource "pagerduty_schedule" "primary"](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/policy-schedules.tf#L48)` and the `[resource "pagerduty_schedule" "secondary"](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/policy-schedules.tf#L80)` resources under the `layer.users` attribute in the `policy-schedules.tf`.
+Add a newly added user to the [`resource "pagerduty_schedule" "primary"`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/policy-schedules.tf#L48) and the [`resource "pagerduty_schedule" "secondary"`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/policy-schedules.tf#L80) resources under the `layer.users` attribute in the `policy-schedules.tf`.
 Make sure the order that users are listed in of the primary schedule differs from the order of the secondary list. This will ensure that one person is not on a rota for the primary and the secondary line at the same time.
 
 ### Running `terraform plan`
 
-In order to run `terraform plan` locally within the `pagerduty/` directory use a Modernisation Platform Account AdministratorAccess SSO role, and pass the pagerduty_token (found in the Modernisation Platform [secrets](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/rotating-secrets.html#how-to-rotate-secrets)) and a pagerduty_user_token (personal) in as a Terraform variables with permissions to the MoJ PagerDuty account.
+In order to run `terraform plan` locally within the `pagerduty/` directory use a Modernisation Platform Account AdministratorAccess SSO role, and pass the `pagerduty_token` (found in the Modernisation Platform [secrets](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/rotating-secrets.html#how-to-rotate-secrets)) and a `pagerduty_user_token` (personal) in as a Terraform variables with permissions to the MoJ PagerDuty account.
 
 ### Merging changes
 
