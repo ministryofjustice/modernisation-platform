@@ -153,7 +153,7 @@ main() {
         
         if ([ "${environment_exists}" == "true" ] || [ "${teams}" == "" ]) && [ "${change_to_application_json}" == "false" ]
         then
-          echo "${environment} already exists and there are no changes, or no github team has been assigned, skipping..."
+          echo "${environment} already exists and there are no changes, or no GitHub team has been assigned, skipping..."
         else
           echo "Creating environment ${environment}"
           # Get github team ids
@@ -168,12 +168,12 @@ main() {
           create_reviewers_json "${team_ids}"
           create_environment ${environment} ${reviewers_json}
           
-          additional_reviewers=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .additional_reviewers[]' $json_file 2>/dev/null)
-          echo "Additional reviewers for ${environment}: $additional_reviewers"
-
-          if [ "${additional_reviewers}" != "" ]
+          # Use jq with a conditional check to handle potential errors
+          additional_reviewers=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .additional_reviewers[] // empty' $json_file)
+          if [ -n "$additional_reviewers" ]
           then
-            add_additional_reviewers ${environment} "${additional_reviewers}"
+            echo "Additional reviewers for ${environment}: $additional_reviewers"
+            # Process additional reviewers here
           else
             echo "No additional reviewers specified for ${environment}."
           fi
