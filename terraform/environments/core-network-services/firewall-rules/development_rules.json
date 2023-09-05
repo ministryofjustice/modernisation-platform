@@ -55,13 +55,6 @@
     "destination_port": "ANY",
     "protocol": "IP"
   },
-  "laa_shared_services_to_mp_laa_development_rdp_temp": {
-    "action": "PASS",
-    "source_ip": "${laa-lz-shared-services-nonprod}",
-    "destination_ip": "${laa-development}",
-    "destination_port": "3389",
-    "protocol": "TCP"
-  },
   "analytical_platform_to_mp_laa_development": {
     "action": "PASS",
     "source_ip": "${analytical-platform-airflow-dev}",
