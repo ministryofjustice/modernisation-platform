@@ -5,14 +5,30 @@ set -e
 github_org="ministryofjustice"
 repository="${github_org}/modernisation-platform-environments"
 secret=$TERRAFORM_GITHUB_TOKEN
-# TODO there is a max per page of 100, need to do pagination properly or probably easiest to rewrite in Ruby/Go etc
+
 get_existing_environments() {
-  response=$(curl -s \
-    -H "Accept: application/vnd.github.v3+json" \
-    -H "Authorization: token ${secret}" \
-    https://api.github.com/repos/${repository}/environments?per_page=100
-    )
-  github_environments=$(echo $response | jq -r '.environments[].name')
+  page=1
+  github_environments=""
+
+  while :; do
+    response=$(curl -s \
+      -H "Accept: application/vnd.github.v3+json" \
+      -H "Authorization: token ${secret}" \
+      "https://api.github.com/repos/${repository}/environments?per_page=100&page=${page}")
+
+    current_page_environments=$(echo $response | jq -r '.environments[].name')
+    github_environments="${github_environments} ${current_page_environments}"
+
+    # Check if there's a "next" link in the headers
+    next_link=$(echo "$response" | grep -i '^link:' | sed -n 's/.*<\(.*\)>; rel="next".*/\1/p')
+
+    if [ -z "$next_link" ]; then
+      break  # No more pages to fetch
+    else
+      page=$((page + 1))
+    fi
+  done
+
   echo "Existing github environments: $github_environments"
 }
 
@@ -80,6 +96,30 @@ create_reviewers_json() {
   # echo "Reviewers json: ${reviewers_json}"
 }
 
+add_additional_reviewers() {
+  environment_name=$1
+  additional_reviewers=$2
+  echo "Adding additional reviewers to ${environment_name}..."
+  
+  # Construct reviewers JSON for additional reviewers
+  additional_reviewers_json=""
+  for reviewer in ${additional_reviewers}
+  do
+    raw_jq=`jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }'`
+    additional_reviewers_json="${raw_jq},${additional_reviewers_json}"
+  done
+  additional_reviewers_json=`echo ${additional_reviewers_json} | sed 's/,*$//g'`
+
+  # Update the environment on GitHub with additional reviewers
+  echo "{\"reviewers\": [${additional_reviewers_json}]}" | curl -L -s \
+    -X PATCH \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: Bearer ${secret}" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    https://api.github.com/repos/${repository}/environments/${environment_name}\
+    -d @- > /dev/null 2>&1
+}
+
 main() {
   #load existing github environments
   get_existing_environments
@@ -126,6 +166,16 @@ main() {
           reviewers_json=""
           create_reviewers_json "${team_ids}"
           create_environment ${environment} ${reviewers_json}
+          
+          additional_reviewers=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .additional_reviewers[]' $json_file 2>/dev/null)
+          echo "Additional reviewers for ${environment}: $additional_reviewers"
+
+          if [ "${additional_reviewers}" != "" ]
+          then
+            add_additional_reviewers ${environment} "${additional_reviewers}"
+          else
+            echo "No additional reviewers specified for ${environment}."
+          fi
         fi
       else
         echo "${environment} is a core environment, skipping..."
