@@ -5,14 +5,30 @@ set -e
 github_org="ministryofjustice"
 repository="${github_org}/modernisation-platform-environments"
 secret=$TERRAFORM_GITHUB_TOKEN
-# TODO there is a max per page of 100, need to do pagination properly or probably easiest to rewrite in Ruby/Go etc
+
 get_existing_environments() {
-  response=$(curl -s \
-    -H "Accept: application/vnd.github.v3+json" \
-    -H "Authorization: token ${secret}" \
-    https://api.github.com/repos/${repository}/environments?per_page=100
-    )
-  github_environments=$(echo $response | jq -r '.environments[].name')
+  page=1
+  github_environments=""
+
+  while :; do
+    response=$(curl -s \
+      -H "Accept: application/vnd.github.v3+json" \
+      -H "Authorization: token ${secret}" \
+      "https://api.github.com/repos/${repository}/environments?per_page=100&page=${page}")
+
+    current_page_environments=$(echo $response | jq -r '.environments[].name')
+    github_environments="${github_environments} ${current_page_environments}"
+
+    # Check if there's a "next" link in the headers
+    next_link=$(echo "$response" | grep -i '^link:' | sed -n 's/.*<\(.*\)>; rel="next".*/\1/p')
+
+    if [ -z "$next_link" ]; then
+      break  # No more pages to fetch
+    else
+      page=$((page + 1))
+    fi
+  done
+
   echo "Existing github environments: $github_environments"
 }
 
