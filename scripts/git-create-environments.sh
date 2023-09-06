@@ -168,8 +168,9 @@ main() {
           create_reviewers_json "${team_ids}"
           create_environment ${environment} ${reviewers_json}
           
-          # Use jq with a conditional check to handle potential errors
-          additional_reviewers=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .additional_reviewers[] // empty' $json_file)
+          # Use jq to conditionally extract additional reviewers
+          additional_reviewers=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e and has("additional_reviewers")) | .additional_reviewers[]' $json_file)
+          
           if [ -n "$additional_reviewers" ]
           then
             echo "Additional reviewers for ${environment}: $additional_reviewers"
