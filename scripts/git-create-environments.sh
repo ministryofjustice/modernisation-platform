@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+set -x
 
 github_org="ministryofjustice"
 repository="${github_org}/modernisation-platform-environments"
@@ -102,13 +103,14 @@ add_additional_reviewers() {
   echo "Adding additional reviewers to ${environment_name}..."
   
   # Construct reviewers JSON for additional reviewers
-  additional_reviewers_json=""
+  additional_reviewers_json="["
   for reviewer in ${additional_reviewers}
   do
     raw_jq=`jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }'`
-    additional_reviewers_json="${raw_jq},${additional_reviewers_json}"
+    additional_reviewers_json="${additional_reviewers_json}${raw_jq},"
   done
-  additional_reviewers_json=`echo ${additional_reviewers_json} | sed 's/,*$//g'`
+  additional_reviewers_json="${additional_reviewers_json%,}"  # Remove trailing comma
+  additional_reviewers_json="${additional_reviewers_json}]"
 
   # Update the environment on GitHub with additional reviewers
   echo "{\"reviewers\": [${additional_reviewers_json}]}" | curl -L -s \
@@ -173,7 +175,7 @@ main() {
           if [ -n "$additional_reviewers" ]
           then
             echo "Additional reviewers for ${environment}: $additional_reviewers"
-            # Process additional reviewers here
+            add_additional_reviewers "${environment}" "${additional_reviewers}"
           else
             echo "No additional reviewers specified for ${environment}."
           fi
