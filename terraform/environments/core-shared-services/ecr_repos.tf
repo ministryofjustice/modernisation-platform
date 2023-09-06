@@ -144,46 +144,6 @@ module "delius_core_openldap_ecr_repo" {
   tags_common = local.tags
 }
 
-module "data_platform_code_ecr_repo" {
-  source = "../../modules/app-ecr-repo"
-
-  app_name = "data-platform-code-extractor"
-
-  push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["data-platform-development"]
-  ]
-
-  pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
-    local.environment_management.account_ids["data-platform-development"],
-  ]
-
-  # Tags
-  tags_common = local.tags
-}
-
-module "data_platform_data_ecr_repo" {
-  source = "../../modules/app-ecr-repo"
-
-  app_name = "data-platform-data-extractor"
-
-  push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["data-platform-development"]
-  ]
-
-  pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
-    local.environment_management.account_ids["data-platform-development"],
-  ]
-
-  # Tags
-  tags_common = local.tags
-}
-
 module "data_platform_athena_load_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
@@ -192,15 +152,26 @@ module "data_platform_athena_load_ecr_repo" {
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["data-platform-development"]
+    local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
   ]
 
   pull_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
     local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
   ]
 
-  enable_retrieval_policy_for_lambdas = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_athena_load*"]
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_athena_load*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-test"]}:function:data_product_athena_load*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-preproduction"]}:function:data_product_athena_load*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-production"]}:function:data_product_athena_load*"
+  ]
 
   # Tags
   tags_common = local.tags
@@ -214,15 +185,26 @@ module "data_platform_get_glue_metadata_ecr_repo" {
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["data-platform-development"]
+    local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
   ]
 
   pull_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
     local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
   ]
 
-  enable_retrieval_policy_for_lambdas = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_get_glue_metadata*"]
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_get_glue_metadata*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-test"]}:function:data_product_get_glue_metadata*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-preproduction"]}:function:data_product_get_glue_metadata*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-production"]}:function:data_product_get_glue_metadata*",
+  ]
 
   # Tags
   tags_common = local.tags
@@ -236,15 +218,26 @@ module "data_platform_presigned_url_ecr_repo" {
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["data-platform-development"]
+    local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
   ]
 
   pull_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
     local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
   ]
 
-  enable_retrieval_policy_for_lambdas = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_presigned_url*"]
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_presigned_url*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-test"]}:function:data_product_presigned_url*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-preproduction"]}:function:data_product_presigned_url*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-production"]}:function:data_product_presigned_url*",
+  ]
 
   # Tags
   tags_common = local.tags
@@ -258,15 +251,26 @@ module "data_platform_authorizer_ecr_repo" {
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["data-platform-development"]
+    local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
   ]
 
   pull_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
     local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
   ]
 
-  enable_retrieval_policy_for_lambdas = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_authorizer*"]
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_authorizer*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-test"]}:function:data_product_authorizer*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-preproduction"]}:function:data_product_authorizer*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-production"]}:function:data_product_authorizer*",
+  ]
 
   # Tags
   tags_common = local.tags
@@ -280,15 +284,26 @@ module "data_platform_docs_ecr_repo" {
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["data-platform-development"]
+    local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
   ]
 
   pull_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
     local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
   ]
 
-  enable_retrieval_policy_for_lambdas = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_docs*"]
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_docs*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-test"]}:function:data_product_docs*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-preproduction"]}:function:data_product_docs*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-production"]}:function:data_product_docs*",
+  ]
 
   # Tags
   tags_common = local.tags
@@ -340,13 +355,19 @@ module "data_platform_python_base_ecr_repo" {
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["data-platform-development"]
+    local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
   ]
 
   pull_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
   ]
 
   # Tags
@@ -361,16 +382,27 @@ module "data_platform_create_metadata_lambda_ecr_repo" {
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["data-platform-development"]
+    local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
   ]
 
   pull_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
   ]
 
-  enable_retrieval_policy_for_lambdas = ["arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_create_metadata*"]
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_create_metadata*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-test"]}:function:data_product_create_metadata*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-preproduction"]}:function:data_product_create_metadata*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-production"]}:function:data_product_create_metadata*",
+  ]
 
   # Tags
   tags_common = local.tags
