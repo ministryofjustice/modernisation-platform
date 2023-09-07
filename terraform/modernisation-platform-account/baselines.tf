@@ -70,5 +70,5 @@ module "baselines-modernisation-platform" {
 
 # Trusted Advisor: refresh every 60 minutes
 module "trusted-advisor-modernisation-platform" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor?ref=5061558ee1b43190cabb6282b78a076f09cde7de" # v3.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor?ref=9646bc724617b4b045b93c53f514c8bc6895f8e5" # v3.1.0
 }
