@@ -24,7 +24,10 @@ data "aws_iam_policy_document" "instance-scheduler-access" {
       "ec2:DescribeInstanceStatus",
       "ec2:DescribeTags",
       "ec2:StartInstances",
-      "ec2:StopInstances"
+      "ec2:StopInstances",
+      "rds:DescribeDBInstances",
+      "rds:StopDBInstance",
+      "rds:StartDBInstance"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
