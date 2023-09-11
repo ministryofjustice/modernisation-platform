@@ -103,11 +103,12 @@ add_additional_reviewers() {
   echo "Adding additional reviewers to ${environment_name}..."
   
   # Construct reviewers JSON for additional reviewers
-  additional_reviewers_json="[]"
+  additional_reviewers_json=()  # Initialize as an empty array
+
   for reviewer in ${additional_reviewers}
   do
-    raw_jq=`jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }'`
-    additional_reviewers_json="${additional_reviewers_json},${raw_jq}"
+      raw_jq=$(jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }')
+      additional_reviewers_json+=("${raw_jq}")
   done
   additional_reviewers_json="${additional_reviewers_json%,}"  # Remove trailing comma
   additional_reviewers_json="${additional_reviewers_json}]"
