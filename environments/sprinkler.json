@@ -9,8 +9,7 @@
           "level": "sandbox",
           "nuke": "rebuild"
         }
-      ],
-      "additional_reviewers": ["astrobinson"]
+      ]
     }
   ],
   "tags": {
