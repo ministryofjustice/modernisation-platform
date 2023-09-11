@@ -111,15 +111,23 @@ add_additional_reviewers() {
   done
   additional_reviewers_json="${additional_reviewers_json%,}"  # Remove trailing comma
   additional_reviewers_json="${additional_reviewers_json}]"
-
+  
   # Update the environment on GitHub with additional reviewers
-  echo "{\"reviewers\": [${additional_reviewers_json}]}" | curl -L -s \
+  response=$(echo "{\"reviewers\": [${additional_reviewers_json}]}" | curl -L -s \
     -X PATCH \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer ${secret}" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
     https://api.github.com/repos/${repository}/environments/${environment_name}\
-    -d @- > /dev/null 2>&1
+    -d @-)
+
+  echo "API Response: $response"  # Print the API response
+
+  # Check if the curl request was successful
+  if [ $? -ne 0 ]; then
+    echo "Error: Failed to update environment with additional reviewers."
+    exit 1
+  fi
 }
 
 main() {
