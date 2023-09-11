@@ -103,17 +103,17 @@ add_additional_reviewers() {
   echo "Adding additional reviewers to ${environment_name}..."
   
   # Construct reviewers JSON for additional reviewers
-  additional_reviewers_json="["
+  additional_reviewers_json="[]"
   for reviewer in ${additional_reviewers}
   do
     raw_jq=`jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }'`
-    additional_reviewers_json="${additional_reviewers_json}${raw_jq},"
+    additional_reviewers_json="${additional_reviewers_json},${raw_jq}"
   done
   additional_reviewers_json="${additional_reviewers_json%,}"  # Remove trailing comma
   additional_reviewers_json="${additional_reviewers_json}]"
   
   # Update the environment on GitHub with additional reviewers
-  response=$(echo "{\"reviewers\": [${additional_reviewers_json}]}" | curl -L -s \
+  response=$(echo "{\"reviewers\": ${additional_reviewers_json}}" | curl -L -s \
     -X PATCH \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer ${secret}" \
@@ -126,6 +126,12 @@ add_additional_reviewers() {
   # Check if the curl request was successful
   if [ $? -ne 0 ]; then
     echo "Error: Failed to update environment with additional reviewers."
+    exit 1
+  fi
+
+  # Check if the API response indicates an error
+  if echo "$response" | jq -e '.message' > /dev/null; then
+    echo "GitHub API Error: $(echo "$response" | jq -r '.message')"
     exit 1
   fi
 }
