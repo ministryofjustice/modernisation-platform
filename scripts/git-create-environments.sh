@@ -95,20 +95,25 @@ create_environment() {
 
 create_reviewers_json() {
   team_slugs=("$@")
-  reviewers=()
+  team_reviewers=()
+  user_reviewers=()
 
   for slug in "${team_slugs[@]}"; do
-    reviewers+=("{\"type\": \"Team\", \"id\": ${slug}}")
+    team_reviewers+=("{\"type\": \"Team\", \"id\": ${slug}}")
   done
 
   if [ -n "${additional_reviewers}" ]; then
     IFS=',' read -ra user_logins <<< "${additional_reviewers}"
     for login in "${user_logins[@]}"; do
-      reviewers+=("{\"type\": \"User\", \"login\": \"$login\"}")
+      user_reviewers+=("{\"type\": \"User\", \"login\": \"$login\"}")
     done
   fi
 
-  reviewers_json=$(IFS=','; echo "[${reviewers[*]}]")
+  team_reviewers_json=$(IFS=','; echo "[${team_reviewers[*]}]")
+  user_reviewers_json=$(IFS=','; echo "[${user_reviewers[*]}]")
+
+  reviewers_json="[${team_reviewers_json},${user_reviewers_json}]"
+
   echo "Reviewers json: ${reviewers_json}"
 }
 
