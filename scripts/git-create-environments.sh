@@ -70,37 +70,34 @@ create_environment() {
   echo "Creating environment ${environment_name}..."
   
   # Construct reviewers JSON for GitHub teams
-reviewers_json=()
-for team in ${github_teams}
-do
-  raw_jq=$(jq -cn --arg team_slug "$team" '{ "type": "Team", "slug": $team_slug }')
-  reviewers_json+=("${raw_jq}")
-done
-
-# Construct reviewers JSON for additional reviewers
-for reviewer in ${additional_reviewers}
-do
-  raw_jq=$(jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }')
-  reviewers_json+=("${raw_jq}")
-done
-
-# Convert the reviewers_json array to a valid JSON array
-reviewers_json_array="["
-for item in "${reviewers_json[@]}"
-do
-  reviewers_json_array+=" $item,"
-done
-# Remove trailing comma and close the array
-reviewers_json_array="${reviewers_json_array%,} ]"
-
-# Construct the payload with reviewers JSON and environment type
-if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]
-then
-  payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": ${reviewers_json_array}}"
-else
-  payload="{\"reviewers\": ${reviewers_json_array}}"
-fi
+  reviewers_json=()
+  for team in ${github_teams}
+  do
+    raw_jq=$(jq -cn --arg team_slug "$team" '{ "type": "Team", "slug": $team_slug }')
+    reviewers_json+=("${raw_jq}")
+  done
   
+  # Construct reviewers JSON for additional reviewers
+  for reviewer in ${additional_reviewers}
+  do
+    raw_jq=$(jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }')
+    reviewers_json+=("${raw_jq}")
+  done
+  
+  # Combine both GitHub teams and additional reviewers into a single array
+  combined_reviewers_json=$(IFS=,; echo "${reviewers_json[*]}")
+  
+  # Construct the payload with reviewers JSON as an array
+  payload="{\"reviewers\": [${combined_reviewers_json}]}"
+
+  # Check if it's a preproduction or production environment
+  if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]
+  then
+    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${combined_reviewers_json}]}"
+  else
+    payload="{\"reviewers\": [${combined_reviewers_json}]}"
+  fi
+
   # Update the environment on GitHub with reviewers
   response=$(echo "${payload}" | curl -L -s \
     -X PUT \
@@ -125,19 +122,19 @@ fi
   fi
 }
 
-create_reviewers_json() {
-  ids=$1
-  for id in ${ids}
-  do
-    # echo "Adding Team ID: $id"
-    raw_jq=`jq -cn --arg team_id "$id" '{ "type": "Team", "id": $team_id|tonumber }'`
-    reviewers_json="${raw_jq},${reviewers_json}"
-    # echo "Reviewers json in loop: ${reviewers_json}"
-  done
-  # remove trailing commas
-  reviewers_json=`echo ${reviewers_json} | sed 's/,*$//g'`
-  # echo "Reviewers json: ${reviewers_json}"
-}
+# create_reviewers_json() {
+#   ids=$1
+#   for id in ${ids}
+#   do
+#     # echo "Adding Team ID: $id"
+#     raw_jq=`jq -cn --arg team_id "$id" '{ "type": "Team", "id": $team_id|tonumber }'`
+#     reviewers_json="${raw_jq},${reviewers_json}"
+#     # echo "Reviewers json in loop: ${reviewers_json}"
+#   done
+#   # remove trailing commas
+#   reviewers_json=`echo ${reviewers_json} | sed 's/,*$//g'`
+#   # echo "Reviewers json: ${reviewers_json}"
+# }
 
 main() {
   #load existing github environments
@@ -183,7 +180,6 @@ main() {
           # echo "Team IDs for ${environment}: ${team_ids}"
           # Create reviewers json
           reviewers_json=""
-          create_reviewers_json "${team_ids}"
           create_environment ${environment} ${reviewers_json}
         fi
       else
@@ -192,6 +188,5 @@ main() {
     done
   done
 }
-
 
 main
