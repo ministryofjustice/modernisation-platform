@@ -78,7 +78,7 @@ create_environment() {
   if [ -n "${additional_reviewers}" ]; then
     IFS=',' read -ra user_logins <<< "${additional_reviewers}"
     for login in "${user_logins[@]}"; do
-      user_reviewers+=("{\"type\": \"User\", \"id\": null, \"login\": \"$login\"}")
+      user_reviewers+=("{\"type\": \"User\", \"login\": \"$login\"}")
     done
   fi
 
