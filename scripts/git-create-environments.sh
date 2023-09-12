@@ -62,9 +62,9 @@ check_if_change_to_application_json() {
 }
 
 create_environment() {
-  environment_name=$1
-  github_teams=$2
-  additional_reviewers=$3  # Include the additional_reviewers as an argument
+  environment_name="$1"
+  github_teams="$2"
+  additional_reviewers="$3"  # Include the additional_reviewers as an argument
   echo "Creating environment ${environment_name}..."
 
   # Construct the payload
@@ -88,35 +88,6 @@ create_environment() {
   -H "X-GitHub-Api-Version: 2022-11-28" \
   https://api.github.com/repos/${repository}/environments/${environment_name}\
   -d @- > /dev/null 2>&1
-}
-
-create_reviewers_json() {
-  team_ids=$1
-  additional_reviewers=$2
-
-  reviewers_json="["
-
-  # Add GitHub teams to the reviewers JSON
-  for id in ${team_ids}
-  do
-    raw_jq=`jq -cn --arg team_id "$id" '{ "type": "Team", "id": ($team_id|tonumber) }'`
-    reviewers_json="${reviewers_json}${raw_jq},"
-  done
-
-  # Add the additional reviewers if provided
-  if [ ! -z "$additional_reviewers" ]; then
-    IFS=',' read -ra reviewer_array <<< "$additional_reviewers"
-    for reviewer in "${reviewer_array[@]}"
-    do
-      raw_jq=`jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }'`
-      reviewers_json="${reviewers_json}${raw_jq},"
-    done
-  fi
-
-  # Remove the trailing comma and close the JSON array
-  reviewers_json="${reviewers_json%,}]"
-
-  echo "Reviewers json: ${reviewers_json}"
 }
 
 main() {
