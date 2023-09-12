@@ -70,27 +70,36 @@ create_environment() {
   echo "Creating environment ${environment_name}..."
   
   # Construct reviewers JSON for GitHub teams
-  reviewers_json=()
-  for team in ${github_teams}
-  do
-    raw_jq=$(jq -cn --arg team_slug "$team" '{ "type": "Team", "slug": $team_slug }')
-    reviewers_json+=("${raw_jq}")
-  done
-  
-  # Construct reviewers JSON for additional reviewers
-  for reviewer in ${additional_reviewers}
-  do
-    raw_jq=$(jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }')
-    reviewers_json+=("${raw_jq}")
-  done
-  
-  # Construct the payload with reviewers JSON and environment type
-  if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]
-  then
-    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": ${reviewers_json}}"
-  else
-    payload="{\"reviewers\": ${reviewers_json}}"
-  fi
+reviewers_json=()
+for team in ${github_teams}
+do
+  raw_jq=$(jq -cn --arg team_slug "$team" '{ "type": "Team", "slug": $team_slug }')
+  reviewers_json+=("${raw_jq}")
+done
+
+# Construct reviewers JSON for additional reviewers
+for reviewer in ${additional_reviewers}
+do
+  raw_jq=$(jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }')
+  reviewers_json+=("${raw_jq}")
+done
+
+# Convert the reviewers_json array to a valid JSON array
+reviewers_json_array="["
+for item in "${reviewers_json[@]}"
+do
+  reviewers_json_array+=" $item,"
+done
+# Remove trailing comma and close the array
+reviewers_json_array="${reviewers_json_array%,} ]"
+
+# Construct the payload with reviewers JSON and environment type
+if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]
+then
+  payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": ${reviewers_json_array}}"
+else
+  payload="{\"reviewers\": ${reviewers_json_array}}"
+fi
   
   # Update the environment on GitHub with reviewers
   response=$(echo "${payload}" | curl -L -s \
