@@ -64,23 +64,56 @@ check_if_change_to_application_json() {
 create_environment() {
   environment_name=$1
   github_teams=$2
+  additional_reviewers=$3  # Pass the additional reviewers as the third argument
+  env=$4  # Pass the environment type as the fourth argument
+
   echo "Creating environment ${environment_name}..."
-  # echo "Teams for payload: ${github_teams}"
+  
+  # Construct reviewers JSON for GitHub teams
+  reviewers_json=()
+  for team in ${github_teams}
+  do
+    raw_jq=$(jq -cn --arg team_slug "$team" '{ "type": "Team", "slug": $team_slug }')
+    reviewers_json+=("${raw_jq}")
+  done
+  
+  # Construct reviewers JSON for additional reviewers
+  for reviewer in ${additional_reviewers}
+  do
+    raw_jq=$(jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }')
+    reviewers_json+=("${raw_jq}")
+  done
+  
+  # Construct the payload with reviewers JSON and environment type
   if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]
   then
-    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${github_teams}]}"
+    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": ${reviewers_json}}"
   else
-    payload="{\"reviewers\": [${github_teams}]}"
+    payload="{\"reviewers\": ${reviewers_json}}"
   fi
-  echo "Payload: $payload"
-  echo "Repository: ${repository}"
-  echo "${payload}" | curl -L -s \
-  -X PUT \
-  -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer ${secret}" \
-  -H "X-GitHub-Api-Version: 2022-11-28" \
-  https://api.github.com/repos/${repository}/environments/${environment_name}\
-  -d @- > /dev/null 2>&1
+  
+  # Update the environment on GitHub with reviewers
+  response=$(echo "${payload}" | curl -L -s \
+    -X PUT \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: Bearer ${secret}" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    "https://api.github.com/repos/${repository}/environments/${environment_name}" \
+    -d @-)
+    
+  echo "API Response: $response"  # Print the API response
+
+  # Check if the curl request was successful
+  if [ $? -ne 0 ]; then
+    echo "Error: Failed to create/update environment."
+    exit 1
+  fi
+
+  # Check if the API response indicates an error
+  if echo "$response" | jq -e '.message' > /dev/null; then
+    echo "GitHub API Error: $(echo "$response" | jq -r '.message')"
+    exit 1
+  fi
 }
 
 create_reviewers_json() {
@@ -95,51 +128,6 @@ create_reviewers_json() {
   # remove trailing commas
   reviewers_json=`echo ${reviewers_json} | sed 's/,*$//g'`
   # echo "Reviewers json: ${reviewers_json}"
-}
-
-add_additional_reviewers() {
-  environment_name=$1
-  additional_reviewers=$2
-  echo "Adding additional reviewers to ${environment_name}..."
-  
-  # Construct reviewers JSON for additional reviewers
-  additional_reviewers_json=()
-  for reviewer in ${additional_reviewers}
-  do
-    raw_jq=$(jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }')
-    additional_reviewers_json+=("${raw_jq}")
-    echo "Additional reviewers JSON: ${additional_reviewers_json}"
-  done
-  
-  # Conditionally set the payload based on the environment type
-  if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]
-  then
-    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": ${additional_reviewers_json}}"
-  else
-    payload="{\"reviewers\": ${additional_reviewers_json}}"
-  fi
-  
-  # Update the environment on GitHub with additional reviewers
-  response=$(echo "${payload}" | curl -L -s \
-    -X PATCH \
-    -H "Accept: application/vnd.github+json" \
-    -H "Authorization: Bearer ${secret}" \
-    -H "X-GitHub-Api-Version: 2022-11-28" \
-    "https://api.github.com/repos/${repository}/environments/${environment_name}" \
-    -d @-)
-  echo "API Response: $response"  # Print the API response
-
-  # Check if the curl request was successful
-  if [ $? -ne 0 ]; then
-    echo "Error: Failed to update environment with additional reviewers."
-    exit 1
-  fi
-
-  # Check if the API response indicates an error
-  if echo "$response" | jq -e '.message' > /dev/null; then
-    echo "GitHub API Error: $(echo "$response" | jq -r '.message')"
-    exit 1
-  fi
 }
 
 main() {
@@ -188,17 +176,6 @@ main() {
           reviewers_json=""
           create_reviewers_json "${team_ids}"
           create_environment ${environment} ${reviewers_json}
-          
-          # Use jq to conditionally extract additional reviewers
-          additional_reviewers=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e and has("additional_reviewers")) | .additional_reviewers[]' $json_file)
-          
-          if [ -n "$additional_reviewers" ]
-          then
-            echo "Additional reviewers for ${environment}: $additional_reviewers"
-            add_additional_reviewers "${environment}" "${additional_reviewers}"
-          else
-            echo "No additional reviewers specified for ${environment}."
-          fi
         fi
       else
         echo "${environment} is a core environment, skipping..."
@@ -206,5 +183,6 @@ main() {
     done
   done
 }
+
 
 main
