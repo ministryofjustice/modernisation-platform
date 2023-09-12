@@ -70,15 +70,15 @@ create_environment() {
   # Modify the payload based on the presence of an additional reviewer
   if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]; then
     if [ -n "${additional_reviewers}" ]; then
-      payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": ${github_teams},${additional_reviewers}]}"
+      payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${github_teams},${additional_reviewers}]}"
     else
-      payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": ${github_teams}]}"
+      payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${github_teams}]}"
     fi
   else
     if [ -n "${additional_reviewers}" ]; then
-      payload="{\"reviewers\": ${github_teams},${additional_reviewers}]}"
+      payload="{\"reviewers\": [${github_teams},${additional_reviewers}]}"
     else
-      payload="{\"reviewers\": ${github_teams}]}"
+      payload="{\"reviewers\": [${github_teams}]}"
     fi
   fi
   
