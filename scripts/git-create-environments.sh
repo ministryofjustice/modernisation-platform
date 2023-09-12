@@ -111,15 +111,22 @@ add_additional_reviewers() {
     echo "Additional reviewers JSON: ${additional_reviewers_json}"
   done
   
+  # Conditionally set the payload based on the environment type
+  if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]
+  then
+    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": ${additional_reviewers_json}}"
+  else
+    payload="{\"reviewers\": ${additional_reviewers_json}}"
+  fi
+  
   # Update the environment on GitHub with additional reviewers
-  response=$(echo "{\"reviewers\": ${additional_reviewers_json}}" | curl -L -s \
+  response=$(echo "${payload}" | curl -L -s \
     -X PATCH \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer ${secret}" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
     "https://api.github.com/repos/${repository}/environments/${environment_name}" \
     -d @-)
-
   echo "API Response: $response"  # Print the API response
 
   # Check if the curl request was successful
