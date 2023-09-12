@@ -160,7 +160,7 @@ main() {
           reviewers_json=""
           create_reviewers_json "${team_ids}"
           # Extract the optional additional reviewer from the JSON configuration
-          additional_reviewers=$(jq -r '."additional_reviewers"' ${json_file})
+          additional_reviewers=$(jq -r --arg env "${env}" '.environments[] | select(.name == $env) | .additional_reviewers' "${json_file}")
           create_environment ${environment} ${reviewers_json} "${additional_reviewers}"
         fi
       else
