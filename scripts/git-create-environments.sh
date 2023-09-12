@@ -162,11 +162,10 @@ main() {
           done
           
           # Get additional reviewer from JSON file if available
-          additional_reviewers=$(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers' "${json_file}")
-
+          additional_reviewers=($(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers[]' "${json_file}"))
           # Create reviewers JSON with teams and the additional reviewer
           reviewers_json=""
-          create_reviewers_json "${team_ids}" "${additional_reviewers}"
+          create_reviewers_json "${team_ids[@]}" "${additional_reviewers[@]}"
           create_environment ${environment} ${reviewers_json}
         fi
       else
