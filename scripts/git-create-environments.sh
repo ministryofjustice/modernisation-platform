@@ -99,21 +99,21 @@ create_reviewers_json() {
   # Add GitHub teams to the reviewers JSON
   for id in ${team_ids}
   do
-    raw_jq=`jq -cn --arg team_id "$id" '{ "type": "Team", "id": $team_id|tonumber }'`
-    reviewers_json="${raw_jq},${reviewers_json}"
+    raw_jq=`jq -cn --arg team_id "$id" '{ "type": "Team", "id": ($team_id|tonumber) }'`
+    reviewers_json="${reviewers_json}${raw_jq},"
   done
 
   # Add the additional reviewers if provided
   if [ ! -z "$additional_reviewers" ]; then
-    additional_reviewers_array=($additional_reviewers) # Convert additional_reviewers to an array
-    for reviewer in "${additional_reviewers_array[@]}"
+    IFS=',' read -ra reviewer_array <<< "$additional_reviewers"
+    for reviewer in "${reviewer_array[@]}"
     do
-      additional_raw_jq=`jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }'`
-      reviewers_json="${additional_raw_jq},${reviewers_json}"
+      raw_jq=`jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }'`
+      reviewers_json="${reviewers_json}${raw_jq},"
     done
   fi
 
-  # Remove trailing comma and close the JSON array
+  # Remove the trailing comma and close the JSON array
   reviewers_json="${reviewers_json%,}]"
 
   echo "Reviewers json: ${reviewers_json}"
