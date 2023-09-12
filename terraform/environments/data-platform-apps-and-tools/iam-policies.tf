@@ -3,7 +3,7 @@ data "aws_iam_policy_document" "airflow_ses_policy" {
     sid       = "AllowSESSendRawEmail"
     effect    = "Allow"
     actions   = ["ses:SendRawEmail"]
-    resources = ["arn:aws:ses:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:identity/${local.ses_domain_identity}"]
+    resources = ["arn:aws:ses:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:identity/${local.environment_configuration.ses_domain_identity}"]
     condition {
       test     = "StringEquals"
       variable = "ses:FromAddress"
