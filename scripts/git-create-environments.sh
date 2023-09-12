@@ -90,6 +90,35 @@ create_environment() {
   -d @- > /dev/null 2>&1
 }
 
+create_reviewers_json() {
+  team_ids=$1
+  additional_reviewers=$2
+
+  reviewers_json="["
+
+  # Add GitHub teams to the reviewers JSON
+  for id in ${team_ids}
+  do
+    raw_jq=$(jq -nc --arg team_id "$id" '{ "type": "Team", "id": ($team_id|tonumber) }')
+    reviewers_json="${reviewers_json}${raw_jq},"
+  done
+
+  # Add the additional reviewers if provided
+  if [ ! -z "$additional_reviewers" ]; then
+    IFS=',' read -ra reviewer_array <<< "$additional_reviewers"
+    for reviewer in "${reviewer_array[@]}"
+    do
+      raw_jq=$(jq -nc --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }')
+      reviewers_json="${reviewers_json}${raw_jq},"
+    done
+  fi
+
+  # Remove the trailing comma and close the JSON array
+  reviewers_json="${reviewers_json%,}]"
+
+  echo "Reviewers json: ${reviewers_json}"
+}
+
 main() {
   # Load existing GitHub environments
   get_existing_environments
