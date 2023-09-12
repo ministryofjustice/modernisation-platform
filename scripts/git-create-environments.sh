@@ -81,7 +81,7 @@ create_environment() {
   echo "Repository: ${repository}"
 
   # Use the payload with github_teams and additional_reviewers
-  echo "${payload}" | curl -L -s \
+  echo "${payload}" | curl -L -s -i \
   -X PUT \
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: Bearer ${secret}" \
@@ -103,10 +103,14 @@ create_reviewers_json() {
     reviewers_json="${raw_jq},${reviewers_json}"
   done
 
-  # Add the additional reviewer if provided
+  # Add the additional reviewers if provided
   if [ ! -z "$additional_reviewers" ]; then
-    additional_raw_jq=`jq -cn --arg reviewer "$additional_reviewers" '{ "type": "User", "login": $reviewer }'`
-    reviewers_json="${additional_raw_jq},${reviewers_json}"
+    additional_reviewers_array=($additional_reviewers) # Convert additional_reviewers to an array
+    for reviewer in "${additional_reviewers_array[@]}"
+    do
+      additional_raw_jq=`jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }'`
+      reviewers_json="${additional_raw_jq},${reviewers_json}"
+    done
   fi
 
   # Remove trailing comma and close the JSON array
