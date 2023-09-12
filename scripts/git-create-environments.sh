@@ -66,31 +66,42 @@ create_environment() {
   github_teams=$2
   additional_reviewers=$3  # New parameter for the optional reviewer
   echo "Creating environment ${environment_name}..."
-  
-  # Modify the payload based on the presence of an additional reviewer
+
+  # Create an array for team reviewers
+  team_reviewers=()
+  for team in ${github_teams}; do
+    team_reviewers+=("{\"type\": \"Team\", \"id\": ${team}}")
+  done
+
+  # Create an array for user reviewers if additional reviewers exist
+  user_reviewers=()
+  if [ -n "${additional_reviewers}" ]; then
+    IFS=',' read -ra user_logins <<< "${additional_reviewers}"
+    for login in "${user_logins[@]}"; do
+      user_reviewers+=("{\"type\": \"User\", \"id\": null, \"login\": \"$login\"}")
+    done
+  fi
+
+  # Define deployment branch policy based on environment type
   if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]; then
     if [ -n "${additional_reviewers}" ]; then
-      payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${github_teams},${additional_reviewers}]}"
+      payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${team_reviewers[*]}, ${user_reviewers[*]}]}"
     else
-      payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${github_teams}]}"
+      payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${team_reviewers[*]}]}"
     fi
   else
-    if [ -n "${additional_reviewers}" ]; then
-      payload="{\"reviewers\": [${github_teams},${additional_reviewers}]}"
-    else
-      payload="{\"reviewers\": [${github_teams}]}"
-    fi
+    payload="{\"reviewers\": [${team_reviewers[*]}, ${user_reviewers[*]}]}"
   fi
-  
+
   echo "Payload: $payload"
   echo "Repository: ${repository}"
   echo "${payload}" | curl -L -s \
-  -X PUT \
-  -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer ${secret}" \
-  -H "X-GitHub-Api-Version: 2022-11-28" \
-  https://api.github.com/repos/${repository}/environments/${environment_name}\
-  -d @- > /dev/null 2>&1
+    -X PUT \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: Bearer ${secret}" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    "https://api.github.com/repos/${repository}/environments/${environment_name}" \
+    -d @- > /dev/null 2>&1
 }
 
 create_reviewers_json() {
