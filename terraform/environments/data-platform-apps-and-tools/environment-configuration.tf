@@ -19,7 +19,7 @@ locals {
       }
       airflow_weekly_maintenance_window_start = "SAT:00:00"
       target_eks_cluster_arn                  = "arn:aws:eks:eu-west-1:525294151996:cluster/development-aWrhyc0m"
-      vpc_cidr                                = "10.26.128.0/22"
+      vpc_cidr                                = "10.26.128.0/21"
       vpc_private_subnets                     = ["10.26.130.0/23", "10.26.132.0/23", "10.26.134.0/23"]
       vpc_public_subnets                      = ["10.26.128.0/27", "10.26.128.32/27", "10.26.128.64/27"]
       vpc_database_subnets                    = ["10.26.128.96/27", "10.26.128.128/27", "10.26.128.160/27"]
@@ -40,7 +40,7 @@ locals {
       }
       airflow_weekly_maintenance_window_start = "SAT:00:00"
       target_eks_cluster_arn                  = "arn:aws:eks:eu-west-1:525294151996:cluster/development-aWrhyc0m"
-      vpc_cidr                                = "10.27.128.0/22"
+      vpc_cidr                                = "10.27.128.0/21"
       vpc_private_subnets                     = ["10.27.130.0/23", "10.27.132.0/23", "10.27.134.0/23"]
       vpc_public_subnets                      = ["10.27.128.0/27", "10.27.128.32/27", "10.27.128.64/27"]
       vpc_database_subnets                    = ["10.27.128.96/27", "10.27.128.128/27", "10.27.128.160/27"]
