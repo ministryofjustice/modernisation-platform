@@ -96,8 +96,9 @@ create_environment() {
 create_reviewers_json() {
   team_slugs=("$@")
   reviewers=()
+
   for slug in "${team_slugs[@]}"; do
-    reviewers+=("{\"type\": \"Team\", \"slug\": \"$slug\"}")
+    reviewers+=("{\"type\": \"Team\", \"id\": ${slug}}")
   done
 
   if [ -n "${additional_reviewers}" ]; then
@@ -107,7 +108,7 @@ create_reviewers_json() {
     done
   fi
 
-  reviewers_json=$(IFS=','; echo "[${reviewers[*]}]")
+  reviewers_json="[${IFS}]"
   echo "Reviewers json: ${reviewers_json}"
 }
 
