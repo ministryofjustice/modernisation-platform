@@ -108,6 +108,7 @@ add_additional_reviewers() {
   do
     raw_jq=$(jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }')
     additional_reviewers_json+=("${raw_jq}")
+    echo "Additional reviewers JSON: ${additional_reviewers_json}"
   done
   
   # Update the environment on GitHub with additional reviewers
