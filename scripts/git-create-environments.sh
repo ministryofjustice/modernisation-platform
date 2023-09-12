@@ -64,77 +64,55 @@ check_if_change_to_application_json() {
 create_environment() {
   environment_name=$1
   github_teams=$2
-  additional_reviewers=$3  # Pass the additional reviewers as the third argument
-  env=$4  # Pass the environment type as the fourth argument
-
+  additional_reviewers=$3  # New parameter for the optional reviewer
   echo "Creating environment ${environment_name}..."
   
-  # Construct reviewers JSON for GitHub teams
-  reviewers_json=()
-  for team in ${github_teams}
-  do
-    raw_jq=$(jq -cn --arg team_slug "$team" '{ "type": "Team", "slug": $team_slug }')
-    reviewers_json+=("${raw_jq}")
-  done
-  
-  # Construct reviewers JSON for additional reviewers
-  for reviewer in ${additional_reviewers}
-  do
-    raw_jq=$(jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }')
-    reviewers_json+=("${raw_jq}")
-  done
-  
-  # Combine both GitHub teams and additional reviewers into a single array
-  combined_reviewers_json=$(IFS=,; echo "${reviewers_json[*]}")
-  
-  # Construct the payload with reviewers JSON as an array
-  payload="{\"reviewers\": [${combined_reviewers_json}]}"
-
-  # Check if it's a preproduction or production environment
-  if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]
-  then
-    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${combined_reviewers_json}]}"
+  # Modify the payload based on the presence of an additional reviewer
+  if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]; then
+    if [ -n "${additional_reviewers}" ]; then
+      payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${github_teams},${additional_reviewers}]}"
+    else
+      payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${github_teams}]}"
+    fi
   else
-    payload="{\"reviewers\": [${combined_reviewers_json}]}"
+    if [ -n "${additional_reviewers}" ]; then
+      payload="{\"reviewers\": [${github_teams},${additional_reviewers}]}"
+    else
+      payload="{\"reviewers\": [${github_teams}]}"
+    fi
   fi
-
-  # Update the environment on GitHub with reviewers
-  response=$(echo "${payload}" | curl -L -s \
-    -X PUT \
-    -H "Accept: application/vnd.github+json" \
-    -H "Authorization: Bearer ${secret}" \
-    -H "X-GitHub-Api-Version: 2022-11-28" \
-    "https://api.github.com/repos/${repository}/environments/${environment_name}" \
-    -d @-)
-    
-  echo "API Response: $response"  # Print the API response
-
-  # Check if the curl request was successful
-  if [ $? -ne 0 ]; then
-    echo "Error: Failed to create/update environment."
-    exit 1
-  fi
-
-  # Check if the API response indicates an error
-  if echo "$response" | jq -e '.message' > /dev/null; then
-    echo "GitHub API Error: $(echo "$response" | jq -r '.message')"
-    exit 1
-  fi
+  
+  echo "Payload: $payload"
+  echo "Repository: ${repository}"
+  echo "${payload}" | curl -L -s \
+  -X PUT \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer ${secret}" \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
+  https://api.github.com/repos/${repository}/environments/${environment_name}\
+  -d @- > /dev/null 2>&1
 }
 
-# create_reviewers_json() {
-#   ids=$1
-#   for id in ${ids}
-#   do
-#     # echo "Adding Team ID: $id"
-#     raw_jq=`jq -cn --arg team_id "$id" '{ "type": "Team", "id": $team_id|tonumber }'`
-#     reviewers_json="${raw_jq},${reviewers_json}"
-#     # echo "Reviewers json in loop: ${reviewers_json}"
-#   done
-#   # remove trailing commas
-#   reviewers_json=`echo ${reviewers_json} | sed 's/,*$//g'`
-#   # echo "Reviewers json: ${reviewers_json}"
-# }
+create_reviewers_json() {
+  ids=$1
+  additional_reviewers=$2  # New parameter for the optional reviewer
+  for id in ${ids}
+  do
+    # echo "Adding Team ID: $id"
+    raw_jq=`jq -cn --arg team_id "$id" '{ "type": "Team", "id": $team_id|tonumber }'`
+    reviewers_json="${raw_jq},${reviewers_json}"
+    # echo "Reviewers json in loop: ${reviewers_json}"
+  done
+
+  # Add the optional reviewer to the reviewers JSON if it exists
+  if [ -n "${additional_reviewers}" ]; then
+    raw_jq_additional_reviewers=`jq -cn --arg reviewer_slug "$additional_reviewers" '{ "type": "User", "login": $reviewer_slug }'`
+    reviewers_json="${reviewers_json},${raw_jq_additional_reviewers}"
+  fi
+  # remove trailing commas
+  reviewers_json=`echo ${reviewers_json} | sed 's/,*$//g'`
+  echo "Reviewers json: ${reviewers_json}"
+}
 
 main() {
   #load existing github environments
@@ -180,7 +158,10 @@ main() {
           # echo "Team IDs for ${environment}: ${team_ids}"
           # Create reviewers json
           reviewers_json=""
-          create_environment ${environment} ${reviewers_json}
+          create_reviewers_json "${team_ids}"
+          # Extract the optional additional reviewer from the JSON configuration
+          additional_reviewers=$(jq -r '."additional_reviewers"' ${json_file})
+          create_environment ${environment} ${reviewers_json} "${additional_reviewers}"
         fi
       else
         echo "${environment} is a core environment, skipping..."
