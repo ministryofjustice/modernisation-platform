@@ -64,23 +64,23 @@ check_if_change_to_application_json() {
 create_environment() {
   environment_name=$1
   github_teams=$2
-  additional_reviewer=$3  # Include the additional_reviewer as an argument
+  additional_reviewers=$3  # Include the additional_reviewers as an argument
   echo "Creating environment ${environment_name}..."
 
   # Construct the payload
   if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]
   then
-    # Include both github_teams and additional_reviewer in the payload
-    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${github_teams}, ${additional_reviewer}]}"
+    # Include both github_teams and additional_reviewers in the payload
+    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${github_teams}, ${additional_reviewers}]}"
   else
-    # Include both github_teams and additional_reviewer in the payload
-    payload="{\"reviewers\": [${github_teams}, ${additional_reviewer}]}"
+    # Include both github_teams and additional_reviewers in the payload
+    payload="{\"reviewers\": [${github_teams}, ${additional_reviewers}]}"
   fi
 
   echo "Payload: $payload"
   echo "Repository: ${repository}"
 
-  # Use the payload with github_teams and additional_reviewer
+  # Use the payload with github_teams and additional_reviewers
   echo "${payload}" | curl -L -s \
   -X PUT \
   -H "Accept: application/vnd.github+json" \
@@ -92,7 +92,7 @@ create_environment() {
 
 create_reviewers_json() {
   team_ids=$1
-  additional_reviewer=$2
+  additional_reviewers=$2
 
   reviewers_json="["
 
@@ -104,8 +104,8 @@ create_reviewers_json() {
   done
 
   # Add the additional reviewer if provided
-  if [ ! -z "$additional_reviewer" ]; then
-    additional_raw_jq=`jq -cn --arg reviewer "$additional_reviewer" '{ "type": "User", "login": $reviewer }'`
+  if [ ! -z "$additional_reviewers" ]; then
+    additional_raw_jq=`jq -cn --arg reviewer "$additional_reviewers" '{ "type": "User", "login": $reviewer }'`
     reviewers_json="${additional_raw_jq},${reviewers_json}"
   fi
 
@@ -158,11 +158,11 @@ main() {
           done
           
           # Get additional reviewer from JSON file if available
-          additional_reviewer=$(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewer' "${json_file}")
+          additional_reviewers=$(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers' "${json_file}")
 
           # Create reviewers JSON with teams and the additional reviewer
           reviewers_json=""
-          create_reviewers_json "${team_ids}" "${additional_reviewer}"
+          create_reviewers_json "${team_ids}" "${additional_reviewers}"
           create_environment ${environment} ${reviewers_json}
         fi
       else
