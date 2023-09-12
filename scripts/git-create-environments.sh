@@ -108,7 +108,7 @@ create_reviewers_json() {
     done
   fi
 
-  reviewers_json="[${IFS}]"
+  reviewers_json=$(IFS=','; echo "[${reviewers[*]}]")
   echo "Reviewers json: ${reviewers_json}"
 }
 
