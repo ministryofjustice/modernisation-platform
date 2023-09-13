@@ -71,6 +71,11 @@ create_environment() {
     reviewers_json="${reviewers_json}${raw_jq},"
   done
 
+  # Add additional reviewers to reviewers_json if available
+  for reviewer in "${additional_reviewers[@]}"; do
+    raw_jq=$(jq -nc --arg reviewer_login "$reviewer" '{ "type": "User", "login": $reviewer_login }')
+    reviewers_json="${reviewers_json}${raw_jq},"
+  done
   # Remove the trailing comma and close the JSON array
   reviewers_json="${reviewers_json%,}]"
 
@@ -143,8 +148,7 @@ main() {
           # Get additional reviewer from JSON file if available
           additional_reviewers=($(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers // []' "${json_file}"))
           # Create reviewers JSON with teams and the additional reviewer
-          reviewers_json=()
-          create_environment "${environment}" "${reviewers_json[@]}"
+          create_environment "${environment}" "${team_ids[@]}" "${additional_reviewers[@]}"
         fi
       else
         echo "${environment} is a core environment, skipping..."
