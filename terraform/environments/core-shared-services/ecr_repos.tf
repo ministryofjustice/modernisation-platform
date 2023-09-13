@@ -263,6 +263,7 @@ module "data_platform_authorizer_ecr_repo" {
     local.environment_management.account_ids["data-platform-test"],
     local.environment_management.account_ids["data-platform-preproduction"],
     local.environment_management.account_ids["data-platform-production"],
+    local.environment_management.account_ids["analytical-platform-data-engineering-sandbox-a"],
   ]
 
   enable_retrieval_policy_for_lambdas = [
@@ -270,6 +271,7 @@ module "data_platform_authorizer_ecr_repo" {
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-test"]}:function:data_product_authorizer*",
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-preproduction"]}:function:data_product_authorizer*",
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-production"]}:function:data_product_authorizer*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-data-engineering-sandbox-a"]}:function:data_product_authorizer*",
   ]
 
   # Tags
