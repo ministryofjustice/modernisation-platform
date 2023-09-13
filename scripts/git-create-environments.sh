@@ -88,7 +88,7 @@ create_environment() {
 
   # Update the environment on GitHub with additional reviewers
   response=$(echo "${payload}" | curl -L -s \
-    -X PATCH \
+    -X PUT \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer ${secret}" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
