@@ -148,7 +148,7 @@ main() {
           # Get additional reviewer from JSON file if available
           additional_reviewers=($(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers // []' "${json_file}"))
           # Create reviewers JSON with teams and the additional reviewer
-          create_environment "${environment}" "${team_ids[@]}" "${additional_reviewers[@]}"
+          create_environment "${environment}" ${team_ids[@]} ${additional_reviewers[@]}
         fi
       else
         echo "${environment} is a core environment, skipping..."
