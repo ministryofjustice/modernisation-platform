@@ -107,14 +107,14 @@ create_reviewers_json() {
   for id in "${team_ids[@]}"
   do
     raw_jq=$(jq -cn --arg team_id "$id" '{ "type": "Team", "id": $team_id|tonumber }')
-    reviewers_json="${raw_jq},${reviewers_json}"
+    reviewers_json="${raw_jq},${reviewers_json},"
   done
   
   # Add user reviewers to reviewers JSON (if any)
   for user_id in "${user_ids[@]}"
   do
     raw_jq=$(jq -cn --arg user_id "$user_id" '{ "type": "User", "id": $user_id|tonumber }')
-    reviewers_json="${raw_jq},${reviewers_json}"
+    reviewers_json="${raw_jq},${reviewers_json},"
   done
 
   # Remove trailing commas
