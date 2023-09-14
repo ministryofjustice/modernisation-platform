@@ -46,13 +46,11 @@ get_github_team_id() {
 
 get_github_user_id() {
   username=$1
-  echo "Getting GitHub user ID for username: ${username}"
   response=$(curl -s \
     -H "Accept: application/vnd.github.v3+json" \
     -H "Authorization: token ${secret}" \
     "https://api.github.com/users/${username}")
   user_id=$(echo ${response} | jq -r '.id')
-  echo "GitHub user ID for ${username}: ${user_id}"
   echo "${user_id}"
 }
 
