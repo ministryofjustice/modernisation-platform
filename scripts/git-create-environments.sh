@@ -30,7 +30,7 @@ get_existing_environments() {
     fi
   done
 
-  echo "Existing github environments: $github_environments"
+  echo "Existing GitHub environments: $github_environments"
 }
 
 get_github_team_id() {
@@ -167,21 +167,24 @@ main() {
             get_github_team_id ${team}
           done
 
-          # Extract the optional additional reviewer from the JSON as a string
-          user_id=$(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers[0]' "${json_file}")
-          echo "User_id: $user_id"
+        # Extract the optional additional reviewers from the JSON as strings
+          additional_reviewers=($(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers[]' "${json_file}"))
+          echo "Additional Reviewers: ${additional_reviewers[*]}"
           
-          # Check if user_id is not empty
-          if [ -n "${user_id}" ]; then
-            # Add user_id to the user_ids array
-            user_ids=("$user_id")
-            echo "User_ids: ${user_ids[*]}"
-          fi
-
+          # Fetch GitHub user IDs for additional reviewers
+          user_ids=()
+          for reviewer in "${additional_reviewers[@]}"
+          do
+            user_id=$(get_github_user_id "${reviewer}")
+            if [ -n "${user_id}" ]; then
+              user_ids+=("${user_id}")
+            fi
+          done
+          
           # Create reviewers json
           reviewers_json=""
           create_reviewers_json "${team_ids[@]}" "${user_ids[@]}"  # Pass team_ids and user_ids as arrays
-          create_environment ${environment} ${reviewers_json}
+          create_environment ${environment} "${reviewers_json}"
         fi
       else
         echo "${environment} is a core environment, skipping..."
