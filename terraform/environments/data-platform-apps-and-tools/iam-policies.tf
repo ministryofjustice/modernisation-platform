@@ -23,7 +23,6 @@ module "airflow_ses_policy" {
   tags = local.tags
 }
 
-/* Removing while we rebuild VPC
 data "aws_iam_policy_document" "airflow_execution_policy" {
   # checkov:skip=CKV_AWS_356:Policy in line with AWS documented recommendation
   statement {
@@ -125,4 +124,3 @@ module "airflow_execution_policy" {
 
   tags = local.tags
 }
-*/

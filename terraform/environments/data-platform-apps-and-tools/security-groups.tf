@@ -14,7 +14,6 @@ module "smtp_vpc_endpoint_security_group" {
   tags = local.tags
 }
 
-/* Removing while we rebuild VPC
 #Open outbound rule in line with AWS documented recommendation
 #tfsec:ignore:aws-ec2-no-public-egress-sgr
 module "mwaa_security_group" {
@@ -36,4 +35,3 @@ module "mwaa_security_group" {
 
   tags = local.tags
 }
-*/

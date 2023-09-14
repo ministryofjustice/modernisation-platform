@@ -1,4 +1,3 @@
-/* Removing while we rebuild VPC
 resource "aws_mwaa_environment" "main" {
   # checkov:skip=CKV_AWS_242:Suppressing message until decision on logging made
   # checkov:skip=CKV_AWS_243:Suppressing message until decision on logging made
@@ -66,4 +65,3 @@ resource "aws_mwaa_environment" "main" {
 
   tags = local.tags
 }
-*/

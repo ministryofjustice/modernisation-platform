@@ -1,4 +1,3 @@
-/* Removing while we rebuild VPC
 module "airflow_iam_user" {
   # checkov:skip=CKV_TF_1:
   source  = "terraform-aws-modules/iam/aws//modules/iam-user"
@@ -9,4 +8,3 @@ module "airflow_iam_user" {
 
   tags = local.tags
 }
-*/
