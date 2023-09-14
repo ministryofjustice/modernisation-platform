@@ -51,6 +51,8 @@ get_github_user_id() {
     -H "Authorization: token ${secret}" \
     "https://api.github.com/users/${username}")
   user_id=$(echo ${response} | jq -r '.id')
+  # Remove double quotes if present
+  user_id="${user_id//\"/}"
   echo "${user_id}"
 }
 
