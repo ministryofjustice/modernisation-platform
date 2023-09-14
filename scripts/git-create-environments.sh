@@ -164,21 +164,27 @@ main() {
           done
 
           # Extract the optional additional reviewers from the JSON as strings
-          additional_reviewers=($(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers[] // empty' "${json_file}"))
-          echo "Additional Reviewers: ${additional_reviewers[*]}"
+          additional_reviewers=($(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers // []' "${json_file}"))
 
-          # Fetch GitHub user IDs for additional reviewers
-          user_ids=()
-          for reviewer in "${additional_reviewers[@]}"
-          do
-            if [ -n "${reviewer}" ]; then
-              user_id=$(get_github_user_id "${reviewer}")
-              if [ -n "${user_id}" ]; then
-                user_ids+=("${user_id}")
+          # Check if additional_reviewers is not empty before processing
+          if [ ${#additional_reviewers[@]} -gt 0 ]; then
+            echo "Additional Reviewers: ${additional_reviewers[*]}"
+
+            # Fetch GitHub user IDs for additional reviewers
+            user_ids=()
+            for reviewer in "${additional_reviewers[@]}"
+            do
+              if [ -n "${reviewer}" ]; then
+                user_id=$(get_github_user_id "${reviewer}")
+                if [ -n "${user_id}" ]; then
+                  user_ids+=("${user_id}")
+                fi
               fi
-            fi
-          done
-          
+            done
+          else
+            echo "No additional reviewers found for ${env}."
+          fi
+
           # Create reviewers json
           reviewers_json=""
           create_reviewers_json "${team_ids[@]}" "${user_ids[@]}"  # Pass team_ids and user_ids as arrays
