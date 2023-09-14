@@ -101,26 +101,24 @@ create_environment() {
 }
 
 create_reviewers_json() {
-  team_ids=("$@")  # Pass team_ids as an array
-  user_ids=("${user_ids[@]}")  # Pass user_ids as an array
   reviewers_json=""
   
   # Add team reviewers to reviewers JSON
   for id in "${team_ids[@]}"
   do
-    raw_jq=`jq -cn --arg team_id "$id" '{ "type": "Team", "id": $team_id|tonumber }'`
+    raw_jq=$(jq -cn --arg team_id "$id" '{ "type": "Team", "id": $team_id|tonumber }')
     reviewers_json="${raw_jq},${reviewers_json}"
   done
   
   # Add user reviewers to reviewers JSON (if any)
   for user_id in "${user_ids[@]}"
   do
-    raw_jq=`jq -cn --arg user_id "$user_id" '{ "type": "User", "id": $user_id|tonumber }'`
+    raw_jq=$(jq -cn --arg user_id "$user_id" '{ "type": "User", "id": $user_id|tonumber }')
     reviewers_json="${raw_jq},${reviewers_json}"
   done
 
   # Remove trailing commas
-  reviewers_json=`echo ${reviewers_json} | sed 's/,*$//g'`
+  reviewers_json=$(echo "${reviewers_json}" | sed 's/,*$//g')
   
   echo "Reviewers JSON: ${reviewers_json}"
 }
@@ -167,7 +165,7 @@ main() {
             get_github_team_id ${team}
           done
 
-        # Extract the optional additional reviewers from the JSON as strings
+          # Extract the optional additional reviewers from the JSON as strings
           additional_reviewers=($(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers[]' "${json_file}"))
           echo "Additional Reviewers: ${additional_reviewers[*]}"
           
