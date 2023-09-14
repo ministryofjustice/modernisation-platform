@@ -176,14 +176,13 @@ main() {
             user_ids=()
             for reviewer in "${additional_reviewers[@]}"
             do
-              if [ -n "${reviewer}" ]; then
+              if [ -n "${reviewer}" ] && [ "${reviewer}" != "[]" ]; then
                 user_id=$(get_github_user_id "${reviewer}")
                 if [ -n "${user_id}" ]; then
                   user_ids+=("${user_id}")
                 fi
               fi
             done
-          else
             echo "No additional reviewers found for ${env}."
           fi
 
