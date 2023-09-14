@@ -108,6 +108,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "application-autoscaling:ListTagsForResource",
       "autoscaling:UpdateAutoScalingGroup",
       "autoscaling:SetDesiredCapacity",
+      "athena:StartQueryExecution",
       "aws-marketplace:ViewSubscriptions",
       "cloudwatch:DisableAlarmActions",
       "cloudwatch:EnableAlarmActions",
