@@ -18,8 +18,9 @@ module "vpc_endpoints" {
       service      = "s3"
       service_type = "Gateway"
       route_table_ids = flatten([
-        module.vpc.private_route_tables,
-        module.vpc.public_route_tables,
+        module.vpc.default_route_table_id,
+        module.vpc.private_route_table_ids,
+        module.vpc.public_route_table_ids
       ])
       tags = { Name = "${local.application_name}-${local.environment}-s3" }
     }
