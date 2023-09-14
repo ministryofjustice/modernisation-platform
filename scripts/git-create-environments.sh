@@ -92,7 +92,7 @@ create_environment() {
 
 create_reviewers_json() {
   ids=$1
-  additional_reviewers=$2  # New variable for the additional reviewer
+  additional_reviewers=("${@:2}")  # Pass additional_reviewer as an array
 
   reviewers_json=()
 
@@ -100,15 +100,15 @@ create_reviewers_json() {
   do
     # Add GitHub team ID to reviewers_json
     raw_jq=`jq -cn --arg team_id "$id" '{ "type": "Team", "id": $team_id|tonumber }'`
-    reviewers_json+="${raw_jq},${reviewers_json}"
+    reviewers_json+="${raw_jq},"
   done
 
-  # Add the additional reviewer if it exists in the JSON
-  if [ -n "${additional_reviewers}" ]; then
+  # Add the additional reviewers if they exist in the array
+  if [ ${#additional_reviewers[@]} -gt 0 ]; then
     for reviewer in "${additional_reviewers[@]}"
     do
-      raw_jq_additional=`jq -cn --arg reviewer "$additional_reviewers" '{ "type": "User", "login": $reviewer }'`
-      reviewers_json+="${raw_jq_additional},${reviewers_json}"
+      raw_jq_additional=`jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }'`
+      reviewers_json+="${raw_jq_additional},"
     done
   fi
 
