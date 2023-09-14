@@ -166,7 +166,7 @@ main() {
           done
 
           # Extract the optional additional reviewers from the JSON as strings
-          additional_reviewers=($(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers // []' "${json_file}"))
+          additional_reviewers=($(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers // []' "${json_file}" | tr -d \"))
 
           # Check if additional_reviewers is not empty before processing
           if [ ${#additional_reviewers[@]} -gt 0 ]; then
