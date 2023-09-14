@@ -45,6 +45,18 @@ get_github_team_id() {
   team_ids="${team_ids} ${team_id}"
 }
 
+get_github_user_id() {
+  username=$1
+  echo "Getting GitHub user ID for username: ${username}"
+  response=$(curl -s \
+    -H "Accept: application/vnd.github.v3+json" \
+    -H "Authorization: token ${secret}" \
+    "https://api.github.com/users/${username}")
+  user_id=$(echo ${response} | jq -r '.id')
+  echo "GitHub user ID for ${username}: ${user_id}"
+  echo "${user_id}"
+}
+
 check_if_environment_exists() {
   echo "Checking if environment $1 exists..."
   [[ $github_environments =~ (^|[[:space:]])$1($|[[:space:]]) ]] && environment_exists="true" || environment_exists="false"
@@ -64,16 +76,15 @@ check_if_change_to_application_json() {
 create_environment() {
   environment_name=$1
   github_teams=$2
-  additional_reviewers=$3  # New argument for additional reviewer
-
+  
   # Construct the payload
   if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]
   then
     # Include both github_teams and additional_reviewers in the payload
-    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${github_teams}, ${additional_reviewers}]}"
+    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${github_teams}]}"
   else
     # Include both github_teams and additional_reviewers in the payload
-    payload="{\"reviewers\": [${github_teams}, ${additional_reviewers}]}"
+    payload="{\"reviewers\": [${github_teams}]}"
   fi
 
   echo "Payload: $payload"
@@ -91,31 +102,31 @@ create_environment() {
 }
 
 create_reviewers_json() {
-  ids=$1
-  additional_reviewers=("${@:2}")  # Pass additional_reviewer as an array
-
-  reviewers_json=()
-
-  for id in ${ids}
+  team_ids=$1
+  user_ids=$2
+  reviewers_json=""
+  
+  # Add team reviewers to reviewers JSON
+  for id in ${team_ids}
   do
-    # Add GitHub team ID to reviewers_json
     raw_jq=`jq -cn --arg team_id "$id" '{ "type": "Team", "id": $team_id|tonumber }'`
-    reviewers_json+="${raw_jq},"
+    reviewers_json="${raw_jq},${reviewers_json}"
   done
-
-  # Add the additional reviewers if they exist in the array
-  if [ "${#additional_reviewers[@]}" -gt 0 ]; then
-    for reviewer in "${additional_reviewers[@]}"
+  
+  # Add user reviewers to reviewers JSON (if any)
+  if [ -n "${user_ids}" ]
+  then
+    for user_id in ${user_ids}
     do
-      raw_jq_additional=`jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }'`
-      reviewers_json+="${raw_jq_additional},"
+      raw_jq=`jq -cn --arg user_id "$user_id" '{ "type": "User", "id": $user_id|tonumber }'`
+      reviewers_json="${raw_jq},${reviewers_json}"
     done
   fi
 
   # Remove trailing commas
   reviewers_json=`echo ${reviewers_json} | sed 's/,*$//g'`
-
-  echo "Reviewers json: ${reviewers_json}"
+  
+  echo "Reviewers JSON: ${reviewers_json}"
 }
 
 main() {
@@ -161,11 +172,11 @@ main() {
           done
 
           # Extract the optional additional reviewer from the JSON
-          additional_reviewers=($(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers // []' "${json_file}"))
+          user_ids=($(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers // []' "${json_file}"))
           
           # Create reviewers json
           reviewers_json=""
-          create_reviewers_json "${team_ids}" "${additional_reviewers[@]}"  # Pass additional_reviewer
+          create_reviewers_json "${team_ids}" "${user_ids}"  # Pass additional_reviewer
           create_environment ${environment} ${reviewers_json}
         fi
       else
