@@ -165,7 +165,7 @@ main() {
           
           # Create reviewers json
           reviewers_json=""
-          create_reviewers_json "${team_ids}" "${additional_reviewers}"  # Pass additional_reviewer
+          create_reviewers_json "${team_ids}" "${additional_reviewers[@]}"  # Pass additional_reviewer
           create_environment ${environment} ${reviewers_json}
         fi
       else
