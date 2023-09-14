@@ -164,16 +164,18 @@ main() {
           done
 
           # Extract the optional additional reviewers from the JSON as strings
-          additional_reviewers=($(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers[]' "${json_file}"))
+          additional_reviewers=($(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers[] // empty' "${json_file}"))
           echo "Additional Reviewers: ${additional_reviewers[*]}"
-          
+
           # Fetch GitHub user IDs for additional reviewers
           user_ids=()
           for reviewer in "${additional_reviewers[@]}"
           do
-            user_id=$(get_github_user_id "${reviewer}")
-            if [ -n "${user_id}" ]; then
-              user_ids+=("${user_id}")
+            if [ -n "${reviewer}" ]; then
+              user_id=$(get_github_user_id "${reviewer}")
+              if [ -n "${user_id}" ]; then
+                user_ids+=("${user_id}")
+              fi
             fi
           done
           
