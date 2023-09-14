@@ -8,10 +8,20 @@ module "vpc_endpoints" {
   endpoints = {
     email-smtp = {
       service             = "email-smtp"
+      service_type        = "Interface"
       subnet_ids          = module.vpc.private_subnets
       security_group_ids  = [module.smtp_vpc_endpoint_security_group.security_group_id]
       private_dns_enabled = true
       tags                = { Name = "${local.application_name}-${local.environment}-smtp" }
+    }
+    s3 = {
+      service      = "s3"
+      service_type = "Gateway"
+      route_table_ids = flatten([
+        module.vpc.private_route_tables,
+        module.vpc.public_route_tables,
+      ])
+      tags = { Name = "${local.application_name}-${local.environment}-s3" }
     }
   }
 
