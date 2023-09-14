@@ -101,8 +101,8 @@ create_environment() {
 }
 
 create_reviewers_json() {
-  team_ids=("$@")
-  user_ids=($(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers // []' "${json_file}"))
+  team_ids=("$@")  # Pass team_ids as an array
+  user_ids=("${user_ids[@]}")  # Pass user_ids as an array
   reviewers_json=""
   
   # Add team reviewers to reviewers JSON
@@ -112,15 +112,12 @@ create_reviewers_json() {
     reviewers_json="${raw_jq},${reviewers_json}"
   done
   
-  # Check if user_ids is not empty
-  if [ -n "${user_ids}" ]; then
-    # Add user reviewers to reviewers JSON
-    for user_id in "${user_ids[@]}"
-    do
-      raw_jq=`jq -cn --arg user_id "$user_id" '{ "type": "User", "id": $user_id|tonumber }'`
-      reviewers_json="${raw_jq},${reviewers_json}"
-    done
-  fi
+  # Add user reviewers to reviewers JSON (if any)
+  for user_id in "${user_ids[@]}"
+  do
+    raw_jq=`jq -cn --arg user_id "$user_id" '{ "type": "User", "id": $user_id|tonumber }'`
+    reviewers_json="${raw_jq},${reviewers_json}"
+  done
 
   # Remove trailing commas
   reviewers_json=`echo ${reviewers_json} | sed 's/,*$//g'`
@@ -170,10 +167,21 @@ main() {
             get_github_team_id ${team}
           done
 
+          # Extract the optional additional reviewer from the JSON as a string
+          user_id=$(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers[0]' "${json_file}")
+          echo "User_id: $user_id"
+          
+          # Check if user_id is not empty
+          if [ -n "${user_id}" ]; then
+            # Add user_id to the user_ids array
+            user_ids=("$user_id")
+            echo "User_ids: ${user_ids[*]}"
+          fi
+
           # Create reviewers json
           reviewers_json=""
-          create_reviewers_json "${team_ids[@]}"  # Pass team_ids as an array
-          create_environment ${environment} "${reviewers_json}"
+          create_reviewers_json "${team_ids[@]}" "${user_ids[@]}"  # Pass team_ids and user_ids as arrays
+          create_environment ${environment} ${reviewers_json}
         fi
       else
         echo "${environment} is a core environment, skipping..."
