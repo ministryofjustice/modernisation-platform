@@ -104,7 +104,7 @@ create_reviewers_json() {
   done
 
   # Add the additional reviewers if they exist in the array
-  if [ ${#additional_reviewers[@]} -gt 0 ]; then
+  if [ "${#additional_reviewers[@]}" -gt 0 ]; then
     for reviewer in "${additional_reviewers[@]}"
     do
       raw_jq_additional=`jq -cn --arg reviewer "$reviewer" '{ "type": "User", "login": $reviewer }'`
