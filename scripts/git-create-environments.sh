@@ -96,35 +96,43 @@ create_environment() {
 
 }
 
-create_reviewers_json() {
-  team_ids=${team_ids[@]}
-  user_ids=${user_ids[@]}
+create_team_reviewers_json() {
+  local team_ids=("${@}")
+  local reviewers_json=""
 
-  echo "Team IDs: ${team_ids}"
-  echo "User IDs: ${user_ids}"
-
-  reviewers_json=""
-
-  # Add team reviewers to reviewers JSON
   for id in "${team_ids[@]}"
   do
     raw_jq=$(jq -cn --arg team_id "$id" '{ "type": "Team", "id": ($team_id|tonumber) }')
     reviewers_json="${reviewers_json}${raw_jq},"
   done
 
-  # Add user reviewers to reviewers JSON (if any)
-  for user_id in "${user_ids[@]}"
+  reviewers_json=$(echo "${reviewers_json}" | sed 's/,$//')
+  echo "${reviewers_json}"
+}
+
+create_user_reviewers_json() {
+  local user_ids=("${@}")
+  local reviewers_json=""
+
+  for id in "${user_ids[@]}"
   do
-    if [ -n "$user_id" ]; then
-      raw_jq=$(jq -cn --arg user_id "$user_id" '{ "type": "User", "id": ($user_id|tonumber) }')
-      reviewers_json="${reviewers_json}${raw_jq},"
-    fi
+    raw_jq=$(jq -cn --arg user_id "$id" '{ "type": "User", "id": ($user_id|tonumber) }')
+    reviewers_json="${reviewers_json}${raw_jq},"
   done
+
+  reviewers_json=$(echo "${reviewers_json}" | sed 's/,$//')
+  echo "${reviewers_json}"
+}
+
+create_reviewers_json() {
+  local reviewers_json=""
+
+  reviewers_json="${team_reviewers_json},${user_reviewers_json}"
 
   # Remove trailing comma
   reviewers_json=$(echo "${reviewers_json}" | sed 's/,$//')
 
-  echo "Reviewers JSON: ${reviewers_json}"
+  echo "${reviewers_json}"
 }
 
 main() {
@@ -193,7 +201,10 @@ main() {
 
           # Create reviewers json
           reviewers_json=""
-          create_reviewers_json "${team_ids[@]}" "${user_ids[@]}"  # Pass team_ids and user_ids as arrays
+          # Create reviewers json for teams and users
+          team_reviewers_json=$(create_team_reviewers_json "${team_ids[@]}")
+          user_reviewers_json=$(create_user_reviewers_json "${user_ids[@]}")
+          create_reviewers_json "${team_reviewers_json}" "${user_reviewers_json}"
           create_environment ${environment} "${reviewers_json}"
         fi
       else
