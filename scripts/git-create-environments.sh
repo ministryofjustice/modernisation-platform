@@ -204,7 +204,7 @@ main() {
           # Create reviewers json for teams and users
           team_reviewers_json=$(create_team_reviewers_json "${team_ids[@]}")
           user_reviewers_json=$(create_user_reviewers_json "${user_ids[@]}")
-          create_reviewers_json "${team_reviewers_json}" "${user_reviewers_json}"
+          reviewers_json=$(create_reviewers_json "${team_reviewers_json}" "${user_reviewers_json}")
           create_environment ${environment} "${reviewers_json}"
         fi
       else
