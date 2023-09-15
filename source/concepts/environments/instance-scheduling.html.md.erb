@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Instance Scheduling - automatically stop non-production instances overnight
-last_reviewed_on: 2023-05-03
+last_reviewed_on: 2023-09-15
 review_in: 6 months
 ---
 
@@ -9,16 +9,16 @@ review_in: 6 months
 
 ## Feature description
 
-This feature automatically stops non-production EC2 instances overnight, in order to save on AWS costs and reduce environmental impact. Stopped instances don't incur charges, but Elastic IP addresses or EBS volumes attached to those instances do.
+This feature automatically stops non-production EC2 and RDS instances overnight, in order to save on AWS costs and reduce environmental impact. Stopped instances don't incur charges, but Elastic IP addresses or EBS volumes attached to those instances do.
 
-The instances will be automatically stopped every weekday at 9pm night and started at 6am in the morning. By default, this includes every EC2 instance in every non-production environment (development, test, pre-production) without requiring any configuration from the end user. Users can customise the default behaviour by attaching the `instance-scheduling` tag to EC2 instances with one of the following values:
+The instances will be automatically stopped every weekday at 9pm night and started at 6am in the morning. By default, this includes every EC2 and RDS instance in every non-production environment (development, test, pre-production) without requiring any configuration from the end user. Users can customise the default behaviour by attaching the `instance-scheduling` tag to EC2 and RDS instances with one of the following values:
 
 - `default` - Automatically stop the instance overnight and start it in the morning. Absence of the `instance-scheduling` tag will have the same effect.
 - `skip-scheduling` - Skip auto scheduling for the instance
 - `skip-auto-start` - Stop the instance at night, but skip starting it in the morning. This could be useful for the instances we want to make sure are automatically stopped every night, but we are happy to manually start when needed.
 - `skip-auto-stop` - Start the instance in the morning, but skip stopping it at night.
 
-Here's a Terraform example of how to add the relevant tag for any EC2 instance that should not be automatically stopped overnight.
+Here's a Terraform example of how to add the relevant tag for any EC2 and RDS instance that should not be automatically stopped overnight.
 
 ```terraform
   tags = merge(
@@ -27,7 +27,7 @@ Here's a Terraform example of how to add the relevant tag for any EC2 instance t
   )
 ```
 
->RDS instances, as well as EC2 instances that are part of an Auto Scaling group, will be skipped automatically. The presence of the tag `aws:autoscaling:groupName` indicates that the EC2 instance is part of an Auto Scaling group.
+>EC2 instances that are part of an Auto Scaling group, will be skipped automatically. The presence of the tag `aws:autoscaling:groupName` indicates that the EC2 instance is part of an Auto Scaling group.
 
 Ordering instances and automatically stopping them on public holidays is not supported.
 
