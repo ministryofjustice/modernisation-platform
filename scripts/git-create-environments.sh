@@ -101,6 +101,8 @@ create_environment() {
 }
 
 create_reviewers_json() {
+  local team_ids=("${@:1:$#-1}")  # Extract team IDs from arguments
+  local user_ids=("${!#}")        # Extract user IDs from arguments
   reviewers_json=""
   
   # Add team reviewers to reviewers JSON
