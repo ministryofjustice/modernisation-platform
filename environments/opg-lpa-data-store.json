@@ -6,12 +6,11 @@
       "access": [
         {
           "github_slug": "opg-modernising-lpa-team",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "administrator"
         },
         {
           "github_slug": "opg-webops",
-          "level": "sandbox"
+          "level": "administrator"
         }
       ]
     }
