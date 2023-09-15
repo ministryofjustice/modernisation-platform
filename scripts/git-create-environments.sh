@@ -116,6 +116,8 @@ create_reviewers_json() {
     reviewers_json="${reviewers_json}${raw_jq},"
   done
   
+  reviewers_json=$(echo "${reviewers_json}" | sed 's/,$//')
+
   # Add user reviewers to reviewers JSON (if any)
   for user_id in "${user_ids[@]}"
   do
