@@ -168,7 +168,9 @@ main() {
           team_ids=()
           for team in ${teams}
           do
-            get_github_team_id ${team}
+            team=$(echo "${team}" | xargs)  # Remove leading/trailing whitespace
+            get_github_team_id "${team}"
+            team_ids+=("${team_id}")
           done
 
           # Extract the optional additional reviewers from the JSON as strings
