@@ -69,17 +69,17 @@ check_if_change_to_application_json() {
 
 create_environment() {
   environment_name=$1
-  github_teams=$2
+  reviewers_json=$2  # Accept the reviewers_json parameter
   
   echo "Creating environment ${environment_name}..."
   # echo "Teams for payload: ${github_teams}"
   if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]
   then
     # Include both github_teams and additional_reviewers in the payload
-    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${github_teams}]}"
+    payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${reviewers_json}]}"
   else
     # Include both github_teams and additional_reviewers in the payload
-    payload="{\"reviewers\": [${github_teams}]}"
+    payload="{\"reviewers\": [${reviewers_json}]}"
   fi
 
   echo "Payload: $payload"
