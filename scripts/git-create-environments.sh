@@ -41,6 +41,7 @@ get_github_team_id() {
     -H "Authorization: token ${secret}" \
     https://api.github.com/orgs/${github_org}/teams/${team_slug})
   team_id=$(echo ${response} | jq -r '.id')
+  # echo "Team ID for ${team_slug}: ${team_id}"
   team_ids=(${team_ids} ${team_id})
 }
 
@@ -76,7 +77,8 @@ create_environment() {
   environment_name=$1
   github_teams=$2
   
-  # Construct the payload
+  echo "Creating environment ${environment_name}..."
+  # echo "Teams for payload: ${github_teams}"
   if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]
   then
     # Include both github_teams and additional_reviewers in the payload
