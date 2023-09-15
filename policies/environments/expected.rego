@@ -48,6 +48,7 @@ expected =
     "oas",
     "oasys",
     "observability-platform",
+    "opg-lpa-data-store",
     "performance-hub",
     "planetfm",
     "portal",
