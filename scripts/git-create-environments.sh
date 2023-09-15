@@ -114,6 +114,7 @@ create_reviewers_json() {
 
   # Add user reviewers to reviewers JSON (if any)
   for user_id in "${user_ids[@]}"
+  do
     if [ -n "$user_id" ]; then
       raw_jq=$(jq -cn --arg user_id "$user_id" '{ "type": "User", "id": ($user_id|tonumber) }')
       reviewers_json="${reviewers_json}${raw_jq},"
