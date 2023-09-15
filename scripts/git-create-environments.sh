@@ -35,12 +35,11 @@ get_existing_environments() {
 
 get_github_team_id() {
   team_slug=${1}
-  echo "Getting team id for team: ${team_slug}"
   response=$(curl -s \
     -H "Accept: application/vnd.github.v3+json" \
     -H "Authorization: token ${secret}" \
     https://api.github.com/orgs/${github_org}/teams/${team_slug})
-  team_id=$(echo ${response} | jq -r '.id')
+  echo "${response}" | jq -r '.id'
 }
 
 get_github_user_id() {
@@ -49,10 +48,7 @@ get_github_user_id() {
     -H "Accept: application/vnd.github.v3+json" \
     -H "Authorization: token ${secret}" \
     "https://api.github.com/users/${username}")
-  user_id=$(echo ${response} | jq -r '.id')
-  # Remove double quotes if present
-  user_id="${user_id//\"/}"
-  echo "${user_id}"
+  echo "${response}" | jq -r '.id'
 }
 
 check_if_environment_exists() {
@@ -101,22 +97,20 @@ create_environment() {
 }
 
 create_reviewers_json() {
-  local team_ids=("${@:1:$#-1}")  # Extract team IDs from arguments
-  local user_ids=("${!#}")        # Extract user IDs from arguments
+  team_ids=${team_ids[@]}
+  user_ids=${user_ids[@]}
 
-  echo "Team IDs: ${team_ids[@]}"
-  echo "User IDs: ${user_ids[@]}"
+  echo "Team IDs: ${team_ids}"
+  echo "User IDs: ${user_ids}"
 
   reviewers_json=""
-  
+
   # Add team reviewers to reviewers JSON
   for id in "${team_ids[@]}"
   do
     raw_jq=$(jq -cn --arg team_id "$id" '{ "type": "Team", "id": ($team_id|tonumber) }')
     reviewers_json="${reviewers_json}${raw_jq},"
   done
-  
-  reviewers_json=$(echo "${reviewers_json}" | sed 's/,$//')
 
   # Add user reviewers to reviewers JSON (if any)
   for user_id in "${user_ids[@]}"
@@ -127,7 +121,7 @@ create_reviewers_json() {
 
   # Remove trailing comma
   reviewers_json=$(echo "${reviewers_json}" | sed 's/,$//')
-  
+
   echo "Reviewers JSON: ${reviewers_json}"
 }
 
@@ -171,7 +165,7 @@ main() {
           for team in ${teams}
           do
             team=$(echo "${team}" | xargs)  # Remove leading/trailing whitespace
-            get_github_team_id "${team}"
+            team_id=$(get_github_team_id "${team}")
             team_ids+=("${team_id}")
           done
 
@@ -193,7 +187,6 @@ main() {
                 fi
               fi
             done
-            echo "No additional reviewers found for ${env}."
           fi
 
           # Create reviewers json
