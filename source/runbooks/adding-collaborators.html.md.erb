@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Adding collaborators to Modernisation Platform accounts
-last_reviewed_on: 2023-06-06
+last_reviewed_on: 2023-09-18
 review_in: 6 month
 ---
 
@@ -90,12 +90,8 @@ Once their IAM user has been created, log into the AWS console yourself and:
 
 The limit of the number of reviewers (teams or users) which can be added to a GitHub environment is [six](https://docs.github.com/en/rest/reference/deployments#create-or-update-an-environment--parameters).
 Two of these spaces will be taken by the application GitHub team and by the Modernisation Platform GitHub team leaving only four spaces to add collaborators.
-For this reason collaborator environment reviewers should be manually added to the environment. (Note - the reviewer will be automatically removed when the collaborators permissions to the repository are removed.)
 
-1. Navigate to [modernisaton-platform-environments -> settings -> environments](https://github.com/ministryofjustice/modernisation-platform-environments/settings/environments)
-1. Find the required environment and click on it
-1. Under `Environment protection rules` add the required collaborators
-1. Click `Save protection rules`
+The deployment approver(s) should be added as 'additional_reviewers' specified per an environment in the application.json file (See: "additional_reviewers" in [Another example](../user-guide/user-guide/creating-environments.html#another-example) for an example).
 
 ## Removing collaborators
 
