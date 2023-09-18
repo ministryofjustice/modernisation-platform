@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -e
-set -x
 
 github_org="ministryofjustice"
 repository="${github_org}/modernisation-platform-environments"
@@ -84,7 +83,7 @@ create_environment() {
 
   echo "Payload: $payload"
   echo "Repository: ${repository}"
-  response=$(echo "${payload}" | curl -L -s -i \
+  response=$(echo "${payload}" | curl -L -s \
     -X PUT \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer ${secret}" \
