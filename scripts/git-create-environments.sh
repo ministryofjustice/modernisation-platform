@@ -190,10 +190,15 @@ main() {
             user_ids=()
             for reviewer in "${additional_reviewers[@]}"
             do
+              # Remove leading and trailing spaces and commas
+              reviewer=$(echo "${reviewer}" | sed 's/^[[:space:],]*//;s/[[:space:],]*$//')
+
               if [ -n "${reviewer}" ] && [ "${reviewer}" != "[]" ]; then
                 user_id=$(get_github_user_id "${reviewer}")
-                if [ -n "${user_id}" ]; then
+                if [ -n "${user_id}" ] && [ "${user_id}" != "null" ]; then
                   user_ids+=("${user_id}")
+                else
+                  echo "User not found or error occurred for reviewer: ${reviewer}. Skipping..."
                 fi
               fi
             done
