@@ -8,7 +8,8 @@
           "github_slug": "modernisation-platform",
           "level": "developer"
         }
-      ]
+      ],
+      "additional_reviewers": ["umeshc-roy" , "nbuckingham72"]
     },
     {
       "name": "preproduction",
@@ -17,7 +18,8 @@
           "github_slug": "ppud-replacement-devs",
           "level": "migration"
         }
-      ]
+      ],
+      "additional_reviewers": ["umeshc-roy" , "nbuckingham72"]
     },
     {
       "name": "production",
@@ -26,7 +28,8 @@
           "github_slug": "ppud-replacement-devs",
           "level": "developer"
         }
-      ]
+      ],
+      "additional_reviewers": ["umeshc-roy" , "nbuckingham72"]
     }
   ],
   "tags": {
