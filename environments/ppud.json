@@ -9,7 +9,7 @@
           "level": "developer"
         }
       ],
-      "additional_reviewers": ["umeshc-roy" "nbuckingham72"]
+      "additional_reviewers": ["umeshc-roy" , "nbuckingham72"]
     },
     {
       "name": "preproduction",
@@ -19,7 +19,7 @@
           "level": "migration"
         }
       ],
-      "additional_reviewers": ["umeshc-roy" "nbuckingham72"]
+      "additional_reviewers": ["umeshc-roy" , "nbuckingham72"]
     },
     {
       "name": "production",
@@ -29,7 +29,7 @@
           "level": "developer"
         }
       ],
-      "additional_reviewers": ["umeshc-roy" "nbuckingham72"]
+      "additional_reviewers": ["umeshc-roy" , "nbuckingham72"]
     }
   ],
   "tags": {
