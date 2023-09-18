@@ -5,7 +5,7 @@ locals {
   airflow_webserver_access_mode = "PUBLIC_ONLY"
   airflow_mail_from_address     = "airflow@${local.environment_configuration.ses_domain_identity}"
 
-  eks_cluster_name = "${local.application_name}-${local.environment}"
+  eks_cluster_name = "apps-tools-${local.environment}"
 
   environment_configuration = local.environment_configurations[local.environment]
   environment_configurations = {
