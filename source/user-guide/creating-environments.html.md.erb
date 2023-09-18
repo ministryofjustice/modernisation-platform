@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating environments in the Modernisation Platform
-last_reviewed_on: 2023-06-15
+last_reviewed_on: 2023-09-18
 review_in: 6 months
 ---
 
@@ -29,6 +29,8 @@ The name must be in lowercase and a maximum of 30 characters. If you need to use
 This is the name of your GitHub team that will be accessing the environment. Environments are accessed via single sign on (SSO), so to give people permissions to access your environment you just have to add them to your GitHub team.
 
 Users who are not part of the MoJ GitHub organisation will need to be added as collaborators separately once the account has been created.  Please contact the Modernisation Platform team to do this.
+
+If you wish to add additional deployment reviewers from outside your GitHub team you can specfiy these per an environment in the application.json file (See: "additional_reviewers" in [Another example](#another-example) for an example).
 
 ### Access
 
@@ -180,18 +182,22 @@ Here are some examples of the environments JSON file that the Modernisation Plat
   "environments": [
     {
       "name": ""
-      "access": {
-        "github_slug": "",
-        "level": "",
-        "nuke": ""
-      }
+      "access": [
+        {
+          "github_slug": "",
+          "level": "",
+          "nuke": ""
+        }
+      ]
     }
   ],
   "tags": {
     "application": "",
     "business-unit": "",
     "owner": ""
-  }
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
 }
 ```
 
@@ -207,25 +213,33 @@ An JSON definition for an nonsensical application called [`glados`](https://en.w
   "environments": [
     {
       "name": "development",
-      "access": {
+      "access": [
+        {
         "github_slug": "glados-team",
         "level": "sandbox",
         "nuke": "rebuild"
-      }
+        }
+      ],
+      "additional_reviewers": ["GitHubUsername1" , "GitHubUsername2"]
     },
     {
       "name": "production",
-      "access": {
-        "github_slug": "glados-team",
-        "level": "view-only"
-      }
+      "access": [
+        {
+          "github_slug": "glados-team",
+          "level": "view-only"
+        }
+      ],
+      "additional_reviewers": ["GitHubUsername3" , "GitHubUsername4"]
     }
   ],
   "tags": {
     "application": "GLaDOS",
     "business-unit": "Platforms",
     "owner": "GLaDOS (Genetic Lifeform and Disk Operating System): aperture-science@digital.justice.gov.uk"
-  }
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
 }
 ```
 
