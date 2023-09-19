@@ -38,6 +38,6 @@ provider "kubernetes" {
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "bash"
-    args        = ["scripts/eks-authentication.sh", data.aws_caller_identity.current.account_id, module.eks.cluster_name]
+    args        = ["scripts/eks-authentication.sh", local.environment_management.account_ids[terraform.workspace], module.eks.cluster_name]
   }
 }
