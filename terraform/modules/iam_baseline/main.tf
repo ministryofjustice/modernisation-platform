@@ -69,6 +69,7 @@ resource "aws_iam_policy" "policy" {
           "glue:GetJobs",
           "glue:GetTable",
           "glue:BatchGetJobs",
+          "glue:DeleteTable",
           "glue:ListJobs",
           "glue:StartJobRun",
           "glue:StartTrigger",
