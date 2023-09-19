@@ -57,7 +57,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        environment: [development, test, preproduction, production]
+        # environment: [development, test, preproduction, production]
+        environment: [development]
     env:
       TF_IN_AUTOMATION: "true"
       CHANGED_DIRECTORIES: ${{ needs.find-environments.outputs.directories }}
