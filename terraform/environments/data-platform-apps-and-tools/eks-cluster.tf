@@ -52,4 +52,6 @@ module "eks" {
       username = "administrator"
     }
   ]
+
+  tags = local.tags
 }
