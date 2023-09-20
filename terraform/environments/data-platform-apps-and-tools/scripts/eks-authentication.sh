@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
+# This scripts exists because the Terraform Lubernetes provider does not pass assumed credentials from the default AWS provider
+
+
 AWS_ACCOUNT_ID=${1}
-AWS_ROLE=${2:-ModernisationPlatformAccess}
 EKS_CLUSTER_NAME=${2}
+AWS_ROLE="ModernisationPlatformAccess"
 
 assumeRole=$(aws sts assume-role \
   --role-arn arn:aws:iam::${AWS_ACCOUNT_ID}:role/${AWS_ROLE} \
