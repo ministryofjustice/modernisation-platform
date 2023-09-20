@@ -29,5 +29,6 @@ data "aws_iam_roles" "eks_sso_access_role" {
 ##################################################
 
 data "aws_route53_zone" "apps_tools" {
-  name = local.environment_configuration.route53_zone
+  name         = local.environment_configuration.route53_zone
+  private_zone = false
 }
