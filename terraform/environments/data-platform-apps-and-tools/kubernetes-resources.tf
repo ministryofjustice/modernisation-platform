@@ -29,3 +29,24 @@ resource "kubernetes_manifest" "cert_manager_cluster_issuer_letsencrypt_producti
 
   depends_on = [helm_release.cert_manager]
 }
+
+resource "kubernetes_manifest" "cert_manager_ingress_nginx_default_certificate" {
+  manifest = {
+    "apiVersion" = "cert-manager.io/v1"
+    "kind"       = "Certificate"
+    "metadata" = {
+      "name"      = "default-certificate"
+      "namespace" = kubernetes_namespace.ingress_nginx.metadata[0].name
+    }
+    "spec" = {
+      "secretName" = "default-certificate"
+      "issuerRef" = {
+        "kind" = "ClusterIssuer"
+        "name" = "letsencrypt-production"
+      }
+      "dnsNames" = [
+        "*.${local.environment_configuration.route53_zone}"
+      ]
+    }
+  }
+}
