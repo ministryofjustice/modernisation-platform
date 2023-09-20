@@ -49,3 +49,19 @@ resource "helm_release" "cert_manager" {
     )
   ]
 }
+
+resource "helm_release" "ingress_nginx" {
+  name       = "ingress-nginx"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  chart      = "ingress-nginx"
+  version    = "4.7.2"
+  namespace  = kubernetes_namespace.ingress_nginx.metadata[0].name
+  values = [
+    templatefile(
+      "${path.module}/src/helm/ingress-nginx/values.yml.tftpl",
+      {
+        default_ssl_certificate = kubernetes_manifest.cert_manager_ingress_nginx_default_certificate.spec[0].secretName
+      }
+    )
+  ]
+}
