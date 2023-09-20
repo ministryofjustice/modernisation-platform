@@ -8,6 +8,10 @@ terraform {
       version = "~> 2.0"
       source  = "hashicorp/cloudinit"
     }
+    helm = {
+      version = "~> 2.0"
+      source  = "hashicorp/helm"
+    }
     http = {
       version = "~> 3.0"
       source  = "hashicorp/http"
