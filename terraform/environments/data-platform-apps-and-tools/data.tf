@@ -20,6 +20,6 @@ data "aws_s3_bucket" "airflow" {
 ##################################################
 
 data "aws_iam_roles" "eks_sso_access_role" {
-  name_regex  = "AWSReservedSSO_${var.eks_sso_access_role}_.*"
+  name_regex  = "AWSReservedSSO_${local.environment_configuration.eks_sso_access_role}_.*"
   path_prefix = "/aws-reserved/sso.amazonaws.com/"
 }
