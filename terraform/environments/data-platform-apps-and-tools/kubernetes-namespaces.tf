@@ -3,3 +3,9 @@ resource "kubernetes_namespace" "external_dns" {
     name = "external-dns"
   }
 }
+
+resource "kubernetes_namespace" "cert_manager" {
+  metadata {
+    name = "cert-manager"
+  }
+}

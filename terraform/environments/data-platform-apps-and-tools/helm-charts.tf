@@ -33,3 +33,19 @@ resource "helm_release" "external_dns" {
     )
   ]
 }
+
+resource "helm_release" "cert_manager" {
+  name       = "cert-manager"
+  repository = "https://charts.jetstack.io"
+  chart      = "cert-manager"
+  version    = "v1.13.0"
+  namespace  = kubernetes_namespace.cert_manager.metadata[0].name
+  values = [
+    templatefile(
+      "${path.module}/src/helm/cert-manager/values.yml.tftpl",
+      {
+        eks_role_arn = module.cert_manager_role.iam_role_arn
+      }
+    )
+  ]
+}
