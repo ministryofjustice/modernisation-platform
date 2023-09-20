@@ -45,11 +45,10 @@ module "eks" {
 
   manage_aws_auth_configmap = true
 
-  # TODO: source this role somehow
   aws_auth_roles = [
     {
       groups   = ["system:masters"]
-      rolearn  = one(data.aws_iam_roles.eks_sso_access_role.arns)
+      rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${one(data.aws_iam_roles.eks_sso_access_role.names)}"
       username = "administrator"
     }
   ]
