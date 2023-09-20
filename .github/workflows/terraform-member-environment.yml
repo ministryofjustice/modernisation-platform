@@ -123,7 +123,8 @@ jobs:
     needs: [find-environments, terraform-plan]
     strategy:
       matrix:
-        environment: [development, test]
+        # environment: [development, test]
+        environment: [development]
     environment: ${{ matrix.environment }}
     env:
       TF_IN_AUTOMATION: "true"
