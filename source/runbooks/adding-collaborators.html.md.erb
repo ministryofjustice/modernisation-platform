@@ -97,4 +97,4 @@ The deployment approver(s) should be added as 'additional_reviewers' specified p
 
 To remove collaborators reverse the above steps.
 
-In order to remove the collaborator IAM user, the Terraform in `modernisation-platform/terraform/modernisation-platform-account` must be run locally as a `superadmin` user, as the pipelines do not have permissions to delete users. Alternatively, the pipeline can be run, then when it fails delete the user and rerun the failed job. 
+In order to remove the collaborator IAM user, the Terraform in `modernisation-platform/terraform/modernisation-platform-account` must be run locally as a `superadmin` user, as the pipelines do not have permissions to delete users. Alternatively the pipeline can be run, then when it fails delete the user and rerun the failed job. 
