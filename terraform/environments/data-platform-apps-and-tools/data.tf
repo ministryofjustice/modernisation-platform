@@ -14,3 +14,12 @@ data "aws_availability_zones" "available" {}
 data "aws_s3_bucket" "airflow" {
   bucket = local.environment_configuration.airflow_s3_bucket
 }
+
+##################################################
+# Data Platform Apps and Tools EKS
+##################################################
+
+data "aws_iam_roles" "eks_sso_access_role" {
+  name_regex  = "AWSReservedSSO_${var.eks_sso_access_role}_.*"
+  path_prefix = "/aws-reserved/sso.amazonaws.com/"
+}

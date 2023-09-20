@@ -29,6 +29,7 @@ locals {
       vpc_one_nat_gateway_per_az              = false
       route53_zone                            = "apps-tools.development.data-platform.service.justice.gov.uk"
       ses_domain_identity                     = "apps-tools.development.data-platform.service.justice.gov.uk"
+      eks_sso_access_role                     = "modernisation-platform-sandbox"
     }
     production = {
       airflow_s3_bucket         = "moj-data-platform-airflow-production20230908140747954800000002"
@@ -50,6 +51,7 @@ locals {
       vpc_one_nat_gateway_per_az              = false
       route53_zone                            = "apps-tools.data-platform.service.justice.gov.uk"
       ses_domain_identity                     = "apps-tools.data-platform.service.justice.gov.uk"
+      eks_sso_access_role                     = "modernisation-platform-developer"
     }
   }
 }
