@@ -32,7 +32,7 @@ body:
   - type: input
     id: useful-contacts
     attributes:
-      description: Please add any useful contacts, these may include; Stakeholders, SME’s or 3rd Parties.
+      description: Please add any useful contacts, these may include; Stakeholders, Subject Matter Expert or 3rd Parties.
       placeholder: Joe Bloggs
       label: Useful Contacts
       value:
@@ -49,7 +49,7 @@ body:
   - type: textarea
     id: dod
     attributes:
-      description: Please clearly and concisely detail the DoD. (example optional checklist below)
+      description: Please clearly and concisely detail the Definition of Done. (example optional checklist below)
       label: Definition of Done
       value:
 
