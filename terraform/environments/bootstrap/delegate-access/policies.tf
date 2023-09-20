@@ -170,6 +170,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "rds:CopyDBClusterSnapshot",
       "rds:CreateDBSnapshot",
       "rds:CreateDBClusterSnapshot",
+      "rds:ModifyDBSnapshotAttribute",
       "rds:RestoreDBInstanceToPointInTime",
       "rds:RebootDB*",
       "rhelkb:GetRhelURL",
