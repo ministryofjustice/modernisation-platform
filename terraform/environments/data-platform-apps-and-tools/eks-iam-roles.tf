@@ -1,7 +1,7 @@
 module "cluster_autoscaler_role" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
 
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
   role_name_prefix                 = "cluster-autoscaler"
@@ -39,7 +39,7 @@ module "external_dns_role" {
 module "cert_manager_role" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
 
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
   role_name_prefix              = "cert-manager"
@@ -59,7 +59,7 @@ module "cert_manager_role" {
 module "ebs_csi_driver_role" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
 
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
   role_name_prefix      = "ebs-csi-driver"
