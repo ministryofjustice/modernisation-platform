@@ -71,11 +71,11 @@ jobs:
 
           #RUN TERRATEST
           pushd terraform/environments/core-shared-services/test
-          # Install GOLANG 1.20.3
+          # Install GOLANG 1.21.1
           if [ `whoami` != "runner" ]
           then
-          wget -q https://dl.google.com/go/go1.20.3.linux-amd64.tar.gz
-          tar -zxvf go1.20.3.linux-amd64.tar.gz
+          wget -q https://dl.google.com/go/go1.21.1.linux-amd64.tar.gz
+          tar -zxvf go1.21.1.linux-amd64.tar.gz
           sudo mv go /usr/local
           echo "--  running newly installed go  --"
           TEST=`/usr/local/go/bin/go test | ${git_dir}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
