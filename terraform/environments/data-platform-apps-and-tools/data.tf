@@ -23,3 +23,11 @@ data "aws_iam_roles" "eks_sso_access_role" {
   name_regex  = "AWSReservedSSO_${local.environment_configuration.eks_sso_access_role}_.*"
   path_prefix = "/aws-reserved/sso.amazonaws.com/"
 }
+
+##################################################
+# Data Platform Apps and Tools Route 53
+##################################################
+
+data "aws_route53_zone" "apps_tools" {
+  name = local.environment_configuration.route53_zone
+}

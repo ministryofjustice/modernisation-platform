@@ -16,3 +16,20 @@ resource "helm_release" "cluster_autoscaler" {
     )
   ]
 }
+
+resource "helm_release" "external_dns" {
+  name       = "external-dns"
+  repository = "https://kubernetes-sigs.github.io/external-dns"
+  chart      = "external-dns"
+  version    = "1.13.0"
+  namespace  = kubernetes_namespace.external_dns.metadata[0].name
+  values = [
+    templatefile(
+      "${path.module}/src/helm/external-dns/values.yml.tftpl",
+      {
+        domain_filter = local.environment_configuration.route53_zone
+        eks_role_arn  = module.external_dns_role.iam_role_arn
+      }
+    )
+  ]
+}
