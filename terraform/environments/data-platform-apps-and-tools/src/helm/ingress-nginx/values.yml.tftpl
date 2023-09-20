@@ -1,5 +1,6 @@
 ---
 controller:
+  replicaCount: 3
   ingressClassResource:
     name: default
     default: true
@@ -18,3 +19,4 @@ controller:
     annotations:
       service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
       service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+      external-dns.alpha.kubernetes.io/hostname: ${ingress_hostname}

@@ -61,6 +61,7 @@ resource "helm_release" "ingress_nginx" {
       "${path.module}/src/helm/ingress-nginx/values.yml.tftpl",
       {
         default_ssl_certificate = "${kubernetes_namespace.ingress_nginx.metadata[0].name}/default-certificate"
+        ingress_hostname        = "ingress.eks.${local.environment_configuration.route53_zone}"
       }
     )
   ]
