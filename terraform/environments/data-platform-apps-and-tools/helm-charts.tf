@@ -60,7 +60,7 @@ resource "helm_release" "ingress_nginx" {
     templatefile(
       "${path.module}/src/helm/ingress-nginx/values.yml.tftpl",
       {
-        default_ssl_certificate = kubernetes_manifest.cert_manager_ingress_nginx_default_certificate.spec[0].secretName
+        default_ssl_certificate = "${kubernetes_namespace.ingress_nginx.metadata[0].name}/default-certificate"
       }
     )
   ]
