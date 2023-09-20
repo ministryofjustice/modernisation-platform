@@ -14,6 +14,8 @@ module "eks" {
   control_plane_subnet_ids = module.vpc.private_subnets
   subnet_ids               = module.vpc.private_subnets
 
+  cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+
   # TODO: Pin versions of these addons
   cluster_addons = {
     coredns = {
