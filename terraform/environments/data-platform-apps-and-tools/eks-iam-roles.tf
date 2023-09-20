@@ -18,7 +18,7 @@ module "cluster_autoscaler_role" {
   tags = local.tags
 }
 
-module "external_dns_iam_role" {
+module "external_dns_role" {
   #checkov:skip=CKV_TF_1:Module is from Terraform registry
 
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
