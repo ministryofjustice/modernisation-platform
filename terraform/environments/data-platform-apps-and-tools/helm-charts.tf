@@ -102,3 +102,19 @@ resource "helm_release" "velero" {
     )
   ]
 }
+
+resource "helm_release" "external_secrets" {
+  name       = "external-secrets"
+  repository = "https://charts.external-secrets.io"
+  chart      = "external-secrets"
+  version    = "0.9.4"
+  namespace  = kubernetes_namespace.external_secrets.metadata[0].name
+  values = [
+    templatefile(
+      "${path.module}/src/helm/external_secrets/values.yml.tftpl",
+      {
+        eks_role_arn = module.external_secrets_role.iam_role_arn
+      }
+    )
+  ]
+}
