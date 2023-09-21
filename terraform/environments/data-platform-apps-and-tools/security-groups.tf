@@ -1,3 +1,19 @@
+module "guardduty_data_vpc_endpoint_security_group" {
+  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~> 5.0"
+
+  name        = "${local.application_name}-${local.environment}-guardduty-data-endpoint"
+  description = "GuardDuty Data VPC Endpoint"
+
+  vpc_id = module.vpc.vpc_id
+
+  ingress_cidr_blocks = [module.vpc.vpc_cidr_block]
+  ingress_rules       = ["https-443-tcp"]
+
+  tags = local.tags
+}
+
 module "smtp_vpc_endpoint_security_group" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source  = "terraform-aws-modules/security-group/aws"
