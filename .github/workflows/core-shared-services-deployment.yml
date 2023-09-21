@@ -57,6 +57,9 @@ jobs:
         with:
           terraform_version: "~1"
           terraform_wrapper: false
+      - uses: actions/setup-go@93397bea11091df50f3d7e59dc26a7711a8bcfbe # v4.1.0
+        with:
+          go-version: 1.21
  
       - name: Run terraform plan in terraform/environments/core-shared-services
         run: |
@@ -71,18 +74,7 @@ jobs:
 
           #RUN TERRATEST
           pushd terraform/environments/core-shared-services/test
-          # Install GOLANG 1.21.1
-          if [ `whoami` != "runner" ]
-          then
-          wget -q https://dl.google.com/go/go1.21.1.linux-amd64.tar.gz
-          tar -zxvf go1.21.1.linux-amd64.tar.gz
-          sudo mv go /usr/local
-          echo "--  running newly installed go  --"
-          TEST=`/usr/local/go/bin/go test | ${git_dir}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
-          else
-          echo "--  running native go  --"
           TEST=`go test | ${git_dir}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
-          fi
           popd
           TEST="> TERRATEST RESULT - core-shared-services
           ${TEST}"
