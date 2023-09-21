@@ -98,7 +98,7 @@ body:
     attributes:
       label: Tags
       description: These will be used to tag your AWS resources, for further details on tagging please see here https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use
-      value:  |
+      value:  
         <table>
         <tr>
           <td>Tag</td>
@@ -119,7 +119,7 @@ body:
           <td>&nbsp;</td>
         </tr>
         </table>
-      render: Markdown
+      render: HTML
     validations:
       required: false
 
