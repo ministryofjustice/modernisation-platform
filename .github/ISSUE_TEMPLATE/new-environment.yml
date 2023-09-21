@@ -49,18 +49,18 @@ body:
         - label: Production
     validations:
       required: true
-  # - type: checkboxes
-  #   id: environment-access
-  #   attributes:
-  #     label: 
-  #     description: 
-  #     options:
-  #       - label: 
-  #         required: false
+  - type: checkboxes
+    id: environment-access-dev
+    attributes:
+      label: Environment access level Development
+      description: 
+      options:
+        - label: view-only
+        - label: developer
+        - label: sandbox
+    validations:
+      required: false
 
-  #           | Environment   | Access level |
-  #       | ---     | --- |
-  #       |<ul><li>[ ] Development</li></ul> | <ul><li>[ ] view-only</li><li>[ ] developer</li><li>[ ] sandbox</li></ul> |
   #       |<ul><li>[ ] Test</li></ul>   | <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
   #       |<ul><li>[ ] Preproduction</li></ul>| <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
   #       |<ul><li>[ ] Production</li></ul> | <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
