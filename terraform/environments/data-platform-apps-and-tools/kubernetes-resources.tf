@@ -49,4 +49,6 @@ resource "kubernetes_manifest" "cert_manager_ingress_nginx_default_certificate" 
       ]
     }
   }
+
+  depends_on = [kubernetes_manifest.cert_manager_cluster_issuer_letsencrypt_production]
 }

@@ -27,6 +27,9 @@ module "eks" {
     vpc-cni = {
       most_recent = true
     }
+    aws-guardduty-agent = {
+      most_recent = true
+    }
   }
 
   eks_managed_node_group_defaults = {
@@ -40,7 +43,7 @@ module "eks" {
     general = {
       min_size       = 1
       max_size       = 10
-      desired_size   = 1
+      desired_size   = 3
       instance_types = ["t3.large", "t3a.large"]
     }
   }
