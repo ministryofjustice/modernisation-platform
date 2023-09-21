@@ -166,9 +166,12 @@ body:
       label: Additional features
       description: Please check any additional features required. For more information see here https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-networking.html#certificate-services If you are not sure you can leave these blank and they can be added at a later date
       value:
-         - [ ] Additional VPC Endpoints
-         - [ ] Extended DNS Zones
-         - [ ] Other - please specify
+
+        - [ ] Additional VPC Endpoints
+
+        - [ ] Extended DNS Zones
+
+        - [ ] Other - please specify
     validations:
       required: true
   - type: textarea
