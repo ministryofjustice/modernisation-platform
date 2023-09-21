@@ -60,6 +60,39 @@ body:
         - label: sandbox
     validations:
       required: false
+  - type: checkboxes
+    id: environment-access-test
+    attributes:
+      label: Environment access level Test
+      description: 
+      options:
+        - label: view-only
+        - label: developer
+        - label: sandbox
+    validations:
+      required: false
+  - type: checkboxes
+    id: environment-access-preprod
+    attributes:
+      label: Environment access level Preproduction
+      description: 
+      options:
+        - label: view-only
+        - label: developer
+        - label: sandbox
+    validations:
+      required: false
+  - type: checkboxes
+    id: environment-access-production
+    attributes:
+      label: Environment access level Production
+      description: 
+      options:
+        - label: view-only
+        - label: developer
+        - label: sandbox
+    validations:
+      required: false
 
   #       |<ul><li>[ ] Test</li></ul>   | <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
   #       |<ul><li>[ ] Preproduction</li></ul>| <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
