@@ -23,4 +23,8 @@ configuration:
 
 snapshotsEnabled: false
 
-# schedules:
+schedules:
+  all-namespaces:
+    schedule: "0 0/3 * * *"
+    template:
+      ttl: "720h"
