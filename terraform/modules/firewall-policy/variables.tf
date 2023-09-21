@@ -23,6 +23,12 @@ variable "fw_kms_arn" {
   type        = string
 }
 
+variable "fw_managed_rule_groups" {
+  description = "Names of AWS managed rule groups from https://docs.aws.amazon.com/network-firewall/latest/developerguide/aws-managed-rule-groups-threat-signature.html"
+  type        = list(string)
+  default     = []
+}
+
 variable "fw_policy_name" {
   type = string
 }

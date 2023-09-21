@@ -1,3 +1,5 @@
+data "aws_region" "current" {}
+
 resource "random_id" "policy_id" {
   byte_length = 2
 }
@@ -11,6 +13,13 @@ resource "aws_networkfirewall_firewall_policy" "main" {
   firewall_policy {
     stateful_engine_options {
       rule_order = "DEFAULT_ACTION_ORDER"
+    }
+    dynamic "stateful_rule_group_reference" {
+      #for_each = toset(var.fw_managed_rule_groups)
+      for_each = length(var.fw_managed_rule_groups) > 0 ? toset(var.fw_managed_rule_groups) : []
+      content {
+        resource_arn = format("arn:aws:network-firewall:%s:aws-managed:stateful-rulegroup/%s", data.aws_region.current.name, stateful_rule_group_reference.key)
+      }
     }
     stateful_rule_group_reference {
       resource_arn = aws_networkfirewall_rule_group.stateful.arn
@@ -26,8 +35,6 @@ resource "aws_networkfirewall_firewall_policy" "main" {
   }
   tags = var.tags
 }
-
-
 
 resource "aws_networkfirewall_rule_group" "stateful" {
   capacity = var.fw_rulegroup_capacity
