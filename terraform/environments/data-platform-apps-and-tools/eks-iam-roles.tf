@@ -105,7 +105,7 @@ module "velero_role" {
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${kubernetes_namespace.velero_system.metadata[0].name}:<serviceaccountname>"]
+      namespace_service_accounts = ["${kubernetes_namespace.velero_system.metadata[0].name}:velero-server"]
     }
   }
 }

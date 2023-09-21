@@ -1,1 +1,24 @@
 ---
+serviceAccount:
+  server:
+    annotations:
+      eks.amazonaws.com/role-arn: ${eks_role_arn}
+
+initContainers:
+  - name: velero-plugin-for-aws
+    image: velero/velero-plugin-for-aws:${velero_aws_plugin_version}
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+      - mountPath: /target
+        name: plugins
+
+configuration:
+  backupStorageLocation:
+    - name: default
+      provider: aws
+      bucket: ${velero_bucket}
+      prefix: ${velero_prefix}
+      config:
+        region: ${aws_region}
+
+# schedules:
