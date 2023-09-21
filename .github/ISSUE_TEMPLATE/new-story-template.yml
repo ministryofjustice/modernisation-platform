@@ -48,8 +48,8 @@ body:
       required: false
   - type: testarea
     id: proposal-unknowns
-    attribures:
-      descripyion: Assumptions / Hypothesis / Questions / Unknowns
+    attributes:
+      description: Assumptions / Hypothesis / Questions / Unknowns
       label: Proposal / Unknowns
       value:
         "### Hypothesis 
