@@ -1,6 +1,6 @@
 name: Modernisation platform Story
 description: 📖 Create Modernisation Platform story
-title: "<title>"
+title: "[gitmoji] <title>"
 labels: ["needs refining"]
 body:
   - type: markdown
