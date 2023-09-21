@@ -1,7 +1,7 @@
 module "eks_backup_bucket" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v7.0.0"
 
-  bucket_prefix      = "moj-${local.application_name}-${local.environment}-velero"
+  bucket_prefix      = "moj-dp-${local.environment}-velero"
   versioning_enabled = true
 
   # to disable ACLs in preference of BucketOwnership controls as per https://aws.amazon.com/blogs/aws/heads-up-amazon-s3-security-changes-are-coming-in-april-of-2023/ set:
