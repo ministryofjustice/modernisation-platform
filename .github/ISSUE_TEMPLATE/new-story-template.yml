@@ -1,6 +1,6 @@
 name: Modernisation platform Story
 description: 📖 Create Modernisation Platform story
-title: "[gitmoji] <title>"
+title: "<title>"
 labels: ["needs refining"]
 body:
   - type: markdown
@@ -46,10 +46,10 @@ body:
       value:
     validations:
       required: false
-  - type: testarea
+  - type: textarea
     id: proposal-unknowns
     attributes:
-      description: Assumptions / Hypothesis / Questions / Unknowns
+      description: Assumptions, Hypothesis, Questions, Unknowns
       label: Proposal / Unknowns
       value:
         "### Hypothesis 
