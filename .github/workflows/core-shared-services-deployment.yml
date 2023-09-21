@@ -76,7 +76,7 @@ jobs:
           #RUN TERRATEST
           pushd terraform/environments/core-shared-services/test
           go mod tidy
-          TEST=`go test -v | ${git_dir}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
+          TEST=`go test | ${git_dir}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
           popd
           TEST="> TERRATEST RESULT - core-shared-services
           ${TEST}"
