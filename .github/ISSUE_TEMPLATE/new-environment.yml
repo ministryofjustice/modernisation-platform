@@ -39,6 +39,7 @@ body:
       required: true
   - type: checkboxes
     id: environment
+    label: Environments
     attributes:
       description: Which environments would you like for your application, (we recommend production and one non production environment if possible),The access level determines what actions you can do in the AWS console, see here for more information see https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#access. Choose one access level per environment.
       options: 
