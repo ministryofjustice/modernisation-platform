@@ -119,7 +119,7 @@ body:
           <td>&nbsp;</td>
         </tr>
         </table>
-      render: HTML
+      render: Markdown
     validations:
       required: false
 
