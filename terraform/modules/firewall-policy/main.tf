@@ -15,7 +15,6 @@ resource "aws_networkfirewall_firewall_policy" "main" {
       rule_order = "DEFAULT_ACTION_ORDER"
     }
     dynamic "stateful_rule_group_reference" {
-      #for_each = toset(var.fw_managed_rule_groups)
       for_each = length(var.fw_managed_rule_groups) > 0 ? toset(var.fw_managed_rule_groups) : []
       content {
         resource_arn = format("arn:aws:network-firewall:%s:aws-managed:stateful-rulegroup/%s", data.aws_region.current.name, stateful_rule_group_reference.key)
