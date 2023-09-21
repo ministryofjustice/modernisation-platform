@@ -82,3 +82,19 @@ resource "helm_release" "aws_efs_csi_driver" {
     )
   ]
 }
+
+# resource "helm_release" "velero" {
+#   name       = "velero"
+#   repository = "https://vmware-tanzu.github.io/helm-charts"
+#   chart      = "velero"
+#   version    = "5.0.2"
+#   namespace  = kubernetes_namespace.velero_system.metadata[0].name
+#   values = [
+#     templatefile(
+#       "${path.module}/src/helm/velero/values.yml.tftpl",
+#       {
+#         eks_role_arn = module.efs_csi_driver_role.iam_role_arn
+#       }
+#     )
+#   ]
+# }

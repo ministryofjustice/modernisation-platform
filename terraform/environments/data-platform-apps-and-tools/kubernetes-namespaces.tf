@@ -15,3 +15,9 @@ resource "kubernetes_namespace" "ingress_nginx" {
     name = "ingress-nginx"
   }
 }
+
+resource "kubernetes_namespace" "velero_system" {
+  metadata {
+    name = "velero-system"
+  }
+}
