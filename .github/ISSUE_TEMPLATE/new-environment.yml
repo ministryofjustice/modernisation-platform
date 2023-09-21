@@ -53,7 +53,8 @@ body:
     id: environment-access-dev
     attributes:
       label: Environment access level Development
-      description: 
+      description:
+      multiple: true 
       options:
         - label: view-only
         - label: developer
@@ -64,7 +65,8 @@ body:
     id: environment-access-test
     attributes:
       label: Environment access level Test
-      description: 
+      description:
+      multiple: true 
       options:
         - label: view-only
         - label: developer
@@ -75,7 +77,8 @@ body:
     id: environment-access-preprod
     attributes:
       label: Environment access level Preproduction
-      description: 
+      description:
+      multiple: true 
       options:
         - label: view-only
         - label: developer
@@ -86,7 +89,8 @@ body:
     id: environment-access-production
     attributes:
       label: Environment access level Production
-      description: 
+      description:
+      multiple: true
       options:
         - label: view-only
         - label: developer
@@ -122,67 +126,66 @@ body:
       render: HTML
     validations:
       required: false
-
-# <!-- 
-# These will be used to tag your AWS resources, for further details on tagging please see here 
-# https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use
-
-# The is-production tag will be inferred from the environment and is not needed here
-# -->
-
-# tag | value
-# --- | ---
-# application |
-# business-unit |
-# infrastructure-support |
-# owner |
-
-
-# <!-- 
-# Valid business-unit values
-# HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE
-
-# The infrastructure-support tag should be an email address which will receive AWS Health Operations emails.
-# -->
-
-# ## Networking options
-
-# ### Subnet sets
-
-# <!--Please choose one of the below, most applications will use the general subnet set for their business unit. This means that they will benefit from out of the box connectivity to other applications, most applications will use the general subnet.  If an application has highly sensitive data it may need to go into a subnet with limited connectivity. -->
-
-# - [ ] General - this application will use the same subnet as other applications in your business unit
-# - [ ] Isolated - this application has highly sensitive data which must have its own isolated subnet with no network connectivity
-
-# ### How do users connect to the application?
-
-# - [ ] Over the public internet
-# - [ ] With a purple cabled device (please give details)
-# - [ ] With a MoJ Official device
-
-# ### Connectivity to other applications or external parties
-
-# <!-- Please detail here and connectivity that your application needs, eg to other applications or external parties -->
-
-# ## Additional features
-
-# <!-- 
-# Please check any additional features required. For more information see here
-# https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-networking.html#certificate-services
-# If you are not sure you can leave these blank and they can be added at a later date
-# -->
-
-# - [ ] Additional VPC Endpoints
-# - [ ] Extended DNS Zones
-# - [ ] Other - please specify
-
-# ## Other information
-
-# <!-- Any other information you feel is relevant, please remember this is a public repository -->
-
-# ## Definition of done
-
-# <!-- Checklist for definition of done and acceptance criteria, for example: -->
-
-# - [ ] account created
-# - [ ] customer informed
+  - type: markdown
+    attributes:
+      value: "Valid business-unit values | HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE | The infrastructure-support tag should be an email address which will receive AWS Health Operations emails."
+  - type: markdown
+    attributes:
+      value: "## Networking options"
+  - type: checkboxes
+    id: subnet-sets
+    attributes:
+      label: Subnet sets
+      description: Please choose one of the below, most applications will use the general subnet set for their business unit. This means that they will benefit from out of the box connectivity to other applications, most applications will use the general subnet.  If an application has highly sensitive data it may need to go into a subnet with limited connectivity.
+      options:
+        - label: General
+        - label: Isolated
+    validations:    
+      required: true
+  - type: dropdown
+    id: app-connect
+    attributes:
+      label: How do users connect to the application
+      description: 
+      multiple: false
+      options:
+        - Over the public internet
+        - With a purple cabled device (please give details)
+        - With a MoJ Official device
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: "### Connectivity to other applications or external parties"
+  - type: markdown
+    attributes:
+      value: Please detail here and connectivity that your application needs, eg to other applications or external parties
+  - type: textarea
+    id: add-feat
+    attributes:
+      label: Additional features
+      description: Please check any additional features required. For more information see here https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-networking.html#certificate-services If you are not sure you can leave these blank and they can be added at a later date
+      value:
+         - [ ] Additional VPC Endpoints
+         - [ ] Extended DNS Zones
+         - [ ] Other - please specify
+    validations:
+      required: true
+  - type: textarea
+    id: other-info
+    attributes:
+      label: Other information
+      description: Any other information you feel is relevant, please remember this is a public repository
+      value:
+    validations:
+      required: 
+  - type: textarea
+    id: dod
+    attributes:
+      description: Please clearly and concisely detail the Definition of Done.
+      label: Definition of Done
+      value:
+        - [ ] account created
+        - [ ] customer informed
+    validations:
+      required: true
