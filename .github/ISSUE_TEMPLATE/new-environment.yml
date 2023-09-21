@@ -93,7 +93,7 @@ body:
         - label: sandbox
     validations:
       required: false
-  - type: markdown
+  - type: textarea
     id: tags 
     attributes:
       label: Tags
@@ -105,6 +105,7 @@ body:
         business-unit |
         infrastructure-support |
         owner |
+      render: Markdown
     validations:
       required: false
 
