@@ -1,6 +1,6 @@
 name: Modernisation platform Story
 description: 📖 Create new Modernisation platform DevOps story
-title: "[gitmoji] <title>"
+title: "<title>"
 labels: ["needs refining"]
 body:
   - type: markdown
@@ -28,7 +28,7 @@ body:
       label: Value / Purpose
       value:
     validations:
-      required: false
+      required: true
   - type: input
     id: useful-contacts
     attributes:
@@ -44,6 +44,23 @@ body:
       description: Please add any useful links or additional information that would be beneficial to anyone working on this Issue.
       label: Additional Information 
       value:
+    validations:
+      required: false
+  - type: testarea
+    id: proposal-unknowns
+    attribures:
+      descripyion: Assumptions / Hypothesis / Questions / Unknowns
+      label: Proposal / Unknowns
+      value:
+        "### Hypothesis 
+        If we... [do a thing]
+        Then... [this will happ]
+
+        ### Proposal
+        A proposal that is something testable, don't worry whether it works or not, it's a place for ideas. 
+
+        ### Unknowns
+        Potential pitfalls that could cause the story to expand beyond its original scope. Ideally this section will remain blank."
     validations:
       required: false
   - type: textarea
@@ -64,7 +81,7 @@ body:
 
         - [ ] Tests are green
     validations:
-      required: false
+      required: true
   - type: markdown
     attributes:
       value: |
