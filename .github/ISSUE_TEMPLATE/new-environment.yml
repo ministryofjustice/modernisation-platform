@@ -99,12 +99,26 @@ body:
       label: Tags
       description: These will be used to tag your AWS resources, for further details on tagging please see here https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use
       value:  |
-        tag | value
-        --- | ---
-        application |
-        business-unit |
-        infrastructure-support |
-        owner |
+        <table>
+        <tr>
+          <td>Tag</td>
+          <td>Value</td>
+        </tr>
+          <td>application</td>
+          <td>&nbsp;</td>
+        <tr>
+          <td>business-unit</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>infrastructure-support</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>owner</td>
+          <td>&nbsp;</td>
+        </tr>
+        </table>
       render: HTML
     validations:
       required: false
