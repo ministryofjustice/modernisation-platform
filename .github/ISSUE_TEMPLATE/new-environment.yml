@@ -93,12 +93,20 @@ body:
         - label: sandbox
     validations:
       required: false
-
-  #       |<ul><li>[ ] Test</li></ul>   | <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
-  #       |<ul><li>[ ] Preproduction</li></ul>| <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
-  #       |<ul><li>[ ] Production</li></ul> | <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
-
-# ### Tags
+  - type: markdown
+    id: tags 
+    attributes:
+      label: Tags
+      description: These will be used to tag your AWS resources, for further details on tagging please see here https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use
+      value:  |
+        tag | value
+        --- | ---
+        application |
+        business-unit |
+        infrastructure-support |
+        owner |
+    validations:
+      required: false
 
 # <!-- 
 # These will be used to tag your AWS resources, for further details on tagging please see here 
