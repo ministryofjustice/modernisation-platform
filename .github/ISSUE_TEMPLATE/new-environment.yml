@@ -37,21 +37,33 @@ body:
       value:
     validations:
       required: true
-  - type: textarea
+  - type: checkboxes
     id: environment
     attributes:
       label: Environments
       description: Which environments would you like for your application, (we recommend production and one non production environment if possible),The access level determines what actions you can do in the AWS console, see here for more information see https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#access. Choose one access level per environment.
-      value: 
-
-        | Environment   | Access level |
-        | ---     | --- |
-        |<ul><li>[ ] Development</li></ul> | <ul><li>[ ] view-only</li><li>[ ] developer</li><li>[ ] sandbox</li></ul> |
-        |<ul><li>[ ] Test</li></ul>   | <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
-        |<ul><li>[ ] Preproduction</li></ul>| <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
-        |<ul><li>[ ] Production</li></ul> | <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
+      options: 
+        - label: Development
+        - label: test
+        - label: Preproduction
+        - label: Production
     validations:
       required: true
+  # - type: checkboxes
+  #   id: environment-access
+  #   attributes:
+  #     label: 
+  #     description: 
+  #     options:
+  #       - label: 
+  #         required: false
+
+  #           | Environment   | Access level |
+  #       | ---     | --- |
+  #       |<ul><li>[ ] Development</li></ul> | <ul><li>[ ] view-only</li><li>[ ] developer</li><li>[ ] sandbox</li></ul> |
+  #       |<ul><li>[ ] Test</li></ul>   | <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
+  #       |<ul><li>[ ] Preproduction</li></ul>| <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
+  #       |<ul><li>[ ] Production</li></ul> | <ul><li>[ ] view-only</li><li>[ ] developer</li></ul> |
 
 # ### Tags
 
