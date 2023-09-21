@@ -49,7 +49,7 @@ body:
         - label: Production
     validations:
       required: true
-  - type: checkboxes
+  - type: dropdown
     id: environment-access-dev
     attributes:
       label: Environment access level Development
@@ -60,7 +60,7 @@ body:
         - label: sandbox
     validations:
       required: false
-  - type: checkboxes
+  - type: dropdown
     id: environment-access-test
     attributes:
       label: Environment access level Test
@@ -71,7 +71,7 @@ body:
         - label: sandbox
     validations:
       required: false
-  - type: checkboxes
+  - type: dropdown
     id: environment-access-preprod
     attributes:
       label: Environment access level Preproduction
@@ -82,7 +82,7 @@ body:
         - label: sandbox
     validations:
       required: false
-  - type: checkboxes
+  - type: dropdown
     id: environment-access-production
     attributes:
       label: Environment access level Production
