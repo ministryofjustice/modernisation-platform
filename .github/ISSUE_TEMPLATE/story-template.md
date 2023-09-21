@@ -1,6 +1,6 @@
 ---
-name: Modernisation Platform Story
-about: Create new Modernisation Platform story
+name: Modernisation Platform Story old form
+about: Old Create new Modernisation Platform story
 labels: ["needs refining"]
 ---
 
