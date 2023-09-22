@@ -131,4 +131,5 @@ resource "helm_release" "gatekeeper" {
       {}
     )
   ]
+  depends_on = [kubernetes_labels.kube_system]
 }
