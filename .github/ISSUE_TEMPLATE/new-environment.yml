@@ -56,9 +56,9 @@ body:
       description:
       multiple: true 
       options:
-        - label: view-only
-        - label: developer
-        - label: sandbox
+        - view-only
+        - developer
+        - sandbox
     validations:
       required: false
   - type: dropdown
@@ -68,9 +68,9 @@ body:
       description:
       multiple: true 
       options:
-        - label: view-only
-        - label: developer
-        - label: sandbox
+        - view-only
+        - developer
+        - sandbox
     validations:
       required: false
   - type: dropdown
@@ -80,9 +80,9 @@ body:
       description:
       multiple: true 
       options:
-        - label: view-only
-        - label: developer
-        - label: sandbox
+        - view-only
+        - developer
+        - sandbox
     validations:
       required: false
   - type: dropdown
@@ -92,9 +92,9 @@ body:
       description:
       multiple: true
       options:
-        - label: view-only
-        - label: developer
-        - label: sandbox
+        - view-only
+        - developer
+        - sandbox
     validations:
       required: false
   - type: textarea
