@@ -118,3 +118,17 @@ resource "helm_release" "external_secrets" {
     )
   ]
 }
+
+resource "helm_release" "gatekeeper" {
+  name       = "gatekeeper"
+  repository = "https://open-policy-agent.github.io/gatekeeper/charts"
+  chart      = "gatekeeper"
+  version    = "3.13.0"
+  namespace  = kubernetes_namespace.gatekeeper_system.metadata[0].name
+  values = [
+    templatefile(
+      "${path.module}/src/helm/gatekeeper/values.yml.tftpl",
+      {}
+    )
+  ]
+}

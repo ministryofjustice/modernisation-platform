@@ -32,3 +32,9 @@ data "aws_route53_zone" "apps_tools" {
   name         = local.environment_configuration.route53_zone
   private_zone = false
 }
+
+data "kubernetes_namespace" "kube_system" {
+  metadata {
+    name = "kube-system"
+  }
+}
