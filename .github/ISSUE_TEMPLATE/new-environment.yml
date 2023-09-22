@@ -190,7 +190,11 @@ body:
       description: Please clearly and concisely detail the Definition of Done.
       label: Definition of Done
       value:
+        
+        Definition of Done
         - [ ] account created
+
         - [ ] customer informed
+
     validations:
       required: true
