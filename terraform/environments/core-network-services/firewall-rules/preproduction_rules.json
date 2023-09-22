@@ -90,10 +90,24 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
+  "mp_hmpps_preproduction_to_noms_live": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-live-vnet}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
   "noms_live_dr_to_mp_hmpps_preproduction": {
     "action": "PASS",
     "source_ip": "${noms-live-dr-vnet}",
     "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "mp_hmpps_preproduction_to_noms_live_dr": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-live-dr-vnet}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
@@ -104,10 +118,24 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
+  "mp_hmpps_preproduction_to_noms_mgmt_live": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-mgmt-live-vnet}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
   "noms_mgmt_live_dr_to_mp_hmpps_preproduction": {
     "action": "PASS",
     "source_ip": "${noms-mgmt-live-dr-vnet}",
     "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "mp_hmpps_preproduction_to_noms_mgmt_live_dr": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-mgmt-live-dr-vnet}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
