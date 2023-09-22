@@ -18,7 +18,10 @@
   "options": {
     "bastion_linux": false,
     "additional_cidrs": [],
-    "additional_endpoints": [],
+    "additional_endpoints": [
+      "com.amazonaws.eu-west-2.kinesis-streams",
+      "com.amazonaws.eu-west-2.secretsmanager"      
+    ],
     "additional_private_zones": [],
     "additional_vpcs": [],
     "dns_zone_extend": []
