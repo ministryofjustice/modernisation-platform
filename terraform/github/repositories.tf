@@ -104,6 +104,7 @@ module "terraform-module-trusted-advisor" {
     "aws",
     "trusted-advisor"
   ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
 module "terraform-module-bastion-linux" {
