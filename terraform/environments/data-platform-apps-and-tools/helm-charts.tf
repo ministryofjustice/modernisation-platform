@@ -133,3 +133,18 @@ resource "helm_release" "gatekeeper" {
   ]
   depends_on = [kubernetes_labels.kube_system]
 }
+
+resource "helm_release" "policy_controller" {
+  name       = "policy-controller"
+  repository = "https://sigstore.github.io/helm-charts"
+  chart      = "policy-controller"
+  version    = "0.6.2"
+  namespace  = kubernetes_namespace.cosign_system.metadata[0].name
+  values = [
+    templatefile(
+      "${path.module}/src/helm/policy-controller/values.yml.tftpl",
+      {}
+    )
+  ]
+  depends_on = [kubernetes_labels.kube_system]
+}

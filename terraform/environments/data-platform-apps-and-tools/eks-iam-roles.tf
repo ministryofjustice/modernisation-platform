@@ -117,8 +117,8 @@ module "external_secrets_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name_prefix                      = "external-secrets"
-  attach_external_secrets_policy        = true
+  role_name_prefix               = "external-secrets"
+  attach_external_secrets_policy = true
   # external_secrets_secrets_manager_arns
   oidc_providers = {
     main = {

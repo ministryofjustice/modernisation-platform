@@ -6,5 +6,6 @@ resource "kubernetes_labels" "kube_system" {
   }
   labels = {
     "admission.gatekeeper.sh/ignore" = "true"
+    "policy.sigstore.dev/include"    = "false"
   }
 }

@@ -3,6 +3,7 @@ resource "kubernetes_namespace" "external_dns" {
     name = "external-dns"
     labels = {
       "admission.gatekeeper.sh/ignore" = "true"
+      "policy.sigstore.dev/include"    = "false"
     }
   }
 }
@@ -12,6 +13,7 @@ resource "kubernetes_namespace" "cert_manager" {
     name = "cert-manager"
     labels = {
       "admission.gatekeeper.sh/ignore" = "true"
+      "policy.sigstore.dev/include"    = "false"
     }
   }
 }
@@ -21,6 +23,7 @@ resource "kubernetes_namespace" "ingress_nginx" {
     name = "ingress-nginx"
     labels = {
       "admission.gatekeeper.sh/ignore" = "true"
+      "policy.sigstore.dev/include"    = "false"
     }
   }
 }
@@ -30,6 +33,7 @@ resource "kubernetes_namespace" "velero_system" {
     name = "velero-system"
     labels = {
       "admission.gatekeeper.sh/ignore" = "true"
+      "policy.sigstore.dev/include"    = "false"
     }
   }
 }
@@ -39,6 +43,7 @@ resource "kubernetes_namespace" "external_secrets" {
     name = "external-secrets"
     labels = {
       "admission.gatekeeper.sh/ignore" = "true"
+      "policy.sigstore.dev/include"    = "false"
     }
   }
 }
@@ -46,5 +51,19 @@ resource "kubernetes_namespace" "external_secrets" {
 resource "kubernetes_namespace" "gatekeeper_system" {
   metadata {
     name = "gatekeeper-system"
+    labels = {
+      "admission.gatekeeper.sh/ignore" = "true"
+      "policy.sigstore.dev/include"    = "false"
+    }
+  }
+}
+
+resource "kubernetes_namespace" "cosign_system" {
+  metadata {
+    name = "cosign-system"
+    labels = {
+      "admission.gatekeeper.sh/ignore" = "true"
+      "policy.sigstore.dev/include"    = "false"
+    }
   }
 }
