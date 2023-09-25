@@ -55,10 +55,24 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
+  "mp_hmpps_test_to_noms_test_dr_vnet": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "${noms-test-dr-vnet}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
   "noms_test_vnet_to_mp_hmpps_test": {
     "action": "PASS",
     "source_ip": "${noms-test-vnet}",
     "destination_ip": "${hmpps-test}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "mp_hmpps_test_to_noms_test_vnet": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "${noms-test-vnet}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
@@ -76,10 +90,24 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
+  "mp_hmpps_test_to_noms_mgmt_vnet": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
   "noms_mgmt_dr_vnet_to_mp_hmpps_test": {
     "action": "PASS",
     "source_ip": "${noms-mgmt-dr-vnet}",
     "destination_ip": "${hmpps-test}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "mp_hmpps_test_to_noms_mgmt_dr_vnet": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "${noms-mgmt-dr-vnet}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
