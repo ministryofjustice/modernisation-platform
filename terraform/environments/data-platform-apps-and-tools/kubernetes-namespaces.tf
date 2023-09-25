@@ -52,7 +52,6 @@ resource "kubernetes_namespace" "gatekeeper_system" {
   metadata {
     name = "gatekeeper-system"
     labels = {
-      "admission.gatekeeper.sh/ignore" = "true"
       "policy.sigstore.dev/include"    = "false"
     }
   }
