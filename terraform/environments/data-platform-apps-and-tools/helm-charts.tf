@@ -1,3 +1,18 @@
+resource "helm_release" "gatekeeper" {
+  name       = "gatekeeper"
+  repository = "https://open-policy-agent.github.io/gatekeeper/charts"
+  chart      = "gatekeeper"
+  version    = "3.13.0"
+  namespace  = kubernetes_namespace.gatekeeper_system.metadata[0].name
+  values = [
+    templatefile(
+      "${path.module}/src/helm/gatekeeper/values.yml.tftpl",
+      {}
+    )
+  ]
+  depends_on = [kubernetes_labels.kube_system]
+}
+
 resource "helm_release" "cluster_autoscaler" {
   name       = "cluster-autoscaler"
   repository = "https://kubernetes.github.io/autoscaler"
@@ -15,6 +30,7 @@ resource "helm_release" "cluster_autoscaler" {
       }
     )
   ]
+  depends_on = [helm_release.gatekeeper]
 }
 
 resource "helm_release" "external_dns" {
@@ -32,6 +48,7 @@ resource "helm_release" "external_dns" {
       }
     )
   ]
+  depends_on = [helm_release.gatekeeper]
 }
 
 resource "helm_release" "cert_manager" {
@@ -48,6 +65,7 @@ resource "helm_release" "cert_manager" {
       }
     )
   ]
+  depends_on = [helm_release.gatekeeper]
 }
 
 resource "helm_release" "ingress_nginx" {
@@ -65,6 +83,7 @@ resource "helm_release" "ingress_nginx" {
       }
     )
   ]
+  depends_on = [helm_release.gatekeeper]
 }
 
 resource "helm_release" "aws_efs_csi_driver" {
@@ -81,6 +100,7 @@ resource "helm_release" "aws_efs_csi_driver" {
       }
     )
   ]
+  depends_on = [helm_release.gatekeeper]
 }
 
 resource "helm_release" "velero" {
@@ -101,6 +121,7 @@ resource "helm_release" "velero" {
       }
     )
   ]
+  depends_on = [helm_release.gatekeeper]
 }
 
 resource "helm_release" "external_secrets" {
@@ -117,21 +138,7 @@ resource "helm_release" "external_secrets" {
       }
     )
   ]
-}
-
-resource "helm_release" "gatekeeper" {
-  name       = "gatekeeper"
-  repository = "https://open-policy-agent.github.io/gatekeeper/charts"
-  chart      = "gatekeeper"
-  version    = "3.13.0"
-  namespace  = kubernetes_namespace.gatekeeper_system.metadata[0].name
-  values = [
-    templatefile(
-      "${path.module}/src/helm/gatekeeper/values.yml.tftpl",
-      {}
-    )
-  ]
-  depends_on = [kubernetes_labels.kube_system]
+  depends_on = [helm_release.gatekeeper]
 }
 
 resource "helm_release" "policy_controller" {
@@ -146,5 +153,5 @@ resource "helm_release" "policy_controller" {
       {}
     )
   ]
-  depends_on = [kubernetes_labels.kube_system]
+  depends_on = [helm_release.gatekeeper]
 }
