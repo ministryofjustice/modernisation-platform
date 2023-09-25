@@ -155,3 +155,18 @@ resource "helm_release" "policy_controller" {
   ]
   depends_on = [helm_release.gatekeeper]
 }
+
+resource "helm_release" "aws_for_fluent_bit" {
+  name       = "aws-for-fluent-bit"
+  repository = "https://aws.github.io/eks-charts"
+  chart      = "aws-for-fluent-bit"
+  version    = "0.1.30"
+  namespace  = data.kubernetes_namespace.kube_system.metadata[0].name
+  values = [
+    templatefile(
+      "${path.module}/src/helm/aws-for-fluent-bit/values.yml.tftpl",
+      {}
+    )
+  ]
+  depends_on = [helm_release.gatekeeper]
+}
