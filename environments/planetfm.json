@@ -21,6 +21,10 @@
         {
           "github_slug": "studio-webops",
           "level": "developer"
+        },
+        {
+          "github_slug": "studio-webops",
+          "level": "migration"
         }
       ]
     },
