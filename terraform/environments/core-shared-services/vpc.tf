@@ -47,14 +47,14 @@ locals {
     for key in keys(local.networking) :
     key => values(module.vpc[key].private_route_tables_map.private)
   }
-
 }
 
 # Create security group for vpc endpoints
 resource "aws_security_group" "interface_endpoint_security_group" {
+  for_each    = module.vpc
   name        = "${local.application_name}-int-endpoint"
   description = "Security group to control traffic through vpc interface endpoints"
-  vpc_id      = module.vpc["non_live_data"].vpc_id
+  vpc_id      = each.value.vpc_id
   tags = merge(
     local.tags,
     {
@@ -64,13 +64,14 @@ resource "aws_security_group" "interface_endpoint_security_group" {
 }
 
 resource "aws_security_group_rule" "interface_endpoint-security_group_rule" {
+  for_each          = module.vpc
   description       = "Permit secure traffic to this endpoint within the VPC"
   type              = "ingress"
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
-  cidr_blocks       = [local.networking.non_live_data]
-  security_group_id = aws_security_group.interface_endpoint_security_group.id
+  cidr_blocks       = [each.value.vpc_cidr_block]
+  security_group_id = aws_security_group.interface_endpoint_security_group[each.key].id
 }
 
 # Create vpc interface endpoints in private subnets in non_live_data vpc
@@ -81,7 +82,7 @@ resource "aws_vpc_endpoint" "vpc_interface_endpoints_non_live_data" {
   vpc_endpoint_type   = "Interface"
   private_dns_enabled = true
   subnet_ids          = module.vpc["non_live_data"].non_tgw_subnet_ids_map["private"]
-  security_group_ids  = [aws_security_group.interface_endpoint_security_group.id]
+  security_group_ids  = [aws_security_group.interface_endpoint_security_group["non_live_data"].id]
   tags = merge(
     local.tags,
     {
@@ -97,7 +98,7 @@ resource "aws_vpc_endpoint" "vpc_interface_endpoints_live_data" {
   vpc_endpoint_type   = "Interface"
   private_dns_enabled = true
   subnet_ids          = module.vpc["live_data"].non_tgw_subnet_ids_map["private"]
-  security_group_ids  = [aws_security_group.interface_endpoint_security_group.id]
+  security_group_ids  = [aws_security_group.interface_endpoint_security_group["live_data"].id]
   tags = merge(
     local.tags,
     {
@@ -136,9 +137,10 @@ resource "aws_vpc_endpoint" "vpc_gateway_endpoints_live_data" {
 
 # Create security group for image builder
 resource "aws_security_group" "image_builder_security_group" {
+  for_each    = module.vpc
   name        = "${local.application_name}-image-builder" # checkov:skip=CKV2_AWS_5: "This will be attached to instances created via image builder"
   description = "Security group for image builder"
-  vpc_id      = module.vpc["non_live_data"].vpc_id
+  vpc_id      = module.vpc[each.key].vpc_id
   tags = merge(
     local.tags,
     {
@@ -149,22 +151,24 @@ resource "aws_security_group" "image_builder_security_group" {
 
 # tfsec:ignore:aws-vpc-no-public-egress-sgr
 resource "aws_security_group_rule" "image_builder_egress_443" {
+  for_each          = module.vpc
   description       = "Allow traffic from image builder instances"
   type              = "egress"
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.image_builder_security_group.id
+  security_group_id = aws_security_group.image_builder_security_group[each.key].id
 }
 
 # tfsec:ignore:aws-vpc-no-public-egress-sgr
 resource "aws_security_group_rule" "image_builder_egress_80" {
+  for_each          = module.vpc
   description       = "Allow traffic from image builder instances"
   type              = "egress"
   from_port         = 80
   to_port           = 80
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.image_builder_security_group.id
+  security_group_id = aws_security_group.image_builder_security_group[each.key].id
 }
