@@ -97,35 +97,42 @@ body:
         - sandbox
     validations:
       required: false
-  - type: textarea
-    id: tags 
+  - type: markdown
     attributes:
-      label: Tags
-      description: These will be used to tag your AWS resources, for further details on tagging please see here https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use
-      value:  
-        <table>
-        <tr>
-          <td>Tag</td>
-          <td>Value</td>
-        </tr>
-          <td>application</td>
-          <td>&nbsp;</td>
-        <tr>
-          <td>business-unit</td>
-          <td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td>infrastructure-support</td>
-          <td>&nbsp;</td>
-        </tr>
-        <tr>
-          <td>owner</td>
-          <td>&nbsp;</td>
-        </tr>
-        </table>
-      render: HTML
+      value: |
+        ## Tags
+        These will be used to tag your AWS resources, for further details on tagging please see here 
+        https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use
+
+        The is-production tag will be inferred from the environment and is not needed here
+  - type: input
+    id: tag1
+    attributes:
+      label: application 
+      value: 
     validations:
-      required: false
+      required: true
+  - type: input
+    id: tag2
+    attributes:
+      label: business-unit 
+      value: 
+    validations:
+      required: true
+  - type: input
+    id: tag3
+    attributes:
+      label: infrastructure-support 
+      value: 
+    validations:
+      required: true
+  - type: input
+    id: tag4
+    attributes:
+      label: owner 
+      value: 
+    validations:
+      required: true
   - type: markdown
     attributes:
       value: "Valid business-unit values | HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE | The infrastructure-support tag should be an email address which will receive AWS Health Operations emails."
@@ -167,7 +174,8 @@ body:
       description: For more information see here https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-networking.html#certificate-services If you are not sure you can leave these blank and they can be added at a later date
       value:
 
-        Please check any additional features required |
+        Please check any additional features required 
+
         - [ ] Additional VPC Endpoints
 
         - [ ] Extended DNS Zones
@@ -192,6 +200,7 @@ body:
       value:
         
         Definition of Done
+        
         - [ ] account created
 
         - [ ] customer informed
