@@ -61,5 +61,5 @@ output "image_builder_security_group_id" {
 }
 
 output "non_live_private_subnet_ids" {
-  value = local.non_live_private_subnet_ids
+  value = module.vpc["non_live_data"].non_tgw_subnet_ids_map["private"]
 }
