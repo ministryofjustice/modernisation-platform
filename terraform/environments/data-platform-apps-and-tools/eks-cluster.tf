@@ -37,6 +37,7 @@ module "eks" {
       AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
       CloudWatchAgentServerPolicy  = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
     }
+    ami_release_version = "1.27.4-20230825" # Obtained from https://github.com/awslabs/amazon-eks-ami/blob/master/CHANGELOG.md
   }
 
   # TODO: Review these settings

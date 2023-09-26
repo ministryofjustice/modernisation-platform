@@ -15,7 +15,7 @@ resource "helm_release" "gatekeeper" {
 
 resource "helm_release" "gatekeeper_constraint_templates" {
   name      = "gatekeeper-constraint-templates"
-  chart     = "./src/helm/gatekeeper-constraint-templates"
+  chart     = "./src/helm/charts/gatekeeper-constraint-templates"
   namespace = kubernetes_namespace.gatekeeper_system.metadata[0].name
 
   depends_on = [helm_release.gatekeeper]
@@ -23,7 +23,7 @@ resource "helm_release" "gatekeeper_constraint_templates" {
 
 resource "helm_release" "gatekeeper_constraints" {
   name      = "gatekeeper-constraints"
-  chart     = "./src/helm/gatekeeper-constraints"
+  chart     = "./src/helm/charts/gatekeeper-constraints"
   namespace = kubernetes_namespace.gatekeeper_system.metadata[0].name
 
   depends_on = [helm_release.gatekeeper_constraint_templates]
