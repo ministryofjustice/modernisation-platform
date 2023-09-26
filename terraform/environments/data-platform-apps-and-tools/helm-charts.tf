@@ -107,7 +107,7 @@ resource "helm_release" "aws_efs_csi_driver" {
   repository = "https://kubernetes-sigs.github.io/aws-efs-csi-driver"
   chart      = "aws-efs-csi-driver"
   version    = "2.4.9"
-  namespace  = "kube-system"
+  namespace  = data.kubernetes_namespace.kube_system.metadata[0].name
   values = [
     templatefile(
       "${path.module}/src/helm/aws-efs-csi-driver/values.yml.tftpl",

@@ -107,10 +107,11 @@ data "aws_iam_policy_document" "airflow_execution_policy" {
     }
   }
   statement {
-    sid       = "AllowEKSDescribeCluster"
-    effect    = "Allow"
-    actions   = ["eks:DescribeCluster"]
-    resources = [local.environment_configuration.target_eks_cluster_arn]
+    sid     = "AllowEKSDescribeCluster"
+    effect  = "Allow"
+    actions = ["eks:DescribeCluster"]
+    # resources = [local.environment_configuration.target_eks_cluster_arn]
+    resources = ["*"] # testing as above causes a cycle error
   }
 }
 
