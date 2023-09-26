@@ -72,8 +72,7 @@ resource "kubernetes_namespace" "airflow" {
   metadata {
     name = "airflow"
     labels = {
-      "admission.gatekeeper.sh/ignore" = "false"
-      "policy.sigstore.dev/include"    = "false"
+      "policy.sigstore.dev/include" = "false"
     }
   }
 }
