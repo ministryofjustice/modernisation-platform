@@ -13,6 +13,22 @@ resource "helm_release" "gatekeeper" {
   depends_on = [kubernetes_labels.kube_system]
 }
 
+resource "helm_release" "gatekeeper_constraint_templates" {
+  name      = "gatekeeper-constraint-templates"
+  chart     = "./src/helm/gatekeeper-constraint-templates"
+  namespace = kubernetes_namespace.gatekeeper_system.metadata[0].name
+
+  depends_on = [helm_release.gatekeeper]
+}
+
+resource "helm_release" "gatekeeper_constraints" {
+  name      = "gatekeeper-constraints"
+  chart     = "./src/helm/gatekeeper-constraints"
+  namespace = kubernetes_namespace.gatekeeper_system.metadata[0].name
+
+  depends_on = [helm_release.gatekeeper_constraint_templates]
+}
+
 resource "helm_release" "cluster_autoscaler" {
   name       = "cluster-autoscaler"
   repository = "https://kubernetes.github.io/autoscaler"
