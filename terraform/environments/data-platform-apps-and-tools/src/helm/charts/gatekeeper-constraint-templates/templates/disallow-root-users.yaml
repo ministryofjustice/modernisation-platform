@@ -12,6 +12,9 @@ spec:
       rego: |-
         package disallowroot
         violation[{"msg": msg}] {
-          not input.review.object.spec.template.spec.securityContext.runAsNonRoot
-          msg := "Containers must not run as root"
+          current_context := input.review.object.spec.securityContext[_]
+          container := input.review.object.spec.containers[_]
+          not container.securityContext.runAsNonRoot
+          not current_context.runAsNonRoot
+          msg := "Containers must not run as root in both their pod and container security context"
         }
