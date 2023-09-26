@@ -57,7 +57,7 @@ module "eks" {
       groups   = ["system:masters"]
       rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${one(data.aws_iam_roles.eks_sso_access_role.names)}"
       username = "administrator"
-    }
+    },
     {
       groups   = ["system:masters"]
       rolearn  = module.airflow_execution_role.iam_role_arn
