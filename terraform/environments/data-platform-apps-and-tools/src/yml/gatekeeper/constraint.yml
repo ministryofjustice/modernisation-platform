@@ -1,0 +1,14 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sAllowedRepos
+metadata:
+  name: airflow-repo-is-permitted
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    namespaces:
+      - "airflow"
+  parameters:
+    repos:
+      - "repo.data-platform.service.justice.gov.uk/"
