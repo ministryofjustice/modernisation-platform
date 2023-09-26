@@ -181,7 +181,10 @@ resource "helm_release" "aws_for_fluent_bit" {
   values = [
     templatefile(
       "${path.module}/src/helm/aws-for-fluent-bit/values.yml.tftpl",
-      {}
+      {
+        aws_region   = data.aws_region.current.name
+        cluster_name = module.eks.cluster_name
+      }
     )
   ]
   depends_on = [helm_release.gatekeeper]
