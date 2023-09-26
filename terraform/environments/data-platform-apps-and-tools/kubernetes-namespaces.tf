@@ -67,3 +67,13 @@ resource "kubernetes_namespace" "cosign_system" {
     }
   }
 }
+
+resource "kubernetes_namespace" "airflow" {
+  metadata {
+    name = "airflow"
+    labels = {
+      "admission.gatekeeper.sh/ignore" = "false"
+      "policy.sigstore.dev/include"    = "false"
+    }
+  }
+}
