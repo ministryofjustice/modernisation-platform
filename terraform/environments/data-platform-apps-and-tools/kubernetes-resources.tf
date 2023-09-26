@@ -52,3 +52,11 @@ resource "kubernetes_manifest" "cert_manager_ingress_nginx_default_certificate" 
 
   depends_on = [kubernetes_manifest.cert_manager_cluster_issuer_letsencrypt_production]
 }
+
+resource "kubernetes_manifest" "gatekeeper_constraint_template_allowed_repos" {
+  manifest = yamldecode(file("src/yml/gatekeeper/allowed_repos_template.yml"))
+}
+
+resource "kubernetes_manifest" "gatekeeper_constraint_airflow_allowed_repos" {
+  manifest = yamldecode(file("src/yml/gatekeeper/airflow_allowed_repos.yml"))
+}
