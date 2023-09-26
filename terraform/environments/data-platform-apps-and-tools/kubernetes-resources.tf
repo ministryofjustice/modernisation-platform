@@ -58,5 +58,6 @@ resource "kubernetes_manifest" "gatekeeper_constraint_template_allowed_repos" {
 }
 
 resource "kubernetes_manifest" "gatekeeper_constraint_airflow_allowed_repos" {
-  manifest = yamldecode(file("src/yml/gatekeeper/airflow_allowed_repos.yml"))
+  manifest   = yamldecode(file("src/yml/gatekeeper/airflow_allowed_repos.yml"))
+  depends_on = [kubernetes_manifest.gatekeeper_constraint_template_allowed_repos]
 }
