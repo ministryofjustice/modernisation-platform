@@ -1,5 +1,5 @@
 name: Modernisation Platform Bug
-about: Create new Modernisation Platform bug
+description: Create new Modernisation Platform bug
 labels: ["bug"]
 body:
   - type: markdown
