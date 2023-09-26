@@ -4,17 +4,17 @@ locals {
     non_live_data = "10.20.96.0/19"
   }
 
-  vpc_interface_endpoint_service_names = toset([
+  vpc_interface_endpoint_service_names = [
     "com.amazonaws.${data.aws_region.current_region.name}.ec2messages",
     "com.amazonaws.${data.aws_region.current_region.name}.imagebuilder",
     "com.amazonaws.${data.aws_region.current_region.name}.logs",
     "com.amazonaws.${data.aws_region.current_region.name}.ssm",
     "com.amazonaws.${data.aws_region.current_region.name}.ssmmessages"
-  ])
+  ]
 
-  vpc_gateway_endpoint_service_names = toset([
+  vpc_gateway_endpoint_service_names = [
     "com.amazonaws.${data.aws_region.current_region.name}.s3"
-  ])
+  ]
 }
 
 module "vpc" {
@@ -47,6 +47,52 @@ locals {
     for key in keys(local.networking) :
     key => values(module.vpc[key].private_route_tables_map.private)
   }
+
+  vpc_interface_endpoints = {
+    for value in setproduct(keys(local.networking), local.vpc_interface_endpoint_service_names) :
+    "${value[0]}-${value[1]}" => {
+      vpc_name      = value[0],
+      endpoint_name = value[1]
+    }
+  }
+
+  vpc_gateway_endpoints = {
+    for value in setproduct(keys(local.networking), local.vpc_gateway_endpoint_service_names) :
+    "${value[0]}-${value[1]}" => {
+      vpc_name      = value[0],
+      endpoint_name = value[1]
+    }
+  }
+}
+
+resource "aws_vpc_endpoint" "vpc_interface_endpoints" {
+  for_each            = local.vpc_interface_endpoints
+  vpc_id              = module.vpc[each.value.vpc_name].vpc_id
+  service_name        = each.value.endpoint_name
+  vpc_endpoint_type   = "Interface"
+  private_dns_enabled = true
+  subnet_ids          = module.vpc[each.value.vpc_name].non_tgw_subnet_ids_map["private"]
+  security_group_ids  = [aws_security_group.interface_endpoint_security_group[each.value.vpc_name].id]
+  tags = merge(
+    local.tags,
+    {
+      Name = "${local.application_name}-${each.value.endpoint_name}"
+    }
+  )
+}
+
+resource "aws_vpc_endpoint" "vpc_gateway_endpoints" {
+  for_each          = local.vpc_gateway_endpoints
+  vpc_endpoint_type = "Gateway"
+  vpc_id            = module.vpc[each.value.vpc_name].vpc_id
+  service_name      = each.value.endpoint_name
+  route_table_ids   = local.private_route_tables[each.value.vpc_name]
+  tags = merge(
+    local.tags,
+    {
+      Name = "${local.application_name}-${each.value.endpoint_name}"
+    }
+  )
 }
 
 # Create security group for vpc endpoints
@@ -72,67 +118,6 @@ resource "aws_security_group_rule" "interface_endpoint-security_group_rule" {
   protocol          = "tcp"
   cidr_blocks       = [each.value.vpc_cidr_block]
   security_group_id = aws_security_group.interface_endpoint_security_group[each.key].id
-}
-
-# Create vpc interface endpoints in private subnets in non_live_data vpc
-resource "aws_vpc_endpoint" "vpc_interface_endpoints_non_live_data" {
-  for_each            = local.vpc_interface_endpoint_service_names
-  vpc_id              = module.vpc["non_live_data"].vpc_id
-  service_name        = each.value
-  vpc_endpoint_type   = "Interface"
-  private_dns_enabled = true
-  subnet_ids          = module.vpc["non_live_data"].non_tgw_subnet_ids_map["private"]
-  security_group_ids  = [aws_security_group.interface_endpoint_security_group["non_live_data"].id]
-  tags = merge(
-    local.tags,
-    {
-      Name = "${local.application_name}-${each.value}"
-    }
-  )
-}
-
-resource "aws_vpc_endpoint" "vpc_interface_endpoints_live_data" {
-  for_each            = local.vpc_interface_endpoint_service_names
-  vpc_id              = module.vpc["live_data"].vpc_id
-  service_name        = each.value
-  vpc_endpoint_type   = "Interface"
-  private_dns_enabled = true
-  subnet_ids          = module.vpc["live_data"].non_tgw_subnet_ids_map["private"]
-  security_group_ids  = [aws_security_group.interface_endpoint_security_group["live_data"].id]
-  tags = merge(
-    local.tags,
-    {
-      Name = "${local.application_name}-${each.value}"
-    }
-  )
-}
-
-resource "aws_vpc_endpoint" "vpc_gateway_endpoints_non_live_data" {
-  for_each          = local.vpc_gateway_endpoint_service_names
-  vpc_endpoint_type = "Gateway"
-  vpc_id            = module.vpc["non_live_data"].vpc_id
-  service_name      = each.value
-  route_table_ids   = local.private_route_tables["non_live_data"]
-  tags = merge(
-    local.tags,
-    {
-      Name = "${local.application_name}-${each.value}"
-    }
-  )
-}
-
-resource "aws_vpc_endpoint" "vpc_gateway_endpoints_live_data" {
-  for_each          = local.vpc_gateway_endpoint_service_names
-  vpc_endpoint_type = "Gateway"
-  vpc_id            = module.vpc["live_data"].vpc_id
-  service_name      = each.value
-  route_table_ids   = local.private_route_tables["live_data"]
-  tags = merge(
-    local.tags,
-    {
-      Name = "${local.application_name}-${each.value}"
-    }
-  )
 }
 
 # Create security group for image builder
