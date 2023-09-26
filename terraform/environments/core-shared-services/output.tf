@@ -57,9 +57,9 @@ output "tgw_subnet_ids" {
 }
 
 output "image_builder_security_group_id" {
-  value = aws_security_group.image_builder_security_group.id
+  value = { for k, v in aws_security_group.image_builder_security_group : k => v.id }
 }
 
 output "non_live_private_subnet_ids" {
-  value = local.non_live_private_subnet_ids
+  value = module.vpc["non_live_data"].non_tgw_subnet_ids_map["private"]
 }
