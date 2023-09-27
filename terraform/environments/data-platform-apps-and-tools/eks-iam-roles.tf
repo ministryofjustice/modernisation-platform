@@ -34,6 +34,8 @@ module "external_dns_role" {
       namespace_service_accounts = ["${kubernetes_namespace.external_dns.metadata[0].name}:external-dns"]
     }
   }
+
+  tags = local.tags
 }
 
 module "cert_manager_role" {
@@ -90,6 +92,8 @@ module "efs_csi_driver_role" {
       namespace_service_accounts = ["kube-system:efs-csi-controller-sa"]
     }
   }
+
+  tags = local.tags
 }
 
 module "velero_role" {
@@ -108,6 +112,8 @@ module "velero_role" {
       namespace_service_accounts = ["${kubernetes_namespace.velero_system.metadata[0].name}:velero-server"]
     }
   }
+
+  tags = local.tags
 }
 
 module "external_secrets_role" {
@@ -128,4 +134,28 @@ module "external_secrets_role" {
       namespace_service_accounts = ["${kubernetes_namespace.external_secrets.metadata[0].name}:external-secrets"]
     }
   }
+
+  tags = local.tags
+}
+
+module "aws_for_fluent_bit_role" {
+  #checkov:skip=CKV_TF_1:Module is from Terraform registry
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.0"
+
+  role_name_prefix = "fluent-bit"
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${kubernetes_namespace.external_secrets.metadata[0].name}:aws-for-fluent-bit"]
+    }
+  }
+
+  role_policy_arns = {
+    CloudWatchAgentServerPolicy = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+  }
+
+  tags = local.tags
 }
