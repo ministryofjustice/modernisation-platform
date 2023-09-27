@@ -20,13 +20,13 @@ locals {
       eks_cluster_name = "apps-tools-${local.environment}"
       eks_versions = {
         cluster                   = "1.27"
-        ami_release               = "1.27.4-20230825" // Obtained from https://github.com/awslabs/amazon-eks-ami/blob/master/CHANGELOG.md
+        ami_release               = "1.27.5-20230919" // Obtained from https://github.com/awslabs/amazon-eks-ami/blob/master/CHANGELOG.md
         addon_coredns             = "v1.10.1-eksbuild.4"
         addon_kube_proxy          = "v1.27.4-eksbuild.2"
         addon_vpc_cni             = "v1.15.0-eksbuild.2"
         addon_aws_guardduty_agent = "v1.2.0-eksbuild.3"
         addon_ebs_csi_driver      = "v1.23.0-eksbuild.1"
-        addon_efs_csi_driver      = "v1.5.8-eksbuild.1"
+        addon_efs_csi_driver      = "v1.6.0-eksbuild.1"
       }
       eks_sso_access_role = "modernisation-platform-sandbox"
 
