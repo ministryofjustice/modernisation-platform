@@ -34,6 +34,22 @@ module "eks" {
   eks_managed_node_group_defaults = {
     ami_release_version = local.environment_configuration.eks_versions.ami_release
 
+    metadata_options = {
+      http_endpoint               = "enabled"
+      http_put_response_hop_limit = 1
+      http_tokens                 = "required"
+      instance_metadata_tags      = "enabled"
+    }
+
+    block_device_mappings = {
+      xvda = {
+        device_name = "/dev/xvda"
+        ebs = {
+          volume_size = 100
+        }
+      }
+    }
+
     iam_role_additional_policies = {
       AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
       CloudWatchAgentServerPolicy  = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
