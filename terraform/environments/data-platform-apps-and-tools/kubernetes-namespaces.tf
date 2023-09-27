@@ -72,7 +72,8 @@ resource "kubernetes_namespace" "airflow" {
   metadata {
     name = "airflow"
     labels = {
-      "policy.sigstore.dev/include" = "false"
+      "pod-security.kubernetes.io/enforce" = "restricted" # https://kubernetes.io/docs/concepts/security/pod-security-standards/#restricted
+      "policy.sigstore.dev/include"        = "false"      # this will eventually be true, but we aren't currently signing images
     }
   }
 }
