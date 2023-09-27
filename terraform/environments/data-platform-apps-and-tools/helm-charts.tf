@@ -102,23 +102,6 @@ resource "helm_release" "ingress_nginx" {
   depends_on = [helm_release.gatekeeper]
 }
 
-# resource "helm_release" "aws_efs_csi_driver" {
-#   name       = "aws-efs-csi-driver"
-#   repository = "https://kubernetes-sigs.github.io/aws-efs-csi-driver"
-#   chart      = "aws-efs-csi-driver"
-#   version    = "2.4.9"
-#   namespace  = data.kubernetes_namespace.kube_system.metadata[0].name
-#   values = [
-#     templatefile(
-#       "${path.module}/src/helm/aws-efs-csi-driver/values.yml.tftpl",
-#       {
-#         eks_role_arn = module.efs_csi_driver_role.iam_role_arn
-#       }
-#     )
-#   ]
-#   depends_on = [helm_release.gatekeeper]
-# }
-
 resource "helm_release" "velero" {
   name       = "velero"
   repository = "https://vmware-tanzu.github.io/helm-charts"
