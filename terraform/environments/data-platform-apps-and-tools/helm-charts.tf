@@ -160,7 +160,6 @@ resource "helm_release" "aws_for_fluent_bit" {
     templatefile(
       "${path.module}/src/helm/aws-for-fluent-bit/values.yml.tftpl",
       {
-        eks_role_arn = module.aws_for_fluent_bit_role.iam_role_arn
         aws_region   = data.aws_region.current.name
         cluster_name = module.eks.cluster_name
       }

@@ -137,25 +137,3 @@ module "external_secrets_role" {
 
   tags = local.tags
 }
-
-module "aws_for_fluent_bit_role" {
-  #checkov:skip=CKV_TF_1:Module is from Terraform registry
-
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.0"
-
-  role_name_prefix = "fluent-bit"
-
-  oidc_providers = {
-    main = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${kubernetes_namespace.external_secrets.metadata[0].name}:aws-for-fluent-bit"]
-    }
-  }
-
-  role_policy_arns = {
-    CloudWatchAgentServerPolicy = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
-  }
-
-  tags = local.tags
-}

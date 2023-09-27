@@ -36,7 +36,7 @@ module "eks" {
 
     metadata_options = {
       http_endpoint               = "enabled"
-      http_put_response_hop_limit = 1
+      http_put_response_hop_limit = 2
       http_tokens                 = "required"
       instance_metadata_tags      = "enabled"
     }
