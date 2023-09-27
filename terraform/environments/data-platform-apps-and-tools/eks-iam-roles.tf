@@ -11,7 +11,7 @@ module "cluster_autoscaler_role" {
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["kube-system:cluster-autoscaler"]
+      namespace_service_accounts = ["${data.kubernetes_namespace.kube_system.metadata[0].name}:cluster-autoscaler"]
     }
   }
 
@@ -110,7 +110,6 @@ module "velero_role" {
   }
 }
 
-
 module "external_secrets_role" {
   #checkov:skip=CKV_TF_1:Module is from Terraform registry
 
@@ -119,11 +118,14 @@ module "external_secrets_role" {
 
   role_name_prefix               = "external-secrets"
   attach_external_secrets_policy = true
-  # external_secrets_secrets_manager_arns
+
+  // TODO: define SecretsManager path for cluster consumed secrets
+  // external_secrets_secrets_manager_arns = []
+
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${kubernetes_namespace.external_secrets.metadata[0].name}:nonsense"]
+      namespace_service_accounts = ["${kubernetes_namespace.external_secrets.metadata[0].name}:external-secrets"]
     }
   }
 }

@@ -1,3 +1,13 @@
+resource "kubernetes_namespace" "gatekeeper_system" {
+  metadata {
+    name = "gatekeeper-system"
+    labels = {
+      "admission.gatekeeper.sh/ignore" = "no-self-managing"
+      "policy.sigstore.dev/include"    = "false"
+    }
+  }
+}
+
 resource "kubernetes_namespace" "external_dns" {
   metadata {
     name = "external-dns"
@@ -48,16 +58,6 @@ resource "kubernetes_namespace" "external_secrets" {
   }
 }
 
-resource "kubernetes_namespace" "gatekeeper_system" {
-  metadata {
-    name = "gatekeeper-system"
-    labels = {
-      "admission.gatekeeper.sh/ignore" = "no-self-managing"
-      "policy.sigstore.dev/include"    = "false"
-    }
-  }
-}
-
 resource "kubernetes_namespace" "cosign_system" {
   metadata {
     name = "cosign-system"
@@ -72,8 +72,8 @@ resource "kubernetes_namespace" "airflow" {
   metadata {
     name = "airflow"
     labels = {
-      "pod-security.kubernetes.io/enforce" = "restricted" # https://kubernetes.io/docs/concepts/security/pod-security-standards/#restricted
-      "policy.sigstore.dev/include"        = "false"      # this will eventually be true, but we aren't currently signing images
+      "pod-security.kubernetes.io/enforce" = "restricted" // https://kubernetes.io/docs/concepts/security/pod-security-standards/#restricted
+      "policy.sigstore.dev/include"        = "false"      // this will eventually be true, but we aren't currently signing images
     }
   }
 }

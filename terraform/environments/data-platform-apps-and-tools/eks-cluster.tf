@@ -4,8 +4,8 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.16.0"
 
-  cluster_name    = local.eks_cluster_name
-  cluster_version = "1.27"
+  cluster_name    = local.environment_configuration.eks_cluster_name
+  cluster_version = local.environment_configuration.eks_versions.cluster
 
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
@@ -16,31 +16,31 @@ module "eks" {
 
   cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
-  # TODO: Pin versions of these addons
   cluster_addons = {
     coredns = {
-      most_recent = true
+      addon_version = local.environment_configuration.eks_versions.addon_coredns
     }
     kube-proxy = {
-      most_recent = true
+      addon_version = local.environment_configuration.eks_versions.addon_kube_proxy
     }
     vpc-cni = {
-      most_recent = true
+      addon_version = local.environment_configuration.eks_versions.addon_vpc_cni
     }
     aws-guardduty-agent = {
-      most_recent = true
+      addon_version = local.environment_configuration.eks_versions.addon_aws_guardduty_agent
     }
   }
 
   eks_managed_node_group_defaults = {
+    ami_release_version = local.environment_configuration.eks_versions.ami_release
+
     iam_role_additional_policies = {
       AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
       CloudWatchAgentServerPolicy  = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
     }
-    ami_release_version = "1.27.4-20230825" # Obtained from https://github.com/awslabs/amazon-eks-ami/blob/master/CHANGELOG.md
   }
 
-  # TODO: Review these settings
+  // TODO: Review these settings
   eks_managed_node_groups = {
     general = {
       min_size       = 1
@@ -57,12 +57,15 @@ module "eks" {
       groups   = ["system:masters"]
       rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${one(data.aws_iam_roles.eks_sso_access_role.names)}"
       username = "administrator"
-    },
+    }
+    // TODO: Define a namespace scoped user for airflow
+    /*
     {
       groups   = ["system:masters"]
       rolearn  = module.airflow_execution_role.iam_role_arn
       username = "airflow"
     }
+    */
   ]
 
   tags = local.tags

@@ -1,3 +1,4 @@
+// kube-system already exists, so we are using kubernetes_labels to add labels in-place
 resource "kubernetes_labels" "kube_system" {
   api_version = "v1"
   kind        = "Namespace"

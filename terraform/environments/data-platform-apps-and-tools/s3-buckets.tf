@@ -1,3 +1,4 @@
+// TODO: clean up this resource
 module "eks_backup_bucket" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v7.0.0"
 

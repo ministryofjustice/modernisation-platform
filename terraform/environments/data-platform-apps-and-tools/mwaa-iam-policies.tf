@@ -7,7 +7,7 @@ data "aws_iam_policy_document" "airflow_ses_policy" {
     condition {
       test     = "StringEquals"
       variable = "ses:FromAddress"
-      values   = [local.airflow_mail_from_address]
+      values   = ["${local.environment_configuration.airflow_mail_from_address}@${local.environment_configuration.ses_domain_identity}"]
     }
   }
 }
@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "airflow_execution_policy" {
     sid       = "AllowAirflowPublishMetrics"
     effect    = "Allow"
     actions   = ["airflow:PublishMetrics"]
-    resources = ["arn:aws:airflow:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:environment/${local.airflow_name}"]
+    resources = ["arn:aws:airflow:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:environment/${local.environment_configuration.airflow_name}"]
   }
   statement {
     sid       = "DenyS3ListAllMyBuckets"
@@ -63,7 +63,7 @@ data "aws_iam_policy_document" "airflow_execution_policy" {
       "logs:GetQueryResults",
       "logs:DescribeLogGroups"
     ]
-    resources = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:airflow-${local.airflow_name}-*"]
+    resources = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:airflow-${local.environment_configuration.airflow_name}-*"]
   }
   statement {
     sid       = "AllowS3GetAccountPublicAccessBlock"
@@ -107,11 +107,10 @@ data "aws_iam_policy_document" "airflow_execution_policy" {
     }
   }
   statement {
-    sid     = "AllowEKSDescribeCluster"
-    effect  = "Allow"
-    actions = ["eks:DescribeCluster"]
-    # resources = [local.environment_configuration.target_eks_cluster_arn]
-    resources = ["*"] # testing as above causes a cycle error
+    sid       = "AllowEKSDescribeCluster"
+    effect    = "Allow"
+    actions   = ["eks:DescribeCluster"]
+    resources = [module.eks.cluster_arn]
   }
 }
 

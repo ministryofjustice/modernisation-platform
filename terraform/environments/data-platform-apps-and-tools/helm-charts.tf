@@ -34,7 +34,7 @@ resource "helm_release" "cluster_autoscaler" {
   repository = "https://kubernetes.github.io/autoscaler"
   chart      = "cluster-autoscaler"
   version    = "9.29.3"
-  namespace  = "kube-system"
+  namespace  = data.kubernetes_namespace.kube_system.metadata[0].name
 
   values = [
     templatefile(
@@ -163,12 +163,7 @@ resource "helm_release" "policy_controller" {
   chart      = "policy-controller"
   version    = "0.6.2"
   namespace  = kubernetes_namespace.cosign_system.metadata[0].name
-  values = [
-    templatefile(
-      "${path.module}/src/helm/policy-controller/values.yml.tftpl",
-      {}
-    )
-  ]
+  values     = [templatefile("${path.module}/src/helm/policy-controller/values.yml.tftpl", {})]
   depends_on = [helm_release.gatekeeper]
 }
 
