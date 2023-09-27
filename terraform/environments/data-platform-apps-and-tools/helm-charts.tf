@@ -131,7 +131,7 @@ resource "helm_release" "velero" {
       {
         eks_role_arn              = module.velero_role.iam_role_arn
         velero_aws_plugin_version = "v1.7.0"
-        velero_bucket             = module.velero_bucket.bucket.id
+        velero_bucket             = module.velero_s3_bucket.bucket.id
         velero_prefix             = module.eks.cluster_name
         aws_region                = data.aws_region.current.name
       }
