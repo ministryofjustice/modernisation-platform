@@ -18,7 +18,7 @@ module "velero_s3_bucket" {
     aws.bucket-replication = aws
   }
 
-  bucket_prefix = "moj-data-platform-velero-${local.environment}"
+  bucket_prefix = "moj-data-platform-${local.environment}-velero"
 
   tags = local.tags
 }
