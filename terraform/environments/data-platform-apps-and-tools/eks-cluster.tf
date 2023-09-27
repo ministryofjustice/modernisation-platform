@@ -54,18 +54,16 @@ module "eks" {
 
   aws_auth_roles = [
     {
-      groups   = ["system:masters"]
       rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${one(data.aws_iam_roles.eks_sso_access_role.names)}"
-      username = "administrator"
-    }
-    // TODO: Define a namespace scoped user for airflow
-    /*
-    {
       groups   = ["system:masters"]
-      rolearn  = module.airflow_execution_role.iam_role_arn
+      username = "administrator"
+    },
+    {
+      // rolearn cannot consume module.airflow_execution_role.arn because that role consumes module.eks.cluster_arn, but we can construct the ARN manually
+      rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.environment_configuration.airflow_execution_role_name}"
+      groups   = ["airflow"]
       username = "airflow"
     }
-    */
   ]
 
   tags = local.tags
