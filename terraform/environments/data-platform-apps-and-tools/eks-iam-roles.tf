@@ -100,7 +100,7 @@ module "velero_role" {
 
   role_name_prefix      = "velero"
   attach_velero_policy  = true
-  velero_s3_bucket_arns = [module.eks_backup_bucket.bucket.arn]
+  velero_s3_bucket_arns = [module.velero_bucket.bucket.arn]
 
   oidc_providers = {
     main = {
