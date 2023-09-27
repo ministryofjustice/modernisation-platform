@@ -21,5 +21,13 @@ module "vpc" {
   create_flow_log_cloudwatch_iam_role       = true
   flow_log_cloudwatch_log_group_name_suffix = "${local.application_name}-${local.environment}"
 
+  public_subnet_tags = {
+    "kubernetes.io/role/elb" = 1
+  }
+
+  private_subnet_tags = {
+    "kubernetes.io/role/internal-elb" = 1
+  }
+
   tags = local.tags
 }
