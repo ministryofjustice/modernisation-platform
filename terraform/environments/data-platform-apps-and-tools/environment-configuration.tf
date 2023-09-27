@@ -26,6 +26,7 @@ locals {
         addon_vpc_cni             = "v1.15.0-eksbuild.2"
         addon_aws_guardduty_agent = "v1.2.0-eksbuild.3"
         addon_ebs_csi_driver      = "v1.23.0-eksbuild.1"
+        addon_efs_csi_driver      = "v1.5.8-eksbuild.1"
       }
       eks_sso_access_role = "modernisation-platform-sandbox"
 
