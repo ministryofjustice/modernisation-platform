@@ -32,7 +32,7 @@ module "eks" {
   }
 
   eks_managed_node_group_defaults = {
-    ami_release_version = local.environment_configuration.eks_versions.ami_release
+    # ami_release_version = local.environment_configuration.eks_versions.ami_release
     ami_type            = "BOTTLEROCKET_x86_64"
     platform            = "bottlerocket"
     metadata_options = {
