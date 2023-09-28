@@ -20,7 +20,7 @@ locals {
       eks_cluster_name = "apps-tools-${local.environment}"
       eks_versions = {
         cluster                   = "1.27"
-        ami_release               = "1.27.5-20230919" // Obtained from https://github.com/awslabs/amazon-eks-ami/blob/master/CHANGELOG.md
+        ami_release               = "aws-k8s-1.27"
         addon_coredns             = "v1.10.1-eksbuild.4"
         addon_kube_proxy          = "v1.27.4-eksbuild.2"
         addon_vpc_cni             = "v1.15.0-eksbuild.2"
