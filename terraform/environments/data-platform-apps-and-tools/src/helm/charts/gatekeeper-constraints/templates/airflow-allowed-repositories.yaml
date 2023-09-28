@@ -13,3 +13,4 @@ spec:
   parameters:
     repos:
       - "repo.data-platform.service.justice.gov.uk/" # This is a placeholder for testing
+      - "public.ecr.aws/"
