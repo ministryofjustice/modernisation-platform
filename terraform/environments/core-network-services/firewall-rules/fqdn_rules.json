@@ -1,6 +1,7 @@
 {
   "fw_allowed_domains": [
     "microsoft.com",
+    "tlu.dl.delivery.mp.microsoft.com",
     "onegetcdn.azureedge.net",
     ".windowsupdate.microsoft.com",
     ".update.microsoft.com",
