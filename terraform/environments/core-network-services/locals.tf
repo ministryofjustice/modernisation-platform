@@ -63,12 +63,6 @@ locals {
 
   parole_board_vpn_static_routes = ["10.50.0.0/16"]
 
-  sixdg_dev_vpn_static_routes   = ["10.221.0.0/16"]
-  sixdg_test_vpn_static_routes  = ["10.224.0.0/16"]
-  sixdg_stage_vpn_static_routes = ["10.223.0.0/16"]
-  sixdg_uat_vpn_static_routes   = ["10.222.0.0/16"]
-  sixdg_prod_vpn_static_routes  = ["10.225.0.0/16"]
-
   core-vpcs = {
     for file in fileset("../../../environments-networks", "*.json") :
     replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))
