@@ -77,3 +77,12 @@ resource "kubernetes_namespace" "airflow" {
     }
   }
 }
+
+resource "kubernetes_namespace" "openmetadata" {
+  metadata {
+    name = "openmetadata"
+    labels = {
+      "policy.sigstore.dev/include" = "false"
+    }
+  }
+}
