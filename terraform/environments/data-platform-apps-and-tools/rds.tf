@@ -1,4 +1,4 @@
-module "airflow_rds" {
+module "openmetadata_airflow_rds" {
 
   source  = "terraform-aws-modules/rds/aws"
   version = "~> 6.0"
