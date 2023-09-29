@@ -1,0 +1,106 @@
+---
+mysql:
+  enabled: false
+
+elasticsearch:
+  enabled: false
+
+airflow:
+  enabled: true
+  airflow:
+    image:
+      repository: docker.getcollate.io/openmetadata/ingestion
+      tag: 1.0.5
+      pullPolicy: "IfNotPresent"
+    executor: "KubernetesExecutor"
+    extraVolumeMounts:
+      - mountPath: /airflow-logs
+        name: efs-airflow-logs
+      - mountPath: /airflow-dags/dags
+        name: efs-airflow-dags
+    extraVolumes:
+      - name: efs-airflow-logs
+        persistentVolumeClaim:
+          claimName: openmetadata-dependencies-logs-pvc
+      - name: efs-airflow-dags
+        persistentVolumeClaim:
+          claimName: openmetadata-dependencies-dags-pvc
+    config:
+      # This is required for OpenMetadata UI to fetch status of DAGs
+      AIRFLOW__API__AUTH_BACKENDS: airflow.api.auth.backend.basic_auth
+      # OpenMetadata Airflow Apis Plugin DAGs Configuration
+      AIRFLOW__OPENMETADATA_AIRFLOW_APIS__DAG_GENERATED_CONFIGS: "/airflow-dags/dags"
+      # OpenMetadata Airflow Secrets Manager Configuration
+      AIRFLOW__OPENMETADATA_SECRETS_MANAGER__AWS_REGION: ""
+      AIRFLOW__OPENMETADATA_SECRETS_MANAGER__AWS_ACCESS_KEY_ID: ""
+      AIRFLOW__OPENMETADATA_SECRETS_MANAGER__AWS_ACCESS_KEY: ""
+    users:
+      - username: admin
+        password: ${openmetadata_airflow_password}
+        role: Admin
+        email: airflow@data-platform.service.justice.gov.uk
+        firstName: Data
+        lastName: Platform
+  web:
+    extraVolumes:
+      - name: pod-template
+        configMap:
+          name: openmetadata-pod-template
+          defaultMode: 420
+    extraVolumeMounts:
+      - name: pod-template
+        readOnly: true
+        subPath: pod_template.yaml
+        mountPath: /opt/airflow/pod_templates/pod_template.yaml
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 60
+      periodSeconds: 30
+      timeoutSeconds: 10
+      failureThreshold: 10
+    livenessProbe:
+      enabled: true
+      initialDelaySeconds: 60
+      periodSeconds: 30
+      timeoutSeconds: 10
+      failureThreshold: 10
+  postgresql:
+    enabled: false
+  workers:
+    enabled: false
+  flower:
+    enabled: false
+  redis:
+    enabled: false
+  externalDatabase:
+    type: mysql
+    host: ${openmetadata_airflow_rds_host}
+    port: 3306
+    database: airflow
+    user: ${openmetadata_airflow_rds_user}
+    passwordSecret: ${openmetadata_airflow_rds_password_secret}
+    passwordSecretKey: ${openmetadata_airflow_rds_password_secret_key}
+  serviceAccount:
+    create: true
+    name: "airflow"
+    annotations:
+      eks.amazonaws.com/role-arn: ${openmetadata_airflow_eks_role_arn}
+  scheduler:
+    logCleanup:
+      enabled: false
+  dags:
+    path: /airflow-dags/dags
+    persistence:
+      enabled: false
+      # NOTE: "" means cluster-default
+      storageClass: ""
+      size: 1Gi
+      accessMode: ReadWriteMany
+  logs:
+    path: /airflow-logs
+    persistence:
+      enabled: false
+      # empty string means cluster-default
+      storageClass: ""
+      accessMode: ReadWriteMany
+      size: 1Gi
