@@ -292,5 +292,12 @@
     "destination_ip": "${noms-mgmt-vnet}",
     "destination_port": "138",
     "protocol": "UDP"
+  },
+  "cp_to_mp_laa_test": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${laa-test}",
+    "destination_port": "1521",
+    "protocol": "TCP"
   }
 }
