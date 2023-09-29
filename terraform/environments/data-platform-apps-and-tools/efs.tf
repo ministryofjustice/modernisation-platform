@@ -5,7 +5,7 @@ module "efs" {
   version = "~> 1.0"
 
   name          = "openmetadata"
-  encrypted     = false
+  encrypted     = true
   kms_key_arn   = module.openmetadata_efs_kms.key_arn
   attach_policy = false
 
