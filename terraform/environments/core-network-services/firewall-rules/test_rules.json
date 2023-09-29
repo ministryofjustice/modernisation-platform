@@ -297,7 +297,7 @@
     "action": "PASS",
     "source_ip": "${cloud-platform}",
     "destination_ip": "${laa-test}",
-    "destination_port": "1521",
+    "destination_port": "1522",
     "protocol": "TCP"
   }
 }
