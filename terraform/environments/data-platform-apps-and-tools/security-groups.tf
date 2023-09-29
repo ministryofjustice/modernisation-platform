@@ -51,3 +51,25 @@ module "mwaa_security_group" {
 
   tags = local.tags
 }
+
+module "rds_security_group" {
+  #checkov:skip=CKV_TF_1:Module is from Terraform registry
+
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~> 5.0"
+
+  name = "rds"
+
+  vpc_id = module.vpc.vpc_id
+
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 3306
+      to_port     = 3306
+      protocol    = "tcp"
+      cidr_blocks = module.vpc.private_subnets
+    },
+  ]
+
+  tags = local.tags
+}

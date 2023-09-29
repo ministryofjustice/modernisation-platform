@@ -20,6 +20,10 @@ terraform {
       version = "~> 2.0"
       source  = "hashicorp/kubernetes"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.0"
+    }
     time = {
       version = "~> 0.9"
       source  = "hashicorp/time"
