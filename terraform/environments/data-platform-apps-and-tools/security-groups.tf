@@ -67,7 +67,7 @@ module "rds_security_group" {
       from_port   = 3306
       to_port     = 3306
       protocol    = "tcp"
-      cidr_blocks = join(",", module.vpc.private_subnets)
+      cidr_blocks = join(",", module.vpc.private_subnets_cidr_blocks)
     },
   ]
 
