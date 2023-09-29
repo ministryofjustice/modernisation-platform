@@ -23,6 +23,10 @@ module "openmetadata_airflow_rds" {
   manage_master_user_password = false
   password                    = random_password.openmetadata_airflow.result
 
+  maintenance_window      = "Mon:00:00-Mon:03:00"
+  backup_window           = "03:00-06:00"
+  backup_retention_period = 7
+
   performance_insights_enabled = true
 
   create_monitoring_role          = true
