@@ -6,7 +6,7 @@ module "efs" {
 
   name          = "openmetadata"
   encrypted     = false
-  kms_key_arn   = module.kms.openmetadata_efs_kms.key_arn
+  kms_key_arn   = module.openmetadata_efs_kms.key_arn
   attach_policy = false
 
   enable_backup_policy = true
