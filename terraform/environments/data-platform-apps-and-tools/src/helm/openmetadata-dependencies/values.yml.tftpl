@@ -8,83 +8,40 @@ elasticsearch:
 airflow:
   enabled: true
   airflow:
-    image:
-      repository: docker.getcollate.io/openmetadata/ingestion
-      tag: 1.1.6
-      pullPolicy: "IfNotPresent"
-    executor: "KubernetesExecutor"
     config:
-      # This is required for OpenMetadata UI to fetch status of DAGs
-      AIRFLOW__API__AUTH_BACKENDS: airflow.api.auth.backend.basic_auth
-      # OpenMetadata Airflow Apis Plugin DAGs Configuration
-      AIRFLOW__OPENMETADATA_AIRFLOW_APIS__DAG_GENERATED_CONFIGS: "/opt/airflow/dags"
-      # OpenMetadata Airflow Secrets Manager Configuration
-      AIRFLOW__OPENMETADATA_SECRETS_MANAGER__AWS_REGION: ""
-      AIRFLOW__OPENMETADATA_SECRETS_MANAGER__AWS_ACCESS_KEY_ID: ""
-      AIRFLOW__OPENMETADATA_SECRETS_MANAGER__AWS_ACCESS_KEY: ""
+      AIRFLOW__OPENMETADATA_AIRFLOW_APIS__DAG_GENERATED_CONFIGS: "/airflow-dags/dags"
     users:
-    - username: admin
-      password: admin
-      role: Admin
-      email: spiderman@superhero.org
-      firstName: Peter
-      lastName: Parker
-  web:
-    extraVolumes:
-    - name: pod-template
-      configMap:
-        name: openmetadata-pod-template
-        defaultMode: 420
+      - username: admin
+        password: ${openmetadata_airflow_password}
+        role: Admin
+        email: ${openmetadata_airflow_admin_email}
+        firstName: Data
+        lastName: Platform
     extraVolumeMounts:
-      - name: pod-template
-        readOnly: true
-        subPath: pod_template.yaml
-        mountPath: /opt/airflow/pod_templates/pod_template.yaml
-    readinessProbe:
-      enabled: true
-      initialDelaySeconds: 60
-      periodSeconds: 30
-      timeoutSeconds: 10
-      failureThreshold: 10
-    livenessProbe:
-      enabled: true
-      initialDelaySeconds: 60
-      periodSeconds: 30
-      timeoutSeconds: 10
-      failureThreshold: 10
-  postgresql:
-    enabled: false
-  workers:
-    enabled: false
-  flower:
-    enabled: false
-  redis:
-    enabled: false
+      - mountPath: /airflow-logs
+        name: efs-airflow-logs
+      - mountPath: /airflow-dags/dags
+        name: efs-airflow-dags
+    extraVolumes:
+      - name: efs-airflow-logs
+        persistentVolumeClaim:
+          claimName: openmetadata-dependencies-logs-pvc
+      - name: efs-airflow-dags
+        persistentVolumeClaim:
+          claimName: openmetadata-dependencies-dags-pvc
   externalDatabase:
     type: mysql
-    host: mysql
+    host: ${openmetadata_airflow_rds_host}
     port: 3306
-    database: airflow_db
-    user: airflow_user
-    passwordSecret: airflow-mysql-secrets
-    passwordSecretKey: airflow-mysql-password
-  serviceAccount:
-    create: true
-    name: "airflow"
-  scheduler:
-    logCleanup:
-      enabled: false
+    database: ${openmetadata_airflow_rds_db}
+    user: ${openmetadata_airflow_rds_user}
+    passwordSecret: ${openmetadata_airflow_rds_password_secret}
+    passwordSecretKey: ${openmetadata_airflow_rds_password_secret_key}
   dags:
+    path: /airflow-dags/dags
     persistence:
-      enabled: true
-      # NOTE: "" means cluster-default
-      storageClass: ""
-      size: 1Gi
-      accessMode: ReadWriteMany
+      enabled: false
   logs:
+    path: /airflow-logs
     persistence:
-      enabled: true
-      # empty string means cluster-default
-      storageClass: ""
-      accessMode: ReadWriteMany
-      size: 1Gi
+      enabled: false

@@ -137,3 +137,23 @@ module "external_secrets_role" {
 
   tags = local.tags
 }
+
+module "openmetadata_airflow_iam_role" {
+  #checkov:skip=CKV_TF_1:Module is from Terraform registry
+
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.0"
+
+  role_name_prefix = "openmetadata-airflow"
+
+  role_policy_arns = {
+    openmetadata-airflow = module.openmetadata_airflow_iam_policy.arn
+  }
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["${kubernetes_namespace.openmetadata.metadata[0].name}:airflow"]
+    }
+  }
+}
