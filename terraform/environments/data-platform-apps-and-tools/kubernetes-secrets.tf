@@ -15,8 +15,8 @@ resource "kubernetes_secret" "openmetadata_airflow_rds_credentials" {
     namespace = kubernetes_namespace.openmetadata.metadata[0].name
   }
   data = {
-    username = local.openmetadata_airflow_rds_credentials.username
-    password = local.openmetadata_airflow_rds_credentials.password
+    username = "airflow"
+    password = random_password.openmetadata_airflow.result
   }
   type = "Opaque"
 }
