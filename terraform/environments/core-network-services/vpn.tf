@@ -80,6 +80,21 @@ resource "aws_ec2_transit_gateway_route_table_association" "vpn_attachments" {
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
 }
 
+# To prevent BGP routes from sending traffic via VPNs, we need static routes to override them
+resource "aws_ec2_transit_gateway_route" "azure_static_routes" {
+  for_each                       = toset(local.azure_static_routes)
+  destination_cidr_block         = each.value
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
+}
+
+resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_noms_routes_to_firewall" {
+  depends_on                     = [aws_ec2_transit_gateway_route.azure_static_routes]
+  for_each                       = local.noms_vpn_attachment_ids
+  transit_gateway_attachment_id  = each.key
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
+}
+
 resource "aws_ec2_transit_gateway_route" "noms_dr_routes" {
   for_each                       = toset(local.noms_dr_vpn_static_routes)
   destination_cidr_block         = each.key

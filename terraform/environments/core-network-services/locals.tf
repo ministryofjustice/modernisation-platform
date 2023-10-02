@@ -41,6 +41,8 @@ locals {
 
   vpn_attachments = fileexists("./vpn_attachments.json") ? jsondecode(file("./vpn_attachments.json")) : {}
 
+  noms_vpn_attachment_ids = toset([for k in aws_vpn_connection.this : k.transit_gateway_attachment_id if(length(regexall("(?:NOMS)", k.tags.Name)) > 0)])
+
   noms_dr_vpn_static_routes = [
     "10.40.64.0/18",
     "10.40.144.0/20",
