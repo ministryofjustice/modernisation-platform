@@ -185,6 +185,7 @@ resource "helm_release" "openmetadata_dependencies" {
         openmetadata_airflow_rds_db                  = "airflow" // TODO: Check if DB name is output from module
         openmetadata_airflow_rds_password_secret     = kubernetes_secret.openmetadata_airflow_rds_credentials.metadata[0].name
         openmetadata_airflow_rds_password_secret_key = "password"
+        openmetadata_airflow_admin_email             = "${local.environment_configuration.airflow_mail_from_address}@${local.environment_configuration.ses_domain_identity}"
       }
     )
   ]
