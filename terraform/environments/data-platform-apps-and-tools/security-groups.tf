@@ -73,3 +73,22 @@ module "rds_security_group" {
 
   tags = local.tags
 }
+
+module "opensearch_security_group" {
+
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~> 5.0"
+
+  name = "openmetadata-opensearch"
+
+  vpc_id = module.vpc.vpc_id
+
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = join(",", module.vpc.private_subnets_cidr_blocks)
+    },
+  ]
+}
