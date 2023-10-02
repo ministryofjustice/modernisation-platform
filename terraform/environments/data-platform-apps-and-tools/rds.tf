@@ -9,10 +9,12 @@ module "openmetadata_airflow_rds" {
   engine_version       = "8.0"
   family               = "mysql8.0"
   major_engine_version = "8.0"
-  instance_class       = "db.t4g.medium"
+  instance_class       = "db.r6g.xlarge"
 
-  allocated_storage     = 64
-  max_allocated_storage = 256
+  ca_cert_identifier = "rds-ca-rsa2048-g1"
+
+  allocated_storage     = 128
+  max_allocated_storage = 512
 
   multi_az               = true
   db_subnet_group_name   = module.vpc.database_subnet_group
@@ -52,6 +54,8 @@ module "openmetadata_rds" {
   family               = "mysql8.0"
   major_engine_version = "8.0"
   instance_class       = "db.t4g.medium"
+
+  ca_cert_identifier = "rds-ca-rsa2048-g1"
 
   allocated_storage     = 64
   max_allocated_storage = 256
