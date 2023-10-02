@@ -69,9 +69,20 @@ module "openmetadata_rds" {
   manage_master_user_password = false
   password                    = random_password.openmetadata.result
 
+  parameters = [
+    {
+      // Required as per Open Metadata's documentation
+      name  = "sort_buffer_size"
+      value = 10485760
+    },
+    // TODO: Review adding more parameters, such as https://github.com/ministryofjustice/data-platform/blob/main/terraform/aws/analytical-platform-production/cluster/terraform.tfvars#L68-L84
+  ]
+
   maintenance_window      = "Mon:00:00-Mon:03:00"
   backup_window           = "03:00-06:00"
   backup_retention_period = 7
+
+  apply_immediately = true
 
   performance_insights_enabled = true
 
