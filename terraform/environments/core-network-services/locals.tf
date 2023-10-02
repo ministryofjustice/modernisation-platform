@@ -43,25 +43,6 @@ locals {
 
   noms_vpn_attachment_ids = toset([for k in aws_vpn_connection.this : k.transit_gateway_attachment_id if(length(regexall("(?:NOMS)", k.tags.Name)) > 0)])
 
-  noms_dr_vpn_static_routes = [
-    "10.40.64.0/18",
-    "10.40.144.0/20",
-    "10.40.176.0/20",
-    "10.111.0.0/16",
-    "10.112.0.0/16",
-    "10.244.0.0/20",
-    "10.247.0.0/20"
-  ]
-  noms_live_vpn_static_routes = [
-    "10.40.0.0/18",
-    "10.40.128.0/20",
-    "10.40.160.0/20",
-    "10.101.0.0/16",
-    "10.102.0.0/16",
-    "10.47.0.0/26",
-    "10.47.0.64/26",
-    "10.47.0.128/26"
-  ]
   azure_static_routes = [
     "10.0.0.0/11",
     "10.64.0.0/11",
