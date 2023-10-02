@@ -236,7 +236,7 @@ data "aws_iam_policy_document" "delius_artefact_policy" {
     ]
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::*:user/delius-jitbit-development-s3_user"]
+      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-development"]}:*"]
     }
   }
 }
