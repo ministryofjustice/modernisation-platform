@@ -28,7 +28,7 @@ resource "kubernetes_secret" "openmetadata_opensearch_credentials" {
     namespace = kubernetes_namespace.openmetadata.metadata[0].name
   }
   data = {
-    password = random_password.opensearch_master_password.result
+    password = random_password.opensearch.result
   }
   type = "Opaque"
 }

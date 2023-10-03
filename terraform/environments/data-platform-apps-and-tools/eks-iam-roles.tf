@@ -169,7 +169,7 @@ module "openmetadata_iam_role" {
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${kubernetes_namespace.open_metadata.metadata[0].name}:openmetadata"]
+      namespace_service_accounts = ["${kubernetes_namespace.openmetadata.metadata[0].name}:openmetadata"]
     }
   }
 }
