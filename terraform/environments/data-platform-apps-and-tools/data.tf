@@ -43,3 +43,15 @@ data "kubernetes_namespace" "kube_system" {
     name = "kube-system"
   }
 }
+
+##################################################
+# Data Platform Apps and Tools Open Metadata
+##################################################
+
+data "aws_secretsmanager_secret_version" "openmetadata_entra_id_client_id" {
+  secret_id = "openmetadata/entra-id/client-id"
+}
+
+data "aws_secretsmanager_secret_version" "openmetadata_entra_id_tenant_id" {
+  secret_id = "openmetadata/entra-id/tenant-id"
+}
