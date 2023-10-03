@@ -14,6 +14,7 @@
     ".dl.delivery.mp.microsoft.com",
     ".office365.com",
     "archive.ubuntu.com",
-    "security.ubuntu.com"
+    "security.ubuntu.com",
+    ".amazontrust.com"
   ]
 }
