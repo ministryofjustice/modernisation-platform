@@ -25,7 +25,7 @@ data "aws_iam_policy_document" "member-access" {
     #checkov:skip=CKV_AWS_356: Needs to access multiple resources
     effect = "Allow"
     actions = [
-      "aps*",
+      "aps:*",
       "acm-pca:*",
       "acm:*",
       "airflow:*",
@@ -121,7 +121,7 @@ data "aws_iam_policy_document" "member-access" {
       "firehose:*",
       "glacier:*",
       "glue:*",
-      "grafana*",
+      "grafana:*",
       "guardduty:get*",
       "iam:*",
       "kinesis:*",
