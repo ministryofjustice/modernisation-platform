@@ -141,6 +141,7 @@ data "aws_iam_policy_document" "member-access" {
       "sns:*",
       "sqs:*",
       "ssm:*",
+      "sso:DescribeRegisteredRegions",
       "waf:*",
       "wafv2:*",
       "resource-groups:*",
