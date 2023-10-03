@@ -172,7 +172,7 @@ resource "helm_release" "openmetadata_dependencies" {
   name       = "openmetadata-dependencies"
   repository = "https://helm.open-metadata.org"
   chart      = "openmetadata-dependencies"
-  version    = "1.1.13"
+  version    = "1.1.14"
   namespace  = kubernetes_namespace.openmetadata.metadata[0].name
   values = [
     templatefile(
@@ -194,3 +194,37 @@ resource "helm_release" "openmetadata_dependencies" {
 
   depends_on = [kubernetes_secret.openmetadata_airflow]
 }
+
+# resource "helm_release" "openmetadata" {
+#   name       = "openmetadata"
+#   repository = "https://helm.open-metadata.org"
+#   chart      = "openmetadata"
+#   version    = "1.1.14"
+#   namespace  = kubernetes_namespace.open_metadata.metadata[0].name
+#   values = [
+#     templatefile(
+#       "${path.module}/src/helm/openmetadata/values.yml.tftpl",
+#       {
+#         namespace                                      = kubernetes_namespace.open_metadata.metadata[0].name
+#         host                                           = "open-metadata.data-platform.moj.woffenden.dev"
+#         acm_certificate_arn                            = aws_acm_certificate_validation.open_metadata.certificate_arn
+#         eks_role_arn                                   = module.open_metadata_iam_role.iam_role_arn
+#         client_id                                      = data.aws_secretsmanager_secret_version.open_metadata_client_id.secret_string
+#         tenant_id                                      = data.aws_secretsmanager_secret_version.open_metadata_tenant_id.secret_string
+#         jwt_key_id                                     = random_uuid.openmetadata_jwt.result
+#         openmetadata_elasticsearch_host                = resource.aws_opensearch_domain.openmetadata.endpoint
+#         openmetadata_elasticsearch_user                = "openmetadata"
+#         openmetadata_elasticsearch_password_secret     = kubernetes_secret.openmetadata_opensearch.metadata[0].name
+#         openmetadata_elasticsearch_password_secret_key = "password"
+#         openmetadata_rds_host                          = module.rds.db_instance_address
+#         openmetadata_rds_user                          = module.rds.db_instance_username
+#         openmetadata_rds_password_secret               = kubernetes_secret.openmetadata_rds_credentials.metadata[0].name
+#         openmetadata_rds_password_secret_key           = "password"
+#       }
+#     )
+#   ]
+#   wait    = true
+#   timeout = 600
+
+#   depends_on = [helm_release.openmetadata_dependencies, aws_acm_certificate_validation.open_metadata]
+# }
