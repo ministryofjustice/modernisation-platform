@@ -36,7 +36,6 @@ locals {
   production_rules      = fileexists("./firewall-rules/production_rules.json") ? jsondecode(templatefile("./firewall-rules/production_rules.json", local.all_cidr_ranges)) : {}
   fqdn_firewall_rules   = fileexists("./firewall-rules/fqdn_rules.json") ? jsondecode(file("./firewall-rules/fqdn_rules.json")) : {}
   inline_firewall_rules = fileexists("./firewall-rules/inline_rules.json") ? jsondecode(templatefile("./firewall-rules/inline_rules.json", local.all_cidr_ranges)) : {}
-  inline_fqdn_rules     = fileexists("./firewall-rules/inline_fqdn_rules.json") ? jsondecode(file("./firewall-rules/inline_fqdn_rules.json")) : {}
   firewall_rules        = merge(local.development_rules, local.test_rules, local.preproduction_rules, local.production_rules)
 
   vpn_attachments = fileexists("./vpn_attachments.json") ? jsondecode(file("./vpn_attachments.json")) : {}
