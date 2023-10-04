@@ -141,7 +141,6 @@ data "aws_iam_policy_document" "member-access" {
       "sns:*",
       "sqs:*",
       "ssm:*",
-      "sso:DescribeRegisteredRegions",
       "waf:*",
       "wafv2:*",
       "resource-groups:*",
@@ -253,6 +252,12 @@ resource "aws_iam_role_policy_attachment" "testing_member_infrastructure_access_
   count      = terraform.workspace == "testing-test" ? 1 : 0
   role       = aws_iam_role.testing_member_infrastructure_access_role[0].id
   policy_arn = aws_iam_policy.member-access[0].arn
+}
+
+resource "aws_iam_role_policy_attachment" "testing_member_grafana_workspace" {
+  count      = terraform.workspace == "testing-test" ? 1 : 0
+  role       = aws_iam_role.testing_member_infrastructure_access_role[0].id
+  policy_arn = "arn:aws:iam::aws:policy/AWSGrafanaWorkspacePermissionManagement"
 }
 
 # MemberInfrastructureAccessUSEast
