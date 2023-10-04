@@ -36,6 +36,8 @@ locals {
     "portal-development",
     "portal-production",
     "portal-test",
-    "data-platform-production"
+    "data-platform-production",
+    "eric-test",
+    "eric-production"
   ])
 }
