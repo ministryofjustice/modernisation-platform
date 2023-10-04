@@ -255,7 +255,6 @@ resource "aws_iam_role_policy_attachment" "testing_member_infrastructure_access_
 }
 
 resource "aws_iam_role_policy_attachment" "testing_member_grafana_workspace" {
-  count      = terraform.workspace == "testing-test" ? 1 : 0
   role       = aws_iam_role.testing_member_infrastructure_access_role[0].id
   policy_arn = "arn:aws:iam::aws:policy/AWSGrafanaWorkspacePermissionManagement"
 }
