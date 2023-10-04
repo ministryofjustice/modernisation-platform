@@ -29,15 +29,15 @@ locals {
   # skip the following alias creation if the alias is used by another account (they are globally unique)
   skip_alias = sort([
     "apex-development",
+    "data-platform-production",
+    "eric-test",
+    "eric-production",
     "nomis-production",
     "testing-test",
     "nomis-development",
     "oas-test",
     "portal-development",
     "portal-production",
-    "portal-test",
-    "data-platform-production",
-    "eric-test",
-    "eric-production"
+    "portal-test"
   ])
 }
