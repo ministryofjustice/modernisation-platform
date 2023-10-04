@@ -1,0 +1,30 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "test",
+      "access": [
+        {
+          "github_slug": "laa-aws-infrastructure",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "laa-aws-infrastructure",
+          "level": "view-only"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "eric",
+    "business-unit": "LAA",
+    "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
+    "owner": "get-acccess-service-improvement@digital.justice.gov.uk"
+  },
+  "github-oidc-team-repositories": [""]
+}

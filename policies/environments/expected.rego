@@ -28,6 +28,7 @@ expected =
     "delius-jitbit",
     "digital-prison-reporting",
     "equip",
+    "eric",
     "example",
     "hmpps-domain-services",
     "hmpps-intelligence-management",
