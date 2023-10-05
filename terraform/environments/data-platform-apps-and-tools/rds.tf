@@ -25,6 +25,13 @@ module "openmetadata_airflow_rds" {
   manage_master_user_password = false
   password                    = random_password.openmetadata_airflow.result
 
+  parameters = [
+    {
+      name  = "require_secure_transport"
+      value = 1
+    }
+  ]
+
   maintenance_window      = "Mon:00:00-Mon:03:00"
   backup_window           = "03:00-06:00"
   backup_retention_period = 7
@@ -71,10 +78,26 @@ module "openmetadata_rds" {
 
   parameters = [
     {
+      name  = "require_secure_transport"
+      value = 1
+    },
+    {
+      name  = "general_log"
+      value = 1
+    },
+    {
+      name  = "long_query_time"
+      value = 10
+    },
+    {
+      name  = "slow_query_log"
+      value = 1
+    },
+    {
       // Required as per Open Metadata's documentation
       name  = "sort_buffer_size"
       value = 10485760
-    },
+    }
     // TODO: Review adding more parameters, such as https://github.com/ministryofjustice/data-platform/blob/main/terraform/aws/analytical-platform-production/cluster/terraform.tfvars#L68-L84
   ]
 
