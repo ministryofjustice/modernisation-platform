@@ -39,7 +39,7 @@ airflow:
     passwordSecretKey: ${openmetadata_airflow_rds_password_secret_key}
   serviceAccount:
     create: true
-    name: "airflow"
+    name: airflow
     annotations:
       eks.amazonaws.com/role-arn: ${openmetadata_airflow_eks_role_arn}
   dags:
