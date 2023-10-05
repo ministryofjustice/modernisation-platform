@@ -504,10 +504,10 @@ module "data_platform_landing_to_raw_ecr_repo" {
   ]
 
   enable_retrieval_policy_for_lambdas = [
-    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:landing_to_raw*",
-    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-test"]}:function:landing_to_raw*",
-    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-preproduction"]}:function:landing_to_raw*",
-    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-production"]}:function:landing_to_raw*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_landing_to_raw*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-test"]}:function:data_product_landing_to_raw*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-preproduction"]}:function:data_product_landing_to_raw*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-production"]}:function:data_product_landing_to_raw*",
   ]
 
   # Tags
