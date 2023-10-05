@@ -3,8 +3,6 @@
 set -o pipefail
 set -e
 
-export TF_LOG="TRACE"
-
 # This script runs terraform plan with input set to false and no color outputs, suitable for running as part of a CI/CD pipeline.
 # You need to pass through a Terraform directory as an argument, e.g.
 # sh terraform-plan.sh terraform/environments
