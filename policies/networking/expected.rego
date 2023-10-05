@@ -245,6 +245,7 @@ expected =
       "general": {
         "cidr": "10.26.96.0/21",
         "accounts": [
+          "eric-test",
           "mlra-test",
           "ccms-ebs-test",
           "laa-oem-test",
@@ -293,6 +294,7 @@ expected =
       "general": {
         "cidr": "10.27.64.0/21",
         "accounts": [
+          "eric-production",
           "mlra-production",
           "ccms-ebs-production",
           "maat-production",
