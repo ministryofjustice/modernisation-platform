@@ -19,10 +19,10 @@ locals {
       /* EKS */
       eks_cluster_name = "apps-tools-${local.environment}"
       eks_versions = {
-        cluster                   = "1.27"
+        cluster                   = "1.28"
         ami_release               = "1.15.0-c9af43ad" // [major version].[minor version].[patch version]-[sha]. Get the sha from here: https://github.com/bottlerocket-os/bottlerocket/releases
         addon_coredns             = "v1.10.1-eksbuild.4"
-        addon_kube_proxy          = "v1.27.4-eksbuild.2"
+        addon_kube_proxy          = "v1.28.2-eksbuild.2"
         addon_vpc_cni             = "v1.15.0-eksbuild.2"
         addon_aws_guardduty_agent = "v1.2.0-eksbuild.3"
         addon_ebs_csi_driver      = "v1.23.0-eksbuild.1"
