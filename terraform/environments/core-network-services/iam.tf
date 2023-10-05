@@ -90,8 +90,8 @@ resource "aws_iam_role_policy" "dns" {
 }
 
 # Role to allow developer SSO user to read DNS records for ACM certificate validation for local plan
-resource "aws_iam_role" "read_dns" {
-  name = "read-dns-records"
+resource "aws_iam_role" "read_logs" {
+  name = "read-log-records"
   assume_role_policy = jsonencode(
     # checkov:skip=CKV_AWS_60: "the policy is secured with the condition"
     # checkov:skip=CKV_AWS_355: "the policy is secured with the condition"
@@ -116,7 +116,7 @@ resource "aws_iam_role" "read_dns" {
   tags = merge(
     local.tags,
     {
-      Name = "read-dns-records"
+      Name = "read-log-records"
     },
   )
 }
@@ -125,7 +125,7 @@ resource "aws_iam_role" "read_dns" {
 resource "aws_iam_role_policy" "read_dns" {
   # checkov:skip=CKV_AWS_355: "the policy is secured with the condition"
   name = "ReadDNSRecords"
-  role = aws_iam_role.read_dns.id
+  role = aws_iam_role.read_logs.id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -137,6 +137,36 @@ resource "aws_iam_role_policy" "read_dns" {
           "route53:List*"
         ],
         "Resource" : "*"
+      }
+    ]
+  })
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+resource "aws_iam_role_policy" "read_firewall" {
+  # checkov:skip=CKV_AWS_355: "the policy is secured with the condition"
+  name = "ReadFirewallRecords"
+  role = aws_iam_role.read_logs.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
+          "logs:GetLogEvents"
+        ],
+        "Resource" : "arn:aws:logs:*:*:log-group/fw-*"
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "network-firewall:Describe*",
+          "network-firewall:List*"
+        ],
+        "Resource" : "arn:aws:network-firewall:*:*:firewall/*"
       }
     ]
   })
