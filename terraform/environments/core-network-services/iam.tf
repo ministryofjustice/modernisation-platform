@@ -158,7 +158,11 @@ resource "aws_iam_role_policy" "read_firewall" {
           "logs:DescribeLogStreams",
           "logs:GetLogEvents"
         ],
-        "Resource" : "arn:aws:logs:*:*:log-group/fw-*"
+        "Resource" : [
+          "arn:aws:logs:*:*:log-group::log-stream:",
+          "arn:aws:logs:*:*:log-group:fw-*:log-stream:",
+          "arn:aws:logs:*:*:log-group:fw-*:log-stream:/aws/network-firewall/*/*"
+        ],
       },
       {
         "Effect" : "Allow",
@@ -166,7 +170,7 @@ resource "aws_iam_role_policy" "read_firewall" {
           "network-firewall:Describe*",
           "network-firewall:List*"
         ],
-        "Resource" : "arn:aws:network-firewall:*:*:firewall/*"
+        "Resource" : "arn:aws:network-firewall:*:*:*/*"
       }
     ]
   })
