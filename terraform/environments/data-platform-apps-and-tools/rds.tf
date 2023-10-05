@@ -5,10 +5,10 @@ module "openmetadata_airflow_rds" {
 
   identifier = "openmetadata-airflow"
 
-  engine               = "mysql"
-  engine_version       = "8.0"
-  family               = "mysql8.0"
-  major_engine_version = "8.0"
+  engine               = "postgres"
+  engine_version       = "15"
+  family               = "postgres15"
+  major_engine_version = "15"
   instance_class       = "db.t4g.medium"
 
   ca_cert_identifier = "rds-ca-rsa2048-g1"
@@ -27,7 +27,19 @@ module "openmetadata_airflow_rds" {
 
   parameters = [
     {
-      name  = "require_secure_transport"
+      name  = "rds.force_ssl"
+      value = 1
+    },
+    {
+      name  = "log_statement"
+      value = "all"
+    },
+    {
+      name  = "log_hostname"
+      value = 1
+    },
+    {
+      name  = "log_connections"
       value = 1
     }
   ]
@@ -43,6 +55,7 @@ module "openmetadata_airflow_rds" {
   monitoring_role_name            = "openmetadata-airflow-rds-monitoring"
   monitoring_role_description     = "Enhanced Monitoring for Open Metadata Airflow RDS"
   monitoring_interval             = 30
+  enabled_cloudwatch_logs_exports = ["general", "audit", "error", "postgresql"]
 
   skip_final_snapshot = true
 
@@ -114,6 +127,7 @@ module "openmetadata_rds" {
   monitoring_role_name            = "openmetadata-rds-monitoring"
   monitoring_role_description     = "Enhanced Monitoring for Open Metadata RDS"
   monitoring_interval             = 30
+  enabled_cloudwatch_logs_exports = ["general", "audit", "error"]
 
   skip_final_snapshot = true
 
