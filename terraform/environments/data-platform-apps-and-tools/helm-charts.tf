@@ -168,32 +168,32 @@ resource "helm_release" "aws_for_fluent_bit" {
   depends_on = [helm_release.gatekeeper]
 }
 
-# resource "helm_release" "openmetadata_dependencies" {
-#   name       = "openmetadata-dependencies"
-#   repository = "https://helm.open-metadata.org"
-#   chart      = "openmetadata-dependencies"
-#   version    = "1.1.14"
-#   namespace  = kubernetes_namespace.openmetadata.metadata[0].name
-#   values = [
-#     templatefile(
-#       "${path.module}/src/helm/openmetadata-dependencies/values.yml.tftpl",
-#       {
-#         openmetadata_airflow_password                = random_password.openmetadata_airflow.result
-#         openmetadata_airflow_eks_role_arn            = module.openmetadata_airflow_iam_role.iam_role_arn
-#         openmetadata_airflow_rds_host                = module.openmetadata_airflow_rds.db_instance_address
-#         openmetadata_airflow_rds_user                = module.openmetadata_airflow_rds.db_instance_username
-#         openmetadata_airflow_rds_db                  = module.openmetadata_airflow_rds.db_instance_name
-#         openmetadata_airflow_rds_password_secret     = kubernetes_secret.openmetadata_airflow_rds_credentials.metadata[0].name
-#         openmetadata_airflow_rds_password_secret_key = "password"
-#         openmetadata_airflow_admin_email             = "${local.environment_configuration.airflow_mail_from_address}@${local.environment_configuration.ses_domain_identity}"
-#       }
-#     )
-#   ]
-#   wait    = true
-#   timeout = 600
+resource "helm_release" "openmetadata_dependencies" {
+  name       = "openmetadata-dependencies"
+  repository = "https://helm.open-metadata.org"
+  chart      = "openmetadata-dependencies"
+  version    = "1.1.14"
+  namespace  = kubernetes_namespace.openmetadata.metadata[0].name
+  values = [
+    templatefile(
+      "${path.module}/src/helm/openmetadata-dependencies/values.yml.tftpl",
+      {
+        openmetadata_airflow_password                = random_password.openmetadata_airflow.result
+        openmetadata_airflow_eks_role_arn            = module.openmetadata_airflow_iam_role.iam_role_arn
+        openmetadata_airflow_rds_host                = module.openmetadata_airflow_rds.db_instance_address
+        openmetadata_airflow_rds_user                = module.openmetadata_airflow_rds.db_instance_username
+        openmetadata_airflow_rds_db                  = module.openmetadata_airflow_rds.db_instance_name
+        openmetadata_airflow_rds_password_secret     = kubernetes_secret.openmetadata_airflow_rds_credentials.metadata[0].name
+        openmetadata_airflow_rds_password_secret_key = "password"
+        openmetadata_airflow_admin_email             = "${local.environment_configuration.airflow_mail_from_address}@${local.environment_configuration.ses_domain_identity}"
+      }
+    )
+  ]
+  wait    = true
+  timeout = 600
 
-#   depends_on = [kubernetes_secret.openmetadata_airflow]
-# }
+  depends_on = [kubernetes_secret.openmetadata_airflow]
+}
 
 # resource "helm_release" "openmetadata" {
 #   name       = "openmetadata"

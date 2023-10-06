@@ -30,9 +30,9 @@ airflow:
         persistentVolumeClaim:
           claimName: openmetadata-dependencies-dags-pvc
   externalDatabase:
-    type: mysql
+    type: postgres
     host: ${openmetadata_airflow_rds_host}
-    port: 3306
+    port: 5432
     database: ${openmetadata_airflow_rds_db}
     user: ${openmetadata_airflow_rds_user}
     passwordSecret: ${openmetadata_airflow_rds_password_secret}
