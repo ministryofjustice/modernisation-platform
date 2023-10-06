@@ -121,6 +121,12 @@ resource "aws_iam_role" "read_dns" {
   )
 }
 
+resource "aws_iam_policy_attachment" "read_dns_aws_managed" {
+  name       = "AmazonRoute53ReadOnlyAccess-read-dns-attachment"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRoute53ReadOnlyAccess"
+  roles      = [aws_iam_role.read_dns.name]
+}
+
 # Role to allow developer SSO user to read DNS records for ACM certificate validation for local plan
 resource "aws_iam_role" "read_logs" {
   name = "read-log-records"
@@ -156,9 +162,8 @@ resource "aws_iam_role" "read_logs" {
 #tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_role_policy" "read_dns" {
   # checkov:skip=CKV_AWS_355: "the policy is secured with the condition"
-  for_each = toset([aws_iam_role.read_dns.id, aws_iam_role.read_logs.id])
   name = "ReadDNSRecords"
-  role = each.key
+  role = aws_iam_role.read_logs.id
 
   policy = jsonencode({
     Version = "2012-10-17"
