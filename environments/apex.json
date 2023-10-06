@@ -24,7 +24,7 @@
       ]
     },
     {
-      "name": "preproducion",
+      "name": "preproduction",
       "access": [
         {
           "github_slug": "laa-aws-infrastructure",
@@ -33,7 +33,7 @@
       ]
     },  
     {
-      "name": "producion",
+      "name": "production",
       "access": [
         {
           "github_slug": "laa-aws-infrastructure",
