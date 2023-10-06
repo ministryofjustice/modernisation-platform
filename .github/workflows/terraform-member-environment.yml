@@ -87,6 +87,7 @@ jobs:
       - name: Terraform workspace
         id: workspace
         run: |
+          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
           for directory in $CHANGED_DIRECTORIES; do
                 workspace="$(basename $directory)-${{ matrix.environment }}"
 
