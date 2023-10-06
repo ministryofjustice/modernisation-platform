@@ -19,6 +19,26 @@ resource "aws_opensearch_domain" "openmetadata" {
     }
   }
 
+  log_publishing_options {
+    cloudwatch_log_group_arn = module.openmetadata_opensearch_cloudwatch_log_group.cloudwatch_log_group_arn
+    log_type                 = "AUDIT_LOGS"
+  }
+
+  log_publishing_options {
+    cloudwatch_log_group_arn = module.openmetadata_opensearch_cloudwatch_log_group.cloudwatch_log_group_arn
+    log_type                 = "ES_APPLICATION_LOGS"
+  }
+
+  log_publishing_options {
+    cloudwatch_log_group_arn = module.openmetadata_opensearch_cloudwatch_log_group.cloudwatch_log_group_arn
+    log_type                 = "SEARCH_SLOW_LOGS"
+  }
+
+  log_publishing_options {
+    cloudwatch_log_group_arn = module.openmetadata_opensearch_cloudwatch_log_group.cloudwatch_log_group_arn
+    log_type                 = "INDEX_SLOW_LOGS"
+  }
+
   encrypt_at_rest {
     enabled    = true
     kms_key_id = module.openmetadata_opensearch_kms.key_id
