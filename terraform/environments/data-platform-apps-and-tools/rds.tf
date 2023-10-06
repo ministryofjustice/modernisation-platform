@@ -87,6 +87,7 @@ module "openmetadata_rds" {
   db_name                     = "openmetadata"
   manage_master_user_password = false
   password                    = random_password.openmetadata.result
+  kms_key_id                  = module.openmetadata_rds_kms.key_arn
 
   parameters = [
     {
