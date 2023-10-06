@@ -15,7 +15,7 @@ resource "kubernetes_persistent_volume" "openmetadata_airflow_dags" {
     persistent_volume_source {
       csi {
         driver        = "efs.csi.aws.com"
-        volume_handle = "${module.efs.id}::${module.efs.access_points["airflow_dags"].id}"
+        volume_handle = "${module.openmetadata_efs.id}::${module.openmetadata_efs.access_points["airflow_dags"].id}"
       }
     }
   }
@@ -38,7 +38,7 @@ resource "kubernetes_persistent_volume" "openmetadata_airflow_logs" {
     persistent_volume_source {
       csi {
         driver        = "efs.csi.aws.com"
-        volume_handle = "${module.efs.id}::${module.efs.access_points["airflow_logs"].id}"
+        volume_handle = "${module.openmetadata_efs.id}::${module.openmetadata_efs.access_points["airflow_logs"].id}"
       }
     }
   }

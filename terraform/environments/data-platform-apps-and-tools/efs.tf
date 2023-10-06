@@ -1,6 +1,4 @@
-module "efs" {
-  #checkov:skip=CKV_TF_1:Module is from Terraform registry
-
+module "openmetadata_efs" {
   source  = "terraform-aws-modules/efs/aws"
   version = "~> 1.0"
 
@@ -62,4 +60,10 @@ module "efs" {
       }
     }
   }
+}
+
+// TODO: Remove me
+moved {
+  from = module.efs
+  to   = module.openmetadata_efs
 }
