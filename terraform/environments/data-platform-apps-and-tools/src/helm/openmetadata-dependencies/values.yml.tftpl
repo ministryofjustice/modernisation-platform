@@ -32,7 +32,7 @@ airflow:
   postgresql:
     enabled: false
   pgBouncer:
-    enabled: true
+    enabled: false
   externalDatabase:
     type: postgres
     host: ${openmetadata_airflow_rds_host}
@@ -54,4 +54,4 @@ airflow:
   logs:
     path: /airflow-logs
     persistence:
-      enabled: false s
+      enabled: false
