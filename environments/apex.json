@@ -7,6 +7,37 @@
         {
           "github_slug": "laa-aws-infrastructure",
           "level": "migration"
+        },
+        {
+          "github_slug": "laa-aws-infrastructure",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "github_slug": "laa-aws-infrastructure",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "preproducion",
+      "access": [
+        {
+          "github_slug": "laa-aws-infrastructure",
+          "level": "developer"
+        }
+      ]
+    },  
+    {
+      "name": "producion",
+      "access": [
+        {
+          "github_slug": "laa-aws-infrastructure",
+          "level": "developer"
         }
       ]
     }
