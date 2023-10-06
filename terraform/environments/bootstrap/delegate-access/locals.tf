@@ -29,6 +29,7 @@ locals {
   # skip the following alias creation if the alias is used by another account (they are globally unique)
   skip_alias = sort([
     "apex-development",
+    "apex-production",
     "data-platform-production",
     "eric-test",
     "eric-production",
