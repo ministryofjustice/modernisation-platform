@@ -109,7 +109,7 @@ module "openmetadata_rds" {
     {
       // Required as per Open Metadata's documentation https://docs.open-metadata.org/v1.1.x/deployment/upgrade#update-sortbuffersize-mysql-or-workmem-postgres
       name  = "work_mem"
-      value = "10MB"
+      value = 10000
     }
   ]
 
