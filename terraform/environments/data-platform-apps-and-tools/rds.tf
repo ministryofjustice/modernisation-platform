@@ -23,7 +23,7 @@ module "openmetadata_airflow_rds" {
   db_name                     = "airflow"
   manage_master_user_password = false
   password                    = random_password.openmetadata_airflow.result
-  kms_key_id                  = module.openmetadata_airflow_rds_kms.key_id
+  kms_key_id                  = module.openmetadata_airflow_rds_kms.key_arn
 
   parameters = [
     {
