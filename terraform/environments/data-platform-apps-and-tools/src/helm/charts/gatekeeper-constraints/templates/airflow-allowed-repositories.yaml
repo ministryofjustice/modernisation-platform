@@ -1,0 +1,16 @@
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: AllowedRepos
+metadata:
+  name: airflow-allowed-repositories
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    namespaces:
+      - "airflow"
+  parameters:
+    repos:
+      - "repo.data-platform.service.justice.gov.uk/" # This is a placeholder for testing
+      - "public.ecr.aws/"

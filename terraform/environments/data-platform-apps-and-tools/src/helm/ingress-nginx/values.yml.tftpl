@@ -1,0 +1,22 @@
+---
+controller:
+  replicaCount: 3
+  ingressClassResource:
+    name: default
+    default: true
+    controllerValue: "k8s.io/ingress-default"
+  ingressClass: default
+  extraArgs:
+    default-ssl-certificate: ${default_ssl_certificate}
+  config:
+    ssl-protocols: "TLSv1.2 TLSv1.3"
+    ssl-ciphers: "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA"
+    server-snippet: |
+      if ($scheme != 'https') {
+        return 308 https://$host$request_uri;
+      }
+  service:
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+      external-dns.alpha.kubernetes.io/hostname: ${ingress_hostname}
