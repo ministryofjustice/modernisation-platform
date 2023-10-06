@@ -17,6 +17,10 @@ data "aws_iam_policy_document" "opensearch_cloudwatch_logs" {
       "logs:PutLogEvents",
       "logs:PutLogEventsBatch"
     ]
+    principals {
+      type        = "Service"
+      identifiers = ["es.amazonaws.com"]
+    }
     resources = ["${module.openmetadata_opensearch_cloudwatch_log_group.cloudwatch_log_group_arn}*"]
   }
 }
