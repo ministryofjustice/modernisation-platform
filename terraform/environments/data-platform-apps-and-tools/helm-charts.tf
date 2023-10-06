@@ -71,7 +71,7 @@ resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = "https://charts.jetstack.io"
   chart      = "cert-manager"
-  version    = "v1.13.0"
+  version    = "v1.13.1"
   namespace  = kubernetes_namespace.cert_manager.metadata[0].name
   values = [
     templatefile(
@@ -88,7 +88,7 @@ resource "helm_release" "ingress_nginx" {
   name       = "ingress-nginx"
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx"
-  version    = "4.7.2"
+  version    = "4.8.1"
   namespace  = kubernetes_namespace.ingress_nginx.metadata[0].name
   values = [
     templatefile(
@@ -106,14 +106,14 @@ resource "helm_release" "velero" {
   name       = "velero"
   repository = "https://vmware-tanzu.github.io/helm-charts"
   chart      = "velero"
-  version    = "5.0.2"
+  version    = "5.1.0"
   namespace  = kubernetes_namespace.velero_system.metadata[0].name
   values = [
     templatefile(
       "${path.module}/src/helm/velero/values.yml.tftpl",
       {
         eks_role_arn              = module.velero_role.iam_role_arn
-        velero_aws_plugin_version = "v1.7.0"
+        velero_aws_plugin_version = "v1.8.0"
         velero_bucket             = module.velero_s3_bucket.bucket.id
         velero_prefix             = module.eks.cluster_name
         aws_region                = data.aws_region.current.name
@@ -127,7 +127,7 @@ resource "helm_release" "external_secrets" {
   name       = "external-secrets"
   repository = "https://charts.external-secrets.io"
   chart      = "external-secrets"
-  version    = "0.9.4"
+  version    = "0.9.5"
   namespace  = kubernetes_namespace.external_secrets.metadata[0].name
   values = [
     templatefile(
@@ -144,7 +144,7 @@ resource "helm_release" "policy_controller" {
   name       = "policy-controller"
   repository = "https://sigstore.github.io/helm-charts"
   chart      = "policy-controller"
-  version    = "0.6.2"
+  version    = "0.6.5"
   namespace  = kubernetes_namespace.cosign_system.metadata[0].name
   values     = [templatefile("${path.module}/src/helm/policy-controller/values.yml.tftpl", {})]
   depends_on = [helm_release.gatekeeper]
