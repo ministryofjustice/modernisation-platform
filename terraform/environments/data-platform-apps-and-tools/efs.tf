@@ -61,9 +61,3 @@ module "openmetadata_efs" {
     }
   }
 }
-
-// TODO: Remove me
-moved {
-  from = module.efs
-  to   = module.openmetadata_efs
-}

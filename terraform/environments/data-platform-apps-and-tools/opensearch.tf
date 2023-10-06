@@ -20,7 +20,8 @@ resource "aws_opensearch_domain" "openmetadata" {
   }
 
   encrypt_at_rest {
-    enabled = true
+    enabled    = true
+    kms_key_id = module.openmetadata_opensearch_kms.key_id
   }
 
   domain_endpoint_options {
