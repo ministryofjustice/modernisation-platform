@@ -6,8 +6,11 @@ openmetadata:
       host: ${host}
       uri: "https://${host}"
     database:
+      dbScheme: postgresql
       host: ${openmetadata_rds_host}
+      port: 5432
       dbUseSSL: true
+      driverClass: org.postgresql.Driver
       databaseName: ${openmetadata_rds_dbname}
       auth:
         username: ${openmetadata_rds_user}
