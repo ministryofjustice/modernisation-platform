@@ -37,6 +37,7 @@ airflow:
     user: ${openmetadata_airflow_rds_user}
     passwordSecret: ${openmetadata_airflow_rds_password_secret}
     passwordSecretKey: ${openmetadata_airflow_rds_password_secret_key}
+    properties: "?sslmode=require"
   serviceAccount:
     create: true
     name: airflow
