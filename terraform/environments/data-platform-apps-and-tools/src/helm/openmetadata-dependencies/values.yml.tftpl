@@ -29,6 +29,10 @@ airflow:
       - name: efs-airflow-dags
         persistentVolumeClaim:
           claimName: openmetadata-dependencies-dags-pvc
+  postgresql:
+    enabled: false
+  pgBouncer:
+    enabled: true
   externalDatabase:
     type: postgres
     host: ${openmetadata_airflow_rds_host}
@@ -50,4 +54,4 @@ airflow:
   logs:
     path: /airflow-logs
     persistence:
-      enabled: false
+      enabled: false s
