@@ -27,8 +27,9 @@ module "openmetadata_airflow_rds" {
 
   parameters = [
     {
-      name  = "rds.force_ssl"
-      value = 1
+      name         = "rds.force_ssl"
+      value        = 1
+      apply_method = "immediate"
     },
     {
       name  = "log_statement"
@@ -91,8 +92,9 @@ module "openmetadata_rds" {
 
   parameters = [
     {
-      name  = "rds.force_ssl"
-      value = 1
+      name         = "rds.force_ssl"
+      value        = 1
+      apply_method = "immediate"
     },
     {
       name  = "log_statement"
