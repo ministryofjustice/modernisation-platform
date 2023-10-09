@@ -17,3 +17,23 @@ module "openmetadata_airflow_iam_policy" {
 
   policy = data.aws_iam_policy_document.openmetadata_airflow.json
 }
+
+data "aws_iam_policy_document" "prometheus" {
+  statement {
+    sid     = "AllowAssumeRole"
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+    resources = [
+      local.local.environment_configuration.observability_platform_role_arn
+    ]
+  }
+}
+
+module "prometheus_iam_policy" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
+  version = "~> 5.0"
+
+  name_prefix = "prometheus"
+
+  policy = data.aws_iam_policy_document.prometheus.json
+}

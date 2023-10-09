@@ -47,6 +47,9 @@ locals {
       }
       airflow_mail_from_address               = "airflow"
       airflow_weekly_maintenance_window_start = "SAT:00:00"
+
+      observability_platform_prometheus_url = "https://aps-workspaces.eu-west-2.amazonaws.com/workspaces/ws-464eea97-631a-4e5d-af22-4c5528d9e0e6/api/v1/remote_write"
+      observability_platform_role_arn       = "arn:aws:iam::915524366300:role/data-platform-apps-and-tools"
     }
     // Commenting out for now
     // production = {}

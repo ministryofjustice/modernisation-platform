@@ -1,0 +1,17 @@
+---
+serviceAccounts:
+  server:
+    name: "prometheus"
+    annotations:
+      eks.amazonaws.com/role-arn: ${eks_role_arn}
+
+server:
+    remoteWrite:
+        - url: ${prometheus_remote_write_url}
+          sigv4:
+            region: ${aws_region}
+            role_arn: ${observability_platform_role_arn}
+          queue_config:
+            max_samples_per_send: 1000
+            max_shards: 200
+            capacity: 2500

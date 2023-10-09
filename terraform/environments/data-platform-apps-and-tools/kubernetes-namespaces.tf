@@ -86,3 +86,13 @@ resource "kubernetes_namespace" "openmetadata" {
     }
   }
 }
+
+resource "kubernetes_namespace" "prometheus" {
+  metadata {
+    name = "prometheus"
+    labels = {
+      "admission.gatekeeper.sh/ignore" = "true"
+      "policy.sigstore.dev/include"    = "false"
+    }
+  }
+}
