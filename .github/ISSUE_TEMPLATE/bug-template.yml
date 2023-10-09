@@ -1,0 +1,63 @@
+name: Modernisation Platform Bug
+description: Create new Modernisation Platform bug
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Bug report
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What should happen?
+      value: 
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What is happening?
+      value: 
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce the Problem
+      description: Steps taken to reproduce the bug
+      placeholder: 
+        ## Steps to Reproduce the Problem
+
+          1.
+          1.
+          1.
+      value: 
+    validations:
+      required: 
+  - type: markdown
+    attributes:
+      value: |
+        ## Other information
+  - type: input
+    id: ver
+    attributes:
+      label: Version 
+      value:
+    validations:
+      required: 
+  - type: input
+    id: mod
+    attributes:
+      label: Modules 
+      value: 
+    validations:
+      required: 
+  - type: input
+    id: acc
+    attributes:
+      label: Account 
+      value:
+    validations:
+      required: false

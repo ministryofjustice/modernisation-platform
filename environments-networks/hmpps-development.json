@@ -30,7 +30,9 @@
     "additional_cidrs": [],
     "additional_endpoints": [
       "com.amazonaws.eu-west-2.email-smtp",
-      "com.amazonaws.eu-west-2.execute-api"
+      "com.amazonaws.eu-west-2.execute-api",
+      "com.amazonaws.eu-west-2.kinesis-streams",
+      "com.amazonaws.eu-west-2.secretsmanager"
     ],
     "additional_private_zones": [],
     "additional_vpcs": [],

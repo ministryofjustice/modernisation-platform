@@ -36,15 +36,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
       - name: Get changed directories
         id:   directories
         run:  |
           git fetch origin main
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            echo "CHANGED_DIRECTORIES=$(git diff HEAD origin/main ${{ github.event.pull_request.changes.paths }} --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | cut -f1-3 -d"/" | uniq)"
+            echo "CHANGED_DIRECTORIES=$(git diff HEAD origin/main ${{ github.event.pull_request.changes.paths }} --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | cut -f1-3 -d"/" | uniq | base64 -w 0 )"
           else
-            echo "CHANGED_DIRECTORIES=$(git diff HEAD^ HEAD ${{ github.event.changes.paths }} --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | cut -f1-3 -d"/" | uniq)"
+            echo "CHANGED_DIRECTORIES=$(git diff HEAD^ HEAD ${{ github.event.changes.paths }} --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | cut -f1-3 -d"/" | uniq | base64 -w 0)"
           fi >> $GITHUB_OUTPUT
       - name: Display changed directories
         run: echo "Directories in scope:" ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}
@@ -61,14 +61,13 @@ jobs:
         environment: [development]
     env:
       TF_IN_AUTOMATION: "true"
-      CHANGED_DIRECTORIES: ${{ needs.find-environments.outputs.directories }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
       - name: Set account number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@50ac8dd1e1b10d09dac7b8727528b91bed831ac0 # v3.0.2
+        uses: aws-actions/configure-aws-credentials@010d0da01d0b5a38af31e9c3470dbfdabdecca3a # v4.0.1
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
           role-session-name: githubactionsrolesession
@@ -82,6 +81,7 @@ jobs:
       - name: Terraform init
         id: init
         run: |
+          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
           for directory in $CHANGED_DIRECTORIES; do
             echo "Running 'terraform init' in" $directory
             scripts/terraform-init.sh $directory
@@ -89,17 +89,18 @@ jobs:
       - name: Terraform workspace
         id: workspace
         run: |
+          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
           for directory in $CHANGED_DIRECTORIES; do
                 workspace="$(basename $directory)-${{ matrix.environment }}"
-                
+
                 if terraform -chdir="$directory" workspace list | grep "$workspace"; then
                   terraform -chdir="$directory" workspace select "$workspace"
 
                 else
-                  echo "Workspace '$workspace' does not exist, skipping further processing"  
+                  echo "Workspace '$workspace' does not exist, skipping further processing"
                   echo "skip_plan=true" >> $GITHUB_OUTPUT
                 fi
-                
+
                 unset workspace
           done
           echo "Selected $(terraform -chdir="$directory" workspace show)"
@@ -107,6 +108,7 @@ jobs:
         id: plan
         if: ${{ steps.workspace.outputs.skip_plan != 'true' }}
         run: |
+          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
           for directory in $CHANGED_DIRECTORIES; do
             workspace="$(basename $directory)-${{ matrix.environment }}"
             scripts/terraform-plan.sh $directory
@@ -128,14 +130,13 @@ jobs:
     environment: ${{ matrix.environment }}
     env:
       TF_IN_AUTOMATION: "true"
-      CHANGED_DIRECTORIES: ${{ needs.find-environments.outputs.directories }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
       - name: Set account number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@50ac8dd1e1b10d09dac7b8727528b91bed831ac0 # v3.0.2
+        uses: aws-actions/configure-aws-credentials@010d0da01d0b5a38af31e9c3470dbfdabdecca3a # v4.0.1
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
           role-session-name: githubactionsrolesession
@@ -149,6 +150,7 @@ jobs:
       - name: Terraform init
         id: init
         run: |
+          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
           for directory in $CHANGED_DIRECTORIES; do
             echo "Running 'terraform init' in" $directory
             scripts/terraform-init.sh $directory
@@ -156,17 +158,18 @@ jobs:
       - name: Terraform workspace
         id: workspace
         run: |
+          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
           for directory in $CHANGED_DIRECTORIES; do
                 workspace="$(basename $directory)-${{ matrix.environment }}"
-                
+
                 if terraform -chdir="$directory" workspace list | grep "$workspace"; then
                   terraform -chdir="$directory" workspace select "$workspace"
 
                 else
-                  echo "Workspace '$workspace' does not exist, skipping further processing"  
+                  echo "Workspace '$workspace' does not exist, skipping further processing"
                   echo "skip_plan=true" >> $GITHUB_OUTPUT
                 fi
-                
+
                 unset workspace
           done
           echo "Selected $(terraform -chdir="$directory" workspace show)"
@@ -174,6 +177,7 @@ jobs:
         id: plan
         if: ${{ steps.workspace.outputs.skip_plan != 'true' }}
         run: |
+          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
           for directory in $CHANGED_DIRECTORIES; do
             workspace="$(basename $directory)-${{ matrix.environment }}"
             scripts/terraform-plan.sh $directory -out="$workspace.tfplan"
@@ -183,6 +187,7 @@ jobs:
         id: apply
         if: ${{ steps.plan.conclusion == 'success' }}
         run: |
+          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
           for directory in $CHANGED_DIRECTORIES; do
             workspace="$(basename $directory)-${{ matrix.environment }}"
             scripts/terraform-apply.sh $directory "$workspace.tfplan"
@@ -204,14 +209,13 @@ jobs:
     environment: ${{ matrix.environment }}
     env:
       TF_IN_AUTOMATION: "true"
-      CHANGED_DIRECTORIES: ${{ needs.find-environments.outputs.directories }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
       - name: Set account number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@50ac8dd1e1b10d09dac7b8727528b91bed831ac0 # v3.0.2
+        uses: aws-actions/configure-aws-credentials@010d0da01d0b5a38af31e9c3470dbfdabdecca3a # v4.0.1
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
           role-session-name: githubactionsrolesession
@@ -225,6 +229,7 @@ jobs:
       - name: Terraform init
         id: init
         run: |
+          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
           for directory in $CHANGED_DIRECTORIES; do
             echo "Running 'terraform init' in" $directory
             scripts/terraform-init.sh $directory
@@ -232,17 +237,18 @@ jobs:
       - name: Terraform workspace
         id: workspace
         run: |
+          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
           for directory in $CHANGED_DIRECTORIES; do
                 workspace="$(basename $directory)-${{ matrix.environment }}"
-                
+
                 if terraform -chdir="$directory" workspace list | grep "$workspace"; then
                   terraform -chdir="$directory" workspace select "$workspace"
 
                 else
-                  echo "Workspace '$workspace' does not exist, skipping further processing"  
+                  echo "Workspace '$workspace' does not exist, skipping further processing"
                   echo "skip_plan=true" >> $GITHUB_OUTPUT
                 fi
-                
+
                 unset workspace
           done
           echo "Selected $(terraform -chdir="$directory" workspace show)"
@@ -250,6 +256,7 @@ jobs:
         id: plan
         if: ${{ steps.workspace.outputs.skip_plan != 'true' }}
         run: |
+          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
           for directory in $CHANGED_DIRECTORIES; do
             workspace="$(basename $directory)-${{ matrix.environment }}"
             scripts/terraform-plan.sh $directory -out="$workspace.tfplan"
@@ -259,6 +266,7 @@ jobs:
         id: apply
         if: ${{ steps.plan.conclusion == 'success' }}
         run: |
+          export CHANGED_DIRECTORIES=$(echo "${{ needs.find-environments.outputs.directories }}" | base64 --decode)
           for directory in $CHANGED_DIRECTORIES; do
             workspace="$(basename $directory)-${{ matrix.environment }}"
             scripts/terraform-apply.sh $directory "$workspace.tfplan"

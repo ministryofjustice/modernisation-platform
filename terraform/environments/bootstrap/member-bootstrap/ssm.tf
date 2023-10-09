@@ -115,3 +115,15 @@ resource "aws_iam_policy" "execution-combined-policy" {
   description = "Combined policy for SSM Automation Execution"
   policy      = data.aws_iam_policy_document.execution-combined-policy-doc.json
 }
+
+# # sync ssm data to the S3 bucket created in the stack
+# # https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-inventory-resource-data-sync.html
+resource "aws_ssm_resource_data_sync" "security_account" {
+  count = contains(local.ssm_resource_sync_opt_in, terraform.workspace) ? 1 : 0
+  name  = "OrgSecurityDataSync"
+  s3_destination {
+    bucket_name = local.environment_management.ssm_resource_sync_bucket_name
+    region      = "eu-west-2"
+    kms_key_arn = local.environment_management.ssm_resource_sync_kms_arn
+  }
+}

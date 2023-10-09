@@ -1,6 +1,8 @@
 {
   "fw_allowed_domains": [
     "microsoft.com",
+    "tlu.dl.delivery.mp.microsoft.com",
+    "onegetcdn.azureedge.net",
     ".windowsupdate.microsoft.com",
     ".update.microsoft.com",
     ".windowsupdate.com",
@@ -12,7 +14,8 @@
     ".ubuntu.com",
     ".docker.io",
     ".docker.com",
-    ".ghcr.io"
+    ".ghcr.io",
+    ".amazontrust.com"
   ],
   "fw_home_net_ips": ["10.26.0.0/16", "10.27.0.0/16"]
 }

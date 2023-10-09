@@ -147,8 +147,7 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_firewall" 
 
 # add external egress routes for non-live-data TGW route table to PTTP attachment
 resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_non_live_data_to_PTTP" {
-  for_each = local.non_live_data_static_routes
-
+  for_each                       = local.non_live_data_static_routes
   destination_cidr_block         = each.value
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["non_live_data"].id
@@ -156,8 +155,7 @@ resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_non_liv
 
 # add external egress routes for live-data TGW route table to PTTP attachment
 resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_live_data_to_PTTP" {
-  for_each = local.live_data_static_routes
-
+  for_each                       = local.live_data_static_routes
   destination_cidr_block         = each.value
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["live_data"].id

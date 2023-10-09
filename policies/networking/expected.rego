@@ -202,6 +202,7 @@ expected =
         "accounts": [
           "apex-development",
           "ccms-ebs-development",
+          "ccms-ebs-upgrade-development",
           "laa-ccms-infra-azure-ad-sso",
           "laa-oem-development",
           "maat-development",
@@ -245,6 +246,8 @@ expected =
       "general": {
         "cidr": "10.26.96.0/21",
         "accounts": [
+          "apex-test",
+          "eric-test",
           "mlra-test",
           "ccms-ebs-test",
           "laa-oem-test",
@@ -293,6 +296,8 @@ expected =
       "general": {
         "cidr": "10.27.64.0/21",
         "accounts": [
+          "apex-production",
+          "eric-production",
           "mlra-production",
           "ccms-ebs-production",
           "maat-production",
@@ -307,6 +312,7 @@ expected =
       "general": {
         "cidr": "10.27.72.0/21",
         "accounts": [
+          "apex-preproduction",
           "mlra-preproduction",
           "ccms-ebs-preproduction",
           "maat-preproduction",

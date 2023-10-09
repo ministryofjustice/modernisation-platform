@@ -1,0 +1,88 @@
+name: Modernisation platform Story
+description: 📖 Create Modernisation Platform story
+title: "<title>"
+labels: ["needs refining"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please fill out the fields below.
+  - type: textarea
+    id: user-story
+    attributes:
+      label: User Story
+      placeholder: "As a… [who is the user?] 
+              I need/want/expect to… [what does the user want to do?]
+              So that… [why does the user want to do this?] "
+      value: "As a…  
+
+              I need/want/expect to… 
+
+              So that…"
+    validations:
+      required: true
+  - type: textarea
+    id: value-purpose
+    attributes:
+      description: Describe the value and purpose of the ticket.
+      label: Value / Purpose
+      value:
+    validations:
+      required: true
+  - type: input
+    id: useful-contacts
+    attributes:
+      description: Please add any useful contacts, these may include; Stakeholders, Subject Matter Expert or 3rd Parties.
+      placeholder: Joe Bloggs
+      label: Useful Contacts
+      value:
+    validations:
+      required: false
+  - type: textarea
+    id: additional-information
+    attributes:
+      description: Please add any useful links or additional information that would be beneficial to anyone working on this Issue.
+      label: Additional Information 
+      value:
+    validations:
+      required: false
+  - type: textarea
+    id: proposal-unknowns
+    attributes:
+      description: Assumptions, Hypothesis, Questions, Unknowns
+      label: Proposal / Unknowns
+      value:
+        "### Hypothesis 
+        If we... [do a thing]
+        Then... [this will happ]
+
+        ### Proposal
+        A proposal that is something testable, don't worry whether it works or not, it's a place for ideas. 
+
+        ### Unknowns
+        Potential pitfalls that could cause the story to expand beyond its original scope. Ideally this section will remain blank."
+    validations:
+      required: false
+  - type: textarea
+    id: dod
+    attributes:
+      description: Please clearly and concisely detail the Definition of Done. (example optional checklist below)
+      label: Definition of Done
+      value:
+
+        Example
+        - [ ] Documentation has been written / updated
+
+        - [ ] README has been updated  
+
+        - [ ] User docs have been updated  
+
+        - [ ] Another team member has reviewed 
+
+        - [ ] Tests are green
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        [How to write good user stories](https://www.gov.uk/service-manual/agile-delivery/writing-user-stories)

@@ -1,0 +1,209 @@
+name: New Modernisation Platform Environment
+description: Request a new Modernisation Platform Environment
+labels: ["onboarding", "member request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please complete the following details and submit the new issue.
+  - type: textarea
+    id: environment-details
+    attributes:
+      label: Environment details
+      value:
+    validations:
+      required: true
+  - type: input
+    id: app-name
+    attributes: 
+      label: Application Name
+      description: Name of the application being created. The name must be in lowercase and a maximum of 30 characters and also follow MoJ guidance for naming things https://ministryofjustice.github.io/technical-guidance/documentation/standards/naming-things.html#naming-things
+      value:
+    validations:
+      required: true
+  - type: textarea
+    id: app-description
+    attributes:
+      label: Description of application
+      description: Brief description of the application and what it looks like. What does the application do?, What technologies does it use?
+      value:
+    validations:
+      required: true
+  - type: input
+    id: github-slug
+    attributes:
+      label: GitHub team slug
+      description: The name of your GitHub team for environment access, this github team must be part of the ministryofjustice github organisation. You can have multiple GitHub teams with different access levels if required.
+      value:
+    validations:
+      required: true
+  - type: checkboxes
+    id: environment
+    attributes:
+      label: Environments
+      description: Which environments would you like for your application, (we recommend production and one non production environment if possible),The access level determines what actions you can do in the AWS console, see here for more information see https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#access. Choose one access level per environment.
+      options: 
+        - label: Development
+        - label: test
+        - label: Preproduction
+        - label: Production
+    validations:
+      required: true
+  - type: dropdown
+    id: environment-access-dev
+    attributes:
+      label: Environment access level Development
+      description:
+      multiple: true 
+      options:
+        - view-only
+        - developer
+        - sandbox
+    validations:
+      required: false
+  - type: dropdown
+    id: environment-access-test
+    attributes:
+      label: Environment access level Test
+      description:
+      multiple: true 
+      options:
+        - view-only
+        - developer
+        - sandbox
+    validations:
+      required: false
+  - type: dropdown
+    id: environment-access-preprod
+    attributes:
+      label: Environment access level Preproduction
+      description:
+      multiple: true 
+      options:
+        - view-only
+        - developer
+        - sandbox
+    validations:
+      required: false
+  - type: dropdown
+    id: environment-access-production
+    attributes:
+      label: Environment access level Production
+      description:
+      multiple: true
+      options:
+        - view-only
+        - developer
+        - sandbox
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        ## Tags
+        These will be used to tag your AWS resources, for further details on tagging please see here 
+        https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use
+
+        The is-production tag will be inferred from the environment and is not needed here
+  - type: input
+    id: tag1
+    attributes:
+      label: application 
+      value: 
+    validations:
+      required: true
+  - type: input
+    id: tag2
+    attributes:
+      label: business-unit 
+      value: 
+    validations:
+      required: true
+  - type: input
+    id: tag3
+    attributes:
+      label: infrastructure-support 
+      value: 
+    validations:
+      required: true
+  - type: input
+    id: tag4
+    attributes:
+      label: owner 
+      value: 
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: "Valid business-unit values | HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE | The infrastructure-support tag should be an email address which will receive AWS Health Operations emails."
+  - type: markdown
+    attributes:
+      value: "## Networking options"
+  - type: checkboxes
+    id: subnet-sets
+    attributes:
+      label: Subnet sets
+      description: Please choose one of the below, most applications will use the general subnet set for their business unit. This means that they will benefit from out of the box connectivity to other applications, most applications will use the general subnet.  If an application has highly sensitive data it may need to go into a subnet with limited connectivity.
+      options:
+        - label: General
+        - label: Isolated
+    validations:    
+      required: true
+  - type: dropdown
+    id: app-connect
+    attributes:
+      label: How do users connect to the application
+      description: 
+      multiple: false
+      options:
+        - Over the public internet
+        - With a purple cabled device (please give details)
+        - With a MoJ Official device
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: "### Connectivity to other applications or external parties"
+  - type: markdown
+    attributes:
+      value: Please detail here and connectivity that your application needs, eg to other applications or external parties
+  - type: textarea
+    id: add-feat
+    attributes:
+      label: Additional features
+      description: For more information see here https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-networking.html#certificate-services If you are not sure you can leave these blank and they can be added at a later date
+      value:
+
+        Please check any additional features required 
+
+        - [ ] Additional VPC Endpoints
+
+        - [ ] Extended DNS Zones
+
+        - [ ] Other - please specify
+
+    validations:
+      required: true
+  - type: textarea
+    id: other-info
+    attributes:
+      label: Other information
+      description: Any other information you feel is relevant, please remember this is a public repository
+      value:
+    validations:
+      required: 
+  - type: textarea
+    id: dod
+    attributes:
+      description: Please clearly and concisely detail the Definition of Done.
+      label: Definition of Done
+      value:
+        
+        Definition of Done
+        
+        - [ ] account created
+
+        - [ ] customer informed
+
+    validations:
+      required: true

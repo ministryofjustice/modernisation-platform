@@ -39,11 +39,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - name: Setup Go
+        uses: actions/setup-go@93397bea11091df50f3d7e59dc26a7711a8bcfbe # v4.1.0
+        with:
+          go-version: 1.21
       - name: Set Account Number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@50ac8dd1e1b10d09dac7b8727528b91bed831ac0 # v3.0.2
+        uses: aws-actions/configure-aws-credentials@010d0da01d0b5a38af31e9c3470dbfdabdecca3a # v4.0.1
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
           role-session-name: githubactionsrolesession
@@ -66,18 +70,8 @@ jobs:
 
           #RUN TERRATEST
           pushd terraform/environments/core-logging/test
-          # Install GOLANG 1.20.3
-          if [ `whoami` != "runner" ]
-          then
-          wget -q https://dl.google.com/go/go1.20.3.linux-amd64.tar.gz
-          tar -zxvf go1.20.3.linux-amd64.tar.gz
-          sudo mv go /usr/local
-          echo "--  running newly installed go  --"
-          TEST=`/usr/local/go/bin/go test | ${git_dir}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
-          else
-          echo "--  running native go  --"
+          go mod tidy
           TEST=`go test | ${git_dir}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
-          fi
           popd
           TEST="> TERRATEST RESULT - core-logging
           ${TEST}"
@@ -100,11 +94,11 @@ jobs:
     needs: [core-logging-deployment-plan]
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
       - name: Set Account Number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@50ac8dd1e1b10d09dac7b8727528b91bed831ac0 # v3.0.2
+        uses: aws-actions/configure-aws-credentials@010d0da01d0b5a38af31e9c3470dbfdabdecca3a # v4.0.1
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
           role-session-name: githubactionsrolesession

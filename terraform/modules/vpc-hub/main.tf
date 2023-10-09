@@ -600,7 +600,7 @@ resource "aws_route_table_association" "transit-gateway" {
 resource "aws_eip" "public" {
   for_each = (var.gateway == "nat") ? aws_subnet.public : {}
 
-  vpc = true
+  domain = "vpc"
 
   tags = merge(
     var.tags_common,

@@ -1,0 +1,22 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "laa-ccms-migration-team",
+          "level": "sandbox",
+          "nuke": "exclude"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "ccms-ebs-upgrade",
+    "business-unit": "LAA",
+    "infrastructure-support": "laa-ccms-platform-tea-aaaaeti4e5egi736k6a4k46qtm@moj.org.slack.com",
+    "owner": "donovan.artz@digital.justice.gov.uk"
+  },
+  "github-oidc-team-repositories": [""]
+}

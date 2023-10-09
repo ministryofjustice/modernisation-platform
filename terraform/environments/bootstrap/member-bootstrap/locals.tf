@@ -44,4 +44,13 @@ locals {
     component     = "member-bootstrap"
     source-code   = "https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/bootstrap/member-bootstrap"
   }
+
+  # When a new account has been added, the organisation-security Terraform must be run before an environment is added here
+  ssm_resource_sync_opt_in = [
+    "ccms-ebs-development",
+    "ccms-ebs-test",
+    "ccms-ebs-preproduction",
+    "ccms-ebs-production",
+    "example-development"
+  ]
 }

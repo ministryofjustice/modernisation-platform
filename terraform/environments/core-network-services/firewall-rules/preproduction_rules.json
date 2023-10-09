@@ -90,10 +90,24 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
+  "mp_hmpps_preproduction_to_noms_live": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-live-vnet}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
   "noms_live_dr_to_mp_hmpps_preproduction": {
     "action": "PASS",
     "source_ip": "${noms-live-dr-vnet}",
     "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "mp_hmpps_preproduction_to_noms_live_dr": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-live-dr-vnet}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
@@ -104,10 +118,24 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
+  "mp_hmpps_preproduction_to_noms_mgmt_live": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-mgmt-live-vnet}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
   "noms_mgmt_live_dr_to_mp_hmpps_preproduction": {
     "action": "PASS",
     "source_ip": "${noms-mgmt-live-dr-vnet}",
     "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "mp_hmpps_preproduction_to_noms_mgmt_live_dr": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-mgmt-live-dr-vnet}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
@@ -243,5 +271,75 @@
     "destination_ip": "${hq-preproduction}",
     "destination_port": "5439",
     "protocol": "TCP"
+  },
+  "mp_hmpps_preproduction_to_noms_mgmt_vnet_ntp": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "123",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_preproduction_to_noms_mgmt_vnet_ldap": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "389",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_preproduction_to_noms_mgmg_vnet_ldap_ssl": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "636",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_preproduction_to_noms_mgmt_vnet_kerberos": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "88",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_preproduction_to_noms_mgmt_vnet_kerberos_password_change": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "464",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_preproduction_to_noms_mgmt_vnet_smb": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "445",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_preproduction_to_noms_mgmt_vnet_global_catalog_3268": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "3268",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_preproduction_to_noms_mgmt_vnet_global_catalog_3269": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "3269",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_preproduction_to_noms_mgmt_vnet_netbios_137": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "137",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_preproduction_to_noms_mgmt_vnet_netbios_138": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "138",
+    "protocol": "UDP"
   }
 }

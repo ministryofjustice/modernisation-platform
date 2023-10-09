@@ -4,6 +4,8 @@
       "general": {
         "cidr": "10.26.96.0/21",
         "accounts": [
+          "apex-test",
+          "eric-test",
           "mlra-test",
           "ccms-ebs-test",
           "laa-oem-test",

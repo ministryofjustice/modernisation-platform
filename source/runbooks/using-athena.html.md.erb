@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Using Athena
-last_reviewed_on: 2023-03-08
+last_reviewed_on: 2023-09-13
 review_in: 6 months
 ---
 
@@ -13,9 +13,9 @@ Accessing detail from the cloudtrail logs can be a tedious process so these inst
 
 ## Setting up Athena
 
-On the system we use (core-logging) Athena is set up but the data source will need to be set. The code for the creation is in the repo https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/athena.tf
+On the system we use (core-logging) Athena is set up but the data source will need to be set. The code for the creation located [here.](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/athena.tf)
 
-If you need to set up Athena either create a PR as above or follow the instructions provided by AWS (https://docs.aws.amazon.com/athena/latest/ug/getting-started.html). The version we have in core-logging is called "mod_cloudtrail_logs"."cloudtrail_logs" not the cloudfront_logs table as suggested in the setup documentation.
+If you need to set up Athena either create a PR as above or follow the instructions provided by AWS [here.](https://docs.aws.amazon.com/athena/latest/ug/getting-started.html) The version we have in core-logging is called "mod_cloudtrail_logs"."cloudtrail_logs" not the cloudfront_logs table as suggested in the setup documentation.
 
 On core-logging the table is rebuilt, daily, by a lambda routine that runs at 12:15. Please note this if you intend to undertake any work at this time.
 

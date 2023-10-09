@@ -33,8 +33,8 @@
   "tags": {
     "application": "tipstaff",
     "business-unit": "HMCTS",
-    "infrastructure-support": "dts-legacy-apps-support-team@hmcts.net",
-    "owner": "dts-legacy-apps-support-team@hmcts.net"
+    "infrastructure-support": "DTS-ITServiceDesk@justice.gov.uk",
+    "owner": "DTS-ITServiceDesk@justice.gov.uk"
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": ["ministryofjustice/Tipstaff"]
 }

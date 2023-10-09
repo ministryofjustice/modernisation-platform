@@ -125,10 +125,24 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
+  "mp_hmpps_development_to_noms_test_dr_vnet": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${noms-test-dr-vnet}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
   "noms_test_vnet_to_mp_hmpps_development": {
     "action": "PASS",
     "source_ip": "${noms-test-vnet}",
     "destination_ip": "${hmpps-development}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "mp_hmpps_development_to_noms_test_vnet": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${noms-test-vnet}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
@@ -139,10 +153,24 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
+  "mp_hmpps_development_to_noms_mgmt_vnet": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
   "noms_mgmt_dr_vnet_to_mp_hmpps_developmemnt": {
     "action": "PASS",
     "source_ip": "${noms-mgmt-dr-vnet}",
-    "destination_ip": "${hmpps-test}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "mp_to_hmpps_development_to_noms_mgmt_dr_vnet": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${noms-mgmt-dr-vnet}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
@@ -250,5 +278,75 @@
     "destination_ip": "${hq-development}",
     "destination_port": "5439",
     "protocol": "TCP"
+  },
+  "mp_hmpps_development_to_noms_mgmt_vnet_ntp": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "123",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_development_to_noms_mgmt_vnet_ldap": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "389",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_development_to_noms_mgmg_vnet_ldap_ssl": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "636",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_development_to_noms_mgmt_vnet_kerberos": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "88",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_development_to_noms_mgmt_vnet_kerberos_password_change": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "464",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_development_to_noms_mgmt_vnet_smb": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "445",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_development_to_noms_mgmt_vnet_global_catalog_3268": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "3268",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_development_to_noms_mgmt_vnet_global_catalog_3269": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "3269",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_development_to_noms_mgmt_vnet_netbios_137": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "137",
+    "protocol": "UDP"
+  },
+  "mp_hmpps_development_to_noms_mgmt_vnet_netbios_138": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${noms-mgmt-vnet}",
+    "destination_port": "138",
+    "protocol": "UDP"
   }
 }

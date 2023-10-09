@@ -1,0 +1,25 @@
+{
+  "account-type": "member-unrestricted",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "opg-modernising-lpa-team",
+          "level": "administrator"
+        },
+        {
+          "github_slug": "opg-webops",
+          "level": "administrator"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "opg-lpa-data-store",
+    "business-unit": "OPG",
+    "infrastructure-support": "opgteam+modernising-lpa@digital.justice.gov.uk",
+    "owner": "OPG MLPA: opgteam+modernising-lpa@digital.justice.gov.uk"
+  },
+  "github-oidc-team-repositories": [""]
+}

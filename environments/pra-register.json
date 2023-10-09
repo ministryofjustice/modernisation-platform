@@ -36,5 +36,5 @@
     "infrastructure-support": "dts-legacy-apps-support-team@hmcts.net",
     "owner": "dts-legacy-apps-support-team@hmcts.net"
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": ["ministryofjustice/PRA"]
 }

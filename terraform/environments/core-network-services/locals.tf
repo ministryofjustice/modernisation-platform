@@ -36,38 +36,74 @@ locals {
   production_rules      = fileexists("./firewall-rules/production_rules.json") ? jsondecode(templatefile("./firewall-rules/production_rules.json", local.all_cidr_ranges)) : {}
   fqdn_firewall_rules   = fileexists("./firewall-rules/fqdn_rules.json") ? jsondecode(file("./firewall-rules/fqdn_rules.json")) : {}
   inline_firewall_rules = fileexists("./firewall-rules/inline_rules.json") ? jsondecode(templatefile("./firewall-rules/inline_rules.json", local.all_cidr_ranges)) : {}
-  inline_fqdn_rules     = fileexists("./firewall-rules/inline_fqdn_rules.json") ? jsondecode(file("./firewall-rules/inline_fqdn_rules.json")) : {}
   firewall_rules        = merge(local.development_rules, local.test_rules, local.preproduction_rules, local.production_rules)
 
   vpn_attachments = fileexists("./vpn_attachments.json") ? jsondecode(file("./vpn_attachments.json")) : {}
 
-  noms_dr_vpn_static_routes = [
-    "10.40.64.0/18",
-    "10.40.144.0/20",
-    "10.40.176.0/20",
-    "10.111.0.0/16",
-    "10.112.0.0/16",
-    "10.244.0.0/20",
-    "10.247.0.0/20"
-  ]
-  noms_live_vpn_static_routes = [
-    "10.40.0.0/18",
-    "10.40.128.0/20",
-    "10.40.160.0/20",
-    "10.101.0.0/16",
-    "10.102.0.0/16",
-    "10.47.0.0/26",
-    "10.47.0.64/26",
-    "10.47.0.128/26"
+  noms_vpn_attachment_ids = toset([for k in aws_vpn_connection.this : k.transit_gateway_attachment_id if(length(regexall("(?:NOMS)", k.tags.Name)) > 0)])
+
+  azure_static_routes = [
+    "10.0.0.0/11",
+    "10.64.0.0/11",
+    "10.100.0.0/15",
+    "10.104.0.0/16",
+    "10.108.0.0/18",
+    "10.108.64.0/23",
+    "10.128.0.0/16",
+    "10.132.0.0/16",
+    "10.136.0.0/13",
+    "10.147.0.0/16",
+    "10.148.0.0/14",
+    "10.154.0.0/23",
+    "10.154.16.0/23",
+    "10.154.32.0/23",
+    "10.154.64.0/23",
+    "10.154.96.0/23",
+    "10.154.112.0/23",
+    "10.154.128.0/23",
+    "10.154.144.0/23",
+    "10.154.160.0/23",
+    "10.154.192.0/23",
+    "10.159.240.0/20",
+    "10.163.0.0/20",
+    "10.171.0.0/16",
+    "10.172.0.0/16",
+    "10.175.0.0/16",
+    "10.176.0.0/16",
+    "10.178.0.0/16",
+    "10.179.0.0/16",
+    "10.188.0.160/27",
+    "10.205.0.0/24",
+    "10.208.0.0/12",
+    "10.211.0.0/22",
+    "10.228.224.0/19",
+    "10.231.252.0/23",
+    "10.232.0.0/16",
+    "10.233.64.0/18",
+    "10.233.128.0/18",
+    "10.233.192.0/20",
+    "10.233.208.0/22",
+    "10.233.212.0/23",
+    "10.233.214.0/23",
+    "10.233.216.0/21",
+    "10.233.224.0/19",
+    "10.234.0.0/15",
+    "10.236.0.0/14",
+    "10.240.0.0/16",
+    "10.243.224.0/20",
+    "10.245.252.0/22",
+    "172.16.0.0/12",
+    "172.16.9.0/24",
+    "172.16.10.0/24",
+    "172.17.0.0/16",
+    "172.18.0.0/15",
+    "172.20.0.0/15",
+    "172.22.0.0/15",
+    "172.25.181.0/24",
+    "195.59.116.244/32"
   ]
 
   parole_board_vpn_static_routes = ["10.50.0.0/16"]
-
-  sixdg_dev_vpn_static_routes   = ["10.221.0.0/16"]
-  sixdg_test_vpn_static_routes  = ["10.224.0.0/16"]
-  sixdg_stage_vpn_static_routes = ["10.223.0.0/16"]
-  sixdg_uat_vpn_static_routes   = ["10.222.0.0/16"]
-  sixdg_prod_vpn_static_routes  = ["10.225.0.0/16"]
 
   core-vpcs = {
     for file in fileset("../../../environments-networks", "*.json") :

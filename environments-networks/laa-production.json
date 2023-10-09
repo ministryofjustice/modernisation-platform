@@ -4,6 +4,8 @@
       "general": {
         "cidr": "10.27.64.0/21",
         "accounts": [
+          "apex-production",
+          "eric-production",
           "mlra-production",
           "ccms-ebs-production",
           "maat-production",

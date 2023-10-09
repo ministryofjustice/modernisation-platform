@@ -20,6 +20,7 @@ Please note that some resources may need extra configuration and new services ma
 ### What is backed up?
 
 Resources which have the tag - `is-production = true` will be backed up.
+Resources which have the tag - `is-production = true` **and** the tag `backup = false` will **not** be backed up.
 
 ### Backup schedule
 
@@ -27,7 +28,7 @@ Backups are taken daily at 00:30.
 
 ### Retention period
 
-Backups are retained for 4 months.  After one month they will be transferred to cold storage.
+Backups are retained for 30 days.
 
 ## Non production backups
 
