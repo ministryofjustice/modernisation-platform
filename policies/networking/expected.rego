@@ -246,6 +246,7 @@ expected =
       "general": {
         "cidr": "10.26.96.0/21",
         "accounts": [
+          "apex-test",
           "eric-test",
           "mlra-test",
           "ccms-ebs-test",
@@ -295,6 +296,7 @@ expected =
       "general": {
         "cidr": "10.27.64.0/21",
         "accounts": [
+          "apex-production",
           "eric-production",
           "mlra-production",
           "ccms-ebs-production",
@@ -310,6 +312,7 @@ expected =
       "general": {
         "cidr": "10.27.72.0/21",
         "accounts": [
+          "apex-preproduction",
           "mlra-preproduction",
           "ccms-ebs-preproduction",
           "maat-preproduction",
