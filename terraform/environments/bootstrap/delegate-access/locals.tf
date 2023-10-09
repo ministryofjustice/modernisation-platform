@@ -30,6 +30,7 @@ locals {
   skip_alias = sort([
     "apex-development",
     "apex-production",
+    "apex-test",
     "data-platform-production",
     "eric-test",
     "eric-production",
