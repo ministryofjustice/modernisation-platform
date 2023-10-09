@@ -13,6 +13,8 @@ module "managed_grafana" {
   data_sources              = ["CLOUDWATCH", "PROMETHEUS"]
   notification_destinations = ["SNS"]
 
+  iam_role_policy_arns = [module.amazon_managed_prometheus_remote_cloudwatch_iam_policy.arn]
+
   role_associations = {
     "ADMIN" = {
       "group_ids" = ["16a2d234-1031-70b5-2657-7f744c55e48f"] # observability-platform
