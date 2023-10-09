@@ -3,7 +3,7 @@ resource "aws_mwaa_environment" "main" {
   # checkov:skip=CKV_AWS_243:Suppressing message until decision on logging made
   # checkov:skip=CKV_AWS_244:Suppressing message until decision on logging made
   # checkov:skip=CKV2_AWS_66:Suppressing message until work completed
-  name                            = local.environment_configuration.airflow_name
+  name                            = local.airflow_name
   airflow_version                 = local.environment_configuration.airflow_version
   environment_class               = local.environment_configuration.airflow_environment_class
   weekly_maintenance_window_start = local.environment_configuration.airflow_weekly_maintenance_window_start

@@ -1,4 +1,5 @@
 locals {
+  airflow_name              = "${local.application_name}-${local.environment}"
   environment_configuration = local.environment_configurations[local.environment]
   environment_configurations = {
     development = {
