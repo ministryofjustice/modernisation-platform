@@ -24,7 +24,7 @@ data "aws_iam_policy_document" "prometheus" {
     effect  = "Allow"
     actions = ["sts:AssumeRole"]
     resources = [
-      local.local.environment_configuration.observability_platform_role_arn
+      local.environment_configuration.observability_platform_role_arn
     ]
   }
 }
