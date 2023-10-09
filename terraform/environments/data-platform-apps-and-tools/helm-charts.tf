@@ -241,8 +241,11 @@ resource "helm_release" "amazon_managed_prometheus_proxy" {
     templatefile(
       "${path.module}/src/helm/prometheus/values.yml.tftpl",
       {
+        aws_account_id                  = data.aws_caller_identity.current.account_id
+        aws_account_name                = "${local.application_name}-${local.environment}"
         aws_region                      = data.aws_region.current.name
         eks_role_arn                    = module.prometheus_iam_role.iam_role_arn
+        cluster_name                    = module.eks.cluster_name
         prometheus_remote_write_url     = local.environment_configuration.observability_platform_prometheus_url
         observability_platform_role_arn = local.environment_configuration.observability_platform_role_arn
       }
