@@ -49,6 +49,7 @@ data "aws_iam_policy_document" "member-access" {
       "codebuild:*",
       "codedeploy:*",
       "codepipeline:*",
+      "datasync:*",
       "dbqms:*",
       "dlm:*",
       "dms:*",
