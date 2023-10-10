@@ -318,8 +318,8 @@ resource "aws_iam_role_policy" "member-delegation" {
         ],
         "Resource" : [
           "arn:aws:logs:*:*:log-group::log-stream:",
-          "arn:aws:logs:*:*:log-group:*-vpc-flow-logs-*:log-stream:",
-          "arn:aws:logs:*:*:log-group:*-vpc-flow-logs-*:log-stream:/log-events/eni-*"
+          "arn:aws:logs:*:*:log-group:*-vpc-flow-logs-*:log-stream:*",
+          "arn:aws:logs:*:*:log-group:*-vpc-flow-logs-*:log-stream:log-events/eni-*"
         ],
       },
     ]

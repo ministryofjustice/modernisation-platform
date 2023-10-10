@@ -200,10 +200,10 @@ resource "aws_iam_role_policy" "read_firewall" {
           "arn:aws:logs:*:*:log-group::log-stream:",
           "arn:aws:logs:*:*:log-group:fw-*:log-stream:",
           "arn:aws:logs:*:*:log-group:fw-*:log-stream:/aws/network-firewall/*/*",
-          "arn:aws:logs:*:*:log-group:*-vpc-flow-logs-*:log-stream:",
-          "arn:aws:logs:*:*:log-group:*-vpc-flow-logs-*:log-stream:/log-events/eni-*",
-          "arn:aws:logs:*:*:log-group:external-inspection-flow-logs:log-stream:",
-          "arn:aws:logs:*:*:log-group:external-inspection-flow-logs:/log-events/eni-*"
+          "arn:aws:logs:*:*:log-group:*-vpc-flow-logs-*:log-stream:*",
+          "arn:aws:logs:*:*:log-group:*-vpc-flow-logs-*:log-stream:log-events/eni-*",
+          "arn:aws:logs:*:*:log-group:external-inspection-flow-logs:log-stream:*",
+          "arn:aws:logs:*:*:log-group:external-inspection-flow-logs:log-events/eni-*"
         ],
       },
       {
