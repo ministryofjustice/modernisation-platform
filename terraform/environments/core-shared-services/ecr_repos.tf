@@ -5,9 +5,9 @@ module "performance_hub_ecr_repo" {
   app_name = "performance-hub"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["performance-hub-development"]}:user/cicd-member-user",
-    "arn:aws:iam::${local.environment_management.account_ids["performance-hub-preproduction"]}:user/cicd-member-user",
-    "arn:aws:iam::${local.environment_management.account_ids["performance-hub-production"]}:user/cicd-member-user"
+    "arn:aws:iam::${local.environment_management.account_ids["performance-hub-development"]}:user/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["performance-hub-preproduction"]}:user/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["performance-hub-production"]}:user/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
