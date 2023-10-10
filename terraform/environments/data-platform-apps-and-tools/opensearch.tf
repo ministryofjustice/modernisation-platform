@@ -20,6 +20,7 @@ resource "aws_opensearch_domain" "openmetadata" {
   }
 
   log_publishing_options {
+    enabled                  = true
     cloudwatch_log_group_arn = module.openmetadata_opensearch_cloudwatch_log_group.cloudwatch_log_group_arn
     log_type                 = "AUDIT_LOGS"
   }
@@ -70,7 +71,8 @@ resource "aws_opensearch_domain" "openmetadata" {
 }
 
 data "aws_iam_policy_document" "opensearch_domain" {
-
+  // TODO: Find source for this policy @jacobwoffenden
+  #checkov:skip=CKV_AWS_283:
   statement {
     effect  = "Allow"
     actions = ["es:ESHttp*"]

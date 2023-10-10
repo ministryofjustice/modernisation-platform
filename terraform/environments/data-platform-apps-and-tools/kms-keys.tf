@@ -1,4 +1,5 @@
 module "openmetadata_efs_kms" {
+  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source  = "terraform-aws-modules/kms/aws"
   version = "~> 1.0"
 
@@ -12,6 +13,7 @@ module "openmetadata_efs_kms" {
 }
 
 module "openmetadata_airflow_rds_kms" {
+  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source  = "terraform-aws-modules/kms/aws"
   version = "~> 1.0"
 
@@ -25,6 +27,7 @@ module "openmetadata_airflow_rds_kms" {
 }
 
 module "openmetadata_rds_kms" {
+  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source  = "terraform-aws-modules/kms/aws"
   version = "~> 1.0"
 
@@ -38,6 +41,7 @@ module "openmetadata_rds_kms" {
 }
 
 module "openmetadata_opensearch_kms" {
+  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source  = "terraform-aws-modules/kms/aws"
   version = "~> 1.0"
 

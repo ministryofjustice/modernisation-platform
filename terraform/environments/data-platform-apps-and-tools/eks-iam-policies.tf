@@ -10,6 +10,7 @@ data "aws_iam_policy_document" "openmetadata_airflow" {
 }
 
 module "openmetadata_airflow_iam_policy" {
+  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
   version = "~> 5.0"
 
@@ -30,6 +31,7 @@ data "aws_iam_policy_document" "prometheus" {
 }
 
 module "prometheus_iam_policy" {
+  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
   version = "~> 5.0"
 

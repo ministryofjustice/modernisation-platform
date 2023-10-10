@@ -205,13 +205,14 @@ resource "helm_release" "openmetadata" {
     templatefile(
       "${path.module}/src/helm/openmetadata/values.yml.tftpl",
       {
-        host                                        = "catalogue.${local.environment_configuration.route53_zone}"
-        eks_role_arn                                = module.openmetadata_iam_role.iam_role_arn
-        client_id                                   = data.aws_secretsmanager_secret_version.openmetadata_entra_id_client_id.secret_string
-        tenant_id                                   = data.aws_secretsmanager_secret_version.openmetadata_entra_id_tenant_id.secret_string
-        jwt_key_id                                  = random_uuid.openmetadata_jwt.result
-        openmetadata_airflow_username               = "${local.environment_configuration.airflow_mail_from_address}@${local.environment_configuration.ses_domain_identity}"
-        openmetadata_airflow_password_secret        = kubernetes_secret.openmetadata_airflow.metadata[0].name
+        host                                 = "catalogue.${local.environment_configuration.route53_zone}"
+        eks_role_arn                         = module.openmetadata_iam_role.iam_role_arn
+        client_id                            = data.aws_secretsmanager_secret_version.openmetadata_entra_id_client_id.secret_string
+        tenant_id                            = data.aws_secretsmanager_secret_version.openmetadata_entra_id_tenant_id.secret_string
+        jwt_key_id                           = random_uuid.openmetadata_jwt.result
+        openmetadata_airflow_username        = "${local.environment_configuration.airflow_mail_from_address}@${local.environment_configuration.ses_domain_identity}"
+        openmetadata_airflow_password_secret = kubernetes_secret.openmetadata_airflow.metadata[0].name
+        #checkov:skip=CKV_SECRET_6:Reference to Kubernetes secret not a sensitive value
         openmetadata_airflow_password_secret_key    = "openmetadata-airflow-password"
         openmetadata_opensearch_host                = resource.aws_opensearch_domain.openmetadata.endpoint
         openmetadata_opensearch_user                = "openmetadata"

@@ -1,4 +1,5 @@
 module "openmetadata_efs" {
+  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source  = "terraform-aws-modules/efs/aws"
   version = "~> 1.0"
 
