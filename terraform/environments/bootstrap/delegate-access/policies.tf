@@ -74,6 +74,7 @@ data "aws_iam_policy_document" "common_statements" {
     ]
     resources = [
       "arn:aws:iam::*:role/read-dns-records",
+      "arn:aws:iam::*:role/read-log-records",
       "arn:aws:iam::*:role/member-delegation-read-only",
       "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/member-shared-services",
       "arn:aws:iam::${local.modernisation_platform_account.id}:role/modernisation-account-limited-read-member-access"
