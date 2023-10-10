@@ -268,6 +268,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "ce:CreateReport",
       "dms:StartReplicationTask",
       "dms:StopReplicationTask",
+      "dms:ModifyReplicationTask",
       "glue:BatchCreatePartition",
       "glue:BatchDeletePartition",
       "glue:BatchDeleteTable",
