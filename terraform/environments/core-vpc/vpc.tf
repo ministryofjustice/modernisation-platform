@@ -309,6 +309,18 @@ resource "aws_iam_role_policy" "member-delegation" {
           "arn:aws:route53:::hostedzone/${module.dns-zone[each.key].zone_private}"
         ]
       },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
+          "logs:GetLogEvents"
+        ],
+        "Resource" : [
+          "arn:aws:logs:*:*:log-group::log-stream:",
+          "arn:aws:logs:*:*:log-group:*-vpc-flow-logs-*:log-stream:*",
+        ],
+      },
     ]
   })
 }
