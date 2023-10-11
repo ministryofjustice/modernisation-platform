@@ -554,7 +554,6 @@ module "data_platform_create_schema_ecr_repo" {
   app_name = "data-platform-create-schema-lambda"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
@@ -563,7 +562,6 @@ module "data_platform_create_schema_ecr_repo" {
   ]
 
   pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
