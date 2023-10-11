@@ -23,5 +23,7 @@
     "infrastructure-support": "probation-webops@digital.justice.gov.uk",
     "owner": "probation-webops@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": ["ministryofjustice/hmpps-delius-operational-automation"]
+  "github-oidc-team-repositories": [
+    "ministryofjustice/hmpps-delius-operational-automation"
+  ]
 }
