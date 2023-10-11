@@ -1,0 +1,182 @@
+---
+owner_slack: "#modernisation-platform"
+title: Quick Start Mac Guide
+last_reviewed_on: 2023-09-29
+review_in: 6 months
+---
+
+# Quick Start Mac Guide
+
+## User Guide: Setting Up macOS with iTerm2, Oh My Zsh, Powerlevel10k (Dracula Theme), Git, AWS-Vault, TFEnv, and Docker
+
+Welcome to the world of macOS! This user guide will walk you through the process of setting up your Mac laptop with iTerm2, Oh My Zsh, Powerlevel10k theme using the stylish Dracula theme, and configuring essential tools like Git, AWS-Vault, TFEnv, and Docker.
+
+N.B - Please remember this is just one developers experience and is by no means the only way of configuring your Mac, this is merely a quick start guide tp help guide new starters. If there are different applications you prefer working with please use them and feel free to add any recommendations to this page 
+
+## Prerequisites
+
+Before you begin, make sure you have the following:
+
+- A Mac laptop with macOS installed.
+- A stable internet connection.
+- Basic knowledge of using the Terminal.
+
+## Step 1: Install Homebrew
+
+Homebrew is a package manager for macOS that will help us install the necessary tools and software. Open the Terminal Open Terminal (command + space) and enter the following command to install Homebrew:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Follow the on-screen instructions to complete the installation.
+
+After installing, add it to the path (replace ”[username]” with your actual username)
+
+```bash
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/[username]/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+```
+
+For more info about homebrew please visit the official website [brew.sh](https://brew.sh.)
+
+## Step 2: Install iTerm2
+
+iTerm2 is a powerful replacement for the default Terminal app on macOS. To install iTerm2, open your Terminal and run:
+
+```bash
+brew install --cask iterm2
+```
+
+Switch to iTerm2 for the remainder of this guide.
+
+## Step 3: Install Git
+
+To set up Git, open iTerm2 and run:
+```bash
+brew install git
+```
+Configure your Git username and email:
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "youremail@example.com"
+```
+
+## Step 4: Install Oh My Zsh
+
+Oh My Zsh is a powerful and customizable shell. To install it, open iTerm2 and run:
+
+```bash
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+Once the installation is complete, restart iTerm2.
+
+## Step 5: Install Zsh Syntax Highlighting
+
+Zsh Syntax Highlighting enhances the terminal by providing syntax highlighting for commands. Install it using Homebrew:
+
+```bash
+brew install zsh-syntax-highlighting
+```
+
+To enable plugin, edit the ~/.zshrc file
+```bash
+vi ~/.zshrc
+```
+
+press " i " to enter INSERT mode and
+append zsh-autosuggestions & zsh-syntax-highlighting to plugins() like this:
+
+```bash
+plugins=(  
+  git  
+  docker  
+  zsh-autosuggestions 
+  zsh-syntax-highlighting
+)
+```
+Then run the following command to apply the changes: 
+```bash
+source ~/.zshrc
+```
+
+## Step 6: Install Powerlevel10k for Oh My Zsh
+
+Powerlevel10k is a theme for Oh My Zsh that offers a rich and customizable prompt. Install it by running:
+
+```bash
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+```
+
+## Step 7: Configure Zsh and Powerlevel10k
+
+Now, we'll configure Zsh and Powerlevel10k.
+
+1. Open iTerm2 and run:
+```bash
+nano ~/.zshrc
+``````
+2. In the .zshrc file, set the ZSH_THEME to "powerlevel10k/powerlevel10k":
+```bash
+ZSH_THEME="powerlevel10k/powerlevel10k"
+```
+3. Save and exit the text editor (press Ctrl + O, then Enter, and Ctrl + X).
+
+4. Restart iTerm2 to apply the changes.
+
+## Step 8: Configure Powerlevel10k
+
+The first time you start a new iTerm2 session, Powerlevel10k will guide you through its configuration wizard. Follow the prompts to customize your prompt to your liking. 
+
+if the prompt doesn't automatically appear then run 
+
+```bash
+p10k configure
+```
+
+## Step 9: Install AWS-Vault
+
+AWS-Vault is a tool for securely managing AWS access credentials. Install it using Homebrew:
+
+```bash
+brew install aws-vault
+```
+Configure AWS-Vault with your AWS credentials:
+```bash
+aws-vault add my-aws-profile
+```
+Follow the prompts to enter your AWS access and secret keys.
+
+for more information please visit [aws-vault](https://github.com/99designs/aws-vault)
+
+## Step 10: Install TFEnv
+
+TFEnv (Terraform Environment Manager) allows you to easily switch between different versions of Terraform. Install it using Homebrew:
+
+```bash
+brew install tfenv
+```
+
+Example usage: tfenv install [version]
+
+```bash
+$ tfenv install 0.7.0
+$ tfenv install latest
+```
+
+## Step 11: Install Docker
+
+Docker is a containerization platform. Install it using Homebrew:
+```bash
+brew install --cask docker
+```
+
+## Conclusion
+
+Congratulations! You have successfully set up macOS with iTerm2, Oh My Zsh, Powerlevel10k and configured essential tools like Git, AWS-Vault, TFEnv, and Docker. Your Mac is now ready to use.
+
+If you encounter any issues or want to further customize your setup, refer to the documentation of each tool or consult their respective websites.
+
+Enjoy your Mac, and happy coding! 😊
