@@ -363,7 +363,7 @@ data "aws_iam_policy_document" "policy" {
     actions = [
       "athena:StartQueryExecution",
       "athena:GetQueryExecution",
-      "backup:Start*"
+      "backup:Start*",
       "codebuild:Start*",
       "codebuild:StartBuild",
       "codebuild:BatchGetBuilds",
