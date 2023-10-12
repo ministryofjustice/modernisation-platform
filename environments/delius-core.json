@@ -15,6 +15,15 @@
           "nuke": "exclude"
         }
       ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "github_slug": "hmpps-migration",
+          "level": "developer"
+        }
+      ]
     }
   ],
   "tags": {
