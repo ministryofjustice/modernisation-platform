@@ -96,7 +96,8 @@ expected =
           "corporate-staff-rostering-test",
           "planetfm-test",
           "hmpps-oem-test",
-          "hmpps-domain-services-test"
+          "hmpps-domain-services-test",
+          "delius-core-test"
         ]
       }
     },
