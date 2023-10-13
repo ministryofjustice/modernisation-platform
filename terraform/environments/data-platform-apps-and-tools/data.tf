@@ -37,17 +37,6 @@ data "aws_iam_roles" "eks_sso_access_role" {
 ##################################################
 # Data Platform Apps and Tools EKS
 ##################################################
-data "aws_ssm_parameter" "bottlerocket_image_id" {
-  name = "/aws/service/bottlerocket/aws-k8s-${local.environment_configuration.eks_versions.cluster}/x86_64/latest/image_id"
-}
-
-data "aws_ami" "bottlerocket_image" {
-  owners = ["amazon"]
-  filter {
-    name   = "image-id"
-    values = [data.aws_ssm_parameter.bottlerocket_image_id.value]
-  }
-}
 
 data "kubernetes_namespace" "kube_system" {
   metadata {
