@@ -90,44 +90,6 @@ resource "aws_iam_role_policy" "dns" {
 }
 
 # Role to allow developer SSO user to read DNS records for ACM certificate validation for local plan
-resource "aws_iam_role" "read_dns" {
-  name = "read-dns-records"
-  assume_role_policy = jsonencode(
-    # checkov:skip=CKV_AWS_60: "the policy is secured with the condition"
-    # checkov:skip=CKV_AWS_355: "the policy is secured with the condition"
-    {
-      "Version" : "2012-10-17",
-      "Statement" : [
-        {
-          "Effect" : "Allow",
-          "Principal" : {
-            "AWS" : "*"
-          },
-          "Action" : "sts:AssumeRole",
-          "Condition" : {
-            "ForAnyValue:StringLike" : {
-              "aws:PrincipalOrgPaths" : ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
-            }
-          }
-        }
-      ]
-  })
-
-  tags = merge(
-    local.tags,
-    {
-      Name = "read-dns-records"
-    },
-  )
-}
-
-resource "aws_iam_policy_attachment" "read_dns_aws_managed" {
-  name       = "AmazonRoute53ReadOnlyAccess-read-dns-attachment"
-  policy_arn = "arn:aws:iam::aws:policy/AmazonRoute53ReadOnlyAccess"
-  roles      = [aws_iam_role.read_dns.name]
-}
-
-# Role to allow developer SSO user to read DNS records for ACM certificate validation for local plan
 resource "aws_iam_role" "read_logs" {
   name = "read-log-records"
   assume_role_policy = jsonencode(
