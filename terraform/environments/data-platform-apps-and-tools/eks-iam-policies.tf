@@ -1,11 +1,9 @@
 data "aws_iam_policy_document" "openmetadata_airflow" {
   statement {
-    sid     = "AllowAssumeRole"
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
-    resources = [
-      "arn:aws:iam::013433889002:role/openmetadata20231004152712710000000002"
-    ]
+    sid       = "AllowAssumeRole"
+    effect    = "Allow"
+    actions   = ["sts:AssumeRole"]
+    resources = ["arn:aws:iam::${local.environment_configuration.data_platform_account_id}:role/${local.environment_configuration.data_platform_openmetadata_role}"]
   }
 }
 
@@ -21,12 +19,10 @@ module "openmetadata_airflow_iam_policy" {
 
 data "aws_iam_policy_document" "prometheus" {
   statement {
-    sid     = "AllowAssumeRole"
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
-    resources = [
-      local.environment_configuration.observability_platform_role_arn
-    ]
+    sid       = "AllowAssumeRole"
+    effect    = "Allow"
+    actions   = ["sts:AssumeRole"]
+    resources = ["arn:aws:iam::${local.environment_configuration.data_platform_account_id}:role/${local.environment_configuration.observability_platform_role}"]
   }
 }
 

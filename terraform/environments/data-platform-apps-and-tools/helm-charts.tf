@@ -250,7 +250,7 @@ resource "helm_release" "amazon_managed_prometheus_proxy" {
         eks_role_arn                    = module.prometheus_iam_role.iam_role_arn
         cluster_name                    = module.eks.cluster_name
         prometheus_remote_write_url     = local.environment_configuration.observability_platform_prometheus_url
-        observability_platform_role_arn = local.environment_configuration.observability_platform_role_arn
+        observability_platform_role_arn = "arn:aws:iam::${local.environment_configuration.data_platform_account_id}:role/${local.environment_configuration.observability_platform_role}"
       }
     )
   ]
