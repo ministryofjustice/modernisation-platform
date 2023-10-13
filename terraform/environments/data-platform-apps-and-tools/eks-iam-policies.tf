@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "prometheus" {
     sid       = "AllowAssumeRole"
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
-    resources = ["arn:aws:iam::${local.environment_configuration.data_platform_account_id}:role/${local.environment_configuration.observability_platform_role}"]
+    resources = ["arn:aws:iam::${local.environment_configuration.observability_platform_account_id}:role/${local.environment_configuration.observability_platform_role}"]
   }
 }
 
