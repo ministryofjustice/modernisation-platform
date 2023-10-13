@@ -12,5 +12,4 @@ spec:
       - "airflow"
   parameters:
     repos:
-      - "repo.data-platform.service.justice.gov.uk/" # This is a placeholder for testing
-      - "public.ecr.aws/"
+      - "189157455002.dkr.ecr.eu-west-1.amazonaws.com/" # analytical-platform-data-engineering-production
