@@ -32,7 +32,7 @@ module "eks" {
   }
 
   eks_managed_node_group_defaults = {
-    ami_id   = data.aws_ami.bottlerocket.image_id
+    ami_id   = data.aws_ami.bottlerocket_image.image_id
     ami_type = "BOTTLEROCKET_x86_64"
     platform = "bottlerocket"
     metadata_options = {
