@@ -42,7 +42,7 @@ data "aws_iam_policy_document" "collaborator_local_plan" {
       "sts:AssumeRole"
     ]
     resources = [
-      "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/read-dns-records",
+      "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/read-log-records",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-development"]}:role/member-delegation-read-only",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-test"]}:role/member-delegation-read-only",
       "arn:aws:iam::${local.environment_management.account_ids["core-vpc-preproduction"]}:role/member-delegation-read-only",

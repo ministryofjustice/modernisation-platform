@@ -73,7 +73,6 @@ data "aws_iam_policy_document" "common_statements" {
       "sts:AssumeRole"
     ]
     resources = [
-      "arn:aws:iam::*:role/read-dns-records",
       "arn:aws:iam::*:role/read-log-records",
       "arn:aws:iam::*:role/member-delegation-read-only",
       "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/member-shared-services",
