@@ -2,7 +2,7 @@ resource "helm_release" "gatekeeper" {
   name       = "gatekeeper"
   repository = "https://open-policy-agent.github.io/gatekeeper/charts"
   chart      = "gatekeeper"
-  version    = "3.13.0"
+  version    = "3.13.2"
   namespace  = kubernetes_namespace.gatekeeper_system.metadata[0].name
   values = [
     templatefile(
@@ -88,7 +88,7 @@ resource "helm_release" "ingress_nginx" {
   name       = "ingress-nginx"
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx"
-  version    = "4.8.1"
+  version    = "4.8.2"
   namespace  = kubernetes_namespace.ingress_nginx.metadata[0].name
   values = [
     templatefile(
@@ -147,6 +147,7 @@ resource "helm_release" "policy_controller" {
   version    = "0.6.5"
   namespace  = kubernetes_namespace.cosign_system.metadata[0].name
   values     = [templatefile("${path.module}/src/helm/policy-controller/values.yml.tftpl", {})]
+
   depends_on = [helm_release.gatekeeper]
 }
 
@@ -165,6 +166,7 @@ resource "helm_release" "aws_for_fluent_bit" {
       }
     )
   ]
+
   depends_on = [helm_release.gatekeeper]
 }
 
@@ -252,4 +254,6 @@ resource "helm_release" "amazon_managed_prometheus_proxy" {
       }
     )
   ]
+
+  depends_on = [helm_release.gatekeeper]
 }
