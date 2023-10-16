@@ -43,6 +43,29 @@ module "mlra_ecr_repo" {
   tags_common = local.tags
 }
 
+# ECR repo holding the APEX application container image
+module "apex_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "apex"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["apex-development"]}:user/cicd-member-user",
+    local.environment_management.account_ids["apex-development"]
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["apex-development"]}:user/cicd-member-user",
+    local.environment_management.account_ids["apex-development"],
+    local.environment_management.account_ids["apex-test"],
+    local.environment_management.account_ids["apex-preproduction"],
+    local.environment_management.account_ids["apex-production"]
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
+
 module "instance_scheduler_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
