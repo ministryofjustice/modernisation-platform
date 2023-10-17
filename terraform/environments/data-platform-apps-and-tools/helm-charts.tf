@@ -2,7 +2,7 @@ resource "helm_release" "gatekeeper" {
   name       = "gatekeeper"
   repository = "https://open-policy-agent.github.io/gatekeeper/charts"
   chart      = "gatekeeper"
-  version    = "3.13.2"
+  version    = "3.13.3"
   namespace  = kubernetes_namespace.gatekeeper_system.metadata[0].name
   values = [
     templatefile(
@@ -127,7 +127,7 @@ resource "helm_release" "external_secrets" {
   name       = "external-secrets"
   repository = "https://charts.external-secrets.io"
   chart      = "external-secrets"
-  version    = "0.9.5"
+  version    = "0.9.6"
   namespace  = kubernetes_namespace.external_secrets.metadata[0].name
   values = [
     templatefile(
