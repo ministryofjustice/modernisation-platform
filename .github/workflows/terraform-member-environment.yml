@@ -55,10 +55,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: find-environments
     strategy:
-      fail-fast: false
       matrix:
-        # environment: [development, test, preproduction, production]
-        environment: [development]
+        environment: [development, test, preproduction, production]
     env:
       TF_IN_AUTOMATION: "true"
     steps:
@@ -76,7 +74,7 @@ jobs:
         id: setup
         uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1 # v2.0.3
         with:
-          terraform_version: "1.5.7"
+          terraform_version: "~1"
           terraform_wrapper: false
       - name: Terraform init
         id: init
@@ -125,8 +123,7 @@ jobs:
     needs: [find-environments, terraform-plan]
     strategy:
       matrix:
-        # environment: [development, test]
-        environment: [development]
+        environment: [development, test]
     environment: ${{ matrix.environment }}
     env:
       TF_IN_AUTOMATION: "true"
@@ -145,7 +142,7 @@ jobs:
         id: setup
         uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1 # v2.0.3
         with:
-          terraform_version: "1.5.7"
+          terraform_version: "~1"
           terraform_wrapper: false
       - name: Terraform init
         id: init
@@ -224,7 +221,7 @@ jobs:
         id: setup
         uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1 # v2.0.3
         with:
-          terraform_version: "1.5.7"
+          terraform_version: "~1"
           terraform_wrapper: false
       - name: Terraform init
         id: init
