@@ -1024,7 +1024,7 @@ resource "pagerduty_slack_connection" "dpr_nonprod_connection" {
   source_id         = pagerduty_service.dpr_nonprod.id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
-  channel_id        = "C061DUDT3NW"
+  channel_id        = "C061353JGDV"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
