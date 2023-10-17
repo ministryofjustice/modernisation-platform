@@ -61,6 +61,6 @@
     "infrastructure-support": "probation-webops@digital.justice.gov.uk",
     "owner": "Probation WebOps: probation-webops@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [""],
+  "github-oidc-team-repositories": ["ministryofjustice/hmpps-cr-ancillary-jitbit-app"],
   "go-live-date": "2023-09-18"
 }
