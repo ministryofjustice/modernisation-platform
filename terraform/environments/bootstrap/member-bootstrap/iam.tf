@@ -383,6 +383,7 @@ data "aws_iam_policy_document" "policy" {
       "datasync:Describe*",
       "datasync:List*",
       "datasync:TagResource",
+      "datasync:StartTaskExecution",
       "ecs:RegisterTaskDefinition",
       "ecs:UpdateService",
       "ecs:deregisterTaskDefinition",
