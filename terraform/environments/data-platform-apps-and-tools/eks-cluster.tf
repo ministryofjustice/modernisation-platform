@@ -1,3 +1,6 @@
+#tfsec:ignore:aws-eks-no-public-cluster-access - k8s API is secured with AWS STS
+#tfsec:ignore:aws-eks-no-public-cluster-access-to-cidr - " "
+#tfsec:ignore:aws-ec2-no-public-egress-sgr - We are going to have a wider discussion and if needed we will fix this
 module "eks" {
   #checkov:skip=CKV_TF_1:Module is from Terraform registry
 
