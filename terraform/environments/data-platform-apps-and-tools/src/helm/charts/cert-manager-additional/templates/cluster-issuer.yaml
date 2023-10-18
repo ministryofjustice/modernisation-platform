@@ -10,8 +10,11 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-production
     solvers:
-      - dns01:
-        cnameStrategy: Follow
-        route53:
-          region: {{ .Values.aws.region }}
-          hostedZoneID: {{ .Values.aws.hostedZoneID }}
+      - selector:
+          dnsZones:
+            - {{ .Values.aws.dnsZone }}
+        dns01:
+          cnameStrategy: Follow
+          route53:
+            region: {{ .Values.aws.region }}
+            hostedZoneID: {{ .Values.aws.hostedZoneID }}

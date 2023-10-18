@@ -5,3 +5,4 @@ acme:
 aws:
   region:
   hostedZoneID:
+  dnsZone:

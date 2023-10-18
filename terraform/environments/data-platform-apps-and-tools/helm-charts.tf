@@ -105,13 +105,8 @@ resource "helm_release" "cert_manager_additional" {
   }
 
   set {
-    name  = "ingressNginxDefaultCertificate.namespace"
-    value = kubernetes_namespace.ingress_nginx.metadata[0].name
-  }
-
-  set {
-    name  = "ingressNginxDefaultCertificate.dnsName"
-    value = "*.${local.environment_configuration.route53_zone}"
+    name  = "aws.dnsZone"
+    value = local.environment_configuration.route53_zone
   }
 
   depends_on = [helm_release.cert_manager]
