@@ -1,0 +1,11 @@
+---
+acme:
+  email:
+
+aws:
+  region:
+  hostedZoneID:
+
+ingressNginxDefaultCertificate:
+  namespace:
+  dnsName:

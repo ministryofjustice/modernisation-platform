@@ -84,6 +84,40 @@ resource "helm_release" "cert_manager" {
   depends_on = [helm_release.gatekeeper]
 }
 
+resource "helm_release" "cert_manager_additional" {
+  name      = "cert-manager-additional"
+  chart     = "./src/helm/charts/cert-manager-additional"
+  namespace = kubernetes_namespace.cert_manager.metadata[0].name
+
+  set {
+    name  = "acme.email"
+    value = "data-platform-tech+certificates@digital.justice.gov.uk"
+  }
+
+  set {
+    name  = "aws.region"
+    value = data.aws_region.current.name
+  }
+
+  set {
+    name  = "aws.hostedZoneID"
+    value = data.aws_route53_zone.apps_tools.zone_id
+  }
+
+  set {
+    name  = "ingressNginxDefaultCertificate.namespace"
+    value = kubernetes_namespace.ingress_nginx.metadata[0].name
+  }
+
+  set {
+    name  = "ingressNginxDefaultCertificate.dnsName"
+    value = "*.${local.environment_configuration.route53_zone}"
+  }
+
+  depends_on = [helm_release.cert_manager]
+
+}
+
 resource "helm_release" "ingress_nginx" {
   name       = "ingress-nginx"
   repository = "https://kubernetes.github.io/ingress-nginx"
@@ -99,7 +133,7 @@ resource "helm_release" "ingress_nginx" {
       }
     )
   ]
-  depends_on = [helm_release.gatekeeper]
+  depends_on = [helm_release.gatekeeper, helm_release.cert_manager_additional]
 }
 
 resource "helm_release" "velero" {
