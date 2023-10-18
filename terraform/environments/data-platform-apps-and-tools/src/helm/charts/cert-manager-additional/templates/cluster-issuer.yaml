@@ -1,0 +1,20 @@
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-production
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: {{ .Values.acme.email }}
+    privateKeySecretRef:
+      name: letsencrypt-production
+    solvers:
+      - selector:
+          dnsZones:
+            - {{ .Values.aws.dnsZone }}
+        dns01:
+          cnameStrategy: Follow
+          route53:
+            region: {{ .Values.aws.region }}
+            hostedZoneID: {{ .Values.aws.hostedZoneID }}

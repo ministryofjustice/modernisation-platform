@@ -1,0 +1,15 @@
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: AllowedRepos
+metadata:
+  name: airflow-allowed-repositories
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    namespaces:
+      - "airflow"
+  parameters:
+    repos:
+      - "189157455002.dkr.ecr.eu-west-1.amazonaws.com/" # analytical-platform-data-engineering-production

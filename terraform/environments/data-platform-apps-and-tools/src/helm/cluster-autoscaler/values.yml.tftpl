@@ -1,0 +1,20 @@
+---
+autoDiscovery:
+  cloudProviders: aws
+  clusterName: ${cluster_name}
+  tags:
+    - k8s.io/cluster-autoscaler/enabled
+    - k8s.io/cluster-autoscaler/${cluster_name}
+    - kubernetes.io/cluster/${cluster_name}
+
+awsRegion: ${aws_region}
+
+cloudProvider: aws
+
+fullnameOverride: cluster-autoscaler
+
+rbac:
+  serviceAccount:
+    name: cluster-autoscaler
+    annotations:
+      eks.amazonaws.com/role-arn: ${eks_role_arn}

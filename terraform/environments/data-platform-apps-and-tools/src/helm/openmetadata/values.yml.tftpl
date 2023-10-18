@@ -1,0 +1,102 @@
+---
+openmetadata:
+  config:
+    logLevel: "INFO"
+    openmetadata:
+      host: ${host}
+      uri: "https://${host}"
+    database:
+      dbScheme: postgresql
+      host: ${openmetadata_rds_host}
+      port: 5432
+      dbUseSSL: true
+      driverClass: org.postgresql.Driver
+      databaseName: ${openmetadata_rds_dbname}
+      auth:
+        username: ${openmetadata_rds_user}
+        password:
+          secretRef: ${openmetadata_rds_password_secret}
+          secretKey: ${openmetadata_rds_password_secret_key}
+    elasticsearch:
+      searchType: opensearch
+      host: ${openmetadata_opensearch_host}
+      port: 443
+      scheme: https
+      auth:
+        enabled: true
+        username: ${openmetadata_opensearch_user}
+        password:
+          secretRef: ${openmetadata_opensearch_password_secret}
+          secretKey: ${openmetadata_opensearch_password_secret_key}
+    pipelineServiceClientConfig:
+      auth:
+        username: ${openmetadata_airflow_username}
+        password:
+          secretRef: ${openmetadata_airflow_password_secret}
+          secretKey: ${openmetadata_airflow_password_secret_key}
+    authorizer:
+      # Due to an issue in how Open Metadata uses initialAdmins, we've disabled this for now
+      # The workaround is to:
+      #  1. Bring up Open Metadata
+      #  2. Login with your Entra ID account (this will create your user in the user_entity table)
+      #  3. Amend your user_entity record in the database to set the isAdmin flag to true
+      # As of 04/10/23, this issue is being discussed here with Collate, Open Metadata's creators
+      # initialAdmins:
+      #   - "Jacob.Woffenden"
+      #   - "Richard.Baguley"
+      #   - "Julia.Lawrence"
+      #   - "Jacob.Hamblin-Pyke"
+      #   - "Brian.Ellwood"
+      #   - "Yikang.Mao"
+      #   - "Brian.Elwood1"
+      allowedEmailRegistrationDomains:
+        - "justice.gov.uk"
+      principalDomain: "justice.gov.uk"
+      enforcePrincipalDomain: true
+      enableSecureSocketConnection: true
+    authentication:
+      provider: "azure"
+      publicKeys:
+        - "https://${host}/api/v1/system/config/jwks"
+        - "https://login.microsoftonline.com/common/discovery/keys"
+      authority: "https://login.microsoftonline.com/${tenant_id}"
+      clientId: "${client_id}"
+      callbackUrl: "https://${host}/callback"
+    jwtTokenConfiguration:
+      rsapublicKeyFilePath: "/opt/openmetadata/jwt/tls/public-key.der"
+      rsaprivateKeyFilePath: "/opt/openmetadata/jwt/tls/private-key.der"
+      jwtissuer: "${host}"
+      keyId: "${jwt_key_id}"
+
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: ${eks_role_arn}
+
+# TODO: Revisit this
+serviceMonitor:
+  enabled: false
+####################
+
+ingress:
+  enabled: true
+  className: "default"
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: ${host}
+  hosts:
+    - host: ${host}
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - ${host}
+      secretName: openmetadata-ingress-tls
+
+extraVolumeMounts:
+  - name: openmetadata-jwt-tls
+    mountPath: /opt/openmetadata/jwt/tls
+
+extraVolumes:
+  - name: openmetadata-jwt-tls
+    secret:
+      secretName: openmetadata-jwt-tls

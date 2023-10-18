@@ -1,0 +1,13 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: default-certificate
+  namespace: {{ .Values.ingressNginxDefaultCertificate.namespace }}
+spec:
+  secretName: default-certificate
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-production
+  dnsNames:
+    - {{ quote .Values.ingressNginxDefaultCertificate.dnsName }}
