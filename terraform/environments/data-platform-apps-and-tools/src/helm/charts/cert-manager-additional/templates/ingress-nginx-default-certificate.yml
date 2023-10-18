@@ -10,4 +10,4 @@ spec:
     kind: ClusterIssuer
     name: letsencrypt-production
   dnsNames:
-    - {{ .Values.ingressNginxDefaultCertificate.dnsName }}
+    - {{ quote .Values.ingressNginxDefaultCertificate.dnsName }}
