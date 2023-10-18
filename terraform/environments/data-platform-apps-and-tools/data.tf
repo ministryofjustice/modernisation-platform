@@ -35,16 +35,6 @@ data "aws_iam_roles" "eks_sso_access_role" {
 }
 
 ##################################################
-# Data Platform Apps and Tools EKS
-##################################################
-
-data "kubernetes_namespace" "kube_system" {
-  metadata {
-    name = "kube-system"
-  }
-}
-
-##################################################
 # Data Platform Apps and Tools Open Metadata
 ##################################################
 

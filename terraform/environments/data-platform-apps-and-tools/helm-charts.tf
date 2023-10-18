@@ -34,7 +34,7 @@ resource "helm_release" "cluster_autoscaler" {
   repository = "https://kubernetes.github.io/autoscaler"
   chart      = "cluster-autoscaler"
   version    = "9.29.3"
-  namespace  = data.kubernetes_namespace.kube_system.metadata[0].name
+  namespace  = "kube-system"
 
   values = [
     templatefile(
@@ -156,7 +156,7 @@ resource "helm_release" "aws_for_fluent_bit" {
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-for-fluent-bit"
   version    = "0.1.30"
-  namespace  = data.kubernetes_namespace.kube_system.metadata[0].name
+  namespace  = "kube-system"
   values = [
     templatefile(
       "${path.module}/src/helm/aws-for-fluent-bit/values.yml.tftpl",
