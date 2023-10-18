@@ -1,0 +1,4 @@
+---
+ingressNginxDefaultCertificate:
+  namespace:
+  dnsName:

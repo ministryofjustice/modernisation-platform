@@ -5,7 +5,3 @@ acme:
 aws:
   region:
   hostedZoneID:
-
-ingressNginxDefaultCertificate:
-  namespace:
-  dnsName:

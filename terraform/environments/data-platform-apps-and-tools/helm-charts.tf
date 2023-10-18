@@ -115,7 +115,24 @@ resource "helm_release" "cert_manager_additional" {
   }
 
   depends_on = [helm_release.cert_manager]
+}
 
+resource "helm_release" "ingress_nginx_prerequisites" {
+  name      = "ingress-nginx-prerequisites"
+  chart     = "./src/helm/charts/ingress-nginx-prerequisites"
+  namespace = kubernetes_namespace.ingress_nginx.metadata[0].name
+
+  set {
+    name  = "ingressNginxDefaultCertificate.namespace"
+    value = kubernetes_namespace.ingress_nginx.metadata[0].name
+  }
+
+  set {
+    name  = "ingressNginxDefaultCertificate.dnsName"
+    value = "*.${local.environment_configuration.route53_zone}"
+  }
+
+  depends_on = [helm_release.cert_manager_additional]
 }
 
 resource "helm_release" "ingress_nginx" {
@@ -133,7 +150,7 @@ resource "helm_release" "ingress_nginx" {
       }
     )
   ]
-  depends_on = [helm_release.gatekeeper, helm_release.cert_manager_additional]
+  depends_on = [helm_release.gatekeeper, helm_release.ingress_nginx_prerequisites]
 }
 
 resource "helm_release" "velero" {
