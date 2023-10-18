@@ -57,7 +57,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        environment: [development]
+        environment: [development, test, preproduction, production]
     env:
       TF_IN_AUTOMATION: "true"
     steps:
@@ -125,7 +125,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        environment: [development]
+        environment: [development, test]
     environment: ${{ matrix.environment }}
     env:
       TF_IN_AUTOMATION: "true"
