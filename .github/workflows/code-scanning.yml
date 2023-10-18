@@ -20,7 +20,7 @@ jobs:
           - ubuntu-latest
     steps:
       - name: Checkout source code
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           token: '${{ secrets.GITHUB_TOKEN }}'
           fetch-depth: 0
@@ -51,7 +51,7 @@ jobs:
       security-events: write
     steps:
       - name: Clone repo
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           token: '${{ secrets.GITHUB_TOKEN }}'
           fetch-depth: 0
@@ -73,7 +73,7 @@ jobs:
       security-events: write
     steps:
       - name: Checkout repo
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           token: '${{ secrets.GITHUB_TOKEN }}'
           fetch-depth: 0
