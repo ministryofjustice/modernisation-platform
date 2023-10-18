@@ -21,7 +21,8 @@ allowed_access := [
   "read-only",
   "security-audit",
   "data-engineer",
-  "reporting-operations"
+  "reporting-operations",
+  "mwaa-user"
 ]
 
 allowed_nuke := [
