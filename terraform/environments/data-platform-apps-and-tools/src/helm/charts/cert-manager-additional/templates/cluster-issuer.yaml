@@ -6,12 +6,12 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: ${{ Values.acme.email }}
+    email: {{ .Values.acme.email }}
     privateKeySecretRef:
       name: letsencrypt-production
     solvers:
       - dns01:
         cnameStrategy: Follow
         route53:
-          region: ${{ Values.aws.region }}
-          hostedZoneID: ${{ Values.aws.hostedZoneID }}
+          region: {{ .Values.aws.region }}
+          hostedZoneID: {{ .Values.aws.hostedZoneID }}
