@@ -11,7 +11,7 @@ module "cluster_autoscaler_role" {
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["${data.kubernetes_namespace.kube_system.metadata[0].name}:cluster-autoscaler"]
+      namespace_service_accounts = ["kube-system:cluster-autoscaler"]
     }
   }
 

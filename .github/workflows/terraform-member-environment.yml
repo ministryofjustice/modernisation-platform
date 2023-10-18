@@ -55,6 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: find-environments
     strategy:
+      fail-fast: false
       matrix:
         environment: [development, test, preproduction, production]
     env:
@@ -122,6 +123,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [find-environments, terraform-plan]
     strategy:
+      fail-fast: false
       matrix:
         environment: [development, test]
     environment: ${{ matrix.environment }}
@@ -201,6 +203,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [find-environments, terraform-plan]
     strategy:
+      fail-fast: false
       matrix:
         environment: [preproduction, production]
     environment: ${{ matrix.environment }}
