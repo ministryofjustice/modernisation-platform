@@ -110,9 +110,8 @@ locals {
       data_platform_openmetadata_role = "openmetadata"
 
       /* Observability Platform */
-      observability_platform_account_id = local.environment_management.account_ids["observability-platform-production"]
-      observability_platform_role       = "data-platform-apps-and-tools"
-      // TODO: Replace this with Obersevability Platform PRODUCTION Prometheus URL
+      observability_platform_account_id     = local.environment_management.account_ids["observability-platform-production"]
+      observability_platform_role           = "data-platform-apps-and-tools"
       observability_platform_prometheus_url = "https://aps-workspaces.eu-west-2.amazonaws.com/workspaces/ws-55a65e9b-aab9-47a0-88b4-8275c50f1ff9/api/v1/remote_write"
     }
   }
