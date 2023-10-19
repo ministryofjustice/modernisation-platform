@@ -1,7 +1,6 @@
-// TODO - Review this rule: "Instance does not have IAM Authentication enabled" IAM Auth not understood by our applications
 module "openmetadata_airflow_rds" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
-  source  = "terraform-aws-modules/rds/aws" #tfsec:ignore:AVD-AWS-0176
+  source  = "terraform-aws-modules/rds/aws"
   version = "~> 6.0"
 
   identifier = "openmetadata-airflow"
@@ -65,10 +64,8 @@ module "openmetadata_airflow_rds" {
   tags = local.tags
 }
 
-// TODO - Review this rule: "Instance does not have IAM Authentication enabled" IAM Auth not understood by our applications
 module "openmetadata_rds" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
-  source  = "terraform-aws-modules/rds/aws" #tfsec:ignore:AVD-AWS-0176
   version = "~> 6.0"
 
   identifier = "openmetadata"
