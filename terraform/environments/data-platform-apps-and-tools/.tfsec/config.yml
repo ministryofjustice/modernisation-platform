@@ -1,0 +1,4 @@
+---
+exclude:
+  # Add IDs of checks to ignore them
+  - aws-rds-enable-iam-auth
