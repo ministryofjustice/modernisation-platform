@@ -1,4 +1,5 @@
 module "managed_grafana" {
+  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source  = "terraform-aws-modules/managed-service-grafana/aws"
   version = "~> 2.0"
 

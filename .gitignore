@@ -7,6 +7,8 @@ megalinter-reports/
 *.tfstate*
 .tfsec/
 .tfsec/*
+!terraform/environments/my-application/.tfsec/
+!terraform/environments/my-application/.tfsec/*
 tmp/
 *.tsv
 .vscode/
