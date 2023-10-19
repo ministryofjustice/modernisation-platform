@@ -66,6 +66,7 @@ module "openmetadata_airflow_rds" {
 
 module "openmetadata_rds" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
+  source  = "terraform-aws-modules/rds/aws"
   version = "~> 6.0"
 
   identifier = "openmetadata"
