@@ -12,11 +12,9 @@ resource "aws_kms_alias" "s3_state_bucket" {
 }
 
 data "aws_iam_policy_document" "kms_state_bucket" {
-
   # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
   # checkov:skip=CKV_AWS_356: "policy is directly related to the resource"
   # checkov:skip=CKV_AWS_109: "role is resticted by limited actions in member account"
-
   statement {
     sid    = "Allow management access of the key to the modernisation platform account"
     effect = "Allow"
@@ -69,7 +67,6 @@ data "aws_iam_policy_document" "kms_state_bucket" {
   }
 }
 
-
 # State bucket KMS Destination
 resource "aws_kms_key" "s3_state_bucket_eu-west-1_replication" {
   provider = aws.modernisation-platform-eu-west-1
@@ -79,6 +76,7 @@ resource "aws_kms_key" "s3_state_bucket_eu-west-1_replication" {
   enable_key_rotation     = true
   deletion_window_in_days = 30
 }
+
 resource "aws_kms_alias" "s3_state_bucket_eu-west-1_replication" {
   provider = aws.modernisation-platform-eu-west-1
 
@@ -159,11 +157,9 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
   }
 
   statement {
-    sid    = "AllowModifyObjectsFromRootAccount"
-    effect = "Allow"
-    actions = [
-      "s3:GetObject"
-    ]
+    sid       = "AllowGetObjectsFromRootAccount"
+    effect    = "Allow"
+    actions   = ["s3:GetObject"]
     resources = ["${module.state-bucket.bucket.arn}/*"]
 
     principals {
@@ -173,6 +169,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
   }
 
   statement {
+    sid       = "AllowPutObjectsFromRootAccounts"
     effect    = "Allow"
     actions   = ["s3:PutObject"]
     resources = ["${module.state-bucket.bucket.arn}/*"]
@@ -188,15 +185,29 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       values   = ["bucket-owner-full-control"]
     }
   }
+
   statement {
-    sid    = "ReadOnlyFromModernisationPlatformOU"
-    effect = "Allow"
-    actions = [
-      "s3:GetObject",
-      "s3:ListBucket"
-    ]
+    sid       = "ListBucketFromModernisationPlatformOU"
+    effect    = "Allow"
+    actions   = ["s3:ListBucket"]
+    resources = [module.state-bucket.bucket.arn]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+  }
+
+  statement {
+    sid     = "GetObjectFromModernisationPlatformOU"
+    effect  = "Allow"
+    actions = ["s3:GetObject"]
     resources = [
-      module.state-bucket.bucket.arn,
       "${module.state-bucket.bucket.arn}/terraform.tfstate",
       "${module.state-bucket.bucket.arn}/environments/members/*",
       "${module.state-bucket.bucket.arn}/environments/accounts/core-network-services/*"
@@ -212,6 +223,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
     }
   }
+
   statement {
     sid     = "AllowTestingCIUser"
     effect  = "Allow"
@@ -248,18 +260,15 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalArn"
-      values = [
-      "arn:aws:iam::*:role/github-actions"]
+      values   = ["arn:aws:iam::*:role/github-actions"]
     }
   }
 
   statement {
-    sid     = "AllowAdministratorAccessRole"
-    effect  = "Allow"
-    actions = ["s3:PutObject"]
-    resources = [
-      "${module.state-bucket.bucket.arn}/environments/members/*"
-    ]
+    sid       = "AllowAdministratorAccessRole"
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/*"]
 
     principals {
       type        = "AWS"
@@ -275,17 +284,15 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalArn"
-      values = [
-      "arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*"]
+      values   = ["arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*"]
     }
   }
+
   statement {
-    sid     = "AllowMPAdministratorAccessRole"
-    effect  = "Allow"
-    actions = ["s3:PutObject"]
-    resources = [
-      "${module.state-bucket.bucket.arn}/environments/accounts/*",
-    ]
+    sid       = "AllowMPAdministratorAccessRole"
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
+    resources = ["${module.state-bucket.bucket.arn}/environments/accounts/*", ]
 
     principals {
       type        = "AWS"
