@@ -7,6 +7,10 @@
         {
           "github_slug": "xhibit-portal-dev",
           "level": "administrator"
+        },
+        {
+          "github_slug": "cjse-xhibit-portal-discovery",
+          "level": "developer"
         }
       ]
     },
