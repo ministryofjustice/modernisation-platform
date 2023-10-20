@@ -187,14 +187,27 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
   }
 
   statement {
-    sid    = "ReadOnlyFromModernisationPlatformOU"
-    effect = "Allow"
-    actions = [
-      "s3:GetObject",
-      "s3:ListBucket"
-    ]
+    sid       = "ListBucketFromModernisationPlatformOU"
+    effect    = "Allow"
+    actions   = ["s3:ListBucket"]
+    resources = [module.state-bucket.bucket.arn]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+  }
+
+  statement {
+    sid     = "GetObjectFromModernisationPlatformOU"
+    effect  = "Allow"
+    actions = ["s3:GetObject"]
     resources = [
-      module.state-bucket.bucket.arn,
       "${module.state-bucket.bucket.arn}/terraform.tfstate",
       "${module.state-bucket.bucket.arn}/environments/members/*",
       "${module.state-bucket.bucket.arn}/environments/accounts/core-network-services/*"
