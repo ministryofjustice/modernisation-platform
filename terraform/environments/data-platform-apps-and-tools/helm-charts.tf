@@ -318,5 +318,5 @@ resource "helm_release" "actions_runner_controller" {
     )
   ]
 
-  depends_on = [helm_release.gatekeeper]
+  depends_on = [helm_release.gatekeeper, helm_release.cert_manager]
 }
