@@ -606,3 +606,35 @@ module "data_platform_create_schema_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
+
+module "data_platform_update_metadata_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "data-platform-update-metadata-lambda"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
+  ]
+
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_update_metadata*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-test"]}:function:data_product_update_metadata*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-preproduction"]}:function:data_product_update_metadata*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-production"]}:function:data_product_update_metadata*",
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
