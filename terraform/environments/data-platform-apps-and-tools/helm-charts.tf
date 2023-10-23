@@ -303,3 +303,20 @@ resource "helm_release" "amazon_managed_prometheus_proxy" {
 
   depends_on = [helm_release.gatekeeper]
 }
+
+resource "helm_release" "actions_runner_controller" {
+  count = terraform.workspace == "data-platform-apps-and-tools-production" ? 1 : 0
+
+  name       = "actions-runner-controller"
+  repository = "oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set-controller"
+  chart      = "actions-runner-controller"
+  version    = "0.6.1"
+  namespace  = kubernetes_namespace.actions_runner_controller[0].metadata[0].name
+  values = [
+    templatefile(
+      "${path.module}/src/helm/actions-runner-controller/values.yml.tftpl",
+    )
+  ]
+
+  depends_on = [helm_release.gatekeeper]
+}

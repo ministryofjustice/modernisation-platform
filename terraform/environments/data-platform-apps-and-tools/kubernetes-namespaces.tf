@@ -96,3 +96,15 @@ resource "kubernetes_namespace" "prometheus" {
     }
   }
 }
+
+resource "kubernetes_namespace" "actions_runner_controller" {
+  count = terraform.workspace == "data-platform-apps-and-tools-production" ? 1 : 0
+
+  metadata {
+    name = "arc-systems"
+    labels = {
+      "admission.gatekeeper.sh/ignore" = "true"
+      "policy.sigstore.dev/include"    = "false"
+    }
+  }
+}
