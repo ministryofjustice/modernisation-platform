@@ -159,12 +159,16 @@ module "delius_core_openldap_ecr_repo" {
   app_name = "delius-core-openldap"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
     local.environment_management.account_ids["delius-core-development"],
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   # Tags
