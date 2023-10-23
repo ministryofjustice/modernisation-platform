@@ -5,32 +5,14 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "data-platform-core-infra",
-          "level": "sandbox",
+          "github_slug": "data-platform-development-modernisation-platform-sandbox",
+          "level": "developer",
           "nuke": "exclude"
         },
         {
-          "github_slug": "data-platform-hackathon",
-          "level": "sandbox",
+          "github_slug": "data-platform-audit-and-security",
+          "level": "security-audit",
           "nuke": "exclude"
-        },
-        {
-          "github_slug": "data-tech-archs",
-          "level": "sandbox",
-          "nuke": "exclude"
-        },
-        {
-          "github_slug": "data-platform-labs",
-          "level": "sandbox",
-          "nuke": "exclude"
-        },
-        {
-          "github_slug": "data-platform-security-and-auditors",
-          "level": "security-audit"
-        },
-        {
-          "github_slug": "data-platform-security-and-auditors",
-          "level": "read-only"
         }
       ]
     },
@@ -38,16 +20,12 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "data-platform-core-infra",
+          "github_slug": "data-platform-test-modernisation-platform-developer",
           "level": "developer"
         },
         {
-          "github_slug": "data-platform-labs",
-          "level": "developer"
-        },
-        {
-          "github_slug": "data-platform-labs",
-          "level": "view-only"
+          "github_slug": "data-platform-audit-and-security",
+          "level": "security-audit"
         }
       ]
     },
@@ -55,16 +33,12 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "data-platform-core-infra",
+          "github_slug": "data-platform-preproduction-modernisation-platform-developer",
           "level": "developer"
         },
         {
-          "github_slug": "data-platform-labs",
-          "level": "developer"
-        },
-        {
-          "github_slug": "data-platform-labs",
-          "level": "view-only"
+          "github_slug": "data-platform-audit-and-security",
+          "level": "security-audit"
         }
       ]
     },
@@ -72,16 +46,12 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "data-platform-core-infra",
+          "github_slug": "data-platform-production-modernisation-platform-developer",
           "level": "developer"
         },
         {
-          "github_slug": "data-platform-labs",
-          "level": "developer"
-        },
-        {
-          "github_slug": "data-platform-labs",
-          "level": "view-only"
+          "github_slug": "data-platform-audit-and-security",
+          "level": "security-audit"
         }
       ]
     }

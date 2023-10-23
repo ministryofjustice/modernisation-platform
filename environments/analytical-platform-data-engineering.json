@@ -5,20 +5,20 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "analytical-platform",
+          "github_slug": "analytical-platform-modernisation-platform-administrator",
           "level": "administrator"
         },
         {
-          "github_slug": "analytics-hq",
-          "level": "view-only"
-        },
-        {
-          "github_slug": "data-engineering-aws",
+          "github_slug": "analytical-platform-data-engineering-modernisation-platform-data-engineer",
           "level": "data-engineer"
         },
         {
-          "github_slug": "data-engineering-aws-developers",
+          "github_slug": "analytical-platform-data-engineering-modernisation-platform-developer",
           "level": "developer"
+        },
+        {
+          "github_slug": "data-platform-audit-and-security",
+          "level": "security-audit"
         }
       ]
     },
@@ -26,24 +26,20 @@
       "name": "sandboxa",
       "access": [
         {
-          "github_slug": "analytical-platform",
+          "github_slug": "analytical-platform-modernisation-platform-administrator",
           "level": "administrator"
         },
         {
-          "github_slug": "analytics-hq",
-          "level": "view-only"
-        },
-        {
-          "github_slug": "data-engineering",
+          "github_slug": "analytical-platform-data-engineering-modernisation-platform-data-engineer",
           "level": "administrator"
         },
         {
-          "github_slug": "data-platform-security-and-auditors",
+          "github_slug": "analytical-platform-data-engineering-modernisation-platform-developer",
+          "level": "administrator"
+        },
+        {
+          "github_slug": "data-platform-audit-and-security",
           "level": "security-audit"
-        },
-        {
-          "github_slug": "data-platform-security-and-auditors",
-          "level": "read-only"
         }
       ]
     }

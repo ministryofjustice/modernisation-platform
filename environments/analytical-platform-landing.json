@@ -5,20 +5,12 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "analytical-platform",
+          "github_slug": "analytical-platform-modernisation-platform-administrator",
           "level": "administrator"
         },
         {
-          "github_slug": "analytics-hq",
-          "level": "administrator"
-        },
-        {
-          "github_slug": "data-platform-security-and-auditors",
+          "github_slug": "data-platform-audit-and-security",
           "level": "security-audit"
-        },
-        {
-          "github_slug": "data-platform-security-and-auditors",
-          "level": "read-only"
         }
       ]
     }
