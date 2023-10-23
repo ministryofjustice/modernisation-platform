@@ -314,7 +314,7 @@ resource "helm_release" "actions_runner_controller" {
   namespace  = kubernetes_namespace.actions_runner_controller[0].metadata[0].name
   values = [
     templatefile(
-      "${path.module}/src/helm/actions-runner-controller/values.yml.tftpl",
+      "${path.module}/src/helm/actions-runner-controller/values.yml.tftpl", {}
     )
   ]
 
