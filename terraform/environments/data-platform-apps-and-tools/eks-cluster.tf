@@ -79,6 +79,11 @@ module "eks" {
       username = "administrator"
     },
     {
+      rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/MemberInfrastructureAccess"
+      groups   = ["system:masters"]
+      username = "modernisation-platform-member-infrastructure-access"
+    },
+    {
       // rolearn cannot consume module.airflow_execution_role.arn because that role consumes module.eks.cluster_arn, but we can construct the ARN manually
       rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.environment_configuration.airflow_execution_role_name}"
       groups   = ["airflow"]
