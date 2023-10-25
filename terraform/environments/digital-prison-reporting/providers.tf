@@ -31,3 +31,9 @@ provider "aws" {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/ModernisationPlatformAccess"
   }
 }
+
+resource "aws_iam_openid_connect_provider" "circleci_oidc_provider" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = distinct(concat(data.tls_certificate.github.certificates[*].sha1_fingerprint, var.github_known_thumbprints))
+  url             = "https://oidc.circleci.com/org/----"
+}
