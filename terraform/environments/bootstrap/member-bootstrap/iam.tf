@@ -457,7 +457,8 @@ data "aws_iam_policy_document" "policy" {
       "secretsmanager:ListSecrets",
       "secretsmanager:DescribeSecret",
       "secretsmanager:GetResourcePolicy",
-      "ssm:GetParameter"
+      "ssm:GetParameter",
+      "ssm:PutParameter"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
