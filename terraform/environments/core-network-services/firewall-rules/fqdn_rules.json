@@ -15,7 +15,8 @@
     ".docker.io",
     ".docker.com",
     ".ghcr.io",
-    ".amazontrust.com"
+    ".amazontrust.com",
+    ".notifications.service.gov.uk"
   ],
   "fw_home_net_ips": ["10.26.0.0/16", "10.27.0.0/16"]
 }
