@@ -90,7 +90,7 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
 
 # CircleCI Organisation ID
 resource "aws_secretsmanager_secret" "circleci" {
-  name        = "cloud-platform-circleci"
+  name        = "mod-platform-circleci"
   description = "CircleCI organisation ID for ministryofjustice, used for OIDC IAM policies"
 }
 
