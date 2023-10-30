@@ -147,6 +147,11 @@ data "aws_iam_policy_document" "modernisation_account_limited_read" {
       "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.current.account_id}:secret:pagerduty_integration_keys-??????",
     ]
   }
+  statement {
+    effect    = "Deny"
+    actions   = [ "s3:*" ]
+    resources = [ "arn:aws:s3:eu-west-2:${data.aws_caller_identity.current.account_id}:*" ]
+  }
 }
 resource "aws_iam_policy" "modernisation_account_limited_read" {
   name        = "ModernisationAccountLimitedRead"
