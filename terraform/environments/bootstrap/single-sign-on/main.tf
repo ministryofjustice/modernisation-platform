@@ -88,6 +88,13 @@ data "aws_ssoadmin_permission_set" "reporting-operations" {
   name         = "mp-reporting-operations"
 }
 
+data "aws_ssoadmin_permission_set" "mwaa_user" {
+  provider = aws.sso-management
+
+  instance_arn = local.sso_instance_arn
+  name         = "modernisation-platform-mwaa-user"
+}
+
 # Get Identity Store groups
 data "aws_identitystore_group" "platform_admin" {
   provider = aws.sso-management
@@ -371,6 +378,29 @@ resource "aws_ssoadmin_account_assignment" "reporting-operations" {
 
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.aws_ssoadmin_permission_set.reporting-operations.arn
+
+  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_type = "GROUP"
+
+  target_id   = local.environment_management.account_ids[terraform.workspace]
+  target_type = "AWS_ACCOUNT"
+}
+
+resource "aws_ssoadmin_account_assignment" "mwaa_user" {
+
+  for_each = {
+
+    for sso_assignment in local.sso_data[local.env_name][*] :
+
+    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+
+    if(sso_assignment.level == "mwaa-user")
+  }
+
+  provider = aws.sso-management
+
+  instance_arn       = local.sso_instance_arn
+  permission_set_arn = data.aws_ssoadmin_permission_set.mwaa_user.arn
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"

@@ -1,3 +1,19 @@
+module "guardduty_data_vpc_endpoint_security_group" {
+  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~> 5.0"
+
+  name        = "${local.application_name}-${local.environment}-guardduty-data-endpoint"
+  description = "GuardDuty Data VPC Endpoint"
+
+  vpc_id = module.vpc.vpc_id
+
+  ingress_cidr_blocks = [module.vpc.vpc_cidr_block]
+  ingress_rules       = ["https-443-tcp"]
+
+  tags = local.tags
+}
+
 module "smtp_vpc_endpoint_security_group" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source  = "terraform-aws-modules/security-group/aws"
@@ -34,4 +50,45 @@ module "mwaa_security_group" {
   ]
 
   tags = local.tags
+}
+
+module "rds_security_group" {
+  #checkov:skip=CKV_TF_1:Module is from Terraform registry
+
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~> 5.0"
+
+  name = "rds"
+
+  vpc_id = module.vpc.vpc_id
+
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 5432
+      to_port     = 5432
+      protocol    = "tcp"
+      cidr_blocks = join(",", module.vpc.private_subnets_cidr_blocks)
+    },
+  ]
+
+  tags = local.tags
+}
+
+module "opensearch_security_group" {
+  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~> 5.0"
+
+  name = "openmetadata-opensearch"
+
+  vpc_id = module.vpc.vpc_id
+
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = join(",", module.vpc.private_subnets_cidr_blocks)
+    },
+  ]
 }

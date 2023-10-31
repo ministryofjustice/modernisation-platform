@@ -1,0 +1,8 @@
+---
+acme:
+  email:
+
+aws:
+  region:
+  hostedZoneID:
+  dnsZone:

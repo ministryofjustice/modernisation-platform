@@ -10,11 +10,6 @@
           "nuke": "exclude"
         },
         {
-          "github_slug": "data-platform-hackathon",
-          "level": "sandbox",
-          "nuke": "exclude"
-        },
-        {
           "github_slug": "data-tech-archs",
           "level": "sandbox",
           "nuke": "exclude"

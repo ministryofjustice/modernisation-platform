@@ -96,7 +96,11 @@ module "delius_jitbit_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-development"]}:user/cicd-member-user",
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-test"]}:user/cicd-member-user",
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-preproduction"]}:user/cicd-member-user",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-production"]}:user/cicd-member-user"
+    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-production"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-test"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-preproduction"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-production"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
@@ -155,12 +159,17 @@ module "delius_core_openldap_ecr_repo" {
   app_name = "delius-core-openldap"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
     local.environment_management.account_ids["delius-core-development"],
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+    local.environment_management.account_ids["delius-core-test"],
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   # Tags
@@ -597,6 +606,70 @@ module "data_platform_create_schema_ecr_repo" {
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-test"]}:function:data_product_create_schema*",
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-preproduction"]}:function:data_product_create_schema*",
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-production"]}:function:data_product_create_schema*",
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
+
+module "data_platform_update_metadata_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "data-platform-update-metadata-lambda"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
+  ]
+
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_update_metadata*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-test"]}:function:data_product_update_metadata*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-preproduction"]}:function:data_product_update_metadata*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-production"]}:function:data_product_update_metadata*",
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
+
+module "data_platform_update_schema_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "data-platform-update-schema-lambda"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["data-platform-development"],
+    local.environment_management.account_ids["data-platform-test"],
+    local.environment_management.account_ids["data-platform-preproduction"],
+    local.environment_management.account_ids["data-platform-production"],
+  ]
+
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-development"]}:function:data_product_update_schema*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-test"]}:function:data_product_update_schema*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-preproduction"]}:function:data_product_update_schema*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-production"]}:function:data_product_update_schema*",
   ]
 
   # Tags

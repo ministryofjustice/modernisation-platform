@@ -68,13 +68,21 @@ Adding explanation on what is implemented with the PR and why. Adding informatio
 * Not approving PRs that do not have a good description or commit messages.
 * Approving only PRs that you understand (it applies to PRs created within and outside the team), limiting reviews to the platform code only.
 * Verifying the pipeline run clean post merge.
-* Using `major.minor.patch` for tags/releases.
 
 We also think it is good to:
 
 * use a meaningful branch naming, using prefixes such as `feature/`, `fix/`, `docs/` etc., including an issue number and making it a summary of what your goal is (e.g. `feature/2563-usingOIDC-in-base`),
 * squash commits before committing to remote, so that each commit represents a step in the implementation (combining  planned changes with fixes to errors),
 * ... and/or squash commits when merging a remote branch with the `main`.
+
+### Tags and Releases
+
+* Using the [Semver](https://semver.org/) versioning strategy, prefixed with a `v` e.g. `v1.*.*` to `v2.0.0` would represent a backwards incompatible API change.
+* Providing a descriptive title for the release, so it's easily identifiable and understood.
+* Providing a high level summary of `What's New` in the release, so consumers can easily understand the changes that have been made - and potentially any changes they may need to make when incrementing to the new version number
+* Making use of GitHub automatically generated release notes. These provide in depth detail of the release.
+    * These can be heavily populated general maintenance PRs. It is worth refining the commit list down to commits that will impact consumers. There is a full changelog link provided for people who want the additional information.
+
 
 ## Spikes
 

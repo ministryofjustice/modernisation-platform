@@ -13,6 +13,11 @@
           "github_slug": "data-tech-archs",
           "level": "sandbox",
           "nuke": "exclude"
+        },
+        {
+          "github_slug": "data-platform-apps-and-tools-airflow-users",
+          "level": "mwaa-user",
+          "nuke": "exclude"
         }
       ]
     },

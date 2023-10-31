@@ -36,15 +36,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Get changed directories
         id:   directories
         run:  |
-          git fetch origin main
+          git fetch origin main --unshallow
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            echo "CHANGED_DIRECTORIES=$(git diff HEAD origin/main ${{ github.event.pull_request.changes.paths }} --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | cut -f1-3 -d"/" | uniq | base64 -w 0 )"
+            echo "CHANGED_DIRECTORIES=$(git diff HEAD origin/main --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | cut -f1-3 -d"/" | uniq | base64 -w 0 )"
           else
-            echo "CHANGED_DIRECTORIES=$(git diff HEAD^ HEAD ${{ github.event.changes.paths }} --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | cut -f1-3 -d"/" | uniq | base64 -w 0)"
+            echo "CHANGED_DIRECTORIES=$(git diff HEAD^ HEAD --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | cut -f1-3 -d"/" | uniq | base64 -w 0)"
           fi >> $GITHUB_OUTPUT
       - name: Display changed directories
         run: echo "Directories in scope:" ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}
@@ -55,13 +55,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: find-environments
     strategy:
+      fail-fast: false
       matrix:
         environment: [development, test, preproduction, production]
     env:
       TF_IN_AUTOMATION: "true"
     steps:
       - name: Checkout repository
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Set account number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: Configure AWS credentials
@@ -122,6 +123,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [find-environments, terraform-plan]
     strategy:
+      fail-fast: false
       matrix:
         environment: [development, test]
     environment: ${{ matrix.environment }}
@@ -129,7 +131,7 @@ jobs:
       TF_IN_AUTOMATION: "true"
     steps:
       - name: Checkout repository
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Set account number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: Configure AWS credentials
@@ -201,6 +203,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [find-environments, terraform-plan]
     strategy:
+      fail-fast: false
       matrix:
         environment: [preproduction, production]
     environment: ${{ matrix.environment }}
@@ -208,7 +211,7 @@ jobs:
       TF_IN_AUTOMATION: "true"
     steps:
       - name: Checkout repository
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Set account number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: Configure AWS credentials
