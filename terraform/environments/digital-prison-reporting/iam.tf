@@ -9,8 +9,8 @@ resource "aws_iam_role" "circleci_iam_role" {
         Federated = aws_iam_openid_connect_provider.circleci_oidc_provider.arn
       },
       Condition = {
-        StringEquals = {
-          "${aws_iam_openid_connect_provider.circleci_oidc_provider.url}:sub" = "need-to-work-out-the-subject-identifier-value"
+        StringLike = {
+          "${aws_iam_openid_connect_provider.circleci_oidc_provider.url}:sub" = "org/${aws_iam_openid_connect_provider.circleci_oidc_provider.url}/*"
         }
       }
     }]
@@ -20,8 +20,28 @@ resource "aws_iam_role" "circleci_iam_role" {
 
 data "aws_iam_policy_document" "circleci_iam_policy" {
   statement {
-    actions = ["s3:*"]
-    resources = ["arn:aws:s3:::dpr-artifact-store-development/*"]
+    actions = [
+        "ec2:RunInstances",
+        "ec2:DescribeInstances",
+        "ec2:TerminateInstances",
+        "ec2:CreateTags",
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:ListBucket",
+        "iam:PassRole",
+        "elasticbeanstalk:*",
+        "rds:*",
+        "lambda:*",
+        "cloudformation:*",
+        "ecs:*",
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "elasticache:*",
+        "kms:Decrypt*",
+        "kms:GenerateDataKey"
+    ]
+    resources = ["*"]
   }
 }
 

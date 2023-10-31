@@ -32,8 +32,23 @@ provider "aws" {
   }
 }
 
+############################
+# OpenID Connect providers #
+############################
+
+# Get secret by arn for environment management
+data "aws_secretsmanager_secret" "mod_plat_circleci" {
+  provider = aws.modernisation-platform
+  name     = "mod-platform-circleci"
+}
+
+data "aws_secretsmanager_secret_version" "circleci" {
+  provider  = aws.modernisation-platform
+  secret_id = data.aws_secretsmanager_secret.mod_plat_circleci.name
+}
+
 resource "aws_iam_openid_connect_provider" "circleci_oidc_provider" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = distinct(concat(data.tls_certificate.github.certificates[*].sha1_fingerprint, var.github_known_thumbprints))
-  url             = "https://oidc.circleci.com/org/----"
+  url             = "https://oidc.circleci.com/org/${data.aws_secretsmanager_secret_version.circleci.secret_string}"
+  client_id_list  = [data.aws_secretsmanager_secret_version.circleci.secret_string]
+  thumbprint_list = distinct(concat(data.tls_certificate.circleci.certificates[*].sha1_fingerprint, var.circleci_known_thumbprints))
 }

@@ -87,3 +87,25 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
 
   tags = local.tags
 }
+
+# CircleCI Organisation ID
+resource "aws_secretsmanager_secret" "circleci" {
+  name        = "mod-platform-circleci"
+  description = "CircleCI organisation ID for ministryofjustice, used for OIDC IAM policies"
+}
+
+resource "aws_secretsmanager_secret_version" "circleci" {
+  secret_id = aws_secretsmanager_secret.circleci.id
+  secret_string = jsonencode({
+    organisation_id = "CHANGE_ME_IN_THE_CONSOLE" # change this value manually in the console once the secret is created
+  })
+
+  lifecycle {
+    ignore_changes = [secret_string]
+  }
+}
+
+# Data call to fetch changed value
+data "aws_secretsmanager_secret_version" "circleci" {
+  secret_id = aws_secretsmanager_secret.circleci.id
+}
