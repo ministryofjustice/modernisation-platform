@@ -149,8 +149,8 @@ data "aws_iam_policy_document" "modernisation_account_limited_read" {
   }
   statement {
     effect    = "Deny"
-    actions   = [ "s3:*" ]
-    resources = [ "arn:aws:s3:::*" ]
+    actions   = ["s3:*"]
+    resources = ["arn:aws:s3:::*"]
   }
 }
 resource "aws_iam_policy" "modernisation_account_limited_read" {
