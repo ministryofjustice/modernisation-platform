@@ -89,7 +89,6 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
 }
 
 # CircleCI Organisation ID
-
 #tfsec:ignore:aws-ssm-secret-use-customer-key
 resource "aws_secretsmanager_secret" "circleci" {
   # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
@@ -113,3 +112,4 @@ resource "aws_secretsmanager_secret_version" "circleci" {
 data "aws_secretsmanager_secret_version" "circleci" {
   secret_id = aws_secretsmanager_secret.circleci.id
 }
+
