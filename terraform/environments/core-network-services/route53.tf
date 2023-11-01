@@ -164,3 +164,11 @@ resource "aws_route53_record" "pagerduty_http" {
   ttl     = "300"
   records = ["cd-2b4752bd7016497638e8dfd051a53722.hosted-status.pagerduty.com"]
 }
+
+resource "aws_route53_record" "pagerduty_tls-certificate" {
+  zone_id = aws_route53_zone.modernisation-platform.zone_id
+  name    = "_0b49b12fdddbd40651a7458e0b054120.status"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["_2b9d3139a782805455e260f16df743e1.xpybkgmvdt.acm-validations.aws."]
+}
