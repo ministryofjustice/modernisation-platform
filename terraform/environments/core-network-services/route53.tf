@@ -132,6 +132,35 @@ resource "aws_route53_record" "github_pages" {
   zone_id = aws_route53_zone.modernisation-platform.zone_id
   name    = "user-guide"
   type    = "CNAME"
-  ttl     = "30"
+  ttl     = "300"
   records = ["ministryofjustice.github.io"]
+}
+
+resource "aws_route53_record" "pagerduty_mail_cname" {
+  zone_id = aws_route53_zone.modernisation-platform.zone_id
+  name    = "em3857.status"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["u31181182.wl183.sendgrid.net"]
+}
+resource "aws_route53_record" "pagerduty_dkim1" {
+  zone_id = aws_route53_zone.modernisation-platform.zone_id
+  name    = "pdt._domainkey.status"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["pdt.domainkey.u31181182.wl183.sendgrid.net"]
+}
+resource "aws_route53_record" "pagerduty_dkim2" {
+  zone_id = aws_route53_zone.modernisation-platform.zone_id
+  name    = "pdt2._domainkey.status"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["pdt2.domainkey.u31181182.wl183.sendgrid.net"]
+}
+resource "aws_route53_record" "pagerduty_http" {
+  zone_id = aws_route53_zone.modernisation-platform.zone_id
+  name    = "status"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["cd-2b4752bd7016497638e8dfd051a53722.hosted-status.pagerduty.com"]
 }
