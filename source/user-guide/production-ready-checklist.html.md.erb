@@ -2,7 +2,7 @@
 owner_slack: "#modernisation-platform"
 title: Production Ready Checklist
 weight: 1
-last_reviewed_on: 2023-10-02
+last_reviewed_on: 2023-11-01
 review_in: 6 months
 ---
 
@@ -24,3 +24,18 @@ You can speed up these checks by preparing as much as possible in advance.
 1. Appropriate application monitoring and logging is in place.
 1. There is an application support team in place and their contact details are in the application runbook.
 1. The Modernisation Platform team are aware of any cutover/migration dates/times and have agreed additional cover if required.
+
+## Infrastructure Review
+
+When reviewing the application infrastructure, the Modernisation Platform team will check for the following things:
+
+1. No hard coded secrets or account numbers.
+1. No sensitive data is made public.
+1. Secrets are stored in Secrets Manager and rotation is enabled.
+1. Security groups are locked down as much as possible.
+1. The infrastructure is resilient and spread across availability zones.
+1. 3rd party modules or code are not used.
+1. The infrastructure is sensibly sized.
+1. There is no attempt to escalate privileges or provide access to parties outside of the platform.
+1. Data is encrypted at rest and in transit.
+1. Code is dry and well written with no commented out blocks.
