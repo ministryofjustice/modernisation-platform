@@ -9,10 +9,6 @@
           "level": "developer"
         },
         {
-          "github_slug": "studio-webops",
-          "level": "data-engineer"
-        },
-        {
           "github_slug": "syscon-devs",
           "level": "instance-management"
         },
@@ -28,10 +24,6 @@
         {
           "github_slug": "studio-webops",
           "level": "developer"
-        },
-        {
-          "github_slug": "studio-webops",
-          "level": "data-engineer"
         },
         {
           "github_slug": "syscon-devs",
@@ -51,10 +43,6 @@
           "level": "developer"
         },
         {
-          "github_slug": "studio-webops",
-          "level": "data-engineer"
-        },
-        {
           "github_slug": "syscon-devs",
           "level": "instance-management"
         },
@@ -70,10 +58,6 @@
         {
           "github_slug": "studio-webops",
           "level": "developer"
-        },
-        {
-          "github_slug": "studio-webops",
-          "level": "data-engineer"
         },
         {
           "github_slug": "syscon-devs",
