@@ -18,10 +18,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Setup Regal
+        uses: styrainc/setup-regal@94ad2891f53efdb7ebe7c6836bc25ecc9504aec1 # v0.2.0
+        with:
+          version: v0.11.0
+      - name: Run Regal Lint
+        run: regal lint --format=github policies
       - name: Install Conftest
         run: |
-          wget https://github.com/open-policy-agent/conftest/releases/download/v0.21.0/conftest_0.21.0_Linux_x86_64.tar.gz
-          tar xzf conftest_0.21.0_Linux_x86_64.tar.gz
+          wget https://github.com/open-policy-agent/conftest/releases/download/v0.46.0/conftest_0.46.0_Linux_x86_64.tar.gz
+          tar xzf conftest_0.46.0_Linux_x86_64.tar.gz
           sudo mv conftest /usr/local/bin
       - name: Run Conftest
         run: bash scripts/tests/validate/run-opa-tests.sh

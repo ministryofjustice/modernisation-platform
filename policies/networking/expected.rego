@@ -1,6 +1,6 @@
 package main
 
-expected =
+expected :=
 {
   "subnet_sets": {
     "garden-sandbox": {

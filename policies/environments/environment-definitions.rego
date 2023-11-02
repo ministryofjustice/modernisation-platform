@@ -1,5 +1,7 @@
 package main
 
+import future.keywords.in
+
 allowed_business_units := [
   "HQ",
   "HMPPS",
@@ -77,12 +79,12 @@ deny[msg] {
 }
 
 deny[msg] {
-  not array_contains(allowed_business_units, input.tags["business-unit"])
+  not input.tags["business-unit"] in allowed_business_units
   msg := sprintf("`%v` uses an unexpected business-unit: got `%v`, expected one of: %v", [input.filename, input.tags["business-unit"], concat(", ", allowed_business_units) ])
 }
 
 deny[msg] {
-  not regex.match("^[a-zA-Z-]{1,20}$", input.tags["business-unit"])
+  not regex.match(`^[a-zA-Z-]{1,20}$`, input.tags["business-unit"])
   msg := sprintf("`%v` Business unit name does not meet requirements", [input.filename])
 }
 
@@ -93,12 +95,12 @@ deny[msg] {
 
 deny[msg] {
   access:=input.environments[_].access[_].level
-  not array_contains(allowed_access, access)
+  not access in allowed_access
   msg := sprintf("`%v` uses an unexpected access level: got `%v`, expected one of: %v", [input.filename, access, concat(", ", allowed_access) ])
 }
 
 deny[msg] {
   nuke:=input.environments[_].access[_].nuke
-  not array_contains(allowed_nuke, nuke)
+  not nuke in allowed_nuke
   msg := sprintf("`%v` uses an unexpected nuke value: got `%v`, expected one of: %v", [input.filename, nuke, concat(", ", allowed_nuke) ])
 }
