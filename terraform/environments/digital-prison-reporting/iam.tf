@@ -21,34 +21,34 @@ resource "aws_iam_role" "circleci_iam_role" {
 data "aws_iam_policy_document" "circleci_iam_policy" {
   statement {
     actions = [
-        "ec2:RunInstances",
-        "ec2:DescribeInstances",
-        "ec2:TerminateInstances",
-        "ec2:CreateTags",
-        "s3:PutObject",
-        "s3:GetObject",
-        "s3:ListBucket",
-        "iam:PassRole",
-        "elasticbeanstalk:*",
-        "rds:*",
-        "lambda:*",
-        "cloudformation:*",
-        "ecs:*",
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "elasticache:*",
-        "kms:Decrypt*",
-        "kms:GenerateDataKey"
+      "ec2:RunInstances",
+      "ec2:DescribeInstances",
+      "ec2:TerminateInstances",
+      "ec2:CreateTags",
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:ListBucket",
+      "iam:PassRole",
+      "elasticbeanstalk:*",
+      "rds:*",
+      "lambda:*",
+      "cloudformation:*",
+      "ecs:*",
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "elasticache:*",
+      "kms:Decrypt*",
+      "kms:GenerateDataKey"
     ]
     resources = ["*"]
   }
 }
 
 resource "aws_iam_policy" "circleci_iam_policy" {
-  name = "circleci_iam_policy"
+  name        = "circleci_iam_policy"
   description = "Policy for CircleCI"
-  policy = data.aws_iam_policy_document.circleci_iam_policy.json
+  policy      = data.aws_iam_policy_document.circleci_iam_policy.json
 }
 
 

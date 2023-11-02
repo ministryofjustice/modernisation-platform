@@ -47,7 +47,7 @@ data "aws_secretsmanager_secret_version" "circleci" {
   secret_id = data.aws_secretsmanager_secret.mod_plat_circleci.name
 }
 locals {
-  secret_json = jsondecode(data.aws_secretsmanager_secret_version.circleci.secret_string)
+  secret_json  = jsondecode(data.aws_secretsmanager_secret_version.circleci.secret_string)
   secret_value = local.secret_json.organisation_id
 }
 
