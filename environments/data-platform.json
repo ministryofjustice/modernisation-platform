@@ -6,7 +6,7 @@
       "access": [
         {
           "github_slug": "data-platform-development-modernisation-platform-sandbox",
-          "level": "developer",
+          "level": "sandbox",
           "nuke": "exclude"
         },
         {

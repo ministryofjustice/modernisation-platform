@@ -337,12 +337,12 @@ resource "aws_iam_policy" "member-access-us-east" {
 
 # Github OIDC role
 module "github_oidc_role" {
+  count               = length(compact(jsondecode(data.http.environments_file.response_body).github-oidc-team-repositories)) > 0 ? 1 : 0
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=c3bde7c787038ff5536bfb1b73781072edbb74da" # v3.0.0
   github_repositories = jsondecode(data.http.environments_file.response_body).github-oidc-team-repositories
   role_name           = "modernisation-platform-oidc-cicd"
   policy_jsons        = [data.aws_iam_policy_document.policy.json]
   tags                = local.tags
-
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
@@ -389,16 +389,13 @@ data "aws_iam_policy_document" "policy" {
       "ecs:deregisterTaskDefinition",
       "ecs:DescribeServices",
       "ecs:DescribeTaskDefinition",
-      "ecs:ListTasks",
-      "ecs:StartTask",
+      "ecs:*Tasks",
       "ecs:ListServices",
       "ecs:CreateService",
-      "ecs:RunTask",
-      "ecs:DescribeTasks",
+      "ecs:*Task",
       "ecs:ListTaskDefinitions",
-      "ecs:UpdateTaskSet",
-      "ecs:CreateTaskSet",
-      "ecs:StopTask",
+      "ecs:*TaskSet",
+      "ecs:TagResource",
       "ecr:DescribeImages",
       "ecr:DescribeRepositories",
       "ecr:ListImages",
@@ -460,7 +457,8 @@ data "aws_iam_policy_document" "policy" {
       "secretsmanager:ListSecrets",
       "secretsmanager:DescribeSecret",
       "secretsmanager:GetResourcePolicy",
-      "ssm:GetParameter"
+      "ssm:GetParameter",
+      "ssm:PutParameter"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
