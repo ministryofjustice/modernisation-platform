@@ -77,7 +77,7 @@ func getFindings(client *securityhub.Client, accountName string, productName str
 				WorkflowStatus: []types.StringFilter{{Comparison: types.StringFilterComparisonEquals, Value: aws.String("NEW")}, {Comparison: types.StringFilterComparisonEquals, Value: aws.String("NOTIFIED")}},
 				SeverityLabel:  []types.StringFilter{{Comparison: types.StringFilterComparisonEquals, Value: aws.String("CRITICAL")}, {Comparison: types.StringFilterComparisonEquals, Value: aws.String("HIGH")}},
 			},
-			MaxResults: int32(100),
+			MaxResults: aws.Int32(100),
 		}
 
 		// get findings
