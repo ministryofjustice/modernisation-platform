@@ -3,7 +3,7 @@ data "aws_iam_policy_document" "openmetadata_airflow" {
     sid       = "AllowAssumeRole"
     effect    = "Allow"
     actions   = ["sts:AssumeRole"]
-    resources = formatlist("arn:aws:iam::%s:role/%s", values(local.environment_configuration.openmetadata_target_accounts), local.environment_configuration.openmetadata_role)
+    resources = formatlist("arn:aws:iam::%s:role/${local.environment_configuration.openmetadata_role}", local.environment_configuration.openmetadata_target_accounts)
   }
 }
 
