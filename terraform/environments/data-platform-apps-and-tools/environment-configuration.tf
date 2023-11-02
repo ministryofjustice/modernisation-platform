@@ -49,9 +49,12 @@ locals {
       airflow_mail_from_address               = "airflow"
       airflow_weekly_maintenance_window_start = "SAT:00:00"
 
-      /* Data Platform */
-      data_platform_account_id        = local.environment_management.account_ids["data-platform-development"]
-      data_platform_openmetadata_role = "openmetadata"
+      /* Open Metadata */
+      openmetadata_role = "openmetadata"
+      openmetadata_target_accounts = [
+        local.environment_management.account_ids["data-platform-development"],
+        local.environment_management.account_ids["analytical-platform-data-production"]
+      ]
 
       /* Observability Platform */
       observability_platform_account_id     = local.environment_management.account_ids["observability-platform-development"]
@@ -105,9 +108,12 @@ locals {
       airflow_mail_from_address               = "airflow"
       airflow_weekly_maintenance_window_start = "SAT:00:00"
 
-      /* Data Platform */
-      data_platform_account_id        = local.environment_management.account_ids["data-platform-production"]
-      data_platform_openmetadata_role = "openmetadata"
+      /* Open Metadata */
+      openmetadata_role = "openmetadata"
+      openmetadata_target_accounts = [
+        local.environment_management.account_ids["data-platform-production"],
+        local.environment_management.account_ids["analytical-platform-data-production"]
+      ]
 
       /* Observability Platform */
       observability_platform_account_id     = local.environment_management.account_ids["observability-platform-production"]
