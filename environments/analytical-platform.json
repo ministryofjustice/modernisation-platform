@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "analytical-platform-modernisation-platform-administrator",
+          "github_slug": "analytical-platform-development-modernisation-platform-administrator",
           "level": "administrator"
         },
         {
@@ -18,7 +18,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "analytical-platform-modernisation-platform-administrator",
+          "github_slug": "analytical-platform-production-modernisation-platform-administrator",
           "level": "administrator"
         },
         {
