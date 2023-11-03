@@ -18,7 +18,12 @@ module "managed_grafana" {
 
   role_associations = {
     "ADMIN" = {
-      "group_ids" = ["16a2d234-1031-70b5-2657-7f744c55e48f", "7652b2d4-d0d1-707f-66ae-0b176587547e"] # observability-platform
+      "group_ids" = ["16a2d234-1031-70b5-2657-7f744c55e48f"] # observability-platform
+    }
+    "EDITOR" = {
+      "group_ids" = [
+        "7652b2d4-d0d1-707f-66ae-0b176587547e" # data-platform-labs
+      ]
     }
   }
 
