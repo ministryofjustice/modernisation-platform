@@ -25,7 +25,7 @@ locals {
         addon_coredns             = "v1.10.1-eksbuild.4"
         addon_kube_proxy          = "v1.28.2-eksbuild.2"
         addon_vpc_cni             = "v1.15.1-eksbuild.1"
-        addon_aws_guardduty_agent = "v1.3.0-eksbuild.1"
+        addon_aws_guardduty_agent = "v1.3.1-eksbuild.1"
         addon_ebs_csi_driver      = "v1.23.1-eksbuild.1"
         addon_efs_csi_driver      = "v1.7.0-eksbuild.1"
       }
@@ -49,9 +49,12 @@ locals {
       airflow_mail_from_address               = "airflow"
       airflow_weekly_maintenance_window_start = "SAT:00:00"
 
-      /* Data Platform */
-      data_platform_account_id        = local.environment_management.account_ids["data-platform-development"]
-      data_platform_openmetadata_role = "openmetadata"
+      /* Open Metadata */
+      openmetadata_role = "openmetadata"
+      openmetadata_target_accounts = [
+        local.environment_management.account_ids["data-platform-development"],
+        local.environment_management.account_ids["analytical-platform-data-production"]
+      ]
 
       /* Observability Platform */
       observability_platform_account_id     = local.environment_management.account_ids["observability-platform-development"]
@@ -81,7 +84,7 @@ locals {
         addon_coredns             = "v1.10.1-eksbuild.4"
         addon_kube_proxy          = "v1.28.2-eksbuild.2"
         addon_vpc_cni             = "v1.15.1-eksbuild.1"
-        addon_aws_guardduty_agent = "v1.3.0-eksbuild.1"
+        addon_aws_guardduty_agent = "v1.3.1-eksbuild.1"
         addon_ebs_csi_driver      = "v1.23.1-eksbuild.1"
         addon_efs_csi_driver      = "v1.7.0-eksbuild.1"
       }
@@ -105,9 +108,12 @@ locals {
       airflow_mail_from_address               = "airflow"
       airflow_weekly_maintenance_window_start = "SAT:00:00"
 
-      /* Data Platform */
-      data_platform_account_id        = local.environment_management.account_ids["data-platform-production"]
-      data_platform_openmetadata_role = "openmetadata"
+      /* Open Metadata */
+      openmetadata_role = "openmetadata"
+      openmetadata_target_accounts = [
+        local.environment_management.account_ids["data-platform-production"],
+        local.environment_management.account_ids["analytical-platform-data-production"]
+      ]
 
       /* Observability Platform */
       observability_platform_account_id     = local.environment_management.account_ids["observability-platform-production"]
