@@ -28,10 +28,9 @@ data "aws_iam_policy_document" "amazon_managed_prometheus_remote_cloudwatch" {
     sid     = "AllowAssumeRole"
     effect  = "Allow"
     actions = ["sts:AssumeRole"]
-    resources = distinct([
-      for k, value in local.environment_configurations : 
-        "arn:aws:iam::${value}:role/observability-platform"
-    ])
+    resources = [
+      formatlist("arn:aws:iam::%s:role/observability-platform", local.environment_configuration.source_accounts)
+    ]
   }
 }
 
