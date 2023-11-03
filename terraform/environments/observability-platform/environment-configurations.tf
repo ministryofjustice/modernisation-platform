@@ -8,7 +8,6 @@ locals {
         local.environment_management.account_ids["data-platform-test"],
         local.environment_management.account_ids["data-platform-preproduction"]
       ]
-    }
       data_platform_apps_tools_account_id = local.environment_management.account_ids["data-platform-apps-and-tools-development"]
     }
     test = {
@@ -21,4 +20,5 @@ locals {
       data_platform_apps_tools_account_id = local.environment_management.account_ids["data-platform-apps-and-tools-production"]
     }
   }
+}
 
