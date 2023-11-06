@@ -459,9 +459,7 @@ data "aws_iam_policy_document" "policy" {
       "secretsmanager:GetResourcePolicy",
       "ssm:GetParameter",
       "ssm:PutParameter",
-      "ssm:StartSession",
       "ssm:DescribeSessions",
-      "ssm:GetConnectionStatus",
       "ssm:ResumeSession",
       "ssm:StartSession",
       "ssm:TerminateSession"
