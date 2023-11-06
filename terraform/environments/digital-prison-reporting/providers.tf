@@ -55,4 +55,8 @@ resource "aws_iam_openid_connect_provider" "circleci_oidc_provider" {
   url             = "https://oidc.circleci.com/org/${local.secret_json.organisation_id}"
   client_id_list  = [local.secret_json.organisation_id]
   thumbprint_list = distinct(concat(data.tls_certificate.circleci.certificates[*].sha1_fingerprint, var.circleci_known_thumbprints))
+
+  lifecycle {
+    ignore_changes = [thumbprint_list]
+  }
 }
