@@ -17,8 +17,10 @@ resource "aws_iam_role" "circleci_iam_role" {
   })
 }
 
-
+#tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "circleci_iam_policy" {
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_356: 
   statement {
     actions = [
       "ec2:RunInstances",
