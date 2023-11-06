@@ -458,7 +458,13 @@ data "aws_iam_policy_document" "policy" {
       "secretsmanager:DescribeSecret",
       "secretsmanager:GetResourcePolicy",
       "ssm:GetParameter",
-      "ssm:PutParameter"
+      "ssm:PutParameter",
+      "ssm:StartSession",
+      "ssm:DescribeSessions",
+      "ssm:GetConnectionStatus",
+      "ssm:ResumeSession",
+      "ssm:StartSession",
+      "ssm:TerminateSession"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
