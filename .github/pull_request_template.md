@@ -21,6 +21,7 @@ Will this deployment impact the platform and / or services on it?
 ## Checklist (check `x` in `[ ]` of list items)
 
 - [ ] I have performed a self-review of my own code
+- [ ] All checks have passed
 - [ ] I have made corresponding changes to the documentation
 - [ ] Plan and discussed how it should be deployed to PROD (If needed)
 
