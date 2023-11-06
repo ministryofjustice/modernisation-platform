@@ -15,7 +15,7 @@
       "access": [
         {
           "github_slug": "observability-platform",
-          "level": "view-only"
+          "level": "developer"
         }
       ]
     }
