@@ -61,4 +61,9 @@ resource "aws_iam_policy_attachment" "circleci_policy_attachment" {
   policy_arn = aws_iam_policy.circleci_iam_policy.arn
   roles      = [aws_iam_role.circleci_iam_role.name]
   name       = "circleci_policy_attachment"
+
+  lifecycle {
+    ignore_changes = [thumbprint_list]
+  }
 }
+
