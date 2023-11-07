@@ -88,23 +88,19 @@ locals {
     local.other_cidr_ranges
   )
 
-  csr_preprod_cidr_ranges = {
-
+  csr_preprod_cidr_ranges = [
     local.other_cidr_ranges.csr-pre-prod-private-west-2a,
     local.other_cidr_ranges.csr-pre-prod-private-west-2b,
     local.other_cidr_ranges.csr-pre-prod-private-west-2c,
+  ]
 
-  }
-
-  csr_prod_cidr_ranges = {
-
+  csr_prod_cidr_ranges = [
     local.other_cidr_ranges.csr-prod-private-west-2a,
     local.other_cidr_ranges.csr-prod-private-west-2b,
     local.other_cidr_ranges.csr-prod-private-west-2c,
+  ]
 
-  }
-
-  csr_external_access = {
+  csr_external_access = [
     local.other_cidr_ranges.mojo-azure-landing-zone,
     local.other_cidr_ranges.mojo-aws-globalprotect-vpc,
     local.other_cidr_ranges.mojo-wifi,
@@ -112,5 +108,5 @@ locals {
     local.other_cidr_ranges.aks-studio-hosting-live-1-vnet,
     local.other_cidr_ranges.atos_arkc_ras,
     local.other_cidr_ranges.atos_arkf_ras,
-  }
+  ]
 }
