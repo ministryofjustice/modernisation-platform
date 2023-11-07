@@ -42,8 +42,3 @@ module "amazon_managed_grafana_remote_cloudwatch_iam_policy" {
 
   policy = data.aws_iam_policy_document.amazon_managed_grafana_remote_cloudwatch.json
 }
-
-moved {
-  from = module.amazon_managed_prometheus_remote_cloudwatch_iam_policy
-  to   = module.amazon_managed_grafana_remote_cloudwatch_iam_policy
-}
