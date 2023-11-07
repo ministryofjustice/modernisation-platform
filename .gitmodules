@@ -1,0 +1,3 @@
+[submodule "workspace/dora-the-explora"]
+	path = workspace/dora-the-explora
+	url = https://github.com/ministryofjustice/dora-the-explora

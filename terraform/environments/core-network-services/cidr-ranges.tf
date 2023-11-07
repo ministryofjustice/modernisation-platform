@@ -22,6 +22,9 @@ locals {
     i2n                              = "10.110.0.0/16"
     moj-core-azure-1                 = "10.50.25.0/27"
     moj-core-azure-2                 = "10.50.26.0/24"
+    mojo-azure-landing-zone          = "10.192.0.0/16"
+    mojo-aws-globalprotect-vpc       = "10.184.0.0/16"
+    mojo-wifi                        = "10.154.0.0/15"
     parole-board                     = "10.50.0.0/16"
     psn                              = "51.0.0.0/8"
     psn-ppud                         = "51.247.2.115/32"
@@ -57,6 +60,15 @@ locals {
     delius-training = "10.162.96.0/20"
     delius-prod     = "10.160.16.0/20"
 
+    # csr application subnets
+    csr-pre-prod-private-west-2a = "10.27.0.0/24"
+    csr-pre-prod-private-west-2b = "10.27.1.0/24"
+    csr-pre-prod-private-west-2c = "10.27.2.0/24"
+
+    csr-prod-private-west-2a = "10.27.8.0/24"
+    csr-prod-private-west-2b = "10.27.9.0/24"
+    csr-prod-private-west-2c = "10.27.10.0/24"
+
     # laa landing zone cidr ranges
     laa-lz-development             = "10.202.0.0/20"
     laa-lz-test                    = "10.203.0.0/20"
@@ -74,5 +86,27 @@ locals {
     local.mp_core_cidr_ranges,
     local.platform_general_set_cidr_ranges,
     local.other_cidr_ranges
+  )
+
+  csr_preprod_cidr_ranges = merge(
+    local.other_cidr_ranges.csr-pre-prod-private-west-2a,
+    local.other_cidr_ranges.csr-pre-prod-private-west-2b,
+    local.other_cidr_ranges.csr-pre-prod-private-west-2c,
+  )
+
+  csr_prod_cidr_ranges = merge(
+    local.other_cidr_ranges.csr-prod-private-west-2a,
+    local.other_cidr_ranges.csr-prod-private-west-2b,
+    local.other_cidr_ranges.csr-prod-private-west-2c,
+  )
+
+  csr_external_access = merge(
+    local.other_cidr_ranges.mojo-azure-landing-zone,
+    local.other_cidr_ranges.mojo-aws-globalprotect-vpc,
+    local.other_cidr_ranges.mojo-wifi,
+    local.other_cidr_ranges.vodafone_wan_nicts_aggregate,
+    local.other_cidr_ranges.aks-studio-hosting-live-1-vnet,
+    local.other_cidr_ranges.atos_arkc_ras,
+    local.other_cidr_ranges.atos_arkf_ras,
   )
 }

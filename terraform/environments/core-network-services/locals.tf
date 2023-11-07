@@ -32,8 +32,8 @@ locals {
 
   development_rules     = fileexists("./firewall-rules/development_rules.json") ? jsondecode(templatefile("./firewall-rules/development_rules.json", local.all_cidr_ranges)) : {}
   test_rules            = fileexists("./firewall-rules/test_rules.json") ? jsondecode(templatefile("./firewall-rules/test_rules.json", local.all_cidr_ranges)) : {}
-  preproduction_rules   = fileexists("./firewall-rules/preproduction_rules.json") ? jsondecode(templatefile("./firewall-rules/preproduction_rules.json", local.all_cidr_ranges)) : {}
-  production_rules      = fileexists("./firewall-rules/production_rules.json") ? jsondecode(templatefile("./firewall-rules/production_rules.json", local.all_cidr_ranges)) : {}
+  preproduction_rules   = fileexists("./firewall-rules/preproduction_rules.json") ? jsondecode(templatefile("./firewall-rules/preproduction_rules.json", local.all_cidr_ranges, local.csr_preprod_cidr_ranges, local.csr_external_access)) : {}
+  production_rules      = fileexists("./firewall-rules/production_rules.json") ? jsondecode(templatefile("./firewall-rules/production_rules.json", local.all_cidr_ranges, local.csr_prod_cidr_ranges, local.csr_external_access)) : {}
   fqdn_firewall_rules   = fileexists("./firewall-rules/fqdn_rules.json") ? jsondecode(file("./firewall-rules/fqdn_rules.json")) : {}
   inline_firewall_rules = fileexists("./firewall-rules/inline_rules.json") ? jsondecode(templatefile("./firewall-rules/inline_rules.json", local.all_cidr_ranges)) : {}
   firewall_rules        = merge(local.development_rules, local.test_rules, local.preproduction_rules, local.production_rules)

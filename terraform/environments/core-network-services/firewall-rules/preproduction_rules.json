@@ -341,5 +341,12 @@
     "destination_ip": "${noms-mgmt-vnet}",
     "destination_port": "138",
     "protocol": "UDP"
+  },
+  "csr_external_to_csr_preproduction_45054": {
+    "action": "PASS",
+    "source_ip": "${local.csr_external_access}",
+    "destination_ip": "${local.csr_preprod_cidr_ranges}",
+    "destination_port": "45054",
+    "protocol": "TCP"
   }
 }
