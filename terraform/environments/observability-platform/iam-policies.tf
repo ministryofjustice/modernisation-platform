@@ -23,7 +23,7 @@ module "amazon_managed_prometheus_iam_policy" {
   policy = data.aws_iam_policy_document.amazon_managed_prometheus.json
 }
 
-data "aws_iam_policy_document" "amazon_managed_prometheus_remote_cloudwatch" {
+data "aws_iam_policy_document" "amazon_managed_grafana_remote_cloudwatch" {
   statement {
     sid     = "AllowAssumeRole"
     effect  = "Allow"
@@ -32,13 +32,13 @@ data "aws_iam_policy_document" "amazon_managed_prometheus_remote_cloudwatch" {
   }
 }
 
-module "amazon_managed_prometheus_remote_cloudwatch_iam_policy" {
+module "amazon_managed_grafana_remote_cloudwatch_iam_policy" {
   #checkov:skip=CKV_TF_1:Module is from Terraform registry
 
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
   version = "~> 5.0"
 
-  name_prefix = "amazon-managed-prometheus-remote-cloudwatch"
+  name_prefix = "amazon-managed-grafana-remote-cloudwatch"
 
-  policy = data.aws_iam_policy_document.amazon_managed_prometheus_remote_cloudwatch.json
+  policy = data.aws_iam_policy_document.amazon_managed_grafana_remote_cloudwatch.json
 }
