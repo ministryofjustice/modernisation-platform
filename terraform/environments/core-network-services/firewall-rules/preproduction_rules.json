@@ -341,5 +341,54 @@
     "destination_ip": "${noms-mgmt-vnet}",
     "destination_port": "138",
     "protocol": "UDP"
+  },
+  "mojo_to_csr_preproduction_http": {
+    "action": "PASS",
+    "source_ip": "10.0.0.0/8",
+    "destination_ip": "${csr-preprod}",
+    "destination_port": "80",
+    "protocol": "TCP"
+  },
+  "mojo_to_csr_preproduction_app_core_7770": {
+    "action": "PASS",
+    "source_ip": "10.0.0.0/8",
+    "destination_ip": "${csr-preprod}",
+    "destination_port": "7770",
+    "protocol": "TCP"
+  },
+  "mojo_to_csr_preproduction_app_core_7771": {
+    "action": "PASS",
+    "source_ip": "10.0.0.0/8",
+    "destination_ip": "${csr-preprod}",
+    "destination_port": "7771",
+    "protocol": "TCP"
+  },
+  "mojo_to_csr_preproduction_app_custom_7780": {
+    "action": "PASS",
+    "source_ip": "10.0.0.0/8",
+    "destination_ip": "${csr-preprod}",
+    "destination_port": "7780",
+    "protocol": "TCP"
+  },
+  "mojo_to_csr_preproduction_app_custom_7781": {
+    "action": "PASS",
+    "source_ip": "10.0.0.0/8",
+    "destination_ip": "${csr-preprod}",
+    "destination_port": "7781",
+    "protocol": "TCP"
+  },
+  "mojo_to_csr_preproduction_2109": {
+    "action": "PASS",
+    "source_ip": "10.0.0.0/8",
+    "destination_ip": "${csr-preprod}",
+    "destination_port": "2109",
+    "protocol": "TCP"
+  },
+  "mojo_to_csr_preproduction_45054": {
+    "action": "PASS",
+    "source_ip": "10.0.0.0/8",
+    "destination_ip": "${csr-preprod}",
+    "destination_port": "45054",
+    "protocol": "TCP"
   }
 }
