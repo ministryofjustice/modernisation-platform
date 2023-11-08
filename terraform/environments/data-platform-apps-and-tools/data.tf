@@ -51,19 +51,19 @@ data "aws_secretsmanager_secret_version" "openmetadata_entra_id_tenant_id" {
 ##################################################
 
 data "aws_secretsmanager_secret_version" "auth0_domain" {
-  provider = aws.analytical-platform-management-production
+  provider = aws.modernisation-platform
 
   secret_id = "auth0/domain"
 }
 
 data "aws_secretsmanager_secret_version" "auth0_client_id" {
-  provider = aws.analytical-platform-management-production
+  provider = aws.modernisation-platform
 
   secret_id = "auth0/client-id"
 }
 
 data "aws_secretsmanager_secret_version" "auth0_client_secret" {
-  provider = aws.analytical-platform-management-production
+  provider = aws.modernisation-platform
 
   secret_id = "auth0/client-secret"
 }
