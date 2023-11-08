@@ -344,7 +344,7 @@
   },
   "mojo_to_csr_preproduction_2109": {
     "action": "PASS",
-    "source_ip": "10.0.0.0/8",
+    "source_ip": "10.192.0.0/16",
     "destination_ip": "${ hmpps-preproduction-general-private-subnets}",
     "destination_port": "2109",
     "protocol": "TCP"
