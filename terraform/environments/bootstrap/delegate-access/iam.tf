@@ -20,15 +20,6 @@ module "cross-account-access" {
   additional_trust_roles = terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : []
 }
 
-module "cicd-member-user" {
-  count  = local.account_data.account-type == "member" ? 1 : 0
-  source = "../../../modules/iam_baseline"
-  providers = {
-    aws = aws.workspace
-  }
-}
-
-
 # Create a parameter for the modernisation platform environment management secret ARN that can be used to gain
 # access to the environments parameter when running a tf plan locally
 
