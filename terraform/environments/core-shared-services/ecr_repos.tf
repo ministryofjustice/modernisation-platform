@@ -26,12 +26,12 @@ module "mlra_ecr_repo" {
   app_name = "mlra"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["mlra-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["mlra-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["mlra-development"]
   ]
 
   pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["mlra-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["mlra-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["mlra-development"],
     local.environment_management.account_ids["mlra-test"],
     local.environment_management.account_ids["mlra-preproduction"],
@@ -50,12 +50,12 @@ module "apex_ecr_repo" {
   app_name = "apex"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["apex-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["apex-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["apex-development"]
   ]
 
   pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["apex-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["apex-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["apex-development"],
     local.environment_management.account_ids["apex-test"],
     local.environment_management.account_ids["apex-preproduction"],
@@ -93,10 +93,10 @@ module "delius_jitbit_ecr_repo" {
   app_name = "delius-jitbit"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-development"]}:user/cicd-member-user",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-test"]}:user/cicd-member-user",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-preproduction"]}:user/cicd-member-user",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-production"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-test"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-preproduction"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-production"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-test"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-preproduction"]}:role/modernisation-platform-oidc-cicd",
@@ -121,12 +121,12 @@ module "delius_core_weblogic_ecr_repo" {
   app_name = "delius-core-weblogic"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
     local.environment_management.account_ids["delius-core-development"],
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   # Tags
@@ -140,12 +140,12 @@ module "delius_core_testing_db_ecr_repo" {
   app_name = "delius-core-testing-db"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
     local.environment_management.account_ids["delius-core-development"],
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   # Tags
@@ -159,7 +159,7 @@ module "delius_core_openldap_ecr_repo" {
   app_name = "delius-core-openldap"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd"
   ]
@@ -167,7 +167,7 @@ module "delius_core_openldap_ecr_repo" {
   pull_principals = [
     local.environment_management.account_ids["delius-core-development"],
     local.environment_management.account_ids["delius-core-test"],
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd"
   ]
@@ -182,7 +182,7 @@ module "data_platform_athena_load_ecr_repo" {
   app_name = "data-platform-athena-load-lambda"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
@@ -191,7 +191,7 @@ module "data_platform_athena_load_ecr_repo" {
   ]
 
   pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
     local.environment_management.account_ids["data-platform-preproduction"],
@@ -215,7 +215,7 @@ module "data_platform_get_glue_metadata_ecr_repo" {
   app_name = "data-platform-get-glue-metadata-lambda"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
@@ -224,7 +224,7 @@ module "data_platform_get_glue_metadata_ecr_repo" {
   ]
 
   pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
     local.environment_management.account_ids["data-platform-preproduction"],
@@ -248,7 +248,7 @@ module "data_platform_presigned_url_ecr_repo" {
   app_name = "data-platform-presigned-url-lambda"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
@@ -257,7 +257,7 @@ module "data_platform_presigned_url_ecr_repo" {
   ]
 
   pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
     local.environment_management.account_ids["data-platform-preproduction"],
@@ -283,7 +283,7 @@ module "data_platform_authorizer_ecr_repo" {
   app_name = "data-platform-authorizer-lambda"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
@@ -292,7 +292,7 @@ module "data_platform_authorizer_ecr_repo" {
   ]
 
   pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
     local.environment_management.account_ids["data-platform-preproduction"],
@@ -318,7 +318,7 @@ module "data_platform_docs_ecr_repo" {
   app_name = "data-platform-docs-lambda"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
@@ -327,7 +327,7 @@ module "data_platform_docs_ecr_repo" {
   ]
 
   pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
     local.environment_management.account_ids["data-platform-preproduction"],
@@ -352,12 +352,12 @@ module "delius_core_ansible_aws_ecr_repo" {
   app_name = "delius-core-ansible-aws"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
     local.environment_management.account_ids["delius-core-development"],
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   # Tags
@@ -371,12 +371,12 @@ module "delius_core_ldap_automation_ecr_repo" {
   app_name = "delius-core-ldap-automation"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
     local.environment_management.account_ids["delius-core-development"],
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:user/cicd-member-user"
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   # Tags
@@ -389,7 +389,7 @@ module "data_platform_python_base_ecr_repo" {
   app_name = "data-platform-python-base"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
@@ -398,7 +398,7 @@ module "data_platform_python_base_ecr_repo" {
   ]
 
   pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
@@ -416,7 +416,7 @@ module "data_platform_create_metadata_lambda_ecr_repo" {
   app_name = "data-platform-create-metadata-lambda"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
@@ -425,7 +425,7 @@ module "data_platform_create_metadata_lambda_ecr_repo" {
   ]
 
   pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
@@ -450,7 +450,7 @@ module "data_platform_resync_unprocessed_files_ecr_repo" {
   app_name = "data-platform-resync-unprocessed-files-lambda"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
@@ -459,7 +459,7 @@ module "data_platform_resync_unprocessed_files_ecr_repo" {
   ]
 
   pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
@@ -484,7 +484,7 @@ module "data_platform_reload_data_product_ecr_repo" {
   app_name = "data-platform-reload-data-product-lambda"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
@@ -493,7 +493,7 @@ module "data_platform_reload_data_product_ecr_repo" {
   ]
 
   pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
@@ -518,7 +518,7 @@ module "data_platform_landing_to_raw_ecr_repo" {
   app_name = "data-platform-landing-to-raw-lambda"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
@@ -527,7 +527,7 @@ module "data_platform_landing_to_raw_ecr_repo" {
   ]
 
   pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
@@ -552,7 +552,7 @@ module "data_platform_get_schema_ecr_repo" {
   app_name = "data-platform-get-schema-lambda"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
@@ -561,7 +561,7 @@ module "data_platform_get_schema_ecr_repo" {
   ]
 
   pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:user/cicd-member-user",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-development"],
     local.environment_management.account_ids["data-platform-test"],
