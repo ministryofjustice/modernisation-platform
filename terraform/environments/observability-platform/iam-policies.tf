@@ -25,9 +25,9 @@ module "amazon_managed_prometheus_iam_policy" {
 
 data "aws_iam_policy_document" "amazon_managed_grafana_remote_cloudwatch" {
   statement {
-    sid     = "AllowAssumeRole"
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
+    sid       = "AllowAssumeRole"
+    effect    = "Allow"
+    actions   = ["sts:AssumeRole"]
     resources = formatlist("arn:aws:iam::%s:role/observability-platform", local.environment_configuration.source_accounts)
   }
 }
