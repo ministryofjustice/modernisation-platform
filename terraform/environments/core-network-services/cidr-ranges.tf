@@ -56,6 +56,7 @@ locals {
     delius-pre-prod = "10.160.0.0/20"
     delius-training = "10.162.96.0/20"
     delius-prod     = "10.160.16.0/20"
+    hmpps-preproduction-general-private-subnets = "10.27.0.0/22"
 
     # laa landing zone cidr ranges
     laa-lz-development             = "10.202.0.0/20"
