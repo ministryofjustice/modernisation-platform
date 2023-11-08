@@ -53,3 +53,9 @@ provider "helm" {
     }
   }
 }
+
+provider "auth0" {
+  domain        = data.aws_secretsmanager_secret_version.auth0_domain.secret_string
+  client_id     = data.aws_secretsmanager_secret_version.auth0_client_id.secret_string
+  client_secret = data.aws_secretsmanager_secret_version.auth0_client_secret.secret_string
+}
