@@ -20,6 +20,10 @@ terraform {
       source  = "hashicorp/random"
       version = "~> 3.0"
     }
+    auth0 = {
+      source  = "auth0/auth0"
+      version = "1.0.0"
+    }
   }
   required_version = "~> 1.0"
 }
