@@ -68,6 +68,8 @@ locals {
     laa-appstream-vpc              = "10.200.32.0/19"
     laa-appstream-vpc_additional   = "10.200.68.0/22"
 
+    hmpps-preproduction-general-private-subnets = "10.27.0.0/22"
+    # hmpps-production-general-private-subnets = "10.27.10.0/22" not yet implemented
   }
 
   all_cidr_ranges = merge(
