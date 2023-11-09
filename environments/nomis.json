@@ -9,6 +9,10 @@
           "level": "developer"
         },
         {
+          "github_slug": "studio-webops",
+          "level": "instance-management"
+        },
+        {
           "github_slug": "syscon-devs",
           "level": "instance-management"
         },
