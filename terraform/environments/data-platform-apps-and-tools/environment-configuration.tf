@@ -80,12 +80,12 @@ locals {
       eks_cluster_name = "apps-tools-${local.environment}"
       eks_versions = {
         cluster                   = "1.28"
-        ami_release               = "1.15.1-264e294c" // [major version].[minor version].[patch version]-[first 8 chars of commit SHA]. Get the SHA from here: https://github.com/bottlerocket-os/bottlerocket/releases
-        addon_coredns             = "v1.10.1-eksbuild.4"
+        ami_release               = "1.16.0-d2d9cf87" // [major version].[minor version].[patch version]-[first 8 chars of commit SHA]. Get the SHA from here: https://github.com/bottlerocket-os/bottlerocket/releases
+        addon_coredns             = "v1.10.1-eksbuild.5"
         addon_kube_proxy          = "v1.28.2-eksbuild.2"
-        addon_vpc_cni             = "v1.15.1-eksbuild.1"
+        addon_vpc_cni             = "v1.15.3-eksbuild.1"
         addon_aws_guardduty_agent = "v1.3.1-eksbuild.1"
-        addon_ebs_csi_driver      = "v1.23.1-eksbuild.1"
+        addon_ebs_csi_driver      = "v1.24.1-eksbuild.1"
         addon_efs_csi_driver      = "v1.7.0-eksbuild.1"
       }
       eks_sso_access_role = "modernisation-platform-developer"
