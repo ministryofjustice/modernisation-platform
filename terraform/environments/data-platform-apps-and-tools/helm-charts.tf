@@ -2,7 +2,7 @@ resource "helm_release" "gatekeeper" {
   name       = "gatekeeper"
   repository = "https://open-policy-agent.github.io/gatekeeper/charts"
   chart      = "gatekeeper"
-  version    = "3.13.3"
+  version    = "3.14.0"
   namespace  = kubernetes_namespace.gatekeeper_system.metadata[0].name
   values = [
     templatefile(
@@ -33,7 +33,7 @@ resource "helm_release" "cluster_autoscaler" {
   name       = "cluster-autoscaler"
   repository = "https://kubernetes.github.io/autoscaler"
   chart      = "cluster-autoscaler"
-  version    = "9.29.3"
+  version    = "9.29.4"
   namespace  = "kube-system"
 
   values = [
@@ -71,7 +71,7 @@ resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = "https://charts.jetstack.io"
   chart      = "cert-manager"
-  version    = "v1.13.1"
+  version    = "v1.13.2"
   namespace  = kubernetes_namespace.cert_manager.metadata[0].name
   values = [
     templatefile(
@@ -134,7 +134,7 @@ resource "helm_release" "ingress_nginx" {
   name       = "ingress-nginx"
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx"
-  version    = "4.8.2"
+  version    = "4.8.3"
   namespace  = kubernetes_namespace.ingress_nginx.metadata[0].name
   values = [
     templatefile(
@@ -152,14 +152,14 @@ resource "helm_release" "velero" {
   name       = "velero"
   repository = "https://vmware-tanzu.github.io/helm-charts"
   chart      = "velero"
-  version    = "5.1.0"
+  version    = "5.1.3"
   namespace  = kubernetes_namespace.velero_system.metadata[0].name
   values = [
     templatefile(
       "${path.module}/src/helm/velero/values.yml.tftpl",
       {
         eks_role_arn              = module.velero_role.iam_role_arn
-        velero_aws_plugin_version = "v1.8.0"
+        velero_aws_plugin_version = "v1.8.1"
         velero_bucket             = module.velero_s3_bucket.bucket.id
         velero_prefix             = module.eks.cluster_name
         aws_region                = data.aws_region.current.name
@@ -173,7 +173,7 @@ resource "helm_release" "external_secrets" {
   name       = "external-secrets"
   repository = "https://charts.external-secrets.io"
   chart      = "external-secrets"
-  version    = "0.9.6"
+  version    = "0.9.8"
   namespace  = kubernetes_namespace.external_secrets.metadata[0].name
   values = [
     templatefile(
@@ -201,7 +201,7 @@ resource "helm_release" "aws_for_fluent_bit" {
   name       = "aws-for-fluent-bit"
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-for-fluent-bit"
-  version    = "0.1.30"
+  version    = "0.1.31"
   namespace  = "kube-system"
   values = [
     templatefile(
@@ -284,7 +284,7 @@ resource "helm_release" "amazon_managed_prometheus_proxy" {
   name       = "prometheus-proxy"
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "prometheus"
-  version    = "25.1.0"
+  version    = "25.4.0"
   namespace  = kubernetes_namespace.prometheus.metadata[0].name
   values = [
     templatefile(
