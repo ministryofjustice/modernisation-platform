@@ -199,7 +199,7 @@ jobs:
           echo "::warning ::Terraform plan was skipped as no valid workspace was found."
 
   terraform-apply-preprod-prod:
-    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' }}
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: [find-environments, terraform-plan]
     strategy:
