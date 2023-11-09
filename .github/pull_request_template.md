@@ -1,4 +1,4 @@
-## A reference to the issue / Description of it.
+## A reference to the issue / Description of it
 
 {Please write here}
 
@@ -14,7 +14,7 @@ Please describe the tests that you ran and provide instructions to reproduce.
 
 ## Deployment Plan / Instructions
 
-Will this deployment impact the platform and / or services on it? 
+Will this deployment impact the platform and / or services on it?
 
 {Please write here}
 
