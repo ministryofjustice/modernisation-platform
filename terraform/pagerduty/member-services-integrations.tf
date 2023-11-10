@@ -1125,7 +1125,7 @@ resource "pagerduty_service_integration" "ncas_non_prod_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
-resource "pagerduty_slack_connection" "my_connection" {
+resource "pagerduty_slack_connection" "ncas_non_prod_connection" {
   source_id = pagerduty_service.ncas_non_prod.id
   source_type = "service_reference"
   workspace_id = local.slack_workspace_id
@@ -1172,7 +1172,7 @@ resource "pagerduty_service_integration" "ncas_prod_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
-resource "pagerduty_slack_connection" "my_connection" {
+resource "pagerduty_slack_connection" "ncas_prod_connection" {
   source_id = pagerduty_service.ncas_prod.id
   source_type = "service_reference"
   workspace_id = local.slack_workspace_id
