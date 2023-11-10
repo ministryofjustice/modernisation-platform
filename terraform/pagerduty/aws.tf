@@ -47,6 +47,7 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     dpr_nonprod_alarms           = pagerduty_service_integration.dpr_nonprod_cloudwatch.integration_key,
     planetfm_alarms              = pagerduty_service_integration.planetfm_cloudwatch.integration_key,
     ncas_non_prod_alarms         = pagerduty_service_integration.ncas_non_prod_cloudwatch.integration_key,
+    ncas_prod_alarms             = pagerduty_service_integration.ncas_prod_cloudwatch.integration_key,
   })
 }
 
