@@ -348,5 +348,19 @@
     "destination_ip": "${noms-mgmt-vnet}",
     "destination_port": "138",
     "protocol": "UDP"
+  },
+  "DOM1_atos_arkc_ras_vpn_to_mp_development": {
+    "action": "PASS",
+    "source_ip": "10.175.0.0/16", 
+    "destination_ip": "${mp-development-test}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
+  "DOM1_atos_arkf_ras_vpn_to_mp_developmen": {
+    "action": "PASS",
+    "source_ip": "10.176.0.0/16", 
+    "destination_ip": "${mp-development-test}",
+    "destination_port": "443",
+    "protocol": "TCP"
   }
 }
