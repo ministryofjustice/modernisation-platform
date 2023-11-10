@@ -1129,7 +1129,7 @@ resource "pagerduty_slack_connection" "my_connection" {
   source_id = pagerduty_service.ncas_non_prod.id
   source_type = "service_reference"
   workspace_id = local.slack_workspace_id
-  channel_id = "C0399KTB88G"
+  channel_id = "C065VSLNFTJ"
   notification_type = "responder"
   config {
     events = [
@@ -1154,4 +1154,4 @@ resource "pagerduty_slack_connection" "my_connection" {
   }
 }
 
-# Slack channel: #dts-legacy-apps-system-alerts
+# Slack channel: #cloudwatch_alerts_modernisation_platform_legacy_apps
