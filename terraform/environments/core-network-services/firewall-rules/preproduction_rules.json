@@ -341,12 +341,5 @@
     "destination_ip": "${noms-mgmt-vnet}",
     "destination_port": "138",
     "protocol": "UDP"
-  },
-  "mojo_to_csr_preproduction_2109": {
-    "action": "PASS",
-    "source_ip": "10.192.1.1",
-    "destination_ip": "10.27.2.12",
-    "destination_port": "2109",
-    "protocol": "TCP"
   }
 }
