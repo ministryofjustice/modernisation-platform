@@ -1126,10 +1126,10 @@ resource "pagerduty_service_integration" "ncas_non_prod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "ncas_non_prod_connection" {
-  source_id = pagerduty_service.ncas_non_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C065VSLNFTJ"
+  source_id         = pagerduty_service.ncas_non_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C065VSLNFTJ"
   notification_type = "responder"
   config {
     events = [
@@ -1173,10 +1173,10 @@ resource "pagerduty_service_integration" "ncas_prod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "ncas_prod_connection" {
-  source_id = pagerduty_service.ncas_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C065VSLNFTJ"
+  source_id         = pagerduty_service.ncas_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C065VSLNFTJ"
   notification_type = "responder"
   config {
     events = [
