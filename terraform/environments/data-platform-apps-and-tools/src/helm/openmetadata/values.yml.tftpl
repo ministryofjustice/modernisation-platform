@@ -9,7 +9,7 @@ openmetadata:
       dbScheme: postgresql
       host: ${openmetadata_rds_host}
       port: 5432
-      dbUseSSL: true
+      dbParams: allowPublicKeyRetrieval=true&useSSL=true&serverTimezone=UTC
       driverClass: org.postgresql.Driver
       databaseName: ${openmetadata_rds_dbname}
       auth:

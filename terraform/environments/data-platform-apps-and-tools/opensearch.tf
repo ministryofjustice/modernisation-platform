@@ -1,6 +1,6 @@
 resource "aws_opensearch_domain" "openmetadata" {
   domain_name    = "openmetadata"
-  engine_version = "OpenSearch_1.3"
+  engine_version = "OpenSearch_2.7"
 
   vpc_options {
     subnet_ids         = module.vpc.private_subnets
