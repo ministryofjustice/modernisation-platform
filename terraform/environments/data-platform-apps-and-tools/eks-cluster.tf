@@ -5,7 +5,7 @@ module "eks" {
   #checkov:skip=CKV_TF_1:Module is from Terraform registry
 
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.16.0"
+  version = "19.19.1"
 
   cluster_name    = local.environment_configuration.eks_cluster_name
   cluster_version = local.environment_configuration.eks_versions.cluster
