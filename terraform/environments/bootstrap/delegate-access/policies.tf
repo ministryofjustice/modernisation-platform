@@ -675,6 +675,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "sqlworkbench:GetConnection",
       "sqlworkbench:UpdateConnection",
       "sqlworkbench:GetAutocompletionMetadata",
+      "sqlworkbench:GetAutocompletionResource",
       "secretsmanager:GetSecretValue",
       "secretsmanager:DescribeSecret",
       "secretsmanager:List*",
