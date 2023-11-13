@@ -156,7 +156,8 @@ resource "aws_iam_role_policy" "read_firewall" {
         "Action" : [
           "logs:DescribeLogGroups",
           "logs:DescribeLogStreams",
-          "logs:GetLogEvents"
+          "logs:GetLogEvents",
+          "logs:FilterLogEvents"
         ],
         "Resource" : [
           "arn:aws:logs:*:*:log-group::log-stream:",
