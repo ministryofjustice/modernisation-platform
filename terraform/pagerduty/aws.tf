@@ -50,6 +50,12 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     ncas_prod_alarms             = pagerduty_service_integration.ncas_prod_cloudwatch.integration_key,
     wardship_non_prod_alarms     = pagerduty_service_integration.wardship_non_prod_cloudwatch.integration_key,
     wardship_prod_alarms         = pagerduty_service_integration.wardship_prod_cloudwatch.integration_key,
+    pra_non_prod_alarms          = pagerduty_service_integration.pra_non_prod_cloudwatch.integration_key,
+    pra_prod_alarms              = pagerduty_service_integration.pra_prod_cloudwatch.integration_key,
+    tipstaff_non_prod_alarms     = pagerduty_service_integration.tipstaff_non_prod_cloudwatch.integration_key,
+    tipstaff_prod_alarms         = pagerduty_service_integration.tipstaff_prod_cloudwatch.integration_key,
+    dacp_non_prod_alarms         = pagerduty_service_integration.dacp_non_prod_cloudwatch.integration_key,
+    dacp_prod_alarms             = pagerduty_service_integration.dacp_prod_cloudwatch.integration_key,
   })
 }
 
