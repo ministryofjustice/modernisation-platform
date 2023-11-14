@@ -1,6 +1,6 @@
 package main
 
-expected =
+expected :=
 {
   "accounts": [
     "analytical-platform",

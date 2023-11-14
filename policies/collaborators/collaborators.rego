@@ -1,5 +1,7 @@
 package main
 
+import future.keywords.in
+
 allowed_access := [
   "read-only",
   "developer",
@@ -54,6 +56,6 @@ deny[msg] {
 
 deny[msg] {
   accounts := input.users[_].accounts[_]
-  not array_contains(allowed_access, accounts.access)
+  not accounts.access in allowed_access
   msg := sprintf("`%v` uses an unexpected access: got `%v`, expected one of: %v", [input.filename, accounts.access, concat(", ", allowed_access) ])
 }

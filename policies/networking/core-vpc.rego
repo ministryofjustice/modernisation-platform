@@ -3,6 +3,7 @@ package main
 nice_name := replace(replace(input.filename, ".json", ""), "environments-networks/", "")
 
 deny[msg] {
+  some key
   expected["subnet_sets"][nice_name][key].cidr != input.cidr.subnet_sets[key].cidr
 
   msg := sprintf("Subnet sets mismatch: `%v` should equal `%v` for `%v (%v)`", [input.cidr.subnet_sets[key].cidr, expected["subnet_sets"][nice_name][key].cidr, nice_name, key])

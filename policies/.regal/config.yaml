@@ -1,0 +1,19 @@
+rules:
+  idiomatic:
+    # Not typically needed in conftest policy
+    # https://docs.styra.com/regal/rules/idiomatic/no-defined-entrypoint
+    no-defined-entrypoint:
+      level: ignore
+  # Style category mostly for following good style conventions,
+  # so certainly optional
+  # https://docs.styra.com/regal/category/style
+  style:
+    line-length:
+      level: ignore
+    opa-fmt:
+      level: ignore
+    prefer-some-in-iteration:
+      level: ignore
+  testing:
+    test-outside-test-package:
+      level: ignore
