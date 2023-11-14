@@ -1220,10 +1220,10 @@ resource "pagerduty_service_integration" "wardship_non_prod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "wardship_non_prod_connection" {
-  source_id = pagerduty_service.wardship_non_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C065VSLNFTJ"
+  source_id         = pagerduty_service.wardship_non_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C065VSLNFTJ"
   notification_type = "responder"
   config {
     events = [
@@ -1267,10 +1267,10 @@ resource "pagerduty_service_integration" "wardship_prod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "wardship_prod_connection" {
-  source_id = pagerduty_service.wardship_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C065VSLNFTJ"
+  source_id         = pagerduty_service.wardship_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C065VSLNFTJ"
   notification_type = "responder"
   config {
     events = [
@@ -1314,10 +1314,10 @@ resource "pagerduty_service_integration" "pra_non_prod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "pra_non_prod_connection" {
-  source_id = pagerduty_service.pra_non_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C065VSLNFTJ"
+  source_id         = pagerduty_service.pra_non_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C065VSLNFTJ"
   notification_type = "responder"
   config {
     events = [
@@ -1361,10 +1361,10 @@ resource "pagerduty_service_integration" "pra_prod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "pra_prod_connection" {
-  source_id = pagerduty_service.pra_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C065VSLNFTJ"
+  source_id         = pagerduty_service.pra_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C065VSLNFTJ"
   notification_type = "responder"
   config {
     events = [
@@ -1408,10 +1408,10 @@ resource "pagerduty_service_integration" "tipstaff_non_prod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "tipstaff_non_prod_connection" {
-  source_id = pagerduty_service.tipstaff_non_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C065VSLNFTJ"
+  source_id         = pagerduty_service.tipstaff_non_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C065VSLNFTJ"
   notification_type = "responder"
   config {
     events = [
@@ -1455,10 +1455,10 @@ resource "pagerduty_service_integration" "tipstaff_prod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "tipstaff_prod_connection" {
-  source_id = pagerduty_service.tipstaff_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C065VSLNFTJ"
+  source_id         = pagerduty_service.tipstaff_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C065VSLNFTJ"
   notification_type = "responder"
   config {
     events = [
@@ -1502,10 +1502,10 @@ resource "pagerduty_service_integration" "dacp_non_prod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "dacp_non_prod_connection" {
-  source_id = pagerduty_service.dacp_non_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C065VSLNFTJ"
+  source_id         = pagerduty_service.dacp_non_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C065VSLNFTJ"
   notification_type = "responder"
   config {
     events = [
@@ -1549,10 +1549,10 @@ resource "pagerduty_service_integration" "dacp_prod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "dacp_prod_connection" {
-  source_id = pagerduty_service.dacp_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C065VSLNFTJ"
+  source_id         = pagerduty_service.dacp_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C065VSLNFTJ"
   notification_type = "responder"
   config {
     events = [
