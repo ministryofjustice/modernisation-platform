@@ -31,7 +31,6 @@ locals {
   general_members = [
     "kcbotsh",
     "SteveMarshall",
-    "ScottSeaward",
     "SimonPPledger",
     "AafAnsari"
   ]
