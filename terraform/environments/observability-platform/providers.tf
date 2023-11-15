@@ -31,3 +31,8 @@ provider "aws" {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/ModernisationPlatformAccess"
   }
 }
+
+provider "grafana" {
+  url  = "https://${module.managed_grafana.workspace_endpoint}"
+  auth = aws_grafana_workspace_api_key.automation_key.key
+}
