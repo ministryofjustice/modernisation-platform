@@ -362,5 +362,19 @@
     "destination_ip": "${mp-development-test}",
     "destination_port": "443",
     "protocol": "TCP"
+  },
+  "platforms_to_DOM1_nas_445": {
+    "action": "PASS",
+    "source_ip": "${platforms-development}",
+    "destination_ip": "10.172.68.0/23",
+    "destination_port": "445",
+    "protocol": "TCP"
+  },
+  "platforms_to_DOM1_nas_389": {
+    "action": "PASS",
+    "source_ip": "${platforms-development}",
+    "destination_ip": "10.172.68.0/23",
+    "destination_port": "389",
+    "protocol": "TCP"
   }
 }
