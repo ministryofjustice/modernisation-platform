@@ -32,13 +32,4 @@ locals {
   # example usage:
   # example_data = local.application_data.accounts[local.environment].example_var
   application_data = fileexists("./application_variables.json") ? jsondecode(file("./application_variables.json")) : {}
-
-  grafana_rbac = {
-    "data-platform-apps-and-tools" = {
-      accounts = ["data-platform-apps-and-tools", "data-platform"]
-    },
-    "data-platform-labs" = {
-      accounts = ["data-platform"]
-    }
-  }
 }
