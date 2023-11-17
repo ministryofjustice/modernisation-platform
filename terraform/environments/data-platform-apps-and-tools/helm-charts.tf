@@ -303,3 +303,16 @@ resource "helm_release" "amazon_managed_prometheus_proxy" {
 
   depends_on = [helm_release.gatekeeper]
 }
+
+resource "helm_release" "static_assets" {
+  name      = "static-assets"
+  chart     = "./src/helm/charts/static-assets"
+  namespace = kubernetes_namespace.static_assets.metadata[0].name
+
+  set {
+    name  = "ingress.host"
+    value = local.environment_configuration.static_assets_hostname
+  }
+
+  depends_on = [helm_release.cert_manager_additional]
+}
