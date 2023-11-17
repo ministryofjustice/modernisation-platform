@@ -63,9 +63,11 @@ module "grafana_teams" {
   grafana_rbac = {
     "data-platform-apps-and-tools" = {
       accounts = ["data-platform-apps-and-tools", "data-platform"]
+      permission = "Edit"
     },
     "data-platform-labs" = {
       accounts = ["data-platform"]
+      permission = "Query"
     }
   }
   workspace_id = module.managed_grafana.workspace_id

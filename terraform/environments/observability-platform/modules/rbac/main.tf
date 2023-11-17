@@ -36,6 +36,6 @@ resource "grafana_data_source_permission" "cloudwatch" {
 
   permissions {
     team_id    = grafana_team.data_platform[each.key].id
-    permission = "Query"
+    permission = each.value.permission
   }
 }
