@@ -6,3 +6,6 @@ aws:
   region:
   hostedZoneID:
   dnsZone:
+
+http01:
+  ingressClassName: default
