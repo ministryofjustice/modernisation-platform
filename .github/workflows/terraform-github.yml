@@ -33,7 +33,6 @@ permissions:
 jobs:
   github-plan-and-apply:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_run' && github.event.workflow == 'Terraform: GitHub resources' && github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success'
     env:
       TF_VAR_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
       TF_IN_AUTOMATION: true
