@@ -16,6 +16,7 @@ resource "kubernetes_namespace" "external_dns" {
       "policy.sigstore.dev/include"    = "false"
     }
   }
+  depends_on = [helm_release.gatekeeper]
 }
 
 resource "kubernetes_namespace" "cert_manager" {
@@ -26,6 +27,7 @@ resource "kubernetes_namespace" "cert_manager" {
       "policy.sigstore.dev/include"    = "false"
     }
   }
+  depends_on = [helm_release.gatekeeper]
 }
 
 resource "kubernetes_namespace" "ingress_nginx" {
@@ -36,6 +38,7 @@ resource "kubernetes_namespace" "ingress_nginx" {
       "policy.sigstore.dev/include"    = "false"
     }
   }
+  depends_on = [helm_release.gatekeeper]
 }
 
 resource "kubernetes_namespace" "velero_system" {
@@ -46,6 +49,7 @@ resource "kubernetes_namespace" "velero_system" {
       "policy.sigstore.dev/include"    = "false"
     }
   }
+  depends_on = [helm_release.gatekeeper]
 }
 
 resource "kubernetes_namespace" "external_secrets" {
@@ -56,6 +60,7 @@ resource "kubernetes_namespace" "external_secrets" {
       "policy.sigstore.dev/include"    = "false"
     }
   }
+  depends_on = [helm_release.gatekeeper]
 }
 
 resource "kubernetes_namespace" "cosign_system" {
@@ -66,6 +71,7 @@ resource "kubernetes_namespace" "cosign_system" {
       "policy.sigstore.dev/include"    = "false"
     }
   }
+  depends_on = [helm_release.gatekeeper]
 }
 
 resource "kubernetes_namespace" "airflow" {
@@ -76,6 +82,7 @@ resource "kubernetes_namespace" "airflow" {
       "policy.sigstore.dev/include"        = "false"      // this will eventually be true, but we aren't currently signing images
     }
   }
+  depends_on = [helm_release.gatekeeper]
 }
 
 resource "kubernetes_namespace" "openmetadata" {
@@ -85,6 +92,7 @@ resource "kubernetes_namespace" "openmetadata" {
       "policy.sigstore.dev/include" = "false"
     }
   }
+  depends_on = [helm_release.gatekeeper]
 }
 
 resource "kubernetes_namespace" "prometheus" {
@@ -95,6 +103,7 @@ resource "kubernetes_namespace" "prometheus" {
       "policy.sigstore.dev/include"    = "false"
     }
   }
+  depends_on = [helm_release.gatekeeper]
 }
 
 resource "kubernetes_namespace" "static_assets" {
@@ -105,4 +114,5 @@ resource "kubernetes_namespace" "static_assets" {
       "policy.sigstore.dev/include"    = "false"
     }
   }
+  depends_on = [helm_release.gatekeeper]
 }
