@@ -39,7 +39,7 @@ module "instance_scheduler" {
 resource "aws_cloudwatch_event_rule" "instance_scheduler_weekly_stop_at_night" {
   name                = "instance_scheduler_weekly_stop_at_night"
   description         = "Call Instance Scheduler with Stop action at 8:00 pm (UTC) every Monday through Friday"
-  schedule_expression = "cron(0 19 ? * MON-FRI *)"
+  schedule_expression = "cron(0 21 ? * MON-FRI *)" ## Edited to work with daylight savings, will need changing March 2024.
 }
 
 resource "aws_cloudwatch_event_target" "instance_scheduler_weekly_stop_at_night" {
@@ -60,7 +60,7 @@ resource "aws_cloudwatch_event_target" "instance_scheduler_weekly_stop_at_night"
 resource "aws_cloudwatch_event_rule" "instance_scheduler_weekly_start_in_the_morning" {
   name                = "instance_scheduler_weekly_start_in_the_morning"
   description         = "Call Instance Scheduler with Start action at 5:00 am (UTC) every Monday through Friday"
-  schedule_expression = "cron(0 4 ? * MON-FRI *)"
+  schedule_expression = "cron(0 6 ? * MON-FRI *)" ## Edited to work with daylight savings, will need changing March 2024.
 }
 
 resource "aws_cloudwatch_event_target" "instance_scheduler_weekly_start_in_the_morning" {
