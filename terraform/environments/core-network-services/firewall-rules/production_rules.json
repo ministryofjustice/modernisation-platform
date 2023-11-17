@@ -390,5 +390,12 @@
     "destination_ip": "${noms-mgmt-vnet}",
     "destination_port": "138",
     "protocol": "UDP"
+  },
+  "noms_mgmt_live_to_planetfm_production_sql_1434_udp": {
+    "action": "PASS",
+    "source_ip": "${noms-mgmt-live-vnet}",
+    "destination_ip": "${hmpps-production-general-private-subnets}",
+    "destination_port": "1434",
+    "protocol": "UDP"
   }
 }
