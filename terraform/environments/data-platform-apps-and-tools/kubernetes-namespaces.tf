@@ -96,3 +96,13 @@ resource "kubernetes_namespace" "prometheus" {
     }
   }
 }
+
+resource "kubernetes_namespace" "static_assets" {
+  metadata {
+    name = "static-assets"
+    labels = {
+      "admission.gatekeeper.sh/ignore" = "true"
+      "policy.sigstore.dev/include"    = "false"
+    }
+  }
+}
