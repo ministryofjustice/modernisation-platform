@@ -124,7 +124,7 @@ locals {
       observability_platform_prometheus_url = "https://aps-workspaces.eu-west-2.amazonaws.com/workspaces/ws-55a65e9b-aab9-47a0-88b4-8275c50f1ff9/api/v1/remote_write"
 
       /* Static Assets */
-      static_assets_hostname = "assets.development.data-platform.service.justice.gov.uk"
+      static_assets_hostname = "assets.data-platform.service.justice.gov.uk"
     }
   }
 }
