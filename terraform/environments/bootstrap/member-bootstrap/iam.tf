@@ -143,6 +143,8 @@ data "aws_iam_policy_document" "member-access" {
       "sqs:*",
       "ssm:*",
       "sso:DescribeRegisteredRegions",
+      "state:CreateStateMachine",
+      "state:ListStateMachines",
       "waf:*",
       "wafv2:*",
       "resource-groups:*",
