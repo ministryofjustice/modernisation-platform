@@ -455,7 +455,9 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "identitystore:DescribeUser",
       "sso:ListDirectoryAssociations",
       "wellarchitected:*",
-      "backup:StartRestoreJob"
+      "backup:StartRestoreJob",
+      "state:CreateStateMachine",
+      "state:ListStateMachines"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
