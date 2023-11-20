@@ -41,6 +41,13 @@
     "destination_port": "5439",
     "protocol": "TCP"
   },
+  "cp_to_mp_hmpps_production_https": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-production}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "mp_ppud_production_to_psn_ppud": {
     "action": "PASS",
     "source_ip": "${hmpps-production}",
