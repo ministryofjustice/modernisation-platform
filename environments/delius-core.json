@@ -17,7 +17,6 @@
         {
           "github_slug": "unilink",
           "level": "instance-management",
-          "nuke": "exclude"
         }
       ]
     },
