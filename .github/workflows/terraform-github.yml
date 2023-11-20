@@ -83,6 +83,7 @@ jobs:
           with:
             fetch-depth: 0 # or "2" To retrieve the preceding commit.
         - name: Create GitHub member environments
+          if: github.event.ref == 'refs/heads/main'
           run: bash ./scripts/git-create-environments.sh
           env:
             TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
