@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "mi-platform-development-administrator",
+          "github_slug": "analytical-platform",
           "level": "administrator"
         }
       ]
