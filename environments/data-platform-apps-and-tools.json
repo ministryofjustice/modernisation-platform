@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "data-platform-apps-and-tools-development-modernisation-platform-sandbox",
+          "github_slug": "data-platform-apps-and-tools-development-sandbox",
           "level": "sandbox",
           "nuke": "exclude"
         },
@@ -25,7 +25,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "data-platform-apps-and-tools-production-modernisation-platform-developer",
+          "github_slug": "data-platform-apps-and-tools-production-developer",
           "level": "developer"
         },
         {

@@ -5,7 +5,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "analytical-platform-landing-production-modernisation-platform-administrator",
+          "github_slug": "analytical-platform-landing-production-administrator",
           "level": "administrator"
         },
         {

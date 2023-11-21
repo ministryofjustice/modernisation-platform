@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "data-platform-development-modernisation-platform-sandbox",
+          "github_slug": "data-platform-development-sandbox",
           "level": "sandbox",
           "nuke": "exclude"
         },
@@ -20,7 +20,7 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "data-platform-test-modernisation-platform-developer",
+          "github_slug": "data-platform-test-developer",
           "level": "developer"
         },
         {
@@ -33,7 +33,7 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "data-platform-preproduction-modernisation-platform-developer",
+          "github_slug": "data-platform-preproduction-developer",
           "level": "developer"
         },
         {
@@ -46,7 +46,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "data-platform-production-modernisation-platform-developer",
+          "github_slug": "data-platform-production-developer",
           "level": "developer"
         },
         {

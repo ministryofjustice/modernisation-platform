@@ -5,11 +5,11 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "analytical-platform-data-development-modernisation-platform-administrator",
+          "github_slug": "analytical-platform-data-development-administrator",
           "level": "administrator"
         },
         {
-          "github_slug": "analytical-platform-data-development-modernisation-platform-data-engineer",
+          "github_slug": "analytical-platform-data-development-data-engineer",
           "level": "data-engineer"
         },
         {
@@ -22,11 +22,11 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "analytical-platform-data-production-modernisation-platform-administrator",
+          "github_slug": "analytical-platform-data-production-administrator",
           "level": "administrator"
         },
         {
-          "github_slug": "analytical-platform-data-production-modernisation-platform-data-engineer",
+          "github_slug": "analytical-platform-data-production-data-engineer",
           "level": "data-engineer"
         },
         {

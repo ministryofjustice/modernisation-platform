@@ -5,7 +5,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "analytical-platform-management-production-modernisation-platform-administrator",
+          "github_slug": "analytical-platform-management-production-administrator",
           "level": "administrator"
         },
         {
