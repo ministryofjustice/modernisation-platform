@@ -5,12 +5,16 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "analytical-platform",
+          "github_slug": "analytical-platform-data-development-administrator",
           "level": "administrator"
         },
         {
-          "github_slug": "analytics-hq",
-          "level": "view-only"
+          "github_slug": "analytical-platform-data-development-data-engineer",
+          "level": "data-engineer"
+        },
+        {
+          "github_slug": "data-platform-audit-and-security",
+          "level": "security-audit"
         }
       ]
     },
@@ -18,24 +22,16 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "analytical-platform",
+          "github_slug": "analytical-platform-data-production-administrator",
           "level": "administrator"
         },
         {
-          "github_slug": "analytics-hq",
-          "level": "view-only"
-        },
-        {
-          "github_slug": "data-engineering-aws",
+          "github_slug": "analytical-platform-data-production-data-engineer",
           "level": "data-engineer"
         },
         {
-          "github_slug": "data-platform-security-and-auditors",
+          "github_slug": "data-platform-audit-and-security",
           "level": "security-audit"
-        },
-        {
-          "github_slug": "data-platform-security-and-auditors",
-          "level": "read-only"
         }
       ]
     }
