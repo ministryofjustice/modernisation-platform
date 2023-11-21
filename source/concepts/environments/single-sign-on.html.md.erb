@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Single Sign On
-last_reviewed_on: 2023-05-18
+last_reviewed_on: 2023-11-21
 review_in: 6 months
 ---
 
@@ -32,5 +32,5 @@ We don't want to have to do identity management (joiners, movers, leavers) in th
 
 ### 3. SSO Permission Sets
 
- - A permission set is a collection of administrator-defined policies that AWS SSO uses to determine a user's effective permissions to access a given AWS account. The root permissions sets are managed in the [sso-admin-permission-sets.tf](https://github.com/ministryofjustice/aws-root-account/blob/main/terraform/sso-admin-permission-sets.tf) file.
+ - A permission set is a collection of administrator-defined policies that AWS SSO uses to determine a user's effective permissions to access a given AWS account. The root permissions sets are managed in the [sso-admin-permission-sets.tf](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/sso-admin-permission-sets.tf) file.
  - The permission set is [mapped](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/single-sign-on/main.tf#L56) using Terraform to the associated AWS account as part of the baseline workflow.
