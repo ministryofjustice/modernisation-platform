@@ -458,7 +458,30 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "backup:StartRestoreJob",
       "states:CreateStateMachine",
       "states:ListStateMachines",
-      "states:DeleteStateMachine"
+      "states:DeleteStateMachine",
+      "states:CreateActivity",
+      "states:CreateStateMachine",
+      "states:CreateStateMachineAlias",
+      "states:DescribeStateMachine",
+      "states:DescribeExecution",
+      "states:DeleteActivity",
+      "states:DeleteStateMachine",
+      "states:DeleteStateMachineAlias",
+      "states:ListExecutions",
+      "states:ListStateMachines",
+      "states:ListTagsForResource",
+      "states:DescribeExecution",
+      "states:UpdateStateMachine",
+      "states:UpdateMapRun",
+      "states:UpdateStateMachineAlias",
+      "states:TagResource",
+      "states:StopExecution",
+      "states:StartSyncExecution",
+      "states:StartExecution",
+      "states:SendTaskSuccess",
+      "states:SendTaskHeartbeat",
+      "states:SendTaskFailure",
+      "states:RedriveExecution"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
