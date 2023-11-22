@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+set -x
 
 github_org="ministryofjustice"
 repository="${github_org}/modernisation-platform-environments"
@@ -84,7 +85,7 @@ create_environment() {
   if [ "${DRY_RUN}" == "true" ]; then
     echo "Payload: $payload"
     echo "Repository: ${repository}"
-    response=$(echo "${payload}" | curl -L -s \
+    response=$(echo "${payload}" | curl -L -s -i \
       -X PUT \
       -H "Accept: application/vnd.github+json" \
       -H "Authorization: Bearer ${secret}" \
@@ -98,7 +99,7 @@ create_environment() {
   else
     echo "Payload: $payload"
     echo "Repository: ${repository}"
-    response=$(echo "${payload}" | curl -L -s \
+    response=$(echo "${payload}" | curl -L -s -i \
       -X PUT \
       -H "Accept: application/vnd.github+json" \
       -H "Authorization: Bearer ${secret}" \
