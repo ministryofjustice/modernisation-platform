@@ -5,18 +5,18 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "data-platform-core-infra",
-          "level": "sandbox",
-          "nuke": "exclude"
-        },
-        {
-          "github_slug": "data-tech-archs",
+          "github_slug": "data-platform-apps-and-tools-development-sandbox",
           "level": "sandbox",
           "nuke": "exclude"
         },
         {
           "github_slug": "data-platform-apps-and-tools-airflow-users",
           "level": "mwaa-user",
+          "nuke": "exclude"
+        },
+        {
+          "github_slug": "data-platform-audit-and-security",
+          "level": "security-audit",
           "nuke": "exclude"
         }
       ]
@@ -25,12 +25,16 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "data-platform-core-infra",
+          "github_slug": "data-platform-apps-and-tools-production-developer",
           "level": "developer"
         },
         {
-          "github_slug": "data-tech-archs",
-          "level": "developer"
+          "github_slug": "data-platform-apps-and-tools-airflow-users",
+          "level": "mwaa-user"
+        },
+        {
+          "github_slug": "data-platform-audit-and-security",
+          "level": "security-audit"
         }
       ]
     }
