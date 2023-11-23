@@ -12,6 +12,7 @@ expected :=
     "bichard7",
     "ccms-ebs",
     "ccms-ebs-upgrade",
+    "cdpt-chaps",
     "cooker",
     "core-logging",
     "core-network-services",
