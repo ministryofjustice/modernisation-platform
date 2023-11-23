@@ -66,7 +66,7 @@ resource "aws_secretsmanager_secret" "pagerduty_token" {
   # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "pagerduty_token"
-  description = "PagerDuty api token"
+  description = "PagerDuty api token, used by PagerDuty Terraform to manage most PagerDuty resources"
   tags        = local.tags
 }
 
@@ -77,6 +77,6 @@ resource "aws_secretsmanager_secret" "pagerduty_user_token" {
   # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "pagerduty_userapi_token"
-  description = "PagerDuty api user token"
+  description = "PagerDuty api user level token, used to link services to Slack channels.  A valid PD and Slack user needed (to authorise against a slack user), needed in addition to the org level token"
   tags        = local.tags
 }
