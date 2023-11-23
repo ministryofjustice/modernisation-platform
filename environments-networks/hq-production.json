@@ -3,7 +3,9 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.27.32.0/21",
-        "accounts": ["data-and-insights-wepi-production"]
+        "accounts": ["data-and-insights-wepi-production",
+                     "cdpt-chaps-production"
+        ]
       }
     }
   },
