@@ -83,18 +83,9 @@ create_environment() {
   fi
 
   if [ "${DRY_RUN}" == "true" ]; then
-    echo "Payload: $payload"
+    echo "DRY Run Payload: $payload"
     echo "Repository: ${repository}"
-    response=$(echo "${payload}" | curl -L -s -i \
-      -X PUT \
-      -H "Accept: application/vnd.github+json" \
-      -H "Authorization: Bearer ${secret}" \
-      -H "X-GitHub-Api-Version: 2022-11-28" \
-      -H "X-GitHub-Environments-Preview: true" \
-      https://api.github.com/repos/${repository}/environments/${environment_name}\
-      -d @- > /dev/null 2>&1)
-
-    echo "API Response: $response"  # Print the API response
+    echo "DRY Run Only no payload submission to GitHub API"
 
   else
     echo "Payload: $payload"
