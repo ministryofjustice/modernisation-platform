@@ -87,7 +87,7 @@ module "eks" {
     {
       rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/data-platform-eks-access"
       groups   = ["system:masters"]
-      username = "globalgithubactionaccess"
+      username = "data-platform-eks-access"
     }
   ]
 
