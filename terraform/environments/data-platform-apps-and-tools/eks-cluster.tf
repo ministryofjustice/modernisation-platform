@@ -85,7 +85,7 @@ module "eks" {
       username = "airflow"
     },
     {
-      rolearn  = "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-management-production"]}:role/GlobalGitHubActionAccess"
+      rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/data-platform-eks-access"
       groups   = ["system:masters"]
       username = "globalgithubactionaccess"
     }
