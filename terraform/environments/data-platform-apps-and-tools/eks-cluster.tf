@@ -83,6 +83,11 @@ module "eks" {
       rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.environment_configuration.airflow_execution_role_name}"
       groups   = ["airflow"]
       username = "airflow"
+    },
+    {
+      rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/data-platform-eks-access"
+      groups   = ["system:masters"]
+      username = "data-platform-eks-access"
     }
   ]
 
