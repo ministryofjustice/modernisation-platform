@@ -35,3 +35,22 @@ module "prometheus_iam_policy" {
 
   policy = data.aws_iam_policy_document.prometheus.json
 }
+
+data "aws_iam_policy_document" "data_platform_eks_access" {
+  statement {
+    sid       = "AllowEKSDescribeCluster"
+    effect    = "Allow"
+    actions   = ["eks:DescribeCluster"]
+    resources = [module.eks.cluster_arn]
+  }
+}
+
+module "data_platform_eks_access_iam_policy" {
+  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
+  source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
+  version = "~> 5.0"
+
+  name_prefix = "data-platform-eks-access"
+
+  policy = data.aws_iam_policy_document.data_platform_eks_access.json
+}
