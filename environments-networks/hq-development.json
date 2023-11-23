@@ -4,7 +4,7 @@
       "general": {
         "cidr": "10.26.48.0/21",
         "accounts": ["data-and-insights-wepi-development",
-                     "cdpt-chaps"
+                     "cdpt-chaps-development"
                     ]
       }
     }

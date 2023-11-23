@@ -4,7 +4,7 @@
       "general": {
         "cidr": "10.27.40.0/21",
         "accounts": ["data-and-insights-wepi-preproduction",
-                     "cdpt-chaps"  
+                     "cdpt-chaps-preproduction"  
         ]
       }
     }
