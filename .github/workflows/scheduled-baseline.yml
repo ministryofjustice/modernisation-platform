@@ -49,7 +49,16 @@ jobs:
       - id: set-matrix
         name: Set Up Matrix
         run: echo "matrix=$(terraform -chdir=terraform/environments/bootstrap/delegate-access workspace list | sed -e "s/*//" -e "s/^[[:space:]]*//" -e "/default/d" -e "/^$/d" | sort -u | jq -ncR '[inputs]')" >> $GITHUB_OUTPUT
-     
+      - name: Slack failure notification
+        uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
+        with:
+          payload: |
+            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+        if: ${{ failure() }}
+
   delegate-access:
     strategy:
       fail-fast: false
