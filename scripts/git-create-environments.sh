@@ -81,18 +81,24 @@ create_environment() {
     payload="{\"reviewers\": [${reviewers_json}]}"
   fi
 
-  echo "Payload: $payload"
-  echo "Repository: ${repository}"
-  response=$(echo "${payload}" | curl -L -s \
-    -X PUT \
-    -H "Accept: application/vnd.github+json" \
-    -H "Authorization: Bearer ${secret}" \
-    -H "X-GitHub-Api-Version: 2022-11-28" \
-    https://api.github.com/repos/${repository}/environments/${environment_name}\
-    -d @- > /dev/null 2>&1)
+  if [ "${DRY_RUN}" == "true" ]; then
+    echo "DRY Run Payload: $payload"
+    echo "Repository: ${repository}"
+    echo "DRY Run Only no payload submission to GitHub API"
+
+  else
+    echo "Payload: $payload"
+    echo "Repository: ${repository}"
+    response=$(echo "${payload}" | curl -L -s -i \
+      -X PUT \
+      -H "Accept: application/vnd.github+json" \
+      -H "Authorization: Bearer ${secret}" \
+      -H "X-GitHub-Api-Version: 2022-11-28" \
+      https://api.github.com/repos/${repository}/environments/${environment_name}\
+      -d @- > /dev/null 2>&1)
 
   echo "API Response: $response"  # Print the API response
-
+  fi
 }
 
 create_team_reviewers_json() {
