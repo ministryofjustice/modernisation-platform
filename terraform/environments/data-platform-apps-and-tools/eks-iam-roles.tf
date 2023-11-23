@@ -200,6 +200,7 @@ module "iam_assumable_role_admin" {
 
   trusted_role_arns = [
     "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-management-production"]}:role/GlobalGitHubActionAccess"
+    "arn:aws:iam::042130406152:role/aws-reserved/sso.amazonaws.com/eu-west-2/AWSReservedSSO_AdministratorAccess_75c6567ee233c758"
   ]
 
   create_role       = true
