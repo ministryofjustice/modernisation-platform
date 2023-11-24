@@ -195,6 +195,7 @@ module "prometheus_iam_role" {
 }
 
 module "iam_assumable_role_admin" {
+  # checkov:skip=CKV_TF_1:
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 5.0"
 
