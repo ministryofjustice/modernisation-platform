@@ -35,5 +35,5 @@
     "owner": "central-digital-product-team@digital.justice.gov.uk",
     "infrastructure-support": "central-digital-product-team@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": ["ministryofjustice/CHAPS"]
 }
