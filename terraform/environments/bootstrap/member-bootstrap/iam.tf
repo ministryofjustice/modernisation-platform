@@ -364,6 +364,8 @@ data "aws_iam_policy_document" "policy" {
     actions = [
       "athena:StartQueryExecution",
       "athena:GetQueryExecution",
+      "autoscaling:PutScheduledUpdateGroupAction",
+      "autoscaling:SetDesiredCapacity",
       "backup:Start*",
       "codebuild:Start*",
       "codebuild:StartBuild",
