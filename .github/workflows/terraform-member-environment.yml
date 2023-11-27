@@ -17,7 +17,6 @@ on:
       - 'terraform/environments/*/*.tf'
       - '!terraform/environments/bootstrap/*/*.tf'
       - '!terraform/environments/core-*/*.tf'
-  workflow_dispatch:
 
 defaults:
   run:
