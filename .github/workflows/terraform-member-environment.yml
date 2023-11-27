@@ -17,6 +17,7 @@ on:
       - 'terraform/environments/*/*.tf'
       - '!terraform/environments/bootstrap/*/*.tf'
       - '!terraform/environments/core-*/*.tf'
+  workflow_dispatch:
 
 defaults:
   run:
@@ -48,6 +49,15 @@ jobs:
           fi >> $GITHUB_OUTPUT
       - name: Display changed directories
         run: echo "Directories in scope:" ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}
+      - name: Slack failure notification
+        uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
+        with:
+          payload: |
+            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+        if: ${{ failure() && (github.event.ref == 'refs/heads/main') }}
     outputs:
       directories: ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}
 
@@ -113,6 +123,15 @@ jobs:
             scripts/terraform-plan.sh $directory
             unset workspace
           done
+      - name: Slack failure notification
+        uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
+        with:
+          payload: |
+            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+        if: ${{ failure() && (github.event.ref == 'refs/heads/main') }}
       - name: Mark job skipped
         if: ${{ steps.workspace.outputs.skip_plan == 'true' }}
         run: |
