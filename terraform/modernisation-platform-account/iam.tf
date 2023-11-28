@@ -164,6 +164,81 @@ resource "aws_iam_role_policy_attachment" "modernisation_account_limited_read" {
   policy_arn = aws_iam_policy.modernisation_account_limited_read.arn
 }
 
+# Modernisation Platform Environments Terraform backend role
+
+data "aws_iam_policy_document" "modernisation_account_terraform_state_role" {
+  version = "2012-10-17"
+  statement {
+    sid    = "AllowDynamoDBAccess"
+    effect = "Allow"
+    actions = [
+      "dynamodb:DescribeTable",
+      "dynamodb:GetItem",
+      "dynamodb:PutItem",
+      "dynamodb:DeleteItem"
+    ]
+    resources = "arn:aws:dynamodb:eu-west-2:${data.aws_caller_identity.current.account_id}:table/modernisation-platform-terraform-state-lock"
+  }
+  statement {
+    sid    = "AllowS3AccessList"
+    effect = "Allow"
+    actions = [
+      "s3:ListBucket",
+    ]
+    resources = "arn:aws:s3:::modernisation-platform-terraform-state"
+  }
+  statement {
+    sid    = "AllowS3AccessActions"
+    effect = "Allow"
+    actions = [
+      "s3:DeleteObject",
+      "s3:GetObject",
+      "s3:PutObject",
+    ]
+    resources = "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"
+  }
+}
+
+data "aws_iam_policy_document" "modernisation_account_terraform_state_assume_role" {
+  version = "2012-10-17"
+
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.modernisation_platform_ou_id}/*"]
+    }
+  }
+}
+
+resource "aws_iam_role" "modernisation_account_terraform_state" {
+  name                 = "modernisation-account-terraform-state-member-access"
+  max_session_duration = 3600
+  assume_role_policy   = data.aws_iam_policy_document.modernisation_account_terraform_state_assume_role.json
+
+  tags = local.tags
+}
+
+resource "aws_iam_policy" "modernisation_account_terraform_state" {
+  name        = "ModernisationAccountTerraformState"
+  description = "Role allowing Modernisation Platform customers access to Terraform state backend resources"
+  policy      = data.aws_iam_policy_document.modernisation_account_terraform_state_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "modernisation_account_limited_read" {
+  role       = aws_iam_role.modernisation_account_terraform_state.id
+  policy_arn = aws_iam_policy.modernisation_account_terraform_state.arn
+}
+
+
 # OIDC resources
 
 module "github-oidc" {
