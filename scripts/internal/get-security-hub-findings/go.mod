@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.23.1
-	github.com/aws/aws-sdk-go-v2/config v1.25.5
+	github.com/aws/aws-sdk-go-v2/config v1.25.6
 	github.com/aws/aws-sdk-go-v2/credentials v1.16.5
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/securityhub v1.41.0
