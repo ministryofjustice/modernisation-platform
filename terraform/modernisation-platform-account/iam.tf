@@ -177,7 +177,7 @@ data "aws_iam_policy_document" "modernisation_account_terraform_state_role" {
       "dynamodb:PutItem",
       "dynamodb:DeleteItem"
     ]
-    resources = "arn:aws:dynamodb:eu-west-2:${data.aws_caller_identity.current.account_id}:table/modernisation-platform-terraform-state-lock"
+    resources = ["arn:aws:dynamodb:eu-west-2:${data.aws_caller_identity.current.account_id}:table/modernisation-platform-terraform-state-lock"]
   }
   statement {
     sid    = "AllowS3AccessList"
@@ -185,7 +185,7 @@ data "aws_iam_policy_document" "modernisation_account_terraform_state_role" {
     actions = [
       "s3:ListBucket",
     ]
-    resources = "arn:aws:s3:::modernisation-platform-terraform-state"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state"]
   }
   statement {
     sid    = "AllowS3AccessActions"
@@ -195,7 +195,7 @@ data "aws_iam_policy_document" "modernisation_account_terraform_state_role" {
       "s3:GetObject",
       "s3:PutObject",
     ]
-    resources = "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
   }
 }
 
@@ -233,7 +233,7 @@ resource "aws_iam_policy" "modernisation_account_terraform_state" {
   policy      = data.aws_iam_policy_document.modernisation_account_terraform_state_role.json
 }
 
-resource "aws_iam_role_policy_attachment" "modernisation_account_limited_read" {
+resource "aws_iam_role_policy_attachment" "modernisation_account_terraform_state" {
   role       = aws_iam_role.modernisation_account_terraform_state.id
   policy_arn = aws_iam_policy.modernisation_account_terraform_state.arn
 }
