@@ -311,6 +311,12 @@ data "aws_iam_policy_document" "data_engineering_additional" {
     resources = ["arn:aws:airflow:eu-west-1:${local.environment_management.account_ids["analytical-platform-data-production"]}:role/*/User"]
   }
 
+   statement {
+    sid       = ""
+    effect    = "Allow"
+    actions   = ["iam:PassRole"]
+    resources = ["arn:aws:iam::${local.environment_management.account_ids["analytical-platform-data-production"]}:role/data-first-data-science"]
+  }
 }
 
 # data engineerin policy (developer + glue + some athena)
