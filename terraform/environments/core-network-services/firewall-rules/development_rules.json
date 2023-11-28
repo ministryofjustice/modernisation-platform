@@ -265,13 +265,6 @@
     "destination_port": "5439",
     "protocol": "TCP"
   },
-  "alpha-vpn_to_data-insights-hub_development_redshift": {
-    "action": "PASS",
-    "source_ip": "${alpha-vpn}",
-    "destination_ip": "${hq-development}",
-    "destination_port": "5439",
-    "protocol": "TCP"
-  },
   "internal-networks_to_data-insights-hub_development_redshift": {
     "action": "PASS",
     "source_ip": "10.0.0.0/8",
@@ -375,13 +368,6 @@
     "source_ip": "${platforms-development}",
     "destination_ip": "10.172.68.0/23",
     "destination_port": "389",
-    "protocol": "TCP"
-  },
-  "alpha_vpn_to_mp_platforms_development": {
-    "action": "PASS",
-    "source_ip": "${alpha-vpn}",
-    "destination_ip": "${platforms-development}",
-    "destination_port": "443",
     "protocol": "TCP"
   }
 }

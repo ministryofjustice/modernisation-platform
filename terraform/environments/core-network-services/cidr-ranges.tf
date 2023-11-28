@@ -12,7 +12,6 @@ locals {
   }
 
   other_cidr_ranges = {
-    alpha-vpn                        = "100.64.0.0/16"
     analytical-platform-airflow-dev  = "10.200.0.0/16"
     analytical-platform-airflow-prod = "10.201.0.0/16"
     atos_arkc_ras                    = "10.175.0.0/16" # for DOM1 devices connected to Cisco RAS VPN
