@@ -1,11 +1,13 @@
-variable "grafana_rbac" {
-  type = map(object({
-    accounts = list(string)
+variable "team_config" {
+  type = object({
+    sso_uuid = string
+    cloudwatch_sources = list(string)
+    prometheus_sources = list(string)
     permission = string
-  }))
-  description = "Map a grafana team name (key) to github teams (accounts) and give permissions"
+  })
+  description = "Map of team configuration"
 }
 
-variable "workspace_id" {
+variable "team_name" {
   type = string
 }

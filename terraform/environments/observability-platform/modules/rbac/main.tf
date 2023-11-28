@@ -1,41 +1,28 @@
 resource "grafana_team" "data_platform" {
-  for_each = var.grafana_rbac
-  name     = each.key
+  name     = var.team_name
   team_sync {
-    groups = each.value.accounts
+    groups = toset([var.team_config.sso_uuid])
   }
 }
 
-resource "grafana_data_source" "prometheus" {
-  type       = "prometheus"
-  name       = "Amazon Managed Prometheus"
-  is_default = true
-  url        = "https://aps-workspaces.${data.aws_region.current.name}.amazonaws.com/workspaces/${var.workspace_id}"
+resource "grafana_data_source_permission" "permission_cloudwatch" {
+  for_each = data.grafana_data_source.cloudwatch
 
-  json_data_encoded = jsonencode({
-    httpMethod    = "POST"
-    sigV4Auth     = true
-    sigV4AuthType = "ec2_iam_role"
-    sigV4Region   = data.aws_region.current.name
-  })
-}
-
-resource "grafana_data_source" "cloudwatch" {
-  type = "cloudwatch"
-  name = "Amazon CloudWatch"
-
-  json_data_encoded = jsonencode({
-    authType      = "ec2_iam_role"
-    defaultRegion = data.aws_region.current.name
-  })
-}
-
-resource "grafana_data_source_permission" "cloudwatch" {
-  for_each      = var.grafana_rbac
-  datasource_id = grafana_data_source.cloudwatch.id
+  datasource_id = each.value.id
 
   permissions {
-    team_id    = grafana_team.data_platform[each.key].id
-    permission = each.value.permission
+    team_id    = var.team_config.sso_uuid
+    permission = var.team_config.permission
+  }
+}
+
+resource "grafana_data_source_permission" "permission_prometheus" {
+  for_each = data.grafana_data_source.prometheus
+
+  datasource_id = each.value.id
+
+  permissions {
+    team_id    = var.team_config.sso_uuid
+    permission = var.team_config.permission
   }
 }

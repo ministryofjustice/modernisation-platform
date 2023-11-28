@@ -57,18 +57,44 @@ resource "aws_grafana_workspace_api_key" "automation_key" {
   }
 }
 
-module "grafana_teams" {
-  source  = "./modules/rbac"
+locals {
+  grafana_configuration = yamldecode(file("${path.module}/team-config.yaml"))
 
-  grafana_rbac = {
-    "data-platform-apps-and-tools" = {
-      accounts = ["data-platform-apps-and-tools", "data-platform"]
-      permission = "Edit"
-    },
-    "data-platform-labs" = {
-      accounts = ["data-platform"]
-      permission = "Query"
-    }
+  all_cloudwatch_sources = distinct(flatten([
+    for team_name, team_config in local.grafana_configuration : [
+      lookup(team_config, "cloudwatch_sources", [])
+    ]
+  ]))
+
+  all_prometheus_sources = distinct(flatten([
+    for team_name, team_config in local.grafana_configuration : [
+      lookup(team_config, "prometheus_sources", [])
+    ]
+  ]))
+}
+
+module "cloudwatch_sources" {
+  source           = "./modules/cloudwatch-source"
+  datasource_names = local.all_cloudwatch_sources
+}
+
+module "prometheus_sources" {
+  source           = "./modules/prometheus-source"
+  datasource_names = local.all_prometheus_sources
+  workspace_id     = module.managed_prometheus.workspace_id
+}
+
+module "grafana_teams" {
+  for_each = {
+    for team_name, team_config in local.grafana_configuration : team_name => team_config
   }
-  workspace_id = module.managed_grafana.workspace_id
+
+  source      = "./modules/rbac"
+  team_name   = each.key
+  team_config = each.value
+
+  depends_on = [
+    module.cloudwatch_sources,
+    module.prometheus_sources
+  ]
 }

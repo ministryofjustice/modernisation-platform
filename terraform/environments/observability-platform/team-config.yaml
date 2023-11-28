@@ -1,0 +1,18 @@
+data-platform:
+  sso_uuid: "< get this from AWS IdC>"
+  cloudwatch_sources:
+    - data-platform-apps-and-tools-development
+    - data-platform-development
+    - data-platform-test
+    - data-platform-staging
+  prometheus_sources:
+    - data-platform-apps-and-tools-development
+  permission: Edit
+example-platform:
+  sso_uuid: "< get this from AWS IdC>"
+  cloudwatch_sources:
+    - example-platform-development
+    - example-platform-test
+    - example-platform-staging
+  prometheus_sources: []
+  permission: Query
