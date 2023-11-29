@@ -74,8 +74,9 @@ locals {
 }
 
 module "cloudwatch_sources" {
-  source           = "./modules/cloudwatch-source"
-  datasource_names = local.all_cloudwatch_sources
+  source                 = "./modules/cloudwatch-source"
+  datasource_names       = local.all_cloudwatch_sources
+  environment_management = local.environment_management
 }
 
 module "prometheus_sources" {
