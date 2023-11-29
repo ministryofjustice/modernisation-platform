@@ -1,5 +1,5 @@
 data-platform:
-  sso_uuid: "7652b2d4-d0d1-707f-66ae-0b176587547e"
+  sso_uuid: "16a2d234-1031-70b5-2657-7f744c55e48f"
   cloudwatch_sources:
     - data-platform-apps-and-tools-development
     - data-platform-development
@@ -7,9 +7,9 @@ data-platform:
     - data-platform-preproduction
   prometheus_sources:
     - data-platform-apps-and-tools-development
-  permission: Edit
+  permission: Query
 data-platform-labs:
-  sso_uuid: "< get this from AWS IdC>"
+  sso_uuid: "7652b2d4-d0d1-707f-66ae-0b176587547e"
   cloudwatch_sources:
     - data-platform-development
     - data-platform-test

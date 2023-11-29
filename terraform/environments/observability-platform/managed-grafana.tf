@@ -5,7 +5,7 @@ module "managed_grafana" {
 
   name = local.application_name
 
-  # license_type = "ENTERPRISE_FREE_TRIAL"
+  # license_type = "ENTERPRISE"
   associate_license = false
 
   account_access_type       = "CURRENT_ACCOUNT"
