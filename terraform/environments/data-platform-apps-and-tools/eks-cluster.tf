@@ -88,6 +88,11 @@ module "eks" {
       rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/data-platform-eks-access"
       groups   = ["system:masters"]
       username = "data-platform-eks-access"
+    },
+    {
+      rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/MemberInfrastructureAccess"
+      groups   = ["system:masters"]
+      username = "modernisation-platform-env-eks-access"
     }
   ]
 
