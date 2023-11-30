@@ -27,8 +27,8 @@ module "managed_grafana" {
 
   name = local.application_name
 
-  # license_type = "ENTERPRISE"
-  associate_license = false
+  license_type      = "ENTERPRISE"
+  associate_license = true
 
   account_access_type       = "CURRENT_ACCOUNT"
   authentication_providers  = ["AWS_SSO"]
