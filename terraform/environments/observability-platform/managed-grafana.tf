@@ -1,3 +1,25 @@
+locals {
+  grafana_configuration = yamldecode(file("${path.module}/tenant-configuration.yaml"))
+
+  all_sso_uuids = distinct(flatten([
+    for team_name, team_config in local.grafana_configuration : [
+      lookup(team_config, "sso_uuid", [])
+    ]
+  ]))
+
+  all_cloudwatch_sources = distinct(flatten([
+    for team_name, team_config in local.grafana_configuration : [
+      lookup(team_config, "cloudwatch_sources", [])
+    ]
+  ]))
+
+  all_prometheus_sources = distinct(flatten([
+    for team_name, team_config in local.grafana_configuration : [
+      lookup(team_config, "prometheus_sources", [])
+    ]
+  ]))
+}
+
 module "managed_grafana" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source  = "terraform-aws-modules/managed-service-grafana/aws"
@@ -20,16 +42,15 @@ module "managed_grafana" {
     "ADMIN" = {
       "group_ids" = ["16a2d234-1031-70b5-2657-7f744c55e48f"] # observability-platform
     }
-    "EDITOR" = {
-      "group_ids" = [
-        "7652b2d4-d0d1-707f-66ae-0b176587547e" # data-platform-labs
-      ]
+    "VIEWER" = {
+      "group_ids" = local.all_sso_uuids
     }
   }
 
   tags = local.tags
 }
 
+/* Grafana API */
 locals {
   expiration_days    = 30
   expiration_seconds = 60 * 60 * 24 * local.expiration_days
@@ -57,32 +78,20 @@ resource "aws_grafana_workspace_api_key" "automation_key" {
   }
 }
 
-locals {
-  grafana_configuration = yamldecode(file("${path.module}/team-config.yaml"))
-
-  all_cloudwatch_sources = distinct(flatten([
-    for team_name, team_config in local.grafana_configuration : [
-      lookup(team_config, "cloudwatch_sources", [])
-    ]
-  ]))
-
-  all_prometheus_sources = distinct(flatten([
-    for team_name, team_config in local.grafana_configuration : [
-      lookup(team_config, "prometheus_sources", [])
-    ]
-  ]))
-}
 
 module "cloudwatch_sources" {
-  source                 = "./modules/cloudwatch-source"
+  source = "./modules/cloudwatch-source"
+
   datasource_names       = local.all_cloudwatch_sources
   environment_management = local.environment_management
 }
 
 module "prometheus_sources" {
-  source           = "./modules/prometheus-source"
-  datasource_names = local.all_prometheus_sources
-  workspace_id     = module.managed_prometheus.workspace_id
+  source = "./modules/prometheus-source"
+
+  datasource_names       = local.all_prometheus_sources
+  workspace_arn          = module.managed_prometheus.workspace_arn
+  environment_management = local.environment_management
 }
 
 module "grafana_teams" {
@@ -95,7 +104,6 @@ module "grafana_teams" {
   team_config = each.value
 
   depends_on = [
-    module.cloudwatch_sources,
-    module.prometheus_sources
+    module.cloudwatch_sources
   ]
 }

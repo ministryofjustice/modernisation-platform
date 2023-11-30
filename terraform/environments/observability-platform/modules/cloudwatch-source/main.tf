@@ -2,7 +2,7 @@ resource "grafana_data_source" "cloudwatch" {
   for_each = toset(var.datasource_names)
 
   type = "cloudwatch"
-  name = each.key
+  name = "${each.key}-cloudwatch"
 
   json_data_encoded = jsonencode({
     authType        = "ec2_iam_role"

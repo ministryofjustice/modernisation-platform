@@ -7,4 +7,6 @@ variable "role_name" {
   default = "observability-platform"
 }
 
-variable "environment_management" {}
+variable "environment_management" {
+  type = any
+}
