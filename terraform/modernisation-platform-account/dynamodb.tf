@@ -38,9 +38,10 @@ data "aws_iam_policy_document" "dynamo_encryption" {
     }
 
     principals {
-      type = "AWS"
+      type        = "AWS"
       identifiers = [
-        data.aws_caller_identity.current.account_id
+        data.aws_caller_identity.current.account_id,
+        aws_iam_role.modernisation_account_terraform_state.arn,
       ]
     }
 
