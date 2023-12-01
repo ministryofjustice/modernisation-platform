@@ -21,8 +21,6 @@ jobs:
         run: |
           const github = new GitHub();
 
-          const issue = context.payload.i
-
           // Get the user who opened the issue
           const user = issue.user.login;
 
