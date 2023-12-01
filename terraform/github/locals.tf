@@ -10,8 +10,8 @@ data "http" "environments_file" {
 }
 locals {
   root_account                   = data.aws_organizations_organization.root_account
-  modernisation_platform_account = can(regex("superadmin|AdministratorAccess", data.aws_iam_session_context.whoami.issuer_arn)) ? data.aws_caller_identity.current : local.root_account.accounts[index(local.root_account.accounts[*].email, "aws+modernisation-platform@digital.justice.gov.uk")]
-  testing_application_name = "testing"
+  modernisation_platform_account = local.root_account.accounts[index(local.root_account.accounts[*].email, "aws+modernisation-platform@digital.justice.gov.uk")]
+  testing_application_name       = "testing"
 
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 
