@@ -1,0 +1,47 @@
+name: Send Message on Onboarding Issue Close
+
+on:
+  issues:
+    types:
+      - closed
+
+jobs:
+  send-message:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@b4ffde6 # v4.1.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install github-actions-toolkit
+
+      - name: Send message to user on onboarding issue close
+        if: contains(github.event.issue.labels.*.name, 'onboarding') && github.event.issue.state == 'closed'
+        run: |
+          const { GitHub, context } = require('github-actions-toolkit');
+
+          const github = new GitHub();
+
+          const issue = context.payload.issue;
+
+          // Get the user who opened the issue
+          const user = issue.user.login;
+
+          // Send a message as a comment when the onboarding issue is closed
+          const message = `Hello @${user}! 
+          Welcome to the Modernisation Platform! Your new accounts have now been created. Please see the user guidance for details on how to build and access infrastructure in the 
+          Modernisation Platform - https://user-guide.modernisation-platform.service.justice.gov.uk/#getting-started
+
+          If you need any help or assistance please contact us in the [#ask-modernisation-platform](https://moj.enterprise.slack.com/archives/C01A7QK5VM1)`;
+          github.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: issue.number,
+            body: message,
+          });
