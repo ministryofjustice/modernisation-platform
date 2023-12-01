@@ -6,7 +6,8 @@ data "http" "environments_file" {
 locals {
   testing_application_name = "testing"
 
-  environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
+  environment_management         = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
+  modernisation_platform_account = local.environment_management.modernisation_platform_account_id
 
   # GitHub usernames for the Modernisation Platform team maintainers
   # NB: Terraform shows a perputal difference in roles if someone is an organisation owner
