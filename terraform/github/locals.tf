@@ -1,9 +1,16 @@
 # Adding information tags about resources created in the testing-test account but managed in this terraform project.
+data "aws_organizations_organization" "root_account" {}
+data "aws_caller_identity" "current" {}
+data "aws_iam_session_context" "whoami" {
+  arn = data.aws_caller_identity.current.arn
+}
 
 data "http" "environments_file" {
   url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/${local.testing_application_name}.json"
 }
 locals {
+  root_account                   = data.aws_organizations_organization.root_account
+  modernisation_platform_account = can(regex("superadmin|AdministratorAccess", data.aws_iam_session_context.whoami.issuer_arn)) ? data.aws_caller_identity.current : local.root_account.accounts[index(local.root_account.accounts[*].email, "aws+modernisation-platform@digital.justice.gov.uk")]
   testing_application_name = "testing"
 
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
