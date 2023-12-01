@@ -22,7 +22,7 @@ jobs:
         run: npm install github-actions-toolkit
 
       - name: Send message to user on onboarding issue close
-        if: github.event.issue.labels.filter(label '=>' label.name '=' 'onboarding').length > 0
+        if: contains(github.event.issue.labels.*.name, 'onboarding') && github.event.issue.state == 'closed'
         run: |
           const { GitHub, context } = require('github-actions-toolkit');
 
