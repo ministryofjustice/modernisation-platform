@@ -1,19 +1,13 @@
 # Adding information tags about resources created in the testing-test account but managed in this terraform project.
-data "aws_organizations_organization" "root_account" {}
-data "aws_caller_identity" "current" {}
-data "aws_iam_session_context" "whoami" {
-  arn = data.aws_caller_identity.current.arn
-}
 
 data "http" "environments_file" {
   url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/${local.testing_application_name}.json"
 }
 locals {
-  root_account                   = data.aws_organizations_organization.root_account
-  modernisation_platform_account = local.root_account.accounts[index(local.root_account.accounts[*].email, "aws+modernisation-platform@digital.justice.gov.uk")]
-  testing_application_name       = "testing"
+  testing_application_name = "testing"
 
-  environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
+  environment_management         = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
+  modernisation_platform_account = local.environment_management.modernisation_platform_account_id
 
   # GitHub usernames for the Modernisation Platform team maintainers
   # NB: Terraform shows a perputal difference in roles if someone is an organisation owner
