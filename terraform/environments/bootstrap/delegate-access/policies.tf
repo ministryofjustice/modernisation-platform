@@ -185,7 +185,11 @@ data "aws_iam_policy_document" "developer_additional" {
       "support:*",
       "wellarchitected:Get*",
       "wellarchitected:List*",
-      "wellarchitected:ExportLens"
+      "wellarchitected:ExportLens",
+      "states:Describe*",
+      "states:List*",
+      "states:Stop*",
+      "states:Start*"
     ]
     resources = ["*"]
   }
