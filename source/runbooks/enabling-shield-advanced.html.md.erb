@@ -13,7 +13,7 @@ review_in: 6 months
 
 Shield advanced is enabled using [AWS Firewall Manager](https://aws.amazon.com/firewall-manager/features/) policies. This is managed in the [aws-root-account](https://github.com/ministryofjustice/aws-root-account/blob/main/organisation-security/terraform/firewall-manager.tf) Terraform.
 
-All Modernisation Platform accounts have Shield Advanced [enabled by default](https://github.com/ministryofjustice/aws-root-account/blob/main/organisation-security/terraform/locals.tf#L40) with an auto remediation policy.
+All Modernisation Platform accounts have Shield Advanced [enabled by default](https://github.com/ministryofjustice/aws-root-account/blob/main/organisation-security/terraform/locals.tf#L106) with an auto remediation policy.
 
 When this happens, any external facing EC2 Elastic IPs and Elastic Load Balancers will have a WAF automatically created for them if one does not already exist. This WAF has no rules, but is required to enable monitoring for DDoS attacks.
 
