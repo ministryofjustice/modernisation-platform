@@ -22,8 +22,7 @@ jobs:
         with:
           github-token: ${{ secrets.pipeline_github_token }}
           script: |
-            const github = new GitHub();
-
+           
             // Get the user who opened the issue
             const user = issue.user.login;
 
