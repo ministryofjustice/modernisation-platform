@@ -75,3 +75,22 @@ resource "aws_cloudwatch_event_target" "instance_scheduler_weekly_start_in_the_m
 }
 
 ## END: Start trigger for Instance Scheduler Lambda Function
+
+# sns topics that are the instance scheduler lambda function's destination configuration
+resource "aws_sns_topic" "on_failure" {
+  name = "instance-scheduler-event-notification-topic-on-failure"
+}
+
+resource "aws_sns_topic" "on_success" {
+  name = "instance-scheduler-event-notification-topic-on-success"
+}
+
+# link the sns topics to the pagerduty service
+module "pagerduty_core_alerts" {
+  depends_on = [
+    aws_sns_topic.on_failure, aws_sns_topic.on_success
+  ]
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=v2.0.0"
+  sns_topics                = [aws_sns_topic.on_failure.name, aws_sns_topic.on_success.name]
+  pagerduty_integration_key = local.pagerduty_integration_keys["operations_cloudwatch"]
+}
