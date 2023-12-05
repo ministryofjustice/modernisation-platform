@@ -161,6 +161,17 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
     resources = ["*"]
     actions   = ["kms:Decrypt"]
   }
+  statement {
+    sid    = "AllowLambdaToPublishToSNSTopics"
+    effect = "Allow"
+    actions = [
+      "sns:Publish"
+    ]
+    resources = [
+      aws_sns_topic.on_success.arn,
+      aws_sns_topic.on_failure.arn
+    ]
+  }
 }
 
 ## END: IAM for Instance Scheduler Lambda Function
