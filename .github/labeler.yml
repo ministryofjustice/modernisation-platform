@@ -1,31 +1,26 @@
 onboarding:
-- any:
   - changed-files:
-    - any-glob-to-any-file:
+    - any-glob-to-any-file: 
       - "environments/**"
       - "environments-networks/**"
 
 documentation:
-- any:
   - changed-files:
     - any-glob-to-any-file:
       - "source/**"
       - "architecture-decision-record/**"
 
 dependencies:
-- any:
   - changed-files:
     - any-glob-to-any-file: 
       - "terraform/**/*.lock.hcl"
 
 github-workflow:
-- any:
   - changed-files:
     - any-glob-to-any-file: 
       - "github/workflows/**"
 
 networking:
-- any:
   - changed-files:
     - any-glob-to-any-file: 
       - "terraform/environments/core-vpc/**"
@@ -33,19 +28,16 @@ networking:
       - "cidr-allocation.md"
 
 core:
-- any:
   - changed-files:
     - any-glob-to-any-file: 
       - "terraform/environments/core-*/**"
 
 security:
-- any:
   - changed-files:
     - any-glob-to-any-file:
       - "terraform/environments/core-security/**"
 
 testing:
-- any:
   - changed-files:
     - any-glob-to-any-file:
       - "policies/**"
