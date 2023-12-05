@@ -185,7 +185,11 @@ data "aws_iam_policy_document" "developer_additional" {
       "support:*",
       "wellarchitected:Get*",
       "wellarchitected:List*",
-      "wellarchitected:ExportLens"
+      "wellarchitected:ExportLens",
+      "states:Describe*",
+      "states:List*",
+      "states:Stop*",
+      "states:Start*"
     ]
     resources = ["*"]
   }
@@ -311,7 +315,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
     resources = ["arn:aws:airflow:eu-west-1:${local.environment_management.account_ids["analytical-platform-data-production"]}:role/*/User"]
   }
 
-   statement {
+  statement {
     sid       = ""
     effect    = "Allow"
     actions   = ["iam:PassRole"]

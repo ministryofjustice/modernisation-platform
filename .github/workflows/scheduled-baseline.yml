@@ -122,6 +122,7 @@ jobs:
 
   single-sign-on:
     strategy:
+      max-parallel: 5
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
