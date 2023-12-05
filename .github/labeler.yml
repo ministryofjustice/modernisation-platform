@@ -18,7 +18,7 @@ dependencies:
 github-workflow:
   - changed-files:
     - any-glob-to-any-file: 
-      - "github/workflows/**"
+      - ".github/workflows/**"
 
 networking:
   - changed-files:
