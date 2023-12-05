@@ -178,7 +178,8 @@ expected :=
         "cidr": "10.26.48.0/21",
         "accounts": [
           "data-and-insights-wepi-development",
-          "cdpt-chaps-development"
+          "cdpt-chaps-development",
+          "cdpt-ifs-development"
         ]
       }
     },
@@ -195,7 +196,8 @@ expected :=
         "cidr": "10.27.32.0/21",
         "accounts": [
           "data-and-insights-wepi-production",
-          "cdpt-chaps-production"
+          "cdpt-chaps-production",
+          "cdpt-ifs-production"
         ]
       }
     },
@@ -279,7 +281,8 @@ expected :=
       "general": {
         "cidr": "10.27.40.0/21",
         "accounts": ["data-and-insights-wepi-preproduction",
-                     "cdpt-chaps-preproduction"
+                     "cdpt-chaps-preproduction",
+                     "cdpt-ifs-preproduction"
         ]
       }
     },
