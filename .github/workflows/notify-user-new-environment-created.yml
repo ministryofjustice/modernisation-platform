@@ -17,10 +17,11 @@ jobs:
         with:
           node-version: 20
       - name: Send message to user on onboarding issue close
+        env:
+          github-token: ${{ secrets.github_token }}  
         if: contains(github.event.issue.labels.*.name, 'onboarding') && github.event.issue.state == 'closed'
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
-          github-token: ${{ secrets.pipeline_github_token }}
           script: |
            
             // Get the user who opened the issue
