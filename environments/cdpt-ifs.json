@@ -1,0 +1,39 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "central-digital-product-team",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "central-digital-product-team",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "central-digital-product-team",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "central-digital-product-team",
+    "business-unit": "HQ",
+    "infrastructure-support": "central-digital-product-team@digital.justice.gov.uk",
+    "owner": "central-digital-product-team@digital.justice.gov.uk"
+  },
+  "github-oidc-team-repositories": [""]
+}
