@@ -18,24 +18,5 @@ jobs:
           node-version: 20
       - name: Send message to user on onboarding issue close
         env:
-          github-token: '${{ secrets.GITHUB_TOKEN }}' 
-        if: contains(github.event.issue.labels.*.name, 'onboarding') && github.event.issue.state == 'closed'
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
-        with:
-          script: |
-           
-            // Get the user who opened the issue
-            const user = issue.user.login;
+          SECRET: ${{ secrets.GITHUB_TOKEN }}
 
-            // Send a message as a comment when the onboarding issue is closed
-            const message = 'Hello @${user}! 
-            Welcome to the Modernisation Platform! Your new accounts have now been created. Please see the user guidance for details on how to build and access infrastructure in the 
-            Modernisation Platform - https://user-guide.modernisation-platform.service.justice.gov.uk/#getting-started
-
-            If you need any help or assistance please contact us in the #ask-modernisation-platform slack channel (https://moj.enterprise.slack.com/archives/C01A7QK5VM1)';
-            github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue.number,
-              body: message,
-            });
