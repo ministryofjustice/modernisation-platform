@@ -25,6 +25,6 @@ jobs:
         with:
           script: |
            
-            // Send a message as a comment when the onboarding issue is closed
-            Welcome to the Modernisation Platform! Your new accounts have now been created. Please see the user guidance for details on how to build and access infrastructure in the 
-            Modernisation Platform - https://user-guide.modernisation-platform.service.justice.gov.uk/#getting-started
+            // echo.js
+            const textToEcho = " Welcome to the Modernisation Platform! Your new accounts have now been created. Please see the user guidance for details on how to build and access infrastructure in the  Modernisation Platform - https://user-guide.modernisation-platform.service.justice.gov.uk/#getting-started";
+            console.log(textToEcho);
