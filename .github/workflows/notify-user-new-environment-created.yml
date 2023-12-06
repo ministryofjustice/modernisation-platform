@@ -25,4 +25,9 @@ jobs:
         with:
           script: |
                   // app.js
-                  console.log('Hello, World!');
+                  github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: 'test message',
+                  });
