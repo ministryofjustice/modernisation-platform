@@ -22,5 +22,7 @@ jobs:
           github-token: "${{ secrets.GITHUB_TOKEN }}"       
       # if: contains(github.event.issue.labels.*.name, 'onboarding') && github.event.issue.state == 'closed'
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
-
-
+        with:
+          script: |
+            Welcome to the Modernisation Platform! Your new accounts have now been created. Please see the user guidance for details on how to build and access infrastructure in the 
+            Modernisation Platform - https://user-guide.modernisation-platform.service.justice.gov.uk/#getting-started
