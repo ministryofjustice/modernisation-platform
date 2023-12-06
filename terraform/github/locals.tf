@@ -47,7 +47,8 @@ locals {
     "ewastempel",
     "ASTRobinson", # Aaron Robinson
     "connormaglynn",
-    "richgreen-moj" # Richard Green
+    "richgreen-moj", # Richard Green
+    "khatraf"  # Khatra Farah
   ]
 
   # Security engineers performing reviews on the platform or member accounts
