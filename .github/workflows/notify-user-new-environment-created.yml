@@ -22,10 +22,8 @@ jobs:
         #   github-token: ${{ secrets.GITHUB_TOKEN }}
        # if: contains(github.event.issue.labels.*.name, 'onboarding') && github.event.issue.state == 'closed'
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
-        # with:
-        #   github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-           
+
             // Get the user who opened the issue
             const user = issue.user.login;
 
