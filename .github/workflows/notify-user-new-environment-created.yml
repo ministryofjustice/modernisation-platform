@@ -1,6 +1,7 @@
 name: Send Message on Onboarding Issue Close
 
 on:
+  workflow_dispatch:
   issues:
     types:
       - closed
