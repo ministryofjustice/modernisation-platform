@@ -25,7 +25,7 @@ jobs:
           script: |
            
             // Get the user who opened the issue
-            const user = issue.user.login;
+            // const user = issue.user.login;
 
             // Send a message as a comment when the onboarding issue is closed
             const message = 'Hello @${user}! 
@@ -33,9 +33,9 @@ jobs:
             Modernisation Platform - https://user-guide.modernisation-platform.service.justice.gov.uk/#getting-started
 
             If you need any help or assistance please contact us in the #ask-modernisation-platform slack channel (https://moj.enterprise.slack.com/archives/C01A7QK5VM1)';
-            github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue.number,
-              body: message,
-            });
+            // github.rest.issues.createComment({
+            //  owner: context.repo.owner,
+            //  repo: context.repo.repo,
+            //  issue_number: issue.number,
+            //  body: message,
+            //});
