@@ -95,5 +95,5 @@ module "pagerduty_core_alerts" {
   ]
   source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=v2.0.0"
   sns_topics                = [aws_sns_topic.on_failure.name, aws_sns_topic.on_success.name]
-  pagerduty_integration_key = local.pagerduty_integration_keys["operations_cloudwatch"]
+  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
 }
