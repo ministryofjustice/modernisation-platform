@@ -58,7 +58,7 @@ locals {
 
       /* Observability Platform */
       observability_platform_account_id     = local.environment_management.account_ids["observability-platform-development"]
-      observability_platform_role           = "data-platform-apps-and-tools"
+      observability_platform_role           = "data-platform-apps-and-tools-development-prometheus"
       observability_platform_prometheus_url = "https://aps-workspaces.eu-west-2.amazonaws.com/workspaces/ws-464eea97-631a-4e5d-af22-4c5528d9e0e6/api/v1/remote_write"
 
       /* Static Assets */
@@ -120,7 +120,7 @@ locals {
 
       /* Observability Platform */
       observability_platform_account_id     = local.environment_management.account_ids["observability-platform-production"]
-      observability_platform_role           = "data-platform-apps-and-tools"
+      observability_platform_role           = "data-platform-apps-and-tools-production-prometheus"
       observability_platform_prometheus_url = "https://aps-workspaces.eu-west-2.amazonaws.com/workspaces/ws-55a65e9b-aab9-47a0-88b4-8275c50f1ff9/api/v1/remote_write"
 
       /* Static Assets */
