@@ -26,5 +26,3 @@ jobs:
           script: |
                   // app.js
                   console.log('Hello, World!');
-                  // Send a message as a comment when the onboarding issue is closed
-                  const message = 'Hello @${user}! 
