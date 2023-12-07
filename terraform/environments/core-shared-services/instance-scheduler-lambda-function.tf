@@ -9,6 +9,7 @@ module "instance_scheduler" {
   description                    = "Lambda to automatically start and stop instances on member accounts"
   role_name                      = "InstanceSchedulerLambdaFunctionPolicy"
   policy_json                    = data.aws_iam_policy_document.instance-scheduler-lambda-function-policy.json
+  policy_json_attached           = true
   function_name                  = "instance-scheduler-lambda-function"
   create_role                    = true
   reserved_concurrent_executions = 1
