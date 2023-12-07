@@ -1,7 +1,7 @@
 github.com/aws/aws-sdk-go-v2 v1.23.5 h1:xK6C4udTyDMd82RFvNkDQxtAd00xlzFUtX4fF2nMZyg=
 github.com/aws/aws-sdk-go-v2 v1.23.5/go.mod h1:t3szzKfP0NeRU27uBFczDivYJjsmSnqI8kIvKyWb9ds=
-github.com/aws/aws-sdk-go-v2/config v1.25.11 h1:RWzp7jhPRliIcACefGkKp03L0Yofmd2p8M25kbiyvno=
-github.com/aws/aws-sdk-go-v2/config v1.25.11/go.mod h1:BVUs0chMdygHsQtvaMyEOpW2GIW+ubrxJLgIz/JU29s=
+github.com/aws/aws-sdk-go-v2/config v1.25.12 h1:mF4cMuNh/2G+d19nWnm1vJ/ak0qK6SbqF0KtSX9pxu0=
+github.com/aws/aws-sdk-go-v2/config v1.25.12/go.mod h1:lOvvqtZP9p29GIjOTuA/76HiVk0c/s8qRcFRq2+E2uc=
 github.com/aws/aws-sdk-go-v2/credentials v1.16.10 h1:VmRkuoKaGl2ZDNGkkRQgw80Hxj1Bb9a+bsT5shqlCwo=
 github.com/aws/aws-sdk-go-v2/credentials v1.16.10/go.mod h1:WEn22lpd50buTs/TDqywytW5xQ2zPOMbYipIlqI6xXg=
 github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.14.9 h1:FZVFahMyZle6WcogZCOxo6D/lkDA2lqKIn4/ueUmVXw=
