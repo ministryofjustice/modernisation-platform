@@ -6,11 +6,15 @@
       "access": [
         {
           "github_slug": "studio-webops",
-          "level": "sandbox"
+          "level": "developer"
         },
         {
           "github_slug": "hmpps-migration",
-          "level": "sandbox"
+          "level": "developer"
+        },
+        {
+          "github_slug": "hmpps-dba",
+          "level": "developer"
         }
       ]
     },
@@ -23,6 +27,10 @@
         },
         {
           "github_slug": "hmpps-migration",
+          "level": "developer"
+        },
+        {
+          "github_slug": "hmpps-dba",
           "level": "developer"
         }
       ]
@@ -37,6 +45,10 @@
         {
           "github_slug": "hmpps-migration",
           "level": "developer"
+        },
+        {
+          "github_slug": "hmpps-dba",
+          "level": "developer"
         }
       ]
     },
@@ -49,6 +61,10 @@
         },
         {
           "github_slug": "hmpps-migration",
+          "level": "developer"
+        },
+        {
+          "github_slug": "hmpps-dba",
           "level": "developer"
         }
       ]
