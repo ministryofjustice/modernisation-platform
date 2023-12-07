@@ -48,8 +48,8 @@ locals {
     "ASTRobinson", # Aaron Robinson
     "connormaglynn",
     "richgreen-moj", # Richard Green
-    "khatraf",  # Khatra Farah
-    "sukeshreddyg" # Sukesh Reddy Gade 
+    "khatraf",       # Khatra Farah
+    "sukeshreddyg"   # Sukesh Reddy Gade 
   ]
 
   # Security engineers performing reviews on the platform or member accounts
