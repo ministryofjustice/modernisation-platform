@@ -81,11 +81,13 @@ resource "aws_cloudwatch_event_target" "instance_scheduler_weekly_start_in_the_m
 ## END: Start trigger for Instance Scheduler Lambda Function
 
 # sns topics that are the instance scheduler lambda function's destination configuration
+# tfsec:ignore:aws-sns-enable-topic-encryption
 resource "aws_sns_topic" "on_failure" {
   #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
   name = "instance-scheduler-event-notification-topic-on-failure"
 }
 
+# tfsec:ignore:aws-sns-enable-topic-encryption
 resource "aws_sns_topic" "on_success" {
   #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
   name = "instance-scheduler-event-notification-topic-on-success"
