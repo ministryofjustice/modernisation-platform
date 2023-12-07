@@ -68,17 +68,17 @@ data "aws_iam_policy_document" "kms_state_bucket" {
 }
 
 # State bucket KMS Destination
-resource "aws_kms_key" "s3_state_bucket_replication" {
-  provider = aws.modernisation-platform-eu-west-3
+resource "aws_kms_key" "s3_state_bucket_eu-west-3_replication" {
+  provider = aws.modernisation-platform-dr-region
 
-  description             = "s3-state_bucket-${local.backup_region}-replication"
+  description             = "s3-state_bucket-${local.backup_region}replication"
   policy                  = data.aws_iam_policy_document.kms_state_bucket.json
   enable_key_rotation     = true
   deletion_window_in_days = 30
 }
 
-resource "aws_kms_alias" "s3_state_bucket_replication" {
-  provider = aws.modernisation-platform-eu-west-3
+resource "aws_kms_alias" "s3_state_bucket_eu-west-3_replication" {
+  provider = aws.modernisation-platform-dr-region
 
   name          = "alias/s3-state_bucket-${local.backup_region}-replication"
   target_key_id = aws_kms_key.s3_state_bucket_eu-west-3_replication.id
@@ -96,7 +96,7 @@ module "state-bucket" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=8688bc15a08fbf5a4f4eef9b7433c5a417df8df1" # v7.0.0
 
   providers = {
-    aws.bucket-replication = aws.modernisation-platform-eu-west-3
+    aws.bucket-replication = aws.modernisation-platform-dr-region
   }
   bucket_policy              = [data.aws_iam_policy_document.allow-state-access-from-root-account.json]
   bucket_name                = "modernisation-platform-terraform-state"
