@@ -81,10 +81,12 @@ resource "aws_cloudwatch_event_target" "instance_scheduler_weekly_start_in_the_m
 
 # sns topics that are the instance scheduler lambda function's destination configuration
 resource "aws_sns_topic" "on_failure" {
+  #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
   name = "instance-scheduler-event-notification-topic-on-failure"
 }
 
 resource "aws_sns_topic" "on_success" {
+  #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
   name = "instance-scheduler-event-notification-topic-on-success"
 }
 
@@ -93,7 +95,7 @@ module "pagerduty_core_alerts" {
   depends_on = [
     aws_sns_topic.on_failure, aws_sns_topic.on_success
   ]
-  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=v2.0.0"
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
   sns_topics                = [aws_sns_topic.on_failure.name, aws_sns_topic.on_success.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
 }
