@@ -81,6 +81,65 @@ data "aws_iam_policy_document" "common_statements" {
   }
 }
 
+# bedrock console policy -- to be retired when terraform support is introduced
+# source: https://docs.aws.amazon.com/bedrock/latest/userguide/security_iam_id-based-policy-examples.html#security_iam_id-based-policy-examples-console
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "bedrock_console" {
+  statement {
+    sid    = "BedrockConsole"
+    effect = "Allow"
+
+    actions = [
+      "bedrock:ListFoundationModels",
+      "bedrock:GetFoundationModel",
+      "bedrock:InvokeModel",
+      "bedrock:InvokeModelWithResponseStream",
+      "bedrock:CreateModelCustomizationJob",
+      "bedrock:GetModelCustomizationJob",
+      "bedrock:GetFoundationModelAvailability",
+      "bedrock:ListModelCustomizationJobs",
+      "bedrock:StopModelCustomizationJob",
+      "bedrock:GetCustomModel",
+      "bedrock:ListCustomModels",
+      "bedrock:DeleteCustomModel",
+      "bedrock:CreateProvisionedModelThroughput",
+      "bedrock:UpdateProvisionedModelThroughput",
+      "bedrock:GetProvisionedModelThroughput",
+      "bedrock:DeleteProvisionedModelThroughput",
+      "bedrock:ListProvisionedModelThroughputs",
+      "bedrock:ListTagsForResource",
+      "bedrock:UntagResource",
+      "bedrock:TagResource",
+      "bedrock:CreateAgent",
+      "bedrock:UpdateAgent",
+      "bedrock:GetAgent",
+      "bedrock:ListAgents",
+      "bedrock:CreateActionGroup",
+      "bedrock:UpdateActionGroup",
+      "bedrock:GetActionGroup",
+      "bedrock:ListActionGroups",
+      "bedrock:CreateAgentDraftSnapshot",
+      "bedrock:GetAgentVersion",
+      "bedrock:ListAgentVersions",
+      "bedrock:CreateAgentAlias",
+      "bedrock:UpdateAgentAlias",
+      "bedrock:GetAgentAlias",
+      "bedrock:ListAgentAliases",
+      "bedrock:InvokeAgent",
+      "bedrock:PutFoundationModelEntitlement",
+      "bedrock:GetModelInvocationLoggingConfiguration",
+      "bedrock:PutModelInvocationLoggingConfiguration",
+      "bedrock:CreateFoundationModelAgreement",
+      "bedrock:DeleteFoundationModelAgreement",
+      "bedrock:ListFoundationModelAgreementOffers",
+      "bedrock:GetUseCaseForModelAccess",
+      "bedrock:PutUseCaseForModelAccess"
+    ]
+
+    resources = ["*"]
+  }
+}
+
 # developer policy - member SSO and collaborators
 resource "aws_iam_policy" "developer" {
   provider = aws.workspace
@@ -97,7 +156,9 @@ data "aws_iam_policy_document" "developer_additional" {
   #checkov:skip=CKV_AWS_111
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
-  source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
+  source_policy_documents = [data.aws_iam_policy_document.common_statements.json, data.aws_iam_policy_document.bedrock_console.json]
+
+  # bedrock added a a source document to ease retirement
   statement {
     sid    = "developerAllow"
     effect = "Allow"
@@ -348,7 +409,8 @@ data "aws_iam_policy_document" "sandbox_additional" {
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV2_AWS_40
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
-  source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
+  source_policy_documents = [data.aws_iam_policy_document.common_statements.json, data.aws_iam_policy_document.bedrock_console.json]
+  # added as a source document to ease retrement
   statement {
     sid    = "sandboxAllow"
     effect = "Allow"
