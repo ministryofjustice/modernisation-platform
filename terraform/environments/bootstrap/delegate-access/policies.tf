@@ -158,9 +158,7 @@ data "aws_iam_policy_document" "developer_additional" {
   #checkov:skip=CKV_AWS_111
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
-  source_policy_documents = [data.aws_iam_policy_document.common_statements.json, data.aws_iam_policy_document.bedrock_console.json]
-
-  # bedrock added as a source document to ease retirement
+  source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
     sid    = "developerAllow"
     effect = "Allow"
