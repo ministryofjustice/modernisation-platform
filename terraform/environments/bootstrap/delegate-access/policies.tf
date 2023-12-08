@@ -85,6 +85,8 @@ data "aws_iam_policy_document" "common_statements" {
 # source: https://docs.aws.amazon.com/bedrock/latest/userguide/security_iam_id-based-policy-examples.html#security_iam_id-based-policy-examples-console
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "bedrock_console" {
+  #checkov:skip=CKV_AWS_111: This is a service policy
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   statement {
     sid    = "BedrockConsole"
     effect = "Allow"
@@ -158,7 +160,7 @@ data "aws_iam_policy_document" "developer_additional" {
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   source_policy_documents = [data.aws_iam_policy_document.common_statements.json, data.aws_iam_policy_document.bedrock_console.json]
 
-  # bedrock added a a source document to ease retirement
+  # bedrock added as a source document to ease retirement
   statement {
     sid    = "developerAllow"
     effect = "Allow"
@@ -310,7 +312,6 @@ data "aws_iam_policy_document" "data_engineering_additional" {
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   source_policy_documents = [data.aws_iam_policy_document.developer_additional.json] # this is a developer++ policy with additional permissions required for data engineering
-
   statement {
     sid    = "DataEngineeringAllow"
     effect = "Allow"
@@ -410,7 +411,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
   #checkov:skip=CKV2_AWS_40
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   source_policy_documents = [data.aws_iam_policy_document.common_statements.json, data.aws_iam_policy_document.bedrock_console.json]
-  # added as a source document to ease retrement
+  # added as a source document to ease retirement
   statement {
     sid    = "sandboxAllow"
     effect = "Allow"
