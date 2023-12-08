@@ -68,7 +68,7 @@ data "aws_iam_policy_document" "kms_state_bucket" {
 }
 
 # State bucket KMS Destination
-resource "aws_kms_key" "s3_state_bucket_eu-west-3_replication" {
+resource "aws_kms_key" "s3_state_bucket_replication" {
   provider = aws.modernisation-platform-dr-region
 
   description             = "s3-state_bucket-${local.backup_region}replication"
@@ -77,11 +77,11 @@ resource "aws_kms_key" "s3_state_bucket_eu-west-3_replication" {
   deletion_window_in_days = 30
 }
 
-resource "aws_kms_alias" "s3_state_bucket_eu-west-3_replication" {
+resource "aws_kms_alias" "s3_state_bucket_replication" {
   provider = aws.modernisation-platform-dr-region
 
   name          = "alias/s3-state_bucket-${local.backup_region}-replication"
-  target_key_id = aws_kms_key.s3_state_bucket_eu-west-3_replication.id
+  target_key_id = aws_kms_key.s3_state_bucket_replication.id
 }
 
 module "state-bucket-s3-replication-role" {
@@ -104,7 +104,7 @@ module "state-bucket" {
   replication_enabled        = true
   replication_region         = local.backup_region
   custom_kms_key             = aws_kms_key.s3_state_bucket.arn
-  custom_replication_kms_key = aws_kms_key.s3_state_bucket_eu-west-3_replication.arn
+  custom_replication_kms_key = aws_kms_key.s3_state_bucket_replication.arn
   tags                       = local.tags
 
   lifecycle_rule = [

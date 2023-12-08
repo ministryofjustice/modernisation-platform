@@ -86,7 +86,7 @@ provider "aws" {
 }
 
 provider "aws" {
-  region = "eu-west-3"
+  region = "eu-west-1"
   alias  = "modernisation-platform-dr-region"
 }
 
