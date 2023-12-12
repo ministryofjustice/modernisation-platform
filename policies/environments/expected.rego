@@ -14,6 +14,7 @@ expected :=
     "ccms-ebs-upgrade",
     "cdpt-chaps",
     "cdpt-ifs",
+    "cica-copilot",
     "cooker",
     "core-logging",
     "core-network-services",
