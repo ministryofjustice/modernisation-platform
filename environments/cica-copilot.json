@@ -1,0 +1,21 @@
+{
+    "account-type": "member",
+    "environments": [
+      {
+        "name": "development",
+        "access": [
+          {
+            "github_slug": "cica-copilot-llm-maintainers",
+            "level": "developer"
+          }
+        ]
+      }
+    ],
+    "tags": {
+      "application": "cica-copilot",
+      "business-unit": "CICA",
+      "owner": "CICA: infrastructure@cica.gov.uk"
+    },
+    "github-oidc-team-repositories": [""],
+    "go-live-date": ""
+  }
