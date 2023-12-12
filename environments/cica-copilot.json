@@ -12,7 +12,7 @@
       }
     ],
     "tags": {
-      "application": "CICA Copilot",
+      "application": "cica-copilot",
       "business-unit": "CICA",
       "owner": "CICA: infrastructure@cica.gov.uk"
     },
