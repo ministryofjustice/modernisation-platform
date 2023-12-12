@@ -14,6 +14,7 @@
     "tags": {
       "application": "cica-copilot",
       "business-unit": "CICA",
+      "infrastructure-support": "infrastructure@cica.gov.uk",
       "owner": "CICA: infrastructure@cica.gov.uk"
     },
     "github-oidc-team-repositories": [""],
