@@ -105,7 +105,8 @@ expected :=
       "general": {
         "cidr": "10.26.32.0/21",
         "accounts": [
-          "tariff-development"
+          "tariff-development",
+          "cica-copilot-development"
         ]
       }
     },
