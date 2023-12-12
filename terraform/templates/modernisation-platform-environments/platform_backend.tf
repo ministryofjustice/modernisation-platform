@@ -5,6 +5,7 @@ terraform {
   backend "s3" {
     acl                  = "bucket-owner-full-control"
     bucket               = "modernisation-platform-terraform-state"
+    dynamodb_table       = "modernisation-platform-terraform-state-lock"
     encrypt              = true
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
