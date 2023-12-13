@@ -44,6 +44,8 @@ locals {
     nomisapi-t3-root-vnet          = "10.47.0.0/26"
     nomisapi-preprod-root-vnet     = "10.47.0.64/26"
     nomisapi-prod-root-vnet        = "10.47.0.128/26"
+    nomis-SMTP-Relay1              = "10.180.104.100"
+    nomis-SMTP-Relay2              = "10.180.105.100"
 
     # hmpps aws cidr ranges
     delius-eng-dev  = "10.161.98.0/25"
