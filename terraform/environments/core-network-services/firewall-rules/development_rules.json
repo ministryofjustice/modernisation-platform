@@ -369,5 +369,33 @@
     "destination_ip": "10.172.68.0/23",
     "destination_port": "389",
     "protocol": "TCP"
+  },
+  "mp-dev-test_to_moj-smtp-relay-1": {
+    "action": "PASS",
+    "source_ip": "10.26.0.0/16",
+    "destination_ip": "10.180.104.100",
+    "destination_port": "25",
+    "protocol": "TCP"
+  },
+  "mp-dev-test_to_moj-smtp-relay-2": {
+    "action": "PASS",
+    "source_ip": "10.26.0.0/16",
+    "destination_ip": "10.180.105.100",
+    "destination_port": "25",
+    "protocol": "TCP"
+  },
+  "mp-dev-test_secure_to_moj-smtp-relay-1": {
+    "action": "PASS",
+    "source_ip": "10.26.0.0/16",
+    "destination_ip": "10.180.104.100",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "mp-dev-test_secure_to_moj-smtp-relay-2": {
+    "action": "PASS",
+    "source_ip": "10.26.0.0/16",
+    "destination_ip": "10.180.105.100",
+    "destination_port": "587",
+    "protocol": "TCP"
   }
 }

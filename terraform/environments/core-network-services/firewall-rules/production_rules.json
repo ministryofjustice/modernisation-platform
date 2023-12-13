@@ -453,5 +453,33 @@
     "destination_ip": "${ hmpps-production-general-private-subnets}",
     "destination_port": "45054",
     "protocol": "TCP"
+  },
+  "mp-prod-preprod_to_moj-smtp-relay-1": {
+    "action": "PASS",
+    "source_ip": "10.27.0.0/16",
+    "destination_ip": "10.180.104.100",
+    "destination_port": "25",
+    "protocol": "TCP"
+  },
+  "mp-prod-preprod_to_moj-smtp-relay-2": {
+    "action": "PASS",
+    "source_ip": "10.27.0.0/16",
+    "destination_ip": "10.180.105.100",
+    "destination_port": "25",
+    "protocol": "TCP"
+  },
+  "mp-prod-preprod_secure_to_moj-smtp-relay-1": {
+    "action": "PASS",
+    "source_ip": "10.27.0.0/16",
+    "destination_ip": "10.180.104.100",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "mp-prod-preprod_secure_to_moj-smtp-relay-2": {
+    "action": "PASS",
+    "source_ip": "10.27.0.0/16",
+    "destination_ip": "10.180.105.100",
+    "destination_port": "587",
+    "protocol": "TCP"
   }
 }
