@@ -231,6 +231,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "s3:DeleteObject",
       "s3:DeleteObjectVersion",
       "s3:RestoreObject",
+      "s3:*StorageLens*",
       "secretsmanager:GetResourcePolicy",
       "secretsmanager:GetSecretValue",
       "secretsmanager:DescribeSecret",
