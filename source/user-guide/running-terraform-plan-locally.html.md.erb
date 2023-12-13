@@ -23,7 +23,7 @@ Follow the instructions [here](https://learn.hashicorp.com/tutorials/terraform/i
 ## Run Terraform plan
 
 1. Navigate to your application infrastructure code - `cd modernisation-platform-environments/terraform/environments/my-application`
-2. Run a Terraform init that assumes the backend role in the **Modernisation Platform** account- `terraform init -backend-config=assume_role={role_arn=\"arn:aws:iam::000000000000:role/modernisation-account-terraform-state-member-access\"`
+2. Run a Terraform init that assumes the backend role in the **Modernisation Platform** account- `terraform init -backend-config=assume_role={role_arn=\"arn:aws:iam::000000000000:role/modernisation-account-terraform-state-member-access\"}`
 >Please note that you will need to replace `000000000000` with the Modernisation Platform account ID.
 3. View the workspaces (you have different workspaces for your different environment accounts) - `terraform workspace list`
 4. Select the required workspace - `terraform workspace select my-application-development`
