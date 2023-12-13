@@ -457,28 +457,28 @@
   "mp-prod-preprod_to_moj-smtp-relay-1": {
     "action": "PASS",
     "source_ip": "${mp-preproduction-production}",
-    "destination_ip": "${nomis-SMTP-Relay1}",
+    "destination_ip": "${nomis-smtp-relay1}",
     "destination_port": "25",
     "protocol": "TCP"
   },
   "mp-prod-preprod_to_moj-smtp-relay-2": {
     "action": "PASS",
     "source_ip": "${mp-preproduction-production}",
-    "destination_ip": "${nomis-SMTP-Relay2}",
+    "destination_ip": "${nomis-smtp-relay2}",
     "destination_port": "25",
     "protocol": "TCP"
   },
   "mp-prod-preprod_secure_to_moj-smtp-relay-1": {
     "action": "PASS",
     "source_ip": "${mp-preproduction-production}",
-    "destination_ip": "${nomis-SMTP-Relay1}",
+    "destination_ip": "${nomis-smtp-relay1}",
     "destination_port": "587",
     "protocol": "TCP"
   },
   "mp-prod-preprod_secure_to_moj-smtp-relay-2": {
     "action": "PASS",
     "source_ip": "${mp-preproduction-production}",
-    "destination_ip": "${nomis-SMTP-Relay2}",
+    "destination_ip": "${nomis-smtp-relay2}",
     "destination_port": "587",
     "protocol": "TCP"
   }
