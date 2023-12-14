@@ -20,11 +20,22 @@ Get your AWS SSO credentials as detailed [here](./getting-aws-credentials.html),
 
 Follow the instructions [here](https://learn.hashicorp.com/tutorials/terraform/install-cli) to install the latest version of Terraform according to your platform.
 
+## Retrieve the Modernisation Platform account ID
+
+You will need the Modernisation Platform account ID to assume the correct role when running `terraform init`.
+You can retrieve the Modernisation Platform account ID from the SSM Parameter store via the web console, or via CLI.
+This will allow you to assume the correct `role_arn`.
+
+```
+aws ssm get-parameters --region eu-west-2 \
+--names "modernisation_platform_account_id" --with-decryption --query "Parameters[*].{Value:Value}" --output text
+```
+
 ## Run Terraform plan
 
 1. Navigate to your application infrastructure code - `cd modernisation-platform-environments/terraform/environments/my-application`
-2. Run a Terraform init that assumes the backend role in the **Modernisation Platform** account- `terraform init -backend-config=assume_role={role_arn=\"arn:aws:iam::000000000000:role/modernisation-account-terraform-state-member-access\"}`
->Please note that you will need to replace `000000000000` with the Modernisation Platform account ID.
+2. Run a Terraform init that assumes the backend role in the **Modernisation Platform** account - `terraform init -backend-config=assume_role={role_arn=\"arn:aws:iam::000000000000:role/modernisation-account-terraform-state-member-access\"}`
+> Remember to replace the `000000000000` placeholder with the Modernisation Platform account ID.
 3. View the workspaces (you have different workspaces for your different environment accounts) - `terraform workspace list`
 4. Select the required workspace - `terraform workspace select my-application-development`
 5. Run a Terraform plan - `terraform plan`
