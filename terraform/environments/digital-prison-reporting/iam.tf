@@ -30,7 +30,6 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "ec2:DescribeInstances",
       "ec2:TerminateInstances",
       "ec2:CreateTags",
-      "s3:PutObject",
       "s3:ListBucket",
       "s3:*Object",
       "iam:PassRole",
