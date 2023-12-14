@@ -1,23 +1,23 @@
 {
-    "account-type": "member",
-    "environments": [
-      {
-        "name": "development",
-        "access": [
-          {
-            "github_slug": "cica-copilot-llm-maintainers",
-            "level": "sandbox",
-            "nuke": "exclude"
-          }
-        ]
-      }
-    ],
-    "tags": {
-      "application": "cica-copilot",
-      "business-unit": "CICA",
-      "infrastructure-support": "infrastructure@cica.gov.uk",
-      "owner": "CICA: infrastructure@cica.gov.uk"
-    },
-    "github-oidc-team-repositories": [""],
-    "go-live-date": ""
-  }
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "cica-copilot-llm-maintainers",
+          "level": "sandbox",
+          "nuke": "exclude"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "cica-copilot",
+    "business-unit": "CICA",
+    "infrastructure-support": "infrastructure@cica.gov.uk",
+    "owner": "CICA: infrastructure@cica.gov.uk"
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}
