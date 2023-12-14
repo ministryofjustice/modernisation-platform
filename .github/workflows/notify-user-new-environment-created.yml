@@ -29,5 +29,7 @@ jobs:
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: 'Welcome to the Modernisation Platform! Your new accounts have now been created. Please see the user guidance for details on how to build and access infrastructure in the Modernisation Platform - https://user-guide.modernisation-platform.service.justice.gov.uk/#getting-started .If you need any help or assistance please contact us in the #ask-modernisation-platform slack channel (https://moj.enterprise.slack.com/archives/C01A7QK5VM1)'
+            body: 'Hello @${{ github.event.issue.user.login }} 👋 Welcome to the Modernisation Platform! Your new accounts have now been created. \
+                   Please see our [user guidance](https://user-guide.modernisation-platform.service.justice.gov.uk/#getting-started) for details on how to build and access infrastructure in the Modernisation Platform. \
+                   If you require help or assistance please contact us via the [#ask-modernisation-platform]((https://moj.enterprise.slack.com/archives/C01A7QK5VM1)) Slack channel. '
             });
