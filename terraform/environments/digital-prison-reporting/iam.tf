@@ -31,8 +31,8 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "ec2:TerminateInstances",
       "ec2:CreateTags",
       "s3:PutObject",
-      "s3:GetObject",
       "s3:ListBucket",
+      "s3:*Object",
       "iam:PassRole",
       "elasticbeanstalk:*",
       "rds:*",
@@ -44,7 +44,9 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "logs:PutLogEvents",
       "elasticache:*",
       "kms:Decrypt*",
-      "kms:GenerateDataKey"
+      "kms:GenerateDataKey",
+      "dms:*",
+      "glue:*"
     ]
     resources = ["*"]
   }
