@@ -31,7 +31,7 @@
     }
   ],
   "tags": {
-    "application": "delius-core",
+    "application": "delius",
     "business-unit": "HMPPS",
     "infrastructure-support": "probation-webops@digital.justice.gov.uk",
     "owner": "probation-webops@digital.justice.gov.uk"
