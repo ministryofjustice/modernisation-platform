@@ -32,9 +32,9 @@ jobs:
         run: |
           /scripts/compile-and-create-artifact.sh
       - name: Upload artifact to be published
-        uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4.0.0
+        uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # v3.1.0
         with:
-          name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
+          name: github-pages
           path: artifact.tar
           retention-days: 1
       - name: Slack failure notification
@@ -59,8 +59,6 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@13b55b33dd8996121833dbc1db458c793a334630 # v3.0.1
-        with:
-          artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
       - name: Slack failure notification
         uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
         with:
