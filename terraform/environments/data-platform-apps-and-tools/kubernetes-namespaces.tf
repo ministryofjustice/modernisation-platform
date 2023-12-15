@@ -116,3 +116,14 @@ resource "kubernetes_namespace" "static_assets" {
   }
   depends_on = [helm_release.gatekeeper]
 }
+
+resource "kubernetes_namespace" "actions_runners" {
+  metadata {
+    name = "actions-runners"
+    labels = {
+      "admission.gatekeeper.sh/ignore" = "true"
+      "policy.sigstore.dev/include"    = "false"
+    }
+  }
+  depends_on = [helm_release.gatekeeper]
+}
