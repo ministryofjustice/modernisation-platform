@@ -431,7 +431,7 @@ resource "aws_ssoadmin_account_assignment" "active_directory_management" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.aws_ssoadmin_permission_set.mwaa_user.arn
+  permission_set_arn = data.aws_ssoadmin_permission_set.active_directory_management.arn
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
