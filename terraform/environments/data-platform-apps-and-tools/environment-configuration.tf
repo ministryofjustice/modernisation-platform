@@ -9,28 +9,6 @@ locals {
       /* SES */
       ses_domain_identity = "apps-tools.development.data-platform.service.justice.gov.uk" // This is defined in modernisation-platform-environments
 
-      /* VPC */
-      vpc_cidr                   = "10.26.128.0/21"
-      vpc_private_subnets        = ["10.26.130.0/23", "10.26.132.0/23", "10.26.134.0/23"]
-      vpc_public_subnets         = ["10.26.128.0/27", "10.26.128.32/27", "10.26.128.64/27"]
-      vpc_database_subnets       = ["10.26.128.96/27", "10.26.128.128/27", "10.26.128.160/27"]
-      vpc_enable_nat_gateway     = true
-      vpc_one_nat_gateway_per_az = false
-
-      /* EKS */
-      eks_cluster_name = "apps-tools-${local.environment}"
-      eks_versions = {
-        cluster                   = "1.28"
-        ami_release               = "1.16.0-d2d9cf87" // [major version].[minor version].[patch version]-[first 8 chars of commit SHA]. Get the SHA from here: https://github.com/bottlerocket-os/bottlerocket/releases
-        addon_coredns             = "v1.10.1-eksbuild.5"
-        addon_kube_proxy          = "v1.28.2-eksbuild.2"
-        addon_vpc_cni             = "v1.15.3-eksbuild.1"
-        addon_aws_guardduty_agent = "v1.3.1-eksbuild.1"
-        addon_ebs_csi_driver      = "v1.24.1-eksbuild.1"
-        addon_efs_csi_driver      = "v1.7.0-eksbuild.1"
-      }
-      eks_sso_access_role = "modernisation-platform-sandbox"
-
       /* Airflow */
       airflow_s3_bucket             = "moj-data-platform-airflow-development20230627094128036000000001" // This is defined in modernisation-platform-environments
       airflow_dag_s3_path           = "dags/"                                                           // This is defined in modernisation-platform-environments
