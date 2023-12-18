@@ -14,3 +14,17 @@ data "aws_secretsmanager_secret_version" "environment_management" {
   provider  = aws.modernisation-platform
   secret_id = data.aws_secretsmanager_secret.environment_management.id
 }
+
+resource "aws_secretsmanager_secret" "test_secret_1" {
+  name        = "test_secret_1"
+  description = "test secret replication"
+  replica {
+    region = "eu-west-1"
+  }
+}
+
+resource "aws_secretsmanager_secret" "test_secret_2" {
+  provider = aws.modernisation-platform-eu-west-1
+  name        = "test_secret_2"
+  description = "test secret replication"
+}
