@@ -35,7 +35,9 @@ aws ssm get-parameters --region eu-west-2 \
 
 1. Navigate to your application infrastructure code - `cd modernisation-platform-environments/terraform/environments/my-application`
 2. Run a Terraform init that assumes the backend role in the **Modernisation Platform** account - `terraform init -backend-config=assume_role={role_arn=\"arn:aws:iam::000000000000:role/modernisation-account-terraform-state-member-access\"}`
+
 > Remember to replace the `000000000000` placeholder with the Modernisation Platform account ID.
+
 3. View the workspaces (you have different workspaces for your different environment accounts) - `terraform workspace list`
 4. Select the required workspace - `terraform workspace select my-application-development`
 5. Run a Terraform plan - `terraform plan`
