@@ -799,3 +799,37 @@ data "aws_iam_policy_document" "reporting-operations" {
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
 }
+
+resource "aws_iam_policy" "directory-management-policy" {
+  provider = aws.workspace
+  name     = "directory_management_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.directory-management-document.json
+}
+
+data "aws_iam_policy_document" "directory-management-document" {
+  statement {
+    sid    = "DirectoryManagementAllow"
+    effect = "Allow"
+    actions = [
+      "ds:*",
+      "ec2:DescribeSubnets",
+      "ec2:DescribeVpcs",
+      "ec2:CreateSecurityGroup",
+      "ec2:CreateNetworkInterface",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:AuthorizeSecurityGroupIngress",
+      "ec2:AuthorizeSecurityGroupEgress",
+      "ec2:CreateTags",
+    ]
+  }
+  statement {
+    sid    = "DirectoryManagementDeny"
+    effect = "Deny"
+    actions = [
+      "ds:CreateDirectory",
+      "ds:CreateMicrosoftAD",
+      "ds:DeleteDirectory"
+    ]
+  }
+}
