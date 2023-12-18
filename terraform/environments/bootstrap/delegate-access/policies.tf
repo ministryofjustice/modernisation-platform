@@ -822,6 +822,7 @@ data "aws_iam_policy_document" "directory-management-document" {
       "ec2:AuthorizeSecurityGroupEgress",
       "ec2:CreateTags",
     ]
+    resources = ["*"]
   }
   statement {
     sid    = "DirectoryManagementDeny"
@@ -831,5 +832,6 @@ data "aws_iam_policy_document" "directory-management-document" {
       "ds:CreateMicrosoftAD",
       "ds:DeleteDirectory"
     ]
+    resources = ["*"]
   }
 }
