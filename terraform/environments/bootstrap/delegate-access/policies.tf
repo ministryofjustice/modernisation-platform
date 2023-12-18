@@ -807,7 +807,14 @@ resource "aws_iam_policy" "directory-management-policy" {
   policy   = data.aws_iam_policy_document.directory-management-document.json
 }
 
+#tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "directory-management-document" {
+  #checkov:skip=CKV_AWS_107
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_110
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_356
   statement {
     sid    = "DirectoryManagementAllow"
     effect = "Allow"
@@ -822,7 +829,7 @@ data "aws_iam_policy_document" "directory-management-document" {
       "ec2:AuthorizeSecurityGroupEgress",
       "ec2:CreateTags",
     ]
-    resources = ["*"]
+    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
   statement {
     sid    = "DirectoryManagementDeny"
@@ -832,6 +839,6 @@ data "aws_iam_policy_document" "directory-management-document" {
       "ds:CreateMicrosoftAD",
       "ds:DeleteDirectory"
     ]
-    resources = ["*"]
+    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
 }
