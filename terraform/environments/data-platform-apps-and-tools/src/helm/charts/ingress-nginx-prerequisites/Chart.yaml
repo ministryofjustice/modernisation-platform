@@ -1,7 +1,0 @@
----
-apiVersion: v2
-name: ingress-nginx-prerequisites
-description: A Helm chart to apply Ingress NGINX prerequisites
-type: application
-version: 1.0.0
-appVersion: 1.0.0

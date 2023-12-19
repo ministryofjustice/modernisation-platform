@@ -1,7 +1,0 @@
----
-apiVersion: v2
-name: cert-manager-additional
-description: A Helm chart to apply Cert Manager Resources
-type: application
-version: 1.0.5
-appVersion: 1.0.0

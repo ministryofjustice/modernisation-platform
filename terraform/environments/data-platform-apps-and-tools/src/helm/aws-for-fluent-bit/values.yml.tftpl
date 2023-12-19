@@ -1,7 +1,0 @@
----
-cloudWatchLogs:
-  enabled: true
-  region: ${aws_region}
-  logGroupName: /aws/eks/${cluster_name}/logs
-  logGroupTemplate: /aws/eks/${cluster_name}/workload/$kubernetes['namespace_name']
-  logRetentionDays: 400
