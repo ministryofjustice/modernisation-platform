@@ -3,7 +3,16 @@
   "environments": [
     {
       "name": "production",
-      "access": []
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "active-directory-management"
+        },
+        {
+          "github_slug": "modernisation-platform-engineers",
+          "level": "active-directory-management"
+        }
+      ]
     }
   ],
   "tags": {
