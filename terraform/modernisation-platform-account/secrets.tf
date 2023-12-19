@@ -11,7 +11,7 @@ resource "aws_secretsmanager_secret" "slack_webhook_url" {
   description = "Slack channel modernisation-platform-notifications webhook url for sending notifications to slack"
   tags        = local.tags
   replica {
-    region = "eu-west-1"
+    region = local.replica_region
   }
 }
 
@@ -28,7 +28,7 @@ resource "aws_secretsmanager_secret" "github_ci_user_pat" {
   description = "GitHub CI user PAT used for generated resources in GitHub via Terraform"
   tags        = local.tags
   replica {
-    region = "eu-west-1"
+    region = local.replica_region
   }
 }
 
@@ -45,7 +45,7 @@ resource "aws_secretsmanager_secret" "github_ci_user_environments_repo_pat" {
   description = "This PAT token is used in reusable pipelines of the modernisation-platform-environments repository. This is so that the CI user can post comments in PRs, e.g. tf plan/apply output. Expires on Tue, Apr 9 2024."
   tags        = local.tags
   replica {
-    region = "eu-west-1"
+    region = local.replica_region
   }
 }
 
@@ -62,7 +62,7 @@ resource "aws_secretsmanager_secret" "github_ci_user_password" {
   description = "GitHub CI user password"
   tags        = local.tags
   replica {
-    region = "eu-west-1"
+    region = local.replica_region
   }
 }
 
@@ -77,7 +77,7 @@ resource "aws_secretsmanager_secret" "nuke_account_blocklist" {
   description = "Account IDs to be excluded from auto-nuke. AWS-Nuke (https://github.com/rebuy-de/aws-nuke) requires at least one Account ID to be present in this blocklist, while it is recommended to add every production account to this blocklist."
   tags        = local.tags
   replica {
-    region = "eu-west-1"
+    region = local.replica_region
   }
 }
 
@@ -92,7 +92,7 @@ resource "aws_secretsmanager_secret" "nuke_account_ids" {
   description = "Account IDs to be auto-nuked on weekly basis. CAUTION: Any account ID you add here will be automatically nuked! This secret is used by GitHub actions job nuke.yml inside the environments repo, to find the Account IDs to be nuked."
   tags        = local.tags
   replica {
-    region = "eu-west-1"
+    region = local.replica_region
   }
 }
 
@@ -113,7 +113,7 @@ resource "aws_secretsmanager_secret" "circleci" {
   name        = "mod-platform-circleci"
   description = "CircleCI organisation ID for ministryofjustice, used for OIDC IAM policies"
   replica {
-    region = "eu-west-1"
+    region = local.replica_region
   }
 }
 
