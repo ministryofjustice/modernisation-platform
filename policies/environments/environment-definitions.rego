@@ -14,17 +14,18 @@ allowed_business_units := [
 ]
 
 allowed_access := [
-  "view-only",
-  "developer",
-  "sandbox",
+  "active-directory-management",
   "administrator",
-  "migration",
-  "instance-management",
-  "read-only",
-  "security-audit",
   "data-engineer",
+  "developer",
+  "instance-management",
+  "migration",
+  "mwaa-user",
+  "read-only",
   "reporting-operations",
-  "mwaa-user"
+  "sandbox",
+  "security-audit",
+  "view-only",
 ]
 
 allowed_nuke := [
