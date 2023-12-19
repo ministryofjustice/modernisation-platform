@@ -117,6 +117,10 @@ resource "aws_cloudwatch_metric_alarm" "instance_scheduler_has_errors" {
   threshold           = "1"
   treat_missing_data  = "notBreaching"
 
+  dimensions = {
+    FunctionName = "instance-scheduler-lambda-function"
+  }
+  
   tags = local.tags
 }
 
@@ -133,6 +137,10 @@ resource "aws_cloudwatch_metric_alarm" "instance_scheduler_was_throttled" {
   statistic           = "Sum"
   threshold           = "1"
   treat_missing_data  = "notBreaching"
+
+  dimensions = {
+    FunctionName = "instance-scheduler-lambda-function"
+  }
 
   tags = local.tags
 }
