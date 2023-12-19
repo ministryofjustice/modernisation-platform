@@ -3,7 +3,7 @@ module "instance_scheduler" {
   #checkov:skip=CKV_AWS_117
   #checkov:skip=CKV_AWS_272 "Code signing not required"
   #checkov:skip=CKV_AWS_173 "These lambda envvars aren't sensitive and don't need a cmk. Default AWS KMS key is sufficient"
-  source                         = "github.com/ministryofjustice/modernisation-platform-terraform-lambda-function?ref=5a3c02a071519986a0ae415168fb4f9d3fb7970f" #v2.0.0
+  source                         = "github.com/ministryofjustice/modernisation-platform-terraform-lambda-function?ref=5a3c02a071519986a0ae415168fb4f9d3fb7970f" #v3.0.0
   application_name               = local.application_name
   tags                           = local.tags
   description                    = "Lambda to automatically start and stop instances on member accounts"
@@ -101,4 +101,38 @@ module "pagerduty_core_alerts" {
   source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
   sns_topics                = [aws_sns_topic.on_failure.name, aws_sns_topic.on_success.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
+}
+
+resource "aws_cloudwatch_metric_alarm" "instance_scheduler_has_errors" {
+  alarm_name        = "instance-scheduler-run-with-errors"
+  alarm_description = "Monitors instance-scheduller for failed invocations. It alarms when instance scheduler execution results in at least 1 error."
+  alarm_actions     = [aws_sns_topic.on_failure.arn]
+
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "Errors"
+  namespace           = "AWS/Lambda"
+  period              = "300"
+  statistic           = "Sum"
+  threshold           = "1"
+  treat_missing_data  = "notBreaching"
+
+  tags = local.tags
+}
+
+resource "aws_cloudwatch_metric_alarm" "instance_scheduler_was_throttled" {
+  alarm_name        = "instance-scheduler-was-throttled"
+  alarm_description = "Monitors instance-scheduller when it fails to be invoked. It alarms when instance scheduler invokation is throttled."
+  alarm_actions     = [aws_sns_topic.on_failure.arn]
+
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "Throttles"
+  namespace           = "AWS/Lambda"
+  period              = "300"
+  statistic           = "Sum"
+  threshold           = "1"
+  treat_missing_data  = "notBreaching"
+
+  tags = local.tags
 }
