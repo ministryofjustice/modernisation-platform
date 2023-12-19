@@ -12,14 +12,6 @@ provider "aws" {
   region = "eu-west-2"
 }
 
-provider "aws" {
-  region = "eu-west-1"
-  alias  = "modernisation-platform-eu-west-1"
-  assume_role {
-    role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
-  }
-}
-
 # AWS provider for core-vpc-<environment>, to share VPCs into this account
 provider "aws" {
   alias  = "core-vpc"
