@@ -107,7 +107,7 @@ data "aws_iam_policy_document" "member-access" {
       "ecs:*",
       "elasticfilesystem:*",
       "elasticloadbalancing:*",
-      "eks:Describe*",
+      "eks:*",
       "es:*",
       "events:*",
       "fsx:*",
