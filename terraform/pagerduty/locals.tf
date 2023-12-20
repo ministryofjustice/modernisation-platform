@@ -60,8 +60,6 @@ locals {
     is-production = true
     owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
   }
-
-  replica_region = "eu-west-1"
 }
 
 # existing users

@@ -10,9 +10,6 @@ resource "aws_secretsmanager_secret" "slack_webhook_url" {
   name        = "slack_webhook_url"
   description = "Slack channel modernisation-platform-notifications webhook url for sending notifications to slack"
   tags        = local.tags
-  replica {
-    region = local.replica_region
-  }
 }
 
 # Github CI user PAT
@@ -27,9 +24,6 @@ resource "aws_secretsmanager_secret" "github_ci_user_pat" {
   name        = "github_ci_user_pat"
   description = "GitHub CI user PAT used for generated resources in GitHub via Terraform"
   tags        = local.tags
-  replica {
-    region = local.replica_region
-  }
 }
 
 # Github CI user environments repo PAT
@@ -44,9 +38,6 @@ resource "aws_secretsmanager_secret" "github_ci_user_environments_repo_pat" {
   name        = "github_ci_user_environments_repo_pat"
   description = "This PAT token is used in reusable pipelines of the modernisation-platform-environments repository. This is so that the CI user can post comments in PRs, e.g. tf plan/apply output. Expires on Tue, Apr 9 2024."
   tags        = local.tags
-  replica {
-    region = local.replica_region
-  }
 }
 
 # Github CI user password
@@ -61,9 +52,6 @@ resource "aws_secretsmanager_secret" "github_ci_user_password" {
   name        = "github_ci_user_password"
   description = "GitHub CI user password"
   tags        = local.tags
-  replica {
-    region = local.replica_region
-  }
 }
 
 # Account IDs to be excluded from auto-nuke
@@ -76,9 +64,6 @@ resource "aws_secretsmanager_secret" "nuke_account_blocklist" {
   name        = "nuke_account_blocklist"
   description = "Account IDs to be excluded from auto-nuke. AWS-Nuke (https://github.com/rebuy-de/aws-nuke) requires at least one Account ID to be present in this blocklist, while it is recommended to add every production account to this blocklist."
   tags        = local.tags
-  replica {
-    region = local.replica_region
-  }
 }
 
 # Account IDs to be auto-nuked on weekly basis
@@ -91,9 +76,6 @@ resource "aws_secretsmanager_secret" "nuke_account_ids" {
   name        = "nuke_account_ids"
   description = "Account IDs to be auto-nuked on weekly basis. CAUTION: Any account ID you add here will be automatically nuked! This secret is used by GitHub actions job nuke.yml inside the environments repo, to find the Account IDs to be nuked."
   tags        = local.tags
-  replica {
-    region = local.replica_region
-  }
 }
 
 # Reflection of what is in member accounts, needed here as well so that the same code works for collaborators
@@ -102,6 +84,7 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
   name  = "modernisation_platform_account_id"
   type  = "SecureString"
   value = data.aws_caller_identity.current.id
+
   tags = local.tags
 }
 
@@ -112,9 +95,6 @@ resource "aws_secretsmanager_secret" "circleci" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "mod-platform-circleci"
   description = "CircleCI organisation ID for ministryofjustice, used for OIDC IAM policies"
-  replica {
-    region = local.replica_region
-  }
 }
 
 resource "aws_secretsmanager_secret_version" "circleci" {
