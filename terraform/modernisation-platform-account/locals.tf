@@ -7,6 +7,7 @@ locals {
   root_users_with_state_access = [ # also includes the organisationsl GHA Role
     "arn:aws:iam::${local.root_account.master_account_id}:user/ModernisationPlatformOrganisationManagement",
     "arn:aws:iam::${local.root_account.master_account_id}:user/DavidElliott",
+    "arn:aws:iam::${local.root_account.master_account_id}:user/EwaStempel",
     "arn:aws:iam::${local.root_account.master_account_id}:role/ModernisationPlatformGithubActionsRole" # Role with the same permissions as ModernisationPlatformOrganisationManagement for Github OIDC
   ]
 
