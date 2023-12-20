@@ -7,9 +7,6 @@ resource "aws_secretsmanager_secret" "environment_management" {
   kms_key_id  = aws_kms_key.environment_management.id
   policy      = data.aws_iam_policy_document.environment_management.json
   tags        = local.environments
-  replica {
-    region = "eu-west-1"
-  }
 }
 
 resource "aws_secretsmanager_secret_version" "environment_management" {
