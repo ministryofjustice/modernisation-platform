@@ -120,7 +120,7 @@ resource "aws_cloudwatch_metric_alarm" "instance_scheduler_has_errors" {
   dimensions = {
     FunctionName = "instance-scheduler-lambda-function"
   }
-  
+
   tags = local.tags
 }
 
