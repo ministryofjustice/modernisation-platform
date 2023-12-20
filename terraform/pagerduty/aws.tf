@@ -10,6 +10,9 @@ resource "aws_secretsmanager_secret" "pagerduty_integration_keys" {
   name        = "pagerduty_integration_keys"
   policy      = data.aws_iam_policy_document.pagerduty_secret.json
   tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
 }
 
 resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
@@ -68,6 +71,9 @@ resource "aws_secretsmanager_secret" "pagerduty_token" {
   name        = "pagerduty_token"
   description = "PagerDuty api token, used by PagerDuty Terraform to manage most PagerDuty resources"
   tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
 }
 
 # Pagerduty user token
@@ -79,4 +85,7 @@ resource "aws_secretsmanager_secret" "pagerduty_user_token" {
   name        = "pagerduty_userapi_token"
   description = "PagerDuty api user level token, used to link services to Slack channels.  A valid PD and Slack user needed (to authorise against a slack user), needed in addition to the org level token"
   tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
 }
