@@ -201,6 +201,20 @@
       ]
     },
     {
+      "username": "jonny.davey",
+      "github-username": "jonny190",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
       "username": "david.savage",
       "github-username": "no-value-supplied",
       "accounts": [
