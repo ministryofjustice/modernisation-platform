@@ -102,7 +102,7 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
   name  = "modernisation_platform_account_id"
   type  = "SecureString"
   value = data.aws_caller_identity.current.id
-  tags = local.tags
+  tags  = local.tags
 }
 
 # CircleCI Organisation ID
