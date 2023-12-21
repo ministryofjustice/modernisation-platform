@@ -3,6 +3,8 @@ locals {
     mp-core                     = "10.20.0.0/16"
     mp-development-test         = "10.26.0.0/16"
     mp-preproduction-production = "10.27.0.0/16"
+    mp-sandbox-garden           = "10.231.0.0/21"
+    mp-sandbox-house            = "10.231.8.0/21"
   }
 
   # This will take the vpc CIDR ranges for each business/env general subnet set, from the environments-networks files
