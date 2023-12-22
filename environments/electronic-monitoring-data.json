@@ -1,0 +1,41 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "hmpps-electronic-monitoring-data-store",
+          "level": "sandbox",
+          "nuke": "exclude"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "hmpps-electronic-monitoring-data-store",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "hmpps-electronic-monitoring-data-store",
+          "level": "view-only"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "electronic-monitoring-data",
+    "business-unit": "HMPPS",
+    "infrastructure-support": "dataengineering@digital.justice.gov.uk",
+    "owner": "Data engineering: dataengineering@digital.justice.gov.uk"
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}
