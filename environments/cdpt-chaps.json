@@ -8,7 +8,8 @@
           "github_slug": "central-digital-product-team",
           "level": "developer"
         }
-      ]
+      ],
+      "additional_reviewers": ["jemnery"]
     },
     {
       "name": "preproduction",
