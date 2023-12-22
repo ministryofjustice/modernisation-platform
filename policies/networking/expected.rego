@@ -26,7 +26,7 @@ expected :=
           "performance-hub-preproduction",
           "oasys-preproduction",
           "nomis-preproduction",
-          "electronic-monitoring-data",
+          "electronic-monitoring-data-preproduction",
           "ppud-preproduction",
           "delius-iaps-preproduction",
           "delius-jitbit-preproduction",
@@ -57,7 +57,7 @@ expected :=
         "accounts": [
           "performance-hub-development",
           "digital-prison-reporting-development",
-          "electronic-monitoring-data",
+          "electronic-monitoring-data-development",
           "equip-development",
           "ppud-development",
           "refer-monitor-development",
@@ -118,7 +118,7 @@ expected :=
         "accounts": [
           "performance-hub-production",
           "ppud-production",
-          "electronic-monitoring-data",
+          "electronic-monitoring-data-production",
           "equip-production",
           "oasys-production",
           "nomis-production",
