@@ -31,7 +31,7 @@
       }
     ],
     "tags": {
-      "application": "electronic monitoring data store",
+      "application": "electronic-monitoring-data-store",
       "business-unit": "HMPPS",
       "infrastructure-support": "dataengineering@digital.justice.gov.uk",
       "owner": "Data engineering: dataengineering@digital.justice.gov.uk"
