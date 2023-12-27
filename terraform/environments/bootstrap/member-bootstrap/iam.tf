@@ -509,7 +509,7 @@ data "aws_iam_policy_document" "member-access-eu-central" {
 
 resource "aws_iam_policy" "member-access-eu-central" {
   count       = local.account_data.account-type == "member" ? 1 : 0
-  name        = "MemberInfrastructureAccessUSEastActions"
+  name        = "MemberInfrastructureBedrockEuCentralActions"
   description = "Restricted policy for US East usage"
   policy      = data.aws_iam_policy_document.member-access-eu-central.json
 }
