@@ -507,9 +507,9 @@ data "aws_iam_policy_document" "member-access-eu-central" {
   }
 }
 
-resource "aws_iam_policy" "member-access-us-east" {
+resource "aws_iam_policy" "member-access-eu-central" {
   count       = local.account_data.account-type == "member" ? 1 : 0
   name        = "MemberInfrastructureAccessUSEastActions"
   description = "Restricted policy for US East usage"
-  policy      = data.aws_iam_policy_document.member-access-us-east.json
+  policy      = data.aws_iam_policy_document.member-access-eu-central.json
 }
