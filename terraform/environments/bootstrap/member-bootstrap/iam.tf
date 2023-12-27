@@ -472,3 +472,44 @@ data "aws_iam_policy_document" "policy" {
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
 }
+
+# MemberInfrastructureBedrockEuCentral
+module "member-access-eu-central" {
+  count                  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
+  account_id             = local.modernisation_platform_account.id
+  additional_trust_roles = [one(data.aws_iam_roles.github_actions_role.arns), one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  policy_arn             = aws_iam_policy.member-access-us-east[0].id
+  role_name              = "MemberInfrastructureBedrockEuCentral"
+}
+
+# lots of SCA ignores and skips on this one as it is the main role allowing members to build most things in the platform
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "member-access-eu-central" {
+  statement {
+    #checkov:skip=CKV_AWS_108
+    #checkov:skip=CKV_AWS_111
+    #checkov:skip=CKV_AWS_107
+    #checkov:skip=CKV_AWS_109
+    #checkov:skip=CKV_AWS_110
+    #checkov:skip=CKV2_AWS_40
+    effect = "Allow"
+    actions = [
+      "bedrock:*"
+    ]
+    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+  }
+
+  statement {
+    effect = "Deny"
+    actions = ["*"]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "member-access-us-east" {
+  count       = local.account_data.account-type == "member" ? 1 : 0
+  name        = "MemberInfrastructureAccessUSEastActions"
+  description = "Restricted policy for US East usage"
+  policy      = data.aws_iam_policy_document.member-access-us-east.json
+}
