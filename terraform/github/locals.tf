@@ -49,7 +49,8 @@ locals {
     "connormaglynn",
     "richgreen-moj", # Richard Green
     "khatraf",       # Khatra Farah
-    "sukeshreddyg"   # Sukesh Reddy Gade 
+    "sukeshreddyg",   # Sukesh Reddy Gade 
+    "mikereiddigital" # Mike Reid
   ]
 
   # Security engineers performing reviews on the platform or member accounts
