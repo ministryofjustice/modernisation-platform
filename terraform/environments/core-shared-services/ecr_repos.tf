@@ -1,4 +1,26 @@
 # Shared Elastic container repositories
+module "maat_api_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "maat"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["maat-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["maat-development"]
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["maat-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["maat-development"],
+    local.environment_management.account_ids["maat-test"],
+    local.environment_management.account_ids["maat-preproduction"],
+    local.environment_management.account_ids["maat-production"]
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
+
 module "performance_hub_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
