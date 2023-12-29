@@ -47,8 +47,8 @@ locals {
     "ewastempel",
     "ASTRobinson", # Aaron Robinson
     "connormaglynn",
-    "richgreen-moj", # Richard Green
-    "khatraf",       # Khatra Farah
+    "richgreen-moj",  # Richard Green
+    "khatraf",        # Khatra Farah
     "sukeshreddyg",   # Sukesh Reddy Gade 
     "mikereiddigital" # Mike Reid
   ]
