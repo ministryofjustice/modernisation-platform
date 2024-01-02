@@ -476,7 +476,7 @@ data "aws_iam_policy_document" "policy" {
 # MemberInfrastructureBedrockEuCentral
 module "member-access-eu-central" {
   count                  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=v2.3.0"
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
   account_id             = local.modernisation_platform_account.id
   additional_trust_roles = [one(data.aws_iam_roles.github_actions_role.arns), one(data.aws_iam_roles.member-sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access-us-east[0].id
