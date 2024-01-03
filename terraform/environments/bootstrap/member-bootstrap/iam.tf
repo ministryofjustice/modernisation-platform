@@ -500,8 +500,8 @@ data "aws_iam_policy_document" "member-access-eu-central" {
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
   statement {
-    effect    = "Deny"
-    actions   = [
+    effect = "Deny"
+    actions = [
       "iam:AddClientIDToOpenIDConnectProvider",
       "iam:AddUserToGroup",
       "iam:AttachGroupPolicy",
@@ -538,12 +538,12 @@ data "aws_iam_policy_document" "member-access-eu-central" {
       "iam:UpdateSAMLProvider",
       "iam:UpdateUser"
     ]
-    resources = ["*"]  
-}
+    resources = ["*"]
+  }
 
   statement {
-    effect = "Deny"
-    actions = ["*"]
+    effect    = "Deny"
+    actions   = ["*"]
     resources = ["*"]
   }
 }
