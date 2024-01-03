@@ -23,6 +23,11 @@ locals {
       email = "ewa.stempel${local.digital_email_suffix}"
       role  = "user"
     },
+    sukesh_reddygade = {
+      name  = "Sukesh Reddy Gade"
+      email = "sukesh.reddygade${local.digital_email_suffix}"
+      role  = "user"
+    },
     modernisation_platform = {
       name  = "Modernisation Platform Team"
       email = "modernisation-platform${local.digital_email_suffix}"
@@ -35,13 +40,12 @@ locals {
   digital_email_suffix = "@digital.justice.gov.uk"
 
   existing_users = {
-    karen_botsh      = data.pagerduty_user.karen_botsh,
-    jake_mulley      = data.pagerduty_user.jake_mulley,
-    stephen_linden   = data.pagerduty_user.stephen_linden,
-    simon_pledger    = data.pagerduty_user.simon_pledger,
-    mark_roberts     = data.pagerduty_user.mark_roberts,
-    aaron_robinson   = data.pagerduty_user.aaron_robinson,
-    sukesh_reddygade = data.pagerduty_user.sukesh_reddygade
+    karen_botsh    = data.pagerduty_user.karen_botsh,
+    jake_mulley    = data.pagerduty_user.jake_mulley,
+    stephen_linden = data.pagerduty_user.stephen_linden,
+    simon_pledger  = data.pagerduty_user.simon_pledger,
+    mark_roberts   = data.pagerduty_user.mark_roberts,
+    aaron_robinson = data.pagerduty_user.aaron_robinson
   }
 
   modernisation_platform_users = merge(local.existing_users, tomap(pagerduty_user.pager_duty_users))
@@ -54,7 +58,7 @@ locals {
   ewa_stempel      = pagerduty_user.pager_duty_users["ewa_stempel"].id
   mark_roberts     = data.pagerduty_user.mark_roberts.id
   aaron_robinson   = data.pagerduty_user.aaron_robinson.id
-  sukesh_reddygade = data.pagerduty_user.sukesh_reddygade.id
+  sukesh_reddygade = pagerduty_user.pager_duty_users["sukesh_reddygade"].id
 
   tags = {
     business-unit = "Platforms"
@@ -89,8 +93,4 @@ data "pagerduty_user" "mark_roberts" {
 
 data "pagerduty_user" "aaron_robinson" {
   email = "aaron.robinson${local.digital_email_suffix}"
-}
-
-data "pagerduty_user" "sukesh_reddygade" {
-  email = "sukesh.reddygade${local.digital_email_suffix}"
 }
