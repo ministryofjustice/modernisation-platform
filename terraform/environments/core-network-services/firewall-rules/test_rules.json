@@ -13,14 +13,14 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "az_noms_test_to_mp_nomis_test_db": {
+  "az_noms_test_to_mp_hmpps_test_oracledb": {
     "action": "PASS",
     "source_ip": "${noms-test-vnet}",
     "destination_ip": "${hmpps-test}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "cp_to_mp_nomis_test_db": {
+  "cp_to_mp_hmpps_test_oracledb": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
     "destination_ip": "${hmpps-test}",
@@ -76,7 +76,7 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "analytical_platform_airflow_dev_to_mp_dev_test": {
+  "analytical_platform_airflow_dev_to_mp_dev_test_oracledb": {
     "action": "PASS",
     "source_ip": "${analytical-platform-airflow-dev}",
     "destination_ip": "${mp-development-test}",
@@ -111,7 +111,7 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "aks_studio_hosting_dev_1_vnet_to_mp_hmpps_test_db": {
+  "aks_studio_hosting_dev_1_vnet_to_mp_hmpps_test_oracledb": {
     "action": "PASS",
     "source_ip": "${aks-studio-hosting-dev-1-vnet}",
     "destination_ip": "${hmpps-test}",
@@ -123,20 +123,6 @@
     "source_ip": "${aks-studio-hosting-dev-1-vnet}",
     "destination_ip": "${hmpps-test}",
     "destination_port": "443",
-    "protocol": "TCP"
-  },
-  "nomisapi_t2_root_vnet_to_mp_hmpps_test": {
-    "action": "PASS",
-    "source_ip": "${nomisapi-t2-root-vnet}",
-    "destination_ip": "${hmpps-test}",
-    "destination_port": "1521",
-    "protocol": "TCP"
-  },
-  "nomisapi_t3_root_vnet_to_mp_hmpps_test": {
-    "action": "PASS",
-    "source_ip": "${nomisapi-t3-root-vnet}",
-    "destination_ip": "${hmpps-test}",
-    "destination_port": "1521",
     "protocol": "TCP"
   },
   "mp_hmpps_test_to_noms_mgmt_vnet_dns": {

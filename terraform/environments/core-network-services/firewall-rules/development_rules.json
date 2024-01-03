@@ -55,7 +55,7 @@
     "destination_port": "ANY",
     "protocol": "IP"
   },
-  "analytical_platform_to_mp_laa_development": {
+  "analytical_platform_to_mp_laa_development_oracledb": {
     "action": "PASS",
     "source_ip": "${analytical-platform-airflow-dev}",
     "destination_ip": "${laa-development}",
@@ -69,14 +69,14 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "cp_to_hmpps_development_oracle": {
+  "cp_to_hmpps_development_oracledb": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
     "destination_ip": "${hmpps-development}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "cp_to_mp_laa_development": {
+  "cp_to_mp_laa_development_oracledb": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
     "destination_ip": "${laa-development}",
@@ -104,7 +104,7 @@
     "destination_port": "5721",
     "protocol": "UDP"
   },
-  "hmpps_development_to_oracle_tcp": {
+  "hmpps_development_to_cp_oracledb": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
     "destination_ip": "${cloud-platform}",
@@ -174,7 +174,7 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "aks_studio_hosting_dev_1_vnet_to_mp_hmpps_development_db": {
+  "aks_studio_hosting_dev_1_vnet_to_mp_hmpps_development_oracledb": {
     "action": "PASS",
     "source_ip": "${aks-studio-hosting-dev-1-vnet}",
     "destination_ip": "${hmpps-development}",
@@ -186,20 +186,6 @@
     "source_ip": "${aks-studio-hosting-dev-1-vnet}",
     "destination_ip": "${hmpps-development}",
     "destination_port": "443",
-    "protocol": "TCP"
-  },
-  "nomisapi_t2_root_vnet_to_mp_hmpps_development": {
-    "action": "PASS",
-    "source_ip": "${nomisapi-t2-root-vnet}",
-    "destination_ip": "${hmpps-development}",
-    "destination_port": "1521",
-    "protocol": "TCP"
-  },
-  "nomisapi_t3_root_vnet_to_mp_hmpps_development": {
-    "action": "PASS",
-    "source_ip": "${nomisapi-t3-root-vnet}",
-    "destination_ip": "${hmpps-development}",
-    "destination_port": "1521",
     "protocol": "TCP"
   },
   "mp_hmpps_development_to_noms_mgmt_vnet_dns": {
