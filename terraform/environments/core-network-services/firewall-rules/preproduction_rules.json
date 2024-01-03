@@ -216,6 +216,13 @@
     "destination_port": "5721",
     "protocol": "UDP"
   },
+  "cp_to_mp_hmpps_preproduction_oracledb": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
   "cp_to_mp_hmpps_preproduction_jdbc": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
