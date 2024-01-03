@@ -472,3 +472,85 @@ data "aws_iam_policy_document" "policy" {
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
 }
+
+# MemberInfrastructureBedrockEuCentral
+module "member-access-eu-central" {
+  count                  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
+  account_id             = local.modernisation_platform_account.id
+  additional_trust_roles = [one(data.aws_iam_roles.github_actions_role.arns), one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  policy_arn             = aws_iam_policy.member-access-us-east[0].id
+  role_name              = "MemberInfrastructureBedrockEuCentral"
+}
+
+# lots of SCA ignores and skips on this one as it is the main role allowing members to build most things in the platform
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "member-access-eu-central" {
+  statement {
+    #checkov:skip=CKV_AWS_108
+    #checkov:skip=CKV_AWS_111
+    #checkov:skip=CKV_AWS_107
+    #checkov:skip=CKV_AWS_109
+    #checkov:skip=CKV_AWS_110
+    #checkov:skip=CKV2_AWS_40
+    effect = "Allow"
+    actions = [
+      "bedrock:*"
+    ]
+    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+  }
+  statement {
+    effect = "Deny"
+    actions = [
+      "iam:AddClientIDToOpenIDConnectProvider",
+      "iam:AddUserToGroup",
+      "iam:AttachGroupPolicy",
+      "iam:AttachUserPolicy",
+      "iam:CreateAccountAlias",
+      "iam:CreateGroup",
+      "iam:CreateLoginProfile",
+      "iam:CreateOpenIDConnectProvider",
+      "iam:CreateSAMLProvider",
+      "iam:CreateUser",
+      "iam:CreateVirtualMFADevice",
+      "iam:DeactivateMFADevice",
+      "iam:DeleteAccountAlias",
+      "iam:DeleteAccountPasswordPolicy",
+      "iam:DeleteGroup",
+      "iam:DeleteGroupPolicy",
+      "iam:DeleteLoginProfile",
+      "iam:DeleteOpenIDConnectProvider",
+      "iam:DeleteSAMLProvider",
+      "iam:DeleteUser",
+      "iam:DeleteUserPermissionsBoundary",
+      "iam:DeleteUserPolicy",
+      "iam:DeleteVirtualMFADevice",
+      "iam:DetachGroupPolicy",
+      "iam:DetachUserPolicy",
+      "iam:EnableMFADevice",
+      "iam:RemoveClientIDFromOpenIDConnectProvider",
+      "iam:RemoveUserFromGroup",
+      "iam:ResyncMFADevice",
+      "iam:UpdateAccountPasswordPolicy",
+      "iam:UpdateGroup",
+      "iam:UpdateLoginProfile",
+      "iam:UpdateOpenIDConnectProviderThumbprint",
+      "iam:UpdateSAMLProvider",
+      "iam:UpdateUser"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    effect    = "Deny"
+    actions   = ["*"]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "member-access-eu-central" {
+  count       = local.account_data.account-type == "member" ? 1 : 0
+  name        = "MemberInfrastructureBedrockEuCentralActions"
+  description = "Restricted policy for US East usage"
+  policy      = data.aws_iam_policy_document.member-access-eu-central.json
+}

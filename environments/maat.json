@@ -44,5 +44,8 @@
     "infrastructure-support": "laa-role-sre@digital.justice.gov.uk",
     "owner": "laa-crime-apps@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [
+    "ministryofjustice/laa-maat-application",
+    "ministryofjustice/laa-maat-court-data-api"
+  ]
 }
