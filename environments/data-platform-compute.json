@@ -5,12 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "data-platform-core-infra",
-          "level": "sandbox",
-          "nuke": "exclude"
-        },
-        {
-          "github_slug": "data-tech-archs",
+          "github_slug": ["data-platform-core-infra", "data-tech-archs"],
           "level": "sandbox",
           "nuke": "exclude"
         }
@@ -20,11 +15,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "data-platform-core-infra",
-          "level": "view-only"
-        },
-        {
-          "github_slug": "data-tech-archs",
+          "github_slug": ["data-platform-core-infra", "data-tech-archs"],
           "level": "view-only"
         }
       ]
