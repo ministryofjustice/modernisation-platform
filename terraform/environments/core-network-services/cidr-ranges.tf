@@ -73,6 +73,8 @@ locals {
 
     hmpps-preproduction-general-private-subnets = "10.27.0.0/22"
     hmpps-production-general-private-subnets    = "10.27.10.0/22"
+
+    mojo-end-user-devices = "10.0.0.0/8"
   }
 
   all_cidr_ranges = merge(
