@@ -160,13 +160,6 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "nomis_prod_monitoring_to_mp_hmpps_production": {
-    "action": "PASS",
-    "source_ip": "${cloud-platform}",
-    "destination_ip": "${hmpps-production}",
-    "destination_port": "9100",
-    "protocol": "TCP"
-  },
   "psn_to_mp_hmpps_production_https": {
     "action": "PASS",
     "source_ip": "${psn}",
