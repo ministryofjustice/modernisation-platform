@@ -24,3 +24,7 @@ if [ ! -z "$2" ]; then
 else
   terraform -chdir="$1" apply -input=false -no-color -auto-approve | ./scripts/redact-output.sh  
 fi
+
+if [ -f "$1/errored.tfstate" ]; then
+  terraform -chdir="$1" state push errored.tfstate | ./scripts/redact-output.sh
+fi
