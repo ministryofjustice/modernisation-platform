@@ -20,14 +20,14 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "azure_noms_to_mp_nomis_production_db": {
+  "azure_noms_to_mp_hmpps_production_oracledb": {
     "action": "PASS",
     "source_ip": "${noms-live-vnet}",
     "destination_ip": "${hmpps-production}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "cp_to_mp_nomis_production_db": {
+  "cp_to_mp_hmpps_production_oracledb": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
     "destination_ip": "${hmpps-production}",
@@ -118,7 +118,7 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "aks_studio_hosting_live_1_to_mp_hmpps_production_db": {
+  "aks_studio_hosting_live_1_to_mp_hmpps_production_oracledb": {
     "action": "PASS",
     "source_ip": "${aks-studio-hosting-live-1-vnet}",
     "destination_ip": "${hmpps-production}",
@@ -132,39 +132,32 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "nomisapi_preprod_root_to_mp_hmpps_production": {
+  "nomisapi_preprod_root_to_mp_hmpps_production_oracledb": {
     "action": "PASS",
     "source_ip": "${nomisapi-preprod-root-vnet}",
     "destination_ip": "${hmpps-production}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "nomisapi_prod_root_vnet_to_mp_hmpps_production": {
+  "nomisapi_prod_root_vnet_to_mp_hmpps_production_oracledb": {
     "action": "PASS",
     "source_ip": "${nomisapi-prod-root-vnet}",
     "destination_ip": "${hmpps-production}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "analytical_platform_to_mp_hmpps_production": {
+  "analytical_platform_to_mp_hmpps_production_oracledb": {
     "action": "PASS",
     "source_ip": "${analytical-platform-airflow-prod}",
     "destination_ip": "${hmpps-production}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "analytical_platform_to_mp_laa_production": {
+  "analytical_platform_to_mp_laa_production_oracledb": {
     "action": "PASS",
     "source_ip": "${analytical-platform-airflow-prod}",
     "destination_ip": "${laa-production}",
     "destination_port": "1521",
-    "protocol": "TCP"
-  },
-  "nomis_prod_monitoring_to_mp_hmpps_production": {
-    "action": "PASS",
-    "source_ip": "${cloud-platform}",
-    "destination_ip": "${hmpps-production}",
-    "destination_port": "9100",
     "protocol": "TCP"
   },
   "psn_to_mp_hmpps_production_https": {

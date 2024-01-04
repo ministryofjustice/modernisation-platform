@@ -76,7 +76,7 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "nomisapi_preprod_root_to_mp_hmpps_preproduction": {
+  "nomisapi_preprod_root_to_mp_hmpps_preproduction_oracledb": {
     "action": "PASS",
     "source_ip": "${nomisapi-preprod-root-vnet}",
     "destination_ip": "${hmpps-preproduction}",
@@ -139,7 +139,7 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "aks_studio_hosting_live_1_to_mp_hmpps_preproduction_db": {
+  "aks_studio_hosting_live_1_to_mp_hmpps_preproduction_oracledb": {
     "action": "PASS",
     "source_ip": "${aks-studio-hosting-live-1-vnet}",
     "destination_ip": "${hmpps-preproduction}",
@@ -153,14 +153,14 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "nomisapi_prod_root_to_mp_hmpps_preproduction": {
+  "nomisapi_prod_root_to_mp_hmpps_preproduction_oracledb": {
     "action": "PASS",
     "source_ip": "${nomisapi-prod-root-vnet}",
     "destination_ip": "${hmpps-preproduction}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "analytical_platform_to_mp_hmpps_preproduction": {
+  "analytical_platform_to_mp_hmpps_preproduction_oracledb": {
     "action": "PASS",
     "source_ip": "${analytical-platform-airflow-prod}",
     "destination_ip": "${hmpps-preproduction}",
