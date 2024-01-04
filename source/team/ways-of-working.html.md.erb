@@ -83,6 +83,23 @@ We also think it is good to:
 * Making use of GitHub automatically generated release notes. These provide in depth detail of the release.
     * These can be heavily populated general maintenance PRs. It is worth refining the commit list down to commits that will impact consumers. There is a full changelog link provided for people who want the additional information.
 
+### Reviewing Contributor Changes to Maintained Modules
+
+We provide access to a number of terraform modules for use in member accounts and we welcome contributions from users, whether that's fixing an issue or adding new features & enhancements. 
+
+These modules include:
+
+* [Baseline modules in the Modersation Platform Github Repo](https://github.com/ministryofjustice/modernisation-platform-environments/tree/main/terraform/modules/baseline)
+* Other modules in separate Github Repos such as https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-instance
+
+Should a PR be posted for one of these modules, consider using the review criteria below:
+
+* All changes. Ensure that either a plan or test output confirms the module builds correctly and no errors are reported. 
+* New features. These changes should maintain backwards compatibility with the existing version of the module and as such use should be optional.
+* Amending an existing feature. The change should be tested to ensure backwards compatibility for existing users and so tests should be undertaken to ensure this is the case. Understanding the reason for its removal is key here.
+* Removing an existing feature. Understanding the reasons for this should be the priority and so a conversation with the PR's author should be had. As with amending features, maintaining backwards compatability is crucial.
+
+If in any doubt, speak to team colleagues for assistance.
 
 ## Spikes
 
