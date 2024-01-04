@@ -474,5 +474,47 @@
     "destination_ip": "${moj-smtp-relay2}",
     "destination_port": "587",
     "protocol": "TCP"
+  },
+  "endusers_to_planetfm_production_netbios_137_udp": {
+    "action": "PASS",
+    "source_ip": "10.0.0.0/8",
+    "destination_ip": "${hmpps-production-general-private-subnets}",
+    "destination_port": "137",
+    "protocol": "UDP"
+  },
+  "endusers_to_planetfm_production_smb_445_tcp": {
+    "action": "PASS",
+    "source_ip": "10.0.0.0/8",
+    "destination_ip": "${hmpps-production-general-private-subnets}",
+    "destination_port": "445",
+    "protocol": "TCP"
+  },
+  "endusers_to_planetfm_production_sql_1433_tcp": {
+    "action": "PASS",
+    "source_ip": "10.0.0.0/8",
+    "destination_ip": "${hmpps-production-general-private-subnets}",
+    "destination_port": "1433",
+    "protocol": "TCP"
+  },
+  "endusers_to_planetfm_production_sql_1434_udp": {
+    "action": "PASS",
+    "source_ip": "10.0.0.0/8",
+    "destination_ip": "${hmpps-production-general-private-subnets}",
+    "destination_port": "1434",
+    "protocol": "UDP"
+  },
+  "endusers_to_planetfm_production_cfam_scheduling_7071_tcp": {
+    "action": "PASS",
+    "source_ip": "10.0.0.0/8",
+    "destination_ip": "${hmpps-production-general-private-subnets}",
+    "destination_port": "7071",
+    "protocol": "TCP"
+  },
+  "endusers_to_planetfm_production_cafm_licensing_7073_tcp": {
+    "action": "PASS",
+    "source_ip": "10.0.0.0/8",
+    "destination_ip": "${hmpps-production-general-private-subnets}",
+    "destination_port": "7073",
+    "protocol": "TCP"
   }
 }
