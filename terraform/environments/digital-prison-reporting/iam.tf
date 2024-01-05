@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
   #checkov:skip=CKV_AWS_111
   statement {
     actions = [
-	"s3:*",
+      "s3:*",
 	"dms:*",
 	"glue:*",
 	"rds:*",
