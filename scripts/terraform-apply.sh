@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -o pipefail
+set -e
 
 # This script runs terraform apply with input set to false and no color outputs, suitable for running as part of a CI/CD pipeline.
 # You need to pass through a Terraform directory as an argument, e.g.
@@ -20,10 +21,12 @@ fi
 if [ ! -z "$2" ]; then
   options="$2"
   terraform -chdir="$1" apply -input=false -no-color -auto-approve $options | ./scripts/redact-output.sh
+  if [ -f "$1/errored.tfstate" ]; then
+    terraform -chdir="$1" state push errored.tfstate | ./scripts/redact-output.sh
+  fi
 else
-  terraform -chdir="$1" apply -input=false -no-color -auto-approve | ./scripts/redact-output.sh  
-fi
-
-if [ -f "$1/errored.tfstate" ]; then
-  terraform -chdir="$1" state push errored.tfstate | ./scripts/redact-output.sh
+  terraform -chdir="$1" apply -input=false -no-color -auto-approve | ./scripts/redact-output.sh
+  if [ -f "$1/errored.tfstate" ]; then
+    terraform -chdir="$1" state push errored.tfstate | ./scripts/redact-output.sh
+  fi
 fi
