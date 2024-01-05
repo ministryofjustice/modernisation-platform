@@ -72,7 +72,7 @@ jobs:
           terraform_version: "~1"
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
-      - run: bash scripts/terraform-apply.sh terraform/environments/bootstrap/delegate-access
+      - run: bash scripts/terraform-apply-and-state-push.sh terraform/environments/bootstrap/delegate-access
       - name: Slack failure notification
         uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
         with:
@@ -107,7 +107,7 @@ jobs:
           terraform_version: "~1"
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
-      - run: bash scripts/terraform-apply.sh terraform/environments/bootstrap/secure-baselines
+      - run: bash scripts/terraform-apply-and-state-push.sh terraform/environments/bootstrap/secure-baselines
       - name: Slack failure notification
         uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
         with:
@@ -144,7 +144,7 @@ jobs:
           terraform_version: "~1"
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
-      - run: bash scripts/terraform-apply.sh terraform/environments/bootstrap/single-sign-on
+      - run: bash scripts/terraform-apply-and-state-push.sh terraform/environments/bootstrap/single-sign-on
       - name: Slack failure notification
         uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
         with:
@@ -179,7 +179,7 @@ jobs:
           terraform_version: "~1"
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/member-bootstrap
-      - run: bash scripts/terraform-apply.sh terraform/environments/bootstrap/member-bootstrap
+      - run: bash scripts/terraform-apply-and-state-push.sh terraform/environments/bootstrap/member-bootstrap
       - name: Slack failure notification
         uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
         with:
