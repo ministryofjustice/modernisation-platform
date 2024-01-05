@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -o pipefail
-set -e
 
 # This script runs terraform apply with input set to false and no color outputs, suitable for running as part of a CI/CD pipeline.
 # You need to pass through a Terraform directory as an argument, e.g.
