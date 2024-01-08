@@ -331,6 +331,7 @@ resource "aws_route" "public-10-231-0-0" {
   destination_cidr_block = "10.231.0.0/20"
   route_table_id         = each.value.id
   vpc_endpoint_id        = local.firewall_endpoint_map[aws_subnet.public[each.key].availability_zone]
+}
 
 resource "aws_network_acl" "public" {
   vpc_id     = aws_vpc.main.id
