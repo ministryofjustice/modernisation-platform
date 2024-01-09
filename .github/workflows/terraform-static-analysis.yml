@@ -53,6 +53,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         scan_type: full
+        tfsec_trivy: trivy
         tfsec_exclude: aws-ssm-secret-use-customer-key,github-repositories-private,aws-vpc-no-excessive-port-access,github-repositories-require-signed-commits
         checkov_exclude: CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
         tflint_exclude: terraform_unused_declarations
