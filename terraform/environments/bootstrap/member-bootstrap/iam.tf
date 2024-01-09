@@ -284,7 +284,11 @@ data "aws_iam_policy_document" "member-access-us-east" {
     actions = ["acm:*",
       "logs:*",
       "waf:*",
-      "wafv2:*"
+      "wafv2:*",
+      "cur:PutReportDefinition", 
+      "cur:DeleteReportDefinition",
+      "cur:ModifyReportDefinition",
+      "cur:DescribeReportDefinitions"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
