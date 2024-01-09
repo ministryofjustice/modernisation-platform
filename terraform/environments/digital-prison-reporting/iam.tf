@@ -76,6 +76,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "ecr:CompleteLayerUpload",
       "ecr:UploadLayerPart",
       "ec2:DescribeInstances",
+      "ec2:RunInstances",
       "ec2:CreateNetworkInterface",
       "ec2:CreateNetworkInterfacePermission",
       "ec2:AttachNetworkInterface",
