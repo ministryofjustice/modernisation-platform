@@ -127,6 +127,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "s3:ListBucket",
       "s3:ListAllMyBuckets",
       "s3:*Object*",
+      "rds:*",
       "secretsmanager:ListSecrets",
       "secretsmanager:DescribeSecret",
       "secretsmanager:GetResourcePolicy",
