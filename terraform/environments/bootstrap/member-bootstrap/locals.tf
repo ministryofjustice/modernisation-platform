@@ -51,6 +51,10 @@ locals {
     "ccms-ebs-test",
     "ccms-ebs-preproduction",
     "ccms-ebs-production",
-    "example-development"
+    "example-development",
+    "oasys-development",
+    "oasys-test",
+    "oasys-preproduction",
+    "oasys-production"
   ]
 }
