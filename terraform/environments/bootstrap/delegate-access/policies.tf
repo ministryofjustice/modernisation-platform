@@ -844,3 +844,30 @@ data "aws_iam_policy_document" "directory-management-document" {
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
 }
+
+
+resource "aws_iam_policy" "fleet-manager-policy" {
+  provider = aws.workspace
+  name     = "fleet_manager_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.fleet-manager-document.json
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "fleet-manager-document" {
+  #checkov:skip=CKV_AWS_107
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_110
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_356
+  override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
+  statement {
+    sid    = "FleetManagerAllow"
+    effect = "Allow"
+    actions = [
+      "ds:*", # left for sukesh
+    ]
+    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+  }
+}
