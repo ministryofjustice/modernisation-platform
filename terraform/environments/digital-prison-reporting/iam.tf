@@ -167,7 +167,10 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "iam:GetRole",
       "iam:ListRolePolicies",
       "iam:ListRoles",
-      "iam:GetPolicyVersion"
+      "iam:GetPolicyVersion",
+      "iam:AttachRolePolicy",
+      "dms:CreateEndpoint",
+      "dms:DeleteEndpoint"
     ]
     resources = ["*"]
   }
