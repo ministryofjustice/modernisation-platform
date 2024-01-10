@@ -125,11 +125,19 @@ EOL
     application_name=$(basename "$file" .json)
     directory=/terraform/environments/$application_name
     account_type=$(jq -r '."account-type"' ${environment_json_dir}/${application_name}.json)
+    codeowners=$(jq -r '.codeowners[] | "@ministryofjustice/" + .' delius-core.json | sort | uniq | tr '\n' ' ')
     github_slugs=$(jq -r '.environments[].access[].github_slug | "@ministryofjustice/" + .' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
 
     if [ "$account_type" = "member" ]; then
-      echo "Adding $directory $github_slugs@modernisation-platform to codeowners"
-      echo "$directory $github_slugs@ministryofjustice/modernisation-platform" >> $codeowners_file
+      # if codeowners array has been defined in the json file, use that
+      if [ -n "$codeowners" ]; then
+        echo "Adding $directory $codeowners@ministryofjustice/modernisation-platform  to codeowners"
+        echo "$directory $codeowners@ministryofjustice/modernisation-platform" >> $codeowners_file
+      # otherwise, use the github_slugs array
+      else
+        echo "Adding $directory $github_slugs@ministryofjustice/modernisation-platform to codeowners"
+        echo "$directory $github_slugs@ministryofjustice/modernisation-platform" >> $codeowners_file
+      fi
     fi
 
   done
