@@ -285,7 +285,7 @@ data "aws_iam_policy_document" "member-access-us-east" {
       "logs:*",
       "waf:*",
       "wafv2:*",
-      "cur:PutReportDefinition", 
+      "cur:PutReportDefinition",
       "cur:DeleteReportDefinition",
       "cur:ModifyReportDefinition",
       "cur:DescribeReportDefinitions"
