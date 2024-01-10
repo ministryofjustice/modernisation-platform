@@ -159,7 +159,15 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "events:ListTagsForResource",
       "states:ListStateMachineVersions",
       "events:ListTargetsByRule",
-      "states:ListTagsForResource"
+      "states:ListTagsForResource",
+      "iam:CreateRole", 
+      "iam:CreatePolicy", 
+      "iam:DeleteRole", 
+      "iam:DeletePolicy",
+      "iam:GetRole",
+      "iam:ListRolePolicies",
+      "iam:ListRoles",
+      "iam:GetPolicyVersion"
     ]
     resources = ["*"]
   }
