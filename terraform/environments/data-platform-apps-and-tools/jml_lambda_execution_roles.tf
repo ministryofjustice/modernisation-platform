@@ -33,12 +33,16 @@ resource "aws_iam_policy" "cloudwatch_logs_policy" {
     Statement = [
       {
         Action = [
+          "cloudwatch:GenerateQuery"
           "logs:DescribeLogStreams",
           "logs:DescribeLogGroups",
-          "logs:GetLogEvents"
+          "logs:GetLogEvents",
+          "secretsmanager:GetSecretValue",
+         "secretsmanager:DescribeSecret",
+         "secretsmanager:ListSecrets"
         ],
         Effect   = "Allow",
-        Resource = "*",
+        Resource = "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-data-production"]}:log-group:/aws/events/auth0/*",
       }
     ]
   })
