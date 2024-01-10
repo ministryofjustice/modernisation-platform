@@ -853,21 +853,23 @@ resource "aws_iam_policy" "fleet-manager-policy" {
   policy   = data.aws_iam_policy_document.fleet-manager-document.json
 }
 
-#tfsec:ignore:aws-iam-no-policy-wildcards
+
 data "aws_iam_policy_document" "fleet-manager-document" {
-  #checkov:skip=CKV_AWS_107
-  #checkov:skip=CKV_AWS_108
-  #checkov:skip=CKV_AWS_109
-  #checkov:skip=CKV_AWS_110
-  #checkov:skip=CKV_AWS_111
-  #checkov:skip=CKV_AWS_356
   override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
     sid    = "FleetManagerAllow"
     effect = "Allow"
     actions = [
-      "ds:*", # left for sukesh
+      "ec2:DescribeInstances"
     ]
-    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+    resources = ["*"]
+  }
+  statement {
+    sid    = "FleetManagerDeny"
+    effect = "Deny"
+    actions = [
+      "ssm:StartSession"
+    ]
+    resources = ["*"]
   }
 }
