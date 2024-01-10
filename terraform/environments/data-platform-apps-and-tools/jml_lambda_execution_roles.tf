@@ -42,7 +42,7 @@ resource "aws_iam_policy" "cloudwatch_logs_policy" {
          "secretsmanager:ListSecrets"
         ],
         Effect   = "Allow",
-        Resource = "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-data-production"]}:log-group:/aws/events/auth0/*",
+        Resource = "arn:aws:logs::${local.environment_management.account_ids["analytical-platform-data-production"]}:log-group:/aws/events/auth0/*",
       }
     ]
   })
