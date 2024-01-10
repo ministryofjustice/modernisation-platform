@@ -33,7 +33,7 @@ resource "aws_iam_policy" "cloudwatch_logs_policy" {
     Statement = [
       {
         Action = [
-          "cloudwatch:GenerateQuery"
+          "cloudwatch:GenerateQuery",
           "logs:DescribeLogStreams",
           "logs:DescribeLogGroups",
           "logs:GetLogEvents",
