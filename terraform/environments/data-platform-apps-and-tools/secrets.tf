@@ -3,6 +3,18 @@ data "aws_ssm_parameter" "modernisation_platform_account_id" {
   name = "modernisation_platform_account_id"
 }
 
+# Create a new secret in AWS SecretsManager for Gov.UK Notify API key
+resource "aws_secretsmanager_secret" "govuk_notify_api_key" {
+  count = terraform.workspace == "data-platform-apps-and-tools-production" ? 1 : 0
+
+name = "gov-uk-notify/production/api-key"
+}
+
+# Email secret for Lambda function
+resource "aws_secretsmanager_secret" "email_secret" {
+  name = "jml/email"
+}
+
 # Get secret by arn for environment management
 data "aws_secretsmanager_secret" "environment_management" {
   provider = aws.modernisation-platform
