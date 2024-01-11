@@ -828,6 +828,7 @@ data "aws_iam_policy_document" "directory-management-document" {
       "ec2:AuthorizeSecurityGroupIngress",
       "ec2:AuthorizeSecurityGroupEgress",
       "ec2:CreateTags",
+      "ssm:*",
       "ssm-guiconnect:*Connection"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097

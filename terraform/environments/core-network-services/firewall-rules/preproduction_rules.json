@@ -446,5 +446,12 @@
     "destination_ip": "${hmpps-preproduction-general-private-subnets}",
     "destination_port": "7073",
     "protocol": "TCP"
+  },
+  "cp_to_mp_laa_preproduction": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "1522",
+    "protocol": "TCP"
   }
 }
