@@ -187,7 +187,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "dms:DeleteEndpoint",
       "states:StopExecution",
       "states:StartExecution", 
-      "states:Send*", # used for reporting
+      "states:Send*", 
       "states:List*",
       "states:Get*",
       "states:Describe",
@@ -200,7 +200,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "events:DeleteRule",
       "events:PutTargets",
       "events:PutEvents",
-      "events:RemoveTargets,
+      "events:RemoveTargets",
       "events:Describe*",
       "events:List*",
       "events:EnableRule",
