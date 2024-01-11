@@ -38,8 +38,8 @@ resource "aws_iam_policy" "cloudwatch_logs_policy" {
           "logs:DescribeLogGroups",
           "logs:GetLogEvents",
           "secretsmanager:GetSecretValue",
-         "secretsmanager:DescribeSecret",
-         "secretsmanager:ListSecrets"
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:ListSecrets"
         ],
         Effect   = "Allow",
         Resource = "arn:aws:logs::${local.environment_management.account_ids["data-platform-apps-and-tools-production"]}:log-group:/aws/events/auth0/*",
