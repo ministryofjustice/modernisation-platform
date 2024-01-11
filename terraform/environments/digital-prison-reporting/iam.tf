@@ -209,7 +209,14 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "ec2:AuthorizeSecurityGroupIngress",
       "ec2:AuthorizeSecurityGroupEgress",
       "ec2:TerminateInstances",
-      "ec2:RunInstances"
+      "ec2:RunInstances",
+      "iam:AttachRolePolicy",
+      "iam:DeleteRolePolicy",
+      "states:TagResource",
+      "states:UntagResource",
+      "states:StartSyncExecution",
+      "logs:PutRetentionPolicy",
+      "logs:DeleteRetentionPolicy"
     ]
     resources = ["*"]
   }
