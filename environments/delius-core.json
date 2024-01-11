@@ -1,5 +1,6 @@
 {
   "account-type": "member",
+  "codeowners" : ["hmpps-migration"],
   "environments": [
     {
       "name": "development",
@@ -12,8 +13,7 @@
         {
           "github_slug": "hmpps-dba",
           "level": "sandbox",
-          "nuke": "exclude",
-          "codeowner": "false"
+          "nuke": "exclude"
         },
         {
           "github_slug": "unilink",
