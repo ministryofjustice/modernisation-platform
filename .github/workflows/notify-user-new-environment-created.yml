@@ -5,6 +5,10 @@ on:
   issues:
     types:
       - closed
+
+permissions:
+  contents: read
+
 jobs:
   send-message:
     runs-on: ubuntu-latest
