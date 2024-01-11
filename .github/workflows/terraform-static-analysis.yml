@@ -25,18 +25,18 @@ jobs:
       with:
         fetch-depth: 0
     - name: Run Analysis
-      uses: ministryofjustice/github-actions/terraform-static-analysis@433c75e44be4eabb0a6ca573951090b9da4901cf # v15.1.0
+      uses: ministryofjustice/github-actions/terraform-static-analysis@7855159a5c3a9bcd658207c894cc4ed22bd35a22 # v15.1.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         scan_type: changed
-        tfsec_trivy: trivy
         trivy_severity: HIGH,CRITICAL
      #   tfsec_exclude: aws-ssm-secret-use-customer-key,github-repositories-private,aws-vpc-no-excessive-port-access,github-repositories-require-signed-commits
         trivy_exclude: aws-ssm-secret-use-customer-key,github-repositories-private,aws-vpc-no-excessive-port-access,github-repositories-require-signed-commits
         checkov_exclude: CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
         tflint_exclude: terraform_unused_declarations
         tflint_call_module_type: none
+        tfsec_trivy: trivy
 
   terraform-static-analysis-full-scan:
     permissions:
