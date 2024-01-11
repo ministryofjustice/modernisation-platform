@@ -12,7 +12,8 @@
         {
           "github_slug": "hmpps-dba",
           "level": "sandbox",
-          "nuke": "exclude"
+          "nuke": "exclude",
+          "codeowner": "false"
         },
         {
           "github_slug": "unilink",
