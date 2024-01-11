@@ -43,6 +43,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "dms:DescribeEndpoints",
       "dms:DescribeEndpointSettings",
       "dms:RebootReplicationInstance",
+      "dms:AddTagsToResource",
       "dynamodb:GetItem",
       "dynamodb:PutItem",
       "datasync:Create*",
