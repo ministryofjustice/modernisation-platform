@@ -7,25 +7,12 @@ data "aws_ssm_parameter" "modernisation_platform_account_id" {
 resource "aws_secretsmanager_secret" "govuk_notify_api_key" {
   count = terraform.workspace == "data-platform-apps-and-tools-production" ? 1 : 0
 
-  name = "gov-uk-notify/production/api-key"
-}
-
-# Add the Gov.UK Notify API key to the secret
-resource "aws_secretsmanager_secret_version" "gov_uk_notify_api_key_version" {
-  count       = terraform.workspace == "data-platform-apps-and-tools-production" ? 1 : 0
-  secret_id   = aws_secretsmanager_secret.govuk_notify_api_key[0].id
-  secret_string = "API_KEY_PLACEHOLDER"
+name = "gov-uk-notify/production/api-key"
 }
 
 # Email secret for Lambda function
 resource "aws_secretsmanager_secret" "email_secret" {
   name = "jml/email"
-}
-
-# Add the email value to the secret
-resource "aws_secretsmanager_secret_version" "email_secret_version" {
-  secret_id     = aws_secretsmanager_secret.email_secret.id
-  secret_string = "EMAIL_VALUE"
 }
 
 # Get secret by arn for environment management
