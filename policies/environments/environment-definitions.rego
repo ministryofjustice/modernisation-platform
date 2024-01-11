@@ -14,7 +14,6 @@ allowed_business_units := [
 ]
 
 allowed_access := [
-  "active-directory-management",
   "administrator",
   "data-engineer",
   "developer",
