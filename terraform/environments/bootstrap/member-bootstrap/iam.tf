@@ -152,7 +152,8 @@ data "aws_iam_policy_document" "member-access" {
       "redshift:*",
       "redshift-data:*",
       "redshift-serverless:*",
-      "resource-explorer-2:*"
+      "resource-explorer-2:*",
+      "transfer:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
