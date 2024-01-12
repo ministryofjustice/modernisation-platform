@@ -8,14 +8,6 @@
           "github_slug": "modernisation-platform",
           "level": "sandbox",
           "nuke": "rebuild"
-        },
-        {
-          "github_slug": "modernisation-platform",
-          "level": "active-directory-management"
-        },
-        {
-          "github_slug": "studio-webops",
-          "level": "active-directory-management"
         }
       ],
       "additional_reviewers": ["astrobinson"]

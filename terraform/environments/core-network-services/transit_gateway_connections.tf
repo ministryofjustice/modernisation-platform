@@ -84,6 +84,7 @@ locals {
   tgw_non_live_data_attachments = {
     for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => v.tags.Name if(
       length(regexall("(?:development-attachment)", v.tags.Name)) > 0 ||
+      length(regexall("(?:sandbox-attachment)", v.tags.Name)) > 0 ||
       length(regexall("(?:test-attachment)", v.tags.Name)) > 0 ||
       length(regexall("(?:-non_live_data-attachment)", v.tags.Name)) > 0
     )

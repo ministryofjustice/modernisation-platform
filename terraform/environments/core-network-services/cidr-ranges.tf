@@ -3,6 +3,7 @@ locals {
     mp-core                     = "10.20.0.0/16"
     mp-development-test         = "10.26.0.0/16"
     mp-preproduction-production = "10.27.0.0/16"
+    mp-sandbox                  = "10.231.0.0/20"
     mp-sandbox-garden           = "10.231.0.0/21"
     mp-sandbox-house            = "10.231.8.0/21"
   }
@@ -73,6 +74,8 @@ locals {
 
     hmpps-preproduction-general-private-subnets = "10.27.0.0/22"
     hmpps-production-general-private-subnets    = "10.27.10.0/22"
+
+    mojo-end-user-devices = "10.0.0.0/8"
   }
 
   all_cidr_ranges = merge(

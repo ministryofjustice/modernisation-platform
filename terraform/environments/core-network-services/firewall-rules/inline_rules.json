@@ -22,7 +22,7 @@
   },
   "mp_sandboxes_to_internet_https": {
     "action": "PASS",
-    "source_ip": "10.231.0.0/20",
+    "source_ip": "${mp-sandbox}",
     "destination_ip": "0.0.0.0/0",
     "destination_port": "443",
     "protocol": "TCP"

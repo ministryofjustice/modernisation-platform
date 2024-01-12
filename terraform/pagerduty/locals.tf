@@ -23,6 +23,11 @@ locals {
       email = "ewa.stempel${local.digital_email_suffix}"
       role  = "user"
     },
+    sukesh_reddygade = {
+      name  = "Sukesh Reddy Gade"
+      email = "sukesh.reddygade${local.digital_email_suffix}"
+      role  = "user"
+    },
     modernisation_platform = {
       name  = "Modernisation Platform Team"
       email = "modernisation-platform${local.digital_email_suffix}"
@@ -46,13 +51,14 @@ locals {
   modernisation_platform_users = merge(local.existing_users, tomap(pagerduty_user.pager_duty_users))
 
   # oncall users local shortcut to make schedules a bit neater
-  david_elliott  = pagerduty_user.pager_duty_users["david_elliott"].id
-  david_sibley   = pagerduty_user.pager_duty_users["david_sibley"].id
-  stephen_linden = data.pagerduty_user.stephen_linden.id
-  edward_proctor = pagerduty_user.pager_duty_users["edward_proctor"].id
-  ewa_stempel    = pagerduty_user.pager_duty_users["ewa_stempel"].id
-  mark_roberts   = data.pagerduty_user.mark_roberts.id
-  aaron_robinson = data.pagerduty_user.aaron_robinson.id
+  david_elliott    = pagerduty_user.pager_duty_users["david_elliott"].id
+  david_sibley     = pagerduty_user.pager_duty_users["david_sibley"].id
+  stephen_linden   = data.pagerduty_user.stephen_linden.id
+  edward_proctor   = pagerduty_user.pager_duty_users["edward_proctor"].id
+  ewa_stempel      = pagerduty_user.pager_duty_users["ewa_stempel"].id
+  mark_roberts     = data.pagerduty_user.mark_roberts.id
+  aaron_robinson   = data.pagerduty_user.aaron_robinson.id
+  sukesh_reddygade = pagerduty_user.pager_duty_users["sukesh_reddygade"].id
 
   tags = {
     business-unit = "Platforms"
