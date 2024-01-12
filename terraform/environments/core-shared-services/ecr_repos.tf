@@ -6,7 +6,7 @@ module "maat_api_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["maat-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["maat-cd-api-development"]
+    local.environment_management.account_ids["maat-development"]
   ]
 
   pull_principals = [
