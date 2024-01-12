@@ -1599,7 +1599,7 @@ resource "pagerduty_slack_connection" "laa_maat_api_nonprod_connection" {
   source_id         = pagerduty_service.laa_maat_api_nonprod.id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
-  channel_id        = "C022CSULB1V"
+  channel_id        = "C06DRV52FEY"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
@@ -1651,7 +1651,7 @@ resource "pagerduty_slack_connection" "laa_maat_api_prod_connection" {
   source_id         = pagerduty_service.laa_maat_api_prod.id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
-  channel_id        = "C022ZQYR30C"
+  channel_id        = "C06DGSWFVNJ"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
