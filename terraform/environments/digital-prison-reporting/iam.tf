@@ -216,7 +216,26 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "states:UntagResource",
       "states:StartSyncExecution",
       "logs:PutRetentionPolicy",
-      "logs:DeleteRetentionPolicy"
+      "logs:DeleteRetentionPolicy",
+      "logs:CreateLogGroup",
+      "logs:DeleteLogGroup",
+      "glue:CreateSecurityConfiguration",
+      "glue:DeleteSecurityConfiguration",
+      "glue:CreateUserDefinedFunction",
+      "glue:DeleteUserDefinedFunction",
+      "glue:CreateJob",
+      "glue:CreateConnection",
+      "glue:CreateRegistry",
+      "glue:CreateSchema",
+      "glue:CreateTable",
+      "glue:CreateTrigger",
+      "glue:DeleteConnection",
+      "glue:DeleteJob",
+      "glue:DeleteRegistry",
+      "glue:DeleteSchema",
+      "glue:DeleteTable",
+      "glue:DeleteTrigger",
+      "iam:TagRole"
     ]
     resources = ["*"]
   }
