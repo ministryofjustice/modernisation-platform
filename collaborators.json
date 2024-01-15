@@ -15,6 +15,10 @@
         {
           "account-name": "testing-test",
           "access": "read-only"
+        },
+        {
+          "account-name": "sprinkler-development",
+          "access": "fleet-manager"
         }
       ]
     },
