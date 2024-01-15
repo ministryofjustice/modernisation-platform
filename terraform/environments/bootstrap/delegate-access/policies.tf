@@ -814,7 +814,7 @@ data "aws_iam_policy_document" "fleet-manager-document" {
     sid    = "FleetManagerAllow"
     effect = "Allow"
     actions = [
-      "ec2:DescribeInstances"
+      "ssm:*"
     ]
     resources = ["*"]
   }
