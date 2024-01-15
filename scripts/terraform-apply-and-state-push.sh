@@ -22,11 +22,15 @@ if [ ! -z "$2" ]; then
   options="$2"
   terraform -chdir="$1" apply -input=false -no-color -auto-approve $options | ./scripts/redact-output.sh
   if [ -f "$1/errored.tfstate" ]; then
+    echo "Running 'terraform -chdir="$1" state push errored.tfstate' ..."
     terraform -chdir="$1" state push errored.tfstate | ./scripts/redact-output.sh
+    exit 0
   fi
 else
   terraform -chdir="$1" apply -input=false -no-color -auto-approve | ./scripts/redact-output.sh
   if [ -f "$1/errored.tfstate" ]; then
+    echo "Running 'terraform -chdir="$1" state push errored.tfstate' ..."
     terraform -chdir="$1" state push errored.tfstate | ./scripts/redact-output.sh
+    exit 0
   fi
 fi
