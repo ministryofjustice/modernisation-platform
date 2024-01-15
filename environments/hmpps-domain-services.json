@@ -6,7 +6,12 @@
       "access": [
         {
           "github_slug": "studio-webops",
-          "level": "sandbox"
+          "level": "sandbox",
+          "nuke": "exclude"
+        },
+        {
+          "github_slug": "csr-application-support",
+          "level": "instance-management"
         }
       ]
     },
@@ -16,6 +21,10 @@
         {
           "github_slug": "studio-webops",
           "level": "developer"
+        },
+        {
+          "github_slug": "csr-application-support",
+          "level": "instance-management"
         }
       ]
     },
@@ -25,6 +34,10 @@
         {
           "github_slug": "studio-webops",
           "level": "developer"
+        },
+        {
+          "github_slug": "csr-application-support",
+          "level": "instance-management"
         }
       ]
     },
@@ -34,6 +47,10 @@
         {
           "github_slug": "studio-webops",
           "level": "developer"
+        },
+        {
+          "github_slug": "csr-application-support",
+          "level": "instance-management"
         }
       ]
     }
