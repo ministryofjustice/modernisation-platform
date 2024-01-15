@@ -34,6 +34,16 @@ See an example file [here](https://user-guide.modernisation-platform.service.jus
 
 > Note - If you are adding an environment to an existing application you can add the new environment block to this file, you do not need to create another. Creating multiple environments in bulk is supported, but creating multiple application accounts is not.
 
+By default the codeowners for the application teams folder in the `modernisation-platform-environments` repository will be the GitHub teams defined in the access block.
+
+You can over write this by defining codeowners as an attribute for that application.
+
+'"codeowners": ["<owner-name>"],'  Replace <owner-name> with a GitHub team such as `modernisation-platform`.
+
+This will restrict code approval to only the GitHub team slugs listed in the 'cdeowners' attribute.
+
+See [#5957] (https://github.com/ministryofjustice/modernisation-platform/pull/5957) for an example of the change required.
+
 #### 2. Update the `expected.rego`
 
 Update the [`policies/environments/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/environments/expected.rego) file with the newly added application name.
