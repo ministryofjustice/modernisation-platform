@@ -33,11 +33,13 @@ Customers will fill out the new-environment template via our public repository [
 See an example file [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#example-json-files).
 
 > Note - If you are adding an environment to an existing application you can add the new environment block to this file, you do not need to create another. Creating multiple environments in bulk is supported, but creating multiple application accounts is not.
+
 There is also a facility to list only the account which will have approval rights on the accounts. To add this limitation you will need to include the line belo immediately after the "account-type" line.
 
-"codeowners": ["hmpps-migration"],
+'"codeowners": ["<owner-name>"],'  Replace <owner-name> with a team such as modernisation-platform. for example. 
 
-This will enable this account to be limited to approval so any others created will not be able to approve their own code. The code in provision-member-directories.sh was amended to limit access.
+This will restrict code approval to only the GitHub team slugs listed in the 'cdeowners' block.. The code in provision-member-directories.sh was amended to limit access.
+
 See [#5957] (https://github.com/ministryofjustice/modernisation-platform/pull/5957) for an example of the change required.
 
 #### 2. Update the `expected.rego`
