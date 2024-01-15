@@ -814,7 +814,9 @@ data "aws_iam_policy_document" "fleet-manager-document" {
     sid    = "FleetManagerAllow"
     effect = "Allow"
     actions = [
-      "ssm:*"
+      "ssm:DescribeSessions",
+      "ec2:DescribeInstances",
+      "ec2:DescribeTags"
     ]
     resources = ["*"]
   }
@@ -822,7 +824,8 @@ data "aws_iam_policy_document" "fleet-manager-document" {
     sid    = "FleetManagerDeny"
     effect = "Deny"
     actions = [
-      "ssm:StartSession"
+      "ssm:StartSession",
+      "ssm:ResumeSession"
     ]
     resources = ["*"]
   }
