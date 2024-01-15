@@ -76,6 +76,8 @@ data "aws_iam_policy_document" "member-access" {
       "ds:Update*",
       "dynamodb:*",
       "ebs:*",
+      "ec2:CreateVpcEndpoint",
+      "ec2:DeleteVpcEndpoints",
       "ec2:CreateVpcEndpointServiceConfiguration",
       "ec2:DeleteVpcEndpointServiceConfigurations",
       "ec2:ModifyVpcEndpointServiceConfiguration",
