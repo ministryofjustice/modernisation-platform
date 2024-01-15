@@ -8,7 +8,8 @@ allowed_access := [
   "security-audit",
   "sandbox",
   "migration",
-  "instance-management"
+  "instance-management",
+  "fleet-manager"
 ]
 
 deny[msg] {
