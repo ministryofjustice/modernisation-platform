@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: AWS Network Firewall
-last_reviewed_on: 2023-07-24
+last_reviewed_on: 2024-01-11
 review_in: 6 months
 ---
 
@@ -22,10 +22,10 @@ To learn more about AWS firewall please follow the links bellow
 
 Rules can be amended by creating a pull request against the modernisation-platform repo and amending one of the following four file names in the terraform/environments/core-network-services directory.
 
-- [development_rules.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/development_rules.json)
-- [test_rules.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/test_rules.json)
-- [preproduction_rules.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/preproduction_rules.json)
-- [production_rules.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/production_rules.json)
+- [development_rules.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/firewall-rules/development_rules.json)
+- [test_rules.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/firewall-rules/test_rules.json)
+- [preproduction_rules.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/firewall-rules/preproduction_rules.json)
+- [production_rules.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/firewall-rules/production_rules.json)
 
 The rules files are broken down by environment and not account to make it easier to keep track of changes, see below our CIDR ranges to help with forming new rules.
 
@@ -56,8 +56,8 @@ These rules are formatted in json format and a text example is shown below.
 We make use of FQDN-based inspection on the `HTTP_HOST` or `TLS_SNI` header values of packets. This allows us to permit traffic based on domain names, rather than combinations of IP address and destination port.
 This is primarily of interest to customers attempting to reach HTTP endpoints on the internet from resources in their Modernisation Platform accounts.
 
-- [Centralised FQDN Rules](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/fqdn_rules.json)
-- [Inline FQDN Rules](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/inline_fqdn_rules.json)
+- [Centralised FQDN Rules](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/firewall-rules/fqdn_rules.json)
+- [Inline FQDN Rules](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/firewall-rules/inline_rules.json)
 
 Below is an example of the file contents. You can raise a pull request to add domains to this list. This can be either the full DNS name (eg. `example.com`) or for the root domain and any sub domains prefix a full stop (eg. `.example.com`).
 
