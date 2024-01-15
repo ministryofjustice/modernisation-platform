@@ -34,7 +34,9 @@ See an example file [here](https://user-guide.modernisation-platform.service.jus
 
 > Note - If you are adding an environment to an existing application you can add the new environment block to this file, you do not need to create another. Creating multiple environments in bulk is supported, but creating multiple application accounts is not.
 
-There is also a facility to list only the account which will have approval rights on the accounts. To add this limitation you will need to include the line belo immediately after the "account-type" line.
+By default the codeowners for the application teams folder in the `modernisation-platform-environments` repository will be the GitHub teams defined in the access block.
+
+You can over write this by defining codeowners as an attribute for that application.
 
 '"codeowners": ["<owner-name>"],'  Replace <owner-name> with a team such as modernisation-platform. for example. 
 
