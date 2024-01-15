@@ -799,3 +799,34 @@ data "aws_iam_policy_document" "reporting-operations" {
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
 }
+
+resource "aws_iam_policy" "fleet-manager-policy" {
+  provider = aws.workspace
+  name     = "fleet_manager_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.fleet-manager-document.json
+}
+
+
+data "aws_iam_policy_document" "fleet-manager-document" {
+  override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
+  statement {
+    sid    = "FleetManagerAllow"
+    effect = "Allow"
+    actions = [
+      "ssm:DescribeSessions",
+      "ec2:DescribeInstances",
+      "ec2:DescribeTags"
+    ]
+    resources = ["*"]
+  }
+  statement {
+    sid    = "FleetManagerDeny"
+    effect = "Deny"
+    actions = [
+      "ssm:StartSession",
+      "ssm:ResumeSession"
+    ]
+    resources = ["*"]
+  }
+}
