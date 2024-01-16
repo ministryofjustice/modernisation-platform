@@ -50,6 +50,7 @@ data "aws_iam_policy_document" "member-access" {
       "codedeploy:*",
       "codepipeline:*",
       "cognito:*",
+      "cognito-idp:*",
       "datasync:*",
       "dbqms:*",
       "dlm:*",
