@@ -183,6 +183,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "cloudwatch:ListTagsForResource",
       "codebuild:ImportSourceCredentials",
       "codebuild:PersistOAuthToken",
+      "cur:DescribeReportDefinitions",
       "ds:*Tags*",
       "ds:*Snapshot*",
       "ds:ResetUserPassword",
