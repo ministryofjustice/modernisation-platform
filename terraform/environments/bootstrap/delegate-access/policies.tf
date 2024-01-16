@@ -423,6 +423,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "codebuild:PersistOAuthToken",
       "cognito-identity:*",
       "cognito-idp:*",
+      "cur:DescribeReportDefinitions",
       "datasync:*",
       "dbqms:*",
       "dlm:*",
