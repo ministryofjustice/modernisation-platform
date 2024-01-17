@@ -78,6 +78,10 @@ data "aws_iam_policy_document" "member-access" {
       "ds:Update*",
       "dynamodb:*",
       "ebs:*",
+      "ec2:CreateVpc",
+      "ec2:DeleteVpc",
+      "ec2:CreateSubnet",
+      "ec2:DeleteSubnet",
       "ec2:CreateVpcEndpoint",
       "ec2:DeleteVpcEndpoints",
       "ec2:CreateVpcEndpointServiceConfiguration",
@@ -165,8 +169,6 @@ data "aws_iam_policy_document" "member-access" {
   statement {
     effect = "Deny"
     actions = [
-      "ec2:CreateVpc",
-      "ec2:CreateSubnet",
       "ec2:CreateVpcPeeringConnection",
       "iam:AddClientIDToOpenIDConnectProvider",
       "iam:AddUserToGroup",
