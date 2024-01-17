@@ -818,8 +818,8 @@ resource "aws_iam_policy" "fleet-manager-policy" {
 
 
 data "aws_iam_policy_document" "fleet-manager-document" {
-  #checkov:skip=CKV_AWS_111
-  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+  #checkov:skip=CKV_AWS_111 Needs to access multiple resources and the policy is attached to a role that is scoped to a specific account
+  #checkov:skip=CKV_AWS_356 Needs to access multiple resources and the policy is attached to a role that is scoped to a specific account
   override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
     sid    = "FleetManagerAllow"
