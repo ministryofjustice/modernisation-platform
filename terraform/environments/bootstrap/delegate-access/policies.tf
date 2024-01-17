@@ -824,17 +824,11 @@ data "aws_iam_policy_document" "fleet-manager-document" {
     effect = "Allow"
     actions = [
       "ssm:DescribeSessions",
+      "ec2:DescribeTags",
       "ec2:DescribeInstances",
-      "ec2:DescribeTags"
-    ]
-    resources = ["*"]
-  }
-  statement {
-    sid    = "FleetManagerDeny"
-    effect = "Deny"
-    actions = [
-      "ssm:StartSession",
-      "ssm:ResumeSession"
+      "ssm-guiconnect:StartConnection",
+      "ssm-guiconnect:GetConnection",
+      "ssm:StartSession"
     ]
     resources = ["*"]
   }
