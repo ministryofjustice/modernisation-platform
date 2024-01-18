@@ -17,5 +17,14 @@ if [ -z "$1" ]; then
   echo "Unsure where to run terraform, exiting"
   exit 1
 else
+  echo "Running 'terraform -chdir="$1" state push errored.tfstate'..."
   terraform -chdir="$1" state push errored.tfstate | ./scripts/redact-output.sh
+  if [ ! -z "$2" ]; then
+    options="$2"
+    echo "Running 'terraform -chdir="$1" plan -input=false -no-color $options'..."
+    terraform -chdir="$1" plan -input=false -no-color $options | ./scripts/redact-output.sh
+  else
+    echo "Running 'terraform -chdir="$1" plan -input=false -no-color'..."
+    terraform -chdir="$1" plan -input=false -no-color | ./scripts/redact-output.sh
+  fi
 fi

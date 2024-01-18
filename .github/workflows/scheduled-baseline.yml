@@ -75,7 +75,11 @@ jobs:
       - run: bash scripts/terraform-apply.sh terraform/environments/bootstrap/delegate-access
       - name: Persist terraform state to backend
         if: ${{ failure() && hashFiles('terraform/environments/bootstrap/delegate-access/errored.tfstate') != '' }}
-        run: bash scripts/terraform-state-push.sh terraform/environments/bootstrap/delegate-access
+        run: |
+          bash scripts/terraform-state-push.sh terraform/environments/bootstrap/delegate-access
+          if [ $? -eq 0 ]; then
+            echo "STATE_PUSH_SUCCESSFUL=true" >> $GITHUB_ENV
+          fi
       - name: Slack failure notification
         uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
         with:
@@ -84,9 +88,10 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-        if: ${{ failure() }}
+        if: ${{ failure() && !env.STATE_PUSH_SUCCESSFUL }}
     env:
      TF_WORKSPACE: ${{ matrix.workspaces }}
+     STATE_PUSH_SUCCESSFUL: false
 
   secure-baselines:
     strategy:
@@ -113,7 +118,11 @@ jobs:
       - run: bash scripts/terraform-apply.sh terraform/environments/bootstrap/secure-baselines
       - name: Persist terraform state to backend
         if: ${{ failure() && hashFiles('terraform/environments/bootstrap/secure-baselines/errored.tfstate') != '' }}
-        run: bash scripts/terraform-state-push.sh terraform/environments/bootstrap/secure-baselines
+        run: |
+          bash scripts/terraform-state-push.sh terraform/environments/bootstrap/secure-baselines
+          if [ $? -eq 0 ]; then
+            echo "STATE_PUSH_SUCCESSFUL=true" >> $GITHUB_ENV
+          fi
       - name: Slack failure notification
         uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
         with:
@@ -122,9 +131,10 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-        if: ${{ failure() }}
+        if: ${{ failure() && !env.STATE_PUSH_SUCCESSFUL }}
     env:
      TF_WORKSPACE: ${{ matrix.workspaces }}
+     STATE_PUSH_SUCCESSFUL: false
 
   single-sign-on:
     strategy:
@@ -153,7 +163,11 @@ jobs:
       - run: bash scripts/terraform-apply.sh terraform/environments/bootstrap/single-sign-on
       - name: Persist terraform state to backend
         if: ${{ failure() && hashFiles('terraform/environments/bootstrap/single-sign-on/errored.tfstate') != '' }}
-        run: bash scripts/terraform-state-push.sh terraform/environments/bootstrap/single-sign-on
+        run: |
+          bash scripts/terraform-state-push.sh terraform/environments/bootstrap/single-sign-on
+          if [ $? -eq 0 ]; then
+            echo "STATE_PUSH_SUCCESSFUL=true" >> $GITHUB_ENV
+          fi
       - name: Slack failure notification
         uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
         with:
@@ -162,9 +176,10 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-        if: ${{ failure() }}
+        if: ${{ failure() && !env.STATE_PUSH_SUCCESSFUL }}
     env:
      TF_WORKSPACE: ${{ matrix.workspaces }}
+     STATE_PUSH_SUCCESSFUL: false
 
   member-bootstrap:
     strategy:
@@ -191,7 +206,11 @@ jobs:
       - run: bash scripts/terraform-apply.sh terraform/environments/bootstrap/member-bootstrap
       - name: Persist terraform state to backend
         if: ${{ failure() && hashFiles('terraform/environments/bootstrap/member-bootstrap/errored.tfstate') != '' }}
-        run: bash scripts/terraform-state-push.sh terraform/environments/bootstrap/member-bootstrap
+        run: |
+          bash scripts/terraform-state-push.sh terraform/environments/bootstrap/member-bootstrap
+          if [ $? -eq 0 ]; then
+            echo "STATE_PUSH_SUCCESSFUL=true" >> $GITHUB_ENV
+          fi
       - name: Slack failure notification
         uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
         with:
@@ -200,9 +219,10 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-        if: ${{ failure() }}
+        if: ${{ failure() && !env.STATE_PUSH_SUCCESSFUL }}
     env:
      TF_WORKSPACE: ${{ matrix.workspaces }}
+     STATE_PUSH_SUCCESSFUL: false
 
   update-permission-sets:
     runs-on: ubuntu-latest
