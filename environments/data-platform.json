@@ -1,5 +1,6 @@
 {
   "account-type": "member",
+  "codeowners": ["data-platform-apps-and-tools", "data-platform-labs"],
   "environments": [
     {
       "name": "development",
