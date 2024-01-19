@@ -76,5 +76,7 @@
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
     "owner": "digital-studio-operations-team@digital.justice.gov.uk: probation-webops@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": ["ministryofjustice/hmpps-delius-operational-automation"]
+  "github-oidc-team-repositories": [
+    "ministryofjustice/hmpps-delius-operational-automation"
+  ]
 }
