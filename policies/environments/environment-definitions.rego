@@ -20,6 +20,7 @@ allowed_access := [
   "instance-management",
   "migration",
   "mwaa-user",
+  "powerbi-user",
   "read-only",
   "reporting-operations",
   "sandbox",

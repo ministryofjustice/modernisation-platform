@@ -24,6 +24,10 @@
         {
           "github_slug": "data-platform-audit-and-security",
           "level": "security-audit"
+        },
+        {
+          "github_slug": "powerbi-team",
+          "level": "read-only"
         }
       ]
     }
