@@ -31,6 +31,7 @@ expected :=
     "delius-core",
     "delius-iaps",
     "delius-jitbit",
+    "delius-mis",
     "digital-prison-reporting",
     "electronic-monitoring-data",
     "equip",
