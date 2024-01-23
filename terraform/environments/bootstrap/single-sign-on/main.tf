@@ -10,6 +10,15 @@ locals {
 
 }
 
+# Create AWS SSO permission sets
+
+resource "aws_ssoadmin_permission_set" "test" {
+  name             = "test"
+  description      = "test"
+  instance_arn     = local.sso_instance_arn
+  tags             = {}
+}
+
 # Get AWS SSO permission sets
 data "aws_ssoadmin_permission_set" "administrator" {
   provider = aws.sso-management
