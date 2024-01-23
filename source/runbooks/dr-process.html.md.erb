@@ -1,0 +1,36 @@
+---
+owner_slack: "#modernisation-platform"
+title: Disaster Recovery Process
+last_reviewed_on: 2024-01-24
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Disaster Recovery Types
+
+If you are reading this, I hope its just to update the page, and not to follow it.
+
+- London has been lost but returning soon. [Click here]().
+- London has been lost, and services need to migrate. [Click here]().
+
+### Cross Region Infrastructure in the Platform
+
+- S3 - _Currently replicating to eu-west-1_
+- KMS keys - Need to be replicated
+- Secrets Manager - Replicated to eu-west-1	
+vpc
+firewall
+transit gateway
+nacls
+subnets
+iam policys - Not region specific
+dns
+
+
+## References
+* [https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html)
+* [https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf)
+* [https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins)
+* [https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf)
+* [https://github.com/99designs/aws-vault](https://github.com/99designs/aws-vault)
