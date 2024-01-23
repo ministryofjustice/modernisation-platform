@@ -12,6 +12,7 @@
           "oasys-production",
           "delius-iaps-production",
           "delius-jitbit-production",
+          "delius-mis-production",
           "nomis-combined-reporting-production",
           "nomis-data-hub-production",
           "hmpps-intelligence-management-production",
