@@ -33,7 +33,7 @@ This is our architecture decision log, made during the design and build of the M
 1. ✅ [Use Member CICD Access for Configuration Management](0027-use-member-cicd-access-for-configuration-management.md)
 1. ✅ [Expand the scope of the platform](0028-expand-the-scope-of-the-platform.md)
 1. ♻ [How we deploy shared Active Directory controllers](0029-how-we-deploy-shared-active-directory-controllers.md)
-1. 🤔 [Cross environment network access](0030-cross-environment-network-access.md)
+1. ✅ [Cross environment network access](0030-cross-environment-network-access.md)
 
 ## Statuses
 

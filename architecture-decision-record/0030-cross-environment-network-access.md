@@ -4,7 +4,7 @@ Date: 2024-01-22
 
 ## Status
 
-🤔 Proposed
+✅ Proposed
 
 ## Context
 
@@ -14,13 +14,12 @@ This can be done relatively simply when both accounts are part of the same busin
 However, this is more complicated when applications are in different business units or environments. The Modernisation Platform is not configured to allow
 east-west traffic flows, which prevents this level of network access.
 
-
 ## Decision
 
 Customers will be free to make their own choices when using applications in the same business unit and environment. EG, directly querying an RDS database
 or calling an API endpoint.
 
-Customers should use cloud-native approaches when using applications in different business units or accounts. EG, sharing RDS database or EC snapshots
+Customers will use cloud-native approaches when using applications in different business units or accounts. EG, sharing RDS database or EC snapshots
 between accounts, or creating AWS PrivateLink endpoints to allow cross-account access to APIs.
 
 ## Consequences
