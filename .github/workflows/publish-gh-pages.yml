@@ -32,7 +32,7 @@ jobs:
         run: |
           /scripts/compile-and-create-artifact.sh
       - name: Upload artifact to be published
-        uses: actions/upload-artifact@694cdabd8bdb0f10b2cea11669e1bf5453eed0a6 # v3.1.0
+        uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v3.1.0
         with:
           name: github-pages
           path: artifact.tar
