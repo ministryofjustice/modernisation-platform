@@ -10,15 +10,6 @@ locals {
 
 }
 
-# Create AWS SSO permission sets
-
-resource "aws_ssoadmin_permission_set" "test" {
-  name             = "test"
-  description      = "test"
-  instance_arn     = local.sso_instance_arn
-  tags             = {}
-}
-
 # Get AWS SSO permission sets
 data "aws_ssoadmin_permission_set" "administrator" {
   provider = aws.sso-management
@@ -41,33 +32,33 @@ data "aws_ssoadmin_permission_set" "developer" {
   name         = "modernisation-platform-developer"
 }
 
-data "aws_ssoadmin_permission_set" "platform_engineer" {
-  provider = aws.sso-management
+# data "aws_ssoadmin_permission_set" "platform_engineer" {
+#   provider = aws.sso-management
 
-  instance_arn = local.sso_instance_arn
-  name         = "ModernisationPlatformEngineer"
-}
+#   instance_arn = local.sso_instance_arn
+#   name         = "ModernisationPlatformEngineer"
+# }
 
-data "aws_ssoadmin_permission_set" "sandbox" {
-  provider = aws.sso-management
+# data "aws_ssoadmin_permission_set" "sandbox" {
+#   provider = aws.sso-management
 
-  instance_arn = local.sso_instance_arn
-  name         = "modernisation-platform-sandbox"
-}
+#   instance_arn = local.sso_instance_arn
+#   name         = "modernisation-platform-sandbox"
+# }
 
-data "aws_ssoadmin_permission_set" "migration" {
-  provider = aws.sso-management
+# data "aws_ssoadmin_permission_set" "migration" {
+#   provider = aws.sso-management
 
-  instance_arn = local.sso_instance_arn
-  name         = "modernisation-platform-migration"
-}
+#   instance_arn = local.sso_instance_arn
+#   name         = "modernisation-platform-migration"
+# }
 
-data "aws_ssoadmin_permission_set" "instance-management" {
-  provider = aws.sso-management
+# data "aws_ssoadmin_permission_set" "instance-management" {
+#   provider = aws.sso-management
 
-  instance_arn = local.sso_instance_arn
-  name         = "mp-instance-management"
-}
+#   instance_arn = local.sso_instance_arn
+#   name         = "mp-instance-management"
+# }
 
 data "aws_ssoadmin_permission_set" "security_audit" {
   provider = aws.sso-management
@@ -83,26 +74,26 @@ data "aws_ssoadmin_permission_set" "read_only" {
   name         = "ReadOnlyAccess"
 }
 
-data "aws_ssoadmin_permission_set" "data_engineer" {
-  provider = aws.sso-management
+# data "aws_ssoadmin_permission_set" "data_engineer" {
+#   provider = aws.sso-management
 
-  instance_arn = local.sso_instance_arn
-  name         = "modernisation-platform-data-eng"
-}
+#   instance_arn = local.sso_instance_arn
+#   name         = "modernisation-platform-data-eng"
+# }
 
-data "aws_ssoadmin_permission_set" "reporting-operations" {
-  provider = aws.sso-management
+# data "aws_ssoadmin_permission_set" "reporting-operations" {
+#   provider = aws.sso-management
 
-  instance_arn = local.sso_instance_arn
-  name         = "mp-reporting-operations"
-}
+#   instance_arn = local.sso_instance_arn
+#   name         = "mp-reporting-operations"
+# }
 
-data "aws_ssoadmin_permission_set" "mwaa_user" {
-  provider = aws.sso-management
+# data "aws_ssoadmin_permission_set" "mwaa_user" {
+#   provider = aws.sso-management
 
-  instance_arn = local.sso_instance_arn
-  name         = "modernisation-platform-mwaa-user"
-}
+#   instance_arn = local.sso_instance_arn
+#   name         = "modernisation-platform-mwaa-user"
+# }
 
 # Get Identity Store groups
 data "aws_identitystore_group" "platform_admin" {
