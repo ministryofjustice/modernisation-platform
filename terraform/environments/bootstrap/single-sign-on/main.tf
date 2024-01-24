@@ -10,6 +10,19 @@ locals {
 
 }
 
+# Get MP-specific AWS SSO permission sets
+
+data "terraform_remote_state" "mp-sso-permissions-sets" {
+  backend = "s3"
+  config = {
+    acl     = "bucket-owner-full-control"
+    bucket  = "modernisation-platform-terraform-state"
+    key     = "single-sign-on/terraform.tfstate"
+    region  = "eu-west-2"
+    encrypt = "true"
+  }
+}
+
 # Get AWS SSO permission sets
 data "aws_ssoadmin_permission_set" "administrator" {
   provider = aws.sso-management
