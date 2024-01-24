@@ -58,7 +58,6 @@ jobs:
         with:
           scan-type: 'fs'
           scan-ref: '.'
-          ignore-unfixed: true
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'

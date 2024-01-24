@@ -1,0 +1,9 @@
+vulnerabilities:
+
+misconfigurations:
+  - id: AVD-AWS-0031
+
+secrets:
+
+
+licenses:
