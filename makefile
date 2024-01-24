@@ -1,4 +1,4 @@
-IMAGE := ministryofjustice/tech-docs-github-pages-publisher:v2
+IMAGE := ministryofjustice/tech-docs-github-pages-publisher:v3.0.1
 
 # Use this to run a local instance of the documentation site, while editing
 # `make -f makefile` will run this container through docker
