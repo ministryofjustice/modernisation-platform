@@ -146,7 +146,7 @@ resource "aws_ssoadmin_account_assignment" "platform_engineer" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.aws_ssoadmin_permission_set.platform_engineer.arn
+  permission_set_arn = aws_ssoadmin_permission_set.platform_engineer.arn
 
   principal_id   = data.aws_identitystore_group.platform_admin.group_id
   principal_type = "GROUP"
@@ -215,7 +215,7 @@ resource "aws_ssoadmin_account_assignment" "sandbox" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.aws_ssoadmin_permission_set.sandbox.arn
+  permission_set_arn = aws_ssoadmin_permission_set.sandbox.arn
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
@@ -238,7 +238,7 @@ resource "aws_ssoadmin_account_assignment" "migration" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.aws_ssoadmin_permission_set.migration.arn
+  permission_set_arn = aws_ssoadmin_permission_set.migration.arn
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
@@ -285,7 +285,7 @@ resource "aws_ssoadmin_account_assignment" "instance-management" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.aws_ssoadmin_permission_set.instance-management.arn
+  permission_set_arn = aws_ssoadmin_permission_set.instance-management.arn
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
@@ -354,7 +354,7 @@ resource "aws_ssoadmin_account_assignment" "data_engineer" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.aws_ssoadmin_permission_set.data_engineer.arn
+  permission_set_arn = aws_ssoadmin_permission_set.data_engineer.arn
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
@@ -377,7 +377,7 @@ resource "aws_ssoadmin_account_assignment" "reporting-operations" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.aws_ssoadmin_permission_set.reporting-operations.arn
+  permission_set_arn = aws_ssoadmin_permission_set.reporting-operations.arn
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
@@ -400,7 +400,7 @@ resource "aws_ssoadmin_account_assignment" "mwaa_user" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.aws_ssoadmin_permission_set.mwaa_user.arn
+  permission_set_arn = aws_ssoadmin_permission_set.mwaa_user.arn
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
