@@ -295,7 +295,7 @@ resource "aws_iam_role" "lambda_invoke_role_policy" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "example_attachment" {
+resource "aws_iam_role_policy_attachment" "lambda_invoke_policy_attachment" {
   role       = aws_iam_role.lambda_invoke_role_policy.name
   policy_arn = aws_iam_policy.lambda_invoke_policy.arn
 }
