@@ -45,5 +45,5 @@ Our `core-network-services` VPCs contain [Network Firewall](../concepts/networki
 endpoints, [NAT Gateways](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html), and Internet Gateways.
 
 Traffic enters from the Transit Gateway attachment, is routed through the Network Firewall where it is statefully 
-inspected. HTTP traffic is permitted only where it matches a [defined list of domains](../../terraform/environments/core-network-services/firewall-rules/inline_fqdn_rules.json).
+inspected. HTTP traffic is permitted only where it matches a [defined list of domains](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/firewall-rules/fqdn_rules.json).
 Permitted traffic is then routed through a NAT gateway, and from there out to the internet via the Internet Gateway.
