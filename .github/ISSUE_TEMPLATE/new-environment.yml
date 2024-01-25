@@ -37,6 +37,14 @@ body:
       value:
     validations:
       required: true
+  - type: input
+    id: codeowners
+    attributes:
+      label: GitHub "codeowner" team slug
+      description: By default all members of the github team specified can access the environments and approve pull requests/merge in to production. If you would like to seperate the permissions so that a different github team acts as a "codeowner" then specify this here.
+      value:
+    validations:
+      required: false
   - type: checkboxes
     id: environment
     attributes:
