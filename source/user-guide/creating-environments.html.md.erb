@@ -32,6 +32,12 @@ Users who are not part of the MoJ GitHub organisation will need to be added as c
 
 If you wish to add additional deployment reviewers from outside your GitHub team you can specfiy these per an environment in the application.json file (See: "additional_reviewers" in [Another example](#another-example) for an example).
 
+### GitHub "codeowner" team slug
+
+By default members of the github team/s specified can both access the aws environments which are created and approve PRs to release changes in to these environemnts.
+
+If required you can seperate the permissions so that a different github team acts as a "codeowner", this way PRs can require a review from this team before changes are released.
+
 ### Access
 
 This is the level of access for the GitHub team to the Modernisation Platform.
@@ -168,6 +174,7 @@ Here are some examples of the environments JSON file that the Modernisation Plat
 ### Schema
 - `account-type` determines if this is a core modernisation platform account or a user member account
 - `environments` should be an array of objects for environments required. If the environment is `production`, retention periods, backup frequency, and similar will be different compared to non-production environments
+- `codeowners` should be a list of github slugs for teams who will be required to review code changes before they are released to environments
 - the `name` key and `access` object are required, see: [Another example](#another-example)
 - the `nuke` key is optional and is only read if the `access.level` is `sandbox`
 - `tags` should be an object of the mandatory tags defined in the MoJ [Tagging Guidance](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tagging-your-infrastructure). You can omit `is-production` as we infer this from the environment name
@@ -179,6 +186,7 @@ Here are some examples of the environments JSON file that the Modernisation Plat
 ```json
 {
   "account-type": "",
+  "codeowners": [""],
   "environments": [
     {
       "name": ""
