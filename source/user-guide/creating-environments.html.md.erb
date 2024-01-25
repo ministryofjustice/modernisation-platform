@@ -174,7 +174,7 @@ Here are some examples of the environments JSON file that the Modernisation Plat
 ### Schema
 - `account-type` determines if this is a core modernisation platform account or a user member account
 - `environments` should be an array of objects for environments required. If the environment is `production`, retention periods, backup frequency, and similar will be different compared to non-production environments
-- `codeowners` is an optional list of github slugs if you want specific teams to review code changes before they are released to environments 
+- `codeowners` is an optional list of github slugs if you want specific teams to review code changes before they are released into environments 
 - the `name` key and `access` object are required, see: [Another example](#another-example)
 - the `nuke` key is optional and is only read if the `access.level` is `sandbox`
 - `tags` should be an object of the mandatory tags defined in the MoJ [Tagging Guidance](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tagging-your-infrastructure). You can omit `is-production` as we infer this from the environment name
