@@ -398,13 +398,6 @@
     "destination_port": "1434",
     "protocol": "UDP"
   },
-  "dom1_dcs_to_planetfm_production_9389_tcp": {
-    "action": "PASS",
-    "source_ip": "${dom1-domain-controllers}",
-    "destination_ip": "${hmpps-production-general-private-subnets}",
-    "destination_port": "9389",
-    "protocol": "TCP"
-  },
   "mojo_to_csr_production_http": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
@@ -522,6 +515,13 @@
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${hmpps-production-general-private-subnets}",
     "destination_port": "7073",
+    "protocol": "TCP"
+  },
+  "dom1_dcs_to_planetfm_production_9389_tcp": {
+    "action": "PASS",
+    "source_ip": "${dom1-domain-controllers}",
+    "destination_ip": "${hmpps-production-general-private-subnets}",
+    "destination_port": "9389",
     "protocol": "TCP"
   }
 }

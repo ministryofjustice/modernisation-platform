@@ -405,13 +405,6 @@
     "destination_port": "1434",
     "protocol": "UDP"
   },
-  "dom1_dcs_to_planetfm_preproduction_9389_tcp": {
-    "action": "PASS",
-    "source_ip": "${dom1-domain-controllers}",
-    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
-    "destination_port": "9389",
-    "protocol": "TCP"
-  },
   "mojo_to_planetfm_preproduction_netbios_137_udp": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
@@ -459,6 +452,13 @@
     "source_ip": "${cloud-platform}",
     "destination_ip": "${laa-preproduction}",
     "destination_port": "1522",
+    "protocol": "TCP"
+  },
+  "dom1_dcs_to_planetfm_preproduction_9389_tcp": {
+    "action": "PASS",
+    "source_ip": "${dom1-domain-controllers}",
+    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_port": "9389",
     "protocol": "TCP"
   }
 }
