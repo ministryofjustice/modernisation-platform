@@ -22,17 +22,6 @@ module "instance_scheduler" {
   timeout      = 600
   tracing_mode = "Active"
 
-  allowed_triggers = {
-    AllowStopExecutionFromCloudWatch = {
-      principal  = "events.amazonaws.com"
-      source_arn = aws_cloudwatch_event_rule.instance_scheduler_weekly_stop_at_night.arn
-    }
-    AllowStartExecutionFromCloudWatch = {
-      principal  = "events.amazonaws.com"
-      source_arn = aws_cloudwatch_event_rule.instance_scheduler_weekly_start_in_the_morning.arn
-    }
-  }
-
   sns_topic_on_failure = aws_sns_topic.on_failure.arn
   sns_topic_on_success = aws_sns_topic.on_success.arn
 
