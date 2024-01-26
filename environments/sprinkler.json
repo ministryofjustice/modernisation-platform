@@ -8,6 +8,11 @@
           "github_slug": "modernisation-platform",
           "level": "sandbox",
           "nuke": "rebuild"
+        },
+        {
+          "github_slug": "modernisation-platform-security",
+          "level": "instance-management",
+          "nuke": "rebuild"
         }
       ],
       "additional_reviewers": ["astrobinson"]

@@ -272,7 +272,7 @@ resource "aws_iam_policy" "lambda_invoke_policy" {
       {
         Action   = ["lambda:InvokeFunction"]
         Effect   = "Allow"
-        Resource = "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:function:*"
+        Resource = "arn:aws:lambda:${data.aws_region.current_region.name}:${local.environment_management.account_ids["core-shared-services-production"]}:function:*"
       }
     ]
   })
@@ -287,7 +287,7 @@ resource "aws_iam_role" "lambda_invoke_role_policy" {
       {
         "Effect" : "Allow",
         "Principal" : {
-          "AWS" : "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:root"
+          "Service" : "scheduler.amazonaws.com"
         },
         "Action" : "sts:AssumeRole"
       }
