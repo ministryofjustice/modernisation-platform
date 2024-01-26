@@ -10,7 +10,7 @@
           "nuke": "rebuild"
         },
         {
-          "github_slug": "security",
+          "github_slug": "modernisation-platform-security",
           "level": "instance-management",
           "nuke": "rebuild"
         }
