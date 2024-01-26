@@ -40,8 +40,8 @@ body:
   - type: input
     id: codeowners
     attributes:
-      label: GitHub "codeowner" team slug
-      description: By default members of the github team/s specified can both access the aws environments and approve pull requests to release changes. If you would like to seperate the permissions so that a different github team acts as a "codeowner" to review changes before they are released then specify this here.
+      label: GitHub code owner team slug
+      description: By default members of the github team/s specified can both access the aws environments and approve pull requests to release changes. If you would like to seperate the permissions so that a different github team acts as a code owner to review changes before they are released then specify this here.
       value:
     validations:
       required: false
