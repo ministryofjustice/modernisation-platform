@@ -456,8 +456,8 @@
   },
   "dom1_dcs_to_planetfm_preproduction_9389_tcp": {
     "action": "PASS",
-    "source_ip": "${dom1-domain-controllers}",
-    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
+    "source_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_ip": "${dom1-domain-controllers}",
     "destination_port": "9389",
     "protocol": "TCP"
   }
