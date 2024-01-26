@@ -57,7 +57,7 @@ locals {
   security = [
     "joelefejuku",
     "isaacthomasMOJ",
-    "rajeshdandamudi"
+    "rajeshdandamudi" 
   ]
 
   # Members of the long term storage account team to acccess that account
