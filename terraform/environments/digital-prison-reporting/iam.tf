@@ -121,6 +121,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "glue:BatchStopJobRun",
       "glue:StopWorkflowRun",
       "glue:UpdateJob",
+      "glue:TagResource",
       "glue:GetSecurityConfiguration",
       "glue:GetTags",
       "iam:getRole",
