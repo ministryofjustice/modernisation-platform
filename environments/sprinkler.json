@@ -13,7 +13,7 @@
           "github_slug": "security",
           "level": "instance-management",
           "nuke": "rebuild"
-        } 
+        }
       ],
       "additional_reviewers": ["astrobinson"]
     }
