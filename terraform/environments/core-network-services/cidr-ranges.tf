@@ -20,6 +20,7 @@ locals {
     atos_arkc_ras                    = "10.175.0.0/16" # for DOM1 devices connected to Cisco RAS VPN
     atos_arkf_ras                    = "10.176.0.0/16" # for DOM1 devices connected to Cisco RAS VPN
     cloud-platform                   = "172.20.0.0/16"
+    dom1-domain-controllers          = "10.172.68.146/29"
     global-protect                   = "10.184.0.0/16"
     i2n                              = "10.110.0.0/16"
     moj-core-azure-1                 = "10.50.25.0/27"

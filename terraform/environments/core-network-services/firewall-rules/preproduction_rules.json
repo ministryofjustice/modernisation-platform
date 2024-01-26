@@ -453,5 +453,12 @@
     "destination_ip": "${laa-preproduction}",
     "destination_port": "1522",
     "protocol": "TCP"
+  },
+  "dom1_dcs_to_planetfm_preproduction_9389_tcp": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_ip": "${dom1-domain-controllers}",
+    "destination_port": "9389",
+    "protocol": "TCP"
   }
 }

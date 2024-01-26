@@ -516,5 +516,12 @@
     "destination_ip": "${hmpps-production-general-private-subnets}",
     "destination_port": "7073",
     "protocol": "TCP"
+  },
+  "dom1_dcs_to_planetfm_production_9389_tcp": {
+    "action": "PASS",
+    "source_ip": "${hmpps-production-general-private-subnets}",
+    "destination_ip": "${dom1-domain-controllers}",
+    "destination_port": "9389",
+    "protocol": "TCP"
   }
 }
