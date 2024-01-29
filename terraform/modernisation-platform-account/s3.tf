@@ -11,6 +11,20 @@ resource "aws_kms_alias" "s3_state_bucket" {
   target_key_id = aws_kms_key.s3_state_bucket.id
 }
 
+# State bucket KMS multi-Region
+resource "aws_kms_key" "s3_state_bucket_multi_region" {
+  description             = "s3-state-bucket-multi-region"
+  policy                  = data.aws_iam_policy_document.kms_state_bucket.json
+  enable_key_rotation     = true
+  deletion_window_in_days = 30
+  multi_region            = true
+}
+
+resource "aws_kms_alias" "s3_state_bucket_multi_region" {
+  name          = "alias/s3-state-bucket-multi-region"
+  target_key_id = aws_kms_key.s3_state_bucket_multi_region.id
+}
+
 data "aws_iam_policy_document" "kms_state_bucket" {
   # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
   # checkov:skip=CKV_AWS_356: "policy is directly related to the resource"
