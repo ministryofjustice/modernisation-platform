@@ -7,26 +7,92 @@ review_in: 6 months
 
 # <%= current_page.data.title %>
 
+# Disaster Recovery
+
+##
+
+If this is in hours, create a huddle / meet. Outside of hours, call the second member of staff on call and post to the channel.
+
 ## Disaster Recovery Types
+
+## Contact AWS
+
+Firstly, contact AWS, understanding if this is an outage for 1 hour or 1 month will dictate the next steps to take.
+
+## Types
 
 If you are reading this, I hope its just to update the page, and not to follow it.
 
 - London has been lost but returning soon. [Click here]().
 - London has been lost, and services need to migrate. [Click here]().
 
+## Disaster Recovery Running outside of London.
+
+If the London infrastructure is to be down for the forseable future, running from another region is the next step. Identifying the region based infrastructure and its replications status will be next
+
 ### Cross Region Infrastructure in the Platform
 
-- S3 - _Currently replicating to eu-west-1_
-- KMS keys - Need to be replicated
-- Secrets Manager - Replicated to eu-west-1	
-vpc
-firewall
-transit gateway
-nacls
-subnets
-iam policys - Not region specific
-dns
+| Technology      	| Information                                    	| Replicated? 	| Replication Region 	|
+|-----------------	|------------------------------------------------	|-------------	|--------------------	|
+| S3              	| Contains the platforms terraform state files.  	| Yes         	| eu-west-1          	|
+| KMS             	| Contains encryption kes for the platform.      	| No          	| -                  	|
+| Secrets Manger  	| Contains platform secrets.                     	| Yes         	| eu-west-1          	|
+| IAM Policys     	| Across all regions.                            	| -           	| -                  	|
+| DNS             	| Across all regions.                            	| -           	| -                  	|
+| VPC             	| No VPCs currently exist for DR, only reserved. 	| -           	| -                  	|
+| Firewall        	|                                                	|             	|                    	|
+| Transit Gateway 	|                                                	|             	|                    	|
+| NACLS           	|                                                	|             	|                    	|
+| Subnets         	|                                                	|             	|                    	|
 
+
+
+### Contact AWS
+
+Contact AWS using the following steps
+- Raise a ticket, highest prioirty.
+- Contact our AWS representative for an update on the situation.
+
+## Platform rebuild
+
+This is a large undertaking, and has not been tested but discussed in the team.
+
+### Firewall
+
+Located in the Core-Network-Services account, DNS, networking and other network related infrastructure will be down. 
+
+The firewall rules can be located here - https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-network-services/firewall-rules
+
+
+
+### Transit Gateway
+
+### VPCs and Subnets
+
+With the infrasturcture in London no longer avaiable we would use the original ranges. 
+
+### Account dependencies
+
+
+| Account      	| Information                                    	| 
+|-----------------	|------------------------------------------------	|
+| Core-Shared-Services            | Contains the platforms terraform state files.  	| 
+| Core-Network-Services           | Contains encryption kes for the platform.      	|
+| Core-Logging  	              | Contains platform secrets.                     	| 
+| Core-Security     	          | Across all regions.                            	| 
+| Cloud-Platform-Transit-Gateways | Across all regions.                            	| 
+| Core-VPC-*                      | No VPCs currently exist for DR, only reserved. 	| 
+
+
+## Customer Dependancies
+
+### Disaster recovery VPC
+
+All could be built in this
+
+
+
+Core shared services account 
 
 ## References
 * [https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html)
