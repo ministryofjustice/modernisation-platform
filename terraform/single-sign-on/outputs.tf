@@ -1,7 +1,3 @@
-output "platform_engineer" {
-    value = aws_ssoadmin_permission_set.modernisation_platform_engineer.arn
-}
-
 output "sandbox" {
     value = aws_ssoadmin_permission_set.modernisation_platform_sandbox.arn
 }
