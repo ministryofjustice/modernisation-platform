@@ -22,6 +22,6 @@ output "reporting_operations" {
     value = aws_ssoadmin_permission_set.modernisation_platform_reporting_operations.arn
 }
 
-output "mwaa_user {
+output "mwaa_user" {
     value = aws_ssoadmin_permission_set.modernisation_platform_data_mwaa_user.arn
 }
