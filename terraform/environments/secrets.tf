@@ -65,6 +65,22 @@ resource "aws_kms_alias" "environment_management" {
   target_key_id = aws_kms_key.environment_management.id
 }
 
+# Environment secret KMS key multi-Region
+resource "aws_kms_key" "environment_management_multi_region" {
+  provider                = aws.modernisation-platform
+  description             = "environment-management-multi-region"
+  policy                  = data.aws_iam_policy_document.kms_environment_management.json
+  enable_key_rotation     = true
+  deletion_window_in_days = 30
+  multi_region            = true
+}
+
+resource "aws_kms_alias" "environment_management_multi_region" {
+  provider      = aws.modernisation-platform
+  name          = "alias/environment-management-multi-region"
+  target_key_id = aws_kms_key.environment_management_multi_region.id
+}
+
 data "aws_iam_policy_document" "kms_environment_management" {
 
   # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"

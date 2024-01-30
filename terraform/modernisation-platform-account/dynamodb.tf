@@ -15,6 +15,23 @@ resource "aws_kms_alias" "dynamo_encryption" {
   target_key_id = aws_kms_key.dynamo_encryption.id
 }
 
+resource "aws_kms_key" "dynamo_encryption_multi_region" {
+  enable_key_rotation = true
+  policy              = data.aws_iam_policy_document.dynamo_encryption.json
+  multi_region        = true
+  tags = merge(
+  local.tags,
+  {
+    Name = "dynamo_encryption_multi_region"
+  }
+  )
+}
+
+resource "aws_kms_alias" "dynamo_encryption_multi_region" {
+  name          = "alias/dynamodb-state-lock-multi-region"
+  target_key_id = aws_kms_key.dynamo_encryption_multi_region.id
+}
+
 data "aws_iam_policy_document" "dynamo_encryption" {
 
   # checkov:skip=CKV_AWS_109: "Key policy requires asterisk resource"
