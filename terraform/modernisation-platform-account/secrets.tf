@@ -3,6 +3,78 @@
 # Secret should be manually set in the console.
 # Tfsec ignore
 # - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
+resource "aws_kms_key" "secrets_key" {
+  description             = "AWS Secretsmanager CMK"
+  policy                  = data.aws_iam_policy_document.kms_secrets_key.json
+  enable_key_rotation     = true
+  deletion_window_in_days = 30
+}
+
+resource "aws_kms_alias" "secrets_key" {
+  name          = "alias/secrets_key"
+  target_key_id = aws_kms_key.secrets_key.id
+}
+
+# Sourced from https://docs.aws.amazon.com/secretsmanager/latest/userguide/security-encryption.html#security-encryption-policies
+data "aws_iam_policy_document" "kms_secrets_key" {
+  # Allow root users access to the key
+  statement {
+    effect = "Allow"
+    actions = ["kms:*"]
+    resources = ["*"] # Represents the key to which this policy is attached
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"] #
+    }
+  }
+  statement {
+    sid = "Allow access through AWS Secrets Manager for all principals in the account that are authorized to use AWS Secrets Manager"
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:CreateGrant",
+      "kms:DescribeKey"
+    ]
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "kms:CallerAccount"
+      values   = ["${data.aws_caller_identity.current.account_id}"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["secretsmanager.amazonaws.com"]
+    }
+  }
+  statement {
+    actions = ["kms:GenerateDataKey*"]
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "kms:CallerAccount"
+      values   = ["${data.aws_caller_identity.current.account_id}"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["secretsmanager.amazonaws.com"]
+    }
+  }
+  }
+}
+
 #tfsec:ignore:AWS095
 resource "aws_secretsmanager_secret" "slack_webhook_url" {
   # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key

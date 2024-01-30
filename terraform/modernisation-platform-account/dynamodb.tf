@@ -20,10 +20,10 @@ resource "aws_kms_key" "dynamo_encryption_multi_region" {
   policy              = data.aws_iam_policy_document.dynamo_encryption.json
   multi_region        = true
   tags = merge(
-  local.tags,
-  {
-    Name = "dynamo_encryption_multi_region"
-  }
+    local.tags,
+    {
+      Name = "dynamo_encryption_multi_region"
+    }
   )
 }
 
