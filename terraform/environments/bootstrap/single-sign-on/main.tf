@@ -10,6 +10,18 @@ locals {
 
 }
 
+# Get MP-specific AWS SSO permission sets
+
+data "terraform_remote_state" "mp-sso-permissions-sets" {
+  backend = "s3"
+  config = {
+    acl     = "bucket-owner-full-control"
+    bucket  = "modernisation-platform-terraform-state"
+    key     = "single-sign-on/terraform.tfstate"
+    region  = "eu-west-2"
+    encrypt = "true"
+  }
+}
 # Get AWS SSO permission sets
 data "aws_ssoadmin_permission_set" "administrator" {
   provider = aws.sso-management
@@ -39,27 +51,6 @@ data "aws_ssoadmin_permission_set" "platform_engineer" {
   name         = "ModernisationPlatformEngineer"
 }
 
-data "aws_ssoadmin_permission_set" "sandbox" {
-  provider = aws.sso-management
-
-  instance_arn = local.sso_instance_arn
-  name         = "modernisation-platform-sandbox"
-}
-
-data "aws_ssoadmin_permission_set" "migration" {
-  provider = aws.sso-management
-
-  instance_arn = local.sso_instance_arn
-  name         = "modernisation-platform-migration"
-}
-
-data "aws_ssoadmin_permission_set" "instance-management" {
-  provider = aws.sso-management
-
-  instance_arn = local.sso_instance_arn
-  name         = "mp-instance-management"
-}
-
 data "aws_ssoadmin_permission_set" "security_audit" {
   provider = aws.sso-management
 
@@ -72,27 +63,6 @@ data "aws_ssoadmin_permission_set" "read_only" {
 
   instance_arn = local.sso_instance_arn
   name         = "ReadOnlyAccess"
-}
-
-data "aws_ssoadmin_permission_set" "data_engineer" {
-  provider = aws.sso-management
-
-  instance_arn = local.sso_instance_arn
-  name         = "modernisation-platform-data-eng"
-}
-
-data "aws_ssoadmin_permission_set" "reporting-operations" {
-  provider = aws.sso-management
-
-  instance_arn = local.sso_instance_arn
-  name         = "mp-reporting-operations"
-}
-
-data "aws_ssoadmin_permission_set" "mwaa_user" {
-  provider = aws.sso-management
-
-  instance_arn = local.sso_instance_arn
-  name         = "modernisation-platform-mwaa-user"
 }
 
 # Get Identity Store groups
@@ -215,7 +185,7 @@ resource "aws_ssoadmin_account_assignment" "sandbox" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.aws_ssoadmin_permission_set.sandbox.arn
+  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.sandbox
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
@@ -238,7 +208,7 @@ resource "aws_ssoadmin_account_assignment" "migration" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.aws_ssoadmin_permission_set.migration.arn
+  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.migration
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
@@ -285,7 +255,7 @@ resource "aws_ssoadmin_account_assignment" "instance-management" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.aws_ssoadmin_permission_set.instance-management.arn
+  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.instance_management
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
@@ -354,7 +324,7 @@ resource "aws_ssoadmin_account_assignment" "data_engineer" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.aws_ssoadmin_permission_set.data_engineer.arn
+  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.data_engineer
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
@@ -377,7 +347,7 @@ resource "aws_ssoadmin_account_assignment" "reporting-operations" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.aws_ssoadmin_permission_set.reporting-operations.arn
+  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.reporting-operations
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
@@ -400,7 +370,7 @@ resource "aws_ssoadmin_account_assignment" "mwaa_user" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.aws_ssoadmin_permission_set.mwaa_user.arn
+  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.mwaa_user
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
