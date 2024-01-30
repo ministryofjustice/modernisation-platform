@@ -17,61 +17,35 @@ resource "aws_kms_alias" "secrets_key" {
 
 # Sourced from https://docs.aws.amazon.com/secretsmanager/latest/userguide/security-encryption.html#security-encryption-policies
 data "aws_iam_policy_document" "kms_secrets_key" {
-  # Allow root users access to the key
+  #cannot reference secret in resources for statement as this causes cyclic error
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_109: "Constraint is via only mp ou condition"
+  #checkov:skip=CKV_AWS_111: "Constraint is via only mp ou condition"
+  #checkov:skip=CKV_AWS_356: Policy is attached to a resource
   statement {
+    sid    = "AllowManagementAccountAccess"
     effect = "Allow"
-    actions = ["kms:*"]
-    resources = ["*"] # Represents the key to which this policy is attached
-
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"] #
+      identifiers = [data.aws_caller_identity.current.account_id, data.aws_organizations_organization.root_account.master_account_id]
     }
+    actions   = ["kms:*"]
+    resources = ["*"]
   }
   statement {
-    sid = "Allow access through AWS Secrets Manager for all principals in the account that are authorized to use AWS Secrets Manager"
-    actions = [
-      "kms:Encrypt",
-      "kms:Decrypt",
-      "kms:ReEncrypt*",
-      "kms:CreateGrant",
-      "kms:DescribeKey"
-    ]
+    sid    = "AllowModernisationPlatformAccountsToDecrypt"
     effect = "Allow"
     principals {
       type        = "AWS"
       identifiers = ["*"]
     }
+    actions   = ["kms:Decrypt*"]
     resources = ["*"]
     condition {
-      test     = "StringEquals"
-      variable = "kms:CallerAccount"
-      values   = ["${data.aws_caller_identity.current.account_id}"]
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
     }
-    condition {
-      test     = "StringEquals"
-      variable = "kms:ViaService"
-      values   = ["secretsmanager.amazonaws.com"]
-    }
-  }
-  statement {
-    actions = ["kms:GenerateDataKey*"]
-    effect = "Allow"
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-    condition {
-      test     = "StringEquals"
-      variable = "kms:CallerAccount"
-      values   = ["${data.aws_caller_identity.current.account_id}"]
-    }
-    condition {
-      test     = "StringEquals"
-      variable = "kms:ViaService"
-      values   = ["secretsmanager.amazonaws.com"]
-    }
-  }
   }
 }
 
