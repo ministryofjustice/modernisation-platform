@@ -44,6 +44,7 @@ If the London infrastructure is to be down for the forseable future, running fro
 | Transit Gateway 	|                                                	|             	|                    	|
 | NACLS           	|                                                	|             	|                    	|
 | Subnets         	|                                                	|             	|                    	|
+| Dynamo Disable    | Check
 
 
 
@@ -57,46 +58,49 @@ Contact AWS using the following steps
 
 This is a large undertaking, and has not been tested but discussed in the team.
 
+
+### VPCs and Subnets
+
+1. Clone the mod-platform repo, change region. 
+2. Core VPC rebuild. Provider would need to be eu-west-1. 
+3. Core Netowrking.
+
+With the infrasturcture in London no longer avaiable we would use the original ranges. 
+
+### Transit Gateway
+
+1. Rebuild Transit gateway in new region, code in core-network-services.
+
 ### Firewall
 
 Located in the Core-Network-Services account, DNS, networking and other network related infrastructure will be down. 
 
 The firewall rules can be located here - https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-network-services/firewall-rules
 
+Live data & non live data.
 
-
-### Transit Gateway
-
-### VPCs and Subnets
-
-With the infrasturcture in London no longer avaiable we would use the original ranges. 
+Peer the new Transit grateway build in eu-west-1 to the MOJ transitgateway that is in eu-west-2 ???
 
 ### Account dependencies
 
 
 | Account      	| Information                                    	| 
 |-----------------	|------------------------------------------------	|
-| Core-Shared-Services            | Contains the platforms terraform state files.  	| 
-| Core-Network-Services           | Contains encryption kes for the platform.      	|
-| Core-Logging  	              | Contains platform secrets.                     	| 
-| Core-Security     	          | Across all regions.                            	| 
+| Core-Shared-Services            | Creates the core shared services account resources	  	| 
+| Core-Network-Services           | Creates the core networking account resources	      	|
+| Core-Logging  	              | Creates the core logging account resources	                    	| 
+| Core-Security     	          | Creates the core security account resources	                           	| 
 | Cloud-Platform-Transit-Gateways | Across all regions.                            	| 
-| Core-VPC-*                      | No VPCs currently exist for DR, only reserved. 	| 
+| Core-VPC-*                      | Creates the core VPC resources in the VPC accounts	 	| 
+| Modernisation-Platform          | Creates key resources such as S3 state buckets for the platform	|
 
 
 ## Customer Dependancies
 
-### Disaster recovery VPC
+Core-shares-services - Required by customers. AMI. Backup region.
 
-All could be built in this
-
-
-
-Core shared services account 
 
 ## References
 * [https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html)
 * [https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf)
-* [https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins)
-* [https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf)
-* [https://github.com/99designs/aws-vault](https://github.com/99designs/aws-vault)
+
