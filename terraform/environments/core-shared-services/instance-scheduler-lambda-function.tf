@@ -36,7 +36,7 @@ resource "aws_scheduler_schedule" "instance_scheduler_weekly_stop_at_night" {
   flexible_time_window {
     mode = "OFF"
   }
-  kms_key_arn = data.aws_kms_key.general_shared.arn
+  kms_key_arn                  = data.aws_kms_key.general_shared.arn
   schedule_expression          = "cron(0 21 ? * MON-FRI *)"
   schedule_expression_timezone = "Europe/London"
   target {
@@ -61,7 +61,7 @@ resource "aws_scheduler_schedule" "instance_scheduler_weekly_start_in_the_mornin
   flexible_time_window {
     mode = "OFF"
   }
-  kms_key_arn = data.aws_kms_key.general_shared.arn
+  kms_key_arn                  = data.aws_kms_key.general_shared.arn
   schedule_expression          = "cron(0 6 ? * MON-FRI *)"
   schedule_expression_timezone = "Europe/London"
   target {
