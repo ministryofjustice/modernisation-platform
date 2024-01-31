@@ -300,7 +300,7 @@ resource "aws_ssoadmin_account_assignment" "reporting-operations" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.reporting-operations
+  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.reporting_operations
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"
