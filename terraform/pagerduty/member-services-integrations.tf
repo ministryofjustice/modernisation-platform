@@ -1681,3 +1681,107 @@ resource "pagerduty_slack_connection" "laa_maat_api_prod_connection" {
   }
 }
 # Slack channel: #laa-alerts-maat-prod
+
+# HMPPS Domain Services Prod
+resource "pagerduty_service" "hmpps_domain_services_prod" {
+  name                    = "HMPPS Domain Services Alarms Prod"
+  description             = "HMPPS Domain Services Alarms Prod"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "hmpps_domain_services_prod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.hmpps_domain_services_prod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "hmpps_domain_services_prod_connection" {
+  source_id         = pagerduty_service.hmpps_domain_services_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C04E4FM3KS7"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+
+    priorities = ["*"]
+  }
+}
+
+# Slack channel: #dso_alerts_modernisation_platform
+
+# HMPPS Domain Services Non Prod
+resource "pagerduty_service" "hmpps_domain_services_nonprod" {
+  name                    = "HMPPS Domain Services Alarms Non Prod"
+  description             = "HMPPS Domain Services Alarms Non Prod"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "hmpps_domain_services_nonprod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.hmpps_domain_services_nonprod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "hmpps_domain_services_nonprod_connection" {
+  source_id         = pagerduty_service.hmpps_domain_services_nonprod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C04QGQML68P"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+# Slack channel: #dso_alerts_devtest_modernisation_platform
