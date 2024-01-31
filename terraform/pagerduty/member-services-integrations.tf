@@ -1684,8 +1684,8 @@ resource "pagerduty_slack_connection" "laa_maat_api_prod_connection" {
 
 # HMPPS Domain Services Prod
 resource "pagerduty_service" "hmpps_domain_services_prod" {
-  name                    = "HMPPS Domain Services Prod Alarms"
-  description             = "HMPPS Domain Services Prod Alarms"
+  name                    = "HMPPS Domain Services Alarms Prod"
+  description             = "HMPPS Domain Services Alarms Prod"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
   escalation_policy       = pagerduty_escalation_policy.member_policy.id
