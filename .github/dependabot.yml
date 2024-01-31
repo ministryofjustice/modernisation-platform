@@ -404,6 +404,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/single-sign-on"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/templates/modernisation-platform"
     schedule:
       interval: "daily"
