@@ -19,5 +19,34 @@ output "reporting_operations" {
 }
 
 output "mwaa_user" {
-  value = aws_ssoadmin_permission_set.modernisation_platform_data_mwaa_user.arn
+    value = aws_ssoadmin_permission_set.modernisation_platform_data_mwaa_user.arn
+}
+
+# Data outputs
+output "administrator" {
+    value = data.aws_ssoadmin_permission_set.administrator.arn
+}
+
+output "view-only" {
+    value = data.aws_ssoadmin_permission_set.view-only.arn
+}
+
+output "developer" {
+    value = data.aws_ssoadmin_permission_set.developer.arn
+}
+
+output "platform_engineer" {
+    value = data.aws_ssoadmin_permission_set.platform_engineer.arn
+}
+
+output "security_audit" {
+    value = data.aws_ssoadmin_permission_set.security_audit.arn
+}
+
+output "read_only" {
+    value = data.aws_ssoadmin_permission_set.read_only.arn
+}
+
+output "ssoadmin_instances" {
+    value = data.aws_ssoadmin_instances.default
 }
