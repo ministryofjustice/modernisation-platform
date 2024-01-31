@@ -1,3 +1,7 @@
+output "developer" {
+    value = aws_ssoadmin_permission_set.modernisation_platform_developer.arn
+}
+
 output "sandbox" {
   value = aws_ssoadmin_permission_set.modernisation_platform_sandbox.arn
 }
@@ -29,10 +33,6 @@ output "administrator" {
 
 output "view-only" {
     value = data.aws_ssoadmin_permission_set.view-only.arn
-}
-
-output "developer" {
-    value = data.aws_ssoadmin_permission_set.developer.arn
 }
 
 output "platform_engineer" {
