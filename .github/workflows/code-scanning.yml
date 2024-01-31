@@ -57,7 +57,6 @@ jobs:
         uses: aquasecurity/trivy-action@d43c1f16c00cfd3978dde6c07f4bbcf9eb6993ca
         with:
           scan-type: 'fs'
-          scan-ref: '.'
           scanners: 'vuln, secret, misconfig'
           format: 'sarif'
           output: 'trivy-results.sarif'
