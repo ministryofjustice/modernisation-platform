@@ -1,14 +1,56 @@
 # Slack channel modernisation-platform-notifications webhook url for sending notifications to slack
 # Not adding a secret version as this url is provided by slack and cannot be added programatically
 # Secret should be manually set in the console.
-# Tfsec ignore
-# - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
-#tfsec:ignore:AWS095
+resource "aws_kms_key" "secrets_key" {
+  description             = "AWS Secretsmanager CMK"
+  policy                  = data.aws_iam_policy_document.kms_secrets_key.json
+  enable_key_rotation     = true
+  deletion_window_in_days = 30
+}
+
+resource "aws_kms_alias" "secrets_key" {
+  name          = "alias/secrets_key"
+  target_key_id = aws_kms_key.secrets_key.id
+}
+
+data "aws_iam_policy_document" "kms_secrets_key" {
+  #cannot reference secret in resources for statement as this causes cyclic error
+  #checkov:skip=CKV_AWS_108: Cannot set resource as not known at time document is created, causing a cyclic error
+  #checkov:skip=CKV_AWS_109: "Constraint is via only mp ou condition"
+  #checkov:skip=CKV_AWS_111: "Constraint is via only mp ou condition"
+  #checkov:skip=CKV_AWS_356: Policy is attached to a resource
+  statement {
+    sid    = "AllowManagementAccountAccess"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = [data.aws_caller_identity.current.account_id, data.aws_organizations_organization.root_account.master_account_id]
+    }
+    actions   = ["kms:*"]
+    resources = ["*"]
+  }
+  statement {
+    sid    = "AllowModernisationPlatformAccountsToDecrypt"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    actions   = ["kms:Decrypt*"]
+    resources = ["*"]
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+  }
+}
+
 resource "aws_secretsmanager_secret" "slack_webhook_url" {
-  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "slack_webhook_url"
   description = "Slack channel modernisation-platform-notifications webhook url for sending notifications to slack"
+  kms_key_id  = aws_kms_key.secrets_key.id
   tags        = local.tags
   replica {
     region = local.replica_region
@@ -18,14 +60,11 @@ resource "aws_secretsmanager_secret" "slack_webhook_url" {
 # Github CI user PAT
 # Not adding a secret version as this url is generated in Github cannot be added programatically
 # Secret should be manually set in the console.
-# Tfsec ignore
-# - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
-#tfsec:ignore:AWS095
 resource "aws_secretsmanager_secret" "github_ci_user_pat" {
-  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "github_ci_user_pat"
   description = "GitHub CI user PAT used for generated resources in GitHub via Terraform"
+  kms_key_id  = aws_kms_key.secrets_key.id
   tags        = local.tags
   replica {
     region = local.replica_region
@@ -35,14 +74,11 @@ resource "aws_secretsmanager_secret" "github_ci_user_pat" {
 # Github CI user environments repo PAT
 # Not adding a secret version as this url is generated in Github cannot be added programatically
 # Secret should be manually set in the console.
-# Tfsec ignore
-# - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
-#tfsec:ignore:AWS095
 resource "aws_secretsmanager_secret" "github_ci_user_environments_repo_pat" {
-  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "github_ci_user_environments_repo_pat"
   description = "This PAT token is used in reusable pipelines of the modernisation-platform-environments repository. This is so that the CI user can post comments in PRs, e.g. tf plan/apply output. Expires on Tue, Apr 9 2024."
+  kms_key_id  = aws_kms_key.secrets_key.id
   tags        = local.tags
   replica {
     region = local.replica_region
@@ -52,14 +88,11 @@ resource "aws_secretsmanager_secret" "github_ci_user_environments_repo_pat" {
 # Github CI user password
 # Not adding a secret version as this url is generated in Github cannot be added programatically
 # Secret should be manually set in the console.
-# Tfsec ignore
-# - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
-#tfsec:ignore:AWS095
 resource "aws_secretsmanager_secret" "github_ci_user_password" {
-  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "github_ci_user_password"
   description = "GitHub CI user password"
+  kms_key_id  = aws_kms_key.secrets_key.id
   tags        = local.tags
   replica {
     region = local.replica_region
@@ -67,14 +100,11 @@ resource "aws_secretsmanager_secret" "github_ci_user_password" {
 }
 
 # Account IDs to be excluded from auto-nuke
-# Tfsec ignore
-# - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
-#tfsec:ignore:AWS095
 resource "aws_secretsmanager_secret" "nuke_account_blocklist" {
-  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "nuke_account_blocklist"
   description = "Account IDs to be excluded from auto-nuke. AWS-Nuke (https://github.com/rebuy-de/aws-nuke) requires at least one Account ID to be present in this blocklist, while it is recommended to add every production account to this blocklist."
+  kms_key_id  = aws_kms_key.secrets_key.id
   tags        = local.tags
   replica {
     region = local.replica_region
@@ -82,14 +112,11 @@ resource "aws_secretsmanager_secret" "nuke_account_blocklist" {
 }
 
 # Account IDs to be auto-nuked on weekly basis
-# Tfsec ignore
-# - AWS095: No requirement currently to encrypt this secret with customer-managed KMS key
-#tfsec:ignore:AWS095
 resource "aws_secretsmanager_secret" "nuke_account_ids" {
-  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "nuke_account_ids"
   description = "Account IDs to be auto-nuked on weekly basis. CAUTION: Any account ID you add here will be automatically nuked! This secret is used by GitHub actions job nuke.yml inside the environments repo, to find the Account IDs to be nuked."
+  kms_key_id  = aws_kms_key.secrets_key.id
   tags        = local.tags
   replica {
     region = local.replica_region
@@ -106,12 +133,12 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
 }
 
 # CircleCI Organisation ID
-#tfsec:ignore:aws-ssm-secret-use-customer-key
 resource "aws_secretsmanager_secret" "circleci" {
-  # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "mod-platform-circleci"
   description = "CircleCI organisation ID for ministryofjustice, used for OIDC IAM policies"
+  kms_key_id  = aws_kms_key.secrets_key.id
+
   replica {
     region = local.replica_region
   }
