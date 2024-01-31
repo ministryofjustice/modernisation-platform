@@ -1683,23 +1683,23 @@ resource "pagerduty_slack_connection" "laa_maat_api_prod_connection" {
 # Slack channel: #laa-alerts-maat-prod
 
 # HMPPS Domain Services
-resource "pagerduty_service" "hmpps_domain_services" {
-  name                    = "HMPPS Domain Services Alarms"
-  description             = "HMPPS Domain Services Alarms"
+resource "pagerduty_service" "hmpps_domain_services_prod" {
+  name                    = "HMPPS Domain Services Prod Alarms"
+  description             = "HMPPS Domain Services Prod Alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
   escalation_policy       = pagerduty_escalation_policy.member_policy.id
   alert_creation          = "create_alerts_and_incidents"
 }
 
-resource "pagerduty_service_integration" "hmpps_domain_services_cloudwatch" {
+resource "pagerduty_service_integration" "hmpps_domain_services_prod_cloudwatch" {
   name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.hmpps_domain_services.id
+  service = pagerduty_service.hmpps_domain_services_prod.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
-resource "pagerduty_slack_connection" "hmpps_domain_services_connection" {
-  source_id         = pagerduty_service.nomis.id
+resource "pagerduty_slack_connection" "hmpps_domain_services_prod_connection" {
+  source_id         = pagerduty_service.hmpps_domain_services_prod.id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
   channel_id        = "C04E4FM3KS7"

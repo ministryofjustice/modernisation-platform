@@ -61,7 +61,7 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     dacp_prod_alarms                     = pagerduty_service_integration.dacp_prod_cloudwatch.integration_key,
     laa_maat_api_nonprod_alarms          = pagerduty_service_integration.laa_maat_api_nonprod_cloudwatch.integration_key,
     laa_maat_api_prod_alarms             = pagerduty_service_integration.laa_maat_api_prod_cloudwatch.integration_key,
-    hmpps_domain_services_alarms         = pagerduty_service_integration.hmpps_domain_services_cloudwatch.integration_key,
+    hmpps_domain_services_prod_alarms    = pagerduty_service_integration.hmpps_domain_services_prod_cloudwatch.integration_key,
     hmpps_domain_services_nonprod_alarms = pagerduty_service_integration.hmpps_domain_services_nonprod_cloudwatch.integration_key
   })
 }
