@@ -1682,7 +1682,7 @@ resource "pagerduty_slack_connection" "laa_maat_api_prod_connection" {
 }
 # Slack channel: #laa-alerts-maat-prod
 
-# HMPPS Domain Services
+# HMPPS Domain Services Prod
 resource "pagerduty_service" "hmpps_domain_services_prod" {
   name                    = "HMPPS Domain Services Prod Alarms"
   description             = "HMPPS Domain Services Prod Alarms"
@@ -1736,7 +1736,6 @@ resource "pagerduty_slack_connection" "hmpps_domain_services_prod_connection" {
 # Slack channel: #dso_alerts_modernisation_platform
 
 # HMPPS Domain Services Non Prod
-
 resource "pagerduty_service" "hmpps_domain_services_nonprod" {
   name                    = "HMPPS Domain Services Alarms Non Prod"
   description             = "HMPPS Domain Services Alarms Non Prod"
