@@ -6,7 +6,7 @@ data "aws_ssoadmin_instances" "default" {
 
 # Get secret by name for environment management
 data "aws_secretsmanager_secret" "environment_management" {
-  name     = "environment_management"
+  name = "environment_management"
 }
 
 # Get latest secret value with ID from above. This secret stores account IDs for the Modernisation Platform sub-accounts

@@ -1,21 +1,21 @@
 output "sandbox" {
-    value = aws_ssoadmin_permission_set.modernisation_platform_sandbox.arn
+  value = aws_ssoadmin_permission_set.modernisation_platform_sandbox.arn
 }
 
 output "migration" {
-    value = aws_ssoadmin_permission_set.modernisation_platform_migration.arn
+  value = aws_ssoadmin_permission_set.modernisation_platform_migration.arn
 }
 
 output "instance_management" {
-    value = aws_ssoadmin_permission_set.modernisation_platform_instance_management.arn
+  value = aws_ssoadmin_permission_set.modernisation_platform_instance_management.arn
 }
 
 output "data_engineer" {
-    value = aws_ssoadmin_permission_set.modernisation_platform_data_engineer.arn
+  value = aws_ssoadmin_permission_set.modernisation_platform_data_engineer.arn
 }
 
 output "reporting_operations" {
-    value = aws_ssoadmin_permission_set.modernisation_platform_reporting_operations.arn
+  value = aws_ssoadmin_permission_set.modernisation_platform_reporting_operations.arn
 }
 
 output "mwaa_user" {
@@ -26,6 +26,7 @@ output "mwaa_user" {
 output "administrator" {
     value = data.aws_ssoadmin_permission_set.administrator.arn
 }
+
 output "view-only" {
     value = data.aws_ssoadmin_permission_set.view-only.arn
 }
