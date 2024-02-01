@@ -28,7 +28,7 @@ This is our architecture decision log, made during the design and build of the M
 1. ✅ [Patching Strategy](0022-patching-strategy.md)
 1. ✅ [Backup Strategy](0023-backup-strategy.md)
 1. ✅ [Egress firewall inspection](0024-egress-traffic-inspection.md)
-1. ✅ [Non Standard User Infrastructure](0025-non-standard-user-infrastructure.md)
+1. ⌛ [Non Standard User Infrastructure](0025-non-standard-user-infrastructure.md)
 1. ✅ [Use Network Services account for DNS resources](0026-use-network-services-account-for-dns.md)
 1. ✅ [Use Member CICD Access for Configuration Management](0027-use-member-cicd-access-for-configuration-management.md)
 1. ✅ [Expand the scope of the platform](0028-expand-the-scope-of-the-platform.md)
