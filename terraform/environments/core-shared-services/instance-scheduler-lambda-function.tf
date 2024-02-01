@@ -30,13 +30,14 @@ module "instance_scheduler" {
 ## BEGIN: Stop trigger for Instance Scheduler Lambda Function
 
 resource "aws_scheduler_schedule" "instance_scheduler_weekly_stop_at_night" {
-  #checkov:skip=CKV_AWS_297 "KMS encryption not required at present"
+  #checkov:skip=CKV_AWS_297 "EventBridge Scheduler Schedule uses Customer Managed KMS Key"
   name        = "instance_scheduler_weekly_stop_at_night"
   description = "Call Instance Scheduler with Stop action at 9:00 pm (BST) every Monday through Friday"
   group_name  = "default"
   flexible_time_window {
     mode = "OFF"
   }
+  kms_key_arn                  = data.aws_kms_key.general_shared.arn
   schedule_expression          = "cron(0 21 ? * MON-FRI *)"
   schedule_expression_timezone = "Europe/London"
   target {
@@ -55,13 +56,14 @@ resource "aws_scheduler_schedule" "instance_scheduler_weekly_stop_at_night" {
 ## BEGIN: Start trigger for Instance Scheduler Lambda Function
 
 resource "aws_scheduler_schedule" "instance_scheduler_weekly_start_in_the_morning" {
-  #checkov:skip=CKV_AWS_297 "KMS encryption not required at present"
+  #checkov:skip=CKV_AWS_297 "EventBridge Scheduler Schedule uses Customer Managed KMS Key"
   name        = "instance_scheduler_weekly_start_in_the_morning"
   description = "Call Instance Scheduler with Start action at 6:00 am (BST) every Monday through Friday"
   group_name  = "default"
   flexible_time_window {
     mode = "OFF"
   }
+  kms_key_arn                  = data.aws_kms_key.general_shared.arn
   schedule_expression          = "cron(0 6 ? * MON-FRI *)"
   schedule_expression_timezone = "Europe/London"
   target {
