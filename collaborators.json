@@ -562,7 +562,7 @@
       "accounts": [
         {
           "account-name": "electronic-monitoring-data-production",
-          "access": "security-audit"
+          "access": "read-only"
         }
       ]
     }
