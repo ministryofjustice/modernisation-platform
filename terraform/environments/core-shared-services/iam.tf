@@ -270,9 +270,16 @@ resource "aws_iam_policy" "lambda_invoke_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Action   = ["lambda:InvokeFunction"]
-        Effect   = "Allow"
-        Resource = "arn:aws:lambda:${data.aws_region.current_region.name}:${local.environment_management.account_ids["core-shared-services-production"]}:function:*"
+        Action = [
+          "lambda:InvokeFunction",
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:lambda:${data.aws_region.current_region.name}:${local.environment_management.account_ids["core-shared-services-production"]}:function:*",
+          "arn:aws:kms:${data.aws_region.current_region.name}:${local.environment_management.account_ids["core-shared-services-production"]}:key/*"
+        ]
       }
     ]
   })
