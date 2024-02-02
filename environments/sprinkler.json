@@ -13,10 +13,6 @@
           "github_slug": "modernisation-platform-security",
           "level": "instance-management",
           "nuke": "rebuild"
-        },
-        {
-          "github_slug": "modernisation-platform",
-          "level": "powerbi-user"
         }
       ],
       "additional_reviewers": ["astrobinson"]
