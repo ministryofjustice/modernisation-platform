@@ -346,7 +346,7 @@ resource "aws_ssoadmin_account_assignment" "powerbi_user" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.powerbi_user
+  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.powerbi_user.arn
 
   principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
   principal_type = "GROUP"

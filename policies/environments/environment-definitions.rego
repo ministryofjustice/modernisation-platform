@@ -109,6 +109,7 @@ deny[msg] {
 deny[msg] {
   access := input.environments[_].access[_].level
   access == "powerbi-user"
-  not startswith(input.filename, "analytical-platform")
-  msg := sprintf("`%v` uses `powerbi-user` access level but is not an analytical platform account", [input.filename])
+  not startswith(input.filename, "environments/analytical-platform")
+  not startswith(input.filename, "environments/sprinkler") # to allow testing
+  msg := sprintf("`%v` uses `powerbi-user` access level but is not an analytical platform or sprinkler account", [input.filename])
 }

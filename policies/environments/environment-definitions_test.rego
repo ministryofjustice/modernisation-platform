@@ -45,7 +45,7 @@ test_unexpected_access {
 }
 
 test_unexpected_access_assignment {
-  deny["`example.json` uses an unexpected access assignment: got `powerbi-user`, but `example.json` is not an analytical platform account"] with input as { "filename": "example.json", "environments": [{"access": [{"level": "powerbi-user"}]}]}
+  deny["`example.json` uses an unexpected access assignment: got `powerbi-user`, but `example` is not an analytical platform or sprinkler account"] with input as { "filename": "example.json", "environments": [{"access": [{"level": "powerbi-user"}]}]}
 }
 
 test_unexpected_nuke {
