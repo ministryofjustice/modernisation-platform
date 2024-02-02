@@ -30,11 +30,11 @@
         },
         {
           "github_slug": "hmpps-dba",
-          "level": "instance-management"
+          "level": "developer"
         },
         {
           "github_slug": "unilink",
-          "level": "instance-management"
+          "level": "developer"
         }
       ]
     }
