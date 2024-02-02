@@ -25,6 +25,7 @@ allowed_access := [
   "sandbox",
   "security-audit",
   "view-only",
+  "powerbi-user"
 ]
 
 allowed_nuke := [

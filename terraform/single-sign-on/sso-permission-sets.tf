@@ -229,7 +229,7 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
 resource "aws_ssoadmin_permission_set" "modernisation_platform_powerbi_user" {
   provider         = aws.sso-management
   name             = "modernisation-platform-powerbi-user"
-  description      = "Modernisation Platform: Analytcal PowerBI User"
+  description      = "Modernisation Platform: Analytcal PowerBI"
   instance_arn     = local.sso_admin_instance_arn
   session_duration = "PT8H"
   tags             = {}
