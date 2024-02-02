@@ -66,7 +66,7 @@ Host glados-test-bastion
      LogLevel QUIET
      IdentityFile ~/.ssh/id_rsa
      User jane
-     ProxyCommand sh -c "aws ssm start-session --target $(aws ec2 describe-instances --no-cli-pager --filters "Name=tag:Name,Values=bastion_linux" --query 'Reservations[0].Instances[0].InstanceId' --profile glados-test-developer | tr -d '"') --document-name AWS-StartSSHSession --parameters 'portNumber=%p' --profile glados-test-developer --region eu-west-2"
+     ProxyCommand sh -c "aws ssm start-session --target $(aws ec2 describe-instances --no-cli-pager --filter "Name=tag:Name,Values=bastion_linux" --filter "Name=instance-state-code,Values=16" --query 'Reservations[0].Instances[0].InstanceId' --profile glados-test-developer | tr -d '"') --document-name AWS-StartSSHSession --parameters 'portNumber=%p' --profile glados-test-developer --region eu-west-2"
 ```
 
 >Note: The bastion server is re-created on daily basis which causes the host identification to change. When the user connects to the bastion using SSH, the SSH client warns about the host identification change. In the above, the configuration `StrictHostKeyChecking no`, `UserKnownHostsFile /dev/null` and `LogLevel QUIET` is added to prevent the `WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!` by the SSH client. If we didn't add the above, the user would have to manually remove the old host key from `~/.ssh/known_hosts` on daily basis, which could be annoying.
