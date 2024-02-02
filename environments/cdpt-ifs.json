@@ -30,10 +30,10 @@
     }
   ],
   "tags": {
-    "application": "central-digital-product-team",
+    "application": "cdpt-ifs",
     "business-unit": "HQ",
     "infrastructure-support": "central-digital-product-team@digital.justice.gov.uk",
     "owner": "central-digital-product-team@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": ["ministryofjustice/IntegratedFraud"]
 }
