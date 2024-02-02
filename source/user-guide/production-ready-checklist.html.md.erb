@@ -2,7 +2,7 @@
 owner_slack: "#modernisation-platform"
 title: Production Ready Checklist
 weight: 1
-last_reviewed_on: 2023-11-01
+last_reviewed_on: 2024-02-02
 review_in: 6 months
 ---
 
@@ -16,6 +16,7 @@ You can speed up these checks by preparing as much as possible in advance.
 
 1. For public facing interfaces - [Create DDoS alarms, enable SRT access, enable Layer 7 Mitigation for ELBs](../runbooks/enabling-shield-advanced.html).
 1. All EC2 instances have the AWS Systems Manage Session Manager [SSM Agent](https://docs.aws.amazon.com/systems-manager/latest/userguide/ssm-agent.html) installed.
+1. There are no `CRITICAL` or `HIGH` severity level findings in security hub for the production account.
 1. Infrastructure code has been reviewed and signed off by a Modernisation Platform engineer.
 1. The application runbook (`README.md`` in the application folder in the [modernisation-platform-environments repository](https://github.com/ministryofjustice/modernisation-platform-environments/tree/main/terraform/environments)) has been completed.
 1. The application conforms to the [MoJ Technical Guidance](https://technical-guidance.service.justice.gov.uk/) and [MoJ Security Guidance](https://security-guidance.service.justice.gov.uk/)
