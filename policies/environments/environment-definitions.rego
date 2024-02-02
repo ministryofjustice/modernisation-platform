@@ -25,6 +25,7 @@ allowed_access := [
   "sandbox",
   "security-audit",
   "view-only",
+  "powerbi-user"
 ]
 
 allowed_nuke := [
@@ -103,4 +104,12 @@ deny[msg] {
   nuke:=input.environments[_].access[_].nuke
   not nuke in allowed_nuke
   msg := sprintf("`%v` uses an unexpected nuke value: got `%v`, expected one of: %v", [input.filename, nuke, concat(", ", allowed_nuke) ])
+}
+
+deny[msg] {
+  access := input.environments[_].access[_].level
+  access == "powerbi-user"
+  not startswith(input.filename, "environments/analytical-platform")
+  not startswith(input.filename, "environments/sprinkler") # to allow testing
+  msg := sprintf("`%v` uses `powerbi-user` access level but is not an analytical platform or sprinkler account", [input.filename])
 }

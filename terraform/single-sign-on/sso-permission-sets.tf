@@ -56,7 +56,7 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
   }
 }
 
-# Modernisation Platform data engineer
+# Modernisation Platform Managed Workloads for Apache Airflow user
 resource "aws_ssoadmin_permission_set" "modernisation_platform_data_mwaa_user" {
   provider         = aws.sso-management
   name             = "modernisation-platform-mwaa-user"
@@ -221,6 +221,33 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
   permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_instance_management.arn
   customer_managed_policy_reference {
     name = "instance_management_policy"
+    path = "/"
+  }
+}
+
+# Modernisation Platform Managed PowerBI user role for Analytical Platform
+resource "aws_ssoadmin_permission_set" "modernisation_platform_powerbi_user" {
+  provider         = aws.sso-management
+  name             = "modernisation-platform-powerbi"
+  description      = "Modernisation Platform: Analytcal PowerBI"
+  instance_arn     = local.sso_admin_instance_arn
+  session_duration = "PT8H"
+  tags             = {}
+}
+
+resource "aws_ssoadmin_managed_policy_attachment" "modernisation_platform_powerbi_user" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  managed_policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_powerbi_user.arn
+}
+
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_powerbi_user" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_powerbi_user.arn
+  customer_managed_policy_reference {
+    name = "powerbi_user"
     path = "/"
   }
 }
