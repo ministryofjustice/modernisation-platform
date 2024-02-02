@@ -6,13 +6,18 @@ review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
+
 ## Contact AWS
 
 Firstly, contact AWS, understanding if this is an outage for 1 hour or 1 month will dictate the next steps to take.
 
+Check the status page here to help diagnoise the severtiy - https://health.aws.amazon.com/health/status 
+
 Login to the Modernisation Platform account, and raise the highest level severity ticket, whilst also enganging with our AWS representative in this channel **fill in**
 
 If this is in hours, create a huddle / meet. Outside of hours, call the second member of staff on call and post to the channel. With the PagerDuty alerts, incident channels will be created, too many to follow, so make a lead channel to coordinate.
+
+## Internal Escelation
 
 ## Disaster Recovery Types
 
@@ -20,8 +25,9 @@ If you are reading this, I hope its just to update the page, and not to follow i
 
 **Let’s work the problem, people. Let’s not make things worse by guessing.**
 
-- London has been lost but returning soon. [Click here]().
-- London has been lost, **and services need to migrate**. [Click here]().
+- London has been lost but **no services need to migrate**. [Click here]().
+- London has been lost, and **all services need to migrate**. [Click here]().
+- Loss of a **single account**. [Click here]().
 
 ## London has been lost but returning soon.
 
@@ -152,6 +158,39 @@ Required by customers. AMI. Backup region. Repos.
 - What permissions do we have building in other regions?
 - Perhaps a list of modules which will need changing ? Some have hard coded providers.. which ones we would need to change.
 
+
+
+## Repo / Module List
+
+| Module / Repo             	| Link                                                                                             	| Information                                                                                                                                                               	| Change Required       	|
+|---------------------------	|--------------------------------------------------------------------------------------------------	|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|-----------------------	|
+| Main Repo                 	| https://github.com/ministryofjustice/modernisation-platform                                      	| Houses all of the terraform that builds the platform, many modules will be refrences in here and will need the variables changed.                                         	| Variable              	|
+| Environments Repo         	| https://github.com/ministryofjustice/modernisation-platform-environments                         	| Customers responsibility (although we might need to help)                                                                                                                 	| -                     	|
+| Bastion Linux             	| https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux              	| Used by teams to create a bastion EC2 instance, module tests have a hard coded region but the module itself has a variable when called, no change required to the module. 	| No, region variable when called. 	|
+| Configuration Management  	| https://github.com/ministryofjustice/modernisation-platform-configuration-management             	| This repository contains configuration management of the ec2 infrastructure hosted on the Modernisation Platform .Requries hardcoded eu-west-2 to be changed.                 | Yes                     	| 
+| Instance Scheduler        	| https://github.com/ministryofjustice/modernisation-platform-instance-scheduler                   	| A Go lambda function for stopping and starting instance, rds resources and autoscaling groups.                                                                             	| Yes                     	|
+| S3 Bucket                 	| https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket                  	| A Terraform module to standardise S3 buckets with sensible defaults.                                                                                                        	| No, region variable when called.                     	|
+| AWS VM Import             	| https://github.com/ministryofjustice/modernisation-platform-terraform-aws-vm-import              	|                                                                                                                                                                           	| Yes in providers.tf                     	|
+| SSM Patching              	| https://github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching               	|                                                                                                                                                                           	| Yes in providers.tf                       	|
+| EC2 Autoscaling           	| https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-autoscaling-group      	| For ec2 autoscaling                                                                                                                                                          	| No, region variable when called.                       	|
+| AMI Builds                	| https://github.com/ministryofjustice/modernisation-platform-ami-builds                           	| This repository contains the Modernisation Platform AMI build code and workflows.                                                                                           	| Yes, in multiple areas.                      	|
+| Terraform Baselines       	| https://github.com/ministryofjustice/modernisation-platform-terraform-baselines                  	|                                                                                                                                                                           	|                       	|
+| Cross Account Access      	| https://github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access       	|                                                                                                                                                                           	|                       	|
+| DNS Certificates          	| https://github.com/ministryofjustice/modernisation-platform-terraform-dns-certificates           	|                                                                                                                                                                           	|                       	|
+| Load Balancer             	| https://github.com/ministryofjustice/modernisation-platform-terraform-loadbalancer               	|                                                                                                                                                                           	|                       	|
+| Github OIDC Role          	| https://github.com/ministryofjustice/modernisation-platform-github-oidc-role                     	|                                                                                                                                                                           	|                       	|
+| Terraform Member VPC      	| https://github.com/ministryofjustice/modernisation-platform-terraform-member-vpc                 	|                                                                                                                                                                           	|                       	|
+| Terraform IAM Superadmins 	| https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins            	|                                                                                                                                                                           	|                       	|
+| S3 Bucket Replication     	| https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role 	|                                                                                                                                                                           	|                       	|
+| EC2 Instance              	| https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-instance               	|                                                                                                                                                                           	|                       	|
+| Github OIDC Provider      	| https://github.com/ministryofjustice/modernisation-platform-github-oidc-provider                 	|                                                                                                                                                                           	|                       	|
+| ECS Cluster               	| https://github.com/ministryofjustice/modernisation-platform-terraform-ecs-cluster                	|                                                                                                                                                                           	|                       	|
+| Pagerduty                 	| https://github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration      	|                                                                                                                                                                           	|                       	|
+| Terraform Module Template 	| https://github.com/ministryofjustice/modernisation-platform-terraform-module-template            	|                                                                                                                                                                           	|                       	|
+| Incident Response         	| https://github.com/ministryofjustice/modernisation-platform-incident-response                    	|                                                                                                                                                                           	|                       	|
+| Trusted Advisor           	| https://github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor            	|                                                                                                                                                                           	|                       	|
+| Lambda Function           	| https://github.com/ministryofjustice/modernisation-platform-terraform-lambda-function            	|                                                                                                                                                                           	|                       	|
+|                           	|                                                                                                  	|                                                                                                                                                                           	|                       	|
 
 
 ## References
