@@ -899,7 +899,7 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
       "arn:aws:s3:::alpha-hr-dataproject/Input Data/Pay Element Lists/*",
       "arn:aws:s3:::alpha-hr-dataproject/Input Data/Remuneration Data/Remuneration Tool Data/*"
     ]
-    sid = "read-only"
+    sid = "readonly"
   }
   statement {
     actions = [
