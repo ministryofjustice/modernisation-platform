@@ -14,7 +14,6 @@ locals {
   # and will attempt to change them from `maintainer` to `member`, so owners should go in here.
   maintainers = [
     "ewastempel",
-    "jakemulley",
     "SteveMarshall",
     "davidkelliott",
     "connormaglynn"
@@ -39,7 +38,6 @@ locals {
   # GitHub usernames for engineers who need full AWS access
   engineers = [
     "davidkelliott",
-    "jakemulley",
     "stevelinden",
     "markgov",
     "dms1981", # David Sibley
