@@ -105,3 +105,10 @@ deny[msg] {
   not nuke in allowed_nuke
   msg := sprintf("`%v` uses an unexpected nuke value: got `%v`, expected one of: %v", [input.filename, nuke, concat(", ", allowed_nuke) ])
 }
+
+deny[msg] {
+  access := input.environments[_].access[_].level
+  access == "powerbi-user"
+  not startswith(input.filename, "analytical-platform")
+  msg := sprintf("`%v` uses `powerbi-user` access level but is not an analytical platform account", [input.filename])
+}

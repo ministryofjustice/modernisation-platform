@@ -228,7 +228,7 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
 # Modernisation Platform Managed PowerBI user role for Analytical Platform
 resource "aws_ssoadmin_permission_set" "modernisation_platform_powerbi_user" {
   provider         = aws.sso-management
-  name             = "modernisation-platform-powerbi-user"
+  name             = "modernisation-platform-powerbi"
   description      = "Modernisation Platform: Analytcal PowerBI"
   instance_arn     = local.sso_admin_instance_arn
   session_duration = "PT8H"
