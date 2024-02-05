@@ -35,5 +35,5 @@
     "infrastructure-support": "central-digital-product-team@digital.justice.gov.uk",
     "owner": "central-digital-product-team@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": ["ministryofjustice/IntegratedFraud"]
+  "github-oidc-team-repositories": ["ministryofjustice/integrated-fraud"]
 }
