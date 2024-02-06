@@ -230,19 +230,145 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "delius_core_dev_to_hmpps_development_ldap": {
-    "action": "PASS",
-    "source_ip": "${delius-core-dev}",
-    "destination_ip": "${hmpps-development}",
-    "destination_port": "389",
-    "protocol": "TCP"
-  },
   "delius_mis_dev_to_hmpps_development_ldap": {
     "action": "PASS",
     "source_ip": "${delius-mis-dev}",
     "destination_ip": "${hmpps-development}",
     "destination_port": "389",
     "protocol": "TCP"
+  },
+  "delius_mis_dev_to_hmpps_development_icmp": {
+    "action": "PASS",
+    "source_ip": "${delius-mis-dev}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "ANY",
+    "protocol": "ICMP"
+  },
+  "hmpps_development_to_delius-mis-dev_icmp": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "ANY",
+    "protocol": "ICMP"
+  },
+  "hmpps_development_to_delius-mis-dev_http": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "80",
+    "protocol": "TCP"
+  },
+  "hmpps_development_to_delius-mis-dev_https": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
+  "hmpps_development_to_delius-mis-dev_oracledb": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "hmpps_development_to_delius-mis-dev_ad_tcp_53": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "53",
+    "protocol": "TCP"
+  },
+  "hmpps_development_to_delius-mis-dev_ad_tcp_88": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "88",
+    "protocol": "TCP"
+  },
+  "hmpps_development_to_delius-mis-dev_ad_tcp_135": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "135",
+    "protocol": "TCP"
+  },
+  "hmpps_development_to_delius-mis-dev_ad_tcp_389": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "389",
+    "protocol": "TCP"
+  },
+  "hmpps_development_to_delius-mis-dev_ad_tcp_445": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "445",
+    "protocol": "TCP"
+  },
+  "hmpps_development_to_delius-mis-dev_ad_tcp_464": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "464",
+    "protocol": "TCP"
+  },
+  "hmpps_development_to_delius-mis-dev_ad_tcp_636": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "636",
+    "protocol": "TCP"
+  },
+  "hmpps_development_to_delius-mis-dev_ad_udp_53": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "53",
+    "protocol": "UDP"
+  },
+  "hmpps_development_to_delius-mis-dev_ad_udp_88": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "88",
+    "protocol": "UDP"
+  },
+  "hmpps_development_to_delius-mis-dev_ad_udp_123": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "123",
+    "protocol": "UDP"
+  },
+  "hmpps_development_to_delius-mis-dev_ad_udp_138": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "138",
+    "protocol": "UDP"
+  },
+  "hmpps_development_to_delius-mis-dev_ad_udp_389": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "389",
+    "protocol": "UDP"
+  },
+  "hmpps_development_to_delius-mis-dev_ad_udp_445": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "445",
+    "protocol": "UDP"
+  },
+  "hmpps_development_to_delius-mis-dev_ad_udp_464": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "464",
+    "protocol": "UDP"
   },
   "global-protect_to_data-insights-hub_development_redshift": {
     "action": "PASS",
