@@ -20,34 +20,6 @@ module "cross-account-access" {
   additional_trust_roles = terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : []
 }
 
-# Create a parameter for the modernisation platform environment management secret ARN that can be used to gain
-# access to the environments parameter when running a tf plan locally
-
-resource "aws_ssm_parameter" "environment_management_arn" {
-  #checkov:skip=CKV_AWS_337: Standard key is fine here
-  provider = aws.workspace
-
-  name  = "environment_management_arn"
-  type  = "SecureString"
-  value = data.aws_secretsmanager_secret.environment_management.arn
-
-  tags = local.environments
-}
-
-# Create a parameter for the modernisation platform account id that can be used
-# by providers in member accounts to assume a role in MP
-
-resource "aws_ssm_parameter" "modernisation_platform_account_id" {
-  #checkov:skip=CKV_AWS_337: Standard key is fine here
-  provider = aws.workspace
-
-  name  = "modernisation_platform_account_id"
-  type  = "SecureString"
-  value = local.environment_management.modernisation_platform_account_id
-
-  tags = local.environments
-}
-
 # AWS Shield Advanced SRT (Shield Response Team) support role
 module "shield_response_team_role" {
   # checkov:skip=CKV_TF_1:
