@@ -23,6 +23,7 @@ expected :=
     "core-shared-services",
     "core-vpc",
     "corporate-staff-rostering",
+    "cortex-xsiam",
     "dacp",
     "data-and-insights-wepi",
     "data-platform",
