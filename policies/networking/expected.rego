@@ -185,9 +185,10 @@ expected :=
       "general": {
         "cidr": "10.26.48.0/21",
         "accounts": [
-          "data-and-insights-wepi-development",
           "cdpt-chaps-development",
-          "cdpt-ifs-development"
+          "cdpt-ifs-development",
+          "cortex-xsiam-development",
+          "data-and-insights-wepi-development"
         ]
       }
     },
@@ -203,9 +204,10 @@ expected :=
       "general": {
         "cidr": "10.27.32.0/21",
         "accounts": [
-          "data-and-insights-wepi-production",
           "cdpt-chaps-production",
-          "cdpt-ifs-production"
+          "cdpt-ifs-production",
+          "cortex-xsiam-production",
+          "data-and-insights-wepi-production"
         ]
       }
     },
