@@ -42,7 +42,7 @@ jobs:
       if: success() || failure()
       uses: github/codeql-action/upload-sarif@cdcdbb579706841c47f7063dda365e292e5cad7a # v2.13.4
       with:
-        sarif_file: './trivy-results.sarif'
+        sarif_file: 'trivy-results.sarif'
 
   terraform-static-analysis-full-scan:
     permissions:
@@ -56,7 +56,7 @@ jobs:
       with:
         fetch-depth: 0
     - name: Run Analysis
-      uses: ministryofjustice/github-actions/terraform-static-analysis@7f9f83f521bd1aa8dc22f1bc07e9bc1b7676f455 # v15.3.0
+      uses: ministryofjustice/github-actions/terraform-static-analysis@8e3363c6e31a9f491705ef23d12ab167f1395e15 # v15.3.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -68,6 +68,12 @@ jobs:
         checkov_exclude: CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
         tflint_exclude: terraform_unused_declarations
         tflint_call_module_type: none
+
+    - name: Upload Trivy scan results to GitHub Security tab
+      if: success() || failure()
+      uses: github/codeql-action/upload-sarif@cdcdbb579706841c47f7063dda365e292e5cad7a # v2.13.4
+      with:
+        sarif_file: 'trivy-results.sarif'
 
   terraform-static-analysis-scheduled-scan:
     name: Terraform Static Analysis - scheduled scan of all directories
