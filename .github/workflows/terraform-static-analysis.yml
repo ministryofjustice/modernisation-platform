@@ -46,6 +46,9 @@ jobs:
 
   terraform-static-analysis-full-scan:
     permissions:
+      contents: read
+      actions: read
+      security-events: write
       pull-requests: write
     name: Terraform Static Analysis - scan all directories
     runs-on: ubuntu-latest
