@@ -572,10 +572,11 @@ resource "aws_iam_policy" "member-access-eu-central" {
 
 resource "aws_ssm_parameter" "environment_management_arn" {
   #checkov:skip=CKV_AWS_337: Standard key is fine here
+  count = local.account_data.account-type == "member" ? 1 : 0
   name  = "environment_management_arn"
   type  = "SecureString"
   value = data.aws_secretsmanager_secret.environment_management.arn
-  tags = local.tags
+  tags  = local.tags
 }
 
 # Create a parameter for the modernisation platform account id that can be used
@@ -583,8 +584,9 @@ resource "aws_ssm_parameter" "environment_management_arn" {
 
 resource "aws_ssm_parameter" "modernisation_platform_account_id" {
   #checkov:skip=CKV_AWS_337: Standard key is fine here
+  count = local.account_data.account-type == "member" ? 1 : 0
   name  = "modernisation_platform_account_id"
   type  = "SecureString"
   value = local.environment_management.modernisation_platform_account_id
-  tags = local.tags
+  tags  = local.tags
 }
