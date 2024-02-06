@@ -188,7 +188,7 @@ expected :=
           "cdpt-chaps-development",
           "cdpt-ifs-development",
           "cortex-xsiam-development",
-          "data-and-insights-wepi-development",
+          "data-and-insights-wepi-development"
         ]
       }
     },
@@ -207,7 +207,7 @@ expected :=
           "cdpt-chaps-production",
           "cdpt-ifs-production",
           "cortex-xsiam-production",
-          "data-and-insights-wepi-production",
+          "data-and-insights-wepi-production"
         ]
       }
     },
