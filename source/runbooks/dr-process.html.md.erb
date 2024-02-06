@@ -7,21 +7,32 @@ review_in: 6 months
 
 # <%= current_page.data.title %>
 
-## Contact AWS
+This page is designed to help give direction in the event of a DR scenario. 
 
-Firstly, contact AWS, understanding if this is an outage for 1 hour or 1 month will dictate the next steps to take.
+It covers permenant loss of all infrastructure, tempoary loss of all infrastructure, and loss of a single account.
 
-Check the status page here to help diagnoise the severtiy - https://health.aws.amazon.com/health/status 
+## Diagnose
 
-Login to the Modernisation Platform account, and raise the highest level severity ticket, whilst also enganging with our AWS representative in this channel **fill in**
+To find out the serverity of the situation, check the AWS status page [here](https://health.aws.amazon.com/health/status ).
 
-If this is in hours, create a huddle / meet. Outside of hours, call the second member of staff on call and post to the channel. With the PagerDuty alerts, incident channels will be created, too many to follow, so make a lead channel to coordinate.
+Regardless of which type of disaster recovery situation there is, you should contact AWS **immediately**, understanding if this is an outage for 1 hour or 1 month will dictate the next steps to take.
+
+If the issue is across all accounts, login to the Modernisation Platform account, and raise the highest level severity ticket, whilst also enganging with our AWS representative in this channel **fill in**
+
+If this issue is in one account, login to that account, and raise  the highest level severity ticket if production, and also enganging with our AWS representative in this channel **fill in**
+
+If this occurs is in hours, create a huddle / meet. Outside of hours, call the second member of staff on call and post to the channel. With the PagerDuty alerts, incident channels will be created, too many to follow, so make a lead channel to coordinate.
 
 ## Internal Escelation
 
-## Disaster Recovery Types
+**Simon can you help fill in this**
 
-If you are reading this, I hope its just to update the page, and not to follow it.
+Inform the following channels of the sitaution as give a member of staff as the contactable person about this
+
+` #ask-modernisation-platform`
+` #ask-modernisation-platform`
+
+## Disaster Recovery Types
 
 **Let’s work the problem, people. Let’s not make things worse by guessing.**
 
@@ -31,13 +42,15 @@ If you are reading this, I hope its just to update the page, and not to follow i
 
 ## London has been lost but returning soon.
 
-### Contact AWS
+### Getting a decision
 
-Working with AWS, find out ETAs surrounding full and partial returns of infrastrucutre. Be aware, whilst the infrastructure may return, whatever is running on it may not jump back to life, rebooting, and troubleshooting will be needed.
+Once a ticket has been raised with AWS, and we engaged with them and have total conformation that the infrastructure will be returning withing X number of minuites or hours, we will need to pass this information on for an informed decision to be made above.
+
+Only when we have this, can we update users on what is next. 
 
 ### Priority list
 
-If theres limited availiblity, which is a possibility, these are the priority accounts.
+If theres limited availiblity, which is a possibility, these are the priority accounts that need to be checked before we can focus on member-accounts.
 
 
 | Account      	| Information                                    	| 
@@ -54,13 +67,17 @@ If theres limited availiblity, which is a possibility, these are the priority ac
 
 If there is limited avaiailbity, power off all infrastrucutre in the test accounts. All are useless until the platform is running.
 
-### Test Accounts
 
 
 
 ## Disaster Recovery Running outside of London.
 
-If the London infrastructure is to be down for the forseable future, running from another region is the next step. Identifying the region based infrastructure and its replications status will be next
+If the London infrastructure is to be down for the forseable future, running from another region is the next step.
+
+
+### Informing teams
+
+Identifying the region based infrastructure and its replications status will be next
 
 ### Cross Region Infrastructure in the Platform
 
@@ -72,10 +89,10 @@ If the London infrastructure is to be down for the forseable future, running fro
 | IAM Policys     	| Across all regions.                            	| -           	| -                  	|
 | DNS             	| Across all regions.                            	| -           	| -                  	|
 | VPC             	| No VPCs currently exist for DR, only reserved. 	| -           	| -                  	|
-| Firewall        	| Not cross region.                                               	|             	|                    	|
-| Transit Gateway 	| Not cross region.                                               	|             	|                    	|
-| NACLS           	| Not cross region.                                               	|             	|                    	|
-| Subnets         	| Not cross region.                                               	|             	|                    	|
+| Firewall        	| Not cross region.                                	|             	|                    	|
+| Transit Gateway 	| Not cross region.                             	|             	|                    	|
+| NACLS           	| Not cross region.                                	|             	|                    	|
+| Subnets         	| Not cross region.                               	|             	|                    	|
 | Dynamo Disable    | Check
 
 
@@ -113,6 +130,8 @@ These are the repositories owned by the Modernisation Platform. This list will h
 | Lambda Function           	| https://github.com/ministryofjustice/modernisation-platform-terraform-lambda-function            	|                                                                                                                                                                           	| No                      	|
 |                           	|                                                                                                  	|                                                                                                                                                                           	|                       	|
 
+
+### Organisational SCPs
 
 ### Contact AWS
 
