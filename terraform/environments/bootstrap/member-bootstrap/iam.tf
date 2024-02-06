@@ -566,3 +566,27 @@ resource "aws_iam_policy" "member-access-eu-central" {
   description = "Restricted policy for US East usage"
   policy      = data.aws_iam_policy_document.member-access-eu-central.json
 }
+
+# Create a parameter for the modernisation platform environment management secret ARN that can be used to gain
+# access to the environments parameter when running a tf plan locally
+
+resource "aws_ssm_parameter" "environment_management_arn" {
+  #checkov:skip=CKV_AWS_337: Standard key is fine here
+  count = local.account_data.account-type == "member" ? 1 : 0
+  name  = "environment_management_arn"
+  type  = "SecureString"
+  value = data.aws_secretsmanager_secret.environment_management.arn
+  tags  = local.tags
+}
+
+# Create a parameter for the modernisation platform account id that can be used
+# by providers in member accounts to assume a role in MP
+
+resource "aws_ssm_parameter" "modernisation_platform_account_id" {
+  #checkov:skip=CKV_AWS_337: Standard key is fine here
+  count = local.account_data.account-type == "member" ? 1 : 0
+  name  = "modernisation_platform_account_id"
+  type  = "SecureString"
+  value = local.environment_management.modernisation_platform_account_id
+  tags  = local.tags
+}
