@@ -22,7 +22,9 @@ setup_ram_share_association() {
     
     if [[ $select_workspace ]]; then
 
-      # Run terraform apply
+      # Run terraform apply to get subnet info
+      ./scripts/terraform-apply.sh $basedir/$application -target=module.ram-ec2-retagging[0].data.aws_subnets.associated
+      # Run the full terraform apply
       ./scripts/terraform-apply.sh $basedir/$application
     fi
     echo "Finished running ram share association for application: ${application}"
