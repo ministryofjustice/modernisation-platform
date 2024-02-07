@@ -31,18 +31,11 @@ jobs:
       with:
         scan_type: changed
         trivy_severity: HIGH,CRITICAL
-     #  tfsec_exclude: aws-ssm-secret-use-customer-key,github-repositories-private,aws-vpc-no-excessive-port-access,github-repositories-require-signed-commits
         trivy_ignore: ./.trivyignore.yaml
         checkov_exclude: CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
         tflint_exclude: terraform_unused_declarations
         tflint_call_module_type: none
         tfsec_trivy: trivy
-
-    - name: Upload Trivy scan results to GitHub Security tab
-      if: success() || failure()
-      uses: github/codeql-action/upload-sarif@cdcdbb579706841c47f7063dda365e292e5cad7a # v2.13.4
-      with:
-        sarif_file: 'trivy-results.sarif'
 
   terraform-static-analysis-full-scan:
     permissions:
@@ -59,7 +52,7 @@ jobs:
       with:
         fetch-depth: 0
     - name: Run Analysis
-      uses: ministryofjustice/github-actions/terraform-static-analysis@8630f3ba1629673652b3223f8c00c68931a2e62d # v15.3.0
+      uses: ministryofjustice/github-actions/terraform-static-analysis@155cf1024f3cfcc644e61e3a2258b1b9d33e454c # v15.3.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
