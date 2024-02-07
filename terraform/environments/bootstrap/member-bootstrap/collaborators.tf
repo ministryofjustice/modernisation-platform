@@ -8,9 +8,6 @@ module "collaborator_fleet_manager_role" {
   count   = local.account_data.account-type == "member" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 5"
-  providers = {
-    aws = aws.workspace
-  }
   trusted_role_arns = [
     local.modernisation_platform_account.id
   ]
