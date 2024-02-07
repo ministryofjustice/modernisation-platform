@@ -104,7 +104,7 @@ module "pagerduty_core_alerts" {
 
 resource "aws_cloudwatch_metric_alarm" "instance_scheduler_has_errors" {
   alarm_name        = "instance-scheduler-run-with-errors"
-  alarm_description = "Monitors instance-scheduller for failed invocations. It alarms when instance scheduler execution results in at least 1 error."
+  alarm_description = "Monitors instance-scheduler for failed invocations. It alarms when instance scheduler execution results in at least 1 error."
   alarm_actions     = [aws_sns_topic.on_failure.arn]
 
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -125,7 +125,7 @@ resource "aws_cloudwatch_metric_alarm" "instance_scheduler_has_errors" {
 
 resource "aws_cloudwatch_metric_alarm" "instance_scheduler_was_throttled" {
   alarm_name        = "instance-scheduler-was-throttled"
-  alarm_description = "Monitors instance-scheduller when it fails to be invoked. It alarms when instance scheduler invokation is throttled."
+  alarm_description = "Monitors instance-scheduler when it fails to be invoked. It alarms when instance scheduler invokation is throttled."
   alarm_actions     = [aws_sns_topic.on_failure.arn]
 
   comparison_operator = "GreaterThanOrEqualToThreshold"
