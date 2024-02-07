@@ -809,33 +809,6 @@ data "aws_iam_policy_document" "reporting-operations" {
   }
 }
 
-resource "aws_iam_policy" "fleet-manager-policy" {
-  provider = aws.workspace
-  name     = "fleet_manager_policy"
-  path     = "/"
-  policy   = data.aws_iam_policy_document.fleet-manager-document.json
-}
-
-
-data "aws_iam_policy_document" "fleet-manager-document" {
-  #checkov:skip=CKV_AWS_111 Needs to access multiple resources and the policy is attached to a role that is scoped to a specific account
-  #checkov:skip=CKV_AWS_356 Needs to access multiple resources and the policy is attached to a role that is scoped to a specific account
-  override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
-  statement {
-    sid    = "FleetManagerAllow"
-    effect = "Allow"
-    actions = [
-      "ssm:DescribeSessions",
-      "ec2:DescribeTags",
-      "ec2:DescribeInstances",
-      "ssm-guiconnect:StartConnection",
-      "ssm-guiconnect:GetConnection",
-      "ssm:StartSession"
-    ]
-    resources = ["*"]
-  }
-}
-
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "powerbi_user_additional" {
   #checkov:skip=CKV_AWS_108
