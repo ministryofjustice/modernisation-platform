@@ -83,9 +83,10 @@ data "aws_iam_policy_document" "common_statements" {
 }
 
 resource "aws_iam_policy" "fleet-manager-policy" {
-  name   = "fleet_manager_policy"
-  path   = "/"
-  policy = data.aws_iam_policy_document.fleet-manager-document.json
+  provider = aws.sso-management
+  name     = "fleet_manager_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.fleet-manager-document.json
 }
 
 
