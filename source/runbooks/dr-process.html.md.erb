@@ -5,254 +5,342 @@ last_reviewed_on: 2024-01-24
 review_in: 6 months
 ---
 
+
 # <%= current_page.data.title %>
 
-This page is designed to help give direction in the event of a DR scenario. 
 
-It covers permenant loss of all infrastructure, tempoary loss of all infrastructure, and loss of a single account.
+This page is designed to help give direction in the event of a DR scenario.
+
+
+It covers permanent loss of all infrastructure, temporary loss of all infrastructure, and loss of a single account.
+
 
 ## Diagnose
 
+
 To find out the serverity of the situation, check the AWS status page [here](https://health.aws.amazon.com/health/status ).
+
 
 Regardless of which type of disaster recovery situation there is, you should contact AWS **immediately**, understanding if this is an outage for 1 hour or 1 month will dictate the next steps to take.
 
-- If the issue is across all accounts, login to the Modernisation Platform account, and raise the highest level severity ticket, whilst also enganging with our AWS representative in this channel **fill in**
 
-- If this issue is in one account, login to that account, and raise  the highest level severity ticket if production, and also enganging with our AWS representative in this channel **fill in**
+- If the issue is across all accounts, login to the Modernisation Platform account, and raise the highest level severity ticket, whilst also enganging with our AWS representative in this channel.
+
+
+- If this issue is in one account, login to that account, and raise the highest level severity ticket if production, and also enganging with our AWS representative in this channel **fill in**
+
 
 - If this occurs is in hours, create a huddle / meet. Outside of hours, call the second member of staff on call and post to the channel. With the PagerDuty alerts, incident channels will be created, too many to follow, so make a lead channel to coordinate.
 
+
 ## Internal Escelation
+
 
 **Simon can you help fill in this**
 
-Inform the following channels of the sitaution and put forward a contactable member of staff from our team.
+
+Inform the following channels of the situation and put forward a contactable member of staff from our team.
+
 
 `#ask-modernisation-platform`
 
+
 `#modernisation-platform`
+
 
 `#modernisation-platform-alerts`
 
 
+
 ## Disaster Recovery Types
 
+
 **Let’s work the problem, people. Let’s not make things worse by guessing.**
+
 
 - London has been lost but **no services need to migrate**. [Click here]().
 - London has been lost, and **all services need to migrate**. [Click here]().
 - Loss of a **single account**. [Click here]().
 
+
 ## London has been lost but returning soon.
+
 
 ### Getting a decision
 
-Once a ticket has been raised with AWS, and we engaged with them and have total conformation that the infrastructure will be returning withing X number of minuites or hours, we will need to pass this information on for an informed decision to be made above.
 
-Only when we have this, can we update users on what is next. 
+Once a ticket has been raised with AWS, and we have engaged with them and have total confirmation that the infrastructure will be returning within X number of minutes or hours, we will need to pass this information on for an informed decision to be made above.
+
+
+Only when we have this, can we update users on what is next.
+
 
 ### Priority list
 
-If theres limited availiblity, which is a possibility, these are the priority accounts that need to be checked before we can focus on member-accounts.
+
+If there is limited availability, which is a possibility, these are the priority accounts that need to be checked before we can focus on member-accounts.
 
 
-| Account      	| Information                                    	| 
-|-----------------	|------------------------------------------------	|
-| Core-Shared-Services            | Creates the core shared services account resources.	  	| 
-| Core-Network-Services           | Creates the core networking account resources, this is the highest priority.	      	|
-| Core-Logging  	              | Creates the core logging account resources	                    	| 
-| Core-Security     	          | Creates the core security account resources	                           	| 
-| Cloud-Platform-Transit-Gateways | Across all regions.                            	| 
-| Core-VPC-*                      | Creates the core VPC resources in the VPC accounts, needed after the core-networking-services.	 	| 
-| Modernisation-Platform          | Creates key resources such as S3 state buckets for the platform	|
+
+|Account|Information|
+|----------------- |------------------------------------------------ |
+|Core-Shared-Services|Creates the core shared services account resources. |
+| Core-Network-Services | Creates the core networking account resources; this is the highest priority. |
+|Core-Logging|Creates the core logging account resources |
+|Core-Security|Creates the core security account resources |
+|Cloud-Platform-Transit-Gateways|Across all regions. |
+|Core-VPC-*|Creates the core VPC resources in the VPC accounts, needed after the core-networking-services. |
+| Modernisation-Platform | Creates key resources such as S3 state buckets for the platform |
+
 
 ### Test Accounts
 
-If there is limited avaiailbity, power off all infrastrucutre in the test accounts. All are useless until the platform is running.
+
+If there is limited availability, power off all infrastructure in the test accounts. All are useless until the platform is running.
 
 
-## Single Account 
+
+## Single Account
+
 
 Dont forget the statefile
 
+
 ### Will it be returning
 
-If this is a test account, waiting may be the easier idea. If AWS can promise us this is a tempoary issue with an estimated fix time, we can pass this to the team and agree our next step.
+
+If this is a test account, waiting may be the easier idea. If AWS can promise us this is a temporary issue with an estimated fix time, we can pass this to the team and agree our next step.
+
 
 ### Rebuild account
 
-Assuming this is a production account with no time given to return, please follow the steps. 
+
+Assuming this is a production account with no time given to return, please follow the steps.
+
 
 #### Workflows
 
-Rather than rebuild an account through workflows, I would run manually, however, technically you could run the account creation process workflows.
+
+Rather than rebuilding an account through workflows, I would run manually, however, technically, you could run the account creation process workflows.
+
 
 #### Manually
+
 
 1.) Run a terraform plan against the production workspace, in modernisation-platform .
 2.) All changes should appear, using your admin credentials, run an apply.
 3.) Assuming the apply runs as planned, login to the account and check that vpcs, etc look correct.
 4.) In modernisation-platform-environments , run terraform against the correct account.
 
+
 ### Things to remember
+
 
 - Statefile for the lost account will exist, this might need to be removed.
 - Any backups on the account or volumes will be lost.
 
+
 ## Disaster Recovery Running outside of London.
+
 
 If the London infrastructure is to be down for the forseable future, running from another region is the next step.
 
 
+
 ### Informing teams
 
-Firstly, inform the following channels of the sitaution and put forward a contactable member of staff from our team. 
+
+Firstly, inform the following channels of the situation and put forward a contactable member of staff from our team.
+
 
 `#ask-modernisation-platform`
 
+
 `#modernisation-platform`
+
 
 `#modernisation-platform-alerts`
 
+
 Supply the ETAs, lead incident numbers, links to where updates will be posted etc.
+
 
 ### Cross Region Infrastructure in the Platform
 
-| Technology      	| Information                                    	| Replicated? 	| Replication Region 	|
-|-----------------	|------------------------------------------------	|-------------	|--------------------	|
-| S3              	| Contains the platforms terraform state files.  	| Yes         	| eu-west-1          	|
-| KMS             	| Contains encryption kes for the platform.      	| No          	| -                  	|
-| Secrets Manger  	| Contains platform secrets.                     	| Yes         	| eu-west-1          	|
-| IAM Policys     	| Across all regions.                            	| -           	| -                  	|
-| DNS             	| Across all regions.                            	| -           	| -                  	|
-| VPC             	| No VPCs currently exist for DR, only reserved. 	| -           	| -                  	|
-| Firewall        	| Not cross region.                                	|             	|                    	|
-| Transit Gateway 	| Not cross region.                             	|             	|                    	|
-| NACLS           	| Not cross region.                                	|             	|                    	|
-| Subnets         	| Not cross region.                               	|             	|                    	|
-| Dynamo Disable    | Check
+
+| Technology | Information | Replicated? | Replication Region |
+|----------------- |------------------------------------------------ |------------- |-------------------- |
+| S3 | Contains the platforms terraform state files. | Yes | eu-west-1 |
+| KMS | Contains encryption kes for the platform. | No | - |
+| Secrets Manger | Contains platform secrets. | Yes | eu-west-1 |
+| IAM Policys | Across all regions. | - | - |
+| DNS | Across all regions. | - | - |
+| VPC | No VPCs currently exist for DR, only reserved. | - | - |
+| Firewall | Not cross region. | | |
+| Transit Gateway | Not cross region. | | |
+| NACLS | Not cross region. | | |
+| Subnets | Not cross region. | | |
+| Dynamo Disable | Check
+
 
 
 ### Repo / Module List
 
-These are the repositories owned by the Modernisation Platform. 
+
+These are the repositories owned by the Modernisation Platform.
+
 
 The next step will be to create new tags for the current releases with any hardcoded region values changed.
 
+
 `0.0.0`
 
-Use the version number stated so these changes are easily recognisable. The version of these modules will then need to be updated in our 
 
-`Modernisation Platform` repository, along with any variables changed that are needed to. This  should go in one large PR with many reviewers.
-
+Use the version number stated so these changes are easily recognisable. The version of these modules will then need to be updated in our
 
 
-| Module / Repo             	| Link                                                                                             	| Information                                                                                                                                                               	| Change Required       	|
-|---------------------------	|--------------------------------------------------------------------------------------------------	|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|-----------------------	|
-| Main Repo                 	| https://github.com/ministryofjustice/modernisation-platform                                      	| Houses all of the terraform that builds the platform, many modules will be refrences in here and will need the variables changed.                                         	| Variable              	|
-| Environments Repo         	| https://github.com/ministryofjustice/modernisation-platform-environments                         	| Customers responsibility (although we might need to help)                                                                                                                 	| -                     	|
-| Bastion Linux             	| https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux              	| Used by teams to create a bastion EC2 instance, module tests have a hard coded region but the module itself has a variable when called, no change required to the module. 	| No, region variable when called. 	|
-| Configuration Management  	| https://github.com/ministryofjustice/modernisation-platform-configuration-management             	| This repository contains configuration management of the ec2 infrastructure hosted on the Modernisation Platform .Requries hardcoded eu-west-2 to be changed.                 | Yes                     	| 
-| Instance Scheduler        	| https://github.com/ministryofjustice/modernisation-platform-instance-scheduler                   	| A Go lambda function for stopping and starting instance, rds resources and autoscaling groups.                                                                             	| Yes                     	|
-| S3 Bucket                 	| https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket                  	| A Terraform module to standardise S3 buckets with sensible defaults.                                                                                                        	| No, region variable when called.                     	|
-| AWS VM Import             	| https://github.com/ministryofjustice/modernisation-platform-terraform-aws-vm-import              	|                                                                                                                                                                           	| Yes in providers.tf                     	|
-| SSM Patching              	| https://github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching               	| Automated patching module.                                                                                                                                                   	| Yes in providers.tf                       	|
-| EC2 Autoscaling           	| https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-autoscaling-group      	| For ec2 autoscaling                                                                                                                                                          	| No, region variable when called.                       	|
-| AMI Builds                	| https://github.com/ministryofjustice/modernisation-platform-ami-builds                           	| This repository contains the Modernisation Platform AMI build code and workflows.                                                                                           	| Yes, in multiple areas.                      	|
-| Terraform Baselines       	| https://github.com/ministryofjustice/modernisation-platform-terraform-baselines                  	| Terraform module for enabling and configuring the MoJ Security Guidance baseline for AWS accounts, alongside some extra reasonable security, identity and compliance services.| No, region variable when called.                       	|
-| Cross Account Access      	| https://github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access       	| A simple Terraform module to configure an IAM role that is assumable from another account.                                                                                   	| No                      	|
-| DNS Certificates          	| https://github.com/ministryofjustice/modernisation-platform-terraform-dns-certificates           	| Template                                                                                                                                                                      | No                      	|
-| Load Balancer             	| https://github.com/ministryofjustice/modernisation-platform-terraform-loadbalancer               	|                                                                                                                                                                           	| No, region variable when called.                       	|
-| Github OIDC Role          	| https://github.com/ministryofjustice/modernisation-platform-github-oidc-role                     	|                                                                                                                                                                              	| No                      	|
-| Terraform Member VPC      	| https://github.com/ministryofjustice/modernisation-platform-terraform-member-vpc                 	| This module creates the member accounts VPC and networking.                                                                                                                  	| Yes                      	|
-| Terraform IAM Superadmins 	| https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins            	| This repository holds a Terraform module that creates set IAM accounts and associated configuration, such as: account password policies, administrator groups, user accounts. | No                      	|
-| S3 Bucket Replication     	| https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role 	| A Terraform module to create an IAM role for S3 bucket replication.                                                                                                          	| No, region variable when called.                       	|
-| EC2 Instance              	| https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-instance               	| Module for an ec2 instance creation.                                                                                                                                         	| No, region variable when called.                       	|
-| Github OIDC Provider      	| https://github.com/ministryofjustice/modernisation-platform-github-oidc-provider                 	| This module allows users to create an OIDC Provider and the associated IAM resources required to make use of the connect provider.                                           	| No                      	|
-| ECS Cluster               	| https://github.com/ministryofjustice/modernisation-platform-terraform-ecs-cluster                	| This repository provides 2 Terraform Modules: Cluster and Service                                                                                                           	| No, region variable when called.                      	|
-| Pagerduty                 	| https://github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration      	|                                                                                                                                                                           	| No, region variable when called.                      	|
-| Terraform Module Template 	| https://github.com/ministryofjustice/modernisation-platform-terraform-module-template            	|                                                                                                                                                                           	| No                      	|
-| Incident Response         	| https://github.com/ministryofjustice/modernisation-platform-incident-response                    	|                                                                                                                                                                           	| No                      	|
-| Trusted Advisor           	| https://github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor            	|                                                                                                                                                                           	| No                      	|
-| Lambda Function           	| https://github.com/ministryofjustice/modernisation-platform-terraform-lambda-function            	|                                                                                                                                                                           	| No                      	|
-|                           	|                                                                                                  	|                                                                                                                                                                           	|                       	|
+`Modernisation Platform` repository, along with any variables changed that are needed to. This should go in one large PR with many reviewers.
+
+
+
+
+| Module / Repo | Link | Information | Change Required |
+|--------------------------- |-------------------------------------------------------------------------------------------------- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |----------------------- |
+| Main Repo | https://github.com/ministryofjustice/modernisation-platform | Houses all of the terraform that builds the platform, many modules will be refrences in here and will need the variables changed. | Variable |
+| Environments Repo | https://github.com/ministryofjustice/modernisation-platform-environments | Customers responsibility (although we might need to help) | - |
+| Bastion Linux | https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux | Used by teams to create a bastion EC2 instance, module tests have a hard coded region but the module itself has a variable when called, no change required to the module. | No, region variable when called. |
+|ConfigurationManagement| https://github.com/ministryofjustice/modernisation-platform-configuration-management |This repository contains configuration management of the ec2 infrastructure hosted on the ModernisationPlatform .Requries hardcoded eu-west-2 to be changed. |Yes|
+| Instance Scheduler | https://github.com/ministryofjustice/modernisation-platform-instance-scheduler | A Go lambda function for stopping and starting instance, rds resources and autoscaling groups. | Yes |
+| S3 Bucket | https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket | A Terraform module to standardise S3 buckets with sensible defaults. | No, region variable when called. |
+| AWS VM Import | https://github.com/ministryofjustice/modernisation-platform-terraform-aws-vm-import | | Yes in providers.tf |
+| SSM Patching | https://github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching | Automated patching module. | Yes in providers.tf |
+| EC2 Autoscaling | https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-autoscaling-group | For ec2 autoscaling | No, region variable when called. |
+| AMI Builds | https://github.com/ministryofjustice/modernisation-platform-ami-builds | This repository contains the Modernisation Platform AMI build code and workflows. | Yes, in multiple areas. |
+| Terraform Baselines | https://github.com/ministryofjustice/modernisation-platform-terraform-baselines | Terraform module for enabling and configuring the MoJ Security Guidance baseline for AWS accounts, alongside some extra reasonable security, identity and compliance services.| No, region variable when called. |
+| Cross Account Access | https://github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access | A simple Terraform module to configure an IAM role that is assumable from another account. | No |
+| DNS Certificates | https://github.com/ministryofjustice/modernisation-platform-terraform-dns-certificates | Template | No |
+| Load Balancer | https://github.com/ministryofjustice/modernisation-platform-terraform-loadbalancer | | No, region variable when called. |
+| Github OIDC Role | https://github.com/ministryofjustice/modernisation-platform-github-oidc-role | | No |
+| Terraform Member VPC | https://github.com/ministryofjustice/modernisation-platform-terraform-member-vpc | This module creates the member accounts VPC and networking. | Yes |
+| Terraform IAM Superadmins | https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins | This repository holds a Terraform module that creates set IAM accounts and associated configuration, such as: account password policies, administrator groups, user accounts. | No |
+| S3 Bucket Replication | https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role | A Terraform module to create an IAM role for S3 bucket replication. | No, region variable when called. |
+| EC2 Instance | https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-instance | Module for an ec2 instance creation. | No, region variable when called. |
+| Github OIDC Provider | https://github.com/ministryofjustice/modernisation-platform-github-oidc-provider | This module allows users to create an OIDC Provider and the associated IAM resources required to make use of the connect provider. | No |
+| ECS Cluster | https://github.com/ministryofjustice/modernisation-platform-terraform-ecs-cluster | This repository provides 2 Terraform Modules: Cluster and Service | No, region variable when called. |
+| Pagerduty | https://github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration | | No, region variable when called. |
+| Terraform Module Template | https://github.com/ministryofjustice/modernisation-platform-terraform-module-template | | No |
+| Incident Response | https://github.com/ministryofjustice/modernisation-platform-incident-response | | No |
+| Trusted Advisor | https://github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor | | No |
+| Lambda Function | https://github.com/ministryofjustice/modernisation-platform-terraform-lambda-function | | No |
+| | | | |
+
 
 
 ### Organisational Service Control Policies
 
+
 Service control policies (SCPs) are a type of organization policy that you can use to manage permissions in the organization. SCPs offer central control over the maximum available permissions for all accounts in your organization. SCPs help you to ensure your accounts stay within your organization’s access control guidelines.
 
-Currently in `eu-west-1` we can build what is required, however if this region was to change, we would need to check what is limited in which region. 
+
+Currently in `eu-west-1` we can build what is required, however if this region was to change, we would need to check what is limited in which region.
+
 
 ### Contact AWS
 
+
 As previously mentioned, contact AWS using the following steps
+
 
 - Raise a ticket, highest prioirty.
 - Contact our AWS representative for an update on the situation.
-- Organise updates, if the situation changes, our approach might need to. 
+- Organise updates, if the situation changes, our approach might need to.
+
 
 ### Running the terraform
 
+
 Once the modules have been updated, and tagged, as well as the PR merged to change any variable or hardcoded mentions of region in `Modernisation-Platform` we will need to begin the rebuild of the platform, starting with networking. The steps below outline which order to follow.
+
 
 ## Platform rebuild - Networking
 
+
 This is a large undertaking, and has not been tested but discussed within the team.
+
 
 ### Networking Overview
 
-Our [Networking Diagram](../concepts/networking/networking-diagram.html) shows a high level view of how shared
-VPCs are connected. 
 
-Our [Networking Approach](../concepts/networking/networking-approach.html) discusses and 
+Our [Networking Diagram](../concepts/networking/networking-diagram.html) shows a high level view of how shared
+VPCs are connected.
+
+
+Our [NetworkingApproach](../concepts/networking/networking-approach.html) discusses and
 contains a detailed view of our shared VPCs.
+
 
 Our [Transit Gateway](../how-vpcs-access-the-internet.html) and how VPCs access the internet.
 
 
+
 ## Stages
+
 
 ### VPCs and Subnets
 
+
 1. Clone the mod-platform repo, change region in code. Whilst its as simple as a find and replace, modules are called and need changing, either locally and refrenced locally, or in the module and pushed to git.
 2. Core VPC rebuild. Provider would need to be eu-west-1, so check the permissions you have in that region with the credentials you are using. E.g. https://moj.awsapps.com/start/ when getting your credentials from here, make sure the region is correct.
-3. Core Netowrking would be the next to run terraform on, checking the code and modules it uses for region refrences and changing them.
+3. Core Networking would be the next to run terraform on, checking the code and modules it uses for region references and changing them.
 
-**With the infrasturcture in London no longer avaiable we would use the original ranges**
+
+**With the infrastructure in London no longer available, we would use the original ranges**
+
 
 ### Transit Gateway
 
-To rebuild Transit gateway in a new region, first find the code, located here, in core-network-services. https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-network-services 
+
+To rebuild the transit gateway in a new region, first find the code, located here, in core-network-services. https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-network-services
+
 
 Using the admin role, run a terraform plan and apply. This hasnt been done from scratch since the platforms creation, so expect to debug issues.
 
+
 ### Firewall - Needs work
+
 
 We make use of AWS Network Firewalls in two ways. First, we use a centralised inspection VPC to control traffic entering and exiting the Modernisation Platform to and from internal Ministry of Justice services. Second, we use inline-inspection in our egress VPCs to control traffic exiting the Modernisation Platform to the internet.
 
-Located in the Core-Network-Services account, DNS, networking and other network related infrastructure will be down. 
+
+Located in the Core-Network-Services account, DNS, networking and other network related infrastructure will be down.
+
 
 The firewall rules can be located here - https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-network-services/firewall-rules
 
-Live data & non live data.
+
+Live data & non-live data.
+
 
 Peer the new Transit grateway build in eu-west-1 to the MOJ transitgateway that is in eu-west-2 ???
 
+
 ### Account dependencies
 
-| Account      	| Information                                    	| 
-|-----------------	|------------------------------------------------	|
-| Core-Shared-Services            | Creates the core shared services account resources, AMIs and other services customers require are based in here.	  	| 
-| Core-Network-Services           | Creates the core networking account resources, and contains the transit gateway terraform, as well as firewall rules.	      	|
-| Core-Logging  	              | Creates the core logging account resources, not essential but a part of the platform.	                    	| 
-| Core-Security     	          | Creates the core security account resources	                           	| 
-| Cloud-Platform-Transit-Gateways | Across all regions.                            	| 
-| Core-VPC-*                      | Creates the core VPC resources in the VPC accounts	 	| 
-| Modernisation-Platform          | Creates key resources such as S3 state buckets for the platform	|
+
+|Account|Information|
+|----------------- |------------------------------------------------ |
+|Core-Shared-Services|Creates the core shared services account resources, AMIsand other services customers require are based in here. |
+| Core-Network-Services | Creates the core networking account resources, and contains the transit gateway terraform, as well as firewall rules. |
+|Core-Logging|Creates the core logging account resources, not essential but a part of the platform. |
+|Core-Security|Creates the core security account resources |
+|Cloud-Platform-Transit-Gateways|Across all regions. |
+|Core-VPC-*|Creates the core VPC resources in the VPC accounts |
+| Modernisation-Platform | Creates key resources such as S3 state buckets for the platform |
+
 
 
 ## References
 
-Will add links to pages useful for this, like I have with networking
+
+I will add links to pages useful for this, like I have with networking
+
