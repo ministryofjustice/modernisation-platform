@@ -52,7 +52,7 @@ jobs:
       with:
         fetch-depth: 0
     - name: Run Analysis
-      uses: ministryofjustice/github-actions/terraform-static-analysis@d311e9fe2bc163f1a1af29000b2ba773ba199e00 # v15.3.0
+      uses: ministryofjustice/github-actions/terraform-static-analysis@4496afa216a8e9cfe5f04a7fc89a7c31e74a2865 # v15.3.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
