@@ -17,6 +17,6 @@ provider "aws" {
   alias  = "workspace"
   region = "eu-west-2"
   assume_role {
-    role_arn = can(regex("superadmin|AdministratorAccess", data.aws_iam_session_context.whoami.issuer_arn)) ? "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess" : "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/OrganizationAccountAccessRole"
+    role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
   }
 }
