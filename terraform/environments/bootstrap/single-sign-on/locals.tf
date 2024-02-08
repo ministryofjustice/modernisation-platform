@@ -2,6 +2,10 @@
 data "aws_caller_identity" "modernisation-platform" {
 
 }
+data "aws_caller_identity" "current" {}
+data "aws_iam_session_context" "whoami" {
+  arn = data.aws_caller_identity.current.arn
+}
 
 locals {
 
