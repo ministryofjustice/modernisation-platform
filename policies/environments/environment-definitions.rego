@@ -25,7 +25,8 @@ allowed_access := [
   "sandbox",
   "security-audit",
   "view-only",
-  "powerbi-user"
+  "powerbi-user",
+  "fleet-manager"
 ]
 
 allowed_nuke := [
