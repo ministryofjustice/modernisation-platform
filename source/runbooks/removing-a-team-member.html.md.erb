@@ -14,3 +14,4 @@ Along with the standard [leavers form](https://leavers.form.service.justice.gov.
 1. Remove them as a superadmin to our AWS landing zone [superadmins/main.tf](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins/blob/main/main.tf#L5)
 1. Run the modernisation-platform account Terraform for the above code change locally as a superuser (the CI user does not have permissions to delete users)
 1. Remove them from the Modernisation Platform Google Group and Slack teams.
+1. Remove them from pagerduty [terraform/pagerduty/locals.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/pagerduty/locals.tf)
