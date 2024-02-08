@@ -13,7 +13,7 @@
           "github_slug": "modernisation-platform-security",
           "level": "instance-management",
           "nuke": "rebuild"
-        }
+        },
         {
           "github_slug": "modernisation-platform",
           "level": "fleet-manager",
