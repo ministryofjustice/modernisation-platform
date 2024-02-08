@@ -11,3 +11,12 @@ provider "aws" {
     role_arn = "arn:aws:iam::${local.environment_management.aws_organizations_root_account_id}:role/ModernisationPlatformSSOAdministrator"
   }
 }
+
+# AWS provider (workspace): the workspace account. Required for assuming a role into an account for bootstrapping
+provider "aws" {
+  alias  = "workspace"
+  region = "eu-west-2"
+  assume_role {
+    role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
+  }
+}
