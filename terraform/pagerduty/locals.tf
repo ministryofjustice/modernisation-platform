@@ -41,7 +41,6 @@ locals {
 
   existing_users = {
     karen_botsh    = data.pagerduty_user.karen_botsh,
-    jake_mulley    = data.pagerduty_user.jake_mulley,
     stephen_linden = data.pagerduty_user.stephen_linden,
     simon_pledger  = data.pagerduty_user.simon_pledger,
     mark_roberts   = data.pagerduty_user.mark_roberts,
@@ -77,10 +76,6 @@ data "pagerduty_user" "stephen_linden" {
 
 data "pagerduty_user" "karen_botsh" {
   email = "karen.botsh${local.digital_email_suffix}"
-}
-
-data "pagerduty_user" "jake_mulley" {
-  email = "jake.mulley${local.digital_email_suffix}"
 }
 
 data "pagerduty_user" "simon_pledger" {
