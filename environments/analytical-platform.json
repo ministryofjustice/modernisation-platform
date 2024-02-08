@@ -11,6 +11,10 @@
         {
           "github_slug": "data-platform-audit-and-security",
           "level": "security-audit"
+        },
+        {
+          "github_slug": "analytical-platform-data-development-data-engineer",
+          "level": "data-engineer"
         }
       ]
     },
