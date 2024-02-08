@@ -17,20 +17,24 @@ To find out the serverity of the situation, check the AWS status page [here](htt
 
 Regardless of which type of disaster recovery situation there is, you should contact AWS **immediately**, understanding if this is an outage for 1 hour or 1 month will dictate the next steps to take.
 
-If the issue is across all accounts, login to the Modernisation Platform account, and raise the highest level severity ticket, whilst also enganging with our AWS representative in this channel **fill in**
+- If the issue is across all accounts, login to the Modernisation Platform account, and raise the highest level severity ticket, whilst also enganging with our AWS representative in this channel **fill in**
 
-If this issue is in one account, login to that account, and raise  the highest level severity ticket if production, and also enganging with our AWS representative in this channel **fill in**
+- If this issue is in one account, login to that account, and raise  the highest level severity ticket if production, and also enganging with our AWS representative in this channel **fill in**
 
-If this occurs is in hours, create a huddle / meet. Outside of hours, call the second member of staff on call and post to the channel. With the PagerDuty alerts, incident channels will be created, too many to follow, so make a lead channel to coordinate.
+- If this occurs is in hours, create a huddle / meet. Outside of hours, call the second member of staff on call and post to the channel. With the PagerDuty alerts, incident channels will be created, too many to follow, so make a lead channel to coordinate.
 
 ## Internal Escelation
 
 **Simon can you help fill in this**
 
-Inform the following channels of the sitaution as give a member of staff as the contactable person about this
+Inform the following channels of the sitaution and put forward a contactable member of staff from our team.
 
-` #ask-modernisation-platform`
-` #ask-modernisation-platform`
+`#ask-modernisation-platform`
+
+`#modernisation-platform`
+
+`#modernisation-platform-alerts`
+
 
 ## Disaster Recovery Types
 
@@ -68,7 +72,33 @@ If theres limited availiblity, which is a possibility, these are the priority ac
 If there is limited avaiailbity, power off all infrastrucutre in the test accounts. All are useless until the platform is running.
 
 
+## Single Account 
 
+Dont forget the statefile
+
+### Will it be returning
+
+If this is a test account, waiting may be the easier idea. If AWS can promise us this is a tempoary issue with an estimated fix time, we can pass this to the team and agree our next step.
+
+### Rebuild account
+
+Assuming this is a production account with no time given to return, please follow the steps. 
+
+#### Workflows
+
+Rather than rebuild an account through workflows, I would run manually, however, technically you could run the account creation process workflows.
+
+#### Manually
+
+1.) Run a terraform plan against the production workspace, in modernisation-platform .
+2.) All changes should appear, using your admin credentials, run an apply.
+3.) Assuming the apply runs as planned, login to the account and check that vpcs, etc look correct.
+4.) In modernisation-platform-environments , run terraform against the correct account.
+
+### Things to remember
+
+- Statefile for the lost account will exist, this might need to be removed.
+- Any backups on the account or volumes will be lost.
 
 ## Disaster Recovery Running outside of London.
 
@@ -77,7 +107,15 @@ If the London infrastructure is to be down for the forseable future, running fro
 
 ### Informing teams
 
-Identifying the region based infrastructure and its replications status will be next
+Firstly, inform the following channels of the sitaution and put forward a contactable member of staff from our team. 
+
+`#ask-modernisation-platform`
+
+`#modernisation-platform`
+
+`#modernisation-platform-alerts`
+
+Supply the ETAs, lead incident numbers, links to where updates will be posted etc.
 
 ### Cross Region Infrastructure in the Platform
 
@@ -98,7 +136,17 @@ Identifying the region based infrastructure and its replications status will be 
 
 ### Repo / Module List
 
-These are the repositories owned by the Modernisation Platform. This list will help direct 
+These are the repositories owned by the Modernisation Platform. 
+
+The next step will be to create new tags for the current releases with any hardcoded region values changed.
+
+`0.0.0`
+
+Use the version number stated so these changes are easily recognisable. The version of these modules will then need to be updated in our 
+
+`Modernisation Platform` repository, along with any variables changed that are needed to. This  should go in one large PR with many reviewers.
+
+
 
 | Module / Repo             	| Link                                                                                             	| Information                                                                                                                                                               	| Change Required       	|
 |---------------------------	|--------------------------------------------------------------------------------------------------	|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|-----------------------	|
@@ -122,16 +170,20 @@ These are the repositories owned by the Modernisation Platform. This list will h
 | S3 Bucket Replication     	| https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role 	| A Terraform module to create an IAM role for S3 bucket replication.                                                                                                          	| No, region variable when called.                       	|
 | EC2 Instance              	| https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-instance               	| Module for an ec2 instance creation.                                                                                                                                         	| No, region variable when called.                       	|
 | Github OIDC Provider      	| https://github.com/ministryofjustice/modernisation-platform-github-oidc-provider                 	| This module allows users to create an OIDC Provider and the associated IAM resources required to make use of the connect provider.                                           	| No                      	|
-| ECS Cluster               	| https://github.com/ministryofjustice/modernisation-platform-terraform-ecs-cluster                	| This repository provides 2 Terraform Modules: Cluster and Service                                                                                                                                                                          	| No, region variable when called.                      	|
-| Pagerduty                 	| https://github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration      	|                                                                                                                                                                           	|                       	|
-| Terraform Module Template 	| https://github.com/ministryofjustice/modernisation-platform-terraform-module-template            	|                                                                                                                                                                           	|                       	|
-| Incident Response         	| https://github.com/ministryofjustice/modernisation-platform-incident-response                    	|                                                                                                                                                                           	|                       	|
-| Trusted Advisor           	| https://github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor            	|                                                                                                                                                                           	|                       	|
+| ECS Cluster               	| https://github.com/ministryofjustice/modernisation-platform-terraform-ecs-cluster                	| This repository provides 2 Terraform Modules: Cluster and Service                                                                                                           	| No, region variable when called.                      	|
+| Pagerduty                 	| https://github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration      	|                                                                                                                                                                           	| No, region variable when called.                      	|
+| Terraform Module Template 	| https://github.com/ministryofjustice/modernisation-platform-terraform-module-template            	|                                                                                                                                                                           	| No                      	|
+| Incident Response         	| https://github.com/ministryofjustice/modernisation-platform-incident-response                    	|                                                                                                                                                                           	| No                      	|
+| Trusted Advisor           	| https://github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor            	|                                                                                                                                                                           	| No                      	|
 | Lambda Function           	| https://github.com/ministryofjustice/modernisation-platform-terraform-lambda-function            	|                                                                                                                                                                           	| No                      	|
 |                           	|                                                                                                  	|                                                                                                                                                                           	|                       	|
 
 
-### Organisational SCPs
+### Organisational Service Control Policies
+
+Service control policies (SCPs) are a type of organization policy that you can use to manage permissions in the organization. SCPs offer central control over the maximum available permissions for all accounts in your organization. SCPs help you to ensure your accounts stay within your organization’s access control guidelines.
+
+Currently in `eu-west-1` we can build what is required, however if this region was to change, we would need to check what is limited in which region. 
 
 ### Contact AWS
 
@@ -140,6 +192,10 @@ As previously mentioned, contact AWS using the following steps
 - Raise a ticket, highest prioirty.
 - Contact our AWS representative for an update on the situation.
 - Organise updates, if the situation changes, our approach might need to. 
+
+### Running the terraform
+
+Once the modules have been updated, and tagged, as well as the PR merged to change any variable or hardcoded mentions of region in `Modernisation-Platform` we will need to begin the rebuild of the platform, starting with networking. The steps below outline which order to follow.
 
 ## Platform rebuild - Networking
 
@@ -168,9 +224,11 @@ Our [Transit Gateway](../how-vpcs-access-the-internet.html) and how VPCs access 
 
 ### Transit Gateway
 
-1. Rebuild Transit gateway in new region, code in core-network-services located here. - https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-network-services 
+To rebuild Transit gateway in a new region, first find the code, located here, in core-network-services. https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-network-services 
 
-### Firewall
+Using the admin role, run a terraform plan and apply. This hasnt been done from scratch since the platforms creation, so expect to debug issues.
+
+### Firewall - Needs work
 
 We make use of AWS Network Firewalls in two ways. First, we use a centralised inspection VPC to control traffic entering and exiting the Modernisation Platform to and from internal Ministry of Justice services. Second, we use inline-inspection in our egress VPCs to control traffic exiting the Modernisation Platform to the internet.
 
@@ -184,7 +242,6 @@ Peer the new Transit grateway build in eu-west-1 to the MOJ transitgateway that 
 
 ### Account dependencies
 
-
 | Account      	| Information                                    	| 
 |-----------------	|------------------------------------------------	|
 | Core-Shared-Services            | Creates the core shared services account resources, AMIs and other services customers require are based in here.	  	| 
@@ -196,21 +253,6 @@ Peer the new Transit grateway build in eu-west-1 to the MOJ transitgateway that 
 | Modernisation-Platform          | Creates key resources such as S3 state buckets for the platform	|
 
 
-## Customer Dependencies
-
-### Core-shares-services
-
-Required by customers. AMI. Backup region. Repos.
-
-
-
-## Things I need to check
-
-- What permissions do we have building in other regions?
-- Perhaps a list of modules which will need changing ? Some have hard coded providers.. which ones we would need to change.
-
-
 ## References
-* [https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html)
-* [https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf)
 
+Will add links to pages useful for this, like I have with networking
