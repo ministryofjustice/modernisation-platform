@@ -520,28 +520,28 @@
   "dom1_dcs_to_planetfm_production_135_MS_RPC_TCP": {
     "action": "PASS",
     "source_ip": "${hmpps-production-general-private-subnets}",
-    "destination_ip": "${outbound-to-all}",
+    "destination_ip": "${mojo-end-user-devices}",
     "destination_port": "135",
     "protocol": "TCP"
   },
   "dom1_dcs_to_planetfm_production_137_NetBios_TCP": {
     "action": "PASS",
     "source_ip": "${hmpps-production-general-private-subnets}",
-    "destination_ip": "${outbound-to-all}",
+    "destination_ip": "${mojo-end-user-devices}",
     "destination_port": "137",
     "protocol": "TCP"
   },
   "dom1_dcs_to_planetfm_production_389_LDAP_TCP": {
     "action": "PASS",
     "source_ip": "${hmpps-production-general-private-subnets}",
-    "destination_ip": "${outbound-to-all}",
+    "destination_ip": "${mojo-end-user-devices}",
     "destination_port": "389",
     "protocol": "TCP"
   },
   "dom1_dcs_to_planetfm_production_445_SMB_TCP": {
     "action": "PASS",
     "source_ip": "${hmpps-production-general-private-subnets}",
-    "destination_ip": "${outbound-to-all}",
+    "destination_ip": "${mojo-end-user-devices}",
     "destination_port": "445",
     "protocol": "TCP"
   }
