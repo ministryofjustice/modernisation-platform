@@ -9,15 +9,15 @@ review_in: 6 month
 
 ## Introduction
 
-In the event of a cyber attack or similar malicious activity there may be a requirement to revoke user access on the Modernisation Platform (MP). 
+In the event of a cyber attack or similar malicious activity e.g. some user credentials are compromised, there may be a requirement to revoke user access on the Modernisation Platform (MP).
 
-This page attempts to break down the various users/identities that exist on MP and explain what you would need to do to revoke access if the credentials etc. had become compromised.
+This page attempts to break down the various users/identities that exist on MP and explain what you would need to do to revoke access.
 
 ## Individual Users
 
-### MOJ Member Access (AWS SSO)
+### MOJ Member Access
 
-MP members who are MOJ employees access environments using [AWS SSO](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/environments/single-sign-on.html#single-sign-on). 
+MP members who are MOJ employees access environments using [AWS SSO](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/environments/single-sign-on.html#single-sign-on)
 which links GitHub Teams to various roles/environments.
 
 Removing user access from GitHub Teams etc. is the responsibility of the relevant application team as explained [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/our-offer-to-you.html#what-we-expect-from-application-teams),
@@ -26,12 +26,12 @@ however you could contact the [Ops Engineering](https://moj.enterprise.slack.com
 ### Collaborator Access 
 
 [Collaborator access](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/working-as-a-collaborator.html#working-as-a-collaborator) 
-is for non-MOJ employees who require access to AWS.
+is for non-MOJ employees who require access to AWS. These users are defined in the [collaborators.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/collaborators.json) file.
 
 Use [this guide](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/adding-collaborators.html#removing-collaborators)
 to remove a collaborator (**NB** the Terraform must be run locally as a superadmin user)
 
-### Mod Platform Team
+### Mod Platform Team Access
 
 MP team members access environments using AWS SSO and in very few circumstances via [Superadmin access](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/accessing-aws-accounts.html#superuser-account-access)
 
@@ -63,6 +63,7 @@ To remove a teams' access/association with an AWS environment:
 To allow automated access to our AWS accounts we provide a “OIDC CI/CD” role - `modernisation-platform-oidc-cicd` in every account which is 
 explained in more detail [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/deploying-your-application.html#deploying-your-application)
 
+Revoking access for 
 
 ## Risks/Caveats
 
