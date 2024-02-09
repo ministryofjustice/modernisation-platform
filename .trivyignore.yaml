@@ -24,7 +24,6 @@ vulnerabilities:
   - id: CVE-2023-3676
   - id: CVE-2023-3955
   - id: CVE-2023-5528
-  - id: CVE-2024-21626
 
 misconfigurations:
   - id: AVD-GIT-0001
