@@ -154,7 +154,7 @@ data "aws_iam_policy_document" "member-access" {
       "sso:ListProfileAssociations",
       "sso-directory:DescribeUser",
       "sso-directory:DescribeGroup",
-      "servicediscovery:Create*",
+      "servicediscovery:*",
       "states:*",
       "waf:*",
       "wafv2:*",
