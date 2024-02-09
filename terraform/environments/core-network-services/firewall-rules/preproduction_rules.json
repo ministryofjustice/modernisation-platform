@@ -454,6 +454,41 @@
     "destination_port": "1522",
     "protocol": "TCP"
   },
+  "dom1_dcs_to_planetfm_preproduction_53_DNS_TCP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_ip": "${mojo-end-user-devices}",
+    "destination_port": "53",
+    "protocol": "TCP"
+  },
+  "dom1_dcs_to_planetfm_preproduction_53_DNS_UDP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_ip": "${mojo-end-user-devices}",
+    "destination_port": "53",
+    "protocol": "UDP"
+  },
+  "dom1_dcs_to_planetfm_preproduction_88_Kerberos_TCP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_ip": "${mojo-end-user-devices}",
+    "destination_port": "88",
+    "protocol": "TCP"
+  },
+  "dom1_dcs_to_planetfm_preproduction_88_Kerberos_UDP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_ip": "${mojo-end-user-devices}",
+    "destination_port": "88",
+    "protocol": "UDP"
+  },
+  "dom1_dcs_to_planetfm_preproduction_123_NTP_UDP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_ip": "${mojo-end-user-devices}",
+    "destination_port": "123",
+    "protocol": "UDP"
+  },
   "dom1_dcs_to_planetfm_preproduction_135_MS_RPC_TCP": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction-general-private-subnets}",
@@ -461,11 +496,11 @@
     "destination_port": "135",
     "protocol": "TCP"
   },
-  "dom1_dcs_to_planetfm_preproduction_137_NetBios_TCP": {
+  "dom1_dcs_to_planetfm_preproduction_139_NetBios_TCP": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction-general-private-subnets}",
     "destination_ip": "${mojo-end-user-devices}",
-    "destination_port": "137",
+    "destination_port": "139",
     "protocol": "TCP"
   },
   "dom1_dcs_to_planetfm_preproduction_389_LDAP_TCP": {
@@ -475,11 +510,67 @@
     "destination_port": "389",
     "protocol": "TCP"
   },
+  "dom1_dcs_to_planetfm_preproduction_389_LDAP_UDP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_ip": "${mojo-end-user-devices}",
+    "destination_port": "389",
+    "protocol": "UDP"
+  },
   "dom1_dcs_to_planetfm_preproduction_445_SMB_TCP": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction-general-private-subnets}",
     "destination_ip": "${mojo-end-user-devices}",
     "destination_port": "445",
+    "protocol": "TCP"
+  },
+  "dom1_dcs_to_planetfm_preproduction_464_Kerberos_TCP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_ip": "${mojo-end-user-devices}",
+    "destination_port": "464",
+    "protocol": "UDP"
+  },
+  "dom1_dcs_to_planetfm_preproduction_464_Kerberos_UDP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_ip": "${mojo-end-user-devices}",
+    "destination_port": "464",
+    "protocol": "UDP"
+  },
+  "dom1_dcs_to_planetfm_preproduction_636_Kerberos_TCP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_ip": "${mojo-end-user-devices}",
+    "destination_port": "636",
+    "protocol": "TCP"
+  },
+  "dom1_dcs_to_planetfm_preproduction_3268_LDAP_glocal_catalogue_TCP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_ip": "${mojo-end-user-devices}",
+    "destination_port": "3268",
+    "protocol": "TCP"
+  },
+  "dom1_dcs_to_planetfm_preproduction_3269_LDAPS_TCP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_ip": "${mojo-end-user-devices}",
+    "destination_port": "3269",
+    "protocol": "TCP"
+  },
+  "dom1_dcs_to_planetfm_preproduction_9389_LDAPS_TCP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_ip": "${mojo-end-user-devices}",
+    "destination_port": "3269",
+    "protocol": "TCP"
+  },
+  "dom1_dcs_to_planetfm_preproduction_49152_RPC_TCP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_ip": "${mojo-end-user-devices}",
+    "destination_port": "49152",
     "protocol": "TCP"
   }
 }
