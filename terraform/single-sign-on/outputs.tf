@@ -30,6 +30,10 @@ output "powerbi_user" {
   value = aws_ssoadmin_permission_set.modernisation_platform_powerbi_user.arn
 }
 
+output "fleet_manager" {
+  value = aws_ssoadmin_permission_set.modernisation_platform_fleet_manager.arn
+}
+
 # Data outputs
 output "administrator" {
   value = data.aws_ssoadmin_permission_set.administrator.arn
