@@ -251,3 +251,30 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
     path = "/"
   }
 }
+
+# Modernisation Platform fleet-manager role
+resource "aws_ssoadmin_permission_set" "modernisation_platform_fleet_manager" {
+  provider         = aws.sso-management
+  name             = "mp-fleet-manager"
+  description      = "Modernisation Platform: fleet-manager"
+  instance_arn     = local.sso_admin_instance_arn
+  session_duration = "PT8H"
+  tags             = {}
+}
+
+resource "aws_ssoadmin_managed_policy_attachment" "modernisation_platform_fleet_manager" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  managed_policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_fleet_manager.arn
+}
+
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_fleet_manager" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_fleet_manager.arn
+  customer_managed_policy_reference {
+    name = "fleet_manager_policy"
+    path = "/"
+  }
+}
