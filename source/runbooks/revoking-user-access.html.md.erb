@@ -142,7 +142,20 @@ If the user assumes the role after you revoked the permissions, then the deny po
 
 A more 'belt and braces' approach would be to follow the AWS guidance on [denying access to all sessions associated with a role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_control-access_disable-perms.html#deny-access-to-all-sessions)
 
-This procedure denies permissions to **all users** that have permissions to assume a role.
+This procedure denies permissions to **all users** that have permissions to assume a role with a policy like this:
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Deny",
+      "Action": "*",
+      "Resource": "*"
+    }
+  ]
+}
+```
 
 ## Risks/Caveats
 
