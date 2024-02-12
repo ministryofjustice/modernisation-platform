@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Revoking User Access
-last_reviewed_on: 2024-02-09
+last_reviewed_on: 2024-02-12
 review_in: 6 month
 ---
 
@@ -13,7 +13,7 @@ In the event of a cyber attack or similar malicious activity e.g. some user cred
 
 This page attempts to break down the various users/identities that exist on MP and explain what you would need to do to revoke access.
 
-## Individual Users
+## Individual IAM Users
 
 ### MOJ Member Access
 
@@ -37,11 +37,16 @@ MP team members access environments using AWS SSO and in very few circumstances 
 
 Removing access for MP team members is documented [here](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/removing-a-team-member.html)
 
+We also have a `testing-ci` user, defined in code [here](https://github.com/ministryofjustice/modernisation-platform/blob/ee861412ad30edb0c1ff763b6deeb2992d139f44/terraform/github/testing-ci.tf#L4) which is used for automated tests.
+It's access is limited to the testing-test account and essential core resources.
+
 ### MOJ Master Users
 
 There are a limited set of users who have access to the Root account ("MOJ Master") for the organisation.
 
-These users are not managed through code so another root user would need to log in to the account to revoke the compromised users' access.
+These users are defined in the [root account repo](https://github.com/ministryofjustice/aws-root-account/blob/b47c74781927ffbdb3cfba485d07b05ade7a23b9/management-account/terraform/iam-users.tf) 
+
+Any PRs raised to remove a users access would need to be approved by a member of [operations-engineering](https://github.com/orgs/ministryofjustice/teams/operations-engineering) or [aws-root-account-admin-team](https://github.com/orgs/ministryofjustice/teams/aws-root-account-admin-team). 
 
 ## Teams
 
@@ -58,12 +63,80 @@ To remove a teams' access/association with an AWS environment:
 
 ## Automation Users (roles/identities)
 
-### OIDC CI/CD Role
+###Member Roles
 
-To allow automated access to our AWS accounts we provide a “OIDC CI/CD” role - `modernisation-platform-oidc-cicd` in every account which is 
+####OIDC CI/CD Role
+
+To allow automated access to MP member environments we provide an optional “OIDC CI/CD” role - `modernisation-platform-oidc-cicd` which is 
 explained in more detail [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/deploying-your-application.html#deploying-your-application)
 
-Revoking access for 
+To remove this role for member accounts through code:
+
+1. Edit the relevant `environment/*.json` file by removing the team name from the `github-oidc-team-repositories` definition for the particular environment
+
+    e.g. `"github-oidc-team-repositories": ["modernisation-platform"]` becomes  `"github-oidc-team-repositories": [""]`
+
+1. Note that only one change to a `environment/*.json` file can be made per PR/run due to current constraints around how the automation works.
+1. Raise a PR and once merged the scheduled baseline job will run to update the access accordingly.
+
+
+####CircleCI Role
+
+Digital Prison Reporting make use of CircleCI for their pipeline. We manage a `circleci_iam_role` on their behalf which is defined in code [here](https://github.com/ministryofjustice/modernisation-platform/blob/376d57912a779f13b91f4ccbc27d1e06c12f7560/terraform/environments/digital-prison-reporting/iam.tf#L1)
+
+Removing access would be as simple as raising a PR to either remove this code entirely or edit the permissions of the associated policy so that it has limited or no access.
+
+###MP Platform Management Roles
+
+Here is a list of roles/identities that are used to manage the Modernisation Platform with links to the code that creates them. In the event of a compromise we would likely need to follow the steps in the next section to revoke permissions whilst the security incident is being investigated.
+
+####Core Logging
+
+- [`athena_lambda`](https://github.com/ministryofjustice/modernisation-platform/blob/576a631c80e16809b846b5a121535cb73045e910/terraform/environments/core-logging/athena.tf#L91) - Role for lambda access to athena
+
+####Core Network Services
+
+- [`dns`](https://github.com/ministryofjustice/modernisation-platform/blob/576a631c80e16809b846b5a121535cb73045e910/terraform/environments/core-network-services/iam.tf#L12) - Role to allow ci/cd to update DNS records for ACM certificate validation
+- [`read-log-records`](https://github.com/ministryofjustice/modernisation-platform/blob/576a631c80e16809b846b5a121535cb73045e910/terraform/environments/core-network-services/iam.tf#L93) - Role to allow developer SSO user to read DNS records for ACM certificate validation for local plan
+
+####Core Shared Services 
+
+- [`image-builder`](https://github.com/ministryofjustice/modernisation-platform/blob/9fcb6df12de7839bc25bd9a5cb5aec506034c9c4/terraform/environments/core-shared-services/iam.tf#L26) - Role to allow member developer SSO user to perform required shared services tasks
+- [`LambdaInvoke`](https://github.com/ministryofjustice/modernisation-platform/blob/9fcb6df12de7839bc25bd9a5cb5aec506034c9c4/terraform/environments/core-shared-services/iam.tf#L288) - Role for EventBridge Scheduler to trigger Lambda Function
+- [`member-shared-services`](https://github.com/ministryofjustice/modernisation-platform/blob/9fcb6df12de7839bc25bd9a5cb5aec506034c9c4/terraform/environments/core-shared-services/iam.tf#L38) - Role to allow member developer SSO user to perform required shared services tasks
+
+####Core VPC
+
+- [`member-delegation`](https://github.com/ministryofjustice/modernisation-platform/blob/7029e8493a988922fa703547443025a2a1712e12/terraform/environments/core-vpc/vpc.tf#L203) - ?
+- [`member-delegation-read-only`](https://github.com/ministryofjustice/modernisation-platform/blob/7029e8493a988922fa703547443025a2a1712e12/terraform/environments/core-vpc/vpc.tf#L329) - Read only role for developer sso plans and for viewing via the console
+
+####Modernisation Platform
+
+- [`ModernisationPlatformGithubActionsRole`](https://github.com/ministryofjustice/aws-root-account/blob/b47c74781927ffbdb3cfba485d07b05ade7a23b9/management-account/terraform/iam-roles.tf#L161) - Modernisation Platform Github OIDC Role
+- [`modernisation-account-limited-read`](https://github.com/ministryofjustice/modernisation-platform/blob/576a631c80e16809b846b5a121535cb73045e910/terraform/modernisation-platform-account/iam.tf#L127) - Limited Read Access in MP Account for Members and CI
+- [`modernisation-account-terraform-state`](https://github.com/ministryofjustice/modernisation-platform/blob/576a631c80e16809b846b5a121535cb73045e910/terraform/modernisation-platform-account/iam.tf#L222) - Role allowing Modernisation Platform customers access to Terraform state backend resources
+
+
+github-actions
+
+###Urgent Disabling Access to IAM Roles
+
+
+If there is an **urgent need** to restrict access related iam roles then consider the following two approaches:
+
+####Revoking IAM role temporary security credentials
+
+To ensure all current sessions using the role are stopped the you can follow the guidance on AWS for [revoking sessions permissions](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_revoke-sessions.html#revoke-session) 
+
+This method attaches a new inline policy to the role that denies all permissions to all actions. It includes a condition that applies the restrictions only if the user assumed the role before the point in time when you revoke the permissions. 
+If the user assumes the role after you revoked the permissions, then the deny policy does not apply to that user.
+
+
+####Disabling permissions for temporary security credentials
+
+A more 'belt and braces' approach would be to follow the AWS guidance on [denying access to all sessions associated with a role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_control-access_disable-perms.html#deny-access-to-all-sessions)
+
+This procedure denies permissions to **all users** that have permissions to assume a role.
 
 ## Risks/Caveats
 
@@ -72,4 +145,8 @@ In some cases this **would not** be the quickest way to revoke access.
 
 Depending on the severity of the compromise there should be some thought around 
 whether it would be better to **temporarily use "clickops" to remove access** before code changes can be released or whether there should be a
-automated mechanism (pipeline etc.) which can temporarily quarantine a user identity while a security incident is being investigated.
+dedicated mechanism (pipeline etc.) which can temporarily quarantine a user identity while a security incident is being investigated.
+
+If any roles/identities related to the running of the MP platform are compromised then revoking access will likely remove our ability to make any further updates via code / CI/CD pipeline so this action should not be taken lightly. 
+
+We would need to establish a new role/credentials to reinstate our ability to make changes via code as quickly as possible.
