@@ -556,15 +556,5 @@
         }
       ]
     },
-    {
-      "username": "william.gould",
-      "github-username": "W-GOULD",
-      "accounts": [
-        {
-          "account-name": "electronic-monitoring-data-production",
-          "access": "read-only"
-        }
-      ]
-    }
   ]
 }
