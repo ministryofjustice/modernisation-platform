@@ -89,7 +89,6 @@ resource "aws_iam_policy" "fleet-manager-policy" {
   policy   = data.aws_iam_policy_document.fleet-manager-document.json
 }
 
-
 data "aws_iam_policy_document" "fleet-manager-document" {
   #checkov:skip=CKV_AWS_111 Needs to access multiple resources and the policy is attached to a role that is scoped to a specific account
   #checkov:skip=CKV_AWS_356 Needs to access multiple resources and the policy is attached to a role that is scoped to a specific account
@@ -115,6 +114,159 @@ resource "aws_iam_policy" "data_engineering" {
   name     = "data_engineering_policy"
   path     = "/"
   policy   = data.aws_iam_policy_document.data_engineering_additional.json
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "developer_additional" {
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_110
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+  source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
+  statement {
+    sid    = "developerAllow"
+    effect = "Allow"
+    actions = [
+      "acm:ImportCertificate",
+      "acm:AddTagsToCertificate",
+      "acm:RemoveTagsFromCertificate",
+      "application-autoscaling:ListTagsForResource",
+      "autoscaling:UpdateAutoScalingGroup",
+      "autoscaling:SetDesiredCapacity",
+      "athena:Get*",
+      "athena:List*",
+      "athena:StartQueryExecution",
+      "athena:StopQueryExecution",
+      "aws-marketplace:ViewSubscriptions",
+      "cloudwatch:DisableAlarmActions",
+      "cloudwatch:EnableAlarmActions",
+      "cloudwatch:PutDashboard",
+      "cloudwatch:ListMetrics",
+      "cloudwatch:DeleteDashboards",
+      "cloudwatch:ListTagsForResource",
+      "codebuild:ImportSourceCredentials",
+      "codebuild:PersistOAuthToken",
+      "cur:DescribeReportDefinitions",
+      "ds:*Tags*",
+      "ds:*Snapshot*",
+      "ds:ResetUserPassword",
+      "ec2:StartInstances",
+      "ec2:StopInstances",
+      "ec2:RebootInstances",
+      "ec2:ModifyImageAttribute",
+      "ec2:ModifyVolume",
+      "ec2:ModifySnapshotAttribute",
+      "ec2:CopyImage",
+      "ec2:CreateImage",
+      "ec2:CreateVolume",
+      "ec2:CopySnapshot",
+      "ec2:CreateSnapshot",
+      "ec2:CreateSnapshots",
+      "ec2:CreateTags",
+      "ec2:DescribeVolumes",
+      "ec2:DescribeInstances",
+      "ec2:DescribeInstanceTypes",
+      "ec2-instance-connect:SendSerialConsoleSSHPublicKey",
+      "ecr:BatchDeleteImage",
+      "ecs:StartTask",
+      "ecs:StopTask",
+      "ecs:ListTagsForResource",
+      "events:DisableRule",
+      "events:EnableRule",
+      "identitystore:DescribeUser",
+      "kms:Decrypt*",
+      "kms:Encrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey",
+      "kms:CreateGrant",
+      "lambda:InvokeFunction",
+      "lambda:UpdateFunctionCode",
+      "rds:AddTagsToResource",
+      "rds:CopyDBSnapshot",
+      "rds:CopyDBClusterSnapshot",
+      "rds:CreateDBSnapshot",
+      "rds:CreateDBClusterSnapshot",
+      "rds:ModifyDBSnapshotAttribute",
+      "rds:RestoreDBInstanceToPointInTime",
+      "rds:RebootDB*",
+      "rhelkb:GetRhelURL",
+      "s3:PutObject",
+      "s3:DeleteObject",
+      "s3:DeleteObjectVersion",
+      "s3:RestoreObject",
+      "s3:*StorageLens*",
+      "secretsmanager:GetResourcePolicy",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecretVersionIds",
+      "secretsmanager:PutSecretValue",
+      "secretsmanager:UpdateSecret",
+      "secretsmanager:RestoreSecret",
+      "secretsmanager:RotateSecret",
+      "servicequotas:*",
+      "ses:PutAccountDetails",
+      "ssm:*",
+      "ssm-guiconnect:*",
+      "sso:ListDirectoryAssociations",
+      "support:*",
+      "wellarchitected:Get*",
+      "wellarchitected:List*",
+      "wellarchitected:ExportLens",
+      "states:Describe*",
+      "states:List*",
+      "states:Stop*",
+      "states:Start*"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "snsAllow"
+    effect = "Allow"
+    actions = [
+      "sns:Publish"
+    ]
+    resources = ["arn:aws:sns:*:*:Automation*"]
+  }
+
+  statement {
+    sid    = "lambdaAllow"
+    effect = "Allow"
+    actions = [
+      "lambda:InvokeFunction"
+    ]
+    resources = ["arn:aws:lambda:*:*:function:Automation*"]
+  }
+
+  statement {
+    sid    = "iamOnCicdMemberAllow"
+    effect = "Allow"
+    actions = [
+      "iam:CreateAccessKey",
+      "iam:DeleteAccessKey",
+      "iam:GetAccessKeyLastUsed",
+      "iam:GetUser",
+      "iam:ListAccessKeys",
+      "iam:UpdateAccessKey"
+    ]
+    resources = ["arn:aws:iam::*:user/cicd-member-user"]
+  }
+
+  statement {
+    sid    = "coreSharedServicesCreateGrantAllow"
+    effect = "Allow"
+    actions = [
+      "kms:CreateGrant"
+    ]
+    resources = ["arn:aws:kms:*:${local.environment_management.account_ids["core-shared-services-production"]}:key/*"]
+    condition {
+      test     = "Bool"
+      variable = "kms:GrantIsForAWSResource"
+      values   = ["true"]
+    }
+  }
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
