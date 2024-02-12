@@ -38,7 +38,7 @@ MP team members access environments using AWS SSO and in very few circumstances 
 Removing access for MP team members is documented [here](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/removing-a-team-member.html)
 
 We also have a `testing-ci` user, defined in code [here](https://github.com/ministryofjustice/modernisation-platform/blob/ee861412ad30edb0c1ff763b6deeb2992d139f44/terraform/github/testing-ci.tf#L4) which is used for automated tests.
-It's access is limited to the testing-test account and essential core resources.
+It's access is limited to the testing-test account and essential core resources. To remove this user raise a PR to remove the user or edit the access of the associated policy.
 
 ### MOJ Master Users
 
@@ -90,6 +90,15 @@ Removing access would be as simple as raising a PR to either remove this code en
 
 Here is a list of roles/identities that are used to manage the Modernisation Platform with links to the code that creates them. In the event of a compromise we would likely need to follow the steps in the next section to revoke permissions whilst the security incident is being investigated.
 
+####Bootstrap
+
+- [`github-actions`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf#L42) - Role for GitHub Actions
+- [`ModernisationPlatformAccess`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf#L12) - ?
+- [`AWSSRTSupport`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf#L24) - Role to allow AWS SRT to make AWS Shield Advanced and AWS WAF API calls on your behalf and to access your AWS WAF logs.
+- [`MemberInfrastructureAccess`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf#L6) - Role to define what members can manage in their environments
+- [`MemberInfrastructureAccessUSEast`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf#L270) - As above but for US-East region
+- [`MemberInfrastructureBedrockEuCentral`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf#L489) - Role for members to access to AWS Bedrock
+
 ####Core Logging
 
 - [`athena_lambda`](https://github.com/ministryofjustice/modernisation-platform/blob/576a631c80e16809b846b5a121535cb73045e910/terraform/environments/core-logging/athena.tf#L91) - Role for lambda access to athena
@@ -115,9 +124,6 @@ Here is a list of roles/identities that are used to manage the Modernisation Pla
 - [`ModernisationPlatformGithubActionsRole`](https://github.com/ministryofjustice/aws-root-account/blob/b47c74781927ffbdb3cfba485d07b05ade7a23b9/management-account/terraform/iam-roles.tf#L161) - Modernisation Platform Github OIDC Role
 - [`modernisation-account-limited-read`](https://github.com/ministryofjustice/modernisation-platform/blob/576a631c80e16809b846b5a121535cb73045e910/terraform/modernisation-platform-account/iam.tf#L127) - Limited Read Access in MP Account for Members and CI
 - [`modernisation-account-terraform-state`](https://github.com/ministryofjustice/modernisation-platform/blob/576a631c80e16809b846b5a121535cb73045e910/terraform/modernisation-platform-account/iam.tf#L222) - Role allowing Modernisation Platform customers access to Terraform state backend resources
-
-
-github-actions
 
 ###Urgent Disabling Access to IAM Roles
 
@@ -147,6 +153,4 @@ Depending on the severity of the compromise there should be some thought around
 whether it would be better to **temporarily use "clickops" to remove access** before code changes can be released or whether there should be a
 dedicated mechanism (pipeline etc.) which can temporarily quarantine a user identity while a security incident is being investigated.
 
-If any roles/identities related to the running of the MP platform are compromised then revoking access will likely remove our ability to make any further updates via code / CI/CD pipeline so this action should not be taken lightly. 
-
-We would need to establish a new role/credentials to reinstate our ability to make changes via code as quickly as possible.
+If any roles/identities related to the running of the MP platform are compromised then revoking access will likely remove our ability to make any further updates via code/pipeline so this action should not be taken lightly. 
