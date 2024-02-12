@@ -1,0 +1,50 @@
+---
+owner_slack: "#modernisation-platform"
+title: Creating VPCs in AWS
+last_reviewed_on: 2024-02-12
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Overview
+There may be occassions where there is a network attack on modernisation platform environments that could require a way of stopping access. This document lists one solution to the issue.
+
+## Establish if there is an attack or unwanted access
+Establish if there is unwanted access or an attack taking place by checking the details on cloudwatch in both core-network-services and core-logging. It should be obvious from the contents of the logs.
+
+On core-network-services examine the contents, for production services, of  
+    * fw-live-data-inline-inspection-logs-ulpiqfaq
+    * live_data-vpc-flow-logs-qoa52v4z
+    * external-inspection-flow-logs
+or the following for non-production services
+    * non_live_data-vpc-flow-logs-fro8eqat
+    * fw-non-live-data-inline-inspection-logs-ks3lnpsk
+
+On core-logging examine the contents, for production services, of 
+    * live_data-vpc-flow-logs
+or the following for non-production services
+    * non_live_data-vpc-flow-logs
+
+## If an issue has been established
+You need to then logon to the environment for which there is an issue
+    1. Connect to the service involved.
+    2. INITIALLY detatch the environment from the VPC - _NOTE THIS IS LIKELY TO CAUSE OTHER_ issues
+    3. Check the log again following the steps above.
+
+## Detatching the VPC didn't work
+In most cases removing the VPC from the environment will stop connections but it is a drastic step. If this didn't work follow these steps
+
+To stop connections you will need to access one of the core-vpc environments through core-vpc-production, core-vpc-development, core-vpc-test, core-vpc-preproduction, core-vpc-sandbox.
+
+Connect to the appropriate environment (so for production go to core-vpc-production) and
+    1. Select the Subnet name under "VPC"
+    2. Pick the actions button and block the offending IP addresses through amending the route table. _THIS WILL IMPACT ALL ENVIRONMENTS CONNECTED TO  THIS SUBNET SO TAKE CARE._
+Do this for all subnets :
+    * general-data
+    * general-private
+    * general-public
+    * protected
+    * transit-gateway
+The subnet names will be proceeded by the service name (e.g. hmpps-development-) and followed by 1 of -eu-west-2a, -eu-west-2b, -eu-west-2c. So a name may be hmpps-development-general-private-eu-west-2b.
+
