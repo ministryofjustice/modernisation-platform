@@ -544,7 +544,7 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
-  override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
+  override_policy_documents = [data.aws_iam_policy_document.data_engineering_additional.json]
   statement {
     actions = [
       "s3:ListBucket",
