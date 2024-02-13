@@ -24,7 +24,7 @@ To find out the severity of the situation, check the AWS status page [here](http
 Regardless of which type of disaster recovery situation there is, you should contact AWS **immediately**, understanding if this is an outage for 1 hour or 1 month will dictate the next steps to take.
 
 
-- If the issue is across all accounts, login to the Modernisation Platform account, and raise the highest level severity ticket, whilst also enganging with our AWS representative in this channel.
+- If the issue is across all accounts, login to the Modernisation Platform account, and raise the highest level severity ticket, whilst also enganging with our AWS representative in the `#ext-aws` channel.
 
 
 - If this issue is in one account, login to that account, and raise the highest level severity ticket if production, and also enganging with our AWS representative in this channel **fill in**
@@ -121,16 +121,26 @@ Assuming this is a production account with no time given to return, please follo
 #### Workflows
 
 
-Rather than rebuilding an account through workflows, I would run manually, however, technically, you could run the account creation process workflows.
+Rather than rebuilding an account through workflows, I would run steps manually to easier debug issues, however, technically, you could start to run the account creation process with our github workflows.
+
+**Member Accounts** - Located [here](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/new-environment.yml), running the new environment workflow should begin the steps of an account creation for member accounts.
+
+**Core Accounts** - Located [here](https://github.com/ministryofjustice/modernisation-platform/actions), on the left you will see the deployment workflows for all core based accounts, required for the building on the platform.
+
+However, I would run manually just to monitor the plan, help troubleshoot issues, as sometimes these scenarios are not as cut and dry as all infrastructure has vanished from one account.
 
 
 #### Manually
 
 
 1.) Run a terraform plan against the production workspace, in modernisation-platform .
+
 2.) All changes should appear, using your admin credentials, run an apply.
+
 3.) Assuming the apply runs as planned, login to the account and check that vpcs, etc look correct.
+
 4.) In modernisation-platform-environments , run terraform against the correct account.
+
 
 
 ### Things to remember
@@ -284,6 +294,10 @@ Our [Transit Gateway](../how-vpcs-access-the-internet.html) and how VPCs access 
 
 
 ## Stages
+
+Rather than rebuilding the platform through workflows, I would run steps manually to easier debug issues, however, technically, you could start to run the account creation process with our github workflows.
+
+Located [here](https://github.com/ministryofjustice/modernisation-platform/actions), on the left you will see the deployment workflows for all core based accounts, required for the building on the platform.
 
 
 ### VPCs and Subnets
