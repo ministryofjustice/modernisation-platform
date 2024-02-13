@@ -115,7 +115,7 @@ Here is a list of roles/identities that are used to manage the Modernisation Pla
 
 #### Core VPC
 
-- [`member-delegation`](https://github.com/ministryofjustice/modernisation-platform/blob/7029e8493a988922fa703547443025a2a1712e12/terraform/environments/core-vpc/vpc.tf#L203) - A role for member accounts to manage infrastructure in the Core VPC account
+- [`member-delegation`](https://github.com/ministryofjustice/modernisation-platform/blob/7029e8493a988922fa703547443025a2a1712e12/terraform/environments/core-vpc/vpc.tf#L203) - A role that sits in the core-vpc accounts and can be assumed by relevant member accounts and ModernisationPlatform account in order to manage networking infrastructure (e.g. DNS, flow logs and EC2's networking)
 - [`member-delegation-read-only`](https://github.com/ministryofjustice/modernisation-platform/blob/7029e8493a988922fa703547443025a2a1712e12/terraform/environments/core-vpc/vpc.tf#L329) - Read only role for developer sso plans and for viewing via the console
 
 #### Modernisation Platform
