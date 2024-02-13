@@ -819,106 +819,466 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
-    actions = [
-      "s3:ListBucket",
-      "s3:ListAllMyBuckets",
-      "s3:GetBucketLocation"
-    ]
     effect = "Allow"
+
     resources = [
-      "arn:aws:s3:::mojap-derived-tables/dev/run_artefacts/*",
-      "arn:aws:s3:::mojap-derived-tables/dev/models/domain_name=risk/*",
-      "arn:aws:s3:::mojap-derived-tables/seeds/*",
-      "arn:aws:s3:::alpha-everyone/*",
-      "arn:aws:s3:::dbt-query-dump/*",
-      "arn:aws:s3:::mojap-manage-offences/ho-offence-codes/dev/*",
-      "arn:aws:s3:::mojap-derived-tables/dev/models/domain_name=general/*",
-      "arn:aws:s3:::mojap-derived-tables/*__dbt_tmp/*",
       "arn:aws:s3:::alpha-postcodes/database/postcodes/*",
       "arn:aws:s3:::alpha-lookup-cjsq/lookup_offence_raw/*",
       "arn:aws:s3:::mojap-derived-tables/prod/models/domain_name=general/*",
+      "arn:aws:s3:::mojap-derived-tables/prod/models/domain_name=opg/*",
       "arn:aws:s3:::moj-reg-dev-curated/hmpps-assess-risks-and-needs-dev/data/*",
+      "arn:aws:s3:::alpha-opg-etl/prod/sample/curated/*",
+      "arn:aws:s3:::alpha-opg-etl/prod/sirius/curated/*",
       "arn:aws:s3:::alpha-data-linking/v4/products/internal/*",
+      "arn:aws:s3:::alpha-opg-etl/prod/investigations/curated/*",
       "arn:aws:s3:::moj-reg-dev-curated/data-eng-uploader-dev/data/*",
-      "arn:aws:s3:::alpha-cjsm-logs-data/api_test/production/processed/pass/*",
+      "arn:aws:s3:::alpha-opg-etl/prod/sirius/derived/*",
       "arn:aws:s3:::alpha-postcodes/database/names/*",
       "arn:aws:s3:::mojap-derived-tables/prod/run_artefacts/*",
       "arn:aws:s3:::moj-reg-dev-curated/hmpps-interventions-dev/data/*",
       "arn:aws:s3:::alpha-lookup-cjsq/lookup_offence/*",
       "arn:aws:s3:::alpha-lookup-cjsq/lookup_court_disposals/*",
+      "arn:aws:s3:::alpha-opg-etl/prod/surveys/curated/*",
       "arn:aws:s3:::alpha-data-linking-anonymised/v4/products/internal/*",
-      "arn:aws:s3:::mojap-derived-tables/prod/models/domain_name=risk/*",
-      "arn:aws:s3:::alpha-psr-discovery-work/*",
-      "arn:aws:s3:::alpha-interventions-discovery-ds/*",
-      "arn:aws:s3:::alpha-segmentation-adhoc/*",
-      "arn:aws:s3:::alpha-app-commuter-sandbox/*",
-      "arn:aws:s3:::alpha-app-interventions/*",
-      "arn:aws:s3:::alpha-segmentation/*",
-      "arn:aws:s3:::alpha-segmentation-2020alpha-segmentation-2020/restricted_share//*",
-      "arn:aws:s3:::alpha-segmentation-2020restricted_share//*",
-      "arn:aws:s3:::alpha-segmentation-2020restricted_share/*/*",
-      "arn:aws:s3:::alpha-segmentation-2020restricted_share/*",
-      "arn:aws:s3:::alpha-segmentation-2020/*",
-      "arn:aws:s3:::alpha-nextgenaccreditedevaluation/*",
-      "arn:aws:s3:::alpha-app-occupeye-automation/*",
-      "arn:aws:s3:::alpha-app-matrixbooking/*",
-      "arn:aws:s3:::alpha-dag-matrix/*",
-      "arn:aws:s3:::alpha-dag-occupeye/*",
-      "arn:aws:s3:::alpha-data-science-risk/*",
-      "arn:aws:s3:::alpha--people-survey/*",
-      "arn:aws:s3:::alpha-accredited-programmes-review-2021/*",
-      "arn:aws:s3:::alpha-probation-data-room/*",
-      "arn:aws:s3:::alpha-app-segmentation-tool-probation/*",
-      "arn:aws:s3:::alpha-hr-dataproject/Input Data/Pay Element Lists/*",
-      "arn:aws:s3:::alpha-hr-dataproject/Input Data/Remuneration Data/Remuneration Tool Data/*"
     ]
-    sid = "readonly"
-  }
-  statement {
+
     actions = [
-      "s3:ListBucket",
-      "s3:ListAllMyBuckets",
-      "s3:GetBucketLocation"
+      "s3:GetObject",
+      "s3:GetObjectAcl",
+      "s3:GetObjectVersion",
     ]
+  }
+
+  statement {
     effect = "Allow"
+
     resources = [
-      "arn:aws:s3:::alpha-cjsm-logs-data",
+      "arn:aws:s3:::alpha-everyone/*",
+      "arn:aws:s3:::mojap-derived-tables/dev/models/domain_name=general/*",
+      "arn:aws:s3:::mojap-manage-offences/ho-offence-codes/dev/*",
+      "arn:aws:s3:::mojap-derived-tables/*__dbt_tmp/*",
+      "arn:aws:s3:::mojap-derived-tables/dev/run_artefacts/*",
+      "arn:aws:s3:::mojap-derived-tables/dev/models/domain_name=opg/*",
+      "arn:aws:s3:::dbt-query-dump/*",
+      "arn:aws:s3:::mojap-derived-tables/seeds/*",
+    ]
+
+    actions = [
+      "s3:GetObject",
+      "s3:GetObjectAcl",
+      "s3:GetObjectVersion",
+      "s3:DeleteObject",
+      "s3:DeleteObjectVersion",
+      "s3:PutObject",
+      "s3:PutObjectAcl",
+      "s3:RestoreObject",
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+
+    resources = [
       "arn:aws:s3:::alpha-data-linking",
       "arn:aws:s3:::alpha-data-linking-anonymised",
       "arn:aws:s3:::alpha-everyone",
       "arn:aws:s3:::alpha-lookup-cjsq",
+      "arn:aws:s3:::alpha-opg-etl",
       "arn:aws:s3:::alpha-postcodes",
       "arn:aws:s3:::dbt-query-dump",
       "arn:aws:s3:::moj-reg-dev-curated",
       "arn:aws:s3:::mojap-derived-tables",
       "arn:aws:s3:::mojap-manage-offences",
-      "arn:aws:s3:::alpha-probation-data-room",
-      "arn:aws:s3:::alpha-psr-discovery-work",
-      "arn:aws:s3:::alpha-interventions-discovery-ds",
-      "arn:aws:s3:::alpha-segmentation-adhoc",
-      "arn:aws:s3:::alpha-app-commuter-sandbox",
-      "arn:aws:s3:::alpha-app-segmentation-tool-probation",
-      "arn:aws:s3:::alpha-app-interventions",
-      "arn:aws:s3:::alpha-segmentation",
-      "arn:aws:s3:::alpha-segmentation-2020",
-      "arn:aws:s3:::alpha-nextgenaccreditedevaluation",
-      "arn:aws:s3:::alpha-app-occupeye-automation",
-      "arn:aws:s3:::alpha-app-matrixbooking",
-      "arn:aws:s3:::alpha-dag-matrix",
-      "arn:aws:s3:::alpha-dag-occupeye",
-      "arn:aws:s3:::alpha-data-science-risk",
-      "arn:aws:s3:::alpha--people-survey",
-      "arn:aws:s3:::alpha-hr-dataproject",
-      "arn:aws:s3:::alpha-accredited-programmes-review-2021",
-      "arn:aws:s3:::alpha-athena-query-dump",
-      "arn:aws:s3:::mojap-athena-query-dump"
     ]
-    sid = "list"
+
+    actions = [
+      "s3:ListBucket",
+    ]
   }
   statement {
-    sid       = "ssm"
-    resources = ["*"]
     effect    = "Allow"
+    resources = ["*"]
+
+    actions = [
+      "s3:ListAllMyBuckets",
+      "s3:ListAccessPoints",
+      "s3:GetAccountPublicAccessBlock",
+      "s3:GetBucketLocation",
+      "s3:ListAllMyBuckets",
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+
+    resources = [
+      "arn:aws:s3:::alpha-app-occupeye-automation",
+      "arn:aws:s3:::alpha-dag-sop-data-engineering-dummy-data",
+      "arn:aws:s3:::alpha-test-contracts-land",
+      "arn:aws:s3:::alpha-app-ccmbpt-guidance",
+      "arn:aws:s3:::alpha-mdatagov",
+      "arn:aws:s3:::alpha-opg-sirius",
+      "arn:aws:s3:::alpha-opg-lpa-dashboard",
+      "arn:aws:s3:::alpha-opg-etl",
+      "arn:aws:s3:::alpha-opg-lpa-pdf",
+      "arn:aws:s3:::alpha-nspl-data-engineering",
+      "arn:aws:s3:::alpha-opg-search-requests",
+      "arn:aws:s3:::alpha-geography",
+      "arn:aws:s3:::alpha-everyone",
+      "arn:aws:s3:::alpha-prison-population",
+      "arn:aws:s3:::alpha-opg-investigations",
+      "arn:aws:s3:::alpha-app-opg-lpa-dashboard",
+    ]
+
+    actions = [
+      "s3:GetBucketPublicAccessBlock",
+      "s3:GetBucketPolicyStatus",
+      "s3:GetBucketTagging",
+      "s3:GetBucketPolicy",
+      "s3:GetBucketAcl",
+      "s3:GetBucketCORS",
+      "s3:GetBucketVersioning",
+      "s3:ListBucketVersions",
+      "s3:ListBucket",
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+
+    resources = [
+      "arn:aws:s3:::alpha-dag-sop-data-engineering-dummy-data/*",
+      "arn:aws:s3:::alpha-test-contracts-land/*",
+      "arn:aws:s3:::alpha-opg-sirius/*",
+      "arn:aws:s3:::alpha-opg-lpa-dashboard/*",
+    ]
+
+    actions = [
+      "s3:GetObject",
+      "s3:GetObjectAcl",
+      "s3:GetObjectVersion",
+      "s3:GetObjectVersionAcl",
+      "s3:GetObjectVersionTagging",
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+
+    resources = [
+      "arn:aws:s3:::alpha-app-occupeye-automation/*",
+      "arn:aws:s3:::alpha-app-ccmbpt-guidance/*",
+      "arn:aws:s3:::alpha-mdatagov/*",
+      "arn:aws:s3:::alpha-opg-etl/*",
+      "arn:aws:s3:::alpha-opg-lpa-pdf/*",
+      "arn:aws:s3:::alpha-nspl-data-engineering/*",
+      "arn:aws:s3:::alpha-opg-search-requests/*",
+      "arn:aws:s3:::alpha-geography/*",
+      "arn:aws:s3:::alpha-everyone/*",
+      "arn:aws:s3:::alpha-prison-population/*",
+      "arn:aws:s3:::alpha-opg-investigations/*",
+      "arn:aws:s3:::alpha-app-opg-lpa-dashboard/*",
+    ]
+
+    actions = [
+      "s3:GetObject",
+      "s3:GetObjectAcl",
+      "s3:GetObjectVersion",
+      "s3:GetObjectVersionAcl",
+      "s3:GetObjectVersionTagging",
+      "s3:DeleteObject",
+      "s3:DeleteObjectVersion",
+      "s3:PutObject",
+      "s3:PutObjectAcl",
+      "s3:RestoreObject",
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+
+    resources = [
+      "arn:aws:s3:::moj-analytics-lookup-tables",
+      "arn:aws:s3:::alpha-athena-query-dump",
+      "arn:aws:s3:::mojap-athena-query-dump",
+    ]
+
+    actions = ["s3:ListBucket"]
+  }
+
+  statement {
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::moj-analytics-lookup-tables/*"]
+    actions   = ["s3:GetObject"]
+  }
+
+  statement {
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::aws-athena-query-results-*"]
+
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+
+    resources = [
+      "arn:aws:s3:::alpha-athena-query-dump/$${aws:userid}/*",
+      "arn:aws:s3:::mojap-athena-query-dump/$${aws:userid}/*",
+    ]
+
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:DeleteObject",
+    ]
+  }
+
+  statement {
+    sid       = "AllowReadAthenaGlue"
+    effect    = "Allow"
+    resources = ["*"]
+
+    actions = [
+      "athena:BatchGetNamedQuery",
+      "athena:BatchGetQueryExecution",
+      "athena:GetNamedQuery",
+      "athena:GetQueryExecution",
+      "athena:GetQueryResults",
+      "athena:GetQueryResultsStream",
+      "athena:GetWorkGroup",
+      "athena:ListNamedQueries",
+      "athena:ListWorkGroups",
+      "athena:StartQueryExecution",
+      "athena:StopQueryExecution",
+      "athena:CancelQueryExecution",
+      "athena:GetCatalogs",
+      "athena:GetExecutionEngine",
+      "athena:GetExecutionEngines",
+      "athena:GetNamespace",
+      "athena:GetNamespaces",
+      "athena:GetTable",
+      "athena:GetTables",
+      "athena:RunQuery",
+      "glue:GetDatabase",
+      "glue:GetDatabases",
+      "glue:GetTable",
+      "glue:GetTables",
+      "glue:GetPartition",
+      "glue:GetPartitions",
+      "glue:BatchGetPartition",
+      "glue:GetCatalogImportStatus",
+      "glue:GetUserDefinedFunction",
+      "glue:GetUserDefinedFunctions",
+    ]
+  }
+
+  statement {
+    sid       = "AllowWriteAthenaGlue"
+    effect    = "Allow"
+    resources = ["*"]
+
+    actions = [
+      "athena:DeleteNamedQuery",
+      "glue:BatchCreatePartition",
+      "glue:BatchDeletePartition",
+      "glue:BatchDeleteTable",
+      "glue:CreateDatabase",
+      "glue:CreatePartition",
+      "glue:CreateTable",
+      "glue:DeleteDatabase",
+      "glue:DeletePartition",
+      "glue:DeleteTable",
+      "glue:UpdateDatabase",
+      "glue:UpdatePartition",
+      "glue:UpdateTable",
+      "glue:CreateUserDefinedFunction",
+      "glue:DeleteUserDefinedFunction",
+      "glue:UpdateUserDefinedFunction",
+    ]
+  }
+
+  statement {
+    sid    = "list"
+    effect = "Allow"
+
+    resources = [
+      "arn:aws:s3:::alpha-athena-query-dump",
+      "arn:aws:s3:::mojap-athena-query-dump",
+    ]
+
+    actions = [
+      "s3:ListBucket",
+    ]
+  }
+  statement {
+    sid    = "AllowListBucket"
+    effect = "Allow"
+
+    resources = [
+      "arn:aws:s3:::moj-analytics-lookup-tables",
+      "arn:aws:s3:::alpha-athena-query-dump",
+    ]
+
+    actions = ["s3:ListBucket"]
+  }
+
+  statement {
+    sid       = "AllowGetObject"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::moj-analytics-lookup-tables/*"]
+    actions   = ["s3:GetObject"]
+  }
+
+  statement {
+    sid       = "AllowGetPutObject"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::aws-athena-query-results-593291632749-eu-west-1/*"]
+
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+    ]
+  }
+
+  statement {
+    sid       = "AllowGetPutDeleteObject"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::alpha-athena-query-dump/$${aws:userid}/*"]
+
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:DeleteObject",
+    ]
+  }
+
+  statement {
+    effect    = "Allow"
+    resources = ["*"]
+
+    actions = [
+      "athena:BatchGetNamedQuery",
+      "athena:BatchGetQueryExecution",
+      "athena:GetNamedQuery",
+      "athena:GetQueryExecution",
+      "athena:GetQueryResults",
+      "athena:GetQueryResultsStream",
+      "athena:GetWorkGroup",
+      "athena:ListNamedQueries",
+      "athena:ListWorkGroups",
+      "athena:StartQueryExecution",
+      "athena:StopQueryExecution",
+      "athena:CancelQueryExecution",
+      "athena:GetCatalogs",
+      "athena:GetExecutionEngine",
+      "athena:GetExecutionEngines",
+      "athena:GetNamespace",
+      "athena:GetNamespaces",
+      "athena:GetTable",
+      "athena:GetTables",
+      "athena:RunQuery",
+      "glue:GetDatabase",
+      "glue:GetDatabases",
+      "glue:GetTable",
+      "glue:GetTables",
+      "glue:GetPartition",
+      "glue:GetPartitions",
+      "glue:BatchGetPartition",
+      "glue:GetCatalogImportStatus",
+      "glue:GetUserDefinedFunction",
+      "glue:GetUserDefinedFunctions",
+    ]
+  }
+  statement {
+    sid       = "GlueJobActions"
+    effect    = "Allow"
+    resources = ["*"]
+
+    actions = [
+      "glue:BatchStopJobRun",
+      "glue:CreateJob",
+      "glue:DeleteJob",
+      "glue:GetJob",
+      "glue:GetJobs",
+      "glue:GetJobRun",
+      "glue:GetJobRuns",
+      "glue:StartJobRun",
+      "glue:UpdateJob",
+      "glue:ListJobs",
+      "glue:BatchGetJobs",
+      "glue:GetJobBookmark",
+    ]
+  }
+
+  statement {
+    sid       = "CanListLogs"
+    effect    = "Allow"
+    resources = ["arn:aws:logs:*:log-group:*:log-stream:*"]
+    actions   = ["logs:DescribeLogGroups"]
+  }
+
+  statement {
+    sid       = "CanGetLogs"
+    effect    = "Allow"
+    resources = ["arn:aws:logs:*:log-group:/aws-glue/*:log-stream:*"]
+
+    actions = [
+      "logs:GetLogEvents",
+      "logs:DescribeLogStreams",
+    ]
+  }
+
+  statement {
+    sid       = "CanGetCloudWatchLogs"
+    effect    = "Allow"
+    resources = ["*"]
+
+    actions = [
+      "cloudwatch:GetMetricData",
+      "cloudwatch:ListDashboards",
+    ]
+  }
+
+  statement {
+    sid    = "CanReadGlueStuff"
+    effect = "Allow"
+
+    resources = [
+      "arn:aws:s3:::aws-glue-*/*",
+      "arn:aws:s3:::*/*aws-glue-*/*",
+      "arn:aws:s3:::aws-glue-*",
+    ]
+
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+    ]
+  }
+
+  statement {
+    effect    = "Allow"
+    resources = ["arn:aws:logs:*:*:/aws-glue/*"]
+    actions   = ["tag:GetResources"]
+  }
+
+  statement {
+    effect    = "Allow"
+    resources = ["arn:aws:logs:*:*:/aws-glue/*"]
+
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+    ]
+  }
+
+  statement {
+    effect    = "Allow"
+    resources = ["*"]
     actions = [
       "ssm:*"
     ]
