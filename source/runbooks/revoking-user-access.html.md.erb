@@ -31,7 +31,7 @@ is for non-MOJ employees who require access to AWS. These users are defined in t
 Use [this guide](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/adding-collaborators.html#removing-collaborators)
 to remove a collaborator (**NB** the Terraform must be run locally as a superadmin user)
 
-### Mod Platform Team Access
+### Modernisation Platform Team Access
 
 MP team members access environments using AWS SSO and in very few circumstances via [Superadmin access](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/accessing-aws-accounts.html#superuser-account-access)
 
@@ -61,7 +61,7 @@ To remove a teams' access/association with an AWS environment:
 1. Note that only one change to a `environment/*.json` file can be made per PR/run due to current constraints around how the automation works.
 1. Raise a PR and once merged the scheduled baseline job will run to update the access accordingly.
 
-## Automation Users (roles/identities)
+## Automation Users (IAM roles/policies)
 
 ### Member Roles
 
@@ -92,7 +92,7 @@ Here is a list of roles/identities that are used to manage the Modernisation Pla
 #### Bootstrap
 
 - [`github-actions`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf#L42) - Role for GitHub Actions
-- [`ModernisationPlatformAccess`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf#L12) - ?
+- [`ModernisationPlatformAccess`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf#L12) - A role that is assumable in other accounts (by ModernisationPlatform account) with AdministratorAccess permissions. In case of testing-test account, this role is also assumable by the `testing-ci` user
 - [`AWSSRTSupport`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf#L24) - Role to allow AWS SRT to make AWS Shield Advanced and AWS WAF API calls on your behalf and to access your AWS WAF logs.
 - [`MemberInfrastructureAccess`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf#L6) - Role to define what members can manage in their environments
 - [`MemberInfrastructureAccessUSEast`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf#L270) - As above but for US-East region
@@ -115,7 +115,7 @@ Here is a list of roles/identities that are used to manage the Modernisation Pla
 
 #### Core VPC
 
-- [`member-delegation`](https://github.com/ministryofjustice/modernisation-platform/blob/7029e8493a988922fa703547443025a2a1712e12/terraform/environments/core-vpc/vpc.tf#L203) - ?
+- [`member-delegation`](https://github.com/ministryofjustice/modernisation-platform/blob/7029e8493a988922fa703547443025a2a1712e12/terraform/environments/core-vpc/vpc.tf#L203) - A role for member accounts to manage infrastructure in the Core VPC account
 - [`member-delegation-read-only`](https://github.com/ministryofjustice/modernisation-platform/blob/7029e8493a988922fa703547443025a2a1712e12/terraform/environments/core-vpc/vpc.tf#L329) - Read only role for developer sso plans and for viewing via the console
 
 #### Modernisation Platform
