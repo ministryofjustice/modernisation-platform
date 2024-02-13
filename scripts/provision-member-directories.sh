@@ -149,6 +149,7 @@ EOL
 **/networking.auto.tfvars.json @ministryofjustice/modernisation-platform
 **/platform_*.tf @ministryofjustice/modernisation-platform
 /terraform/modules
+.devcontainer @ministryofjustice/devcontainer-community
 EOL
 
 }
