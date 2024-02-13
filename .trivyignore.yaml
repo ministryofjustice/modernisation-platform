@@ -34,6 +34,3 @@ misconfigurations:
 secrets:
 
 licenses:
-
-# Ignore all directories named "test" and their contents
-**/test/**
