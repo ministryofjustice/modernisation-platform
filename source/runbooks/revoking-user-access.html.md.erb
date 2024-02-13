@@ -135,7 +135,7 @@ To ensure all current sessions using the role are stopped the you can follow the
 This method attaches a new inline policy to the role that denies all permissions to all actions. It includes a condition that applies the restrictions only if the user assumed the role before the point in time when you revoke the permissions.
 If the user assumes the role after you revoked the permissions, then the deny policy does not apply to that user.
 
-####Disabling permissions for temporary security credentials
+#### Disabling permissions for temporary security credentials
 
 A more 'belt and braces' approach would be to follow the AWS guidance on [denying access to all sessions associated with a role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_control-access_disable-perms.html#deny-access-to-all-sessions)
 
