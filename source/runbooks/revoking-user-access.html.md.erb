@@ -63,9 +63,9 @@ To remove a teams' access/association with an AWS environment:
 
 ## Automation Users (roles/identities)
 
-###Member Roles
+### Member Roles
 
-####OIDC CI/CD Role
+#### OIDC CI/CD Role
 
 To allow automated access to MP member environments we provide an optional “OIDC CI/CD” role - `modernisation-platform-oidc-cicd` which is 
 explained in more detail [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/deploying-your-application.html#deploying-your-application)
@@ -80,7 +80,7 @@ To remove this role for member accounts through code:
 1. Raise a PR and once merged the scheduled baseline job will run to update the access accordingly.
 
 
-####CircleCI Role
+#### CircleCI Role
 
 Digital Prison Reporting make use of CircleCI for their pipeline. We manage a `circleci_iam_role` on their behalf which is defined in code [here](https://github.com/ministryofjustice/modernisation-platform/blob/376d57912a779f13b91f4ccbc27d1e06c12f7560/terraform/environments/digital-prison-reporting/iam.tf#L1)
 
@@ -90,7 +90,7 @@ Removing access would be as simple as raising a PR to either remove this code en
 
 Here is a list of roles/identities that are used to manage the Modernisation Platform with links to the code that creates them. In the event of a compromise we would likely need to follow the steps in the next section to revoke permissions whilst the security incident is being investigated.
 
-####Bootstrap
+#### Bootstrap
 
 - [`github-actions`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf#L42) - Role for GitHub Actions
 - [`ModernisationPlatformAccess`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf#L12) - ?
@@ -99,33 +99,33 @@ Here is a list of roles/identities that are used to manage the Modernisation Pla
 - [`MemberInfrastructureAccessUSEast`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf#L270) - As above but for US-East region
 - [`MemberInfrastructureBedrockEuCentral`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf#L489) - Role for members to access to AWS Bedrock
 
-####Core Logging
+#### Core Logging
 
 - [`athena_lambda`](https://github.com/ministryofjustice/modernisation-platform/blob/576a631c80e16809b846b5a121535cb73045e910/terraform/environments/core-logging/athena.tf#L91) - Role for lambda access to athena
 
-####Core Network Services
+#### Core Network Services
 
 - [`dns`](https://github.com/ministryofjustice/modernisation-platform/blob/576a631c80e16809b846b5a121535cb73045e910/terraform/environments/core-network-services/iam.tf#L12) - Role to allow ci/cd to update DNS records for ACM certificate validation
 - [`read-log-records`](https://github.com/ministryofjustice/modernisation-platform/blob/576a631c80e16809b846b5a121535cb73045e910/terraform/environments/core-network-services/iam.tf#L93) - Role to allow developer SSO user to read DNS records for ACM certificate validation for local plan
 
-####Core Shared Services 
+#### Core Shared Services 
 
 - [`image-builder`](https://github.com/ministryofjustice/modernisation-platform/blob/9fcb6df12de7839bc25bd9a5cb5aec506034c9c4/terraform/environments/core-shared-services/iam.tf#L26) - Role to allow member developer SSO user to perform required shared services tasks
 - [`LambdaInvoke`](https://github.com/ministryofjustice/modernisation-platform/blob/9fcb6df12de7839bc25bd9a5cb5aec506034c9c4/terraform/environments/core-shared-services/iam.tf#L288) - Role for EventBridge Scheduler to trigger Lambda Function
 - [`member-shared-services`](https://github.com/ministryofjustice/modernisation-platform/blob/9fcb6df12de7839bc25bd9a5cb5aec506034c9c4/terraform/environments/core-shared-services/iam.tf#L38) - Role to allow member developer SSO user to perform required shared services tasks
 
-####Core VPC
+#### Core VPC
 
 - [`member-delegation`](https://github.com/ministryofjustice/modernisation-platform/blob/7029e8493a988922fa703547443025a2a1712e12/terraform/environments/core-vpc/vpc.tf#L203) - ?
 - [`member-delegation-read-only`](https://github.com/ministryofjustice/modernisation-platform/blob/7029e8493a988922fa703547443025a2a1712e12/terraform/environments/core-vpc/vpc.tf#L329) - Read only role for developer sso plans and for viewing via the console
 
-####Modernisation Platform
+#### Modernisation Platform
 
 - [`ModernisationPlatformGithubActionsRole`](https://github.com/ministryofjustice/aws-root-account/blob/b47c74781927ffbdb3cfba485d07b05ade7a23b9/management-account/terraform/iam-roles.tf#L161) - Modernisation Platform Github OIDC Role
 - [`modernisation-account-limited-read`](https://github.com/ministryofjustice/modernisation-platform/blob/576a631c80e16809b846b5a121535cb73045e910/terraform/modernisation-platform-account/iam.tf#L127) - Limited Read Access in MP Account for Members and CI
 - [`modernisation-account-terraform-state`](https://github.com/ministryofjustice/modernisation-platform/blob/576a631c80e16809b846b5a121535cb73045e910/terraform/modernisation-platform-account/iam.tf#L222) - Role allowing Modernisation Platform customers access to Terraform state backend resources
 
-###Urgent Disabling Access to IAM Roles
+### Urgent Disabling Access to IAM Roles
 
 
 If there is an **urgent need** to restrict access related iam roles then consider the following two approaches:
