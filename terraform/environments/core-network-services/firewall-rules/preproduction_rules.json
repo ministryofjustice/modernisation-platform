@@ -565,5 +565,12 @@
     "destination_ip": "${dom1-dcs}",
     "destination_port": "9389",
     "protocol": "TCP"
+  },
+  "dom1_dcs_to_planetfm_preproduction_49152_65535_RPC_TCP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_ip": "${dom1-dcs}",
+    "destination_port": "49152:65535",
+    "protocol": "TCP"
   }
 }
