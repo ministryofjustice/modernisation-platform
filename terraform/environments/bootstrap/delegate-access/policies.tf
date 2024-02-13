@@ -1023,7 +1023,6 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
   }
 
   statement {
-    sid    = "AllowGetPutDeleteObject"
     effect = "Allow"
 
     resources = [
@@ -1158,7 +1157,6 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
   }
 
   statement {
-    sid       = "AllowReadAthenaGlue"
     effect    = "Allow"
     resources = ["*"]
 
