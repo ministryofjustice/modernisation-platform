@@ -1277,6 +1277,14 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
       "logs:PutLogEvents",
     ]
   }
+
+  statement {
+    effect    = "Allow"
+    resources = ["*"]
+    actions = [
+      "ssm:*"
+    ]
+  }
 }
 
 resource "aws_iam_policy" "powerbi_user" {
