@@ -45,7 +45,16 @@ On core-logging examine the contents, for production services, of
 
 ## If an issue has been established
 
-You need to then logon to the environment for which there is an issue 1. Connect to the service involved. 2. INITIALLY detatch the environment from the VPC > [!CAUTION] > NOTE THIS IS DRATIC AND LIKELY TO CAUSE OTHER issues. 3. Check the log again following the steps above.
+You need to then logon to the environment for which there is an issue
+
+1. Connect to the service involved.
+2. INITIALLY detatch the environment from the VPC.
+
+[CAUTION]
+
+> **NOTE THIS IS DRASTIC AND LIKELY TO CAUSE OTHER issues.**
+
+3. Check the log again following the steps above.
 
 ## Detatching the VPC didn't work
 
@@ -58,7 +67,7 @@ In most cases removing the VPC from the environment will stop connections but it
 Connect to the appropriate environment (so for production go to core-vpc-production) and
 
 1. Select the Subnet name under "VPC"
-2. Pick the actions button and block the offending IP addresses through amending the route table. To do this change the route <<<<**\*** may be wrong>>>>
+2. Pick the actions button and block the offending IP addresses through amending the route table. To do this change the route <<<< this is probably wrong >>>>
 
 [CAUTION]
 
