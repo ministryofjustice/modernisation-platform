@@ -54,9 +54,7 @@ GitHub Teams are linked to AWS environments via the `environment/*.json` files i
 
 To remove a teams' access/association with an AWS environment:
 
-1. Edit the relevant `environment/*.json` file by removing the team name from the `github_slug` definition for the particular environment
-
-   e.g. `"github_slug": "modernisation-platform",` becomes `"github_slug": "",`
+1. Edit the relevant `environment/*.json` file by removing the team name from the `github_slug` definition for the particular environment e.g. `"github_slug": "modernisation-platform",` becomes `"github_slug": "",`
 
 1. Note that only one change to a `environment/*.json` file can be made per PR/run due to current constraints around how the automation works.
 1. Raise a PR and once merged the scheduled baseline job will run to update the access accordingly.
@@ -72,9 +70,7 @@ explained in more detail [here](https://user-guide.modernisation-platform.servic
 
 To remove this role for member accounts through code:
 
-1. Edit the relevant `environment/*.json` file by removing the team name from the `github-oidc-team-repositories` definition for the particular environment
-
-   e.g. `"github-oidc-team-repositories": ["modernisation-platform"]` becomes `"github-oidc-team-repositories": [""]`
+1. Edit the relevant `environment/*.json` file by removing the team name from the `github-oidc-team-repositories` definition for the particular environment e.g. `"github-oidc-team-repositories": ["modernisation-platform"]` becomes `"github-oidc-team-repositories": [""]`
 
 1. Note that only one change to a `environment/*.json` file can be made per PR/run due to current constraints around how the automation works.
 1. Raise a PR and once merged the scheduled baseline job will run to update the access accordingly.
