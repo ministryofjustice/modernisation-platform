@@ -300,7 +300,7 @@
     "destination_port": "ANY",
     "protocol": "ICMP"
   },
-  "hmpps_test_to_delius_test_icmp": {
+  "delius_test_icmp_toThmpps_test": {
     "action": "PASS",
     "source_ip": "${hmpps-test}",
     "destination_ip": "${delius-test}",
