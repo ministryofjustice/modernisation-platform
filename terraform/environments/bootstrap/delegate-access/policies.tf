@@ -833,12 +833,14 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
       "s3:GetObjectAcl",
       "s3:GetObjectVersion",
     ]
-    sid = "S3ReadOnly"
+    sid = "S3Readnly"
   }
 
   statement {
     actions = [
       "s3:ListBucket",
+      "s3:ListAllMyBuckets",
+      "s3:GetBucketLocation",
     ]
     effect = "Allow"
     resources = [
