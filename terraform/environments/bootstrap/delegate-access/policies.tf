@@ -833,14 +833,12 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
       "s3:GetObjectAcl",
       "s3:GetObjectVersion",
     ]
-    sid = "s3readonly"
+    sid = "S3ReadOnly"
   }
 
   statement {
     actions = [
       "s3:ListBucket",
-      "s3:ListAllMyBuckets",
-      "s3:GetBucketLocation"
     ]
     effect = "Allow"
     resources = [
@@ -929,6 +927,14 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
     actions = [
       "s3:GetObject",
       "s3:PutObject",
+    ]
+  }
+
+  statement {
+    effect    = "Allow"
+    resources = ["*"]
+    actions = [
+      "ssm:*"
     ]
   }
 
