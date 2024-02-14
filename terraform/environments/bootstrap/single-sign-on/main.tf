@@ -101,7 +101,7 @@ resource "aws_ssoadmin_account_assignment" "view_only" {
   target_type = "AWS_ACCOUNT"
 }
 
-/*resource "aws_ssoadmin_account_assignment" "developer" {
+resource "aws_ssoadmin_account_assignment" "developer" {
 
   for_each = {
 
@@ -168,7 +168,7 @@ resource "aws_ssoadmin_account_assignment" "migration" {
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
   target_type = "AWS_ACCOUNT"
-}*/
+}
 
 # This is only used for legacy bichard
 resource "aws_ssoadmin_account_assignment" "administator" {
@@ -194,7 +194,7 @@ resource "aws_ssoadmin_account_assignment" "administator" {
   target_type = "AWS_ACCOUNT"
 }
 
-/*resource "aws_ssoadmin_account_assignment" "instance-management" {
+resource "aws_ssoadmin_account_assignment" "instance-management" {
 
   for_each = {
 
@@ -215,7 +215,7 @@ resource "aws_ssoadmin_account_assignment" "administator" {
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
   target_type = "AWS_ACCOUNT"
-}*/
+}
 
 resource "aws_ssoadmin_account_assignment" "security_audit" {
 
@@ -263,7 +263,7 @@ resource "aws_ssoadmin_account_assignment" "read_only" {
   target_type = "AWS_ACCOUNT"
 }
 
-/*resource "aws_ssoadmin_account_assignment" "data_engineer" {
+resource "aws_ssoadmin_account_assignment" "data_engineer" {
 
   for_each = {
 
@@ -307,7 +307,7 @@ resource "aws_ssoadmin_account_assignment" "reporting-operations" {
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
   target_type = "AWS_ACCOUNT"
-}*/
+}
 
 resource "aws_ssoadmin_account_assignment" "mwaa_user" {
 
@@ -332,7 +332,7 @@ resource "aws_ssoadmin_account_assignment" "mwaa_user" {
   target_type = "AWS_ACCOUNT"
 }
 
-/*resource "aws_ssoadmin_account_assignment" "powerbi_user" {
+resource "aws_ssoadmin_account_assignment" "powerbi_user" {
 
   for_each = {
 
@@ -353,7 +353,7 @@ resource "aws_ssoadmin_account_assignment" "mwaa_user" {
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
   target_type = "AWS_ACCOUNT"
-}*/
+}
 
 resource "aws_ssoadmin_account_assignment" "fleet_manager" {
 
