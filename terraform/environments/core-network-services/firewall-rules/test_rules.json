@@ -285,5 +285,26 @@
     "destination_ip": "${laa-test}",
     "destination_port": "1522",
     "protocol": "TCP"
-  }
+  },
+    "delius_test_to_hmpps_test_ldap": {
+    "action": "PASS",
+    "source_ip": "${delius-test}",
+    "destination_ip": "${hmpps-test}",
+    "destination_port": "389",
+    "protocol": "TCP"
+  },
+  "delius_test_to_hmpps_test_icmp": {
+    "action": "PASS",
+    "source_ip": "${delius-test}",
+    "destination_ip": "${hmpps-test}",
+    "destination_port": "ANY",
+    "protocol": "ICMP"
+  },
+  "hmpps_test_to_delius_test_icmp": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "${delius-test}",
+    "destination_port": "ANY",
+    "protocol": "ICMP"
+  },
 }
