@@ -826,12 +826,12 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
       "arn:aws:s3:::alpha-postcodes/database/names/*",
       "arn:aws:s3:::mojap-derived-tables/prod/models/*",
       "arn:aws:s3:::mojap-derived-tables/dev/models/*",
-      "arn:aws:s3:::mojap-derived-tables/seeds/*",
+      "arn:aws:s3:::mojap-derived-tables/seeds/*"
     ]
     actions = [
       "s3:GetObject",
       "s3:GetObjectAcl",
-      "s3:GetObjectVersion",
+      "s3:GetObjectVersion"
     ]
     sid = "S3ReadOnly"
   }
@@ -840,7 +840,7 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
     actions = [
       "s3:ListBucket",
       "s3:ListAllMyBuckets",
-      "s3:GetBucketLocation",
+      "s3:GetBucketLocation"
     ]
     effect = "Allow"
     resources = [
@@ -855,7 +855,7 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
       "arn:aws:s3:::alpha-postcodes/database/names/*",
       "arn:aws:s3:::mojap-derived-tables/prod/models/*",
       "arn:aws:s3:::mojap-derived-tables/dev/models/*",
-      "arn:aws:s3:::mojap-derived-tables/seeds/*",
+      "arn:aws:s3:::mojap-derived-tables/seeds/*"
     ]
     sid = "List"
   }
@@ -865,7 +865,7 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
     resources = ["arn:aws:s3:::aws-athena-query-results-*"]
     actions = [
       "s3:GetObject",
-      "s3:PutObject",
+      "s3:PutObject"
     ]
     sid = "ReadWriteQueryResults"
   }
@@ -874,12 +874,12 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
     effect = "Allow"
     resources = [
       "arn:aws:s3:::alpha-athena-query-dump/$${aws:userid}/*",
-      "arn:aws:s3:::mojap-athena-query-dump/$${aws:userid}/*",
+      "arn:aws:s3:::mojap-athena-query-dump/$${aws:userid}/*"
     ]
     actions = [
       "s3:GetObject",
       "s3:PutObject",
-      "s3:DeleteObject",
+      "s3:DeleteObject"
     ]
     sid = "ReadWriteQueryDump"
   }
@@ -918,7 +918,7 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
       "glue:BatchGetPartition",
       "glue:GetCatalogImportStatus",
       "glue:GetUserDefinedFunction",
-      "glue:GetUserDefinedFunctions",
+      "glue:GetUserDefinedFunctions"
     ]
   }
 
@@ -928,7 +928,7 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
     resources = ["arn:aws:s3:::aws-athena-query-results-593291632749-eu-west-1/*"]
     actions = [
       "s3:GetObject",
-      "s3:PutObject",
+      "s3:PutObject"
     ]
   }
 
