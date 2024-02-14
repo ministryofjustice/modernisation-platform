@@ -24,16 +24,16 @@ To find out the severity of the situation, check the AWS status page [here](http
 Regardless of which type of disaster recovery situation there is, you should contact AWS **immediately**, understanding if this is an outage for 1 hour or 1 month will dictate the next steps to take.
 
 
-- If the issue is across all accounts, login to the Modernisation Platform account, and raise the highest level severity ticket, whilst also enganging with our AWS representative in the `#ext-aws` channel.
+- If the issue is across all accounts, login to the Modernisation Platform account, and raise the highest level severity ticket, whilst also engaging with our AWS representative in the `#ext-aws` channel.
 
 
-- If this issue is in one account, login to that account, and raise the highest level severity ticket if production, and also enganging with our AWS representative in this channel **fill in**
+- If this issue is in one account, login to that account, and raise the highest level severity ticket if production, and also engaging with our AWS representative in the `#ext-aws` channel.
 
 
 - If this occurs during working hours, create a huddle / meet. Outside of hours, call the second member of staff on call and post to the channel. With the PagerDuty alerts, incident channels will be created, too many to follow, so make a lead channel to coordinate.
 
 
-## Internal Escelation
+## Internal Escalation
 
 
 **Simon can you help fill in this**
@@ -182,9 +182,9 @@ Supply the ETAs, lead incident numbers, links to where updates will be posted et
 | Technology | Information | Replicated? | Replication Region |
 |----------------- |------------------------------------------------ |------------- |-------------------- |
 | S3 | Contains the platforms terraform state files. | Yes | eu-west-1 |
-| KMS | Contains encryption kes for the platform. | No | - |
+| KMS | Contains encryption keys for the platform. | No | - |
 | Secrets Manger | Contains platform secrets. | Yes | eu-west-1 |
-| IAM Policys | Across all regions. | - | - |
+| IAM Policies | Across all regions. | - | - |
 | DNS | Across all regions. | - | - |
 | VPC | No VPCs currently exist for DR, only reserved. | - | - |
 | Firewall | Not cross region. | | |
@@ -217,7 +217,7 @@ Use the version number stated so these changes are easily recognisable. The vers
 
 | Module / Repo | Link | Information | Change Required |
 |--------------------------- |-------------------------------------------------------------------------------------------------- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |----------------------- |
-| Main Repo | https://github.com/ministryofjustice/modernisation-platform | Houses all of the terraform that builds the platform, many modules will be refrences in here and will need the variables changed. | Variable |
+| Main Repo | https://github.com/ministryofjustice/modernisation-platform | Houses all of the terraform that builds the platform, many modules will be referenced in here and will need the variables changed. | Variable |
 | Environments Repo | https://github.com/ministryofjustice/modernisation-platform-environments | Customers responsibility (although we might need to help) | - |
 | Bastion Linux | https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux | Used by teams to create a bastion EC2 instance, module tests have a hard coded region but the module itself has a variable when called, no change required to the module. | No, region variable when called. |
 |ConfigurationManagement| https://github.com/ministryofjustice/modernisation-platform-configuration-management |This repository contains configuration management of the ec2 infrastructure hosted on the ModernisationPlatform .Requries hardcoded eu-west-2 to be changed. |Yes|
@@ -262,7 +262,7 @@ Currently in `eu-west-1` we can build what is required, however if this region w
 As previously mentioned, contact AWS using the following steps
 
 
-- Raise a ticket, highest prioirty.
+- Raise a ticket, highest priority.
 - Contact our AWS representative for an update on the situation.
 - Organise updates, if the situation changes, our approach might need to.
 
@@ -304,7 +304,7 @@ Located [here](https://github.com/ministryofjustice/modernisation-platform/actio
 ### VPCs and Subnets
 
 
-1. Clone the mod-platform repo, change region in code. Whilst its as simple as a find and replace, modules are called and need changing, either locally and refrenced locally, or in the module and pushed to git.
+1. Clone the mod-platform repo, change region in code. Whilst its as simple as a find and replace, modules are called and need changing, either locally and referenced locally, or in the module and pushed to git.
 2. Core VPC rebuild. Provider would need to be eu-west-1, so check the permissions you have in that region with the credentials you are using. E.g. https://moj.awsapps.com/start/ when getting your credentials from here, make sure the region is correct.
 3. Core Networking would be the next to run terraform on, checking the code and modules it uses for region references and changing them.
 
