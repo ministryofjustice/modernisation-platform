@@ -820,7 +820,6 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
   override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
     effect = "Allow"
-
     resources = [
       "arn:aws:s3:::alpha-everyone/*",
       "arn:aws:s3:::alpha-postcodes/database/postcodes/*",
@@ -829,17 +828,21 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
       "arn:aws:s3:::mojap-derived-tables/dev/models/*",
       "arn:aws:s3:::mojap-derived-tables/seeds/*",
     ]
-
     actions = [
       "s3:GetObject",
       "s3:GetObjectAcl",
       "s3:GetObjectVersion",
     ]
+    sid = "s3readonly"
   }
 
   statement {
+    actions = [
+      "s3:ListBucket",
+      "s3:ListAllMyBuckets",
+      "s3:GetBucketLocation"
+    ]
     effect = "Allow"
-
     resources = [
       "arn:aws:s3:::alpha-everyone",
       "arn:aws:s3:::alpha-postcodes",
@@ -847,56 +850,44 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
       "arn:aws:s3:::mojap-derived-tables",
       "arn:aws:s3:::alpha-athena-query-dump",
       "arn:aws:s3:::mojap-athena-query-dump",
+      "arn:aws:s3:::alpha-everyone/*",
+      "arn:aws:s3:::alpha-postcodes/database/postcodes/*",
+      "arn:aws:s3:::alpha-postcodes/database/names/*",
+      "arn:aws:s3:::mojap-derived-tables/prod/models/*",
+      "arn:aws:s3:::mojap-derived-tables/dev/models/*",
+      "arn:aws:s3:::mojap-derived-tables/seeds/*",
     ]
-
-    actions = [
-      "s3:ListBucket",
-    ]
-  }
-
-  statement {
-    effect    = "Allow"
-    resources = ["*"]
-
-    actions = [
-      "s3:ListAllMyBuckets",
-      "s3:ListAccessPoints",
-      "s3:GetAccountPublicAccessBlock",
-      "s3:GetBucketLocation",
-      "s3:ListAllMyBuckets",
-    ]
+    sid = "List"
   }
 
   statement {
     effect    = "Allow"
     resources = ["arn:aws:s3:::aws-athena-query-results-*"]
-
     actions = [
       "s3:GetObject",
       "s3:PutObject",
     ]
+    sid = "ReadWriteQueryResults"
   }
 
   statement {
     effect = "Allow"
-
     resources = [
       "arn:aws:s3:::alpha-athena-query-dump/$${aws:userid}/*",
       "arn:aws:s3:::mojap-athena-query-dump/$${aws:userid}/*",
     ]
-
     actions = [
       "s3:GetObject",
       "s3:PutObject",
       "s3:DeleteObject",
     ]
+    sid = "ReadWriteQueryDump"
   }
 
   statement {
     sid       = "AllowReadAthenaGlue"
     effect    = "Allow"
     resources = ["*"]
-
     actions = [
       "athena:BatchGetNamedQuery",
       "athena:BatchGetQueryExecution",
@@ -932,35 +923,9 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
   }
 
   statement {
-    sid       = "AllowWriteAthenaGlue"
-    effect    = "Allow"
-    resources = ["*"]
-
-    actions = [
-      "athena:DeleteNamedQuery",
-      "glue:BatchCreatePartition",
-      "glue:BatchDeletePartition",
-      "glue:BatchDeleteTable",
-      "glue:CreateDatabase",
-      "glue:CreatePartition",
-      "glue:CreateTable",
-      "glue:DeleteDatabase",
-      "glue:DeletePartition",
-      "glue:DeleteTable",
-      "glue:UpdateDatabase",
-      "glue:UpdatePartition",
-      "glue:UpdateTable",
-      "glue:CreateUserDefinedFunction",
-      "glue:DeleteUserDefinedFunction",
-      "glue:UpdateUserDefinedFunction",
-    ]
-  }
-
-  statement {
     sid       = "AllowGetPutObject"
     effect    = "Allow"
     resources = ["arn:aws:s3:::aws-athena-query-results-593291632749-eu-west-1/*"]
-
     actions = [
       "s3:GetObject",
       "s3:PutObject",
