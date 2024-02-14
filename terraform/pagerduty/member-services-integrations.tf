@@ -931,7 +931,36 @@ resource "pagerduty_service_integration" "laa_maat_nonprod_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
-# Slack channel: #laa-alerts-maat-nonprod
+resource "pagerduty_slack_connection" "laa_maat_nonprod_connection" {
+  source_id = pagerduty_service.laa_maat_nonprod.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C06JPN4TADB"
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
+# Slack channel: #mp-laa-alerts-maat-nonprod
 
 # LAA MAAT - Prod
 resource "pagerduty_service" "laa_maat_prod" {
@@ -949,7 +978,36 @@ resource "pagerduty_service_integration" "laa_maat_prod_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
-# Slack channel: #laa-alerts-maat-prod
+resource "pagerduty_slack_connection" "laa_maat_prod_connection" {
+  source_id = pagerduty_service.laa_maat_prod.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C06JSKP2AM8"
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
+# Slack channel: #mp-laa-alerts-maat-prod
 
 # Slack channel: #csr_alerts_modernisation_platform
 resource "pagerduty_service" "csr" {
