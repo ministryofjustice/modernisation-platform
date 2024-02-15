@@ -709,8 +709,7 @@ resource "aws_instance" "ad_fixngo" {
 
   root_block_device {
     encrypted = true
-    ##CSS kms_key_id  = module.kms["hmpps"].kms_key_id [OUTPUT DOESN'T EXIST]
-    kms_key_id  = module.environment.kms_keys["general"].arn
+    kms_key_id  = module.kms["hmpps"].key_ids["ebs"]
     volume_size = 127
     volume_type = "gp3"
 
