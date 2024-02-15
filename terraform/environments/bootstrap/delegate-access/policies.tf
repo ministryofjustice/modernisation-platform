@@ -203,6 +203,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "ec2:DescribeVolumes",
       "ec2:DescribeInstances",
       "ec2:DescribeInstanceTypes",
+      "ec2:ModifyInstanceAttribute",
       "ec2-instance-connect:SendSerialConsoleSSHPublicKey",
       "ecr:BatchDeleteImage",
       "ecs:StartTask",
@@ -308,20 +309,6 @@ data "aws_iam_policy_document" "developer_additional" {
       values   = ["true"]
     }
   }
-
-  statement {
-    sid    = "AllowDisableApiStop"
-    effect = "Allow"
-    actions = [
-      "ec2:ModifyInstanceAttribute"
-    ]
-    resources = ["*"]
-    condition {
-      test     = "StringEquals"
-      variable = "ec2:ModifyInstanceAttribute"
-      values   = ["disableApiStop"]
-    }
-  }
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
@@ -361,7 +348,6 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "glue:CreateUserDefinedFunction",
       "glue:DeleteUserDefinedFunction",
       "glue:UpdateUserDefinedFunction",
-      "glue:BatchStopJobRun",
       "glue:CreateJob",
       "glue:DeleteJob",
       "glue:Get*",
