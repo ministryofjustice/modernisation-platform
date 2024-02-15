@@ -58,7 +58,7 @@ jobs:
       with:
         scan_type: full
         tfsec_trivy: trivy
-        trivy_skip_dir: '**test**'
+        trivy_skip_dir: ''
         trivy_severity: HIGH,CRITICAL
         trivy_ignore: ./.trivyignore.yaml
         tfsec_exclude: aws-ssm-secret-use-customer-key,github-repositories-private,aws-vpc-no-excessive-port-access,github-repositories-require-signed-commits
