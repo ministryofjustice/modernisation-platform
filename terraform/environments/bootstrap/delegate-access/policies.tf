@@ -308,6 +308,20 @@ data "aws_iam_policy_document" "developer_additional" {
       values   = ["true"]
     }
   }
+
+  statement {
+    sid    = "AllowDisableApiStop"
+    effect = "Allow"
+    actions = [
+      "ec2:ModifyInstanceAttribute"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "ec2:ModifyInstanceAttribute"
+      values   = ["disableApiStop"]
+    }
+  }
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
@@ -683,6 +697,20 @@ data "aws_iam_policy_document" "instance-management-document" {
       test     = "Bool"
       variable = "kms:GrantIsForAWSResource"
       values   = ["true"]
+    }
+  }
+
+  statement {
+    sid    = "AllowDisableApiStop"
+    effect = "Allow"
+    actions = [
+      "ec2:ModifyInstanceAttribute"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "ec2:ModifyInstanceAttribute"
+      values   = ["disableApiStop"]
     }
   }
 }
