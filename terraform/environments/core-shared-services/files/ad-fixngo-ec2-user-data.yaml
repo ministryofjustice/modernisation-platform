@@ -1,0 +1,47 @@
+# This is an EC2Launch V2 type user-data script
+# https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/ec2launch-v2-settings.html#ec2launch-v2-task-configuration
+# See C:\ProgramData\Amazon\EC2Launch\log for logs
+# See C:\Windows\System32\config\systemprofile\AppData\Local\Temp\EC2Launch* for script output
+version: 1.0 # version 1.0 is required as this executes AFTER the SSM Agent is running
+tasks:
+  - task: executeScript
+    inputs:
+      - frequency: once
+        type: powershell
+        runAs: admin
+        content: |-
+          # Install git - it should be in AMI but install if missing
+          $ErrorActionPreference = "Stop"
+          if (Get-Command "git" -ErrorAction SilentlyContinue) {
+            Write-Output "git already installed"
+          } else {
+            Write-Output "choco install git.install -y"
+            choco install git.install -y
+          }
+          Start-Sleep -Seconds 1 # helps debugging as logs have different timestamps
+      - frequency: once
+        type: powershell
+        runAs: admin
+        content: |-
+          # Install awscli - it should be in AMI but install if missing
+          $ErrorActionPreference = "Stop"
+          if (Get-Command "aws" -ErrorAction SilentlyContinue) {
+            Write-Output "awscli already installed"
+          } else {
+            Write-Output "choco install awscli -y"
+            choco install awscli -y
+          }
+          Start-Sleep -Seconds 1 # helps debugging as logs have different timestamps
+      - frequency: once
+        type: powershell
+        runAs: admin
+        content: |-
+          # Run UserData powershell from modernisation-platform-configuration-management repo
+          $ErrorActionPreference = "Stop"
+          Write-Output "Downloading and running Run-GitScript.ps1"
+          Set-Location -Path ([System.IO.Path]::GetTempPath())
+          $GitBranch = "DSOS-2581/active-directory-and-rdlicense-pwsh"
+          $Script = "Invoke-UserDataScript.ps1"
+          [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # since powershell 4 uses Tls1 as default
+          Invoke-WebRequest "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform-configuration-management/${GitBranch}/powershell/Scripts/Run-GitScript.ps1" -OutFile "Run-GitScript.ps1"
+          . ./Run-GitScript.ps1 $Script -GitBranch $GitBranch
