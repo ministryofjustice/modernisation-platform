@@ -145,8 +145,8 @@ locals {
               "kms:RevokeGrant"
             ]
             resources = [
-              module.kms["hmpps"].key_arns["ebs"].arn,
-              module.kms["hmpps"].key_arns["general"].arn,
+              module.kms["hmpps"].key_arns["ebs"],
+              module.kms["hmpps"].key_arns["general"],
             ]
           },
           {
