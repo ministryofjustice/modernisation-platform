@@ -66,12 +66,6 @@ jobs:
         tflint_exclude: terraform_unused_declarations
         tflint_call_module_type: none
 
-    - name: Upload Trivy scan results to GitHub Security tab
-      if: success() || failure()
-      uses: github/codeql-action/upload-sarif@cdcdbb579706841c47f7063dda365e292e5cad7a # v2.13.4
-      with:
-        sarif_file: 'trivy-results.sarif'
-
   terraform-static-analysis-scheduled-scan:
     name: Terraform Static Analysis - scheduled scan of all directories
     runs-on: ubuntu-latest
