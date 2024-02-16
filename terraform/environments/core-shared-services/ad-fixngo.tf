@@ -5,6 +5,7 @@
 # Managed by DSO team, slack: #ask-digital-studio-ops 
 
 module "ad_fixngo_ip_addresses" {
+  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source = "github.com/ministryofjustice/modernisation-platform-environments//terraform/modules/ip_addresses"
 }
 
