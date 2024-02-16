@@ -6,7 +6,7 @@
 
 module "ad_fixngo_ip_addresses" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
-  source = "github.com/ministryofjustice/modernisation-platform-environments//terraform/modules/ip_addresses"
+  source = "github.com/ministryofjustice/modernisation-platform-environments//terraform/modules/ip_addresses?ref=373164d50013894187bc4fdba80a066ec136c90f"
 }
 
 locals {
@@ -773,6 +773,8 @@ locals {
   }
 }
 
+#egress to internet required for https and is controlled elsewhere, e.g. NACL/firewall
+#trivy:ignore:AVD-AWS-0104
 resource "aws_security_group_rule" "ad_fixngo" {
   for_each = local.ad_fixngo_security_group_rules
 
