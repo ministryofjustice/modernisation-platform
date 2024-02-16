@@ -300,7 +300,7 @@
     "destination_port": "ANY",
     "protocol": "ICMP"
   },
-    "cp_to_mp_hmpps_test_ldap": {
+  "cp_to_mp_hmpps_test_ldap": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
     "destination_ip": "${hmpps-test}",

@@ -932,10 +932,10 @@ resource "pagerduty_service_integration" "laa_maat_nonprod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "laa_maat_nonprod_connection" {
-  source_id = pagerduty_service.laa_maat_nonprod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C06JPN4TADB"
+  source_id         = pagerduty_service.laa_maat_nonprod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C06JPN4TADB"
   notification_type = "responder"
   config {
     events = [
@@ -979,10 +979,10 @@ resource "pagerduty_service_integration" "laa_maat_prod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "laa_maat_prod_connection" {
-  source_id = pagerduty_service.laa_maat_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C06JSKP2AM8"
+  source_id         = pagerduty_service.laa_maat_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C06JSKP2AM8"
   notification_type = "responder"
   config {
     events = [
