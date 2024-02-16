@@ -1,8 +1,8 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Disabling network access if required
-last_reviewed_on: 2024-02-12
-review_in: 6 months
+last_reviewed_on: 2024-02-14
+review_in: 6 months or when is resolved.
 ---
 
 # <%= current_page.data.title %>
@@ -37,7 +37,7 @@ On core-logging examine the contents, for production services, of
   or the following for non-production services
 - non_live_data-vpc-flow-logs
 
-### Sample files
+### Sample screenshots
 
 [core-network-services sample](../images/core-network-services.png)
 
@@ -62,12 +62,18 @@ In most cases removing the VPC from the environment will stop connections but it
 
 [NOTE]
 
-> To stop connections you will need to access one of the core-vpc environments through core-vpc-production, core-vpc-development, core-vpc-test, core-vpc-preproduction, core-vpc-sandbox.
+> To stop connections you will need to access one of the core-vpc environments:
+
+- core-vpc-production
+- core-vpc-development
+- core-vpc-test
+- core-vpc-preproduction
+- core-vpc-sandbox
 
 Connect to the appropriate environment (so for production go to core-vpc-production) and
 
 1. Select the Subnet name under "VPC"
-2. Pick the actions button and block the offending IP addresses through amending the route table. To do this change the route <<<< this is probably wrong >>>>
+2. Pick the actions button and block the offending IP addresses through amending the route table. To do this change the route to one that has no network access. The new root table will be called block-all-access. The root table ID will not be known until the build is complete. 
 
 [CAUTION]
 
@@ -83,6 +89,18 @@ Do this for all subnets :
 
 [NOTE]
 
-> The subnet names will be proceeded by the service name (e.g. hmpps-development-) and followed by 1 of -eu-west-2a, -eu-west-2b, -eu-west-2c. So a name may be hmpps-preproduction-general-private-eu-west-2b.
+> The subnet names will be proceeded by the service name (e.g. hmpps-development-) and followed by 1 of -eu-west-2a, -eu-west-2b, -eu-west-2c. So a name may be hmpps-preproduction-general-private-eu-west-2b, as an example.
+
+### Sample screenshot
 
 [core-vpc-test sample](../images/core-vpc-preproduction.png)
+
+## Major issue and we need to stop all access
+
+This is when there is an issue that is access from anywhere. In this instance we need to stop all access to the transit gateway (TGW).
+
+In this instance we would remove the access to the TGW from the access for each area impacted. A note should be kept of the current TGW ID so that it can be re-instated at a later date.
+
+To do this follow the screenshot below. This is from the Transit gateway attachments option towards the bottom of the screen.
+
+[Transit gateway attachments](../images/remove-tgw-from-attachments.png)
