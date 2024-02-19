@@ -18,7 +18,6 @@ There may be occassions where there is a network attack on modernisation platfor
 ## Establish if there is an attack or unwanted access
 
 Establish if there is unwanted access or an attack taking place by checking the details on cloudwatch in both core-network-services and core-logging. It should be obvious from the contents of the logs.
-Sample examples are shown below the text.
 
 On core-network-services examine the contents, for production services, of
 
@@ -36,12 +35,6 @@ On core-logging examine the contents, for production services, of
 - live_data-vpc-flow-logs
   or the following for non-production services
 - non_live_data-vpc-flow-logs
-
-### Sample screenshots
-
-[core-network-services sample](../images/core-network-services.png)
-
-[core-logging sample](../images/core-logging.png)
 
 ## If an issue has been established
 
@@ -91,16 +84,16 @@ Do this for all subnets :
 
 > The subnet names will be proceeded by the service name (e.g. hmpps-development-) and followed by 1 of -eu-west-2a, -eu-west-2b, -eu-west-2c. So a name may be hmpps-preproduction-general-private-eu-west-2b, as an example.
 
-### Sample screenshot
-
-[core-vpc-test sample](../images/core-vpc-preproduction.png)
-
 ## Major issue and we need to stop all access
 
 This is when there is an issue that is access from anywhere. In this instance we need to stop all access to the transit gateway (TGW).
 
 In this instance we would remove the access to the TGW from the access for each area impacted. A note should be kept of the current TGW ID so that it can be re-instated at a later date.
 
-To do this follow the screenshot below. This is from the Transit gateway attachments option towards the bottom of the screen.
+To do this :
 
-[Transit gateway attachments](../images/remove-tgw-from-attachments.png)
+1. connect to the trnait gateway attachments section in the VPC list (transit gateway is quite a way down the screen on the left)
+2. pick the option you want and select Actions, Delete transit gateway attachment
+3. select the gateway to remove (only one should be listed) and type "delete" in the space and click the Delete button
+
+The transit gateway will be removed. 
