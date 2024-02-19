@@ -509,5 +509,19 @@
     "destination_ip": "${moj-smtp-relay2}",
     "destination_port": "587",
     "protocol": "TCP"
+  },
+  "arkf-syslog_to_hq-development-1": {
+    "action": "PASS",
+    "source_ip": "${arkf_anyconnect_transit}",
+    "destination_ip": "${hq-development}",
+    "destination_port": "514",
+    "protocol": "UDP"
+  },
+  "arkf-syslog_to_hq-development-2": {
+    "action": "PASS",
+    "source_ip": "${arkf_anyconnect_transit}",
+    "destination_ip": "${hq-development}",
+    "destination_port": "6514",
+    "protocol": "TCP"
   }
 }
