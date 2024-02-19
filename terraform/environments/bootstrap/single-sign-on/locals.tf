@@ -1,18 +1,11 @@
 # This data sources allows us to get the Modernisation Platform account information for use elsewhere
 data "aws_caller_identity" "modernisation-platform" {
-
-}
-data "aws_caller_identity" "current" {}
-data "aws_iam_session_context" "whoami" {
-  arn = data.aws_caller_identity.current.arn
 }
 
 locals {
 
   app_name = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, "/-([[:alnum:]]+)$/", ""))
 
-
-  #app_name = replace(terraform.workspace, "/-([[:alnum:]]+)$/", "")
   env_name = replace(terraform.workspace, "${local.app_name}-", "")
 
   modernisation_platform_account = data.aws_caller_identity.modernisation-platform
