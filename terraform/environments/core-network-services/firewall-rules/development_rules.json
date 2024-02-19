@@ -272,53 +272,25 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "hmpps_development_to_delius-mis-dev_ad_tcp_53": {
+  "hmpps_development_to_delius-mis-dev-2a_ad_all": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
-    "destination_ip": "${delius-mis-dev}",
-    "destination_port": "53",
+    "destination_ip": "${delius-mis-dev-private-eu-west-2a}",
+    "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "hmpps_development_to_delius-mis-dev_ad_tcp_88": {
+  "hmpps_development_to_delius-mis-dev-2b_ad_all": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
-    "destination_ip": "${delius-mis-dev}",
-    "destination_port": "88",
+    "destination_ip": "${delius-mis-dev-private-eu-west-2b}",
+    "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "hmpps_development_to_delius-mis-dev_ad_tcp_135": {
+  "hmpps_development_to_delius-mis-dev-2c_ad_all": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
-    "destination_ip": "${delius-mis-dev}",
-    "destination_port": "135",
-    "protocol": "TCP"
-  },
-  "hmpps_development_to_delius-mis-dev_ad_tcp_389": {
-    "action": "PASS",
-    "source_ip": "${hmpps-development}",
-    "destination_ip": "${delius-mis-dev}",
-    "destination_port": "389",
-    "protocol": "TCP"
-  },
-  "hmpps_development_to_delius-mis-dev_ad_tcp_445": {
-    "action": "PASS",
-    "source_ip": "${hmpps-development}",
-    "destination_ip": "${delius-mis-dev}",
-    "destination_port": "445",
-    "protocol": "TCP"
-  },
-  "hmpps_development_to_delius-mis-dev_ad_tcp_464": {
-    "action": "PASS",
-    "source_ip": "${hmpps-development}",
-    "destination_ip": "${delius-mis-dev}",
-    "destination_port": "464",
-    "protocol": "TCP"
-  },
-  "hmpps_development_to_delius-mis-dev_ad_tcp_636": {
-    "action": "PASS",
-    "source_ip": "${hmpps-development}",
-    "destination_ip": "${delius-mis-dev}",
-    "destination_port": "636",
+    "destination_ip": "${delius-mis-dev-private-eu-west-2c}",
+    "destination_port": "ANY",
     "protocol": "TCP"
   },
   "hmpps_development_to_delius-mis-dev_ad_udp_53": {

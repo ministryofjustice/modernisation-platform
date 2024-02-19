@@ -54,15 +54,17 @@ locals {
     moj-smtp-relay2                = "10.180.105.100/32"
 
     # hmpps aws cidr ranges
-    delius-eng-dev  = "10.161.98.0/25"
-    delius-eng-prod = "10.160.98.0/25"
-    delius-core-dev = "10.161.20.0/22"
-    delius-mis-dev  = "10.162.32.0/20"
-    delius-test     = "10.162.0.0/20"
-    delius-stage    = "10.160.32.0/20"
-    delius-pre-prod = "10.160.0.0/20"
-    delius-training = "10.162.96.0/20"
-    delius-prod     = "10.160.16.0/20"
+    delius-eng-dev                    = "10.161.98.0/25"
+    delius-eng-prod                   = "10.160.98.0/25"
+    delius-mis-dev                    = "10.162.32.0/20"
+    delius-mis-dev-private-eu-west-2a = "10.162.32.0/22"
+    delius-mis-dev-private-eu-west-2b = "10.162.36.0/22"
+    delius-mis-dev-private-eu-west-2c = "10.162.40.0/22"
+    delius-test                       = "10.162.0.0/20"
+    delius-stage                      = "10.160.32.0/20"
+    delius-pre-prod                   = "10.160.0.0/20"
+    delius-training                   = "10.162.96.0/20"
+    delius-prod                       = "10.160.16.0/20"
 
     # laa landing zone cidr ranges
     laa-lz-development             = "10.202.0.0/20"
