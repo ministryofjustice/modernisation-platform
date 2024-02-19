@@ -184,24 +184,21 @@ Supply the ETAs, lead incident numbers, links to where updates will be posted et
 | S3 | Contains the platforms terraform state files. | Yes | eu-west-1 |
 | KMS | Contains encryption keys for the platform. | No | - |
 | Secrets Manger | Contains platform secrets. | Yes | eu-west-1 |
-| IAM Policies | Across all regions. | - | - |
-| DNS | Across all regions. | - | - |
+| IAM | Across all regions. | - | - |
+| DNS (Route53) | Across all regions. | - | - |
 | VPC | No VPCs currently exist for DR, only reserved. | - | - |
 | Firewall | Not cross region. | | |
 | Transit Gateway | Not cross region. | | |
 | NACLS | Not cross region. | | |
 | Subnets | Not cross region. | | |
-| Dynamo Disable | Check
+| Dynamo DB | modernisation-platform-terraform-state-lock table| No, but can be replicated | TBC |
 
 
 
 ### Repo / Module List
 
 
-These are the repositories owned by the Modernisation Platform.
-
-
-The next step will be to create new tags for the current releases with any hardcoded region values changed.
+Below are the repositories owned by the Modernisation Platform. The next step will be to create new tags for the current releases with any hardcoded region values changed.
 
 
 `0.0.0`
@@ -209,7 +206,6 @@ The next step will be to create new tags for the current releases with any hardc
 
 Use the version number stated so these changes are easily recognisable. The version of these modules will then need to be updated in our
 `Modernisation Platform` repository, along with any variables changed that are needed to. This should go in one large PR with many reviewers.
-
 
 
 
