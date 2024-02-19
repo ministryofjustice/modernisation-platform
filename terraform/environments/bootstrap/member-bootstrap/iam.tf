@@ -114,6 +114,7 @@ data "aws_iam_policy_document" "member-access" {
       "ecr-public:*",
       "ecr:*",
       "ecs:*",
+      "elasticache:*",
       "elasticfilesystem:*",
       "elasticloadbalancing:*",
       "eks:*",
