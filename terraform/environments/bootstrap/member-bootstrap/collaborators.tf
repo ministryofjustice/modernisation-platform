@@ -1,9 +1,9 @@
 # read only role for collaborators
 module "collaborator_readonly_role" {
   # checkov:skip=CKV_TF_1:
-  count   = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-roles"
-  version = "~> 5"
+  count                = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
+  source               = "terraform-aws-modules/iam/aws//modules/iam-assumable-roles"
+  version              = "~> 5"
   max_session_duration = 43200
 
   # Read-only role
@@ -20,9 +20,9 @@ module "collaborator_readonly_role" {
 # security audit role for collaborators
 module "collaborator_security_audit_role" {
   # checkov:skip=CKV_TF_1:
-  count   = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "~> 5"
+  count                = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
+  source               = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+  version              = "~> 5"
   max_session_duration = 43200
 
   create_role       = true

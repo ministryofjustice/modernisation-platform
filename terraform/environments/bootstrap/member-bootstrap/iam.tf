@@ -591,8 +591,8 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
 
 # Github OIDC provider
 module "github-oidc" {
-  count  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test") ? 1 : 0
-  source = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=82f546bd5f002674138a2ccdade7d7618c6758b3" # v3.0.0
+  count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test") ? 1 : 0
+  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=82f546bd5f002674138a2ccdade7d7618c6758b3" # v3.0.0
   additional_permissions = data.aws_iam_policy_document.oidc_assume_role_member[0].json
   github_repositories    = ["ministryofjustice/modernisation-platform-environments:*"]
   tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
@@ -650,8 +650,8 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
 # AWS Shield Advanced SRT (Shield Response Team) support role
 module "shield_response_team_role" {
   # checkov:skip=CKV_TF_1:
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "~> 5"
+  source                = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+  version               = "~> 5"
   trusted_role_services = ["drt.shield.amazonaws.com"]
 
   create_role       = true
