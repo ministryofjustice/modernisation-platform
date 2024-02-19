@@ -15,10 +15,6 @@ data "aws_iam_roles" "member-sso-admin-access" {
   path_prefix = "/aws-reserved/sso.amazonaws.com/"
 }
 
-data "aws_iam_roles" "github_actions_role" {
-  name_regex = "github-actions"
-}
-
 data "http" "environments_file" {
   url = format("https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/%s.json", local.application_name)
 }

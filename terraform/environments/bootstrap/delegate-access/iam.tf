@@ -1,8 +1,3 @@
-locals {
-  account_name = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, regex("-[^-]*$", terraform.workspace), ""))
-  account_data = jsondecode(file("../../../../environments/${local.account_name}.json"))
-}
-
 module "cross-account-access" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=ef80831bbc71e96733abb9ff32cc3f24bcc7e55f" #v3.0.0
   providers = {
