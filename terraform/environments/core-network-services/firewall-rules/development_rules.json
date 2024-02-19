@@ -523,5 +523,19 @@
     "destination_ip": "${hq-development}",
     "destination_port": "6514",
     "protocol": "TCP"
+  },
+  "pf-mgmt-syslog_to_hq-development-1": {
+    "action": "PASS",
+    "source_ip": "${pettyfrance-mgmt}",
+    "destination_ip": "${hq-development}",
+    "destination_port": "514",
+    "protocol": "UDP"
+  },
+  "pf-mgmt-syslog_to_hq-development-2": {
+    "action": "PASS",
+    "source_ip": "${pettyfrance-mgmt}",
+    "destination_ip": "${hq-development}",
+    "destination_port": "6514",
+    "protocol": "TCP"
   }
 }
