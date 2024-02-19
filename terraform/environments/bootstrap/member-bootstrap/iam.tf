@@ -646,3 +646,19 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
     "s3:PutObjectAcl"]
   }
 }
+
+# AWS Shield Advanced SRT (Shield Response Team) support role
+module "shield_response_team_role" {
+  # checkov:skip=CKV_TF_1:
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+  version = "~> 5"
+  trusted_role_services = ["drt.shield.amazonaws.com"]
+
+  create_role       = true
+  role_name         = "AWSSRTSupport"
+  role_requires_mfa = false
+
+  custom_role_policy_arns = ["arn:aws:iam::aws:policy/service-role/AWSShieldDRTAccessPolicy"]
+
+  number_of_custom_role_policy_arns = 1
+}
