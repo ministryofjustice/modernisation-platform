@@ -9,11 +9,11 @@ review_in: 6 months or when is resolved.
 
 ## Overview
 
-There may be occassions where there is a network attack on modernisation platform environments that could require a way of stopping access. This document lists teo possible solutions to the issue.
+There may be occasions where there is a network attack on Modernisation Platform environments that could require a way of stopping access. This document lists the possible solutions to the issue.
 
 [NOTE]
 
-> All the steps below assume you can access the system through the AWS console and do not require changes to the terraform code.
+> All the steps below assume you can access the system through the AWS console and do not require changes to the terraform code. This is based on initial speed of access. There may be times when amending the code is quicker but this is not included here.
 
 ## Establish if there is an attack or unwanted access
 
@@ -38,14 +38,14 @@ On core-logging examine the contents, for production services, of
 
 ## If an issue has been established
 
-You need to then logon to the environment for which there is an issue
+You need to then logon to the environment for which there is an issue. For example if it is on NOMIS Combined Reporting Preproduction (nomis-combined-reporting-production) then connect to the core-vpc-preproduction. In this case it would be the hmpps VPC.
 
 1. Connect to the service involved.
-2. INITIALLY detatch the environment from the VPC.
+2. INITIALLY detatch the environment from the VPC using Actions and Delete VPC. It might not be possible to delete this as there will be networked interfaces attached which need to be noted and deleted. In this case amending the code may be more appropriate. In the above example there are 166 preproduction network interfaces to be removed.
 
 [CAUTION]
 
-> **NOTE THIS IS DRASTIC AND LIKELY TO CAUSE OTHER issues.**
+> **NOTE THIS IS DRASTIC AND LIKELY TO CAUSE OTHER issues in stopping all applcations attached to this VPC.**
 
 3. Check the log again following the steps above.
 
