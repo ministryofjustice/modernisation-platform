@@ -3,12 +3,6 @@ locals {
   account_data = jsondecode(file("../../../../environments/${local.account_name}.json"))
 }
 
-resource "aws_iam_account_alias" "alias" {
-  count         = (local.account_data.account-type != "member-unrestricted") && !(contains(local.skip_alias, terraform.workspace)) ? 1 : 0
-  provider      = aws.workspace
-  account_alias = terraform.workspace
-}
-
 module "cross-account-access" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=ef80831bbc71e96733abb9ff32cc3f24bcc7e55f" #v3.0.0
   providers = {

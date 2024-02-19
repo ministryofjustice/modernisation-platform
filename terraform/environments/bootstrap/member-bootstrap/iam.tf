@@ -662,3 +662,10 @@ module "shield_response_team_role" {
 
   number_of_custom_role_policy_arns = 1
 }
+
+# Manages the account alias for the AWS Account.
+resource "aws_iam_account_alias" "alias" {
+  count         = (local.account_data.account-type != "member-unrestricted") && !(contains(local.skip_alias, terraform.workspace)) ? 1 : 0
+  provider      = aws.workspace
+  account_alias = terraform.workspace
+}
