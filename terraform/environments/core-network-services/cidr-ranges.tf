@@ -19,6 +19,7 @@ locals {
     analytical-platform-airflow-prod = "10.201.0.0/16"
     atos_arkc_ras                    = "10.175.0.0/16" # for DOM1 devices connected to Cisco RAS VPN
     atos_arkf_ras                    = "10.176.0.0/16" # for DOM1 devices connected to Cisco RAS VPN
+    arkf_anyconnect_transit          = "10.179.1.0/24" # for incoming syslog traffic
     cloud-platform                   = "172.20.0.0/16"
     dom1-domain-controllers          = "10.172.68.146/29"
     global-protect                   = "10.184.0.0/16"

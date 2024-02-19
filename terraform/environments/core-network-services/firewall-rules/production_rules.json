@@ -635,5 +635,19 @@
     "destination_ip": "${dom1-dcs}",
     "destination_port": "49152:65535",
     "protocol": "TCP"
+  },
+  "arkf-syslog_to_hq-development-1": {
+    "action": "PASS",
+    "source_ip": "${arkf_anyconnect_transit}",
+    "destination_ip": "${hq-production}",
+    "destination_port": "514",
+    "protocol": "UDP"
+  },
+  "arkf-syslog_to_hq-development-2": {
+    "action": "PASS",
+    "source_ip": "${arkf_anyconnect_transit}",
+    "destination_ip": "${hq-production}",
+    "destination_port": "6514",
+    "protocol": "TCP"
   }
 }
