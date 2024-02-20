@@ -4,6 +4,9 @@ vulnerabilities:
   - id: CVE-2019-11253
   - id: CVE-2020-8558
   - id: CVE-2020-10675
+  - id: CVE-2020-15114
+    expired_at: 2024-08-20
+    statement: "Review in 6 months"
   - id: CVE-2020-26160
   - id: CVE-2020-35381
   - id: CVE-2021-25741
