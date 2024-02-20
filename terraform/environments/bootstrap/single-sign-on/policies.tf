@@ -600,6 +600,7 @@ data "aws_iam_policy_document" "instance-management-document" {
       "ec2:StopInstances",
       "ec2:RebootInstances",
       "ec2:ModifyImageAttribute",
+      "ec2:ModifyInstanceAttribute",
       "ec2:ModifySnapshotAttribute",
       "ec2:CopyImage",
       "ec2:CreateImage",
@@ -668,20 +669,6 @@ data "aws_iam_policy_document" "instance-management-document" {
       test     = "Bool"
       variable = "kms:GrantIsForAWSResource"
       values   = ["true"]
-    }
-  }
-
-  statement {
-    sid    = "AllowDisableApiStop"
-    effect = "Allow"
-    actions = [
-      "ec2:ModifyInstanceAttribute"
-    ]
-    resources = ["*"]
-    condition {
-      test     = "StringEquals"
-      variable = "ec2:ModifyInstanceAttribute"
-      values   = ["disableApiStop"]
     }
   }
 }
