@@ -345,13 +345,18 @@ Peer the new Transit gateway build in eu-west-1 to the MOJ transit gateway that 
 |Core-VPC-*|Creates the core VPC resources in the VPC accounts |
 |Modernisation-Platform | Creates key resources such as S3 state buckets for the platform |
 
+Once terraform has been run against these accounts, member accounts can be next, as technically, all that is required for the platform should now exist.
 
+### Member Accounts 
+
+After the networking has been completed, the core accounts created, and the modernisation platform itself built, the next step is creating member-accounts. Start with cooker, example and sprinkler, building from the mod-platform repo and then applying the terraform in the environments repo. This will allow us to test the steps required for our customers to follow when recreating their infrastructure from the environments repo.
 
 ## References
 
 * [Accessing the AWS Console](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/accessing-the-aws-console.html)
 * [Networking Diagram](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/networking/networking-diagram.html)
 * [Repositories List](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/sdlc/repositories.html)
+
 ## TODO
 - Find out what is expected from us, and update the doc. How often to we need to update customers? What downtime will require a migration to another region? 
 
