@@ -54,7 +54,7 @@ locals {
     "oasys-production"
   ]
 
-# skip the following alias creation if the alias is used by another account (they are globally unique)
+  # skip the following alias creation if the alias is used by another account (they are globally unique)
   skip_alias = sort([
     "apex-development",
     "apex-production",
