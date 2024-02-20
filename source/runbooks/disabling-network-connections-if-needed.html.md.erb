@@ -67,6 +67,7 @@ Connect to the appropriate environment (so for production go to core-vpc-product
 
 1. Select the Subnet name under "VPC"
 2. Pick the actions button and block the offending IP addresses through amending the route table. To do this change the route to one that has no network access. The new root table will be called block-all-access. The root table ID will not be known until the build is complete. 
+Follow the blackhole code in [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route#blackhole-route)
 
 [CAUTION]
 
@@ -88,7 +89,7 @@ Do this for all subnets :
 
 This is when there is an issue that is access from anywhere. In this instance we need to stop all access to the transit gateway (TGW).
 
-In this instance we would remove the access to the TGW from the access for each area impacted. A note should be kept of the current TGW ID so that it can be re-instated at a later date.
+In this instance we would remove the access to the TGW from the access for each area impacted. A note should be kept of the current TGW ID so that it can be re-instated at a later date. Currently there is only one transit gateway and this is the same for all services. IF you forget to note it for one it will be listed elsewhere for the others. Do make a note, however, in case additional ones are added at a later date.
 
 To do this :
 
@@ -96,4 +97,4 @@ To do this :
 2. pick the option you want and select Actions, Delete transit gateway attachment
 3. select the gateway to remove (only one should be listed) and type "delete" in the space and click the Delete button
 
-The transit gateway will be removed. 
+The transit gateway will be removed from the servers we use. 
