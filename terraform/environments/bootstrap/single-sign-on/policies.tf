@@ -332,6 +332,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "glue:DeleteDatabase",
       "glue:DeletePartition",
       "glue:DeleteTable",
+      "glue:*JobRun",
       "glue:UpdateDatabase",
       "glue:UpdatePartition",
       "glue:UpdateTable",
