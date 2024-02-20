@@ -95,17 +95,6 @@ module "terraform-module-s3-bucket" {
   secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
-module "terraform-module-trusted-advisor" {
-  source      = "./modules/repository"
-  name        = "modernisation-platform-terraform-trusted-advisor"
-  type        = "module"
-  description = "Module for refreshing Trusted Advisor every 60 minutes"
-  topics = [
-    "aws",
-    "trusted-advisor"
-  ]
-  secrets = nonsensitive(local.testing_ci_iam_user_keys)
-}
 
 module "terraform-module-bastion-linux" {
   source      = "./modules/repository"
