@@ -121,13 +121,13 @@ Assuming this is a production account with no time given to return, please follo
 #### Workflows
 
 
-Rather than rebuilding an account through workflows, I would run steps manually to easier debug issues, however, technically, you could start to run the account creation process with our github workflows.
+Rebuilding an account entirely through workflows would be the next step, and in an ideal scenario this would work first time, however when errors occur, debugging terraform plans and applies locally saves a lot of time. 
+
+Scenarios are never as cut and dry as ‘all infrastructure has vanished from one account’, so working and debugging the issues that occur will be quicker locally.
 
 **Member Accounts** - Located [here](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/new-environment.yml), running the new environment workflow should begin the steps of an account creation for member accounts.
 
 **Core Accounts** - Located [here](https://github.com/ministryofjustice/modernisation-platform/actions), on the left you will see the deployment workflows for all core based accounts, required for the building on the platform.
-
-However, I would run manually just to monitor the plan, help troubleshoot issues, as sometimes these scenarios are not as cut and dry as all infrastructure has vanished from one account.
 
 
 #### Manually
