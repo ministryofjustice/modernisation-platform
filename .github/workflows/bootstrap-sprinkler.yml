@@ -46,6 +46,7 @@ jobs:
 
   secure-baselines-plan:
     runs-on: ubuntu-latest
+    needs: delegate-access-plan
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Set Account Number
@@ -66,6 +67,7 @@ jobs:
 
   single-sign-on-plan:
     runs-on: ubuntu-latest
+    needs: delegate-access-plan
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Set Account Number
@@ -86,6 +88,7 @@ jobs:
 
   member-bootstrap-plan:
     runs-on: ubuntu-latest
+    needs: single-sign-on-plan
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Set Account Number
@@ -126,6 +129,7 @@ jobs:
 
   secure-baselines-apply:
     runs-on: ubuntu-latest
+    needs: delegate-access-apply
     environment: production
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -147,6 +151,7 @@ jobs:
 
   single-sign-on-apply:
     runs-on: ubuntu-latest
+    needs: delegate-access-apply
     environment: production
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -168,6 +173,7 @@ jobs:
 
   member-bootstrap-apply:
     runs-on: ubuntu-latest
+    needs: single-sign-on-apply
     environment: production
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
