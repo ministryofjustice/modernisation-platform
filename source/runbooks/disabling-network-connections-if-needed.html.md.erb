@@ -7,7 +7,7 @@ review_in: 6 months or when is resolved.
 
 # <%= current_page.data.title %>
 
-## Overview
+# Overview
 
 There may be occasions where there is a network attack on Modernisation Platform environments that could require a way of stopping access. This document lists the possible solutions to the issue.
 
@@ -15,7 +15,7 @@ There may be occasions where there is a network attack on Modernisation Platform
 
 > All the steps below assume you can access the system through the AWS console and do not require changes to the terraform code. This is based on initial speed of access. There may be times when amending the code is quicker but this is not included here.
 
-## Establish if there is an attack or unwanted access
+# Establish if there is an attack or unwanted access
 
 Establish if there is unwanted access or an attack taking place by checking the details on cloudwatch in both core-network-services and core-logging. It should be obvious from the contents of the logs.
 
@@ -36,22 +36,53 @@ On core-logging examine the contents, for production services, of
   or the following for non-production services
 - non_live_data-vpc-flow-logs
 
-## If an issue has been established
+We, currently, have no examples of unwanted access so an example cannot be shown in here.
 
-You need to then logon to the environment for which there is an issue. For example if it is on NOMIS Combined Reporting Preproduction (nomis-combined-reporting-production) then connect to the core-vpc-preproduction. In this case it would be the hmpps VPC.
+# If an issue has been established
 
-1. Connect to the service involved.
-2. INITIALLY detatch the environment from the VPC using Actions and Delete VPC. It might not be possible to delete this as there will be networked interfaces attached which need to be noted and deleted. In this case amending the code may be more appropriate. In the above example there are 166 preproduction network interfaces to be removed.
+## Service can be identified
+
+This is done from the core-network-services environment.
+
+When the service can be identified the route table can be removed from the transit gateway (quite a way down the left hand menu on VPCs). If you know the name of the option involved this is easier but if you select the Transit gateway route tables and pick an option the name comes up if the tags are correctly set.
+
+There are 3 options on this
+
+- live_data
+- non_live_data
+- external
+
+Pick the area you want to access - select the Trnasit route table ID :
+
+1. if you know the item you want select the tick box - otherwise **check**
+2. note the association you are removing because you will probably need to add it back later
+3. click Delete association button on the bottom window
+4. Confirm you want to delete this.
+
+Repeat this for all the associations you need to remove.
+
+### Defintely external access
+
+If the access is definitely outside the company - external - the above process should be repeated but for **all** external access routes. Repeat the above process for all (6 at present) external access routes. After this check if the "attack" is still happening.
+
+Should there still be an issue removing the internet gateway might be needed.
 
 [CAUTION]
 
-> **NOTE THIS IS DRASTIC AND LIKELY TO CAUSE OTHER issues in stopping all applcations attached to this VPC.**
+> **NOTE THIS IS DRASTIC AND LIKELY TO CAUSE OTHER issues in stopping internet access which may be required by some environments.**
 
-3. Check the log again following the steps above.
+This is done from the core-network-services environment.
 
-## Detatching the VPC didn't work
+1. Connect to the VPC option and Internet gateways
+2. note the gateway you are removing because you will probably need to add it back later
+3. Select each of the two names internet gateways and click on the Actions button and Detach from VPC
+4. Confirm you want to delete this.
 
-In most cases removing the VPC from the environment will stop connections but it is a drastic step. If this does not work follow the steps listed below. Again a smaple is shown below the text.
+If you want to remove the internet gateways altogether both can be selected and using the Actions click on the Delete internet gateway. The next screen will require you to type delete before the delete button opens. Again make a note of both gateways for re-addition later.
+
+## Send requets to the "blackhole"
+
+The block-all-access route table has not been pre-created so it will need to be built first. Instructions on how to create the code are shown in the terraform accessed from the link below.
 
 [NOTE]
 
@@ -66,14 +97,16 @@ In most cases removing the VPC from the environment will stop connections but it
 Connect to the appropriate environment (so for production go to core-vpc-production) and
 
 1. Select the Subnet name under "VPC"
-2. Pick the actions button and block the offending IP addresses through amending the route table. To do this change the route to one that has no network access. The new root table will be called block-all-access. The root table ID will not be known until the build is complete. 
-Follow the blackhole code in [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route#blackhole-route)
+2. Pick the actions button and block the offending IP addresses through amending the route table.
+3. change the route to one that has no network access. The new route table will be called block-all-access. The route table ID will not be known until the build is complete.
+
+   Follow the blackhole code in [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route#blackhole-route)
 
 [CAUTION]
 
 > **THIS WILL IMPACT _ALL ENVIRONMENTS_ CONNECTED TO THIS SUBNET SO TAKE CARE.**
 
-Do this for all subnets :
+Do this for affected subnet or, alternatively, all subnets :
 
 - general-data
 - general-private
@@ -83,18 +116,35 @@ Do this for all subnets :
 
 [NOTE]
 
-> The subnet names will be proceeded by the service name (e.g. hmpps-development-) and followed by 1 of -eu-west-2a, -eu-west-2b, -eu-west-2c. So a name may be hmpps-preproduction-general-private-eu-west-2b, as an example.
+> The subnet names are proceeded by the service name (e.g. hmpps-development-) and followed by 1 of -eu-west-2a, -eu-west-2b, -eu-west-2c. So a name may be hmpps-preproduction-general-private-eu-west-2b, as an example.
 
-## Major issue and we need to stop all access
+## Major issue and we need to stop all access to the Transit GateWay
 
-This is when there is an issue that is access from anywhere. In this instance we need to stop all access to the transit gateway (TGW).
+This is when there is an issue that is accessing the environment internally. In this instance we need to stop all access to the transit gateway (TGW).
 
-In this instance we would remove the access to the TGW from the access for each area impacted. A note should be kept of the current TGW ID so that it can be re-instated at a later date. Currently there is only one transit gateway and this is the same for all services. IF you forget to note it for one it will be listed elsewhere for the others. Do make a note, however, in case additional ones are added at a later date.
+[CAUTION]
+
+> **THIS WILL IMPACT EVERYONE AS NO ACCESS WILL BE ALLOWED TO ANY ENVIRONMENT.**
+
+In this instance we would remove the access to the TGW from the access for each area impacted. A note should be kept of the current TGW ID so that it can be re-instated at a later date. Currently there is only one transit gateway and this is the same for all services. IF you forget to note it for one it will be listed elsewhere for the others. Do make a note, however, in case additional ones are added at a later date. Again this is from the core-network-services environment.
 
 To do this :
 
 1. connect to the transit gateway attachments section in the VPC list (transit gateway is quite a way down the screen on the left)
-2. pick the option you want and select Actions, Delete transit gateway attachment
-3. select the gateway to remove (only one should be listed) and type "delete" in the space and click the Delete button
+2. pick the Transit Gateway (there is only one) and select Actions, Delete transit gateway attachment
+3. select the gateway to remove and type "delete" in the space and click the Delete button
 
-The transit gateway will be removed from the servers we use. 
+The transit gateway will be removed from the servers we use.
+
+## Remove access to the VPC
+
+You need to then logon to the environment for which there is an issue. For example if it is on NOMIS Combined Reporting Preproduction (nomis-combined-reporting-preproduction) then connect to the core-vpc-preproduction. In this case it would be the hmpps VPC.
+
+1. Connect to the service involved.
+2. INITIALLY detatch the environment from the VPC using Actions and Delete VPC. It might not be possible to delete this as there will be networked interfaces attached which need to be noted and deleted. In this case amending the code may be more appropriate. In the above example there are 166 preproduction network interfaces to be removed.
+
+[CAUTION]
+
+> **NOTE THIS IS DRASTIC AND LIKELY TO CAUSE OTHER issues in stopping all applcations attached to this VPC.**
+
+3. Check the log again following the steps above.
