@@ -2,7 +2,7 @@
   "account-type": "member",
   "environments": [
     {
-      "name": "development",
+      "name": "dev",
       "access": [
         {
           "github_slug": "modernisation-platform",
