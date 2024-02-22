@@ -10,6 +10,7 @@ module "core" {
     "aws",
     "documentation"
   ]
+  required_checks = ["run-opa-policy-tests"]
   secrets = {
     # Terraform GitHub token for the CI/CD user
     TERRAFORM_GITHUB_TOKEN = data.aws_secretsmanager_secret_version.github_ci_user_token.secret_string
