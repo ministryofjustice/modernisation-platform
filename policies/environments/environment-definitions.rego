@@ -114,3 +114,5 @@ deny[msg] {
   not startswith(input.filename, "environments/sprinkler") # to allow testing
   msg := sprintf("`%v` uses `powerbi-user` access level but is not an analytical platform or sprinkler account", [input.filename])
 }
+
+print(input)
