@@ -635,33 +635,5 @@
     "destination_ip": "${dom1-dcs}",
     "destination_port": "49152:65535",
     "protocol": "TCP"
-  },
-  "arkf-syslog_to_hq-production-1": {
-    "action": "PASS",
-    "source_ip": "${arkf_anyconnect_transit}",
-    "destination_ip": "${hq-production}",
-    "destination_port": "514",
-    "protocol": "UDP"
-  },
-  "arkf-syslog_to_hq-production-2": {
-    "action": "PASS",
-    "source_ip": "${arkf_anyconnect_transit}",
-    "destination_ip": "${hq-production}",
-    "destination_port": "6514",
-    "protocol": "TCP"
-  },
-  "pf-mgmt-syslog_to_hq-production-1": {
-    "action": "PASS",
-    "source_ip": "${pettyfrance-mgmt}",
-    "destination_ip": "${hq-production}",
-    "destination_port": "514",
-    "protocol": "UDP"
-  },
-  "pf-mgmt-syslog_to_hq-production-2": {
-    "action": "PASS",
-    "source_ip": "${pettyfrance-mgmt}",
-    "destination_ip": "${hq-production}",
-    "destination_port": "6514",
-    "protocol": "TCP"
   }
 }
