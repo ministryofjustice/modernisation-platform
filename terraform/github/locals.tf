@@ -48,7 +48,8 @@ locals {
     "richgreen-moj",  # Richard Green
     "khatraf",        # Khatra Farah
     "sukeshreddyg",   # Sukesh Reddy Gade 
-    "mikereiddigital" # Mike Reid
+    "mikereiddigital", # Mike Reid
+    "Kudzai-moj"      # Kudzai Mtoko
   ]
 
   # Security engineers performing reviews on the platform or member accounts
