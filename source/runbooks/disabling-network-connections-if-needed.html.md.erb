@@ -9,11 +9,11 @@ review_in: 6 months or when is resolved.
 
 # Overview
 
-There may be occasions where there is a network attack on Modernisation Platform environments that could require a way of stopping access. This document lists the possible solutions to the issue.
+There may be occasions where there is a network attack on Modernisation Platform environments that could require a way of blocking netwroking access/connectivity. This document lists the steps to follow.
 
 [NOTE]
 
-> All the steps below assume you can access the system through the AWS console and do not require changes to the terraform code. This is based on initial speed of access. There may be times when amending the code is quicker but this is not included here.
+> All the steps below assume you can access the system through the AWS console and do not require changes to the terraform code. This is based on initial speed of access. There may be times when amending the code is quicker but this is not included here. Changes in done through this route will impact terraform code but that can be mitigated by manually reverting the steps followed to prevent access.
 
 # Establish if there is an attack or unwanted access
 
