@@ -16,7 +16,7 @@ locals {
 
 # Secure baselines (GuardDuty, Config, SecurityHub, etc)
 module "baselines-modernisation-platform" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=e8a385de54111b6030f768fb3421f03d7fd53ab6" # v6.4.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=2f866eab07900c44720dd5e1c693816f37b4f836" # v6.5.0
   providers = {
     # Default and replication regions
     aws                    = aws.modernisation-platform-eu-west-2
