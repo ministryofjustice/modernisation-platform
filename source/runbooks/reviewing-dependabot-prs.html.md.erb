@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: How to review Dependabot pull requests
-last_reviewed_on: 2023-08-23
+last_reviewed_on: 2024-08-23
 review_in: 6 months
 ---
 
@@ -9,7 +9,7 @@ review_in: 6 months
 
 ## Introduction
 
-We use [Dependabot](https://github.com/dependabot) to keep our dependancies up-to-date.  We need to review, approve and merge these pull requests.
+We use [Dependabot](https://github.com/dependabot) to keep our dependancies up-to-date. We need to review, approve and merge these pull requests.
 
 At 09:00, 12:00 and 15:00 GitHub will post open pull requests from all of the repositories that the [modernisation-platform](https://github.com/orgs/ministryofjustice/teams/modernisation-platform) team is an admin of, into our main Slack channel.
 
@@ -25,7 +25,7 @@ Click on the link in Slack to open the pull request.
 
 Keep this in mind when reviewing, major version changes will need a detailed code review to ensure the breaking changes do not affect our code or are resolved before approving and merging the pull request.
 
-2. GitHub checks (GitHub Actions workflows) will not have access to GitHub secrets, this means checks needing secrets will fail.  After reviewing the release notes and code for potential security issues, you can open an close the pull request to trigger the checks to run with secret access.
+2. GitHub checks (GitHub Actions workflows) will not have access to GitHub secrets, this means checks needing secrets will fail. After reviewing the release notes and code for potential security issues, you can open an close the pull request to trigger the checks to run with secret access.
 
 3. Sometimes the pull request will need rebasing, Dependabot will usually do this for you but if not it can be done by commenting `@dependabot rebase`.
 
