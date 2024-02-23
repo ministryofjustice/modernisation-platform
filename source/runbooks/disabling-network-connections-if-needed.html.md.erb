@@ -52,7 +52,7 @@ There are 3 options on this
 - non_live_data
 - external
 
-Pick the area you want to access - select the Trnasit route table ID :
+Pick the area you want to access - select the "Trnasit route table ID" :
 
 1. if you know the item you want select the tick box - otherwise **check**
 2. note the association you are removing because you will probably need to add it back later
@@ -73,12 +73,12 @@ Should there still be an issue removing the internet gateway might be needed.
 
 This is done from the core-network-services environment.
 
-1. Connect to the VPC option and Internet gateways
+1. Connect to the VPC option and "Internet gateways""
 2. note the gateway you are removing because you will probably need to add it back later
-3. Select each of the two names internet gateways and click on the Actions button and Detach from VPC
+3. Select each of the two names internet gateways and click on the "Actions" button and "Detach from VPC"
 4. Confirm you want to delete this.
 
-If you want to remove the internet gateways altogether both can be selected and using the Actions click on the Delete internet gateway. The next screen will require you to type delete before the delete button opens. Again make a note of both gateways for re-addition later.
+If you want to remove the internet gateways altogether both can be selected and using the "Actions" click on the "Delete internet gateway". The next screen will require you to type delete before the delete button opens. Again make a note of both gateways for re-addition later.
 
 ## Send requets to the "blackhole"
 
@@ -96,7 +96,7 @@ The block-all-access route table has not been pre-created so it will need to be 
 
 Connect to the appropriate environment (so for production go to core-vpc-production) and
 
-1. Select the Subnet name under "VPC"
+1. Select the "Subnet" name under "VPC"
 2. Pick the actions button and block the offending IP addresses through amending the route table.
 3. change the route to one that has no network access. The new route table will be called block-all-access. The route table ID will not be known until the build is complete.
 
@@ -130,9 +130,9 @@ In this instance we would remove the access to the TGW from the access for each 
 
 To do this :
 
-1. connect to the transit gateway attachments section in the VPC list (transit gateway is quite a way down the screen on the left)
-2. pick the Transit Gateway (there is only one) and select Actions, Delete transit gateway attachment
-3. select the gateway to remove and type "delete" in the space and click the Delete button
+1. connect to the "Transit gateway attachments" section in the VPC list (transit gateway is quite a way down the screen on the left)
+2. pick the Transit Gateway (there is only one) and select "Actions", "Delete transit gateway attachment"
+3. select the gateway to remove and type "delete" in the space and click the "Delete" button
 
 The transit gateway will be removed from the servers we use.
 
@@ -141,7 +141,7 @@ The transit gateway will be removed from the servers we use.
 You need to then logon to the environment for which there is an issue. For example if it is on NOMIS Combined Reporting Preproduction (nomis-combined-reporting-preproduction) then connect to the core-vpc-preproduction. In this case it would be the hmpps VPC.
 
 1. Connect to the service involved.
-2. INITIALLY detatch the environment from the VPC using Actions and Delete VPC. It might not be possible to delete this as there will be networked interfaces attached which need to be noted and deleted. In this case amending the code may be more appropriate. In the above example there are 166 preproduction network interfaces to be removed.
+2. INITIALLY detatch the environment from the VPC using "Actions" and "Delete VPC". It might not be possible to delete this as there will be networked interfaces attached which need to be noted and deleted. In this case amending the code may be more appropriate. In the above example there are 166 preproduction network interfaces to be removed.
 
 [CAUTION]
 
