@@ -1,14 +1,13 @@
 
 # Data source to get the ARN of an existing SNS topic
 data "aws_sns_topic" "existing_topic" {
-  count         = local.account_data.account-type != "member-unrestricted" ? 1 : 0
   name = "backup_failure_topic"
 }
 
 # Create an email subscription to the existing SNS topic
 resource "aws_sns_topic_subscription" "email_subscription" {
   count         = local.account_data.account-type != "member-unrestricted" ? 1 : 0
-  topic_arn =  data.aws_sns_topic.existing_topic[0].arn
+  topic_arn =  data.aws_sns_topic.existing_topic.arn
   protocol  = "email"
   endpoint  = "modernisation-platform@digital.justice.gov.uk"
 }
@@ -20,7 +19,7 @@ module "pagerduty_core_alerts" {
     data.aws_sns_topic.existing_topic
   ]
   source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
-  sns_topics                = [data.aws_sns_topic.existing_topic[count.index]]
+  sns_topics                = [data.aws_sns_topic.existing_topic.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
 }
 
@@ -28,7 +27,7 @@ resource "aws_cloudwatch_metric_alarm" "aws_backup_has_errors" {
   count         = local.account_data.account-type != "member-unrestricted" ? 1 : 0
   alarm_name        = "aws-backup-failed"
   alarm_description = "AWS Backup, everything has failed. Please check logs"
-  alarm_actions = [data.aws_sns_topic.existing_topic[0].arn]
+  alarm_actions = [data.aws_sns_topic.existing_topic.arn]
 
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
