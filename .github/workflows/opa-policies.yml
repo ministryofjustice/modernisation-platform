@@ -17,7 +17,21 @@ jobs:
   run-opa-policy-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Get changed directories
+        id:   directories
+        run:  |
+          git fetch origin main --unshallow
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "CHANGED_DIRECTORIES=$(git diff HEAD origin/main --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | cut -f1-3 -d"/" | uniq | base64 -w 0 )"
+          else
+            echo "CHANGED_DIRECTORIES=$(git diff HEAD^ HEAD --name-only | awk '{print $1}' | grep ".tf" | grep -a "environments//*" | cut -f1-3 -d"/" | uniq | base64 -w 0)"
+          fi >> $GITHUB_OUTPUT
+      - name: Display changed directories
+        run: echo "Directories in scope:" ${{ steps.directories.outputs.CHANGED_DIRECTORIES }}
+      - name: Add PR comment for high risk changes
+        run: gh pr comment ${{ github.event.number }} --body "This is a high risk change"
       - name: Setup Regal
         uses: styrainc/setup-regal@33a142b1189004e0f14bf42b15972c67eecce776 # v1.0.0
         with:
