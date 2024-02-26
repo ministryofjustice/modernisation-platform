@@ -1,10 +1,13 @@
+
 # Data source to get the ARN of an existing SNS topic
 data "aws_sns_topic" "existing_topic" {
+  count         = (local.account_data.account-type != "member-unrestricted") ? 1 : 0
   name = "backup_failure_topic"
 }
 
 # Create an email subscription to the existing SNS topic
 resource "aws_sns_topic_subscription" "email_subscription" {
+  count         = (local.account_data.account-type != "member-unrestricted") ? 1 : 0
   topic_arn = data.aws_sns_topic.existing_topic.arn
   protocol  = "email"
   endpoint  = "modernisation-platform@digital.justice.gov.uk"
@@ -12,6 +15,7 @@ resource "aws_sns_topic_subscription" "email_subscription" {
 
 # Link the sns topics to the pagerduty service
 module "pagerduty_core_alerts" {
+  count         = (local.account_data.account-type != "member-unrestricted") ? 1 : 0
   depends_on = [
     data.aws_sns_topic.existing_topic
   ]
@@ -21,6 +25,7 @@ module "pagerduty_core_alerts" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "aws_backup_has_errors" {
+  count         = (local.account_data.account-type != "member-unrestricted") ? 1 : 0
   alarm_name        = "aws-backup-failed"
   alarm_description = "AWS Backup, everything has failed. Please check logs"
   alarm_actions     = [data.aws_sns_topic.existing_topic.arn]
@@ -41,17 +46,20 @@ resource "aws_cloudwatch_metric_alarm" "aws_backup_has_errors" {
 }
 
 data "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
+  count         = (local.account_data.account-type != "member-unrestricted") ? 1 : 0
   provider  = aws.modernisation-platform
   secret_id = data.aws_secretsmanager_secret.pagerduty_integration_keys.id
 }
 
 # Get the map of pagerduty integration keys
 data "aws_secretsmanager_secret" "pagerduty_integration_keys" {
+  count         = (local.account_data.account-type != "member-unrestricted") ? 1 : 0
   provider = aws.modernisation-platform
   name     = "pagerduty_integration_keys"
 }
 
 locals {
+    count         = (local.account_data.account-type != "member-unrestricted") ? 1 : 0
     pagerduty_integration_keys = jsondecode(data.aws_secretsmanager_secret_version.pagerduty_integration_keys.secret_string)
 
 }
