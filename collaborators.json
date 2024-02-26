@@ -545,6 +545,16 @@
           "access": "developer"
         }
       ]
+},
+    {
+      "username": "kaleb.sofer",
+      "github-username": "kalebsofer",
+      "accounts": [
+        {
+          "account-name": "electronic-monitoring-data-development",
+          "access": "developer"
+        }
+      ]
     }
   ]
 }
