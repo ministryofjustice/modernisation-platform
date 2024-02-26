@@ -23,6 +23,7 @@ module "pagerduty_core_alerts" {
   pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
 }
 
+# Cloudwatch metric alarm required for errors
 resource "aws_cloudwatch_metric_alarm" "aws_backup_has_errors" {
   count         = local.account_data.account-type != "member-unrestricted" ? 1 : 0
   alarm_name        = "aws-backup-failed"
@@ -44,6 +45,7 @@ resource "aws_cloudwatch_metric_alarm" "aws_backup_has_errors" {
 
 }
 
+# Keys for pagerduty
 data "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
   provider  = aws.modernisation-platform
   secret_id = data.aws_secretsmanager_secret.pagerduty_integration_keys.id
@@ -55,6 +57,7 @@ data "aws_secretsmanager_secret" "pagerduty_integration_keys" {
   name     = "pagerduty_integration_keys"
 }
 
+# Keys for pagerduty
 locals {
     pagerduty_integration_keys = jsondecode(data.aws_secretsmanager_secret_version.pagerduty_integration_keys.secret_string)
 }
