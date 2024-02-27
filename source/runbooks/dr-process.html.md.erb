@@ -283,7 +283,7 @@ Our [Transit Gateway](../how-vpcs-access-the-internet.html) and how VPCs access 
 
 ## Stages
 
-Rather than rebuilding the platform through workflows, I would run steps manually to easier debug issues, however, technically, you could start to run the account creation process with our github workflows.
+Rather than rebuilding the platform through workflows, I would run steps manually to easier debug issues, however, technically, you could start to run the account creation process with our GitHub workflows.
 
 Located [here](https://github.com/ministryofjustice/modernisation-platform/actions), on the left you will see the deployment workflows for all core based accounts, required for the building on the platform.
 
@@ -291,9 +291,9 @@ Located [here](https://github.com/ministryofjustice/modernisation-platform/actio
 ### VPCs and Subnets
 
 
-1. Clone the mod-platform repo, change region in code. Whilst its as simple as a find and replace, modules are called and need changing, either locally and referenced locally, or in the module and pushed to git.
+1. Clone the modernisation-platform repo, and change the region in the code. Whilst its as simple as a find and replace, modules are called and need changing, either locally and referenced locally, or in the module and pushed to GitHub.
 2. Core VPC rebuild. Provider would need to be eu-west-1, so check the permissions you have in that region with the credentials you are using. E.g. https://moj.awsapps.com/start/ when getting your credentials from here, make sure the region is correct.
-3. Core Networking would be the next to run terraform on, checking the code and modules it uses for region references and changing them.
+3. Core Networking would be the next to run Terraform on, checking the code and modules it uses for region references and changing them.
 
 
 **With the infrastructure in London no longer available, we would use the original ranges**
@@ -305,7 +305,7 @@ Located [here](https://github.com/ministryofjustice/modernisation-platform/actio
 To rebuild the transit gateway in a new region, first find the code, located here, in core-network-services. https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-network-services
 
 
-Using the admin role, run a terraform plan and apply. This hasnt been done from scratch since the platforms creation, so expect to debug issues.
+Using the admin role, run a Terraform plan and apply. This hasn't been done from scratch since the platform's creation, so expect to debug issues.
 
 
 ### Firewall
@@ -329,21 +329,21 @@ Peer the new Transit gateway build in eu-west-1 to the MOJ transit gateway that 
 ### Account dependencies
 
 
-|Account|Information|
+| Account | Information |
 |----------------- |------------------------------------------------ |
-|Core-Shared-Services|Creates the core shared services account resources, AMIs, KMS, S3 and other shared services customers require are based in here. |
-|Core-Network-Services | Creates the core networking account resources, and contains the transit gateway terraform, as well as firewall rules. |
-|Core-Logging|Creates the core logging account resources, not essential for operational function but a part of the platform. As well as for troubleshooting, logging is required for audit purposes and therefore should also be prioritised. |
-|Core-Security|Creates the core security account resources |
-|Cloud-Platform-Transit-Gateways|Across all regions. |
-|Core-VPC-*|Creates the core VPC resources in the VPC accounts |
-|Modernisation-Platform | Creates key resources such as S3 state buckets for the platform |
+| Core-Shared-Services|Creates the core shared services account resources, AMIs, KMS, S3 and other shared services customers require are based in here. |
+| Core-Network-Services | Creates the core networking account resources, and contains the transit gateway Terraform, as well as firewall rules. |
+| Core-Logging | Creates the core logging account resources, not essential for operational function but a part of the platform. As well as for troubleshooting, logging is required for audit purposes and therefore should also be prioritised. |
+| Core-Security | Creates the core security account resources. |
+| Cloud-Platform-Transit-Gateways | Across all regions. |
+| Core-VPC-*| Creates the core VPC resources in the VPC accounts. |
+| Modernisation-Platform | Creates key resources such as S3 state buckets for the platform. |
 
-Once terraform has been run against these accounts, member accounts can be next, as technically, all that is required for the platform should now exist.
+Once Terraform has been run against these accounts, member accounts can be next, as technically, all that is required for the platform should now exist.
 
 ### Member Accounts 
 
-After the networking has been completed, the core accounts created, and the modernisation platform itself built, the next step is creating member-accounts. Start with cooker, example and sprinkler, building from the mod-platform repo and then applying the terraform in the environments repo. This will allow us to test the steps required for our customers to follow when recreating their infrastructure from the environments repo.
+After the networking has been completed, the core accounts created, and the modernisation platform itself built, the next step is creating member-accounts. Start with cooker, example and sprinkler, building from the mod-platform repo and then applying the Terraform in the environments repo. This will allow us to test the steps required for our customers to follow when recreating their infrastructure from the environments repo.
 
 ## References
 
@@ -352,5 +352,4 @@ After the networking has been completed, the core accounts created, and the mode
 * [Repositories List](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/sdlc/repositories.html)
 
 ## TODO
-- Find out what is expected from us, and update the doc. How often to we need to update customers? What downtime will require a migration to another region? 
-
+- Find out what is expected from us, and update the doc. How often do we need to update customers? What downtime will require a migration to another region?
