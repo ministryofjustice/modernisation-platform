@@ -26,8 +26,8 @@ jobs:
       - name: Get changed files/directories
         id: directories
         run: |
-          readarray -t CHANGED_DIRECTORIES <<< "$(gh pr view ${{ github.event.number }} --json files --jq '.files.[].path' | base64 -w 0)"
-          echo $CHANGED_DIRECTORIES >> $GITHUB_OUTPUT
+          readarray -t CHANGED_DIRECTORIES <<< "$(gh pr view ${{ github.event.number }} --json files --jq '.files.[].path')"
+          echo $CHANGED_DIRECTORIES | base64 -w 0 >> $GITHUB_OUTPUT
       - name: Add PR comment for high risk changes
         run: |
           export CHANGED_DIRECTORIES=$(echo "${{ steps.directories.outputs.CHANGED_DIRECTORIES }}" | base64 --decode) 
