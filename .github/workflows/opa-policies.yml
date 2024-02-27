@@ -26,7 +26,7 @@ jobs:
       - name: Get changed files/directories and add PR comment for high risk changes
         run: |
           readarray -t CHANGED_DIRECTORIES <<< "$(gh pr view ${{ github.event.number }} --json files --jq '.files.[].path')"
-          echo -e "This PR is making changes to the following files/directories:\n "${CHANGED_DIRECTORIES[@]}""
+          printf "This PR is making changes to the following files/directories:\n "${CHANGED_DIRECTORIES[@]}""
           files=($(jq -r '.danger_files[].file' policies/pr-messages.json))
           for value1 in "${CHANGED_DIRECTORIES[@]}"; do
             for value2 in "${files[@]}"; do 
