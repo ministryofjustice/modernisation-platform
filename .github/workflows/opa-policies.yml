@@ -33,7 +33,7 @@ jobs:
           for value1 in "${CHANGED_DIRECTORIES[@]}"; do
             for value2 in "${files[@]}"; do 
               if [[ "$value1" =~ $value2 ]]; then
-                echo "something matched"
+                echo "${value} matched ${value2}"
                 echo $(jq '.danger_files[] | select(.file | test ("$value2")) | .message' policies/pr-messages.json)
               fi
             done
