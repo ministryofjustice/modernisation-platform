@@ -125,7 +125,7 @@ EOL
     application_name=$(basename "$file" .json)
     directory=/terraform/environments/$application_name
     account_type=$(jq -r '."account-type"' ${environment_json_dir}/${application_name}.json)
-    codeowners=$(jq -r '.codeowners[] | "@ministryofjustice/" + .' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
+    codeowners=$(jq -r 'try (.codeowners[] | "@ministryofjustice/" + .) ' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
     github_slugs=$(jq -r '.environments[].access[].github_slug | "@ministryofjustice/" + .' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
 
     if [ "$account_type" = "member" ]; then
