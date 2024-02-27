@@ -4,14 +4,6 @@ data "aws_sns_topic" "existing_topic" {
   name = "backup_failure_topic"
 }
 
-# Create an email subscription to the existing SNS topic
-resource "aws_sns_topic_subscription" "email_subscription" {
-  count         = local.account_data.account-type != "member-unrestricted" ? 1 : 0
-  topic_arn =  data.aws_sns_topic.existing_topic.arn
-  protocol  = "email"
-  endpoint  = "modernisation-platform@digital.justice.gov.uk"
-}
-
 # Link the sns topics to the pagerduty service
 module "pagerduty_core_alerts" {
   count         = (local.account_data.account-type != "member-unrestricted") ? 1 : 0
