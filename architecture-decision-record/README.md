@@ -34,6 +34,7 @@ This is our architecture decision log, made during the design and build of the M
 1. ✅ [Expand the scope of the platform](0028-expand-the-scope-of-the-platform.md)
 1. ♻ [How we deploy shared Active Directory controllers](0029-how-we-deploy-shared-active-directory-controllers.md)
 1. ✅ [Cross environment network access](0030-cross-environment-network-access.md)
+1. ✅ [LLMs will be hosted on the Analytical Platform](0031-llms-will-be-hosted-on-the-analytical-platform.md)
 
 ## Statuses
 
