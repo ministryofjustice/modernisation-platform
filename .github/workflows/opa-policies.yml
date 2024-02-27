@@ -32,11 +32,11 @@ jobs:
             for value2 in "${files[@]}"; do 
               if [[ "$value1" =~ $value2 ]]; then
                 echo "${value1} matched ${value2}"
-                echo -e ":warning: $(jq -r ".danger_files[] | select(.file | test (\"^$value2\")) | .message" policies/pr-messages.json) \n" >> pr-comment-body.txt
+                echo -e ":warning: $(jq -r ".danger_files[] | select(.file | test (\"^$value2\")) | .message" policies/pr-messages.json) \n" >> pr-comment.txt
               fi
             done
           done
-          sort -u pr-comment-body.txt | tee pr-comment-body.txt | sed '1{/^$/d}'
+          sort -u pr-comment.txt > pr-comment-body.txt
           gh pr comment ${{ github.event.number }} --body-file pr-comment-body.txt
       - name: Setup Regal
         uses: styrainc/setup-regal@33a142b1189004e0f14bf42b15972c67eecce776 # v1.0.0
