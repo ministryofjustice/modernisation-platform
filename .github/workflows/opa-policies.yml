@@ -31,11 +31,11 @@ jobs:
             for value2 in "${files[@]}"; do 
               if [[ "$value1" =~ $value2 ]]; then
                 echo "${value1} matched ${value2}"
-                echo $(jq ".danger_files[] | select(.file | test (\"$value2\")) | .message" policies/pr-messages.json)
+                gh pr comment ${{ github.event.number }} --body "$(jq ".danger_files[] | select(.file | test (\"$value2\")) | .message" policies/pr-messages.json)"
+                # echo $(jq ".danger_files[] | select(.file | test (\"$value2\")) | .message" policies/pr-messages.json)
               fi
             done
           done
-          # gh pr comment ${{ github.event.number }} --body "This PR is making changes to the following files\: $CHANGED_DIRECTORIES"
       - name: Setup Regal
         uses: styrainc/setup-regal@33a142b1189004e0f14bf42b15972c67eecce776 # v1.0.0
         with:
