@@ -31,6 +31,7 @@ jobs:
             for value2 in "${files[@]}"; do 
               if [ "$value1" =~ "$value2" ]; then
                 echo $(jq ".danger_files[] | select(.file | test ("$value2")) | .message" policies/pr-messages.json)
+              fi
             done
           done
           # gh pr comment ${{ github.event.number }} --body "This PR is making changes to the following files\: $CHANGED_DIRECTORIES"
