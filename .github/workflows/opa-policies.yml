@@ -27,11 +27,7 @@ jobs:
         run: |
           readarray -t CHANGED_DIRECTORIES <<< "$(gh pr view ${{ github.event.number }} --json files --jq '.files.[].path')"
           for value in "${CHANGED_DIRECTORIES[@]}"; do
-            if [ cat policies/pr-messages.json | grep $value ]; then
-              echo "Making risky changes"
-            else
-              echo "No risky changes found"
-            fi
+            echo $value
           done
           # gh pr comment ${{ github.event.number }} --body "This PR is making changes to the following files\: $CHANGED_DIRECTORIES"
       - name: Setup Regal
