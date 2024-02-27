@@ -31,13 +31,15 @@ jobs:
       - name: Add PR comment for high risk changes
         run: |
           export CHANGED_DIRECTORIES=$(echo "${{ steps.directories.outputs.CHANGED_DIRECTORIES }}" | base64 --decode) 
-          for value in $CHANGED_DIRECTORIES; do
-            if [ cat policies/pr-messages.json | grep $value ]; then
-              echo "Making risky changes"
-            else
-              echo "No risky changes found"
-            fi
-          done
+          cat policies/pr-messages.json 
+          echo $CHANGED_DIRECTORIES
+          # for value in $CHANGED_DIRECTORIES; do
+          #   if [ cat policies/pr-messages.json | grep $value ]; then
+          #     echo "Making risky changes"
+          #   else
+          #     echo "No risky changes found"
+          #   fi
+          # done
 
 
           # gh pr comment ${{ github.event.number }} --body "This PR is making changes to the following files\: $CHANGED_DIRECTORIES"
