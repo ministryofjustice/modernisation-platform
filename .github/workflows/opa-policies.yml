@@ -26,8 +26,12 @@ jobs:
       - name: Get changed files/directories and add PR comment for high risk changes
         run: |
           readarray -t CHANGED_DIRECTORIES <<< "$(gh pr view ${{ github.event.number }} --json files --jq '.files.[].path')"
-          for value in "${CHANGED_DIRECTORIES[@]}"; do
-            echo $value
+          files=($(jq -r '.danger_files[].file' policies/pr-messages.json))
+          for value1 in "${CHANGED_DIRECTORIES[@]}"; do
+            for value2 in "${files[@]}"; do 
+              if [ "$value1" =~ "$value2" ]; then
+                echo $(jq ".danger_files[] | select(.file | test ("$value2")) | .message" policies/pr-messages.json)
+            done
           done
           # gh pr comment ${{ github.event.number }} --body "This PR is making changes to the following files\: $CHANGED_DIRECTORIES"
       - name: Setup Regal

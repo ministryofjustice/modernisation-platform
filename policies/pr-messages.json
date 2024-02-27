@@ -1,6 +1,12 @@
 {
-  "danger_files": {
-    "environments/": "Making changes to `environments/application.json` files will affect member AWS accounts, please check the plan carefully before proceeding",
-    "iam": "Something about iam"
-  }
+  "danger_files": [
+    {
+      "file": "environments/",
+      "message": "Making changes to the environment json files will affect member AWS accounts, please check the plan carefully before proceeding"
+    },
+
+    { "file": "iam", 
+      "message": "Something about iam" 
+    }
+  ]
 }
