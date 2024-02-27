@@ -4,13 +4,12 @@
       "file": "environments/",
       "message": "Making changes to the environment json files will affect member AWS accounts, please check the plan carefully before proceeding"
     },
-
-    { "file": "iam", 
-      "message": "Something about iam" 
-    },
     {
-      "file": "terraform/github",
-      "message": "Be careful making changes to the GitHub code"
+      "file": "environments-networks/",
+      "message": "Making changes to the environment network files will affect networking of member AWS accounts, please check the plan carefully before proceeding"
+    },
+    { "file": "terraform/environments/baseline/iam.tf", 
+      "message": "Making changes to the baseline iam.tf file will alter the IAM permissions for all members on the MP platform, please check the plan carefully before proceeding" 
     }
   ]
 }
