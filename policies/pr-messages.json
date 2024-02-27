@@ -7,6 +7,10 @@
 
     { "file": "iam", 
       "message": "Something about iam" 
+    },
+    {
+      "file": "terraform/github",
+      "message": "Be careful making changes to the GitHub code"
     }
   ]
 }
