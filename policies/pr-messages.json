@@ -1,0 +1,6 @@
+{
+  "danger_files": {
+    "environments/": "Making changes to `environments/application.json` files will affect member AWS accounts, please check the plan carefully before proceeding",
+    "iam": "Something about iam"
+  }
+}

@@ -29,6 +29,15 @@ jobs:
       - name: Add PR comment for high risk changes
         run: |
           export CHANGED_DIRECTORIES=$(echo "${{ steps.directories.outputs.CHANGED_DIRECTORIES }}" | base64 --decode) 
+          for value in $CHANGED_DIRECTORIES; do
+            if [ echo $CHANGED_DIRECTORIES | grep $value ]; then
+              echo "Making changes to `environments/application.json` files will affect member AWS accounts, please check the plan carefully before proceeding"
+            else
+              echo "No risky changes found"
+            fi
+          done
+
+
           gh pr comment ${{ github.event.number }} --body "This PR is making changes to the following files\: $CHANGED_DIRECTORIES"
       - name: Setup Regal
         uses: styrainc/setup-regal@33a142b1189004e0f14bf42b15972c67eecce776 # v1.0.0
