@@ -8,8 +8,8 @@
       "file": "environments-networks/",
       "message": "Making changes to the `environments-networks/*.json` files will affect networking of member AWS accounts, please check the plan carefully before proceeding"
     },
-    { "file": "terraform/environments/baseline/iam.tf", 
-      "message": "Making changes to the `terraform/environments/baseline/iam.tf` file will alter the IAM permissions for all members on the MP platform, please check the plan carefully before proceeding" 
+    { "file": "terraform/environments/bootstrap/member-bootstrap/iam.tf", 
+      "message": "Making changes to the `terraform/environments/bootstrap/member-bootstrap/iam.tf` file will alter the IAM permissions for all members on the MP platform, please check the plan carefully before proceeding" 
     }
   ]
 }
