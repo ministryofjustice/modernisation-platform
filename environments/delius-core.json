@@ -3,9 +3,6 @@
   "codeowners": [
     "hmpps-migration"
   ],
-  "github_action_reviewers": [
-    "hmpps-migration"
-  ],
   "environments": [
     {
       "name": "development",
