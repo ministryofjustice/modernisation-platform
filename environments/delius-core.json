@@ -1,6 +1,8 @@
 {
   "account-type": "member",
-  "codeowners": ["hmpps-migration"],
+  "codeowners": [
+    "hmpps-migration"
+  ],
   "environments": [
     {
       "name": "development",
