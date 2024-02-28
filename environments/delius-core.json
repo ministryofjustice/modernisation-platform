@@ -3,7 +3,7 @@
   "codeowners": [
     "hmpps-migration"
   ],
-  "gha_reviewers": [
+  "github_action_reviewers": [
     "hmpps-migration"
   ],
   "environments": [
