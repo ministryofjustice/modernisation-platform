@@ -45,6 +45,14 @@ body:
       value:
     validations:
       required: false
+  - type: input
+    id: github_action_reviewers
+    attributes:
+      label: GitHub actions reviewer team slug
+      description: By default members of the github team/s specified can both access the aws environments and approve Github action runs. If you would like to seperate the permissions so that a different github team can review these, then specify this here.
+      value:
+    validations:
+      required: false
   - type: checkboxes
     id: environment
     attributes:
