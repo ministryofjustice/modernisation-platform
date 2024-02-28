@@ -6,7 +6,7 @@ data "aws_sns_topic" "existing_topic" {
 
 # Link the sns topics to the pagerduty service
 module "pagerduty_core_alerts" {
-  count         = (local.account_data.account-type != "member-unrestricted") ? 1 : 0
+  count = (local.account_data.account-type != "member-unrestricted") ? 1 : 0
   depends_on = [
     data.aws_sns_topic.existing_topic
   ]
@@ -17,10 +17,10 @@ module "pagerduty_core_alerts" {
 
 # Cloudwatch metric alarm required for errors
 resource "aws_cloudwatch_metric_alarm" "aws_backup_has_errors" {
-  count         = local.account_data.account-type != "member-unrestricted" ? 1 : 0
+  count             = local.account_data.account-type != "member-unrestricted" ? 1 : 0
   alarm_name        = "aws-backup-failed"
   alarm_description = "AWS Backup, everything has failed. Please check logs"
-  alarm_actions = [data.aws_sns_topic.existing_topic.arn]
+  alarm_actions     = [data.aws_sns_topic.existing_topic.arn]
 
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -41,7 +41,7 @@ resource "aws_cloudwatch_metric_alarm" "aws_backup_has_errors" {
 data "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
   provider  = aws.modernisation-platform
   secret_id = data.aws_secretsmanager_secret.pagerduty_integration_keys.id
- }
+}
 
 # Get the map of pagerduty integration keys
 data "aws_secretsmanager_secret" "pagerduty_integration_keys" {
@@ -51,5 +51,5 @@ data "aws_secretsmanager_secret" "pagerduty_integration_keys" {
 
 # Keys for pagerduty
 locals {
-    pagerduty_integration_keys = jsondecode(data.aws_secretsmanager_secret_version.pagerduty_integration_keys.secret_string)
+  pagerduty_integration_keys = jsondecode(data.aws_secretsmanager_secret_version.pagerduty_integration_keys.secret_string)
 }
