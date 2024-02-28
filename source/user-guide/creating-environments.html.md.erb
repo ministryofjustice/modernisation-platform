@@ -38,6 +38,12 @@ By default members of the github team/s specified can both access the aws enviro
 
 If required you can seperate the permissions so that a different github team acts as a code owner, this way PRs will require a review from this team before changes are released.
 
+### GitHub action reviewers team slug
+
+By default all teams listed in the access blocks for an environment can approve the corresponding Github action runs.
+
+If required you can seperate the permssions so that a different github team is the approver. In this case all Github action runs requiring approval, such as terraform applies, will need to app approved by the team name provided.
+
 ### Access
 
 This is the level of access for the GitHub team to the Modernisation Platform.
