@@ -163,10 +163,10 @@ main() {
       then
         
         # Get environment GitHub team slugs from gha_reviewers array
-        gha_reviewers=$(jq -r 'try (.gha_reviewers[])' $json_file)
+        github_action_reviewers=$(jq -r 'try (.github_action_reviewers[])' $json_file)
         # If gha_reviewers is not empty, use it as the teams
-         if ([ ${#gha_reviewers[@]} -gt 0 ] && [ -n "$gha_reviewers" ]); then
-          teams=$gha_reviewers
+         if ([ ${#github_action_reviewers[@]} -gt 0 ] && [ -n "$github_action_reviewers" ]); then
+          teams=$github_action_reviewers
         else
           # Get environment GitHub team slugs from member access array
           teams=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .access[].github_slug' $json_file)
