@@ -32,7 +32,7 @@ locals {
     "kcbotsh",
     "SteveMarshall",
     "SimonPPledger",
-    "AafAnsari"
+    "imkatiewatson"
   ]
 
   # GitHub usernames for engineers who need full AWS access
