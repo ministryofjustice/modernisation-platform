@@ -58,5 +58,5 @@ Option 3, LLMs will be hosted in the Analytical Platform. The platform already h
 ## Consequences
 
  - The Analytical Platform will build a new LLM sandbox area to allow MoJ users to start experimenting with LLMs
- - The Analytical Platform will build new a new production LLM service
+ - The Analytical Platform will build a new production LLM service
  - The Modernisation Platform team will support the Analytical Platform with any new hosting needs required
