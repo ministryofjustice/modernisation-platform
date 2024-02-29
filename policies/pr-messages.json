@@ -2,11 +2,11 @@
   "danger_files": [
     {
       "file": "environments/",
-      "message": "Making changes to the `environments/*.json` files will affect member AWS accounts, please check the plan carefully before proceeding"
+      "message": "Making changes to the `environments/*.json` files will affect MP AWS accounts, for more information on the impact of these changes read the [documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#schema). Please check the plan carefully before proceeding"
     },
     {
       "file": "environments-networks/",
-      "message": "Making changes to the `environments-networks/*.json` files will affect networking of member AWS accounts, please check the plan carefully before proceeding"
+      "message": "Making changes to the `environments-networks/*.json` files will affect networking of MP AWS accounts, please check the plan carefully before proceeding"
     },
     { "file": "terraform/environments/bootstrap/member-bootstrap/iam.tf", 
       "message": "Making changes to the `terraform/environments/bootstrap/member-bootstrap/iam.tf` file will alter the IAM permissions for all members on the MP platform, please check the plan carefully before proceeding" 
