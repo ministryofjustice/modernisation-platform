@@ -47,6 +47,81 @@ We, currently (late February 2024), have no examples of unwanted access so an ex
 
 You will need to determine the best course of action. This can be simply removing limited access or taking the whole transit gateway or access to the internet down. The steps below list what needs to be done in each instance.
 
+## Block internet access
+
+This can be achieved by editing the relevant "$vpc-$environment-public-nacl". You can stop access to and from the internet based on the inbound rules and outbound rules. It needs to be carefully managed as it will affect all applications in this VPC. 
+
+Access the AWS Console for the relevant "core-vpc-$environment" account and navigate to VPC > Network ACLs > "$vpc-$environment-public-nacl"
+
+1. in the "Inbound Rules" tab select "Edit inbound rules"
+2. select "Add new rule"
+3. assign a number of "1" to ensure that this rule is processed first
+4. select a Type of "All Traffic" with the "Allow/Deny" set to "Deny"
+5. select to Save changes.
+6. Repeat these steps for the "Outbound Rules" tab.
+
+Doing this will deny access for both the inbound and outbound traffic and prevent all access in and out of the public subnets.
+
+If you want to stop external access do this for outbbound rules.
+
+## Send requests to the "blackhole"
+
+The block-all-access route table has not been pre-created so it will need to be built first. Instructions on how to create the code are shown in the terraform accessed from ths [link](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route).
+
+This will allow you to limit access to specific environments within the 
+
+[NOTE]
+
+> To stop connections you will need to access one of the core-vpc environments:
+
+- core-vpc-production
+- core-vpc-development
+- core-vpc-test
+- core-vpc-preproduction
+- core-vpc-sandbox
+
+Connect to the appropriate environment (so for production go to core-vpc-production) and
+
+1. select the "Subnet" for the required "VPC" - they are well named
+2. pick the actions button and block the offending IP addresses through amending the route table.
+3. change the route to one that has no network access (block-all-access). The route table ID will not be known until the build is complete.
+4. save the changes
+
+[CAUTION]
+
+> **THIS WILL IMPACT _ALL ENVIRONMENTS_ CONNECTED TO THIS SUBNET SO TAKE CARE.**
+
+Do this for affected subnet or, alternatively, all subnets with names containing :
+
+- general-data
+- general-private
+- general-public
+- protected
+- transit-gateway
+
+[NOTE]
+
+> The subnet names are proceeded by the service name (e.g. hmpps-development-) and followed by 1 of -eu-west-2a, -eu-west-2b, -eu-west-2c. So a name may be hmpps-preproduction-general-private-eu-west-2b, as an example.
+
+## Block access through the Network Access Control List (NACL)
+
+The final alternative is to amend the Network Access Control List (NACL). Again this will impact all environments attached.
+
+From VPC go to Security, Network ACLs
+
+1. select the appropriate ACL (as an example laa-preproduction-data-nacl) 
+2. Select "Actions" and "Edit inbound rules" (or "Edit outbound rules")
+3. assign a number of "1" to ensure that this rule is processed first
+4. select a Type of "All Traffic" with the "Allow/Deny" set to "Deny"
+5. select to Save changes
+6. repeat the above for "Edit outbound rules"
+
+There are 4 services set here - data, private, protected, public. If you want to stop access to all routes all 4 will require this change.
+
+[CAUTION]
+
+> **THIS WILL IMPACT _ALL ENVIRONMENTS_ CONNECTED TO THIS ACL SO TAKE CARE.**
+
 ## Service can be identified - remove individual route table(s)
 
 This is done from the core-network-services environment.
@@ -84,44 +159,6 @@ This is done from the core-network-services environment.
 2. note the gateway you are removing because you will need to add it back later
 3. select each of the two names internet gateways and click on the "Actions" button and "Detach from VPC"
 4. confirm you want to delete this.
-
-## Send requests to the "blackhole"
-
-The block-all-access route table has not been pre-created so it will need to be built first. Instructions on how to create the code are shown in the terraform accessed from ths [link](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route).
-
-[NOTE]
-
-> To stop connections you will need to access one of the core-vpc environments:
-
-- core-vpc-production
-- core-vpc-development
-- core-vpc-test
-- core-vpc-preproduction
-- core-vpc-sandbox
-
-Connect to the appropriate environment (so for production go to core-vpc-production) and
-
-1. Select the "Subnet" name under "VPC"
-2. Pick the actions button and block the offending IP addresses through amending the route table.
-3. change the route to one that has no network access. The new route table will be called block-all-access. The route table ID will not be known until the build is complete.
-
-   Follow the blackhole code in [here](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route#blackhole-route)
-
-[CAUTION]
-
-> **THIS WILL IMPACT _ALL ENVIRONMENTS_ CONNECTED TO THIS SUBNET SO TAKE CARE.**
-
-Do this for affected subnet or, alternatively, all subnets :
-
-- general-data
-- general-private
-- general-public
-- protected
-- transit-gateway
-
-[NOTE]
-
-> The subnet names are proceeded by the service name (e.g. hmpps-development-) and followed by 1 of -eu-west-2a, -eu-west-2b, -eu-west-2c. So a name may be hmpps-preproduction-general-private-eu-west-2b, as an example.
 
 ## Delete the internet gateways - to prevent all external access
 
