@@ -85,13 +85,22 @@ locals {
 module "vpc" {
   for_each = local.vpcs[terraform.workspace]
 
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=e8447fc0906270e0e67bf329e8355cd306ef9fef" #v2.2.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=fd28014d7f7ccdc7def154a9ebef8c3a0a41596a" # See branch add-aws-firehose
 
   subnet_sets = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
 
   additional_endpoints = each.value.options.additional_endpoints
 
   transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
+
+  environment = substr(terraform.workspace, length(local.application_name) + 1, length(terraform.workspace))
+
+  build_firehose = local.is_development == "-development" || local.is_production == "-production" ? true : false
+
+  endpoint_url = local.endpoint_url
+
+
+
 
   # VPC Flow Logs
   vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
