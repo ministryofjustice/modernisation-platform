@@ -768,7 +768,7 @@ resource "aws_instance" "ad_fixngo" {
   ebs_optimized          = true
   iam_instance_profile   = aws_iam_instance_profile.ad_fixngo[each.key].name
   instance_type          = each.value.instance_type
-  key_name               = aws_key_pair.ad_fixngo[each.key_name].key_name
+  key_name               = aws_key_pair.ad_fixngo[each.value.key_name].key_name
   private_ip             = each.value.private_ip
   subnet_id              = each.value.subnet_id
   user_data              = base64encode(file("./files/ad-fixngo-ec2-user-data.yaml"))
