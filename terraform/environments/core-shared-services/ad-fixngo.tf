@@ -4,6 +4,9 @@
 # - https://dsdmoj.atlassian.net/wiki/x/3oCKGAE
 # Managed by DSO team, slack: #ask-digital-studio-ops 
 
+# NOTE: remember to remove ad-fixngo-ec2-access from
+# terraform/environments/bootstrap/single-sign-on/policies.tf when this is no longer required
+
 module "ad_fixngo_ip_addresses" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source = "github.com/ministryofjustice/modernisation-platform-environments//terraform/modules/ip_addresses?ref=373164d50013894187bc4fdba80a066ec136c90f"
