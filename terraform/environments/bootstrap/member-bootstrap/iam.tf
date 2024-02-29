@@ -133,6 +133,7 @@ data "aws_iam_policy_document" "member-access" {
       "logs:*",
       "organizations:Describe*",
       "organizations:List*",
+      "oam:*",
       "quicksight:*",
       "rds-db:*",
       "rds:*",
