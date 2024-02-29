@@ -85,7 +85,7 @@ locals {
 module "vpc" {
   for_each = local.vpcs[terraform.workspace]
 
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=5271710c8973d219deb9f889743e8dbfaaf12114" # See branch add-aws-firehose
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=3f65805e95b401cb1005290495a26fac0be5371e" # See branch add-aws-firehose
 
   subnet_sets = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
 
