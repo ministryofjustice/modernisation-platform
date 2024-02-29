@@ -93,17 +93,16 @@ module "vpc" {
 
   transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
 
-  environment = substr(terraform.workspace, length(local.application_name) + 1, length(terraform.workspace))
+  # VPC Flow Logs
+  vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
 
-  build_firehose = local.is_development == "-development" || local.is_production == "-production" ? true : false
+  secret_string = local.secret_string
 
   endpoint_url = local.endpoint_url
 
+  environment = substr(terraform.workspace, length(local.application_name) + 1, length(terraform.workspace))
 
-
-
-  # VPC Flow Logs
-  vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
+  build_firehose = local.is_development == "-development" || local.is_production == "-production" ? true : false
 
   # Tags
   tags_common = local.tags
