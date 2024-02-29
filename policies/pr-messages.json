@@ -15,6 +15,10 @@
     {
       "file": "terraform/single-sign-on/",
       "message": "Making changes to the MP `terraform/single-sign-on` code could impact the effective permissions to access a given AWS account, for more information on the potential impact of these changes consult the [documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/environments/single-sign-on.html#single-sign-on)."
+    },
+    {
+      "file": "/terraform/environments/core-network-services/firewall-rules",
+      "message": "Making changes to the firewall rules will impact the network traffic allowed enter/exit the Mod Platform environments including it's connections to the Internet and internal MoJ services, for more information on the potential impact of these changes consult the [documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/networking/network-firewall.html#aws-network-firewall)"
     }
   ]
 }
