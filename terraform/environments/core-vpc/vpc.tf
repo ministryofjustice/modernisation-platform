@@ -85,7 +85,7 @@ locals {
 module "vpc" {
   for_each = local.vpcs[terraform.workspace]
 
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=e8447fc0906270e0e67bf329e8355cd306ef9fef" #v2.2.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=93ecac996b01626cd262a13f4972b520b33d05ee" # See branch add-aws-firehose
 
   subnet_sets = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
 
@@ -96,6 +96,18 @@ module "vpc" {
   # VPC Flow Logs
   vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
 
+  # Variables required for Firehose integration
+
+  secret_string = tostring(local.firehose_preprod_network_secret["xsiam_preprod_network_secret"])
+
+  endpoint_url = local.endpoint_url
+
+  environment = substr(terraform.workspace, length(local.application_name) + 1, length(terraform.workspace))
+
+  # build_firehose = anytrue([local.is-development, local.is-production]) 
+
+  build_firehose = (local.is-development == true && each.key == "hmpps-development")
+  
   # Tags
   tags_common = local.tags
   tags_prefix = each.key
