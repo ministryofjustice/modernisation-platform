@@ -14,7 +14,7 @@
     },
     {
       "file": "terraform/single-sign-on/",
-      "message": "Making changes to the MP single-sign-on code could impact the effective permissions to access a given AWS account, for more information on the potential impact of these changes consult the [documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/environments/single-sign-on.html#single-sign-on)."
+      "message": "Making changes to the MP `terraform/single-sign-on` code could impact the effective permissions to access a given AWS account, for more information on the potential impact of these changes consult the [documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/environments/single-sign-on.html#single-sign-on)."
     }
   ]
 }
