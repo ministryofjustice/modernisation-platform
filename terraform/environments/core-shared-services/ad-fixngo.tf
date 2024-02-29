@@ -820,7 +820,7 @@ resource "aws_key_pair" "ad_fixngo" {
   key_name   = each.key
   public_key = each.value
 
-  tags = merge(local.tags, each.value.tags, {
+  tags = merge(local.tags, {
     Name = each.key
   })
 }
