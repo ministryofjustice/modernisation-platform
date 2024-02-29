@@ -1,11 +1,7 @@
 {
   "account-type": "member",
-  "codeowners": [
-    "hmpps-migration"
-  ],
-  "github_action_reviewers": [
-    "hmpps-migration"
-  ],
+  "codeowners": ["hmpps-migration"],
+  "github_action_reviewers": ["hmpps-migration"],
   "environments": [
     {
       "name": "development",
