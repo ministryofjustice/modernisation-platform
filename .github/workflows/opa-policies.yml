@@ -37,6 +37,8 @@ jobs:
             done
           done
           sort -u pr-comment.txt > pr-comment-body.txt
+          echo "**Please check the plan carefully before deploying these changes.**" >> pr-comment-body.txt
+          sed G pr-comment-body.txt | tee pr-comment-body.txt
           gh pr comment ${{ github.event.number }} --body-file pr-comment-body.txt
       - name: Setup Regal
         uses: styrainc/setup-regal@33a142b1189004e0f14bf42b15972c67eecce776 # v1.0.0
