@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Disabling network access if required
-last_reviewed_on: 2024-02-14
+last_reviewed_on: 2024-03-01
 review_in: 6 months or when is resolved.
 ---
 
@@ -15,6 +15,20 @@ There may be occasions where there is a network attack on Modernisation Platform
 
 > All the steps below assume you can access the system through the **AWS console** and do not require changes to the terraform code. This is based on initial speed of access. Issues may also arise when amending the code, for example missing a step or code amendment issues, that could be caused following this route. Additionally the code would also need to be amended so the orignal steps are not lost so they can be re-instated once the issue is resolved. 
 There may be times when amending the code is quicker but this is not included here. Changes in done through this route will impact terraform code but that can be mitigated by manually reverting the steps followed to prevent access.
+
+## Summary
+
+The instrcutions shown here are based on AWS in March 2024 so may require amendments in the future. 
+
+It is assumed that an attack of some sort, internal or external, has been detected and will require work to limit access. Although instructions are given to check if there is an attack are lsited these are not necesaarily required.
+Once an attack has been detected it is advided to 
+
+- stop access from the internet
+- stop access to the internet
+- stop access from the rest of the MoJ
+- stop access to the rest of the MoJ
+
+The first two steps are covered in **Block internet access** and the restricting access from and to the MoJ are shown in **Send requests to the "blackhole"**, **Block access through the Network Access Control List (NACL)** and **Service can be identified - remove individual route table(s)**. Additional steps to cover restricting internet access, removing the internet gateway and removing the VPC are shown for completeness.
 
 # Check to see if there is an attack or unwanted access
 
