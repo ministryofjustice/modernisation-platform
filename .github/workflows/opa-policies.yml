@@ -33,6 +33,8 @@ jobs:
               if [[ "$value1" =~ ^$value2 ]]; then
                 echo "${value1} matched ${value2}"
                 echo -e ":warning: $(jq -r ".danger_files[] | select(.file | test (\"^$value2\")) | .message" policies/pr-messages.json) \n" >> pr-comments.txt
+              else
+                echo "${value1} DID NOT MATCH ${value2}"
               fi
             done
           done
