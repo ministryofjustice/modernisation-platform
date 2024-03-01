@@ -8,7 +8,7 @@ def get_email(account_name):
         "ppud": "modernisation-platform@digital.justice.gov.uk",
         "digital": "digitalprisonreporting@digital.justice.gov.uk",
         "data": "modernisation-platform@digital.justice.gov.uk",
-        "portal": "aws-webops-laa@digital.justice.gov.uk",",
+        "portal": "aws-webops-laa@digital.justice.gov.uk",
         "electronic": "modernisation-platform@digital.justice.gov.uk",
         "delius": "probation-webops@digital.justice.gov.uk"
         # Add more mappings here if needed
