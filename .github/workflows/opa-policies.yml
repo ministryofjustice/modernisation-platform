@@ -32,16 +32,11 @@ jobs:
             for value2 in "${files[@]}"; do 
               if [[ "$value1" =~ $value2 ]]; then
                 echo "${value1} matched ${value2}"
-                echo -e ":warning: $(jq -r ".danger_files[] | select(.file | test (\"$value2\")) | .message" policies/pr-messages.json) \n" >> pr-comments.txt
-              else
-                echo "${value1} DID NOT MATCH ${value2}"
+                echo -e ":warning: $(jq -r ".danger_files[] | select(.file == \"$value2\") | .message" policies/pr-messages.json) \n" >> pr-comments.txt
               fi
             done
           done
           echo "**Please check the plan carefully before deploying these changes.**" >> pr-comments.txt
-          echo DEBUG
-          cat pr-comments.txt
-          echo DEBUG END
           cat pr-comments.txt | sort -u | sed G > pr-comment-body.txt
           gh pr comment ${{ github.event.number }} --body-file pr-comment-body.txt
       - name: Setup Regal
