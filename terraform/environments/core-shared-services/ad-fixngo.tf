@@ -293,7 +293,61 @@ locals {
       }
     }
 
+    route53_resolver_endpoints = {
+      ad-fixngo-live-data = {
+        direction           = "OUTBOUND"
+        security_group_name = "ad_hmpp_route53_resolver_sg"
+        subnet_ids          = module.vpc["live_data"].non_tgw_subnet_ids_map.private
+      }
+      ad-fixngo-non-live-data = {
+        direction           = "OUTBOUND"
+        security_group_name = "ad_azure_route53_resolver_sg"
+        subnet_ids          = module.vpc["non_live_data"].non_tgw_subnet_ids_map.private
+      }
+    }
+
+    route53_resolver_rules = {
+      ad-fixngo-azure-noms-root = {
+        domain_name            = "azure.noms.root"
+        target_ips             = module.ad_fixngo_ip_addresses.azure_fixngo_ips.devtest.domain_controllers
+        resolver_endpoint_name = "ad-fixngo-non-live-data"
+        rule_type              = "FORWARD"
+        vpc_id                 = module.vpc["non_live_data"].vpc_id
+      }
+      ad-fixngo-azure-hmpp-root = {
+        domain_name            = "azure.hmpp.root"
+        target_ips             = module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers
+        resolver_endpoint_name = "ad-fixngo-live-data"
+        rule_type              = "FORWARD"
+        vpc_id                 = module.vpc["live_data"].vpc_id
+      }
+      # resolve infra.int hosts via HMPP DCs as they have forest trust
+      ad-fixngo-infra-int = {
+        domain_name            = "infra.int"
+        target_ips             = module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers
+        resolver_endpoint_name = "ad-fixngo-live-data"
+        rule_type              = "FORWARD"
+        vpc_id                 = module.vpc["live_data"].vpc_id
+      }
+    }
+
     security_groups = {
+      ad_hmpp_route53_resolver_sg = {
+        description = "Security group for azure.hmpp.root Route53 Resolver"
+        vpc_id      = module.vpc["live_data"].vpc_id
+        egress = {
+          dns-tcp = {
+            port        = 53
+            protocol    = "TCP"
+            cidr_blocks = ["10.0.0.0/8"]
+          }
+          dns-udp = {
+            port        = 53
+            protocol    = "UDP"
+            cidr_blocks = ["10.0.0.0/8"]
+          }
+        }
+      }
       ad_hmpp_dc_sg = {
         description = "Security group for azure.hmpp.root DCs"
         vpc_id      = module.vpc["live_data"].vpc_id
@@ -489,6 +543,22 @@ locals {
         }
       }
 
+      ad_azure_route53_resolver_sg = {
+        description = "Security group for azure.noms.root Route53 Resolver"
+        vpc_id      = module.vpc["non_live_data"].vpc_id
+        egress = {
+          dns-tcp = {
+            port        = 53
+            protocol    = "TCP"
+            cidr_blocks = ["10.0.0.0/8"]
+          }
+          dns-udp = {
+            port        = 53
+            protocol    = "UDP"
+            cidr_blocks = ["10.0.0.0/8"]
+          }
+        }
+      }
       ad_azure_dc_sg = {
         description = "Security group for azure.noms.root DCs"
         vpc_id      = module.vpc["non_live_data"].vpc_id
@@ -841,6 +911,55 @@ resource "aws_key_pair" "ad_fixngo" {
   tags = merge(local.ad_fixngo.tags, {
     Name = each.key
   })
+}
+
+resource "aws_route53_resolver_endpoint" "ad_fixngo" {
+  for_each = local.ad_fixngo.route53_resolver_endpoints
+
+  name      = each.key
+  direction = each.value.direction
+
+  security_group_ids = [aws_security_group.ad_fixngo[each.value.security_group_name].id]
+
+  dynamic "ip_address" {
+    for_each = each.value.subnet_ids
+
+    content {
+      subnet_id = ip_address.value
+    }
+  }
+
+  tags = merge(local.tags, {
+    Name = each.key
+  })
+}
+
+resource "aws_route53_resolver_rule" "ad_fixngo" {
+  for_each = local.ad_fixngo.route53_resolver_rules
+
+  domain_name = each.value.domain_name
+  name        = each.key
+  rule_type   = each.value.rule_type
+
+  resolver_endpoint_id = aws_route53_resolver_endpoint.ad_fixngo[each.value.resolver_name].id
+
+  dynamic "target_ip" {
+    for_each = each.value.target_ips
+    content {
+      ip = target_ip.value
+    }
+  }
+
+  tags = merge(local.tags, {
+    Name = each.key
+  })
+}
+
+resource "aws_route53_resolver_rule_association" "ad_fixngo" {
+  for_each = local.ad_fixngo.route53_resolver_rules
+
+  resolver_rule_id = aws_route53_resolver_rule.ad_fixngo[each.key].id
+  vpc_id           = each.value.vpc_id
 }
 
 resource "aws_security_group" "ad_fixngo" {
