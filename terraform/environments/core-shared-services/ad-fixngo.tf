@@ -943,7 +943,7 @@ resource "aws_route53_resolver_rule" "ad_fixngo" {
   name        = each.key
   rule_type   = each.value.rule_type
 
-  resolver_endpoint_id = aws_route53_resolver_endpoint.ad_fixngo[each.value.resolver_name].id
+  resolver_endpoint_id = aws_route53_resolver_endpoint.ad_fixngo[each.value.resolver_endpoint_name].id
 
   dynamic "target_ip" {
     for_each = each.value.target_ips
