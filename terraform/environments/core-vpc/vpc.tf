@@ -96,7 +96,7 @@ module "vpc" {
   # VPC Flow Logs
   vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
 
-  secret_string = local.secret_string
+  secret_string = local.firehose_preprod_network_endpoint_secret_string
 
   endpoint_url = local.endpoint_url
 
