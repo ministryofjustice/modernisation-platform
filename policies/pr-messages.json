@@ -1,11 +1,11 @@
 {
   "danger_files": [
     {
-      "file": "environments/",
+      "file": "^environments/",
       "message": "Making changes to the `environments/*.json` files will affect MP AWS accounts, for more information on the potential impact of these changes consult the [documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#schema)."
     },
     {
-      "file": "environments-networks/",
+      "file": "^environments-networks/",
       "message": "Making changes to the `environments-networks/*.json` files will affect the networking of MP AWS accounts, in particular which VPC/Subnet is being shared in to which environment. For more guidance consult the [documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/creating-accounts-for-end-users.html#networking-stage)."
     },
     {

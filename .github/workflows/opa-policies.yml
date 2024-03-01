@@ -30,9 +30,9 @@ jobs:
           files=($(jq -r '.danger_files[].file' policies/pr-messages.json))
           for value1 in "${CHANGED_DIRECTORIES[@]}"; do
             for value2 in "${files[@]}"; do 
-              if [[ "$value1" =~ ^$value2 ]]; then
+              if [[ "$value1" =~ $value2 ]]; then
                 echo "${value1} matched ${value2}"
-                echo -e ":warning: $(jq -r ".danger_files[] | select(.file | test (\"^$value2\")) | .message" policies/pr-messages.json) \n" >> pr-comments.txt
+                echo -e ":warning: $(jq -r ".danger_files[] | select(.file | test (\"$value2\")) | .message" policies/pr-messages.json) \n" >> pr-comments.txt
               else
                 echo "${value1} DID NOT MATCH ${value2}"
               fi
