@@ -36,13 +36,25 @@ See an example file [here](https://user-guide.modernisation-platform.service.jus
 
 By default the codeowners for the application teams folder in the `modernisation-platform-environments` repository will be the GitHub teams defined in the access block.
 
-You can over write this by defining codeowners as an attribute for that application.
+You can override this by defining `codeowners` as an attribute for that application.
 
 `"codeowners": ["<owner-name>"],`  Replace \<owner-name\> with a GitHub team such as `modernisation-platform`.
 
 This will restrict code approval to only the GitHub team slugs listed in the 'codeowners' attribute.
 
 See [#5957] (https://github.com/ministryofjustice/modernisation-platform/pull/5957) for an example of the change required.
+
+
+By default all teams listed in the access blocks for an environment can approve the corresponding Github action runs.
+
+You can override this by defining `github_action_reviewers` as an attribute for the application.
+
+`"github_action_reviewers" : ["<owner-name>"],` Replace \<owner-name\> with a GitHub team such as `modernisation-platform`.
+
+This will restrict Github action approval to only the GitHub team slugs listed in the 'github_action_reviewers' attribute.
+
+See [#6338] (https://github.com/ministryofjustice/modernisation-platform/pull/6338) for an example of the change required.
+
 
 #### 2. Update the `expected.rego`
 

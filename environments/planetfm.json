@@ -8,10 +8,6 @@
           "github_slug": "studio-webops",
           "level": "sandbox",
           "nuke": "exclude"
-        },
-        {
-          "github_slug": "studio-webops",
-          "level": "migration"
         }
       ]
     },
@@ -21,10 +17,6 @@
         {
           "github_slug": "studio-webops",
           "level": "developer"
-        },
-        {
-          "github_slug": "studio-webops",
-          "level": "migration"
         },
         {
           "github_slug": "csr-application-support",
@@ -40,10 +32,6 @@
           "level": "developer"
         },
         {
-          "github_slug": "studio-webops",
-          "level": "migration"
-        },
-        {
           "github_slug": "csr-application-support",
           "level": "instance-management"
         }
@@ -55,10 +43,6 @@
         {
           "github_slug": "studio-webops",
           "level": "developer"
-        },
-        {
-          "github_slug": "studio-webops",
-          "level": "migration"
         },
         {
           "github_slug": "csr-application-support",

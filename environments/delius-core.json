@@ -1,6 +1,7 @@
 {
   "account-type": "member",
   "codeowners": ["hmpps-migration"],
+  "github_action_reviewers": ["hmpps-migration"],
   "environments": [
     {
       "name": "development",
@@ -17,7 +18,7 @@
         },
         {
           "github_slug": "unilink",
-          "level": "instance-management"
+          "level": "developer"
         }
       ]
     },

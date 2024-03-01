@@ -4,6 +4,9 @@
 # - https://dsdmoj.atlassian.net/wiki/x/3oCKGAE
 # Managed by DSO team, slack: #ask-digital-studio-ops 
 
+# NOTE: remember to remove ad-fixngo-ec2-access from
+# terraform/environments/bootstrap/single-sign-on/policies.tf when this is no longer required
+
 module "ad_fixngo_ip_addresses" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source = "github.com/ministryofjustice/modernisation-platform-environments//terraform/modules/ip_addresses?ref=373164d50013894187bc4fdba80a066ec136c90f"
@@ -12,6 +15,12 @@ module "ad_fixngo_ip_addresses" {
 locals {
 
   ad_fixngo = {
+
+    aws_key_pairs = {
+      # See https://dsdmoj.atlassian.net/wiki/x/3oCKGAE
+      ad-fixngo-ec2-live    = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4XM7YBLA/DY3w4oMS4PEYyfYLcK2OuidwRRUKTFyS3lnzoucuPg4fuv3yMbLJxxoUT8QjfHDWUzQRsQorkj6ig8TB68rAz0/BBx3wuA76dNoDXAXSM/sOP1ZA1gXL3BR21hbe8QIvmqP881BLgKvB5WGN7iSPIepNtxea8g6/Eg91ISLnDvVKkqjej+wJbeBKcnGCdv6LJ082HZRMxIBfAuN9snoNyjymXYU/nMeXgwZhfSzLHU9KYOAzuYxOHgVz0k1NOPYCJflSqcYyqNbuvmLmUJVSb3u/8kpOwcTR9UP0awIzuH7PXZf87g1wyfesyAkNPMa4uUoEMIIah2tp+rAp9AUDnzn5MIv84lSkerqp2+0L/dLf+FCjNpIUePpmJiC8JCqD7oemwvrEuPpsvFalmRuRNlg2s+DKg7FVdhUWH7HiIKoiSB7dBtb02AjeY5Hi8c9urFBas4LmtngEbH8mf65VZTA82S2mLjOw8DdGRGPTc/o4MilYqR7cqDcNIw3+eEw1PqYkJUykJP5saKjLZuUxe6U0dog1iY9pimPdRKiYouF95tt43+b7/7zVTajq096r/BY2XkklVmbQ/a1HBO/Q/cfQWxhaaIaQwwnAwGQdMtEZsXaJ0OR650NJYeqtKh9ZKeMF/M+HLddiC7+1ncu78NFLlB98zD8cTw=="
+      ad-fixngo-ec2-nonlive = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDZ7Q515wcJIdw68vUuf2v0BFow0GmqFjapC7qJ+x6eiFqfP3Cq7jT/HYS51nzJgiXUUvyXPhQcKJgQ1O0VlTX/AjctUdm9YUbArI+S74BgNFLLbDd9EsMxhm6SKjYqbhrL9S4YxA6C0hgz4+NiEJk8XKEg5laHrOCt7kmtRE8FDvyzTLZLQ7HomHkd43tDLtvTKzKkeV2iOlnYG+l0XAFLC58ufOS3ujtK9jD2vZwyarfLTiyyE/gXTtFpb+ktUnwvJpgNXDdaGHVOOjAdJh7jEmqtl438aXxfDoroX7BQmn+8nrY0lkSY+eUis58exHDqWWtUsSyHqaSUeKvyJvC0dnCUQEVulsCljFVRWeof+xcCpeHGrS4tfDop5Kckoadpwa0LILiun8NeQTLTt8jnPAU3auZZTb4u+vQeWYsE0DSWMsTMEoAh+pKBSfnAFZNYgIIp0jQKJJwL8ndTC/XPm0Wu3eorwFGnMgyNVZbkOA6yjtaknUqNVDb/9MOINZYi12NJSguLJg0tN04F0W4X6nCm2v5I72Uv5BLX/c0YpgKjHMCZdSzjS+EWD2a/WRtSUqSmg/ObHimOinPGhdM3JoIlXXUTXHCLkPADLYJ+b8e2sdEqhHFuGvLgXe302ZYftTqfZANMngkrd9tTM3uIoCxRCibicB/jJJ1u8YBqJQ=="
+    }
 
     aws_instances = {
 
@@ -28,6 +37,7 @@ locals {
       #   availability_zone         = "eu-west-2a"
       #   iam_instance_profile_role = "ad-fixngo-ec2-live-role"
       #   instance_type             = "t3.large"
+      #   key_name                  = "ad-fixngo-ec2-live"
       #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-dc-a"]
       #   subnet_id                 = module.vpc["live_data"].non_tgw_subnet_ids_map.private[0]
       #   vpc_security_group_name   = "ad_hmpp_dc_sg"
@@ -42,6 +52,7 @@ locals {
       #   availability_zone         = "eu-west-2b"
       #   iam_instance_profile_role = "ad-fixngo-ec2-live-role"
       #   instance_type             = "t3.large"
+      #   key_name                  = "ad-fixngo-ec2-live"
       #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-dc-b"]
       #   subnet_id                 = module.vpc["live_data"].non_tgw_subnet_ids_map.private[1]
       #   vpc_security_group_name   = "ad_hmpp_dc_sg"
@@ -56,6 +67,7 @@ locals {
       #   availability_zone         = "eu-west-2c"
       #   iam_instance_profile_role = "ad-fixngo-ec2-live-role"
       #   instance_type             = "t3.medium"
+      #   key_name                  = "ad-fixngo-ec2-live"
       #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-rdlic"]
       #   subnet_id                 = module.vpc["live_data"].non_tgw_subnet_ids_map.private[2]
       #   vpc_security_group_name   = "ad_hmpp_rdlic_sg"
@@ -66,27 +78,14 @@ locals {
       #   }
       # }
 
-      ad-azure-dc-a = {
-        ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
-        availability_zone         = "eu-west-2a"
-        iam_instance_profile_role = "ad-fixngo-ec2-nonlive-role"
-        instance_type             = "t3.large"
-        private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-azure-dc-a"]
-        subnet_id                 = module.vpc["non_live_data"].non_tgw_subnet_ids_map.private[0]
-        vpc_security_group_name   = "ad_azure_dc_sg"
-        tags = {
-          server-type = "DomainController"
-          domain-name = "azure.noms.root"
-          description = "domain controller for FixNGo azure.noms.root domain"
-        }
-      }
-      # ad-azure-dc-b = {
+      # ad-azure-dc-a = {
       #   ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
-      #   availability_zone         = "eu-west-2b"
+      #   availability_zone         = "eu-west-2a"
       #   iam_instance_profile_role = "ad-fixngo-ec2-nonlive-role"
       #   instance_type             = "t3.large"
-      #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-azure-dc-b"]
-      #   subnet_id                 = module.vpc["non_live_data"].non_tgw_subnet_ids_map.private[1]
+      #   key_name                  = "ad-fixngo-ec2-nonlive"
+      #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-azure-dc-a"]
+      #   subnet_id                 = module.vpc["non_live_data"].non_tgw_subnet_ids_map.private[0]
       #   vpc_security_group_name   = "ad_azure_dc_sg"
       #   tags = {
       #     server-type = "DomainController"
@@ -94,11 +93,27 @@ locals {
       #     description = "domain controller for FixNGo azure.noms.root domain"
       #   }
       # }
+      ad-azure-dc-b = {
+        ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
+        availability_zone         = "eu-west-2b"
+        iam_instance_profile_role = "ad-fixngo-ec2-nonlive-role"
+        instance_type             = "t3.large"
+        key_name                  = "ad-fixngo-ec2-nonlive"
+        private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-azure-dc-b"]
+        subnet_id                 = module.vpc["non_live_data"].non_tgw_subnet_ids_map.private[1]
+        vpc_security_group_name   = "ad_azure_dc_sg"
+        tags = {
+          server-type = "DomainController"
+          domain-name = "azure.noms.root"
+          description = "domain controller for FixNGo azure.noms.root domain"
+        }
+      }
       # ad-azure-rdlic = {
       #   ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
       #   availability_zone         = "eu-west-2c"
       #   iam_instance_profile_role = "ad-fixngo-ec2-nonlive-role"
       #   instance_type             = "t3.medium"
+      #   key_name                  = "ad-fixngo-ec2-nonlive"
       #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-azure-rdlic"]
       #   subnet_id                 = module.vpc["non_live_data"].non_tgw_subnet_ids_map.private[2]
       #   vpc_security_group_name   = "ad_azure_rdlic_sg"
@@ -113,6 +128,18 @@ locals {
     ec2_iam_roles = {
       # NOTE: roles will be granted access to relevant domain secrets in hmpps-domain-services accounts
       ad-fixngo-ec2-nonlive-role = {
+        description = "AD FixNGo EC2 instance role for SSM and accessing non-live Secrets"
+        assume_role_policy = jsonencode({
+          "Version" : "2012-10-17",
+          "Statement" : [{
+            "Effect" : "Allow",
+            "Principal" : {
+              "Service" : "ec2.amazonaws.com"
+            }
+            "Action" : "sts:AssumeRole",
+            "Condition" : {}
+          }]
+        })
         managed_policy_arns = [
           "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
           "ad-fixngo-ec2-policy",
@@ -120,10 +147,45 @@ locals {
         ]
       }
       ad-fixngo-ec2-live-role = {
+        description = "AD FixNGo EC2 instance role for SSM and accessing live Secrets"
+        assume_role_policy = jsonencode({
+          "Version" : "2012-10-17",
+          "Statement" : [{
+            "Effect" : "Allow",
+            "Principal" : {
+              "Service" : "ec2.amazonaws.com"
+            }
+            "Action" : "sts:AssumeRole",
+            "Condition" : {}
+          }]
+        })
         managed_policy_arns = [
           "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
           "ad-fixngo-ec2-policy",
           "ad-fixngo-live-secrets-policy",
+        ]
+      }
+      ad-fixngo-ec2-access = {
+        description = "AD FixNGo role for FleetManager EC2 console access"
+        assume_role_policy = jsonencode({
+          "Version" : "2012-10-17",
+          "Statement" : [{
+            "Effect" : "Allow",
+            "Principal" : {
+              "AWS" : "*"
+            },
+            "Action" : "sts:AssumeRole",
+            "Condition" : {
+              "ForAnyValue:StringLike" : {
+                "aws:PrincipalOrgPaths" : ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+              }
+            }
+          }]
+        })
+        managed_policy_arns = [
+          "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess",
+          "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess",
+          "ad-fixngo-fleetmanager-access-policy",
         ]
       }
     }
@@ -192,6 +254,41 @@ locals {
               "arn:aws:secretsmanager:*:${local.environment_management.account_ids.hmpps-domain-services-production}:secret:/microsoft/AD/*/shared-*",
             ]
           },
+        ]
+      }
+      ad-fixngo-fleetmanager-access-policy = {
+        description = "Policy to allow FleetManager access via console"
+        path        = "/"
+        statements = [
+          {
+            sid    = "EC2",
+            effect = "Allow",
+            actions = [
+              "ec2:GetPasswordData",
+            ],
+            resources = ["*"]
+          },
+          {
+            sid    = "SSMStartSession",
+            effect = "Allow",
+            actions = [
+              "ssm:StartSession"
+            ],
+            resources = [
+              "arn:aws:ec2:*:*:instance/*",
+              "arn:aws:ssm:*:*:document/AWS-StartPortForwardingSession"
+            ]
+          },
+          {
+            sid    = "GuiConnect",
+            effect = "Allow",
+            actions = [
+              "ssm-guiconnect:CancelConnection",
+              "ssm-guiconnect:GetConnection",
+              "ssm-guiconnect:StartConnection"
+            ],
+            resources = ["*"]
+          }
         ]
       }
     }
@@ -639,27 +736,15 @@ resource "aws_iam_policy" "ad_fixngo" {
   })
 }
 
+# checkov:skip=CKV_AWS_60: "assume_role_policy is secured with the condition"
 resource "aws_iam_role" "ad_fixngo" {
   for_each = local.ad_fixngo.ec2_iam_roles
 
   name                 = each.key
+  description          = each.value.description
   path                 = "/"
   max_session_duration = "3600"
-  assume_role_policy = jsonencode(
-    {
-      "Version" : "2012-10-17",
-      "Statement" : [
-        {
-          "Effect" : "Allow",
-          "Principal" : {
-            "Service" : "ec2.amazonaws.com"
-          }
-          "Action" : "sts:AssumeRole",
-          "Condition" : {}
-        }
-      ]
-    }
-  )
+  assume_role_policy   = each.value.assume_role_policy
 
   managed_policy_arns = [
     for key_or_arn in each.value.managed_policy_arns : try(aws_iam_policy.ad_fixngo[key_or_arn].arn, key_or_arn)
@@ -686,6 +771,7 @@ resource "aws_instance" "ad_fixngo" {
   ebs_optimized          = true
   iam_instance_profile   = aws_iam_instance_profile.ad_fixngo[each.key].name
   instance_type          = each.value.instance_type
+  key_name               = aws_key_pair.ad_fixngo[each.value.key_name].key_name
   private_ip             = each.value.private_ip
   subnet_id              = each.value.subnet_id
   user_data              = base64encode(file("./files/ad-fixngo-ec2-user-data.yaml"))
@@ -727,6 +813,17 @@ resource "aws_instance" "ad_fixngo" {
   }
 
   tags = merge(local.tags, local.ad_fixngo.tags, each.value.tags, {
+    Name = each.key
+  })
+}
+
+resource "aws_key_pair" "ad_fixngo" {
+  for_each = local.ad_fixngo.aws_key_pairs
+
+  key_name   = each.key
+  public_key = each.value
+
+  tags = merge(local.tags, {
     Name = each.key
   })
 }
