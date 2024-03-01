@@ -335,6 +335,7 @@ locals {
       ad_hmpp_route53_resolver_sg = {
         description = "Security group for azure.hmpp.root Route53 Resolver"
         vpc_id      = module.vpc["live_data"].vpc_id
+        ingress     = {}
         egress = {
           dns-tcp = {
             port        = 53
@@ -546,6 +547,7 @@ locals {
       ad_azure_route53_resolver_sg = {
         description = "Security group for azure.noms.root Route53 Resolver"
         vpc_id      = module.vpc["non_live_data"].vpc_id
+        ingress     = {}
         egress = {
           dns-tcp = {
             port        = 53
