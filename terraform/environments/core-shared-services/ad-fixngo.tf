@@ -684,9 +684,20 @@ locals {
       }
     }
 
+    ssm_parameters = {
+      "/ad-fixngo/account_ids" = {
+        description = "Account IDs used when provisioning the AD FixNGo EC2s"
+        value = jsonencode({
+          for key, value in local.environment_management.account_ids :
+          key => value if contains(["hmpps-domain-services-test", "hmpps-domain-services-production"], key)
+        })
+      }
+    }
+
     tags = merge(local.tags, {
-      source-code            = "https://github.com/ministryofjustice/modernisation-platform"
+      environment-name       = terraform.workspace
       infrastructure-support = "DSO:digital-studio-operations-team@digital.justice.gov.uk"
+      source-code            = "https://github.com/ministryofjustice/modernisation-platform"
     })
   }
 }
@@ -731,7 +742,7 @@ resource "aws_iam_policy" "ad_fixngo" {
   description = each.value.description
   policy      = data.aws_iam_policy_document.ad_fixngo[each.key].json
 
-  tags = merge(local.tags, local.ad_fixngo.tags, {
+  tags = merge(local.ad_fixngo.tags, {
     Name = each.key
   })
 }
@@ -750,7 +761,7 @@ resource "aws_iam_role" "ad_fixngo" {
     for key_or_arn in each.value.managed_policy_arns : try(aws_iam_policy.ad_fixngo[key_or_arn].arn, key_or_arn)
   ]
 
-  tags = merge(local.tags, local.ad_fixngo.tags, {
+  tags = merge(local.ad_fixngo.tags, {
     Name = each.key
   })
 }
@@ -761,6 +772,10 @@ resource "aws_iam_instance_profile" "ad_fixngo" {
   name = "ec2-profile-${each.key}"
   role = each.value.iam_instance_profile_role
   path = "/"
+
+  tags = merge(local.ad_fixngo.tags, {
+    Name = "ec2-profile-${each.key}"
+  })
 }
 
 resource "aws_instance" "ad_fixngo" {
@@ -800,7 +815,7 @@ resource "aws_instance" "ad_fixngo" {
     volume_size = 127
     volume_type = "gp3"
 
-    tags = merge(local.tags, local.ad_fixngo.tags, each.value.tags, {
+    tags = merge(local.ad_fixngo.tags, each.value.tags, {
       Name = join("-", [each.key, "root", data.aws_ami.ad_fixngo[each.value.ami_name].root_device_name])
     })
   }
@@ -812,7 +827,7 @@ resource "aws_instance" "ad_fixngo" {
     ]
   }
 
-  tags = merge(local.tags, local.ad_fixngo.tags, each.value.tags, {
+  tags = merge(local.ad_fixngo.tags, each.value.tags, {
     Name = each.key
   })
 }
@@ -823,7 +838,7 @@ resource "aws_key_pair" "ad_fixngo" {
   key_name   = each.key
   public_key = each.value
 
-  tags = merge(local.tags, {
+  tags = merge(local.ad_fixngo.tags, {
     Name = each.key
   })
 }
@@ -837,7 +852,7 @@ resource "aws_security_group" "ad_fixngo" {
   description = each.value.description
   vpc_id      = each.value.vpc_id
 
-  tags = merge(local.tags, local.ad_fixngo.tags, {
+  tags = merge(local.ad_fixngo.tags, {
     Name = each.key
   })
 }
@@ -883,4 +898,18 @@ resource "aws_security_group_rule" "ad_fixngo" {
   cidr_blocks       = try(each.value.cidr_blocks, null)
   self              = try(each.value.self, null)
   security_group_id = aws_security_group.ad_fixngo[each.value.security_group_name].id
+}
+
+resource "aws_ssm_parameter" "ad_fixngo" {
+  for_each = local.ad_fixngo.ssm_parameters
+
+  description = each.value.description
+  key_id      = module.kms["hmpps"].key_ids["general"]
+  name        = each.key
+  type        = "SecureString"
+  value       = each.value.value
+
+  tags = merge(local.tags, {
+    Name = each.key
+  })
 }
