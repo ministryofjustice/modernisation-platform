@@ -883,7 +883,7 @@ resource "aws_instance" "ad_fixngo" {
 
   root_block_device {
     encrypted   = true
-    kms_key_id  = module.kms["hmpps"].key_ids["ebs"]
+    kms_key_id  = module.kms["hmpps"].key_arns["ebs"] # need to specify arn rather than id
     volume_size = 127
     volume_type = "gp3"
 
