@@ -39,6 +39,9 @@ jobs:
             done
           done
           echo "**Please check the plan carefully before deploying these changes.**" >> pr-comments.txt
+          echo DEBUG
+          cat pr-comments.txt
+          echo DEBUG END
           cat pr-comments.txt | sort -u | sed G > pr-comment-body.txt
           gh pr comment ${{ github.event.number }} --body-file pr-comment-body.txt
       - name: Setup Regal
