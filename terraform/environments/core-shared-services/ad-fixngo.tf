@@ -1025,7 +1025,7 @@ resource "aws_ssm_parameter" "ad_fixngo" {
   for_each = local.ad_fixngo.ssm_parameters
 
   description = each.value.description
-  key_id      = module.kms["hmpps"].key_ids["general"]
+  key_id      = module.kms["hmpps"].key_arns["general"]
   name        = each.key
   type        = "SecureString"
   value       = each.value.value
