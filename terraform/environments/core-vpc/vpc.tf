@@ -96,7 +96,9 @@ module "vpc" {
   # VPC Flow Logs
   vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
 
-  secret_string = local.firehose_preprod_network_secret
+  # Variables required for Firehose integration
+
+  secret_string = tostring(local.firehose_preprod_network_secret["xsiam_preprod_network_secret"])
 
   endpoint_url = local.endpoint_url
 
