@@ -23,13 +23,13 @@ data "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
 
 
 # For the Firehose Endpoints - More will be added for the other endpoints
-data "aws_secretsmanager_secret" "secret_arn" {
+data "aws_secretsmanager_secret" "preprod_network_secret_arn" {
   provider = aws.modernisation-platform
   name     = "xsiam_preprod_network_secret"
 }
 
-data "aws_secretsmanager_secret_version" "secret_arn_version" {
+data "aws_secretsmanager_secret_version" "preprod_network_secret_arn_version" {
   provider = aws.modernisation-platform
-  secret_id = data.aws_secretsmanager_secret.secret_arn.id
+  secret_id = data.aws_secretsmanager_secret.preprod_network_secret_arn.id
 }
 
