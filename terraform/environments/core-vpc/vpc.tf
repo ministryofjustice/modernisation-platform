@@ -104,9 +104,9 @@ module "vpc" {
 
   environment = substr(terraform.workspace, length(local.application_name) + 1, length(terraform.workspace))
 
-  build_firehose = anytrue([local.is-development, local.is-production]) 
+  # build_firehose = anytrue([local.is-development, local.is-production]) 
 
-  # build_firehose = (local.is-development == true && each.key == "hmpps") || (local.is-production == true && each.key == "hmpps")
+  build_firehose = (local.is-development == true && each.key == "hmpps-development") || (local.is-production == true && each.key == "hmpps-production")
 
   # Tags
   tags_common = local.tags
