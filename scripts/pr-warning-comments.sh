@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define array of files/directories changed in the PR
-readarray -t CHANGED_DIRECTORIES <<< "$(gh pr view ${{ github.event.number }} --json files --jq '.files.[].path')"
+readarray -t CHANGED_DIRECTORIES <<< "$(gh pr view $GITHUB_EVENT_NUMBER --json files --jq '.files.[].path')"
 printf %"s\n" "This PR is making changes to the following files/directories: "${CHANGED_DIRECTORIES[@]}""
 
 # Define array of regexes for files/directories that require a warning
@@ -21,5 +21,5 @@ done
 # If any matches are found then format the PR comment body and post it to the PR 
 if [ -f pr-comments.txt ]; then
     cat pr-comments.txt | sort -u | sed G > pr-comment-body.txt
-    gh pr comment ${{ github.event.number }} --body-file pr-comment-body.txt
+    gh pr comment $GITHUB_EVENT_NUMBER --body-file pr-comment-body.txt
 fi

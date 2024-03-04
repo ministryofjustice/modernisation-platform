@@ -16,6 +16,7 @@ defaults:
 
 env:
   GH_TOKEN: ${{ github.token }}
+  GITHUB_EVENT_NUMBER: ${{ github.event.number }}
 
 jobs:
   run-opa-policy-tests:
@@ -24,7 +25,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Get changed files/directories and add PR comment for high risk changes
-        run: bash scripts/pr-warning-comments.sh
+        run: bash scripts/pr-warning-comments.sh          
       - name: Setup Regal
         uses: styrainc/setup-regal@33a142b1189004e0f14bf42b15972c67eecce776 # v1.0.0
         with:
