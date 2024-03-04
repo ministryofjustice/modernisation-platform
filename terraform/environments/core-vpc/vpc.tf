@@ -106,8 +106,7 @@ module "vpc" {
 
   # build_firehose = anytrue([local.is-development, local.is-production]) 
 
-  build_firehose = (local.is-development == true && each.key == "hmpps-development") || (local.is-production == true && each.key == "hmpps-production")
-
+  build_firehose = (local.is-development == true && each.key == "hmpps-development")
   # Tags
   tags_common = local.tags
   tags_prefix = each.key
