@@ -7,7 +7,9 @@ env:
     AWS_REGION: "eu-west-2"
     ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
     SCRIPTS_PATH: "./scripts/internal/collaborators-inactivity-notification"
-    
+    API_KEY: ${{ secrets.API_KEY }}
+    TEMPLATE_ID: "44d86b2d-2a73-4179-9b67-7c3fc2b58934"
+
 permissions:
     id-token: write # This is required for requesting the JWT
     contents: read # This is required for actions/checkout
@@ -33,6 +35,9 @@ jobs:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install the client
+        run: pip install notifications-python-client
     
       - name: Get Inactive Collaborator Users
         run: |
