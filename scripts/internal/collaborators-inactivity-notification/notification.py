@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+from notifications_python_client.notifications import NotificationsAPIClient
 
 def get_email(account_name):
   """
@@ -43,6 +44,10 @@ def main(collaborators_file, iam_users_file):
       collaborators_file: Path to the collaborators.json file.
       iam_users_file: Path to the iam_users.list file.
   """
+  api_key = os.environ["API_KEY"]
+  template_id = os.environ["TEMPLATE_ID"]
+  client = NotificationsAPIClient(api_key=api_key)
+
   with open(collaborators_file, 'r') as f:
     collaborators_data = json.load(f)
 
@@ -50,6 +55,7 @@ def main(collaborators_file, iam_users_file):
     iam_users = [line.strip() for line in f.readlines()]
     
   user_emails = []
+  
   for user in collaborators_data['users']:
     for account in user['accounts']:
       account_name = account['account-name']
@@ -61,8 +67,15 @@ def main(collaborators_file, iam_users_file):
           if email:
             user_emails.append({"username": user['username'], "email": email})
   unique_emails = remove_duplicates(user_emails)
+
   for user in unique_emails:
-    print(user["username"], user["email"])
+    notification = client.send_email_notification(
+            template_id=template_id,
+            email_address=user["email"],
+            personalisation={"username": user["username"]},
+    )
+  print("Notification sent to all users")
+
 if __name__ == "__main__":
   if len(sys.argv) != 3:
     print("Usage: python script.py collaborators.json iam_users.list")
