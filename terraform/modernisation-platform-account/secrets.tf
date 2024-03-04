@@ -173,4 +173,3 @@ data "aws_secretsmanager_secret_version" "circleci" {
   secret_id = aws_secretsmanager_secret.circleci.id
 }
 
-
