@@ -819,8 +819,9 @@ resource "aws_iam_policy" "ad_fixngo" {
   })
 }
 
-# checkov:skip=CKV_AWS_60: "assume_role_policy is secured with the condition"
+
 resource "aws_iam_role" "ad_fixngo" {
+  # checkov:skip=CKV_AWS_60: "assume_role_policy is secured with the condition"
   for_each = local.ad_fixngo.ec2_iam_roles
 
   name                 = each.key
