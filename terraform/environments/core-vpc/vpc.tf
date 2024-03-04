@@ -100,8 +100,10 @@ module "vpc" {
 
   # build_firehose = anytrue([local.is-development, local.is-production].
 
-  build_firehose = (local.is-development == true && each.key == "hmpps-development")
+  # build_firehose = (local.is-sandbox == true && each.key == "hmpps-development")
   
+  build_firehose = local.is-sandbox == true
+
   kinesis_endpoint_secret_string = tostring(local.firehose_preprod_network_secret["xsiam_preprod_network_secret"])
 
   kinesis_endpoint_url = local.kinesis_endpoint_url # This is a requirement for the resources to build. 
