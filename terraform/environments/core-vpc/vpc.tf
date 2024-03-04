@@ -85,7 +85,7 @@ locals {
 module "vpc" {
   for_each = local.vpcs[terraform.workspace]
 
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=93ecac996b01626cd262a13f4972b520b33d05ee" # See branch add-aws-firehose
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=87e17c25734a0b5592029cecde2309d318571324" # See branch add-aws-firehose
 
   subnet_sets = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
 
@@ -98,13 +98,11 @@ module "vpc" {
 
   # Variables required for Firehose integration
 
-  secret_string = tostring(local.firehose_preprod_network_secret["xsiam_preprod_network_secret"])
+  kinesis_endpoint_secret_string = tostring(local.kinesis_preprod_network_secret_arn_version["xsiam_preprod_network_secret"])
 
-  endpoint_url = local.endpoint_url
+  kinesis_endpoint_url = local.kinesis_endpoint_url # This is a requirement for the resources to build. 
 
-  environment = substr(terraform.workspace, length(local.application_name) + 1, length(terraform.workspace))
-
-  # build_firehose = anytrue([local.is-development, local.is-production]) 
+  # build_firehose = anytrue([local.is-development, local.is-production].
 
   build_firehose = (local.is-development == true && each.key == "hmpps-development")
   

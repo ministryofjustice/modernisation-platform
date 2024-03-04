@@ -18,7 +18,7 @@ locals {
   # This applies the same logic as above but to determine whether the environment is development. Required for firehose resources.
   is-development = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-development"
 
-  endpoint_url = "https://api-justiceukpreprod.xdr.uk.paloaltonetworks.com/logs/v1/aws"
+  kinesis_endpoint_url = "https://api-justiceukpreprod.xdr.uk.paloaltonetworks.com/logs/v1/aws"
 
   tags = {
     business-unit = "Platforms"
