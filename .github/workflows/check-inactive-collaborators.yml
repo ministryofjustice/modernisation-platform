@@ -7,7 +7,7 @@ env:
     AWS_REGION: "eu-west-2"
     ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
     SCRIPTS_PATH: "./scripts/internal/collaborators-inactivity-notification"
-    API_KEY: ${{ secrets.API_KEY }}
+    API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
     TEMPLATE_ID: "44d86b2d-2a73-4179-9b67-7c3fc2b58934"
 
 permissions:
