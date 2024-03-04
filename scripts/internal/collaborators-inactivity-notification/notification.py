@@ -5,42 +5,32 @@ import sys
 def get_email(account_name):
   """
   Retrieves email address from the corresponding JSON file based on account name.
-
   Args:
       account_name: The name of the account (without suffixes like -development).
-
   Returns:
       The email address if found, otherwise None.
   """
   account_file = os.path.join("environments", f"{account_name}.json")
-  
   if not os.path.exists(account_file):
     return None
-
   with open(account_file, 'r') as f:
     account_data = json.load(f)
-
   return account_data.get("tags", {}).get("infrastructure-support")
 
 def remove_duplicates(user_emails):
     """
     Removes duplicate dictionaries from a list while preserving all unique emails for each username.
-
     Args:
         user_emails (list): A list of dictionaries containing username and email keys.
-
     Returns:
         list: A new list with unique dictionaries containing all emails per username.
     """
     seen_emails = set()
     unique_emails = []
-
     for user_email in user_emails:
         username = user_email["username"]
         email = user_email["email"]
-
         unique_key = f"{username}-{email}"
-
         if unique_key not in seen_emails:
             seen_emails.add(unique_key)
             unique_emails.append(user_email)
@@ -49,7 +39,6 @@ def remove_duplicates(user_emails):
 def main(collaborators_file, iam_users_file):
   """
   Reads user data from collaborators.json, IAM users from iam_users.list, and retrieves emails from account JSON files.
-
   Args:
       collaborators_file: Path to the collaborators.json file.
       iam_users_file: Path to the iam_users.list file.
@@ -59,7 +48,7 @@ def main(collaborators_file, iam_users_file):
 
   with open(iam_users_file, 'r') as f:
     iam_users = [line.strip() for line in f.readlines()]
-
+    
   user_emails = []
   for user in collaborators_data['users']:
     for account in user['accounts']:
@@ -71,17 +60,13 @@ def main(collaborators_file, iam_users_file):
           email = get_email(base_account_name)
           if email:
             user_emails.append({"username": user['username'], "email": email})
-
   unique_emails = remove_duplicates(user_emails)
-
   for user in unique_emails:
     print(user["username"], user["email"])
-
 if __name__ == "__main__":
   if len(sys.argv) != 3:
     print("Usage: python script.py collaborators.json iam_users.list")
     sys.exit(1)
-
   collaborators_file = sys.argv[1]
   iam_users_file = sys.argv[2]
   main(collaborators_file, iam_users_file)
