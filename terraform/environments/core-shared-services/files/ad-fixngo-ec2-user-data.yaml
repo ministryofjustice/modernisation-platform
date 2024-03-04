@@ -40,8 +40,9 @@ tasks:
           $ErrorActionPreference = "Stop"
           Write-Output "Downloading and running Run-GitScript.ps1"
           Set-Location -Path ([System.IO.Path]::GetTempPath())
-          $GitBranch = "DSOS-2581/active-directory-and-rdlicense-pwsh"
+          $GitBranch = "main"
           $Script = "Invoke-UserDataScript.ps1"
           [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # since powershell 4 uses Tls1 as default
           Invoke-WebRequest "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform-configuration-management/${GitBranch}/powershell/Scripts/Run-GitScript.ps1" -OutFile "Run-GitScript.ps1"
           . ./Run-GitScript.ps1 $Script -GitBranch $GitBranch
+          Exit $LASTEXITCODE

@@ -293,7 +293,62 @@ locals {
       }
     }
 
+    route53_resolver_endpoints = {
+      ad-fixngo-live-data = {
+        direction           = "OUTBOUND"
+        security_group_name = "ad_hmpp_route53_resolver_sg"
+        subnet_ids          = module.vpc["live_data"].non_tgw_subnet_ids_map.private
+      }
+      ad-fixngo-non-live-data = {
+        direction           = "OUTBOUND"
+        security_group_name = "ad_azure_route53_resolver_sg"
+        subnet_ids          = module.vpc["non_live_data"].non_tgw_subnet_ids_map.private
+      }
+    }
+
+    route53_resolver_rules = {
+      ad-fixngo-azure-noms-root = {
+        domain_name            = "azure.noms.root"
+        target_ips             = module.ad_fixngo_ip_addresses.azure_fixngo_ips.devtest.domain_controllers
+        resolver_endpoint_name = "ad-fixngo-non-live-data"
+        rule_type              = "FORWARD"
+        vpc_id                 = module.vpc["non_live_data"].vpc_id
+      }
+      ad-fixngo-azure-hmpp-root = {
+        domain_name            = "azure.hmpp.root"
+        target_ips             = module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers
+        resolver_endpoint_name = "ad-fixngo-live-data"
+        rule_type              = "FORWARD"
+        vpc_id                 = module.vpc["live_data"].vpc_id
+      }
+      # resolve infra.int hosts via HMPP DCs as they have forest trust
+      ad-fixngo-infra-int = {
+        domain_name            = "infra.int"
+        target_ips             = module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers
+        resolver_endpoint_name = "ad-fixngo-live-data"
+        rule_type              = "FORWARD"
+        vpc_id                 = module.vpc["live_data"].vpc_id
+      }
+    }
+
     security_groups = {
+      ad_hmpp_route53_resolver_sg = {
+        description = "Security group for azure.hmpp.root Route53 Resolver"
+        vpc_id      = module.vpc["live_data"].vpc_id
+        ingress     = {}
+        egress = {
+          dns-tcp = {
+            port        = 53
+            protocol    = "TCP"
+            cidr_blocks = ["10.0.0.0/8"]
+          }
+          dns-udp = {
+            port        = 53
+            protocol    = "UDP"
+            cidr_blocks = ["10.0.0.0/8"]
+          }
+        }
+      }
       ad_hmpp_dc_sg = {
         description = "Security group for azure.hmpp.root DCs"
         vpc_id      = module.vpc["live_data"].vpc_id
@@ -489,6 +544,23 @@ locals {
         }
       }
 
+      ad_azure_route53_resolver_sg = {
+        description = "Security group for azure.noms.root Route53 Resolver"
+        vpc_id      = module.vpc["non_live_data"].vpc_id
+        ingress     = {}
+        egress = {
+          dns-tcp = {
+            port        = 53
+            protocol    = "TCP"
+            cidr_blocks = ["10.0.0.0/8"]
+          }
+          dns-udp = {
+            port        = 53
+            protocol    = "UDP"
+            cidr_blocks = ["10.0.0.0/8"]
+          }
+        }
+      }
       ad_azure_dc_sg = {
         description = "Security group for azure.noms.root DCs"
         vpc_id      = module.vpc["non_live_data"].vpc_id
@@ -684,9 +756,20 @@ locals {
       }
     }
 
+    ssm_parameters = {
+      "/ad-fixngo/account_ids" = {
+        description = "Account IDs used when provisioning the AD FixNGo EC2s"
+        value = jsonencode({
+          for key, value in local.environment_management.account_ids :
+          key => value if contains(["hmpps-domain-services-test", "hmpps-domain-services-production"], key)
+        })
+      }
+    }
+
     tags = merge(local.tags, {
-      source-code            = "https://github.com/ministryofjustice/modernisation-platform"
+      environment-name       = terraform.workspace
       infrastructure-support = "DSO:digital-studio-operations-team@digital.justice.gov.uk"
+      source-code            = "https://github.com/ministryofjustice/modernisation-platform"
     })
   }
 }
@@ -731,7 +814,7 @@ resource "aws_iam_policy" "ad_fixngo" {
   description = each.value.description
   policy      = data.aws_iam_policy_document.ad_fixngo[each.key].json
 
-  tags = merge(local.tags, local.ad_fixngo.tags, {
+  tags = merge(local.ad_fixngo.tags, {
     Name = each.key
   })
 }
@@ -750,7 +833,7 @@ resource "aws_iam_role" "ad_fixngo" {
     for key_or_arn in each.value.managed_policy_arns : try(aws_iam_policy.ad_fixngo[key_or_arn].arn, key_or_arn)
   ]
 
-  tags = merge(local.tags, local.ad_fixngo.tags, {
+  tags = merge(local.ad_fixngo.tags, {
     Name = each.key
   })
 }
@@ -761,6 +844,10 @@ resource "aws_iam_instance_profile" "ad_fixngo" {
   name = "ec2-profile-${each.key}"
   role = each.value.iam_instance_profile_role
   path = "/"
+
+  tags = merge(local.ad_fixngo.tags, {
+    Name = "ec2-profile-${each.key}"
+  })
 }
 
 resource "aws_instance" "ad_fixngo" {
@@ -796,11 +883,11 @@ resource "aws_instance" "ad_fixngo" {
 
   root_block_device {
     encrypted   = true
-    kms_key_id  = module.kms["hmpps"].key_ids["ebs"]
+    kms_key_id  = module.kms["hmpps"].key_arns["ebs"] # need to specify arn rather than id
     volume_size = 127
     volume_type = "gp3"
 
-    tags = merge(local.tags, local.ad_fixngo.tags, each.value.tags, {
+    tags = merge(local.ad_fixngo.tags, each.value.tags, {
       Name = join("-", [each.key, "root", data.aws_ami.ad_fixngo[each.value.ami_name].root_device_name])
     })
   }
@@ -812,7 +899,7 @@ resource "aws_instance" "ad_fixngo" {
     ]
   }
 
-  tags = merge(local.tags, local.ad_fixngo.tags, each.value.tags, {
+  tags = merge(local.ad_fixngo.tags, each.value.tags, {
     Name = each.key
   })
 }
@@ -823,9 +910,58 @@ resource "aws_key_pair" "ad_fixngo" {
   key_name   = each.key
   public_key = each.value
 
+  tags = merge(local.ad_fixngo.tags, {
+    Name = each.key
+  })
+}
+
+resource "aws_route53_resolver_endpoint" "ad_fixngo" {
+  for_each = local.ad_fixngo.route53_resolver_endpoints
+
+  name      = each.key
+  direction = each.value.direction
+
+  security_group_ids = [aws_security_group.ad_fixngo[each.value.security_group_name].id]
+
+  dynamic "ip_address" {
+    for_each = each.value.subnet_ids
+
+    content {
+      subnet_id = ip_address.value
+    }
+  }
+
   tags = merge(local.tags, {
     Name = each.key
   })
+}
+
+resource "aws_route53_resolver_rule" "ad_fixngo" {
+  for_each = local.ad_fixngo.route53_resolver_rules
+
+  domain_name = each.value.domain_name
+  name        = each.key
+  rule_type   = each.value.rule_type
+
+  resolver_endpoint_id = aws_route53_resolver_endpoint.ad_fixngo[each.value.resolver_endpoint_name].id
+
+  dynamic "target_ip" {
+    for_each = each.value.target_ips
+    content {
+      ip = target_ip.value
+    }
+  }
+
+  tags = merge(local.tags, {
+    Name = each.key
+  })
+}
+
+resource "aws_route53_resolver_rule_association" "ad_fixngo" {
+  for_each = local.ad_fixngo.route53_resolver_rules
+
+  resolver_rule_id = aws_route53_resolver_rule.ad_fixngo[each.key].id
+  vpc_id           = each.value.vpc_id
 }
 
 resource "aws_security_group" "ad_fixngo" {
@@ -837,7 +973,7 @@ resource "aws_security_group" "ad_fixngo" {
   description = each.value.description
   vpc_id      = each.value.vpc_id
 
-  tags = merge(local.tags, local.ad_fixngo.tags, {
+  tags = merge(local.ad_fixngo.tags, {
     Name = each.key
   })
 }
@@ -883,4 +1019,18 @@ resource "aws_security_group_rule" "ad_fixngo" {
   cidr_blocks       = try(each.value.cidr_blocks, null)
   self              = try(each.value.self, null)
   security_group_id = aws_security_group.ad_fixngo[each.value.security_group_name].id
+}
+
+resource "aws_ssm_parameter" "ad_fixngo" {
+  for_each = local.ad_fixngo.ssm_parameters
+
+  description = each.value.description
+  key_id      = module.kms["hmpps"].key_arns["general"]
+  name        = each.key
+  type        = "SecureString"
+  value       = each.value.value
+
+  tags = merge(local.tags, {
+    Name = each.key
+  })
 }
