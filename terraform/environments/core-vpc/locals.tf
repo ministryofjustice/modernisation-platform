@@ -15,7 +15,8 @@ locals {
   is-production = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production"
   is-live_data  = (substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production") || (substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction")
 
-  # This applies the same logic as above but to determine whether the environment is development. Required for firehose resources.
+  # This applies the same logic as above but to determine whether the environment is either sandbox or development. Required for firehose resources.
+  is-sandbox = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-sandbox"
   is-development = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-development"
 
   kinesis_endpoint_url = "https://api-justiceukpreprod.xdr.uk.paloaltonetworks.com/logs/v1/aws"
