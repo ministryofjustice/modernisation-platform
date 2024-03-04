@@ -37,8 +37,10 @@ jobs:
               fi
             done
           done
-          cat pr-comments.txt | sort -u | sed G > pr-comment-body.txt
-          gh pr comment ${{ github.event.number }} --body-file pr-comment-body.txt
+          if [ -f pr-comments.txt ]; then
+            cat pr-comments.txt | sort -u | sed G > pr-comment-body.txt
+            gh pr comment ${{ github.event.number }} --body-file pr-comment-body.txt
+          fi
       - name: Setup Regal
         uses: styrainc/setup-regal@33a142b1189004e0f14bf42b15972c67eecce776 # v1.0.0
         with:
