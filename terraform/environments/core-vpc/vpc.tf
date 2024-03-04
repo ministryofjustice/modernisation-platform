@@ -85,7 +85,7 @@ locals {
 module "vpc" {
   for_each = local.vpcs[terraform.workspace]
 
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=46e8738d3237dc8a887f9178c7f831676d6f595d" # See branch add-aws-firehose
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=93ecac996b01626cd262a13f4972b520b33d05ee" # See branch add-aws-firehose
 
   subnet_sets = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
 
@@ -107,6 +107,7 @@ module "vpc" {
   # build_firehose = anytrue([local.is-development, local.is-production]) 
 
   build_firehose = (local.is-development == true && each.key == "hmpps-development")
+  
   # Tags
   tags_common = local.tags
   tags_prefix = each.key
