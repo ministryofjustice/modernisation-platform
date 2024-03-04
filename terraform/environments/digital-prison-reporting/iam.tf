@@ -56,6 +56,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "dms:DescribeReplicationTasks",
       "dms:ModifyEndpoint",
       "dms:RemoveTagsFromResource",
+      "dms:ModifyReplicationInstance",
       "dms:TestConnection",
       "dynamodb:GetItem",
       "dynamodb:PutItem",
