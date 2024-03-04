@@ -1,0 +1,96 @@
+---
+owner_slack: "#modernisation-platform"
+title: Revoke network access if required
+last_reviewed_on: 2024-03-04
+review_in: 6 months or when is resolved.
+---
+
+# <%= current_page.data.title %>
+
+# Summary
+
+The steps listed deny access on a platform level. If additional changes are required at an application level then these must be undertaken by the application owning team.
+
+A network attack is an exceptional situation so quick amendments are needed. It is anticiapted that this can be done quickley through the console.
+
+This document lists the steps needed to stop access to and from the internet and prevening the system from brineg accessed from or accessing other applications on the MoJ.
+
+All changes are to be made manually on the relevant environment (for example core-vpc-production) and are not made through the code. If a way of reverting back to baseline is required the terraform code and be run and this will reset everything.
+
+## Stopping access from the internet to an application on MP
+
+This work is carried out from the core-vpc-(environment) environment e.g. core-vpc-production
+
+If you know which VPC application area is being attacked you can remove it from the VPC.
+
+1. Go to VPC->Internet gateways
+2. Select the gateway (example is hmpps-preproduction-internet-gateway)
+3. Note the Internet gateway ID and the VPC ID
+4. Click on Actions, Detach from VPC
+5. If you are sure this is correct click on the Detach internet gateway button
+
+The selected internet gateway will be detached from the VPC.
+
+This change will affect all applications in the VPC that you have selected. No applications in the VPC will be accessible from the internet.
+
+## Stopping access to the internet for an application on MP
+
+This work is carried out from the core-vpc-(environment) environment e.g. core-vpc-production
+
+The process needs to be done for all 4 regions listed. An example is
+
+- hmpps-production-data-nacl
+- hmpps-production-private-nacl
+- hmpps-production-protected-nacl
+- hmpps-production-public-nacl
+
+Follow the process below for each of these
+
+1. Go to VPC->Security->Network ACLs
+2. Click on the checkbox for the one you want to change then select **outbound rules**.
+3. Due to the way checks work in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ) we need to amend each one in place to Deny where it is currently Allow. **Note** any that are currently set to Deny in case this is manually changed back.
+4. Save changes
+
+Setting up a deny rule on the inline-inspection firewalls, regardless of the processing order, is not possible due to the issue mentioned above. This is why the deny on each area is required.
+
+## Stopping access from the MOJ to an application on MP
+
+This work is carried out from the core-vpc-(environment) environment e.g. core-vpc-production
+
+The process needs to be done for all 4 regions listed. An example is
+
+- hmpps-production-data-nacl
+- hmpps-production-private-nacl
+- hmpps-production-protected-nacl
+- hmpps-production-public-nacl
+
+You need to access this through the same route as above:
+
+1. Go to VPC->Security->Network ACLs
+2. Click on the checkbox for the one you want to change then select **inbound rules**.
+3. To prevent access change the one for the current system to Deny. For example in production you would amend 10.27.8.0/21 to deny for hmpps-production.
+4. Ensure that the access to the system is completely denied by amending the TCP to ports 1024 - 65535 on 0.0.0.0/0 to Deny too.
+5. Save the changes
+
+As mentioned above the way checks are undertaken in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ) mean adding a step for Deny may not work.
+
+## Stopping access to the MOJ for an application on MP
+
+This work is carried out from the core-vpc-(environment) environment e.g. core-vpc-production
+
+The process needs to be done for all 4 regions listed. An example is
+
+- hmpps-production-data-nacl
+- hmpps-production-private-nacl
+- hmpps-production-protected-nacl
+- hmpps-production-public-nacl
+
+You need to access this through the same route as above:
+
+1. Go to VPC->Security->Network ACLs
+2. Click on the checkbox for the one you want to change then select **outbound rules**
+3. To prevent access change the one for the current system to Deny. For example in production you would amend 10.27.8.0/21 to deny for hmpps-production.
+4. Ensure that the access to the system is completely denied by amending the TCP to ports 1024 - 65535 on 0.0.0.0/0 to Deny too.
+5. Save the changes
+
+As mentioned above the way checks are undertaken in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ) mean adding a step for Deny may not work.
