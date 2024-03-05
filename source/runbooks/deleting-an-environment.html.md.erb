@@ -30,6 +30,8 @@ You can get this from the SSO log on page if you have access to the account via 
 To do this, `cd` into `terraform environments` and find the resource in the state:
 
 - `cd terraform/environments`
+- source or export the modernisation platform [AWS Credentials](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/getting-aws-credentials.html#getting-aws-credentials) into your terminal 
+- `terraform init`
 - `terraform state list`
 
 To find the email address, run:
@@ -62,6 +64,8 @@ You need to remove the resource from the Terraform state where it gets created s
 To do this, `cd` into `terraform environments` and find the resource in the state:
 
 - `cd terraform/environments`
+- source or export the modernisation platform [AWS Credentials](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/getting-aws-credentials.html#getting-aws-credentials) into your terminal 
+- `terraform init`
 - `terraform state list`
 
 To remove it, run:
@@ -130,10 +134,13 @@ should become:
   }
 }
 ```
+If you are removing all the environments for an application, you can delete the whole json file
 
 Remove the accounts from the relevant `environments-networking/business-environment.json` file. (not required if non member account and not using shared networking)
 
-Update the [OPA polices](https://github.com/ministryofjustice/modernisation-platform/tree/main/policies) to remove references to the environment.
+Update the [OPA polices](https://github.com/ministryofjustice/modernisation-platform/tree/main/policies) to remove references in the following files
+
+[`policies/environments/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/environments/expected.rego) [`policies/networking/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/networking/expected.rego)
 
 Before merging in these changes, complete the rest of the steps in this document.
 

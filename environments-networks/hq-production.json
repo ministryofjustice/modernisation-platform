@@ -6,7 +6,6 @@
         "accounts": [
           "cdpt-chaps-production",
           "cdpt-ifs-production",
-          "cortex-xsiam-production",
           "data-and-insights-wepi-production"
         ]
       }
