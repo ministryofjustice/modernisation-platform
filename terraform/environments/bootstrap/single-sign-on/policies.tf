@@ -446,7 +446,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "eks:AccessKubernetesApi",
       "eks:Describe*",
       "eks:List*",
-      "elasticache:*"
+      "elasticache:*",
       "elasticfilesystem:*",
       "elasticloadbalancing:*",
       "events:*",
