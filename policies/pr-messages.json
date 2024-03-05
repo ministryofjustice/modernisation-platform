@@ -1,0 +1,29 @@
+{
+  "danger_files": [
+    {
+      "file": "^environments/",
+      "message": "Making changes to the `environments/*.json` files will affect MP AWS accounts, for more information on the potential impact of these changes consult the [documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#schema)."
+    },
+    {
+      "file": "^environments-networks/",
+      "message": "Making changes to the `environments-networks/*.json` files will affect the networking of MP AWS accounts, in particular which VPC/Subnet is being shared in to which environment. For more guidance consult the [documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/creating-accounts-for-end-users.html#networking-stage)."
+    },
+    {
+      "file": "terraform/environments/bootstrap/member-bootstrap/iam.tf",
+      "message": "Making changes to the `terraform/environments/bootstrap/member-bootstrap/iam.tf` file will alter the IAM permissions for all members on the MP platform. In particular the `member-access` policy which defines the permissions members have for building IaC in their environments or the `github OIDC role` that defines the permissions for their application CI/CD pipelines. Please ensure that any permissions changes have been agreed with the wider team."
+    },
+    {
+      "file": "terraform/single-sign-on/",
+      "message": "Making changes to the MP `terraform/single-sign-on` code could impact the effective permissions to access a given AWS account, for more information on the potential impact of these changes consult the [documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/environments/single-sign-on.html#single-sign-on)."
+    },
+    {
+      "file": "terraform/environments/core-network-services/firewall-rules",
+      "message": "Making changes to the firewall rules will impact the network traffic allowed enter/exit the Mod Platform environments including it's connections to the Internet and internal MoJ services, for more information on the potential impact of these changes consult the [documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/networking/network-firewall.html#aws-network-firewall)."
+    },
+    {
+      "file": "/secrets.tf",
+      "message": "You are making changes to the secrets in the MP platform, for more information on the potential impact of these changes consult the [documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/rotating-secrets.html)."
+    }
+
+  ]
+}
