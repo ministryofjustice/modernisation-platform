@@ -21,7 +21,7 @@ All changes are to be made manually on the relevant environment (for example cor
 
 This work is carried out from the core-vpc-(environment) environment e.g. core-vpc-production
 
-If you know which VPC application area is being attacked you can remove it from the VPC.
+If you know which VPC application area is being attacked you can remove the connection by following these instructions.
 
 1. Go to VPC->Internet gateways
 2. Select the gateway (example is hmpps-preproduction-internet-gateway)
@@ -37,12 +37,14 @@ This change will affect all applications in the VPC that you have selected. No a
 
 This work is carried out from the core-vpc-(environment) environment e.g. core-vpc-production
 
-The process needs to be done for all 4 regions listed. An example is
+The process needs to be done for all 3 NACLs listed. An example is
 
 - hmpps-production-data-nacl
 - hmpps-production-private-nacl
 - hmpps-production-protected-nacl
 - hmpps-production-public-nacl
+
+In this case the protected one needs to be amended as, although TCP references are in place, the IP addresses are the same as those listed for the other NACLs.
 
 Follow the process below for each of these
 
@@ -51,18 +53,20 @@ Follow the process below for each of these
 3. Due to the way checks work in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ) we need to amend each one in place to Deny where it is currently Allow. **Note** any that are currently set to Deny in case this is manually changed back.
 4. Save changes
 
-Setting up a deny rule on the inline-inspection firewalls, regardless of the processing order, is not possible due to the issue mentioned above. This is why the deny on each area is required.
+Setting up a deny rule on the stateful inline-inspection rules, regardless of the processing order, is not possible due to the issue mentioned above. This is why the deny on each area is required.
 
 ## Stopping access from the MOJ to an application on MP
 
 This work is carried out from the core-vpc-(environment) environment e.g. core-vpc-production
 
-The process needs to be done for all 4 regions listed. An example is
+The process needs to be done for all 4 NACLs listed. An example is
 
 - hmpps-production-data-nacl
 - hmpps-production-private-nacl
 - hmpps-production-protected-nacl
 - hmpps-production-public-nacl
+
+In this case the protected one needs to be amended as, although TCP references are in place, the IP addresses are the same as those llisted for the other NACLs.
 
 You need to access this through the same route as above:
 
@@ -72,18 +76,20 @@ You need to access this through the same route as above:
 4. Ensure that the access to the system is completely denied by amending the TCP to ports 1024 - 65535 on 0.0.0.0/0 to Deny too.
 5. Save the changes
 
-As mentioned above the way checks are undertaken in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ) mean adding a step for Deny may not work.
+As mentioned above the way checks are undertaken in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ) mean adding a step for Deny may not work. **Note** any that are currently set to Deny in case this is manually changed back.
 
 ## Stopping access to the MOJ for an application on MP
 
 This work is carried out from the core-vpc-(environment) environment e.g. core-vpc-production
 
-The process needs to be done for all 4 regions listed. An example is
+The process needs to be done for all 4 NACLs listed. An example is
 
 - hmpps-production-data-nacl
 - hmpps-production-private-nacl
 - hmpps-production-protected-nacl
 - hmpps-production-public-nacl
+
+In this case the protected one needs to be amended as, although TCP references are in place, the IP addresses are the same as those listed for the other NACLs.
 
 You need to access this through the same route as above:
 
@@ -93,4 +99,4 @@ You need to access this through the same route as above:
 4. Ensure that the access to the system is completely denied by amending the TCP to ports 1024 - 65535 on 0.0.0.0/0 to Deny too.
 5. Save the changes
 
-As mentioned above the way checks are undertaken in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ) mean adding a step for Deny may not work.
+As mentioned above the way checks are undertaken in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ) mean adding a step for Deny may not work. **Note** any that are currently set to Deny in case this is manually changed back.
