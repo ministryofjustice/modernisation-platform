@@ -55,9 +55,13 @@ Follow the process below for each of these
 
 Setting up a deny rule on the stateful inline-inspection rules, regardless of the processing order, is not possible due to the issue mentioned above. This is why the deny on each area is required.
 
-## Stopping access from the MOJ to an application on MP
+## Stopping access from the MOJ to an application on the Modernisation Platform Transit Gateway
 
 This work is carried out from the core-vpc-(environment) environment e.g. core-vpc-production
+
+As mentioned above the way checks are undertaken in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ) mean adding a step for Deny may not work. **Note** any that are currently set to Deny in case this is manually changed back.
+
+Blocking the firewall is an option but this would mean that the access has already bypassed access into the system and blocking through the firewall may no be an effective solution. Blocking is done here to prevent unauthorised access. 
 
 The process needs to be done for all 4 NACLs listed. An example is
 
@@ -76,9 +80,7 @@ You need to access this through the same route as above:
 4. Ensure that the access to the system is completely denied by amending the TCP to ports 1024 - 65535 on 0.0.0.0/0 to Deny too.
 5. Save the changes
 
-As mentioned above the way checks are undertaken in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ) mean adding a step for Deny may not work. **Note** any that are currently set to Deny in case this is manually changed back.
-
-## Stopping access to the MOJ for an application on MP
+## Stopping access to the MOJ for an application on the Modernisation Platform Transit Gateway
 
 This work is carried out from the core-vpc-(environment) environment e.g. core-vpc-production
 
