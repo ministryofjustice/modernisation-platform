@@ -1,7 +1,11 @@
 {
   "account-type": "member",
-  "codeowners": ["hmpps-migration"],
-  "github_action_reviewers": ["hmpps-migration"],
+  "codeowners": [
+    "hmpps-migration"
+  ],
+  "github_action_reviewers": [
+    "hmpps-migration"
+  ],
   "environments": [
     {
       "name": "development",
@@ -48,6 +52,7 @@
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/hmpps-delius-operational-automation",
-    "ministryofjustice/hmpps-openldap-container"
+    "ministryofjustice/hmpps-openldap-container",
+    "ministryofjustice/hmpps-delius-docker-images"
   ]
 }
