@@ -982,10 +982,10 @@ module "delius_core_openldap_ecr_repo" {
   tags_common = local.tags
 }
 
-# module "delius_core_password_management_ecr_repo" {
-#   source = "../../modules/app-ecr-repo"
+module "delius_core_password_reset_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
 
-#   app_name = "delius-core-password-management"
+  app_name = "delius-core-password-management"
 
 #   push_principals = [
 #     "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
