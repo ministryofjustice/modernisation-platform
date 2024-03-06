@@ -30,7 +30,7 @@ You can get this from the SSO log on page if you have access to the account via 
 To do this, `cd` into `terraform environments` and find the resource in the state:
 
 - `cd terraform/environments`
-- source or export the modernisation platform [AWS Credentials](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/getting-aws-credentials.html#getting-aws-credentials) into your terminal 
+- Use [temporary AWS Credentials](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/getting-aws-credentials.html#getting-aws-credentials) or [AWS-Vault](https://github.com/99designs/aws-vault) to source the **Modernisation Platform** credentials in your terminal
 - `terraform init`
 - `terraform state list`
 
@@ -64,7 +64,7 @@ You need to remove the resource from the Terraform state where it gets created s
 To do this, `cd` into `terraform environments` and find the resource in the state:
 
 - `cd terraform/environments`
-- source or export the modernisation platform [AWS Credentials](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/getting-aws-credentials.html#getting-aws-credentials) into your terminal 
+- Use [temporary AWS Credentials](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/getting-aws-credentials.html#getting-aws-credentials) or [AWS-Vault](https://github.com/99designs/aws-vault) to source the **Modernisation Platform** credentials in your terminal
 - `terraform init`
 - `terraform state list`
 
@@ -134,23 +134,32 @@ should become:
   }
 }
 ```
-If you are removing all the environments for an application, you can delete the whole json file
+
+If you are removing **all the environments** for an application, you can **delete** the **whole json file**.
 
 Remove the accounts from the relevant `environments-networking/business-environment.json` file. (not required if non member account and not using shared networking)
 
-Update the [OPA polices](https://github.com/ministryofjustice/modernisation-platform/tree/main/policies) to remove references in the following files
+Update the [OPA polices](https://github.com/ministryofjustice/modernisation-platform/tree/main/policies) by removing references in the following files
 
-[`policies/environments/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/environments/expected.rego) [`policies/networking/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/networking/expected.rego)
+- [`policies/environments/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/-policies/environments/expected.rego)
+
+- [`policies/networking/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/networking/expected.rego)
 
 Before merging in these changes, complete the rest of the steps in this document.
 
-## Find and delete the Terraform workspaces for the environment
+## Delete Terraform resources for the environment
 
-For the following workspaces, switch to the workspace and run a `terraform destroy` to ensure any resources such as DNS entries created in shared accounts are deleted and not orphaned.
+For the following repos, switch to the corresponding workspace and run a `terraform destroy` to ensure any resources such as DNS entries created in shared accounts are deleted and not orphaned.
+
+`modernisation-platform/terraform/environments/<application-name>`
 
 `modernisation-platform-environments/terraform/environments/<application-name>` (not required if non member account)
 
-`modernisation-platform/terraform/environments/<application-name>`
+> Note that you need to assume the [backend role](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/running-terraform-plan-locally.html#run-terraform-plan) for the Terraform init command in the `modernisation-platform-environments` repo
+
+> Some resources such as s3 buckets cannot be destroyed until you manually empty all the objects and versions in them
+
+## Delete Terraform workspaces for the environment
 
 After completing this, you will need to delete the application terraform workspaces in the following locations. Note, you will need to switch to the default workspace before deleting the workspace, see an example command below.
 
@@ -165,7 +174,7 @@ After completing this, you will need to delete the application terraform workspa
 `modernisation-platform-environments/terraform/environments/<application-name>` (not required if non member account)
 
 `modernisation-platform/terraform/environments/<application-name>`
-For example: 
+For example:
 
 ```bash
 terraform workspace select default
@@ -173,6 +182,8 @@ terraform workspace delete -force core-vpc-non-live-data
 ```
 
 > This will not delete the resources that are set up by the Terraform configuration. It will only delete the Terraform reference to the workspace. You will need to delete the AWS account properly.
+
+## Remove Environment Files (\*only if removing all environments for an application)
 
 If you delete the last environment and there are no more environments for the application, you should delete all of the environment files in the following folders:
 
@@ -182,7 +193,7 @@ If you delete the last environment and there are no more environments for the ap
 
 `modernisation-platform-environments/.github/workflows/<application-name>`
 
-After following the above steps, you need to move the account to the closed accounts OU before deleting the actual AWS account that the environment was linked to.
+After following the above steps, you need to move the account to the root OU before deleting the actual AWS account that the environment was linked to.
 
 ## Move the account to the root organizational unit
 
@@ -198,10 +209,9 @@ Now the AWS account can be deleted.
 
 > This process cannot be undone. Proceed carefully.
 
-Follow the [AWS documentation on closing an AWS account](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/close-account.html#closing-the-account). You will need:
+Follow the [AWS documentation on closing an AWS account](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/close-account.html#closing-the-account).
 
-- access to the AWS account's root email address (_not_ the AWS Organizations root account)
-- the ability to read password reset emails
+You will need access to the [AWS - notifications](https://groups.google.com/a/digital.justice.gov.uk/g/aws) Google Group which will receive the password reset email.
 
 ## Move the account to the closed accounts organizational unit
 
