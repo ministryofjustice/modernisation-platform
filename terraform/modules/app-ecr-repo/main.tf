@@ -22,7 +22,7 @@ resource "aws_ecr_repository" "ecr_repo" {
   tags = merge(
     var.tags_common,
     {
-      Name = "${var.app_name}"
+      Name = var.app_name
     }
   )
 }
