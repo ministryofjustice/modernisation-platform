@@ -1,7 +1,7 @@
 #tfsec:ignore:AWS078 tfsec:ignore:aws-ecr-repository-customer-key
 resource "aws_ecr_repository" "ecr_repo" {
   #checkov:skip=CKV_AWS_51:Skip Tag Mutable requirement we want tags to be overwritten   
-  name                 = ${var.app_name}
+  name                 = var.app_name
   image_tag_mutability = "MUTABLE"
 
   encryption_configuration {
