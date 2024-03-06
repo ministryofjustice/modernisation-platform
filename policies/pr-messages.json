@@ -24,6 +24,5 @@
       "file": "/secrets.tf",
       "message": "You are making changes to the secrets in the MP platform, for more information on the potential impact of these changes consult the [documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/rotating-secrets.html)."
     }
-
   ]
 }
