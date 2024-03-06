@@ -49,6 +49,7 @@
   "github-oidc-team-repositories": [
     "ministryofjustice/hmpps-delius-operational-automation",
     "ministryofjustice/hmpps-openldap-container",
-    "ministryofjustice/hmpps-delius-docker-images"
+    "ministryofjustice/hmpps-delius-docker-images",
+    "ministryofjustice/hmpps-pwm"
   ]
 }
