@@ -2,7 +2,7 @@ name: "Terraform: scheduled baseline"
 
 on:
   schedule:
-    - cron: "30 22 * * 6"
+    - cron: "30 22 * * 0"
   push:
     branches:
       - main
