@@ -26,7 +26,6 @@ expected :=
           "performance-hub-preproduction",
           "oasys-preproduction",
           "nomis-preproduction",
-          "electronic-monitoring-data-preproduction",
           "ppud-preproduction",
           "delius-iaps-preproduction",
           "delius-jitbit-preproduction",
