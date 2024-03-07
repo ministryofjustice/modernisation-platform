@@ -22,7 +22,7 @@ data "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
 }
 
 
-# For the Firehose Endpoints - More will be added for the other endpoints
+# For the Firehose Endpoint Keys - More will be added for the other endpoints
 data "aws_secretsmanager_secret" "kinesis_preprod_network_secret_arn" {
   provider = aws.modernisation-platform
   name     = "xsiam_preprod_network_secret"
@@ -33,3 +33,13 @@ data "aws_secretsmanager_secret_version" "kinesis_preprod_network_secret_arn_ver
   secret_id = data.aws_secretsmanager_secret.kinesis_preprod_network_secret_arn.id
 }
 
+# For the Firehose Endpoints URLs - More will be added for the other endpoints
+data "aws_secretsmanager_secret" "kinesis_preprod_network_endpoint_arn" {
+  provider = aws.modernisation-platform
+  name     = "xsiam_preprod_network_endpoint"
+}
+
+data "aws_secretsmanager_secret_version" "kinesis_preprod_network_endpoint_arn_version" {
+  provider = aws.modernisation-platform
+  secret_id = data.aws_secretsmanager_secret.kinesis_preprod_network_endpoint_arn.id
+}
