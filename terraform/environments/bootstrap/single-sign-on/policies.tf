@@ -466,6 +466,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "rds-data:*",
       "route53:*",
       "s3:*",
+      "scheduler:CreateSchedule",
       "secretsmanager:*",
       "ses:*",
       "sns:*",
