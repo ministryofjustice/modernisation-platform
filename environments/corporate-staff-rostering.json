@@ -61,5 +61,6 @@
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
     "owner": "digital-studio-operations-team@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [""],
+  "go-live-date": "2024-03-11"
 }
