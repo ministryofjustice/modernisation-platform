@@ -186,7 +186,6 @@ expected :=
         "accounts": [
           "cdpt-chaps-development",
           "cdpt-ifs-development",
-          "cortex-xsiam-development",
           "data-and-insights-wepi-development"
         ]
       }
@@ -205,7 +204,6 @@ expected :=
         "accounts": [
           "cdpt-chaps-production",
           "cdpt-ifs-production",
-          "cortex-xsiam-production",
           "data-and-insights-wepi-production"
         ]
       }
