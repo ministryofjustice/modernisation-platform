@@ -9,6 +9,8 @@ review_in: 6 month
 
 > Note: This process is cannot be undone. All resources in an AWS account will be deleted.
 
+> You will need to **complete the actions** below ideally **within a working day**. If not some scheduled pipelines may run which could re-create the workspaces/resources which you are trying to delete.
+
 In the Modernisation Platform, we run a pipeline to create AWS accounts using the `aws_organizations_account` Terraform resource.
 
 The `aws_organizations_account` cannot, and does not, delete AWS accounts if removed from the configuration. It attempts to move the AWS account from AWS Organizations to a standalone account, which should fail.
