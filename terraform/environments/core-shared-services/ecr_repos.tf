@@ -1046,3 +1046,54 @@ module "delius_core_weblogic_eis_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
+
+module "analytical_platform_ingestion_notify_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "analytical-platform-ingestion-notify"
+
+  push_principals = ["arn:aws:iam::${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:role/modernisation-platform-oidc-cicd"]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["analytical-platform-ingestion-development"],
+    local.environment_management.account_ids["analytical-platform-ingestion-production"]
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
+
+module "analytical_platform_ingestion_scan_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "analytical-platform-ingestion-scan"
+
+  push_principals = ["arn:aws:iam::${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:role/modernisation-platform-oidc-cicd"]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["analytical-platform-ingestion-development"],
+    local.environment_management.account_ids["analytical-platform-ingestion-production"]
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
+
+module "analytical_platform_ingestion_transfer_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "analytical-platform-ingestion-transfer"
+
+  push_principals = ["arn:aws:iam::${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:role/modernisation-platform-oidc-cicd"]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["analytical-platform-ingestion-development"],
+    local.environment_management.account_ids["analytical-platform-ingestion-production"]
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
