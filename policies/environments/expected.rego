@@ -6,6 +6,7 @@ expected :=
     "analytical-platform",
     "analytical-platform-data",
     "analytical-platform-data-engineering",
+    "analytical-platform-ingestion",
     "analytical-platform-landing",
     "analytical-platform-management",
     "apex",
