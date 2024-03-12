@@ -20,7 +20,7 @@
         },
         {
           "github_slug": "csr-application-support",
-          "level": "instance-management"
+          "level": "developer"
         }
       ]
     },
@@ -33,7 +33,7 @@
         },
         {
           "github_slug": "csr-application-support",
-          "level": "instance-management"
+          "level": "developer"
         }
       ]
     },
@@ -46,7 +46,7 @@
         },
         {
           "github_slug": "csr-application-support",
-          "level": "instance-management"
+          "level": "developer"
         }
       ]
     }
