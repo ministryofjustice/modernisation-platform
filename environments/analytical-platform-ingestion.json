@@ -27,6 +27,10 @@
     "infrastructure-support": "analytical-platform@digital.justice.gov.uk",
     "owner": "Analytical Platform"
   },
-  "github-oidc-team-repositories": [""],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/analytical-platform-ingestion-notify",
+    "ministryofjustice/analytical-platform-ingestion-scan",
+    "ministryofjustice/analytical-platform-ingestion-transfer"
+  ],
   "go-live-date": ""
 }
