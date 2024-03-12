@@ -761,6 +761,7 @@ module "data_platform_jml_ecr_repo" {
 
   pull_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-apps-and-tools-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-apps-and-tools-production"],
   ]
 
