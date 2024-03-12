@@ -18,7 +18,7 @@ locals {
   is-development = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-development" 
 
   # Required for determining whether non-prod or prod secrets are referenced for Firehose
-  is-non_production =! local.is-production
+  is-non_production = local.is-production != true
 
   # Determines if Firehose should be built in an environment.
   build_firehose = anytrue ([local.is-development, local.is-production]) ? true : false
