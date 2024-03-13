@@ -21,6 +21,53 @@ data "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
   secret_id = data.aws_secretsmanager_secret.pagerduty_integration_keys.id
 }
 
+
+# Secrets for Firehose Endpoint URL & Key
+
+# For the Xsiam endpoint secret key
+data "aws_secretsmanager_secret" "kinesis_preprod_firewall_secret_arn" {
+  provider = aws.modernisation-platform
+  name     = "xsiam_preprod_firewall_secret"
+}
+
+data "aws_secretsmanager_secret_version" "kinesis_preprod_firewall_secret_arn_version" {
+  provider  = aws.modernisation-platform
+  secret_id = data.aws_secretsmanager_secret.kinesis_preprod_firewall_secret_arn.id
+}
+
+# For the Xsiam endpoints URL
+data "aws_secretsmanager_secret" "kinesis_preprod_firewall_endpoint_arn" {
+  provider = aws.modernisation-platform
+  name     = "xsiam_preprod_firewall_endpoint"
+}
+
+data "aws_secretsmanager_secret_version" "kinesis_preprod_firewall_endpoint_arn_version" {
+  provider  = aws.modernisation-platform
+  secret_id = data.aws_secretsmanager_secret.kinesis_preprod_firewall_endpoint_arn.id
+}
+
+
+data "aws_secretsmanager_secret" "kinesis_prod_firewall_secret_arn" {
+  provider = aws.modernisation-platform
+  name     = "xsiam_prod_firewall_secret"
+}
+
+data "aws_secretsmanager_secret_version" "kinesis_prod_firewall_secret_arn_version" {
+  provider  = aws.modernisation-platform
+  secret_id = data.aws_secretsmanager_secret.kinesis_prod_firewall_secret_arn.id
+}
+
+data "aws_secretsmanager_secret" "kinesis_prod_firewall_endpoint_arn" {
+  provider = aws.modernisation-platform
+  name     = "xsiam_prod_firewall_endpoint"
+}
+
+data "aws_secretsmanager_secret_version" "kinesis_prod_firewall_endpoint_arn_version" {
+  provider  = aws.modernisation-platform
+  secret_id = data.aws_secretsmanager_secret.kinesis_prod_firewall_endpoint_arn.id
+}
+
+
 # Environment logging secret KMS key
 resource "aws_kms_key" "environment_logging" {
   description             = "environment-logging"
@@ -72,3 +119,4 @@ data "aws_iam_policy_document" "environment_logging" {
     }
   }
 }
+

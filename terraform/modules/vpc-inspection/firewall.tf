@@ -43,4 +43,6 @@ module "inline_inspection_logging" {
   fw_arn                    = aws_networkfirewall_firewall.inline_inspection.arn
   fw_name                   = aws_networkfirewall_firewall.inline_inspection.name
   tags                      = var.tags_common
+  xsiam_firewall_endpoint   = var.xsiam_firewall_endpoint
+  xsiam_firewall_secret     = var.xsiam_firewall_secret
 }

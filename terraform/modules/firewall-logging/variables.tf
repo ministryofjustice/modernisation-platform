@@ -17,3 +17,13 @@ variable "tags" {
   description = "A map of keys and values used to create resource metadata tags"
   type        = map(any)
 }
+
+variable "xsiam_firewall_endpoint" {
+  description = "The http endpoint URL for the transfer of log data via firehose"
+  type        = string
+}
+
+variable "xsiam_firewall_secret" {
+  description = "The secret for the xsiam http endpoint"
+  type        = string
+}

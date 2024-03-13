@@ -178,6 +178,8 @@ module "firewall_logging" {
   fw_arn                    = aws_networkfirewall_firewall.external_inspection.arn
   fw_name                   = aws_networkfirewall_firewall.external_inspection.name
   tags                      = local.tags
+  xsiam_firewall_endpoint   = tostring(local.firehose_prod_firewall_endpoint["xsiam_prod_firewall_endpoint"])
+  xsiam_firewall_secret     = tostring(local.firehose_prod_firewall_secret["xsiam_prod_firewall_secret"])
 }
 
 resource "aws_networkfirewall_firewall" "external_inspection" {
