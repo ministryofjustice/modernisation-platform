@@ -5,8 +5,9 @@ provider "aws" {
 
 # AWS provider (workspace): the workspace account. Required for assuming a role into an account for bootstrapping
 provider "aws" {
-  alias  = "workspace"
-  region = "eu-west-2"
+  alias      = "workspace"
+  region     = "eu-west-2"
+  retry_mode = "adaptive"
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
   }
