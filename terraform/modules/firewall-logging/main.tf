@@ -24,3 +24,20 @@ resource "aws_cloudwatch_log_group" "main" {
   retention_in_days = 365 # 0 = never expire
   tags              = var.tags
 }
+
+
+module "firehose_delivery_stream" {
+  source                  = "../../modules/firehose"
+  resource_prefix         = var.fw_name
+  firewall_name           = var.fw_name
+  log_group_name          = aws_cloudwatch_log_group.main.name
+  tags                    = var.tags
+  xsiam_endpoint          = var.xsiam_firewall_endpoint
+  xsiam_secret            = var.xsiam_firewall_secret
+}
+
+
+output "cloudwatch_log" {
+  value       = aws_cloudwatch_log_group.main
+  description = "The cloudwatch log created for the firewall"
+}

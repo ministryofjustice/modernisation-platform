@@ -21,3 +21,5 @@ data "aws_route" "live_data" {
 data "aws_kms_key" "general_shared" {
   key_id = "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:alias/general-platforms"
 }
+
+

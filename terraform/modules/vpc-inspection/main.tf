@@ -78,6 +78,18 @@ resource "aws_flow_log" "cloudwatch" {
   )
 }
 
+# For the sharing of the above VPC flowlog data via Firehose
+module "firehose_delivery_stream" {
+  source                  = "../../modules/firehose"
+  resource_prefix         = "external_inspection"
+  firewall_name           = "external_inspection"
+  log_group_name          = aws_cloudwatch_log_group.main.name
+  tags                    = var.tags_common
+  xsiam_endpoint          = var.xsiam_network_endpoint
+  xsiam_secret            = var.xsiam_network_secret
+}
+
+
 ### Transit Gateway Subnets ###
 resource "aws_subnet" "transit-gateway" {
   for_each          = tomap(local.types_and_azs_and_cidrs.transit-gateway)
@@ -393,3 +405,4 @@ resource "aws_nat_gateway" "public" {
     { Name = format("%s-%s", var.tags_prefix, each.key) }
   )
 }
+

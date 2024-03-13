@@ -41,5 +41,8 @@ module "inline_inspection_logging" {
   source                    = "../firewall-logging"
   cloudwatch_log_group_name = format("fw-%s-logs", aws_networkfirewall_firewall.inline_inspection.name)
   fw_arn                    = aws_networkfirewall_firewall.inline_inspection.arn
+  fw_name                   = aws_networkfirewall_firewall.inline_inspection.name
   tags                      = var.tags_common
+  xsiam_firewall_endpoint   = var.xsiam_firewall_endpoint
+  xsiam_firewall_secret     = var.xsiam_firewall_secret
 }
