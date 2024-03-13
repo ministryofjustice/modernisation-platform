@@ -5,9 +5,9 @@ provider "aws" {
 
 # AWS provider (workspace): the workspace account. Required for assuming a role into an account for bootstrapping
 provider "aws" {
-  alias      = "workspace"
-  region     = "eu-west-2"
-  retry_mode = "adaptive"
+  alias                              = "workspace"
+  region                             = "eu-west-2"
+  token_bucket_rate_limiter_capacity = 100000
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
   }
@@ -15,9 +15,9 @@ provider "aws" {
 
 # Region specific providers for the workspace. Required for bootstrapping resources in enabled regions.
 provider "aws" {
-  alias      = "workspace-eu-central-1"
-  region     = "eu-central-1"
-  retry_mode = "adaptive"
+  alias                              = "workspace-eu-central-1"
+  region                             = "eu-central-1"
+  token_bucket_rate_limiter_capacity = 100000
 
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
@@ -25,9 +25,9 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias      = "workspace-eu-west-1"
-  region     = "eu-west-1"
-  retry_mode = "adaptive"
+  alias                              = "workspace-eu-west-1"
+  region                             = "eu-west-1"
+  token_bucket_rate_limiter_capacity = 100000
 
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
@@ -35,9 +35,9 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias      = "workspace-eu-west-2"
-  region     = "eu-west-2"
-  retry_mode = "adaptive"
+  alias                              = "workspace-eu-west-2"
+  region                             = "eu-west-2"
+  token_bucket_rate_limiter_capacity = 100000
 
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
@@ -45,9 +45,9 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias      = "workspace-us-east-1"
-  region     = "us-east-1"
-  retry_mode = "adaptive"
+  alias                              = "workspace-us-east-1"
+  region                             = "us-east-1"
+  token_bucket_rate_limiter_capacity = 100000
 
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
