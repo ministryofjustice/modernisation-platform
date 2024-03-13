@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Deleting an environment (AWS account)
-last_reviewed_on: 2024-01-25
+last_reviewed_on: 2024-03-12
 review_in: 6 month
 ---
 
@@ -18,7 +18,7 @@ review_in: 6 month
 
 > Note: This process is cannot be undone. All resources in an AWS account will be deleted.
 
-> You will need to **complete the actions** below ideally **within a working day**. If not some scheduled pipelines may run which could re-create the workspaces/resources which you are trying to delete.
+> You will need to **complete the actions** below in as **short a time frame as possible**. Certain workflows such as [Terraform: New environment](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml) will re-create accounts/workspaces which you are trying to delete if it runs mid-way through your progress. Ideally warn the MP team **not to merge any PRs** whilst you carry out these actions.
 
 In the Modernisation Platform, we run a pipeline to create AWS accounts using the `aws_organizations_account` Terraform resource.
 
@@ -237,3 +237,5 @@ Raise a PR to merge in your file changes which will trigger Terraform to perform
 ## Delete Github environments
 
 Navigate to [https://github.com/ministryofjustice/modernisation-platform-environments/settings/environments](https://github.com/ministryofjustice/modernisation-platform-environments/settings/environments) and delete the relevant GitHub environments.
+
+Check for any automated PRs that have been raised in the MP Environments repo to update the `.github/CODEOWNERS` file. Here is an [example PR](https://github.com/ministryofjustice/modernisation-platform-environments/pull/5317/files). These will need to be merged in.
