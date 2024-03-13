@@ -29,7 +29,7 @@ data "aws_secretsmanager_secret" "kinesis_preprod_network_secret_arn" {
 }
 
 data "aws_secretsmanager_secret_version" "kinesis_preprod_network_secret_arn_version" {
-  provider = aws.modernisation-platform
+  provider  = aws.modernisation-platform
   secret_id = data.aws_secretsmanager_secret.kinesis_preprod_network_secret_arn.id
 }
 
@@ -40,7 +40,7 @@ data "aws_secretsmanager_secret" "kinesis_preprod_network_endpoint_arn" {
 }
 
 data "aws_secretsmanager_secret_version" "kinesis_preprod_network_endpoint_arn_version" {
-  provider = aws.modernisation-platform
+  provider  = aws.modernisation-platform
   secret_id = data.aws_secretsmanager_secret.kinesis_preprod_network_endpoint_arn.id
 }
 
@@ -53,7 +53,7 @@ data "aws_secretsmanager_secret" "kinesis_prod_network_secret_arn" {
 }
 
 data "aws_secretsmanager_secret_version" "kinesis_prod_network_secret_arn_version" {
-  provider = aws.modernisation-platform
+  provider  = aws.modernisation-platform
   secret_id = data.aws_secretsmanager_secret.kinesis_prod_network_secret_arn.id
 }
 
@@ -63,6 +63,6 @@ data "aws_secretsmanager_secret" "kinesis_prod_network_endpoint_arn" {
 }
 
 data "aws_secretsmanager_secret_version" "kinesis_prod_network_endpoint_arn_version" {
-  provider = aws.modernisation-platform
+  provider  = aws.modernisation-platform
   secret_id = data.aws_secretsmanager_secret.kinesis_prod_network_endpoint_arn.id
 }
