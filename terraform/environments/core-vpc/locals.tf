@@ -15,16 +15,16 @@ locals {
   is-live_data  = (substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production") || (substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction")
 
   # This applies the same logic as above but to determine whether the environment is the development environment. Required for firehose resources.
-  is-development = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-development" 
+  is-development = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-development"
 
   # Determines if Firehose should be built in an environment.
-  build_firehose = anytrue ([local.is-development, local.is-production]) ? true : false
+  build_firehose = anytrue([local.is-development, local.is-production]) ? true : false
 
   # Secrets used by Firehose resources which we only require for development & production VPCs.
-  firehose_preprod_network_secret = jsondecode(data.aws_secretsmanager_secret_version.kinesis_preprod_network_secret_arn_version.secret_string)
+  firehose_preprod_network_secret   = jsondecode(data.aws_secretsmanager_secret_version.kinesis_preprod_network_secret_arn_version.secret_string)
   firehose_preprod_network_endpoint = jsondecode(data.aws_secretsmanager_secret_version.kinesis_preprod_network_endpoint_arn_version.secret_string)
-  firehose_prod_network_secret = jsondecode(data.aws_secretsmanager_secret_version.kinesis_prod_network_secret_arn_version.secret_string)
-  firehose_prod_network_endpoint = jsondecode(data.aws_secretsmanager_secret_version.kinesis_prod_network_endpoint_arn_version.secret_string)
+  firehose_prod_network_secret      = jsondecode(data.aws_secretsmanager_secret_version.kinesis_prod_network_secret_arn_version.secret_string)
+  firehose_prod_network_endpoint    = jsondecode(data.aws_secretsmanager_secret_version.kinesis_prod_network_endpoint_arn_version.secret_string)
 
   tags = {
     business-unit = "Platforms"
