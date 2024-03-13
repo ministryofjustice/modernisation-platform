@@ -176,6 +176,7 @@ module "firewall_logging" {
   source                    = "../../modules/firewall-logging"
   cloudwatch_log_group_name = format("fw-%s-logs", aws_networkfirewall_firewall.external_inspection.name)
   fw_arn                    = aws_networkfirewall_firewall.external_inspection.arn
+  fw_name                   = aws_networkfirewall_firewall.external_inspection.name
   tags                      = local.tags
 }
 

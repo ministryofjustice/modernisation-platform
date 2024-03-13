@@ -24,3 +24,9 @@ resource "aws_cloudwatch_log_group" "main" {
   retention_in_days = 365 # 0 = never expire
   tags              = var.tags
 }
+
+
+output "cloudwatch_log" {
+  value       = aws_cloudwatch_log_group.main
+  description = "The cloudwatch log created for the firewall"
+}

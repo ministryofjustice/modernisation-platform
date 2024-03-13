@@ -109,4 +109,5 @@ locals {
     for file in fileset("../../../environments-networks", "*.json") :
     replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))
   }
+
 }

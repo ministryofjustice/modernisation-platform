@@ -8,6 +8,11 @@ variable "fw_arn" {
   type        = string
 }
 
+variable "fw_name" {
+  description = "Name of firewall to identify whether live or non-line"
+  type        = string
+}
+
 variable "tags" {
   description = "A map of keys and values used to create resource metadata tags"
   type        = map(any)
