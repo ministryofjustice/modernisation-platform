@@ -17,8 +17,14 @@ locals {
   firehose_preprod_firewall_secret   = jsondecode(data.aws_secretsmanager_secret_version.kinesis_preprod_firewall_secret_arn_version.secret_string)
   firehose_preprod_firewall_endpoint = jsondecode(data.aws_secretsmanager_secret_version.kinesis_preprod_firewall_endpoint_arn_version.secret_string)
 
+  firehose_preprod_network_secret   = jsondecode(data.aws_secretsmanager_secret_version.kinesis_preprod_network_secret_arn_version.secret_string)
+  firehose_preprod_network_endpoint = jsondecode(data.aws_secretsmanager_secret_version.kinesis_preprod_network_endpoint_arn_version.secret_string)
+
   firehose_prod_firewall_secret   = jsondecode(data.aws_secretsmanager_secret_version.kinesis_prod_firewall_secret_arn_version.secret_string)
   firehose_prod_firewall_endpoint = jsondecode(data.aws_secretsmanager_secret_version.kinesis_prod_firewall_endpoint_arn_version.secret_string)
+
+  firehose_prod_network_secret   = jsondecode(data.aws_secretsmanager_secret_version.kinesis_prod_network_secret_arn_version.secret_string)
+  firehose_prod_network_endpoint = jsondecode(data.aws_secretsmanager_secret_version.kinesis_prod_network_endpoint_arn_version.secret_string)
 
 
   tags = {

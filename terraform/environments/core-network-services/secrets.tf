@@ -22,9 +22,11 @@ data "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
 }
 
 
-# Secrets for Firehose Endpoint URL & Key
+# Data for Firehose Endpoint URL & Key that are held in secrets manager.
 
-# For the Xsiam endpoint secret key
+# 1. Secrets for Firewall-related log data.
+
+# NonProd
 data "aws_secretsmanager_secret" "kinesis_preprod_firewall_secret_arn" {
   provider = aws.modernisation-platform
   name     = "xsiam_preprod_firewall_secret"
@@ -35,7 +37,6 @@ data "aws_secretsmanager_secret_version" "kinesis_preprod_firewall_secret_arn_ve
   secret_id = data.aws_secretsmanager_secret.kinesis_preprod_firewall_secret_arn.id
 }
 
-# For the Xsiam endpoints URL
 data "aws_secretsmanager_secret" "kinesis_preprod_firewall_endpoint_arn" {
   provider = aws.modernisation-platform
   name     = "xsiam_preprod_firewall_endpoint"
@@ -46,7 +47,7 @@ data "aws_secretsmanager_secret_version" "kinesis_preprod_firewall_endpoint_arn_
   secret_id = data.aws_secretsmanager_secret.kinesis_preprod_firewall_endpoint_arn.id
 }
 
-
+# Prod
 data "aws_secretsmanager_secret" "kinesis_prod_firewall_secret_arn" {
   provider = aws.modernisation-platform
   name     = "xsiam_prod_firewall_secret"
@@ -65,6 +66,51 @@ data "aws_secretsmanager_secret" "kinesis_prod_firewall_endpoint_arn" {
 data "aws_secretsmanager_secret_version" "kinesis_prod_firewall_endpoint_arn_version" {
   provider  = aws.modernisation-platform
   secret_id = data.aws_secretsmanager_secret.kinesis_prod_firewall_endpoint_arn.id
+}
+
+
+# 2. Secrets related to VPC flow log data.
+
+# NonProd
+data "aws_secretsmanager_secret" "kinesis_preprod_network_secret_arn" {
+  provider = aws.modernisation-platform
+  name     = "xsiam_preprod_network_secret"
+}
+
+data "aws_secretsmanager_secret_version" "kinesis_preprod_network_secret_arn_version" {
+  provider  = aws.modernisation-platform
+  secret_id = data.aws_secretsmanager_secret.kinesis_preprod_network_secret_arn.id
+}
+
+data "aws_secretsmanager_secret" "kinesis_preprod_network_endpoint_arn" {
+  provider = aws.modernisation-platform
+  name     = "xsiam_preprod_network_endpoint"
+}
+
+data "aws_secretsmanager_secret_version" "kinesis_preprod_network_endpoint_arn_version" {
+  provider  = aws.modernisation-platform
+  secret_id = data.aws_secretsmanager_secret.kinesis_preprod_network_endpoint_arn.id
+}
+
+#Prod
+data "aws_secretsmanager_secret" "kinesis_prod_network_secret_arn" {
+  provider = aws.modernisation-platform
+  name     = "xsiam_prod_network_secret"
+}
+
+data "aws_secretsmanager_secret_version" "kinesis_prod_network_secret_arn_version" {
+  provider  = aws.modernisation-platform
+  secret_id = data.aws_secretsmanager_secret.kinesis_prod_network_secret_arn.id
+}
+
+data "aws_secretsmanager_secret" "kinesis_prod_network_endpoint_arn" {
+  provider = aws.modernisation-platform
+  name     = "xsiam_prod_network_endpoint"
+}
+
+data "aws_secretsmanager_secret_version" "kinesis_prod_network_endpoint_arn_version" {
+  provider  = aws.modernisation-platform
+  secret_id = data.aws_secretsmanager_secret.kinesis_prod_network_endpoint_arn.id
 }
 
 

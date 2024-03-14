@@ -66,12 +66,22 @@ variable "vpc_flow_log_iam_role" {
   type        = string
 }
 
+variable "xsiam_network_endpoint" {
+  description = "The http endpoint URL for the transfer of VPC flowlog data via firehose"
+  type        = string
+}
+
+variable "xsiam_network_secret" {
+  description = "The secret for the vpc flow log xsiam http endpoint"
+  type        = string
+}
+
 variable "xsiam_firewall_endpoint" {
-  description = "The http endpoint URL for the transfer of log data via firehose"
+  description = "The http endpoint URL for the transfer of firewall log data via firehose"
   type        = string
 }
 
 variable "xsiam_firewall_secret" {
-  description = "The secret for the xsiam http endpoint"
+  description = "The secret for the firewall xsiam http endpoint"
   type        = string
 }
