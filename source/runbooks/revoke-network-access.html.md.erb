@@ -20,7 +20,7 @@ A network attack is an exceptional situation so quick amendments are needed. It 
 
 This document lists the steps needed to stop access to and from the internet and preventing the system from being accessed from or accessing other applications on the MoJ.
 
-All changes are to be made manually on the relevant environment (for example core-vpc-production) and are not made through the code. If a way of reverting back to baseline is required the terraform code can be run and this will reset everything. All of the steps listed will be performed on the core-vpc-(environment) location unless otherwise specified.
+All changes are to be made manually on the relevant environment (for example core-vpc-production) and are not made through the code. If a way of reverting back to baseline is required the terraform code can be run and this will reset everything. All of the steps listed will be performed on the core-vpc-<environment> location unless otherwise specified.
 
 [CAUTION]
 > All networking changes via terraform should be stopped while this work is ongoing. No MP terraform runs should be permitted while there is work going on to prevent unauthorised access to the environments.
@@ -43,7 +43,7 @@ The default behaviour for a security group with no rules is to Deny all traffic.
 
 ## Stopping access from the internet to an application on MP
 
-This work is carried out from the core-vpc-(environment) environment e.g. core-vpc-production
+This work is carried out from the core-vpc-<environment> environment e.g. core-vpc-production
 
 If you know which business unit the application under attack is in  you can disconnect the VPC from the internet by following these instructions.
 
@@ -61,7 +61,7 @@ This change will affect all applications in the VPC that you have selected. No a
 
 Due to the way Network Firewall applies rules in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ), this section only covers changes to the VPC NACL. 
 
-This work is carried out from the core-vpc-(environment) environment e.g. core-vpc-production.
+This work is carried out from the core-vpc-<environment> environment e.g. core-vpc-production.
 
 The process needs to be done for all 3 NACLs listed. An example is
 
@@ -69,18 +69,18 @@ The process needs to be done for all 3 NACLs listed. An example is
 - hmpps-production-private-nacl
 - hmpps-production-public-nacl
 
-Follow the process below for each of these
+Follow the process below for each of these.
 
 1. Go to VPC->Security->Network ACLs.
 2. Click on the checkbox for the ACL you want to change then select **outbound rules**.
-3. Add a new Deny rule for 0.0.0.0/0, rule number 4999, which will prevent access to the items listed after this point. All internet rules are 5000 and above.
+3. Add a new Deny rule for 0.0.0.0/0, rule number 4999, which will prevent access to the items listed after this point. All internet rules are 5000 and above based on our current code.
 4. Save changes.
 
 ## Stopping access from the MOJ to an application via the Modernisation Platform Transit Gateway
 
 As mentioned above the way checks are undertaken in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ), this section only covers changes to the VPC NACL.  
 
-This work is carried out from the core-vpc-(environment) environment e.g. core-vpc-production
+This work is carried out from the core-vpc-<environment> environment e.g. core-vpc-production
 
 The process needs to be done for all 3 NACLs listed. An example is
 
@@ -88,18 +88,18 @@ The process needs to be done for all 3 NACLs listed. An example is
 - hmpps-production-private-nacl
 - hmpps-production-public-nacl
 
-In this case the protected one needs to be amended as, although TCP references are in place, the IP addresses are the same as those listed for the other NACLs.
-
-You need to access this through the same route as above:
+You need to access this through the same route as below.
 
 1. Go to VPC->Security->Network ACLs.
 2. Click on the checkbox for the one you want to change then select **inbound rules**.
 3. Amend all the rules that are >= 4000 and < 5000 so they are in a Deny state.
 4. Save the changes.
 
+**NOTE** the rules between 4000 and 5000 is based on the code being correctly set up to put the rules in this range. Amend the instructions if this changes.
+
 ## Stopping access to the MOJ for an application via the Modernisation Platform Transit Gateway
 
-As previously mentioned above the way checks are undertaken in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ) mean adding a step for Deny may not work. **Note** any that are currently set to Deny in case this is manually changed back.
+As previously mentioned above the way checks are undertaken in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ), this section only covers changes to the VPC NACL. 
 
 This work is carried out from the core-vpc-<environment> account, e.g. core-vpc-production
 
@@ -109,12 +109,14 @@ The process needs to be done for all 3 NACLs listed. An example is
 - hmpps-production-private-nacl
 - hmpps-production-public-nacl
 
-You need to access this through the same route as above:
+You need to access this through the same route as below:
 
 1. Go to VPC->Security->Network ACLs
 2. Click on the checkbox for the one you want to change then select **outbound rules**
 3. Amend all the rules that are >= 4000 and < 5000 so they are in a Deny state.
 4. Save the changes
+
+**NOTE** the rules between 4000 and 5000 is based on the code being correctly set up to put the rules in this range. Amend the instructions if this changes.
 
 ## Blocking access for something moving internally on MP
 
