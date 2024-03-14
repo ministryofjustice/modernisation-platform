@@ -35,9 +35,3 @@ module "firehose_delivery_stream" {
   xsiam_endpoint          = var.xsiam_firewall_endpoint
   xsiam_secret            = var.xsiam_firewall_secret
 }
-
-
-output "cloudwatch_log" {
-  value       = aws_cloudwatch_log_group.main
-  description = "The cloudwatch log created for the firewall"
-}
