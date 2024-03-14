@@ -43,7 +43,9 @@ The default behaviour for a security group with no rules is to Deny all traffic.
 
 ## Stopping access from the internet to an application on MP
 
-This work is carried out from the core-vpc-<environment> environment e.g. core-vpc-production
+In addition to the items listed below, if all internet access is being stopped the transit gateway should also be stopped. They are located in core-logging, core-network-services,core-shared-services and core-security environments. In this case follow the steps below from each environment.
+
+This work is carried out from the core-vpc-<environment> environment e.g. core-vpc-production.
 
 If you know which business unit the application under attack is in  you can disconnect the VPC from the internet by following these instructions.
 
@@ -61,13 +63,16 @@ This change will affect all applications in the VPC that you have selected. No a
 
 Due to the way Network Firewall applies rules in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ), this section only covers changes to the VPC NACL. 
 
-This work is carried out from the core-vpc-<environment> environment e.g. core-vpc-production.
+In addition to the items listed below, if all internet access is being stopped the transit gateway should also be stopped. They are located in core-logging, core-network-services,core-shared-services and core-security environments. The rules on these will also need to be set to Deny (currently they appear to allow all network access).
 
-The process needs to be done for all 3 NACLs listed. An example is
+This work is carried out from the core-vpc-<environment> environment e.g. core-vpc-production. 
+
+The process needs to be done for all 4 of the NACLs listed below. Examples for production are shown here:
 
 - hmpps-production-data-nacl
 - hmpps-production-private-nacl
 - hmpps-production-public-nacl
+- hmpps-production-protected-nacl (use rule number 1 for this)
 
 Follow the process below for each of these.
 
@@ -82,11 +87,12 @@ As mentioned above the way checks are undertaken in AWS (see [here](https://docs
 
 This work is carried out from the core-vpc-<environment> environment e.g. core-vpc-production
 
-The process needs to be done for all 3 NACLs listed. An example is
+The process needs to be done for all 4 of the NACLs listed below. Examples for production are shown here:
 
 - hmpps-production-data-nacl
 - hmpps-production-private-nacl
 - hmpps-production-public-nacl
+- hmpps-production-protected-nacl (use rule number 1 for this)
 
 You need to access this through the same route as below.
 
@@ -103,11 +109,12 @@ As previously mentioned above the way checks are undertaken in AWS (see [here](h
 
 This work is carried out from the core-vpc-<environment> account, e.g. core-vpc-production
 
-The process needs to be done for all 3 NACLs listed. An example is
+The process needs to be done for all 4 of the NACLs listed below. Examples for production are shown here:
 
 - hmpps-production-data-nacl
 - hmpps-production-private-nacl
 - hmpps-production-public-nacl
+- hmpps-production-protected-nacl (use rule number 1 for this)
 
 You need to access this through the same route as below:
 
