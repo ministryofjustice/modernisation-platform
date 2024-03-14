@@ -7,6 +7,10 @@
         {
           "github_slug": "laa-aws-infrastructure",
           "level": "developer"
+        },
+        {
+          "github_slug": "oas-migration",
+          "level": "instance-management"
         }
       ]
     },

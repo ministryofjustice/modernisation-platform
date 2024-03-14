@@ -1,6 +1,6 @@
 locals {
 
-  application_name = "cortex-xsiam"
+  application_name = "analytical-platform-ingestion"
 
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 

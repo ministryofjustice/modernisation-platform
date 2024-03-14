@@ -85,7 +85,7 @@ locals {
 module "vpc" {
   for_each = local.vpcs[terraform.workspace]
 
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=e8447fc0906270e0e67bf329e8355cd306ef9fef" #v2.2.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=ddcd36b717b937bfa72b6245fd0410861aa40b36" # v2.3.0
 
   subnet_sets = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
 
@@ -95,6 +95,14 @@ module "vpc" {
 
   # VPC Flow Logs
   vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
+
+  # Variables required for Firehose integration. We are not building this in all environments hence the "build_firehose" condition below.
+
+  build_firehose = local.build_firehose
+
+  kinesis_endpoint_secret_string = local.is-production ? tostring(local.firehose_prod_network_secret["xsiam_prod_network_secret"]) : tostring(local.firehose_preprod_network_secret["xsiam_preprod_network_secret"])
+
+  kinesis_endpoint_url = local.is-production ? tostring(local.firehose_prod_network_endpoint["xsiam_prod_network_endpoint"]) : tostring(local.firehose_preprod_network_endpoint["xsiam_preprod_network_endpoint"])
 
   # Tags
   tags_common = local.tags

@@ -5,6 +5,7 @@ locals {
   application-zones = {
     ccms-ebs      = "ccms-ebs.service.justice.gov.uk",
     cdpt-chaps    = "correspondence-handling-and-processing.service.justice.gov.uk",
+    cdpt-ifs      = "integrated-fraud-system.service.justice.gov.uk",
     dacp          = "divorce-section-search.service.justice.gov.uk",
     delius-jitbit = "jitbit.cr.probation.service.justice.gov.uk",
     equip         = "equip.service.justice.gov.uk",

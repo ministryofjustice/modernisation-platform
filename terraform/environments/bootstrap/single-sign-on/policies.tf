@@ -290,6 +290,20 @@ data "aws_iam_policy_document" "developer_additional" {
   }
 
   statement {
+    sid    = "iamForECSAllow"
+    effect = "Allow"
+    actions = [
+      "iam:PassRole"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "iam:PassedToService"
+      values   = ["ecs.amazonaws.com"]
+    }
+  }
+
+  statement {
     sid    = "coreSharedServicesCreateGrantAllow"
     effect = "Allow"
     actions = [
@@ -404,6 +418,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "airflow:*",
       "apigateway:*",
       "application-autoscaling:*",
+      "appstream:*",
       "athena:*",
       "autoscaling:*",
       "cloudformation:*",
@@ -466,6 +481,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "rds-data:*",
       "route53:*",
       "s3:*",
+      "scheduler:CreateSchedule",
       "secretsmanager:*",
       "ses:*",
       "sns:*",

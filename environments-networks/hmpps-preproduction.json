@@ -17,8 +17,7 @@
           "corporate-staff-rostering-preproduction",
           "planetfm-preproduction",
           "hmpps-oem-preproduction",
-          "hmpps-domain-services-preproduction",
-          "electronic-monitoring-data-preproduction"
+          "hmpps-domain-services-preproduction"
         ]
       }
     }

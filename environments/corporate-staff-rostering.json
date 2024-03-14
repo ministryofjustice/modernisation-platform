@@ -23,12 +23,8 @@
           "level": "developer"
         },
         {
-          "github_slug": "studio-webops",
-          "level": "migration"
-        },
-        {
           "github_slug": "csr-application-support",
-          "level": "instance-management"
+          "level": "developer"
         }
       ]
     },
@@ -40,12 +36,8 @@
           "level": "developer"
         },
         {
-          "github_slug": "studio-webops",
-          "level": "migration"
-        },
-        {
           "github_slug": "csr-application-support",
-          "level": "instance-management"
+          "level": "developer"
         }
       ]
     },
@@ -57,12 +49,8 @@
           "level": "developer"
         },
         {
-          "github_slug": "studio-webops",
-          "level": "migration"
-        },
-        {
           "github_slug": "csr-application-support",
-          "level": "instance-management"
+          "level": "developer"
         }
       ]
     }
@@ -73,5 +61,6 @@
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
     "owner": "digital-studio-operations-team@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [""],
+  "go-live-date": "2024-03-11"
 }

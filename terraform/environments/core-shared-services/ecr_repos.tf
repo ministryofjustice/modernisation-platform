@@ -755,11 +755,13 @@ module "data_platform_jml_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-apps-and-tools-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-apps-and-tools-production"],
   ]
 
   pull_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-apps-and-tools-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["data-platform-apps-and-tools-production"],
   ]
 
@@ -818,27 +820,6 @@ module "delius_core_ansible_aws_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
   app_name = "delius-core-ansible-aws"
-
-  push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd"
-  ]
-
-  pull_principals = [
-    local.environment_management.account_ids["delius-core-development"],
-    local.environment_management.account_ids["delius-core-test"],
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd"
-  ]
-
-  # Tags
-  tags_common = local.tags
-}
-
-module "delius_core_community_api_ecr_repo" {
-  source = "../../modules/app-ecr-repo"
-
-  app_name = "delius-core-community-api"
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
@@ -982,31 +963,10 @@ module "delius_core_openldap_ecr_repo" {
   tags_common = local.tags
 }
 
-module "delius_core_password_management_ecr_repo" {
+module "delius_core_password_reset_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
   app_name = "delius-core-password-management"
-
-  push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd"
-  ]
-
-  pull_principals = [
-    local.environment_management.account_ids["delius-core-development"],
-    local.environment_management.account_ids["delius-core-test"],
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd"
-  ]
-
-  # Tags
-  tags_common = local.tags
-}
-
-module "delius_core_testing_db_ecr_repo" {
-  source = "../../modules/app-ecr-repo"
-
-  app_name = "delius-core-testing-db"
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
@@ -1081,6 +1041,57 @@ module "delius_core_weblogic_eis_ecr_repo" {
     local.environment_management.account_ids["delius-core-test"],
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
+
+module "analytical_platform_ingestion_notify_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "analytical-platform-ingestion-notify"
+
+  push_principals = ["arn:aws:iam::${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:role/modernisation-platform-oidc-cicd"]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["analytical-platform-ingestion-development"],
+    local.environment_management.account_ids["analytical-platform-ingestion-production"]
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
+
+module "analytical_platform_ingestion_scan_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "analytical-platform-ingestion-scan"
+
+  push_principals = ["arn:aws:iam::${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:role/modernisation-platform-oidc-cicd"]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["analytical-platform-ingestion-development"],
+    local.environment_management.account_ids["analytical-platform-ingestion-production"]
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
+
+module "analytical_platform_ingestion_transfer_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "analytical-platform-ingestion-transfer"
+
+  push_principals = ["arn:aws:iam::${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:role/modernisation-platform-oidc-cicd"]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["analytical-platform-ingestion-development"],
+    local.environment_management.account_ids["analytical-platform-ingestion-production"]
   ]
 
   # Tags

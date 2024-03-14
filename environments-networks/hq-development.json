@@ -6,7 +6,6 @@
         "accounts": [
           "cdpt-chaps-development",
           "cdpt-ifs-development",
-          "cortex-xsiam-development",
           "data-and-insights-wepi-development"
         ]
       }

@@ -7,6 +7,10 @@
         {
           "github_slug": "modernisation-platform",
           "level": "developer"
+        },
+        {
+          "github_slug": "ppud-replacement-devs",
+          "level": "fleet-manager"
         }
       ],
       "additional_reviewers": ["umeshc-roy", "nbuckingham72"]
@@ -17,6 +21,10 @@
         {
           "github_slug": "ppud-replacement-devs",
           "level": "migration"
+        },
+        {
+          "github_slug": "ppud-replacement-devs",
+          "level": "fleet-manager"
         }
       ],
       "additional_reviewers": ["umeshc-roy", "nbuckingham72"]

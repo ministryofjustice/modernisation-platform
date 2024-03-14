@@ -1,33 +1,37 @@
 {
-    "account-type": "member",
-    "isolated-network": "true",
-    "environments": [
-      {
-        "name": "development",
-        "access": [
-          {
-            "github_slug": "analytical-platform",
-            "level": "sandbox",
-            "nuke": "exclude"
-          }
-        ]
-      },
-      {
-        "name": "production",
-        "access": [
-          {
-            "github_slug": "analytical-platform",
-            "level": "developer"
-          }
-        ]
-      }
-    ],
-    "tags": {
-      "application": "analytical-platform-ingestion",
-      "business-unit": "Platforms",
-      "infrastructure-support": "analytical-platform@digital.justice.gov.uk",
-      "owner": "Analytical Platform"
+  "account-type": "member",
+  "isolated-network": "true",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "analytical-platform",
+          "level": "sandbox",
+          "nuke": "exclude"
+        }
+      ]
     },
-    "github-oidc-team-repositories": [""],
-    "go-live-date": ""
-  }
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "analytical-platform",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "analytical-platform-ingestion",
+    "business-unit": "Platforms",
+    "infrastructure-support": "analytical-platform@digital.justice.gov.uk",
+    "owner": "Analytical Platform"
+  },
+  "github-oidc-team-repositories": [
+    "ministryofjustice/analytical-platform-ingestion-notify",
+    "ministryofjustice/analytical-platform-ingestion-scan",
+    "ministryofjustice/analytical-platform-ingestion-transfer"
+  ],
+  "go-live-date": ""
+}

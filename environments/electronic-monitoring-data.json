@@ -12,15 +12,6 @@
       ]
     },
     {
-      "name": "preproduction",
-      "access": [
-        {
-          "github_slug": "hmpps-electronic-monitoring-data-store",
-          "level": "data-engineer"
-        }
-      ]
-    },
-    {
       "name": "production",
       "access": [
         {

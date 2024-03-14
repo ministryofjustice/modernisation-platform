@@ -8,7 +8,7 @@ terraform {
     encrypt              = true
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
-    workspace_key_prefix = "environments/accounts/cortex-xsiam" # This will store the object as environments/accounts/cortex-xsiam/${workspace}/terraform.tfstate
+    workspace_key_prefix = "environments/accounts/analytical-platform-ingestion" # This will store the object as environments/accounts/analytical-platform-ingestion/${workspace}/terraform.tfstate
     dynamodb_table       = "modernisation-platform-terraform-state-lock"
   }
 }
