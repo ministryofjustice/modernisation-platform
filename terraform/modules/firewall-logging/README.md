@@ -41,7 +41,5 @@
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_cloudwatch_log"></a> [cloudwatch\_log](#output\_cloudwatch\_log) | The cloudwatch log created for the firewall |
+No outputs.
 <!-- END_TF_DOCS -->
