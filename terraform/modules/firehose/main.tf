@@ -109,7 +109,6 @@ resource "aws_s3_bucket" "firehose_error_logging_bucket" {
   #checkov:skip=CKV2_AWS_61: Lifecycle is enabled but this error still gets thrown.
   #checkov:skip=CKV2_AWS_6: Public Access Block enabled - see below - but the error still gets thrown.
   bucket = format("%s-%s-%s", var.resource_prefix, "firehose_error_logging_bucket", random_string.firehose_rnd.result) 
-  tags   = var.tags
 }
 
 #tfsec:ignore:aws-ssm-secret-use-customer-key
@@ -225,7 +224,6 @@ resource "aws_iam_policy" "error_log_policy" {
       }
     ]
   })
-  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "s3_role_attachment" {
@@ -259,14 +257,12 @@ resource "aws_iam_policy" "s3_policy" {
       }
     ]
   })
-  tags = var.tags
 }
 
 
 
 resource "aws_iam_role" "xsiam_put_record_role" {
   name_prefix        = format("%s-%s-%s", var.resource_prefix, "xsiam-put-record-role", random_string.firehose_rnd.result) 
-  tags               = var.tags
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -286,7 +282,6 @@ EOF
 
 resource "aws_iam_policy" "xsiam_put_record_policy" {
   name_prefix = format("%s-%s-%s", var.resource_prefix, "xsiam-put-record-policy", random_string.firehose_rnd.result) 
-  tags        = var.tags
   policy      = <<-EOF
 {
     "Version": "2012-10-17",
