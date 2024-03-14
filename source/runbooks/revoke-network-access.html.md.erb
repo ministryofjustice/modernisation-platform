@@ -29,7 +29,7 @@ All changes are to be made manually on the relevant environment (for example cor
 
 > Additionally we are only making the changes manually to prevent the code being updated to the detriment of subsequent repairs. Assuming the issue is resolved we would need to rerun the original terraform code to reset everything to it's previous state. Any changes made to the code could cause us issues in being able to do this. It is likely that when applying the code there will be an warning shown stating that some changes have been made outside terraform. This is not something to worry about as all access will be reset to the previous state.
 
-## Stopping access to a single application
+## Stopping access to/from a single application
 
 The most appropriate way is to remove rules from the relevant security groups. You will need to login to the application account with the `ModernisationPlatformEngineer` SSO role. You will need to identify the relevant security groups:
 
