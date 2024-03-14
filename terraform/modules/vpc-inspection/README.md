@@ -18,6 +18,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_firehose_delivery_stream"></a> [firehose\_delivery\_stream](#module\_firehose\_delivery\_stream) | ../../modules/firehose | n/a |
 | <a name="module_inline_inspection_logging"></a> [inline\_inspection\_logging](#module\_inline\_inspection\_logging) | ../firewall-logging | n/a |
 | <a name="module_inline_inspection_policy"></a> [inline\_inspection\_policy](#module\_inline\_inspection\_policy) | ../../modules/firewall-policy | n/a |
 
@@ -41,14 +42,17 @@
 | [aws_networkfirewall_firewall.inline_inspection](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/networkfirewall_firewall) | resource |
 | [aws_route.inspection-0-0-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.inspection-10-20-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
+| [aws_route.inspection-10-231-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.inspection-10-26-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.inspection-10-27-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.public-0-0-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.public-10-20-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
+| [aws_route.public-10-231-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.public-10-26-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.public-10-27-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.transit-gateway-0-0-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.transit-gateway-10-20-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
+| [aws_route.transit-gateway-10-231-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.transit-gateway-10-26-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.transit-gateway-10-27-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route_table.inspection](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
@@ -74,13 +78,17 @@
 | <a name="input_fw_delete_protection"></a> [fw\_delete\_protection](#input\_fw\_delete\_protection) | Boolean to enable or disable firewall deletion protection | `bool` | `true` | no |
 | <a name="input_fw_home_net_ips"></a> [fw\_home\_net\_ips](#input\_fw\_home\_net\_ips) | List of strings covering firewall HOME\_NET values | `list(string)` | n/a | yes |
 | <a name="input_fw_kms_arn"></a> [fw\_kms\_arn](#input\_fw\_kms\_arn) | KMS key ARN used for firewall encryption | `string` | n/a | yes |
-| <a name="input_fw_managed_rule_groups"></a> [fw\_managed\_rule\_groups](#input\_fw\_managed\_rule\_groups) | Names of AWS managed rule groups from <https://docs.aws.amazon.com/network-firewall/latest/developerguide/aws-managed-rule-groups-threat-signature.html> | `list(string)` | `[]` | no |
+| <a name="input_fw_managed_rule_groups"></a> [fw\_managed\_rule\_groups](#input\_fw\_managed\_rule\_groups) | Names of AWS managed rule groups from https://docs.aws.amazon.com/network-firewall/latest/developerguide/aws-managed-rule-groups-threat-signature.html | `list(string)` | `[]` | no |
 | <a name="input_fw_rules"></a> [fw\_rules](#input\_fw\_rules) | JSON map of maps containing stateless firewall rules | `map(any)` | n/a | yes |
 | <a name="input_tags_common"></a> [tags\_common](#input\_tags\_common) | Ministry of Justice required tags | `map(any)` | n/a | yes |
 | <a name="input_tags_prefix"></a> [tags\_prefix](#input\_tags\_prefix) | Prefix for name tags, e.g. "live\_data" | `string` | n/a | yes |
 | <a name="input_transit_gateway_id"></a> [transit\_gateway\_id](#input\_transit\_gateway\_id) | n/a | `string` | `""` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | CIDR range for the VPC | `string` | n/a | yes |
 | <a name="input_vpc_flow_log_iam_role"></a> [vpc\_flow\_log\_iam\_role](#input\_vpc\_flow\_log\_iam\_role) | VPC Flow Log IAM role ARN for VPC Flow Logs to CloudWatch | `string` | n/a | yes |
+| <a name="input_xsiam_firewall_endpoint"></a> [xsiam\_firewall\_endpoint](#input\_xsiam\_firewall\_endpoint) | The http endpoint URL for the transfer of firewall log data via firehose | `string` | n/a | yes |
+| <a name="input_xsiam_firewall_secret"></a> [xsiam\_firewall\_secret](#input\_xsiam\_firewall\_secret) | The secret for the firewall xsiam http endpoint | `string` | n/a | yes |
+| <a name="input_xsiam_network_endpoint"></a> [xsiam\_network\_endpoint](#input\_xsiam\_network\_endpoint) | The http endpoint URL for the transfer of VPC flowlog data via firehose | `string` | n/a | yes |
+| <a name="input_xsiam_network_secret"></a> [xsiam\_network\_secret](#input\_xsiam\_network\_secret) | The secret for the vpc flow log xsiam http endpoint | `string` | n/a | yes |
 
 ## Outputs
 
