@@ -45,7 +45,6 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_firewall_name"></a> [firewall\_name](#input\_firewall\_name) | Name of firewall to identify whether live or non-line | `string` | n/a | yes |
 | <a name="input_log_group_name"></a> [log\_group\_name](#input\_log\_group\_name) | The name of the log group that the subscription will be added to | `string` | n/a | yes |
 | <a name="input_resource_prefix"></a> [resource\_prefix](#input\_resource\_prefix) | The prefix to be used for the resource names - used for easy identification | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of keys and values used to create resource metadata tags | `map(any)` | n/a | yes |
