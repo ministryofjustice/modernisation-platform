@@ -14,8 +14,7 @@ resource "aws_kinesis_firehose_delivery_stream" "delivery_stream" {
   #checkov:skip=CKV_AWS_241: We are using the default key for encryption.
   name        = format("%s-%s-%s", var.resource_prefix, "delivery-stream", random_string.firehose_rnd.result) 
   destination = "http_endpoint"
-
-    tags = merge(
+  tags = merge(
     var.tags,
     {
       Name = format("%s-%s-%s", var.resource_prefix, "delivery-stream", random_string.firehose_rnd.result) 
