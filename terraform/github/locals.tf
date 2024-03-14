@@ -55,8 +55,7 @@ locals {
   # Security engineers performing reviews on the platform or member accounts
   security = [
     "joelefejuku",
-    "isaacthomasMOJ",
-    "rajeshdandamudi"
+    "isaacthomasMOJ"
   ]
 
   # Members of the long term storage account team to acccess that account
