@@ -43,8 +43,6 @@ The default behaviour for a security group with no rules is to Deny all traffic.
 
 ## Stopping access from the internet to an application on MP
 
-In addition to the items listed below, if all internet access is being stopped the transit gateway should also be stopped. They are located in core-logging, core-network-services,core-shared-services and core-security environments. In this case follow the steps below from each environment.
-
 This work is carried out from the core-vpc-<environment> environment e.g. core-vpc-production.
 
 If you know which business unit the application under attack is in  you can disconnect the VPC from the internet by following these instructions.
@@ -59,11 +57,18 @@ The selected internet gateway will be detached from the VPC.
 
 This change will affect all applications in the VPC that you have selected. No applications in the VPC will be accessible from the internet. 
 
+In addition to the items listed above, if all internet access is being stopped the transit gateway should also be stopped. Access
+
+- core-logging
+- core-network-services
+- core-shared-services
+- core-security environments. 
+
+In this case follow the steps above from each environment.
+
 ## Stopping access to the internet for an application on MP
 
 Due to the way Network Firewall applies rules in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ), this section only covers changes to the VPC NACL. 
-
-In addition to the items listed below, if all internet access is being stopped the transit gateway should also be stopped. They are located in core-logging, core-network-services,core-shared-services and core-security environments. The rules on these will also need to be set to Deny (currently they appear to allow all network access).
 
 This work is carried out from the core-vpc-<environment> environment e.g. core-vpc-production. 
 
@@ -80,6 +85,15 @@ Follow the process below for each of these.
 2. Click on the checkbox for the ACL you want to change then select **outbound rules**.
 3. Add a new Deny rule for 0.0.0.0/0, rule number 4999, which will prevent access to the items listed after this point. All internet rules are 5000 and above based on our current code.
 4. Save changes.
+
+In addition to the items listed above, if all internet access is being stopped the transit gateway should also be stopped. Access
+
+- core-logging
+- core-network-services
+- core-shared-services
+- core-security environments. 
+
+The rules on these will need to be set to Deny (currently they allow all network access in most cases).
 
 ## Stopping access from the MOJ to an application via the Modernisation Platform Transit Gateway
 
