@@ -101,7 +101,7 @@ You need to access this through the same route as above:
 
 As previously mentioned above the way checks are undertaken in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ) mean adding a step for Deny may not work. **Note** any that are currently set to Deny in case this is manually changed back.
 
-This work is carried out from the core-vpc-(environment) environment e.g. core-vpc-production
+This work is carried out from the core-vpc-<environment> account, e.g. core-vpc-production
 
 The process needs to be done for all 3 NACLs listed. An example is
 
