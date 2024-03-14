@@ -52,8 +52,8 @@ resource "aws_kinesis_firehose_delivery_stream" "delivery_stream" {
       content_encoding = "GZIP"
 
       common_attributes {
-        name  = "Firewall Name"
-        value = var.firewall_name
+        name  = "Firewall Name & Log Type"
+        value = var.resource_prefix
       }
     }
 

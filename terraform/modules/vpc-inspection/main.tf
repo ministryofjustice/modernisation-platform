@@ -82,7 +82,6 @@ resource "aws_flow_log" "cloudwatch" {
 module "firehose_delivery_stream" {
   source                  = "../../modules/firehose"
   resource_prefix         = "${var.tags_prefix}-vpcflow"
-  firewall_name           = "${var.tags_prefix}-vpcflow"
   log_group_name          = aws_cloudwatch_log_group.main.name
   tags                    = var.tags_common
   xsiam_endpoint          = var.xsiam_network_endpoint

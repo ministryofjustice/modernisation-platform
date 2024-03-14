@@ -9,11 +9,6 @@ variable "resource_prefix" {
    type        = string
 }
 
-variable "firewall_name" {
-  description = "Name of firewall to identify whether live or non-line"
-  type        = string
-}
-
 variable "log_group_name" {
     description = "The name of the log group that the subscription will be added to"
     type        = string
