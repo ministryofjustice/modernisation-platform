@@ -23,7 +23,7 @@ This document lists the steps needed to stop access to and from the internet and
 All changes are to be made manually on the relevant environment (for example core-vpc-production) and are not made through the code. If a way of reverting back to baseline is required the terraform code can be run and this will reset everything. All of the steps listed will be performed on the core-vpc-(environment) location unless otherwise specified.
 
 [CAUTION]
-> All changes via terraform should be stopped while this work is ongoing. No MP terraform runs should be permitted while there is work going on to prevent unauthorised access to the environments.
+> All networking changes via terraform should be stopped while this work is ongoing. No MP terraform runs should be permitted while there is work going on to prevent unauthorised access to the environments.
 
 > The changes listed in this document will impact all applications connected to a particular NACL. If you were to amend, for example, hmpps-production-data-nacl, everything that connects via that NACL will be impacted. Nothing that connects from HMPPS through this NACL will have access.
 
