@@ -15,7 +15,7 @@ environment_json_dir=$core_repo_dir/environments
 codeowners_file=$env_repo_dir/.github/CODEOWNERS
 
 provision_environment_directories() {
-    # This reshapes the JSON for subnet sets to include the business unit, pulled from the filename; and the set name from the key of the object:
+  # This reshapes the JSON for subnet sets to include the business unit, pulled from the filename; and the set name from the key of the object:
   # [
   #   {
   #     "subnet_sets": [
@@ -54,7 +54,7 @@ provision_environment_directories() {
     echo "This is the directory: $directory"
     account_type=$(jq -r '."account-type"' ${environment_json_dir}/${application_name}.json)
 
-    if [ -d "$directory" ] || [ "$account_type" != "member" ] || [ "$application_name" == "testing" ]; then
+    if [ -d $directory ] || [ "$account_type" != "member" ] || [ "$application_name" == "testing" ]; then
       # Do nothing if a directory already exists
       echo ""
       echo "Ignoring $directory, it already exists or is a core account or unrestricted account"
