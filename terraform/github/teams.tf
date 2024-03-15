@@ -17,7 +17,6 @@ module "core-team" {
     module.terraform-module-aws-loadbalancer.repository.name,
     module.modernisation-platform-ami-builds.repository.name,
     module.modernisation-platform-environments.repository.name,
-    module.modernisation-platform-infrastructure-test.repository.name,
     module.modernisation-platform-terraform-member-vpc.repository.name,
     module.modernisation-platform-cp-network-test.repository.name,
     module.modernisation-platform-terraform-module-template.repository.name,
