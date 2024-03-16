@@ -28,6 +28,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/analytical-platform-ingestion"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/analytical-platform-landing"
     schedule:
       interval: "daily"
@@ -113,10 +117,6 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/corporate-staff-rostering"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/cortex-xsiam"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
