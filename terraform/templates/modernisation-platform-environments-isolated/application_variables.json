@@ -1,0 +1,16 @@
+{
+  "accounts": {
+    "development": {
+      "vpc_cidr": "10.0.0.0/16"
+    },
+    "test": {
+      "vpc_cidr": "10.0.0.0/16"
+    },
+    "preproduction": {
+      "vpc_cidr": "10.0.0.0/16"
+    },
+    "production": {
+      "vpc_cidr": "10.0.0.0/16"
+    }
+  }
+}
