@@ -1,8 +1,8 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Revoke network access if required
-last_reviewed_on: 2024-03-14
-review_in: 6 months or when is resolved.
+last_reviewed_on: 2024-03-18
+review_in: 3 months
 ---
 
 # <%= current_page.data.title %>
@@ -43,13 +43,13 @@ The default behaviour for a security group with no rules is to Deny all traffic.
 
 ## Stopping access from the internet to an application on MP
 
-This work is carried out from the core-vpc-<environment> account e.g. core-vpc-production.
+This work is carried out from the `core-vpc-<environment>` account e.g. `core-vpc-production`.
 
 If you know which business unit the application under attack is in  you can disconnect the VPC from the internet by following these instructions.
 
 1. Go to VPC->Internet gateways.
-2. Select the gateway (example is hmpps-preproduction-internet-gateway).
-3. Note the Internet gateway ID and the VPC ID.
+2. Select the gateway (example is `hmpps-preproduction-internet-gateway`).
+3. Note the internet gateway ID and the VPC ID.
 4. Click on Actions, Detach from VPC.
 5. If you are sure this is correct click on the Detach internet gateway button.
 
@@ -61,50 +61,34 @@ This change will affect all applications in the VPC that you have selected. No a
 
 Due to the way Network Firewall applies rules in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ), this section only covers changes to the VPC NACL. 
 
-This work is carried out from the core-vpc-<environment> account e.g. core-vpc-production. 
+This work is carried out from the `core-vpc-<environment>` account e.g. `core-vpc-production`. 
 
 The process needs to be done for the 3 NACLs listed below. Examples for production are shown here:
 
-- hmpps-production-data-nacl
-- hmpps-production-private-nacl
-- hmpps-production-public-nacl
-- hmpps-production-protected-nacl
+- `hmpps-production-data-nacl`
+- `hmpps-production-private-nacl`
+- `hmpps-production-public-nacl`
+- `hmpps-production-protected-nacl`
 
 Follow the process below for each of these.
 
 1. Go to VPC->Security->Network ACLs.
 2. Click on the checkbox for the ACL you want to change then select **outbound rules**.
-3. Add a new Deny for 0.0.0.0/0, rule number 4999, which will prevent access to the items listed after this point. All internet rules are 5000 and above based on our current code.    
-3a. For `hmpps-production-protected-nacl` add rule number 1 with a Deny on 0.0.0.0/0.
-4. Save changes.
-
-## Stop transit gateway access to the internet on additional accounts
-
-In addition to the items listed above, if all internet access is being stopped the transit gateway should also be stopped. Access each of the following in turn :
-
-- core-logging
-- core-network-services
-- core-shared-services
-- core-security environments. 
-
-On each environment follow the steps above (noted below for completeness)
-
-1. Go to VPC->Security->Network ACLs.
-2. Click on the checkbox for the ACL you want to change (in this case transit-gateway) then select **outbound rules**.
-3. Add a new Deny for 0.0.0.0/0, rule number 1, which will prevent access to the items listed after this point.
+3. Add a new Deny for **0.0.0.0/0**, rule number 4999, which will prevent access to the items listed after this point. All internet rules are 5000 and above based on our current code.    
+3a. For `hmpps-production-protected-nacl` add rule number 1 with a Deny on **0.0.0.0/0**.
 4. Save changes.
 
 ## Stopping access from the MOJ to an application via the Modernisation Platform Transit Gateway
 
 Due to the way Network Firewall applies rules in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ), this section only covers changes to the VPC NACLs.  
 
-This work is carried out from the core-vpc-<environment> account e.g. core-vpc-production
+This work is carried out from the `core-vpc-<environment>` account e.g. `core-vpc-production`
 
 The process needs to be done for the 3 NACLs listed below. Examples for production are shown here:
 
-- hmpps-production-data-nacl
-- hmpps-production-private-nacl
-- hmpps-production-public-nacl
+- `hmpps-production-data-nacl`
+- `hmpps-production-private-nacl`
+- `hmpps-production-public-nacl`
 
 You need to access this through the same route as below.
 
@@ -119,13 +103,13 @@ You need to access this through the same route as below.
 
 Due to the way Network Firewall applies rules in AWS (see [here](https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-rule-evaluation-order.html) ), this section only covers changes to the VPC NACLs. 
 
-This work is carried out from the core-vpc-<environment> account, e.g. core-vpc-production
+This work is carried out from the `core-vpc-<environment>` account, e.g. `core-vpc-production`
 
 The process needs to be done for the 3 NACLs listed below. Examples for production are shown here:
 
-- hmpps-production-data-nacl
-- hmpps-production-private-nacl
-- hmpps-production-public-nacl
+- `hmpps-production-data-nacl`
+- `hmpps-production-private-nacl`
+- `hmpps-production-public-nacl`
 
 You need to access this through the same route as below:
 
@@ -140,13 +124,51 @@ You need to access this through the same route as below:
 
 At a platform level, we can delete the VPC Transit Gateway attachment to prevent internal movement. We can do so through the following steps:
 
-1. Connect to core-network-services.
+1. Connect to `core-network-services`.
 2. Got to VPC->Transit gateway->Transit gateway attachments.
-3. Pick the required attachment (e.g. platforms-preproduction-attachment). 
+3. Pick the required attachment (e.g. `platforms-preproduction-attachment`). 
 4. On the Actions pick Delete transit gateway attachment.
 5. Type delete in the box and click on the Delete button.
-7. The changes are saved.
+6. The changes are saved.
 
 To fully isolate a VPC you can also detach the internet gateway.
 
-An an application level, you should refer to the earlier guidance on stopping access to/from a single application.
+At an application level, you should refer to the earlier guidance on stopping access to/from a single application.
+
+## Blocking access to infrastructure in MP core accounts
+
+At a platform level, we may need to stop access to services in our core accounts.
+
+This work is carried out from the `core-<service>` account, e.g. `core-logging`.
+
+The process needs to be done for the 3 NACLs listed below. Examples for production are shown here:
+
+- `live_data-data`
+- `live_data-private`
+- `live_data-public`
+
+1. Connect to `core-shared-services`.
+2. Click on the checkbox for the one you want to change then select **inbound rules**.
+3. Amend all the rules that are >= 500 and < 600 so they are in a Deny state.
+4. Save the changes.
+
+**NOTE** `core-network-services` VPCs host network firewall endpoints. Amending NACLs here will affect all traffic moving through the VPCs, either to the internet or to the rest of the MOJ.
+
+## Blocking access from infrastructure in MP core account
+
+At a platform level, we may need to stop access from services in our core accounts.
+
+This work is carried out from the `core-<service>` account, e.g. `core-logging`.
+
+The process needs to be done for the 3 NACLs listed below. Examples for production are shown here:
+
+- `live_data-data`
+- `live_data-private`
+- `live_data-public`
+
+1. Connect to `core-shared-services`.
+2. Click on the checkbox for the one you want to change then select **outbound rules**.
+3. Add a new Deny for **0.0.0.0/0**, rule number 211, which will prevent access to the items listed after this point. As rule 210 allows access inside the VPC, all rules above allow traffic to leave the VPC.
+4. Save the changes.
+
+**NOTE** `core-network-services` VPCs host network firewall endpoints. Amending NACLs here will affect all traffic moving through the VPCs, either to the internet or to the rest of the MOJ.
