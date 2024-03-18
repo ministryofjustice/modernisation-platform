@@ -118,119 +118,119 @@
     "destination_port": "49152:65535",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_as_53_DNS_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_a_53_DNS_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-a}",
     "destination_port": "53",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_as_53_DNS_UDP": {
+  "mojo_to_mp_ad_hmpp_dc_a_53_DNS_UDP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-a}",
     "destination_port": "53",
     "protocol": "UDP"
   },
-  "mojo_to_mp_ad_hmpp_dc_as_88_Kerberos_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_a_88_Kerberos_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-a}",
     "destination_port": "88",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_as_88_Kerberos_UDP": {
+  "mojo_to_mp_ad_hmpp_dc_a_88_Kerberos_UDP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-a}",
     "destination_port": "88",
     "protocol": "UDP"
   },
-  "mojo_to_mp_ad_hmpp_dc_as_123_NTP_UDP": {
+  "mojo_to_mp_ad_hmpp_dc_a_123_NTP_UDP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-a}",
     "destination_port": "123",
     "protocol": "UDP"
   },
-  "mojo_to_mp_ad_hmpp_dc_as_135_MS_RPC_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_a_135_MS_RPC_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-a}",
     "destination_port": "135",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_as_139_NetBios_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_a_139_NetBios_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-a}",
     "destination_port": "139",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_as_389_LDAP_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_a_389_LDAP_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-a}",
     "destination_port": "389",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_as_389_LDAP_UDP": {
+  "mojo_to_mp_ad_hmpp_dc_a_389_LDAP_UDP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-a}",
     "destination_port": "389",
     "protocol": "UDP"
   },
-  "mojo_to_mp_ad_hmpp_dc_as_445_SMB_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_a_445_SMB_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-a}",
     "destination_port": "445",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_as_464_Kerberos_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_a_464_Kerberos_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-a}",
     "destination_port": "464",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_as_464_Kerberos_UDP": {
+  "mojo_to_mp_ad_hmpp_dc_a_464_Kerberos_UDP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-a}",
     "destination_port": "464",
     "protocol": "UDP"
   },
-  "mojo_to_mp_ad_hmpp_dc_as_636_LDAPS_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_a_636_LDAPS_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-a}",
     "destination_port": "636",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_as_3268_LDAP_GC_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_a_3268_LDAP_GC_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-a}",
     "destination_port": "3268",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_as_3269_LDAPS_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_a_3269_LDAPS_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-a}",
     "destination_port": "3269",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_as_9389_ADWS_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_a_9389_ADWS_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-a}",
     "destination_port": "9389",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_as_49152_65535_RPC_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_a_49152_65535_RPC_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-a}",
@@ -356,119 +356,119 @@
     "destination_port": "49152:65535",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_bs_53_DNS_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_b_53_DNS_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-b}",
     "destination_port": "53",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_bs_53_DNS_UDP": {
+  "mojo_to_mp_ad_hmpp_dc_b_53_DNS_UDP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-b}",
     "destination_port": "53",
     "protocol": "UDP"
   },
-  "mojo_to_mp_ad_hmpp_dc_bs_88_Kerberos_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_b_88_Kerberos_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-b}",
     "destination_port": "88",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_bs_88_Kerberos_UDP": {
+  "mojo_to_mp_ad_hmpp_dc_b_88_Kerberos_UDP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-b}",
     "destination_port": "88",
     "protocol": "UDP"
   },
-  "mojo_to_mp_ad_hmpp_dc_bs_123_NTP_UDP": {
+  "mojo_to_mp_ad_hmpp_dc_b_123_NTP_UDP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-b}",
     "destination_port": "123",
     "protocol": "UDP"
   },
-  "mojo_to_mp_ad_hmpp_dc_bs_135_MS_RPC_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_b_135_MS_RPC_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-b}",
     "destination_port": "135",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_bs_139_NetBios_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_b_139_NetBios_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-b}",
     "destination_port": "139",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_bs_389_LDAP_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_b_389_LDAP_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-b}",
     "destination_port": "389",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_bs_389_LDAP_UDP": {
+  "mojo_to_mp_ad_hmpp_dc_b_389_LDAP_UDP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-b}",
     "destination_port": "389",
     "protocol": "UDP"
   },
-  "mojo_to_mp_ad_hmpp_dc_bs_445_SMB_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_b_445_SMB_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-b}",
     "destination_port": "445",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_bs_464_Kerberos_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_b_464_Kerberos_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-b}",
     "destination_port": "464",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_bs_464_Kerberos_UDP": {
+  "mojo_to_mp_ad_hmpp_dc_b_464_Kerberos_UDP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-b}",
     "destination_port": "464",
     "protocol": "UDP"
   },
-  "mojo_to_mp_ad_hmpp_dc_bs_636_LDAPS_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_b_636_LDAPS_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-b}",
     "destination_port": "636",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_bs_3268_LDAP_GC_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_b_3268_LDAP_GC_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-b}",
     "destination_port": "3268",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_bs_3269_LDAPS_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_b_3269_LDAPS_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-b}",
     "destination_port": "3269",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_bs_9389_ADWS_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_b_9389_ADWS_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-b}",
     "destination_port": "9389",
     "protocol": "TCP"
   },
-  "mojo_to_mp_ad_hmpp_dc_bs_49152_65535_RPC_TCP": {
+  "mojo_to_mp_ad_hmpp_dc_b_49152_65535_RPC_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
     "destination_ip": "${ad-hmpp-dc-b}",
