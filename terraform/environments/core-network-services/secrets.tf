@@ -86,19 +86,4 @@ data "aws_iam_policy_document" "environment_logging" {
   }
 }
 
-# output "xsiam_preprod_network_endpoint" {
-#   value = "local.xsiam_secret_data[xsiam_network_preprod_endpoint]"
-# }
-
-
-# output "xsiam_secret_values" {
-#     dynamic "output" {
-#       for_each = local.xsiam_secret_items
-#         content {
-#           name = output.key
-#           value = local.xsiam_secret_data[output.key]
-#         }
-#     }
-# }
-
 
