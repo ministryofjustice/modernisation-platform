@@ -166,8 +166,9 @@ data "aws_iam_policy_document" "developer_additional" {
     sid    = "developerAllow"
     effect = "Allow"
     actions = [
-      "acm:ImportCertificate",
       "acm:AddTagsToCertificate",
+      "acm:DeleteCertificate",
+      "acm:ImportCertificate",
       "acm:RemoveTagsFromCertificate",
       "application-autoscaling:ListTagsForResource",
       "autoscaling:UpdateAutoScalingGroup",
