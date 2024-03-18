@@ -13,19 +13,8 @@ locals {
   # the string leftover is `-production`, if it isn't (e.g. core-vpc-non-production => -non-production) then it sets the var to false.
   is-production = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production"
 
-  # Secrets that contain the Xsiam endpoints and secret keys for live & non-live
-  firehose_preprod_firewall_secret   = jsondecode(data.aws_secretsmanager_secret_version.kinesis_preprod_firewall_secret_arn_version.secret_string)
-  firehose_preprod_firewall_endpoint = jsondecode(data.aws_secretsmanager_secret_version.kinesis_preprod_firewall_endpoint_arn_version.secret_string)
-
-  firehose_preprod_network_secret   = jsondecode(data.aws_secretsmanager_secret_version.kinesis_preprod_network_secret_arn_version.secret_string)
-  firehose_preprod_network_endpoint = jsondecode(data.aws_secretsmanager_secret_version.kinesis_preprod_network_endpoint_arn_version.secret_string)
-
-  firehose_prod_firewall_secret   = jsondecode(data.aws_secretsmanager_secret_version.kinesis_prod_firewall_secret_arn_version.secret_string)
-  firehose_prod_firewall_endpoint = jsondecode(data.aws_secretsmanager_secret_version.kinesis_prod_firewall_endpoint_arn_version.secret_string)
-
-  firehose_prod_network_secret   = jsondecode(data.aws_secretsmanager_secret_version.kinesis_prod_network_secret_arn_version.secret_string)
-  firehose_prod_network_endpoint = jsondecode(data.aws_secretsmanager_secret_version.kinesis_prod_network_endpoint_arn_version.secret_string)
-
+  # This local allows us to references the key / value pairs held in xsiam_secrets.
+  xsiam = jsondecode(data.aws_secretsmanager_secret_version.xsiam_secret_arn_version.secret_string)
 
   tags = {
     business-unit = "Platforms"

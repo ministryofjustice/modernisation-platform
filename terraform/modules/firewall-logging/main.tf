@@ -25,12 +25,8 @@ resource "aws_cloudwatch_log_group" "main" {
   tags              = var.tags
 }
 
-
-module "firehose_delivery_stream" {
-  source                  = "../../modules/firehose"
-  resource_prefix         = "${var.fw_name}-firewall"
-  log_group_name          = aws_cloudwatch_log_group.main.name
-  tags                    = var.tags
-  xsiam_endpoint          = var.xsiam_firewall_endpoint
-  xsiam_secret            = var.xsiam_firewall_secret
+output "cloudwatch_log_group_name" {
+  value = aws_cloudwatch_log_group.main.name
 }
+
+

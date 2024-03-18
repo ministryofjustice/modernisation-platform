@@ -178,8 +178,6 @@ module "firewall_logging" {
   fw_arn                    = aws_networkfirewall_firewall.external_inspection.arn
   fw_name                   = aws_networkfirewall_firewall.external_inspection.name
   tags                      = local.tags
-  xsiam_firewall_endpoint   = tostring(local.firehose_prod_firewall_endpoint["xsiam_prod_firewall_endpoint"])
-  xsiam_firewall_secret     = tostring(local.firehose_prod_firewall_secret["xsiam_prod_firewall_secret"])
 }
 
 resource "aws_networkfirewall_firewall" "external_inspection" {
@@ -201,6 +199,16 @@ resource "aws_networkfirewall_firewall" "external_inspection" {
     { Name = "external-inspection" }
   )
 }
+
+module "firehose_delivery_stream" {
+  source                  = "../../modules/firehose"
+  resource_prefix         = "external-inspection-firewall"
+  log_group_name          = module.firewall_logging.cloudwatch_log_group_name
+  tags                    = local.tags
+  xsiam_endpoint          = tostring(local.xsiam["xsiam_prod_firewall_endpoint"])
+  xsiam_secret            = tostring(local.xsiam["xsiam_prod_firewall_secret"])
+}
+
 
 #################################
 # TGW attach inspection vpc
