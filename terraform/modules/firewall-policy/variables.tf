@@ -43,7 +43,8 @@ variable "fw_rulegroup_name" {
 }
 
 variable "port_sets" {
-  description = "A map of lists for firewall port sets. EG {\"HTTP\" = [\"80\", \"443\"]
+  description = "A map of lists for firewall port sets."
+  default = {}
   type = map(any)
 }
 
