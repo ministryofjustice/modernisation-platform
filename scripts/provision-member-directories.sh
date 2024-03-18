@@ -48,7 +48,7 @@ provision_environment_directories() {
     echo "This is the application name: $application_name"
     account_type=$(jq -r '."account-type"' "$file")
     echo "This is a " $account_type " account"
-    isolated_network=$(jq -r '."isolated_network"' "$file")
+    isolated_network=$(jq -r '."isolated-network"' "$file")
     echo "Isolated network: $isolated_network"
     directory=$basedir/$application_name
     echo "This is the directory: $directory"
@@ -66,7 +66,7 @@ provision_environment_directories() {
         echo "Creating $directory"
 
         mkdir -p "$directory"
-        copy_isolate_templates "$directory" "$application_name"
+        copy_isolated_templates "$directory" "$application_name"
 
         # Create workflow file
         echo "Creating workflow file"
