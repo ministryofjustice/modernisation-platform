@@ -68,6 +68,17 @@ resource "aws_networkfirewall_rule_group" "stateful" {
         }
       }
     }
+    rule_variables {
+      dynamic "port_sets" {
+        for_each = var.port_sets
+        content {
+          key = upper(port_sets.key)
+          port_set {
+            definition = tolist(port_sets.value)
+          }
+        }
+      }
+    }
   }
   lifecycle {
     create_before_destroy = true
