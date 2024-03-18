@@ -80,6 +80,8 @@ locals {
 
     mojo-end-user-devices = "10.0.0.0/8"
     dom1-dcs              = "10.0.0.0/8"
+    ad-hmpp-dc-a          = "10.20.72.5/32" # see https://github.com/ministryofjustice/modernisation-platform/issues/5970
+    ad-hmpp-dc-b          = "10.20.74.5/32" # and https://dsdmoj.atlassian.net/wiki/x/3oCKGAE
   }
 
   all_cidr_ranges = merge(
