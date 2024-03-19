@@ -555,6 +555,86 @@
           "access": "developer"
         }
       ]
+    },
+    {
+      "username": "olumide.alabi",
+      "github-username": "olusyscon",
+      "accounts": [
+        {
+          "account-name": "nomis-development",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "paul.morris",
+      "github-username": "paulmsys",
+      "accounts": [
+        {
+          "account-name": "nomis-development",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "claus.andresen",
+      "github-username": "clausdk66",
+      "accounts": [
+        {
+          "account-name": "nomis-development",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "claire.fraser",
+      "github-username": "CFraserSyscon",
+      "accounts": [
+        {
+          "account-name": "nomis-development",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "adrian.lowe",
+      "github-username": "Alowesyscon",
+      "accounts": [
+        {
+          "account-name": "nomis-development",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "prashant.thakur",
+      "github-username": "pthakur97",
+      "accounts": [
+        {
+          "account-name": "nomis-development",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "sunil.ghadigaonkar",
+      "github-username": "sunilsyscon",
+      "accounts": [
+        {
+          "account-name": "nomis-development",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "richard.stubbs",
+      "github-username": "rs87099",
+      "accounts": [
+        {
+          "account-name": "nomis-development",
+          "access": "instance-management"
+        }
+      ]
     }
   ]
 }
