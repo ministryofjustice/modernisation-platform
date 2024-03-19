@@ -168,6 +168,8 @@ module "firewall_policy" {
   fw_fqdn_rulegroup_name = format("%s-fw-fqdn-rulegroup", local.application_name)
   fw_allowed_domains     = local.fqdn_firewall_rules.fw_allowed_domains
   fw_home_net_ips        = local.fqdn_firewall_rules.fw_home_net_ips
+  ip_sets                = local.firewall_sets["IP_SETS"]
+  port_sets              = local.firewall_sets["PORT_SETS"]
   rules                  = local.firewall_rules
   tags                   = local.tags
 }

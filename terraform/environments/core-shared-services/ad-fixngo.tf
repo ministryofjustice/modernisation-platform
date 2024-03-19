@@ -42,26 +42,26 @@ locals {
         subnet_id                 = module.vpc["live_data"].non_tgw_subnet_ids_map.private[0]
         vpc_security_group_name   = "ad_hmpp_dc_sg"
         tags = {
-          server-type = "DomainController"
+          server-type = "DomainJoin"
           domain-name = "azure.hmpp.root"
           description = "domain controller for FixNGo azure.hmpp.root domain"
         }
       }
-      # ad-hmpp-dc-b = {
-      #   ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
-      #   availability_zone         = "eu-west-2b"
-      #   iam_instance_profile_role = "ad-fixngo-ec2-live-role"
-      #   instance_type             = "t3.large"
-      #   key_name                  = "ad-fixngo-ec2-live"
-      #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-dc-b"]
-      #   subnet_id                 = module.vpc["live_data"].non_tgw_subnet_ids_map.private[1]
-      #   vpc_security_group_name   = "ad_hmpp_dc_sg"
-      #   tags = {
-      #     server-type = "DomainController"
-      #     domain-name = "azure.hmpp.root"
-      #     description = "domain controller for FixNGo azure.hmpp.root domain"
-      #   }
-      # }
+      ad-hmpp-dc-b = {
+        ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
+        availability_zone         = "eu-west-2b"
+        iam_instance_profile_role = "ad-fixngo-ec2-live-role"
+        instance_type             = "t3.large"
+        key_name                  = "ad-fixngo-ec2-live"
+        private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-dc-b"]
+        subnet_id                 = module.vpc["live_data"].non_tgw_subnet_ids_map.private[1]
+        vpc_security_group_name   = "ad_hmpp_dc_sg"
+        tags = {
+          server-type = "DomainJoin"
+          domain-name = "azure.hmpp.root"
+          description = "domain controller for FixNGo azure.hmpp.root domain"
+        }
+      }
       # ad-hmpp-rdlic = {
       #   ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
       #   availability_zone         = "eu-west-2c"
@@ -884,7 +884,7 @@ resource "aws_instance" "ad_fixngo" {
 
   root_block_device {
     encrypted   = true
-    kms_key_id  = module.kms["hmpps"].key_arns["ebs"] # need to specify arn rather than id
+    kms_key_id  = module.kms["hmpps"].key_arns["ebs"] # need to specify arn rather than id
     volume_size = 127
     volume_type = "gp3"
 

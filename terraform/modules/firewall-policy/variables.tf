@@ -42,6 +42,18 @@ variable "fw_rulegroup_name" {
   type = string
 }
 
+variable "ip_sets" {
+  description = "A map of lists for firewall IP sets."
+  default = {}
+  type = map(any)
+}
+
+variable "port_sets" {
+  description = "A map of lists for firewall port sets."
+  default = {}
+  type = map(any)
+}
+
 variable "rules" {
   description = "A map of values supplied to create firewall rules"
   type        = map(any)

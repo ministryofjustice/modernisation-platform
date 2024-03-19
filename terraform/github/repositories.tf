@@ -270,19 +270,6 @@ module "modernisation-platform-environments" {
   }
 }
 
-module "modernisation-platform-infrastructure-test" {
-  source      = "./modules/repository"
-  name        = "modernisation-platform-infrastructure-test"
-  type        = "core"
-  description = "Infrastructure test tool based on Cucumber.js"
-  topics = [
-    "aws",
-    "networking",
-    "test",
-    "moj-security"
-  ]
-}
-
 module "terraform-module-aws-loadbalancer" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-loadbalancer"

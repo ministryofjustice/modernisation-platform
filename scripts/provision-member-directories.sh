@@ -10,6 +10,7 @@ env_repo_dir=modernisation-platform-environments
 basedir=$env_repo_dir/terraform/environments
 networkdir=$core_repo_dir/environments-networks
 templates=$core_repo_dir/terraform/templates/modernisation-platform-environments/*.*
+isolated_templates=$core_repo_dir/terraform/templates/modernisation-platform-environments-isolated/*.*
 environment_json_dir=$core_repo_dir/environments
 codeowners_file=$env_repo_dir/.github/CODEOWNERS
 
@@ -47,27 +48,41 @@ provision_environment_directories() {
     echo "This is the application name: $application_name"
     account_type=$(jq -r '."account-type"' "$file")
     echo "This is a " $account_type " account"
+    isolated_network=$(jq -r '."isolated-network"' "$file")
+    echo "Isolated network: $isolated_network"
     directory=$basedir/$application_name
     echo "This is the directory: $directory"
     account_type=$(jq -r '."account-type"' ${environment_json_dir}/${application_name}.json)
 
     if [ -d $directory ] || [ "$account_type" != "member" ] || [ "$application_name" == "testing" ]; then
-
       # Do nothing if a directory already exists
       echo ""
       echo "Ignoring $directory, it already exists or is a core account or unrestricted account"
       echo ""
     else
-      # Create the directory and copy files if it doesn't exist
-      echo ""
-      echo "Creating $directory"
+      if [ "$isolated_network" = "true" ]; then
+        # Create the directory and copy files if it doesn't exist
+        echo ""
+        echo "Creating $directory"
 
-      mkdir -p "$directory"
-      copy_templates "$directory" "$application_name"
+        mkdir -p "$directory"
+        copy_isolated_templates "$directory" "$application_name"
 
-      # Create workflow file
-      echo "Creating workflow file"
-      sed "s/\$application_name/$application_name/g" "$core_repo_dir/.github/workflows/templates/workflow-template.yml" > "$env_repo_dir/.github/workflows/$application_name.yml"
+        # Create workflow file
+        echo "Creating workflow file"
+        sed "s/\$application_name/$application_name/g" "$core_repo_dir/.github/workflows/templates/workflow-template.yml" > "$env_repo_dir/.github/workflows/$application_name.yml"
+      else
+        # Create the directory and copy files if it doesn't exist
+        echo ""
+        echo "Creating $directory"
+
+        mkdir -p "$directory"
+        copy_templates "$directory" "$application_name"
+
+        # Create workflow file
+        echo "Creating workflow file"
+        sed "s/\$application_name/$application_name/g" "$core_repo_dir/.github/workflows/templates/workflow-template.yml" > "$env_repo_dir/.github/workflows/$application_name.yml"
+      fi
     fi
 
     # This filters and reshapes networking_definitions to only include the business units and subnet sets for $APPLICATION_NAME
@@ -100,6 +115,15 @@ provision_environment_directories() {
       jq -rn --argjson DATA "${RAW_OUTPUT}" '{ networking: [ $DATA ] }' > "$directory"/networking.auto.tfvars.json
     fi
   done
+}
+
+copy_isolated_templates() {
+  for file in $isolated_templates; do
+    filename=$(basename "$file")
+    echo "Copying $file to $1, replacing application_name with $application_name"
+    sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
+  done
+  echo "Finished copying isolated network templates."
 }
 
 copy_templates() {
