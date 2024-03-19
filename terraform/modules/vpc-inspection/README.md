@@ -93,10 +93,12 @@
 | Name | Description |
 |------|-------------|
 | <a name="output_firewall"></a> [firewall](#output\_firewall) | n/a |
+| <a name="output_fw_cloudwatch_name"></a> [fw\_cloudwatch\_name](#output\_fw\_cloudwatch\_name) | n/a |
 | <a name="output_internet_gateway"></a> [internet\_gateway](#output\_internet\_gateway) | n/a |
 | <a name="output_nat_gateway"></a> [nat\_gateway](#output\_nat\_gateway) | n/a |
 | <a name="output_route_table_ids"></a> [route\_table\_ids](#output\_route\_table\_ids) | n/a |
 | <a name="output_subnet_attributes"></a> [subnet\_attributes](#output\_subnet\_attributes) | n/a |
 | <a name="output_transit_gateway_attachment_id"></a> [transit\_gateway\_attachment\_id](#output\_transit\_gateway\_attachment\_id) | n/a |
+| <a name="output_vpc_cloudwatch_name"></a> [vpc\_cloudwatch\_name](#output\_vpc\_cloudwatch\_name) | n/a |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | n/a |
 <!-- END_TF_DOCS -->
