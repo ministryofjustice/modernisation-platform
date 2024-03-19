@@ -26,12 +26,3 @@ module "vpc_inspection" {
   tags_prefix = each.key
 }
 
-module "firehose_delivery_stream" {
-  for_each = local.networking
-    source                  = "../../modules/firehose"
-    resource_prefix         = "${each.key}-firewall"
-    log_group_name          = module.inline_inspection_logging.cloudwatch_log_group_name
-    tags                    = local.tags
-    xsiam_endpoint          = each.key == "live_data" ? tostring(local.xsiam["xsiam_prod_firewall_endpoint"]) : tostring(local.xsiam["xsiam_preprod_firewall_endpoint"])
-    xsiam_secret            = each.key == "live_data" ? tostring(local.xsiam["xsiam_prod_firewall_secret"]) : tostring(local.xsiam["xsiam_preprod_firewall_secret"])
-}
