@@ -1,54 +1,58 @@
 {
-    "account-type": "member",
-    "codeowners": ["hmpps-migration"],
-    "github_action_reviewers": ["hmpps-migration"],
-    "environments": [
-      {
-        "name": "development",
-        "access": [
-          {
-            "github_slug": "hmpps-migration",
-            "level": "sandbox",
-            "nuke": "exclude"
-          }
-        ]
-      },
-      {
-        "name": "test",
-        "access": [
-          {
-            "github_slug": "hmpps-migration",
-            "level": "developer"
-          }
-        ]
-      },
-      {
-        "name": "preproduction",
-        "access": [
-          {
-            "github_slug": "hmpps-migration",
-            "level": "developer"
-          }
-        ]
-      },
-      {
-        "name": "production",
-        "access": [
-          {
-            "github_slug": "hmpps-migration",
-            "level": "developer"
-          }
-        ]
-      }
-    ],
-    "tags": {
-      "application": "delius-nextcloud",
-      "business-unit": "HMPPS",
-      "infrastructure-support": "probation-webops@digital.justice.gov.uk",
-      "owner": "probation-webops@digital.justice.gov.uk"
-    },
-    "github-oidc-team-repositories": [
-      "ministryofjustice/hmpps-delius-operational-automation"
-    ],
-    "go-live-date": ""
-  }
+	"account-type": "member",
+	"codeowners": [
+		"hmpps-migration"
+	],
+	"github_action_reviewers": [
+		"hmpps-migration"
+	],
+	"environments": [
+		{
+			"name": "development",
+			"access": [
+				{
+					"github_slug": "hmpps-migration",
+					"level": "sandbox",
+					"nuke": "exclude"
+				}
+			]
+		},
+		{
+			"name": "test",
+			"access": [
+				{
+					"github_slug": "hmpps-migration",
+					"level": "developer"
+				}
+			]
+		},
+		{
+			"name": "preproduction",
+			"access": [
+				{
+					"github_slug": "hmpps-migration",
+					"level": "developer"
+				}
+			]
+		},
+		{
+			"name": "production",
+			"access": [
+				{
+					"github_slug": "hmpps-migration",
+					"level": "developer"
+				}
+			]
+		}
+	],
+	"tags": {
+		"application": "delius-nextcloud",
+		"business-unit": "HMPPS",
+		"infrastructure-support": "probation-webops@digital.justice.gov.uk",
+		"owner": "probation-webops@digital.justice.gov.uk"
+	},
+	"github-oidc-team-repositories": [
+		"ministryofjustice/hmpps-delius-operational-automation"
+	],
+	"go-live-date": ""
+}
