@@ -3,11 +3,8 @@
 # This uses the cloudwatch log names outputted from the vpc inspection firewall module as well as the log group created for the external inspection firewall
 
 locals {
-    live_data = module.vpc_inspection["live_data"].fw_cloudwatch_name
-    non_live_data = module.vpc_inspection["non_live_data"].fw_cloudwatch_name
-    external_inspection = module.firewall_logging.cloudwatch_log_group_name
 
-    firewall_logs = toset([local.live_data, local.non_live_data, local.external_inspection])
+    firewall_logs = toset([module.vpc_inspection["live_data"].fw_cloudwatch_name, module.vpc_inspection["non_live_data"].fw_cloudwatch_name, module.firewall_logging.cloudwatch_log_group_name])
 
 }
 
