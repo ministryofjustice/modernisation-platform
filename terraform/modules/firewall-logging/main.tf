@@ -24,3 +24,9 @@ resource "aws_cloudwatch_log_group" "main" {
   retention_in_days = 365 # 0 = never expire
   tags              = var.tags
 }
+
+output "cloudwatch_log_group_name" {
+  value = aws_cloudwatch_log_group.main.name
+}
+
+

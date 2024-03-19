@@ -41,14 +41,17 @@
 | [aws_networkfirewall_firewall.inline_inspection](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/networkfirewall_firewall) | resource |
 | [aws_route.inspection-0-0-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.inspection-10-20-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
+| [aws_route.inspection-10-231-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.inspection-10-26-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.inspection-10-27-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.public-0-0-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.public-10-20-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
+| [aws_route.public-10-231-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.public-10-26-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.public-10-27-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.transit-gateway-0-0-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.transit-gateway-10-20-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
+| [aws_route.transit-gateway-10-231-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.transit-gateway-10-26-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route.transit-gateway-10-27-0-0](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
 | [aws_route_table.inspection](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
@@ -74,7 +77,7 @@
 | <a name="input_fw_delete_protection"></a> [fw\_delete\_protection](#input\_fw\_delete\_protection) | Boolean to enable or disable firewall deletion protection | `bool` | `true` | no |
 | <a name="input_fw_home_net_ips"></a> [fw\_home\_net\_ips](#input\_fw\_home\_net\_ips) | List of strings covering firewall HOME\_NET values | `list(string)` | n/a | yes |
 | <a name="input_fw_kms_arn"></a> [fw\_kms\_arn](#input\_fw\_kms\_arn) | KMS key ARN used for firewall encryption | `string` | n/a | yes |
-| <a name="input_fw_managed_rule_groups"></a> [fw\_managed\_rule\_groups](#input\_fw\_managed\_rule\_groups) | Names of AWS managed rule groups from <https://docs.aws.amazon.com/network-firewall/latest/developerguide/aws-managed-rule-groups-threat-signature.html> | `list(string)` | `[]` | no |
+| <a name="input_fw_managed_rule_groups"></a> [fw\_managed\_rule\_groups](#input\_fw\_managed\_rule\_groups) | Names of AWS managed rule groups from https://docs.aws.amazon.com/network-firewall/latest/developerguide/aws-managed-rule-groups-threat-signature.html | `list(string)` | `[]` | no |
 | <a name="input_fw_rules"></a> [fw\_rules](#input\_fw\_rules) | JSON map of maps containing stateless firewall rules | `map(any)` | n/a | yes |
 | <a name="input_tags_common"></a> [tags\_common](#input\_tags\_common) | Ministry of Justice required tags | `map(any)` | n/a | yes |
 | <a name="input_tags_prefix"></a> [tags\_prefix](#input\_tags\_prefix) | Prefix for name tags, e.g. "live\_data" | `string` | n/a | yes |
@@ -87,10 +90,12 @@
 | Name | Description |
 |------|-------------|
 | <a name="output_firewall"></a> [firewall](#output\_firewall) | n/a |
+| <a name="output_fw_cloudwatch_name"></a> [fw\_cloudwatch\_name](#output\_fw\_cloudwatch\_name) | n/a |
 | <a name="output_internet_gateway"></a> [internet\_gateway](#output\_internet\_gateway) | n/a |
 | <a name="output_nat_gateway"></a> [nat\_gateway](#output\_nat\_gateway) | n/a |
 | <a name="output_route_table_ids"></a> [route\_table\_ids](#output\_route\_table\_ids) | n/a |
 | <a name="output_subnet_attributes"></a> [subnet\_attributes](#output\_subnet\_attributes) | n/a |
 | <a name="output_transit_gateway_attachment_id"></a> [transit\_gateway\_attachment\_id](#output\_transit\_gateway\_attachment\_id) | n/a |
+| <a name="output_vpc_cloudwatch_name"></a> [vpc\_cloudwatch\_name](#output\_vpc\_cloudwatch\_name) | n/a |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | n/a |
 <!-- END_TF_DOCS -->

@@ -48,5 +48,8 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_key_arns"></a> [key\_arns](#output\_key\_arns) | Map of created KMS key arns where the map keys are 'ebs', 'general' and 'rds' |
+| <a name="output_key_ids"></a> [key\_ids](#output\_key\_ids) | Map of created KMS key ids where the map keys are 'ebs', 'general' and 'rds' |
 <!-- END_TF_DOCS -->

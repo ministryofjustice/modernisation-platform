@@ -3,6 +3,7 @@ locals {
     live_data     = "10.20.0.0/19"
     non_live_data = "10.20.32.0/19"
   }
+
 }
 
 module "vpc_inspection" {

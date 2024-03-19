@@ -12,3 +12,4 @@ variable "tags" {
   description = "A map of keys and values used to create resource metadata tags"
   type        = map(any)
 }
+
