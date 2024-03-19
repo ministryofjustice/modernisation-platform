@@ -11,7 +11,7 @@ locals {
 module "external_inspection_firehose" {
   source          = "../../modules/firehose"
   for_each        = local.firewall_logs
-  resource_prefix = each.value
+  resource_prefix = substr(each.value, 3, 3) # We do this because the log name is too long and we want to avoid any invalid characters.
   log_group_name  = each.value
   tags            = local.tags
   xsiam_endpoint  = each.value != "fw-non-live*" ? tostring(local.xsiam["xsiam_prod_firewall_endpoint"]) : tostring(local.xsiam["xsiam_nonprod_firewall_endpoint"])
