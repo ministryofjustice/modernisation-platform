@@ -3,6 +3,7 @@ locals {
     live_data     = "10.20.0.0/19"
     non_live_data = "10.20.32.0/19"
   }
+
 }
 
 module "vpc_inspection" {
@@ -17,8 +18,6 @@ module "vpc_inspection" {
   vpc_cidr              = each.value
   vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
   transit_gateway_id    = aws_ec2_transit_gateway.transit-gateway.id
-  xsiam_endpoint        = each.key == "live_data" ? tostring(local.xsiam["xsiam_prod_firewall_endpoint"]) : tostring(local.xsiam["xsiam_preprod_firewall_endpoint"])
-  xsiam_secret          = each.key == "live_data" ? tostring(local.xsiam["xsiam_prod_firewall_secret"]) : tostring(local.xsiam["xsiam_preprod_firewall_secret"])
 
   # Tags
   tags_common = merge(
@@ -27,4 +26,3 @@ module "vpc_inspection" {
   )
   tags_prefix = each.key
 }
-

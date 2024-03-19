@@ -65,13 +65,3 @@ variable "vpc_flow_log_iam_role" {
   description = "VPC Flow Log IAM role ARN for VPC Flow Logs to CloudWatch"
   type        = string
 }
-
-variable "xsiam_endpoint" {
-  description = "The http endpoint address of the production xsiam firewall stream"
-  type        = string
-}
-
-variable "xsiam_secret" {
-  description = "The http endpoint key of the production xsiam firewall stream"
-  type        = string
-}

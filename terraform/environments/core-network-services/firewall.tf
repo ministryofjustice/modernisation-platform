@@ -179,15 +179,6 @@ module "firewall_logging" {
   tags                      = local.tags
 }
 
-module "external_inspection_firehose" {
-  source          = "../../modules/firehose"
-  resource_prefix = "external-inspection-firewall"
-  log_group_name  = module.vpc_inspection.fw_cloudwatch_name.name
-  tags            = local.tags
-  xsiam_endpoint  = tostring(local.xsiam["xsiam_prod_firewall_endpoint"])
-  xsiam_secret    = tostring(local.xsiam["xsiam_prod_firewall_secret"])
-}
-
 resource "aws_networkfirewall_firewall" "external_inspection" {
   # checkov:skip=CKV2_AWS_63: Firewall logging is defined in module see call above
   depends_on          = [aws_subnet.external_inspection_out]

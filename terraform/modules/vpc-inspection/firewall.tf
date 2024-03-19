@@ -44,11 +44,11 @@ module "inline_inspection_logging" {
   tags                      = var.tags_common
 }
 
-module "firehose_delivery_stream" {
-  source                  = "../../modules/firehose"
-  resource_prefix         = "external-inspection-firewall"
-  log_group_name          = module.fw_cloudwatch_name.name
-  tags                    = var.tags_common
-  xsiam_endpoint          = var.xsiam_endpoint 
-  xsiam_secret            = var.xsiam_secret 
-}
+# module "firehose_delivery_stream" {
+#   source                  = "../../modules/firehose"
+#   resource_prefix         = "external-inspection-firewall"
+#   log_group_name          = module.fw_cloudwatch_name.name
+#   tags                    = var.tags_common
+#   xsiam_endpoint          = var.xsiam_endpoint 
+#   xsiam_secret            = var.xsiam_secret 
+# }
