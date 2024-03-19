@@ -18,16 +18,16 @@ The steps listed deny access on a platform level. If additional changes are requ
 
 A network attack is an exceptional situation so quick amendments are needed. It is anticipated that this can be done quickly through the console.
 
-This document lists the steps needed to stop access to and from the internet and preventing the system from being accessed from or accessing other applications on the MoJ.
+This document lists the steps required to revoke internet access, and isolate the compromised infrastructure from other applications.
 
 All changes are to be made manually on the relevant environment (for example core-vpc-production) and are not made through the code. If a way of reverting back to baseline is required the terraform code can be run and this will reset everything. All of the steps listed will be performed on the core-vpc-<environment> location unless otherwise specified.
 
-[CAUTION]
+## CAUTION
 > All networking changes via terraform should be stopped while this work is ongoing. No MP terraform runs should be permitted while there is work going on to prevent unauthorised access to the environments.
 
 > The changes listed in this document will impact all applications connected to a particular NACL. If you were to amend, for example, hmpps-production-data-nacl, everything that connects via that NACL will be impacted. Nothing that connects from HMPPS through this NACL will have access.
 
-> Additionally we are only making the changes manually to prevent the code being updated to the detriment of subsequent repairs. Assuming the issue is resolved we would need to rerun the original terraform code to reset everything to it's previous state. Any changes made to the code could cause us issues in being able to do this. It is likely that when applying the code there will be an warning shown stating that some changes have been made outside terraform. This is not something to worry about as all access will be reset to the previous state.
+> Additionally, we are only making the changes manually to prevent the code being updated to the detriment of subsequent repairs. Assuming the issue is resolved we would need to rerun the original terraform code to reset everything to it's previous state. Any changes made to the code could cause us issues in being able to do this. It is likely that when applying the code there will be an warning shown stating that some changes have been made outside terraform. This is not something to worry about as all access will be reset to the previous state.
 
 ## Stopping access to/from a single application
 
@@ -39,7 +39,7 @@ The most appropriate way is to remove rules from the relevant security groups. Y
 4. Delete each rule listed. For some security groups there may be a long list of items to delete. 
 5. You will need to Save rules to apply your change.
 
-The default behaviour for a security group with no rules is to Deny all traffic. 
+The default behaviour for a security group with no rules is to `deny` all traffic. 
 
 ## Stopping access from the internet to an application on MP
 
@@ -74,8 +74,8 @@ Follow the process below for each of these.
 
 1. Go to VPC->Security->Network ACLs.
 2. Click on the checkbox for the ACL you want to change then select **outbound rules**.
-3. Add a new Deny for **0.0.0.0/0**, rule number 4999, which will prevent access to the items listed after this point. All internet rules are 5000 and above based on our current code.    
-3a. For `hmpps-production-protected-nacl` add rule number 1 with a Deny on **0.0.0.0/0**.
+3. Add a new `deny` for **0.0.0.0/0**, rule number 4999, which will prevent access to the items listed after this point. All internet rules are 5000 and above based on our current code.    
+3a. For `hmpps-production-protected-nacl` add rule number 1 with a `deny` on **0.0.0.0/0**.
 4. Save changes.
 
 ## Stopping access from the MOJ to an application via the Modernisation Platform Transit Gateway
@@ -94,7 +94,7 @@ You need to access this through the same route as below.
 
 1. Go to VPC->Security->Network ACLs.
 2. Click on the checkbox for the one you want to change then select **inbound rules**.
-3. Amend all the rules that are >= 4000 and < 5000 so they are in a Deny state.
+3. Amend all the rules that are >= 4000 and < 5000 so they are in a `deny` state.
 4. Save the changes.
 
 **NOTE** the rules between 4000 and 5000 is based on the code being correctly set up to put the rules in this range. Amend the instructions if this changes.
@@ -115,7 +115,7 @@ You need to access this through the same route as below:
 
 1. Go to VPC->Security->Network ACLs
 2. Click on the checkbox for the one you want to change then select **outbound rules**
-3. Amend all the rules that are >= 4000 and < 5000 so they are in a Deny state.
+3. Amend all the rules that are >= 4000 and < 5000 so they are in a `deny` state.
 4. Save the changes
 
 **NOTE** the rules between 4000 and 5000 is based on the code being correctly set up to put the rules in this range. Amend the instructions if this changes.
@@ -149,7 +149,7 @@ The process needs to be done for the 3 NACLs listed below. Examples for producti
 
 1. Connect to `core-shared-services`.
 2. Click on the checkbox for the one you want to change then select **inbound rules**.
-3. Amend all the rules that are >= 500 and < 600 so they are in a Deny state.
+3. Amend all the rules that are >= 500 and < 600 so they are in a `deny` state.
 4. Save the changes.
 
 **NOTE** `core-network-services` VPCs host network firewall endpoints. Amending NACLs here will affect all traffic moving through the VPCs, either to the internet or to the rest of the MOJ.
@@ -168,7 +168,7 @@ The process needs to be done for the 3 NACLs listed below. Examples for producti
 
 1. Connect to `core-shared-services`.
 2. Click on the checkbox for the one you want to change then select **outbound rules**.
-3. Add a new Deny for **0.0.0.0/0**, rule number 211, which will prevent access to the items listed after this point. As rule 210 allows access inside the VPC, all rules above allow traffic to leave the VPC.
+3. Add a new `deny` for **0.0.0.0/0**, rule number 211, which will prevent access to the items listed after this point. As rule 210 allows access inside the VPC, all rules above allow traffic to leave the VPC.
 4. Save the changes.
 
 **NOTE** `core-network-services` VPCs host network firewall endpoints. Amending NACLs here will affect all traffic moving through the VPCs, either to the internet or to the rest of the MOJ.
