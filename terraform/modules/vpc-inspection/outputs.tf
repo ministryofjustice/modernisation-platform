@@ -54,3 +54,11 @@ output "transit_gateway_attachment_id" {
 output "vpc_id" {
   value = aws_vpc.main.id
 }
+
+output "vpc_cloudwatch_name" {
+  value = aws_cloudwatch_log_group.main.name
+}
+
+output "fw_cloudwatch_name" {
+  value = module.inline_inspection_logging.cloudwatch_log_group_name
+}

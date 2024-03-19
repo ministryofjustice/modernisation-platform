@@ -182,7 +182,7 @@ module "firewall_logging" {
 module "external_inspection_firehose" {
   source          = "../../modules/firehose"
   resource_prefix = "external-inspection-firewall"
-  log_group_name  = module.firewall_logging.cloudwatch_log_group_name
+  log_group_name  = module.vpc_inspection.fw_cloudwatch_name.name
   tags            = local.tags
   xsiam_endpoint  = tostring(local.xsiam["xsiam_prod_firewall_endpoint"])
   xsiam_secret    = tostring(local.xsiam["xsiam_prod_firewall_secret"])
