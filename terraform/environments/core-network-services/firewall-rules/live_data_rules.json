@@ -1,30 +1,30 @@
 {
   "mp_ad_hmpp_dc_to_dom1_TCP": {
     "action": "PASS",
-    "source_ip": "AD_HMPP_DCS",
+    "source_ip": "$AD_HMPP_DCS",
     "destination_ip": "${dom1-dcs}",
-    "destination_port": "DOMAIN_CONTROLLER_TCP",
+    "destination_port": "$DOMAIN_CONTROLLER_TCP",
     "protocol": "TCP"
   },
   "mp_ad_hmpp_dc_to_dom1_UDP": {
     "action": "PASS",
-    "source_ip": "AD_HMPP_DCS",
+    "source_ip": "$AD_HMPP_DCS",
     "destination_ip": "${dom1-dcs}",
-    "destination_port": "DOMAIN_CONTROLLER_UDP",
+    "destination_port": "$DOMAIN_CONTROLLER_UDP",
     "protocol": "TCP"
   },
   "mojo_to_mp_ad_hmpp_dcs_TCP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "AD_HMPP_DCS",
-    "destination_port": "DOMAIN_CONTROLLER_TCP",
+    "destination_ip": "$AD_HMPP_DCS",
+    "destination_port": "$DOMAIN_CONTROLLER_TCP",
     "protocol": "TCP"
   },
   "mojo_to_mp_ad_hmpp_dcs_UDP": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "AD_HMPP_DCS",
-    "destination_port": "DOMAIN_CONTROLLER_UDP",
+    "destination_ip": "$AD_HMPP_DCS",
+    "destination_port": "$DOMAIN_CONTROLLER_UDP",
     "protocol": "UDP"
   }
 }
