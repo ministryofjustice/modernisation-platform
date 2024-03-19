@@ -73,18 +73,18 @@ resource "aws_cloudwatch_log_subscription_filter" "subscription_filter" {
 
 resource "aws_cloudwatch_log_group" "delivery_errors_log_group" {
   #checkov:skip=CKV_AWS_158:"Temporarily skip KMS encryption check while logging solution is being updated"
-  name              = format("%s-%s-%s", var.resource_prefix, "delivery_errors_log_group", random_string.firehose_rnd.result) 
+  name              = format("%s-%s-%s", var.resource_prefix, "delivery-errors-log-group", random_string.firehose_rnd.result) 
   tags = merge(
     var.tags,
     {
-      Name = format("%s-%s-%s", var.resource_prefix, "delivery_errors_log_group", random_string.firehose_rnd.result) 
+      Name = format("%s-%s-%s", var.resource_prefix, "delivery-errors-log-group", random_string.firehose_rnd.result) 
     }
   )
   retention_in_days = 400 # Because it's more than a year.
 }
 
 resource "aws_cloudwatch_log_stream" "delivery_errors_log_stream" {
-  name           = format("%s-%s-%s", var.resource_prefix, "delivery_errors_log_stream", random_string.firehose_rnd.result)
+  name           = format("%s-%s-%s", var.resource_prefix, "delivery-errors-log-stream", random_string.firehose_rnd.result)
   log_group_name = aws_cloudwatch_log_group.delivery_errors_log_group.name
 }
 
