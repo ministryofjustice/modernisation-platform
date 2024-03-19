@@ -69,6 +69,15 @@ resource "aws_networkfirewall_rule_group" "stateful" {
       }
     }
     rule_variables {
+      dynamic "ip_sets" {
+        for_each = var.ip_sets
+        content {
+          key = upper(ip_sets.key)
+          ip_set {
+            definition = tolist(ip_sets.value)
+          }
+        }
+      }
       dynamic "port_sets" {
         for_each = var.port_sets
         content {
