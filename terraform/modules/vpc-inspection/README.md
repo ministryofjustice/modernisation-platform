@@ -18,7 +18,6 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_firehose_delivery_stream"></a> [firehose\_delivery\_stream](#module\_firehose\_delivery\_stream) | ../../modules/firehose | n/a |
 | <a name="module_inline_inspection_logging"></a> [inline\_inspection\_logging](#module\_inline\_inspection\_logging) | ../firewall-logging | n/a |
 | <a name="module_inline_inspection_policy"></a> [inline\_inspection\_policy](#module\_inline\_inspection\_policy) | ../../modules/firewall-policy | n/a |
 
@@ -85,10 +84,6 @@
 | <a name="input_transit_gateway_id"></a> [transit\_gateway\_id](#input\_transit\_gateway\_id) | n/a | `string` | `""` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | CIDR range for the VPC | `string` | n/a | yes |
 | <a name="input_vpc_flow_log_iam_role"></a> [vpc\_flow\_log\_iam\_role](#input\_vpc\_flow\_log\_iam\_role) | VPC Flow Log IAM role ARN for VPC Flow Logs to CloudWatch | `string` | n/a | yes |
-| <a name="input_xsiam_firewall_endpoint"></a> [xsiam\_firewall\_endpoint](#input\_xsiam\_firewall\_endpoint) | The http endpoint URL for the transfer of firewall log data via firehose | `string` | n/a | yes |
-| <a name="input_xsiam_firewall_secret"></a> [xsiam\_firewall\_secret](#input\_xsiam\_firewall\_secret) | The secret for the firewall xsiam http endpoint | `string` | n/a | yes |
-| <a name="input_xsiam_network_endpoint"></a> [xsiam\_network\_endpoint](#input\_xsiam\_network\_endpoint) | The http endpoint URL for the transfer of VPC flowlog data via firehose | `string` | n/a | yes |
-| <a name="input_xsiam_network_secret"></a> [xsiam\_network\_secret](#input\_xsiam\_network\_secret) | The secret for the vpc flow log xsiam http endpoint | `string` | n/a | yes |
 
 ## Outputs
 
