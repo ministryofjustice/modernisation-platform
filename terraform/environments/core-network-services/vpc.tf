@@ -17,10 +17,6 @@ module "vpc_inspection" {
   vpc_cidr                = each.value
   vpc_flow_log_iam_role   = data.aws_iam_role.vpc-flow-log.arn
   transit_gateway_id      = aws_ec2_transit_gateway.transit-gateway.id
-  xsiam_network_endpoint  = each.key == "live_data" ? tostring(local.xsiam["xsiam_prod_network_endpoint"]) : tostring(local.xsiam["xsiam_preprod_network_endpoint"])
-  xsiam_network_secret    = each.key == "live_data" ? tostring(local.xsiam["xsiam_prod_network_secret"]) : tostring(local.xsiam["xsiam_preprod_network_secret"])
-  xsiam_firewall_endpoint = each.key == "live_data" ? tostring(local.xsiam["xsiam_prod_firewall_endpoint"]) : tostring(local.xsiam["xsiam_preprod_firewall_endpoint"])
-  xsiam_firewall_secret   = each.key == "live_data" ? tostring(local.xsiam["xsiam_prod_firewall_secret"]) : tostring(local.xsiam["xsiam_preprod_firewall_secret"])
 
   # Tags
   tags_common = merge(
@@ -28,4 +24,14 @@ module "vpc_inspection" {
     { inline-inspection = "true" }
   )
   tags_prefix = each.key
+}
+
+module "firehose_delivery_stream" {
+  for_each = local.networking
+    source                  = "../../modules/firehose"
+    resource_prefix         = "${each.key}-firewall"
+    log_group_name          = module.inline_inspection_logging.cloudwatch_log_group_name
+    tags                    = local.tags
+    xsiam_endpoint          = each.key == "live_data" ? tostring(local.xsiam["xsiam_prod_firewall_endpoint"]) : tostring(local.xsiam["xsiam_preprod_firewall_endpoint"])
+    xsiam_secret            = each.key == "live_data" ? tostring(local.xsiam["xsiam_prod_firewall_secret"]) : tostring(local.xsiam["xsiam_preprod_firewall_secret"])
 }

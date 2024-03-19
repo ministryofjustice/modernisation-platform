@@ -43,12 +43,3 @@ module "inline_inspection_logging" {
   fw_arn                    = aws_networkfirewall_firewall.inline_inspection.arn
   tags                      = var.tags_common
 }
-
-module "firehose_delivery_stream" {
-  source                  = "../../modules/firehose"
-  resource_prefix         = "${var.tags_prefix}-firewall"
-  log_group_name          = module.inline_inspection_logging.cloudwatch_log_group_name
-  tags                    = var.tags_common
-  xsiam_endpoint          = var.xsiam_firewall_endpoint
-  xsiam_secret            = var.xsiam_firewall_secret
-}
