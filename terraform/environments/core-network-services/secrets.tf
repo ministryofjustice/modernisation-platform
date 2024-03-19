@@ -30,8 +30,8 @@ data "aws_secretsmanager_secret" "xsiam_secret_arn" {
 }
 
 data "aws_secretsmanager_secret_version" "xsiam_secret_arn_version" {
-    provider  = aws.modernisation-platform
-    secret_id = data.aws_secretsmanager_secret.xsiam_secret_arn.id
+  provider  = aws.modernisation-platform
+  secret_id = data.aws_secretsmanager_secret.xsiam_secret_arn.id
 }
 
 # Environment logging secret KMS key

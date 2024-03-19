@@ -47,7 +47,7 @@ module "inline_inspection_logging" {
 module "firehose_delivery_stream" {
   source                  = "../../modules/firehose"
   resource_prefix         = "external-inspection-firewall"
-  log_group_name          = module.firewall_logging.cloudwatch_log_group_name
+  log_group_name          = module.inline_inspection_logging.cloudwatch_log_group_name
   tags                    = var.tags_common
   xsiam_endpoint          = var.xsiam_endpoint 
   xsiam_secret            = var.xsiam_secret 
