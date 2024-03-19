@@ -6,6 +6,7 @@
 
 # NOTE: remember to remove ad-fixngo-ec2-access from
 # terraform/environments/bootstrap/single-sign-on/policies.tf when this is no longer required
+# and firewall rules from terraform/environments/core-network-services
 
 module "ad_fixngo_ip_addresses" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions

@@ -34,10 +34,12 @@ locals {
   test_rules            = fileexists("./firewall-rules/test_rules.json") ? jsondecode(templatefile("./firewall-rules/test_rules.json", local.all_cidr_ranges)) : {}
   preproduction_rules   = fileexists("./firewall-rules/preproduction_rules.json") ? jsondecode(templatefile("./firewall-rules/preproduction_rules.json", local.all_cidr_ranges)) : {}
   production_rules      = fileexists("./firewall-rules/production_rules.json") ? jsondecode(templatefile("./firewall-rules/production_rules.json", local.all_cidr_ranges)) : {}
+  live_data_rules       = fileexists("./firewall-rules/live_data_rules.json") ? jsondecode(templatefile("./firewall-rules/live_data_rules.json", local.all_cidr_ranges)) : {}
   fqdn_firewall_rules   = fileexists("./firewall-rules/fqdn_rules.json") ? jsondecode(file("./firewall-rules/fqdn_rules.json")) : {}
   inline_firewall_rules = fileexists("./firewall-rules/inline_rules.json") ? jsondecode(templatefile("./firewall-rules/inline_rules.json", local.all_cidr_ranges)) : {}
-  firewall_rules        = merge(local.development_rules, local.test_rules, local.preproduction_rules, local.production_rules)
-  firewall_sets         = fileexists("./firewall-rules/sets.json") ? jsondecode(file("./firewall-rules/sets.json")) : {}
+  firewall_rules        = merge(local.development_rules, local.test_rules, local.preproduction_rules, local.production_rules, local.live_data_rules)
+  firewall_sets         = fileexists("./firewall-rules/sets.json") ? jsondecode(templatefile("./firewall-rules/sets.json", local.all_cidr_ranges)) : {}
+
   vpn_attachments = fileexists("./vpn_attachments.json") ? jsondecode(file("./vpn_attachments.json")) : {}
 
   noms_vpn_attachment_ids = toset([for k in aws_vpn_connection.this : k.transit_gateway_attachment_id if(length(regexall("(?:NOMS)", k.tags.Name)) > 0)])
