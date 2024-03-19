@@ -107,7 +107,7 @@ resource "aws_s3_bucket" "firehose_error_logging_bucket" {
   #checkov:skip=CKV_AWS_18: No access logging required
   #checkov:skip=CKV2_AWS_61: Lifecycle is enabled but this error still gets thrown.
   #checkov:skip=CKV2_AWS_6: Public Access Block enabled - see below - but the error still gets thrown.
-  bucket = format("%s-%s-%s", var.resource_prefix, "firehose_error_logging_bucket", random_string.firehose_rnd.result) 
+  bucket = format("%s-%s-%s", var.resource_prefix, "firehose-error-logging-bucket", random_string.firehose_rnd.result) 
 }
 
 #tfsec:ignore:aws-ssm-secret-use-customer-key
