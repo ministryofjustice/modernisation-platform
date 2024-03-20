@@ -58,6 +58,7 @@ expected :=
     "nomis-data-hub",
     "oas",
     "oasys",
+    "oasys-national-reporting",
     "observability-platform",
     "opg-lpa-data-store",
     "performance-hub",
