@@ -114,3 +114,8 @@ deny[msg] {
   not startswith(input.filename, "environments/sprinkler") # to allow testing
   msg := sprintf("`%v` uses `powerbi-user` access level but is not an analytical platform or sprinkler account", [input.filename])
 }
+
+deny[msg] {
+  not has_field(input, "github-oidc-team-repositories")
+  msg := sprintf("`%v` is missing the `github-oidc-team-repositories` key", [input.filename])
+}
