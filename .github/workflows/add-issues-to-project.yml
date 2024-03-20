@@ -11,7 +11,7 @@ jobs:
     name: Add issue to project
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/add-to-project@0609a2702eefb44781da00f8e04901d6e5cd2b92 # v0.6.0
+      - uses: actions/add-to-project@1b844f0c5ac6446a402e0cb3693f9be5eca188c5 # v0.6.1
         with:
           project-url: https://github.com/orgs/ministryofjustice/projects/17
           github-token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
