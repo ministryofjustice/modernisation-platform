@@ -12,7 +12,7 @@ locals {
 
 # The initial call is for the creation of firehose stream resources for the firewall inspection logs.
 
-module "external_inspection_firehose" {
+module "firehose_firewalls" {
   source          = "../../modules/firehose"
   for_each        = local.firewall_logs
   resource_prefix = substr(each.value, 3, 3) # We do this because the log name is too long and we want to avoid any invalid characters.
@@ -24,12 +24,26 @@ module "external_inspection_firehose" {
 
 # A 2nd call of the module which will generate the firehose streams for the firewall vpc flow logs.
 
-module "firehose_for_firewall_vpc_flow_logs" {
+module "firehose_vpcs" {
   source          = "../../modules/firehose"
   for_each        = local.firewall_vpc_logs
-  resource_prefix = format("%s-vpc", substr(each.value, 0, 3)) # As above but we add an additional identifier 
+  resource_prefix = format("%s-vpc", substr(each.value, 0, 3)) # As above but we add an additional identifier
   log_group_name  = each.value
   tags            = local.tags
   xsiam_endpoint  = substr(each.value, 0, 3) != "non" ? tostring(local.xsiam["xsiam_prod_network_endpoint"]) : tostring(local.xsiam["xsiam_preprod_network_endpoint"])
   xsiam_secret    = substr(each.value, 0, 3) != "non" ? tostring(local.xsiam["xsiam_prod_network_secret"]) : tostring(local.xsiam["xsiam_preprod_network_secret"])
+}
+
+
+# Renaming the modules for extensibility reasons
+
+moved {
+  from = module.external_inspection_firehose
+  to   = module.firehose_firewalls
+
+}
+
+moved {
+  from = module.firehose_for_firewall_vpc_flow_logs
+  to   = module.firehose_vpcs
 }
