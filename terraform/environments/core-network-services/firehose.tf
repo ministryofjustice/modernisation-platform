@@ -33,17 +33,3 @@ module "firehose_vpcs" {
   xsiam_endpoint  = substr(each.value, 0, 3) != "non" ? tostring(local.xsiam["xsiam_prod_network_endpoint"]) : tostring(local.xsiam["xsiam_preprod_network_endpoint"])
   xsiam_secret    = substr(each.value, 0, 3) != "non" ? tostring(local.xsiam["xsiam_prod_network_secret"]) : tostring(local.xsiam["xsiam_preprod_network_secret"])
 }
-
-
-# Renaming the modules for extensibility reasons
-
-moved {
-  from = module.external_inspection_firehose
-  to   = module.firehose_firewalls
-
-}
-
-moved {
-  from = module.firehose_for_firewall_vpc_flow_logs
-  to   = module.firehose_vpcs
-}
