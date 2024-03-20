@@ -107,7 +107,7 @@ expected :=
           "hmpps-oem-test",
           "hmpps-domain-services-test",
           "delius-core-test",
-          "oasys-national-reporting-development"
+          "oasys-national-reporting-test"
         ]
       }
     },
