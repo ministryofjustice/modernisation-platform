@@ -1,0 +1,50 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "sandbox",
+          "nuke": "exclude"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "studio-webops",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "Oasys National Reporting/ONR",
+    "business-unit": "HMPPS",
+    "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
+    "owner": "Mark Richardson"
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}
