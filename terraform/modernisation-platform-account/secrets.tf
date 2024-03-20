@@ -178,13 +178,13 @@ data "aws_secretsmanager_secret_version" "circleci" {
 
 resource "aws_secretsmanager_secret" "xsiam_secrets" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
-    name        = "xsiam_secrets"
-    description = "Secret that holds the preprod & prod XSIAM endpoint values & keys for the firewall inspection & vpc flow log transfers"
-    kms_key_id  = aws_kms_key.secrets_key.id
-    tags        = local.tags
-    replica {
-      region = local.replica_region
-    }  
+  name        = "xsiam_secrets"
+  description = "Secret that holds the preprod & prod XSIAM endpoint values & keys for the firewall inspection & vpc flow log transfers"
+  kms_key_id  = aws_kms_key.secrets_key.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
 }
 
 
