@@ -65,7 +65,6 @@ These modules are used by the Modernisation Platform's core infrastructure
 | Name                                                                                                                          | Description                                          |
 | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
 | [modernisation-platform-instance-scheduler](https://github.com/ministryofjustice/modernisation-platform-instance-scheduler)   | A Go lambda function for stopping and starting instance, rds resources and autoscaling groups. The lambda is used by the core platform and can be reused outside of the platform with minimal changes |
-| [modernisation-platform-infrastructure-test](https://github.com/ministryofjustice/modernisation-platform-infrastructure-test) | Infrastructure test tool based on Cucumber.js        |
 | [modernisation-platform-cp-network-test](https://github.com/ministryofjustice/modernisation-platform-cp-network-test)         | Container bundled with utilities for network testing |
 
 
