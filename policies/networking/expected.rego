@@ -37,7 +37,8 @@ expected :=
           "corporate-staff-rostering-preproduction",
           "planetfm-preproduction",
           "hmpps-oem-preproduction",
-          "hmpps-domain-services-preproduction"
+          "hmpps-domain-services-preproduction",
+          "oasys-national-reporting-preproduction"
         ]
       }
     },
@@ -75,7 +76,8 @@ expected :=
           "corporate-staff-rostering-development",
           "planetfm-development",
           "hmpps-oem-development",
-          "hmpps-domain-services-development"
+          "hmpps-domain-services-development",
+          "oasys-national-reporting-development"
         ]
       }
     },
@@ -104,7 +106,8 @@ expected :=
           "planetfm-test",
           "hmpps-oem-test",
           "hmpps-domain-services-test",
-          "delius-core-test"
+          "delius-core-test",
+          "oasys-national-reporting-development"
         ]
       }
     },
@@ -138,7 +141,8 @@ expected :=
           "planetfm-production",
           "hmpps-oem-production",
           "digital-prison-reporting-production",
-          "hmpps-domain-services-production"
+          "hmpps-domain-services-production",
+          "oasys-national-reporting-production"
         ]
       }
     },

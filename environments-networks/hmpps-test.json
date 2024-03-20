@@ -16,7 +16,8 @@
           "planetfm-test",
           "hmpps-oem-test",
           "hmpps-domain-services-test",
-          "delius-core-test"
+          "delius-core-test",
+          "oasys-national-reporting-test"
         ]
       }
     }
