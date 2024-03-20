@@ -1077,6 +1077,13 @@ module "analytical_platform_ingestion_scan_ecr_repo" {
     local.environment_management.account_ids["analytical-platform-ingestion-production"]
   ]
 
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:function:scan*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-ingestion-production"]}:function:scan*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:function:definition-upload*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-ingestion-production"]}:function:definition-upload*"
+  ]
+
   # Tags
   tags_common = local.tags
 }
@@ -1092,6 +1099,11 @@ module "analytical_platform_ingestion_transfer_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["analytical-platform-ingestion-development"],
     local.environment_management.account_ids["analytical-platform-ingestion-production"]
+  ]
+
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:function:transfer*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-ingestion-production"]}:function:transfer*"
   ]
 
   # Tags
