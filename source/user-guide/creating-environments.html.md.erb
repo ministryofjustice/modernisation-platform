@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating environments in the Modernisation Platform
-last_reviewed_on: 2023-12-12
+last_reviewed_on: 2024-03-20
 review_in: 6 months
 ---
 
@@ -20,7 +20,7 @@ review_in: 6 months
 
 In the Modernisation Platform, we define environments (AWS accounts) via a JSON file in the [environments](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments) directory of the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform).
 
-When we recieve your request we will create a new JSON file and submit a pull request to the Modernisation Platform repository. On merging the Modernisation Platform will automatically provision your environments. Each environment defined represents an AWS account, see the [example](#blank-example) below for more information.
+When we receive your request we will create a new JSON file and submit a pull request to the Modernisation Platform repository. On merging the Modernisation Platform will automatically provision your environments. Each environment defined represents an AWS account, see the [example](#blank-example) below for more information.
 
 ## Requesting an environment
 
@@ -31,15 +31,15 @@ This will ask you for the following information:
 ### Application name
 
 Please follow MoJ guidance for [naming things](https://ministryofjustice.github.io/technical-guidance/documentation/standards/naming-things.html#naming-things)
-The name must be in lowercase and a maximum of 30 characters. If you need to use a separater use `-`.
+The name must be in lowercase and a maximum of 30 characters. If you need to use a separator use `-`.
 
 ### GitHub team slug
 
 This is the name of your GitHub team that will be accessing the environment. Environments are accessed via single sign on (SSO), so to give people permissions to access your environment you just have to add them to your GitHub team.
 
-Users who are not part of the MoJ GitHub organisation will need to be added as collaborators separately once the account has been created.  Please contact the Modernisation Platform team to do this.
+Users who are not part of the MoJ GitHub organisation will need to be added as collaborators separately once the account has been created. Please contact the Modernisation Platform team to do this.
 
-If you wish to add additional deployment reviewers from outside your GitHub team you can specfiy these per an environment in the application.json file (See: "additional_reviewers" in [Another example](#another-example) for an example).
+If you wish to add additional deployment reviewers from outside your GitHub team you can specify these per an environment in the application.json file (See: "additional_reviewers" in [Another example](#another-example) for an example).
 
 ### GitHub code owner team slug
 
@@ -51,7 +51,7 @@ If required you can seperate the permissions so that a different github team act
 
 By default all teams listed in the access blocks for an environment can approve the corresponding Github action runs.
 
-If required you can seperate the permissions so that a different github team is the approver. In this case all Github action runs requiring approval, such as terraform applies, will need to be approved by a member of the team provided.
+If required you can separate the permissions so that a different github team is the approver. In this case all Github action runs requiring approval, such as terraform applies, will need to be approved by a member of the team provided.
 
 ### Access
 
@@ -61,8 +61,8 @@ The options are as follows:
 
 #### view-only
 
- - Log into the console
- - See resources and basic metadata. You cannot see the content of resources such as logs or S3 buckets.
+- Log into the console
+- See resources and basic metadata. You cannot see the content of resources such as logs or S3 buckets.
 
 #### read-only
 
@@ -72,17 +72,17 @@ The options are as follows:
 
 #### developer
 
- - Log into the console
- - Read only access to resources including things like logs and S3 buckets
- - View and Edit [Secrets Manager](https://aws.amazon.com/secrets-manager/) secrets and [Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) values
- - Create and rotate access keys for the application deployment CI user
- - [Connect to instances via SSM](accessing-ec2s.html)
- - Start, stop and reboot EC2 instances
- - Create and copy Snapshots
- - Put and delete S3 objects
- - [Import certificates to ACM](certificate-import.html)
- - [Switch roles to view shared resources](member-read-only-core-accounts.html)
- - Raise AWS Support cases
+- Log into the console
+- Read only access to resources including things like logs and S3 buckets
+- View and Edit [Secrets Manager](https://aws.amazon.com/secrets-manager/) secrets and [Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) values
+- Create and rotate access keys for the application deployment CI user
+- [Connect to instances via SSM](accessing-ec2s.html)
+- Start, stop and reboot EC2 instances
+- Create and copy Snapshots
+- Put and delete S3 objects
+- [Import certificates to ACM](certificate-import.html)
+- [Switch roles to view shared resources](member-read-only-core-accounts.html)
+- Raise AWS Support cases
 
 #### sandbox
 
@@ -134,14 +134,14 @@ The instance-management role is a role given to assist database administrators.
 
 #### data-engineering
 
-Created for data engineers to have developer permissions as well as glue and athena permissions all in one policy. 
+Created for data engineers to have developer permissions as well as glue and athena permissions all in one policy.
 
 - Log into the console.
 - Data engineering permissions.
 
 #### administrator
 
- - Full admin access
+- Full admin access
 
 This is a legacy role and will not be generally available.
 
@@ -150,10 +150,10 @@ This is a legacy role and will not be generally available.
 Which environments you wish to use, we provide [core networking](creating-networking.html) for up to 4 accounts as standard.
 Usually two environments per application will be enough, a production account and a development account.
 
-* development
-* test
-* preproduction
-* production
+- development
+- test
+- preproduction
+- production
 
 As these environments are identical, and controlled via code, we would recommend you try to use as few environments as possible. We can provide more environments if there is a genuine need for them.
 
@@ -163,18 +163,18 @@ These will be used to tag your AWS resources, for further guidance on tagging pl
 
 The is-production tag will be inferred if the environment is production.
 
-tag | value
---- | ---
-application | Find a solicitor
-business-unit | LAA
-owner | find-a-solicitor@ministryofjustice.gov.uk
+| tag           | value                                     |
+| ------------- | ----------------------------------------- |
+| application   | Find a solicitor                          |
+| business-unit | LAA                                       |
+| owner         | find-a-solicitor@ministryofjustice.gov.uk |
 
 Valid business-unit values
 HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE
 
 ### Additional features
 
-In addition to the core networking provided, you can request bastion access, additional VPC endpoints and extended DNS zones.
+In addition to the core networking provided, you can request bastion access, additional VPC endpoints, extended DNS zones or a isolated network environment.
 
 See [creating networking](creating-networking.html) for more information on additional features.
 
@@ -187,13 +187,15 @@ You can view our architecture for Environments (AWS accounts) on the [dedicated 
 Here are some examples of the environments JSON file that the Modernisation Platform team will create.
 
 ### Schema
-- `account-type` determines if this is a core modernisation platform account or a user member account
-- `codeowners` is an optional list of github slugs if you want specific teams to review code changes before they are released into environments 
-- `github_action_reviewers` is an optional list of github slugs if you want specific teams to approve github action runs
-- `environments` should be an array of objects for environments required. If the environment is `production`, retention periods, backup frequency, and similar will be different compared to non-production environments
+
+- `account-type` determines if this is a core modernisation platform account or a user member account.
+- `isolated-network` is an optional field which can be set to 'true' if you require an isolated environment with no internet or shared network connectivity.
+- `codeowners` is an optional list of github slugs if you want specific teams to review code changes before they are released into environments.
+- `github_action_reviewers` is an optional list of github slugs if you want specific teams to approve github action runs.
+- `environments` should be an array of objects for environments required. If the environment is `production`, retention periods, backup frequency, and similar will be different compared to non-production environments.
 - the `name` key and `access` object are required, see: [Another example](#another-example)
-- the `nuke` key is optional and is only read if the `access.level` is `sandbox`
-- `tags` should be an object of the mandatory tags defined in the MoJ [Tagging Guidance](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tagging-your-infrastructure). You can omit `is-production` as we infer this from the environment name
+- the `nuke` key is optional and is only read if the `access.level` is `sandbox`.
+- `tags` should be an object of the mandatory tags defined in the MoJ [Tagging Guidance](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tagging-your-infrastructure). You can omit `is-production` as we infer this from the environment name.
 
 ### Blank example
 
@@ -202,6 +204,7 @@ Here are some examples of the environments JSON file that the Modernisation Plat
 ```json
 {
   "account-type": "",
+  "isolated-network": "",
   "codeowners": [""],
   "github_action_reviewers": [""],
   "environments": [
@@ -241,12 +244,12 @@ An JSON definition for an nonsensical application called [`glados`](https://en.w
       "name": "development",
       "access": [
         {
-        "github_slug": "glados-team",
-        "level": "sandbox",
-        "nuke": "rebuild"
+          "github_slug": "glados-team",
+          "level": "sandbox",
+          "nuke": "rebuild"
         }
       ],
-      "additional_reviewers": ["GitHubUsername1" , "GitHubUsername2"]
+      "additional_reviewers": ["GitHubUsername1", "GitHubUsername2"]
     },
     {
       "name": "production",
@@ -256,7 +259,7 @@ An JSON definition for an nonsensical application called [`glados`](https://en.w
           "level": "view-only"
         }
       ],
-      "additional_reviewers": ["GitHubUsername3" , "GitHubUsername4"]
+      "additional_reviewers": ["GitHubUsername3", "GitHubUsername4"]
     }
   ],
   "tags": {

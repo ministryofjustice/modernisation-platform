@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating networking resources in the Modernisation Platform
-last_reviewed_on: 2024-03-05
+last_reviewed_on: 2024-03-20
 review_in: 6 months
 ---
 
@@ -36,9 +36,9 @@ VPC ([AWS Virtual Private Cloud](https://aws.amazon.com/vpc/)), providing out of
 
 Three different subnet types spread across all three availability zones (eu-west-2a, eu-west-2b, eu-west2c), making a total of nine subnets:
 
- * Public (for public resources such as load balancers)
- * Private (for private resources such as application servers)
- * Data (for data resources such as databases)
+- Public (for public resources such as load balancers)
+- Private (for private resources such as application servers)
+- Data (for data resources such as databases)
 
 #### DNS Zones
 
@@ -62,6 +62,12 @@ A bastion can also be used for connecting locally to RDS databases via port forw
 #### Extended DNS
 
 Allow your VPC to have access to additional DNS zones in other VPCs.
+
+#### Isolated Network
+
+If you require an isolated environment that is separated from the standard resources detailed above with no internet or shared network connectivity please select the 'Isolated' option under subnet sets (Networking Options) when submitting your new environment request.
+
+This option will trigger the copy of a different set of platform environment templates which can be found [here](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/templates/modernisation-platform-environments-isolated)
 
 ### Additional information
 

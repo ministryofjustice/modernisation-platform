@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating AWS Accounts for Teams
-last_reviewed_on: 2024-01-25
+last_reviewed_on: 2024-03-20
 review_in: 6 months
 ---
 
@@ -18,20 +18,21 @@ review_in: 6 months
 
 ## Overview
 
-Here’s an example of an account request, and the steps that were taken in order to create it.  There are links to pull requests and the stages they need to be opened and merged, as well as references and explanations as to why.
+Here’s an example of an account request, and the steps that were taken in order to create it. There are links to pull requests and the stages they need to be opened and merged, as well as references and explanations as to why.
 
 ## Information Required
 
 Customers will fill out the new-environment template via our public repository [here](https://github.com/ministryofjustice/modernisation-platform/issues/new/choose) and supply the required information.
 
-|Attribute|Description|
----|---|
-|Application name (file name)|The name must be in lowercase and a maximum of 30 characters. For our example we have `data-and-insights-wepi`|
-|GitHub team slug|This is the name of your GitHub team that will be accessing the environment. Environments are accessed via single sign on (SSO), so to give people permissions to access your environment you just have to add them to your GitHub team.|
-|Access|For our example, sandbox access has been requested. To read more about access levels, click [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#application-name)|
-|Environment|This is one of the four valid environments, development, test, preproduction or production|
-|Tags| application, business-unit and owner are in tags, and they are used to tag your AWS resources inside of your account.|
-|Additional features| This example has no additional features, but things VPN endpoints and extended DNS zones are requestable.|
+| Attribute                    | Description                                                                                                                                                                                                                              |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Application name (file name) | The name must be in lowercase and a maximum of 30 characters. For our example we have `data-and-insights-wepi`                                                                                                                           |
+| isolated-network             | If the user has requested an isolated network environment only completed the [New Environment Files](#New-Environment-Files) and stop when you reach the [Networking Stage](#Networking-Stage) as this is not required.                  |
+| GitHub team slug             | This is the name of your GitHub team that will be accessing the environment. Environments are accessed via single sign on (SSO), so to give people permissions to access your environment you just have to add them to your GitHub team. |
+| Access                       | For our example, sandbox access has been requested. To read more about access levels, click [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#application-name)              |
+| Environment                  | This is one of the four valid environments, development, test, preproduction or production                                                                                                                                               |
+| Tags                         | application, business-unit and owner are in tags, and they are used to tag your AWS resources inside of your account.                                                                                                                    |
+| Additional features          | This example has no additional features, but things VPN endpoints and extended DNS zones are requestable.                                                                                                                                |
 
 ## New Environment Files
 
@@ -47,12 +48,11 @@ By default the codeowners for the application teams folder in the `modernisation
 
 You can override this by defining `codeowners` as an attribute for that application.
 
-`"codeowners": ["<owner-name>"],`  Replace \<owner-name\> with a GitHub team such as `modernisation-platform`.
+`"codeowners": ["<owner-name>"],` Replace \<owner-name\> with a GitHub team such as `modernisation-platform`.
 
 This will restrict code approval to only the GitHub team slugs listed in the 'codeowners' attribute.
 
-See [#5957] (https://github.com/ministryofjustice/modernisation-platform/pull/5957) for an example of the change required.
-
+See [#5957](https://github.com/ministryofjustice/modernisation-platform/pull/5957) for an example of the change required.
 
 By default all teams listed in the access blocks for an environment can approve the corresponding Github action runs.
 
@@ -62,8 +62,7 @@ You can override this by defining `github_action_reviewers` as an attribute for 
 
 This will restrict Github action approval to only the GitHub team slugs listed in the 'github_action_reviewers' attribute.
 
-See [#6338] (https://github.com/ministryofjustice/modernisation-platform/pull/6338) for an example of the change required.
-
+See [#6338](https://github.com/ministryofjustice/modernisation-platform/pull/6338) for an example of the change required.
 
 #### 2. Update the `expected.rego`
 
@@ -88,19 +87,21 @@ If the environment is being created for an account type of member-unrestricted i
 
 > Note - These PRs are only created the first time an environment for an application is created, eg the first time you create a new application.json file. If you add to an existing environment the PRs will not be created.
 
-> The new-environment workflow may fail if the account alias is already in use.  If this happens, add the environment name to the [skip-alias local](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/locals.tf#L30). Merging this PR will run the required jobs again.
+> The new-environment workflow may fail if the account alias is already in use. If this happens, add the environment name to the [skip-alias local](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/locals.tf#L30). Merging this PR will run the required jobs again.
 
 #### 5. Merge the pull request created in the modernisation-platform repo (step 4.1)
 
 #### 6. Merge the pull request created in the modernisation-platform-environments repo (step 4.2)
 
-> Note - The plan will fail on these PRs due to the networking not yet being complete.  This is fine, the goal of these PRs is to create the necessary files, not make deployments.
+> Note - The plan will fail on these PRs due to the networking not yet being complete. This is fine, the goal of these PRs is to create the necessary files, not make deployments.
+
+> Note - isolated network environment setup stops here and is completed.
 
 ## Networking Stage
 
 This stage sets up [Resource Access Manager (RAM) sharing](https://docs.aws.amazon.com/ram/latest/userguide/what-is.html) to share the relevant business unit subnet sets to the application account.
 
-Business unit VPCs and subnet sets are already created for all the MoJ business units.  If an additional VPC or subnet set is needed, see guidance [here.](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/creating-vpcs.html).
+Business unit VPCs and subnet sets are already created for all the MoJ business units. If an additional VPC or subnet set is needed, see guidance [here.](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/creating-vpcs.html).
 
 If the environment is being created for an account type of member-unrestricted this stage is not required and can be ignored.
 
@@ -108,11 +109,11 @@ If the environment is being created for an account type of member-unrestricted t
 
 Add the application to the subnet sets in [`environments-networks`](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments-networks).
 
-Most applications will be added to the `general` subnet set.  If they need something different see the above guidance on creating VPCs and subnet sets.
+Most applications will be added to the `general` subnet set. If they need something different see the above guidance on creating VPCs and subnet sets.
 
 #### 2. Update the OPA policies
 
-Update the [`policies/networking/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/networking/expected.rego) file to include newly added environments. This is to ensure that none of the subnets get accidentally deleted. Here's an example of a pull request for this [stage](https://github.com/ministryofjustice/modernisation-platform/pull/2127/files ).
+Update the [`policies/networking/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/networking/expected.rego) file to include newly added environments. This is to ensure that none of the subnets get accidentally deleted. Here's an example of a pull request for this [stage](https://github.com/ministryofjustice/modernisation-platform/pull/2127/files).
 
 > Note remember to add the full environment names, eg `data-and-insights-wepi-development` not just the application name.
 
@@ -120,7 +121,7 @@ Update the [`policies/networking/expected.rego`](https://github.com/ministryofju
 
 This will then kick off `core-vpc-<env>-demployment` pipelines and run `terraform plan`, `terraform apply` and the `scripts/member-account-ram-association.sh` script for the RAM share.
 
-This will run the RAM share successfully if you are adding environments for an existing application.  If it is a new application the RAM share won't sucessfully run until the next step.
+This will run the RAM share successfully if you are adding environments for an existing application. If it is a new application the RAM share won't sucessfully run until the next step.
 
 The pipeline will also generate a PR for networking variables in both the modernisation-platform and modernisation-platform-environments repos. An example can be found [here](https://github.com/ministryofjustice/modernisation-platform/pull/2203)
 
