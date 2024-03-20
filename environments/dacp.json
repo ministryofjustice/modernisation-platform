@@ -35,5 +35,6 @@
     "infrastructure-support": "DTS-ITServiceDesk@justice.gov.uk",
     "owner": "DTS-ITServiceDesk@justice.gov.uk"
   },
-  "github-oidc-team-repositories": ["ministryofjustice/Dacp"]
+  "github-oidc-team-repositories": ["ministryofjustice/Dacp"],
+  "go-live-date": "2023-10-04"
 }

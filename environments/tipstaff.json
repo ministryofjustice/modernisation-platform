@@ -36,5 +36,6 @@
     "infrastructure-support": "DTS-ITServiceDesk@justice.gov.uk",
     "owner": "DTS-ITServiceDesk@justice.gov.uk"
   },
-  "github-oidc-team-repositories": ["ministryofjustice/Tipstaff"]
+  "github-oidc-team-repositories": ["ministryofjustice/Tipstaff"],
+  "go-live-date": "2023-08-09"
 }
