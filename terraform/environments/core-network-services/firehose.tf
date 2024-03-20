@@ -24,7 +24,7 @@ module "firehose_firewalls" {
 
 # A 2nd call of the module which will generate the firehose streams for the firewall vpc flow logs.
 
-module "firehose_for_firewall_vpc_flow_logs" {
+module "firehose_vpcs" {
   source          = "../../modules/firehose"
   for_each        = local.firewall_vpc_logs
   resource_prefix = format("%s-vpc", substr(each.value, 0, 3)) # As above but we add an additional identifier
@@ -41,4 +41,9 @@ moved {
   from = module.external_inspection_firehose
   to   = module.firehose_firewalls
 
+}
+
+moved {
+  from = module.firehose_for_firewall_vpc_flow_logs
+  to   = module.firehose_vpcs
 }
