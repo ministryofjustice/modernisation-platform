@@ -35,7 +35,7 @@ The name must be in lowercase and a maximum of 30 characters. If you need to use
 
 ### GitHub team slug
 
-This is the name of your GitHub team that will be accessing the environment. Environments are accessed via single sign on (SSO), so to give people permissions to access your environment you just have to add them to your GitHub team.
+This is the name of your GitHub team that will be accessing the environment. Environments are accessed via single sign-on (SSO), so to give people permissions to access your environment you just have to add them to your GitHub team.
 
 Users who are not part of the MoJ GitHub organisation will need to be added as collaborators separately once the account has been created. Please contact the Modernisation Platform team to do this.
 
@@ -43,15 +43,15 @@ If you wish to add additional deployment reviewers from outside your GitHub team
 
 ### GitHub code owner team slug
 
-By default members of the github team/s specified can both access the aws environments and approve pull requests to release changes.
+By default members of the GitHub team/s specified can both access the AWS environments and approve pull requests to release changes.
 
-If required you can seperate the permissions so that a different github team acts as a code owner, this way PRs will require a review from this team before changes are released.
+If required you can separate the permissions so that a different GitHub team acts as a code owner, this way PRs will require a review from this team before changes are released.
 
 ### GitHub action reviewers team slug
 
-By default all teams listed in the access blocks for an environment can approve the corresponding Github action runs.
+By default all teams listed in the access blocks for an environment can approve the corresponding GitHub action runs.
 
-If required you can separate the permissions so that a different github team is the approver. In this case all Github action runs requiring approval, such as terraform applies, will need to be approved by a member of the team provided.
+If required you can separate the permissions so that a different GitHub team is the approver. In this case all Github action runs requiring approval, such as terraform applies, will need to be approved by a member of the team provided.
 
 ### Access
 
@@ -91,9 +91,9 @@ The sandbox access can only be used on a `development` environment account.
 - Log into the console
 - Same console read and write permissions as the pipelines have
 - This permission can only be attached to development accounts
-- Once a week the account will be cleared with [AWS Nuke](../concepts/environments/auto-nuke.html) then rebuilt from Terraform
+- Once a week the account will be cleared with [AWS Nuke](../concepts/environments/auto-nuke.html) and then rebuilt from Terraform
 
-The idea of sandbox access is that it gives you freedom to experiment and modify things in the console to assist with creating your Terraform code.
+The idea of sandbox access is that it gives you the freedom to experiment and modify things in the console to assist with creating your Terraform code.
 
 Anything not in code will be lost at the end of the week.
 
@@ -147,8 +147,8 @@ This is a legacy role and will not be generally available.
 
 ### Environment name
 
-Which environments you wish to use, we provide [core networking](creating-networking.html) for up to 4 accounts as standard.
-Usually two environments per application will be enough, a production account and a development account.
+Which environments do you wish to use, we provide [core networking](creating-networking.html) for up to 4 accounts as standard.
+Usually, two environments per application will be enough, a production account and a development account.
 
 - development
 - test
@@ -174,7 +174,7 @@ HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE
 
 ### Additional features
 
-In addition to the core networking provided, you can request bastion access, additional VPC endpoints, extended DNS zones or a isolated network environment.
+In addition to the core networking provided, you can request bastion access, additional VPC endpoints, extended DNS zones or an isolated network environment.
 
 See [creating networking](creating-networking.html) for more information on additional features.
 
@@ -190,8 +190,8 @@ Here are some examples of the environments JSON file that the Modernisation Plat
 
 - `account-type` determines if this is a core modernisation platform account or a user member account.
 - `isolated-network` is an optional field which can be set to 'true' if you require an isolated environment with no internet or shared network connectivity.
-- `codeowners` is an optional list of github slugs if you want specific teams to review code changes before they are released into environments.
-- `github_action_reviewers` is an optional list of github slugs if you want specific teams to approve github action runs.
+- `codeowners` is an optional list of GitHub slugs if you want specific teams to review code changes before they are released into environments.
+- `github_action_reviewers` is an optional list of GitHub slugs if you want specific teams to approve GitHub action runs.
 - `environments` should be an array of objects for environments required. If the environment is `production`, retention periods, backup frequency, and similar will be different compared to non-production environments.
 - the `name` key and `access` object are required, see: [Another example](#another-example)
 - the `nuke` key is optional and is only read if the `access.level` is `sandbox`.
@@ -232,7 +232,7 @@ Here are some examples of the environments JSON file that the Modernisation Plat
 
 ### Another example
 
-An JSON definition for an nonsensical application called [`glados`](https://en.wikipedia.org/wiki/GLaDOS), that needs two environments: `development` with `sandbox` permissions and `production`, and want to give the GitHub team `glados-team` access to each environment. If a develoment account with sandbox permissions has no `nuke` key defined, it will automatically be [wiped on a weekly basis](../concepts/environments/auto-nuke.html). The `nuke` value of `rebuild` indicates that the development account will be automatically rebuilt from code after it is nuked.
+An JSON definition for a nonsensical application called [`glados`](https://en.wikipedia.org/wiki/GLaDOS), that needs two environments: `development` with `sandbox` permissions and `production`, and want to give the GitHub team `glados-team` access to each environment. If a develoment account with sandbox permissions has no `nuke` key defined, it will automatically be [wiped on a weekly basis](../concepts/environments/auto-nuke.html). The `nuke` value of `rebuild` indicates that the development account will be automatically rebuilt from code after it is nuked.
 
 `filename`: `glados.json`
 
