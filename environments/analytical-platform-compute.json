@@ -36,6 +36,7 @@
       "business-unit": "Platforms",
       "infrastructure-support": "analytical-platform@digital.justice.gov.uk",
       "owner": "Analytical Platform: analytical-platform@digital.justice.gov.uk",
-      "go-live-date": ""
-  }
+    },
+    "github-oidc-team-repositories": [""],
+    "go-live-date": ""
 }
