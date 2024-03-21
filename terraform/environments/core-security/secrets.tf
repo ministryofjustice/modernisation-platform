@@ -20,3 +20,15 @@ data "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
   provider  = aws.modernisation-platform
   secret_id = data.aws_secretsmanager_secret.pagerduty_integration_keys.id
 }
+
+# Data for Firehose Endpoint URL & Key that are held in secrets manager.
+
+data "aws_secretsmanager_secret" "xsiam_secret_arn" {
+  provider = aws.modernisation-platform
+  name     = "xsiam_secrets"
+}
+
+data "aws_secretsmanager_secret_version" "xsiam_secret_arn_version" {
+  provider  = aws.modernisation-platform
+  secret_id = data.aws_secretsmanager_secret.xsiam_secret_arn.id
+}
