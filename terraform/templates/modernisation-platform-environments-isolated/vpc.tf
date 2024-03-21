@@ -27,16 +27,16 @@ module "vpc_endpoints" {
 
   endpoints = {
     logs = {
-      service            = "logs"
-      service_type       = "Interface"
+      service      = "logs"
+      service_type = "Interface"
       tags = merge(
         local.tags,
         { Name = format("%s-logs-api-vpc-endpoint", local.application_name) }
       )
     },
     sts = {
-      service            = "sts"
-      service_type       = "Interface"
+      service      = "sts"
+      service_type = "Interface"
       tags = merge(
         local.tags,
         { Name = format("%s-sts-vpc-endpoint", local.application_name) }

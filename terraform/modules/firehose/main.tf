@@ -12,12 +12,12 @@ resource "random_string" "firehose_rnd" {
 
 resource "aws_kinesis_firehose_delivery_stream" "delivery_stream" {
   #checkov:skip=CKV_AWS_241: We are using the default key for encryption.
-  name        = format("%s-%s-%s", var.resource_prefix, "delivery-stream", random_string.firehose_rnd.result) 
+  name        = format("%s-%s-%s", var.resource_prefix, "delivery-stream", random_string.firehose_rnd.result)
   destination = "http_endpoint"
   tags = merge(
     var.tags,
     {
-      Name = format("%s-%s-%s", var.resource_prefix, "delivery-stream", random_string.firehose_rnd.result) 
+      Name = format("%s-%s-%s", var.resource_prefix, "delivery-stream", random_string.firehose_rnd.result)
     }
   )
 
@@ -64,7 +64,7 @@ resource "aws_kinesis_firehose_delivery_stream" "delivery_stream" {
 # This acts as the interface between the flow log data in cloudwatch & the Firehose Stream.
 
 resource "aws_cloudwatch_log_subscription_filter" "subscription_filter" {
-  name            =  format("%s-%s-%s", var.resource_prefix, "subscription_filter", random_string.firehose_rnd.result) 
+  name            = format("%s-%s-%s", var.resource_prefix, "subscription_filter", random_string.firehose_rnd.result)
   role_arn        = aws_iam_role.xsiam_put_record_role.arn
   log_group_name  = var.log_group_name
   filter_pattern  = ""
@@ -73,11 +73,11 @@ resource "aws_cloudwatch_log_subscription_filter" "subscription_filter" {
 
 resource "aws_cloudwatch_log_group" "delivery_errors_log_group" {
   #checkov:skip=CKV_AWS_158:"Temporarily skip KMS encryption check while logging solution is being updated"
-  name              = format("%s-%s-%s", var.resource_prefix, "delivery-errors-log-group", random_string.firehose_rnd.result) 
+  name = format("%s-%s-%s", var.resource_prefix, "delivery-errors-log-group", random_string.firehose_rnd.result)
   tags = merge(
     var.tags,
     {
-      Name = format("%s-%s-%s", var.resource_prefix, "delivery-errors-log-group", random_string.firehose_rnd.result) 
+      Name = format("%s-%s-%s", var.resource_prefix, "delivery-errors-log-group", random_string.firehose_rnd.result)
     }
   )
   retention_in_days = 400 # Because it's more than a year.
@@ -107,7 +107,7 @@ resource "aws_s3_bucket" "firehose_error_logging_bucket" {
   #checkov:skip=CKV_AWS_18: No access logging required
   #checkov:skip=CKV2_AWS_61: Lifecycle is enabled but this error still gets thrown.
   #checkov:skip=CKV2_AWS_6: Public Access Block enabled - see below - but the error still gets thrown.
-  bucket = format("%s-%s-%s", var.resource_prefix, "firehose-error-logging-bucket", random_string.firehose_rnd.result) 
+  bucket = format("%s-%s-%s", var.resource_prefix, "firehose-error-logging-bucket", random_string.firehose_rnd.result)
 }
 
 #tfsec:ignore:aws-ssm-secret-use-customer-key
@@ -157,7 +157,7 @@ resource "aws_s3_bucket_public_access_block" "bucket_block_public" {
 
 
 resource "aws_iam_role" "delivery_stream_role" {
-  name  = format("%s-%s-%s", var.resource_prefix, "delivery-stream-role", random_string.firehose_rnd.result)
+  name = format("%s-%s-%s", var.resource_prefix, "delivery-stream-role", random_string.firehose_rnd.result)
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -181,8 +181,8 @@ resource "aws_iam_role" "delivery_stream_role" {
 #tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_role_policy" "delivery_stream_role_policy" {
   #checkov:skip=CKV_AWS_355: - Ignore for now whilst we look into this.
-  role  = aws_iam_role.delivery_stream_role.id
-  name  = format("%s-%s-%s", var.resource_prefix, "delivery-stream-role-policy", random_string.firehose_rnd.result)
+  role = aws_iam_role.delivery_stream_role.id
+  name = format("%s-%s-%s", var.resource_prefix, "delivery-stream-role-policy", random_string.firehose_rnd.result)
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -208,7 +208,7 @@ resource "aws_iam_role_policy_attachment" "error_log_role_attachment" {
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_policy" "error_log_policy" {
-  name  = format("%s-%s-%s", var.resource_prefix, "error-log-policy", random_string.firehose_rnd.result)
+  name = format("%s-%s-%s", var.resource_prefix, "error-log-policy", random_string.firehose_rnd.result)
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -235,7 +235,7 @@ resource "aws_iam_role_policy_attachment" "s3_role_attachment" {
 resource "aws_iam_policy" "s3_policy" {
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax. 
-  name  = format("%s-%s-%s", var.resource_prefix, "s3-kinesis-xsiam-policy", random_string.firehose_rnd.result)
+  name = format("%s-%s-%s", var.resource_prefix, "s3-kinesis-xsiam-policy", random_string.firehose_rnd.result)
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -261,7 +261,7 @@ resource "aws_iam_policy" "s3_policy" {
 
 
 resource "aws_iam_role" "xsiam_put_record_role" {
-  name_prefix        = format("%s-%s-%s", var.resource_prefix, "xsiam-put-record-role", random_string.firehose_rnd.result) 
+  name_prefix        = format("%s-%s-%s", var.resource_prefix, "xsiam-put-record-role", random_string.firehose_rnd.result)
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -280,7 +280,7 @@ EOF
 }
 
 resource "aws_iam_policy" "xsiam_put_record_policy" {
-  name_prefix = format("%s-%s-%s", var.resource_prefix, "xsiam-put-record-policy", random_string.firehose_rnd.result) 
+  name_prefix = format("%s-%s-%s", var.resource_prefix, "xsiam-put-record-policy", random_string.firehose_rnd.result)
   policy      = <<-EOF
 {
     "Version": "2012-10-17",
