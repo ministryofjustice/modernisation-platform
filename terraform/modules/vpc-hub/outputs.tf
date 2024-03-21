@@ -74,3 +74,6 @@ output "public_igw_route" {
   description = "Public Internet Gateway route"
   value       = aws_route.public-internet-gateway
 }
+output "vpc_cloudwatch_name" {
+  value = aws_cloudwatch_log_group.default.name
+}
