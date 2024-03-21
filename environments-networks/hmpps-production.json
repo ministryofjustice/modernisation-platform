@@ -21,7 +21,8 @@
           "planetfm-production",
           "hmpps-oem-production",
           "digital-prison-reporting-production",
-          "hmpps-domain-services-production"
+          "hmpps-domain-services-production",
+          "oasys-national-reporting-production"
         ]
       }
     }

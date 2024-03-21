@@ -23,7 +23,8 @@
           "corporate-staff-rostering-development",
           "planetfm-development",
           "hmpps-oem-development",
-          "hmpps-domain-services-development"
+          "hmpps-domain-services-development",
+          "oasys-national-reporting-development"
         ]
       }
     }
