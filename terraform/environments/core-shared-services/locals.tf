@@ -45,6 +45,9 @@ locals {
     ]
   }
 
+   # This local allows us to references the key / value pairs held in xsiam_secrets.
+  xsiam = jsondecode(data.aws_secretsmanager_secret_version.xsiam_secret_arn_version.secret_string)
+
   tags = {
     business-unit = "Platforms"
     application   = "Modernisation Platform: ${terraform.workspace}"
