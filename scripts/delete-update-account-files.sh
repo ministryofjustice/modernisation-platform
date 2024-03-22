@@ -19,8 +19,8 @@ if [ $? -ne 0 ]; then
 fi
 
 # Git setup
-echo "Pulling latest changes to origin/main"
-git pull origin/main
+echo "Pulling latest changes from origin main"
+git pull origin main
 echo "Creating a branch"
 timestamp=$(date +%s)
 git checkout -b "delete-$application_name-$workspace-$timestamp"
