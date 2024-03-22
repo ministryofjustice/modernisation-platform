@@ -44,14 +44,14 @@ variable "fw_rulegroup_name" {
 
 variable "ip_sets" {
   description = "A map of lists for firewall IP sets."
-  default = {}
-  type = map(any)
+  default     = {}
+  type        = map(any)
 }
 
 variable "port_sets" {
   description = "A map of lists for firewall port sets."
-  default = {}
-  type = map(any)
+  default     = {}
+  type        = map(any)
 }
 
 variable "rules" {

@@ -10,7 +10,7 @@ locals {
 module "firehose_core_logging_vpcs" {
   source          = "../../modules/firehose"
   for_each        = local.vpc_logs
-  resource_prefix = format("%s-log", substr(each.value, 0, 3)) 
+  resource_prefix = format("%s-log", substr(each.value, 0, 3))
   log_group_name  = each.value
   tags            = local.tags
   xsiam_endpoint  = substr(each.value, 0, 3) != "non" ? tostring(local.xsiam["xsiam_prod_network_endpoint"]) : tostring(local.xsiam["xsiam_preprod_network_endpoint"])

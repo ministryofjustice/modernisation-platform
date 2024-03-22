@@ -41,6 +41,8 @@ No modules.
 | <a name="input_fw_policy_name"></a> [fw\_policy\_name](#input\_fw\_policy\_name) | n/a | `string` | n/a | yes |
 | <a name="input_fw_rulegroup_capacity"></a> [fw\_rulegroup\_capacity](#input\_fw\_rulegroup\_capacity) | n/a | `string` | `"10000"` | no |
 | <a name="input_fw_rulegroup_name"></a> [fw\_rulegroup\_name](#input\_fw\_rulegroup\_name) | n/a | `string` | n/a | yes |
+| <a name="input_ip_sets"></a> [ip\_sets](#input\_ip\_sets) | A map of lists for firewall IP sets. | `map(any)` | `{}` | no |
+| <a name="input_port_sets"></a> [port\_sets](#input\_port\_sets) | A map of lists for firewall port sets. | `map(any)` | `{}` | no |
 | <a name="input_rules"></a> [rules](#input\_rules) | A map of values supplied to create firewall rules | `map(any)` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of keys and values used to create resource metadata tags | `map(any)` | n/a | yes |
 
