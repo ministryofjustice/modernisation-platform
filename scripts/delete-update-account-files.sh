@@ -7,7 +7,16 @@ echo "Please enter the workspace you would like to kill.
 If you are removing all the environments for an application type 'all'"
 read workspace
 
-echo "You have selected,$application_name and $workspace! Lets gooo."
+read -p "You have selected, *** $application_name *** and *** $workspace ***
+Do you want to proceed? (yes/no) " yn
+
+case $yn in 
+	yes ) echo ok, we will proceed;;
+	no ) echo exiting...;
+		exit;;
+	* ) echo invalid response;
+		exit 1;;
+esac
 
 cd ../../modernisation-platform/environments
 
@@ -19,8 +28,6 @@ if [ $? -ne 0 ]; then
 fi
 
 # Git setup
-echo "Pulling latest changes from origin main"
-git pull origin main
 echo "Creating a branch"
 timestamp=$(date +%s)
 git checkout -b "delete-$application_name-$workspace-$timestamp"
