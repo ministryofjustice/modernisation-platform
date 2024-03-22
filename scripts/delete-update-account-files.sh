@@ -22,7 +22,8 @@ fi
 echo "Pulling latest changes to origin/main"
 git pull origin/main
 echo "Creating a branch"
-git checkout -b "delete-$application_name-$workspace"
+timestamp=$(date +%s)
+git checkout -b "delete-$application_name-$workspace-$timestamp"
 
 # Delete the environment from the application.json file (or the whole file)
 if [[ $workspace != "all" ]]; then
