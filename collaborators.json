@@ -553,10 +553,6 @@
         {
           "account-name": "electronic-monitoring-data-development",
           "access": "sandbox"
-        },
-        {
-          "account-name": "electronic-monitoring-data-production",
-          "access": "developer"
         }
       ]
     },
