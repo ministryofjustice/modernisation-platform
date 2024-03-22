@@ -102,5 +102,6 @@ No modules.
 | <a name="output_public_route_tables"></a> [public\_route\_tables](#output\_public\_route\_tables) | Public route tables |
 | <a name="output_tgw_subnet_ids"></a> [tgw\_subnet\_ids](#output\_tgw\_subnet\_ids) | Transit Gateway subnet IDs |
 | <a name="output_vpc_cidr_block"></a> [vpc\_cidr\_block](#output\_vpc\_cidr\_block) | VPC CIDR block |
+| <a name="output_vpc_cloudwatch_name"></a> [vpc\_cloudwatch\_name](#output\_vpc\_cloudwatch\_name) | n/a |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | VPC ID |
 <!-- END_TF_DOCS -->
