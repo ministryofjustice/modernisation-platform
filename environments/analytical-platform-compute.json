@@ -1,42 +1,42 @@
 {
-    "account-type": "member",
-    "isolated-network": "true",
-    "environments": [
-      {
-        "name": "development",
-        "access": [
-          {
-            "github_slug": "analytical-platform",
-            "level": "sandbox",
-            "nuke": "exclude"
-          }
-        ]
-      },
-      {
-        "name": "test",
-        "access": [
-          {
-            "github_slug": "analytical-platform",
-            "level": "developer"
-          }
-        ]
-      },
-      {
-        "name": "production",
-        "access": [
-          {
-            "github_slug": "analytical-platform",
-            "level": "developer"
-          }
-        ]
-      }
-    ],
-    "tags": {
-      "application": "analytical-platform-compute",
-      "business-unit": "Platforms",
-      "infrastructure-support": "analytical-platform@digital.justice.gov.uk",
-      "owner": "Analytical Platform: analytical-platform@digital.justice.gov.uk"
+  "account-type": "member",
+  "isolated-network": "true",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "analytical-platform",
+          "level": "sandbox",
+          "nuke": "exclude"
+        }
+      ]
     },
-    "github-oidc-team-repositories": [""],
-    "go-live-date": ""
+    {
+      "name": "test",
+      "access": [
+        {
+          "github_slug": "analytical-platform",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "analytical-platform",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "analytical-platform-compute",
+    "business-unit": "Platforms",
+    "infrastructure-support": "analytical-platform@digital.justice.gov.uk",
+    "owner": "Analytical Platform: analytical-platform@digital.justice.gov.uk"
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
 }

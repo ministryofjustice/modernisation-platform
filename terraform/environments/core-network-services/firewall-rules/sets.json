@@ -1,11 +1,23 @@
 {
   "IP_SETS": {
     "IP_SET_EXAMPLE": ["1.1.1.1/32", "1.0.0.1/32"],
-    "AD_HMPP_DCS" : ["${ad-hmpp-dc-a}", "${ad-hmpp-dc-b}"]
+    "AD_HMPP_DCS": ["${ad-hmpp-dc-a}", "${ad-hmpp-dc-b}"]
   },
   "PORT_SETS": {
     "PORT_SET_EXAMPLE": ["80, 443"],
-    "DOMAIN_CONTROLLER_TCP": ["53", "88", "135", "139", "389", "445", "464", "636", "3268:3269", "9389", "49152:65535"],
+    "DOMAIN_CONTROLLER_TCP": [
+      "53",
+      "88",
+      "135",
+      "139",
+      "389",
+      "445",
+      "464",
+      "636",
+      "3268:3269",
+      "9389",
+      "49152:65535"
+    ],
     "DOMAIN_CONTROLLER_UDP": ["53", "88", "123", "389", "464"]
   }
 }

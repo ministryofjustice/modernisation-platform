@@ -5,13 +5,13 @@ variable "tags" {
 }
 
 variable "resource_prefix" {
-   description = "The prefix to be used for the resource names - used for easy identification"
-   type        = string
+  description = "The prefix to be used for the resource names - used for easy identification"
+  type        = string
 }
 
 variable "log_group_name" {
-    description = "The name of the log group that the subscription will be added to"
-    type        = string
+  description = "The name of the log group that the subscription will be added to"
+  type        = string
 }
 
 variable "xsiam_endpoint" {
