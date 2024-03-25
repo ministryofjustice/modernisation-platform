@@ -13,6 +13,6 @@ module "firehose_core_logging_vpcs" {
   resource_prefix = format("%s-sha", substr(each.value, 0, 3))
   log_group_name  = each.value
   tags            = local.tags
-  xsiam_endpoint  = substr(each.value, 0, 3) != "non" ? tostring(local.xsiam["xsiam_prod_network_endpoint"]) : tostring(local.xsiam["xsiam_preprod_network_endpoint"])
-  xsiam_secret    = substr(each.value, 0, 3) != "non" ? tostring(local.xsiam["xsiam_prod_network_secret"]) : tostring(local.xsiam["xsiam_preprod_network_secret"])
+  xsiam_endpoint  = local.is-production == true ? local.xsiam["xsiam_prod_network_endpoint"] : local.xsiam["xsiam_preprod_network_endpoint"]
+  xsiam_secret    = local.is-production == true ? local.xsiam["xsiam_prod_network_secret"] : local.xsiam["xsiam_preprod_network_secret"]
 }

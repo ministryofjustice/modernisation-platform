@@ -100,9 +100,9 @@ module "vpc" {
 
   build_firehose = local.build_firehose
 
-  kinesis_endpoint_url = local.is-production ? tostring(local.xsiam["xsiam_prod_network_endpoint"]) : tostring(local.xsiam["xsiam_preprod_network_endpoint"])
+  kinesis_endpoint_url = local.is-production ? local.xsiam["xsiam_prod_network_endpoint"] : local.xsiam["xsiam_preprod_network_endpoint"]
 
-  kinesis_endpoint_secret_string = local.is-production ? tostring(local.xsiam["xsiam_prod_network_secret"]) : tostring(local.xsiam["xsiam_preprod_network_secret"])
+  kinesis_endpoint_secret_string = local.is-production ? local.xsiam["xsiam_prod_network_secret"] : local.xsiam["xsiam_preprod_network_secret"]
 
 
   # Tags
