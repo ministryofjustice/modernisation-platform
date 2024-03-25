@@ -1,13 +1,10 @@
 
 # The purpose of this module call is to generate firehose & related resources for each R53 resolver log in core-vpc
 
-
-# The initial call is for the creation of firehose stream resources for the firewall inspection logs.
-
 # We are only building for production & development.
 
 
-module "firehose_firewalls" {
+module "firehose_r53_resolver_logs" {
   source          = "../../modules/firehose"  
   for_each = { for key, value in module.vpc : 
             key => value["vpc_id"] 
