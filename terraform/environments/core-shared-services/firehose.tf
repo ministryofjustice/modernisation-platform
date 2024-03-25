@@ -8,11 +8,13 @@ locals {
 }
 
 module "firehose_core_logging_vpcs" {
-  source          = "../../modules/firehose"
-  for_each        = local.vpc_logs
-  resource_prefix = format("%s-sha", substr(each.value, 0, 3))
-  log_group_name  = each.value
-  tags            = local.tags
-  xsiam_endpoint  = substr(each.value, 0, 3) != "non" ? tostring(local.xsiam["xsiam_prod_network_endpoint"]) : tostring(local.xsiam["xsiam_preprod_network_endpoint"])
-  xsiam_secret    = substr(each.value, 0, 3) != "non" ? tostring(local.xsiam["xsiam_prod_network_secret"]) : tostring(local.xsiam["xsiam_preprod_network_secret"])
+  source           = "../../modules/firehose"
+  for_each         = local.vpc_logs
+  resource_prefix  = format("%s-sha", substr(each.value, 0, 3))
+  common_attribute = "${each.key}-${local.application_name}"
+
+  log_group_name   = each.value
+  tags             = local.tags
+  xsiam_endpoint   = substr(each.value, 0, 3) != "non" ? tostring(local.xsiam["xsiam_prod_network_endpoint"]) : tostring(local.xsiam["xsiam_preprod_network_endpoint"])
+  xsiam_secret     = substr(each.value, 0, 3) != "non" ? tostring(local.xsiam["xsiam_prod_network_secret"]) : tostring(local.xsiam["xsiam_preprod_network_secret"])
 }

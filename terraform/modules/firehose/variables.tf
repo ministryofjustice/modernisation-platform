@@ -4,6 +4,11 @@ variable "tags" {
   type        = map(any)
 }
 
+variable "common_attribute" {
+  description = "The value of the common_attributes property which should be the name of the aws account or the account name & live / non-live"
+  type        = string
+}
+
 variable "resource_prefix" {
   description = "The prefix to be used for the resource names - used for easy identification"
   type        = string
