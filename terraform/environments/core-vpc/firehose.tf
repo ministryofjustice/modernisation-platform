@@ -11,7 +11,7 @@ module "firehose_firewalls" {
   source          = "../../modules/firehose"  
   for_each = { for key, value in module.vpc : 
             key => value["vpc_id"] 
-            if anytrue(local.local.is-development, local.local.is-production) }
+            if anytrue(local.is-development, local.is-production) }
     common_attribute          = "${each.key}-${local.application_name}"
     resource_prefix           = format("R53-%s",each.key) # We do this to ensure the resource names are unique
     log_group_name            = module.route_53_resolver_logs[each.key].r53_resolver_log_name
