@@ -30,6 +30,6 @@ module "firehose_vpcs" {
   resource_prefix = format("%s-vpc", substr(each.value, 0, 3)) # As above but we add an additional identifier
   log_group_name  = each.value
   tags            = local.tags
-  xsiam_endpoint  = local.is-production == true ? local.xsiam["xsiam_prod_network_endpoint"] : local.xsiam["xsiam_preprod_network_endpoint"]
-  xsiam_secret    = local.is-production == true ? local.xsiam["xsiam_prod_network_secret"] : local.xsiam["xsiam_preprod_network_secret"]
+  xsiam_endpoint  = each.key == "live_data" ? local.xsiam["xsiam_prod_network_endpoint"] : local.xsiam["xsiam_preprod_network_endpoint"]
+  xsiam_secret    = each.key == "live_data" ? local.xsiam["xsiam_prod_network_secret"] : local.xsiam["xsiam_preprod_network_secret"]
 }

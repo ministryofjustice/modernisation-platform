@@ -18,7 +18,7 @@ locals {
   is-development = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-development"
 
   # Determines if Firehose should be built in an environment.
-  build_firehose = anytrue([local.is-development, local.is-production]) ? true : false
+  build_firehose = local.is-production == true ? true : false
 
   # Secrets used by Firehose resources which we only require for development & production VPCs.
   xsiam = jsondecode(data.aws_secretsmanager_secret_version.xsiam_secret_arn_version.secret_string)
