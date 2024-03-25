@@ -24,9 +24,9 @@ directories=("delegate-access" "secure-baselines" "single-sign-on" "member-boots
 for dir in "${directories[@]}"; do
     cd "$dir" || { echo "Failed to navigate to $dir"; exit 1; }
     terraform init > /dev/null 2>&1
-    terraform workspace select $workspace
+    terraform workspace select default
     pwd
-    echo "Here I will run terraform workspace delete -force (workspace name)"
+    echo "Here I will run terraform workspace delete -force $workspace"
     # Return to the original directory
     cd - > /dev/null
 done
