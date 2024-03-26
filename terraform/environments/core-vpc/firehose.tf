@@ -11,6 +11,6 @@ module "firehose_r53_resolver_logs" {
   resource_prefix  = format("%s-R53", each.key) # We do this to ensure the resource names are unique
   log_group_name   = module.route_53_resolver_logs[each.key].r53_resolver_log_name
   tags             = local.tags
-  xsiam_endpoint   = each.value == "live_data" ? local.xsiam["xsiam_prod_network_endpoint"] : local.xsiam["xsiam_preprod_network_endpoint"]
-  xsiam_secret     = each.value == "live_data" ? local.xsiam["xsiam_prod_r53_secret"] : local.xsiam["xsiam_preprod_r53_secret"]
+  xsiam_endpoint   = local.is-production == true ? local.xsiam["xsiam_prod_network_endpoint"] : local.xsiam["xsiam_preprod_network_endpoint"]
+  xsiam_secret     = local.is-production == true ? local.xsiam["xsiam_prod_r53_secret"] : local.xsiam["xsiam_preprod_r53_secret"]
 }
