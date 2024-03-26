@@ -2,6 +2,8 @@
 # The purpose of this module call is to generate firehose & related resources for each cloudwatch log group created for the inline & external inspection firewalls.
 # This uses the cloudwatch log names outputted from the vpc inspection firewall module as well as the log group created for the external inspection firewall
 
+# For the endpoint & secret values we test using the vpc_logs values rather than the is_production local as both sets of vpcs are in the same account.
+
 locals {
 
   firewall_logs = toset([module.vpc_inspection["live_data"].fw_cloudwatch_name, module.vpc_inspection["non_live_data"].fw_cloudwatch_name, module.firewall_logging.cloudwatch_log_group_name])
