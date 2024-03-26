@@ -17,6 +17,10 @@
         {
           "github_slug": "studio-webops",
           "level": "developer"
+        },
+        {
+          "github_slug": "national-applications-reporting-team",
+          "level": "instance-management"
         }
       ]
     },
@@ -26,6 +30,10 @@
         {
           "github_slug": "studio-webops",
           "level": "developer"
+        },
+        {
+          "github_slug": "national-applications-reporting-team",
+          "level": "instance-management"
         }
       ]
     },
@@ -35,6 +43,10 @@
         {
           "github_slug": "studio-webops",
           "level": "developer"
+        },
+        {
+          "github_slug": "national-applications-reporting-team",
+          "level": "instance-management"
         }
       ]
     }
