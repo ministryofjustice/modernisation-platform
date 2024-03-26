@@ -16,11 +16,11 @@ module "firehose_firewalls" {
   source          = "../../modules/firehose"
   for_each        = local.firewall_logs
   resource_prefix = substr(each.value, 3, 3) # We do this because the log name is too long and we want to avoid any invalid characters.
-  common_attribute          = "${each.key}-${local.application_name}"
+  common_attribute          = "${local.application_name}-${each.key}"
   log_group_name  = each.value
   tags            = local.tags
-  xsiam_endpoint  = substr(each.value, 3, 3) != "non" ? tostring(local.xsiam["xsiam_prod_firewall_endpoint"]) : tostring(local.xsiam["xsiam_preprod_firewall_endpoint"])
-  xsiam_secret    = substr(each.value, 3, 3) != "non" ? tostring(local.xsiam["xsiam_prod_firewall_secret"]) : tostring(local.xsiam["xsiam_preprod_firewall_secret"])
+  xsiam_endpoint  = each.value == "live_data" ? tostring(local.xsiam["xsiam_prod_firewall_endpoint"]) : tostring(local.xsiam["xsiam_preprod_firewall_endpoint"])
+  xsiam_secret    = each.value == "live_data" ? tostring(local.xsiam["xsiam_prod_firewall_secret"]) : tostring(local.xsiam["xsiam_preprod_firewall_secret"])
 }
 
 # A 2nd call of the module which will generate the firehose streams for the firewall vpc flow logs.
@@ -29,9 +29,9 @@ module "firehose_vpcs" {
   source          = "../../modules/firehose"
   for_each        = local.firewall_vpc_logs
   resource_prefix = format("%s-vpc", substr(each.value, 0, 3)) # As above but we add an additional identifier
-  common_attribute          = "${each.key}-${local.application_name}"
+  common_attribute          = "${local.application_name}-${each.key}"
   log_group_name  = each.value
   tags            = local.tags
-  xsiam_endpoint  = substr(each.value, 0, 3) != "non" ? tostring(local.xsiam["xsiam_prod_network_endpoint"]) : tostring(local.xsiam["xsiam_preprod_network_endpoint"])
-  xsiam_secret    = substr(each.value, 0, 3) != "non" ? tostring(local.xsiam["xsiam_prod_network_secret"]) : tostring(local.xsiam["xsiam_preprod_network_secret"])
+  xsiam_endpoint  = each.value == "live_data" ? tostring(local.xsiam["xsiam_prod_network_endpoint"]) : tostring(local.xsiam["xsiam_preprod_network_endpoint"])
+  xsiam_secret    = each.value == "live_data" ? tostring(local.xsiam["xsiam_prod_network_secret"]) : tostring(local.xsiam["xsiam_preprod_network_secret"])
 }

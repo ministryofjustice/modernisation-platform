@@ -53,7 +53,7 @@ resource "aws_kinesis_firehose_delivery_stream" "delivery_stream" {
 
       common_attributes {
         name  = "Firewall Name & Log Type"
-        value = var.resource_prefix
+        value = var.common_attribute
       }
     }
 
