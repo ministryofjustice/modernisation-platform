@@ -3,6 +3,8 @@
 
 # For the endpoint & secret values we test using the vpc_logs values rather than the is_production local as both sets of vpcs are in the same account.
 
+# Note the module was updated to shorten some of the resource names.
+
 
 locals {
 
