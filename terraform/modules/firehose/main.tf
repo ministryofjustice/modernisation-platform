@@ -65,7 +65,7 @@ resource "aws_kinesis_firehose_delivery_stream" "delivery_stream" {
 
 resource "aws_cloudwatch_log_subscription_filter" "subscription_filter" {
   name            = format("%s-%s-%s", var.resource_prefix, "subscription_filter", random_string.firehose_rnd.result)
-  role_arn        = aws_iam_role.xsiam_put_record_role.arn
+  role_arn        = aws_iam_role.put_record_role.arn
   log_group_name  = var.log_group_name
   filter_pattern  = ""
   destination_arn = aws_kinesis_firehose_delivery_stream.delivery_stream.arn
@@ -301,8 +301,8 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "put_record_policy_attachment" {
-  role       = aws_iam_role.xsiam_put_record_role.name
-  policy_arn = aws_iam_policy.xsiam_put_record_policy.arn
+  role       = aws_iam_role.put_record_role.name
+  policy_arn = aws_iam_policy.put_record_policy.arn
 }
 
 
