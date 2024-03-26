@@ -15,3 +15,7 @@ resource "aws_cloudwatch_log_group" "main" {
   name              = format("%s-r53-resolver-logs", var.vpc_name)
   retention_in_days = 365
 }
+
+output "r53_resolver_log_name" {
+  value = aws_cloudwatch_log_group.main.name
+}

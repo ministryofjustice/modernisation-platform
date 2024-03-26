@@ -16,7 +16,6 @@ locals {
 
   # This applies the same logic as above but to determine whether the environment is the development environment. Required for firehose resources.
   is-development = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-development"
-
   # Determines if Firehose should be built in an environment.
   build_firehose = anytrue([local.is-development, local.is-production]) ? true : false
 
