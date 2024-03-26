@@ -1,0 +1,67 @@
+---
+owner_slack: "#modernisation-platform"
+title: GitHub Workflow Action Status
+last_reviewed_on: 2024-03-25
+review_in: 3 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+### Modernisation Platform Tools & Checks
+
+| Workflow                                                                                                                                                                               | Description                                            |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| ![Check Inactive Collaborators](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/check-inactive-collaborators.yml/badge.svg?branch=main)                  | Checks for inactive collaborators and sends our email. |
+| ![Close Stale PRs](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/close-stale-prs.yml/badge.svg?branch=main)                                            | Closes stale PR's over 90 days.                        |
+| ![Generate Dependabot File](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/generate-dependabot-file.yml/badge.svg?branch=main)                          | Creates a PR to dependabot the file.                   |
+| ![Generate Terraform README Docs](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/documentation.yml/badge.svg)                                           | Generates Terraform readme documentation.              |
+| ![Format Code](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/format-code.yml/badge.svg?branch=main)                                                    | Ensures code formatting guidelines are met.            |
+| ![Open Policy Agent](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/opa-policies.yml/badge.svg)                                                         | Validate's JSON structures.                            |
+| ![Publish GitHub Pages](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/publish-gh-pages.yml/badge.svg?branch=main)                                      | Deploys GitHub Pages.                                  |
+| ![Pull Request Labeler](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/labeler.yml/badge.svg)                                                           | Automatically labels pull requests.                    |
+| ![Scorecards supply-chain security](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/scorecards.yml/badge.svg?branch=main)                                | Scorecards supply-chain security.                      |
+| ![Secrets Rotation Reminder](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/secrets-rotation-reminder.yml/badge.svg?branch=main)                        | Secrets Rotation Reminder.                             |
+| ![Secure Code Analysis](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/code-scanning.yml/badge.svg?branch=main)                                         | Secure Code Analysis.                                  |
+| ![Send Message on Onboarding Issue Close](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/notify-user-new-environment-created.yml/badge.svg?branch=main) | Send Message on Onboarding Issue Close.                |
+
+### Core Deployments
+
+| Workflow                                                                                                                                                                        | Description                          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| ![Bootstrap plan for Sprinkler](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/bootstrap-sprinkler.yml/badge.svg?branch=main)                    | Deploy's bootstrap to Sprinkler.     |
+| ![core-logging-deployment](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/core-logging-deployment.yml/badge.svg?branch=main)                     | Deploy's core logging.               |
+| ![core-network-services-deployment](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/core-network-services-deployment.yml/badge.svg?branch=main)   | Deploy's core network services.      |
+| ![core-security-deployment](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/core-security-deployment.yml/badge.svg?branch=main)                   | Deploy's core security.              |
+| ![core-shared-services-deployment](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/core-shared-services-deployment.yml/badge.svg?branch=main)     | Deploy's core share services.        |
+| ![core-vpc-development-deployment](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/core-vpc-development-deployment.yml/badge.svg?branch=main)     | Deploy's core VPC to development.    |
+| ![core-vpc-preproduction-deployment](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/core-vpc-preproduction-deployment.yml/badge.svg?branch=main) | Deploy's core VPC to pre-production. |
+| ![core-vpc-production-deployment](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/core-vpc-production-deployment.yml/badge.svg?branch=main)       | Deploy's core VPC to production.     |
+
+### Terraform Workflows
+
+| Workflow                                                                                                                                                                             | Description |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| ![Terraform: GitHub Resources](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/terraform-github.yml/badge.svg?branch=main)                             |             |
+| ![Terraform: Member Environments](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/terraform-member-environment.yml/badge.svg?branch=main)              |             |
+| ![Terraform: Modernisation-Platform-Account](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/modernisation-platform-account.yml/badge.svg?branch=main) |             |
+| ![Terraform: New Environment](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/new-environment.yml/badge.svg?branch=main)                               |             |
+| ![Terraform: PagerDuty Resources](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/terraform-pagerduty.yml/badge.svg?branch=main)                       |             |
+| ![Terraform: Scheduled Baseline](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/scheduled-baseline.yml/badge.svg?branch=main)                         |             |
+| ![Terraform: Single-Sign-On](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/terraform-single-sign-on.yml/badge.svg?branch=main)                       |             |
+| ![Terraform: Static Code Analysis](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/terraform-static-analysis.yml/badge.svg?branch=main)                |             |
+
+### New Environment Workflows
+
+| Workflow                                                                                                                                                              | Description |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| ![New environment files](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/new-environment-files.yml/badge.svg?branch=main)               |             |
+| ![New member environment files](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/new-member-environment-files.yml/badge.svg?branch=main) |             |
