@@ -12,3 +12,4 @@ megalinter-reports/
 tmp/
 *.tsv
 .vscode/
+config.txt
