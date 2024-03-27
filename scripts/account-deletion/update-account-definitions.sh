@@ -9,7 +9,7 @@ echo "Creating a branch in the MP repository"
 timestamp=$(date +%s)
 git checkout -b "delete-$APPLICATION_NAME-environments-$timestamp"
 
-for workspace in $WORKSPACES do;
+for workspace in $WORKSPACES; do
     # Delete the environment from the application.json file
     echo "Deleting $workspace from $APPLICATION_NAME.json"
     jq "del(.environments[] | select(.name == \"$workspace\"))" $APPLICATION_NAME.json > $APPLICATION_NAME.tmp
