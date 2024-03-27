@@ -1,52 +1,56 @@
 #!/bin/bash
 
-echo "Remember to manually check for resources that require emptying before destruction, such as S3 buckets."
+# Path to the configuration file
+CONFIG_FILE="example-config.txt"
 
-# Initial user prompts
-echo "Please enter the application name for the environment/s you want to delete:"
-read application_name
+# Function to load and parse the configuration file
+load_config() {
+    while IFS= read -r line; do
+        if [[ "$line" =~ ^#.*$ ]]; then
+            continue # Skip comments
+        fi
+        if [[ "$line" =~ WORKSPACES=.* ]]; then
+            WORKSPACES=($(echo "$line" | sed 's/WORKSPACES=\(.*\)/\1/' | tr -d '()' | tr -d '"' | tr " " "\n"))
+        elif [[ "$line" =~ APPLICATION_NAME=.* ]]; then
+            APPLICATION_NAME=$(echo "$line" | cut -d'=' -f2 | tr -d '"')
+        elif [[ "$line" =~ MEMBER_ACCOUNT=.* ]]; then
+            MEMBER_ACCOUNT=$(echo "$line" | cut -d'=' -f2 | tr -d '"')
+        elif [[ "$line" =~ MODERNISATION_ACCOUNT_ID=.* ]]; then
+            MODERNISATION_ACCOUNT_ID=$(echo "$line" | cut -d'=' -f2 | tr -d '"')
+        elif [[ "$line" =~ USER_MP_DIR=.* ]]; then
+            USER_MP_DIR=$(echo "$line" | cut -d'=' -f2 | tr -d '"')
+        elif [[ "$line" =~ USER_MPE_DIR=.* ]]; then
+            USER_MPE_DIR=$(echo "$line" | cut -d'=' -f2 | tr -d '"')
+        fi
+    done < "$CONFIG_FILE"
+}
 
-echo "Enter the Modernisation Platform account ID:"
-read modernisation_account_id
+# Invoke the function to load config from file
+load_config
 
-PLATFORM_DIR="modernisation-platform/terraform/environments/$application_name"
-CUSTOMER_DIR="modernisation-platform-environments/terraform/environments/$application_name"
+# Define directories based on the loaded configuration
+PLATFORM_DIR="$USER_MP_DIR/terraform/environments/$APPLICATION_NAME"
+CUSTOMER_DIR="$USER_MPE_DIR/terraform/environments/$APPLICATION_NAME"
 
-echo "Is this operation for a non-member account? (y/n):"
-read -r is_non_member
+# Set account type and directories to process
 account_type="member"
 DIRECTORIES_TO_PROCESS=("$PLATFORM_DIR")
-if [[ "$is_non_member" =~ ^[Yy]$ ]]; then
+if [[ "$MEMBER_ACCOUNT" == "no" ]]; then
     account_type="non-member"
 else
     DIRECTORIES_TO_PROCESS+=("$CUSTOMER_DIR")
 fi
 
-# Dynamically creating the list of workspaces to process based on user input
-WORKSPACES=()
-echo "Do you want to delete the development environment? (y/n)"
-read delete_development
-[[ "$delete_development" =~ ^[Yy]$ ]] && WORKSPACES+=("development")
+echo "Remember to manually check for resources that require emptying before destruction, such as S3 buckets."
 
-echo "Do you want to delete the test environment? (y/n)"
-read delete_test
-[[ "$delete_test" =~ ^[Yy]$ ]] && WORKSPACES+=("test")
-
-echo "Do you want to delete the preproduction environment? (y/n)"
-read delete_preproduction
-[[ "$delete_preproduction" =~ ^[Yy]$ ]] && WORKSPACES+=("preproduction")
-
-echo "Do you want to delete the production environment? (y/n)"
-read delete_production
-[[ "$delete_production" =~ ^[Yy]$ ]] && WORKSPACES+=("production")
-
+# Function to destroy resources
 destroy_resources() {
     local workspace_name=$1
     local target_dir=$2
 
     local init_args=""
     if [[ "$target_dir" == "$CUSTOMER_DIR" ]]; then
-        init_args="-backend-config=assume_role={role_arn=\"arn:aws:iam::$modernisation_account_id:role/modernisation-account-terraform-state-member-access\"}"
+        init_args="-backend-config=assume_role={role_arn=\"arn:aws:iam::$MODERNISATION_ACCOUNT_ID:role/modernisation-account-terraform-state-member-access\"}"
     fi
 
     echo "Working in directory: $target_dir"
@@ -77,3 +81,4 @@ for dir in "${DIRECTORIES_TO_PROCESS[@]}"; do
 done
 
 echo "All specified workspaces have been processed in all directories. Script execution complete."
+
