@@ -9,6 +9,15 @@
           "level": "administrator"
         }
       ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "moj-official-techops",
+          "level": "administrator"
+        }
+      ]
     }
   ],
   "tags": {
