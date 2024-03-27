@@ -9,6 +9,9 @@ APPLICATION_NAME="example"
 # Is this operation for a member account? (yes/no)
 MEMBER_ACCOUNT="yes"
 
+# Are you deleting ALL of the remaining environments for the application? (yes/no)
+COMPLETE_DELETION="no"
+
 # Define the Modernisation Platform Account ID
 MODERNISATION_ACCOUNT_ID=""
 
