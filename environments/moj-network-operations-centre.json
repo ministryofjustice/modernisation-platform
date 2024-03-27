@@ -7,7 +7,12 @@
         {
           "github_slug": "moj-official-techops",
           "level": "administrator"
+        },
+        {
+          "github_slug": "moj-official-techops-readonly",
+          "level": "view-only"
         }
+
       ]
     },
     {
@@ -16,6 +21,10 @@
         {
           "github_slug": "moj-official-techops",
           "level": "administrator"
+        },
+        {
+          "github_slug": "moj-official-techops-readonly",
+          "level": "view-only"
         }
       ]
     }
