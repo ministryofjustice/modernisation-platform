@@ -35,5 +35,6 @@
     "infrastructure-support": "central-digital-product-team@digital.justice.gov.uk",
     "owner": "central-digital-product-team@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": ["ministryofjustice/integrated-fraud"]
+  "github-oidc-team-repositories": ["ministryofjustice/integrated-fraud"],
+  "go-live-date": "02-04-2024"
 }
