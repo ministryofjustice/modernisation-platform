@@ -21,12 +21,25 @@ load_config() {
             USER_MP_DIR=$(echo "$line" | cut -d'=' -f2 | tr -d '"')
         elif [[ "$line" =~ USER_MPE_DIR=.* ]]; then
             USER_MPE_DIR=$(echo "$line" | cut -d'=' -f2 | tr -d '"')
+        elif [[ "$line" =~ MP_CREDENTIALS=.* ]]; then
+            IFS="(" read -ra MP_CREDENTIALS <<< "$(echo "$line" | cut -d'=' -f2 | tr -d '()')"
         fi
     done < "$CONFIG_FILE"
+
+    # Export MP_CREDENTIALS
+    for cred in "${MP_CREDENTIALS[@]}"; do
+        eval "$cred"
+    done
 }
 
 # Invoke the function to load config from file
 load_config
+
+# Verify if the required variables are set
+if [ -z "$AWS_ACCESS_KEY_ID" ] || [ -z "$AWS_SECRET_ACCESS_KEY" ] || [ -z "$AWS_SESSION_TOKEN" ]; then
+  echo "One or more AWS credentials were not provided in the config file. Please check your input and try again."
+  exit 1
+fi
 
 # Define directories based on the loaded configuration
 PLATFORM_DIR="$USER_MP_DIR/terraform/environments/$APPLICATION_NAME"
@@ -56,7 +69,7 @@ destroy_resources() {
     cd "$target_dir" || { echo "Failed to navigate to the directory $target_dir."; exit 1; }
 
     echo "Initializing Terraform..."
-    terraform init -reconfigure $init_args || { echo "Terraform init failed"; exit 1; }
+    terraform init $init_args || { echo "Terraform init failed"; exit 1; }
 
     echo "Switching to workspace: $workspace_name"
     terraform workspace select $workspace_name 2>/dev/null || terraform workspace new $workspace_name || { echo "Failed to select or create workspace $workspace_name"; exit 1; }
@@ -67,6 +80,12 @@ destroy_resources() {
         terraform destroy -auto-approve || { echo "Terraform destroy failed in workspace $workspace_name"; exit 1; }
         echo "Resources destroyed in workspace: $workspace_name"
     else
-        echo "Resource destruction
+        echo "Resource destruction"
+    fi
+}
+
+# Rest of the script...
+
+
 
 
