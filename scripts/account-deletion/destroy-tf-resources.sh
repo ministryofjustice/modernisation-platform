@@ -33,12 +33,12 @@ PLATFORM_DIR="$USER_MP_DIR/terraform/environments/$APPLICATION_NAME"
 CUSTOMER_DIR="$USER_MPE_DIR/terraform/environments/$APPLICATION_NAME"
 
 # Set account type and directories to process
-account_type="member"
-DIRECTORIES_TO_PROCESS=("$PLATFORM_DIR")
 if [[ "$MEMBER_ACCOUNT" == "no" ]]; then
     account_type="non-member"
+    DIRECTORIES_TO_PROCESS=("$PLATFORM_DIR")
 else
-    DIRECTORIES_TO_PROCESS+=("$CUSTOMER_DIR")
+    # For member accounts, start with the customer directory
+    DIRECTORIES_TO_PROCESS=("$CUSTOMER_DIR" "$PLATFORM_DIR")
 fi
 
 echo "Remember to manually check for resources that require emptying before destruction, such as S3 buckets."
@@ -47,7 +47,6 @@ echo "Remember to manually check for resources that require emptying before dest
 destroy_resources() {
     local workspace_name=$1
     local target_dir=$2
-
     local init_args=""
     if [[ "$target_dir" == "$CUSTOMER_DIR" ]]; then
         init_args="-backend-config=assume_role={role_arn=\"arn:aws:iam::$MODERNISATION_ACCOUNT_ID:role/modernisation-account-terraform-state-member-access\"}"
@@ -68,17 +67,6 @@ destroy_resources() {
         terraform destroy -auto-approve || { echo "Terraform destroy failed in workspace $workspace_name"; exit 1; }
         echo "Resources destroyed in workspace: $workspace_name"
     else
-        echo "Resource destruction cancelled."
-        return 1  # Exit the function if destruction is cancelled
-    fi
-}
+        echo "Resource destruction
 
-# Process each workspace in each directory
-for dir in "${DIRECTORIES_TO_PROCESS[@]}"; do
-    for workspace in "${WORKSPACES[@]}"; do
-        destroy_resources "$workspace" "$dir"
-    done
-done
-
-echo "All specified workspaces have been processed in all directories. Script execution complete."
 
