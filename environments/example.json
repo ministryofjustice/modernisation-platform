@@ -9,6 +9,15 @@
           "level": "developer"
         }
       ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "github_slug": "modernisation-platform",
+          "level": "developer"
+        }
+      ]
     }
   ],
   "tags": {
