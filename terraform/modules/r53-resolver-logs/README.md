@@ -34,5 +34,7 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_r53_resolver_log_name"></a> [r53\_resolver\_log\_name](#output\_r53\_resolver\_log\_name) | n/a |
 <!-- END_TF_DOCS -->
