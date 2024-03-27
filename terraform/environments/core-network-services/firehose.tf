@@ -15,25 +15,25 @@ locals {
 # The initial call is for the creation of firehose stream resources for the firewall inspection logs.
 
 module "firehose_firewalls" {
-  source          = "../../modules/firehose"
-  for_each        = local.firewall_logs
-  resource_prefix = substr(each.value, 3, 3) # We do this because the log name is too long and we want to avoid any invalid characters.
-  common_attribute          = "${local.application_name}-${each.key}"
-  log_group_name  = each.value
-  tags            = local.tags
-  xsiam_endpoint  = each.value != "non_live_data" ? tostring(local.xsiam["xsiam_prod_firewall_endpoint"]) : tostring(local.xsiam["xsiam_preprod_firewall_endpoint"])
-  xsiam_secret    = each.value != "non_live_data" ? tostring(local.xsiam["xsiam_prod_firewall_secret"]) : tostring(local.xsiam["xsiam_preprod_firewall_secret"])
+  source           = "../../modules/firehose"
+  for_each         = local.firewall_logs
+  resource_prefix  = substr(each.value, 3, 3) # We do this because the log name is too long and we want to avoid any invalid characters.
+  common_attribute = "${local.application_name}-${each.key}"
+  log_group_name   = each.value
+  tags             = local.tags
+  xsiam_endpoint   = each.value != "non_live_data" ? tostring(local.xsiam["xsiam_prod_firewall_endpoint"]) : tostring(local.xsiam["xsiam_preprod_firewall_endpoint"])
+  xsiam_secret     = each.value != "non_live_data" ? tostring(local.xsiam["xsiam_prod_firewall_secret"]) : tostring(local.xsiam["xsiam_preprod_firewall_secret"])
 }
 
 # A 2nd call of the module which will generate the firehose streams for the firewall vpc flow logs.
 
 module "firehose_vpcs" {
-  source          = "../../modules/firehose"
-  for_each        = local.firewall_vpc_logs
-  resource_prefix = format("%s-vpc", substr(each.value, 0, 3)) # As above but we add an additional identifier
-  common_attribute          = "${local.application_name}-${each.key}"
-  log_group_name  = each.value
-  tags            = local.tags
-  xsiam_endpoint  = each.value != "non_live_data" ? tostring(local.xsiam["xsiam_prod_network_endpoint"]) : tostring(local.xsiam["xsiam_preprod_network_endpoint"])
-  xsiam_secret    = each.value != "non_live_data" ? tostring(local.xsiam["xsiam_prod_network_secret"]) : tostring(local.xsiam["xsiam_preprod_network_secret"])
+  source           = "../../modules/firehose"
+  for_each         = local.firewall_vpc_logs
+  resource_prefix  = format("%s-vpc", substr(each.value, 0, 3)) # As above but we add an additional identifier
+  common_attribute = "${local.application_name}-${each.key}"
+  log_group_name   = each.value
+  tags             = local.tags
+  xsiam_endpoint   = each.value != "non_live_data" ? tostring(local.xsiam["xsiam_prod_network_endpoint"]) : tostring(local.xsiam["xsiam_preprod_network_endpoint"])
+  xsiam_secret     = each.value != "non_live_data" ? tostring(local.xsiam["xsiam_prod_network_secret"]) : tostring(local.xsiam["xsiam_preprod_network_secret"])
 }
