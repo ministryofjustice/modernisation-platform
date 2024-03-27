@@ -10,7 +10,7 @@ if [[ $COMPLETE_DELETION = "yes" ]]; then
     # Git setup for MP Environments repository
     echo "Creating a branch in the MP Environments repository"
     timestamp=$(date +%s)
-    git checkout -b "delete-$APPLICATION_NAME-$timestamp"
+    git -C $USER_MPE_DIR checkout -b "delete-$APPLICATION_NAME-$timestamp"
 
     echo "Deleting terraform/environments/$APPLICATION_NAME in the MP Environments repository"
     rm -rf $USER_MPE_DIR/terraform/environments/$APPLICATION_NAME
