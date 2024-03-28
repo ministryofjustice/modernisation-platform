@@ -63,7 +63,7 @@
 ### preproduction and production /21s for member subnet-sets
 
 | CIDR        | mask | allocated to                          |
-| :---------- | :--- | :------------------------------------ |
+| :---------- | :--- |:--------------------------------------|
 | 10.27.0.0   | /21  | hmpps preproduction - general         |
 | 10.27.8.0   | /21  | hmpps production - general            |
 | 10.27.16.0  | /21  | hmcts production - general            |
@@ -81,7 +81,7 @@
 | 10.27.112.0 | /21  | cjse production - general             |
 | 10.27.120.0 | /21  | cjse preproduction - general          |
 | 10.27.128.0 | /21  | data-platform production - networking |
-| 10.27.136.0 | /21  | -                                     |
+| 10.27.136.0 | /21  | core-shared-services live_data        |
 | 10.27.144.0 | /21  | -                                     |
 | 10.27.152.0 | /21  | -                                     |
 | 10.27.160.0 | /21  | -                                     |
