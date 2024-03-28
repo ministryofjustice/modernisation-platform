@@ -7,6 +7,24 @@
         {
           "github_slug": "moj-official-techops",
           "level": "administrator"
+        },
+        {
+          "github_slug": "moj-official-techops-readonly",
+          "level": "view-only"
+        }
+
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "moj-official-techops",
+          "level": "administrator"
+        },
+        {
+          "github_slug": "moj-official-techops-readonly",
+          "level": "view-only"
         }
       ]
     }
