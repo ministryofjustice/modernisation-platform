@@ -3,7 +3,7 @@ name: Terraform Static Code Analysis
 on:
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '0 7 * * 1-5'
+    - cron: "0 7 * * 1-5"
   workflow_dispatch:
   pull_request:
     branches:
@@ -20,22 +20,22 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch' && github.event_name != 'schedule'
     steps:
-    - name: Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      with:
-        fetch-depth: 0
-    - name: Run Analysis
-      uses: ministryofjustice/github-actions/terraform-static-analysis@1a75ce5ae70d9109044f8c8224aac3eb1f8301d3 # v16.0.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        scan_type: changed
-        trivy_severity: HIGH,CRITICAL
-        trivy_ignore: ./.trivyignore.yaml
-        checkov_exclude: CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
-        tflint_exclude: terraform_unused_declarations
-        tflint_call_module_type: none
-        tfsec_trivy: trivy
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          fetch-depth: 0
+      - name: Run Analysis
+        uses: ministryofjustice/github-actions/terraform-static-analysis@39f43616b34bd46eae8ff052b3bf97726bb0f01a # v17.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          scan_type: changed
+          trivy_severity: HIGH,CRITICAL
+          trivy_ignore: ./.trivyignore.yaml
+          checkov_exclude: CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
+          tflint_exclude: terraform_unused_declarations
+          tflint_call_module_type: none
+          tfsec_trivy: trivy
 
   terraform-static-analysis-full-scan:
     permissions:
@@ -47,53 +47,53 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch'
     steps:
-    - name: Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      with:
-        fetch-depth: 0
-    - name: Run Analysis
-      uses: ministryofjustice/github-actions/terraform-static-analysis@1a75ce5ae70d9109044f8c8224aac3eb1f8301d3 # v16.0.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        scan_type: full
-        tfsec_trivy: trivy
-        trivy_skip_dir: ''
-        trivy_severity: HIGH,CRITICAL
-        trivy_ignore: ./.trivyignore.yaml
-        tfsec_exclude: aws-ssm-secret-use-customer-key,github-repositories-private,aws-vpc-no-excessive-port-access,github-repositories-require-signed-commits
-        checkov_exclude: CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
-        tflint_exclude: terraform_unused_declarations
-        tflint_call_module_type: none
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          fetch-depth: 0
+      - name: Run Analysis
+      uses: ministryofjustice/github-actions/terraform-static-analysis@39f43616b34bd46eae8ff052b3bf97726bb0f01a # v17.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          scan_type: full
+          tfsec_trivy: trivy
+          trivy_skip_dir: ""
+          trivy_severity: HIGH,CRITICAL
+          trivy_ignore: ./.trivyignore.yaml
+          tfsec_exclude: aws-ssm-secret-use-customer-key,github-repositories-private,aws-vpc-no-excessive-port-access,github-repositories-require-signed-commits
+          checkov_exclude: CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
+          tflint_exclude: terraform_unused_declarations
+          tflint_call_module_type: none
 
   terraform-static-analysis-scheduled-scan:
     name: Terraform Static Analysis - scheduled scan of all directories
     runs-on: ubuntu-latest
     if: github.event_name == 'schedule'
     steps:
-    - name: Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      with:
-        fetch-depth: 0
-    - name: Run Analysis
-      uses: ministryofjustice/github-actions/terraform-static-analysis@1a75ce5ae70d9109044f8c8224aac3eb1f8301d3 # v16.0.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        scan_type: full
-        tfsec_trivy: trivy
-        trivy_severity: HIGH,CRITICAL
-        trivy_ignore: ./.trivyignore.yaml
-        tfsec_exclude: aws-ssm-secret-use-customer-key,github-repositories-private,aws-vpc-no-excessive-port-access,github-repositories-require-signed-commits
-        checkov_exclude: CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
-        tflint_exclude: terraform_unused_declarations
-        tflint_call_module_type: none
-    - name: Slack failure notification
-      uses: slackapi/slack-github-action@6c661ce58804a1a20f6dc5fbee7f0381b469e001 # v1.25.0
-      with:
-        payload: |
-          {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-      if: ${{ failure() }}
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          fetch-depth: 0
+      - name: Run Analysis
+        uses: ministryofjustice/github-actions/terraform-static-analysis@39f43616b34bd46eae8ff052b3bf97726bb0f01a # v17.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          scan_type: full
+          tfsec_trivy: trivy
+          trivy_severity: HIGH,CRITICAL
+          trivy_ignore: ./.trivyignore.yaml
+          tfsec_exclude: aws-ssm-secret-use-customer-key,github-repositories-private,aws-vpc-no-excessive-port-access,github-repositories-require-signed-commits
+          checkov_exclude: CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
+          tflint_exclude: terraform_unused_declarations
+          tflint_call_module_type: none
+      - name: Slack failure notification
+        uses: slackapi/slack-github-action@6c661ce58804a1a20f6dc5fbee7f0381b469e001 # v1.25.0
+        with:
+          payload: |
+            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+        if: ${{ failure() }}
