@@ -112,6 +112,7 @@ resource "aws_network_acl_rule" "allow-192-168-0-0-16" {
 }
 
 #trivy:ignore:AVD-AWS-0102
+#trivy:ignore:AVD-AWS-0102
 resource "aws_network_acl_rule" "high-ports-in-from-internet" {
   cidr_block     = "0.0.0.0/0"
   egress         = false
