@@ -16,15 +16,13 @@ COMPLETE_DELETION="no"
 MODERNISATION_ACCOUNT_ID=""
 
 # Define the absolute path to the Modernisation Platform repo on your device
-USER_MP_DIR="/Users/kudzai.mtoko/mojgithub/modernisation-platform"
+USER_MP_DIR="/Users/richard.green/mojgithub/modernisation-platform"
 
 # Define the absolute path to the Modernisation Platform Environments repo on your device
 USER_MPE_DIR="/Users/richard.green/Documents/GitHub/modernisation-platform-environments"
 
 # Define the Temporary Administrator Access Modernisation Platform Account Credentials
-MP_CREDENTIALS=(
-    
-)
+MP_CREDENTIALS=""
 
 # Define the Temporary Administrator Access Development Account Credentials
 DEVELOPMENT_CREDENTIALS=""
