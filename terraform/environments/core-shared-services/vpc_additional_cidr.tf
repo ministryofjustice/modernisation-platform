@@ -19,13 +19,28 @@ resource "aws_vpc_ipv4_cidr_block_association" "live-data-additional" {
   vpc_id     = module.vpc["live_data"].vpc_id
 }
 
+resource "aws_vpc_endpoint_route_table_association" "live-data-additional" {
+  route_table_id  = aws_route_table.live-data-additional.id
+  vpc_endpoint_id = aws_vpc_endpoint.vpc_gateway_endpoints["live_data-com.amazonaws.eu-west-2.s3"].id
+}
+
+resource "aws_security_group_rule" "live-data-additional-interface_endpoints" {
+  description       = "Permit secure traffic to this endpoint within the VPC"
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = [aws_vpc_ipv4_cidr_block_association.live-data-additional.cidr_block]
+  security_group_id = aws_security_group.interface_endpoint_security_group["live_data"].id
+}
+
 resource "aws_subnet" "live-data-additional" {
   for_each   = local.additional_subnet_cidr_map
   cidr_block = each.value
   vpc_id     = module.vpc["live_data"].vpc_id
   tags = merge({
     "Name" = format("live_data-additional-%s", each.key)
-  },
+    },
   local.tags)
 }
 
@@ -33,7 +48,7 @@ resource "aws_route_table" "live-data-additional" {
   vpc_id = module.vpc["live_data"].vpc_id
   tags = merge({
     "Name" = "live_data-additional"
-  },
+    },
   local.tags)
 }
 
@@ -54,7 +69,7 @@ resource "aws_network_acl" "live-data-additional" {
   subnet_ids = values(aws_subnet.live-data-additional)[*].id
   tags = merge({
     "Name" = "live_data-additional"
-  },
+    },
   local.tags)
 }
 
