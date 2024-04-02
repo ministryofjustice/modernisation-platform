@@ -57,6 +57,8 @@
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
     "owner": "Mark Richardson"
   },
-  "github-oidc-team-repositories": [""],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/dso-modernisation-platform-automation"
+  ],
   "go-live-date": ""
 }
