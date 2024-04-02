@@ -23,7 +23,7 @@ You can speed up these checks by preparing as much as possible in advance.
 
 ## Checklist
 
-1. For public facing interfaces - [Create DDoS alarms, enable SRT access, enable Layer 7 Mitigation for ELBs](../runbooks/enabling-shield-advanced.html).
+1. For public facing interfaces - [Create DDoS alarms, enable SRT access, enable Layer 7 Mitigation for ELBs](../runbooks/enabling-shield-advanced.html) This is not required if the interface is restricted to internal use only.
 1. All EC2 instances have the AWS Systems Manage Session Manager [SSM Agent](https://docs.aws.amazon.com/systems-manager/latest/userguide/ssm-agent.html) installed.
 1. There are no `CRITICAL` or `HIGH` severity level findings in Security Hub for the production account.
 1. Infrastructure code has been reviewed and signed off by a Modernisation Platform engineer.
