@@ -61,6 +61,7 @@ expected :=
     "oasys",
     "oasys-national-reporting",
     "observability-platform",
+    "operations-engineering",
     "opg-lpa-data-store",
     "performance-hub",
     "planetfm",
