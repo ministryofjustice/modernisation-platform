@@ -50,7 +50,7 @@ resource "aws_network_acl" "live-data-additional" {
 
 #trivy:ignore:AVD-AWS-0102
 resource "aws_network_acl_rule" "allow-vpc" {
-  #chekov:skip=CKV_AWS_352
+  #checkov:skip=CKV_AWS_352:Verified
   for_each       = local.bidirectional_nacl_rules
   cidr_block     = module.vpc["live_data"].vpc_cidr_block
   egress         = each.value
@@ -62,7 +62,7 @@ resource "aws_network_acl_rule" "allow-vpc" {
 
 #trivy:ignore:AVD-AWS-0102
 resource "aws_network_acl_rule" "allow-vpc-additional" {
-  #chekov:skip=CKV_AWS_352
+  #checkov:skip=CKV_AWS_352
   for_each       = local.bidirectional_nacl_rules
   cidr_block     = aws_vpc_ipv4_cidr_block_association.live-data-additional.cidr_block
   egress         = each.value
@@ -77,7 +77,7 @@ resource "aws_network_acl_rule" "allow-vpc-additional" {
 
 #trivy:ignore:AVD-AWS-0102
 resource "aws_network_acl_rule" "allow-10-0-0-0-8" {
-  #chekov:skip=CKV_AWS_352
+  #checkov:skip=CKV_AWS_352
   for_each       = local.bidirectional_nacl_rules
   cidr_block     = "10.0.0.0/8"
   egress         = each.value
@@ -89,7 +89,7 @@ resource "aws_network_acl_rule" "allow-10-0-0-0-8" {
 
 #trivy:ignore:AVD-AWS-0102
 resource "aws_network_acl_rule" "allow-172-16-0-0-12" {
-  #chekov:skip=CKV_AWS_352
+  #checkov:skip=CKV_AWS_352
   for_each       = local.bidirectional_nacl_rules
   cidr_block     = "172.16.0.0/12"
   egress         = each.value
@@ -101,7 +101,7 @@ resource "aws_network_acl_rule" "allow-172-16-0-0-12" {
 
 #trivy:ignore:AVD-AWS-0102
 resource "aws_network_acl_rule" "allow-192-168-0-0-16" {
-  #chekov:skip=CKV_AWS_352
+  #checkov:skip=CKV_AWS_352
   for_each       = local.bidirectional_nacl_rules
   cidr_block     = "192.168.0.0/16"
   egress         = each.value
