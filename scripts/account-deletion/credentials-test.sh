@@ -44,18 +44,4 @@ terraform init
 echo "Current Terraform state:"
 terraform state list
 
-# Loop through each workspace to plan resources
-for ENVIRONMENT in "${WORKSPACES[@]}"; do
-    echo "Planning resources for application '$application_name' in the '$ENVIRONMENT' environment."
-
-    # Select the Terraform workspace
-    echo "Selecting Terraform workspace '$ENVIRONMENT'"
-    terraform workspace select "$ENVIRONMENT" || terraform workspace new "$ENVIRONMENT"
-
-    # Generate and show the plan for the current workspace
-    echo "Generating Terraform plan for the '$ENVIRONMENT' environment..."
-    terraform plan
-done
-
 echo "Terraform plan operations completed."
-
