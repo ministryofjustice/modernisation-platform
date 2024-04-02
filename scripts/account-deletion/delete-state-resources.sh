@@ -34,7 +34,9 @@ fi
 
 # Change directory to the Terraform environments
 # This needs to be changed to be more dynamic
-cd "/Users/kudzai.mtoko/mojgithub/modernisation-platform/terraform/environments" || exit
+pwd
+cd $USER_MP_DIR/terraform/environments || exit
+pwd
 
 # Initialize Terraform
 echo "Initializing Terraform..."
