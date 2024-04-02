@@ -19,7 +19,7 @@ resource "aws_vpc_ipv4_cidr_block_association" "live-data-additional" {
   vpc_id     = module.vpc["live_data"].vpc_id
 }
 
-resource "aws_vpc_endpoint_route_table_association" "example" {
+resource "aws_vpc_endpoint_route_table_association" "live-data-additional" {
   route_table_id  = aws_route_table.live-data-additional.id
   vpc_endpoint_id = aws_vpc_endpoint.vpc_gateway_endpoints["live_data-com.amazonaws.eu-west-2.s3"].id
 }
