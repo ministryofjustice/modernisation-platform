@@ -23,11 +23,18 @@ resource "aws_subnet" "live-data-additional" {
   for_each   = local.additional_subnet_cidr_map
   cidr_block = each.value
   vpc_id     = module.vpc["live_data"].vpc_id
-  tags       = local.tags
+  tags = merge({
+    "Name" = format("live_data-additional-%s", each.key)
+  },
+  local.tags)
 }
 
 resource "aws_route_table" "live-data-additional" {
   vpc_id = module.vpc["live_data"].vpc_id
+  tags = merge({
+    "Name" = "live_data-additional"
+  },
+  local.tags)
 }
 
 resource "aws_route_table_association" "live-data-additional" {
