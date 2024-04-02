@@ -15,7 +15,7 @@ locals {
 }
 
 resource "aws_vpc_ipv4_cidr_block_association" "live-data-additional" {
-  cidr_block = "10.26.144.0/21"
+  cidr_block = "10.27.136.0/21"
   vpc_id     = module.vpc["live_data"].vpc_id
 }
 
