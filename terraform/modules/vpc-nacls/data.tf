@@ -77,6 +77,24 @@ locals {
       rule_number = 3000
       to_port     = null
     },
+    allow_10-27-136-0_in = {
+      cidr_block  = "10.27.136.0/21"
+      egress      = false
+      from_port   = null
+      protocol    = "-1"
+      rule_action = "allow"
+      rule_number = 2010
+      to_port     = null
+    },
+    allow_10-27-136-0_out = {
+      cidr_block  = "10.27.136.0/21"
+      egress      = true
+      from_port   = null
+      protocol    = "-1"
+      rule_action = "allow"
+      rule_number = 2010
+      to_port     = null
+    },
     deny_mp_cidr_out = {
       cidr_block  = "10.26.0.0/15"
       egress      = true
