@@ -80,6 +80,8 @@
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
     "owner": "digital-studio-operations-team@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [""],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/dso-modernisation-platform-automation"
+  ],
   "go-live-date": "2022-08-25"
 }

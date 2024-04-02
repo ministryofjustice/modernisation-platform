@@ -61,6 +61,8 @@
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
     "owner": "sean.privett@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [""],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/dso-modernisation-platform-automation"
+  ],
   "go-live-date": "2023-08-22"
 }
