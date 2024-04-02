@@ -50,7 +50,8 @@ expected :=
           "data-platform-development",
           "data-platform-apps-and-tools-development",
           "delete-account-development",
-          "observability-platform-development"
+          "observability-platform-development",
+          "operations-engineering-development"
         ]
       }
     },
