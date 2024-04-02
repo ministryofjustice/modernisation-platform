@@ -52,7 +52,10 @@ resource "aws_route" "default-via-tgw" {
 resource "aws_network_acl" "live-data-additional" {
   vpc_id     = module.vpc["live_data"].vpc_id
   subnet_ids = values(aws_subnet.live-data-additional)[*].id
-  tags       = local.tags
+  tags = merge({
+    "Name" = "live_data-additional"
+  },
+  local.tags)
 }
 
 #trivy:ignore:AVD-AWS-0102
