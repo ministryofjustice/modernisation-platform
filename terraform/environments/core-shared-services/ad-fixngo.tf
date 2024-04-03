@@ -40,7 +40,7 @@ locals {
       #   instance_type             = "t3.large"
       #   key_name                  = "ad-fixngo-ec2-live"
       #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-dc-a"]
-      #   subnet_id                 = module.vpc["live_data"].non_tgw_subnet_ids_map.private[0]
+      #   subnet_id                 = aws_subnet.live-data-additional["eu-west-2a"].id
       #   vpc_security_group_name   = "ad_hmpp_dc_sg"
       #   tags = {
       #     server-type = "DomainJoin"
@@ -55,7 +55,7 @@ locals {
       #   instance_type             = "t3.large"
       #   key_name                  = "ad-fixngo-ec2-live"
       #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-dc-b"]
-      #   subnet_id                 = module.vpc["live_data"].non_tgw_subnet_ids_map.private[1]
+      #   subnet_id                 = aws_subnet.live-data-additional["eu-west-2b"].id
       #   vpc_security_group_name   = "ad_hmpp_dc_sg"
       #   tags = {
       #     server-type = "DomainJoin"
@@ -70,7 +70,7 @@ locals {
       #   instance_type             = "t3.medium"
       #   key_name                  = "ad-fixngo-ec2-live"
       #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-rdlic"]
-      #   subnet_id                 = module.vpc["live_data"].non_tgw_subnet_ids_map.private[2]
+      #   subnet_id                 = aws_subnet.live-data-additional["eu-west-2c"].id
       #   vpc_security_group_name   = "ad_hmpp_rdlic_sg"
       #   tags = {
       #     server-type = "RDLicensing"
