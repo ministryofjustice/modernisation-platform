@@ -10,7 +10,7 @@
 
 module "ad_fixngo_ip_addresses" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
-  source = "github.com/ministryofjustice/modernisation-platform-environments//terraform/modules/ip_addresses?ref=85e895e8161b5edc67975dfa6925233ffaf625a2"
+  source = "github.com/ministryofjustice/modernisation-platform-environments//terraform/modules/ip_addresses?ref=29c48e315aa5eeef5d604617169b2f6db953966e"
 }
 
 locals {
