@@ -55,6 +55,7 @@
       ]
     }
   ],
+
   "tags": {
     "application": "hmpps-domain-services",
     "business-unit": "HMPPS",
