@@ -10,7 +10,7 @@
 
 module "ad_fixngo_ip_addresses" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
-  source = "github.com/ministryofjustice/modernisation-platform-environments//terraform/modules/ip_addresses?ref=373164d50013894187bc4fdba80a066ec136c90f"
+  source = "github.com/ministryofjustice/modernisation-platform-environments//terraform/modules/ip_addresses?ref=29c48e315aa5eeef5d604617169b2f6db953966e"
 }
 
 locals {
@@ -33,21 +33,21 @@ locals {
       # rdlic        = remote desktop licensing server
       # a/b/c suffix = availability zone
 
-      # ad-hmpp-dc-a = {
-      #   ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
-      #   availability_zone         = "eu-west-2a"
-      #   iam_instance_profile_role = "ad-fixngo-ec2-live-role"
-      #   instance_type             = "t3.large"
-      #   key_name                  = "ad-fixngo-ec2-live"
-      #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-dc-a"]
-      #   subnet_id                 = module.vpc["live_data"].non_tgw_subnet_ids_map.private[0]
-      #   vpc_security_group_name   = "ad_hmpp_dc_sg"
-      #   tags = {
-      #     server-type = "DomainJoin"
-      #     domain-name = "azure.hmpp.root"
-      #     description = "domain controller for FixNGo azure.hmpp.root domain"
-      #   }
-      # }
+      ad-hmpp-dc-a = {
+        ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
+        availability_zone         = "eu-west-2a"
+        iam_instance_profile_role = "ad-fixngo-ec2-live-role"
+        instance_type             = "t3.large"
+        key_name                  = "ad-fixngo-ec2-live"
+        private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-dc-a"]
+        subnet_id                 = aws_subnet.live-data-additional["eu-west-2a"].id
+        vpc_security_group_name   = "ad_hmpp_dc_sg"
+        tags = {
+          server-type = "DomainJoin"
+          domain-name = "azure.hmpp.root"
+          description = "domain controller for FixNGo azure.hmpp.root domain"
+        }
+      }
       # ad-hmpp-dc-b = {
       #   ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
       #   availability_zone         = "eu-west-2b"
@@ -55,7 +55,7 @@ locals {
       #   instance_type             = "t3.large"
       #   key_name                  = "ad-fixngo-ec2-live"
       #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-dc-b"]
-      #   subnet_id                 = module.vpc["live_data"].non_tgw_subnet_ids_map.private[1]
+      #   subnet_id                 = aws_subnet.live-data-additional["eu-west-2b"].id
       #   vpc_security_group_name   = "ad_hmpp_dc_sg"
       #   tags = {
       #     server-type = "DomainJoin"
@@ -70,7 +70,7 @@ locals {
       #   instance_type             = "t3.medium"
       #   key_name                  = "ad-fixngo-ec2-live"
       #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-rdlic"]
-      #   subnet_id                 = module.vpc["live_data"].non_tgw_subnet_ids_map.private[2]
+      #   subnet_id                 = aws_subnet.live-data-additional["eu-west-2c"].id
       #   vpc_security_group_name   = "ad_hmpp_rdlic_sg"
       #   tags = {
       #     server-type = "RDLicensing"
