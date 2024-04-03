@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Quick Start Mac Guide
-last_reviewed_on: 2023-09-29
+last_reviewed_on: 2023-04-03
 review_in: 6 months
 ---
 
@@ -20,7 +20,7 @@ review_in: 6 months
 
 Welcome to the world of macOS! This user guide will walk you through the process of setting up your Mac laptop with iTerm2, Oh My Zsh, Powerlevel10k theme using the stylish Dracula theme, and configuring essential tools like Git, AWS-Vault, TFEnv, and Docker.
 
-N.B - Please remember this is just one developers experience and is by no means the only way of configuring your Mac, this is merely a quick start guide tp help guide new starters. If there are different applications you prefer working with please use them and feel free to add any recommendations to this page 
+N.B - Please remember this is just one developers experience and is by no means the only way of configuring your Mac, this is merely a quick start guide tp help guide new starters. If there are different applications you prefer working with please use them and feel free to add any recommendations to this page
 
 ## Prerequisites
 
@@ -62,9 +62,11 @@ Switch to iTerm2 for the remainder of this guide.
 ## Step 3: Install Git
 
 To set up Git, open iTerm2 and run:
+
 ```bash
 brew install git
 ```
+
 Configure your Git username and email:
 
 ```bash
@@ -91,6 +93,7 @@ brew install zsh-syntax-highlighting
 ```
 
 To enable plugin, edit the ~/.zshrc file
+
 ```bash
 vi ~/.zshrc
 ```
@@ -99,14 +102,16 @@ press " i " to enter INSERT mode and
 append zsh-autosuggestions & zsh-syntax-highlighting to plugins() like this:
 
 ```bash
-plugins=(  
-  git  
-  docker  
-  zsh-autosuggestions 
+plugins=(
+  git
+  docker
+  zsh-autosuggestions
   zsh-syntax-highlighting
 )
 ```
-Then run the following command to apply the changes: 
+
+Then run the following command to apply the changes:
+
 ```bash
 source ~/.zshrc
 ```
@@ -124,22 +129,26 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/the
 Now, we'll configure Zsh and Powerlevel10k.
 
 1. Open iTerm2 and run:
+
 ```bash
 nano ~/.zshrc
-``````
+```
+
 2. In the .zshrc file, set the ZSH_THEME to "powerlevel10k/powerlevel10k":
+
 ```bash
 ZSH_THEME="powerlevel10k/powerlevel10k"
 ```
+
 3. Save and exit the text editor (press Ctrl + O, then Enter, and Ctrl + X).
 
 4. Restart iTerm2 to apply the changes.
 
 ## Step 8: Configure Powerlevel10k
 
-The first time you start a new iTerm2 session, Powerlevel10k will guide you through its configuration wizard. Follow the prompts to customize your prompt to your liking. 
+The first time you start a new iTerm2 session, Powerlevel10k will guide you through its configuration wizard. Follow the prompts to customize your prompt to your liking.
 
-if the prompt doesn't automatically appear then run 
+if the prompt doesn't automatically appear then run
 
 ```bash
 p10k configure
@@ -152,10 +161,13 @@ AWS-Vault is a tool for securely managing AWS access credentials. Install it usi
 ```bash
 brew install aws-vault
 ```
+
 Configure AWS-Vault with your AWS credentials:
+
 ```bash
 aws-vault add my-aws-profile
 ```
+
 Follow the prompts to enter your AWS access and secret keys.
 
 for more information please visit [aws-vault](https://github.com/99designs/aws-vault)
@@ -178,6 +190,7 @@ $ tfenv install latest
 ## Step 11: Install Docker
 
 Docker is a containerization platform. Install it using Homebrew:
+
 ```bash
 brew install --cask docker
 ```
