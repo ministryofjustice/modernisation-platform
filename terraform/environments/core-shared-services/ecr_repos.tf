@@ -1060,6 +1060,13 @@ module "analytical_platform_ingestion_notify_ecr_repo" {
     local.environment_management.account_ids["analytical-platform-ingestion-production"]
   ]
 
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:function:notify-quarantined*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-ingestion-production"]}:function:notify-quarantined*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:function:notify-transferred*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-ingestion-production"]}:function:notify-transferred*"
+  ]
+
   # Tags
   tags_common = local.tags
 }
