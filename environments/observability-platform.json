@@ -26,5 +26,5 @@
     "infrastructure-support": "hosting-leads@digital.justice.gov.uk",
     "owner": "hosting-leads@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": ["ministryofjustice/observability-platform-grafana-api-key-rotator"]
 }
