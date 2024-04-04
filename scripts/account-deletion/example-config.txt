@@ -1,0 +1,55 @@
+# Define the Application name
+APPLICATION_NAME="example"
+
+# Define an array of workspaces to manage
+WORKSPACES=("development" "test" "preproduction" "production") 
+
+# Define the Modernisation Platform AWS Account ID
+MP_ACCOUNT_ID="xxx"
+
+# Is this operation for a member account? (yes/no)
+MEMBER_ACCOUNT="yes"
+
+# Are you deleting ALL of the remaining environments for the application? (yes/no)
+COMPLETE_DELETION="no"
+
+# Define the absolute path to the Modernisation Platform repo on your device
+USER_MP_DIR="/Users/kudzai.mtoko/mojgithub/modernisation-platform"
+
+# Define the absolute path to the Modernisation Platform Environments repo on your device
+USER_MPE_DIR="/Users/kudzai.mtoko/mojgithub/modernisation-platform-environments"
+
+# Copy and paste below the admin credentials for the Modernisation Platform account 
+MP_CREDENTIAL(){
+export AWS_ACCESS_KEY_ID="xxx"
+export AWS_SECRET_ACCESS_KEY="yyy"
+export AWS_SESSION_TOKEN="zzz"
+}
+
+# Copy and paste below the admin credentials for the Application's development account 
+DEVELOPMENT_CREDENTIAL(){
+export AWS_ACCESS_KEY_ID="xxx"
+export AWS_SECRET_ACCESS_KEY="yyy"
+export AWS_SESSION_TOKEN="zzz"
+}
+
+# Copy and paste below the admin credentials for the Application's test account 
+TEST_CREDENTIALS(){ 
+export AWS_ACCESS_KEY_ID="xxx"
+export AWS_SECRET_ACCESS_KEY="yyy"
+export AWS_SESSION_TOKEN="zzz"
+}
+
+# Copy and paste below the admin credentials for the Application's preproduction account 
+PREPRODUCTION_CREDENTIALS(){
+export AWS_ACCESS_KEY_ID="xxx"
+export AWS_SECRET_ACCESS_KEY="yyy"
+export AWS_SESSION_TOKEN="zzz"
+}
+
+# Copy and paste below the admin credentials for the Application's production account 
+PREPRODUCTION_CREDENTIALS(){
+export AWS_ACCESS_KEY_ID="xxx"
+export AWS_SECRET_ACCESS_KEY="yyy"
+export AWS_SESSION_TOKEN="zzz"
+}
