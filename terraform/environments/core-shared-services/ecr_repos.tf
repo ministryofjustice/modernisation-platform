@@ -1116,3 +1116,24 @@ module "analytical_platform_ingestion_transfer_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
+
+module "observability_platform_grafana_api_key_rotator_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "observability-platform-grafana-api-key-rotator"
+
+  push_principals = ["arn:aws:iam::${local.environment_management.account_ids["observability-platform-development"]}:role/modernisation-platform-oidc-cicd"]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["observability-platform-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["observability-platform-development"],
+    local.environment_management.account_ids["observability-platform-production"]
+  ]
+
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["observability-platform-development"]}:function:grafana-api-key-rotator*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["observability-platform-production"]}:function:grafana-api-key-rotator*"
+  ]
+
+  tags_common = local.tags
+}
