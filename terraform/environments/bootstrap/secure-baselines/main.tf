@@ -5,7 +5,7 @@ data "aws_kms_key" "cloudtrail_key" {
 }
 
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=30ff794d88767e5aaf1fc739779f1410fe82768b" # v6.5.1
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=69afa89a92f1478f42a50ba4423f8d455579b56c" # v6.6.0
 
   providers = {
     # Default and replication regions
