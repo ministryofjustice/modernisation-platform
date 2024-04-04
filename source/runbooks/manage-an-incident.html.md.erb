@@ -43,9 +43,12 @@ From the [#modernisation-platform](https://mojdt.slack.com/archives/C013RM6MFFW)
 
 `/pd trigger`
 
-Declaring the incident will launch a form for you to complete.  Please use a meaningful title and add as much information to the description as you can.
+> Type `/pd help` to see other available PagerDuty commands, although most likely they will not be useful here.
 
-Impacted services - choose from the following depending on the type of incident:
+Declaring the incident will launch a form for you to complete, see an example of the slack form UI below:
+![Create a new PagerDuty incident](./../images/pd-new-incident.png)
+
+**Impacted Service** - choose from the following depending on the type of incident:
 
  - Networking - Modernisation Platform
  - Operations - Modernisation Platform
@@ -53,13 +56,19 @@ Impacted services - choose from the following depending on the type of incident:
 
 #### Which Priority to assign?
 
-| Priority | Description |
+| **Priority** | Description |
 |---|---|
 |P1|The whole platform is down or unavailable, all user applications are unavailable|
 |P2|Part of the platform is down or unavailable, some user applications are impacted or unavailable|
 |P3|Part of the platform is down or unavailable, user applications are still available|
 
-Click the create dedicated Public Slack channel for the incident.  You should use this channel to manage the incident.
+Tick the **Create a dedicated Public Slack channel for this incident** box.  You should use this channel to manage the incident.
+
+Click **Create** button once you are happy with the form. This will create a new incident in PagerDuty and it will update PagerDuty Status Page. The PagerDuty Status Page slack integration will then automatically post the status in the [ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) and [modernisation-platform-update](https://mojdt.slack.com/archives/C02L5MCJ12N) channels.
+
+The newly created slack channel (see example below) will also be available for record keeping and collaborating on the incident.
+
+![PagerDuty incident slack channel](../../images/pd-incident-slack-channel.png)
 
 At your discretion, you may also wish to notify users now via [ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) and/or [modernisation-platform-update](https://mojdt.slack.com/archives/C02L5MCJ12N), however please ensure that this does not replace the Status Page update (see later in the guidance).
 
@@ -88,7 +97,7 @@ To fill these roles, ask for volunteers from the team, either verbally or via #m
 
 ### 3.2 Scribe
 
-> Anyone can make notes on the incident, but one persion (and that could be the lead should make sure the incident is documented)
+> Anyone can make notes on the incident, but one person (and that could be the lead) should make sure the incident is documented.
 
 **Responsibilities**:
 
@@ -102,9 +111,23 @@ The scribe is responsible for keeping a log of the incident, including:
 
 > This log is not intended to be a verbatim transcript of discussions. Rather, things like "xxx suggested the disk might be full. yyy to investigate and report back"
 
-Entries on the incident can be created from Slack using the "Add Note" option on the Incident or via PagerDuty.
+## 4. Managing the incident
 
-### 3.3 Updating the External Status on PagerDuty
+### 4.1 Recording notes
+
+Entries on the incident can be created from Slack using the **Add a Note** action option on the Incident Post in the incident dedicated slack channel (see below)
+
+![PagerDuty incident actions in slack](../../images/pd-incident-actions.png)
+
+or via PagerDuty Incident page by clicking **+ Add Note** button (see below)
+
+![PagerDuty incident page management](../../images/pd-incident-page.png)
+
+> NOTE, other incident actions are also listed in the slack UI, e.g. **Assign Roles**, however not all of them are currently enabled (as some features cost extra). Therefore, managing these information may require a manual recording through **Add a Note** action instead.
+>
+> Similarly, these features will not be available in the incident page.
+
+### 4.2 Updating the External Status on PagerDuty
 
 When an incident is raised, an update will become pending on the Modernisation Platform external status page (the internal status will be automatically updated). 
 
@@ -116,13 +139,13 @@ Fill in the details for the update and publish it, this will also post an update
 
 It is important to use the External Status page as this feeds in to other services in PagerDuty dependant on the Modernisation Platform.
 
-### Transferring roles
+### 4.3 Transferring roles
 
 It may be necessary to transfer roles from one team member to another, e.g. during long-running incidents. In this case, it is the responsibility of whoever is in a role to ensure that someone else takes it over.
 
-Whoever assumes a role should announce it in the incident slack thread, so that the team is aware.
+Whoever assumes a role should announce it in the incident slack channel (or thread if the channel was not created), so that the team is aware.
 
-## 4. Fix the problem
+## 5. Fix the problem
 
 Please bear in mind that not every incident requires the whole team to be involved (even if they all *want* to join in).
 
@@ -135,7 +158,7 @@ For AWS support, log a call in the AWS account affected.
 ---|---|---
 AWS| [Creating a support case](https://docs.aws.amazon.com/awssupport/latest/user/case-management.html)| On the case, or post in [#ext-aws] (https://moj.enterprise.slack.com/archives/C015UBQ78MR)
 
-## 5. End the incident
+## 6. End the incident
 
 The incident is resolved once the user is no longer facing issues.  This may be a temporary fix, in which case an issue should be created to put a permanent fix in place.
 
@@ -145,10 +168,12 @@ Update the external PagerDuty status page with the resolution.
 
 This marks the official end of the incident.
 
-## 6. Post-incident procedure
+## 7. Post-incident procedure
 
 After the incident is resolved:
 
+* A new incident report should be created and stored in the [Modernisation Platform > Incidents](https://drive.google.com/drive/folders/1zlL8Uoh4jequ9_np_NcthCO6dMsqBqhe) drive directory. See [an example](https://docs.google.com/document/d/1eVlz__U84usgGqrSZdV8fC9aTVeg8-rvKtLbIGk2WNY) of such report.
+The notes generated during the incident management in PagerDuty can be used for the incident timeline records.
 * A blameless post mortem meeting should be scheduled to identify any processes that need to be improved
 * A [runbook] for how to fix this issue **should** be published
 
