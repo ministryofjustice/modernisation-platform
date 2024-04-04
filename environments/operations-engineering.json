@@ -1,23 +1,22 @@
 {
-    "account-type": "member",
-    "environments": [
-      {
-        "name": "development",
-        "access": [
-          {
-            "github_slug": "operations-engineering",
-            "level": "sandbox"
-          }
-        ]
-      }
-    ],
-    "tags": {
-      "application": "operations-engineering",
-      "business-unit": "Platforms",
-      "infrastructure-support": "operations-engineering@digital.justice.gov.uk",
-      "owner": "operations-engineering@digital.justice.gov.uk"
-    },
-    "github-oidc-team-repositories": [""],
-    "go-live-date": ""
-  }
-  
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "operations-engineering",
+          "level": "sandbox"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "operations-engineering",
+    "business-unit": "Platforms",
+    "infrastructure-support": "operations-engineering@digital.justice.gov.uk",
+    "owner": "operations-engineering@digital.justice.gov.uk"
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}

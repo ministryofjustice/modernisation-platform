@@ -4,9 +4,10 @@
       "general": {
         "cidr": "10.26.0.0/21",
         "accounts": [
-          "testing-test", 
-          "data-platform-test", 
-          "delete-account-test"]
+          "testing-test",
+          "data-platform-test",
+          "delete-account-test"
+        ]
       }
     }
   },
