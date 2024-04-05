@@ -492,7 +492,7 @@ module "member-access-eu-central" {
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
   account_id             = local.modernisation_platform_account.id
   additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
-  policy_arn             = aws_iam_policy.member-access-us-east[0].id
+  policy_arn             = aws_iam_policy.member-access-eu-central[0].id
   role_name              = "MemberInfrastructureBedrockEuCentral"
 }
 
