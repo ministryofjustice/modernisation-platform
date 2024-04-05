@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "cica-data-extraction-maintainers",
+          "github_slug": "cica-extract-tool-admins",
           "level": "developer"
         }
       ]
