@@ -3,7 +3,10 @@
 
 # Define script names
 script1="./delete-tf-state.sh"
-script2="./delete-tf-resources.sh"
+script2="./update-files.sh"
+script3="./delete-tf-resources.sh"
+script4="./delete-tf-workspaces.sh"
+script5="./delete-files.sh"
 log_file="execution_log.txt"
 
 
@@ -28,12 +31,10 @@ execute_script() {
 
 
 # Ensure scripts are executable
-chmod +x "$script1" "$script2"
-
+chmod +x "$script1" "$script2" "$script3" "$script4" "$script5"
 
 # Execute scripts in sequence, checking for success after each
 echo "$(date "+%Y-%m-%d %H:%M:%S") - Starting to execute scripts..." | tee -a "$log_file"
-
 
 execute_script "$script1"
 status=$?
@@ -42,7 +43,6 @@ if [ $status -ne 0 ]; then
    exit $status
 fi
 
-
 execute_script "$script2"
 status=$?
 if [ $status -ne 0 ]; then
@@ -50,5 +50,25 @@ if [ $status -ne 0 ]; then
    exit $status
 fi
 
+execute_script "$script3"
+status=$?
+if [ $status -ne 0 ]; then
+   echo "$(date "+%Y-%m-%d %H:%M:%S") - Stopping execution due to failure." | tee -a "$log_file"
+   exit $status
+fi
+
+execute_script "$script4"
+status=$?
+if [ $status -ne 0 ]; then
+   echo "$(date "+%Y-%m-%d %H:%M:%S") - Stopping execution due to failure." | tee -a "$log_file"
+   exit $status
+fi
+
+execute_script "$script5"
+status=$?
+if [ $status -ne 0 ]; then
+   echo "$(date "+%Y-%m-%d %H:%M:%S") - Stopping execution due to failure." | tee -a "$log_file"
+   exit $status
+fi
 
 echo "$(date "+%Y-%m-%d %H:%M:%S") - All scripts executed successfully." | tee -a "$log_file"
