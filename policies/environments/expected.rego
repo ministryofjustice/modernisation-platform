@@ -17,6 +17,7 @@ expected :=
     "cdpt-chaps",
     "cdpt-ifs",
     "cica-copilot",
+    "cica-data-extraction",
     "cooker",
     "core-logging",
     "core-network-services",
