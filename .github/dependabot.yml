@@ -88,6 +88,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/cica-data-extraction"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/cooker"
     schedule:
       interval: "daily"
@@ -141,6 +145,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/data-platform-compute"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/environments/delete-account"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
@@ -261,6 +269,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/observability-platform"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/environments/operations-engineering"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
