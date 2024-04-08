@@ -173,7 +173,7 @@ jobs:
           echo "files=$files" >> $GITHUB_OUTPUT
       - name: Run delegate access
         run: |
-          accounts=(${{ steps.new_account.outputs.files }} | base64 --decode)
+          accounts=($(echo "${{ steps.new_account.outputs.files }}" | base64 --decode))
           if [ ! -z ${accounts} ]
           then
           for i in "${accounts[@]}"
@@ -223,7 +223,7 @@ jobs:
           echo "files=$files" >> $GITHUB_OUTPUT
       - name: Run secure baselines
         run: |
-          accounts=(${{ steps.new_account.outputs.files }} | base64 --decode)
+          accounts=($(echo "${{ steps.new_account.outputs.files }}" | base64 --decode))
           if [ ! -z ${accounts} ]
           then
           for i in "${accounts[@]}"
@@ -273,7 +273,7 @@ jobs:
           echo "files=$files" >> $GITHUB_OUTPUT
       - name: Run single sign on
         run: |
-          accounts=(${{ steps.new_account.outputs.files }} | base64 --decode)
+          accounts=($(echo "${{ steps.new_account.outputs.files }}" | base64 --decode))
           if [ ! -z ${accounts} ]
           then
           for i in "${accounts[@]}"
@@ -323,7 +323,7 @@ jobs:
           echo "files=$files" >> $GITHUB_OUTPUT
       - name: Run secure baselines
         run: |
-          accounts=(${{ steps.new_account.outputs.files }} | base64 --decode)
+          accounts=($(echo "${{ steps.new_account.outputs.files }}" | base64 --decode))
           if [ ! -z ${accounts} ]
           then
           for i in "${accounts[@]}"
