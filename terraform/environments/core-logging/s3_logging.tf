@@ -287,13 +287,18 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
     }
   }
   statement {
-    sid     = "allowSQSSendMessage"
-    effect  = "Allow"
-    actions = ["sqs:SendMessage"]
-    resources = [
+    sid        = "allowSQSSendMessage"
+    effect     = "Allow"
+    actions    = ["sqs:SendMessage"]
+    resources  = [
       module.s3-bucket-cloudtrail.bucket.arn,
-      format("%s/*", module.s3-bucket-cloudtrail.bucket.arn)
+      format("%s/*", module.s3-bucket-cloudtrail.bucket.arn),
+      aws_sqs_queue.mp_cloudtrail_log_queue.arn
     ]
+    principals {
+      type        = "Service"
+      identifiers = ["sqs.amazonaws.com"]
+    }
     condition {
       test     = "StringEquals"
       variable = "aws:SourceArn"
