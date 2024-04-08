@@ -2,11 +2,13 @@
 
 # SQS Queue to present the logging bucket updates
 resource "aws_sqs_queue" "mp_cloudtrail_log_queue" {
-  name                      = "mp_cloudtrail_log_queue"
-  delay_seconds             = 0       # The default is 0 but can be up to 15 minutes
-  max_message_size          = 262144  # 256k which is the max size
-  message_retention_seconds = 345600  # This is 4 days. The max is 14 days
-  visibility_timeout_seconds = 30     # This is only useful for queues that have multiple subscribers
+  name                              = "mp_cloudtrail_log_queue"
+  kms_master_key_id                 = "alias/s3-logging-cloudtrail" # We reuse the S3 bucket key
+  kms_data_key_reuse_period_seconds = 300
+  delay_seconds                     = 0       # The default is 0 but can be up to 15 minutes
+  max_message_size                  = 262144  # 256k which is the max size
+  message_retention_seconds         = 345600  # This is 4 days. The max is 14 days
+  visibility_timeout_seconds        = 30     # This is only useful for queues that have multiple subscribers
 }
 
 # Data to grant read access to the s3 bucket
@@ -61,10 +63,12 @@ resource "aws_iam_policy" "sqs_queue_read_policy" {
 
 # Creates an IAM user that will access the sqs queue
 resource "aws_iam_user" "cortex_xsiam_user" {
+  #checkov:skip=CKV_AWS_273: This has been agreed by the TA that for this purpose an IAM user account can be used.
   name = "cortex_xsiam_user"
 }
 
 resource "aws_iam_user_policy_attachment" "sqs_queue_read_policy_attachment" {
+  #checkov:skip=CKV_AWS_40: User account only has a single purpose so no role or group is needed
   user       = "cortex_xsiam_user" 
   policy_arn = aws_iam_policy.sqs_queue_read_policy.arn
 }
