@@ -11,22 +11,6 @@ resource "aws_sqs_queue" "mp_cloudtrail_log_queue" {
   visibility_timeout_seconds        = 30     # This is only useful for queues that have multiple subscribers
 }
 
-# Data to grant read access to the s3 bucket
-data "aws_iam_policy_document" "sqs_s3_read_bucket_document" {
-  statement {
-    sid       = "S3BucketGetObject"
-    effect    = "Allow"
-    actions   = ["s3:GetObject"]
-    resources = [module.s3-bucket-cloudtrail.bucket.arn, "${module.s3-bucket-cloudtrail.bucket.arn}/*"] 
-  }
-}
-
-# Grant access for the queue read the S3 logging bucket
-resource "aws_sqs_queue_policy" "sqs_s3_read_bucket_policy" {
-  queue_url = aws_sqs_queue.mp_cloudtrail_log_queue.id
-  policy = data.aws_iam_policy_document.sqs_s3_read_bucket_document.json
-}
-
 # S3 bucket event notification for updates to the cloudtrail logging bucket
 resource "aws_s3_bucket_notification" "logging_bucket_notification" {
   bucket = module.s3-bucket-cloudtrail-logging.bucket.bucket  
@@ -51,6 +35,12 @@ data "aws_iam_policy_document" "sqs_queue_read_document" {
       "sqs:ListQueues"
     ]
     resources = [aws_sqs_queue.mp_cloudtrail_log_queue.arn] 
+  }
+  statement {
+    sid       = "SQSReadLoggingS3"
+    effect    = "Allow"
+    actions   = "s3:GetObject"
+    resources = [module.s3-bucket-cloudtrail.bucket.arn, "${module.s3-bucket-cloudtrail.bucket.arn}/*"] 
   }
 }
 
