@@ -6,7 +6,8 @@
       "access": [
         {
           "github_slug": "cica-extract-tool-admins",
-          "level": "developer"
+          "level": "sandbox",
+          "nuke": "rebuild"
         }
       ]
     }
