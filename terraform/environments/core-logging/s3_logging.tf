@@ -294,6 +294,10 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
       module.s3-bucket-cloudtrail.bucket.arn,
       format("%s/*", module.s3-bucket-cloudtrail.bucket.arn)
     ]
+    principals {
+    type        = "Service"
+    identifiers = ["sqs.amazonaws.com"]
+    }
     condition {
       test     = "StringEquals"
       variable = "aws:SourceArn"
