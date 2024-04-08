@@ -5,7 +5,7 @@ data "aws_kms_key" "cloudtrail_key" {
 }
 
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=69afa89a92f1478f42a50ba4423f8d455579b56c" # v6.6.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=385cb6f25209abf444849f4f6ff4d07c0c68d2f8" # v6.6.0
 
   providers = {
     # Default and replication regions
@@ -39,6 +39,9 @@ module "baselines" {
     aws.us-west-1      = aws.workspace-eu-west-2
     aws.us-west-2      = aws.workspace-eu-west-2
   }
+
+  # Selectively enable CloudTrail object-level logging
+  enable_cloudtrail_s3_mgmt_events = local.enable-cloudtrail-events
 
   # Regions to enable IAM Access Analyzer in
   enabled_access_analyzer_regions = local.enabled_baseline_regions
