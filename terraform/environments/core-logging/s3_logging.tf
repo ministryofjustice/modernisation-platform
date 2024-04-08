@@ -286,6 +286,20 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
       identifiers = [data.aws_caller_identity.current.account_id]
     }
   }
+  statement {
+    sid     = "allowSQSSendMessage"
+    effect  = "Allow"
+    actions = ["sqs:SendMessage"]
+    resources = [
+      module.s3-bucket-cloudtrail.bucket.arn,
+      format("%s/*", module.s3-bucket-cloudtrail.bucket.arn)
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceArn"
+      values   = [aws_sqs_queue.mp_cloudtrail_log_queue.arn] 
+    }
+  }
 }
 
 module "cloudtrail-s3-logging-replication-role" {
