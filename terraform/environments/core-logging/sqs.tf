@@ -39,7 +39,7 @@ data "aws_iam_policy_document" "sqs_queue_read_document" {
   statement {
     sid       = "SQSReadLoggingS3"
     effect    = "Allow"
-    actions   = "s3:GetObject"
+    actions   = ["s3:GetObject"]
     resources = [module.s3-bucket-cloudtrail.bucket.arn, "${module.s3-bucket-cloudtrail.bucket.arn}/*"] 
   }
 }
