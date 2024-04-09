@@ -80,6 +80,19 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail" {
       identifiers = ["logs.amazonaws.com"]
     }
   }
+  statement {
+    sid    = "Allow use of the key by SQS"
+    effect = "Allow"
+    actions = [
+      "kms:Describe*",
+      "kms:Decrypt*"
+    ]
+    resources = [aws_sqs_queue.mp_cloudtrail_log_queue.arn]
+    principals {
+      type        = "Service"
+      identifiers = ["sqs.amazonaws.com"]
+    }
+  }
 
   statement {
     sid    = "Allow key decryption to STS bucket replication roles"
