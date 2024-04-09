@@ -31,14 +31,14 @@ data "aws_iam_policy_document" "queue_policy_document" {
     condition {
       test     = "ArnEquals"
       variable = "aws:SourceArn"
-      values   = [module.s3-bucket-cloudtrail-logging.bucket.arn]
+      values   = [module.s3-bucket-cloudtrail.bucket.arn]
     }
   }
 }
 
 # S3 bucket event notification for updates to the cloudtrail logging bucket
 resource "aws_s3_bucket_notification" "logging_bucket_notification" {
-  bucket = module.s3-bucket-cloudtrail-logging.bucket.id
+  bucket = module.s3-bucket-cloudtrail.bucket.id
   queue {
     queue_arn = aws_sqs_queue.mp_cloudtrail_log_queue.arn
     events    = ["s3:ObjectCreated:*"] # Events to trigger the notification
