@@ -1,0 +1,87 @@
+---
+owner_slack: "#modernisation-platform"
+title: Moving an environment (AWS account)
+last_reviewed_on: 2024-04-02
+review_in: 6 month
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+> Note: This process is needs root account access.
+
+> You will need it to **complete the actions** below in order. 
+
+In the Modernisation Platform, we may get requests to move an account into the modernisation platform from a differnt OU within the AWS Oraganization.
+
+Therefore, there are a few things todo to move an environment, in this order:
+
+1. Confirm account number to be moved with the team that has requested the move
+1. Create PR in the root repo that created the account to remove it
+1. Remove account from the terraform state state file
+1. Run a terraform plan locally using root account, to check that the account won't get deleted when pr is merged, then merge the PR
+1. Rename account if the account has spaces
+1. Create a PR in the Modernistion platform repo to create the code for the account
+1. Use terraform import to import the account into the mod platform based on the pr that has been created via root account 
+1. use Terraform plan to confirm that a new account will not be created but the sso and other elements are
+1. merge PR and monitor the workflows
+
+## Removing the AWS account from terraform and from the terraform state file
+
+You need to remove the resource from the Terraform code and the terraform state where it gets created so Terraform no longer has knowledge of it. You don't need to remove the organisational unit, as Terraform will remove those if they're not used by anything else.
+
+To do this you will need to create a PR on the root account an example of this is show bellow.
+
+- Example PR [Remove from root](https://github.com/ministryofjustice/aws-root-account/pull/885)
+
+To remove the account from the terraform state, run the following as the root account user:
+
+- `terraform state rm <resource reference>`
+
+For example, to remove the environment for `moj_official_network_operations_centre`:
+
+```bash
+$ cd management-account/terraform
+$ terraform state list aws_organizations_account moj_official_network_operations_centre
+...
+aws_organizations_account.accounts["moj_official_network_operations_centre"]
+...
+$ terraform state rm aws_organizations_account moj_official_network_operations_centre
+Removed aws_organizations_account moj_official_network_operations_centre
+Successfully removed 1 resource instance(s).
+```
+
+## Importing the account into modernization platform
+
+For importing the account you will need to create a PR in the modernization platform repos and follow the [New environment account process](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/creating-accounts-for-end-users.html).
+
+An example or a pr used to move the account can be seen 
+[here](https://github.com/ministryofjustice/modernisation-platform/pull/6620)
+
+Once your PR is ready you will need someone with root account access to download your branch and run the following terraform commands in the bellow folder
+
+`modernisation-platform/terraform/environments/`
+
+```bash
+$ cd modernisation-platform/terraform/environments/
+$ terraform import module.environments.random_string.email-address["moj-network-operations-centre-production"] aws+mojofficial-networkopscentre@digital.justice.gov.uk
+importing arandom_string.email-address aws+mojofficial-networkopscentre@digital.justice.gov.uk
+Successfully imported 1 resource instance(s).
+$ terraform import module.environments.aws_organizations_account.accounts["moj-network-operations-centre-production"] 208632142291
+Importing aws_organizations_account moj_official_network_operations_centre
+Successfully imported 1 resource instance(s).
+```
+
+Once the resources are imported run a terraform plan locally to check that there will be no new account created
+
+## Merge in your file changes
+
+Raise a PR to merge in your file changes which will trigger Terraform to perform the remaining workflows needed.
