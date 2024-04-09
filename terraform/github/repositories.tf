@@ -348,21 +348,6 @@ module "modernisation-platform-configuration-management" {
   ]
 }
 
-module "modernisation-platform-incident-response" {
-  source      = "./modules/repository"
-  name        = "modernisation-platform-incident-response"
-  type        = "core"
-  description = "Repository for incident management code used to manage and document Modernisation Platform incidents. Originally forked from https://github.com/ministryofjustice/opg-incident-response"
-  topics = [
-    "incident-management",
-    "javascript",
-    "python",
-    "django",
-    "docker",
-    "kubernetes",
-    "helm"
-  ]
-}
 module "modernisation-platform-terraform-dns-certificates" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-dns-certificates"
