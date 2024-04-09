@@ -11,6 +11,32 @@ resource "aws_sqs_queue" "mp_cloudtrail_log_queue" {
   visibility_timeout_seconds        = 30     # This is only useful for queues that have multiple subscribers
 }
 
+# This policy grants queue send message to the s3 logging bucket
+resource "aws_sqs_queue_policy" "queue_policy" {
+    queue_url = aws_sqs_queue.mp_cloudtrail_log_queue.id
+    policy = data.aws_iam_policy_document.queue_policy_document.json
+}
+
+data "aws_iam_policy_document" "queue_policy_document" {
+    statement {
+        sid        = "AllowSendMessage"
+        effect     = "Allow"
+        principals {
+            type        = "Service"
+            identifiers = ["s3.amazonaws.com"]
+        }
+        actions    = ["sqs:SendMessage"]
+        resources  = [
+            aws_sqs_queue.mp_cloudtrail_log_queue.arn
+        ]
+        condition {
+            test     = "ArnEquals"
+            variable = "aws:SourceArn"
+            values   = [module.s3-bucket-cloudtrail-logging.bucket.arn] 
+        }
+    }
+}
+
 # S3 bucket event notification for updates to the cloudtrail logging bucket
 resource "aws_s3_bucket_notification" "logging_bucket_notification" {
   bucket = module.s3-bucket-cloudtrail-logging.bucket.bucket  
