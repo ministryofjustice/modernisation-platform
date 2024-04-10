@@ -24,8 +24,8 @@ while read -r username lastactivity; do
     fi
   fi
 
-  # Check if last console login activity is more than or equal to thresold days or is "None"
-  if [ "$lastactivity" == "None" ] || [ "$(date -d "$lastactivity" +%s)" -le "$(date -d "now - $thresold days" +%s)" ]; then
+  # Check if last console login activity is more than or equal to threshold days or is "None"
+  if [ "$lastactivity" == "None" ] || [ "$(date -d "$lastactivity" +%s)" -le "$(date -d "now - $threshold days" +%s)" ]; then
     # Get information about the access keys for the current user
     access_keys=$(aws iam list-access-keys --user-name "$username" --query 'AccessKeyMetadata[].AccessKeyId' --output text)
     
@@ -36,8 +36,8 @@ while read -r username lastactivity; do
     for access_key_id in $access_keys; do
       # Get the last used information for the access key
       last_used=$(aws iam get-access-key-last-used --access-key-id "$access_key_id" --query 'AccessKeyLastUsed.LastUsedDate' --output text)
-      if [ "$last_used" != "None" ] && [ "$(date -d "$last_used" +%s)" -ge "$(date -d "now - $thresold days" +%s)" ]; then
-        # If any access key was used within the last thresold days, user does not meet the criteria
+      if [ "$last_used" != "None" ] && [ "$(date -d "$last_used" +%s)" -ge "$(date -d "now - $threshold days" +%s)" ]; then
+        # If any access key was used within the last threshold days, user does not meet the criteria
         meets_criteria=0
         break
       fi
