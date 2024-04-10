@@ -83,6 +83,47 @@ data "aws_iam_policy_document" "common_statements" {
     ]
   }
 }
+# Common polocy for allow
+resource "aws_iam_policy" "common_policy_permissions" {
+  provider = aws.workspace
+  name     = "common_policy_permissions"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.common_policy_document.json
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "common_policy_document" {
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_110
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+  source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
+  statement {
+    sid    = "commonAllow"
+    effect = "Allow"
+
+    actions = [
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecret*",
+      "secretsmanager:GetSecretValue",
+      "ec2:DescribeVolumes",
+      "ec2:DescribeInstances",
+      "ec2:DescribeInstanceTypes",
+      "kms:Decrypt*",
+      "kms:Encrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey",
+
+
+
+
+
+    ]
+  }
+}
+
 
 # bedrock console policy -- to be retired when terraform support is introduced
 # source: https://docs.aws.amazon.com/bedrock/latest/userguide/security_iam_id-based-policy-examples.html#security_iam_id-based-policy-examples-console
@@ -196,9 +237,6 @@ data "aws_iam_policy_document" "developer_additional" {
       "ec2:CopySnapshot",
       "ec2:CreateSnapshot*",
       "ec2:CreateTags",
-      "ec2:DescribeVolumes",
-      "ec2:DescribeInstances",
-      "ec2:DescribeInstanceTypes",
       "ec2:ModifyInstanceAttribute",
       "ec2-instance-connect:SendSerialConsoleSSHPublicKey",
       "ecr:BatchDeleteImage",
@@ -212,11 +250,6 @@ data "aws_iam_policy_document" "developer_additional" {
       "events:DisableRule",
       "events:EnableRule",
       "identitystore:DescribeUser",
-      "kms:Decrypt*",
-      "kms:Encrypt",
-      "kms:ReEncrypt*",
-      "kms:GenerateDataKey*",
-      "kms:DescribeKey",
       "kms:CreateGrant",
       "lambda:InvokeFunction",
       "lambda:UpdateFunctionCode",
@@ -628,18 +661,10 @@ data "aws_iam_policy_document" "instance-management-document" {
       "ec2:CreateSnapshot",
       "ec2:CreateSnapshots",
       "ec2:CreateTags",
-      "ec2:DescribeVolumes",
-      "ec2:DescribeInstances",
-      "ec2:DescribeInstanceTypes",
       "ecs:ListServices",
       "ecs:DescribeServices",
       "ecs:UpdateService",
       "identitystore:DescribeUser",
-      "kms:Decrypt*",
-      "kms:Encrypt",
-      "kms:ReEncrypt*",
-      "kms:GenerateDataKey*",
-      "kms:DescribeKey",
       "rds:CopyDBSnapshot",
       "rds:CopyDBClusterSnapshot",
       "rds:CreateDBSnapshot",
@@ -649,9 +674,6 @@ data "aws_iam_policy_document" "instance-management-document" {
       "s3:List*",
       "s3:Get*",
       "s3:PutObject",
-      "secretsmanager:DescribeSecret",
-      "secretsmanager:ListSecret*",
-      "secretsmanager:GetSecretValue",
       "ssm:*",
       "ssm-guiconnect:*",
       "sso:ListDirectoryAssociations",
