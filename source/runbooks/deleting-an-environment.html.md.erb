@@ -16,7 +16,7 @@ review_in: 6 month
 
 # <%= current_page.data.title %>
 
-> Note: This process is cannot be undone. All resources in an AWS account will be deleted.
+> Note: This process cannot be undone. All resources in an AWS account will be deleted.
 
 > You will need to **complete the actions** below in as **short a time frame as possible**. Certain workflows such as [Terraform: New environment](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml) will re-create accounts/workspaces which you are trying to delete if it runs mid-way through your progress. Ideally warn the MP team **not to merge any PRs** whilst you carry out these actions.
 
@@ -68,143 +68,26 @@ resource "aws_organizations_account" "accounts" {
 }
 ```
 
-## Removing the AWS account from Modernisation Platform management
+## Running bash scripts
 
-You need to remove the resource from the Terraform state where it gets created so Terraform no longer has knowledge of it. You don't need to remove the organisational unit, as Terraform will remove those if they're not used by anything else.
+We have bash scripts that,
 
-To do this, `cd` into `terraform environments` and find the resource in the state:
+1. Remove the AWS account from Modernisation Platform management
+2. Remove the environment definition
+3. Delete Terraform resources for the environment
+4. Delete Terraform workspaces for the environment (This will not delete the resources that are set up by the Terraform configuration. It will only delete the Terraform reference to the workspace. You will need to delete the AWS account properly.)
+5. Remove Environment Files (*only if removing all environments for an application)
 
-- `cd terraform/environments`
-- Use [temporary AWS Credentials](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/getting-aws-credentials.html#getting-aws-credentials) or [AWS-Vault](https://github.com/99designs/aws-vault) to source the **Modernisation Platform** credentials in your terminal
-- `terraform init`
-- `terraform state list`
+Be aware that some resources such as s3 buckets cannot be destroyed until you manually empty all the objects and versions in them.
 
-To remove it, run:
+- Go to the [account-deletion folder ](https://github.com/ministryofjustice/modernisation-platform/tree/feature/6457-account-delete-combo/scripts/account-deletion) and create a config.txt file
+- Copy the content in [example-config.txt](https://github.com/ministryofjustice/modernisation-platform/blob/feature/6457-account-delete-combo/scripts/account-deletion/example-config.txt) and paste it into your config.txt file
+- Fill in the the variables specific to your deletion task
+- In your terminal, ensure you are in the account-deletion directory
+- Make the script executable by running the command, `chmod +x config-text`
+- Run the script `./config-text`
 
-- `terraform state rm <resource reference>`
-
-For example, to remove the environment for `core-vpc-non-live-data`:
-
-```bash
-$ cd terraform/environments
-$ terraform state list
-...
-module.environments.aws_organizations_account.accounts["core-logging-production"]
-module.environments.aws_organizations_account.accounts["core-network-services-production"]
-module.environments.aws_organizations_account.accounts["core-sandbox-dev"]
-module.environments.aws_organizations_account.accounts["core-security-production"]
-module.environments.aws_organizations_account.accounts["core-shared-services-production"]
-module.environments.aws_organizations_account.accounts["core-vpc-non-live-data"]
-module.environments.aws_organizations_account.accounts["core-vpc-production"]
-...
-$ terraform state rm 'module.environments.aws_organizations_account.accounts["core-vpc-non-live-data"]'
-Removed module.environments.aws_organizations_account.accounts["core-vpc-non-live-data"]
-Successfully removed 1 resource instance(s).
-```
-
-## Removing the environment definition
-
-To ensure the account isn't recreated after removing it from the `terraform state`, remove it from its `environments/*.json` file.
-
-For example, to remove `core-vpc-non-live-data` from the `core-vpc` set of accounts:
-
-```json
-{
-  "environments": [
-    {
-      "name": "production",
-      "access": []
-    },
-    {
-      "name": "non-live-data",
-      "access": []
-    }
-  ],
-  "tags": {
-    "application": "modernisation-platform",
-    "business-unit": "Platforms",
-    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
-  }
-}
-```
-
-should become:
-
-```json
-{
-  "environments": [
-    {
-      "name": "production",
-      "access": []
-    }
-  ],
-  "tags": {
-    "application": "modernisation-platform",
-    "business-unit": "Platforms",
-    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
-  }
-}
-```
-
-If you are removing **all the environments** for an application, you can **delete** the **whole json file**.
-
-Remove the accounts from the relevant `environments-networking/business-environment.json` file. (not required if non member account and not using shared networking)
-
-Update the [OPA polices](https://github.com/ministryofjustice/modernisation-platform/tree/main/policies) by removing references in the following files
-
-- [`policies/environments/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/-policies/environments/expected.rego)
-
-- [`policies/networking/expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/networking/expected.rego)
-
-Before merging in these changes, complete the rest of the steps in this document.
-
-## Delete Terraform resources for the environment
-
-For the following repos, switch to the corresponding workspace and run a `terraform destroy` to ensure any resources such as DNS entries created in shared accounts are deleted and not orphaned.
-
-`modernisation-platform/terraform/environments/<application-name>`
-
-`modernisation-platform-environments/terraform/environments/<application-name>` (not required if non member account)
-
-> Note that you need to assume the [backend role](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/running-terraform-plan-locally.html#run-terraform-plan) for the Terraform init command in the `modernisation-platform-environments` repo
-
-> Some resources such as s3 buckets cannot be destroyed until you manually empty all the objects and versions in them
-
-## Delete Terraform workspaces for the environment
-
-After completing this, you will need to delete the application terraform workspaces in the following locations. Note, you will need to switch to the default workspace before deleting the workspace, see an example command below.
-
-`modernisation-platform/terraform/environments/bootstrap/delegate-access/`
-
-`modernisation-platform/terraform/environments/bootstrap/secure-baselines/`
-
-`modernisation-platform/terraform/environments/bootstrap/single-sign-on/`
-
-`modernisation-platform/terraform/environments/bootstrap/member-bootstrap/`
-
-`modernisation-platform-environments/terraform/environments/<application-name>` (not required if non member account)
-
-`modernisation-platform/terraform/environments/<application-name>`
-For example:
-
-```bash
-terraform workspace select default
-terraform workspace delete -force core-vpc-non-live-data
-```
-
-> This will not delete the resources that are set up by the Terraform configuration. It will only delete the Terraform reference to the workspace. You will need to delete the AWS account properly.
-
-## Remove Environment Files (\*only if removing all environments for an application)
-
-If you delete the last environment and there are no more environments for the application, you should delete all of the environment files in the following folders:
-
-`modernisation-platform/terraform/environments/<application-name>`
-
-`modernisation-platform-environments/terraform/environments/<application-name>`
-
-`modernisation-platform-environments/.github/workflows/<application-name>`
-
-After following the above steps, you need to move the account to the root OU before deleting the actual AWS account that the environment was linked to.
+When scripts are running, you it will get prompts asking for your approval to proceed with delete operations
 
 ## Move the account to the root organizational unit
 
