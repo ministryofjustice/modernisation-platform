@@ -6,7 +6,6 @@ on:
 env:
     AWS_REGION: "eu-west-2"
     ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-    SCRIPTS_PATH: "./scripts/internal/collaborators-inactivity-notification"
     API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
     TEMPLATE_ID: "44d86b2d-2a73-4179-9b67-7c3fc2b58934"
 
@@ -32,32 +31,12 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Fetch Inactive Collaborators
-        run: bash ${SCRIPTS_PATH}/check_inactive_users.sh
+        run: bash ./scripts/internal/collaborators-inactivity-notification/check_inactive_users.sh
         env:
-          thresold: 120
+          threshold: 120
 
       - name: Disable Console Login
-        run: |
-          # check final_users.list is exist
-          if [ -f final_users.list ]; then
-            while read username; do
-
-              # Disable console access for the user
-              if aws iam get-login-profile --user-name "$username" &> /dev/null; then
-                aws iam delete-login-profile --user-name "$username"
-                echo "Console access for $username has been disabled"
-              fi
-
-              # Get a list of access keys for the user and deactivate them if they are active
-              access_keys=$(aws iam list-access-keys --user-name $username --query "AccessKeyMetadata[].AccessKeyId" --output text 2>/dev/null | xargs -n 1)
-              while read -r key; do
-                aws iam update-access-key --access-key-id $key --status Inactive --user-name $username
-              done <<< "$access_keys"
-            done <<< "$(cat final_users.list)"
-
-          else
-            echo "There are no inactive collaborator users with an inactivity period of 120 days or longer."
-          fi
+        run: bash ./scripts/internal/collaborators-inactivity-notification/disable_user_credentials.sh
 
   notify-inactive-collaborators:
     runs-on: ubuntu-latest
@@ -86,10 +65,10 @@ jobs:
     
       - name: Fetch Inactive Collaborators
         run: |
-          bash ${SCRIPTS_PATH}/check_inactive_users.sh
+          bash ./scripts/internal/collaborators-inactivity-notification/check_inactive_users.sh
           cat final_users.list
         env:
-          thresold: 90
+          threshold: 90
           SKIP_DISABLED_CONSOLE_USERS: true
 
       #- name: Send Notification to Collaborators
