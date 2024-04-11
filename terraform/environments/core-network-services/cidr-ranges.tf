@@ -18,6 +18,9 @@ locals {
   other_cidr_ranges = {
     analytical-platform-airflow-dev  = "10.200.0.0/16"
     analytical-platform-airflow-prod = "10.201.0.0/16"
+    data-engineering-dev             = "172.24.0.0/16"
+    data-engineering-prod            = "172.25.0.0/16"
+    data-engineering-stage           = "172.26.0.0/16"
     atos_arkc_ras                    = "10.175.0.0/16" # for DOM1 devices connected to Cisco RAS VPN
     atos_arkf_ras                    = "10.176.0.0/16" # for DOM1 devices connected to Cisco RAS VPN
     cloud-platform                   = "172.20.0.0/16"
