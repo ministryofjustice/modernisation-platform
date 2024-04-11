@@ -72,7 +72,7 @@ jobs:
       - name: Send Notification to Collaborators
         run: |
           if [ -f final_users.list ]; then
-            python ${SCRIPTS_PATH}/notification.py collaborators.json final_users.list
+            python ./scripts/internal/collaborators-inactivity-notification/notification.py collaborators.json final_users.list
           else
             echo "There are no inactive collaborator users with an inactivity period of 90 days or longer"
           fi
