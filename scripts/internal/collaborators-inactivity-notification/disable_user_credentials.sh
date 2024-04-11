@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # check final_users.list is exist
 if [ -f final_users.list ]; then
   while read username; do
