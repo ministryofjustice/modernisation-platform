@@ -8,9 +8,11 @@ if [ -f final_users.list ]; then
     fi
     # Get a list of access keys for the user and deactivate them if they are active
     access_keys=$(aws iam list-access-keys --user-name $username --query "AccessKeyMetadata[].AccessKeyId" --output text 2>/dev/null | xargs -n 1)
-    while read -r key; do
-      aws iam update-access-key --access-key-id $key --status Inactive --user-name $username
-    done <<< "$access_keys"
+    if [ ! -z $access_keys ]; then
+      while read -r key; do
+        aws iam update-access-key --access-key-id $key --status Inactive --user-name $username
+      done <<< "$access_keys"
+    fi
   done <<< "$(cat final_users.list)"
 else
   echo "There are no inactive collaborator users with an inactivity period of 120 days or longer."
