@@ -572,5 +572,12 @@
     "destination_ip": "${dom1-dcs}",
     "destination_port": "49152:65535",
     "protocol": "TCP"
+  },
+  "data_engineering_to_hmpps_preproduction_oracledb": {
+    "action": "PASS",
+    "source_ip": "${data-engineering-stage}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "1521",
+    "protocol": "TCP"
   }
 }
