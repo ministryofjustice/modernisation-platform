@@ -4,7 +4,7 @@ on:
   workflow_dispatch: 
 
 env:
-    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    GH_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
     AWS_REGION: "eu-west-2"
     ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
     API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
