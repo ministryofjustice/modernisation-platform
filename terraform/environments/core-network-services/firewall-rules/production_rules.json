@@ -638,7 +638,7 @@
   },
   "data_engineering_to_hmpps_production_oracledb": {
     "action": "PASS",
-    "source_ip": "$DATA_ENGINEERING",
+    "source_ip": "${data-engineering-prod}",
     "destination_ip": "${hmpps-production}",
     "destination_port": "1521",
     "protocol": "TCP"
