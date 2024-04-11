@@ -64,12 +64,15 @@ jobs:
         run: pip install notifications-python-client
     
       - name: Fetch Inactive Collaborators
-        run: |
-          bash ./scripts/internal/collaborators-inactivity-notification/check_inactive_users.sh
-          cat final_users.list
+        run: bash ./scripts/internal/collaborators-inactivity-notification/check_inactive_users.sh
         env:
           threshold: 90
           SKIP_DISABLED_CONSOLE_USERS: true
 
-      #- name: Send Notification to Collaborators
-      #  run: python ${SCRIPTS_PATH}/notification.py collaborators.json final_users.list
+      - name: Send Notification to Collaborators
+        run: |
+          if [ -f final_users.list ]; then
+            python ./scripts/internal/collaborators-inactivity-notification/notification.py collaborators.json final_users.list
+          else
+            echo "There are no inactive collaborator users with an inactivity period of 90 days or longer"
+          fi
