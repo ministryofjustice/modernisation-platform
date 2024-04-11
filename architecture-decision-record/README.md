@@ -36,6 +36,7 @@ This is our architecture decision log, made during the design and build of the M
 1. ✅ [Cross environment network access](0030-cross-environment-network-access.md)
 1. ✅ [LLMs will be hosted on the Analytical Platform](0031-llms-will-be-hosted-on-the-analytical-platform.md)
 
+
 ## Statuses
 
 - ✅ Accepted
