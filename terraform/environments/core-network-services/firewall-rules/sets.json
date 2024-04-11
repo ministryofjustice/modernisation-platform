@@ -1,7 +1,8 @@
 {
   "IP_SETS": {
     "IP_SET_EXAMPLE": ["1.1.1.1/32", "1.0.0.1/32"],
-    "AD_HMPP_DCS": ["${ad-hmpp-dc-a}", "${ad-hmpp-dc-b}"]
+    "AD_HMPP_DCS": ["${ad-hmpp-dc-a}", "${ad-hmpp-dc-b}"],
+    "DATA_ENGINEERING": ["${data-engineering-dev}", "${data-engineering-prod}", "${data-engineering-stage}"]
   },
   "PORT_SETS": {
     "PORT_SET_EXAMPLE": ["80, 443"],
