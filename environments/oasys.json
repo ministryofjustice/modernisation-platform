@@ -33,7 +33,7 @@
         },
         {
           "github_slug": "oasys-operator",
-          "level": "developer"
+          "level": "instance-management"
         }
       ]
     },
@@ -43,6 +43,10 @@
         {
           "github_slug": "studio-webops",
           "level": "developer"
+        },
+        {
+          "github_slug": "oasys-operator",
+          "level": "instance-management"
         }
       ]
     }
