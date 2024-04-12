@@ -4,11 +4,7 @@ on:
   workflow_dispatch: 
 
 env:
-    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    AWS_REGION: "eu-west-2"
-    ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-    API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
-    TEMPLATE_ID: "44d86b2d-2a73-4179-9b67-7c3fc2b58934"
+    GH_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
 
 permissions:
     id-token: write # This is required for requesting the JWT
@@ -26,6 +22,7 @@ jobs:
           gh issue create \
             --title "Test Issue" \
             --label security \
+            --project "Modernisation Platform"
             --body "The [IAM-Collaborator-Inactivity-Monitoring workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) has detected that the username test is inactive for more than 180 days. This is a test issue.
 
             Consult [this documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/adding-collaborators.html#removing-collaborators) which describes the process for deleting the collaborator user."
