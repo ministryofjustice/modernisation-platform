@@ -1,0 +1,19 @@
+name: Create Issue
+
+on:
+  workflow_dispatch: 
+
+permissions:
+    id-token: write # This is required for requesting the JWT
+    contents: read # This is required for actions/checkout
+    issues: write # This is required to create issues
+
+jobs:
+  create_issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Issue
+        run: |
+          gh issue create --title "Test Issue" --body "This is a test issue created by a GitHub Actions workflow."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
