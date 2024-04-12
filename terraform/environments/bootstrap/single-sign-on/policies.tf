@@ -83,7 +83,7 @@ data "aws_iam_policy_document" "common_statements" {
     ]
   }
 }
-# Common polocy for allow
+# Common policy for allow
 resource "aws_iam_policy" "common_policy_permissions" {
   provider = aws.workspace
   name     = "common_policy_permissions"
@@ -266,7 +266,6 @@ data "aws_iam_policy_document" "developer_additional" {
       "s3:RestoreObject",
       "s3:*StorageLens*",
       "secretsmanager:Get*",
-      "secretsmanager:DescribeSecret",
       "secretsmanager:ListSecretVersionIds",
       "secretsmanager:PutSecretValue",
       "secretsmanager:UpdateSecret",
