@@ -23,4 +23,11 @@ jobs:
 
       - name: Create Issue
         run: |
-          gh issue create --title "Test Issue" --body "This is a test issue created by a GitHub Actions workflow."
+          gh issue create --title "" --body "This is a test issue created by a GitHub Actions workflow."
+          gh issue create \
+            --title "Test Issue" \
+            --label security \
+            --project "Modernisation Platform" \
+            --body "The IAM-Collaborator-Inactivity-Monitoring workflow has detected that the username test is inactive for more than 180 days. This is a test issue.
+
+            Consult [this documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/adding-collaborators.html#removing-collaborators) which describes the process for deleting the collaborator user."
