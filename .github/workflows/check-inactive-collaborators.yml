@@ -26,5 +26,4 @@ jobs:
           gh issue create \
             --title "Test Issue" \
             --label security \
-            --project "Modernisation Platform" \
             --body "The IAM-Collaborator-Inactivity-Monitoring workflow has detected that the username test is inactive for more than 180 days. This is a test issue."
