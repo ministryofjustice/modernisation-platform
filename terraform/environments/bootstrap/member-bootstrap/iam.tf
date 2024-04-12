@@ -113,7 +113,6 @@ data "aws_iam_policy_document" "member-access" {
       "ec2:*Spot*",
       "ec2:*InternetGateway*",
       "ec2:*NatGateway*",
-
       "ecr-public:*",
       "ecr:*",
       "ecs:*",
@@ -646,6 +645,14 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
     actions = ["s3:PutObject",
     "s3:PutObjectAcl"]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "dynamodb:GetItem",
+      "dynamodb:PutItem"
+    ]
+    resources = ["arn:aws:dynamodb:eu-west-2:${data.aws_caller_identity.modernisation_platform.account_id}:table/modernisation-platform-terraform-state-lock"]
   }
 }
 
