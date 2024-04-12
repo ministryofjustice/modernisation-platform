@@ -4,6 +4,7 @@ on:
   workflow_dispatch: 
 
 env:
+    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     AWS_REGION: "eu-west-2"
     ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
     API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
@@ -14,65 +15,15 @@ permissions:
     contents: read # This is required for actions/checkout
     issues: write # This is required to create issues
 jobs:
-  disable-login-for-inactive-collaborators:
+  create_issue:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
-      - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
-        with:
-          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
-          role-session-name: githubactionsrolesession
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Fetch Inactive Collaborators
-        run: bash ./scripts/internal/collaborators-inactivity-notification/check_inactive_users.sh
-        env:
-          threshold: 120
-
-      - name: Disable Console Login
-        run: bash ./scripts/internal/collaborators-inactivity-notification/disable_user_credentials.sh
-
-  notify-inactive-collaborators:
-    runs-on: ubuntu-latest
-    needs: disable-login-for-inactive-collaborators
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-
-      - name: Install Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10' 
-    
-      - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
-        with:
-          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
-          role-session-name: githubactionsrolesession
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Install the client
-        run: pip install notifications-python-client
-    
-      - name: Fetch Inactive Collaborators
-        run: bash ./scripts/internal/collaborators-inactivity-notification/check_inactive_users.sh
-        env:
-          threshold: 90
-          SKIP_DISABLED_CONSOLE_USERS: true
-
-      - name: Send Notification to Collaborators
+       - name: Create Issue
         run: |
-          if [ -f final_users.list ]; then
-            python ./scripts/internal/collaborators-inactivity-notification/notification.py collaborators.json final_users.list
-          else
-            echo "There are no inactive collaborator users with an inactivity period of 90 days or longer"
-          fi
+          gh issue create --title "Test Issue" --body "This is a test issue created by a GitHub Actions workflow."
+        
+
+      
