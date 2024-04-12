@@ -23,7 +23,6 @@ jobs:
 
       - name: Create Issue
         run: |
-          gh issue create --title "" --body "This is a test issue created by a GitHub Actions workflow."
           gh issue create \
             --title "Test Issue" \
             --label security \
