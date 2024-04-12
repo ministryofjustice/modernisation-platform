@@ -15,7 +15,7 @@ permissions:
     contents: read # This is required for actions/checkout
     issues: write # This is required to create issues
 jobs:
-  create_issue:
+  create-issue:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
