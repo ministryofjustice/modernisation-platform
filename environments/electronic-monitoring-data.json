@@ -11,7 +11,8 @@
         },
         {
           "github_slug": "hmpps-electronic-monitoring-data-store",
-          "level": "migration"
+          "level": "migration",
+          "nuke": "exclude"
         }
       ]
     },
