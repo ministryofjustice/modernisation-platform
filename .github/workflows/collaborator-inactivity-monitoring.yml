@@ -1,7 +1,8 @@
 name: Check Inactive Collaborators
 
 on:
-  workflow_dispatch: 
+  schedule:
+    - cron: "30 9 */100,1-7 * MON" 
 
 env:
     AWS_REGION: "eu-west-2"
