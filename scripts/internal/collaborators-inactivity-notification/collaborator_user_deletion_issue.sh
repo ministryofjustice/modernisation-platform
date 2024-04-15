@@ -13,7 +13,6 @@ if [ -f final_users.list ]; then
                 --label security \
                 --project "Modernisation Platform" \
                 --body "The Collaborator-Inactivity-Monitoring workflow has detected that the username $username is inactive for more than 180 days.
-
                 Consult [this documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/adding-collaborators.html#removing-collaborators) which describes the process for deleting the collaborator user."
         fi
     done <<< "$(cat final_users.list)"
