@@ -102,7 +102,6 @@ data "aws_iam_policy_document" "common_policy_document" {
   statement {
     sid    = "commonAllow"
     effect = "Allow"
-
     actions = [
       "secretsmanager:DescribeSecret",
       "secretsmanager:ListSecret*",
