@@ -29,7 +29,7 @@ set_credentials_based_on_workspace() {
 
 # Function to ask for confirmation
 ask_for_confirmation() {
-    read -p "Do you want to list the Terraform state for workspace $1 in directory $(pwd)? (y/n): " response
+    read -p "Do you want to delete the Terraform resources for workspace $1 in directory $(pwd)? (y/n): " response
     if [[ $response =~ ^[Yy]$ ]]; then
         return 0
     else
@@ -86,28 +86,22 @@ part_1() {
         echo "Handling Terraform operations for workspace: $WORKSPACE"
         
         # Selecting Terraform workspace
-        echo "Selecting Terraform workspace: $WORKSPACE"
-        if terraform workspace select "$WORKSPACE"; then
-            echo "Workspace $WORKSPACE selected."
+        echo "Selecting Terraform workspace: $FULL_WORKSPACE_NAME"
+        if terraform workspace select "$FULL_WORKSPACE_NAME"; then
+            echo "Workspace $FULL_WORKSPACE_NAME selected."
             
-            # Ask for confirmation before listing Terraform state
-            if ask_for_confirmation "$WORKSPACE"; then
-                # List out the current Terraform state for this workspace
-                echo "Listing current Terraform state for workspace $WORKSPACE:"
-                state_output=$(terraform state list)
-                if [ -z "$state_output" ]; then
-                    echo "No resources found in Terraform state for workspace $WORKSPACE."
-                else
-                    echo "$state_output"
-                fi
+            # Ask user if they want to proceed to destroy the Terraform resources for this workspace
+            echo "WARNING: You are about to destroy all resources in the workspace $FULL_WORKSPACE_NAME."
+            if ask_for_confirmation; then
+                echo "Destroying resources in workspace $FULL_WORKSPACE_NAME..."
+                terraform destroy -auto-approve
             else
-                echo "Skipping listing Terraform state for workspace $WORKSPACE."
+                echo "Destruction cancelled for workspace $FULL_WORKSPACE_NAME."
             fi
-            
         else
-            echo "Workspace $WORKSPACE does not exist. Skipping..."
+            echo "Workspace $FULL_WORKSPACE_NAME does not exist. Skipping..."
         fi
-        
+
         echo "----------------------------------------------------------------"
     done
 
@@ -169,17 +163,17 @@ part_2() {
         if terraform workspace select "$FULL_WORKSPACE_NAME"; then
             echo "Workspace $FULL_WORKSPACE_NAME selected."
             
-            # Ask user if they want to proceed to list the Terraform state for this workspace
-            if ask_for_confirmation $FULL_WORKSPACE_NAME; then
-                echo "Current Terraform state for workspace $FULL_WORKSPACE_NAME:"
-                terraform state list
+            # Ask user if they want to proceed to destroy the Terraform resources for this workspace
+            echo "WARNING: You are about to destroy all resources in the workspace $FULL_WORKSPACE_NAME."
+            if ask_for_confirmation; then
+                echo "Destroying resources in workspace $FULL_WORKSPACE_NAME..."
+                terraform destroy -auto-approve
             else
-                echo "Skipping listing of Terraform state for $FULL_WORKSPACE_NAME."
+                echo "Destruction cancelled for workspace $FULL_WORKSPACE_NAME."
             fi
         else
             echo "Workspace $FULL_WORKSPACE_NAME does not exist. Skipping..."
         fi
-        
         echo "----------------------------------------------------------------"
     done
 

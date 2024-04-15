@@ -54,7 +54,7 @@ for WORKSPACE in "${WORKSPACES[@]}"; do
   read -r confirm
   if [[ "$confirm" = [yY] ]]; then
     echo "Removing $RESOURCE_TO_REMOVE from the Terraform state..."
-    echo "This is where we will delete the resource" # terraform state rm "$RESOURCE_TO_REMOVE"
+    terraform state rm "$RESOURCE_TO_REMOVE"
   else
     echo "Skipping removal of $RESOURCE_TO_REMOVE."
   fi
