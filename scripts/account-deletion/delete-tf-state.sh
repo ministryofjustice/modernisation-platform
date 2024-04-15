@@ -1,16 +1,6 @@
 # Define the path to the configuration script
 CONFIG_SCRIPT="config.txt"
 
-# Function to ask for confirmation
-ask_for_confirmation() {
-    read -p "Do you want to list the Terraform state for workspace $1 in directory $(pwd)? (y/n): " response
-    if [[ $response =~ ^[Yy]$ ]]; then
-        return 0
-    else
-        return 1
-    fi
-}
-
 echo "Listing State for MP repo"
 
 # Define the path to the credentials and configuration file
