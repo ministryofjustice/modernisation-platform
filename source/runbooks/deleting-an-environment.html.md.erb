@@ -26,11 +26,11 @@ This runbook describes the process required to delete an environment/s.
 
 We have bash scripts that are designed to automate the process of decommissioning an AWS account. The scripts perform the following tasks, in this order;
 
-* Remove the AWS account from Modernisation Platform management
-* Remove the environment definition
-* Delete Terraform resources for the environment
-* Delete Terraform workspaces for the environment (This will not delete the resources that are set up by the Terraform configuration. It will only delete the Terraform reference to the workspace. You will need to delete the AWS account properly.)
-* Remove Environment Files (\*only if removing all environments for an application)
+* Removes the AWS account from Modernisation Platform state management
+* Removes the environment definition in `environments/*.json`
+* Deletes Terraform resources for the environment (in the MP and MP Environments repos)
+* Deletes Terraform workspaces for the environment in `terraform/environments/bootstrap/*`
+* Removes Environment Files (\*only if removing all environments for an application)
 
 >Be aware that some resources such as s3 buckets cannot be destroyed until you manually empty all the objects and versions in them.
 
