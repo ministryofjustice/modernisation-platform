@@ -20,80 +20,41 @@ review_in: 6 month
 
 > You will need to **complete the actions** below in as **short a time frame as possible**. Certain workflows such as [Terraform: New environment](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml) will re-create accounts/workspaces which you are trying to delete if it runs mid-way through your progress. Ideally warn the MP team **not to merge any PRs** whilst you carry out these actions.
 
-In the Modernisation Platform, we run a pipeline to create AWS accounts using the `aws_organizations_account` Terraform resource.
+This runbook describes the process required to delete an environment/s.
 
-The `aws_organizations_account` cannot, and does not, delete AWS accounts if removed from the configuration. It attempts to move the AWS account from AWS Organizations to a standalone account, which should fail.
+## Running account deletion scripts locally
 
-Therefore, there are a few things to do to delete an environment, in this order:
+We have bash scripts that are designed to automate the process of decommissioning an AWS account. The scripts perform the following tasks, in this order;
 
-1. Get the AWS accounts root IAM user's email address
-1. Remove the environment definition from `environments/*.json`
-1. Remove the AWS account from Modernisation Platform management
-1. Delete the `terraform workspace` wherever it appears
-1. Delete the actual AWS account
+* Remove the AWS account from Modernisation Platform management
+* Remove the environment definition
+* Delete Terraform resources for the environment
+* Delete Terraform workspaces for the environment (This will not delete the resources that are set up by the Terraform configuration. It will only delete the Terraform reference to the workspace. You will need to delete the AWS account properly.)
+* Remove Environment Files (\*only if removing all environments for an application)
 
-## Getting the root IAM user's email address
+>Be aware that some resources such as s3 buckets cannot be destroyed until you manually empty all the objects and versions in them.
 
-You need the root IAM user's email address to delete the AWS account in the last step, so note it down.
+>Ensure that you have fetched the most recent updates in your local MP and MPE directories by executing a `git pull` command.
 
-You can get this from the SSO log on page if you have access to the account via SSO, if not it can be found in the Terraform state.
+>Ensure that you have deleted all local `.terraform` and `.terraform.lock.hcl` files 
 
-To do this, `cd` into `terraform environments` and find the resource in the state:
-
-- `cd terraform/environments`
-- Use [temporary AWS Credentials](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/getting-aws-credentials.html#getting-aws-credentials) or [AWS-Vault](https://github.com/99designs/aws-vault) to source the **Modernisation Platform** credentials in your terminal
-- `terraform init`
-- `terraform state list`
-
-To find the email address, run:
-
-- `terraform state show <resource reference>`
-
-```bash
-$ cd terraform/environments
-$ terraform state list
-$ terraform state show 'module.environments.aws_organizations_account.accounts["core-vpc-non-live-data"]'
-
-resource "aws_organizations_account" "accounts" {
-    ...
-    email                      = "..." <- This will be the email address for the root IAM user
-    ...
-    tags                       = {
-        "application"      = "modernisation-platform"
-        "business-unit"    = "Platforms"
-        "environment-name" = "production"
-        "is-production"    = "true"
-        "owner"            = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
-    }
-}
-```
-
-## Running bash scripts
-
-We have bash scripts that are designed to automate the process of decommissioning an AWS account. The scripts perform the following tasks:
-
-1. Remove the AWS account from Modernisation Platform management
-2. Remove the environment definition
-3. Delete Terraform resources for the environment
-4. Delete Terraform workspaces for the environment (This will not delete the resources that are set up by the Terraform configuration. It will only delete the Terraform reference to the workspace. You will need to delete the AWS account properly.)
-5. Remove Environment Files (*only if removing all environments for an application)
-
-Be aware that some resources such as s3 buckets cannot be destroyed until you manually empty all the objects and versions in them.
-
-Ensure that you have fetched the most recent updates in your local MP and MPE directories by executing a `git pull` command. 
 
 To use the scripts, follow these steps:
 
-- Navigate to the [account-deletion folder ](https://github.com/ministryofjustice/modernisation-platform/tree/feature/6457-account-delete-combo/scripts/account-deletion) and create a config.txt file within it
-- Open the [example-config.txt file](https://github.com/ministryofjustice/modernisation-platform/blob/feature/6457-account-delete-combo/scripts/account-deletion/example-config.txt), copy its contents, and paste them into your newly created config.txt file.
-- Modify the config.txt file to include variables specific to your AWS account deletion task.
-- Open your terminal and ensure your current working directory is account-deletion.
-- Make the script executable by running the command: `chmod +x config-text`.
-- Execute the script using the command: `./config-text`
+1. Navigate to the [account-deletion folder](https://github.com/ministryofjustice/modernisation-platform/scripts/account-deletion) and create a config.txt file within it
+1. Open the [example-config.txt file](https://github.com/ministryofjustice/modernisation-platform/scripts/account-deletion/example-config.txt), copy its contents, and paste them into your newly created config.txt file.
+1. Modify the config.txt file to include variables specific to your AWS account deletion task.
+1. Open your terminal and ensure your current working directory is account-deletion.
+1. Make the script executable by running the command: `chmod +x delete-accounts.sh`
+1. Execute the script using the command: `./delete-accounts.sh`
+
+>The script execution logs will be written to a file called `execution_log.txt` which show the progress being made and help to debug any issues that may arise.
+
+>If the script fails at any point you can choose to re-run the `account-deletion.sh` script or manually run one of the individual scripts that it calls.
 
 ## Move the account to the root organizational unit
 
-> Note that a user with root account permissions will need to do this.
+> Note that a user with root account permissions will need to do this. Contact the MP teams TA/Lead Webops Engineer.
 
 This is to move the account out of an organizational unit where there is an SCP preventing any actions by the root user.
 
@@ -107,17 +68,19 @@ Now the AWS account can be deleted.
 
 Follow the [AWS documentation on closing an AWS account](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/close-account.html#closing-the-account).
 
+You need the root IAM user's email address to delete the AWS account. You can get this from the [AWS SSO login page](https://moj.awsapps.com/start#/)
+
 You will need access to the [AWS - notifications](https://groups.google.com/a/digital.justice.gov.uk/g/aws) Google Group which will receive the password reset email.
 
 ## Move the account to the closed accounts organizational unit
 
-> Note that a user with root account permissions will need to do this. Please post in #ask-operations-engineering about it, or message the MP teams TA/Lead Webops Engineer.
+> Note that a user with root account permissions will need to do this. Contact the MP teams TA/Lead Webops Engineer.
 
 Log into the AWS Console and navigate to AWS Oraganizations, find the account and move it to the `Closed accounts` OU.
 
 ## Merge in your file changes
 
-Raise a PR to merge in your file changes which will trigger Terraform to perform the remaining clean up needed.
+Raise a PR to merge in your file changes in both the MP and MP Environments repositories which will trigger Terraform to perform the remaining clean up needed.
 
 ## Delete Github environments
 
