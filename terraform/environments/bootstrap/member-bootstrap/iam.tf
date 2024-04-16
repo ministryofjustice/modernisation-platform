@@ -381,6 +381,7 @@ data "aws_iam_policy_document" "policy" {
       "autoscaling:PutScheduledUpdateGroupAction",
       "autoscaling:SetDesiredCapacity",
       "backup:Start*",
+      "cloudwatch:PutMetricData",
       "codebuild:Start*",
       "codebuild:StartBuild",
       "codebuild:BatchGetBuilds",
