@@ -46,7 +46,9 @@ part_1() {
 
     for WORKSPACE_NAME in "${WORKSPACES[@]}"; do
         # Construct the full workspace name
-        WORKSPACE="${APPLICATION_NAME}-${WORKSPACE_NAME}"
+        FULL_WORKSPACE_NAME="${APPLICATION_NAME}-${WORKSPACE}"
+        echo "----------------------------------------------------------------"
+        echo "Handling Terraform operations for workspace: $FULL_WORKSPACE_NAME"
 
         # Load credentials for the current workspace
         set_credentials_based_on_workspace "$WORKSPACE_NAME"

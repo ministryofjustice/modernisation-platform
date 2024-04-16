@@ -20,14 +20,14 @@ USER_MP_DIR="/Users/kudzai.mtoko/mojgithub/modernisation-platform"
 USER_MPE_DIR="/Users/kudzai.mtoko/mojgithub/modernisation-platform-environments"
 
 # Copy and paste below the admin credentials for the Modernisation Platform account 
-MP_CREDENTIAL(){
+MP_CREDENTIALS(){
 export AWS_ACCESS_KEY_ID="xxx"
 export AWS_SECRET_ACCESS_KEY="yyy"
 export AWS_SESSION_TOKEN="zzz"
 }
 
 # Copy and paste below the admin credentials for the Application's development account 
-DEVELOPMENT_CREDENTIAL(){
+DEVELOPMENT_CREDENTIALS(){
 export AWS_ACCESS_KEY_ID="xxx"
 export AWS_SECRET_ACCESS_KEY="yyy"
 export AWS_SESSION_TOKEN="zzz"
