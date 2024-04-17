@@ -481,8 +481,7 @@ data "aws_iam_policy_document" "policy" {
       "ssm:DescribeSessions",
       "ssm:ResumeSession",
       "ssm:StartSession",
-      "ssm:TerminateSession",
-      "*:*Tags*"
+      "ssm:TerminateSession"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
