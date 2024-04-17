@@ -90,41 +90,6 @@ data "aws_iam_policy_document" "common_statements" {
     ]
   }
 }
-# Common policy for allow
-resource "aws_iam_policy" "common_policy_permissions" {
-  provider = aws.workspace
-  name     = "common_policy_permissions"
-  path     = "/"
-  policy   = data.aws_iam_policy_document.common_policy_document.json
-}
-
-#tfsec:ignore:aws-iam-no-policy-wildcards
-data "aws_iam_policy_document" "common_policy_document" {
-  #checkov:skip=CKV_AWS_108
-  #checkov:skip=CKV_AWS_109
-  #checkov:skip=CKV_AWS_111
-  #checkov:skip=CKV_AWS_110
-  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
-  source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
-  statement {
-    sid    = "commonAllow"
-    effect = "Allow"
-    actions = [
-      "secretsmanager:DescribeSecret",
-      "secretsmanager:ListSecret*",
-      "secretsmanager:GetSecretValue",
-      "ec2:DescribeVolumes",
-      "ec2:DescribeInstances",
-      "ec2:DescribeInstanceTypes",
-      "kms:Decrypt*",
-      "kms:Encrypt",
-      "kms:ReEncrypt*",
-      "kms:GenerateDataKey*",
-      "kms:DescribeKey"
-    ]
-    resources = ["*"]
-  }
-}
 
 
 # bedrock console policy -- to be retired when terraform support is introduced
