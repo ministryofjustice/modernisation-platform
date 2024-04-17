@@ -643,11 +643,11 @@ data "aws_iam_policy_document" "instance-access-document" {
       "secretsmanager:GetSecretValue",
     ]
     resources = ["*"]
-    conditions = [{
+    condition {
       test     = "StringEquals"
       variable = "secretsmanager:ResourceTag/instance-access-policy"
       values   = ["limited"]
-    }]
+    }
   }
   statement {
     sid    = "SecretsManagerPut"
@@ -657,11 +657,11 @@ data "aws_iam_policy_document" "instance-access-document" {
       "secretsmanager:PutSecretValue",
     ]
     resources = ["*"]
-    conditions = [{
+    condition {
       test     = "StringEquals"
       variable = "secretsmanager:ResourceTag/instance-access-policy"
       values   = ["full"]
-    }]
+    }
   }
   statement {
     sid    = "SSMStartSessionPortForwarding"
@@ -674,18 +674,16 @@ data "aws_iam_policy_document" "instance-access-document" {
       "arn:aws:ssm:*:*:managed-instance/*",
       "arn:aws:ssm:*:*:document/AWS-StartPortForwardingSession",
     ]
-    conditions = [
-      {
-        test     = "BoolIfExists"
-        variable = "ssm:SessionDocumentAccessCheck"
-        values   = ["true"]
-      },
-      {
-        test     = "StringEqualsIfExists"
-        variable = "ssm:resourceTag/instance-access-policy"
-        values   = ["limited"] # doesn't work as expected with granular tags, e.g. use ssh/portforward
-      },
-    ]
+    condition {
+      test     = "BoolIfExists"
+      variable = "ssm:SessionDocumentAccessCheck"
+      values   = ["true"]
+    }
+    condition {
+      test     = "StringEqualsIfExists"
+      variable = "ssm:resourceTag/instance-access-policy"
+      values   = ["limited"] # doesn't work as expected with granular tags, e.g. use ssh/portforward
+    }
   }
   statement {
     sid    = "SSMStartSessionSSH"
@@ -698,18 +696,16 @@ data "aws_iam_policy_document" "instance-access-document" {
       "arn:aws:ssm:*:*:managed-instance/*",
       "arn:aws:ssm:*:*:document/AWS-StartSSHSession",
     ]
-    conditions = [
-      {
-        test     = "BoolIfExists"
-        variable = "ssm:SessionDocumentAccessCheck"
-        values   = ["true"]
-      },
-      {
-        test     = "StringEqualsIfExists"
-        variable = "ssm:resourceTag/instance-access-policy"
-        values   = ["limited"]
-      },
-    ]
+    condition {
+      test     = "BoolIfExists"
+      variable = "ssm:SessionDocumentAccessCheck"
+      values   = ["true"]
+    }
+    condition {
+      test     = "StringEqualsIfExists"
+      variable = "ssm:resourceTag/instance-access-policy"
+      values   = ["limited"]
+    }
   }
   statement {
     sid    = "SSMStartSession"
@@ -721,13 +717,11 @@ data "aws_iam_policy_document" "instance-access-document" {
       "arn:aws:ec2:*:*:instance/*",
       "arn:aws:ssm:*:*:managed-instance/*",
     ]
-    conditions = [
-      {
-        test     = "StringEqualsIfExists"
-        variable = "ssm:resourceTag/instance-access-policy"
-        values   = ["full"]
-      }
-    ]
+    condition {
+      test     = "StringEqualsIfExists"
+      variable = "ssm:resourceTag/instance-access-policy"
+      values   = ["full"]
+    }
   }
 
   statement {
@@ -741,18 +735,16 @@ data "aws_iam_policy_document" "instance-access-document" {
       "arn:aws:ssm:*:*:managed-instance/*",
       "arn:aws:ssm:*:*:document/AWSSSO-CreateSSOUser"
     ]
-    conditions = [
-      {
-        test     = "BoolIfExists"
-        variable = "ssm:SessionDocumentAccessCheck"
-        values   = ["true"]
-      },
-      {
-        test     = "StringEqualsIfExists"
-        variable = "ssm:resourceTag/instance-access-policy"
-        values   = ["full"]
-      },
-    ]
+    condition {
+      test     = "BoolIfExists"
+      variable = "ssm:SessionDocumentAccessCheck"
+      values   = ["true"]
+    }
+    condition {
+      test     = "StringEqualsIfExists"
+      variable = "ssm:resourceTag/instance-access-policy"
+      values   = ["full"]
+    }
   }
 
 }
