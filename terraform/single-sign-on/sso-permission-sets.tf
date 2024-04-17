@@ -257,7 +257,7 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
 resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_reporting_common" {
   provider           = aws.sso-management
   instance_arn       = local.sso_admin_instance_arn
-  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_reporting.arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_reporting_operations.arn
   customer_managed_policy_reference {
     name = "common_policy"
     path = "/"
@@ -331,7 +331,7 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
 resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_powerbi_common" {
   provider           = aws.sso-management
   instance_arn       = local.sso_admin_instance_arn
-  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_powerbi.arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_powerbi_user.arn
   customer_managed_policy_reference {
     name = "common_policy"
     path = "/"
