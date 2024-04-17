@@ -607,7 +607,7 @@ resource "aws_iam_policy" "instance-access" {
 }
 
 # cut down version of instance-management policy
-# Use instance-access-role tag on resources to control access:
+# Use instance-access-policy tag on resources to control access:
 #   tag doesn't exist = s3 put; no secret access;  ec2 ssm full access
 #   "none"            = s3 put; no secret access;  no ec2 ssm access
 #   "limited"         = s3 put; read-only  secret; ec2 ssm ssh/port-forwarding only
@@ -645,7 +645,7 @@ data "aws_iam_policy_document" "instance-access-document" {
     resources = ["*"]
     conditions = [{
       test     = "StringEquals"
-      variable = "secretsmanager:ResourceTag/instance-access-role"
+      variable = "secretsmanager:ResourceTag/instance-access-policy"
       values   = ["limited"]
     }]
   }
@@ -659,7 +659,7 @@ data "aws_iam_policy_document" "instance-access-document" {
     resources = ["*"]
     conditions = [{
       test     = "StringEquals"
-      variable = "secretsmanager:ResourceTag/instance-access-role"
+      variable = "secretsmanager:ResourceTag/instance-access-policy"
       values   = ["full"]
     }]
   }
