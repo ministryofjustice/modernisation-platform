@@ -12,13 +12,12 @@
         },
         {
           "github_slug": "hmpps-dba",
-          "level": "sandbox",
+          "level": "sandbox"
 
         },
         {
           "github_slug": "hmpps-delius-mis",
-          "level": "instance-management",
-          "nuke": "exclude"
+          "level": "instance-management"
         }
       ]
     },
