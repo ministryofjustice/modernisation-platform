@@ -44,14 +44,14 @@ part_1() {
     # Source the configuration script to load application settings and function definitions
     source "$CONFIG_SCRIPT"
 
-    for WORKSPACE_NAME in "${WORKSPACES[@]}"; do
+    for WORKSPACE in "${WORKSPACES[@]}"; do
         # Construct the full workspace name
         FULL_WORKSPACE_NAME="${APPLICATION_NAME}-${WORKSPACE}"
         echo "----------------------------------------------------------------"
         echo "Handling Terraform operations for workspace: $FULL_WORKSPACE_NAME"
 
         # Load credentials for the current workspace
-        set_credentials_based_on_workspace "$WORKSPACE_NAME"
+        set_credentials_based_on_workspace "$WORKSPACE"
         
         # Check if credentials were successfully loaded
         if [ $? -ne 0 ]; then
