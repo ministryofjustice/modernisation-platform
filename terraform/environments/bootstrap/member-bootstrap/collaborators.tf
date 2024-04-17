@@ -119,6 +119,31 @@ data "aws_iam_policy" "migration" {
   name = "migration_policy"
 }
 
+# Collaborator Instance Access role
+module "collaborator_instance_access_role" {
+  # checkov:skip=CKV_TF_1:
+  count   = local.account_data.account-type == "member" ? 1 : 0
+  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
+  version = "~> 5"
+  trusted_role_arns = [
+    local.modernisation_platform_account.id
+  ]
+
+  create_role       = true
+  role_name         = "instance-access"
+  role_requires_mfa = true
+
+  custom_role_policy_arns = [
+    "arn:aws:iam::aws:policy/ReadOnlyAccess",
+    data.aws_iam_policy.instance-access.arn,
+  ]
+  number_of_custom_role_policy_arns = 2
+}
+
+data "aws_iam_policy" "instance-access" {
+  name = "instance_access_policy"
+}
+
 # Collaborator Database Management role
 module "collaborator_database_mgmt_role" {
   # checkov:skip=CKV_TF_1:
