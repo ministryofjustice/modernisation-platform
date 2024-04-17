@@ -400,7 +400,7 @@ data "aws_iam_policy_document" "policy" {
       "datasync:Delete*",
       "datasync:Describe*",
       "datasync:List*",
-      "datasync:TagResource",
+      "datasync:*Tag*",
       "datasync:StartTaskExecution",
       "ecs:RegisterTaskDefinition",
       "ecs:UpdateService",
@@ -413,7 +413,7 @@ data "aws_iam_policy_document" "policy" {
       "ecs:*Task",
       "ecs:ListTaskDefinitions",
       "ecs:*TaskSet",
-      "ecs:TagResource",
+      "ecs:*Tag*",
       "ecr:DescribeImages",
       "ecr:DescribeRepositories",
       "ecr:ListImages",
@@ -468,10 +468,12 @@ data "aws_iam_policy_document" "policy" {
       "logs:DescribeLogGroups",
       "logs:DescribeResourcePolicies",
       "logs:GetLogEvents",
+      "rds:*Tag*",
       "s3:GetBucketLocation",
       "s3:ListBucket",
       "s3:ListAllMyBuckets",
       "s3:*Object*",
+      "s3:*Tag*",
       "secretsmanager:DescribeSecret",
       "secretsmanager:GetResourcePolicy",
       "secretsmanager:GetSecretValue",
@@ -481,8 +483,7 @@ data "aws_iam_policy_document" "policy" {
       "ssm:DescribeSessions",
       "ssm:ResumeSession",
       "ssm:StartSession",
-      "ssm:TerminateSession",
-      "*:*Tags*"
+      "ssm:TerminateSession"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
