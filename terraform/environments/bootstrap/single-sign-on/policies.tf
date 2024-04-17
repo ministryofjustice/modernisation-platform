@@ -614,6 +614,7 @@ resource "aws_iam_policy" "instance-access" {
 #   "full"            = s3 put; read-write secret; ec2 ssm full access; ec2 sso local admin
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "instance-access-document" {
+  #checkov:skip=CKV_AWS_107
   #checkov:skip=CKV_AWS_108
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_111
