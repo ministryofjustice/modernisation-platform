@@ -28,7 +28,7 @@ set_credentials_based_on_workspace() {
 
 # Function to ask for confirmation
 ask_for_confirmation() {
-    read -p "Do you want to delete the Terraform resources for workspace $1 in directory $(pwd)? (y/n): " response
+    read -p "Do you want to delete the Terraform resources in directory $(pwd)? (y/n): " response
     if [[ $response =~ ^[Yy]$ ]]; then
         return 0
     else

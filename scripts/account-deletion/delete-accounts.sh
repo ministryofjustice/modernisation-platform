@@ -56,7 +56,7 @@ run_script_confirmation() {
 }
 
 if run_script_confirmation; then
-   Execute scripts in sequence, checking for success after each
+   # Execute scripts in sequence, checking for success after each
    echo "$(date "+%Y-%m-%d %H:%M:%S") - Starting to execute scripts..." | tee -a "$log_file"
 
    execute_script "$script1"
