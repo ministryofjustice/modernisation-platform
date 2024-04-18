@@ -6,7 +6,8 @@
       "access": [
         {
           "github_slug": "laa-aws-infrastructure",
-          "level": "developer"
+          "level": "sandbox",
+          "nuke": "exclude"
         }
       ]
     },
