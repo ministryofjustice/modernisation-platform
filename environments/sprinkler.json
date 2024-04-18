@@ -6,7 +6,22 @@
       "access": [
         {
           "github_slug": "modernisation-platform",
-          "level": "sandbox",
+          "level": "developer",
+          "nuke": "rebuild"
+        },
+        {
+          "github_slug": "modernisation-platform",
+          "level": "reporting-operations",
+          "nuke": "rebuild"
+        },
+        {
+          "github_slug": "modernisation-platform",
+          "level": "migration",
+          "nuke": "rebuild"
+        },
+        {
+          "github_slug": "modernisation-platform",
+          "level": "data-engineering",
           "nuke": "rebuild"
         },
         {
