@@ -105,21 +105,18 @@ part_1() {
 
         echo "----------------------------------------------------------------"
     done
-
+    cd "$USER_MP_DIR/scripts/account-deletion"
     echo "Part 1: Terraform operations completed for MP Environments repo"
 }
 
 # Part 2: Managing Resources for MP repo
 part_2() {
     echo "Part 2: Managing Resources for MP repo"
-    
-    # Define the path to the credentials and configuration file
-    CONFIG_FILE="config.txt"
 
     # Function to load configurations and AWS credentials from config.sh
     load_configurations_and_credentials() {
         echo "Loading configurations and AWS credentials..."
-        source "$CONFIG_FILE"
+        source "$CONFIG_SCRIPT"
         
         # Call the MP_CREDENTIAL function to load credentials
         MP_CREDENTIALS
@@ -177,7 +174,7 @@ part_2() {
         fi
         echo "----------------------------------------------------------------"
     done
-
+    cd "$USER_MP_DIR/scripts/account-deletion"
     echo "Part 2: Terraform operations completed for MP repo"
 }
 
