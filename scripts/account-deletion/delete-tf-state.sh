@@ -1,3 +1,6 @@
+#!/bin/bash
+set -e
+
 # Define the path to the configuration script
 CONFIG_SCRIPT="config.txt"
 

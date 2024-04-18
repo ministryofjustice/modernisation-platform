@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Define the path to the credentials and configuration file
 CONFIG_FILE="config.txt"

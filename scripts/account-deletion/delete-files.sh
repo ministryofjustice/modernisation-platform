@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 source config.txt
 
 # If all environments are being deleted, delete the relevant files

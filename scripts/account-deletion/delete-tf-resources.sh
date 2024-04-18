@@ -1,6 +1,5 @@
 #!/bin/bash
-
-# Some resources such as s3 buckets cannot be destroyed until you manually empty all the objects and versions in them
+set -e
 
 # Define the path to the configuration script
 CONFIG_SCRIPT="config.txt"

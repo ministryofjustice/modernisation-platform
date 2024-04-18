@@ -24,13 +24,15 @@ This runbook describes the process required to delete an environment/s.
 
 ## Running account deletion scripts locally
 
-We have bash scripts that are designed to automate the process of decommissioning an AWS account. The scripts perform the following tasks, in this order;
+In `modernisation-platform/scripts/account-deletion` we have a set of bash scripts that are designed to automate the process of decommissioning an AWS account. The scripts perform the following tasks, in this order:
 
-* Removes the AWS account from Modernisation Platform state management
-* Removes the environment definition in `environments/*.json`
-* Deletes Terraform resources for the environment (in the MP and MP Environments repos)
-* Deletes Terraform workspaces for the environment in `terraform/environments/bootstrap/*`
-* Removes Environment Files (\*only if removing all environments for an application)
+1. `delete-tf-state.sh` - Removes the AWS account from Modernisation Platform state management
+1. `update-files.sh`- Removes the environment definition in `environments/*.json`
+1.  `delete-tf-resources`- Deletes Terraform resources for the environment (in the MP and MP Environments repos)
+1. `delete-tf-workspaces.sh`- Deletes Terraform workspaces for the environment in `terraform/environments/bootstrap/*`
+1.  `delete-files.sh`- Removes Environment Files (only if removing all environments for an application)
+
+They are all triggered in sequence by the `delete-accounts.sh` script.
 
 >Be aware that some resources such as s3 buckets cannot be destroyed until you manually empty all the objects and versions in them.
 
@@ -41,17 +43,19 @@ We have bash scripts that are designed to automate the process of decommissionin
 
 To use the scripts, follow these steps:
 
-1. Navigate to the [account-deletion folder](https://github.com/ministryofjustice/modernisation-platform/scripts/account-deletion) and create a config.txt file within it
-1. Open the [example-config.txt file](https://github.com/ministryofjustice/modernisation-platform/scripts/account-deletion/example-config.txt), copy its contents, and paste them into your newly created config.txt file.
-1. Modify the config.txt file to include variables specific to your AWS account deletion task.
-1. Open your terminal and ensure your current working directory is account-deletion.
-1. Make the script executable by running the command: `chmod +x delete-accounts.sh`
+1. Navigate to the [account-deletion folder](https://github.com/ministryofjustice/modernisation-platform/scripts/account-deletion) and create a `config.txt` file within it
+1. Open the [example-config.txt file](https://github.com/ministryofjustice/modernisation-platform/scripts/account-deletion/example-config.txt), copy its contents, and paste them into your newly created `config.txt` file.
+1. Modify your `config.txt` file to include variables specific to your AWS account deletion task.
+1. Open your terminal and ensure your current working directory is `modernisation-platform/scripts/account-deletion`.
+1. If required make the script executable by running the command: `chmod +x delete-accounts.sh`
 1. Execute the script using the command: `./delete-accounts.sh`
 1. While the script is running you will need to respond to prompts to confirm your actions at various stages
 
 >The script execution logs will be written to a file called `execution_log.txt` which show the progress being made and help to debug any issues that may arise.
 
->If the script fails at any point you can choose to re-run the `account-deletion.sh` script or manually run one of the individual scripts that it calls.
+>If the script fails at any point you can try to re-run the `account-deletion.sh` script or manually run a combination of the individual scripts that it calls using the order mentioned above.
+
+>Where the script has made changes to files in the MP/MP Environments repos it will have created them on a new branch with a unique name. You will need to merge these in at a later stage of the process. 
 
 ## Move the account to the root organizational unit
 
@@ -81,7 +85,7 @@ Log into the AWS Console and navigate to AWS Oraganizations, find the account an
 
 ## Merge in your file changes
 
-Raise a PR to merge in your file changes in both the MP and MP Environments repositories which will trigger Terraform to perform the remaining clean up needed.
+Raise a PR to merge in your file changes (created by the scripts above) in both the MP and MP Environments repositories which will trigger Terraform to perform the remaining clean up needed.
 
 ## Delete Github environments
 

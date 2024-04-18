@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 source config.txt
 
 # Git setup for MP repository
