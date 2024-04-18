@@ -21,7 +21,7 @@
         },
         {
           "github_slug": "modernisation-platform",
-          "level": "data-engineering",
+          "level": "data-engineer",
           "nuke": "rebuild"
         },
         {
