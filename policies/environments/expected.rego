@@ -31,7 +31,6 @@ expected :=
     "data-platform",
     "data-platform-apps-and-tools",
     "data-platform-compute",
-    "delete-account",
     "delius-core",
     "delius-iaps",
     "delius-jitbit",

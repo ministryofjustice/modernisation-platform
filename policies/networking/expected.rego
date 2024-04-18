@@ -49,7 +49,6 @@ expected :=
           "example-development",
           "data-platform-development",
           "data-platform-apps-and-tools-development",
-          "delete-account-development",
           "observability-platform-development",
           "operations-engineering-development"
         ]
@@ -88,7 +87,6 @@ expected :=
         "cidr": "10.26.0.0/21",
         "accounts": [
           "data-platform-test",
-          "delete-account-test",
           "testing-test"
         ]
       }
