@@ -85,10 +85,10 @@ Log into the AWS Console and navigate to AWS Oraganizations, find the account an
 
 ## Merge in your file changes
 
-Raise a PR to merge in your file changes (created by the scripts above) in both the MP and MP Environments repositories which will trigger Terraform to perform the remaining clean up needed.
+Raise a PR to merge in your file changes (created by the scripts above) in both the MP and MP Environments repositories which will trigger Terraform to perform the remaining clean up needed. 
+
+Check for any automated PRs that have been raised in the MP Environments repo to update the `.github/CODEOWNERS` file. Here is an [example PR](https://github.com/ministryofjustice/modernisation-platform-environments/pull/5317/files). These will need to be merged in.
 
 ## Delete Github environments
 
 Navigate to [https://github.com/ministryofjustice/modernisation-platform-environments/settings/environments](https://github.com/ministryofjustice/modernisation-platform-environments/settings/environments) and delete the relevant GitHub environments.
-
-Check for any automated PRs that have been raised in the MP Environments repo to update the `.github/CODEOWNERS` file. Here is an [example PR](https://github.com/ministryofjustice/modernisation-platform-environments/pull/5317/files). These will need to be merged in.
