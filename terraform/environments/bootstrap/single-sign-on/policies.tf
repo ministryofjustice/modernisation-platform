@@ -1,6 +1,13 @@
 # IAM policies used for SSO and collaborator roles
 
-# common policy statements
+# common policy and statements
+resource "aws_iam_policy" "common_policy" {
+  provider = aws.workspace
+  name     = "common_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.common_statements.json
+}
+
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "common_statements" {
   statement {
@@ -84,6 +91,7 @@ data "aws_iam_policy_document" "common_statements" {
   }
 }
 
+
 # bedrock console policy -- to be retired when terraform support is introduced
 # source: https://docs.aws.amazon.com/bedrock/latest/userguide/security_iam_id-based-policy-examples.html#security_iam_id-based-policy-examples-console
 #tfsec:ignore:aws-iam-no-policy-wildcards
@@ -161,7 +169,6 @@ data "aws_iam_policy_document" "developer_additional" {
   #checkov:skip=CKV_AWS_111
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
-  source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
     sid    = "developerAllow"
     effect = "Allow"
@@ -318,6 +325,14 @@ data "aws_iam_policy_document" "developer_additional" {
   }
 }
 
+# data engineerin policy (developer + glue + some athena)
+resource "aws_iam_policy" "data_engineering" {
+  provider = aws.workspace
+  name     = "data_engineering_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.data_engineering_additional.json
+}
+
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "data_engineering_additional" {
   #checkov:skip=CKV_AWS_108
@@ -325,7 +340,6 @@ data "aws_iam_policy_document" "data_engineering_additional" {
   #checkov:skip=CKV_AWS_111
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
-  source_policy_documents = [data.aws_iam_policy_document.developer_additional.json] # this is a developer++ policy with additional permissions required for data engineering
   statement {
     sid    = "DataEngineeringAllow"
     effect = "Allow"
@@ -382,13 +396,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
   }
 }
 
-# data engineerin policy (developer + glue + some athena)
-resource "aws_iam_policy" "data_engineering" {
-  provider = aws.workspace
-  name     = "data_engineering_policy"
-  path     = "/"
-  policy   = data.aws_iam_policy_document.data_engineering_additional.json
-}
+
 
 # sandbox policy - member SSO and collaborators, development accounts only
 resource "aws_iam_policy" "sandbox" {
@@ -407,7 +415,6 @@ data "aws_iam_policy_document" "sandbox_additional" {
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV2_AWS_40
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
-  source_policy_documents = [data.aws_iam_policy_document.common_statements.json, data.aws_iam_policy_document.bedrock_console.json]
   # added as a source document to ease retirement
   statement {
     sid    = "sandboxAllow"
@@ -548,8 +555,6 @@ data "aws_iam_policy_document" "migration_additional" {
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
-  source_policy_documents   = [data.aws_iam_policy_document.developer_additional.json]
-  override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
     sid    = "migrationAllow"
     effect = "Allow"
@@ -608,7 +613,6 @@ data "aws_iam_policy_document" "instance-management-document" {
   #checkov:skip=CKV_AWS_111
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
-  source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
     sid    = "databaseAllow"
     effect = "Allow"
@@ -710,7 +714,6 @@ data "aws_iam_policy_document" "reporting-operations" {
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356:
-  override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
     sid    = "reportingOperationsAllow"
     effect = "Allow"
@@ -829,7 +832,6 @@ data "aws_iam_policy_document" "powerbi_user_additional" {
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
-  override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
   statement {
     effect = "Allow"
     resources = [
@@ -972,7 +974,7 @@ resource "aws_iam_policy" "fleet-manager-policy" {
 data "aws_iam_policy_document" "fleet-manager-document" {
   #checkov:skip=CKV_AWS_111 Needs to access multiple resources and the policy is attached to a role that is scoped to a specific account
   #checkov:skip=CKV_AWS_356 Needs to access multiple resources and the policy is attached to a role that is scoped to a specific account
-  override_policy_documents = [data.aws_iam_policy_document.common_statements.json]
+  
   statement {
     sid    = "FleetManagerAllow"
     effect = "Allow"

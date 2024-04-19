@@ -29,6 +29,16 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
   }
 }
 
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_developer_common" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_developer.arn
+  customer_managed_policy_reference {
+    name = "common_policy"
+    path = "/"
+  }
+}
+
 # Modernisation Platform data engineer
 resource "aws_ssoadmin_permission_set" "modernisation_platform_data_engineer" {
   provider         = aws.sso-management
@@ -52,6 +62,25 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
   permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_data_engineer.arn
   customer_managed_policy_reference {
     name = "data_engineering_policy"
+    path = "/"
+  }
+}
+
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_data_engineer_common" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_data_engineer.arn
+  customer_managed_policy_reference {
+    name = "common_policy"
+    path = "/"
+  }
+}
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_data_engineer_developer_additional" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_data_engineer.arn
+  customer_managed_policy_reference {
+    name = "developer_policy"
     path = "/"
   }
 }
@@ -116,6 +145,16 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
   }
 }
 
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_sandox_common" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_sandbox.arn
+  customer_managed_policy_reference {
+    name = "common_policy"
+    path = "/"
+  }
+}
+
 # Modernisation Platform migration
 resource "aws_ssoadmin_permission_set" "modernisation_platform_migration" {
   provider         = aws.sso-management
@@ -170,7 +209,25 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
     path = "/"
   }
 }
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_data_migration_developer_additional" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_migration.arn
+  customer_managed_policy_reference {
+    name = "developer_policy"
+    path = "/"
+  }
+}
 
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_migration_common" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_migration.arn
+  customer_managed_policy_reference {
+    name = "common_policy"
+    path = "/"
+  }
+}
 # Modernisation Platform reporting operations
 resource "aws_ssoadmin_permission_set" "modernisation_platform_reporting_operations" {
   provider         = aws.sso-management
@@ -194,6 +251,15 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
   permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_reporting_operations.arn
   customer_managed_policy_reference {
     name = "reporting_operations_policy"
+    path = "/"
+  }
+}
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_reporting_common" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_reporting_operations.arn
+  customer_managed_policy_reference {
+    name = "common_policy"
     path = "/"
   }
 }
@@ -225,6 +291,16 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
   }
 }
 
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_instance_management_common" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_instance_management.arn
+  customer_managed_policy_reference {
+    name = "common_policy"
+    path = "/"
+  }
+}
+
 # Modernisation Platform Managed PowerBI user role for Analytical Platform
 resource "aws_ssoadmin_permission_set" "modernisation_platform_powerbi_user" {
   provider         = aws.sso-management
@@ -252,6 +328,16 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
   }
 }
 
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_powerbi_common" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_powerbi_user.arn
+  customer_managed_policy_reference {
+    name = "common_policy"
+    path = "/"
+  }
+}
+
 # Modernisation Platform fleet-manager role
 resource "aws_ssoadmin_permission_set" "modernisation_platform_fleet_manager" {
   provider         = aws.sso-management
@@ -275,6 +361,16 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
   permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_fleet_manager.arn
   customer_managed_policy_reference {
     name = "fleet_manager_policy"
+    path = "/"
+  }
+}
+
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_fleet_manager_common" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_fleet_manager.arn
+  customer_managed_policy_reference {
+    name = "common_policy"
     path = "/"
   }
 }
