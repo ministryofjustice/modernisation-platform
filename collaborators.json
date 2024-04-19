@@ -557,6 +557,26 @@
       ]
     },
     {
+      "username": "jasper.jackson",
+      "github-username": "JazJax",
+      "accounts": [
+        {
+          "account-name": "electronic-monitoring-data-development",
+          "access": "sandbox"
+        }
+      ]
+    },
+    {
+      "username": "luke.williams",
+      "github-username": "luke-a-williams",
+      "accounts": [
+        {
+          "account-name": "electronic-monitoring-data-development",
+          "access": "sandbox"
+        }
+      ]
+    },
+    {
       "username": "olumide.alabi",
       "github-username": "olusyscon",
       "accounts": [

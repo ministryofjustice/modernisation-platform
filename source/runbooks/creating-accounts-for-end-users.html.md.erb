@@ -119,7 +119,7 @@ Update the [`policies/networking/expected.rego`](https://github.com/ministryofju
 
 #### 3. Create a pull request for the changes in step 1 and 2
 
-This will then kick off `core-vpc-<env>-demployment` pipelines and run `terraform plan`, `terraform apply` and the `scripts/member-account-ram-association.sh` script for the RAM share.
+This will then kick off `core-vpc-<env>-deployment` pipelines and run `terraform plan`, `terraform apply` and the `scripts/member-account-ram-association.sh` script for the RAM share.
 
 This will run the RAM share successfully if you are adding environments for an existing application. If it is a new application the RAM share won't sucessfully run until the next step.
 

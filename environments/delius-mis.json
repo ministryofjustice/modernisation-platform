@@ -12,8 +12,11 @@
         },
         {
           "github_slug": "hmpps-dba",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "sandbox"
+        },
+        {
+          "github_slug": "hmpps-delius-mis",
+          "level": "instance-management"
         }
       ]
     },
@@ -27,6 +30,10 @@
         {
           "github_slug": "hmpps-dba",
           "level": "developer"
+        },
+        {
+          "github_slug": "hmpps-delius-mis",
+          "level": "instance-management"
         }
       ]
     },
@@ -40,6 +47,10 @@
         {
           "github_slug": "hmpps-dba",
           "level": "developer"
+        },
+        {
+          "github_slug": "hmpps-delius-mis",
+          "level": "instance-management"
         }
       ]
     },
@@ -53,6 +64,10 @@
         {
           "github_slug": "hmpps-dba",
           "level": "developer"
+        },
+        {
+          "github_slug": "hmpps-delius-mis",
+          "level": "instance-management"
         }
       ]
     }

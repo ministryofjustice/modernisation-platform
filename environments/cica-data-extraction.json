@@ -1,0 +1,23 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "cica-extract-tool-admins",
+          "level": "sandbox",
+          "nuke": "rebuild"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "cica-data-extraction",
+    "business-unit": "CICA",
+    "infrastructure-support": "infrastructure@cica.gov.uk",
+    "owner": "CICA: infrastructure@cica.gov.uk"
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}

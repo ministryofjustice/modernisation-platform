@@ -1,0 +1,60 @@
+---
+owner_slack: "#modernisation-platform"
+title: Migrating an existing AWS account into the Modernisation Platform
+last_reviewed_on: 2024-03-11
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+This runbook outlines general steps to take in order to migrate an existing Ministry of Justice Amazon Web Services account into the Modernisation Platform.
+
+## Outline
+
+On occasion, we may be asked to bring an existing AWS account into the Modernisation Platform for ongoing management and application of account baselines.
+
+We can make use of some of our existing processes and our `member-unrestricted` AWS Organizations Unit to import accounts, apply baselines, and provide SSO access.
+
+The following high-level steps need to be undertaken:
+
+* Prepare account
+* Create entries for account in Modernisation Platform repository
+* Import manageable resources
+
+## Preparing an account for import into the Modernisation Platform
+
+You can make use of the [AWS guidance](https://docs.aws.amazon.com/IAM/latest/UserGuide/reset-root-password.html) to log into the account of interest as the root user.
+
+You will want to check that the account being migrated:
+* Conforms to Modernisation Platform naming standards (eg, all lower-case letters, with no spaces as separators).
+* Has been removed from any Terraform statefiles that manage the account.
+* Has been removed from management in code.
+
+## Importing an account into the Modernisation Platform
+
+You will want to create a branch in GitHub in the Modernisation Platform repository with relevant `environments/*.json` values
+* The account-type will be `unrestricted`
+
+You will want to switch your local branch in GitHub to the one with the newly-created/amended `environments/*.json` values in order to import information into Terraform.
+* Ensure you are in the `terraform/environments` directory
+* Import the `module.environments.aws_organizations_account.accounts["$account-name"] $account-id`
+* Import the `module.environments.random_string.email-address["$account-name"] $account-email-address`
+* Merge your new branch into `main`.
+
+It is likely that you will also need to import resources into Terraform state for the [account baselines](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines).
+You will do this through the `terraform/environments/boostrap/member-bootstrap` directory in the relevant workspace(s).
+
+## Examples
+
+* [Removing an account from management in code](https://github.com/ministryofjustice/aws-root-account/pull/885)
+* [Preparing environment files for an imported account](https://github.com/ministryofjustice/modernisation-platform/pull/6620)
+* [Running the Modernisation Platform baselines for an imported account](https://github.com/ministryofjustice/modernisation-platform/actions/runs/8468732300)

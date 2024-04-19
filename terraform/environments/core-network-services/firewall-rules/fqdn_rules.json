@@ -15,7 +15,7 @@
     "onegetcdn.azureedge.net",
     "saas40.kaseya.net",
     "stats.microsoft.com",
-    "tlu.dl.delivery.mp.microsoft.com",
+    ".delivery.mp.microsoft.com",
     "wustat.windows.com"
   ],
   "fw_home_net_ips": ["10.26.0.0/16", "10.27.0.0/16"]

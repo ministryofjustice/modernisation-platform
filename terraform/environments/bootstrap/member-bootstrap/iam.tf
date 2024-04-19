@@ -381,6 +381,7 @@ data "aws_iam_policy_document" "policy" {
       "autoscaling:PutScheduledUpdateGroupAction",
       "autoscaling:SetDesiredCapacity",
       "backup:Start*",
+      "cloudwatch:PutMetricData",
       "codebuild:Start*",
       "codebuild:StartBuild",
       "codebuild:BatchGetBuilds",
@@ -399,7 +400,7 @@ data "aws_iam_policy_document" "policy" {
       "datasync:Delete*",
       "datasync:Describe*",
       "datasync:List*",
-      "datasync:TagResource",
+      "datasync:*Tag*",
       "datasync:StartTaskExecution",
       "ecs:RegisterTaskDefinition",
       "ecs:UpdateService",
@@ -412,7 +413,7 @@ data "aws_iam_policy_document" "policy" {
       "ecs:*Task",
       "ecs:ListTaskDefinitions",
       "ecs:*TaskSet",
-      "ecs:TagResource",
+      "ecs:*Tag*",
       "ecr:DescribeImages",
       "ecr:DescribeRepositories",
       "ecr:ListImages",
@@ -467,10 +468,12 @@ data "aws_iam_policy_document" "policy" {
       "logs:DescribeLogGroups",
       "logs:DescribeResourcePolicies",
       "logs:GetLogEvents",
+      "rds:*Tag*",
       "s3:GetBucketLocation",
       "s3:ListBucket",
       "s3:ListAllMyBuckets",
       "s3:*Object*",
+      "s3:*Tag*",
       "secretsmanager:DescribeSecret",
       "secretsmanager:GetResourcePolicy",
       "secretsmanager:GetSecretValue",
@@ -492,7 +495,7 @@ module "member-access-eu-central" {
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
   account_id             = local.modernisation_platform_account.id
   additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
-  policy_arn             = aws_iam_policy.member-access-us-east[0].id
+  policy_arn             = aws_iam_policy.member-access-eu-central[0].id
   role_name              = "MemberInfrastructureBedrockEuCentral"
 }
 
