@@ -469,6 +469,7 @@ data "aws_iam_policy_document" "policy" {
       "logs:DescribeResourcePolicies",
       "logs:GetLogEvents",
       "rds:*Tag*",
+      "rds:*Snapshot*",
       "s3:GetBucketLocation",
       "s3:ListBucket",
       "s3:ListAllMyBuckets",
