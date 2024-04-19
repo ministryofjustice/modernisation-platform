@@ -6,7 +6,7 @@
 | 10.26.0.0  | /16  | shared-vpcs development and test         |                            |
 | 10.27.0.0  | /16  | shared-vpcs preproduction and production |                            |
 | 10.239.0.0 | /16  | shared-vpcs sandbox (NOT ROUTEABLE)      | Use for local testing only |
-|            |      |
+|            |      |                                          |                            |
 
 # Core Accounts CIDRs
 
@@ -20,7 +20,7 @@
 | 10.20.160.0 | /19  | core-logging non_live_data          |
 | 10.20.192.0 | /19  | core-security live_data             |
 | 10.20.224.0 | /19  | core-security non_live_data         |
-|             |      |
+|             |      |                                     |
 
 ### development and test /21s for member subnet-sets
 
@@ -58,12 +58,12 @@
 | 10.26.232.0 | /21  | -                                      |
 | 10.26.240.0 | /21  | -                                      |
 | 10.26.248.0 | /21  | -                                      |
-|             |      |
+|             |      |                                        |
 
 ### preproduction and production /21s for member subnet-sets
 
 | CIDR        | mask | allocated to                          |
-| :---------- | :--- |:--------------------------------------|
+| :---------- | :--- | :------------------------------------ |
 | 10.27.0.0   | /21  | hmpps preproduction - general         |
 | 10.27.8.0   | /21  | hmpps production - general            |
 | 10.27.16.0  | /21  | hmcts production - general            |
@@ -96,15 +96,15 @@
 | 10.27.232.0 | /21  | -                                     |
 | 10.27.240.0 | /21  | -                                     |
 | 10.27.248.0 | /21  | -                                     |
-|             |      |
+|             |      |                                       |
 
 ### sandbox /21s for member subnet-sets
 
 | CIDR        | mask | allocated to              |
-|:------------| :--- | :------------------------ |
+| :---------- | :--- | :------------------------ |
 | 10.231.0.0  | /21  | LAB ONLY garden - general |
 | 10.231.8.0  | /21  | LAB ONLY house - general  |
 | 10.231.16.0 | /21  | -                         |
 | 10.231.24.0 | /21  | -                         |
 | 10.231.32.0 | /21  | -                         |
-|             |      |
+|             |      |                           |

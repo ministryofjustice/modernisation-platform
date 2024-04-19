@@ -12,16 +12,20 @@ You need to run Terraform commands in this directory using a Ministry of Justice
 > NB: The `default` terraform workspace is not in use, but is undeletable.
 
 ### Find available workspaces
+
 `terraform workspace list`
 
 ### Selecting a workspace
+
 `terraform workspace select <workspace_name>`
 
 ### Running Terraform inside a workspace
+
 `terraform plan`
 
 ### Example for `shared-services-dev`
-```
+
+```terraform
 terraform workspace list
 terraform workspace select shared-services-dev
 terraform plan
@@ -29,4 +33,5 @@ terraform apply
 ```
 
 ## Running this in CI/CD
+
 This repository includes a [script to automate this](https://github.com/ministryofjustice/modernisation-platform/tree/main/scripts/create-accounts.sh) for all new workspaces.
