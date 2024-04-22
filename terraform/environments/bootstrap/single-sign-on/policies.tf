@@ -565,8 +565,10 @@ data "aws_iam_policy_document" "migration_additional" {
       "drs:*",
       "mgh:*",
       "mgn:*",
-      "sts:DecodeAuthorizationMessage",
-      "migrationhub-strategy:*"
+      "migrationhub-strategy:*",
+      "ssm:*",
+      "ssm-guiconnect:*",
+      "sts:DecodeAuthorizationMessage"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
