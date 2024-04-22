@@ -17,6 +17,7 @@ allowed_access := [
   "administrator",
   "data-engineer",
   "developer",
+  "instance-access",
   "instance-management",
   "migration",
   "mwaa-user",
