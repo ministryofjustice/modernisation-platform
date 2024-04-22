@@ -46,7 +46,7 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 -w 0)
+          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64)
           echo "files=$files" >> $GITHUB_OUTPUT
       - name: Run delegate access
         run: |
