@@ -17,6 +17,10 @@ module "collaborator_readonly_role" {
   ]
 }
 
+data "aws_iam_policy" "common_policy" {
+  name = "common_policy"
+}
+
 # security audit role for collaborators
 module "collaborator_security_audit_role" {
   # checkov:skip=CKV_TF_1:
@@ -56,8 +60,9 @@ module "collaborator_developer_role" {
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
     data.aws_iam_policy.developer.arn,
+    data.aws_iam_policy.common_policy.arn,
   ]
-  number_of_custom_role_policy_arns = 2
+  number_of_custom_role_policy_arns = 3
 }
 
 data "aws_iam_policy" "developer" {
@@ -81,8 +86,9 @@ module "collaborator_sandbox_role" {
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
     data.aws_iam_policy.sandbox.arn,
+    data.aws_iam_policy.common_policy.arn,
   ]
-  number_of_custom_role_policy_arns = 2
+  number_of_custom_role_policy_arns = 3
 }
 
 data "aws_iam_policy" "sandbox" {
@@ -111,8 +117,10 @@ module "collaborator_migration_role" {
     "arn:aws:iam::aws:policy/ServerMigrationConnector",
     "arn:aws:iam::aws:policy/AWSApplicationMigrationEC2Access",
     data.aws_iam_policy.migration.arn,
+    data.aws_iam_policy.developer.arn,
+    data.aws_iam_policy.common_policy.arn,
   ]
-  number_of_custom_role_policy_arns = 7
+  number_of_custom_role_policy_arns = 9
 }
 
 data "aws_iam_policy" "migration" {
@@ -136,8 +144,9 @@ module "collaborator_instance_access_role" {
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
     data.aws_iam_policy.instance-access.arn,
+    data.aws_iam_policy.common_policy.arn,
   ]
-  number_of_custom_role_policy_arns = 2
+  number_of_custom_role_policy_arns = 3
 }
 
 data "aws_iam_policy" "instance-access" {
@@ -161,8 +170,9 @@ module "collaborator_database_mgmt_role" {
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
     data.aws_iam_policy.instance-management.arn,
+    data.aws_iam_policy.common_policy.arn,
   ]
-  number_of_custom_role_policy_arns = 2
+  number_of_custom_role_policy_arns = 3
 }
 
 data "aws_iam_policy" "instance-management" {
@@ -185,9 +195,10 @@ module "collaborator_fleet_manager_role" {
 
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
-    data.aws_iam_policy.fleet_manager.arn
+    data.aws_iam_policy.fleet_manager.arn,
+    data.aws_iam_policy.common_policy.arn,
   ]
-  number_of_custom_role_policy_arns = 2
+  number_of_custom_role_policy_arns = 3
 }
 
 data "aws_iam_policy" "fleet_manager" {
