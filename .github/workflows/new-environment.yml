@@ -174,7 +174,7 @@ jobs:
       - name: Run delegate access
         run: |
           readarray -t accounts <<< "$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)"
-          if [ ! -z ${accounts} ]
+          if [[ ! -z ${accounts} ]]
           then
           for i in "${accounts[@]}"
           do
@@ -224,7 +224,7 @@ jobs:
       - name: Run secure baselines
         run: |
           readarray -t accounts <<< "$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)"
-          if [ ! -z ${accounts} ]
+          if [[ ! -z ${accounts} ]]
           then
           for i in "${accounts[@]}"
           do
@@ -274,7 +274,7 @@ jobs:
       - name: Run single sign on
         run: |
           readarray -t accounts <<< "$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)"
-          if [ ! -z ${accounts} ]
+          if [[ ! -z ${accounts} ]]
           then
           for i in "${accounts[@]}"
           do
@@ -324,7 +324,7 @@ jobs:
       - name: Run secure baselines
         run: |
           readarray -t accounts <<< "$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)"
-          if [ ! -z ${accounts} ]
+          if [[ ! -z ${accounts} ]]
           then
           for i in "${accounts[@]}"
           do
