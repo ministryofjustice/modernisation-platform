@@ -974,7 +974,7 @@ resource "aws_iam_policy" "fleet-manager-policy" {
 data "aws_iam_policy_document" "fleet-manager-document" {
   #checkov:skip=CKV_AWS_111 Needs to access multiple resources and the policy is attached to a role that is scoped to a specific account
   #checkov:skip=CKV_AWS_356 Needs to access multiple resources and the policy is attached to a role that is scoped to a specific account
-  
+
   statement {
     sid    = "FleetManagerAllow"
     effect = "Allow"
