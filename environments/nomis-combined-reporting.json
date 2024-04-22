@@ -6,13 +6,16 @@
       "access": [
         {
           "github_slug": "national-applications-reporting-team",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "instance-management"
         },
         {
           "github_slug": "studio-webops",
           "level": "sandbox",
           "nuke": "exclude"
+        },
+        {
+          "github_slug": "csr-application-support",
+          "level": "instance-management"
         }
       ]
     },
@@ -21,11 +24,15 @@
       "access": [
         {
           "github_slug": "national-applications-reporting-team",
-          "level": "developer"
+          "level": "instance-management"
         },
         {
           "github_slug": "studio-webops",
           "level": "developer"
+        },
+        {
+          "github_slug": "csr-application-support",
+          "level": "instance-management"
         }
       ]
     },
@@ -34,11 +41,15 @@
       "access": [
         {
           "github_slug": "national-applications-reporting-team",
-          "level": "developer"
+          "level": "instance-access"
         },
         {
           "github_slug": "studio-webops",
           "level": "developer"
+        },
+        {
+          "github_slug": "csr-application-support",
+          "level": "instance-access"
         }
       ]
     },
@@ -47,11 +58,15 @@
       "access": [
         {
           "github_slug": "national-applications-reporting-team",
-          "level": "developer"
+          "level": "instance-access"
         },
         {
           "github_slug": "studio-webops",
           "level": "developer"
+        },
+        {
+          "github_slug": "csr-application-support",
+          "level": "instance-access"
         }
       ]
     }
