@@ -40,6 +40,7 @@ jobs:
     env:
       TF_VAR_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
     steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: get new account(s)
         id: new_account
         run: |
