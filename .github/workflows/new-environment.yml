@@ -51,7 +51,7 @@ jobs:
       - name: Run delegate access
         run: |
           accounts=$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)
-          if [ ! -z ${accounts} ]
+          if [ ! -z "${accounts}" ]
           then
           for i in "${accounts[@]}"
           do
