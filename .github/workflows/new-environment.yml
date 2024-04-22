@@ -34,81 +34,53 @@ defaults:
     shell: bash
 
 jobs:
-  test-logic:
+  check-environments-deployment-plan:
     runs-on: ubuntu-latest
     if: github.ref != 'refs/heads/main' && github.event_name != 'workflow_dispatch'
     env:
       TF_VAR_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Set Account Number
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
-          fetch-depth: 2
-      - name: get new account(s)
-        id: new_account
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36 # v3.0.0
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+
+      - name: Run terraform plan for root terraform/environments
         run: |
-          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64)
-          echo "files=$files" >> $GITHUB_OUTPUT
-      - name: Run delegate access
-        run: |
-          readarray -t accounts <<< "$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)"
-          if [[ ! -z ${accounts} ]]
+          terraform --version
+          # Test if this is a PR or PULL event
+
+          #USE IF RUNNING IN GITHUB ACTIONS
+          if [ ! -z ${{ github.event.pull_request.number }} ]
           then
-          for i in "${accounts[@]}"
-          do
-          echo "[+] Running delegate-access baseline for account ${i}"
-          done
-          else
-          echo "[+] There were no AWS member accounts to process"
+
+          #USE IF USING ACT
+          # if [ ! -z ${PULL_REQUEST_NUMBER} ]
+          # then
+
+          #CONFIGURE TERRAFORM
+          bash scripts/terraform-init.sh terraform/environments
+
+          #RUN TERRAFORM PLAN
+          PLAN=`bash scripts/terraform-plan.sh terraform/environments | tee /dev/stderr | grep '^Plan: \|^No changes.'`
+          PLAN="> TERRAFORM PLAN RESULT - ACCOUNTS-TO-CREATE/MODIFY/DELETE -
+          ${PLAN}"
+          bash scripts/update-pr-comments.sh "${PLAN}"
           fi
-
-
-  # check-environments-deployment-plan:
-  #   runs-on: ubuntu-latest
-  #   if: github.ref != 'refs/heads/main' && github.event_name != 'workflow_dispatch'
-  #   env:
-  #     TF_VAR_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
-
-  #   steps:
-  #     - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-  #     - name: Set Account Number
-  #       run: echo "ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
-  #     - name: Configure AWS Credentials
-  #       uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
-  #       with:
-  #         role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
-  #         role-session-name: githubactionsrolesession
-  #         aws-region: ${{ env.AWS_REGION }}
-  #     - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36 # v3.0.0
-  #       with:
-  #         terraform_version: "~1"
-  #         terraform_wrapper: false
-
-  #     - name: Run terraform plan for root terraform/environments
-  #       run: |
-  #         terraform --version
-  #         # Test if this is a PR or PULL event
-
-  #         #USE IF RUNNING IN GITHUB ACTIONS
-  #         if [ ! -z ${{ github.event.pull_request.number }} ]
-  #         then
-
-  #         #USE IF USING ACT
-  #         # if [ ! -z ${PULL_REQUEST_NUMBER} ]
-  #         # then
-
-  #         #CONFIGURE TERRAFORM
-  #         bash scripts/terraform-init.sh terraform/environments
-
-  #         #RUN TERRAFORM PLAN
-  #         PLAN=`bash scripts/terraform-plan.sh terraform/environments | tee /dev/stderr | grep '^Plan: \|^No changes.'`
-  #         PLAN="> TERRAFORM PLAN RESULT - ACCOUNTS-TO-CREATE/MODIFY/DELETE -
-  #         ${PLAN}"
-  #         bash scripts/update-pr-comments.sh "${PLAN}"
-  #         fi
-  #       env:
-  #         SECRET: ${{ secrets.GITHUB_TOKEN }}
-  #         GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
-  #         PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
+        env:
+          SECRET: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
+          PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
   create-environment:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
@@ -198,11 +170,11 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          files=$(git diff --name-only --diff-filter=AM @^ -- '*.json' 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
+          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
           echo "files=$files" >> $GITHUB_OUTPUT
       - name: Run delegate access
         run: |
-          accounts=$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)
+          readarray -t accounts <<< "$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)"
           if [ ! -z ${accounts} ]
           then
           for i in "${accounts[@]}"
@@ -248,11 +220,11 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          files=$(git diff --name-only --diff-filter=AM @^ -- '*.json' 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
+          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
           echo "files=$files" >> $GITHUB_OUTPUT
       - name: Run secure baselines
         run: |
-          accounts=$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)
+          readarray -t accounts <<< "$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)"
           if [ ! -z ${accounts} ]
           then
           for i in "${accounts[@]}"
@@ -298,11 +270,11 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          files=$(git diff --name-only --diff-filter=AM @^ -- '*.json' 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
+          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
           echo "files=$files" >> $GITHUB_OUTPUT
       - name: Run single sign on
         run: |
-          accounts=$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)
+          readarray -t accounts <<< "$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)"
           if [ ! -z ${accounts} ]
           then
           for i in "${accounts[@]}"
@@ -348,11 +320,11 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          files=$(git diff --name-only --diff-filter=AM @^ -- '*.json' 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
+          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
           echo "files=$files" >> $GITHUB_OUTPUT
       - name: Run secure baselines
         run: |
-          accounts=$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)
+          readarray -t accounts <<< "$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)"
           if [ ! -z ${accounts} ]
           then
           for i in "${accounts[@]}"
