@@ -10,6 +10,10 @@
         },
         {
           "github_slug": "studio-webops",
+          "level": "instance-access"
+        },
+        {
+          "github_slug": "studio-webops",
           "level": "instance-management"
         },
         {
