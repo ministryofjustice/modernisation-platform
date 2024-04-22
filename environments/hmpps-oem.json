@@ -16,6 +16,10 @@
         {
           "github_slug": "hmpps-dba",
           "level": "developer"
+        },
+        {
+          "github_slug": "csr-application-support",
+          "level": "instance-management"
         }
       ]
     },
@@ -33,6 +37,10 @@
         {
           "github_slug": "hmpps-dba",
           "level": "developer"
+        },
+        {
+          "github_slug": "csr-application-support",
+          "level": "instance-management"
         }
       ]
     },
@@ -50,6 +58,10 @@
         {
           "github_slug": "hmpps-dba",
           "level": "developer"
+        },
+        {
+          "github_slug": "csr-application-support",
+          "level": "instance-access"
         }
       ]
     },
@@ -67,6 +79,10 @@
         {
           "github_slug": "hmpps-dba",
           "level": "developer"
+        },
+        {
+          "github_slug": "csr-application-support",
+          "level": "instance-access"
         }
       ]
     }
