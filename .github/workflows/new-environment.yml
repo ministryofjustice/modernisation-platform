@@ -169,12 +169,12 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          files=$(git diff --name-only --diff-filter=AM @^ -- '*.json' 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
+          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
           echo "files=$files" >> $GITHUB_OUTPUT
       - name: Run delegate access
         run: |
-          accounts=$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)
-          if [ ! -z ${accounts} ]
+          readarray -t accounts <<< "$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)"
+          if [[ ! -z ${accounts} ]]
           then
           for i in "${accounts[@]}"
           do
@@ -219,12 +219,12 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          files=$(git diff --name-only --diff-filter=AM @^ -- '*.json' 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
+          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
           echo "files=$files" >> $GITHUB_OUTPUT
       - name: Run secure baselines
         run: |
-          accounts=$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)
-          if [ ! -z ${accounts} ]
+          readarray -t accounts <<< "$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)"
+          if [[ ! -z ${accounts} ]]
           then
           for i in "${accounts[@]}"
           do
@@ -269,12 +269,12 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          files=$(git diff --name-only --diff-filter=AM @^ -- '*.json' 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
+          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
           echo "files=$files" >> $GITHUB_OUTPUT
       - name: Run single sign on
         run: |
-          accounts=$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)
-          if [ ! -z ${accounts} ]
+          readarray -t accounts <<< "$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)"
+          if [[ ! -z ${accounts} ]]
           then
           for i in "${accounts[@]}"
           do
@@ -319,12 +319,12 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          files=$(git diff --name-only --diff-filter=AM @^ -- '*.json' 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
+          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
           echo "files=$files" >> $GITHUB_OUTPUT
       - name: Run secure baselines
         run: |
-          accounts=$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)
-          if [ ! -z ${accounts} ]
+          readarray -t accounts <<< "$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)"
+          if [[ ! -z ${accounts} ]]
           then
           for i in "${accounts[@]}"
           do
