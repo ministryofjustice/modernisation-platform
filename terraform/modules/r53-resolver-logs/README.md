@@ -1,3 +1,5 @@
+# R53 Resolver Logs
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 

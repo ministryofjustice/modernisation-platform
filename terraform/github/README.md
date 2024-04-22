@@ -13,7 +13,7 @@ The state is stored in S3, as defined in [backend.tf](backend.tf).
 
 Say that we want to create a new repository for a terraform module named `bastion-linux`. We need to add the following section to [main.tf](main.tf)
 
-```
+```terraform
 module "terraform-module-bastion-linux" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-bastion-linux"
@@ -28,7 +28,7 @@ module "terraform-module-bastion-linux" {
 
 Then add `module.terraform-module-bastion-linux.repository.name` to the repositories dict inside the core-team module definition, for example
 
-```
+```terraform
 module "core-team" {
   ...
   repositories = [
@@ -50,18 +50,21 @@ Since the new repository you're creating is for a terraform module, please also 
 Note the [template-repository](https://github.com/ministryofjustice/template-repository) holds all the files that will be added to every new repository.
 
 ## How to archive a repository
->**NOTE**: This documentation was written whilst performing repository archive and removing the references from the code. However, it has never been end-to-end tested. Therefore, you might find it buggy. If this documentation instructions worked for you, please remove this NOTE after the process. Otherwise, please update this documentation as required.
+
+> **NOTE**: This documentation was written whilst performing repository archive and removing the references from the code. However, it has never been end-to-end tested. Therefore, you might find it buggy. If this documentation instructions worked for you, please remove this NOTE after the process. Otherwise, please update this documentation as required.
 
 Delete the target GitHub repository references in code:
+
 1. Remove the repository module reference in [modernisation-platform/terraform/github/repositories.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/github/repositories.tf)
 2. Remove the repository reference from the core team's repository list in [modernisation-platform/terraform/github/teams.tf](https://github.com/ministryofjustice/modernisation-platform/blob/be29e5e601e39749c8d3acc784e8dbdea2d2db1c/terraform/github/teams.tf#L2)
 
 You can run a local plan in `modernisation-platform/terraform/github/` to verify the correctness of changes. You will need to pass your GH token when prompted.
 
-Once happy with the changes, create a PR, get a review and merge your code.  Because `archive_on_destroy` is set to `true` in the [`github_repository`](https://github.com/ministryofjustice/modernisation-platform/blob/be29e5e601e39749c8d3acc784e8dbdea2d2db1c/terraform/github/modules/repository/main.tf#L24) resource it will [archive](https://github.com/integrations/terraform-provider-github/blob/2881a2a4c19475ca8a9f0b4ea6570dda4fd12b71/github/resource_github_repository.go#L857) the repository, rather than delete it, even though it will be deleted from the terraform code.
+Once happy with the changes, create a PR, get a review and merge your code. Because `archive_on_destroy` is set to `true` in the [`github_repository`](https://github.com/ministryofjustice/modernisation-platform/blob/be29e5e601e39749c8d3acc784e8dbdea2d2db1c/terraform/github/modules/repository/main.tf#L24) resource it will [archive](https://github.com/integrations/terraform-provider-github/blob/2881a2a4c19475ca8a9f0b4ea6570dda4fd12b71/github/resource_github_repository.go#L857) the repository, rather than delete it, even though it will be deleted from the terraform code.
 
 The merge pipeline will fail with a similar [error](https://github.com/ministryofjustice/modernisation-platform/actions/runs/8613918329/job/23606264385) to the one below:
-```
+
+```shell
 Error: DELETE https://api.github.com/organizations/2203574/team/7196780/repos/ministryofjustice/modernisation-platform-incident-response: 403 You must have administrative rights on a repository or team in order to remove the repository from that team []
 ```
 

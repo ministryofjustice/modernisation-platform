@@ -1,3 +1,5 @@
+# Firewall Logging
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
