@@ -264,6 +264,33 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
   }
 }
 
+# Modernisation Platform instance-access role
+resource "aws_ssoadmin_permission_set" "modernisation_platform_instance_access" {
+  provider         = aws.sso-management
+  name             = "mp-instance-access"
+  description      = "Modernisation Platform: instance-access"
+  instance_arn     = local.sso_admin_instance_arn
+  session_duration = "PT8H"
+  tags             = {}
+}
+
+resource "aws_ssoadmin_managed_policy_attachment" "modernisation_platform_instance_access" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  managed_policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_instance_access.arn
+}
+
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_instance_access" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_instance_access.arn
+  customer_managed_policy_reference {
+    name = "instance_access_policy"
+    path = "/"
+  }
+}
+
 # Modernisation Platform instance-management role
 resource "aws_ssoadmin_permission_set" "modernisation_platform_instance_management" {
   provider         = aws.sso-management

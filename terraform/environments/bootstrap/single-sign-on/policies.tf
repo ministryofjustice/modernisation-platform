@@ -598,6 +598,157 @@ data "aws_iam_policy_document" "migration_additional" {
   }
 }
 
+# instance access - member SSO and collaborators
+resource "aws_iam_policy" "instance-access" {
+  provider = aws.workspace
+  name     = "instance_access_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.instance-access-document.json
+}
+
+# cut down version of instance-management policy
+# Use instance-access-policy tag on resources to control access:
+#   tag doesn't exist = s3 put; no secret access;  ec2 ssm full access
+#   "none"            = s3 put; no secret access;  no ec2 ssm access
+#   "limited"         = s3 put; read-only  secret; ec2 ssm ssh/port-forwarding only
+#   "full"            = s3 put; read-write secret; ec2 ssm full access; ec2 sso local admin
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "instance-access-document" {
+  #checkov:skip=CKV_AWS_107
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_110
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+  source_policy_documents = [data.aws_iam_policy_document.common_statements.json]
+  statement {
+    sid    = "InstanceAccess"
+    effect = "Allow"
+    actions = [
+      "ec2:GetPasswordData",
+      "kms:Decrypt*",
+      "kms:Encrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey",
+      "rhelkb:GetRhelURL",
+      "s3:PutObject",
+      "ssm-guiconnect:*",
+    ]
+    resources = ["*"]
+  }
+  statement {
+    sid    = "SecretsManagerGet"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:GetSecretValue",
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "secretsmanager:ResourceTag/instance-access-policy"
+      values   = ["limited"]
+    }
+  }
+  statement {
+    sid    = "SecretsManagerPut"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:PutSecretValue",
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "secretsmanager:ResourceTag/instance-access-policy"
+      values   = ["full"]
+    }
+  }
+  statement {
+    sid    = "SSMStartSessionPortForwarding"
+    effect = "Allow"
+    actions = [
+      "ssm:StartSession"
+    ]
+    resources = [
+      "arn:aws:ec2:*:*:instance/*",
+      "arn:aws:ssm:*:*:managed-instance/*",
+      "arn:aws:ssm:*:*:document/AWS-StartPortForwardingSession",
+    ]
+    condition {
+      test     = "BoolIfExists"
+      variable = "ssm:SessionDocumentAccessCheck"
+      values   = ["true"]
+    }
+    condition {
+      test     = "StringEqualsIfExists"
+      variable = "ssm:resourceTag/instance-access-policy"
+      values   = ["limited"] # doesn't work as expected with granular tags, e.g. use ssh/portforward
+    }
+  }
+  statement {
+    sid    = "SSMStartSessionSSH"
+    effect = "Allow"
+    actions = [
+      "ssm:StartSession"
+    ]
+    resources = [
+      "arn:aws:ec2:*:*:instance/*",
+      "arn:aws:ssm:*:*:managed-instance/*",
+      "arn:aws:ssm:*:*:document/AWS-StartSSHSession",
+    ]
+    condition {
+      test     = "BoolIfExists"
+      variable = "ssm:SessionDocumentAccessCheck"
+      values   = ["true"]
+    }
+    condition {
+      test     = "StringEqualsIfExists"
+      variable = "ssm:resourceTag/instance-access-policy"
+      values   = ["limited"]
+    }
+  }
+  statement {
+    sid    = "SSMStartSession"
+    effect = "Allow"
+    actions = [
+      "ssm:StartSession"
+    ]
+    resources = [
+      "arn:aws:ec2:*:*:instance/*",
+      "arn:aws:ssm:*:*:managed-instance/*",
+    ]
+    condition {
+      test     = "StringEqualsIfExists"
+      variable = "ssm:resourceTag/instance-access-policy"
+      values   = ["full"]
+    }
+  }
+
+  statement {
+    sid    = "SSMSendCommand"
+    effect = "Allow"
+    actions = [
+      "ssm:SendCommand",
+    ]
+    resources = [
+      "arn:aws:ec2:*:*:instance/*",
+      "arn:aws:ssm:*:*:managed-instance/*",
+      "arn:aws:ssm:*:*:document/AWSSSO-CreateSSOUser"
+    ]
+    condition {
+      test     = "BoolIfExists"
+      variable = "ssm:SessionDocumentAccessCheck"
+      values   = ["true"]
+    }
+    condition {
+      test     = "StringEqualsIfExists"
+      variable = "ssm:resourceTag/instance-access-policy"
+      values   = ["full"]
+    }
+  }
+
+}
 
 # instance management - member SSO and collaborators
 resource "aws_iam_policy" "instance-management" {

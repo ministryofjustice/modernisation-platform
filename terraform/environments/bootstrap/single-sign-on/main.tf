@@ -194,6 +194,29 @@ resource "aws_ssoadmin_account_assignment" "administator" {
   target_type = "AWS_ACCOUNT"
 }
 
+resource "aws_ssoadmin_account_assignment" "instance-access" {
+
+  for_each = {
+
+    for sso_assignment in local.sso_data[local.env_name][*] :
+
+    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+
+    if(sso_assignment.level == "instance-access")
+  }
+
+  provider = aws.sso-management
+
+  instance_arn       = local.sso_instance_arn
+  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.instance_access
+
+  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_type = "GROUP"
+
+  target_id   = local.environment_management.account_ids[terraform.workspace]
+  target_type = "AWS_ACCOUNT"
+}
+
 resource "aws_ssoadmin_account_assignment" "instance-management" {
 
   for_each = {
