@@ -464,6 +464,7 @@ data "aws_iam_policy_document" "policy" {
       "kms:DescribeKey",
       "kms:Decrypt",
       "kms:GenerateDataKey",
+      "kms:CreateGrant",
       "logs:CreateLogGroup",
       "logs:DescribeLogGroups",
       "logs:DescribeResourcePolicies",
