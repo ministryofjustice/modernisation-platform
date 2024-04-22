@@ -10,6 +10,10 @@ output "migration" {
   value = aws_ssoadmin_permission_set.modernisation_platform_migration.arn
 }
 
+output "instance_access" {
+  value = aws_ssoadmin_permission_set.modernisation_platform_instance_access.arn
+}
+
 output "instance_management" {
   value = aws_ssoadmin_permission_set.modernisation_platform_instance_management.arn
 }

@@ -44,7 +44,8 @@ Once you have been [set up as a collaborator](../runbooks/adding-collaborators.h
 |developer|Read only console plus other permissions such as the ability to set secrets,restart EC2s, raise support tickets.|Used by engineers working on the application infrastructure|
 |sandbox|Admin role to perform most AWS actions via the console| Used by engineers to make development easier in some situations, only allowed in the development account
 |migration|Role with developer and AWS migration services permissions| Used by engineers to migrate applications, will be removed before application goes into production
-|instance-management|Role for use by instance management with permissions for EC2 and RDS instances | Used by database or EC2 administrators  to migrate services and perform tasks.
+|instance-access|Role for login access to EC2 instances and secret access controlled by instance-access-policy resource tag| Used by application support teams.
+|instance-management|Role for use by instance management with permissions for EC2 and RDS instances and all secrets| Used by database or EC2 administrators  to migrate services and perform tasks.
 |security-audit|Role with AWS managed SecurityAudit policy | Used by members of security and audit teams.
 
 You can see the accounts and roles assigned to you [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/collaborators.json)
@@ -89,7 +90,7 @@ Follow the instructions [here](https://learn.hashicorp.com/tutorials/terraform/i
 
 ## Accessing EC2s as a Collaborator
 
-You will need to have the `developer` access role in order to use SSM/Bastion.
+You will need to have the `developer`, `instance-management` or `instance-access` role in order to use SSM/Bastion.
 
 1. Download the [AWS CLI](https://aws.amazon.com/cli/)
 1. Ensure you have your [AWS credentials](#getting-access-credentials)
@@ -108,9 +109,55 @@ role_session_name=<my-application-account-name>
 
 Most modern AMIs will already have the SSM Agent installed. You can connect to these instances directly with Session Manager.
 
+The `developer` and `instance-management` role allow full SSM access to all resources.
+The `instance-access` role allows restricted access based on the `instance-access-policy` resource tag:
+
+|Resource|instance-access-policy tag value|Description|
+|---|---|---|
+|EC2|undefined|Full SSM access allowed|
+|EC2|none|No access via SSM allowed|
+|EC2|limited|SSH and Port Forwarding over SSM allowed|
+|EC2|full|Full SSM access allowed|
+|SecretsManager Secret|undefined|No access to secret|
+|SecretsManager Secret|none|No access to secret|
+|SecretsManager Secret|limited|Read-only access to secret|
+|SecretsManager Secret|full|Read-Write access to secret|
+
 1. Start a basic Session Manager session
 
+This will give you a Linux shell or a Windows powershell with root/Admin access.
+
 `aws ssm start-session --target i-12345bc --profile <my aws profile>`
+
+2. Start a port forwarding Session Manager session
+
+The following example starts a port forwarding session mapping remote port 1521 to local port 1521.
+
+`aws ssm start-session --target i-12345bc --profile <my aws profile> --document-name AWS-StartPortForwardingSession --parameters '{"portNumber":["1521"],"localPortNumber":["1521"]}'`
+
+3. Start an SSH session using Session Manager
+
+Connect using SSH over SSM. Useful if you want to restrict sudo access. The relevant user and ssh key-pair must be configured on the EC2.
+
+Example SSH config `~/.ssh/config`
+
+```
+Host i-*
+   ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p' --profile <my aws profile>"
+   User <my ec2 username>
+```
+
+And then just `ssh i-12345bc`
+
+4. Accessing Windows EC2 via Fleet Manager Remote Desktop console
+
+Launch [Fleet Manager RDP Connect](https://eu-west-2.console.aws.amazon.com/systems-manager/managed-instances/rdp-connect?region=eu-west-2)
+and add the relevant node.
+
+Log-in using either:
+- Single Sign-On (for local admin user)
+- Key Pair (providing Administrator key pair is configured)
+- User credentials (if EC2 is joined to a domain for example, or another local user configured)
 
 ### Accessing EC2s via a bastion
 
