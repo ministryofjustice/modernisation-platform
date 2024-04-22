@@ -23,6 +23,10 @@
         {
           "github_slug": "syscon-nomis",
           "level": "instance-management"
+        },
+        {
+          "github_slug": "csr-application-support",
+          "level": "instance-management"
         }
       ]
     },
@@ -40,6 +44,10 @@
         {
           "github_slug": "syscon-nomis",
           "level": "instance-management"
+        },
+        {
+          "github_slug": "csr-application-support",
+          "level": "instance-management"
         }
       ]
     },
@@ -52,11 +60,15 @@
         },
         {
           "github_slug": "syscon-devs",
-          "level": "instance-management"
+          "level": "instance-access"
         },
         {
           "github_slug": "syscon-nomis",
-          "level": "instance-management"
+          "level": "instance-access"
+        },
+        {
+          "github_slug": "csr-application-support",
+          "level": "instance-access"
         }
       ]
     },
@@ -69,11 +81,15 @@
         },
         {
           "github_slug": "syscon-devs",
-          "level": "instance-management"
+          "level": "instance-access"
         },
         {
           "github_slug": "syscon-nomis",
-          "level": "instance-management"
+          "level": "instance-access"
+        },
+        {
+          "github_slug": "csr-application-support",
+          "level": "instance-access"
         }
       ]
     }
