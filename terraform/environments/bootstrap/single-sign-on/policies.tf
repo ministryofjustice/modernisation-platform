@@ -950,6 +950,8 @@ data "aws_iam_policy_document" "reporting-operations" {
       "glue:GetJobs",
       "glue:GetJobRun",
       "glue:GetJobRuns",
+      "glue:StartTrigger",
+      "glue:StopTrigger",
       "logs:DescribeLogStreams",
       "logs:GetLogEvents",
       "dynamodb:BatchGet*",
