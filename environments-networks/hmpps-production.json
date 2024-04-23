@@ -10,6 +10,7 @@
           "electronic-monitoring-data-production",
           "nomis-production",
           "oasys-production",
+          "delius-core-production",
           "delius-iaps-production",
           "delius-jitbit-production",
           "delius-mis-production",
