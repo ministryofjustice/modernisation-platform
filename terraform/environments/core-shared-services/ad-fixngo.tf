@@ -43,26 +43,26 @@ locals {
         subnet_id                 = aws_subnet.live-data-additional["eu-west-2a"].id
         vpc_security_group_name   = "ad_hmpp_dc_sg"
         tags = {
-          server-type = "DomainJoin"
+          server-type = "DomainController"
           domain-name = "azure.hmpp.root"
           description = "domain controller for FixNGo azure.hmpp.root domain"
         }
       }
-      # ad-hmpp-dc-b = {
-      #   ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
-      #   availability_zone         = "eu-west-2b"
-      #   iam_instance_profile_role = "ad-fixngo-ec2-live-role"
-      #   instance_type             = "t3.large"
-      #   key_name                  = "ad-fixngo-ec2-live"
-      #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-dc-b"]
-      #   subnet_id                 = aws_subnet.live-data-additional["eu-west-2b"].id
-      #   vpc_security_group_name   = "ad_hmpp_dc_sg"
-      #   tags = {
-      #     server-type = "DomainJoin"
-      #     domain-name = "azure.hmpp.root"
-      #     description = "domain controller for FixNGo azure.hmpp.root domain"
-      #   }
-      # }
+      ad-hmpp-dc-b = {
+        ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
+        availability_zone         = "eu-west-2b"
+        iam_instance_profile_role = "ad-fixngo-ec2-live-role"
+        instance_type             = "t3.large"
+        key_name                  = "ad-fixngo-ec2-live"
+        private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-dc-b"]
+        subnet_id                 = aws_subnet.live-data-additional["eu-west-2b"].id
+        vpc_security_group_name   = "ad_hmpp_dc_sg"
+        tags = {
+          server-type = "DomainController"
+          domain-name = "azure.hmpp.root"
+          description = "domain controller for FixNGo azure.hmpp.root domain"
+        }
+      }
       # ad-hmpp-rdlic = {
       #   ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
       #   availability_zone         = "eu-west-2c"
