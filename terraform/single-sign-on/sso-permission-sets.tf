@@ -144,7 +144,15 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
     path = "/"
   }
 }
-
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_sandox_bedrock" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_sandbox.arn
+  customer_managed_policy_reference {
+    name = "bedrock_policy"
+    path = "/"
+  }
+}
 resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_sandox_common" {
   provider           = aws.sso-management
   instance_arn       = local.sso_admin_instance_arn
