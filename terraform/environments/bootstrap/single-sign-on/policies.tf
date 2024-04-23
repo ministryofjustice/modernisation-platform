@@ -93,6 +93,14 @@ data "aws_iam_policy_document" "common_statements" {
 
 
 # bedrock console policy -- to be retired when terraform support is introduced
+# bedrock policy - member SSO and collaborators
+resource "aws_iam_policy" "bedrock_policy" {
+  provider = aws.workspace
+  name     = "bedrock_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.bedrock_console.json
+}
+
 # source: https://docs.aws.amazon.com/bedrock/latest/userguide/security_iam_id-based-policy-examples.html#security_iam_id-based-policy-examples-console
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "bedrock_console" {
