@@ -10,14 +10,62 @@ tasks:
         type: powershell
         runAs: admin
         content: |-
+          # Install / upgrade chocolatey since the version installed can be very old
+          $ErrorActionPreference = "Stop"
+          if (Get-Command choco.exe -ErrorAction SilentlyContinue) {
+            $version=choco --version
+            if ($version -lt "2.2.2") {
+              Write-Output "Upgrading old version of chocolatey $version to 2.2.2"
+              choco upgrade chocolatey --version 2.2.2 -y
+            } else {
+              Write-Output "Chocolatey already installed version $version"
+            }
+          } else {
+            Write-Output "Installing Chocolatey"
+            Set-ExecutionPolicy Bypass -Scope Process -Force
+            [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+            Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+          }
+          Start-Sleep -Seconds 1 # helps debugging as logs have different timestamps
+      - frequency: once
+        type: powershell
+        runAs: admin
+        content: |-
           # Install git - it should be in AMI but install if missing
           $ErrorActionPreference = "Stop"
           if (Get-Command "git" -ErrorAction SilentlyContinue) {
-            Write-Output "git already installed"
+            Write-Output "git already installed, skipping choco install"
           } else {
+            Write-Output "choco upgrade chocolatey-compatibility.extension -y"
+            choco upgrade chocolatey-compatibility.extension -y
+            Write-Output "choco upgrade chocolatey-core.extension -y"
+            choco upgrade chocolatey-core.extension -y
             Write-Output "choco install git.install -y"
             choco install git.install -y
           }
+          Start-Sleep -Seconds 1 # helps debugging as logs have different timestamps
+      - frequency: once
+        type: powershell
+        runAs: admin
+        content: |-
+          # Fallback installation for git
+          $ErrorActionPreference = "Stop"
+          if (Get-Command "git" -ErrorAction SilentlyContinue) {
+            Write-Output "git already installed, skipping fallback install"
+          } else {
+            Set-Location -Path ([System.IO.Path]::GetTempPath())
+            Url="https://github.com/git-for-windows/git/releases/download/v2.44.0.windows.1/Git-2.44.0-64-bit.exe"
+            Write-Output "Fallback installation for git - downloading from $Url"
+            Invoke-WebRequest $Url -OutFile ".\Git.exe"
+            .\Git.exe /VERYSILENT /NORESTART
+          }
+          Start-Sleep -Seconds 1 # helps debugging as logs have different timestamps
+      - frequency: once
+        type: powershell
+        runAs: admin
+        content: |-
+          Write-Output "choco upgrade all -y"
+          choco upgrade all -y
           Start-Sleep -Seconds 1 # helps debugging as logs have different timestamps
       - frequency: once
         type: powershell
