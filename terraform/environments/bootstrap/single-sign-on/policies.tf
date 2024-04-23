@@ -770,6 +770,9 @@ data "aws_iam_policy_document" "instance-management-document" {
     sid    = "databaseAllow"
     effect = "Allow"
     actions = [
+      "application-autoscaling:ListTagsForResource",
+      "autoscaling:UpdateAutoScalingGroup",
+      "autoscaling:SetDesiredCapacity",
       "aws-marketplace:ViewSubscriptions",
       "ds:*Tags*",
       "ds:*Snapshot*",
