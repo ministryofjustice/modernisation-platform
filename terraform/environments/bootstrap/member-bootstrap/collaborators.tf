@@ -87,6 +87,7 @@ module "collaborator_sandbox_role" {
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
     data.aws_iam_policy.sandbox.arn,
     data.aws_iam_policy.common_policy.arn,
+    data.aws_iam_policy.bedrock.arn,
   ]
   number_of_custom_role_policy_arns = 3
 }
@@ -95,6 +96,9 @@ data "aws_iam_policy" "sandbox" {
   name = "sandbox_policy"
 }
 
+data "aws_iam_policy" "bedrock" {
+  name = "bedrock_policy"
+}
 # Collaborator Migration role
 module "collaborator_migration_role" {
   # checkov:skip=CKV_TF_1:
