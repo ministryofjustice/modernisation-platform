@@ -167,7 +167,27 @@ data "aws_iam_policy_document" "member-access" {
       "redshift-data:*",
       "redshift-serverless:*",
       "resource-explorer-2:*",
-      "transfer:*"
+      "transfer:*",
+      "kinesisanalytics:UpdateApplication",
+      "kinesisanalytics:TagResource",
+      "kinesisanalytics:CreateApplication",
+      "kinesisanalytics:DescribeApplication",
+      "kinesisanalytics:DeleteApplication",
+      "kinesisanalytics:StartApplication",
+      "kinesisanalytics:StopApplication",
+      "kinesisanalytics:AddApplicationCloudWatchLoggingOption",
+      "kinesisanalytics:AddApplicationInput",
+      "kinesisanalytics:AddApplicationInputProcessingConfiguration",
+      "kinesisanalytics:AddApplicationOutput",
+      "kinesisanalytics:AddApplicationReferenceDataSource",
+      "kinesisanalytics:AddApplicationVpcConfiguration",
+      "kinesisanalytics:DeleteApplicationVpcConfiguration",
+      "kinesisanalytics:DeleteApplicationOutput",
+      "kinesisanalytics:DeleteApplicationReferenceDataSource",
+      "kinesisanalytics:DeleteApplicationInputProcessingConfiguration",
+      "kinesisanalytics:DeleteApplicationCloudWatchLoggingOption",
+      "kinesisanalytics:UpdateApplicationMaintenanceConfiguration",
+      "kinesisanalytics:UntagResource"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
