@@ -93,7 +93,7 @@ jobs:
           terraform -chdir="terraform/environments/core-vpc" workspace select "core-vpc-${TF_ENV}"
 
           #RUN TERRAFORM PLAN
-          PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-vpc "-target=module.vpc -target=module.vpc_tgw_routing -target=module.core-vpc-tgw-routes -target=module.dns-zone -target=module.dns_zone_extend -target=module.pagerduty_core_alerts" | tee /dev/stderr | grep '^Plan: \|^No changes.'`
+          PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-vpc | tee /dev/stderr | grep '^Plan: \|^No changes.'`
           PLAN="> TERRAFORM PLAN RESULT - core-vpc - ${TF_ENV}
           ${PLAN}"
           bash scripts/update-pr-comments.sh "${PLAN}"
