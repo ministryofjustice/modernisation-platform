@@ -267,7 +267,10 @@ data "aws_iam_policy_document" "developer_additional" {
       "states:Describe*",
       "states:List*",
       "states:Stop*",
-      "states:Start*"
+      "states:Start*",
+      "kinesisanalytics:List*",
+      "kinesisanalytics:Describe*",
+      "kinesisanalytics:DiscoverInputSchema",
     ]
     resources = ["*"]
   }
@@ -540,7 +543,8 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "support:*",
       "textract:*",
       "wafv2:*",
-      "wellarchitected:*"
+      "wellarchitected:*",
+      "kinesisanalytics:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
@@ -984,7 +988,14 @@ data "aws_iam_policy_document" "reporting-operations" {
       "cloudwatch:ListDashboards",
       "states:StartExecution",
       "states:StopExecution",
-      "states:RedriveExecution"
+      "states:RedriveExecution",
+      "kinesisanalytics:StartApplication",
+      "kinesisanalytics:StopApplication",
+      "kinesisanalytics:CreateApplicationSnapshot",
+      "kinesisanalytics:List*",
+      "kinesisanalytics:Describe*",
+      "kinesisanalytics:DiscoverInputSchema",
+      "kinesisanalytics:RollbackApplication"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
