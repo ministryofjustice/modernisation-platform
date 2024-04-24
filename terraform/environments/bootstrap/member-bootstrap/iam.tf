@@ -167,7 +167,9 @@ data "aws_iam_policy_document" "member-access" {
       "redshift-data:*",
       "redshift-serverless:*",
       "resource-explorer-2:*",
-      "transfer:*"
+      "transfer:*",
+      "kinesisanalytics:*Application*",
+      "kinesisanalytics:*Resource"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
