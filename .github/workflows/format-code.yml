@@ -51,8 +51,8 @@ jobs:
           ENABLE_LINTERS: JSON_PRETTIER,YAML_PRETTIER,TERRAFORM_TERRAFORM_FMT,MARKDOWN_MARKDOWNLINT
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
           VALIDATE_ALL_CODEBASE: true
-          YAML_PRETTIER_FILTER_REGEX_EXCLUDE: '(.github/*)'
-          MFILTER_REGEX_EXCLUDE: '(terraform/modules/**/*.md)'
+          YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (.github/*)
+          MARKDOWN_MARKDOWNLINT_FILTER_REGEX_EXCLUDE: (terraform/modules/**/*.md)
           REPORT_OUTPUT_FOLDER: none
 
       - name: Check for changes
