@@ -2,7 +2,6 @@
 resource "aws_iam_role" "vpc_flow_log" {
   name               = "AWSVPCFlowLog"
   assume_role_policy = data.aws_iam_policy_document.vpc_flow_log_assume_role_policy.json
-  tags               = var.tags
 }
 
 # VPC Flow Log: assume role policy
