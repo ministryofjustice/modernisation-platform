@@ -94,7 +94,7 @@ module "vpc" {
   transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id
 
   # VPC Flow Logs
-  vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
+  vpc_flow_log_iam_role = aws_iam_role.vpc_flow_log.arn
 
   # Variables required for Firehose integration. We are not building this in all environments hence the "build_firehose" condition below.
 

@@ -16,7 +16,7 @@ module "vpc_inspection" {
   fw_kms_arn            = data.aws_kms_key.general_shared.arn
   fw_rules              = local.inline_firewall_rules
   vpc_cidr              = each.value
-  vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
+  vpc_flow_log_iam_role = aws_iam_role.vpc_flow_log.arn
   transit_gateway_id    = aws_ec2_transit_gateway.transit-gateway.id
 
   # Tags
