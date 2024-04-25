@@ -5,7 +5,7 @@ data "aws_kms_key" "cloudtrail_key" {
 }
 
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=385cb6f25209abf444849f4f6ff4d07c0c68d2f8" # v6.6.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=b5ae2be29aaa29d644b6909af51acefdfaa80e14" # v7.0.0
 
   providers = {
     # Default and replication regions
@@ -60,9 +60,6 @@ module "baselines" {
 
   # Regions to enable Security Hub in
   enabled_securityhub_regions = local.enabled_baseline_regions
-
-  # Regions to enable default VPC configuration and VPC Flow Logs in
-  enabled_vpc_regions = local.enabled_baseline_regions
 
   cloudtrail_kms_key = data.aws_kms_key.cloudtrail_key.arn
   root_account_id    = local.root_account.master_account_id
