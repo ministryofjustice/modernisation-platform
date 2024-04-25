@@ -32,7 +32,7 @@ module "vpc" {
   gateway = "transit"
 
   # VPC Flow Logs
-  vpc_flow_log_iam_role = data.aws_iam_role.vpc-flow-log.arn
+  vpc_flow_log_iam_role = aws_iam_role.vpc_flow_log.arn
 
   # Transit Gateway ID
   transit_gateway_id = data.aws_ec2_transit_gateway.transit-gateway.id

@@ -142,7 +142,7 @@ resource "aws_cloudwatch_log_group" "tgw_flowlog_group" {
 resource "aws_flow_log" "tgw_flowlog" {
   depends_on                    = [aws_cloudwatch_log_group.tgw_flowlog_group]
   for_each                      = merge(data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all, data.aws_ec2_transit_gateway_peering_attachment.transit_gateway_production)
-  iam_role_arn                  = data.aws_iam_role.vpc-flow-log.arn
+  iam_role_arn                  = aws_iam_role.vpc_flow_log.arn
   log_destination               = aws_cloudwatch_log_group.tgw_flowlog_group.arn
   log_destination_type          = "cloud-watch-logs"
   traffic_type                  = "ALL"
