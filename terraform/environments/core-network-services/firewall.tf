@@ -57,7 +57,7 @@ resource "aws_cloudwatch_log_group" "external_inspection" {
 }
 
 resource "aws_flow_log" "external_inspection" {
-  iam_role_arn             = data.aws_iam_role.vpc-flow-log.arn
+  iam_role_arn             = aws_iam_role.vpc_flow_log.arn
   log_destination          = aws_cloudwatch_log_group.external_inspection.arn
   traffic_type             = "ALL"
   log_destination_type     = "cloud-watch-logs"
