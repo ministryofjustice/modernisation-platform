@@ -32,5 +32,5 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Remove Default VPC
-        run: bash ./scripts/internal/remove_default_vpc.sh
+        run: bash ./scripts/internal/remove-default-vpc/remove_default_vpc_all_accounts.sh
         
