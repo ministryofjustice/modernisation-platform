@@ -1,6 +1,9 @@
 name: "Remove Default VPC"
 
 on:
+  schedule:
+    # trigger every Monday at 08:30am
+    - cron: "30 8 * * MON"
   workflow_dispatch:
 
 env:
