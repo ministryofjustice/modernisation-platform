@@ -45,6 +45,7 @@
     "ministryofjustice/InformationTribunal",
     "ministryofjustice/HMLandsRegistry",
     "ministryofjustice/LandsChamberTribunal",
-    "ministryofjustice/Transport"
+    "ministryofjustice/Transport",
+    "ministryofjustice/dts-legacy-tribunals-ftp"
   ]
 }
