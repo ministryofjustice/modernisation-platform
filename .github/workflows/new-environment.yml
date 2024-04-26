@@ -228,7 +228,6 @@ jobs:
           bash ./scripts/internal/remove-default-vpc/remove_default_vpc_new_account.sh $account_number
           done
           done
-          fi
           else
           echo "[+] There were no AWS member accounts to process"
           fi   
