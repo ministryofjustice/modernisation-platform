@@ -1,6 +1,9 @@
 name: "Remove Default VPC"
 
 on:
+  schedule:
+    # trigger every Monday at 08:30am
+    - cron: "30 8 * * MON"
   workflow_dispatch:
 
 env:
@@ -32,5 +35,5 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Remove Default VPC
-        run: bash ./scripts/internal/remove_default_vpc.sh
+        run: bash ./scripts/internal/remove-default-vpc/remove_default_vpc_all_accounts.sh
         

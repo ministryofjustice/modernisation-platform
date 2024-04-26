@@ -195,6 +195,51 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
         if: ${{ failure() }}
+  remove-default-vpc:
+    runs-on: ubuntu-latest
+    if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    needs: [delegate-access]
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          fetch-depth: 0
+      - name: Set Account Number
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - name: get new account(s)
+        id: new_account
+        run: |
+          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
+          echo "files=$files" >> $GITHUB_OUTPUT
+      - name: Remove Default VPC
+        run: |
+          readarray -t accounts <<< "$(echo "${{ steps.new_account.outputs.files }}" | base64 --decode)"
+          if [[ ! -z ${accounts} ]]; then
+          for i in "${accounts[@]}"; do
+          environments=$(jq -r '.environments[].name' "environments/${i}.json")
+          for env in $environments; do
+          key="${i}-${env}"
+          account_number=$(echo "$ENVIRONMENT_MANAGEMENT" | jq -r ".account_ids[\"$key\"]")
+          bash ./scripts/internal/remove-default-vpc/remove_default_vpc_new_account.sh $account_number
+          done
+          done
+          else
+          echo "[+] There were no AWS member accounts to process"
+          fi   
+      - name: Slack failure notification
+        uses: slackapi/slack-github-action@70cd7be8e40a46e8b0eced40b0de447bdb42f68e # v1.26.0
+        with:
+          payload: |
+            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+        if: ${{ failure() }}
   secure-baselines:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'

@@ -13,7 +13,7 @@ getAssumeRoleCfg() {
 }
 
 for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIRONMENT_MANAGEMENT); do
-    echo $account_id
+    echo "account: $account_id"
     getAssumeRoleCfg "$account_id"
     for region in $regions; do
         #Skipping region due to insufficient permissions.
@@ -38,9 +38,11 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIR
 
             # Delete subnets associated with the VPC
             subnets=$(aws ec2 describe-subnets --region $region --filters Name=vpc-id,Values=$vpc_id | jq -r .Subnets[].SubnetId)
-            for subnet_id in $subnets; do
-              aws ec2 delete-subnet --region $region --subnet-id $subnet_id
-            done
+            if [ "$subnets" != "null" ]; then
+                for subnet_id in $subnets; do
+                    aws ec2 delete-subnet --region $region --subnet-id $subnet_id
+                done
+            fi
 
             # Delete the VPC
             aws ec2 delete-vpc --region $region --vpc-id $vpc_id
@@ -51,4 +53,3 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIR
     export AWS_SESSION_TOKEN=$ROOT_AWS_SESSION_TOKEN
     rm credentials.json
 done
-unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
