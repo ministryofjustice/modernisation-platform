@@ -38,9 +38,11 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIR
 
             # Delete subnets associated with the VPC
             subnets=$(aws ec2 describe-subnets --region $region --filters Name=vpc-id,Values=$vpc_id | jq -r .Subnets[].SubnetId)
-            for subnet_id in $subnets; do
-              aws ec2 delete-subnet --region $region --subnet-id $subnet_id
-            done
+            if [ "$subnets" != "null" ]; then
+                for subnet_id in $subnets; do
+                    aws ec2 delete-subnet --region $region --subnet-id $subnet_id
+                done
+            fi
 
             # Delete the VPC
             aws ec2 delete-vpc --region $region --vpc-id $vpc_id
