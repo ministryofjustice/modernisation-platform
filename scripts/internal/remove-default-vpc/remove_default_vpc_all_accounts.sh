@@ -51,4 +51,3 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIR
     export AWS_SESSION_TOKEN=$ROOT_AWS_SESSION_TOKEN
     rm credentials.json
 done
-unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
