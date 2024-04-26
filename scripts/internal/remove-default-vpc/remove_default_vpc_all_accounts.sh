@@ -13,7 +13,7 @@ getAssumeRoleCfg() {
 }
 
 for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIRONMENT_MANAGEMENT); do
-    echo $account_id
+    echo "account: $account_id"
     getAssumeRoleCfg "$account_id"
     for region in $regions; do
         #Skipping region due to insufficient permissions.
