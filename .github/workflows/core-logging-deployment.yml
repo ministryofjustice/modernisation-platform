@@ -52,7 +52,7 @@ jobs:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
-      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36 # v3.0.0
+      - uses: hashicorp/setup-terraform@97f030cf6dc0b4f5e0da352c7bca9cca34579800 # v3.1.0
         with:
           terraform_version: "~1"
           terraform_wrapper: false
@@ -103,7 +103,7 @@ jobs:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
-      - uses: hashicorp/setup-terraform@a1502cd9e758c50496cc9ac5308c4843bcd56d36 # v3.0.0
+      - uses: hashicorp/setup-terraform@97f030cf6dc0b4f5e0da352c7bca9cca34579800 # v3.1.0
         with:
           terraform_version: "~1"
           terraform_wrapper: false
