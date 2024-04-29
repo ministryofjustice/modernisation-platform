@@ -16,7 +16,7 @@ locals {
 
 # Secure baselines (GuardDuty, Config, SecurityHub, etc)
 module "baselines-modernisation-platform" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=69afa89a92f1478f42a50ba4423f8d455579b56c" # v6.6.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=b5ae2be29aaa29d644b6909af51acefdfaa80e14" # v7.0.0
   providers = {
     # Default and replication regions
     aws                    = aws.modernisation-platform-eu-west-2
@@ -58,9 +58,6 @@ module "baselines-modernisation-platform" {
 
   # Regions to enable Security Hub in
   enabled_securityhub_regions = local.enabled_baseline_regions
-
-  # Regions to enable default VPC configuration and VPC Flow Logs in
-  enabled_vpc_regions = local.enabled_baseline_regions
 
   cloudtrail_kms_key = data.aws_kms_key.cloudtrail_key.arn
 
