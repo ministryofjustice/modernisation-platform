@@ -5,13 +5,13 @@
         "cidr": "10.27.72.0/21",
         "accounts": [
           "apex-preproduction",
-          "mlra-preproduction",
           "ccms-ebs-preproduction",
-          "maat-preproduction",
-          "oas-preproduction",
-          "portal-preproduction",
+          "edw-preproduction",
           "laa-oem-preproduction",
-          "edw-preproduction"
+          "maat-preproduction",
+          "mlra-preproduction",
+          "oas-preproduction",
+          "portal-preproduction"
         ]
       }
     }
