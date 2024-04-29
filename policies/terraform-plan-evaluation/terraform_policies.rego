@@ -10,22 +10,6 @@ protected_resources := [
   "aws_iam_policy.instance-scheduler-access[0]"
 ]
 
-
-
-# Check to see if protected resources are being deleted
-deny[msg] {
-    check_protected := [resources_removed[_].address]
-    check_protected[i] == protected_resources[j]
-    msg := sprintf("Protected resources are being deleted because `%v` matches `%v`",[check_protected[i], protected_resources[j]])
-}
-
-
-# deny[msg] {
-#     check_protected := [input.resource_changes[_].address]
-#     check_protected[i] == protected_resources[j]
-#     msg := sprintf("Protected resources are being deleted because `%v` matches `%v`",[check_protected[i], protected_resources[j]])
-# }
-
 # Change maximums
 max_additions := 10
 max_deletions := 10
@@ -41,7 +25,20 @@ resources_removed := plan_functions.get_resources_by_action("delete", resource_c
 # Get all modifies
 resource_changed := plan_functions.get_resources_by_action("update", resource_changes)
 
+# Check to see if protected resources are being deleted
+deny[msg] {
+    check_protected := [resources_removed[_].address]
+    check_protected[i] == protected_resources[j]
+    msg := sprintf("Protected resources are being deleted because `%v` matches `%v`",[check_protected[i], protected_resources[j]])
+}
 
+# Check if production resources (or any particular tagged resource) will be destroyed
+deny[msg] {
+    resource_address := [resources_removed[_].address]
+    check_for_prod_tags := [resources_removed[_].change.before.tags["is-production"]]
+    check_for_prod_tags != 0
+    msg := sprintf("`%v` is a production resource that will be deleted",[resource_address])
+}
 
 # Check to see if there are too many changes
 warn[msg] {
