@@ -16,6 +16,7 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIR
     echo "account: $account_id"
     getAssumeRoleCfg "$account_id"
     for region in $regions; do
+        delete_subnet_error=false 
         #Skipping region due to insufficient permissions.
         if ! aws ec2 describe-vpcs --region $region &> /dev/null; then
             continue
@@ -38,14 +39,20 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIR
 
             # Delete subnets associated with the VPC
             subnets=$(aws ec2 describe-subnets --region $region --filters Name=vpc-id,Values=$vpc_id | jq -r .Subnets[].SubnetId)
-            if [ "$subnets" != "null" ]; then
+            if [ ! -z "$subnets" ]; then
                 for subnet_id in $subnets; do
-                    aws ec2 delete-subnet --region $region --subnet-id $subnet_id
+                    if ! aws ec2 delete-subnet --region $region --subnet-id $subnet_id &> /dev/null; then
+                      echo "Error deleting subnet $subnet_id in region $region. Continuing to next region."
+                      delete_subnet_error=true
+                      break
+                    fi
                 done
             fi
 
             # Delete the VPC
-            aws ec2 delete-vpc --region $region --vpc-id $vpc_id
+            if [ "$delete_subnet_error" = false ]; then
+                aws ec2 delete-vpc --region $region --vpc-id $vpc_id
+            fi
         fi
     done
     export AWS_ACCESS_KEY_ID=$ROOT_AWS_ACCESS_KEY_ID
