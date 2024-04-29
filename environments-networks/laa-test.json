@@ -5,14 +5,15 @@
         "cidr": "10.26.96.0/21",
         "accounts": [
           "apex-test",
-          "eric-test",
-          "mlra-test",
           "ccms-ebs-test",
+          "edw-test",
+          "eric-test",
           "laa-oem-test",
           "maat-test",
+          "mlra-test",
+          "mojfin-test",
           "oas-test",
-          "portal-test",
-          "mojfin-test"
+          "portal-test"
         ]
       }
     }

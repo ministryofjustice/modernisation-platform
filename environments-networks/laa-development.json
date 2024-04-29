@@ -7,14 +7,15 @@
           "apex-development",
           "ccms-ebs-development",
           "ccms-ebs-upgrade-development",
+          "edw-development",
           "laa-ccms-infra-azure-ad-sso-development",
           "laa-oem-development",
           "maat-development",
           "maatdb-development",
           "mlra-development",
+          "mojfin-development",
           "oas-development",
-          "portal-development",
-          "mojfin-development"
+          "portal-development"
         ]
       }
     }
