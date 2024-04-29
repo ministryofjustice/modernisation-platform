@@ -10,6 +10,15 @@
           "nuke": "exclude"
         }
       ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "github_slug": "laa-ccms-migration-team",
+          "level": "development"
+        }
+      ]
     }
   ],
   "tags": {
