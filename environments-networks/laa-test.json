@@ -12,7 +12,8 @@
           "maat-test",
           "oas-test",
           "portal-test",
-          "mojfin-test"
+          "mojfin-test",
+          "edw-test"
         ]
       }
     }

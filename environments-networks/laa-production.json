@@ -12,7 +12,8 @@
           "oas-production",
           "portal-production",
           "laa-oem-production",
-          "mojfin-production"
+          "mojfin-production",
+          "edw-production"
         ]
       }
     }

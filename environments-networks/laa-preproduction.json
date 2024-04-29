@@ -10,7 +10,8 @@
           "maat-preproduction",
           "oas-preproduction",
           "portal-preproduction",
-          "laa-oem-preproduction"
+          "laa-oem-preproduction",
+          "edw-preproduction"
         ]
       }
     }

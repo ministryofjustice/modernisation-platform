@@ -14,7 +14,8 @@
           "mlra-development",
           "oas-development",
           "portal-development",
-          "mojfin-development"
+          "mojfin-development",
+          "edw-development"
         ]
       }
     }
