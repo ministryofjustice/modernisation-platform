@@ -59,9 +59,6 @@ module "baselines-modernisation-platform" {
   # Regions to enable Security Hub in
   enabled_securityhub_regions = local.enabled_baseline_regions
 
-  # Regions to enable default VPC configuration and VPC Flow Logs in
-  enabled_vpc_regions = local.enabled_baseline_regions
-
   cloudtrail_kms_key = data.aws_kms_key.cloudtrail_key.arn
 
   root_account_id = local.root_account.master_account_id
