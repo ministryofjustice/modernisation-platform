@@ -274,6 +274,7 @@ expected :=
           "eric-test",
           "mlra-test",
           "ccms-ebs-test",
+          "ccms-ebs-upgrade-test",
           "laa-oem-test",
           "maat-test",
           "oas-test",
