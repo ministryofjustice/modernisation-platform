@@ -27,6 +27,9 @@ vulnerabilities:
   - id: CVE-2023-5528
   - id: CVE-2023-37788
   - id: CVE-2023-39325
+  - id: CVE-2024-315
+    expired_at: 2024-10-29
+    statement: "Review in 6 months; this one appeared to be Terratest related"
   - id: CVE-2024-15114
     expired_at: 2024-08-19
     statement: "Review in 6 months"
