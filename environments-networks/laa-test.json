@@ -6,6 +6,7 @@
         "accounts": [
           "apex-test",
           "ccms-ebs-test",
+          "ccms-ebs-upgrade-test",
           "edw-test",
           "eric-test",
           "laa-oem-test",
