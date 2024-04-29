@@ -259,7 +259,7 @@ module "modernisation-platform-environments" {
     "aws",
     "environments"
   ]
-  required_checks = ["run-opa-policy-tests"]
+  required_checks = ["run-opa-policy-tests", "terraform (development, plan_apply) / plan", "terraform (test, plan_apply) / plan", "terraform (preproduction, plan_apply) / plan", "terraform (production, plan_apply) / plan"]
   secrets = {
     # Terraform GitHub token for the CI/CD user
     TERRAFORM_GITHUB_TOKEN                               = data.aws_secretsmanager_secret_version.github_ci_user_token.secret_string
