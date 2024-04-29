@@ -37,6 +37,7 @@ expected :=
     "delius-mis",
     "delius-nextcloud",
     "digital-prison-reporting",
+    "edw",
     "electronic-monitoring-data",
     "equip",
     "eric",
