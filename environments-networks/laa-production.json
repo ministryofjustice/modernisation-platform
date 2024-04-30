@@ -6,6 +6,7 @@
         "accounts": [
           "apex-production",
           "ccms-ebs-production",
+          "contract-work-administration-production",
           "edw-production",
           "eric-production",
           "laa-oem-production",
