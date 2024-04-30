@@ -27,7 +27,7 @@ resource "github_repository" "default" {
 
   security_and_analysis {
     dynamic "advanced_security" {
-      for_each = var.visibility == "public" ? [] : [1]
+      for_each = var.visibility == "public" ? [1] : []
       content {
         status = "enabled"
       }
