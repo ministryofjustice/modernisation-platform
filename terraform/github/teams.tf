@@ -29,7 +29,8 @@ module "core-team" {
     module.terraform-module-ec2-instance.repository.name,
     module.terraform-module-ec2-autoscaling-group.repository.name,
     module.terraform-module-ecs-cluster.repository.name,
-    module.modernisation-platform-terraform-dns-certificates.repository.name
+    module.modernisation-platform-terraform-dns-certificates.repository.name,
+    module.modernisation-platform-security.repository.name
   ]
 
   maintainers = local.maintainers

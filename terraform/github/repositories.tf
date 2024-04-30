@@ -360,3 +360,15 @@ module "modernisation-platform-terraform-dns-certificates" {
     "networking"
   ]
 }
+
+module "modernisation-platform-security" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-security"
+  type        = "core"
+  description = "Repository for internal only security issues and content"
+  topics = [
+    "aws",
+    "security"
+  ]
+  visibility = "internal"
+}
