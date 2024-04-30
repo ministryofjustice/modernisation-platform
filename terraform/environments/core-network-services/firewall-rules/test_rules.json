@@ -41,6 +41,13 @@
     "destination_port": "5432",
     "protocol": "TCP"
   },
+  "laa_test_to_mp_laa_test": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-test}",
+    "destination_ip": "${laa-test}",
+    "destination_port": "ANY",
+    "protocol": "IP"
+  },
   "laa_test_to_mp_laa_test_http": {
     "action": "PASS",
     "source_ip": "${laa-lz-test}",
