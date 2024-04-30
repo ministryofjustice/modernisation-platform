@@ -9,11 +9,11 @@ review_in: 6 months
 
 # Introduction
 
-It is relatively easy to set up Macie for users and it need to be done on an account by account basis. **NOTE** Macie ONLY looks at S3 buckets and checks their access information so it will not look at databases or EC2 settings, for example. 
+It is relatively easy to set up Macie for users and it need to be done on an account by account basis. **NOTE** Macie ONLY looks at S3 buckets and checks their access information so it will not look at databases or EC2 settings, for example.
 
 To do this you should connect to the environment on which you want to create Macie. Note, for accounts with 4 versions (development, test, preproduction, production) you will need to create Macie on each one. In theory you can just set it up in each account and allow one (day production) to use every account to access their data. At the time this document was produced this was not tested but can be used according to an AWS video showing a [demo](https://www.youtube.com/watch?v=8piwEQJJXdo).
 
-AWS also have a brief outline of the purpose of [Macie](https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html) which can be checked to see if this is suitable.  
+AWS also have a brief outline of the purpose of [Macie](https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html) which can be checked to see if this is suitable.
 
 # To start Macie
 
@@ -21,9 +21,9 @@ Initially this will show the "how to" on the console. There will be links to the
 
 Connect to the account you want to use with AdministratorAccess.
 
-Access the Amazon Macie choice and click on "Get started". 
+Access the Amazon Macie choice and click on "Get started".
 
-*Initially it will set up a 30 day trial, which may be useful to look at possible costs of using the service. If you want to disable the trial connect to the settings page and look to the disable option and select the Disable option, type Disable in the box and click Disable. This will stop the Macie access.*
+_Initially it will set up a 30 day trial, which may be useful to look at possible costs of using the service. If you want to disable the trial connect to the settings page and look to the disable option and select the Disable option, type Disable in the box and click Disable. This will stop the Macie access._
 
 Following the Get started choice a window will be available to see what access is needed. I would recommend that the details in here are copied and saved in case you need to give the required access later.
 
@@ -35,9 +35,9 @@ As part of the initial trial there will be an option to see what the costs will 
 
 Jobs can be set up on the console quite simply. There is a message about not having an S3 bucket to push the changes to but that can be ignored for the most part. It is suggested that you crete one. To do this you will need to add some code or amend that which is in place. The document [here](https://repost.aws/knowledge-center/macie-s3-kms-permission) explains what is needed. Most importantly ensure that the correct arn is in place on both the S3 and JMS key files as well as following the instructions shown.
 
-Under get started there is an option to create a job. Specify the buckets if only connecting to one account but pick the criteria if more that one account is going to be looked at. Once set work through each of the screens. 
+Under get started there is an option to create a job. Specify the buckets if only connecting to one account but pick the criteria if more that one account is going to be looked at. Once set work through each of the screens.
 
-If you want something to *run regularly (daily, weekly or monthly)* pick that option on screen 3, otherwise select a *one-time* job.
+If you want something to _run regularly (daily, weekly or monthly)_ pick that option on screen 3, otherwise select a _one-time_ job.
 
 On screen 5 you can select custom data identifiers but these need to be set up first. Picking the option to set these up will open a new screen.
 
@@ -49,7 +49,6 @@ The final screen lists the selected buckets and gives (under the free trial at l
 
 If you list the jobs you can see if it is running and the results will appear on the Findings screen once it completes. Note, it may take some time to give results. On our example buckets, which are small, it takes over 15 minutes at least initially.
 
-
 # Terraform code
 
 Note the items shown here are not actual detailed Terraform code but examples of how to set things up. To get more detail it is best to do a search for ["aws macie terraform"](https://www.google.com/search?q=aws+macie+terraform&rlz=1C5GCCM_en&oq=&gs_lcrp=EgZjaHJvbWUqCQgAEEUYOxjCAzIJCAAQRRg7GMIDMgkIARBFGDsYwgMyCQgCEEUYOxjCAzIJCAMQRRg7GMIDMgkIBBBFGDsYwgMyCQgFEEUYOxjCAzIJCAYQRRg7GMIDMgkIBxBFGDsYwgPSAQkzMTE4ajBqMTWoAgiwAgE&sourceid=chrome&ie=UTF-8)
@@ -58,3 +57,62 @@ Set up a [Macie account](https://registry.terraform.io/providers/hashicorp/aws/l
 
 Creating a [Macie job](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/macie2_classification_job)
 
+Example code is shown below BUT the build of the Macie account fails so there is no guarantee this will work.
+
+```
+# Create macie account
+# When logging in as adminisitrator this is not needed but may be for our customers
+# Account name is MacieAccount. Publishes data every hour (choice are FIFTEEN_MINUTES, ONE_HOUR or SIX_HOURS)
+resource "aws_macie2_account" "MacieAccount" {
+  finding_publishing_frequency = "ONE_HOUR"
+  status                       = "ENABLED"
+}
+
+# Now create a job
+# Job type options are ONE-TIME and SCHEDULED. If scheduled is chosen you need to select a frequency using schedule_frequency of daily_schedule, weekly_schedule or monthly_schedule
+# The buckets should be replaced but a list of buckets to examine. This could be limited to those in the account you are connected to or others to which you have access.
+# Below there is a limited list of those from example shown.
+# There are many other job options available and these should be looked at in terrform [job creation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/macie2_classification_job)
+
+
+resource "aws_macie2_classification_job" "test" {
+  job_type = "ONE_TIME"
+  name     = "JOBNAME"
+  s3_job_definition {
+    bucket_definitions {
+      account_id = "MacieAccount"
+      buckets    = [
+      "bastion-example-example-development-cqx7gf",
+      "config-20220505080423816000000003",
+      "s3-bucket-example20231124172322406400000006"
+      ]
+    }
+  }
+  depends_on = [aws_macie2_account.MacieAccount]
+}
+
+Below is an example of code used in production. Note, unless there is other code to set up the correct access, this will not work.
+Full details of this creation, including information on the likes of job type, are shown in the code (macie.tf) in the environments repo. 
+
+```
+resource "aws_macie2_account" "MacieAccount" {
+  finding_publishing_frequency = "ONE_HOUR"
+  status                       = "ENABLED"
+}
+
+resource "aws_macie2_classification_job" "test" {
+  job_type = "ONE_TIME"
+  name     = "JOBNAME"
+  s3_job_definition {
+    bucket_definitions {
+      account_id = "MacieAccount"
+      buckets    = [
+      "bastion-example-example-development-cqx7gf",
+      "config-20220505080423816000000003",
+      "s3-bucket-example20231124172322406400000006"
+      ]
+    }
+  }
+  depends_on = [aws_macie2_account.MacieAccount]
+}
+```
