@@ -172,6 +172,7 @@ EOL
 **/subnet_share.tf @ministryofjustice/modernisation-platform
 **/networking.auto.tfvars.json @ministryofjustice/modernisation-platform
 **/platform_*.tf @ministryofjustice/modernisation-platform
+/terraform/modules/probation-webops @ministryofjustice/modernisation-platform @ministryofjustice/hmpps-migration
 /terraform/modules
 .devcontainer @ministryofjustice/devcontainer-community
 EOL
