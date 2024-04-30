@@ -1,5 +1,7 @@
 package main
 
+import future.keywords.in
+
 nice_name := replace(replace(input.filename, ".json", ""), "environments-networks/", "")
 
 deny[msg] {
@@ -60,4 +62,11 @@ deny[msg] {
 deny[msg] {
   not is_array(input.nacl)
   msg := sprintf("`%v` invalid nacl type - must be an array", [input.filename])
+}
+
+# Check that application name is appended with environment name
+deny[msg] {
+  some account in input.cidr.subnet_sets.general.accounts
+  not regex.match(`\S+(-development|-test|-preproduction|-production)`, account)
+  msg := sprintf("%v does not end include the environment name e.g. *-development|*-test|*-preproduction|*-production", [account])
 }

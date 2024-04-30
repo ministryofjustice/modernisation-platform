@@ -35,9 +35,10 @@ resource "aws_security_group_rule" "live-data-additional-interface_endpoints" {
 }
 
 resource "aws_subnet" "live-data-additional" {
-  for_each   = local.additional_subnet_cidr_map
-  cidr_block = each.value
-  vpc_id     = module.vpc["live_data"].vpc_id
+  for_each          = local.additional_subnet_cidr_map
+  availability_zone = each.key
+  cidr_block        = each.value
+  vpc_id            = module.vpc["live_data"].vpc_id
   tags = merge({
     "Name" = format("live_data-additional-%s", each.key)
     },
