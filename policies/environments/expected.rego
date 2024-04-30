@@ -18,7 +18,7 @@ expected :=
     "cdpt-ifs",
     "cica-copilot",
     "cica-data-extraction",
-    "contract-nd-work-administration",
+    "contract-work-administration",
     "cooker",
     "core-logging",
     "core-network-services",
