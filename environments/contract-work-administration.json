@@ -1,50 +1,49 @@
 {
-    "account-type": "member",
-    "environments": [
-      {
-        "name": "development",
-        "access": [
-          {
-            "github_slug": "laa-aws-infrastructure",
-            "level": "sandbox"
-          }
-        ]
-      },
-      {
-        "name": "test",
-        "access": [
-          {
-            "github_slug": "laa-aws-infrastructure",
-            "level": "developer"
-          }
-        ]
-      },
-      {
-        "name": "preproduction",
-        "access": [
-          {
-            "github_slug": "laa-aws-infrastructure",
-            "level": "developer"
-          }
-        ]
-      },
-      {
-        "name": "production",
-        "access": [
-          {
-            "github_slug": "laa-aws-infrastructure",
-            "level": "developer"
-          }
-        ]
-      }
-    ],
-    "tags": {
-      "application": "contract-work-administration",
-      "business-unit": "LAA",
-      "infrastructure-support": "laa_ops@digital.justice.gov.uk",
-      "owner": "laa_ops@digital.justice.gov.uk"
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "laa-aws-infrastructure",
+          "level": "sandbox"
+        }
+      ]
     },
-    "github-oidc-team-repositories": [""],
-    "go-live-date": ""
-  }
-  
+    {
+      "name": "test",
+      "access": [
+        {
+          "github_slug": "laa-aws-infrastructure",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "github_slug": "laa-aws-infrastructure",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "laa-aws-infrastructure",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "contract-work-administration",
+    "business-unit": "LAA",
+    "infrastructure-support": "laa_ops@digital.justice.gov.uk",
+    "owner": "laa_ops@digital.justice.gov.uk"
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}
