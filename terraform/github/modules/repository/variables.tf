@@ -44,7 +44,7 @@ variable "required_checks" {
 }
 
 variable "restrict_dismissals" {
-  type        = boolean
+  type        = bool
   description = "Restrict pull request review dismissals"
   default     = false
 }
