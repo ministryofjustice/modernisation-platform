@@ -383,6 +383,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "glue:List*",
       "glue:BatchGetJobs",
       "glue:*Trigger",
+      "lambda:PutRuntimeManagementConfig",
       "states:Describe*",
       "states:List*",
       "states:Stop*",
