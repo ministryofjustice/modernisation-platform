@@ -203,13 +203,22 @@ locals {
       rule_number = 5400
       to_port     = 5721
     },
+    deny_0-0-0-0_remote-desktop_tcp_in = {
+      cidr_block  = "0.0.0.0/0"
+      egress      = false
+      from_port   = 3389
+      protocol    = "tcp"
+      rule_action = "deny"
+      rule_number = 5000
+      to_port     = 3389
+    },
     allow_0-0-0-0_dynamic_tcp_in = {
       cidr_block  = "0.0.0.0/0"
       egress      = false
       from_port   = 1024
       protocol    = "tcp"
       rule_action = "allow"
-      rule_number = 5300
+      rule_number = 5100
       to_port     = 65535
     }
   }
