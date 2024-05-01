@@ -208,7 +208,7 @@ locals {
       egress      = false
       from_port   = 3389
       protocol    = "tcp"
-      rule_action = "allow"
+      rule_action = "deny"
       rule_number = 5000
       to_port     = 3389
     },
