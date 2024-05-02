@@ -23,20 +23,6 @@
       ]
     },
     {
-      "username": "gary.akhmetov",
-      "github-username": "no-username-supplied",
-      "accounts": [
-        {
-          "account-name": "equip-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "james.ashton",
       "github-username": "jamesashton-roc",
       "accounts": [
@@ -265,40 +251,12 @@
       ]
     },
     {
-      "username": "laura.cook",
-      "github-username": "Lcook90",
-      "accounts": [
-        {
-          "account-name": "delius-iaps-development",
-          "access": "instance-management"
-        },
-        {
-          "account-name": "delius-iaps-preproduction",
-          "access": "instance-management"
-        },
-        {
-          "account-name": "delius-iaps-production",
-          "access": "instance-management"
-        }
-      ]
-    },
-    {
       "username": "edward.caren",
       "github-username": "EdwardTCaren",
       "accounts": [
         {
           "account-name": "ppud-production",
           "access": "developer"
-        }
-      ]
-    },
-    {
-      "username": "joe.beauchamp",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "digital-prison-reporting-preproduction",
-          "access": "read-only"
         }
       ]
     },
@@ -315,16 +273,6 @@
     {
       "username": "madhu.kadiri",
       "github-username": "madhu-k-sr2",
-      "accounts": [
-        {
-          "account-name": "electronic-monitoring-data-development",
-          "access": "sandbox"
-        }
-      ]
-    },
-    {
-      "username": "jasper.jackson",
-      "github-username": "JazJax",
       "accounts": [
         {
           "account-name": "electronic-monitoring-data-development",
