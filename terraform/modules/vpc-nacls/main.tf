@@ -66,21 +66,6 @@ resource "aws_network_acl_rule" "private_subnet_static_rules" {
 }
 
 #tfsec:ignore:aws-vpc-no-excessive-port-access tfsec:ignore:aws-ec2-no-public-ingress-acl
-resource "aws_network_acl_rule" "public_subnet_static_rules" {
-  #checkov:skip=CKV_AWS_352:Verified - these rules are reasonable
-  #checkov:skip=CKV_AWS_231:Allow ingress from 0.0.0.0:0 to port 3389 required
-  for_each       = local.static_acl_rules
-  cidr_block     = each.value.cidr_block
-  egress         = each.value.egress
-  from_port      = each.value.from_port != null ? each.value.from_port : null
-  network_acl_id = aws_network_acl.general-public.id
-  protocol       = each.value.protocol
-  rule_action    = each.value.rule_action
-  rule_number    = each.value.rule_number
-  to_port        = each.value.to_port != null ? each.value.to_port : null
-}
-
-#tfsec:ignore:aws-vpc-no-excessive-port-access tfsec:ignore:aws-ec2-no-public-ingress-acl
 resource "aws_network_acl_rule" "public_subnet_internet_access_rules" {
   #checkov:skip=CKV_AWS_231:Verified - these rules are reasonable
   for_each       = local.public_access_acl_rules

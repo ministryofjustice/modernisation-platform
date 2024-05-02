@@ -203,22 +203,13 @@ locals {
       rule_number = 5400
       to_port     = 5721
     },
-    deny_0-0-0-0_remote-desktop_tcp_in = {
-      cidr_block  = "0.0.0.0/0"
-      egress      = false
-      from_port   = 3389
-      protocol    = "tcp"
-      rule_action = "deny"
-      rule_number = 5000
-      to_port     = 3389
-    },
     allow_0-0-0-0_dynamic_tcp_in = {
       cidr_block  = "0.0.0.0/0"
       egress      = false
       from_port   = 1024
       protocol    = "tcp"
       rule_action = "allow"
-      rule_number = 5100
+      rule_number = 5000
       to_port     = 65535
     }
   }
@@ -233,13 +224,22 @@ locals {
       rule_number = 7000
       to_port     = 443
     },
+    deny_remote-desktop_tcp_in = {
+      cidr_block  = "0.0.0.0/0"
+      egress      = false
+      from_port   = 3389
+      protocol    = "tcp"
+      rule_action = "deny"
+      rule_number = 7100
+      to_port     = 3389
+    },
     allow_dynamic_tcp_in = {
       cidr_block  = "0.0.0.0/0"
       egress      = false
       from_port   = 1024
       protocol    = "tcp"
       rule_action = "allow"
-      rule_number = 7100
+      rule_number = 7200
       to_port     = 65535
     },
     allow_dynamic_udp_in = {
@@ -248,7 +248,7 @@ locals {
       from_port   = 1024
       protocol    = "udp"
       rule_action = "allow"
-      rule_number = 7200
+      rule_number = 7300
       to_port     = 65535
     },
     allow_any_out = {
