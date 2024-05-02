@@ -235,6 +235,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "kms:CreateGrant",
       "lambda:InvokeFunction",
       "lambda:UpdateFunctionCode",
+      "oam:ListTagsForResource",
       "rds:AddTagsToResource",
       "rds:CopyDB*",
       "rds:Create*",
