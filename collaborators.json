@@ -529,24 +529,6 @@
       ]
     },
     {
-      "username": "max.malhi",
-      "github-username": "GitMax1998",
-      "accounts": [
-        {
-          "account-name": "data-and-insights-wepi-development",
-          "access": "sandbox"
-        },
-        {
-          "account-name": "data-and-insights-wepi-preproduction",
-          "access": "developer"
-        },
-        {
-          "account-name": "data-and-insights-wepi-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "madhu.kadiri",
       "github-username": "madhu-k-sr2",
       "accounts": [
