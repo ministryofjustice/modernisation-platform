@@ -51,20 +51,6 @@
       ]
     },
     {
-      "username": "john.broom",
-      "github-username": "hullcoastie",
-      "accounts": [
-        {
-          "account-name": "equip-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "howard.brown",
       "github-username": "HowardCB",
       "accounts": [
@@ -149,20 +135,6 @@
       ]
     },
     {
-      "username": "kam.mistry",
-      "github-username": "no-username-supplied",
-      "accounts": [
-        {
-          "account-name": "equip-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "joy.parokkaran",
       "github-username": "parokkajadm",
       "accounts": [
@@ -179,20 +151,6 @@
     {
       "username": "tom.rudley",
       "github-username": "trudley",
-      "accounts": [
-        {
-          "account-name": "equip-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
-      "username": "helen.vickers",
-      "github-username": "helenvickers-roc",
       "accounts": [
         {
           "account-name": "equip-development",
@@ -482,16 +440,6 @@
     },
     {
       "username": "joe.beauchamp",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "digital-prison-reporting-preproduction",
-          "access": "read-only"
-        }
-      ]
-    },
-    {
-      "username": "shaun.dundavan",
       "github-username": "no-value-supplied",
       "accounts": [
         {
