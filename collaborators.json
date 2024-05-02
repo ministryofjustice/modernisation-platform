@@ -79,20 +79,6 @@
       ]
     },
     {
-      "username": "tom.rudley",
-      "github-username": "trudley",
-      "accounts": [
-        {
-          "account-name": "equip-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "jonny.davey",
       "github-username": "jonny190",
       "accounts": [
@@ -102,16 +88,6 @@
         },
         {
           "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
-      "username": "david.savage",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "ppud-development",
           "access": "developer"
         }
       ]
@@ -307,16 +283,6 @@
       ]
     },
     {
-      "username": "edward.kirwin",
-      "github-username": "no-username-supplied",
-      "accounts": [
-        {
-          "account-name": "ppud-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "edward.caren",
       "github-username": "EdwardTCaren",
       "accounts": [
@@ -333,24 +299,6 @@
         {
           "account-name": "digital-prison-reporting-preproduction",
           "access": "read-only"
-        }
-      ]
-    },
-    {
-      "username": "simona.treivase",
-      "github-username": "simonytta",
-      "accounts": [
-        {
-          "account-name": "data-and-insights-wepi-development",
-          "access": "sandbox"
-        },
-        {
-          "account-name": "data-and-insights-wepi-preproduction",
-          "access": "developer"
-        },
-        {
-          "account-name": "data-and-insights-wepi-production",
-          "access": "developer"
         }
       ]
     },
