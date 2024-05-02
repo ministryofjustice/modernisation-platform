@@ -64,4 +64,7 @@ module "baselines" {
   cloudtrail_kms_key = data.aws_kms_key.cloudtrail_key.arn
   root_account_id    = local.root_account.master_account_id
   tags               = local.environments
+
+  # Regions to enable IMDSv2 in
+  enabled_imdsv2_regions = local.enabled_baseline_regions
 }
