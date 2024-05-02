@@ -51,50 +51,8 @@
       ]
     },
     {
-      "username": "howard.brown",
-      "github-username": "HowardCB",
-      "accounts": [
-        {
-          "account-name": "equip-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "nigel.freeman",
       "github-username": "nigelf-roc",
-      "accounts": [
-        {
-          "account-name": "equip-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
-      "username": "adam.gadsby",
-      "github-username": "AdamG-Roc",
-      "accounts": [
-        {
-          "account-name": "equip-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
-      "username": "craig.gordon",
-      "github-username": "craigygordon",
       "accounts": [
         {
           "account-name": "equip-development",
@@ -193,24 +151,6 @@
         {
           "account-name": "ppud-development",
           "access": "developer"
-        }
-      ]
-    },
-    {
-      "username": "luis.martinez",
-      "github-username": "larnal-lumen",
-      "accounts": [
-        {
-          "account-name": "ppud-development",
-          "access": "sandbox"
-        },
-        {
-          "account-name": "ppud-preproduction",
-          "access": "migration"
-        },
-        {
-          "account-name": "ppud-production",
-          "access": "migration"
         }
       ]
     },
