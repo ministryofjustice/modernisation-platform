@@ -51,20 +51,6 @@
       ]
     },
     {
-      "username": "joy.parokkaran",
-      "github-username": "parokkajadm",
-      "accounts": [
-        {
-          "account-name": "equip-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "jonny.davey",
       "github-username": "jonny190",
       "accounts": [
@@ -74,16 +60,6 @@
         },
         {
           "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
-      "username": "jani.green",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "ppud-development",
           "access": "developer"
         }
       ]
@@ -261,28 +237,8 @@
       ]
     },
     {
-      "username": "saanchi.dubey",
-      "github-username": "saanchidubey",
-      "accounts": [
-        {
-          "account-name": "portal-development",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "madhu.kadiri",
       "github-username": "madhu-k-sr2",
-      "accounts": [
-        {
-          "account-name": "electronic-monitoring-data-development",
-          "access": "sandbox"
-        }
-      ]
-    },
-    {
-      "username": "luke.williams",
-      "github-username": "luke-a-williams",
       "accounts": [
         {
           "account-name": "electronic-monitoring-data-development",
