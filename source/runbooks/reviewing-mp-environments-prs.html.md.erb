@@ -1,0 +1,43 @@
+---
+owner_slack: "#modernisation-platform"
+title: How to review MP Environments pull requests
+last_reviewed_on: 2024-05-03
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+## Introduction
+
+The [Modernisation Platform Environments](https://github.com/ministryofjustice/modernisation-platform-environments) repository contains user application infrastructure as code and deployment workflows. This allows users of the Modernisation Platform to manage their own infrastructure and deployments into their various environments. 
+
+## Notes on reviewing
+
+Only 1 approving review is required for any pull requests which are raised which means that in the majority of cases, members can approve their own PRs with a review being made by another member of their GitHub team.
+
+In certain cases the MP team need to review infrastructure changes being made to ensure that the use-case is deemed acceptable. These include:
+
+1. Any changes made to files specified in the [`.github/CODEOWNERS`](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/CODEOWNERS) file which only show `@ministryofjustice/modernisation-platform` as an owner e.g. `**/platform_*.tf` files
+
+1. Any changes which are highlighted by the [`terraform-plan-evaluator.sh`](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/scripts/terraform-plan-evaluator.sh) shell script. This script is built in to the [`reusable_terraform_plan_apply.yml`](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/workflows/reusable_terraform_plan_apply.yml) workflow and if any of the resources listed e.g. `aws_eks_cluster` are found in the Terraform plan stage the build will be marked as **failed**, preventing deployments.
+
+## Process for approving PRs
+
+To approve these PRs at least 1 member of the `@ministryofjustice/modernisation-platform` Github team will need to add an approving review. 
+
+**Additionally**, in the case of changes which are highlighted by the [`terraform-plan-evaluator.sh`](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/scripts/terraform-plan-evaluator.sh) shell script,  a comment will be left on the PR as follows: 
+
+>_Terraform plan evaluation detected changes to resources that require approval from @ministryofjustice/modernsation-platform - please contact #ask-modernisation-platform for assistance_
+
+This will also add a "Requested Changes" review from the `modernisation-platform-ci` user. A member of the `@ministryofjustice/modernisation-platform` Github team will need to dismiss this review in order for the deployment to be merged/applied successfully.
+
+![Requested Changes](../images/requested-changes.png "Requested Changes")
