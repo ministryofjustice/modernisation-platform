@@ -42,3 +42,15 @@ variable "required_checks" {
   description = "List of required checks"
   default     = []
 }
+
+variable "restrict_dismissals" {
+  type        = bool
+  description = "Restrict pull request review dismissals"
+  default     = false
+}
+
+variable "dismissal_restrictions" {
+  type        = list(string)
+  description = "The list of actor Names/IDs with dismissal access e.g. 'exampleorganization/exampleteam' or '/exampleuser'"
+  default     = []
+}

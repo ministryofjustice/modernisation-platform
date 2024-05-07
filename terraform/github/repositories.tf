@@ -268,6 +268,8 @@ module "modernisation-platform-environments" {
     TESTING_AWS_ACCESS_KEY_ID                            = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     TESTING_AWS_SECRET_ACCESS_KEY                        = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  restrict_dismissals    = true
+  dismissal_restrictions = ["ministryofjustice/modernisation-platform"]
 }
 
 module "terraform-module-aws-loadbalancer" {

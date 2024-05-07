@@ -92,6 +92,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/contract-work-administration"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/cooker"
     schedule:
       interval: "daily"
@@ -173,6 +177,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/digital-prison-reporting"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/environments/edw"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
