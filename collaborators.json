@@ -159,10 +159,6 @@
       "github-username": "HelgaVonTrapp",
       "accounts": [
         {
-          "account-name": "delius-iaps-development",
-          "access": "instance-management"
-        },
-        {
           "account-name": "delius-iaps-preproduction",
           "access": "instance-management"
         },
@@ -176,10 +172,6 @@
       "username": "liam.fortune",
       "github-username": "liamfortune01",
       "accounts": [
-        {
-          "account-name": "delius-iaps-development",
-          "access": "instance-management"
-        },
         {
           "account-name": "delius-iaps-preproduction",
           "access": "instance-management"
@@ -195,10 +187,6 @@
       "github-username": "GemmaMills01",
       "accounts": [
         {
-          "account-name": "delius-iaps-development",
-          "access": "instance-management"
-        },
-        {
           "account-name": "delius-iaps-preproduction",
           "access": "instance-management"
         },
@@ -212,10 +200,6 @@
       "username": "michaela.blowers",
       "github-username": "MichaelaB21",
       "accounts": [
-        {
-          "account-name": "delius-iaps-development",
-          "access": "instance-management"
-        },
         {
           "account-name": "delius-iaps-preproduction",
           "access": "instance-management"
