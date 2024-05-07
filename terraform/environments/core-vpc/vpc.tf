@@ -120,6 +120,28 @@ module "vpc_nacls" {
   vpc_name         = each.key
 }
 
+## Insert additional rule to account for Xhibit Portal requirement
+resource "aws_network_acl_rule" "hmcts-public-10" {
+  cidr_block     = "10.193.40.0/24"
+  from_port      = 1514
+  network_acl_id = module.vpc_nacls[format("hmcts-%s", local.current_environment)].general-public.id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 10
+  to_port        = 1514
+}
+
+## Insert additional rule to account for Xhibit Portal requirement
+resource "aws_network_acl_rule" "hmcts-public-20" {
+  cidr_block     = "10.33.48.0/24"
+  from_port      = 8014
+  network_acl_id = module.vpc_nacls[format("hmcts-%s", local.current_environment)].general-public.id
+  protocol       = "tcp"
+  rule_action    = "allow"
+  rule_number    = 20
+  to_port        = 8014
+}
+
 module "route_53_resolver_logs" {
   source      = "../../modules/r53-resolver-logs"
   for_each    = { for key, value in module.vpc : key => value["vpc_id"] }

@@ -215,6 +215,24 @@ locals {
   }
 
   public_access_acl_rules = {
+    allow_vpc_cidr_in = {
+      cidr_block  = data.aws_vpc.current.cidr_block
+      egress      = false
+      from_port   = null
+      protocol    = "-1"
+      rule_action = "allow"
+      rule_number = 1000
+      to_port     = null
+    },
+    allow_vpc_cidr_out = {
+      cidr_block  = data.aws_vpc.current.cidr_block
+      egress      = true
+      from_port   = null
+      protocol    = "-1"
+      rule_action = "allow"
+      rule_number = 1000
+      to_port     = null
+    },
     allow_https_in = {
       cidr_block  = "0.0.0.0/0"
       egress      = false
