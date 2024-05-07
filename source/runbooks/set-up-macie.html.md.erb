@@ -51,18 +51,27 @@ If you list the jobs you can see if it is running and the results will appear on
 
 # Terraform code
 
-Note the items shown here are not actual detailed Terraform code but examples of how to set things up. To get more detail it is best to do a search for ["aws macie terraform"](https://www.google.com/search?q=aws+macie+terraform&rlz=1C5GCCM_en&oq=&gs_lcrp=EgZjaHJvbWUqCQgAEEUYOxjCAzIJCAAQRRg7GMIDMgkIARBFGDsYwgMyCQgCEEUYOxjCAzIJCAMQRRg7GMIDMgkIBBBFGDsYwgMyCQgFEEUYOxjCAzIJCAYQRRg7GMIDMgkIBxBFGDsYwgPSAQkzMTE4ajBqMTWoAgiwAgE&sourceid=chrome&ie=UTF-8)
+Note the items shown above are not actual Terraform code but examples of how to set things up. Below there is an example of how the items were set up in Cooker following the instructions listed here.
+
+To get more detail it is best to do a search for ["aws macie terraform"](https://www.google.com/search?q=aws+macie+terraform&rlz=1C5GCCM_en&oq=&gs_lcrp=EgZjaHJvbWUqCQgAEEUYOxjCAzIJCAAQRRg7GMIDMgkIARBFGDsYwgMyCQgCEEUYOxjCAzIJCAMQRRg7GMIDMgkIBBBFGDsYwgMyCQgFEEUYOxjCAzIJCAYQRRg7GMIDMgkIBxBFGDsYwgPSAQkzMTE4ajBqMTWoAgiwAgE&sourceid=chrome&ie=UTF-8)
 
 Set up a [Macie account](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/macie2_account)
 
 Creating a [Macie job](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/macie2_classification_job)
 
-Example code is shown below BUT the build of the Macie account fails so there is no guarantee this will work.
+## Example Terraform code
+
+There is one pre-requisite, for the code shown here, to allow this to work and run successfully. Make sure that the role for **MemberInfrastructureAccess has ace macie2:** set. If this has not been set up correctly (by the Modernisation Platform Team) the terraform listed below will not work. If this is amended in the future, so that it is enabled globally, this comment will be removed. 
+
+The full details of the "finding_publishing_frequency" and "job_type" can be seen in the terraform links listed above.
+
+Full details of this creation, including information on the likes of job type, are shown in the code (macie.tf) in the modernisation-platform-environments repo for cooker. The appropriate environment account reference should be used rather than the "account-code for this environment" shown below.
 
 ```
 # Create macie account
-# When logging in as adminisitrator this is not needed but may be for our customers
-# Account name is MacieAccount. Publishes data every hour (choice are FIFTEEN_MINUTES, ONE_HOUR or SIX_HOURS)
+# When logging in as administrator this is not needed but may be for our customers - yet to be fully determined.
+# Account name is MacieAccount. Publishes data every hour (choice are FIFTEEN_MINUTES, ONE_HOUR or SIX_HOURS).
+
 resource "aws_macie2_account" "MacieAccount" {
   finding_publishing_frequency = "ONE_HOUR"
   status                       = "ENABLED"
@@ -70,58 +79,23 @@ resource "aws_macie2_account" "MacieAccount" {
 
 # Now create a job
 # Job type options are ONE-TIME and SCHEDULED. If scheduled is chosen you need to select a frequency using schedule_frequency of daily_schedule, weekly_schedule or monthly_schedule
-# The buckets should be replaced but a list of buckets to examine. This could be limited to those in the account you are connected to or others to which you have access.
+# The buckets list should be replaced but a list of buckets to examine. This could be limited to those in the account you are connected to or others to which you have access.
 # Below there is a limited list of those from example shown.
 # There are many other job options available and these should be looked at in terrform [job creation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/macie2_classification_job)
 
 
 resource "aws_macie2_classification_job" "test" {
   job_type = "ONE_TIME"
-  name     = "JOBNAME"
+  name     = "<an appropriate job name>"
   s3_job_definition {
     bucket_definitions {
-      account_id = "MacieAccount"
+      account_id = "<account-code for this environment>"
       buckets    = [
-      "bastion-example-example-development-cqx7gf",
-      "config-20220505080423816000000003",
-      "s3-bucket-example20231124172322406400000006"
+      "<list of buckets>",
+      "<separated by commas>"
       ]
     }
   }
   depends_on = [aws_macie2_account.MacieAccount]
 }
-
-Below is an example of code used in production. Note, unless there is other code to set up the correct access, this will not work.
-
-There is one pre-requisites for this to work and run successfully. Make sure that the role for MemberInfrastructureAccess has ace macie2:* set. If this has not been set up correctly (by the Modernisation Platform Team) the terraform listed below will not work. If this is amended in the future, so that it is enabled globally, this comment will be removed. 
-
-Full details of this creation, including information on the likes of job type, are shown in the code (macie.tf) in the environments repo for cooker. The account reference below (236861075084) is the cooker account ID.
-
-```
-provider "aws" {
-    alias  = "macie_access" # delegated admin
-    assume_role {
-      role_arn = "arn:aws:iam::236861075084:role/macie_access"
-    }
-  }
-
-resource "aws_macie2_account" "macieaccess" { 
-   finding_publishing_frequency = "ONE_HOUR"
-   status                       = "ENABLED"
- }
-
-resource "aws_macie2_classification_job" "test" {
-  job_type = "ONE_TIME"
-  name     = "JOBNAME"
-  s3_job_definition {
-    bucket_definitions {
-      account_id = "236861075084"
-      buckets    = [
-      "aws-sam-cli-managed-default-samclisourcebucket-1leowh6voenwy",
-      "config-20220407082146408700000002",
-      "macie-test-results-cooker",
-      "bucket-to-test-macie-for-cooker"
-      ]
-    }
-  }
 ```
