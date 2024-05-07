@@ -92,27 +92,36 @@ resource "aws_macie2_classification_job" "test" {
 }
 
 Below is an example of code used in production. Note, unless there is other code to set up the correct access, this will not work.
-Full details of this creation, including information on the likes of job type, are shown in the code (macie.tf) in the environments repo. 
+
+There is one pre-requisites for this to work and run successfully. Make sure that the role for MemberInfrastructureAccess has ace macie2:* set. If this has not been set up correctly (by the Modernisation Platform Team) the terraform listed below will not work. If this is amended in the future, so that it is enabled globally, this comment will be removed. 
+
+Full details of this creation, including information on the likes of job type, are shown in the code (macie.tf) in the environments repo for cooker. The account reference below (236861075084) is the cooker account ID.
 
 ```
-resource "aws_macie2_account" "MacieAccount" {
-  finding_publishing_frequency = "ONE_HOUR"
-  status                       = "ENABLED"
-}
+provider "aws" {
+    alias  = "macie_access" # delegated admin
+    assume_role {
+      role_arn = "arn:aws:iam::236861075084:role/macie_access"
+    }
+  }
+
+resource "aws_macie2_account" "macieaccess" { 
+   finding_publishing_frequency = "ONE_HOUR"
+   status                       = "ENABLED"
+ }
 
 resource "aws_macie2_classification_job" "test" {
   job_type = "ONE_TIME"
   name     = "JOBNAME"
   s3_job_definition {
     bucket_definitions {
-      account_id = "MacieAccount"
+      account_id = "236861075084"
       buckets    = [
-      "bastion-example-example-development-cqx7gf",
-      "config-20220505080423816000000003",
-      "s3-bucket-example20231124172322406400000006"
+      "aws-sam-cli-managed-default-samclisourcebucket-1leowh6voenwy",
+      "config-20220407082146408700000002",
+      "macie-test-results-cooker",
+      "bucket-to-test-macie-for-cooker"
       ]
     }
   }
-  depends_on = [aws_macie2_account.MacieAccount]
-}
 ```
