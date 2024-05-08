@@ -16,7 +16,6 @@ on:
 env:
   TF_IN_AUTOMATION: true
   AWS_REGION: "eu-west-2"
-  ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
 
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -27,12 +26,21 @@ defaults:
     shell: bash
 
 jobs:
+  retrieve-secrets:
+    uses: ./.github/workflows/secrets-retrieval.yml
+    secrets: inherit
   setup-prerequisites:
     runs-on: ubuntu-latest
+    needs: retrieve-secrets
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Decrypt Secrets
+        uses: ./.github/actions/decrypt-secrets
+        with:
+          environment_management: ${{ needs.retrieve-secrets.outputs.environment_management }}
+          passphrase: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: Configure AWS Credentials
@@ -56,9 +64,15 @@ jobs:
       matrix:
         workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
     runs-on: ubuntu-latest
-    needs: setup-prerequisites
+    needs: [retrieve-secrets,setup-prerequisites]
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Decrypt Secrets
+        uses: ./.github/actions/decrypt-secrets
+        with:
+          environment_management: ${{ needs.retrieve-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.retrieve-secrets.outputs.slack_webhook_url }}
+          passphrase: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: Configure AWS Credentials
@@ -86,7 +100,7 @@ jobs:
           payload: |
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
         if: ${{ failure() }}
     env:
@@ -99,9 +113,15 @@ jobs:
       matrix:
         workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
     runs-on: ubuntu-latest
-    needs: [setup-prerequisites, delegate-access]
+    needs: [retrieve-secrets,setup-prerequisites, delegate-access]
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Decrypt Secrets
+        uses: ./.github/actions/decrypt-secrets
+        with:
+          environment_management: ${{ needs.retrieve-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.retrieve-secrets.outputs.slack_webhook_url }}
+          passphrase: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: Configure AWS Credentials
@@ -129,7 +149,7 @@ jobs:
           payload: |
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
         if: ${{ failure() }}
     env:
@@ -142,9 +162,15 @@ jobs:
       matrix:
         workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
     runs-on: ubuntu-latest
-    needs: [setup-prerequisites, delegate-access]
+    needs: [retrieve-secrets,setup-prerequisites, delegate-access]
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Decrypt Secrets
+        uses: ./.github/actions/decrypt-secrets
+        with:
+          environment_management: ${{ needs.retrieve-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.retrieve-secrets.outputs.slack_webhook_url }}
+          passphrase: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
 
@@ -173,7 +199,7 @@ jobs:
           payload: |
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
         if: ${{ failure() }}
     env:
@@ -186,9 +212,15 @@ jobs:
       matrix:
         workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
     runs-on: ubuntu-latest
-    needs: [setup-prerequisites, single-sign-on]
+    needs: [retrieve-secrets,setup-prerequisites, single-sign-on]
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Decrypt Secrets
+        uses: ./.github/actions/decrypt-secrets
+        with:
+          environment_management: ${{ needs.retrieve-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.retrieve-secrets.outputs.slack_webhook_url }}
+          passphrase: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: Configure AWS Credentials
@@ -216,7 +248,7 @@ jobs:
           payload: |
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
         if: ${{ failure() }}
     env:
@@ -225,9 +257,15 @@ jobs:
 
   update-permission-sets:
     runs-on: ubuntu-latest
-    needs: [delegate-access,single-sign-on]
+    needs: [retrieve-secrets,delegate-access,single-sign-on]
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Decrypt Secrets
+        uses: ./.github/actions/decrypt-secrets
+        with:
+          environment_management: ${{ needs.retrieve-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.retrieve-secrets.outputs.slack_webhook_url }}
+          passphrase: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: Set Root Account Number
@@ -252,6 +290,6 @@ jobs:
           payload: |
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
         if: ${{ failure() }}
