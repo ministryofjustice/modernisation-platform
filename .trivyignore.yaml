@@ -42,7 +42,6 @@ misconfigurations:
 - id: AVD-AWS-0031
 - id: AVD-AWS-0039
 - id: AVD-AWS-0057
-- id: AVD-AWS-0136
 
 secrets:
 

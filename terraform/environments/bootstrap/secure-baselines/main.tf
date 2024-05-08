@@ -4,6 +4,7 @@ data "aws_kms_key" "cloudtrail_key" {
   key_id   = "alias/s3-logging-cloudtrail"
 }
 
+#trivy:ignore:AVD-AWS-0136
 module "baselines" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=65595d61d9656d6edac5aff6b4c92be1cdfd5fc9" # v7.1.0
 
