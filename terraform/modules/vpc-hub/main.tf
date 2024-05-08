@@ -126,7 +126,7 @@ resource "aws_default_security_group" "default" {
 #################
 # TF sec exclusions
 # - Ignore warnings regarding log groups not encrypted using customer-managed KMS keys - following cost/benefit discussion and longer term plans for logging solution
-#tfsec:ignore:AWS089
+#trivy:ignore:AVD-AWS-0017
 resource "aws_cloudwatch_log_group" "default" {
   #checkov:skip=CKV_AWS_158:Temporarily skip KMS encryption check while logging solution is being updated
   name              = "${var.tags_prefix}-vpc-flow-logs"
@@ -199,7 +199,8 @@ resource "aws_network_acl" "public" {
 }
 
 # Public NACLs rules
-#tfsec:ignore:aws-vpc-no-public-ingress-acl tfsec:ignore:aws-vpc-no-excessive-port-access
+#trivy:ignore:AVD-AWS-0102
+#trivy:ignore:AVD-AWS-0105
 resource "aws_network_acl_rule" "public" {
   # checkov:skip=CKV_AWS_352:Ports need to be open
   for_each = local.public_access_acl_rules
@@ -297,7 +298,8 @@ resource "aws_network_acl" "private" {
 }
 
 # Private NACLs rules
-#tfsec:ignore:aws-vpc-no-public-ingress-acl
+#trivy:ignore:AVD-AWS-0102
+#trivy:ignore:AVD-AWS-0105
 resource "aws_network_acl_rule" "private" {
   for_each = local.static_acl_rules
 
@@ -368,7 +370,8 @@ resource "aws_network_acl" "data" {
 }
 
 # Data NACLs rules
-#tfsec:ignore:aws-vpc-no-public-ingress-acl
+#trivy:ignore:AVD-AWS-0102
+#trivy:ignore:AVD-AWS-0105
 resource "aws_network_acl_rule" "data" {
   for_each = local.static_acl_rules
 
@@ -439,7 +442,8 @@ resource "aws_network_acl" "transit-gateway" {
 }
 
 # Transit Gateway NACLs rules
-#tfsec:ignore:aws-vpc-no-public-ingress-acl
+#trivy:ignore:AVD-AWS-0102
+#trivy:ignore:AVD-AWS-0105
 resource "aws_network_acl_rule" "transit-gateway" {
   # checkov:skip=CKV_AWS_229:Transit Gateway subnet NACL open by design
   # checkov:skip=CKV_AWS_230:Transit Gateway subnet NACL open by design
