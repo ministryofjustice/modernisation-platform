@@ -202,4 +202,26 @@ locals {
     }
   }
 
+  # TGW NACL open as per AWS guidance (https://docs.aws.amazon.com/vpc/latest/tgw/tgw-best-design-practices.html)
+  transit_gateway_acl_rules = {
+    allow_any_in = {
+      cidr_block  = "0.0.0.0/0"
+      egress      = false
+      from_port   = null
+      protocol    = "-1"
+      rule_action = "allow"
+      rule_number = 1000
+      to_port     = null
+    },
+    allow_any_out = {
+      cidr_block  = "0.0.0.0/0"
+      egress      = true
+      from_port   = null
+      protocol    = "-1"
+      rule_action = "allow"
+      rule_number = 1000
+      to_port     = null
+    }
+  }
+
 }

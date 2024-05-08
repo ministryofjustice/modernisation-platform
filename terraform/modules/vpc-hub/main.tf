@@ -58,41 +58,6 @@ locals {
     }
   }
 
-  # NACLs
-  nacl_rules = [
-    { egress = false, action = "allow", protocol = -1, from_port = 80, to_port = 80, rule_num = 910, cidr = "0.0.0.0/0" },
-    { egress = false, action = "allow", protocol = -1, from_port = 443, to_port = 443, rule_num = 920, cidr = "0.0.0.0/0" },
-    { egress = false, action = "allow", protocol = -1, from_port = 1024, to_port = 65535, rule_num = 930, cidr = "0.0.0.0/0" },
-    { egress = true, action = "allow", protocol = -1, from_port = 80, to_port = 80, rule_num = 910, cidr = "0.0.0.0/0" },
-    { egress = true, action = "allow", protocol = -1, from_port = 443, to_port = 443, rule_num = 920, cidr = "0.0.0.0/0" },
-    { egress = true, action = "allow", protocol = -1, from_port = 1024, to_port = 65535, rule_num = 930, cidr = "0.0.0.0/0" }
-  ]
-
-  # NACL rules with keys
-  nacl_rules_expanded = {
-    for rule in local.nacl_rules : join("-", values(rule)) => rule
-  }
-
-  # Private NACLs. Do not allow communicating with public internet addresses except for outgoing https.
-  private_nacl_rules = [
-    { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 510, cidr = "10.0.0.0/8" },
-    { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 520, cidr = "172.16.0.0/12" },
-    { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 530, cidr = "192.168.0.0/16" },
-    { egress = true, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 510, cidr = "10.0.0.0/8" },
-    { egress = true, action = "allow", protocol = -1, from_port = 80, to_port = 80, rule_num = 520, cidr = "172.16.0.0/12" },
-    { egress = true, action = "allow", protocol = -1, from_port = 443, to_port = 443, rule_num = 530, cidr = "172.16.0.0/12" },
-    { egress = true, action = "allow", protocol = -1, from_port = 1024, to_port = 65535, rule_num = 540, cidr = "172.16.0.0/12" },
-    { egress = true, action = "allow", protocol = -1, from_port = 80, to_port = 80, rule_num = 550, cidr = "192.168.0.0/16" },
-    { egress = true, action = "allow", protocol = -1, from_port = 443, to_port = 443, rule_num = 560, cidr = "192.168.0.0/16" },
-    { egress = true, action = "allow", protocol = -1, from_port = 1024, to_port = 65535, rule_num = 570, cidr = "192.168.0.0/16" },
-    { egress = false, action = "allow", protocol = 6, from_port = 1024, to_port = 65535, rule_num = 910, cidr = "0.0.0.0/0" },
-    { egress = true, action = "allow", protocol = 6, from_port = 443, to_port = 443, rule_num = 910, cidr = "0.0.0.0/0" }
-  ]
-
-  # Private NACL rules with keys
-  private_nacl_rules_expanded = {
-    for rule in local.private_nacl_rules : join("-", values(rule)) => rule
-  }
 }
 
 #######
@@ -476,37 +441,21 @@ resource "aws_network_acl" "transit-gateway" {
 # Transit Gateway NACLs rules
 #tfsec:ignore:aws-vpc-no-public-ingress-acl
 resource "aws_network_acl_rule" "transit-gateway" {
-  for_each = local.nacl_rules_expanded
+  # checkov:skip=CKV_AWS_229:Transit Gateway subnet NACL open by design
+  # checkov:skip=CKV_AWS_230:Transit Gateway subnet NACL open by design
+  # checkov:skip=CKV_AWS_231:Transit Gateway subnet NACL open by design
+  # checkov:skip=CKV_AWS_232:Transit Gateway subnet NACL open by design
+  # checkov:skip=CKV_AWS_352:Transit Gateway subnet NACL open by design
+  for_each = local.transit_gateway_acl_rules
 
   network_acl_id = aws_network_acl.transit-gateway.id
-  rule_number    = each.value.rule_num
+  rule_number    = each.value.rule_number
   egress         = each.value.egress
   protocol       = each.value.protocol
-  rule_action    = each.value.action
-  cidr_block     = each.value.cidr
+  rule_action    = each.value.rule_action
+  cidr_block     = each.value.cidr_block
   from_port      = each.value.from_port
   to_port        = each.value.to_port
-}
-
-#tfsec:ignore:aws-vpc-no-excessive-port-access
-resource "aws_network_acl_rule" "transit-gateway-local-ingress" {
-  #checkov:skip=CKV_AWS_352: Open as intra vpc traffic
-  network_acl_id = aws_network_acl.transit-gateway.id
-  rule_number    = 210
-  egress         = false
-  protocol       = "-1"
-  rule_action    = "allow"
-  cidr_block     = var.vpc_cidr
-}
-
-#tfsec:ignore:aws-vpc-no-excessive-port-access
-resource "aws_network_acl_rule" "transit-gateway-local-egress" {
-  network_acl_id = aws_network_acl.transit-gateway.id
-  rule_number    = 210
-  egress         = true
-  protocol       = "-1"
-  rule_action    = "allow"
-  cidr_block     = var.vpc_cidr
 }
 
 # Transit Gateway route table
