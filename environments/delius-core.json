@@ -13,12 +13,13 @@
         },
         {
           "github_slug": "hmpps-dba",
-          "level": "sandbox",
+          "level": "developer",
           "nuke": "exclude"
         },
         {
           "github_slug": "unilink",
-          "level": "developer"
+          "level": "developer",
+          "nuke": "exclude"
         }
       ]
     },
