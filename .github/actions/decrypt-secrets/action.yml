@@ -1,0 +1,53 @@
+name: Decrypt Secrets
+
+inputs:
+  environment_management:
+    required: false
+  pagerduty_token:
+    required: false
+  pagerduty_userapi_token:
+    required: false
+  slack_webhook_url:
+    required: false
+  environments:
+    required: false
+  github_ci_user_pat: 
+    required: false
+  passphrase: 
+    required: true
+    
+runs:
+  using: "composite"
+  steps:
+    - name: Decrypt Secrets
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.environment_management }}" ]; then
+        environment_management_decrypt=$(gpg --decrypt --quiet --batch --passphrase "${{ inputs.passphrase }}" --output - <(echo "${{ inputs.environment_management }}" | base64 --decode))
+        echo "::add-mask::$environment_management_decrypt"
+        echo "ENVIRONMENT_MANAGEMENT=$environment_management_decrypt" >> $GITHUB_ENV
+        fi
+        
+        if [ -n "${{ inputs.pagerduty_token }}" ]; then
+        pagerduty_token_decrypt=$(gpg --decrypt --quiet --batch --passphrase "${{ inputs.passphrase }}" --output - <(echo "${{ inputs.pagerduty_token }}" | base64 --decode))
+        echo "::add-mask::$pagerduty_token_decrypt"
+        echo "TF_VAR_pagerduty_token=$pagerduty_token_decrypt" >> $GITHUB_ENV
+        fi
+        
+        if [ -n "${{ inputs.pagerduty_userapi_token }}" ]; then
+        pagerduty_userapi_token_decrypt=$(gpg --decrypt --quiet --batch --passphrase "${{ inputs.passphrase }}" --output - <(echo "${{ inputs.pagerduty_userapi_token }}" | base64 --decode))
+        echo "::add-mask::$pagerduty_userapi_token_decrypt"
+        echo "TF_VAR_pagerduty_user_token=$pagerduty_userapi_token_decrypt" >> $GITHUB_ENV
+        fi
+
+        if [ -n "${{ inputs.slack_webhook_url }}" ]; then
+        slack_webhook_url_decrypt=$(gpg --decrypt --quiet --batch --passphrase "${{ inputs.passphrase }}" --output - <(echo "${{ inputs.slack_webhook_url }}" | base64 --decode))
+        echo "::add-mask::$slack_webhook_url_decrypt"
+        echo "SLACK_WEBHOOK_URL=$slack_webhook_url_decrypt" >> $GITHUB_ENV
+        fi
+
+        if [ -n "${{ inputs.github_ci_user_pat }}" ]; then
+        github_ci_user_pat_decrypt=$(gpg --decrypt --quiet --batch --passphrase "${{ inputs.passphrase }}" --output - <(echo "${{ inputs.github_ci_user_pat }}" | base64 --decode))
+        echo "::add-mask::$github_ci_user_pat_decrypt"
+        echo "TF_VAR_github_token=$github_ci_user_pat_decrypt" >> $GITHUB_ENV
+        fi
