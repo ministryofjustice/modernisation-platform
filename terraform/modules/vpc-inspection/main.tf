@@ -23,11 +23,6 @@ locals {
     sync_state.availability_zone => sync_state.attachment[0].endpoint_id
   }
 
-  nacl_rules = {
-    inbound  = { egress = false, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 910, cidr = "0.0.0.0/0" },
-    outbound = { egress = true, action = "allow", protocol = -1, from_port = 0, to_port = 0, rule_num = 910, cidr = "0.0.0.0/0" }
-  }
-
 }
 
 ### VPC ###
@@ -153,21 +148,22 @@ resource "aws_network_acl" "transit-gateway" {
   )
 }
 
-#tfsec:ignore:aws-vpc-no-public-ingress-acl
+#trivy:ignore:avd-aws-0102
+#trivy:ignore:avd-aws-0105
 resource "aws_network_acl_rule" "transit-gateway" {
   #checkov:skip=CKV_AWS_229:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_230:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_231:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_232:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_352:NACL rules open as firewall applies controls
-  for_each = local.nacl_rules
+  for_each = local.static_acl_rules
 
   network_acl_id = aws_network_acl.transit-gateway.id
-  rule_number    = each.value.rule_num
+  rule_number    = each.value.rule_number
   egress         = each.value.egress
   protocol       = each.value.protocol
-  rule_action    = each.value.action
-  cidr_block     = each.value.cidr
+  rule_action    = each.value.rule_action
+  cidr_block     = each.value.cidr_block
   from_port      = each.value.from_port
   to_port        = each.value.to_port
 }
@@ -246,21 +242,22 @@ resource "aws_network_acl" "inspection" {
   )
 }
 
-#tfsec:ignore:aws-vpc-no-public-ingress-acl
+#trivy:ignore:avd-aws-0102
+#trivy:ignore:avd-aws-0105
 resource "aws_network_acl_rule" "inspection" {
   #checkov:skip=CKV_AWS_229:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_230:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_231:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_232:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_352:NACL rules open as firewall applies controls
-  for_each = local.nacl_rules
+  for_each = local.static_acl_rules
 
   network_acl_id = aws_network_acl.inspection.id
-  rule_number    = each.value.rule_num
+  rule_number    = each.value.rule_number
   egress         = each.value.egress
   protocol       = each.value.protocol
-  rule_action    = each.value.action
-  cidr_block     = each.value.cidr
+  rule_action    = each.value.rule_action
+  cidr_block     = each.value.cidr_block
   from_port      = each.value.from_port
   to_port        = each.value.to_port
 }
@@ -343,21 +340,22 @@ resource "aws_network_acl" "public" {
   )
 }
 
-#tfsec:ignore:aws-vpc-no-public-ingress-acl
+#trivy:ignore:avd-aws-0102
+#trivy:ignore:avd-aws-0105
 resource "aws_network_acl_rule" "public" {
   #checkov:skip=CKV_AWS_229:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_230:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_231:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_232:NACL rules open as firewall applies controls
   #checkov:skip=CKV_AWS_352:NACL rules open as firewall applies controls
-  for_each = local.nacl_rules
+  for_each = local.static_acl_rules
 
   network_acl_id = aws_network_acl.public.id
-  rule_number    = each.value.rule_num
+  rule_number    = each.value.rule_number
   egress         = each.value.egress
   protocol       = each.value.protocol
-  rule_action    = each.value.action
-  cidr_block     = each.value.cidr
+  rule_action    = each.value.rule_action
+  cidr_block     = each.value.cidr_block
   from_port      = each.value.from_port
   to_port        = each.value.to_port
 }
