@@ -113,6 +113,7 @@ resource "aws_s3_bucket" "firehose_error_logging_bucket" {
 #tfsec:ignore:aws-ssm-secret-use-customer-key
 #tfsec:ignore:aws-s3-encryption-customer-key
 resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption" {
+  #checkov:skip=CKV2_AWS_67
   bucket = aws_s3_bucket.firehose_error_logging_bucket.id
   rule {
     apply_server_side_encryption_by_default {
