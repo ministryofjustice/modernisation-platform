@@ -213,7 +213,7 @@ jobs:
         uses: aws-actions/aws-secretsmanager-get-secrets@f91b2a3e784edce744f972af1685eca7e24d2302 #v2.0.2
         with:
           secret-ids: |
-            ENVIRONMENTS,environment_management
+            AWS_ENVIRONMENTS,environment_management
             SLACK_WEBHOOK_URL,slack_webhook_url
       - name: get new account(s)
         id: new_account
@@ -228,7 +228,7 @@ jobs:
           environments=$(jq -r '.environments[].name' "environments/${i}.json")
           for env in $environments; do
           key="${i}-${env}"
-          account_number=$(echo "$ENVIRONMENTS" | jq -r ".account_ids[\"$key\"]")
+          account_number=$(echo "$AWS_ENVIRONMENTS" | jq -r ".account_ids[\"$key\"]")
           bash ./scripts/internal/remove-default-vpc/remove_default_vpc_new_account.sh $account_number
           done
           done
