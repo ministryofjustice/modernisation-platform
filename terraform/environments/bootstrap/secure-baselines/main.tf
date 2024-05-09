@@ -30,7 +30,7 @@ module "baselines" {
     aws.ap-northeast-1 = aws.workspace-eu-west-2
     aws.ap-northeast-2 = aws.workspace-eu-west-2
     aws.ap-south-1     = aws.workspace-eu-west-2
-    aws.eu-west-3      = aws.workspace-eu-west-2
+    aws.eu-west-3      = aws.workspace-eu-west-3
     aws.ap-southeast-1 = aws.workspace-eu-west-2
     aws.ap-southeast-2 = aws.workspace-eu-west-2
     aws.ca-central-1   = aws.workspace-eu-west-2
