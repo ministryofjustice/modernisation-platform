@@ -82,6 +82,8 @@ data "aws_iam_policy_document" "member-access" {
       "ec2:CreateSubnet",
       "ec2:DeleteSubnet",
       "ec2:AssociateRouteTable",
+      "ec2:CreateRoute",
+      "ec2:DeleteRoute",
       "ec2:CreateRouteTable",
       "ec2:DeleteRouteTable",
       "ec2:CreateVpcEndpoint",
