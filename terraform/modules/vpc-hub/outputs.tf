@@ -13,6 +13,14 @@ output "tgw_subnet_ids" {
   value       = [for subnet in aws_subnet.transit-gateway : subnet.id]
 }
 
+output "network_acls" {
+  value = {
+    "public"  = aws_network_acl.public
+    "private" = aws_network_acl.private
+    "data"    = aws_network_acl.data
+  }
+}
+
 output "non_tgw_subnet_ids" {
   description = "Non-Transit Gateway subnet IDs (public, private, data)"
   value = concat([
