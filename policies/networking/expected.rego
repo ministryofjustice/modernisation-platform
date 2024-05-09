@@ -38,6 +38,7 @@ expected :=
           "planetfm-preproduction",
           "hmpps-oem-preproduction",
           "hmpps-domain-services-preproduction",
+          "delius-core-preproduction",
           "oasys-national-reporting-preproduction"
         ]
       }
@@ -144,6 +145,7 @@ expected :=
           "hmpps-oem-production",
           "digital-prison-reporting-production",
           "hmpps-domain-services-production",
+          "delius-core-production",
           "oasys-national-reporting-production"
         ]
       }
