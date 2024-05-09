@@ -4,8 +4,9 @@ data "aws_kms_key" "cloudtrail_key" {
   key_id   = "alias/s3-logging-cloudtrail"
 }
 
+#trivy:ignore:AVD-AWS-0136
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=b5ae2be29aaa29d644b6909af51acefdfaa80e14" # v7.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=2a59110767bd30e949b242818da7dbe72fe9481b" # v7.1.0
 
   providers = {
     # Default and replication regions
@@ -64,4 +65,7 @@ module "baselines" {
   cloudtrail_kms_key = data.aws_kms_key.cloudtrail_key.arn
   root_account_id    = local.root_account.master_account_id
   tags               = local.environments
+
+  # Regions to enable IMDSv2 in
+  enabled_imdsv2_regions = local.enabled_baseline_regions
 }

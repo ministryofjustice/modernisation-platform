@@ -1,48 +1,48 @@
 vulnerabilities:
-  - id: GHSA-m425-mq94-257g
-  - id: CVE-2017-20146
-  - id: CVE-2019-11253
-  - id: CVE-2020-8558
-  - id: CVE-2020-10675
-  - id: CVE-2020-15114
-    expired_at: 2024-08-20
-    statement: "Review in 6 months"
-  - id: CVE-2020-26160
-  - id: CVE-2020-35381
-  - id: CVE-2021-25741
-  - id: CVE-2021-30465
-  - id: CVE-2021-38561
-  - id: CVE-2021-43565
-  - id: CVE-2021-43816
-  - id: CVE-2022-1996
-  - id: CVE-2022-21698
-  - id: CVE-2022-23648
-  - id: CVE-2022-24778
-  - id: CVE-2022-27191
-  - id: CVE-2022-27664
-  - id: CVE-2022-32149
-  - id: CVE-2022-41723
-  - id: CVE-2023-3676
-  - id: CVE-2023-3955
-  - id: CVE-2023-5528
-  - id: CVE-2023-37788
-  - id: CVE-2023-39325
-  - id: CVE-2024-3154
-    expired_at: 2024-10-29
-    statement: "Review in 6 months; this one appeared to be Terratest related"
-  - id: CVE-2024-15114
-    expired_at: 2024-08-19
-    statement: "Review in 6 months"
-  - id: CVE-2024-21626
-    expired_at: 2024-08-19
-    statement: "Review in 6 months"
+- id: GHSA-m425-mq94-257g
+- id: CVE-2017-20146
+- id: CVE-2019-11253
+- id: CVE-2020-8558
+- id: CVE-2020-10675
+- id: CVE-2020-15114
+  expired_at: 2024-08-20
+  statement: "Review in 6 months"
+- id: CVE-2020-26160
+- id: CVE-2020-35381
+- id: CVE-2021-25741
+- id: CVE-2021-30465
+- id: CVE-2021-38561
+- id: CVE-2021-43565
+- id: CVE-2021-43816
+- id: CVE-2022-1996
+- id: CVE-2022-21698
+- id: CVE-2022-23648
+- id: CVE-2022-24778
+- id: CVE-2022-27191
+- id: CVE-2022-27664
+- id: CVE-2022-32149
+- id: CVE-2022-41723
+- id: CVE-2023-3676
+- id: CVE-2023-3955
+- id: CVE-2023-5528
+- id: CVE-2023-37788
+- id: CVE-2023-39325
+- id: CVE-2024-3154
+  expired_at: 2024-10-29
+  statement: "Review in 6 months; this one appeared to be Terratest related"
+- id: CVE-2024-15114
+  expired_at: 2024-08-19
+  statement: "Review in 6 months"
+- id: CVE-2024-21626
+  expired_at: 2024-08-19
+  statement: "Review in 6 months"
 
 misconfigurations:
-  - id: AVD-GIT-0001
-  - id: AVD-AWS-0031
-  - id: AVD-AWS-0039
-  - id: AVD-AWS-0057
-  
+- id: AVD-GIT-0001
+- id: AVD-AWS-0031
+- id: AVD-AWS-0039
+- id: AVD-AWS-0057
+
 secrets:
 
 licenses:
