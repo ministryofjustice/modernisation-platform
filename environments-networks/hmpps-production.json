@@ -16,6 +16,7 @@
           "delius-nextcloud-production",
           "nomis-combined-reporting-production",
           "nomis-data-hub-production",
+          "delius-core-production",
           "hmpps-intelligence-management-production",
           "corporate-staff-rostering-production",
           "planetfm-production",
