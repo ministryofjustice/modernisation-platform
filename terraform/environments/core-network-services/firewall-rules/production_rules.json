@@ -642,5 +642,12 @@
     "destination_ip": "${hmpps-production}",
     "destination_port": "1521",
     "protocol": "TCP"
+  },
+  "cp_to_mp_laa_production": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "1521",
+    "protocol": "TCP"
   }
 }
