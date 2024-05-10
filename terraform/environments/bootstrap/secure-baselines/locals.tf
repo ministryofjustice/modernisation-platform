@@ -8,6 +8,7 @@ locals {
     "eu-central-1", # Europe (Frankfurt)
     "eu-west-1",    # Europe (Ireland)
     "eu-west-2",    # Europe (London)
+    "eu-west-3",    # Europe (Paris)
     "us-east-1",    # US East (N. Virginia) (for global services)
   ]
   environments = {

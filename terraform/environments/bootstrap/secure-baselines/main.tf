@@ -17,6 +17,7 @@ module "baselines" {
     aws.eu-central-1 = aws.workspace-eu-central-1
     aws.eu-west-1    = aws.workspace-eu-west-1
     aws.eu-west-2    = aws.workspace-eu-west-2
+    aws.eu-west-3    = aws.workspace-eu-west-3
     aws.us-east-1    = aws.workspace-us-east-1
 
     # We're part of a Organization SCP that restricts regional usage, so we can't assume roles in non-restricted regions.
@@ -31,7 +32,6 @@ module "baselines" {
     aws.ap-northeast-1 = aws.workspace-eu-west-2
     aws.ap-northeast-2 = aws.workspace-eu-west-2
     aws.ap-south-1     = aws.workspace-eu-west-2
-    aws.eu-west-3      = aws.workspace-eu-west-2
     aws.ap-southeast-1 = aws.workspace-eu-west-2
     aws.ap-southeast-2 = aws.workspace-eu-west-2
     aws.ca-central-1   = aws.workspace-eu-west-2
