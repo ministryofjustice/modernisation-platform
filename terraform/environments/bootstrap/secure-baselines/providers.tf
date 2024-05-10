@@ -44,6 +44,16 @@ provider "aws" {
 }
 
 provider "aws" {
+  alias       = "workspace-eu-west-3"
+  region      = "eu-west-3"
+  max_retries = 100
+
+  assume_role {
+    role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
+  }
+}
+
+provider "aws" {
   alias       = "workspace-us-east-1"
   region      = "us-east-1"
   max_retries = 100
