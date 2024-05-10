@@ -43,7 +43,7 @@ SEPARATE macie.tf code
 # When logging in as administrator this is not needed but may be for our customers - yet to be fully determined.
 # Account name is MacieAccount. Publishes data every hour (choice are FIFTEEN_MINUTES, ONE_HOUR or SIX_HOURS).
 
-resource "aws_macie2_account" "MacieAccount" {
+resource "aws_macie2_account" "macieaccount" {
   finding_publishing_frequency = "ONE_HOUR"
   status                       = "ENABLED"
 }
@@ -60,7 +60,7 @@ resource "aws_macie2_classification_job" "test" {
   name     = "<an appropriate job name>"
   s3_job_definition {
     bucket_definitions {
-      account_id = ""data.aws_ssm_parameter.modernisation_platform_account_id.value""
+      account_id = "data.aws_ssm_parameter.modernisation_platform_account_id.value"
       buckets    = [
         data.aws_s3_bucket.bucket1.id,
         data.aws_s3_bucket.bucket2.id,
@@ -68,7 +68,7 @@ resource "aws_macie2_classification_job" "test" {
       ]
     }
   }
-  depends_on = [ aws_macie2_account.macieaccess ]
+  depends_on = [ aws_macie2_account.macieaccount ]
 }
 ```
 
