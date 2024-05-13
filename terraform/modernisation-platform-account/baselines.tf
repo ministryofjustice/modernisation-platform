@@ -65,5 +65,8 @@ module "baselines-modernisation-platform" {
 
   root_account_id = local.root_account.master_account_id
   tags            = local.tags
+
+  # Regions to enable IMDSv2 in
+  enabled_imdsv2_regions = local.enabled_baseline_regions
 }
 
