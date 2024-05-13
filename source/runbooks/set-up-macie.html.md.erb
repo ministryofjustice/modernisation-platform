@@ -19,25 +19,31 @@ Starting Macie with Terraform is possible and the instructions are shown below. 
 
 # Terraform code
 
-Below there is an example of how the items were set up in Cooker following the instructions listed here.
+Below there is an example of how the items were set up in both Example and Cooker following the instructions listed here.
 
 ## Example Terraform code
 
 There is one **pre-requisite**, for the code shown here, to allow this to work and run successfully. Make sure that the role for **MemberInfrastructureAccess has ace "macie2:*"** set. If this has not been set up correctly (by the Modernisation Platform Team) the terraform listed below will not work. If this is amended in the future, so that it is enabled globally, this comment will be removed.
 
-Another item is needed before the code below is run. This is the requirements to set up some data. It can be added to "platform_data.tf" or to "data.tf". This shown below in the code (based on example from cooker) and is needed to allow the likes of data.aws_s3_bucket.bucket1.id to work. I have shown bucket1 in the code below. 
+Another item is needed before the code below is run. This is the requirements to set up some data. It can be added to "platform_data.tf" or to "data.tf". This shown below in the code (based on example from example and cooker) and is needed to allow the likes of data.aws_s3_bucket.bucket1.id to work. I have shown bucket1 in the code below. 
 
-Full details of this creation, including information on the likes of job type, are shown in the code (macie.tf) in the modernisation-platform-environments repo for cooker. The appropriate environment account reference should be used rather than the "data.aws_ssm_parameter.modernisation_platform_account_id.value" shown below. If this data value isn't in place look on the code to see how it's set up. You may have something more appropriate set up. The comments can be removed but are included here to provide explanation. They are not shown in the cooker repository.
+Full details of this creation, including information on the likes of job type, are shown in the code (macie.tf) in the modernisation-platform-environments repo for example and cooker. The appropriate environment account reference should be used as shown below. If this data value isn't in place look on the code to see how it's set up. You may have something more appropriate set up. The comments can be removed but are included here to provide explanation. They are not shown in the example and cooker repositories.
 
-NEEDED IN data.tf of platform_data.tf
+BOTH the sections shown below are needed
+
+NEEDED IN data.tf (or platform_data.tf). In example and cooker they have been included in data.tf
+
 ```
 # For macie code
 data "aws_s3_bucket" "bucket1" {
    bucket = "config-20220407082146408700000002"
+   ...
+   ...
  }
  ```
 
 SEPARATE macie.tf code
+
 ```
 # Create macie account
 # When logging in as administrator this is not needed but may be for our customers - yet to be fully determined.
@@ -60,7 +66,7 @@ resource "aws_macie2_classification_job" "test" {
   name     = "<an appropriate job name>"
   s3_job_definition {
     bucket_definitions {
-      account_id = "data.aws_ssm_parameter.modernisation_platform_account_id.value"
+      account_id = local.environment_management.account_ids[terraform.workspace]
       buckets    = [
         data.aws_s3_bucket.bucket1.id,
         data.aws_s3_bucket.bucket2.id,
