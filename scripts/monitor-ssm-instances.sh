@@ -2,7 +2,7 @@
 
 #Set Values
 export AWS_PAGER=""
-regions="eu-central-1 eu-west-1 eu-west-2 eu-west-3 us-east-1"
+regions="eu-west-2"
 ROOT_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
 ROOT_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 ROOT_AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
@@ -25,8 +25,8 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIR
     for region in $regions; do
         #Set Values
         AWS_REGION=$region
-        account_name=$(aws iam list-account-aliases --query 'AccountAliases[*]' --output text)
-        account_id=$(aws sts get-caller-identity --query Account --output text)
+        account_name=$(jq -r '.account_ids | to_entries[] | select(.value==\"$account_id\").key')
+        # account_id=$(aws sts get-caller-identity --query Account --output text)
 
         #Check for SSM managed instances
         echo "Searching for SSM managed instances in $account_name $region"
@@ -47,6 +47,3 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIR
     export AWS_SESSION_TOKEN=$ROOT_AWS_SESSION_TOKEN
     rm credentials.json
 done
-
-# # Print csv file to console
-# cat ssm-managed-instances.csv
