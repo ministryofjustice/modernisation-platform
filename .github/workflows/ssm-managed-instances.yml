@@ -1,0 +1,44 @@
+name: "SSM Managed Instances Check"
+
+on:
+  push:
+    branches:
+      - feature/2415-monitor-ssm-instances
+  workflow_dispatch:
+
+env:
+  AWS_REGION: "eu-west-2"
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+    monitor-ssm-instances:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+    
+          - name: Set Account Number
+            run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+            
+          - name: Configure AWS Credentials
+            uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+            with:
+              role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+              role-session-name: githubactionsrolesession
+              aws-region: ${{ env.AWS_REGION }}
+    
+          - name: Run SSM Monitoring Script
+            run: bash ./scripts/monitor-ssm-instances.sh
+
+          - name: Upload ssm-managed-instances.csv file
+            uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
+            with:
+              name: ssm-managed-instances.csv
+              path: ./ssm-managed-instances.csv
+              retention-days: 1
