@@ -307,12 +307,14 @@ data "aws_iam_policy_document" "member-access-us-east" {
   statement {
     effect = "Deny"
     actions = [
+      "iam:AddClientIDToOpenIDConnectProvider",
       "iam:AddUserToGroup",
       "iam:AttachGroupPolicy",
       "iam:AttachUserPolicy",
       "iam:CreateAccountAlias",
       "iam:CreateGroup",
       "iam:CreateLoginProfile",
+      "iam:CreateOpenIDConnectProvider",
       "iam:CreateSAMLProvider",
       "iam:CreateUser",
       "iam:CreateVirtualMFADevice",
@@ -322,6 +324,7 @@ data "aws_iam_policy_document" "member-access-us-east" {
       "iam:DeleteGroup",
       "iam:DeleteGroupPolicy",
       "iam:DeleteLoginProfile",
+      "iam:DeleteOpenIDConnectProvider",
       "iam:DeleteSAMLProvider",
       "iam:DeleteUser",
       "iam:DeleteUserPermissionsBoundary",
@@ -330,11 +333,13 @@ data "aws_iam_policy_document" "member-access-us-east" {
       "iam:DetachGroupPolicy",
       "iam:DetachUserPolicy",
       "iam:EnableMFADevice",
+      "iam:RemoveClientIDFromOpenIDConnectProvider",
       "iam:RemoveUserFromGroup",
       "iam:ResyncMFADevice",
       "iam:UpdateAccountPasswordPolicy",
       "iam:UpdateGroup",
       "iam:UpdateLoginProfile",
+      "iam:UpdateOpenIDConnectProviderThumbprint",
       "iam:UpdateSAMLProvider",
       "iam:UpdateUser"
     ]
