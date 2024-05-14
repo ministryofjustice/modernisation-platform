@@ -26,17 +26,17 @@ resource "github_repository" "default" {
   topics                 = concat(local.topics, var.topics)
 
   security_and_analysis {
-    dynamic "secret_scanning" {
-      for_each = var.visibility == "public" ? [1] : []
-      content {
-        status = "enabled"
-      }
+    dynamic "advanced_security" {
+      for_each = var.visibility == "public" ? [] : [1]
+        content {
+          status = "disabled"
+        }
+     }
+    secret_scanning {
+      status = var.visibility == "public" ? "enabled" : "disabled"
     }
-    dynamic "secret_scanning_push_protection" {
-      for_each = var.visibility == "public" ? [1] : []
-      content {
-        status = "enabled"
-      }
+    secret_scanning_push_protection {
+      status = var.visibility == "public" ? "enabled" : "disabled"
     }
   }
 
