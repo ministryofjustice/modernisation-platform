@@ -23,7 +23,7 @@ Below there is an example of how the items were set up in both Example and Cooke
 
 ## Example Terraform code
 
-There is one **pre-requisite**, for the code shown here, to allow this to work and run successfully. Make sure that the role for **MemberInfrastructureAccess has ace "macie2:*"** set. If this has not been set up correctly (by the Modernisation Platform Team) the terraform listed below will not work. If this is amended in the future, so that it is enabled globally, this comment will be removed.
+There is one **pre-requisite**, for the code shown here, to allow this to work and run successfully. Make sure that the role for **MemberInfrastructureAccess has "macie2:*" in it**. If this has not been set up correctly (by the Modernisation Platform Team) the terraform listed below will not work. If this is amended in the future, so that it is enabled globally, this comment will be removed.
 
 Another item is needed before the code below is run. This is the requirements to set up some data. It can be added to "platform_data.tf" or to "data.tf". This shown below in the code (based on example from Cooker) and is needed to allow the likes of "data.aws_s3_bucket.bucket1.id" to work. I have shown bucket1 in the code below. 
 
