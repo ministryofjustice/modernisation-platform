@@ -180,13 +180,11 @@ data "aws_iam_policy_document" "member-access" {
     effect = "Deny"
     actions = [
       "ec2:CreateVpcPeeringConnection",
-      "iam:AddClientIDToOpenIDConnectProvider",
       "iam:AddUserToGroup",
       "iam:AttachGroupPolicy",
       "iam:CreateAccountAlias",
       "iam:CreateGroup",
       "iam:CreateLoginProfile",
-      "iam:CreateOpenIDConnectProvider",
       "iam:CreateSAMLProvider",
       "iam:CreateVirtualMFADevice",
       "iam:DeactivateMFADevice",
@@ -195,19 +193,16 @@ data "aws_iam_policy_document" "member-access" {
       "iam:DeleteGroup",
       "iam:DeleteGroupPolicy",
       "iam:DeleteLoginProfile",
-      "iam:DeleteOpenIDConnectProvider",
       "iam:DeleteSAMLProvider",
       "iam:DeleteUserPermissionsBoundary",
       "iam:DeleteVirtualMFADevice",
       "iam:DetachGroupPolicy",
       "iam:EnableMFADevice",
-      "iam:RemoveClientIDFromOpenIDConnectProvider",
       "iam:RemoveUserFromGroup",
       "iam:ResyncMFADevice",
       "iam:UpdateAccountPasswordPolicy",
       "iam:UpdateGroup",
       "iam:UpdateLoginProfile",
-      "iam:UpdateOpenIDConnectProviderThumbprint",
       "iam:UpdateSAMLProvider",
       "iam:UpdateUser"
     ]
