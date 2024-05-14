@@ -1,0 +1,39 @@
+---
+owner_slack: "#modernisation-platform"
+title: Security Monitoring
+last_reviewed_on: 2024-05-14
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+## Introduction
+
+We actively monitor for security threats using various tools including AWS Security Hub, AWS GuardDuty, AWS Inspector, AWS Config and Security Operations Centre (SOC) Palo Alto Cortex XIAM.
+
+## Raising a new security issue
+
+New issues should be raised in the internal repository - [modernisation-platform-security](https://github.com/ministryofjustice/modernisation-platform-security) and added to the Modernisation Platform GitHub project. Please note this is for security issues (misconfigurations or practices which need addressing) rather than security incidents.  Security incidents should follow our [incident management process](manage-an-incident.html).
+
+## Security Monitoring
+
+| Monitoring | Description | How findings are reported | How to raise an issue
+| --- | --- | --- | --- |
+| AWS Security Hub | AWS security tool installed on all organisation accounts and configured in the Modernisation Platform Security Baselines repository. | Platform alerts go into the #modernisation-platform-low-priority-alarms Slack channel. User application findings can be viewed in the application account or via the organisation-security account. | Platform issues should be raised as above, user issues should be raised with the application team. |
+| AWS GuardDuty | AWS security tool installed on all organisation accounts and configured in the Modernisation Platform Security Baselines repository. | Platform alerts go into Security Hub. User application findings can be viewed in the application account or via the organisation-security account. | Platform issues should be raised as above, user issues should be raised with the application team. |
+| AWS Config | AWS security tool installed on all organisation accounts and configured in the Modernisation Platform Security Baselines repository. | Platform alerts go into Security Hub. User application findings can be viewed in the application account or via the organisation-security account. | Platform issues should be raised as above, user issues should be raised with the application team. |
+| AWS Inspector | AWS security tool installed on all organisation accounts and configured in the Modernisation Platform Security Baselines repository. | Platform alerts go into Security Hub. User application findings can be viewed in the application account or via the organisation-security account. | Platform issues should be raised as above, user issues should be raised with the application team. |
+| SOC - Cortex XIAM | Intelligent AI driven tool which collates various logs including Cloudtrail, VPC Flowlogs and Route53 logs to detect security issues and incidents. | Findings are sent to the Modernisation Platform group email address. | Platform issues should be raised as above, user issues should be raised with the application team. |
+
+### Future Plans
+
+We have work on our roadmap to integrate these tools to raise issues in GitHub directly so that we can manage security issues centrally in one place and not need to manually raise them.
