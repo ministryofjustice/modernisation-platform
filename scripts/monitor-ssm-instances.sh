@@ -26,6 +26,7 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIR
         #Set Values
         AWS_REGION=$region
         account_name=$(jq -r ".account_ids | to_entries[] | select(.value==\"$account_id\").key")
+        echo "The account name is $account_name"
         # account_id=$(aws sts get-caller-identity --query Account --output text)
 
         #Check for SSM managed instances
