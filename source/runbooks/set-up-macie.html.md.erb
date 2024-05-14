@@ -9,7 +9,7 @@ review_in: 6 months
 
 # Introduction
 
-It is relatively easy to set up Macie for users and it need to be done on an account by account basis. **NOTE** Macie ONLY looks at S3 buckets and checks their access information so it will not look at databases or EC2 settings, for example.
+It is relatively easy to set up Macie for users and it needs to be done on an account by account basis. **NOTE** Macie ONLY looks at S3 buckets and it will not look at databases or EC2 settings, for example.
 
 To do this you should connect to the environment on which you want to create Macie. Note, for accounts with 4 versions (development, test, preproduction, production) you will need to create Macie on each one where you want to use macie. There is an AWS video explaining the set up and use of macie [demo](https://www.youtube.com/watch?v=8piwEQJJXdo).
 
@@ -25,13 +25,13 @@ Below there is an example of how the items were set up in both Example and Cooke
 
 There is one **pre-requisite**, for the code shown here, to allow this to work and run successfully. Make sure that the role for **MemberInfrastructureAccess has ace "macie2:*"** set. If this has not been set up correctly (by the Modernisation Platform Team) the terraform listed below will not work. If this is amended in the future, so that it is enabled globally, this comment will be removed.
 
-Another item is needed before the code below is run. This is the requirements to set up some data. It can be added to "platform_data.tf" or to "data.tf". This shown below in the code (based on example from example and cooker) and is needed to allow the likes of data.aws_s3_bucket.bucket1.id to work. I have shown bucket1 in the code below. 
+Another item is needed before the code below is run. This is the requirements to set up some data. It can be added to "platform_data.tf" or to "data.tf". This shown below in the code (based on example from Cooker) and is needed to allow the likes of "data.aws_s3_bucket.bucket1.id" to work. I have shown bucket1 in the code below. 
 
-Full details of this creation, including information on the likes of job type, are shown in the code (macie.tf) in the modernisation-platform-environments repo for example and cooker. The appropriate environment account reference should be used as shown below. If this data value isn't in place look on the code to see how it's set up. You may have something more appropriate set up. The comments can be removed but are included here to provide explanation. They are not shown in the example and cooker repositories.
+Full details of this creation, including information on the likes of job type, are shown in the code (macie.tf) in the modernisation-platform-environments repo for Example and Cooker. The comments can be removed but are included here to provide explanation. They are not shown in the Example and Cooker repositories.
 
 BOTH the sections shown below are needed
 
-NEEDED IN data.tf (or platform_data.tf). In example and cooker they have been included in data.tf
+NEEDED IN data.tf (or platform_data.tf). In Example and Cooker they have been included in data.tf
 
 ```
 # For macie code
@@ -46,7 +46,6 @@ SEPARATE macie.tf code
 
 ```
 # Create macie account
-# When logging in as administrator this is not needed but may be for our customers - yet to be fully determined.
 # Account name is MacieAccount. Publishes data every hour (choice are FIFTEEN_MINUTES, ONE_HOUR or SIX_HOURS).
 
 resource "aws_macie2_account" "macieaccount" {
@@ -83,21 +82,3 @@ Further information can be found in the links below.
 Set up a [Macie account](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/macie2_account)
 
 Creating a [Macie job](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/macie2_classification_job)
-
-# How to set up Macie jobs
-
-Jobs can be set up on the console quite simply. There is a message about not having an S3 bucket to push the changes to but that can be ignored for the most part. It is suggested that you crete one. To do this you will need to add some code or amend that which is in place. The document [here](https://repost.aws/knowledge-center/macie-s3-kms-permission) explains what is needed. Most importantly ensure that the correct arn is in place on both the S3 and HMS key files as well as following the instructions shown.
-
-Under get started there is an option to create a job. Specify the buckets if only connecting to one account but pick the criteria if more that one account is going to be looked at. Once set work through each of the screens.
-
-If you want something to _run regularly (daily, weekly or monthly)_ pick that option on screen 3, otherwise select a _one-time_ job.
-
-On screen 5 you can select custom data identifiers but these need to be set up first. Picking the option to set these up will open a new screen.
-
-Screen 6 shows allow lists. Again they need to be set up beforehand but can be created through another screen.
-
-The 7th screen makes you enter a job name and, if you want, add tags. The job name **MUST** be entered. You will not be able to move on without setting the job name.
-
-The final screen lists the selected buckets and gives (under the free trial at least) an estimated cost. You can also amend any of the previous settings here.
-
-If you list the jobs you can see if it is running and the results will appear on the Findings screen once it completes. Note, it may take some time to give results. On our example buckets, which are small, it takes over 15 minutes at least initially.
