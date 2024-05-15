@@ -12,6 +12,7 @@ module "iam" {
 #tfsec:ignore:aws-iam-enforce-mfa
 module "collaborators_group" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
+  #checkov:skip=CKV_TF_2:Module registry does not support tags
   source  = "terraform-aws-modules/iam/aws//modules/iam-group-with-policies"
   version = "~> 5.0"
   name    = "collaborators"
