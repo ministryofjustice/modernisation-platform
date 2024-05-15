@@ -169,7 +169,7 @@ main() {
           teams=$github_action_reviewers
         else
           # If github_action_reviewers wasn't provided, get environment GitHub team slugs from member access array instead
-          teams=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .access[].github_slug' $json_file)
+          teams=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .access[] | select(.github_action_reviewer=="true") | .github_slug' $json_file)
         fi
 
         echo "Teams for $environment: $teams"

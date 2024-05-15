@@ -9,7 +9,8 @@
         {
           "github_slug": "hmpps-migration",
           "level": "sandbox",
-          "nuke": "exclude"
+          "nuke": "exclude",
+          "github_action_reviewer" : "true"
         },
         {
           "github_slug": "hmpps-dba",
@@ -19,7 +20,8 @@
         {
           "github_slug": "unilink",
           "level": "developer",
-          "nuke": "exclude"
+          "nuke": "exclude",
+          "github_action_reviewer" : "true"
         }
       ]
     },
