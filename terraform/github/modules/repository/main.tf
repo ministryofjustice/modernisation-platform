@@ -28,10 +28,10 @@ resource "github_repository" "default" {
   security_and_analysis {
     dynamic "advanced_security" {
       for_each = var.visibility == "public" ? [] : [1]
-        content {
-          status = "disabled"
-        }
-     }
+      content {
+        status = "disabled"
+      }
+    }
     secret_scanning {
       status = var.visibility == "public" ? "enabled" : "disabled"
     }
