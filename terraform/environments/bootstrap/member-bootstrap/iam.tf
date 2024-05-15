@@ -115,7 +115,6 @@ data "aws_iam_policy_document" "member-access" {
       "ec2:*Spot*",
       "ec2:*InternetGateway*",
       "ec2:*NatGateway*",
-
       "ecr-public:*",
       "ecr:*",
       "ecs:*",
@@ -136,6 +135,7 @@ data "aws_iam_policy_document" "member-access" {
       "kms:*",
       "lambda:*",
       "logs:*",
+      "macie2:*",
       "organizations:Describe*",
       "organizations:List*",
       "oam:*",
