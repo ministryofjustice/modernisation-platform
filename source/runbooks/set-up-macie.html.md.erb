@@ -1,0 +1,68 @@
+---
+owner_slack: "#modernisation-platform"
+title: Set Up Macie
+last_reviewed_on: 2024-04-18
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+# Introduction
+
+It is relatively easy to set up Macie for users and it needs to be done on an account by account basis. **NOTE Macie ONLY looks at S3 buckets and it will not look at databases or EC2 settings**, for example.
+
+There is an AWS video explaining the set up and use of macie [demo](https://www.youtube.com/watch?v=8piwEQJJXdo) which you can watch.
+
+AWS also have a brief outline of the purpose of [Macie](https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html). Check the documentation to to see if it is suitable.
+
+Starting Macie with Terraform is possible and the instructions are shown below. I have also listed the details of setting up jobs. The example only shows a few of the many items that can be included. Details from Terraform are shown below the example code.
+
+# Terraform code
+
+Below there is an example of how the items were set up in Example following the instructions listed here.
+
+## Example Terraform code
+
+The MemberInfrastructureAccess was amended to include "macie2:*" so no other user access is required. All users can access the Amazon Macie through the system by following the code below.
+
+
+Full details of this creation, including information on the likes of job type, are shown in the code (macie.tf) in the modernisation-platform-environments repo for Example. The comments can be removed but are included here to provide explanation. They are not shown in the Example repository.
+
+```
+# Create macie account
+# Account name is MacieAccount. Publishes data every hour (choice are FIFTEEN_MINUTES, ONE_HOUR or SIX_HOURS).
+
+resource "aws_macie2_account" "macieaccount" {
+  finding_publishing_frequency = "ONE_HOUR"
+  status                       = "ENABLED"
+}
+
+# Now create a job
+# Job type options are ONE-TIME and SCHEDULED. If scheduled is chosen you need to select a frequency using schedule_frequency of daily_schedule, weekly_schedule or monthly_schedule
+# The buckets list should be replaced but a list of buckets to examine. This could be limited to those in the account you are connected to or others to which you have access.
+# Below there is a limited list of those from example shown.
+# There are many other job options available and these should be looked at in terrform [job creation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/macie2_classification_job)
+
+
+resource "aws_macie2_classification_job" "test" {
+  job_type = "ONE_TIME"
+  name     = "<an appropriate job name>"
+  s3_job_definition {
+    bucket_definitions {
+      account_id = local.environment_management.account_ids[terraform.workspace]
+      buckets    = [
+        data.aws_s3_bucket.bucket1.id,
+        data.aws_s3_bucket.bucket2.id,
+        data.aws_s3_bucket.bucket3.id,
+      ]
+    }
+  }
+  depends_on = [ aws_macie2_account.macieaccount ]
+}
+```
+
+Further information can be found in the links below.
+
+Set up a [Macie account](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/macie2_account)
+
+Creating a [Macie job](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/macie2_classification_job)
