@@ -844,7 +844,7 @@ data "aws_iam_policy_document" "instance-management-document" {
     resources = ["*"]
     condition {
       test     = "StringEquals"
-      variable = "secretsmanager:ResourceTag/instance-access-policy"
+      variable = "secretsmanager:ResourceTag/instance-management-policy"
       values   = ["full"]
     }
   }
