@@ -836,6 +836,20 @@ data "aws_iam_policy_document" "instance-management-document" {
   }
 
   statement {
+    sid    = "SecretsManagerPut"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:PutSecretValue",
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "secretsmanager:ResourceTag/instance-access-policy"
+      values   = ["full"]
+    }
+  }
+
+  statement {
     sid    = "snsAllow"
     effect = "Allow"
     actions = [
