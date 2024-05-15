@@ -45,7 +45,7 @@ Once you have been [set up as a collaborator](../runbooks/adding-collaborators.h
 |sandbox|Admin role to perform most AWS actions via the console| Used by engineers to make development easier in some situations, only allowed in the development account
 |migration|Role with developer and AWS migration services permissions| Used by engineers to migrate applications, will be removed before application goes into production
 |instance-access|Role for login access to EC2 instances and secret access controlled by instance-access-policy resource tag| Used by application support teams.
-|instance-management|Role for use by instance management with permissions for EC2 and RDS instances and all secrets| Used by database or EC2 administrators  to migrate services and perform tasks.
+|instance-management|Role for use by instance management with permissions for EC2 and RDS instances and all secrets| Used by database or EC2 administrators  to migrate services and perform tasks.| instance-management-policy resource tag on secrets can give permissions to put secrets
 |security-audit|Role with AWS managed SecurityAudit policy | Used by members of security and audit teams.
 
 You can see the accounts and roles assigned to you [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/collaborators.json)
@@ -121,6 +121,10 @@ The `instance-access` role allows restricted access based on the `instance-acces
 |SecretsManager Secret|undefined|No access to secret|
 |SecretsManager Secret|none|No access to secret|
 |SecretsManager Secret|limited|Read-only access to secret|
+|SecretsManager Secret|full|Read-Write access to secret|
+
+The `instance-management` role allows restricted access to secrets based on the `instance-management-policy` resource tag:
+|SecretsManager Secret|undefined|Read-only access to secret|
 |SecretsManager Secret|full|Read-Write access to secret|
 
 1. Start a basic Session Manager session
