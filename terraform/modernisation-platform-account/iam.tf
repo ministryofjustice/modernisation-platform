@@ -1,7 +1,7 @@
 #tfsec:ignore:aws-iam-no-policy-wildcards
 #tfsec:ignore:aws-iam-enforce-mfa
 module "iam" {
-  source        = "github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins?ref=9ba93858510a46312a36cd40a2afae2eedf68ca5" # v2.0.4
+  source        = "github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins?ref=ed65a526a2bcd687b47e18988a6c0edead771636" # v2.0.5
   account_alias = "moj-modernisation-platform"
 }
 
@@ -12,6 +12,7 @@ module "iam" {
 #tfsec:ignore:aws-iam-enforce-mfa
 module "collaborators_group" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
+  #checkov:skip=CKV_TF_2:Module registry does not support tags
   source  = "terraform-aws-modules/iam/aws//modules/iam-group-with-policies"
   version = "~> 5.0"
   name    = "collaborators"

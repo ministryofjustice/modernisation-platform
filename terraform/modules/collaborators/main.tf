@@ -13,6 +13,7 @@ resource "time_sleep" "wait_30_seconds" {
 # Create each user
 module "iam_user" {
   # checkov:skip=CKV_TF_1:
+  # checkov:skip=CKV_TF_2:
   source                        = "terraform-aws-modules/iam/aws//modules/iam-user"
   version                       = "~> 5.0"
   name                          = var.username
