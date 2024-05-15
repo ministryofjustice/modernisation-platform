@@ -9,13 +9,13 @@ review_in: 6 months
 
 # Introduction
 
-It is relatively easy to set up Macie for users and it needs to be done on an account by account basis. **NOTE** Macie ONLY looks at S3 buckets and it will not look at databases or EC2 settings, for example.
+It is relatively easy to set up Macie for users and it needs to be done on an account by account basis. **NOTE Macie ONLY looks at S3 buckets and it will not look at databases or EC2 settings**, for example.
 
-To do this you should connect to the environment on which you want to create Macie. Note, for accounts with 4 versions (development, test, preproduction, production) you will need to create Macie on each one where you want to use macie. There is an AWS video explaining the set up and use of macie [demo](https://www.youtube.com/watch?v=8piwEQJJXdo).
+To do this you should connect to the environment on which you want to create Macie. Note, for accounts with 4 versions (development, test, preproduction, production) you will need to create Macie on each one where you want to use macie. There is an AWS video explaining the set up and use of macie [demo](https://www.youtube.com/watch?v=8piwEQJJXdo) which you can watch.
 
-AWS also have a brief outline of the purpose of [Macie](https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html) which can be checked to see if this is suitable.
+AWS also have a brief outline of the purpose of [Macie](https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html). Check the documentation to to see if it is suitable.
 
-Starting Macie with Terraform is possible and the instructions are shown below. I have also listed the details of setting up jobs. it may be beneficial to set up jobs manually due to the items that can be included. The example only shows a few of the many items that can be included.
+Starting Macie with Terraform is possible and the instructions are shown below. I have also listed the details of setting up jobs. it may be beneficial to set up jobs manually due to the items that can be included. The example only shows a few of the many items that can be included. Details from Terraform are shown below the example code.
 
 # Terraform code
 
@@ -23,13 +23,13 @@ Below there is an example of how the items were set up in both Example and Cooke
 
 ## Example Terraform code
 
-There is one **pre-requisite**, for the code shown here, to allow this to work and run successfully. Make sure that the role for **MemberInfrastructureAccess has "macie2:*" in it**. If this has not been set up correctly (by the Modernisation Platform Team) the terraform listed below will not work. If this is amended in the future, so that it is enabled globally, this comment will be removed.
+The MemberInfrastructureAccess was amended to include "macie2:*" so no other user access is required. All users can access the Amazon Macie through the system by following the code below.
 
-Another item is needed before the code below is run. This is the requirements to set up some data. It can be added to "platform_data.tf" or to "data.tf". This shown below in the code (based on example from Cooker) and is needed to allow the likes of "data.aws_s3_bucket.bucket1.id" to work. I have shown bucket1 in the code below. 
+One item is needed before the code below is run. This is the requirement to set up some access to the S3 buckets you want to check. It can be added to "platform_data.tf" or to "data.tf". This is shown below in the code (based on example from Cooker) and is needed to allow the likes of "data.aws_s3_bucket.bucket1.id" to work. I have shown bucket1 in the code below. 
 
 Full details of this creation, including information on the likes of job type, are shown in the code (macie.tf) in the modernisation-platform-environments repo for Example and Cooker. The comments can be removed but are included here to provide explanation. They are not shown in the Example and Cooker repositories.
 
-BOTH the sections shown below are needed
+**BOTH** the sections shown below are needed
 
 NEEDED IN data.tf (or platform_data.tf). In Example and Cooker they have been included in data.tf
 
