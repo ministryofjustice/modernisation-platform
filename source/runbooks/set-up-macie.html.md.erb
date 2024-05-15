@@ -25,13 +25,13 @@ Below there is an example of how the items were set up in Example following the 
 
 The MemberInfrastructureAccess was amended to include "macie2:*" so no other user access is required. All users can access the Amazon Macie through the system by following the code below.
 
-One item is needed before the code below is run. This is the requirement to set up some access to the S3 buckets you want to check. It can be added to "platform_data.tf" or to "data.tf". This is shown below in the code (based on an example from Example) and is needed to allow the likes of "data.aws_s3_bucket.bucket1.id" to work. I have shown bucket1 in the code below. 
+One item is needed before the code below is run. This is the requirement to set up some access to the S3 buckets you want to check. It can be added to "data.tf". This is shown below in the code (based on an example from Example) and is needed to allow the likes of "data.aws_s3_bucket.bucket1.id" to work. I have shown bucket1 in the code below. 
 
 Full details of this creation, including information on the likes of job type, are shown in the code (macie.tf) in the modernisation-platform-environments repo for Example. The comments can be removed but are included here to provide explanation. They are not shown in the Example repository.
 
 **BOTH** the sections shown below are needed
 
-NEEDED IN data.tf (or platform_data.tf). In Example they have been included in data.tf
+NEEDED IN data.tf. Below we can see the first one in Example.
 
 ```
 # For macie code
