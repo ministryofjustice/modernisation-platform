@@ -56,10 +56,6 @@ See [#5957](https://github.com/ministryofjustice/modernisation-platform/pull/595
 
 By default all teams listed in the access blocks for an environment can approve the corresponding Github action runs.
 
-You can override this by defining `github_action_reviewers` as an attribute for the application.
-
-`"github_action_reviewers" : ["<owner-name>"],` Replace \<owner-name\> with a GitHub team such as `modernisation-platform`. This will set the GitHub team slugs that can approve the Github action runs for every environment and will override the default behaviour.
-
 Alternatively, if you wish to specify the GitHub team slugs that can approve the Github action runs for a specific environment, you can define `github_action_reviewer` as an attribute for that environment by setting `"github_action_reviewer" : "true"` in the access block for that environment/team.
 
 ```json
