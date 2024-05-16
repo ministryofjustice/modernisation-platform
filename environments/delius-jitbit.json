@@ -6,8 +6,7 @@
       "access": [
         {
           "github_slug": "hmpps-migration",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "developer",
         },
         {
           "github_slug": "hmpps-delius-jitbit-devs",
