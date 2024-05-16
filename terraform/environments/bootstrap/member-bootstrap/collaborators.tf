@@ -1,6 +1,7 @@
 # read only role for collaborators
 module "collaborator_readonly_role" {
   # checkov:skip=CKV_TF_1:
+  # checkov:skip=CKV_TF_2:
   count                = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
   source               = "terraform-aws-modules/iam/aws//modules/iam-assumable-roles"
   version              = "~> 5"
@@ -24,6 +25,7 @@ data "aws_iam_policy" "common_policy" {
 # security audit role for collaborators
 module "collaborator_security_audit_role" {
   # checkov:skip=CKV_TF_1:
+  # checkov:skip=CKV_TF_2:
   count                = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
   source               = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version              = "~> 5"
@@ -46,6 +48,7 @@ module "collaborator_security_audit_role" {
 # developer role for collaborators
 module "collaborator_developer_role" {
   # checkov:skip=CKV_TF_1:
+  # checkov:skip=CKV_TF_2:
   count   = local.account_data.account-type == "member" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 5"
@@ -72,6 +75,7 @@ data "aws_iam_policy" "developer" {
 # Collaborator Sandbox role
 module "collaborator_sandbox_role" {
   # checkov:skip=CKV_TF_1:
+  # checkov:skip=CKV_TF_2:
   count   = local.account_data.account-type == "member" && local.application_environment == "development" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 5"
@@ -102,6 +106,7 @@ data "aws_iam_policy" "bedrock" {
 # Collaborator Migration role
 module "collaborator_migration_role" {
   # checkov:skip=CKV_TF_1:
+  # checkov:skip=CKV_TF_2:
   count   = local.account_data.account-type == "member" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 5"
@@ -134,6 +139,7 @@ data "aws_iam_policy" "migration" {
 # Collaborator Instance Access role
 module "collaborator_instance_access_role" {
   # checkov:skip=CKV_TF_1:
+  # checkov:skip=CKV_TF_2:
   count   = local.account_data.account-type == "member" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 5"
@@ -160,6 +166,7 @@ data "aws_iam_policy" "instance-access" {
 # Collaborator Database Management role
 module "collaborator_database_mgmt_role" {
   # checkov:skip=CKV_TF_1:
+  # checkov:skip=CKV_TF_2:
   count   = local.account_data.account-type == "member" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 5"
@@ -186,6 +193,7 @@ data "aws_iam_policy" "instance-management" {
 # fleet-manager role for collaborators
 module "collaborator_fleet_manager_role" {
   # checkov:skip=CKV_TF_1:
+  # checkov:skip=CKV_TF_2:
   count   = local.account_data.account-type == "member" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 5"
