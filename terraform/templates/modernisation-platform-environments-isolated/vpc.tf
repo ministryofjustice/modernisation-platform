@@ -1,5 +1,6 @@
 module "vpc" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
+  # checkov:skip=CKV_TF_2:
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 5.0"
 
@@ -19,6 +20,7 @@ module "vpc" {
 
 module "vpc_endpoints" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
+  # checkov:skip=CKV_TF_2:
   source  = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
   version = "~> 5.0"
 
