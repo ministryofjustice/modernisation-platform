@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "dps-ims-tech",
+          "github_slug": "modernisation-platform",
           "level": "developer"
         }
       ]
@@ -14,7 +14,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "dps-ims-tech",
+          "github_slug": "modernisation-platform",
           "level": "developer"
         }
       ]
