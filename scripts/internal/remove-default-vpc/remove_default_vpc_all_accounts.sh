@@ -1,5 +1,5 @@
 #!/bin/bash
-regions="eu-central-1 eu-west-1 eu-west-2 us-east-1"
+regions="eu-central-1 eu-west-1 eu-west-2 us-east-1 eu-west-3"
 ROOT_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
 ROOT_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 ROOT_AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
