@@ -652,9 +652,9 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
 # AWS Shield Advanced SRT (Shield Response Team) support role
 module "shield_response_team_role" {
   # checkov:skip=CKV_TF_1:
-  # checkov:skip=CKV_TF_2:
-  source                = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version               = "~> 5"
+
+  source                = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb"
+
   trusted_role_services = ["drt.shield.amazonaws.com"]
 
   create_role       = true
