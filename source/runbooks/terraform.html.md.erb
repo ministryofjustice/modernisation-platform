@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Terraform
-last_reviewed_on: 2023-11-16
+last_reviewed_on: 2024-05-16
 review_in: 6 months
 ---
 
@@ -64,12 +64,14 @@ After pasting the credentials, use the following steps to run terraform in the `
 
 ```bash
 $ cd terraform/environments/nomis
-$ terraform init
+$ terraform init -backend-config=assume_role={role_arn=\"arn:aws:iam::<modernisation-platform account number>:role/modernisation-account-terraform-state-member-access\"}
 $ terraform workspace list
 $ terraform workspace select nomis-development
 $ terraform plan
 $ terraform apply
 ```
+
+NOTE, you are required to replace `<modernisation-platform account number>` with the actual account number of the `modernisation-platform` account in order to run the `terraform init` command.
 
 >If you encounter `Access Denied` error, try running `rm -rf .terraform` and rerun `terraform init`
 
