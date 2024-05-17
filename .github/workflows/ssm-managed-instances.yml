@@ -1,9 +1,6 @@
 name: "SSM Managed Instances Check"
 
 on:
-  push:
-    branches:
-      - feature/2415-monitor-ssm-instances
   workflow_dispatch:
 
 env:
