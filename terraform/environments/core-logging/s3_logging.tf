@@ -32,7 +32,8 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail" {
     principals {
       type = "AWS"
       identifiers = [
-        data.aws_caller_identity.current.account_id
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+
       ]
     }
   }
@@ -69,15 +70,10 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail" {
     resources = ["*"]
     principals {
       type        = "Service"
-      identifiers = ["logging.s3.amazonaws.com"]
-    }
-    principals {
-      type        = "Service"
-      identifiers = ["cloudtrail.amazonaws.com"]
-    }
-    principals {
-      type        = "Service"
-      identifiers = ["logs.amazonaws.com"]
+      identifiers = [
+        "logging.s3.amazonaws.com",
+        "cloudtrail.amazonaws.com",
+        "logs.amazonaws.com"]
     }
   }
   statement {
@@ -168,16 +164,16 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail_replication" {
   }
 }
 
-module "cloudtrail-s3-replication-role" {
-  source             = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role?ref=3b8a2945c1d266cc0ec2b21edb7f186b6574bda7" # v4.0.0
-  buckets            = [module.s3-bucket-cloudtrail.bucket.arn]
-  replication_bucket = "modernisation-platform-logs-cloudtrail-replication"
-  suffix_name        = "-cloudtrail"
-  tags               = local.tags
-}
+# module "cloudtrail-s3-replication-role" {
+#   source             = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role?ref=3b8a2945c1d266cc0ec2b21edb7f186b6574bda7" # v4.0.0
+#   buckets            = [module.s3-bucket-cloudtrail.bucket.arn]
+#   replication_bucket = "modernisation-platform-logs-cloudtrail-replication"
+#   suffix_name        = "-cloudtrail"
+#   tags               = local.tags
+# }
 
 module "s3-bucket-cloudtrail" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=8688bc15a08fbf5a4f4eef9b7433c5a417df8df1" # v7.0.0
+  source = "/Users/khatra.farah/moj-repo/modernisation-platform-terraform-s3-bucket" # v7.0.0
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
@@ -222,7 +218,7 @@ module "s3-bucket-cloudtrail" {
     }
   ]
   log_bucket           = module.s3-bucket-cloudtrail-logging.bucket.id
-  replication_role_arn = module.cloudtrail-s3-replication-role.role.arn
+  # replication_role_arn = module.cloudtrail-s3-replication-role.role.arn
   tags                 = local.tags
 }
 # Allow access to the bucket from the MoJ root account
