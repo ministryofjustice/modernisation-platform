@@ -18,8 +18,8 @@ github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.8 h1:gwdGHxiV5
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.8/go.mod h1:C9Glc6N50uIJqPPeL6N3spW/wzGyeQsQmecnKS7DTR4=
 github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.28.9 h1:qH8ovDAQkGLgYh/QEEKx/uSDL1vCIuVB2VIZJsVr4dA=
 github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.28.9/go.mod h1:5mMk0DgUgaHlcqtN65fNyZI0ZDX3i9Cw+nwq75HKB3U=
-github.com/aws/aws-sdk-go-v2/service/securityhub v1.48.1 h1:qJM49bHLO+hdY1m9N+A2MhQEIXm5S7jW3DDgc06fIv4=
-github.com/aws/aws-sdk-go-v2/service/securityhub v1.48.1/go.mod h1:+UHsbWOvJL6540wx6zQqmXa4u9ChviLZ/ifXRcdB0Q4=
+github.com/aws/aws-sdk-go-v2/service/securityhub v1.48.3 h1:dNsxpxbzyuE8LN9XtIpmoGqxVALWcS4sfI4THDwFdQk=
+github.com/aws/aws-sdk-go-v2/service/securityhub v1.48.3/go.mod h1:Ypax6FsjjJFd0fojZ85aErP+hwfVaXW4gsInyTbwL6Q=
 github.com/aws/aws-sdk-go-v2/service/sso v1.20.7 h1:sdPpNCoUijc0ntu024ZdjrXh3mB9rud5SjmE7djIfK4=
 github.com/aws/aws-sdk-go-v2/service/sso v1.20.7/go.mod h1:8RMeDMFTkkDQ5LvaaAykdkNVVR0eQxGWm8CD6uBvd1M=
 github.com/aws/aws-sdk-go-v2/service/ssooidc v1.24.1 h1:/vljM1ZswUEIRHWVxEqDhLzOSGmDcstW2zeTt23Ipf0=
