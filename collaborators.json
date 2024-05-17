@@ -74,11 +74,11 @@
         },
         {
           "account-name": "ppud-preproduction",
-          "access": "migration"
+          "access": "developer"
         },
         {
           "account-name": "ppud-production",
-          "access": "migration"
+          "access": "developer"
         }
       ]
     },
@@ -92,11 +92,11 @@
         },
         {
           "account-name": "ppud-preproduction",
-          "access": "migration"
+          "access": "developer"
         },
         {
           "account-name": "ppud-production",
-          "access": "migration"
+          "access": "developer"
         }
       ]
     },
@@ -110,11 +110,11 @@
         },
         {
           "account-name": "ppud-preproduction",
-          "access": "migration"
+          "access": "developer"
         },
         {
           "account-name": "ppud-production",
-          "access": "migration"
+          "access": "developer"
         }
       ]
     },
