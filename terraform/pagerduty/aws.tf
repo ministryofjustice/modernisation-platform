@@ -64,6 +64,8 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     hmpps_domain_services_prod_alarms    = pagerduty_service_integration.hmpps_domain_services_prod_cloudwatch.integration_key,
     hmpps_domain_services_nonprod_alarms = pagerduty_service_integration.hmpps_domain_services_nonprod_cloudwatch.integration_key
     delius_core_nonprod_alarms           = pagerduty_service_integration.delius_core_nonprod_cloudwatch.integration_key
+    delius_nextcloud_nonprod_alarms      = pagerduty_service_integration.delius_nextcloud_nonprod_cloudwatch.integration_key
+    delius_nextcloud_prod_alarms         = pagerduty_service_integration.delius_nextcloud_prod_cloudwatch.integration_key
   })
 }
 
