@@ -1,8 +1,8 @@
 module "vpc" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
 
+  source = "github.com/terraform-aws-modules/terraform-aws-vpc?ref=25322b6b6be69db6cca7f167d7b0e5327156a595" # v5.8.1
+  
   name            = "${local.application_name}-${local.environment}"
   azs             = local.availability_zones
   cidr            = local.application_data.accounts[local.environment].vpc_cidr
@@ -19,8 +19,8 @@ module "vpc" {
 
 module "vpc_endpoints" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
-  source  = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
-  version = "~> 5.0"
+
+  source = "github.com/terraform-aws-modules/terraform-aws-vpc//modules/vpc-endpoints?ref=25322b6b6be69db6cca7f167d7b0e5327156a595" # v5.8.1
 
   security_group_ids = [aws_security_group.vpc_endpoints.id]
   subnet_ids         = module.vpc.private_subnets
