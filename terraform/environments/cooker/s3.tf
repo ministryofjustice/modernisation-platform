@@ -1,6 +1,6 @@
 module "s3-bucket" {
     # checkov:skip=CKV_TF_1:
-    source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v7.0.0"
+    source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v7.1.0"
 
   bucket_prefix                            = "s3-security-testing-bucket"
   versioning_enabled                       = true
