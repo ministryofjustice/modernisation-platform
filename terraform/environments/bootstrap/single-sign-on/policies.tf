@@ -194,6 +194,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "cloudwatch:DisableAlarmActions",
       "cloudwatch:EnableAlarmActions",
       "cloudwatch:PutDashboard",
+      "cloudwatch:PutMetricAlarm",
       "cloudwatch:List*",
       "cloudwatch:DeleteDashboards",
       "codebuild:ImportSourceCredentials",
