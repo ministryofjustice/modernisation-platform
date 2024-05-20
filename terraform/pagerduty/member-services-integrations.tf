@@ -1912,10 +1912,10 @@ resource "pagerduty_service_integration" "delius_nextcloud_nonprod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "delius_nextcloud_nonprod_connection" {
-  source_id = pagerduty_service.delius_nextcloud_nonprod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C07409ALASY" 
+  source_id         = pagerduty_service.delius_nextcloud_nonprod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C07409ALASY"
   notification_type = "responder"
   config {
     events = [
@@ -1956,10 +1956,10 @@ resource "pagerduty_service_integration" "delius_nextcloud_prod_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "delius_nextcloud_prod_connection" {
-  source_id = pagerduty_service.delius_nextcloud_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C073H8H5Q0P" 
+  source_id         = pagerduty_service.delius_nextcloud_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C073H8H5Q0P"
   notification_type = "responder"
   config {
     events = [

@@ -658,7 +658,7 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
 module "shield_response_team_role" {
   # checkov:skip=CKV_TF_1:
 
-  source                = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
 
   trusted_role_services = ["drt.shield.amazonaws.com"]
 
