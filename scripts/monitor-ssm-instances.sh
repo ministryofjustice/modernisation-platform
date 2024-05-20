@@ -27,7 +27,6 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIR
         AWS_REGION=$region
         account_name=$(jq -r ".account_ids | to_entries[] | select(.value==\"$account_id\").key" <<< $ENVIRONMENT_MANAGEMENT)
         echo "The account name is $account_name"
-        # account_id=$(aws sts get-caller-identity --query Account --output text)
 
         #Check for SSM managed instances
         echo "Searching for SSM managed instances in $account_name $region"
@@ -35,8 +34,12 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIR
         do
             instance_name=$(aws ec2 describe-instances --instance-ids $instance --query 'Reservations[*].Instances[*].[Tags[?Key==`Name`].Value]' --output text)
             managed=$(aws ssm describe-instance-information  --filters "Key=InstanceIds,Values=$instance" --query 'InstanceInformationList[*].[AssociationStatus]' --output text)
+            platform_details=$()
+            ami_id=$(aws ec2 describe-instances --instance-ids $instance --query 'Reservations[*].Instances[*].ImageId' --output text)
             if [[ "$managed" != "Success" ]]; then 
-                managed="Not Managed";
+                managed="Not Managed"
+                ami_name=$(aws ec2 describe-images --image-ids $image_id --query 'Images[*].Name' --output text)
+                ami_location=$(aws ec2 describe-images --image-ids $image_id --query 'Images[*].ImageLocation' --output text)
             else
                 managed="Managed"
             fi
