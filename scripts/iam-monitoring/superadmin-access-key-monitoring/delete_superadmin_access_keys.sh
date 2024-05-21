@@ -18,7 +18,7 @@ while read -r username lastactivity; do
         # Get the last used date of the access key
         last_used=$(aws iam get-access-key-last-used --access-key-id "$access_key_id" --query 'AccessKeyLastUsed.LastUsedDate' --output text)
         # Check if the access key was never used or has not been used within the threshold
-        if [ "$last_used" == "None" ] || [ "$(gdate -d "$last_used" +%s)" -le "$(gdate -d "now - $threshold days" +%s)" ]; then
+        if [ "$last_used" == "None" ] || [ "$(date -d "$last_used" +%s)" -le "$(date -d "now - $threshold days" +%s)" ]; then
           # Delete the inactive access key
           aws iam delete-access-key --access-key-id $access_key_id --user-name $username
           inactive_users+=" $username"
