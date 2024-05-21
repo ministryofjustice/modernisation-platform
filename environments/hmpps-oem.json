@@ -6,8 +6,7 @@
       "access": [
         {
           "github_slug": "studio-webops",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "developer",
         },
         {
           "github_slug": "hmpps-migration",
