@@ -11,8 +11,8 @@ def process_users(user_list_file):
     Args:
         user_list_file (str): The path to the file containing the list of inactive users.
     """
-    api_key = os.environ["api_key"]
-    template_id = os.environ["template_id"]
+    api_key = os.environ["API_KEY"]
+    template_id = os.environ["TEMPLATE_ID"]
     client = NotificationsAPIClient(api_key=api_key)
 
     with open(user_list_file, 'r') as file:
