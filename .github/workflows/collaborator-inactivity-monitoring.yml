@@ -33,12 +33,12 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Fetch Inactive Collaborators
-        run: bash ./scripts/internal/collaborators-inactivity-notification/check_inactive_users.sh
+        run: bash ./scripts/iam-monitoring/collaborators-inactivity-monitoring/check_inactive_users.sh
         env:
           threshold: 120
 
       - name: Disable Console Login
-        run: bash ./scripts/internal/collaborators-inactivity-notification/disable_user_credentials.sh
+        run: bash ./scripts/iam-monitoring/collaborators-inactivity-monitoring/disable_user_credentials.sh
 
   notify-inactive-collaborators:
     runs-on: ubuntu-latest
@@ -66,7 +66,7 @@ jobs:
         run: pip install notifications-python-client
     
       - name: Fetch Inactive Collaborators
-        run: bash ./scripts/internal/collaborators-inactivity-notification/check_inactive_users.sh
+        run: bash ./scripts/iam-monitoring/collaborators-inactivity-monitoring/check_inactive_users.sh
         env:
           threshold: 90
           SKIP_DISABLED_CONSOLE_USERS: true
@@ -74,7 +74,7 @@ jobs:
       - name: Send Notification to Collaborators
         run: |
           if [ -f final_users.list ]; then
-            python ./scripts/internal/collaborators-inactivity-notification/notification.py collaborators.json final_users.list
+            python ./scripts/iam-monitoring/collaborators-inactivity-monitoring/notification.py collaborators.json final_users.list
           else
             echo "There are no inactive collaborator users with an inactivity period of 90 days or longer"
           fi
@@ -96,9 +96,9 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Fetch Inactive Collaborators
-        run: bash ./scripts/internal/collaborators-inactivity-notification/check_inactive_users.sh
+        run: bash ./scripts/iam-monitoring/collaborators-inactivity-monitoring/check_inactive_users.sh
         env:
           threshold: 180
 
       - name: Create Deletion Issue
-        run: bash ./scripts/internal/collaborators-inactivity-notification/collaborator_user_deletion_issue.sh
+        run: bash ./scripts/iam-monitoring/collaborators-inactivity-monitoring/collaborator_user_deletion_issue.sh
