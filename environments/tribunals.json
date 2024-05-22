@@ -6,7 +6,11 @@
       "access": [
         {
           "github_slug": "dts-legacy",
-          "level": "developer"
+          "level": "migration"
+        },
+        {
+          "github_slug": "dts-legacy",
+          "level": "data-engineer"
         }
       ]
     },
@@ -15,7 +19,11 @@
       "access": [
         {
           "github_slug": "dts-legacy",
-          "level": "developer"
+          "level": "migration"
+        },
+        {
+          "github_slug": "dts-legacy",
+          "level": "data-engineer"
         }
       ]
     },
@@ -24,7 +32,11 @@
       "access": [
         {
           "github_slug": "dts-legacy",
-          "level": "developer"
+          "level": "migration"
+        },
+        {
+          "github_slug": "dts-legacy",
+          "level": "data-engineer"
         }
       ]
     }
