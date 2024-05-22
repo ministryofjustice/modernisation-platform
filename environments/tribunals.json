@@ -7,6 +7,10 @@
         {
           "github_slug": "dts-legacy",
           "level": "developer"
+        },
+        {
+          "github_slug": "dts-legacy",
+          "level": "migration"
         }
       ]
     },
@@ -16,6 +20,10 @@
         {
           "github_slug": "dts-legacy",
           "level": "developer"
+        },
+        {
+          "github_slug": "dts-legacy",
+          "level": "migration"
         }
       ]
     },
@@ -25,6 +33,10 @@
         {
           "github_slug": "dts-legacy",
           "level": "developer"
+        },
+        {
+          "github_slug": "dts-legacy",
+          "level": "migration"
         }
       ]
     }
