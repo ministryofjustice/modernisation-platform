@@ -246,7 +246,7 @@ module "github-oidc" {
   source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=82f546bd5f002674138a2ccdade7d7618c6758b3" # v3.0.0
   additional_permissions      = data.aws_iam_policy_document.oidc-deny-specific-actions.json
   additional_managed_policies = ["arn:aws:iam::aws:policy/AdministratorAccess"]
-  github_repositories         = ["ministryofjustice/modernisation-platform:*", "ministryofjustice/modernisation-platform-ami-builds:*"]
+  github_repositories         = ["ministryofjustice/modernisation-platform:*", "ministryofjustice/modernisation-platform-ami-builds:*", "ministryofjustice/modernisation-platform-security:*"]
   tags_common                 = { "Name" = format("%s-oidc", terraform.workspace) }
   tags_prefix                 = ""
 }
