@@ -401,49 +401,49 @@
   "mojo_to_csr_production_http": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${ hmpps-production-general-private-subnets}",
+    "destination_ip": "${hmpps-production-general-private-subnets}",
     "destination_port": "80",
     "protocol": "TCP"
   },
   "mojo_to_csr_production_app_core_7770": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${ hmpps-production-general-private-subnets}",
+    "destination_ip": "${hmpps-production-general-private-subnets}",
     "destination_port": "7770",
     "protocol": "TCP"
   },
   "mojo_to_csr_production_app_core_7771": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${ hmpps-production-general-private-subnets}",
+    "destination_ip": "${hmpps-production-general-private-subnets}",
     "destination_port": "7771",
     "protocol": "TCP"
   },
   "mojo_to_csr_production_app_custom_7780": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${ hmpps-production-general-private-subnets}",
+    "destination_ip": "${hmpps-production-general-private-subnets}",
     "destination_port": "7780",
     "protocol": "TCP"
   },
   "mojo_to_csr_production_app_custom_7781": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${ hmpps-production-general-private-subnets}",
+    "destination_ip": "${hmpps-production-general-private-subnets}",
     "destination_port": "7781",
     "protocol": "TCP"
   },
   "mojo_to_csr_production_2109": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${ hmpps-production-general-private-subnets}",
+    "destination_ip": "${hmpps-production-general-private-subnets}",
     "destination_port": "2109",
     "protocol": "TCP"
   },
   "mojo_to_csr_production_45054": {
     "action": "PASS",
     "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${ hmpps-production-general-private-subnets}",
+    "destination_ip": "${hmpps-production-general-private-subnets}",
     "destination_port": "45054",
     "protocol": "TCP"
   },
