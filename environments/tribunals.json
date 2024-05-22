@@ -10,7 +10,7 @@
         },
         {
           "github_slug": "dts-legacy",
-          "level": "data-engineer"
+          "level": "migration"
         }
       ]
     },
@@ -23,7 +23,7 @@
         },
         {
           "github_slug": "dts-legacy",
-          "level": "data-engineer"
+          "level": "migration"
         }
       ]
     },
@@ -36,7 +36,7 @@
         },
         {
           "github_slug": "dts-legacy",
-          "level": "data-engineer"
+          "level": "migration"
         }
       ]
     }
