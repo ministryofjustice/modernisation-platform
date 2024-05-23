@@ -161,14 +161,10 @@ main() {
       account_type=$(jq -r '."account-type"' ${json_file})
       if [ "${account_type}" = "member" ]
       then
-        
-        # Get environment GitHub team slugs from github_action_reviewers array
-        github_action_reviewers=$(jq -r 'try (.github_action_reviewers[])' $json_file)
-        # If github_action_reviewers is not empty, use it as the teams
-         if ([ ${#github_action_reviewers[@]} -gt 0 ] && [ -n "$github_action_reviewers" ]); then
-          teams=$github_action_reviewers
-        else
-          # If github_action_reviewers wasn't provided, get environment GitHub team slugs from member access array instead
+        # Check for teams that have the github_action_reviewer flag set to true
+        teams=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .access[] | select(.github_action_reviewer=="true") | .github_slug' $json_file)
+        # if teams is empty (none of the teams have the github_action_reviewer flag), get all teams
+        if [ -z "$teams" ]; then
           teams=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .access[].github_slug' $json_file)
         fi
 
