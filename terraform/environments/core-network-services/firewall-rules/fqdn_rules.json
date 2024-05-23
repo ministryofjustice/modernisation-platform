@@ -16,7 +16,11 @@
     "saas40.kaseya.net",
     "stats.microsoft.com",
     ".delivery.mp.microsoft.com",
-    "wustat.windows.com"
+    "wustat.windows.com",
+    "ccms-opa.dev.legalservices.gov.uk",
+    "ccms-opa.uat.legalservices.gov.uk",
+    "ccms-opa.stg.legalservices.gov.uk",
+    "ccms-opa.legalservices.gov.uk"
   ],
   "fw_home_net_ips": ["10.26.0.0/16", "10.27.0.0/16"]
 }
