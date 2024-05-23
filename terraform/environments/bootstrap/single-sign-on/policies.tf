@@ -1015,7 +1015,8 @@ data "aws_iam_policy_document" "reporting-operations" {
       "kinesisanalytics:List*",
       "kinesisanalytics:Describe*",
       "kinesisanalytics:DiscoverInputSchema",
-      "kinesisanalytics:RollbackApplication"
+      "kinesisanalytics:RollbackApplication",
+      "lambda:InvokeFunction"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
