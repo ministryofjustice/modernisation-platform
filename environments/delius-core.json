@@ -89,6 +89,7 @@
     "ministryofjustice/hmpps-delius-operational-automation",
     "ministryofjustice/hmpps-openldap-container",
     "ministryofjustice/hmpps-delius-docker-images",
-    "ministryofjustice/hmpps-pwm"
+    "ministryofjustice/hmpps-pwm",
+    "ministryofjustice/ndelius-um"
   ]
 }
