@@ -61,6 +61,10 @@ resource "aws_macie2_classification_job" "test" {
 }
 ```
 
+Note - it may be necessary to add the following to the above terraform in the event of an apply error:
+
+  job_status = "RUNNING"
+
 Further information can be found in the links below.
 
 Set up a [Macie account](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/macie2_account)
