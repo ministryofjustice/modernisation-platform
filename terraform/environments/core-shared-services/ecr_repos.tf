@@ -1137,3 +1137,28 @@ module "observability_platform_grafana_api_key_rotator_ecr_repo" {
 
   tags_common = local.tags
 }
+
+# ECR repo holding the hmpps jitbit application container image
+module "delius_nextcloud_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "delius-nextcloud"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["delius-nextcloud-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-nextcloud-test"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-nextcloud-preproduction"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-nextcloud-production"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-nextcloud-development"]}:role/modernisation-platform-oidc-cicd",
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["delius-nextcloud-development"],
+    local.environment_management.account_ids["delius-nextcloud-test"],
+    local.environment_management.account_ids["delius-nextcloud-preproduction"],
+    local.environment_management.account_ids["delius-nextcloud-production"]
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
