@@ -374,11 +374,13 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "glue:BatchDeleteTable",
       "glue:CreateDatabase",
       "glue:CreatePartition",
+      "glue:CreateSession",
       "glue:CreateTable",
       "glue:DeleteDatabase",
       "glue:DeletePartition",
       "glue:DeleteTable",
       "glue:*JobRun",
+      "glue:RunStatement",
       "glue:UpdateDatabase",
       "glue:UpdatePartition",
       "glue:UpdateTable",
@@ -409,7 +411,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
     sid       = ""
     effect    = "Allow"
     actions   = ["iam:PassRole"]
-    resources = ["arn:aws:iam::${local.environment_management.account_ids["analytical-platform-data-production"]}:role/data-first-data-science"]
+    resources = ["arn:aws:iam::${local.environment_management.account_ids["analytical-platform-data-production"]}:role/data-first-data-science","arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/glue-notebook-role-tf"]
   }
 }
 
