@@ -1,55 +1,44 @@
-name: "Reusable Bootstrap Plan for Sprinkler"
+name: Reusable Configurations for Bootstrap Plan
 
-on:
-  workflow_call:
-    
-    inputs:
-      aws_region:
-        required: true
-        type: string
-      tf_workspace:
-        required: true
-        type: string
-    secrets:
-      tf_state_bucket:
-        required: true
-      aws_account_number:
-        required: true
-      environment_management:
-        required: true
+on: workflow_call
+
+env:
+  TF_IN_AUTOMATION: true
+  AWS_REGION: "eu-west-2"
+  ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
+  TF_WORKSPACE: "sprinkler-development"
+
+permissions:
+  id-token: write
+  contents: read
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   delegate-access-plan:
     runs-on: ubuntu-latest
-    env:
-      TF_IN_AUTOMATION: true
-      AWS_REGION: ${{ inputs.aws_region }}
-      ENVIRONMENT_MANAGEMENT: ${{ secrets.environment_management }}
-      TF_WORKSPACE: ${{ inputs.tf_workspace }}
-      ACCOUNT_NUMBER: ${{ secrets.aws_account_number }}
-
-    permissions:
-      id-token: write
-      contents: read
-
-    defaults:
-      run:
-        shell: bash
-
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.1
+      - name: Set Account Number
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v4.0.2
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
-      - uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v3.1.1
         with:
           terraform_version: "~1"
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
       - run: bash scripts/terraform-plan.sh terraform/environments/bootstrap/delegate-access
+
+
+
+
 
 
 

@@ -1,13 +1,6 @@
-name: "Bootstrap Plan for Sprinkler"
+name: Bootstrap plan for Sprinkler
 
 on:
-  pull_request:
-    branches:
-      - feature/6888-reusable-terraform-plan-apply
-    paths:
-      - 'terraform/environments/bootstrap/**'
-      - 'terraform/modules/iam_baseline/**'
-      - '.github/workflows/bootstrap-sprinkler.yml'
   push:
     branches:
       - feature/6888-reusable-terraform-plan-apply
@@ -15,17 +8,35 @@ on:
       - 'terraform/environments/bootstrap/**'
       - 'terraform/modules/iam_baseline/**'
       - '.github/workflows/bootstrap-sprinkler.yml'
+  pull_request:
+    branches:
+      - main
+      - feature/6888-reusable-terraform-plan-apply
+    paths:
+      - 'terraform/environments/bootstrap/**'
+      - 'terraform/modules/iam_baseline/**'
+      - '.github/workflows/bootstrap-sprinkler.yml'
   workflow_dispatch:
 
+env:
+  TF_IN_AUTOMATION: true
+  AWS_REGION: "eu-west-2"
+  ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
+  TF_WORKSPACE: "sprinkler-development"
+
+permissions:
+  id-token: write
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
 jobs:
-  call-reusable-bootstrap:
+  delegate-access-plan:
     uses: ./.github/workflows/bootstrap-sprinkler-test.yml
-    with:
-      aws_region: "eu-west-2"
-      tf_workspace: "sprinkler-development"
-    secrets:
-      tf_state_bucket: ${{ secrets.TF_STATE_BUCKET }}
-      aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
-      environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
+
+
+
 
 
