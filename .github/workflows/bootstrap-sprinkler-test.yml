@@ -20,17 +20,3 @@ jobs:
       tf_state_bucket: ${{ secrets.TF_STATE_BUCKET }}
       aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
