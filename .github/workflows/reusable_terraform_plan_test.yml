@@ -12,7 +12,7 @@ on:
       terraform_workspace:
         required: true
         type: string
-      account_number:
+      aws_account_number:
         required: true
         type: string
       pipeline_github_token:
@@ -33,6 +33,9 @@ jobs:
   terraform_plan:
     needs: setup
     runs-on: ubuntu-latest  # Define the runner for the terraform_plan job
+    env:
+      AWS_ACCOUNT_NUMBER: ${{ inputs.aws_account_number }}
+      PIPELINE_GITHUB_TOKEN: ${{ inputs.pipeline_github_token }}
     steps:
       - uses: actions/checkout@v2
       - name: Configure AWS Credentials
@@ -53,6 +56,8 @@ jobs:
         with:
           name: terraform-plan-output
           path: plan-output.log
+
+
 
 
 

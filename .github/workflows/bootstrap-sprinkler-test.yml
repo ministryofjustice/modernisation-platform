@@ -18,11 +18,9 @@ jobs:
     uses: ./.github/workflows/reusable_terraform_plan_test.yml
     with:
       aws_region: 'eu-west-2'
-      environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-      terraform_workspace: 'sprinkler-development'
-      account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
-      pipeline_github_token: ${{ secrets.MODERNISATION_PLATFORM_CI_USER_ENVIRONMENTS_REPO_PAT }}
     secrets: inherit
+
+
 
 
 
