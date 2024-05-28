@@ -7,9 +7,6 @@ on:
       aws_region:
         required: true
         type: string
-      environment_management:
-        required: true
-        type: string
       tf_workspace:
         required: true
         type: string
@@ -47,6 +44,7 @@ jobs:
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
       - run: bash scripts/terraform-plan.sh terraform/environments/bootstrap/delegate-access
+
 
 
 
