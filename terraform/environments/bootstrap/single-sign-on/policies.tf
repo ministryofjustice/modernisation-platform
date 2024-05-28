@@ -838,7 +838,17 @@ data "aws_iam_policy_document" "instance-management-document" {
       "sso:ListDirectoryAssociations",
       "support:*"
     ]
+    condition {
+      test = "StringLike"
+      variable = "ec2:ResourceTag/owner"
+      
+      values = [
+        "&{aws:PrincipalTag/github_team}"
+        ]
+      }
+    
     resources = ["*"]
+    
   }
 
   statement {
