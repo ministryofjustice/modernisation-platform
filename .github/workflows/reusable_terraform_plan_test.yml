@@ -15,6 +15,9 @@ on:
       account_number:
         required: true
         type: string
+      pipeline_github_token:
+        required: true
+        type: string
 
 jobs:
   setup:
@@ -38,7 +41,8 @@ jobs:
           role-to-assume: "arn:aws:iam::${{ needs.setup.outputs.account_number }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
           aws-region: ${{ inputs.aws_region }}
-      - uses: hashicorp/setup-terraform@v1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: "~1"
           terraform_wrapper: false
@@ -49,6 +53,9 @@ jobs:
         with:
           name: terraform-plan-output
           path: plan-output.log
+
+
+
 
 
 
