@@ -1,4 +1,4 @@
-name: "Bootstrap Plan for Sprinkler"
+name: Bootstrap Plan for Sprinkler
 
 on:
   pull_request:
@@ -33,9 +33,11 @@ jobs:
 
   call-reusable-workflow:
     needs: setup
-    uses: ./.github/workflows/reusable_terraform_plan_test.yml@feature/6888-reusable-terraform-plan-apply
+    uses: ./.github/workflows/reusable_terraform_plan_test.yml
     with:
       aws_region: ${{ env.AWS_REGION }}
       environment_management: ${{ env.ENVIRONMENT_MANAGEMENT }}
       terraform_workspace: ${{ env.TF_WORKSPACE }}
       account_number: ${{ needs.setup.outputs.account_number }}
+
+      
