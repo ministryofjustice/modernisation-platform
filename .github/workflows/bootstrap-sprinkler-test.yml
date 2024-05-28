@@ -1,42 +1,15 @@
-name: Bootstrap plan for Sprinkler
+# .github/workflows/bootstrap-caller.yml
+name: "Bootstrap Plan Caller for Sprinkler"
 
 on:
   push:
     branches:
       - feature/6888-reusable-terraform-plan-apply
-    paths:
-      - 'terraform/environments/bootstrap/**'
-      - 'terraform/modules/iam_baseline/**'
-      - '.github/workflows/bootstrap-sprinkler.yml'
-  pull_request:
-    branches:
-      - main
-      - feature/6888-reusable-terraform-plan-apply
-    paths:
-      - 'terraform/environments/bootstrap/**'
-      - 'terraform/modules/iam_baseline/**'
-      - '.github/workflows/bootstrap-sprinkler.yml'
-  workflow_dispatch:
-
-env:
-  TF_IN_AUTOMATION: true
-  AWS_REGION: "eu-west-2"
-  ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-  TF_WORKSPACE: "sprinkler-development"
-
-permissions:
-  id-token: write
-  contents: read
-
-defaults:
-  run:
-    shell: bash
 
 jobs:
-  delegate-access-plan:
-    uses: ./.github/workflows/bootstrap-sprinkler-test.yml
-
-
-
-
-
+  call-bootstrap:
+    uses: ./.github/workflows/reusable_terraform_plan_test.yml
+    with:
+      aws_region: "eu-west-2"
+      environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
+      tf_workspace: "sprinkler-development"
