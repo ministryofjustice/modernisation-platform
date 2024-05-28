@@ -2,6 +2,7 @@ name: "Reusable Bootstrap Plan for Sprinkler"
 
 on:
   workflow_call:
+    
     inputs:
       aws_region:
         required: true
@@ -49,6 +50,7 @@ jobs:
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
       - run: bash scripts/terraform-plan.sh terraform/environments/bootstrap/delegate-access
+
 
 
 
