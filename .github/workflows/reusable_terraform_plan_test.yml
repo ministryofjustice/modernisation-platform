@@ -18,20 +18,20 @@ on:
 
 jobs:
   setup:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Define the runner for the setup job
     outputs:
       account_number: ${{ steps.extract_account.outputs.account_number }}
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@v2
       - name: Set Account Number
         id: extract_account
         run: echo "::set-output name=account_number::$(jq -r -e '.aws_organizations_root_account_id' <<< ${{ inputs.environment_management }})"
 
   terraform_plan:
     needs: setup
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Define the runner for the terraform_plan job
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@v2
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -49,6 +49,7 @@ jobs:
         with:
           name: terraform-plan-output
           path: plan-output.log
+
 
 
 

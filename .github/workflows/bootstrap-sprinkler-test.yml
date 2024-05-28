@@ -11,7 +11,6 @@ on:
   push:
     branches:
       - feature/6888-reusable-terraform-plan-apply
-
   workflow_dispatch:
 
 env:
@@ -22,13 +21,14 @@ env:
 
 jobs:
   call-reusable-workflow:
-    runs-on: ubuntu-latest
     uses: ./.github/workflows/reusable_terraform_plan_test.yml
     with:
       aws_region: ${{ env.AWS_REGION }}
       environment_management: ${{ env.ENVIRONMENT_MANAGEMENT }}
       terraform_workspace: ${{ env.TF_WORKSPACE }}
       account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
+    secrets: inherit
+
 
 
 
