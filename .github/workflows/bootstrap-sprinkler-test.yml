@@ -39,4 +39,3 @@ jobs:
       environment_management: ${{ env.ENVIRONMENT_MANAGEMENT }}
       terraform_workspace: ${{ env.TF_WORKSPACE }}
       account_number: ${{ needs.setup.outputs.account_number }}
-
