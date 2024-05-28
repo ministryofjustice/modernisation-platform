@@ -1,0 +1,40 @@
+name: "Reusable Terraform Actions"
+
+on:
+  workflow_call:
+    inputs:
+      aws_region:
+        required: true
+        type: string
+      environment_management:
+        required: true
+        type: string
+      terraform_workspace:
+        required: true
+        type: string
+      account_number:
+        required: true
+        type: string
+
+jobs:
+  terraform_plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
+        with:
+          role-to-assume: "arn:aws:iam::${{ inputs.account_number }}:role/ModernisationPlatformGithubActionsRole"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ inputs.aws_region }}
+      - uses: hashicorp/setup-terraform@651471c36a6092792c552e8b1bef71e592b462d8
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
+      - run: bash scripts/terraform-plan.sh terraform/environments/bootstrap/delegate-access
+      - name: Archive Plan Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: terraform-plan-output
+          path: plan-output.log
