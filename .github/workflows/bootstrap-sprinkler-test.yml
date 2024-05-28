@@ -11,7 +11,7 @@ on:
   push:
     branches:
       - feature/6888-reusable-terraform-plan-apply
-      
+
   workflow_dispatch:
 
 env:
