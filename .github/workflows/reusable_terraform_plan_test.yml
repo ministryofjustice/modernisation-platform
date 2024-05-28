@@ -1,4 +1,4 @@
-name: Reusable Terraform Plan and Apply
+name: "Reusable Bootstrap Plan for Sprinkler"
 
 on:
   workflow_call:
@@ -6,56 +6,53 @@ on:
       aws_region:
         required: true
         type: string
-      environment_management:
+      tf_workspace:
         required: true
         type: string
-      terraform_workspace:
+    secrets:
+      tf_state_bucket:
         required: true
-        type: string
       aws_account_number:
         required: true
-        type: string
-      pipeline_github_token:
+      environment_management:
         required: true
-        type: string
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest  # Define the runner for the setup job
-    outputs:
-      account_number: ${{ steps.extract_account.outputs.account_number }}
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set Account Number
-        id: extract_account
-        run: echo "::set-output name=account_number::$(jq -r -e '.aws_organizations_root_account_id' <<< ${{ inputs.environment_management }})"
-
-  terraform_plan:
-    needs: setup
-    runs-on: ubuntu-latest  # Define the runner for the terraform_plan job
+  delegate-access-plan:
+    runs-on: ubuntu-latest
     env:
-      AWS_ACCOUNT_NUMBER: ${{ inputs.aws_account_number }}
-      PIPELINE_GITHUB_TOKEN: ${{ inputs.pipeline_github_token }}
+      TF_IN_AUTOMATION: true
+      AWS_REGION: ${{ inputs.aws_region }}
+      ENVIRONMENT_MANAGEMENT: ${{ secrets.environment_management }}
+      TF_WORKSPACE: ${{ inputs.tf_workspace }}
+      ACCOUNT_NUMBER: ${{ secrets.aws_account_number }}
+
+    permissions:
+      id-token: write
+      contents: read
+
+    defaults:
+      run:
+        shell: bash
+
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: "arn:aws:iam::${{ needs.setup.outputs.account_number }}:role/ModernisationPlatformGithubActionsRole"
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
-          aws-region: ${{ inputs.aws_region }}
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+          aws-region: ${{ env.AWS_REGION }}
+      - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "~1"
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
       - run: bash scripts/terraform-plan.sh terraform/environments/bootstrap/delegate-access
-      - name: Archive Plan Results
-        uses: actions/upload-artifact@v2
-        with:
-          name: terraform-plan-output
-          path: plan-output.log
+
+
+
+
 
 
 
