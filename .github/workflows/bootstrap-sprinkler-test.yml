@@ -3,7 +3,6 @@ name: "Bootstrap Plan for Sprinkler"
 on:
   pull_request:
     branches:
-      - main
       - feature/6888-reusable-terraform-plan-apply
     paths:
       - 'terraform/environments/bootstrap/**'
@@ -12,6 +11,7 @@ on:
   push:
     branches:
       - feature/6888-reusable-terraform-plan-apply
+      
   workflow_dispatch:
 
 env:
