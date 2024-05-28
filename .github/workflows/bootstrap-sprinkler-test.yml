@@ -28,7 +28,7 @@ jobs:
       - name: Set Account Number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: Call Reusable Workflow
-        uses: ./.github/workflows/reusable_terraform_plan_test.yml
+        uses: ./.github/workflows/reusable_terraform_plan_test.yml@feature/6888-reusable-terraform-plan-apply
         with:
           aws_region: ${{ env.AWS_REGION }}
           environment_management: ${{ env.ENVIRONMENT_MANAGEMENT }}
