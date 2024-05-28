@@ -13,6 +13,9 @@ on:
       tf_workspace:
         required: true
         type: string
+    secrets:
+      environment_management:
+        required: true
 
 jobs:
   bootstrap:
@@ -20,7 +23,7 @@ jobs:
     env:
       TF_IN_AUTOMATION: true
       AWS_REGION: ${{ inputs.aws_region }}
-      ENVIRONMENT_MANAGEMENT: ${{ inputs.environment_management }}
+      ENVIRONMENT_MANAGEMENT: ${{ secrets.environment_management }}
       TF_WORKSPACE: ${{ inputs.tf_workspace }}
     permissions:
       id-token: write
@@ -44,6 +47,7 @@ jobs:
           terraform_wrapper: false
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
       - run: bash scripts/terraform-plan.sh terraform/environments/bootstrap/delegate-access
+
 
 
 

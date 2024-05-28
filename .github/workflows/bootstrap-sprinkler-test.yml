@@ -13,3 +13,5 @@ jobs:
       aws_region: "eu-west-2"
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       tf_workspace: "sprinkler-development"
+    secrets:
+      environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
