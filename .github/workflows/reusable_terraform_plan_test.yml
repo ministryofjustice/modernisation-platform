@@ -1,38 +1,43 @@
-name: "Bootstrap Plan for Sprinkler"
+name: "Reusable Terraform Plan and Apply"
 
 on:
-  pull_request:
-    branches:
-      - feature/6888-reusable-terraform-plan-apply
-    paths:
-      - 'terraform/environments/bootstrap/**'
-      - 'terraform/modules/iam_baseline/**'
-      - '.github/workflows/bootstrap-sprinkler.yml'
-  push:
-    branches:
-      - feature/6888-reusable-terraform-plan-apply
-
-  workflow_dispatch:
-
-env:
-  TF_IN_AUTOMATION: true
-  AWS_REGION: "eu-west-2"
-  ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-  TF_WORKSPACE: "sprinkler-development"
+  workflow_call:
+    inputs:
+      aws_region:
+        required: true
+        type: string
+      environment_management:
+        required: true
+        type: string
+      terraform_workspace:
+        required: true
+        type: string
+      account_number:
+        required: true
+        type: string
 
 jobs:
-  delegate-access-plan:
+  terraform_plan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
-      - name: Call Reusable Workflow
-        uses: ./.github/workflows/reusable_terraform_plan_test.yml@feature/6888-reusable-terraform-plan-apply
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
         with:
-          aws_region: ${{ env.AWS_REGION }}
-          environment_management: ${{ env.ENVIRONMENT_MANAGEMENT }}
-          terraform_workspace: ${{ env.TF_WORKSPACE }}
-          account_number: ${{ env.ACCOUNT_NUMBER }}
+          role-to-assume: "arn:aws:iam::${{ inputs.account_number }}:role/ModernisationPlatformGithubActionsRole"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ inputs.aws_region }}
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
+      - run: bash scripts/terraform-plan.sh terraform/environments/bootstrap/delegate-access
+      - name: Archive Plan Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: terraform-plan-output
+          path: plan-output.log
+
 
 
