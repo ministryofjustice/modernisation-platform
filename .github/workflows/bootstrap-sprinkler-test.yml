@@ -21,16 +21,22 @@ env:
   TF_WORKSPACE: "sprinkler-development"
 
 jobs:
-  delegate-access-plan:
+  setup:
     runs-on: ubuntu-latest
+    outputs:
+      account_number: ${{ steps.extract_account.outputs.account_number }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
-      - name: Call Reusable Workflow
-        uses: ./.github/workflows/replaced_reusable_terraform_plan_test.yml@feature/6888-reusable-terraform-plan-apply
-        with:
-          aws_region: ${{ env.AWS_REGION }}
-          environment_management: ${{ env.ENVIRONMENT_MANAGEMENT }}
-          terraform_workspace: ${{ env.TF_WORKSPACE }}
-          account_number: ${{ env.ACCOUNT_NUMBER }}
+        id: extract_account
+        run: echo "::set-output name=account_number::$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)"
+
+  call-reusable-workflow:
+    needs: setup
+    uses: ./.github/workflows/reusable_terraform_plan_test.yml@feature/6888-reusable-terraform-plan-apply
+    with:
+      aws_region: ${{ env.AWS_REGION }}
+      environment_management: ${{ env.ENVIRONMENT_MANAGEMENT }}
+      terraform_workspace: ${{ env.TF_WORKSPACE }}
+      account_number: ${{ needs.setup.outputs.account_number }}
+
