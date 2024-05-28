@@ -33,19 +33,13 @@ jobs:
 
   call-reusable-workflow:
     needs: setup
-    runs-on: ubuntu-latest
-    env:
-      AWS_REGION: "eu-west-2"
-      ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-      TF_WORKSPACE: "sprinkler-development"
-    steps:
-      - name: Call Reusable Workflow
-        uses: ./.github/workflows/reusable_terraform_plan_test.yml
-        with:
-          aws_region: ${{ env.AWS_REGION }}
-          environment_management: ${{ env.ENVIRONMENT_MANAGEMENT }}
-          terraform_workspace: ${{ env.TF_WORKSPACE }}
-          account_number: ${{ needs.setup.outputs.account_number }}
+    uses: ./.github/workflows/reusable_terraform_plan_test.yml
+    with:
+      aws_region: ${{ env.AWS_REGION }}
+      environment_management: ${{ env.ENVIRONMENT_MANAGEMENT }}
+      terraform_workspace: ${{ env.TF_WORKSPACE }}
+      account_number: ${{ needs.setup.outputs.account_number }}
+
 
 
 
