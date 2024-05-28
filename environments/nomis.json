@@ -10,10 +10,6 @@
         },
         {
           "github_slug": "studio-webops",
-          "level": "instance-access"
-        },
-        {
-          "github_slug": "studio-webops",
           "level": "instance-management"
         },
         {
@@ -27,6 +23,10 @@
         {
           "github_slug": "csr-application-support",
           "level": "instance-management"
+        },
+        {
+          "github_slug": "nomis-access",
+          "level": "instance-access"
         }
       ]
     },
@@ -48,6 +48,10 @@
         {
           "github_slug": "csr-application-support",
           "level": "instance-management"
+        },
+        {
+          "github_slug": "nomis-access",
+          "level": "instance-access"
         }
       ]
     },
@@ -69,6 +73,10 @@
         {
           "github_slug": "csr-application-support",
           "level": "instance-access"
+        },
+        {
+          "github_slug": "nomis-access",
+          "level": "instance-access"
         }
       ]
     },
@@ -89,6 +97,10 @@
         },
         {
           "github_slug": "csr-application-support",
+          "level": "instance-access"
+        },
+        {
+          "github_slug": "nomis-access",
           "level": "instance-access"
         }
       ]
