@@ -21,24 +21,15 @@ env:
   TF_WORKSPACE: "sprinkler-development"
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    outputs:
-      account_number: ${{ steps.extract_account.outputs.account_number }}
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - name: Set Account Number
-        id: extract_account
-        run: echo "::set-output name=account_number::$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)"
-
   call-reusable-workflow:
-    needs: setup
+    runs-on: ubuntu-latest
     uses: ./.github/workflows/reusable_terraform_plan_test.yml
     with:
       aws_region: ${{ env.AWS_REGION }}
       environment_management: ${{ env.ENVIRONMENT_MANAGEMENT }}
       terraform_workspace: ${{ env.TF_WORKSPACE }}
-      account_number: ${{ needs.setup.outputs.account_number }}
+      account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
+
 
 
 
