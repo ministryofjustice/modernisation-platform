@@ -1,6 +1,7 @@
 {
   "fw_allowed_domains": [
     ".amazontrust.com",
+    ".c2r.ts.cdn.office.net",
     ".docker.com",
     ".docker.io",
     ".download.windowsupdate.com",
@@ -12,6 +13,7 @@
     ".windowsupdate.microsoft.com",
     "microsoft.com",
     "ntservicepack.microsoft.com",
+    "officecdn.microsoft.com",
     "onegetcdn.azureedge.net",
     "saas40.kaseya.net",
     "stats.microsoft.com",
