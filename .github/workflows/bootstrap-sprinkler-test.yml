@@ -14,6 +14,7 @@ on:
   workflow_dispatch:
 
 jobs:
+
   delegate-access-plan:
     uses: ./.github/workflows/reusable_terraform_plan_test.yml
     with:
@@ -22,3 +23,13 @@ jobs:
       working_directory: "terraform/environments/bootstrap/delegate-access"
     secrets:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
+
+
+  secure-baselines-plan:
+        uses: ./.github/workflows/reusable_terraform_plan_test.yml
+        with:
+          aws_region: "eu-west-2"
+          tf_workspace: "sprinkler-development"
+          working_directory: "terraform/environments/bootstrap/secure-baselines"
+        secrets:
+          environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}    
