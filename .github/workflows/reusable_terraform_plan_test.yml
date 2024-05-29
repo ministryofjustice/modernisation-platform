@@ -28,7 +28,8 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Set Account Number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: Configure AWS Credentials
@@ -37,11 +38,13 @@ jobs:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
-      - uses: hashicorp/setup-terraform@651471c36a6092792c552e8b1bef71e592b462d8 # v3.1.1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@651471c36a6092792c552e8b1bef71e592b462d8 # v3.1.1
         with:
           terraform_version: "~1"
           terraform_wrapper: false
-      - run: bash scripts/terraform-init.sh
-        working-directory: ${{ inputs.working_directory }}
-      - run: bash scripts/terraform-plan.sh
-        working-directory: ${{ inputs.working_directory }}
+      - name: Terraform Init
+        run: bash scripts/terraform-init.sh ${{ inputs.working_directory }}
+      - name: Terraform Plan
+        run: bash scripts/terraform-plan.sh ${{ inputs.working_directory }}
+
