@@ -1,0 +1,21 @@
+name: Call Single Sign-On Plan
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  single-sign-on:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Environment Management
+        id: set_env
+        run: echo "::set-output name=environment_management::$(echo '{\"modernisation_platform_account_id\":\"123456789012\"}')"
+
+      - name: Call Reusable Workflow
+        uses: ./.github/workflows/single-sign-on-workflow.yml
+        with:
+          environment_management: ${{ steps.set_env.outputs.environment_management }}
+          aws_region: "us-east-1"
+          terraform_environment_path: "terraform/environments/bootstrap/single-sign-on"

@@ -1,0 +1,37 @@
+name: Single Sign-On Workflow
+
+on:
+  workflow_call:
+    inputs:
+      environment_management:
+        required: true
+        type: string
+      aws_region:
+        required: true
+        type: string
+      terraform_environment_path:
+        required: true
+        type: string
+
+jobs:
+  single-sign-on:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Set Account Number
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< ${{ inputs.environment_management }})" >> $GITHUB_ENV
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ inputs.aws_region }}
+
+      - uses: hashicorp/setup-terraform@651471c36a6092792c552e8b1bef71e592b462d8 # v3.1.1
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+
+      - run: bash scripts/terraform-init.sh ${{ inputs.terraform_environment_path }}
+      - run: bash scripts/terraform-plan.sh ${{ inputs.terraform_environment_path }}
