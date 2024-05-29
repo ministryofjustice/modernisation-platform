@@ -1,5 +1,4 @@
-# .github/workflows/bootstrap-caller.yml
-name: "Bootstrap Plan Caller for Sprinkler"
+name: "Caller for Sprinkler"
 
 on:
   push:

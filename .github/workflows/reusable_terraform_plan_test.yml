@@ -1,5 +1,4 @@
-# .github/workflows/reusable-bootstrap.yml
-name: "Reusable Bootstrap Plan for Sprinkler"
+name: "Reusable Plan for Sprinkler"
 
 on:
   workflow_call:
