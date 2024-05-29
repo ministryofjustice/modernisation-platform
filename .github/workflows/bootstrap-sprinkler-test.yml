@@ -14,23 +14,14 @@ on:
   workflow_dispatch:
 
 jobs:
-
-  delegate-access-plan:
+  call-plan:
     uses: ./.github/workflows/reusable_terraform_plan_test.yml
     with:
       aws_region: "eu-west-2"
       tf_workspace: "sprinkler-development"
       working_directory: "terraform/environments/bootstrap/delegate-access"
+      role_name: "ModernisationPlatformGithubActionsRole"
     secrets:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-
-
-  secure-baselines-plan:
-    needs: delegate-access-plan  
-    uses: ./.github/workflows/reusable_terraform_plan_test.yml
-    with:
-      aws_region: "eu-west-2"
-      tf_workspace: "sprinkler-development"
-      working_directory: "terraform/environments/bootstrap/secure-baselines"
-    secrets:
-          environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}    
+      ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
+  
