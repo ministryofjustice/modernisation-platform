@@ -851,7 +851,7 @@ data "aws_iam_policy_document" "instance-management-document" {
     
   }
   statement {
-    sid    = "databaseAllow"
+    sid    = "databaseDeny"
     effect = "Deny"
     actions = [
       "application-autoscaling:ListTagsForResource",
@@ -915,7 +915,7 @@ data "aws_iam_policy_document" "instance-management-document" {
     
   }
   statement {
-    sid    = "databaseAllow"
+    sid    = "databaseAllowNull"
     effect = "Allow"
     actions = [
       "application-autoscaling:ListTagsForResource",
