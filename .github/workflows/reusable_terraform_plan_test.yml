@@ -47,4 +47,3 @@ jobs:
         run: bash scripts/terraform-init.sh ${{ inputs.working_directory }}
       - name: Terraform Plan
         run: bash scripts/terraform-plan.sh ${{ inputs.working_directory }}
-
