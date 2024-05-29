@@ -4,9 +4,17 @@ on:
   push:
     branches:
       - feature/6888-reusable-terraform-plan-apply
+  pull_request:
+    branches:
+      - feature/6888-reusable-terraform-plan-apply
+    paths:
+      - 'terraform/environments/bootstrap/**'
+      - 'terraform/modules/iam_baseline/**'
+      - '.github/workflows/bootstrap-sprinkler.yml'
+  workflow_dispatch:
 
 jobs:
-  call-plan:
+  delegate-access-plan:
     uses: ./.github/workflows/reusable_terraform_plan_test.yml
     with:
       aws_region: "eu-west-2"
