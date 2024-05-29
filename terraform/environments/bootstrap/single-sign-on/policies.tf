@@ -839,7 +839,7 @@ data "aws_iam_policy_document" "instance-management-document" {
       "support:*"
     ]
     condition {
-      test = "StringLike"
+      test = "StringEquils"
       variable = "ec2:ResourceTag/owner"
       
       values = [
@@ -850,7 +850,134 @@ data "aws_iam_policy_document" "instance-management-document" {
     resources = ["*"]
     
   }
-
+  statement {
+    sid    = "databaseAllow"
+    effect = "Deny"
+    actions = [
+      "application-autoscaling:ListTagsForResource",
+      "autoscaling:UpdateAutoScalingGroup",
+      "autoscaling:SetDesiredCapacity",
+      "aws-marketplace:ViewSubscriptions",
+      "ds:*Tags*",
+      "ds:*Snapshot*",
+      "ds:ResetUserPassword",
+      "ec2:StartInstances",
+      "ec2:StopInstances",
+      "ec2:RebootInstances",
+      "ec2:ModifyImageAttribute",
+      "ec2:ModifyInstanceAttribute",
+      "ec2:ModifySnapshotAttribute",
+      "ec2:CopyImage",
+      "ec2:CreateImage",
+      "ec2:CopySnapshot",
+      "ec2:CreateSnapshot",
+      "ec2:CreateSnapshots",
+      "ec2:CreateTags",
+      "ec2:DescribeVolumes",
+      "ec2:DescribeInstances",
+      "ec2:DescribeInstanceTypes",
+      "ecs:ListServices",
+      "ecs:DescribeServices",
+      "ecs:UpdateService",
+      "identitystore:DescribeUser",
+      "kms:Decrypt*",
+      "kms:Encrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey",
+      "rds:CopyDBSnapshot",
+      "rds:CopyDBClusterSnapshot",
+      "rds:CreateDBSnapshot",
+      "rds:CreateDBClusterSnapshot",
+      "rds:RebootDB*",
+      "rhelkb:GetRhelURL",
+      "s3:List*",
+      "s3:Get*",
+      "s3:PutObject",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecret*",
+      "secretsmanager:GetSecretValue",
+      "ssm:*",
+      "ssm-guiconnect:*",
+      "sso:ListDirectoryAssociations",
+      "support:*"
+    ]
+    condition {
+      test = "StringNotEquils"
+      variable = "ec2:ResourceTag/owner"
+      
+      values = [
+        "&{aws:PrincipalTag/github_team}"
+        ]
+      }
+    
+    resources = ["*"]
+    
+  }
+  statement {
+    sid    = "databaseAllow"
+    effect = "Allow"
+    actions = [
+      "application-autoscaling:ListTagsForResource",
+      "autoscaling:UpdateAutoScalingGroup",
+      "autoscaling:SetDesiredCapacity",
+      "aws-marketplace:ViewSubscriptions",
+      "ds:*Tags*",
+      "ds:*Snapshot*",
+      "ds:ResetUserPassword",
+      "ec2:StartInstances",
+      "ec2:StopInstances",
+      "ec2:RebootInstances",
+      "ec2:ModifyImageAttribute",
+      "ec2:ModifyInstanceAttribute",
+      "ec2:ModifySnapshotAttribute",
+      "ec2:CopyImage",
+      "ec2:CreateImage",
+      "ec2:CopySnapshot",
+      "ec2:CreateSnapshot",
+      "ec2:CreateSnapshots",
+      "ec2:CreateTags",
+      "ec2:DescribeVolumes",
+      "ec2:DescribeInstances",
+      "ec2:DescribeInstanceTypes",
+      "ecs:ListServices",
+      "ecs:DescribeServices",
+      "ecs:UpdateService",
+      "identitystore:DescribeUser",
+      "kms:Decrypt*",
+      "kms:Encrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey",
+      "rds:CopyDBSnapshot",
+      "rds:CopyDBClusterSnapshot",
+      "rds:CreateDBSnapshot",
+      "rds:CreateDBClusterSnapshot",
+      "rds:RebootDB*",
+      "rhelkb:GetRhelURL",
+      "s3:List*",
+      "s3:Get*",
+      "s3:PutObject",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecret*",
+      "secretsmanager:GetSecretValue",
+      "ssm:*",
+      "ssm-guiconnect:*",
+      "sso:ListDirectoryAssociations",
+      "support:*"
+    ]
+    condition {
+      test = "Null"
+      variable = "ec2:ResourceTag/owner"
+      
+      values = [
+        "True"
+        ]
+      }
+    
+    resources = ["*"]
+    
+  }
   statement {
     sid    = "SecretsManagerPut"
     effect = "Allow"
