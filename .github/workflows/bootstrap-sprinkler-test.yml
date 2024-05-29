@@ -27,6 +27,7 @@ jobs:
       ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
 
   secure-baselines-plan:
+    needs: delegate-access-plan
     uses: ./.github/workflows/reusable_terraform_plan_test.yml
     with:
       aws_region: "eu-west-2"
