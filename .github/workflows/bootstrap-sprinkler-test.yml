@@ -14,7 +14,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  call-plan:
+
+  delegate-access-plan:
     uses: ./.github/workflows/reusable_terraform_plan_test.yml
     with:
       aws_region: "eu-west-2"
@@ -24,4 +25,15 @@ jobs:
     secrets:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
+
+  secure-baselines-plan:
+    uses: ./.github/workflows/reusable_terraform_plan_test.yml
+    with:
+      aws_region: "eu-west-2"
+      tf_workspace: "sprinkler-development"
+      working_directory: "terraform/environments/bootstrap/secure-baselines"
+      role_name: "github-actions"
+    secrets:
+      environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
+      ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}    
   
