@@ -11,5 +11,7 @@ jobs:
     with:
       aws_region: "eu-west-2"
       tf_workspace: "sprinkler-development"
+      working_directory: "terraform/environments/bootstrap/delegate-access"
     secrets:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
+

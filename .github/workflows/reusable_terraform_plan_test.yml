@@ -9,6 +9,9 @@ on:
       tf_workspace:
         required: true
         type: string
+      working_directory:
+        required: true
+        type: string
     secrets:
       environment_management:
         required: true
@@ -24,9 +27,6 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    defaults:
-      run:
-        shell: bash
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Set Account Number
@@ -41,8 +41,12 @@ jobs:
         with:
           terraform_version: "~1"
           terraform_wrapper: false
-      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
-      - run: bash scripts/terraform-plan.sh terraform/environments/bootstrap/delegate-access
+      - run: bash scripts/terraform-init.sh
+        working-directory: ${{ inputs.working_directory }}
+      - run: bash scripts/terraform-plan.sh
+        working-directory: ${{ inputs.working_directory }}
+
+
 
 
 
