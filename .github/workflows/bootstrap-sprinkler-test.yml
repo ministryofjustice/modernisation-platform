@@ -26,10 +26,11 @@ jobs:
 
 
   secure-baselines-plan:
-        uses: ./.github/workflows/reusable_terraform_plan_test.yml
-        with:
-          aws_region: "eu-west-2"
-          tf_workspace: "sprinkler-development"
-          working_directory: "terraform/environments/bootstrap/secure-baselines"
-        secrets:
+    needs: delegate-access-plan  
+    uses: ./.github/workflows/reusable_terraform_plan_test.yml
+    with:
+      aws_region: "eu-west-2"
+      tf_workspace: "sprinkler-development"
+      working_directory: "terraform/environments/bootstrap/secure-baselines"
+    secrets:
           environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}    
