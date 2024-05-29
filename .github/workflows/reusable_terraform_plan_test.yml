@@ -15,7 +15,7 @@ on:
         required: true
 
 jobs:
-  bootstrap:
+  plan:
     runs-on: ubuntu-latest
     env:
       TF_IN_AUTOMATION: true
