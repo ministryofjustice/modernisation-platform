@@ -18,8 +18,6 @@ on:
     secrets:
       environment_management:
         required: true
-      ACCOUNT_NUMBER:
-        required: true
 
 jobs:
   plan:
@@ -29,7 +27,6 @@ jobs:
       AWS_REGION: ${{ inputs.aws_region }}
       ENVIRONMENT_MANAGEMENT: ${{ secrets.environment_management }}
       TF_WORKSPACE: ${{ inputs.tf_workspace }}
-      ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
     permissions:
       id-token: write
       contents: read
