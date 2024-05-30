@@ -15,6 +15,9 @@ on:
       role_name:
         required: true
         type: string
+      ACCOUNT_NUMBER:
+        required: true  
+        type: string
     secrets:
       environment_management:
         required: true
@@ -27,14 +30,13 @@ jobs:
       AWS_REGION: ${{ inputs.aws_region }}
       ENVIRONMENT_MANAGEMENT: ${{ secrets.environment_management }}
       TF_WORKSPACE: ${{ inputs.tf_workspace }}
+      ACCOUNT_NUMBER: ${{ inputs.ACCOUNT_NUMBER }}
     permissions:
       id-token: write
       contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
