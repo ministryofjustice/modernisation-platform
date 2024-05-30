@@ -839,13 +839,23 @@ data "aws_iam_policy_document" "instance-management-document" {
       "support:*"
     ]
     condition {
-      test = "StringEquils"
+      test = "StringEquals"
       variable = "ec2:ResourceTag/owner"
       
       values = [
         "&{aws:PrincipalTag/github_team}"
         ]
       }
+    condition {
+      test = "StringEquals"
+      variable = "aws:PrincipalAccount"
+
+      values = [
+        local.environment_management.account_ids["core-shared-services"],
+        local.environment_management.account_ids["sprinkler-development"],
+        local.environment_management.account_ids["cooker-development"]
+      ]
+    }
     
     resources = ["*"]
     
@@ -903,7 +913,7 @@ data "aws_iam_policy_document" "instance-management-document" {
       "support:*"
     ]
     condition {
-      test = "StringNotEquils"
+      test = "StringNotEquals"
       variable = "ec2:ResourceTag/owner"
       
       values = [
