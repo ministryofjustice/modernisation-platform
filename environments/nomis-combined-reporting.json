@@ -1,5 +1,6 @@
 {
   "account-type": "member",
+  "codeowners": ["studio-webops"],
   "environments": [
     {
       "name": "development",
@@ -11,11 +12,8 @@
         {
           "github_slug": "studio-webops",
           "level": "sandbox",
+          "github_action_reviewer": "true",
           "nuke": "exclude"
-        },
-        {
-          "github_slug": "studio-webops",
-          "level": "instance-management"
         },
         {
           "github_slug": "csr-application-support",
@@ -33,10 +31,7 @@
         {
           "github_slug": "studio-webops",
           "level": "developer"
-        },
-        {
-          "github_slug": "studio-webops",
-          "level": "instance-management"
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "csr-application-support",
@@ -53,11 +48,8 @@
         },
         {
           "github_slug": "studio-webops",
-          "level": "developer"
-        },
-        {
-          "github_slug": "studio-webops",
-          "level": "instance-access"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "csr-application-support",
@@ -74,11 +66,8 @@
         },
         {
           "github_slug": "studio-webops",
-          "level": "developer"
-        },
-        {
-          "github_slug": "studio-webops",
-          "level": "instance-access"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "csr-application-support",
