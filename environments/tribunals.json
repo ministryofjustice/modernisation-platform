@@ -15,7 +15,7 @@
       ]
     },
     {
-      "name": "preproduction",
+      "name": "preprod",
       "access": [
         {
           "github_slug": "dts-legacy",
