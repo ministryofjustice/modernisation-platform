@@ -851,9 +851,7 @@ data "aws_iam_policy_document" "instance-management-document" {
       variable = "aws:PrincipalAccount"
 
       values = [
-        local.environment_management.account_ids["core-shared-services"],
-        local.environment_management.account_ids["sprinkler-development"],
-        local.environment_management.account_ids["cooker-development"]
+        local.environment_management.account_ids["core-shared-services"]
       ]
     }
     
