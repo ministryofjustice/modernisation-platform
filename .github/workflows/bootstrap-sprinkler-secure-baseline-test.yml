@@ -192,3 +192,4 @@ jobs:
   #         terraform_wrapper: false
   #     - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/member-bootstrap
   #     - run: bash scripts/terraform-apply.sh terraform/environments/bootstrap/member-bootstrap
+  
