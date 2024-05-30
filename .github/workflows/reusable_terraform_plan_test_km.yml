@@ -1,0 +1,55 @@
+name: "Reusable Plan for Sprinkler"
+
+on:
+  workflow_call:
+    inputs:
+      aws_region:
+        required: true
+        type: string
+      tf_workspace:
+        required: true
+        type: string
+      working_directory:
+        required: true
+        type: string
+      role_name:
+        required: true
+        type: string
+    secrets:
+      environment_management:
+        required: true
+      ACCOUNT_NUMBER:
+        required: true
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    env:
+      TF_IN_AUTOMATION: true
+      AWS_REGION: ${{ inputs.aws_region }}
+      ENVIRONMENT_MANAGEMENT: ${{ secrets.environment_management }}
+      TF_WORKSPACE: ${{ inputs.tf_workspace }}
+      ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Set Account Number
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/${{ inputs.role_name }}"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@651471c36a6092792c552e8b1bef71e592b462d8 # v3.1.1
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+      - name: Terraform Init
+        run: bash scripts/terraform-init.sh ${{ inputs.working_directory }}
+      - name: Terraform Plan
+        run: bash scripts/terraform-plan.sh ${{ inputs.working_directory }}
