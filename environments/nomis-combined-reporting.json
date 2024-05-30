@@ -30,7 +30,7 @@
         },
         {
           "github_slug": "studio-webops",
-          "level": "developer"
+          "level": "developer",
           "github_action_reviewer": "true"
         },
         {
