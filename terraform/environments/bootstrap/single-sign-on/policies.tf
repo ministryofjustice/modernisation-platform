@@ -839,11 +839,11 @@ data "aws_iam_policy_document" "instance-management-document" {
       "support:*"
     ]
     condition {
-      test = "StringEquals"
+      test = "StringLike"
       variable = "ec2:ResourceTag/owner"
       
       values = [
-        "&{aws:PrincipalTag/github_team}"
+        "$${aws:PrincipalTag/github_team}"
         ]
       }
     condition {
