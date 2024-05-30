@@ -24,7 +24,6 @@ jobs:
       role_name: "ModernisationPlatformGithubActionsRole"
     secrets:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-      ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
 
   secure-baselines-plan:
     needs: delegate-access-plan
@@ -36,7 +35,6 @@ jobs:
       role_name: "github-actions"
     secrets:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-      ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
 
   single-sign-on-plan:
     needs: delegate-access-plan
