@@ -22,6 +22,7 @@ jobs:
       tf_workspace: "sprinkler-development"
       working_directory: "terraform/environments/bootstrap/delegate-access"
       role_name: "ModernisationPlatformGithubActionsRole"
+      aws_account_id: ".aws_organizations_root_account_id"
     secrets:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
@@ -34,6 +35,7 @@ jobs:
       tf_workspace: "sprinkler-development"
       working_directory: "terraform/environments/bootstrap/secure-baselines"
       role_name: "github-actions"
+      aws_account_id: ".modernisation_platform_account_id"
     secrets:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
@@ -46,6 +48,7 @@ jobs:
       tf_workspace: "sprinkler-development"
       working_directory: "terraform/environments/bootstrap/single-sign-on"
       role_name: "github-actions"
+      aws_account_id: ".modernisation_platform_account_id"
     secrets:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}    
@@ -58,6 +61,7 @@ jobs:
       tf_workspace: "sprinkler-development"
       working_directory: "terraform/environments/bootstrap/member-bootstrap"
       role_name: "github-actions"
+      aws_account_id: ".modernisation_platform_account_id"
     secrets:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-      ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}     
+      ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
