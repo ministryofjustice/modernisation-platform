@@ -1039,7 +1039,7 @@ resource "aws_ssm_parameter" "ad_fixngo" {
 
 module "core-shared-service-ad-azure-dc-a" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching.git?ref=v3.0.0"
-  count  = local.is-production == true ? 1 : 0
+#  count  = local.is-production == true ? 1 : 0
   providers = {
     aws.bucket-replication = aws
   }
