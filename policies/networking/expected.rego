@@ -119,7 +119,8 @@ expected :=
         "accounts": [
           "tariff-development",
           "cica-copilot-development",
-          "cica-data-extraction-development"
+          "cica-data-extraction-development",
+          "cica-tariff-development"
         ]
       }
     },
