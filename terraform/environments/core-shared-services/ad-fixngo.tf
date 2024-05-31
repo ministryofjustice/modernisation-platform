@@ -1046,11 +1046,34 @@ module "core-shared-service-ad-azure-dc-a" {
 
   account_number       = local.environment_management.account_ids[terraform.workspace]
   application_name     = local.application_name
-  approval_days        = "14"
-  patch_schedule       = "cron(0 21 ? * THU#4 *)" # 4th Thurs @ 9pm
+  approval_days        = "9"
+  patch_schedule       = "cron(0 21 ? * TUE#2 *)" # 2nd Tues @ 9pm
+  operating_system     = "WINDOWS"
+  patch_tag            = "eu-west-2a"
+  suffix               = "-2a"
+  patch_classification = ["SecurityUpdates", "CriticalUpdates"]
+  tags = merge(
+    local.tags,
+    {
+      Name = "ssm-patching"
+    },
+  )
+}
+
+module "core-shared-service-ad-azure-dc-b" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching.git?ref=v3.0.0"
+  #  count  = local.is-production == true ? 1 : 0
+  providers = {
+    aws.bucket-replication = aws
+  }
+
+  account_number       = local.environment_management.account_ids[terraform.workspace]
+  application_name     = local.application_name
+  approval_days        = "9"
+  patch_schedule       = "cron(0 21 ? * THUR#4 *)" # 4th Thurs @ 9pm
   operating_system     = "WINDOWS"
   patch_tag            = "eu-west-2b"
-  suffix               = "-a"
+  suffix               = "-2b"
   patch_classification = ["SecurityUpdates", "CriticalUpdates"]
   tags = merge(
     local.tags,
