@@ -1055,7 +1055,7 @@ module "ad_fixngo_ssm_patching" {
   }
 
   account_number       = local.environment_management.account_ids[terraform.workspace]
-  application_name     = each.key
+  application_name     = each.value.application-name
   approval_days        = each.value.approval_days
   patch_schedule       = each.value.patch_schedule
   operating_system     = "WINDOWS"
