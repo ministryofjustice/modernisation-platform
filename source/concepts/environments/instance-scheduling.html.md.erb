@@ -40,6 +40,20 @@ Here's a Terraform example of how to add the relevant tag for any EC2 and RDS in
 
 Ordering instances and automatically stopping them on public holidays is not supported.
 
+## Custom Shutdown & Startup Schedules
+
+For those teams that require the shutdown & startup of ec2 & rds resources in a specific order or at different times, the option exists to make use of github workflows & cron schedules to stop & start services.
+
+- These workflows can be run from the application source github via the use of oidc for authenticaiton to the Modernisation Platform - see https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/deploying-your-application.html#deploying-your-application. It is recommended to hold the AWS account number for the member account as a github secret, especially if the repo is public.
+
+- An example of how to use a github workflow to meet this requirement can be found here - https://github.com/ministryofjustice/modernisation-platform-configuration-management/blob/main/.github/workflows/flexible-instance-stop-start.yml. Note that the workflow uses a separate script to run the AWS CLI commands for shutdown & startup. These can be easily reused & customised to meet specific needs. 
+
+- EC2 or RDS resources that are stopped or started in this manner must have the `skip-scheduling` tag added as described above.
+
+- Note that there are some restrictions that come with using github schedules - most importantly that github themselves do not guarantee execution of the action at the specified time. Actions can be delayed at busy times or even dropped entirely so it is recommended to avoid schedules running on-the-hour or half-hour.
+
+Further information regarding github schedule events can be found here - https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule
+
 ## References
 
 1. [GitHub repository](https://github.com/ministryofjustice/modernisation-platform-instance-scheduler)
