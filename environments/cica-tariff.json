@@ -1,0 +1,22 @@
+{
+    "account-type": "member",
+    "environments": [
+      {
+        "name": "development",
+        "access": [
+          {
+            "github_slug": "cica-mp-tariff",
+            "level": "developer"
+          }
+        ]
+      }
+    ],
+    "tags": {
+      "application": "cica-tariff",
+      "business-unit": "CICA",
+      "infrastructure-support": "Infrastructure@cica.gov.uk",
+      "owner": "alan.terry@cica.gov.uk"
+    },
+    "github-oidc-team-repositories": [""]
+  }
+  
