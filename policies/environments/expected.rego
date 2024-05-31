@@ -18,6 +18,7 @@ expected :=
     "cdpt-ifs",
     "cica-copilot",
     "cica-data-extraction",
+    "cica-tariff"
     "contract-work-administration",
     "cooker",
     "core-logging",
