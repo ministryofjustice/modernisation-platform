@@ -13,7 +13,7 @@ jobs:
       tf_workspace: "modernisation-platform-account"
       working_directory: "terraform/modernisation-platform-account"
       role_name: "github-actions"
-      aws_account_id: ".aws_organizations_root_account_id"
+      aws_account_id: ".modernisation_platform_account_id"
     secrets:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_ID }}
