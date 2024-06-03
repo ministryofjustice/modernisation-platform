@@ -2,19 +2,19 @@ name: "Terraform: modernisation-platform-account"
 
 on:
   push:
-    paths:
-      - 'terraform/modernisation-platform-account/**'
-      - '.github/workflows/modernisation-platform-account.yml'
-      - 'collaborators.json'
     branches:
       - feature/6888-reusable-terraform-plan-apply
-  pull_request:
     paths:
       - 'terraform/modernisation-platform-account/**'
       - '.github/workflows/modernisation-platform-account.yml'
       - 'collaborators.json'
+  pull_request:
     branches:
       - main
+    paths:
+      - 'terraform/modernisation-platform-account/**'
+      - '.github/workflows/modernisation-platform-account.yml'
+      - 'collaborators.json'
     types: [opened, edited, reopened, synchronize]
   workflow_dispatch:
 
