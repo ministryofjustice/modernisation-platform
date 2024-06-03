@@ -22,15 +22,7 @@ locals {
       ad-fixngo-ec2-live    = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4XM7YBLA/DY3w4oMS4PEYyfYLcK2OuidwRRUKTFyS3lnzoucuPg4fuv3yMbLJxxoUT8QjfHDWUzQRsQorkj6ig8TB68rAz0/BBx3wuA76dNoDXAXSM/sOP1ZA1gXL3BR21hbe8QIvmqP881BLgKvB5WGN7iSPIepNtxea8g6/Eg91ISLnDvVKkqjej+wJbeBKcnGCdv6LJ082HZRMxIBfAuN9snoNyjymXYU/nMeXgwZhfSzLHU9KYOAzuYxOHgVz0k1NOPYCJflSqcYyqNbuvmLmUJVSb3u/8kpOwcTR9UP0awIzuH7PXZf87g1wyfesyAkNPMa4uUoEMIIah2tp+rAp9AUDnzn5MIv84lSkerqp2+0L/dLf+FCjNpIUePpmJiC8JCqD7oemwvrEuPpsvFalmRuRNlg2s+DKg7FVdhUWH7HiIKoiSB7dBtb02AjeY5Hi8c9urFBas4LmtngEbH8mf65VZTA82S2mLjOw8DdGRGPTc/o4MilYqR7cqDcNIw3+eEw1PqYkJUykJP5saKjLZuUxe6U0dog1iY9pimPdRKiYouF95tt43+b7/7zVTajq096r/BY2XkklVmbQ/a1HBO/Q/cfQWxhaaIaQwwnAwGQdMtEZsXaJ0OR650NJYeqtKh9ZKeMF/M+HLddiC7+1ncu78NFLlB98zD8cTw=="
       ad-fixngo-ec2-nonlive = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDZ7Q515wcJIdw68vUuf2v0BFow0GmqFjapC7qJ+x6eiFqfP3Cq7jT/HYS51nzJgiXUUvyXPhQcKJgQ1O0VlTX/AjctUdm9YUbArI+S74BgNFLLbDd9EsMxhm6SKjYqbhrL9S4YxA6C0hgz4+NiEJk8XKEg5laHrOCt7kmtRE8FDvyzTLZLQ7HomHkd43tDLtvTKzKkeV2iOlnYG+l0XAFLC58ufOS3ujtK9jD2vZwyarfLTiyyE/gXTtFpb+ktUnwvJpgNXDdaGHVOOjAdJh7jEmqtl438aXxfDoroX7BQmn+8nrY0lkSY+eUis58exHDqWWtUsSyHqaSUeKvyJvC0dnCUQEVulsCljFVRWeof+xcCpeHGrS4tfDop5Kckoadpwa0LILiun8NeQTLTt8jnPAU3auZZTb4u+vQeWYsE0DSWMsTMEoAh+pKBSfnAFZNYgIIp0jQKJJwL8ndTC/XPm0Wu3eorwFGnMgyNVZbkOA6yjtaknUqNVDb/9MOINZYi12NJSguLJg0tN04F0W4X6nCm2v5I72Uv5BLX/c0YpgKjHMCZdSzjS+EWD2a/WRtSUqSmg/ObHimOinPGhdM3JoIlXXUTXHCLkPADLYJ+b8e2sdEqhHFuGvLgXe302ZYftTqfZANMngkrd9tTM3uIoCxRCibicB/jJJ1u8YBqJQ=="
     }
-    ssm_patching = {
-      ad-fixngo-ssm-patching-nonlive-a = {
-        application-name     = "ad-nonlive-a"
-        approval_days        = "9"
-        patch_schedule       = "cron(0 21 ? * TUE#2 *)" # 2nd Tues @ 9pm
-        patch_tag            = "eu-west-2a"
-        suffix                = "-2a"
-    }
-    }
+
     aws_instances = {
 
       # NOTE: Fixed IPs for IP allow listing and to avoid AD DNS updates
@@ -775,6 +767,16 @@ locals {
       }
     }
 
+    ssm_patching = {
+      ad-fixngo-ssm-patching-nonlive-a = {
+        application-name     = "ad-nonlive-a"
+        approval_days        = "9"
+        patch_schedule       = "cron(0 21 ? * TUE#2 *)" # 2nd Tues @ 9pm
+        patch_tag            = "eu-west-2a"
+        suffix                = "-2a"
+      }
+    }
+
     tags = merge(local.tags, {
       environment-name       = terraform.workspace
       infrastructure-support = "DSO:digital-studio-operations-team@digital.justice.gov.uk"
@@ -1054,7 +1056,7 @@ module "ad_fixngo_ssm_patching" {
     aws.bucket-replication = aws
   }
 
-  account_number       = local.environment_management.account_ids[terraform.workspace]
+  account_number       = local.environment_management.account_ids["core-shared-services-production"]
   application_name     = each.value.application-name
   approval_days        = each.value.approval_days
   patch_schedule       = each.value.patch_schedule
@@ -1065,7 +1067,7 @@ module "ad_fixngo_ssm_patching" {
   tags = merge(
     local.tags,
     {
-      Name = each.key
+      Name = each.value.application-name
     },
   )
 }
