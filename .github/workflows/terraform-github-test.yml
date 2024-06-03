@@ -2,9 +2,8 @@ name: "Terraform: GitHub resources"
 
 on:
   push:
-    
     branches:
-      -  feature/6888-reusable-terraform-plan-apply
+      - feature/6888-reusable-terraform-plan-apply
 
   workflow_dispatch:
 
@@ -29,6 +28,7 @@ jobs:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_ID }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
 
   notify:
     runs-on: ubuntu-latest
@@ -44,16 +44,16 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
-
   create-github-environments:
-      runs-on: ubuntu-latest
-      needs: [ github-plan-and-apply ]
-      steps:
-        - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-          with:
-            fetch-depth: 0 # or "2" To retrieve the preceding commit.
-        - name: Create GitHub member environments plan
-          run: bash ./scripts/git-create-environments.sh
-          env:
-            DRY_RUN: true
-            TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+    runs-on: ubuntu-latest
+    needs: [ github-plan-and-apply ]
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          fetch-depth: 0 # or "2" To retrieve the preceding commit.
+      - name: Create GitHub member environments plan
+        run: bash ./scripts/git-create-environments.sh
+        env:
+          DRY_RUN: true
+          TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+

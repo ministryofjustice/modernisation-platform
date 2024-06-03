@@ -25,6 +25,8 @@ on:
         required: true
       SLACK_WEBHOOK_URL:
         required: false
+      TERRAFORM_GITHUB_TOKEN:
+        required: true
 
 jobs:
   plan:
@@ -36,6 +38,7 @@ jobs:
       TF_WORKSPACE: ${{ inputs.tf_workspace }}
       ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      TF_VAR_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
     permissions:
       id-token: write
       contents: read
@@ -58,6 +61,8 @@ jobs:
       - name: Terraform Init
         run: bash scripts/terraform-init.sh ${{ inputs.working_directory }}
       - name: Terraform Plan
+        env:
+          TF_VAR_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
         run: bash scripts/terraform-plan.sh ${{ inputs.working_directory }}
       - name: Slack failure notification
         if: failure() && env.SLACK_WEBHOOK_URL
