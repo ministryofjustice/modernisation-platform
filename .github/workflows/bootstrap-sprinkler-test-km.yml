@@ -28,6 +28,7 @@ jobs:
     secrets:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
+      TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
 
   secure-baselines-plan:
     needs: delegate-access-plan
@@ -41,6 +42,7 @@ jobs:
     secrets:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
+      TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
 
   single-sign-on-plan:
     needs: delegate-access-plan
@@ -53,7 +55,8 @@ jobs:
       aws_account_id: ".modernisation_platform_account_id"
     secrets:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-      ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}    
+      ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }} 
+      TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}   
 
   member-bootstrap-plan:
     needs: single-sign-on-plan
@@ -67,3 +70,4 @@ jobs:
     secrets:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
+      TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
