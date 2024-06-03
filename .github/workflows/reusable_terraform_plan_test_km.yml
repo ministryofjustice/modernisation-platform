@@ -23,6 +23,8 @@ on:
         required: true
       ACCOUNT_NUMBER:
         required: true
+      SLACK_WEBHOOK_URL:
+        required: false
 
 jobs:
   plan:
@@ -33,6 +35,7 @@ jobs:
       ENVIRONMENT_MANAGEMENT: ${{ secrets.environment_management }}
       TF_WORKSPACE: ${{ inputs.tf_workspace }}
       ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     permissions:
       id-token: write
       contents: read
@@ -46,7 +49,7 @@ jobs:
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/${{ inputs.role_name }}"
           role-session-name: githubactionsrolesession
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ inputs.aws_region }}
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@651471c36a6092792c552e8b1bef71e592b462d8 # v3.1.1
         with:
@@ -56,3 +59,12 @@ jobs:
         run: bash scripts/terraform-init.sh ${{ inputs.working_directory }}
       - name: Terraform Plan
         run: bash scripts/terraform-plan.sh ${{ inputs.working_directory }}
+      - name: Slack failure notification
+        if: failure() && env.SLACK_WEBHOOK_URL
+        uses: slackapi/slack-github-action@70cd7be8e40a46e8b0eced40b0de447bdb42f68e # v1.26.0
+        with:
+          payload: |
+            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
