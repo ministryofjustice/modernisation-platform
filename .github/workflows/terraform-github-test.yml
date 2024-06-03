@@ -56,4 +56,3 @@ jobs:
         env:
           DRY_RUN: true
           TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
-

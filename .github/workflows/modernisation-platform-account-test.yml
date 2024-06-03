@@ -3,8 +3,7 @@ name: "Terraform: modernisation-platform-account"
 on:
   push:
     branches:
-      # - feature/6888-reusable-terraform-plan-apply
-      - main
+      - feature/6888-reusable-terraform-plan-apply
 
 jobs:
   reusable-plan:
