@@ -92,6 +92,7 @@ locals {
           server-type = "DomainController"
           domain-name = "azure.noms.root"
           description = "domain controller for FixNGo azure.noms.root domain"
+          Patching    = "eu-west-2a"
         }
       }
       ad-azure-dc-b = {
