@@ -7,7 +7,7 @@ on:
       - '.github/workflows/modernisation-platform-account.yml'
       - 'collaborators.json'
     branches:
-      - main
+      - feature/6888-reusable-terraform-plan-apply
   pull_request:
     paths:
       - 'terraform/modernisation-platform-account/**'
