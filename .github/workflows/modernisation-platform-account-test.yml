@@ -1,4 +1,4 @@
-name: "Terraform: modernisation-platform-account"
+name: "Test Terraform: test modernisation-platform-account"
 
 on:
   push:
