@@ -92,6 +92,7 @@ locals {
           server-type = "DomainController"
           domain-name = "azure.noms.root"
           description = "domain controller for FixNGo azure.noms.root domain"
+          Patching    = "eu-west-2a"
         }
       }
       ad-azure-dc-b = {
@@ -767,6 +768,16 @@ locals {
       }
     }
 
+    ssm_patching = {
+      ad-fixngo-ssm-patching-nonlive-a = {
+        application-name  = "ad-nonlive-a"
+        approval_days     = "9"
+        patch_schedule    = "cron(0 21 ? * TUE#2 *)" # 2nd Tues @ 9pm
+        patch_tag         = "eu-west-2a"
+        suffix             = "-2a"
+      }
+    }
+
     tags = merge(local.tags, {
       environment-name       = terraform.workspace
       infrastructure-support = "DSO:digital-studio-operations-team@digital.justice.gov.uk"
@@ -1035,4 +1046,29 @@ resource "aws_ssm_parameter" "ad_fixngo" {
   tags = merge(local.tags, {
     Name = each.key
   })
+}
+
+module "ad_fixngo_ssm_patching" {
+  for_each = local.ad_fixngo.ssm_patching
+
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching.git?ref=v3.0.0"
+
+  providers = {
+    aws.bucket-replication = aws
+  }
+
+  account_number       = local.environment_management.account_ids["core-shared-services-production"]
+  application_name     = each.value.application-name
+  approval_days        = each.value.approval_days
+  patch_schedule       = each.value.patch_schedule
+  operating_system     = "WINDOWS"
+  patch_tag            = each.value.patch_tag
+  suffix                = each.value.suffix
+  patch_classification  = ["SecurityUpdates", "CriticalUpdates"]
+  tags = merge(
+    local.tags,
+    {
+      Name = each.value.application-name
+    },
+  )
 }
