@@ -57,6 +57,41 @@ The relevant configuration for application accounts is also defined in code with
 This code defines a cross-account access role that can be assumed by an administrator. It is applied as part of a common
 baseline for application accounts.
 
+## Using aws-vault with terraform againt member accounts or sprinkler/cooker
+
+aws-vault can be used to aws-sso to provide a reliable means to authenticate against aws accounts so as to run terraform commands. To install aws-vault, refer to the user-guide - https://github.com/99designs/aws-vault
+
+The following below provides an example for running a terraform plan against sprinkler:
+
+- Create a profile for the account in your ./aws/config file. For example for the sprinkler account:
+
+```
+[profile sprinkler]
+sso_start_url = https://moj.awsapps.com/start
+sso_region = eu-west-2
+sso_account_id = 348456244381
+sso_role_name = AdministratorAccess 
+region = eu-west-2
+output = text
+```
+
+- Login to aws via sso using the above profile:
+
+```
+aws-vault login sprinkler
+```
+
+* Note - the --debug command can be used for trouble-shooting.*
+
+- cd to the sprinkler directory in the local git folder for modernisation-platform-accounts and run terraform init using aws-vault:
+
+```
+aws-vault exec sprinkler -- terraform init -backend-config=assume_role={role_arn=\"arn:aws:iam::946070829339:role/modernisation-account-terraform-state-member-access\"}
+```
+
+Whilst the session is active, terraform commands can then be used without further need for aws-vault. When the session times out, re-run the aws-vault login command as above.
+
+
 ## References
 * [https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html)
 * [https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf)
