@@ -1,9 +1,9 @@
 name: "Terraform: GitHub resources"
 
 on:
-  # push:
-  #   branches:
-  #     - feature/6888-reusable-terraform-plan-apply
+  push:
+    branches:
+      - feature/6888-reusable-terraform-plan-apply
 
   workflow_dispatch:
 
@@ -16,11 +16,10 @@ permissions:
   contents: read
 
 jobs:
-  github-plan-and-apply:
+  github-plan:
     uses: ./.github/workflows/reusable_terraform_plan_test_km.yml
     with:
       aws_region: "eu-west-2"
-      tf_workspace: "github-resources"
       working_directory: "terraform/github"
       role_name: "github-actions"
       aws_account_id: ".modernisation_platform_account_id"
@@ -32,7 +31,7 @@ jobs:
 
   notify:
     runs-on: ubuntu-latest
-    needs: github-plan-and-apply
+    needs: github-plan
     if: ${{ failure() && github.ref == 'refs/heads/main' }}
     steps:
       - name: Slack failure notification
@@ -46,7 +45,7 @@ jobs:
 
   create-github-environments:
     runs-on: ubuntu-latest
-    needs: [ github-plan-and-apply ]
+    needs: [ github-plan ]
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:

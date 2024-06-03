@@ -10,7 +10,6 @@ jobs:
     uses: ./.github/workflows/reusable_terraform_plan_test_km.yml
     with:
       aws_region: "eu-west-2"
-      tf_workspace: "modernisation-platform-account"
       working_directory: "terraform/modernisation-platform-account"
       role_name: "github-actions"
       aws_account_id: ".modernisation_platform_account_id"
