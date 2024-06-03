@@ -7,14 +7,14 @@ on:
       - '.github/workflows/terraform-github.yml'
       - 'environments/**.json'
     branches:
-      - main
+      -  feature/6888-reusable-terraform-plan-apply
   pull_request:
     paths:
       - 'terraform/github/**'
       - '.github/workflows/terraform-github.yml'
       - 'environments/**.json'
     branches:
-      - main
+      - feature/6888-reusable-terraform-plan-apply
     types: [opened, edited, reopened, synchronize]
   schedule:
     - cron: '0 12 * * 6'
