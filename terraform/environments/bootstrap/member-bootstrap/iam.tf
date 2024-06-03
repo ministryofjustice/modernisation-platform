@@ -147,6 +147,7 @@ data "aws_iam_policy_document" "member-access" {
       "s3:*",
       "secretsmanager:*",
       "ses:*",
+      "shield:*",
       "sns:*",
       "sqs:*",
       "ssm:*",
