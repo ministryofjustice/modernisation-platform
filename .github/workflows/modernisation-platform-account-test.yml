@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - feature/6888-reusable-terraform-plan-apply
-    paths:
-      - 'terraform/modernisation-platform-account/**'
-      - '.github/workflows/modernisation-platform-account.yml'
-      - 'collaborators.json'
 
 jobs:
   test:
@@ -18,4 +14,3 @@ jobs:
 
       - name: Print Message
         run: echo "Workflow triggered successfully!"
-
