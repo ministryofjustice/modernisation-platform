@@ -203,6 +203,7 @@ resource "aws_network_acl" "public" {
 #trivy:ignore:AVD-AWS-0105
 resource "aws_network_acl_rule" "public" {
   # checkov:skip=CKV_AWS_352:Ports need to be open
+  #checkov:skip=CKV_AWS_231:Ports 0.0.0.0 needs to be open
   for_each = local.public_access_acl_rules
 
   network_acl_id = aws_network_acl.public.id
@@ -301,6 +302,8 @@ resource "aws_network_acl" "private" {
 #trivy:ignore:AVD-AWS-0102
 #trivy:ignore:AVD-AWS-0105
 resource "aws_network_acl_rule" "private" {
+  #checkov:skip=CKV_AWS_352:Ports need to be open
+  #checkov:skip=CKV_AWS_231:Ports 0.0.0.0 needs to be open
   for_each = local.static_acl_rules
 
   network_acl_id = aws_network_acl.private.id
@@ -373,6 +376,8 @@ resource "aws_network_acl" "data" {
 #trivy:ignore:AVD-AWS-0102
 #trivy:ignore:AVD-AWS-0105
 resource "aws_network_acl_rule" "data" {
+  #checkov:skip=CKV_AWS_352:Ports need to be open
+  #checkov:skip=CKV_AWS_231:Ports 0.0.0.0 needs to be open
   for_each = local.static_acl_rules
 
   network_acl_id = aws_network_acl.data.id

@@ -1049,6 +1049,7 @@ resource "aws_ssm_parameter" "ad_fixngo" {
 }
 
 module "ad_fixngo_ssm_patching" {
+  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   for_each = local.ad_fixngo.ssm_patching
 
   source = "github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching.git?ref=v3.0.0"
