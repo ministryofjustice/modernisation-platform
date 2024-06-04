@@ -770,11 +770,11 @@ locals {
 
     ssm_patching = {
       ad-fixngo-ssm-patching-nonlive-a = {
-        application-name  = "ad-nonlive-a"
-        approval_days     = "9"
-        patch_schedule    = "cron(0 21 ? * TUE#2 *)" # 2nd Tues @ 9pm
-        patch_tag         = "eu-west-2a"
-        suffix             = "-2a"
+        application-name = "ad-nonlive-a"
+        approval_days    = "9"
+        patch_schedule   = "cron(0 21 ? * TUE#2 *)" # 2nd Tues @ 9pm
+        patch_tag        = "eu-west-2a"
+        suffix           = "-2a"
       }
     }
 
@@ -1063,8 +1063,8 @@ module "ad_fixngo_ssm_patching" {
   patch_schedule       = each.value.patch_schedule
   operating_system     = "WINDOWS"
   patch_tag            = each.value.patch_tag
-  suffix                = each.value.suffix
-  patch_classification  = ["SecurityUpdates", "CriticalUpdates"]
+  suffix               = each.value.suffix
+  patch_classification = ["SecurityUpdates", "CriticalUpdates"]
   tags = merge(
     local.tags,
     {
