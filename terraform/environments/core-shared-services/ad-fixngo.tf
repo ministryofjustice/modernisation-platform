@@ -9,7 +9,6 @@
 # and firewall rules from terraform/environments/core-network-services
 
 module "ad_fixngo_ip_addresses" {
-  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source = "github.com/ministryofjustice/modernisation-platform-environments//terraform/modules/ip_addresses?ref=29c48e315aa5eeef5d604617169b2f6db953966e"
 }
 
@@ -1092,10 +1091,9 @@ resource "aws_ssm_parameter" "ad_fixngo" {
 }
 
 module "ad_fixngo_ssm_patching" {
-  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   for_each = local.ad_fixngo.ssm_patching
 
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching.git?ref=v3.0.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching.git?ref=d1be56ad6bceeee3fb0a1beb9ad0d61ea07d0259"
 
   providers = {
     aws.bucket-replication = aws
