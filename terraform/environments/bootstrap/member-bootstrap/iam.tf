@@ -231,6 +231,23 @@ data "aws_iam_policy_document" "member-access" {
     ]
     resources = ["arn:aws:iam::*:user/cicd-member-user"]
   }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "cloudformation:ListStacks",
+      "cloudformation:DescribeStacks",
+      "cloudformation:CreateStack",
+      "cloudformation:UpdateStack",
+      "cloudformation:DeleteStack"
+    ]
+    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+    condition {
+      test     = "StringEquals"
+      variable = "cloudformation:ResourceTypes"
+      values   = ["AWS::WAFv2::WebACL"]
+    }
+  }
 }
 
 resource "aws_iam_policy" "member-access" {
