@@ -232,37 +232,44 @@ data "aws_iam_policy_document" "member-access" {
     resources = ["arn:aws:iam::*:user/cicd-member-user"]
   }
 
-  statement {
+    statement {
       effect = "Allow"
       actions = [
           "cloudformation:ListStacks",
           "cloudformation:DescribeStacks",
-          "cloudformation:CreateStack",
-          "cloudformation:UpdateStack",
           "cloudformation:DeleteStack",
           "cloudformation:GetTemplate"
       ]
       resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
-      # condition {
-      #     test     = "ForAnyValue:StringEquals"
-      #     variable = "cloudformation:ResourceTypes"
-      #     values   = ["AWS::WAFv2::WebACL"]
-      # }
   }
 
   statement {
-      effect = "Deny"
+      effect = "Allow"
       actions = [
           "cloudformation:CreateStack",
-          "cloudformation:UpdateStack"
+          "cloudformation:UpdateStack",
       ]
       resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
       condition {
-          test     = "StringNotEquals"
+          test     = "StringEquals"
           variable = "cloudformation:ResourceTypes"
           values   = ["AWS::WAFv2::WebACL"]
       }
   }
+
+  # statement {
+  #     effect = "Deny"
+  #     actions = [
+  #         "cloudformation:CreateStack",
+  #         "cloudformation:UpdateStack"
+  #     ]
+  #     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+  #     condition {
+  #         test     = "StringNotEquals"
+  #         variable = "cloudformation:ResourceTypes"
+  #         values   = ["AWS::WAFv2::WebACL"]
+  #     }
+  # }
 
 }
 
