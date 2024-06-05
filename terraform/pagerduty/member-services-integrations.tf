@@ -2000,10 +2000,10 @@ resource "pagerduty_service_integration" "cwa_non_prod" {
 }
 
 resource "pagerduty_slack_connection" "cwa_non_prod" {
-  source_id = pagerduty_service.cwa_non_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C076FGV8H7V"
+  source_id         = pagerduty_service.cwa_non_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C076FGV8H7V"
   notification_type = "responder"
   config {
     events = [
@@ -2046,10 +2046,10 @@ resource "pagerduty_service_integration" "cwa_prod" {
 }
 
 resource "pagerduty_slack_connection" "cwa_prod" {
-  source_id = pagerduty_service.cwa_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C07613RPX2B"
+  source_id         = pagerduty_service.cwa_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C07613RPX2B"
   notification_type = "responder"
   config {
     events = [
