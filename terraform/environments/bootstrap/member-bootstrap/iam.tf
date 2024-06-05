@@ -257,7 +257,7 @@ data "aws_iam_policy_document" "member-access" {
   #         variable = "cloudformation:ResourceTypes"
   #         values   = ["AWS::WAFv2::WebACL"]
   #     }
-  }
+  #}
 
   # statement {
   #     effect = "Deny"
