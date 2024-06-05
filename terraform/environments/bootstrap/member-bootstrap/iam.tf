@@ -233,35 +233,35 @@ data "aws_iam_policy_document" "member-access" {
   }
 
   statement {
-    effect = "Allow"
-    actions = [
-      "cloudformation:ListStacks",
-      "cloudformation:DescribeStacks",
-      "cloudformation:CreateStack",
-      "cloudformation:UpdateStack",
-      "cloudformation:DeleteStack",
-      "cloudformation:GetTemplate"
-    ]
-    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
-    condition {
-      test     = "ForAllValues:StringEquals"
-      variable = "cloudformation:ResourceTypes"
-      values   = ["AWS::WAFv2::WebACL"]
-    }
+      effect = "Allow"
+      actions = [
+          "cloudformation:ListStacks",
+          "cloudformation:DescribeStacks",
+          "cloudformation:CreateStack",
+          "cloudformation:UpdateStack",
+          "cloudformation:DeleteStack",
+          "cloudformation:GetTemplate"
+      ]
+      resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+      condition {
+          test     = "ForAnyValue:StringEquals"
+          variable = "cloudformation:ResourceTypes"
+          values   = ["AWS::WAFv2::WebACL"]
+      }
   }
 
   statement {
-    effect = "Deny"
-    actions = [
-      "cloudformation:CreateStack",
-      "cloudformation:UpdateStack"
-    ]
-    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
-    condition {
-      test     = "ForAllValues:StringNotEquals"
-      variable = "cloudformation:ResourceTypes"
-      values   = ["AWS::WAFv2::WebACL"]
-    }
+      effect = "Deny"
+      actions = [
+          "cloudformation:CreateStack",
+          "cloudformation:UpdateStack"
+      ]
+      resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+      condition {
+          test     = "ForAllValues:StringNotEquals"
+          variable = "cloudformation:ResourceTypes"
+          values   = ["AWS::WAFv2::WebACL"]
+      }
   }
 
 }
