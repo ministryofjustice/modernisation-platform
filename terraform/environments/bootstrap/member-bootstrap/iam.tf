@@ -244,25 +244,12 @@ data "aws_iam_policy_document" "member-access" {
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
     condition {
-      test     = "StringEqualsIfExists"
-      variable = "cloudformation:ResourceTypes"
+      test     = "ForAllValues:StringEquals"
+      variable = "cloudformation:TemplateResourceTypes"
       values   = ["AWS::WAFv2::WebACL"]
     }
   }
 
-  statement {
-    effect = "Deny"
-    actions = [
-      "cloudformation:CreateStack",
-      "cloudformation:UpdateStack"
-    ]
-    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
-    condition {
-      test     = "StringNotEqualsIfExists"
-      variable = "cloudformation:ResourceTypes"
-      values   = ["AWS::WAFv2::WebACL"]
-    }
-  }
 }
 
 resource "aws_iam_policy" "member-access" {
