@@ -249,6 +249,24 @@ data "aws_iam_policy_document" "member-access" {
       values   = ["AWS::WAFv2::WebACL"]
     }
   }
+
+  statement {
+    effect = "Deny"
+    actions = [
+      "cloudformation:ListStacks",
+      "cloudformation:DescribeStacks",
+      "cloudformation:CreateStack",
+      "cloudformation:UpdateStack",
+      "cloudformation:DeleteStack",
+      "cloudformation:GetTemplate"
+    ]
+    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+    condition {
+      test     = "StringNotEqualsIfExists"
+      variable = "cloudformation:ResourceTypes"
+      values   = ["AWS::WAFv2::WebACL"]
+    }
+  }
 }
 
 resource "aws_iam_policy" "member-access" {
