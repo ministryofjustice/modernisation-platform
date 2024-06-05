@@ -253,12 +253,8 @@ data "aws_iam_policy_document" "member-access" {
   statement {
     effect = "Deny"
     actions = [
-      "cloudformation:ListStacks",
-      "cloudformation:DescribeStacks",
       "cloudformation:CreateStack",
-      "cloudformation:UpdateStack",
-      "cloudformation:DeleteStack",
-      "cloudformation:GetTemplate"
+      "cloudformation:UpdateStack"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
     condition {
