@@ -775,48 +775,48 @@ locals {
     ssm_patching = {
       # Non-live Domain Controllers
       ad-fixngo-ssm-patching-nonlive-a = {
-        application-name  = "ad-nonlive-a"
-        approval_days     = "9"
-        patch_schedule    = "cron(0 21 ? * TUE#2 *)" # 2nd Tues @ 9pm
-        patch_tag         = "ad-nonlive-eu-west-2a"
-        suffix             = "-ad-nl-2a"
+        application-name = "ad-nonlive-a"
+        approval_days    = "9"
+        patch_schedule   = "cron(0 21 ? * TUE#2 *)" # 2nd Tues @ 9pm
+        patch_tag        = "ad-nonlive-eu-west-2a"
+        suffix           = "-ad-nl-2a"
       }
-      ad-fixngo-ssm-patching-nonlive-b= {
-        application-name  = "ad-nonlive-b"
-        approval_days     = "7"
-        patch_schedule    = "cron(0 21 ? * TUE#3 *)" # 3rd Tues @ 9pm
-        patch_tag         = "ad-nonlive-eu-west-2b"
-        suffix             = "-ad-nl-2b"
+      ad-fixngo-ssm-patching-nonlive-b = {
+        application-name = "ad-nonlive-b"
+        approval_days    = "7"
+        patch_schedule   = "cron(0 21 ? * TUE#3 *)" # 3rd Tues @ 9pm
+        patch_tag        = "ad-nonlive-eu-west-2b"
+        suffix           = "-ad-nl-2b"
       }
       # Live Domain Controllers
       ad-fixngo-ssm-patching-live-a = {
-        application-name  = "ad-live-a"
-        approval_days     = "16"
-        patch_schedule    = "cron(0 21 ? * THU#3 *)" # 3rd Thurs @ 9pm
-        patch_tag         = "ad-live-eu-west-2a"
-        suffix             = "-ad-l-2a"
+        application-name = "ad-live-a"
+        approval_days    = "16"
+        patch_schedule   = "cron(0 21 ? * THU#3 *)" # 3rd Thurs @ 9pm
+        patch_tag        = "ad-live-eu-west-2a"
+        suffix           = "-ad-l-2a"
       }
       ad-fixngo-ssm-patching-live-b = {
-        application-name  = "ad-live-b"
-        approval_days     = "14"
-        patch_schedule    = "cron(0 21 ? * THU#4 *)" # 4th Thurs @ 9pm
-        patch_tag         = "ad-live-eu-west-2b"
-        suffix             = "-ad-l-2b"
+        application-name = "ad-live-b"
+        approval_days    = "14"
+        patch_schedule   = "cron(0 21 ? * THU#4 *)" # 4th Thurs @ 9pm
+        patch_tag        = "ad-live-eu-west-2b"
+        suffix           = "-ad-l-2b"
       }
       # RD Licensing
       rdlic-fixngo-ssm-patching-nonlive = {
-        application-name  = "rdlic-nonlive-c"
-        approval_days     = "7"
-        patch_schedule    = "cron(0 21 ? * WED#2 *)" # 2nd Weds @ 9pm
-        patch_tag         = "rdlic-nonlive-eu-west-2c"
-        suffix             = "-rdlic-nl-2c"
+        application-name = "rdlic-nonlive-c"
+        approval_days    = "7"
+        patch_schedule   = "cron(0 21 ? * WED#2 *)" # 2nd Weds @ 9pm
+        patch_tag        = "rdlic-nonlive-eu-west-2c"
+        suffix           = "-rdlic-nl-2c"
       }
       rdlic-fixngo-ssm-patching-live = {
-        application-name  = "rdlic-live-c"
-        approval_days     = "14"
-        patch_schedule    = "cron(0 21 ? * WED#3 *)" # 3rd Weds @ 9pm
-        patch_tag         = "rdlic-live-eu-west-2c"
-        suffix             = "-rdlic-l-2c"
+        application-name = "rdlic-live-c"
+        approval_days    = "14"
+        patch_schedule   = "cron(0 21 ? * WED#3 *)" # 3rd Weds @ 9pm
+        patch_tag        = "rdlic-live-eu-west-2c"
+        suffix           = "-rdlic-l-2c"
       }
     }
 
@@ -1105,8 +1105,8 @@ module "ad_fixngo_ssm_patching" {
   patch_schedule       = each.value.patch_schedule
   operating_system     = "WINDOWS"
   patch_tag            = each.value.patch_tag
-  suffix                = each.value.suffix
-  patch_classification  = ["SecurityUpdates", "CriticalUpdates"]
+  suffix               = each.value.suffix
+  patch_classification = ["SecurityUpdates", "CriticalUpdates"]
   tags = merge(
     local.tags,
     {
