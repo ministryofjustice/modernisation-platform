@@ -258,8 +258,8 @@ data "aws_iam_policy_document" "member-access" {
       ]
       resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
       condition {
-          test     = "ForAllValues:StringNotEquals"
-          variable = "cloudformation:ResourceTypes"
+          test     = "StringEquals"
+          variable = "ResourceType"
           values   = ["AWS::WAFv2::WebACL"]
       }
   }
