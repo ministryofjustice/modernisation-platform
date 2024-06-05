@@ -243,11 +243,11 @@ data "aws_iam_policy_document" "member-access" {
           "cloudformation:GetTemplate"
       ]
       resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
-      condition {
-          test     = "ForAnyValue:StringEquals"
-          variable = "cloudformation:ResourceTypes"
-          values   = ["AWS::WAFv2::WebACL"]
-      }
+      # condition {
+      #     test     = "ForAnyValue:StringEquals"
+      #     variable = "cloudformation:ResourceTypes"
+      #     values   = ["AWS::WAFv2::WebACL"]
+      # }
   }
 
   statement {
