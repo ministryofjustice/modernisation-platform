@@ -238,23 +238,25 @@ data "aws_iam_policy_document" "member-access" {
           "cloudformation:ListStacks",
           "cloudformation:DescribeStacks",
           "cloudformation:DeleteStack",
-          "cloudformation:GetTemplate"
+          "cloudformation:GetTemplate",
+          "cloudformation:CreateStack",
+          "cloudformation:UpdateStack"
       ]
       resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
 
-  statement {
-      effect = "Allow"
-      actions = [
-          "cloudformation:CreateStack",
-          "cloudformation:UpdateStack",
-      ]
-      resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
-      condition {
-          test     = "StringEquals"
-          variable = "cloudformation:ResourceTypes"
-          values   = ["AWS::WAFv2::WebACL"]
-      }
+  # statement {
+  #     effect = "Allow"
+  #     actions = [
+  #         "cloudformation:CreateStack",
+  #         "cloudformation:UpdateStack",
+  #     ]
+  #     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+  #     condition {
+  #         test     = "StringEquals"
+  #         variable = "cloudformation:ResourceTypes"
+  #         values   = ["AWS::WAFv2::WebACL"]
+  #     }
   }
 
   # statement {
