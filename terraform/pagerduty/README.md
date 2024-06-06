@@ -14,7 +14,7 @@ The state is stored in S3, as defined in [backend.tf](backend.tf).
 
 ### User changes in [`locals.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/pagerduty/locals.tf)
 
-If a new team already exists in the MoJ Pager Duty (PD) account, add `data "pagerduty_user"` in the [`locals.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L66) and reference them under the [`existing_users`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L37) local variable.
+If a new team member already exists in the MoJ Pager Duty (PD) account, add `data "pagerduty_user"` in the [`locals.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L66) and reference them under the [`existing_users`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L37) local variable.
 Otherwise, add a new user entry under `pager_duty_users` local variable in the [`locals.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L5).
 
 Add a newly added user to the local shortcuts in the [`locals.tf`](https://github.com/ministryofjustice/modernisation-platform/blob/5f7483a0e14d9606f0f90c892cd55264e3932c46/terraform/pagerduty/locals.tf#L49).

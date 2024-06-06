@@ -44,7 +44,8 @@ locals {
     stephen_linden = data.pagerduty_user.stephen_linden,
     simon_pledger  = data.pagerduty_user.simon_pledger,
     mark_roberts   = data.pagerduty_user.mark_roberts,
-    aaron_robinson = data.pagerduty_user.aaron_robinson
+    aaron_robinson = data.pagerduty_user.aaron_robinson,
+    richard_green = data.pagerduty_user.richard_green
   }
 
   modernisation_platform_users = merge(local.existing_users, tomap(pagerduty_user.pager_duty_users))
@@ -58,6 +59,7 @@ locals {
   mark_roberts     = data.pagerduty_user.mark_roberts.id
   aaron_robinson   = data.pagerduty_user.aaron_robinson.id
   sukesh_reddygade = pagerduty_user.pager_duty_users["sukesh_reddygade"].id
+  richard_green   = data.pagerduty_user.richard_green.id
 
   tags = {
     business-unit = "Platforms"
@@ -88,4 +90,8 @@ data "pagerduty_user" "mark_roberts" {
 
 data "pagerduty_user" "aaron_robinson" {
   email = "aaron.robinson${local.digital_email_suffix}"
+}
+
+data "pagerduty_user" "richard_green"{
+  email = "richard.green${local.digital_email_suffix}"
 }
