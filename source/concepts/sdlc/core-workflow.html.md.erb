@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Core Workflow (CI/CD)
-last_reviewed_on: 2023-12-06
+last_reviewed_on: 2024-06-06
 review_in: 6 months
 ---
 
@@ -30,42 +30,42 @@ Workflow files are found [here](https://github.com/ministryofjustice/modernisati
 
 Workflows which create terraform resources in our core accounts and creates new member accounts.
 
-Name | Description | Terraform location | Workflow file |
----|---|---|---|
-Modernisation Platform account | Creates key resources such as S3 state buckets for the platform | `terraform/modernisation-platform-account` | Manually run
-Environment creation | Creates member OUs and accounts | `terraform/environments` | `new-environment.yml`
-Core Logging | Creates the core logging account resources | `terraform/environments/core-logging` | `core-logging-deployment.yml`
-Core Networking | Creates the core networking account resources | `terraform/environments/core-network-services` | `core-network-services-deployment.yml`
-Core Security | Creates the core security account resources | `terraform/environments/core-security` | `core-security-deployment.yml`
-Core Shared Services | Creates the core shared services account resources | `terraform/environments/shared-services` | `core-shared-services-deployment.yml`
-Core VPC | Creates the core VPC resources in the VPC accounts | `terraform/environments/core-vpc` | `core-vpc-development-deployment.yml`,`core-vpc-test-deployment.yml`,`core-vpc-preproduction-deployment.yml`,`core-vpc-production-deployment.yml`
-GitHub Terraform | Creates the GitHub teams and repositories in GitHub | `terraform/github` | `terraform-github.yml`
-PagerDuty | Creates PagerDuty teams, users, services and schedules | 'terraform/pagerduty' | `terraform-pagerduty.yml`
+| Name                           | Description                                                     | Terraform location                             | Workflow file                                                                                                                                     |
+| ------------------------------ | --------------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Modernisation Platform account | Creates key resources such as S3 state buckets for the platform | `terraform/modernisation-platform-account`     | Manually run                                                                                                                                      |
+| Environment creation           | Creates member OUs and accounts                                 | `terraform/environments`                       | `new-environment.yml`                                                                                                                             |
+| Core Logging                   | Creates the core logging account resources                      | `terraform/environments/core-logging`          | `core-logging-deployment.yml`                                                                                                                     |
+| Core Networking                | Creates the core networking account resources                   | `terraform/environments/core-network-services` | `core-network-services-deployment.yml`                                                                                                            |
+| Core Security                  | Creates the core security account resources                     | `terraform/environments/core-security`         | `core-security-deployment.yml`                                                                                                                    |
+| Core Shared Services           | Creates the core shared services account resources              | `terraform/environments/shared-services`       | `core-shared-services-deployment.yml`                                                                                                             |
+| Core VPC                       | Creates the core VPC resources in the VPC accounts              | `terraform/environments/core-vpc`              | `core-vpc-development-deployment.yml`,`core-vpc-test-deployment.yml`,`core-vpc-preproduction-deployment.yml`,`core-vpc-production-deployment.yml` |
+| GitHub Terraform               | Creates the GitHub teams and repositories in GitHub             | `terraform/github`                             | `terraform-github.yml`                                                                                                                            |
+| PagerDuty                      | Creates PagerDuty teams, users, services and schedules          | 'terraform/pagerduty'                          | `terraform-pagerduty.yml`                                                                                                                         |
 
 ### New member file creation workflows
 
 These workflows create the new files needed for new member accounts.
 
-Name | Description | Workflow file |
-|---|---|---|
-New environment files | Creates new files in the modernisation-platform repository | `new-environment-files.yml`
-New member environment files | Creates new files in the modernisation-platform-environments repository, also creates the GitHub environments | `new-member-environment-files.yml`
-Notify New Users | Notifies new users when their accounts have been created | `notify-user-new-environment-created.yml`
+| Name                         | Description                                                                                                   | Workflow file                             |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| New environment files        | Creates new files in the modernisation-platform repository                                                    | `new-environment-files.yml`               |
+| New member environment files | Creates new files in the modernisation-platform-environments repository, also creates the GitHub environments | `new-member-environment-files.yml`        |
+| Notify New Users             | Notifies new users when their accounts have been created                                                      | `notify-user-new-environment-created.yml` |
 
 ### Other workflows
 
-Name | Description | Workflow file |
-|---|---|---|
-Publish | Publishes pages in `source` to our GitHub pages user guidance | `publish-gh-pages.yml`
-Format Code | Formats code once a week and raises a PR for review | `format-code.yml`
-Labeler | Adds labels to our pull requests depending on which folders are changed | `labeler.yml`
-OPA Policies | Runs Open Policy Agent validation tests against our json files | `opa-policies.yml`
-Sheduled Baseline | Runs the baseline code across all accounts ensuring security baselines are still in place | `scheduled-baseline.yml`
-Terraform Static Code Analysis | Runs TFSEC, Checkov and TFlint against all Terraform code | `terraform-static-analysis.yml`
-Generate Dependabot File | Generates a new dependabot file to add any newly added Terraform folders | `generate-dependabot-file.yml`
-Add issues to project | On new modernisation-plaform repository issue creation adds the new issue to the Modernisation Platform project | `add-issues-to-project.yml`
-Terraform Documentation | Generates Terraform module documentation | `documentation.yml`
-Scorecards | Generates [OSSF scorecard](https://github.com/ossf/scorecard) security findings and publishes them on the repository security tab in GitHub | `scorecards.yml`
-Code Scanning | Runs Static Code Analysis and uploads findings and publishes them on the repository code scanning tab in GitHub | `code-scanning.yml`
-Secrets Rotation Reminder | Checks the age of Modernisation Platform secrets and raises issues to prompt them to be rotated regularly | `secrets-rotation-reminder.yml`
-Close Stale PRs | Sets PRs and Issues as stale after a period of inactivity and closes them as appropriate | `close-stale-prs.yml`
+| Name                           | Description                                                                                                                                 | Workflow file                   |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| Publish                        | Publishes pages in `source` to our GitHub pages user guidance                                                                               | `publish-gh-pages.yml`          |
+| Format Code                    | Formats code once a week and raises a PR for review                                                                                         | `format-code.yml`               |
+| Labeler                        | Adds labels to our pull requests depending on which folders are changed                                                                     | `labeler.yml`                   |
+| OPA Policies                   | Runs Open Policy Agent validation tests against our json files                                                                              | `opa-policies.yml`              |
+| Sheduled Baseline              | Runs the baseline code across all accounts ensuring security baselines are still in place                                                   | `scheduled-baseline.yml`        |
+| Terraform Static Code Analysis | Runs TFSEC, Checkov and TFlint against all Terraform code                                                                                   | `terraform-static-analysis.yml` |
+| Generate Dependabot File       | Generates a new dependabot file to add any newly added Terraform folders                                                                    | `generate-dependabot-file.yml`  |
+| Add issues to project          | On new modernisation-platform repository issue creation adds the new issue to the Modernisation Platform project                            | `add-issues-to-project.yml`     |
+| Terraform Documentation        | Generates Terraform module documentation                                                                                                    | `documentation.yml`             |
+| Scorecards                     | Generates [OSSF scorecard](https://github.com/ossf/scorecard) security findings and publishes them on the repository security tab in GitHub | `scorecards.yml`                |
+| Code Scanning                  | Runs Static Code Analysis and uploads findings and publishes them on the repository code scanning tab in GitHub                             | `code-scanning.yml`             |
+| Secrets Rotation Reminder      | Checks the age of Modernisation Platform secrets and raises issues to prompt them to be rotated regularly                                   | `secrets-rotation-reminder.yml` |
+| Close Stale PRs                | Sets PRs and Issues as stale after a period of inactivity and closes them as appropriate                                                    | `close-stale-prs.yml`           |
