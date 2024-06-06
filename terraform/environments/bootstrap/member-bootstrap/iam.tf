@@ -238,7 +238,9 @@ data "aws_iam_policy_document" "member-access" {
           "cloudformation:ListStacks",
           "cloudformation:DescribeStacks",
           "cloudformation:DeleteStack",
-          "cloudformation:GetTemplate"
+          "cloudformation:GetTemplate",
+          "cloudformation:GetTemplateSummary",
+          "cloudformation:GetStackPolicy"
       ]
       resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
