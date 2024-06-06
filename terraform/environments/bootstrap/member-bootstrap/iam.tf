@@ -240,7 +240,9 @@ data "aws_iam_policy_document" "member-access" {
           "cloudformation:DeleteStack",
           "cloudformation:GetTemplate",
           "cloudformation:GetTemplateSummary",
-          "cloudformation:GetStackPolicy"
+          "cloudformation:GetStackPolicy",
+          "cloudformation:ListChangeSets",
+          "cloudformation:DescribeChangeSet"
       ]
       resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
@@ -248,6 +250,7 @@ data "aws_iam_policy_document" "member-access" {
   statement {
       effect = "Allow"
       actions = [
+          "cloudformation:CreateChangeSet",
           "cloudformation:CreateStack",
           "cloudformation:UpdateStack"
       ]
