@@ -247,13 +247,13 @@ data "aws_iam_policy_document" "member-access" {
       effect = "Allow"
       actions = [
           "cloudformation:CreateStack",
-          "cloudformation:UpdateStack",
+          "cloudformation:UpdateStack"
       ]
       resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
       condition {
-          test     = "StringLike"
-          variable = "cloudformation:ResourceTypes"
-          values   = ["AWS::WAFv2::*"]
+        test     = "StringEquals"
+        variable = "cloudformation:ResourceTypes"
+        values   = ["AWS::WAFv2::WebACL"]
       }
   }
 
