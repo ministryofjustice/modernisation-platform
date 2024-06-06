@@ -28,39 +28,16 @@ When this happens, any external facing EC2 Elastic IPs and Elastic Load Balancer
 
 For production accounts, AWS Shield Response Team (SRT) access, and Automatic Layer 7 DDoS Mitigation can optionally be configured.
 
-## Create alarms
+## Managing AWS Shield Advanced for your account
 
-DDoS alarms should be configured for all production public facing interfaces, when these alarms are triggered they should send a notification through to the [#modernisation-platform-high-priority-alarms](https://mojdt.slack.com/archives/C03CY6451QT) channel.
-See example code [here](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/terraform/environments/sprinkler/monitoring.tf).
+You can complete the following tasks by implementing the [`shield_advanced`](https://github.com/ministryofjustice/modernisation-platform-environments/tree/main/terraform/modules/shield_advanced) terraform module into your environment code:
 
-## Enable SRT Access
-
-This needs to be done manually in the AWS console by a Modernisation Platform engineer in the application account.
-
-1. Navigate to the [Shield Overview](https://us-east-1.console.aws.amazon.com/wafv2/shieldv2#/overview)
-1. Under the Shield Advanced setup, click step 3. "Edit SRT access"
-1. Under SRT access setting, choose "Choose and existing role for the SRT to access my accounts"
-1. Select the [AWSSRTSupport](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf#L317) role
-1. Click "Save"
-
-This will enable the SRT to view data to help them support and create WAF rules during a DDoS attack.
-
-## Enable Automatic Layer 7 Mitigation for Elastic Load Balancers
-
-[Automatic Layer 7 DDoS mitigation](https://docs.aws.amazon.com/waf/latest/developerguide/ddos-automatic-app-layer-response.html) can be enabled for Application Load Balancers.
-
-This needs to be done manually in the AWS console by a Modernisation Platform engineer in the application account.
-
-1. Navigate to the [Shield Protected resources](https://us-east-1.console.aws.amazon.com/wafv2/shieldv2#/protected_resources)
-1. Select the Elastic Load Balancer and choose "Configure protections" and "Selected resources"
-1. Under "Associate web ACL" select the Web ACL (normally beginning with `FMManagedWebACLV2`)
-1. If there is no rate limit rule, add one and give it a sensible setting depending on the service, set the Action to "Count"
-1. Under "Automatic application layer DDoS mitigation", select "Enable" and set the rule action to "Count"
-1. Select "Next", associate a health check if one has been created and required
-1. Select "Next", select the SNS topic created earlier for the alarms
-1. Select "Next", review the configuration and click "Finish configuration"
-
-Once the configuration is complete, monitor the WAF metrics and Shield events for 1-2 weeks to ensure that there are no false positives with the new rules. Then return to the configuration, and change the "Count" to "Block" for the rate limit rule and for the automatic mitigation.
+* Configure DDoS alerts
+* Enable Shield Response Team (SRT) Access
+* Associate Shield Protected resources with the Shield Managed WAF ACL
+* Create alarms and notifications
+* Apply a count/block rule to the managed WAF with a simple threshold
+* Optionally apply AWS Shield automatic responses
 
 ## Route53 hosted zones
 
