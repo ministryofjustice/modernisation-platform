@@ -242,7 +242,8 @@ data "aws_iam_policy_document" "member-access" {
           "cloudformation:GetTemplateSummary",
           "cloudformation:GetStackPolicy",
           "cloudformation:ListChangeSets",
-          "cloudformation:DescribeChangeSet"
+          "cloudformation:DescribeChangeSet",
+          "cloudformation:ListStackResources"
       ]
       resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
@@ -256,7 +257,7 @@ data "aws_iam_policy_document" "member-access" {
       ]
       resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
       condition {
-        test     = "StringEquals"
+        test     = "ForAllValues:StringEquals"
         variable = "cloudformation:ResourceTypes"
         values   = ["AWS::WAFv2::WebACL"]
       }
