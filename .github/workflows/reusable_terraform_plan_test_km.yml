@@ -1,21 +1,18 @@
-name: "Reusable Plan for Sprinkler"
+name: "Reusable Plan"
 
 on:
   workflow_call:
     inputs:
       aws_region:
-        required: true
-        type: string
-      tf_workspace:
         required: false
+        default: 'eu-west-2'
         type: string
       working_directory:
         required: true
         type: string
+
     secrets:
       environment_management:
-        required: true
-      ACCOUNT_NUMBER:
         required: true
       SLACK_WEBHOOK_URL:
         required: true
@@ -28,10 +25,7 @@ jobs:
 
     env:
       TF_IN_AUTOMATION: true
-      AWS_REGION: ${{ inputs.aws_region }}
       ENVIRONMENT_MANAGEMENT: ${{ secrets.environment_management }}
-      TF_WORKSPACE: ${{ inputs.tf_workspace }}
-      ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       TF_VAR_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
 

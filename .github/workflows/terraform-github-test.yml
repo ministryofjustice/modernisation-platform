@@ -3,7 +3,7 @@ name: "Terraform: GitHub resources"
 on:
   push:
     branches:
-      - feature/6888-reusable-terraform-plan-apply
+      - main
 
   workflow_dispatch:
 
