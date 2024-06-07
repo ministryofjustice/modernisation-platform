@@ -286,7 +286,7 @@ resource "aws_iam_policy" "member-access" {
   policy      = data.aws_iam_policy_document.member-access.json
 }
 
-resource "aws_iam_policy" "member-access-cloudformation" {
+resource "aws_iam_policy" "member_access_cloudformation" {
   name        = "member-access-cloudformation"
   description = "This policy grants create and update permissions for cloudformation stack resources based on the resource types being created."
   policy      = <<EOF
@@ -300,17 +300,18 @@ resource "aws_iam_policy" "member-access-cloudformation" {
         "cloudformation:UpdateStack",
         "cloudformation:CreateChangeSet"
       ],
-      "Resource": ["*"]
-    },
-    "Condition": {
-      "StringNotEquals": {
-        "cloudformation:ResourceTypes": [ "AWS::WAFv2::WebAC" ]
+      "Resource": ["*"],
+      "Condition": {
+        "StringNotEquals": {
+          "cloudformation:ResourceTypes": [ "AWS::WAFv2::WebACL" ]
+        }
       }
     }
   ]
 }
 EOF
 }
+
 
 # Attachment to associate the cloudformation policy with the MemberAccess Role
 resource "aws_iam_role_policy_attachment" "memberaccess_role_policy_attachment" {
