@@ -187,4 +187,13 @@ resource "aws_secretsmanager_secret" "xsiam_secrets" {
   }
 }
 
-
+resource "aws_secretsmanager_secret" "test" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "test"
+  description = "reusable workflow test"
+  kms_key_id  = aws_kms_key.secrets_key.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}

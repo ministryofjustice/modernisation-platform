@@ -3,7 +3,7 @@ name: "Caller for Sprinkler"
 on:
   push:
     branches:
-      - feature/6888-reusable-terraform-plan-apply
+      - main
   
   pull_request:
     branches:
