@@ -1,12 +1,10 @@
-name: "Terraform: PagerDuty resources"
+name: "Terraform: Single Sign On"
 
 on:
   push:
 
     branches:
-      - main
-      # - feature/6888-reusable-terraform-plan-apply
-      
+      - feature/6888-reusable-terraform-plan-apply
       
   workflow_dispatch:
 
@@ -22,10 +20,8 @@ jobs:
   pagerduty-plan-and-apply:
     uses: ./.github/workflows/reusable_terraform_plan_test_km.yml
     with:
-      working_directory: "terraform/pagerduty"
+      working_directory: "terraform/single-sign-on"
     secrets:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
-      PAGERDUTY_TOKEN: ${{ secrets.PAGERDUTY_TOKEN }}
-      PAGERDUTY_USERAPI_TOKEN: ${{ secrets.PAGERDUTY_USERAPI_TOKEN }}
