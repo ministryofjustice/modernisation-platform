@@ -312,10 +312,13 @@ resource "aws_iam_policy" "member_access_cloudformation" {
 EOF
 }
 
+data "aws_iam_role" "member_access_role_name" {
+  name       = module.member-access.default.name  
+}
 
 # Attachment to associate the cloudformation policy with the MemberAccess Role
 resource "aws_iam_role_policy_attachment" "memberaccess_role_policy_attachment" {
-  role       = module.member-access.aws_iam_role.default.name  
+  role       = data.aws_iam_role.member_access_role_name
   policy_arn = aws_iam_policy.member_access_cloudformation.arn
 }
 
