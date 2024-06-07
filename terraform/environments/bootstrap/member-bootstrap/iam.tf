@@ -8,7 +8,7 @@ module "member-access" {
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=b67419df67f04d3023f410db26432b87186c909a"
   account_id             = local.modernisation_platform_account.id
   additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
-  policy_arns             = [aws_iam_policy.member-access[0].id, aws_iam_policy.member_access_cloudformation.id ]
+  policy_arns             = [aws_iam_policy.member-access[0].id]
   role_name              = "MemberInfrastructureAccess"
 }
 
