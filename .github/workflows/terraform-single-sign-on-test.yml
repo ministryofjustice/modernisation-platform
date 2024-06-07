@@ -1,4 +1,4 @@
-name: "Terraform: Single Sign On"
+name: "Terraform: Single Sign On "
 
 on:
   push:
