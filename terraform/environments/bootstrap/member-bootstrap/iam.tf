@@ -248,20 +248,20 @@ data "aws_iam_policy_document" "member-access" {
       resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
 
-  statement {
-      effect = "Allow"
-      actions = [
-          "cloudformation:CreateChangeSet",
-          "cloudformation:CreateStack",
-          "cloudformation:UpdateStack"
-      ]
-      resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
-      condition {
-        test     = "ForAllValues:StringEquals"
-        variable = "cloudformation:ResourceTypes"
-        values   = [ "AWS::WAFv2::WebACL" ]
-      }
-  }
+  # statement {
+  #     effect = "Allow"
+  #     actions = [
+  #         "cloudformation:CreateChangeSet",
+  #         "cloudformation:CreateStack",
+  #         "cloudformation:UpdateStack"
+  #     ]
+  #     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+  #     condition {
+  #       test     = "ForAllValues:StringEquals"
+  #       variable = "cloudformation:ResourceTypes"
+  #       values   = [ "AWS::WAFv2::WebACL" ]
+  #     }
+  # }
 
   # statement {
   #     effect = "Deny"
@@ -284,6 +284,38 @@ resource "aws_iam_policy" "member-access" {
   name        = "MemberInfrastructureAccessActions"
   description = "Restricted admin policy for member CI/CD to use"
   policy      = data.aws_iam_policy_document.member-access.json
+}
+
+resource "aws_iam_policy" "member-access-cloudformation" {
+  name        = "member-access-cloudformation"
+  description = "This policy grants create and update permissions for cloudformation stack resources based on the resource types being created."
+  policy      = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateStack",
+        "cloudformation:UpdateStack",
+        "cloudformation:CreateChangeSet"
+      ],
+      "Resource": ["*"]
+    },
+    "Condition": {
+      "StringNotEquals": {
+        "cloudformation:ResourceTypes": [ "AWS::WAFv2::WebAC" ]
+      }
+    }
+  ]
+}
+EOF
+}
+
+# Attachment to associate the cloudformation policy with the MemberAccess Role
+resource "aws_iam_role_policy_attachment" "memberaccess_role_policy_attachment" {
+  role       = module.member-access.aws_iam_role.default.name  
+  policy_arn = aws_iam_policy.member-access-cloudformation.arn
 }
 
 # Testing-test member access - separate as need the testing user created in the testing account to be able to access as well
