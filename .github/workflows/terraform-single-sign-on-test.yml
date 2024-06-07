@@ -17,7 +17,7 @@ defaults:
     shell: bash
 
 jobs:
-  pagerduty-plan-and-apply:
+  single-sign-on-plan-and-apply:
     uses: ./.github/workflows/reusable_terraform_plan_test_km.yml
     with:
       working_directory: "terraform/single-sign-on"
