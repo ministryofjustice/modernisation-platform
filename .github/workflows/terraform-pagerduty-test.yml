@@ -12,7 +12,8 @@ on:
       - 'terraform/pagerduty/**'
       - '.github/workflows/terraform-pagerduty.yml'
     branches:
-      - main
+      - feature/6888-reusable-terraform-plan-apply
+      
     types: [opened, edited, reopened, synchronize]
   workflow_dispatch:
 
