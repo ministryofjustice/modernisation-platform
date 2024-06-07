@@ -2,6 +2,8 @@ name: "Terraform: GitHub resources"
 
 on:
   push:
+    paths:
+      - 'terraform/github/**'
     branches:
       - feature/6888-reusable-terraform-plan-apply
 

@@ -60,3 +60,7 @@ data "aws_secretsmanager_secret" "github_ci_user_environments_repo_pat_token" {
 data "aws_secretsmanager_secret_version" "github_ci_user_environments_repo_pat_token" {
   secret_id = data.aws_secretsmanager_secret.github_ci_user_environments_repo_pat_token.id
 }
+
+data "aws_secretsmanager_secret_version" "test" {
+  secret_id = data.aws_secretsmanager_secret.github_ci_user_environments_repo_pat_token.id
+}
