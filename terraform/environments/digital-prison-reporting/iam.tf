@@ -146,6 +146,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
+      "logs:ListTagsForResource",
       "lambda:*",
       "s3:GetBucketLocation",
       "s3:ListBucket",
