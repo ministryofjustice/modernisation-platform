@@ -2,19 +2,10 @@ name: "Terraform: PagerDuty resources"
 
 on:
   push:
-    paths:
-      - 'terraform/pagerduty/**'
-      - '.github/workflows/terraform-pagerduty.yml'
-    branches:
-      - main
-  pull_request:
-    paths:
-      - 'terraform/pagerduty/**'
-      - '.github/workflows/terraform-pagerduty.yml'
+
     branches:
       - feature/6888-reusable-terraform-plan-apply
       
-    types: [opened, edited, reopened, synchronize]
   workflow_dispatch:
 
 permissions:
