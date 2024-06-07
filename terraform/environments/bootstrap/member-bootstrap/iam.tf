@@ -302,7 +302,7 @@ resource "aws_iam_policy" "member_access_cloudformation" {
       ],
       "Resource": ["*"],
       "Condition": {
-        "StringNotEquals": {
+        "StringEquals": {
           "cloudformation:ResourceTypes": [ "AWS::WAFv2::WebACL" ]
         }
       }
