@@ -2,7 +2,8 @@ name: "Terraform: Single Sign On "
 
 on:
   push:
-
+    paths:
+      - 'terraform/single-sign-on/**'
     branches:
       - feature/6888-reusable-terraform-plan-apply
       
