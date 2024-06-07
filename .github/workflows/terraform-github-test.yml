@@ -5,7 +5,8 @@ on:
     paths:
       - 'terraform/github/**'
     branches:
-      - feature/6888-reusable-terraform-plan-apply
+      # - feature/6888-reusable-terraform-plan-apply
+      - main
 
   workflow_dispatch:
 
