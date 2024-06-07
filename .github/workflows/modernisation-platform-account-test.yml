@@ -2,8 +2,8 @@ name: "Terraform: modernisation-platform-account"
 
 on:
   push:
-    # paths:
-    #   - 'terraform/modernisation-platform-account/**'
+    paths:
+      - 'terraform/modernisation-platform-account/**'
     branches:
       - feature/6888-reusable-terraform-plan-apply
       

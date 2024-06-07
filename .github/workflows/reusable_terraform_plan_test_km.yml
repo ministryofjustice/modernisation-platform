@@ -62,7 +62,7 @@ jobs:
         run: bash scripts/terraform-plan.sh ${{ inputs.working_directory }}
 
       - name: Slack failure notification
-        if: ${{ failure() && github.ref == 'refs/heads/main' && env.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() && github.ref == 'refs/heads/main' }}
         uses: slackapi/slack-github-action@70cd7be8e40a46e8b0eced40b0de447bdb42f68e # v1.26.0
         with:
           payload: |
