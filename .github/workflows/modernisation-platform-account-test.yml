@@ -9,7 +9,7 @@ on:
       
 
 jobs:
-  reusable-plan:
+  modernisation-platform-account-reusable-plan:
     uses: ./.github/workflows/reusable_terraform_plan_test_km.yml
     with:
       working_directory: "terraform/modernisation-platform-account"

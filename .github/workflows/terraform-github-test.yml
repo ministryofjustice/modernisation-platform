@@ -18,7 +18,7 @@ permissions:
   contents: read
 
 jobs:
-  github-plan:
+  terraform-github-plan:
     uses: ./.github/workflows/reusable_terraform_plan_test_km.yml
     with:
       aws_region: "eu-west-2"
@@ -30,7 +30,7 @@ jobs:
 
   create-github-environments:
     runs-on: ubuntu-latest
-    needs: [ github-plan ]
+    needs: [ terraform-github-plan ]
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:

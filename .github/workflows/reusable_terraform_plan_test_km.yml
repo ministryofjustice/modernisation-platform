@@ -18,6 +18,10 @@ on:
         required: true
       TERRAFORM_GITHUB_TOKEN:
         required: true
+      PAGERDUTY_TOKEN:
+        required: false
+      PAGERDUTY_USERAPI_TOKEN:
+        required: false
 
 jobs:
   plan:

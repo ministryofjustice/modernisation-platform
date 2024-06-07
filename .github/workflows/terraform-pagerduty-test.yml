@@ -1,0 +1,38 @@
+name: "Terraform: PagerDuty resources"
+
+on:
+  push:
+    paths:
+      - 'terraform/pagerduty/**'
+      - '.github/workflows/terraform-pagerduty.yml'
+    branches:
+      - main
+  pull_request:
+    paths:
+      - 'terraform/pagerduty/**'
+      - '.github/workflows/terraform-pagerduty.yml'
+    branches:
+      - main
+    types: [opened, edited, reopened, synchronize]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  pagerduty-plan-and-apply:
+    uses: ./.github/workflows/reusable_terraform_plan_test_km.yml
+    with:
+      aws_region: "eu-west-2"
+      working_directory: "terraform/pagerduty"
+    secrets:
+      environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+      PAGERDUTY_TOKEN: ${{ secrets.PAGERDUTY_TOKEN }}
+      PAGERDUTY_USERAPI_TOKEN: ${{ secrets.PAGERDUTY_USERAPI_TOKEN }}
