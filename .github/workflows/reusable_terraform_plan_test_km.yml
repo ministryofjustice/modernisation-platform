@@ -12,25 +12,20 @@ on:
       working_directory:
         required: true
         type: string
-      role_name:
-        required: true
-        type: string
-      aws_account_id:
-        required: true
-        type: string  
     secrets:
       environment_management:
         required: true
       ACCOUNT_NUMBER:
         required: true
       SLACK_WEBHOOK_URL:
-        required: false
+        required: true
       TERRAFORM_GITHUB_TOKEN:
         required: true
 
 jobs:
   plan:
     runs-on: ubuntu-latest
+
     env:
       TF_IN_AUTOMATION: true
       AWS_REGION: ${{ inputs.aws_region }}
@@ -39,20 +34,22 @@ jobs:
       ACCOUNT_NUMBER: ${{ secrets.ACCOUNT_NUMBER }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       TF_VAR_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+
     permissions:
       id-token: write
       contents: read
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e '${{ inputs.aws_account_id }}' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
-          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/${{ inputs.role_name }}"
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
           role-session-name: githubactionsrolesession
           aws-region: ${{ inputs.aws_region }}
 
