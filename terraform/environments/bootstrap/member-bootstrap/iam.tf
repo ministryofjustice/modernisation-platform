@@ -316,7 +316,7 @@ EOF
 # Attachment to associate the cloudformation policy with the MemberAccess Role
 resource "aws_iam_role_policy_attachment" "memberaccess_role_policy_attachment" {
   role       = module.member-access.aws_iam_role.default.name  
-  policy_arn = aws_iam_policy.member-access-cloudformation.arn
+  policy_arn = aws_iam_policy.member_access_cloudformation.arn
 }
 
 # Testing-test member access - separate as need the testing user created in the testing account to be able to access as well
