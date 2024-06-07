@@ -32,6 +32,8 @@ jobs:
       ENVIRONMENT_MANAGEMENT: ${{ secrets.environment_management }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       TF_VAR_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+      TF_VAR_pagerduty_token: ${{ secrets.PAGERDUTY_TOKEN }}
+      TF_VAR_pagerduty_user_token: ${{ secrets.PAGERDUTY_USERAPI_TOKEN}}
 
     permissions:
       id-token: write
