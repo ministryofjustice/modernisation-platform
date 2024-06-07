@@ -98,23 +98,16 @@ resource "aws_kms_alias" "s3_state_bucket_eu-west-1_replication" {
   target_key_id = aws_kms_key.s3_state_bucket_eu-west-1_replication.id
 }
 
-module "state-bucket-s3-replication-role" {
-  source             = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket-replication-role?ref=3b8a2945c1d266cc0ec2b21edb7f186b6574bda7" # v4.0.0
-  buckets            = [module.state-bucket.bucket.arn]
-  replication_bucket = "modernisation-platform-terraform-state-replication"
-  suffix_name        = "-terraform-state"
-  tags               = local.tags
-}
-
 module "state-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=8688bc15a08fbf5a4f4eef9b7433c5a417df8df1" # v7.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=cadab519b10a7d28dfa3b77d407725db6b37614a" # v8.0.0
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
   bucket_policy              = [data.aws_iam_policy_document.allow-state-access-from-root-account.json]
   bucket_name                = "modernisation-platform-terraform-state"
-  replication_role_arn       = module.state-bucket-s3-replication-role.role.arn
+  replication_bucket         = "modernisation-platform-terraform-state-replication"
+  suffix_name                = "-terraform-state"
   replication_enabled        = true
   replication_region         = "eu-west-1"
   custom_kms_key             = aws_kms_key.s3_state_bucket.arn
