@@ -21,8 +21,6 @@ jobs:
     with:
       aws_region: "eu-west-2"
       working_directory: "terraform/github"
-      role_name: "github-actions"
-      aws_account_id: ".modernisation_platform_account_id"
     secrets:
       environment_management: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_ID }}
