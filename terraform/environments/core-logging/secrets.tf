@@ -37,3 +37,9 @@ data "aws_secretsmanager_secret_version" "test" {
   provider  = aws.modernisation-platform
   secret_id = data.aws_secretsmanager_secret.xsiam_secret_arn.id
 }
+
+
+data "aws_secretsmanager_secret_version" "test-2" {
+  provider  = aws.modernisation-platform
+  secret_id = data.aws_secretsmanager_secret.xsiam_secret_arn.id
+}
