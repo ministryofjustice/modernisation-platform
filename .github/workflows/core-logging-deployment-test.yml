@@ -1,0 +1,31 @@
+name: core-logging-deployment
+
+on: 
+  push:
+    branches:
+      - main
+      - feature/6888-reusable-terraform-plan-apply
+  #   paths:
+  #     - 'terraform/environments/core-logging/**'
+  #     - 'terraform/modules/vpc-hub/**'
+  #     - 'terraform/modules/core-monitoring/**'
+  #     - '.github/workflows/core-logging-deployment.yml'
+  # pull_request:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - 'terraform/environments/core-logging/**'
+  #     - 'terraform/modules/vpc-hub/**'
+  #     - 'terraform/modules/core-monitoring/**'
+  #     - '.github/workflows/core-logging-deployment.yml'
+  workflow_dispatch:
+
+jobs:
+  call-core-logging-reusable:
+    uses: ./.github/workflows/reusable_core_terraform_plan_test.yml
+    with:
+      aws_region: "eu-west-2"
+    secrets:
+      ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

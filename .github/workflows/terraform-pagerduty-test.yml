@@ -20,7 +20,7 @@ defaults:
 
 jobs:
   pagerduty-plan-and-apply:
-    uses: ./.github/workflows/reusable_terraform_plan_test_km.yml
+    uses: ./.github/workflows/reusable_general_terraform_plan_test.yml
     with:
       working_directory: "terraform/pagerduty"
     secrets:

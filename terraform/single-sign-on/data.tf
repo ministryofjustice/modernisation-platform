@@ -49,10 +49,3 @@ data "aws_ssoadmin_permission_set" "read_only" {
   instance_arn = local.sso_instance_arn
   name         = "ReadOnlyAccess"
 }
-
-data "aws_ssoadmin_permission_set" "test" {
-  provider = aws.sso-management
-
-  instance_arn = local.sso_instance_arn
-  name         = "ReadOnlyAccess"
-}
