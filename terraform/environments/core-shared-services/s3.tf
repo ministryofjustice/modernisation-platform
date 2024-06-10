@@ -25,15 +25,8 @@ module "s3-bucket" {
         {
           days          = 90
           storage_class = "STANDARD_IA"
-          }, {
-          days          = 365
-          storage_class = "GLACIER"
         }
       ]
-
-      expiration = {
-        days = 730
-      }
 
       noncurrent_version_transition = [
         {
@@ -59,7 +52,9 @@ data "aws_iam_policy_document" "bucket_policy" {
     effect = "Allow"
     actions = [
       "s3:GetObject",
+      "s3:GetObjectTagging",
       "s3:PutObject",
+      "s3:PutObjectTagging",
       "s3:DeleteObject",
       "s3:ListBucket"
     ]
