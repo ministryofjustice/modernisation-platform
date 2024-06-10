@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  call-core-logging-reusable:
+  call-core-terraform-plan-reusable:
     uses: ./.github/workflows/reusable_core_terraform_plan_test.yml
     with:
       aws_region: "eu-west-2"

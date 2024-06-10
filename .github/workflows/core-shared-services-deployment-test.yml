@@ -1,4 +1,4 @@
-name: core-network-services-deployment
+name: core-shared-services-deployment
 
 on: 
   push:
@@ -11,8 +11,8 @@ jobs:
     uses: ./.github/workflows/reusable_core_terraform_plan_test.yml
     with:
       aws_region: "eu-west-2"
-      cache_dependency_path: "terraform/environments/core-network-services/test/go.sum"
-      service_name: "core-network-services"
+      cache_dependency_path: "terraform/environments/core-shared-services/test/go.sum"
+      service_name: "core-shared-services"
     secrets:
       ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
