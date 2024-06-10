@@ -21,6 +21,7 @@ permissions:
 
 env:
   TF_IN_AUTOMATION: true
+  ENVIRONMENT_MANAGEMENT: ${{ secrets.environment_management }}
 
 defaults:
   run:
@@ -38,7 +39,7 @@ jobs:
           go-version: 1.21
           cache-dependency-path: "terraform/environments/core-logging/test/go.sum"
       - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< ${{ secrets.ENVIRONMENT_MANAGEMENT }})" >> $GITHUB_ENV
+        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
@@ -80,6 +81,7 @@ jobs:
           SECRET: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
           PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
+        
 
   # reusable-core-terraform-apply:
   #   runs-on: ubuntu-latest
