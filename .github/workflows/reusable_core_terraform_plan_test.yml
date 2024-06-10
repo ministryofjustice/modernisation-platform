@@ -1,4 +1,4 @@
-name: Reusable Core Logging Deployment
+name: Reusable Core Plan
 
 on:
   workflow_call:
@@ -123,7 +123,7 @@ jobs:
   #         bash scripts/terraform-init.sh terraform/environments/${{ inputs.service_name }}
   #         terraform -chdir="terraform/environments/${{ inputs.service_name }}" workspace select ${{ inputs.service_name }}-production
   #         bash scripts/terraform-apply.sh terraform/environments/${{ inputs.service_name }}
-  
+
   #     - name: Slack failure notification
   #       uses: slackapi/slack-github-action@70cd7be8e40a46e8b0eced40b0de447bdb42f68e # v1.26.0
   #       with:

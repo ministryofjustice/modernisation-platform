@@ -1,0 +1,18 @@
+name: core-security-deployment
+
+on: 
+  push:
+    branches:
+      - feature/6888-reusable-terraform-plan-apply
+  workflow_dispatch:
+
+jobs:
+  call-core-logging-reusable:
+    uses: ./.github/workflows/reusable_core_terraform_plan_test.yml
+    with:
+      aws_region: "eu-west-2"
+      cache_dependency_path: "terraform/environments/core-security/test/go.sum"
+      service_name: "core-security"
+    secrets:
+      ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
