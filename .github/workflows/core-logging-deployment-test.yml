@@ -25,6 +25,7 @@ jobs:
     uses: ./.github/workflows/reusable_core_terraform_plan_test.yml
     with:
       aws_region: "eu-west-2"
+      cache_dependency_path: "terraform/environments/core-logging/test/go.sum"
     secrets:
       ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
