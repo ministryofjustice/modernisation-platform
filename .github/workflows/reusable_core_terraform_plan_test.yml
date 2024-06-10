@@ -42,13 +42,16 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
       - name: Setup Go
         uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
         with:
           go-version: 1.21
           cache-dependency-path: ${{ inputs.cache_dependency_path }}
+
       - name: Set Account Number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
+
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
@@ -99,8 +102,10 @@ jobs:
   #   steps:
   #     - name: Checkout Repository
   #       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
   #     - name: Set Account Number
   #       run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< ${{ secrets.ENVIRONMENT_MANAGEMENT }})" >> $GITHUB_ENV
+
   #     - name: configure aws credentials
   #       uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
   #       with:
@@ -118,6 +123,7 @@ jobs:
   #         bash scripts/terraform-init.sh terraform/environments/${{ inputs.service_name }}
   #         terraform -chdir="terraform/environments/${{ inputs.service_name }}" workspace select ${{ inputs.service_name }}-production
   #         bash scripts/terraform-apply.sh terraform/environments/${{ inputs.service_name }}
+  
   #     - name: Slack failure notification
   #       uses: slackapi/slack-github-action@70cd7be8e40a46e8b0eced40b0de447bdb42f68e # v1.26.0
   #       with:
