@@ -3,21 +3,7 @@ name: core-logging-deployment
 on: 
   push:
     branches:
-      # - main
       - feature/6888-reusable-terraform-plan-apply
-    paths:
-      - 'terraform/environments/core-logging/**'
-  #     - 'terraform/modules/vpc-hub/**'
-  #     - 'terraform/modules/core-monitoring/**'
-  #     - '.github/workflows/core-logging-deployment.yml'
-  # pull_request:
-  #   branches:
-  #     - main
-  #   paths:
-  #     - 'terraform/environments/core-logging/**'
-  #     - 'terraform/modules/vpc-hub/**'
-  #     - 'terraform/modules/core-monitoring/**'
-  #     - '.github/workflows/core-logging-deployment.yml'
   workflow_dispatch:
 
 jobs:
