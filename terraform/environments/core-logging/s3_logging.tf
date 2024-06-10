@@ -216,8 +216,8 @@ module "s3-bucket-cloudtrail" {
       }
     }
   ]
-  log_bucket           = module.s3-bucket-cloudtrail-logging.bucket.id
-  tags                 = local.tags
+  log_bucket = module.s3-bucket-cloudtrail-logging.bucket.id
+  tags       = local.tags
 }
 # Allow access to the bucket from the MoJ root account
 # Policy extrapolated from:
@@ -344,5 +344,5 @@ module "s3-bucket-cloudtrail-logging" {
     }
   ]
 
-  tags                 = local.tags
+  tags = local.tags
 }
