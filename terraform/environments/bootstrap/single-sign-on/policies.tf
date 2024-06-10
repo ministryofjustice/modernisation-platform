@@ -185,6 +185,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "acm:AddTagsToCertificate",
       "acm:RemoveTagsFromCertificate",
       "application-autoscaling:ListTagsForResource",
+      "autoscaling:StartInstanceRefresh",
       "autoscaling:UpdateAutoScalingGroup",
       "autoscaling:SetDesiredCapacity",
       "athena:Get*",
@@ -791,6 +792,7 @@ data "aws_iam_policy_document" "instance-management-document" {
     effect = "Allow"
     actions = [
       "application-autoscaling:ListTagsForResource",
+      "autoscaling:StartInstanceRefresh",
       "autoscaling:UpdateAutoScalingGroup",
       "autoscaling:SetDesiredCapacity",
       "aws-marketplace:ViewSubscriptions",
