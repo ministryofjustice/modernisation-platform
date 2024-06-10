@@ -12,6 +12,11 @@ on:
           description: 'Path to the go.sum file'
           required: true
           type: string
+      service_name:
+          description: 'Path to the go.sum file'
+          required: true
+          type: string
+     
 
     secrets:
       ENVIRONMENT_MANAGEMENT:
@@ -55,7 +60,7 @@ jobs:
           terraform_version: "~1"
           terraform_wrapper: false
  
-      - name: Run terraform plan in terraform/environments/core-logging
+      - name: Run terraform plan in terraform/environments/${{ inputs.service_name }}
         run: |
           git_dir=`git rev-parse --show-toplevel`
           terraform --version
@@ -63,21 +68,21 @@ jobs:
           if [ ! -z ${{ github.event.pull_request.number }} ]
           then
           #CONFIGURE TERRAFORM AND WORKSPACE
-          bash scripts/terraform-init.sh terraform/environments/core-logging
-          terraform -chdir="terraform/environments/core-logging" workspace select core-logging-production
+          bash scripts/terraform-init.sh terraform/environments/${{ inputs.service_name }}
+          terraform -chdir="terraform/environments/${{ inputs.service_name }}" workspace select ${{ inputs.service_name }}-production
 
           #RUN TERRATEST
-          pushd terraform/environments/core-logging/test
+          pushd terraform/environments/${{ inputs.service_name }}/test
           go mod tidy
           TEST=`go test | ${git_dir}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
           popd
-          TEST="> TERRATEST RESULT - core-logging
+          TEST="> TERRATEST RESULT - ${{ inputs.service_name }}
           ${TEST}"
           bash scripts/update-pr-comments.sh "${TEST}"
 
           #RUN TERRAFORM PLAN
-          PLAN=`bash scripts/terraform-plan.sh terraform/environments/core-logging | tee /dev/stderr | grep '^Plan: \|^No changes.'`
-          PLAN="> TERRAFORM PLAN RESULT - core-logging
+          PLAN=`bash scripts/terraform-plan.sh terraform/environments/${{ inputs.service_name }} | tee /dev/stderr | grep '^Plan: \|^No changes.'`
+          PLAN="> TERRAFORM PLAN RESULT - ${{ inputs.service_name }}
           ${PLAN}"
           bash scripts/update-pr-comments.sh "${PLAN}"
           fi
@@ -107,12 +112,12 @@ jobs:
   #         terraform_version: "~1"
   #         terraform_wrapper: false
 
-  #     - name: Run Terraform apply in terraform/environments/core-logging
+  #     - name: Run Terraform apply in terraform/environments/${{ inputs.service_name }}
   #       run: |
   #         terraform --version
-  #         bash scripts/terraform-init.sh terraform/environments/core-logging
-  #         terraform -chdir="terraform/environments/core-logging" workspace select core-logging-production
-  #         bash scripts/terraform-apply.sh terraform/environments/core-logging
+  #         bash scripts/terraform-init.sh terraform/environments/${{ inputs.service_name }}
+  #         terraform -chdir="terraform/environments/${{ inputs.service_name }}" workspace select ${{ inputs.service_name }}-production
+  #         bash scripts/terraform-apply.sh terraform/environments/${{ inputs.service_name }}
   #     - name: Slack failure notification
   #       uses: slackapi/slack-github-action@70cd7be8e40a46e8b0eced40b0de447bdb42f68e # v1.26.0
   #       with:
