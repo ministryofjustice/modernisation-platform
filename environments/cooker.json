@@ -10,7 +10,7 @@
         },
         {
           "github_slug": "modernisation-platform",
-          "level": "instance-management",
+          "level": "instance-management"
         }
       ],
       "additional_reviewers": ["astrobinson"]
