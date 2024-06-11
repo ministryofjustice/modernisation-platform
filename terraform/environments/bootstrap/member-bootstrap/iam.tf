@@ -5,10 +5,10 @@ locals {
 
 module "member-access" {
   count                  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=b67419df67f04d3023f410db26432b87186c909a"
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0"
   account_id             = local.modernisation_platform_account.id
   additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
-  policy_arns             = [aws_iam_policy.member-access[0].id, aws_iam_policy.member_access_cloudformation.id]
+  policy_arns             = aws_iam_policy.member-access[0].id
   role_name              = "MemberInfrastructureAccess"
 }
 
@@ -248,20 +248,20 @@ data "aws_iam_policy_document" "member-access" {
       resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
 
-  # statement {
-  #     effect = "Allow"
-  #     actions = [
-  #         "cloudformation:CreateChangeSet",
-  #         "cloudformation:CreateStack",
-  #         "cloudformation:UpdateStack"
-  #     ]
-  #     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
-  #     condition {
-  #       test     = "ForAllValues:StringEquals"
-  #       variable = "cloudformation:ResourceTypes"
-  #       values   = [ "AWS::WAFv2::WebACL" ]
-  #     }
-  # }
+  statement {
+      effect = "Allow"
+      actions = [
+          "cloudformation:CreateChangeSet",
+          "cloudformation:CreateStack",
+          "cloudformation:UpdateStack"
+      ]
+      resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+      condition {
+        test     = "StringEquals"
+        variable = "cloudformation:ResourceTypes"
+        values   = [ "aws::wafv2::webacl", "aws::s3::bucket" ]
+      }
+  }
 
   # statement {
   #     effect = "Deny"
@@ -286,31 +286,31 @@ resource "aws_iam_policy" "member-access" {
   policy      = data.aws_iam_policy_document.member-access.json
 }
 
-resource "aws_iam_policy" "member_access_cloudformation" {
-  name        = "member-access-cloudformation"
-  description = "This policy grants create and update permissions for cloudformation stack resources based on the resource types being created."
-  policy      = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "cloudformation:CreateStack",
-        "cloudformation:UpdateStack",
-        "cloudformation:CreateChangeSet"
-      ],
-      "Resource": ["*"],
-      "Condition": {
-        "ForAllValues:StringEquals": {
-          "cloudformation:ResourceTypes": [ "AWS::WAFv2::WebACL" ]
-        }
-      }
-    }
-  ]
-}
-EOF
-}
+# resource "aws_iam_policy" "member_access_cloudformation" {
+#   name        = "member-access-cloudformation"
+#   description = "This policy grants create and update permissions for cloudformation stack resources based on the resource types being created."
+#   policy      = <<EOF
+# {
+#   "Version": "2012-10-17",
+#   "Statement": [
+#     {
+#       "Effect": "Allow",
+#       "Action": [
+#         "cloudformation:CreateStack",
+#         "cloudformation:UpdateStack",
+#         "cloudformation:CreateChangeSet"
+#       ],
+#       "Resource": ["*"],
+#       "Condition": {
+#         "ForAllValues:StringEquals": {
+#           "cloudformation:ResourceTypes": [ "AWS::WAFv2::WebACL" ]
+#         }
+#       }
+#     }
+#   ]
+# }
+# EOF
+# }
 
 
 # Testing-test member access - separate as need the testing user created in the testing account to be able to access as well
