@@ -43,6 +43,7 @@ expected :=
     "equip",
     "eric",
     "example",
+    "genesys-call-centre-data",
     "hmpps-domain-services",
     "hmpps-oem",
     "laa-ccms-infra-azure-ad-sso",
