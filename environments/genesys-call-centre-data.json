@@ -4,7 +4,7 @@
   "codeowners": [""],
   "environments": [
     {
-      "name": "genesys-call-centre-data",
+      "name": "development",
       "access": [
         {
           "github_slug": "genesys-call-centre-data",
