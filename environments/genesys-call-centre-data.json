@@ -1,0 +1,33 @@
+{
+  "account-type": "member",
+  "isolated-network": "true",
+  "codeowners": [""],
+  "environments": [
+    {
+      "name": "genesys-call-centre-data",
+      "access": [
+        {
+          "github_slug": "genesys-call-centre-data",
+          "level": "sandbox"
+        },
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "genesys-call-centre-data",
+          "level": "view-only"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "genesys-call-centre-data",
+    "business-unit": "Platforms",
+    "infrastructure-support": "dataengineering@digital.justice.gov.uk",
+    "owner": "dataengineering@digital.justice.gov.uk"
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}
