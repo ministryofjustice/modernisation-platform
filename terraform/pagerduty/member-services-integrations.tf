@@ -2167,3 +2167,95 @@ resource "pagerduty_slack_connection" "ndh_prod" {
 }
 
 # Slack channel: #dso_alerts_modernisation_platform
+
+resource "pagerduty_service" "apex_non_prod" {
+  name                    = "APEX Non-Production Alarms"
+  description             = "APEX Non-Production Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "apex_non_prod" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.apex_non_prod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "apex_non_prod" {
+  source_id = pagerduty_service.apex_non_prod.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C077JSH4DNE"
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
+# Slack channel: #mp-laa-alerts-apex-non-prod
+
+resource "pagerduty_service" "apex_prod" {
+  name                    = "APEX Production Alarms"
+  description             = "APEX Production Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "apex_prod" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.apex_prod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "apex_prod" {
+  source_id = pagerduty_service.apex_prod.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C077G0229U5"
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
+# Slack channel: #mp-laa-alerts-apex-prod
