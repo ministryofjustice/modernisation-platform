@@ -11,7 +11,12 @@
         {
           "github_slug": "laa-aws-infrastructure",
           "level": "developer"
+        },
+        {
+          "github_slug": "laa-apex-developer",
+          "level": "developer"
         }
+      ]
       ]
     },
     {
@@ -20,7 +25,12 @@
         {
           "github_slug": "laa-aws-infrastructure",
           "level": "developer"
+        },
+        {
+          "github_slug": "laa-apex-developer",
+          "level": "developer"
         }
+      ]
       ]
     },
     {
@@ -29,7 +39,12 @@
         {
           "github_slug": "laa-aws-infrastructure",
           "level": "developer"
+        },
+        {
+          "github_slug": "laa-apex-developer",
+          "level": "developer"
         }
+      ]
       ]
     },
     {
@@ -38,7 +53,12 @@
         {
           "github_slug": "laa-aws-infrastructure",
           "level": "developer"
+        },
+        {
+          "github_slug": "laa-apex-developer",
+          "level": "developer"
         }
+      ]
       ]
     }
   ],
