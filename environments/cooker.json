@@ -7,6 +7,11 @@
         {
           "github_slug": "modernisation-platform",
           "level": "developer"
+        },
+        {
+          "github_slug": "modernisation-platform",
+          "level": "instance-management",
+          "nuke": "rebuild"
         }
       ],
       "additional_reviewers": ["astrobinson"]

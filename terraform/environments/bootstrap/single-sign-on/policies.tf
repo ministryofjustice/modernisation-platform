@@ -841,7 +841,7 @@ data "aws_iam_policy_document" "instance-management-document" {
       "support:*"
     ]
     resources = ["*"]
-  }
+    }
 
   statement {
     sid    = "SecretsManagerPut"
