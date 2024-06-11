@@ -259,7 +259,7 @@ data "aws_iam_policy_document" "member-access" {
       condition {
         test     = "StringEquals"
         variable = "cloudformation:ResourceTypes"
-        values   = [ "aws::wafv2::webacl", "aws::s3::bucket" ]
+        values   = [ "AWS::WAFv2::WebACL", "AWS::S3::Bucket" ]
       }
   }
 
