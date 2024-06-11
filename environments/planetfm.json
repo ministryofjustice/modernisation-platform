@@ -7,7 +7,7 @@
         {
           "github_slug": "studio-webops",
           "level": "sandbox",
-          "nuke": "exclude"
+          "nuke": "rebuild"
         }
       ]
     },
