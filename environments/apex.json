@@ -17,7 +17,6 @@
           "level": "developer"
         }
       ]
-      ]
     },
     {
       "name": "test",
@@ -30,7 +29,6 @@
           "github_slug": "laa-apex-developer",
           "level": "developer"
         }
-      ]
       ]
     },
     {
@@ -45,7 +43,6 @@
           "level": "developer"
         }
       ]
-      ]
     },
     {
       "name": "production",
@@ -58,7 +55,6 @@
           "github_slug": "laa-apex-developer",
           "level": "developer"
         }
-      ]
       ]
     }
   ],
