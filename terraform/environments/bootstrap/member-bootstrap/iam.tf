@@ -243,7 +243,8 @@ data "aws_iam_policy_document" "member-access" {
           "cloudformation:GetStackPolicy",
           "cloudformation:ListChangeSets",
           "cloudformation:DescribeChangeSet",
-          "cloudformation:ListStackResources"
+          "cloudformation:ListStackResources",
+          "cloudformation:CreateUploadBucket"
       ]
       resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
