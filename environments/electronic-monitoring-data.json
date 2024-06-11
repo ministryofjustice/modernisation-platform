@@ -7,7 +7,7 @@
         {
           "github_slug": "hmpps-electronic-monitoring-data-store",
           "level": "sandbox",
-          "nuke": "exclude"
+          "nuke": "rebuild"
         },
         {
           "github_slug": "hmpps-electronic-monitoring-data-store",
