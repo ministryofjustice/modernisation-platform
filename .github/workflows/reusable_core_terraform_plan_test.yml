@@ -71,8 +71,8 @@ jobs:
           git_dir=`git rev-parse --show-toplevel`
           terraform --version
           # Test if this is a PR or PULL event
-          if [ ! -z ${{ github.event.pull_request.number }} ]
-          then
+          # if [ ! -z ${{ github.event.pull_request.number }} ]
+          # then
           #CONFIGURE TERRAFORM AND WORKSPACE
           bash scripts/terraform-init.sh terraform/environments/${{ inputs.service_name }}
           terraform -chdir="terraform/environments/${{ inputs.service_name }}" workspace select ${{ inputs.service_name }}-production
@@ -91,7 +91,7 @@ jobs:
           PLAN="> TERRAFORM PLAN RESULT - ${{ inputs.service_name }}
           ${PLAN}"
           bash scripts/update-pr-comments.sh "${PLAN}"
-          fi
+          # fi
         env:
           SECRET: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
@@ -136,4 +136,3 @@ jobs:
   #         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   #         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
   #       if: ${{ failure() }}
-  
