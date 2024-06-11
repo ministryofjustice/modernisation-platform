@@ -9,7 +9,8 @@
         {
           "github_slug": "genesys-call-centre-data",
           "level": "sandbox"
-        },
+        }
+      ]
     },
     {
       "name": "production",
