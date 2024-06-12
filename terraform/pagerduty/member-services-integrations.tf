@@ -2184,10 +2184,10 @@ resource "pagerduty_service_integration" "apex_non_prod" {
 }
 
 resource "pagerduty_slack_connection" "apex_non_prod" {
-  source_id = pagerduty_service.apex_non_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C077JSH4DNE"
+  source_id         = pagerduty_service.apex_non_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C077JSH4DNE"
   notification_type = "responder"
   config {
     events = [
@@ -2230,10 +2230,10 @@ resource "pagerduty_service_integration" "apex_prod" {
 }
 
 resource "pagerduty_slack_connection" "apex_prod" {
-  source_id = pagerduty_service.apex_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C077G0229U5"
+  source_id         = pagerduty_service.apex_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C077G0229U5"
   notification_type = "responder"
   config {
     events = [
