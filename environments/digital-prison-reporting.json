@@ -20,6 +20,10 @@
         {
           "github_slug": "hmpps-digital-prison-reporting-non-cleared-team",
           "level": "reporting-operations"
+        },
+        {
+          "github_slug": "digital-prisons-reporting-development-data-engineer",
+          "level": "data-engineer"
         }
       ]
     },
@@ -41,6 +45,10 @@
         {
           "github_slug": "hmpps-digital-prison-reporting-non-cleared-team",
           "level": "reporting-operations"
+        },
+        {
+          "github_slug": "digital-prisons-reporting-test-data-engineer",
+          "level": "data-engineer"
         }
       ]
     },
@@ -54,6 +62,10 @@
         {
           "github_slug": "hmpps-digital-prison-reporting",
           "level": "reporting-operations"
+        },
+        {
+          "github_slug": "digital-prisons-reporting-preproduction-data-engineer",
+          "level": "data-engineer"
         }
       ]
     },
