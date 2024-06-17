@@ -167,6 +167,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "iam:GetPolicy",
       "dms:List*",
       "iam:GetPolicyVersion",
+      "iam:DeletePolicyVersion",
       "dms:DescribeReplicationSubnetGroups",
       "dms:DescribeReplicationInstances",
       "dms:DescribeReplicationTasks",
