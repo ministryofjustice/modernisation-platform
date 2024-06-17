@@ -18,7 +18,8 @@
           "github_slug": "modernisation-platform-engineers",
           "level": "developer"
         }
-      ]
+      ],
+      "additional_reviewers": ["jamesashton-roc"]
     }
   ],
   "tags": {
