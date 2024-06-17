@@ -655,6 +655,8 @@ data "aws_iam_policy_document" "instance-access-document" {
     sid    = "InstanceAccess"
     effect = "Allow"
     actions = [
+      "athena:StartQueryExecution",
+      "athena:StopQueryExecution",
       "ec2:GetPasswordData",
       "kms:Decrypt*",
       "kms:Encrypt",
@@ -801,6 +803,8 @@ data "aws_iam_policy_document" "instance-management-document" {
     effect = "Allow"
     actions = [
       "application-autoscaling:ListTagsForResource",
+      "athena:StartQueryExecution",
+      "athena:StopQueryExecution",
       "autoscaling:StartInstanceRefresh",
       "autoscaling:UpdateAutoScalingGroup",
       "autoscaling:SetDesiredCapacity",
