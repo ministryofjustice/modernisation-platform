@@ -204,6 +204,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/genesys-call-centre-data"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/hmpps-domain-services"
     schedule:
       interval: "daily"
