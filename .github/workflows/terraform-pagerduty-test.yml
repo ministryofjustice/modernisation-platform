@@ -1,4 +1,4 @@
-name: "Terraform: PagerDuty resources"
+name: "Test Terra PagerDuty resources"
 
 on:
   push:

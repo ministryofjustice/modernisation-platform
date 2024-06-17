@@ -1,4 +1,4 @@
-name: core-logging-deployment
+name: test core-logging-deployment
 
 on: 
   push:

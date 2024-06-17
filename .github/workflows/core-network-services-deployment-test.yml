@@ -1,4 +1,4 @@
-name: core-network-services-deployment
+name: test core-network-services-deployment
 
 on: 
   push:

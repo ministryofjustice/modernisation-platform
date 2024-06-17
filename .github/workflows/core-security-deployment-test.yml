@@ -1,4 +1,4 @@
-name: core-security-deployment
+name: test core-security-deployment
 
 on: 
   push:

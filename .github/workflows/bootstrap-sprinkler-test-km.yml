@@ -1,4 +1,4 @@
-name: "Caller for Sprinkler"
+name: "Test Caller Sprinkler"
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: "Terraform: GitHub resources"
+name: "Test Terra GitHub resources"
 
 on:
   push:

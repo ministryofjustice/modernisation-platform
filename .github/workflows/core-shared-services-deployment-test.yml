@@ -1,4 +1,4 @@
-name: core-shared-services-deployment
+name: test core-shared-services-deployment
 
 on: 
   push:
