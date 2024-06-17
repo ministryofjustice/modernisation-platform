@@ -328,13 +328,13 @@ data "aws_iam_policy_document" "developer_additional" {
   }
 
   statement {
-      sid = "cloudWatchCrossAccountAllow"
-      effect = "Allow"
-      actions = [
-        "iam:CreateServiceLinkedRole"
-      ]
-      resources = ["arn:aws:iam::*:role/aws-service-role/cloudwatch-crossaccount.amazonaws.com/AWSServiceRoleForCloudWatchCrossAccount"]
-    }
+    sid    = "cloudWatchCrossAccountAllow"
+    effect = "Allow"
+    actions = [
+      "iam:CreateServiceLinkedRole"
+    ]
+    resources = ["arn:aws:iam::*:role/aws-service-role/cloudwatch-crossaccount.amazonaws.com/AWSServiceRoleForCloudWatchCrossAccount"]
+  }
 
   statement {
     sid    = "coreSharedServicesCreateGrantAllow"
