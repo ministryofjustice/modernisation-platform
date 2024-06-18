@@ -2,7 +2,7 @@ name: reusable terraform plan apply
 on:
   workflow_call:
     inputs:
-      working_directory:
+      working-directory:
         required: true
         type: string
       aws-region:
