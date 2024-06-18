@@ -12,10 +12,15 @@ on:
     secrets:
       modernisation_platform_environments:
         required: true
+      github_token: 
+        required: true
       SLACK_WEBHOOK_URL:
         required: true
+
 env:
   ENVIRONMENT_MANAGEMENT: "${{ secrets.modernisation_platform_environments }}"
+  TF_VAR_github_token: "${{ secrets.github_token }}"
+  TF_IN_AUTOMATION: true
 
 jobs:
   plan-and-apply:
