@@ -606,6 +606,98 @@ resource "pagerduty_slack_connection" "iaps_prod_connection" {
 
 # Slack channel: #hmpps-iaps-alerts-prod
 
+# Delius MIS Prod
+# hmpps-mis-alerts-prod
+resource "pagerduty_service" "delius_mis_prod" {
+  name                    = "Delius MIS Production"
+  description             = "Delius MIS Production Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "delius_mis_prod" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.my_application.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "delius_mis_prod" {
+  source_id = pagerduty_service.my_application.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C07868KH4AK"
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
+# Delius MIS Non-prod
+# hmpps-mis-alerts-non-prod
+resource "pagerduty_service" "delius_mis_non_prod" {
+  name                    = "Delius MIS Non-production"
+  description             = "Delius MIS Non-production Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "delius_mis_non_prod" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.my_application.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "delius_mis_non_prod" {
+  source_id = pagerduty_service.my_application.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "C07868JGQVD"
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
 # LAA MojFin - Prod
 resource "pagerduty_service" "laa_mojfin_prod" {
   name                    = "Legal Aid Agency MojFin Application Production"
