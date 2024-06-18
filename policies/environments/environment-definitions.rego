@@ -1,6 +1,6 @@
 package main
 
-import future.keywords.in
+import rego.v1
 
 allowed_business_units := [
   "HQ",
