@@ -26,47 +26,11 @@ defaults:
 
 jobs:
   pagerduty-plan-and-apply:
-    runs-on: ubuntu-latest
-    env:
-      TF_VAR_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
-      TF_VAR_pagerduty_token: ${{ secrets.PAGERDUTY_TOKEN }}
-      TF_VAR_pagerduty_user_token: ${{ secrets.PAGERDUTY_USERAPI_TOKEN}}
-      TF_IN_AUTOMATION: true
-      AWS_REGION: "eu-west-2"
-      ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-
-      - name: Set Account Number
-        run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
-        with:
-          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
-          role-session-name: githubactionsrolesession
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@651471c36a6092792c552e8b1bef71e592b462d8 # v3.1.1
-        with:
-          terraform_version: "~1"
-          terraform_wrapper: false
-      - name: terraform init
-        run: bash scripts/terraform-init.sh terraform/pagerduty
-      - name: terraform plan
-        run: bash scripts/terraform-plan.sh terraform/pagerduty
-      - name: terraform apply
-        if: github.event.ref == 'refs/heads/main'
-        run: bash scripts/terraform-apply.sh terraform/pagerduty
-      - name: Slack failure notification
-        if: ${{ failure() && github.ref == 'refs/heads/main' }}
-        uses: slackapi/slack-github-action@70cd7be8e40a46e8b0eced40b0de447bdb42f68e # v1.26.0
-        with:
-          payload: |
-            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+    uses: ./.github/workflows/reusable_terraform_plan_apply.yml
+    with:
+      working-directory: "terraform/pagerduty"
+    secrets:
+      modernisation_platform_environments: "${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}"
+      github_token: "${{ secrets.TERRAFORM_GITHUB_TOKEN }}"
+      pagerduty_token: "${{ secrets.PAGERDUTY_TOKEN }}"
+      pagerduty_userapi_token: "${{ secrets.PAGERDUTY_USERAPI_TOKEN}}"
