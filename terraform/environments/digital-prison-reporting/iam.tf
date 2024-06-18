@@ -237,6 +237,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "glue:CreateRegistry",
       "glue:CreateSchema",
       "glue:CreateTable",
+      "glue:GetTrigger",
       "glue:CreateTrigger",
       "glue:DeleteConnection",
       "glue:DeleteJob",
