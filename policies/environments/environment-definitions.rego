@@ -2,7 +2,7 @@ package main
 
 import rego.v1
 
-allowed_business_units contains {:= [
+allowed_business_units contains value if { value := [
   "HQ",
   "HMPPS",
   "OPG",
@@ -14,7 +14,7 @@ allowed_business_units contains {:= [
 ]
 }
 
-allowed_access contains {:= [
+allowed_access contains value if { value := [
   "administrator",
   "data-engineer",
   "developer",
