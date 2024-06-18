@@ -1,6 +1,7 @@
 package main
 
 import future.keywords.in
+import rego.v1
 
 nice_name := replace(replace(input.filename, ".json", ""), "environments-networks/", "")
 
