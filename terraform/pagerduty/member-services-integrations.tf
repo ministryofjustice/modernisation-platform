@@ -619,12 +619,12 @@ resource "pagerduty_service" "delius_mis_prod" {
 
 resource "pagerduty_service_integration" "delius_mis_prod" {
   name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.my_application.id
+  service = pagerduty_service.delius_mis_prod.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
 resource "pagerduty_slack_connection" "delius_mis_prod" {
-  source_id = pagerduty_service.my_application.id
+  source_id = pagerduty_service.delius_mis_prod.id
   source_type = "service_reference"
   workspace_id = local.slack_workspace_id
   channel_id = "C07868KH4AK"
@@ -665,12 +665,12 @@ resource "pagerduty_service" "delius_mis_non_prod" {
 
 resource "pagerduty_service_integration" "delius_mis_non_prod" {
   name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.my_application.id
+  service = pagerduty_service.delius_mis_non_prod.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
 resource "pagerduty_slack_connection" "delius_mis_non_prod" {
-  source_id = pagerduty_service.my_application.id
+  source_id = pagerduty_service.delius_mis_non_prod.id
   source_type = "service_reference"
   workspace_id = local.slack_workspace_id
   channel_id = "C07868JGQVD"
