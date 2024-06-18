@@ -2,7 +2,7 @@ package main
 
 import rego.v1
 
-allowed_business_units := [
+if allowed_business_units := [
   "HQ",
   "HMPPS",
   "OPG",
@@ -13,7 +13,8 @@ allowed_business_units := [
   "CJSE"
 ]
 
-allowed_access := [
+
+if allowed_access := [
   "administrator",
   "data-engineer",
   "developer",
