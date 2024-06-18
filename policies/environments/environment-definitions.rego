@@ -2,7 +2,7 @@ package main
 
 import rego.v1
 
-if allowed_business_units := [
+allowed_business_units contains {:= [
   "HQ",
   "HMPPS",
   "OPG",
@@ -12,9 +12,9 @@ if allowed_business_units := [
   "Platforms",
   "CJSE"
 ]
+}
 
-
-if allowed_access := [
+allowed_access contains {:= [
   "administrator",
   "data-engineer",
   "developer",
@@ -30,7 +30,7 @@ if allowed_access := [
   "powerbi-user",
   "fleet-manager"
 ]
-
+}
 allowed_nuke := [
   "include",
   "exclude",
