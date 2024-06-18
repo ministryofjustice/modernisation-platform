@@ -2,8 +2,7 @@ package main
 
 import rego.v1
 
-allowed_environments   
-  [
+allowed_environments := [
   "development",
   "test",
   "preproduction",
