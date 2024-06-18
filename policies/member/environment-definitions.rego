@@ -2,7 +2,8 @@ package main
 
 import rego.v1
 
-allowed_environments contains value if { value := [
+allowed_environments contains value if { 
+  [
   "development",
   "test",
   "preproduction",
