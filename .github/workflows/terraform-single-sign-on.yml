@@ -4,13 +4,13 @@ on:
   push:
     paths:
       - 'terraform/single-sign-on/**'
-      - '.github/workflows/single-sign-on.yml'
+      - '.github/workflows/terraform-single-sign-on.yml'
     branches:
       - main
   pull_request:
     paths:
       - 'terraform/single-sign-on/**'
-      - '.github/workflows/single-sign-on.yml'
+      - '.github/workflows/terraform-single-sign-on.yml'
     branches:
       - main
     types: [opened, edited, reopened, synchronize]
