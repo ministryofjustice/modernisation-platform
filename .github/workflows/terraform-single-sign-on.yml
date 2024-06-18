@@ -30,5 +30,6 @@ jobs:
     with:
       working-directory: "terraform/single-sign-on"
     secrets:
-      modernisation_platform_environments: "${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}"
-      gh_workflow_token: "${{ secrets.TERRAFORM_GITHUB_TOKEN }}"
+      modernisation_platform_environments: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
+      gh_workflow_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
