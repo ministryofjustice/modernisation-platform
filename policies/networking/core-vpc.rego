@@ -6,10 +6,9 @@ nice_name := replace(replace(input.filename, ".json", ""), "environments-network
 
 deny[msg] if {
   some key
-  input.cidr.subnet_sets[key]
-  expected[nice_name].cidr.subnet_sets[key].cidr != input.cidr.subnet_sets[key].cidr
+  expected["subnet_sets"][nice_name][key].cidr != input.cidr.subnet_sets[key].cidr
 
-  msg := sprintf("Subnet sets mismatch: `%v` should equal `%v` for `%v (%v)`", [input.cidr.subnet_sets[key].cidr, expected[nice_name].cidr.subnet_sets[key].cidr, nice_name, key])
+  msg := sprintf("Subnet sets mismatch: `%v` should equal `%v` for `%v (%v)`", [input.cidr.subnet_sets[key].cidr, expected["subnet_sets"][nice_name][key].cidr, nice_name, key])
 }
 
 # General rules
