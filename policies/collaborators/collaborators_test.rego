@@ -22,7 +22,7 @@ test_no_accounts if {
 
 test_empty_values if {
   deny["`example.json` is missing the `username` key"] with input as { "filename": "example.json", "users" :[{"username": ""}] }
-  deny["`example.json` is missing the `github-username` key"] with input as { "filename": "example.json", "users" :[{"github-username": ""}] }
+  deny["`example.json` is missing the `github-username` key"] with input as { "filename": "example.json", "users" :[{"github_username": ""}] }
   deny["`example.json` is missing the `accounts` key"] with input as { "filename": "example.json", "users" :[{"accounts": ""}] }
 }
 
