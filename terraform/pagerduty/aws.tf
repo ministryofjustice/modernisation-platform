@@ -73,7 +73,7 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     laa_apex_nonprod_alarms              = pagerduty_service_integration.apex_non_prod.integration_key
     laa_apex_prod_alarms                 = pagerduty_service_integration.apex_prod.integration_key
     delius_mis_nonprod_alarms            = pagerduty_service_integration.delius_mis_non_prod.integration_key
-    delius_mis_prod_alarms              = pagerduty_service_integration.delius_mis_prod.integration_key
+    delius_mis_prod_alarms               = pagerduty_service_integration.delius_mis_prod.integration_key
   })
 }
 
