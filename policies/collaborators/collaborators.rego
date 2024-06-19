@@ -25,7 +25,7 @@ deny[msg] if {
   msg := sprintf("`%v` is missing the `users` key", [input.filename])
 }
 
-deny[msg] {
+deny[msg] if {
   users := input.users[_]
   not has_field(users, "username")
   msg := sprintf("`%v` is missing the `username` key", [input.filename])
