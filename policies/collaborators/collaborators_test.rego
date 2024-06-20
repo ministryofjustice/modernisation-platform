@@ -1,31 +1,31 @@
 package main
 
-test_empty_file if {
+testEmptyFile if {
   deny["`example.json` is an empty file"] with input as { "filename": "example.json" }
 }
 
-test_no_users if {
+testNoUsers if {
   deny["`example.json` is missing the `users` key"] with input as { "filename": "example.json" }
 }
 
-test_no_username if {
+testNoUsername if {
   deny["`example.json` is missing the `username` key"] with input as { "filename": "example.json" , "users" :[{}]}
 }
 
-test_no_github_username if {
+testNoGithubUsername if {
   deny["`example.json` is missing the `github-username` key"] with input as { "filename": "example.json" , "users" :[{}]}
 }
 
-test_no_accounts if {
+testNoAccounts if {
   deny["`example.json` is missing the `accounts` key"] with input as { "filename": "example.json" , "users" :[{}]}
 }
 
-test_empty_values if {
+testEmptyValues if {
   deny["`example.json` is missing the `username` key"] with input as { "filename": "example.json", "users" :[{"username": ""}] }
   deny["`example.json` is missing the `github-username` key"] with input as { "filename": "example.json", "users" :[{"github_username": ""}] }
   deny["`example.json` is missing the `accounts` key"] with input as { "filename": "example.json", "users" :[{"accounts": ""}] }
 }
 
-test_unexpected_access if {
+testUnexpectedAccess if {
   deny["`example.json` uses an unexpected access: got `incorrect-access`, expected one of: read-only, developer, security-audit, sandbox, migration, instance-management"] with input as { "filename": "example.json", "users" :[{"accounts": [{"access": "incorrect-access"}]}] }
 }
