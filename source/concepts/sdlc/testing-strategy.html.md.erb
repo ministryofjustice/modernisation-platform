@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Testing Strategy
-last_reviewed_on: 2023-12-15
+last_reviewed_on: 2024-06-20
 review_in: 6 months
 ---
 
@@ -26,7 +26,7 @@ This strategy is currently focussed on core platform testing, however members ma
 
 ## Testing tools
 
-We use [Terratest](https://terratest.gruntwork.io/) for testing Terraform code, and [Open Policy Agent (OPA)](https://www.openpolicyagent.org/) for JSON structures.
+We use [Terratest](https://terratest.gruntwork.io/) for testing Terraform code, as well as native [Terraform test](https://www.hashicorp.com/blog/terraform-1-6-adds-a-test-framework-for-enhanced-code-validation) since version 1.6, and [Open Policy Agent (OPA)](https://www.openpolicyagent.org/) for JSON structures.
 All other tests should be written in Go and should use the standard Go [testing library](https://pkg.go.dev/testing).
 
 ## Testing environments
