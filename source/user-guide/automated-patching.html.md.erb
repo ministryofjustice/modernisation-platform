@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Automated Patching
-last_reviewed_on: 2023-12-15
+last_reviewed_on: 2024-06-20
 review_in: 6 months
 ---
 
@@ -18,7 +18,7 @@ review_in: 6 months
 
 ## Patching for EC2 Instances
 
-You can use the [modernisation-platform-terraform-ssm-patching](https://github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching) module to create [AWS SSM Patch Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-patch.html) resources in your account.
+You can use the [modernisation-platform-terraform-ssm-patching](https://github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching) module to create [AWS SSM Patch Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-patch.html) resources in your account. The module supports multiple schedules per environment.
 
 The module creates an s3 bucket for log storage, as well as maintenance windows, tasks, resource groups, and patch baselines.
 
