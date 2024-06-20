@@ -13,7 +13,7 @@ testNoUsername if {
 }
 
 testNoGithubUsername if {
-  deny["`example.json` is missing the `github-username` key"] with input as { "filename": "example.json" , "users" :[{}]}
+  deny["`example.json` is missing the `githubUsername` key"] with input as { "filename": "example.json" , "users" :[{}]}
 }
 
 testNoAccounts if {
@@ -22,10 +22,10 @@ testNoAccounts if {
 
 testEmptyValues if {
   deny["`example.json` is missing the `username` key"] with input as { "filename": "example.json", "users" :[{"username": ""}] }
-  deny["`example.json` is missing the `github-username` key"] with input as { "filename": "example.json", "users" :[{"github_username": ""}] }
+  deny["`example.json` is missing the `githubUsername` key"] with input as { "filename": "example.json", "users" :[{"githubUsername": ""}] }
   deny["`example.json` is missing the `accounts` key"] with input as { "filename": "example.json", "users" :[{"accounts": ""}] }
 }
 
 testUnexpectedAccess if {
-  deny["`example.json` uses an unexpected access: got `incorrect-access`, expected one of: read-only, developer, security-audit, sandbox, migration, instance-management"] with input as { "filename": "example.json", "users" :[{"accounts": [{"access": "incorrect-access"}]}] }
+  deny["`example.json` uses an unexpected access: got `incorrectAccess`, expected one of: read-only, developer, security-audit, sandbox, migration, instance-management"] with input as { "filename": "example.json", "users" :[{"accounts": [{"access": "incorrectAccess"}]}] }
 }
