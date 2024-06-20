@@ -1,53 +1,53 @@
 package main
 
-testEmptyFile if {
+test_empty_file if {
   deny["`example.json` is an empty file"] with input as { "filename": "example.json" }
 }
 
-testNoEnvironments if {
+test_no_environments if {
   deny["`example.json` is missing the `environments` key"] with input as { "filename": "example.json" }
 }
 
-testEmptyEnvironments if {
+test_empty_environments if {
   deny["`example.json` has no environments"] with input as { "filename": "example.json", "environments": [] }
 }
 
-testNoTags if {
+test_no_tags if {
   deny["`example.json` is missing the `tags` key"] with input as { "filename": "example.json" }
 }
 
-testNoTagsApplication if {
+test_no_tags_application if {
   deny["`example.json` is missing the `application` tag"] with input as { "filename": "example.json", "tags": {} }
-  deny["`example.json` is missing the `businessUnit` tag"] with input as { "filename": "example.json", "tags": {} }
+  deny["`example.json` is missing the `business-unit` tag"] with input as { "filename": "example.json", "tags": {} }
   deny["`example.json` is missing the `owner` tag"] with input as { "filename": "example.json", "tags": {} }
 }
 
-testEmptyValues if {
+test_empty_values if {
   deny["`example.json` is missing the `application` tag"] with input as { "filename": "example.json", "tags": {"application": ""} }
-  deny["`example.json` is missing the `businessUnit` tag"] with input as { "filename": "example.json", "tags": {"businessUnit": ""} }
+  deny["`example.json` is missing the `business-unit` tag"] with input as { "filename": "example.json", "tags": {"business-unit": ""} }
   deny["`example.json` is missing the `owner` tag"] with input as { "filename": "example.json", "tags": {"owner": ""} }
 }
 
-testUnexpectedBusinessUnits if {
-  deny["`example.json` uses an unexpected businessUnit: got `incorrectBusinessUnit`, expected one of: HQ, HMPPS, OPG, LAA, HMCTS, CICA, Platforms, CJSE"] with input as { "filename": "example.json", "tags": { "businessUnit": "incorrectBusinessUnit" } }
+test_unexpected_business_units if {
+  deny["`example.json` uses an unexpected business-unit: got `incorrect-business-unit`, expected one of: HQ, HMPPS, OPG, LAA, HMCTS, CICA, Platforms, CJSE"] with input as { "filename": "example.json", "tags": { "business-unit": "incorrect-business-unit" } }
 }
 
-testBusinessUnitsLength if {
+test_business_units_length if {
   deny["`example.json` Business unit name does not meet requirements"] with input as { "filename": "example.json", "tags": { "business-unit": "example-this-is-too-long-for-a-business-unit" } }
 }
 
-testBusinessUnitsCharacter if {
-  deny["`example.json` Business unit name does not meet requirements"] with input as { "filename": "example.json", "tags": { "businessUnit": "Platforms4" } }
+test_business_units_character if {
+  deny["`example.json` Business unit name does not meet requirements"] with input as { "filename": "example.json", "tags": { "business-unit": "Platforms4" } }
 }
 
-testUnexpectedAccess if {
-  deny["`example.json` uses an unexpected access level: got `incorrectAccess`, expected one of: view-only, developer, sandbox, administrator, migration, instance-management, read-only, security-audit, data-engineer, reporting-operations, mwaa-user, powerbi-user"] with input as { "filename": "example.json", "environments": [{"access": [{"level": "incorrectAccess"}]}]}
+test_unexpected_access if {
+  deny["`example.json` uses an unexpected access level: got `incorrect-access`, expected one of: view-only, developer, sandbox, administrator, migration, instance-management, read-only, security-audit, data-engineer, reporting-operations, mwaa-user, powerbi-user"] with input as { "filename": "example.json", "environments": [{"access": [{"level": "incorrect-access"}]}]}
 }
 
-testUnexpectedAccessAssignment if {
-  deny["`example.json` uses an unexpected access assignment: got `powerbiUser`, but `example` is not an analytical platform or sprinkler account"] with input as { "filename": "example.json", "environments": [{"access": [{"level": "powerbiUser"}]}]}
+test_unexpected_access_assignment if {
+  deny["`example.json` uses an unexpected access assignment: got `powerbi-user`, but `example` is not an analytical platform or sprinkler account"] with input as { "filename": "example.json", "environments": [{"access": [{"level": "powerbi-user"}]}]}
 }
 
-testUnexpectedNuke if {
-  deny["`example.json` uses an unexpected nuke value: got `incorrectValue`, expected one of: include, exclude, rebuild"] with input as { "filename": "example.json", "environments": [{"access": [{"nuke": "incorrectValue"}]}]}
+test_unexpected_nuke if {
+  deny["`example.json` uses an unexpected nuke value: got `incorrect-value`, expected one of: include, exclude, rebuild"] with input as { "filename": "example.json", "environments": [{"access": [{"nuke": "incorrect-value"}]}]}
 }
