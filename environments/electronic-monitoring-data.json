@@ -36,6 +36,8 @@
     "infrastructure-support": "dataengineering@digital.justice.gov.uk",
     "owner": "Data engineering: dataengineering@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": ["ministryofjustice/electronic-monitoring-data-lambda-functions"],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/electronic-monitoring-data-lambda-functions"
+  ],
   "go-live-date": ""
 }

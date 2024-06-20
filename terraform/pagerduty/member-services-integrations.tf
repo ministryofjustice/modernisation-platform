@@ -624,10 +624,10 @@ resource "pagerduty_service_integration" "delius_mis_prod" {
 }
 
 resource "pagerduty_slack_connection" "delius_mis_prod" {
-  source_id = pagerduty_service.delius_mis_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C07868KH4AK"
+  source_id         = pagerduty_service.delius_mis_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C07868KH4AK"
   notification_type = "responder"
   config {
     events = [
@@ -670,10 +670,10 @@ resource "pagerduty_service_integration" "delius_mis_non_prod" {
 }
 
 resource "pagerduty_slack_connection" "delius_mis_non_prod" {
-  source_id = pagerduty_service.delius_mis_non_prod.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "C07868JGQVD"
+  source_id         = pagerduty_service.delius_mis_non_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C07868JGQVD"
   notification_type = "responder"
   config {
     events = [
