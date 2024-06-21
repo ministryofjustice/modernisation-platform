@@ -17,7 +17,8 @@ resource "aws_secretsmanager_secret_version" "environment_management" {
   secret_id = aws_secretsmanager_secret.environment_management.id
   secret_string = jsonencode(merge(
     local.environment_management,
-    { account_ids : module.environments.environment_account_ids }
+    { account_ids : module.environments.environment_account_ids },
+    { account_ids : module.environments.modernisation_platform_member_unrestricted_ou_id }
   ))
   depends_on = [data.aws_secretsmanager_secret_version.environment_management]
 }
@@ -136,7 +137,8 @@ resource "github_actions_secret" "environment_management" {
   repository  = each.key
   plaintext_value = jsonencode(merge(
     local.environment_management,
-    { account_ids : module.environments.environment_account_ids }
+    { account_ids : module.environments.environment_account_ids },
+    { account_ids : module.environments.modernisation_platform_member_unrestricted_ou_id }
   ))
 }
 
@@ -161,13 +163,4 @@ resource "github_actions_secret" "autonuke" {
   # testing-test, cooker-development, and example-development are internal test account which are not sandpits but require nuking.
   plaintext_value = jsonencode(concat(module.environments.environment_nuke_accounts, ["testing-test", "cooker-development", "example-development"]))
 }
-
-resource "github_actions_secret" "member_unrestricted_list" {
-  # checkov:skip=CKV_SECRET_6: "secret_name is not a secret"
-  secret_name     = "MODERNISATION_PLATFORM_MEMBER_UNRESTRICTED_LIST"
-  repository      = "modernisation-platform-environments"
-  plaintext_value = jsonencode(module.environments.modernisation_platform_member_unrestricted_ou_id)
-}
-
-
 
