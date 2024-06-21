@@ -68,6 +68,7 @@ module "terraform-module-iam-superadmins" {
     "aws",
     "iam"
   ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
 module "terraform-module-s3-bucket-replication-role" {
@@ -297,6 +298,7 @@ module "modernisation-platform-terraform-member-vpc" {
     "platform",
     "member-vpc"
   ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
 module "modernisation-platform-cp-network-test" {
@@ -362,6 +364,7 @@ module "modernisation-platform-terraform-dns-certificates" {
     "terraform",
     "networking"
   ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
 module "modernisation-platform-security" {
