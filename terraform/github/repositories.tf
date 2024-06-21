@@ -33,6 +33,7 @@ module "terraform-module-baselines" {
     "aws-baselines",
     "moj-security",
   ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
 module "terraform-module-cross-account-access" {
