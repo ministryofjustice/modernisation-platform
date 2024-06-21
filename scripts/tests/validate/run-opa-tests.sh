@@ -9,7 +9,7 @@ get-diff() {
 }
 
 check-environment-files-present() {
-  test_data=`cat policies/environments/expected.rego | sed '1,3d'`
+  test_data=`cat policies/environments/expected.rego | sed '1,5d'`
   accounts=`jq -rn --argjson DATA "${test_data}" '$DATA.accounts[]' | sort | tr -s '\n' ' '`
   files=`ls -d environments/*.json | sed 's/environments\///g' | sed 's/.json//g' | sort | tr -s '\n' ' '`
   
@@ -24,7 +24,7 @@ check-environment-files-present() {
 }
 
 check-network-files-present() {
-  test_data=`cat policies/networking/expected.rego | sed '1,3d'`
+  test_data=`cat policies/networking/expected.rego | sed '1,5d'`
   business_units=`jq -rn --argjson DATA "${test_data}" '$DATA.subnet_sets | keys | .[]' | sort | tr -s '\n' ' '`
   files=`ls -d environments-networks/*.json | sed 's/environments-networks\///g' | sed 's/.json//g' | sort | tr -s '\n' ' '`
 

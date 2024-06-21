@@ -1,6 +1,8 @@
 package main
 
-has_field(object, field) {
-  object[field]
-  object[field] != ""
+import rego.v1
+
+has_field(object, field) if {
+	object[field]
+	object[field] != ""
 }

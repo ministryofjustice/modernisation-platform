@@ -1,5 +1,7 @@
 package main
 
+import rego.v1
+
 expected :=
 {
   "subnet_sets": {
