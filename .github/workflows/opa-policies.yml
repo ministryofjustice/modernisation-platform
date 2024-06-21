@@ -5,8 +5,14 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - '**.json'
+      - '**.rego'
   merge_group:
     types: [checks_requested]
+    paths:
+      - '**.json'
+      - '**.rego'
 
 permissions:
   contents: read
