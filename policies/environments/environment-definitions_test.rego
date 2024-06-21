@@ -1,5 +1,7 @@
 package main
 
+import rego.v1
+
 test_empty_file if {
   deny["`example.json` is an empty file"] with input as { "filename": "example.json" }
 }
