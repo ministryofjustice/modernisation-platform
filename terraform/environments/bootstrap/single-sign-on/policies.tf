@@ -217,6 +217,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "ec2:DescribeInstances",
       "ec2:DescribeInstanceTypes",
       "ec2:ImportImage",
+      "ec2:ImportSnapshot",
       "ec2:ModifyInstanceAttribute",
       "ec2-instance-connect:SendSerialConsoleSSHPublicKey",
       "ecr:BatchDeleteImage",
