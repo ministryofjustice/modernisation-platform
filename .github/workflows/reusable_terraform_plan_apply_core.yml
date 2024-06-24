@@ -49,11 +49,11 @@ jobs:
         id: check_test_directory
         run: |
             if [ -d "${WORKING_DIRECTORY}/test" ]; then
-              echo "skip_terratest=true" >> $GITHUB_OUTPUT
+              echo "run_terratest=true" >> $GITHUB_OUTPUT
             fi
 
       - name: Setup Go
-        if: ${{ steps.check_test_directory.outputs.skip_terratest == 'true' }}
+        if: ${{ steps.check_test_directory.outputs.run_terratest == 'true' }}
         uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
         with:
           go-version: 1.21
@@ -84,7 +84,7 @@ jobs:
           terraform -chdir="${WORKING_DIRECTORY}" workspace select ${WORKSPACE_NAME}
 
       - name: Run Terratest
-        if: ${{ steps.check_test_directory.outputs.skip_terratest == 'true' }}
+        if: ${{ steps.check_test_directory.outputs.run_terratest == 'true' }}
         run: |
           pushd ${WORKING_DIRECTORY}/test
           go mod tidy
