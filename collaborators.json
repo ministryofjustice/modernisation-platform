@@ -343,6 +343,26 @@
           "access": "instance-management"
         }
       ]
+    },
+    {
+      "username": "theo.phillips",
+      "github-username": "theo-phillips",
+      "accounts": [
+        {
+          "account-name": "nomis-test",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "chris.keep",
+      "github-username": "iamchriskeep",
+      "accounts": [
+        {
+          "account-name": "nomis-test",
+          "access": "instance-management"
+        }
+      ]
     }
   ]
 }
