@@ -410,6 +410,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "states:Start*",
       "states:RedriveExecution",
       "s3:PutBucketNotificationConfiguration",
+      "s3:GetBucketOwnershipControls"
     ]
     resources = ["*"]
   }
