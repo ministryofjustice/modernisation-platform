@@ -29,7 +29,7 @@ defaults:
     shell: bash
 
 jobs:
-  core-logging-deployment-plan:
+  core-logging-deployment-plan-apply:
     uses: ./.github/workflows/reusable_terraform_plan_apply_core.yml
     with:
       account_name: core-logging

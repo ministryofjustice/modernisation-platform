@@ -29,7 +29,7 @@ defaults:
     shell: bash
 
 jobs:
-  core-security-deployment-plan:
+  core-security-deployment-plan-apply:
     uses: ./.github/workflows/reusable_terraform_plan_apply_core.yml
     with:
       account_name: core-security

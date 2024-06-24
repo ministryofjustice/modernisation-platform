@@ -35,7 +35,7 @@ defaults:
     shell: bash
 
 jobs:
-  core-shared-services-deployment-plan:
+  core-shared-services-deployment-plan-apply:
     uses: ./.github/workflows/reusable_terraform_plan_apply_core.yml
     with:
       account_name: core-shared-services
