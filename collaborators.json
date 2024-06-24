@@ -323,6 +323,46 @@
           "access": "instance-management"
         }
       ]
+    },
+    {
+      "username": "joehyland.deeson",
+      "github-username": "joe-hd",
+      "accounts": [
+        {
+          "account-name": "nomis-test",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "yordi.tak",
+      "github-username": "yorditak",
+      "accounts": [
+        {
+          "account-name": "nomis-test",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "theo.phillips",
+      "github-username": "theo-phillips",
+      "accounts": [
+        {
+          "account-name": "nomis-test",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "chris.keep",
+      "github-username": "iamchriskeep",
+      "accounts": [
+        {
+          "account-name": "nomis-test",
+          "access": "instance-management"
+        }
+      ]
     }
   ]
 }
