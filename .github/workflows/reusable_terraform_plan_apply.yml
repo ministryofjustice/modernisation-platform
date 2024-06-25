@@ -1,24 +1,35 @@
-name: reusable terraform plan apply
+name: terraform plan apply
 on:
   workflow_call:
     inputs:
       working-directory:
         required: true
         type: string
-      aws-region:
+        description: "Path to the directory where the workflow operates"
+      environment:
+        type: string
+        required: false
+        description: "Name of the environment, e.g. development"
+      aws_region:
         required: false
         type: string
         default: "eu-west-2"
+        description: "Specifies the AWS region"
+      terraform_version:
+        type: string
+        required: false
+        description: "The terraform version to use"
+        default: "~1"
     secrets:
       modernisation_platform_environments:
-        required: true
-      gh_workflow_token: 
         required: true
       SLACK_WEBHOOK_URL:
         required: true
       pagerduty_token:
         required: false
       pagerduty_userapi_token:
+        required: false
+      gh_workflow_token: 
         required: false
 
 env:
@@ -35,27 +46,67 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
+      - name: Set up variables
+        id: vars
+        if: ${{ inputs.environment }}
+        run: |
+          account_name=$(basename ${{ inputs.working-directory }})
+          echo "ACCOUNT_NAME=${account_name}"  >> $GITHUB_ENV
+          echo "WORKSPACE_NAME=${account_name}-${{ inputs.environment }}" >> $GITHUB_ENV
+          # Check if test directory exists
+          if [ ${GITHUB_REF} != 'refs/heads/main' ] && [ -d "${{ inputs.working-directory }}/test" ]; then
+              echo "run_terratest=true" >> $GITHUB_OUTPUT
+          fi
+    
+      - name: Setup Go
+        if: ${{ steps.vars.outputs.run_terratest == 'true' }}
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
+        with:
+          go-version: 1.21
+          cache-dependency-path: "${{ inputs.working-directory }}/test/go.sum"
+
       - name: Set Account Number
         run: echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)" >> $GITHUB_ENV
 
-      - name: Configure AWS Credentials
+      - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
           role-session-name: githubactionsrolesession
-          aws-region: ${{ inputs.aws-region }}
+          aws-region: ${{ inputs.aws_region }}
 
-      - name: Set up Terraform
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@651471c36a6092792c552e8b1bef71e592b462d8 # v3.1.1
         with:
-          terraform_version: "~1"
+          terraform_version: "${{ inputs.terraform_version }}"
           terraform_wrapper: false
 
-      - name: terraform init
-        run: bash scripts/terraform-init.sh ${{ inputs.working-directory }}
+      - name: Initialize Terraform
+        run: |
+          bash scripts/terraform-init.sh ${{ inputs.working-directory }}
 
-      - name: terraform plan
-        run: bash scripts/terraform-plan.sh ${{ inputs.working-directory }}
+      - name: Terraform Workspace Select
+        if: ${{ inputs.environment }}
+        run: |
+          terraform -chdir="${{ inputs.working-directory }}" workspace select ${WORKSPACE_NAME}
+
+      - name: Run Terratest
+        if: ${{ steps.vars.outputs.run_terratest == 'true' }}
+        run: |
+          pushd ${{ inputs.working-directory }}/test
+          go mod tidy
+          TEST=`go test | ${{ github.workspace }}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
+          popd
+          TEST="> TERRATEST RESULT - ${ACCOUNT_NAME}
+          ${TEST}"
+          pwd
+          ls
+          bash scripts/update-pr-comments.sh "${TEST}"
+
+      - name: Run Terraform Plan
+        if: github.event.ref != 'refs/heads/main'
+        run: |
+          bash scripts/terraform-plan.sh ${{ inputs.working-directory }}
 
       - name: terraform apply
         if: github.event.ref == 'refs/heads/main'
