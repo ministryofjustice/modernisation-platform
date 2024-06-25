@@ -53,3 +53,7 @@ test_unexpected_access_assignment if {
 test_unexpected_nuke if {
   deny["`example.json` uses an unexpected nuke value: got `incorrect-value`, expected one of: include, exclude, rebuild"] with input as { "filename": "example.json", "environments": [{"access": [{"nuke": "incorrect-value"}]}]}
 }
+
+test_invalid_email if {
+  deny["`example.json` infrastructure-support tag value is not a valid email address"] with input as { "filename": "example.json", "tags": { "infrastructure-support": "not-a-valid-email-address" } }
+}
