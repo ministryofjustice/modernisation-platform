@@ -132,8 +132,6 @@ jobs:
           terraform --version
           bash scripts/terraform-init.sh terraform/environments/core-vpc
           terraform -chdir="terraform/environments/core-vpc" workspace select "core-vpc-${TF_ENV}"
-          bash scripts/terraform-apply.sh terraform/environments/core-vpc -target=module.vpc
-          echo "Target apply finished"
           bash scripts/terraform-apply.sh terraform/environments/core-vpc
           echo "Terraform apply finished"
 
