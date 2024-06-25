@@ -285,6 +285,8 @@ jobs:
           echo "ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)"
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=${ACCOUNT_NUMBER}" >> $GITHUB_ENV
+      - name: Set Root Account Number
+        run: |
           echo "ROOT_ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)"
           echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
           echo "ROOT_ACCOUNT_NUMBER=${ROOT_ACCOUNT_NUMBER}" >> $GITHUB_ENV
