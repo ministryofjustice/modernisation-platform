@@ -67,6 +67,7 @@ expected :=
     "observability-platform",
     "operations-engineering",
     "opg-lpa-data-store",
+    "panda-cyber-appsec-lab",
     "performance-hub",
     "planetfm",
     "portal",

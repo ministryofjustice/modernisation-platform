@@ -1,0 +1,22 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "github_slug": "panda-cyber-team",
+          "level": "sandbox"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "panda-cyber-appsec-lab",
+    "business-unit": "Platforms",
+    "infrastructure-support": "panda-cyber-appsec",
+    "owner": "panda-cyber-appsec"
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}
