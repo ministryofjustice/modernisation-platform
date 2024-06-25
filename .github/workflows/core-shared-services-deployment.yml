@@ -37,7 +37,7 @@ jobs:
   core-shared-services-deployment-plan-apply:
     uses: ./.github/workflows/reusable_terraform_plan_apply.yml
     with:
-      working-directory: core-shared-services
+      working-directory: "terraform/environments/core-shared-services"
       environment: production
     secrets:
       modernisation_platform_environments: "${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}"

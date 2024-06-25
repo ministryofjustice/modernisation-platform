@@ -32,7 +32,7 @@ jobs:
   core-security-deployment-plan-apply:
     uses: ./.github/workflows/reusable_terraform_plan_apply.yml
     with:
-      working-directory: core-security
+      working-directory: "terraform/environments/core-security"
       environment: production
     secrets:
       modernisation_platform_environments: "${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}"
