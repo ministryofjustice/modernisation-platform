@@ -15,7 +15,7 @@
     "application": "panda-cyber-appsec-lab",
     "business-unit": "Platforms",
     "infrastructure-support": "panda-cyber-appsec",
-    "owner": "panda-cyber-appsec"
+    "owner": "appsec@digital.justice.gov.uk"
   },
   "github-oidc-team-repositories": [""],
   "go-live-date": ""
