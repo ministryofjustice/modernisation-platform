@@ -5,12 +5,14 @@ on:
     paths:
       - 'terraform/pagerduty/**'
       - '.github/workflows/terraform-pagerduty.yml'
+      - '.github/workflows/reusable_terraform_plan_apply.yml'
     branches:
       - main
   pull_request:
     paths:
       - 'terraform/pagerduty/**'
       - '.github/workflows/terraform-pagerduty.yml'
+      - '.github/workflows/reusable_terraform_plan_apply.yml'
     branches:
       - main
     types: [opened, edited, reopened, synchronize]

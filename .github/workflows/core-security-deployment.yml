@@ -10,6 +10,7 @@ on:
       - 'terraform/modules/vpc-hub/**'
       - 'terraform/modules/core-monitoring/**'
       - '.github/workflows/core-security-deployment.yml'
+      - '.github/workflows/reusable_terraform_plan_apply.yml'
   pull_request:
     branches:
       - main
@@ -18,6 +19,7 @@ on:
       - 'terraform/modules/vpc-hub/**'
       - 'terraform/modules/core-monitoring/**'
       - '.github/workflows/core-security-deployment.yml'
+      - '.github/workflows/reusable_terraform_plan_apply.yml'
   workflow_dispatch:
 
 permissions:
