@@ -14,7 +14,7 @@
   "tags": {
     "application": "panda-cyber-appsec-lab",
     "business-unit": "Platforms",
-    "infrastructure-support": "panda-cyber-appsec",
+    "infrastructure-support": "appsec@digital.justice.gov.uk",
     "owner": "appsec@digital.justice.gov.uk"
   },
   "github-oidc-team-repositories": [""],
