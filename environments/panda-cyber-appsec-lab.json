@@ -1,5 +1,6 @@
 {
   "account-type": "member",
+  "isolated-network": "true",
   "environments": [
     {
       "name": "development",
