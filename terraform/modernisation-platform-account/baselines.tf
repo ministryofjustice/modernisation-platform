@@ -18,7 +18,7 @@ locals {
 # Secure baselines (GuardDuty, Config, SecurityHub, etc)
 #trivy:ignore:AVD-AWS-0136 trivy:ignore:AVD-AWS-0132
 module "baselines-modernisation-platform" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=957a6ca5f5a4e81fa6fa7799a8e060b630bc14ab" # v7.2.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=8d8daff82548c8554e5a0dcc94ce99d712c88661" # v7.3.0
   providers = {
     # Default and replication regions
     aws                    = aws.modernisation-platform-eu-west-2
