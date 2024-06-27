@@ -4,14 +4,18 @@ data "aws_sns_topic" "existing_topic" {
   name = "backup_failure_topic"
 }
 
+data "aws_sns_topic" "backup_vault_failure_topic" {
+  name = "backup_vault_failure_topic"
+}
+
 # Link the sns topics to the pagerduty service
 module "pagerduty_core_alerts" {
   count = (local.account_data.account-type != "member-unrestricted") ? 1 : 0
   depends_on = [
-    data.aws_sns_topic.existing_topic
+    data.aws_sns_topic.existing_topic, data.aws_sns_topic.backup_vault_failure_topic
   ]
   source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
-  sns_topics                = [data.aws_sns_topic.existing_topic.name]
+  sns_topics                = [data.aws_sns_topic.existing_topic.name, data.aws_sns_topic.backup_vault_failure_topic.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
 }
 
@@ -35,6 +39,28 @@ resource "aws_cloudwatch_metric_alarm" "aws_backup_has_errors" {
     FunctionName = "aws-backup-failure"
   }
 
+}
+
+resource "aws_cloudwatch_event_rule" "backup_vault_deleted_rule" {
+  name          = "backup-vault-deleted-rule"
+  event_pattern = <<EOF
+{
+  "source": ["aws.backup"],
+  "detail-type": ["AWS API Call via CloudTrail"],
+  "detail": {
+    "eventSource": ["backup.amazonaws.com"],
+    "eventName": ["DeleteBackupVault", "UpdateRecoveryPointLifecycle", "DeleteBackupVaultLockConfiguration", "PutBackupVaultLockConfiguration"],
+    "userIdentity": {
+      "type": ["IAMUser", "AssumedRole"]
+    }
+  }
+}
+EOF
+}
+
+resource "aws_cloudwatch_event_target" "backup_vault_deleted_target" {
+  rule = aws_cloudwatch_event_rule.backup_vault_deleted_rule.name
+  arn  = data.aws_sns_topic.backup_vault_failure_topic.arn
 }
 
 # Keys for pagerduty
