@@ -70,20 +70,6 @@ module "terraform-module-iam-superadmins" {
   secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
-module "terraform-module-s3-bucket-replication-role" {
-  source      = "./modules/repository"
-  name        = "modernisation-platform-terraform-s3-bucket-replication-role"
-  type        = "module"
-  description = "Module for creating an IAM role for S3 bucket replication"
-  topics = [
-    "aws",
-    "s3",
-    "s3-replication",
-    "iam"
-  ]
-  secrets = nonsensitive(local.testing_ci_iam_user_keys)
-}
-
 module "terraform-module-s3-bucket" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-s3-bucket"
