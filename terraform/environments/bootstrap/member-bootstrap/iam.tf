@@ -142,6 +142,8 @@ data "aws_iam_policy_document" "member-access" {
       "organizations:List*",
       "oam:*",
       "quicksight:*",
+      "ram:Get*",
+      "ram:List*",
       "rds-db:*",
       "rds:*",
       "rds-data:*",
