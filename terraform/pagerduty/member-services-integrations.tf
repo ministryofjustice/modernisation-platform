@@ -1937,8 +1937,7 @@ resource "pagerduty_slack_connection" "hmpps_domain_services_nonprod_connection"
 # Slack channel: #dso_alerts_devtest_modernisation_platform
 
 
-# Slack channel: #delius_core_nonprod_alerts_modernisation_platform
-
+# Slack channel: #hmpps-delius-core-alerts-nonprod
 # Delius Core Non Prod
 resource "pagerduty_service" "delius_core_nonprod" {
   name                    = "Delius Core Non Prod"
@@ -1959,7 +1958,7 @@ resource "pagerduty_slack_connection" "delius_core_nonprod_connection" {
   source_id         = pagerduty_service.delius_core_nonprod.id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
-  channel_id        = "CRMJZ0PGB"
+  channel_id        = "C054P7AHFEY"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
@@ -1988,6 +1987,9 @@ resource "pagerduty_slack_connection" "delius_core_nonprod_connection" {
     priorities = ["*"]
   }
 }
+
+# Slack channel: #hmpps-delius-nextcloud-alerts-nonprod
+# Delius Nextcloud Non Prod
 resource "pagerduty_service" "delius_nextcloud_nonprod" {
   name                    = "Delius Nextcloud Alarms"
   description             = "Delius Nextcloud Alarms"
@@ -2047,6 +2049,8 @@ resource "pagerduty_service_integration" "delius_nextcloud_prod_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
+# Slack channel: #hmpps-delius-nextcloud-alerts-prod
+# Delius Nextcloud Prod
 resource "pagerduty_slack_connection" "delius_nextcloud_prod_connection" {
   source_id         = pagerduty_service.delius_nextcloud_prod.id
   source_type       = "service_reference"
