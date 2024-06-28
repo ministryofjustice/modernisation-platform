@@ -195,7 +195,7 @@ Here are some examples of the environments JSON file that the Modernisation Plat
 - the `name` key and `access` object are required, see: [Another example](#another-example)
 - `github_action_reviewer` is an optional true/false for each team listed and determines if the team should be the approver for GitHub action runs.
 - the `nuke` key is optional and is only read if the `access.level` is `sandbox`.
-- `tags` should be an object of the mandatory tags defined in the MoJ [Tagging Guidance](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tagging-your-infrastructure). You can omit `is-production` as we infer this from the environment name.
+- `tags` should be an object of the mandatory tags defined in the MoJ [Tagging Guidance](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tagging-your-infrastructure). You can omit `is-production` as we infer this from the environment name. Note that the `infrastructure-support` tag must contain a valid email address.
 
 ### Blank example
 
@@ -265,7 +265,7 @@ An JSON definition for a nonsensical application called [`glados`](https://en.wi
   "tags": {
     "application": "GLaDOS",
     "business-unit": "Platforms",
-    "infrastructure-support": "",
+    "infrastructure-support": "aperture-science@digital.justice.gov.uk",
     "owner": "GLaDOS (Genetic Lifeform and Disk Operating System): aperture-science@digital.justice.gov.uk"
   },
   "github-oidc-team-repositories": [""],
