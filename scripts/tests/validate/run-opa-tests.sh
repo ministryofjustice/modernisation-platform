@@ -3,6 +3,11 @@
 set -e
 set -o pipefail
 
+line(){
+  echo ""
+  echo "------------------------------------------------------------------------------------------"
+}
+
 get-diff() {
   diff=`comm <(tr ' ' '\n' <<<"$1" | sort) <(tr ' ' '\n' <<<"$2" | sort)`
   echo "$(tput -T xterm setaf 1)Diff: $diff$(tput -T xterm sgr0)"
@@ -40,32 +45,53 @@ check-network-files-present() {
 
 # Run OPA tests with conftest
 environments() {
+  line
+  echo "Running Environments tests"
   jq -n -c -r '[ inputs | . + { filename: input_filename } ]' environments/*.json | conftest test -p policies/environments -
 }
 
 networking() {
+  line
+  echo "Running Networking tests"
   jq -n -c -r '[ inputs | . + { filename: input_filename } ]' environments-networks/*.json | conftest test -p policies/networking -
 }
 
 member() {
+  line
+  echo "Running Member tests"
   jq -n -c -r '[ inputs | . + { filename: input_filename } | select( .["account-type"] == "member" ) ]' environments/*.json | conftest test -p policies/member -
 }
 
 collaborators(){
-    jq -n -c -r '[ inputs | . + { filename: input_filename } ]' collaborators.json | conftest test -p policies/collaborators -
+  line
+  echo "Running Collaborator tests"
+  jq -n -c -r '[ inputs | . + { filename: input_filename } ]' collaborators.json | conftest test -p policies/collaborators -
+}
+
+# Verify OPA tests
+
+verify-tests(){
+  line
+  echo "Verify OPA tests"
+  conftest verify -p policies/environments
 }
 
 main() {
+  line
+  echo "Checking files"
   check-environment-files-present
   check-network-files-present
+  verify-tests & verify_tests_outcome=$!
+  wait $verify_tests_outcome
   environments & environments_outcome=$!
-  networking & networking_outcome=$!
-  member & member_outcome=$!
-  collaborators & collaborators_outcome=$!
   wait $environments_outcome
+  networking & networking_outcome=$!
   wait $networking_outcome
+  member & member_outcome=$!
   wait $member_outcome
+  collaborators & collaborators_outcome=$!
   wait $collaborators_outcome
+  line
 }
 
 main
