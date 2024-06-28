@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'terraform/single-sign-on/**'
+      - '!**.md'
       - '.github/workflows/terraform-single-sign-on.yml'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
     branches:
@@ -11,6 +12,7 @@ on:
   pull_request:
     paths:
       - 'terraform/single-sign-on/**'
+      - '!**.md'
       - '.github/workflows/terraform-single-sign-on.yml'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
     branches:

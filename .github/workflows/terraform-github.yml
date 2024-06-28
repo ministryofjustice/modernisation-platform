@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'terraform/github/**'
+      - '!**.md'
       - '.github/workflows/terraform-github.yml'
       - 'environments/**.json'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
@@ -12,6 +13,7 @@ on:
   pull_request:
     paths:
       - 'terraform/github/**'
+      - '!**.md'
       - '.github/workflows/terraform-github.yml'
       - 'environments/**.json'
       - '.github/workflows/reusable_terraform_plan_apply.yml'

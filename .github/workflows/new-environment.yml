@@ -9,6 +9,7 @@ on:
       - 'terraform/environments/*.tf'
       - 'environments/**.json'
       - 'terraform/environments/bootstrap/**'
+      - '!**.md'
   pull_request:
     branches:
       - main
