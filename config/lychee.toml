@@ -1,0 +1,46 @@
+#############################  Display  #############################
+
+# Verbose program output
+# Accepts log level: "error", "warn", "info", "debug", "trace"
+verbose = "info"
+
+# Don't show interactive progress bar while checking links.
+no_progress = true
+
+#############################  Cache  ###############################
+
+# Enable link caching. This can be helpful to avoid checking the same links on
+# multiple runs.
+cache = true
+
+# Discard all cached requests older than this duration.
+max_cache_age = "2d"
+
+#############################  Requests  ############################
+
+# User agent to send with each request.
+user_agent = "curl/7.83. 1"
+
+# Website timeout from connect to response finished.
+timeout = 2
+
+# Minimum wait time in seconds between retries of failed requests.
+retry_wait_time = 2
+
+# Comma-separated list of accepted status codes for valid links.
+# Supported values are:
+accept = ["200", "401", "403", "429"]
+#############################  Exclusions  ##########################
+
+# Exclude URLs and mail addresses from checking (supports regex).
+exclude = [
+    '^https://github\.com/ministryofjustice/[\w-]+/settings/.*', 
+    '^https://github\.com/ministryofjustice/modernisation-platform-security',
+    '^https://github\.com/ministryofjustice/deployment-tgw',
+    '^https://moj-digital-tools.pagerduty.com',
+]
+
+# Exclude all private IPs from checking.
+# Equivalent to setting `exclude_private`, `exclude_link_local`, and
+# `exclude_loopback` to true.
+exclude_all_private = true
