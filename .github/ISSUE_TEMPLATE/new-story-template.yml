@@ -63,7 +63,7 @@ body:
         - [ ] Another team member has reviewed 
 
         - [ ] Tests are green
-      value:
+      value: |
         - [ ] First outcome
         - [ ] Second outcome
     validations:
