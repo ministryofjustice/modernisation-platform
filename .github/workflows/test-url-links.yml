@@ -1,10 +1,12 @@
 ---
-  name: check user guide links
+  name: check for broken links
 
   on:
     pull_request: 
       paths:
         - "source/**"
+    schedule:
+      - cron: '3 7 * * TUE'
 
   permissions: {}
   jobs:
