@@ -74,6 +74,9 @@ verify-tests(){
   line
   echo "Verify OPA tests"
   conftest verify -p policies/environments
+  conftest verify -p policies/networking
+  conftest verify -p policies/member
+  conftest verify -p policies/collaborators
 }
 
 main() {

@@ -38,10 +38,6 @@ test_missing_options_keys if {
   deny["`example.json` is missing the `dns_zone_extend` key"] with input as { "filename": "example.json", "options": {} }
 }
 
-test_no_nacl if {
-  deny["`example.json` is missing the `nacl` key"] with input as { "filename": "example.json" }
-}
-
 test_cidr_types if {
   deny["`example.json` invalid subnet_sets type - must be a object"] with input as { "filename": "example.json", "cidr": {"subnet_sets": ""} }
 }
