@@ -18,14 +18,13 @@ review_in: 6 months
 
 ## Public Certificates
 
-There are two main ways to use public certificates for DNS on the Modernisation Platform; ACM (Amazon Certificate Manager) public certificates, and Gandi.net certificates imported into ACM.
-Please see [How to configure DNS for public services](../../user-guide/how-to-configure-dns.html) for more information.
+There are two main ways to use public certificates for DNS on the Modernisation Platform; [ACM (Amazon Certificate Manager)](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html) public certificates, and Gandi.net certificates imported into ACM. Please see [How to configure DNS for public services](../../user-guide/how-to-configure-dns.html) for more information.
 
 ## Private Certificates
 
 We provide a [Private root Certificate Authority (CA)](https://docs.aws.amazon.com/acm-pca/latest/userguide/PcaWelcome.html) in the [network services account and VPC](networking-approach.html#other-vpcs), along with subordinate production and non production CAs.
 
-The subordinate CA's are then shared to the application environments via a [RAM](https://docs.aws.amazon.com/ram/latest/userguide/what-is.html) share (either production or non production depending on the environment).
+The subordinate CA's are then shared to the application environments via a [Resource Access Manager (RAM)](https://docs.aws.amazon.com/ram/latest/userguide/what-is.html) share (either production or non-production depending on the environment).
 
 Certificates can then be created using the Private subordinate CA, the certificates remain local to the application environment.
 
