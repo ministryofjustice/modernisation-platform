@@ -296,6 +296,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/panda-cyber-appsec-lab"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/performance-hub"
     schedule:
       interval: "daily"
