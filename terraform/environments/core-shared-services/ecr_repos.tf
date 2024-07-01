@@ -141,10 +141,6 @@ module "delius_jitbit_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-test"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-preproduction"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-production"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-development"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-test"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-preproduction"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-production"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
@@ -1179,7 +1175,6 @@ module "delius_nextcloud_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["delius-nextcloud-test"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-nextcloud-preproduction"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-nextcloud-production"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-nextcloud-development"]}:role/modernisation-platform-oidc-cicd",
   ]
 
   pull_principals = [
