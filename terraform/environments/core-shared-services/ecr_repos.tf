@@ -1048,6 +1048,10 @@ module "delius_core_new_tech_pdfgenerator_repo" {
   
   app_name = "delius-core-new-tech-pdfgenerator"
 
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
   pull_principals = [
     local.environment_management.account_ids["delius-core-development"],
     local.environment_management.account_ids["delius-core-test"],
@@ -1062,6 +1066,10 @@ module "delius_core_new_tech_web_repo" {
   source = "../../modules/app-ecr-repo"
   
   app_name = "delius-core-new-tech-web"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd"
+  ]
 
   pull_principals = [
     local.environment_management.account_ids["delius-core-development"],
