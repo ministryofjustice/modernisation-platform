@@ -19,6 +19,7 @@ on:
       - 'terraform/modules/vpc-nacls/**'
       - 'terraform/modules/ram-resource-share/**'
       - 'terraform/modules/core-vpc-tgw-routes/**'
+      - '!**.md'
   pull_request:
     branches:
       - main
@@ -36,6 +37,7 @@ on:
       - 'terraform/modules/vpc-nacls/**'
       - 'terraform/modules/ram-resource-share/**'
       - 'terraform/modules/core-vpc-tgw-routes/**'
+      - '!**.md'
   workflow_dispatch:
 
 env:

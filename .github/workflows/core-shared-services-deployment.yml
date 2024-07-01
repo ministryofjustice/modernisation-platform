@@ -10,6 +10,7 @@ on:
       - 'terraform/modules/vpc-hub/**'
       - 'terraform/modules/core-monitoring/**'
       - 'terraform/modules/kms/**'
+      - '!**.md'
       - '.github/workflows/core-shared-services-deployment.yml'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
   pull_request:
@@ -19,6 +20,7 @@ on:
       - 'terraform/environments/core-shared-services/**'
       - 'terraform/modules/vpc-hub/**'
       - 'terraform/modules/core-monitoring/**'
+      - '!**.md'
       - '.github/workflows/core-shared-services-deployment.yml'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
   workflow_run:

@@ -9,8 +9,8 @@ on:
     paths:
       - '.github/workflows/scheduled-baseline.yml'
       - 'terraform/environments/bootstrap/**'
-      - '!**.md'
       - 'terraform/modules/iam_baseline/**'
+      - '!**.md'
       - 'scripts/update-sso-permission-sets.sh'
   workflow_dispatch:
 
