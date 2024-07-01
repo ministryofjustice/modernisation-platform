@@ -141,10 +141,6 @@ module "delius_jitbit_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-test"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-preproduction"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-production"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-development"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-test"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-preproduction"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-production"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
@@ -1047,6 +1043,36 @@ module "delius_core_weblogic_eis_ecr_repo" {
   tags_common = local.tags
 }
 
+module "delius_core_new_tech_pdfgenerator_repo" {
+  source = "../../modules/app-ecr-repo"
+  
+  app_name = "delius-core-new-tech-pdfgenerator"
+
+  pull_principals = [
+    local.environment_management.account_ids["delius-core-development"],
+    local.environment_management.account_ids["delius-core-test"],
+    local.environment_management.account_ids["delius-core-preproduction"],
+    local.environment_management.account_ids["delius-core-production"],
+  ]
+
+  tags_common = local.tags
+}
+
+module "delius_core_new_tech_web_repo" {
+  source = "../../modules/app-ecr-repo"
+  
+  app_name = "delius-core-new-tech-web"
+
+  pull_principals = [
+    local.environment_management.account_ids["delius-core-development"],
+    local.environment_management.account_ids["delius-core-test"],
+    local.environment_management.account_ids["delius-core-preproduction"],
+    local.environment_management.account_ids["delius-core-production"],
+  ]
+
+  tags_common = local.tags
+}
+
 module "analytical_platform_ingestion_notify_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
@@ -1149,7 +1175,6 @@ module "delius_nextcloud_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["delius-nextcloud-test"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-nextcloud-preproduction"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-nextcloud-production"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-nextcloud-development"]}:role/modernisation-platform-oidc-cicd",
   ]
 
   pull_principals = [
