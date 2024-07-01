@@ -28,35 +28,43 @@ resource "aws_ecr_repository" "ecr_repo" {
 }
 
 data "aws_iam_policy_document" "ecr_repo_policy" {
-  statement {
-    sid    = "AllowPush"
-    effect = "Allow"
-    actions = [
-      "ecr:CompleteLayerUpload",
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:PutImage",
-      "ecr:InitiateLayerUpload",
-      "ecr:UploadLayerPart",
-      "ecr:DescribeImages"
-    ]
-    principals {
-      type        = "AWS"
-      identifiers = var.push_principals
+  dynamic "statement" {
+    for_each = length(var.push_principals) > 0 ? [1] : []
+
+    content {
+      sid    = "AllowPush"
+      effect = "Allow"
+      actions = [
+        "ecr:CompleteLayerUpload",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:PutImage",
+        "ecr:InitiateLayerUpload",
+        "ecr:UploadLayerPart",
+        "ecr:DescribeImages"
+      ]
+      principals {
+        type        = "AWS"
+        identifiers = var.push_principals
+      }
     }
   }
 
-  statement {
-    sid    = "AllowPull"
-    effect = "Allow"
-    actions = [
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:BatchGetImage",
-      "ecr:DescribeRepositories",
-      "ecr:ListImages"
-    ]
-    principals {
-      type        = "AWS"
-      identifiers = var.pull_principals
+  dynamic "statement" {
+    for_each = length(var.pull_principals) > 0 ? [1] : []
+
+    content {
+      sid    = "AllowPull"
+      effect = "Allow"
+      actions = [
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage",
+        "ecr:DescribeRepositories",
+        "ecr:ListImages"
+      ]
+      principals {
+        type        = "AWS"
+        identifiers = var.pull_principals
+      }
     }
   }
 
