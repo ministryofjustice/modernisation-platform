@@ -10,6 +10,7 @@ on:
       - 'terraform/modules/vpc-hub/**'
       - 'terraform/modules/core-monitoring/**'
       - 'terraform/modules/firewall-policy/**'
+      - '!**.md'
       - '.github/workflows/core-network-services-deployment.yml'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
   pull_request:
@@ -19,6 +20,7 @@ on:
       - 'terraform/environments/core-network-services/**'
       - 'terraform/modules/vpc-hub/**'
       - 'terraform/modules/core-monitoring/**'
+      - '!**.md'
       - '.github/workflows/core-network-services-deployment.yml'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
   workflow_dispatch:

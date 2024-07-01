@@ -7,6 +7,7 @@ on:
     paths:
       - 'terraform/environments/bootstrap/**'
       - 'terraform/modules/iam_baseline/**'
+      - '!**.md'
       - '.github/workflows/bootstrap-sprinkler.yml'
   workflow_dispatch:
 

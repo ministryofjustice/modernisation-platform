@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'terraform/pagerduty/**'
+      - '!**.md'
       - '.github/workflows/terraform-pagerduty.yml'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
     branches:
@@ -11,6 +12,7 @@ on:
   pull_request:
     paths:
       - 'terraform/pagerduty/**'
+      - '!**.md'
       - '.github/workflows/terraform-pagerduty.yml'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
     branches:
