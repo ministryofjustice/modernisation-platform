@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Networking Approach
-last_reviewed_on: 2024-06-13
+last_reviewed_on: 2024-06-28
 review_in: 6 months
 ---
 
@@ -18,18 +18,18 @@ review_in: 6 months
 
 ### What we're trying to fix
 
-Networking is hard, setting up a landing zone, a VPC, subnets, endpoints, peering, NACLS, gateways, etc, is both complex and time consuming.
+Networking is hard. Setting up a landing zone, VPCs, subnets, endpoints, peering, NACLS, gateways, etc, is both complex and time consuming.
 We want to take care of this so that users can focus on what is important to them - their application.
 
 ### What we investigated
 
-We looked into having a [VPC](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) per account. Although this provides good network isolation, because we have one account per application environment, it would mean a lot of VPC peering would be required to connect one application to another if needed.
+We looked into having a [VPC](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) per account. While this provides good network isolation, because we have one account per application environment, it would mean a lot of VPC peering would be required to connect applications together if needed.
 
 ### What we decided
 
 #### VPCs
 
-Instead of creating a VPC in each account, we have created separate environment accounts, and have one VPC per business unit, per environment.
+Instead of creating a VPC in each account, we have organised the VPCs into central 'environment' accounts (one account per [SDLC stage](https://en.wikipedia.org/wiki/Systems_development_life_cycle#Environments)). Within the environment accounts there is one VPC per business unit, per environment.
 
 So we have the following environment accounts:
 
@@ -38,19 +38,19 @@ So we have the following environment accounts:
 * test
 * development
 
-Within these environment accounts there is a VPC per business unit.  For example one VPC for the LAA, and one for HMPPS.
+Within these environment accounts there is one VPC per business unit.  For example within the production account there is one VPC for LAA, and one for HMPPS.
 
-These VPCs are then shared via [RAM](https://docs.aws.amazon.com/ram/latest/userguide/what-is.html) to the application accounts.
+These VPCs are then shared via [Resource Access Manager (RAM)](https://docs.aws.amazon.com/ram/latest/userguide/what-is.html) to the application accounts.
 
-For example the production LAA VPC may be shared to multiple LAA application accounts, this enables LAA applications to communicate with each other without the need for [VPC peering](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-peering.html) as they are using the same VPC.
+For example the production LAA VPC may be shared to multiple LAA application accounts. This enables LAA applications to communicate with each other without the need for [VPC peering](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-peering.html) as they are using the same VPC.
 
-Connection to other VPCs, for example if an LAA application needs to communicate with a HMPPS application, is done through the [Transit Gateway](#what-we-decided-transit-gateway), [NACLs](#nacls) can be opened to allow access, and [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html) from other accounts can be referenced.
+Connection to other VPCs - i.e. if an LAA application needs to communicate with a HMPPS application - is done through the [Transit Gateway](#what-we-decided-transit-gateway). [NACLs](#nacls) can be opened to allow access, and [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html) from other accounts can be referenced.
 
 #### Subnets
 
 ##### General
 
-Each VPC will have a general subnet set - a set of subnets that can be used for most of the application accounts. These are shared to the application accounts using RAM.
+Each VPC will have a general subnet set - subnets that can be used for most of the application accounts. These are shared to the application accounts using RAM.
 
 For most business areas, the general subset set will be enough, but we can always create more subnet sets if needed.
 
@@ -60,7 +60,7 @@ The subnet sets contain three types of subnet:
  * Private (for private resources such as application servers)
  * Data (for data resources such as databases)
 
-Each of the different subnet types are spread across all three London region [availability zones](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones) (eu-west-2a, eu-west-2b and eu-west2c), making a total of nine subnets.
+Each of the different subnet types are spread across all three London region [availability zones](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones) (`eu-west-2a`, `eu-west-2b`, and `eu-west-2c`), making a total of nine subnets.
 
 For more information on the subnet ranges, see the [subnet allocation](subnet-allocation.html) page.
 
@@ -75,13 +75,13 @@ Protected subnets are created per account and used for [VPC endpoints](https://d
 
 ##### Transit Gateway
 
-The [transit gateway](#what-we-decided-transit-gateway) subnets are created per account to allow access to other accounts and services via the transit gateway.
+The [transit gateway](#what-we-decided-transit-gateway) subnets are created per-account to allow access to other accounts and services via the transit gateway.
 
 #### NACLs
 
-Access to the subnet sets is controlled with [Network ACLs (NACLs)](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html).
+Access to the subnet sets is controlled with [Network Access Control Lists (NACLs)](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html).
 
-NACLs allow traffic in and out of the Modernisation Platform (North/South), but prevent traffic from traversion business unit VPCs (East/West).
+NACLs allow traffic in and out of the Modernisation Platform (North/South), but prevent traffic from traversing business unit VPCs (East/West).
 
 Traffic within a VPC is not restricted.
 
@@ -93,7 +93,7 @@ AWS [Network Firewalls](network-firewall.html) provide additional controls to tr
 
 There are other VPCs in the Modernisation Platform core infrastructure accounts, these are connected to the [transit gateway](#what-we-decided-transit-gateway) as well.
 
-Examples of some of these that you will connect to are:
+Some examples that you will connect to:
 
 * network-services (where the transit gateway lives)
 * shared-services

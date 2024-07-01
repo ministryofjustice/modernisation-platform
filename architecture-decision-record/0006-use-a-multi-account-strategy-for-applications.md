@@ -12,7 +12,7 @@ In the Modernisation Platform, we want to reduce the blast radius and increase t
 
 ## Decision
 
-We've decided to use a multi-account strategy, split by application. We have a complete write-up as part of our [environments concept](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/environments/).
+We've decided to use a multi-account strategy, split by application. We have a complete write-up as part of our [environments concept](https://user-guide.modernisation-platform.service.justice.gov.uk/#environments-aws-accounts).
 
 ## Consequences
 

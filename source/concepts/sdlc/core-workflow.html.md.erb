@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
-title: Core Workflow (CI/CD)
-last_reviewed_on: 2024-06-06
+title: Core Workflows (CI/CD)
+last_reviewed_on: 2024-06-28
 review_in: 6 months
 ---
 
@@ -22,9 +22,9 @@ We use [trunk base development](https://www.atlassian.com/continuous-delivery/co
 
 ## CI/CD
 
-For our CI/CD pipelines we use [GitHub actions](https://docs.github.com/en/actions).
+For our CI/CD pipelines we use [GitHub Actions](https://docs.github.com/en/actions).
 
-Workflow files are found [here](https://github.com/ministryofjustice/modernisation-platform/tree/main/.github/workflows)
+Workflow files are [found here](https://github.com/ministryofjustice/modernisation-platform/tree/main/.github/workflows)
 
 ### Terraform workflows
 
@@ -58,12 +58,12 @@ These workflows create the new files needed for new member accounts.
 
 | Name                           | Description                                                                                                                                 | Workflow file                   |
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
-| Publish                        | Publishes pages in `source` to our GitHub pages user guidance                                                                               | `publish-gh-pages.yml`          |
+| Publish                        | Publishes pages in the `source/` directory to our GitHub pages user guidance                                                                               | `publish-gh-pages.yml`          |
 | Format Code                    | Formats code once a week and raises a PR for review                                                                                         | `format-code.yml`               |
 | Labeler                        | Adds labels to our pull requests depending on which folders are changed                                                                     | `labeler.yml`                   |
 | OPA Policies                   | Runs Open Policy Agent validation tests against our json files                                                                              | `opa-policies.yml`              |
 | Scheduled Baseline             | Runs the baseline code across all accounts ensuring security baselines are still in place                                                   | `scheduled-baseline.yml`        |
-| Terraform Static Code Analysis | Runs Trivy, Checkov and TFlint against all Terraform code                                                                                   | `terraform-static-analysis.yml` |
+| Terraform Static Code Analysis | Runs [Trivy](https://github.com/aquasecurity/trivy), [Checkov](https://github.com/bridgecrewio/checkov?tab=readme-ov-file) and [TFlint](https://github.com/terraform-linters/tflint?tab=readme-ov-file#tflint) against all Terraform code                                                                                   | `terraform-static-analysis.yml` |
 | Generate Dependabot File       | Generates a new dependabot file to add any newly added Terraform folders                                                                    | `generate-dependabot-file.yml`  |
 | Add issues to project          | On new modernisation-platform repository issue creation adds the new issue to the Modernisation Platform project                            | `add-issues-to-project.yml`     |
 | Terraform Documentation        | Generates Terraform module documentation                                                                                                    | `documentation.yml`             |

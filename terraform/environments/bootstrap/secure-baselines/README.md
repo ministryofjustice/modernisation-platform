@@ -1,6 +1,13 @@
 # Modernisation Platform: environments bootstrapping
 
-This directory creates and maintains common resources that should be available in every account. It uses `terraform workspace` and replaces the [previous process for bootstrapping accounts](https://github.com/ministryofjustice/modernisation-platform/tree/5a8fd5c6/terraform/environments).
+This directory configures use of [the `secure-baselines` Terraform module](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines?tab=readme-ov-file#modernisation-platform-terraform-baselines-module), which creates and maintains common resources that should be available in every account.
+
+The `secure-baselines` module:
+> _enables and configures the MoJ Security Guidance baseline for AWS accounts, alongside some extra reasonable security, identity and compliance services_
+
+New environments can be created via the [new-environment.yml](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml) workflow, which includes [a `secure-baselines` step](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml#L258) that uses `terraform workspace` commands to call [a `setup-baselines.sh` bash script](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/setup-baseline.sh).
+
+The processes here replaces the [previous process for bootstrapping accounts](https://github.com/ministryofjustice/modernisation-platform/tree/5a8fd5c6/terraform/environments).
 
 You need to run Terraform commands in this directory using a Ministry of Justice AWS organisational root IAM user that has permissions to `sts:AssumeRole`. It utilises the `OrganizationAccountAccessRole` created by AWS Organizations to assume a role in an account and bootstrap it with the following:
 
@@ -34,4 +41,4 @@ terraform apply
 
 ## Running this in CI/CD
 
-This repository includes a [script to automate this](https://github.com/ministryofjustice/modernisation-platform/tree/main/scripts/create-accounts.sh) for all new workspaces.
+New environments can be created via the [new-environment.yml](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml) workflow.

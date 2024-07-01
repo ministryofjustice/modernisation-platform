@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Environments (AWS accounts) security
-last_reviewed_on: 2024-06-14
+last_reviewed_on: 2024-06-28
 review_in: 6 months
 ---
 
@@ -39,7 +39,7 @@ We can see an overview of compliance across the Modernisation Platform and we wi
 
 ## Regional restrictions
 
-We restrict the regional usage of accounts that sit within the Modernisation Platform. We use a [Service Control Policy](https://github.com/ministryofjustice/aws-root-account/blob/main/terraform/organizations-service-control-policies.tf#L40) to do this.
+We restrict the regional usage of accounts that sit within the Modernisation Platform. We use a [Service Control Policy (SCP)](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control.tf) to do this.
 
 In accordance with the [Security Guidance](https://ministryofjustice.github.io/security-guidance/baseline-aws-accounts/#regions), you should only use EU AWS regions.
 

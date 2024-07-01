@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Environments (AWS accounts)
-last_reviewed_on: 2024-02-21
+last_reviewed_on: 2024-06-28
 review_in: 12 months
 ---
 
@@ -30,43 +30,43 @@ For example, if we had an account for `fictional-business-unit-production` and s
 
 `example-b`, which is an application with a database that holds sensitive `dataset B`
 
-### Issue 1: blast radius
+### Issue 1: Blast radius
 
-One of the risks of splitting AWS accounts at the granularity of business unit and their SDLC is the blast radius. By doing this, the blast radius has a much wider impact on the business and has a high probability of affecting other resources and applications that sit within an AWS account.
+One of the risks of splitting AWS accounts at the granularity of business unit and their SDLC is the potential size of the blast radius - the radius in which damage could occur should something go wrong. At this level of granularity, the blast radius has a much wider impact on the business and has a high probability of affecting other resources and applications that sit within an AWS account.
 
 The blast radius can be affected by anything, such as security, or an Availability Zone going offline.
 
-#### Security example
+#### Example: Compromise of security
 
-Access keys are leaked for an IAM user that is in `fictional-business-unit-production`. The IAM user has an `AdministratorAccess` policy attached. A malicious attacker with these keys now has the ability to access both sensitive datasets: `dataset A` and `dataset B`.
+Access keys are leaked for an IAM user in `fictional-business-unit-production`. The IAM user has an `AdministratorAccess` policy attached. A malicious attacker with these keys now has the ability to access both sensitive datasets: `dataset A` and `dataset B`.
 
-#### High-availability example
+#### Example: Loss of availability
 
 `fictional-business-unit-production` had only ever configured their EC2 instances to run in one AZ. If this AZ goes down, all of their applications do too.
 
-### Issue 2: team isolation
+### Issue 2: Team isolation
 
 Similar to Issue 1, team isolation becomes extremely difficult to maintain if all applications in their SDLC stage are within one account.
 
 Imagine `team-a` works on `example-a` and `team-b` works on `example-b`, both of which fall under `fictional-business-unit`.
 
-Everything `team-a` does can be seen by `team-b` even if you use a well-defined [attribute-based access control](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_attribute-based-access-control.html) (ABAC). Using ABAC requires resources to be tagged, and it has no effect on untagged resources. ABAC also doesn't work for all resources in AWS.
+Everything `team-a` does can be seen by `team-b` even if you use a well-defined [attribute-based access control (ABAC)](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_attribute-based-access-control.html). Using ABAC requires resources to be tagged, and it has no effect on untagged resources.ABAC also doesn't work for all resources in AWS.
 
-If `team-a` forgets to tag something, or creates a resource that doesn't support tagging during creation, it's interactable by who has access to that AWS account.
+If `team-a` forgets to tag something, or creates a resource that doesn't support tagging during creation, anyone who has access to that AWS account will be able to interact with it.
 
-#### An extreme misclicking example
+#### Example: Human error (misclick)
 
-`team-a` notices an issue with one of their `production` EC2 instances. They try to terminate it, and notice that they've just terminated a `production` instance that belonged to `team-b`, which disrupts `team-b`'s workflow whilst they redeploy their application. It takes time and money to reprovision these resources.
+`team-a` notices an issue with one of their `production` EC2 instances. They try to terminate it, and notice that they've just terminated a `production` instance that belonged to `team-b`, which disrupts `team-b`'s workflow whilst they redeploy their application. It takes time and money to reprovision these resources, and may affect application users.
 
-### Issue 3: billing
+### Issue 3: Billing
 
-In a shared AWS account for a business unit, untaggable billable items such as Data Transfer become impossible to attribute to an application.
+In a shared AWS account for a business unit, untaggable billable items such as Data Transfer cannot easily be attributed to a particular application.
 
 Billing granularity requires resource tagging, and it is useful to know how much an application costs to run to help prioritise the refactoring, replacement, or retirement of each application.
 
-Further to this, having more granular billing can expose expensive operations or misconfigured resources such as instances that require right-sizing.
+Further to this, having more granular billing can expose opportunities for optimisation: expensive operations or misconfigured resources such as instances that require right-sizing.
 
-#### Example
+#### Example: Unbalanced untaggable billing
 
 `example-a` stores 100TB of data in an S3 bucket and replicates it to another region, costing $2,048.00.
 
@@ -74,43 +74,43 @@ Further to this, having more granular billing can expose expensive operations or
 
 Since Data Transfer isn't taggable, you can't easily trace it back to the originating S3 bucket.
 
-### Issue 4: cloud waste
+### Issue 4: Cloud waste
 
-When holding all applications in a SDLC account, it becomes difficult to retire application infrastructure, even if they're covered by a good tagging policy. With cloud infrastructure, everything should be considered ephemeral and everything should be rebuildable from code.
+When holding all applications in a SDLC account, it becomes difficult to retire application infrastructure, even if they're covered by a good tagging policy. When deploying to the cloud, all infrastructure should be considered ephemeral and everything should be rebuildable from code.
 
-If you destroy the wrong infrastructure when retiring an application, it becomes costly to recreate. If you miss the deprovisioning of some infrastructure, you create cloud waste which is also costly.
+If you destroy the wrong infrastructure when retiring an application, it becomes costly to recreate. If you accidently miss some infrastructure during de-provisioning, you inadvertently create ongoing cloud waste which is also costly.
 
-Unless you've retired all applications within a shared AWS account, you can't close it, so there's always a chance there are some resources unaccounted for after an application has been refactored, replaced, or retired.
+Until you've retired all applications within a shared AWS account, you can't close it, so there's always a chance there are some resources left unaccounted for after an application has been refactored, replaced, or retired.
 
-#### Example of cloud waste
+#### Example: Cloud waste from uncertainty
 
 `example-a` has been retired, and is no longer of use. There are untagged resources that are thought to be part of `example-a`, but `team-a` is unsure, so they just leave it.
 
 #### Example of destroying the wrong infrastructure
 
-See [An extreme misclicking example](#an-extreme-misclicking-example).
+See [Example: Human error (misclick)](#example-human-error-misclick).
 
 ## What we investigated
 
-### Let teams decide
+### Option A: Let teams decide
 
-In the Modernisation Platform, we want to empower teams and give them the autonomy to do whatever they need to support their application and environments. One of the issues with delegating how their infrastructure is separated is that it:
+In the Modernisation Platform, we want to empower teams and grant them the autonomy to do whatever they need to support their applications and environments. Some complexities that can arise from delegating how infrastructure is separated are:
 
-- quickly becomes hard to track
-- can become messy
-- doesn't support the central alignment we're trying to achieve
 - people tend to go for the easiest option, which creates technical debt further down the line
+- infrastructure quickly becomes hard to track
+- it can become tangled and messy
+- doesn't support the central alignment we're trying to achieve 
 
-Of that, there are some positives:
+However, raw autonomy does give some positives:
 
 - teams truly have autonomy and empowerment to run their infrastructure in the way they believe is best
 - teams can understand their own configuration as they are the ones who built it
 
-### One account, strong attribute-based access controls
+### Option B: One account, strong attribute-based access controls
 
 Having one account is by far the easiest setup to have. You can use VPCs out of the box to enable cross-resource communication, you only have to set up IAM users once, and you can easily see all resources in one place.
 
-Early on, we explored using strong [attribute-based access control](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_attribute-based-access-control.html) (ABAC) so teams can only view their own resources in an account, alongside strong IAM policies to stop cross-team resource interaction. Some of the issues with this is that:
+Early on, we explored using strong [attribute-based access control](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_attribute-based-access-control.html) (ABAC) so teams can only view their own resources in an account, alongside strict IAM policies to stop cross-team resource interaction. Some of the issues with this is that:
 
 - ABAC isn't supported on all AWS resources, and requires resources to be tagged (it doesn't work on untagged resources)
 - finding the cost of an application becomes extremely hard to do, where billable items like Data Transfer aren't easily attributable directly to a source
@@ -118,32 +118,32 @@ Early on, we explored using strong [attribute-based access control](https://docs
 - resources aren't truly isolated, as they're all in one account
 - the blast radius is huge
 
-### Separate by application and SDLC
+### Option C: Accounts separated by business unit and SDLC stage
 
-Separating accounts by application is the more granular middle-ground of either having [one account](#one-account-strong-attribute-based-access-controls), or [separating everything](#separate-everything). It's very similar to [separating by business unit and SDLC](#separate-by-business-unit-and-sdlc) but goes a step further to provide granularity at an application level.
-
-It has some issues:
-
-- it's not simple to do
-- it's uncommon
-- you probably need an essence of centralisation, such as for networking
-- it has a higher risk of cloud waste, but is easier to track
-
-### Separate by business unit and SDLC
-
-This is how most multi-account architectures are set up and it is recommended by most cloud providers to go to _at least_ this level of granularity. Some issues with this are listed above in [What we're trying to fix](#what-we-39-re-trying-to-fix).
+This is how most multi-account architectures are set up and it is recommended by most cloud providers to go to _at least_ this level of granularity. Some issues with this are listed above in [What we're trying to fix](#what-were-trying-to-fix).
 
 It's not incorrect or wrong to do things this way, but the Modernisation Platform would like to improve on the Ministry of Justice's current working practices.
 
 It does have its benefits:
 
-- there are a set number of SDLC stages a business unit will use
+- there are a set of SDLC stages a business unit will typically use
 - it's easy to work with, since everything for each SDLC stage is in one place
 - it logically separates business units from each other
 
-### Separate everything
+### Option D: Accounts separated by application and SDLC stage
 
-Theoretically and technically, you can separate _everything_ into different accounts. You could have something like this:
+Separating accounts by application is a more granular middle-ground of either having [one account](#one-account-strong-attribute-based-access-controls), or [separating everything](#option-e-separate-everything). It's very similar to [separating by business unit and SDLC stage](#option-c-accounts-separated-by-business-unit-and-sdlc-stage) but goes a step further to provide granularity at an application level.
+
+It has some issues:
+
+- it's not simple to do
+- it's an uncommon pattern
+- users probably need some degree of centralisation, such as for networking
+- it has a higher risk of cloud waste, but is easier to track
+
+### Option E: Separate everything
+
+Theoretically and technically, you can separate _everything_ into different accounts; i.e. application, application component/layer, and SDLC stage. You could have something like this for the `example A` application:
 
 ```
 example-a-api-production
@@ -157,7 +157,7 @@ example-a-frontend-development
 example-a-landing-zone
 ```
 
-The issue with this is:
+Some issues with this are:
 
 - it becomes incredibly complex to maintain
 - it becomes difficult to track
@@ -170,13 +170,13 @@ The issue with this is:
 The benefits of this are:
 
 - it becomes easy to track costs per application and layer (frontend, backend)
-- it has a tiny blast radius
+- each account has a tiny blast radius
 
 ## What we decided
 
 ### Overview
 
-We decided to use separate AWS accounts per application as a middle-ground between [separating everything](#separate-everything) and using [one account with strong attribute-based access controls](#one-account-strong-attribute-based-access-controls).
+We decided to use [separate AWS accounts per application](#option-d-accounts-separated-by-application-and-sdlc-stage)  as a middle-ground between [separating everything](#option-e-separate-everything) and using [one account with strong attribute-based access controls](#option-b-one-account-strong-attribute-based-access-controls).
 
 Whilst there is a trade-off to more complexity, we feel it's outweighed by the benefits of doing this.
 
@@ -189,9 +189,11 @@ Some of the biggest benefits are:
 
 ### Logically separate applications
 
-The Modernisation Platform is going to host a number of applications, which are built in different ways. One of our goals is to modernise these applications, and that can be anything from moving away from on-premise hosted databases into managed services such as AWS [Relational Database Service](https://aws.amazon.com/rds/); or moving away from bastion hosts to [agent-based instance management](https://aws.amazon.com/about-aws/whats-new/2018/09/introducing-aws-systems-manager-session-manager/).
+The Modernisation Platform hosts a number of applications, each built in different ways. One of our goals is to facilitate modernisation of these applications through the onboarding process. That could mean:
+- moving away from on-premise hosted databases into managed services such as AWS [Relational Database Service (RDS)](https://aws.amazon.com/rds/)
+- moving away from bastion hosts to [agent-based instance management](https://aws.amazon.com/about-aws/whats-new/2018/09/introducing-aws-systems-manager-session-manager/)
 
-Whilst that is our goal, we're also aware it won't happen straight away, or can't happen for some legacy applications.
+Whilst app modernisation is our goal, we're also aware that it won't happen straight away, and may not be possible for some legacy applications.
 
 By separating applications out into their own AWS accounts we can:
 
