@@ -68,7 +68,7 @@ GitHub environments prevents any workflow being deployed to your environments un
 
 #### AWS IAM (Identity and Access Management)
 
-Each account has a [`MemberInfrastructureAccess`](https://github.com/ministryofjustice/modernisation-platform/blob/ab3eb5a6a8e6253afc9db794362034ba4ae1cd94/terraform/environments/bootstrap/member-bootstrap/iam.tf#L266) IAM role that allows the GitHub workflows to create resources in each AWS account.
+Each account has a [`MemberInfrastructureAccess`](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/iam.tf) IAM role that allows the GitHub workflows to create resources in each AWS account.
 Each application workflow will use the role for the relevant account, ensuring one account can't create resources in another.
 
 For modifying DNS entries, a `dns-<business-unit>-<environment>` role is used. It is only capable of changes to the DNS hosted zone for your particular business unit.
