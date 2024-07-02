@@ -1045,7 +1045,7 @@ module "delius_core_weblogic_eis_ecr_repo" {
 
 module "delius_core_new_tech_pdfgenerator_repo" {
   source = "../../modules/app-ecr-repo"
-  
+
   app_name = "delius-core-new-tech-pdfgenerator"
 
   push_principals = [
@@ -1064,7 +1064,7 @@ module "delius_core_new_tech_pdfgenerator_repo" {
 
 module "delius_core_new_tech_web_repo" {
   source = "../../modules/app-ecr-repo"
-  
+
   app_name = "delius-core-new-tech-web"
 
   push_principals = [
