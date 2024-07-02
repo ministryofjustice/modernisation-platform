@@ -308,6 +308,7 @@ module "modernisation-platform-terraform-module-template" {
     "terraform",
     "module"
   ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
 module "modernisation-platform-terraform-pagerduty-integration" {
