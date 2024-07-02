@@ -222,7 +222,7 @@ jobs:
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
       - name: Retrieve Secrets from AWS Secrets Manager
-        uses: aws-actions/aws-secretsmanager-get-secrets@98c2d6bf1dd67c2575fa2bb14294aa64103d426c #v2.0.5
+        uses: aws-actions/aws-secretsmanager-get-secrets@4e95aaf6ba8028772f5384971d4fedccfaab8621 #v2.0.6
         with:
           secret-ids: |
             AWS_ENVIRONMENTS,environment_management
