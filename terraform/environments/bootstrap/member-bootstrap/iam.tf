@@ -445,6 +445,7 @@ data "aws_iam_policy_document" "policy" {
       "elasticfilesystem:Create*",
       "elasticfilesystem:Delete*",
       "elasticfilesystem:restore",
+      "elasticloadbalancing:SetRulePriorities",
       "glue:GetJobRuns",
       "glue:StartJobRun",
       "glue:GetJobs",
@@ -494,6 +495,7 @@ data "aws_iam_policy_document" "policy" {
       "ssm:PutParameter",
       "ssm:DescribeSessions",
       "ssm:ResumeSession",
+      "ssm:SendCommand",
       "ssm:StartSession",
       "ssm:TerminateSession"
     ]
