@@ -1195,3 +1195,28 @@ module "delius_nextcloud_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
+
+# Repo for electronic monitoring data account lambda
+module "electronic_monitoring_data_lambdas_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "electronic-monitoring-data-lambdas"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["electronic-monitoring-data-development"],
+    local.environment_management.account_ids["electronic-monitoring-data-production"]
+  ]
+
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-development"]}:function:*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-production"]}:function:*"
+    ]
+
+  # Tags
+  tags_common = local.tags
+}
