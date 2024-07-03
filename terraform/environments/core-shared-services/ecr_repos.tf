@@ -1215,7 +1215,7 @@ module "electronic_monitoring_data_lambdas_ecr_repo" {
   enable_retrieval_policy_for_lambdas = [
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-development"]}:function:*",
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-production"]}:function:*"
-    ]
+  ]
 
   # Tags
   tags_common = local.tags
