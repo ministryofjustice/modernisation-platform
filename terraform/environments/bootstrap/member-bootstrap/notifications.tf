@@ -41,26 +41,38 @@ resource "aws_cloudwatch_metric_alarm" "aws_backup_has_errors" {
 
 }
 
-resource "aws_cloudwatch_event_rule" "backup_vault_deleted_rule" {
-  name          = "backup-vault-deleted-rule"
-  event_pattern = <<EOF
-{
-  "source": ["aws.backup"],
-  "detail-type": ["AWS API Call via CloudTrail"],
-  "detail": {
-    "eventSource": ["backup.amazonaws.com"],
-    "eventName": ["DeleteBackupVault", "UpdateRecoveryPointLifecycle", "DeleteBackupVaultLockConfiguration", "PutBackupVaultLockConfiguration"],
-    "userIdentity": {
-      "type": ["IAMUser", "AssumedRole"]
-    }
+data "aws_cloudwatch_log_group" "cloudtrail" {
+  name = "cloudtrail"
+}
+resource "aws_cloudwatch_log_metric_filter" "backup_vault_lock_changes" {
+  name           = "BackupVaultLockChanges"
+  pattern        = "{($.eventSource = \"backup.amazonaws.com\") && (($.eventName = \"PutBackupVaultLockConfiguration\") || ($.eventName = \"DeleteBackupVaultLockConfiguration\") || ($.eventName = \"ChangeBackupVaultLockConfiguration\") || ($.eventName = \"PutBackupVaultAccessPolicy\"))}"
+  log_group_name = data.aws_cloudwatch_log_group.cloudtrail.name
+
+  metric_transformation {
+    name      = "CallCount"
+    namespace = "CustomMetrics"
+    value     = "1"
   }
 }
-EOF
-}
 
-resource "aws_cloudwatch_event_target" "backup_vault_deleted_target" {
-  rule = aws_cloudwatch_event_rule.backup_vault_deleted_rule.name
-  arn  = data.aws_sns_topic.backup_vault_failure_topic.arn
+resource "aws_cloudwatch_metric_alarm" "backup_vault_config_alarm" {
+  # count             = local.account_data.account_type != "member-unrestricted" ? 1 : 0
+  alarm_name        = "backup-vault-config-change"
+  alarm_description = "Alarm when there are changes to Backup Vault configurations. Please check logs"
+  alarm_actions     = [data.aws_sns_topic.backup_vault_failure_topic.arn]
+
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "CallCount"
+  namespace           = "CustomMetrics"
+  period              = "10"
+  statistic           = "Sum"
+  threshold           = "1"
+  treat_missing_data  = "notBreaching"
+
+
+  depends_on = [aws_cloudwatch_log_metric_filter.backup_vault_lock_changes]
 }
 
 # Keys for pagerduty
