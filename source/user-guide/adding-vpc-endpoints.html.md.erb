@@ -1,0 +1,53 @@
+---
+owner_slack: "#modernisation-platform"
+title: Adding VPC endpoints
+last_reviewed_on: 2024-07-04
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+## Overview
+A selection of [AWS VPC Endpoints](https://docs.aws.amazon.com/whitepapers/latest/aws-privatelink/what-are-vpc-endpoints.html) are supplied by default to member VPCs.
+
+Modernisation Platform customers can raise pull requests to add further VPC endpoints as they require them.
+
+## Default AWS VPC Endpoints
+Modernisation Platform `core-vpc-*` accounts contain per-business-unit VPCs which each have the following endpoints provisioned in their `protected` subnets:
+```
+"com.amazonaws.eu-west-2.ec2",
+"com.amazonaws.eu-west-2.ec2messages",
+"com.amazonaws.eu-west-2.ssm",
+"com.amazonaws.eu-west-2.ssmmessages",
+```
+No action is required to make use of these. 
+
+## Adding supplementary AWS VPC Endpoints
+Additional VPC endpoints should be defined in the relevant `$business_unit-$environment.json` file in our [environments-networks](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments-networks) directory.
+You can raise a pull request similar to [this example](https://github.com/ministryofjustice/modernisation-platform/pull/7408) for any additions you require.
+```
+{  
+  ...
+  "options": {
+    ...
+    "additional_endpoints": [
+      "com.amazonaws.eu-west-2.$endpoint"
+    ],
+    ...
+  }
+}
+```
+
+## Validating the creation of supplementary AWS VPC Endpoints
+Changes to VPC endpoints will be made through GitHub Actions. You can track the relevant `core-vpc-*` workflow [here](https://github.com/ministryofjustice/modernisation-platform/actions).
+
+You can also follow our guidance on [Viewing Core Account resources as a Member Account Developer](./member-read-only-core-accounts.html) to review the VPC endpoints in the relevant `core-vpc-*` account.
