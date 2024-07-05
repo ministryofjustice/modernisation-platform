@@ -52,7 +52,7 @@ defaults:
 
 env:
   AWS_REGION: "eu-west-2"
-
+  ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
 jobs:
   core-vpc-development-deployment-plan-apply:
     uses: ./.github/workflows/reusable_terraform_plan_apply.yml
