@@ -43,11 +43,8 @@ on:
   workflow_dispatch:
 
 env:
-  TF_IN_AUTOMATION: true
-  TF_ENV: "preproduction"
   AWS_REGION: "eu-west-2"
-  ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-
+  
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout

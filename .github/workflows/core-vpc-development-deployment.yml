@@ -50,6 +50,9 @@ defaults:
   run:
     shell: bash
 
+env:
+  AWS_REGION: "eu-west-2"
+
 jobs:
   core-vpc-development-deployment-plan-apply:
     uses: ./.github/workflows/reusable_terraform_plan_apply.yml
