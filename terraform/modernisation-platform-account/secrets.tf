@@ -26,6 +26,19 @@ resource "aws_kms_alias" "secrets_key_multi_region" {
   target_key_id = aws_kms_key.secrets_key_multi_region.id
 }
 
+
+resource "aws_kms_replica_key" "secrets_key_multi_region_replica" {
+  description             = "AWS Secretsmanager CMK replica key"
+  deletion_window_in_days = 30
+  primary_key_arn         = aws_kms_key.secrets_key_multi_region.arn
+  provider = aws.modernisation-platform-eu-west-1
+}
+
+resource "aws_kms_alias" "secrets_key_multi_region_replica" {
+  name          = "alias/secrets-key-multi-region-replica"
+  target_key_id = aws_kms_replica_key.secrets_key_multi_region_replica.id
+}
+
 data "aws_iam_policy_document" "kms_secrets_key" {
   #cannot reference secret in resources for statement as this causes cyclic error
   #checkov:skip=CKV_AWS_108: Cannot set resource as not known at time document is created, causing a cyclic error
