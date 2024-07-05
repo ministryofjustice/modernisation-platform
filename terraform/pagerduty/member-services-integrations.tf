@@ -2465,7 +2465,7 @@ resource "pagerduty_service" "cdpt-ifs" {
 
 resource "pagerduty_service_integration" "cdpt_ifs_cloudwatch" {
   name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.my_application.id
+  service = pagerduty_service.cdpt-ifs.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
