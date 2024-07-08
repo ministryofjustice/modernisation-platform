@@ -32,7 +32,7 @@ The data is shared using AWS Data Firehose for the following categories of data:
 
 One exception is Cloudtrail log data in S3 held in the core-logging account. This is accessed by a Cortex Xsiam plugin for S3 using SQS that has events published via an Event Notification resource. The plugin uses an IAM user account to access the core-logging account.
 
-## Terraform Sourece
+## Terraform Source
 
 The terraform for these Data Firehose & associated resources can be found here:
 
