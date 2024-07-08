@@ -3,7 +3,7 @@
 
 ## Introduction
 
-The Modernisation Platform shares data from a number of sources with the Security Operations team for purpose of the protective monitoring of the platform and the applications hosted on it.
+The Modernisation Platform shares data from a number of sources with the Security Operations team's Coretext Xsiam platform for purpose of the protective monitoring of the platform and the applications hosted on it.
 
 ## Categories of data shared with Security Operations
 
@@ -15,8 +15,7 @@ The data is shared using AWS Data Firehose for the following categories of data:
 - VPC flow log data for the three network firewall vpcs.
 - VPC flow log data for core-shared-services, core-logging and core-security.
 
-
-One exception is Cloudtrail log data in S3 held in the core-logging account. This is accessed by the SecOps team using SQS that has events published via an Event Notification resource. The SQS is accessed directly via an IAM user account.
+One exception is Cloudtrail log data in S3 held in the core-logging account. This is accessed by a Cortex Xsiam plugin for S3 using SQS that has events published via an Event Notification resource. The plugin uses an IAM user account to access the core-logging account.
 
 ## Terraform Sourece
 
@@ -45,3 +44,9 @@ Each Data Firehose resource has an endpoint & key that is obtained from a common
 ## Known Maintenance Requirements
 
 - The user access key for the IAM account needs to be rotated every 6 months and the new value shared with the SecOps team. See the runbook page for [Rotating Secrets](rotating-secrets.html.md.erb) for further information.
+
+## Known Contacts:
+
+- Leonardo Marini - Leonardo.Marini@justice.gov.uk. Contractor who implements the Coretext Xsiam endpoints that receive the Firehose transfers. (https://www.paloaltonetworks.com/cortex/cortex-xsiam)
+
+- The Protective Monitoring Team who will be managing the Cortex Xsiam platform going forward - monitoring-and-integration-platform@justice.gov.uk
