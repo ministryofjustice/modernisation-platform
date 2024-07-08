@@ -18,7 +18,7 @@ review_in: 6 months
 
 ## Introduction
 
-The Modernisation Platform shares data from a number of sources with the Security Operations team's Coretext Xsiam platform for purpose of the protective monitoring of the platform and the applications hosted on it.
+The Modernisation Platform shares data from a number of sources with the Security Operations team's Cortex Xsiam platform for purpose of the protective monitoring of the platform and the applications hosted on it.
 
 ## Categories of data shared with Security Operations
 
@@ -62,6 +62,6 @@ Each Data Firehose resource has an endpoint & key that is obtained from a common
 
 ## Known Contacts:
 
-- Leonardo Marini - Leonardo.Marini@justice.gov.uk. Contractor who implements the Coretext Xsiam endpoints that receive the Firehose transfers. (https://www.paloaltonetworks.com/cortex/cortex-xsiam)
+- Leonardo Marini - Leonardo.Marini@justice.gov.uk. Contractor who implements the Cortex Xsiam endpoints that receive the Firehose transfers. (https://www.paloaltonetworks.com/cortex/cortex-xsiam)
 
 - The Protective Monitoring Team who will be managing the Cortex Xsiam platform going forward - monitoring-and-integration-platform@justice.gov.uk
