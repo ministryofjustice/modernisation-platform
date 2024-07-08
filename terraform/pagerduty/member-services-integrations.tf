@@ -2470,10 +2470,10 @@ resource "pagerduty_service_integration" "cdpt_ifs_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "ifs_slack" {
-  source_id = pagerduty_service.cdpt-ifs.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "CQ02MKXQU"  
+  source_id         = pagerduty_service.cdpt-ifs.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "CQ02MKXQU"
   notification_type = "responder"
   config {
     events = [
