@@ -14,8 +14,8 @@ data "aws_sns_topic" "existing_topic" {
 }
 
 data "aws_sns_topic" "backup_vault_failure_topic" {
-   count = (local.is_production && data.aws_region.current.name == "eu-west-2") ? 1 : 0
-   name  = "backup_vault_failure_topic"
+  count = (local.is_production && data.aws_region.current.name == "eu-west-2") ? 1 : 0
+  name  = "backup_vault_failure_topic"
 
 }
 
@@ -32,7 +32,7 @@ module "pagerduty_core_alerts" {
 
 # Cloudwatch metric alarm required for errors
 resource "aws_cloudwatch_metric_alarm" "aws_backup_has_errors" {
-  count = (local.is_production && data.aws_region.current.name == "eu-west-2") ? 1 : 0
+  count             = (local.is_production && data.aws_region.current.name == "eu-west-2") ? 1 : 0
   alarm_name        = "aws-backup-failed"
   alarm_description = "AWS Backup, everything has failed. Please check logs"
   alarm_actions     = [data.aws_sns_topic.existing_topic[0].arn]
@@ -56,7 +56,7 @@ data "aws_cloudwatch_log_group" "cloudtrail" {
   name = "cloudtrail"
 }
 resource "aws_cloudwatch_log_metric_filter" "backup_vault_lock_changes" {
-    count        = (local.is_production && data.aws_region.current.name == "eu-west-2") ? 1 : 0
+  count          = (local.is_production && data.aws_region.current.name == "eu-west-2") ? 1 : 0
   name           = "BackupVaultLockChanges"
   pattern        = "{($.eventSource = \"backup.amazonaws.com\") && (($.eventName = \"PutBackupVaultLockConfiguration\") || ($.eventName = \"DeleteBackupVaultLockConfiguration\") || ($.eventName = \"ChangeBackupVaultLockConfiguration\") || ($.eventName = \"PutBackupVaultAccessPolicy\"))}"
   log_group_name = data.aws_cloudwatch_log_group.cloudtrail.name

@@ -31,7 +31,7 @@ resource "aws_kms_replica_key" "secrets_key_multi_region_replica" {
   description             = "AWS Secretsmanager CMK replica key"
   deletion_window_in_days = 30
   primary_key_arn         = aws_kms_key.secrets_key_multi_region.arn
-  provider = aws.modernisation-platform-eu-west-1
+  provider                = aws.modernisation-platform-eu-west-1
 }
 
 resource "aws_kms_alias" "secrets_key_multi_region_replica" {
