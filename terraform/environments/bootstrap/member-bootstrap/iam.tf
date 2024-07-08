@@ -469,6 +469,7 @@ data "aws_iam_policy_document" "policy" {
       "kinesis:PutRecord",
       "kms:DescribeKey",
       "kms:Decrypt",
+      "kms:Encrypt",
       "kms:GenerateDataKey",
       "kms:CreateGrant",
       "logs:CreateLogGroup",
