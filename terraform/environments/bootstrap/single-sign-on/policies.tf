@@ -787,16 +787,9 @@ data "aws_iam_policy_document" "instance-management-document" {
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   statement {
-    sid    = "databaseAllow"
-    effect = "Allow"
+    sid    = "ABACEc2Deny"
+    effect = "Deny"
     actions = [
-      "application-autoscaling:ListTagsForResource",
-      "autoscaling:UpdateAutoScalingGroup",
-      "autoscaling:SetDesiredCapacity",
-      "aws-marketplace:ViewSubscriptions",
-      "ds:*Tags*",
-      "ds:*Snapshot*",
-      "ds:ResetUserPassword",
       "ec2:StartInstances",
       "ec2:StopInstances",
       "ec2:RebootInstances",
@@ -815,18 +808,11 @@ data "aws_iam_policy_document" "instance-management-document" {
       "ecs:ListServices",
       "ecs:DescribeServices",
       "ecs:UpdateService",
-      "identitystore:DescribeUser",
       "kms:Decrypt*",
       "kms:Encrypt",
       "kms:ReEncrypt*",
       "kms:GenerateDataKey*",
       "kms:DescribeKey",
-      "rds:CopyDBSnapshot",
-      "rds:CopyDBClusterSnapshot",
-      "rds:CreateDBSnapshot",
-      "rds:CreateDBClusterSnapshot",
-      "rds:RebootDB*",
-      "rhelkb:GetRhelURL",
       "s3:List*",
       "s3:Get*",
       "s3:PutObject",
@@ -834,30 +820,35 @@ data "aws_iam_policy_document" "instance-management-document" {
       "secretsmanager:ListSecret*",
       "secretsmanager:GetSecretValue",
       "ssm:*",
-      "ssm-guiconnect:*",
-      "sso:ListDirectoryAssociations",
-      "support:*"
+      "ssm-guiconnect:*"
     ]
     condition {
-      test = "StringLike"
-      variable = "ec2:ResourceTag/owner"
+      test = "ForAnyValue:StringNotLike"
+      variable = "aws:PrincipalTag/Owner"
       
       values = [
-        "$${aws:PrincipalTag/github_team}"
+         "*:${aws:ResourceTag/github_team}:*",
+          "${aws:ResourceTag/github_team}:*",
+          "*:${aws:ResourceTag/github_team}"
         ]
       }
+      condition {
+      test = Null
+      variable = "aws:PrincipalTag/Owner" 
+      values = [
+            "aws:ResourceTag/github_team": "false"
+      ]
+      }  
     condition {
       test = "StringEquals"
       variable = "aws:PrincipalAccount"
 
       values = [
-        local.environment_management.account_ids["core-shared-services-production"],
-        local.environment_management.account_ids["sprinkler-development"],
-        local.environment_management.account_ids["cooker-development"]
+        local.environment_management.account_ids["core-shared-services-production"]
       ]
     }
     
-    resources = ["*"]
+    resources = ["arn:aws:ec2:eu-west-2:*:instance/i-*"]
     
   }
   statement {
@@ -912,14 +903,6 @@ data "aws_iam_policy_document" "instance-management-document" {
       "sso:ListDirectoryAssociations",
       "support:*"
     ]
-    condition {
-      test = "Null"
-      variable = "ec2:ResourceTag/owner"
-      
-      values = [
-        "True"
-        ]
-      }
     
     resources = ["*"]
     
