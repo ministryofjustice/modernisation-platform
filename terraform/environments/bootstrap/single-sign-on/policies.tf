@@ -832,8 +832,8 @@ data "aws_iam_policy_document" "instance-management-document" {
           "*:$${aws:ResourceTag/github_team}"
         ]
       }
-      condition {
-      test = Null
+    condition {
+      test = "Null"
       variable = "aws:ResourceTag/github_team" 
       values = [
             "False"
