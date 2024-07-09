@@ -1,0 +1,67 @@
+---
+owner_slack: "#modernisation-platform"
+title: Sharing of Platform Operational Data with Security Operations via AWS Data Firehose
+last_reviewed_on: 2024-06-13
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+## Introduction
+
+The Modernisation Platform shares data from a number of sources with the Security Operations team's Cortex Xsiam platform for purpose of the protective monitoring of the platform and the applications hosted on it.
+
+## Categories of data shared with Security Operations
+
+The data is shared using AWS Data Firehose for the following categories of data:
+
+- Managed member account VPC Flow Log Data via cloudwatch logs. 
+- Route53 resolver logs for managed member accounts.
+- Network firewall inspection log data for live, non-live and external.
+- VPC flow log data for the three network firewall vpcs.
+- VPC flow log data for core-shared-services, core-logging and core-security.
+
+One exception is Cloudtrail log data in S3 held in the core-logging account. This is accessed by a Cortex Xsiam plugin for S3 using SQS that has events published via an Event Notification resource. The plugin uses an IAM user account to access the core-logging account.
+
+## Terraform Source
+
+The terraform for these Data Firehose & associated resources can be found here:
+
+- Managed member account VPC flow log data - https://github.com/ministryofjustice/modernisation-platform/blob/b629292a791bd8ce99b6bff6e0ddd888953cb76a/terraform/environments/core-vpc/vpc.tf#L85
+
+- Route53 resolver logs for managed member accounts - https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-vpc/firehose.tf
+
+- Network firewall inspection log data - https://github.com/ministryofjustice/modernisation-platform/blob/b629292a791bd8ce99b6bff6e0ddd888953cb76a/terraform/environments/core-network-services/firehose.tf#L17
+
+- VPC flow log data for network firewalls - https://github.com/ministryofjustice/modernisation-platform/blob/b629292a791bd8ce99b6bff6e0ddd888953cb76a/terraform/environments/core-network-services/firehose.tf#L30
+
+- VPC flow log data for shared accounts:
+
+        - https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/firehose.tf
+
+        - https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-security/firehose.tf
+
+        - https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-shared-services/firehose.tf
+
+- Cloudtrail log data - https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/sqs.tf
+
+Each Data Firehose resource has an endpoint & key that is obtained from a common AWS Secrets Manager resource held in the Modernisation Platform account called "xsiam_secrets" for vpc flow logs, firewall logs and r53 resolver logs. 
+
+## Known Maintenance Requirements
+
+- The user access key for the IAM account needs to be rotated every 6 months and the new value shared with the SecOps team. See the runbook page for [Rotating Secrets](rotating-secrets.html.md.erb) for further information.
+
+## Known Contacts:
+
+- Leonardo Marini - Leonardo.Marini@justice.gov.uk. Contractor who implements the Cortex Xsiam endpoints that receive the Firehose transfers. (https://www.paloaltonetworks.com/cortex/cortex-xsiam)
+
+- The Protective Monitoring Team who will be managing the Cortex Xsiam platform going forward - monitoring-and-integration-platform@justice.gov.uk
