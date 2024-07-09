@@ -834,9 +834,9 @@ data "aws_iam_policy_document" "instance-management-document" {
       }
       condition {
       test = Null
-      variable = "aws:PrincipalTag/Owner" 
+      variable = "aws:ResourceTag/github_team" 
       values = [
-            "aws:ResourceTag/github_team": "false"
+            "False"
       ]
       }  
     condition {
