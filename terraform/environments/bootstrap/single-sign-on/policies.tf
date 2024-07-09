@@ -827,9 +827,9 @@ data "aws_iam_policy_document" "instance-management-document" {
       variable = "aws:PrincipalTag/Owner"
       
       values = [
-         "*:${aws:ResourceTag/github_team}:*",
-          "${aws:ResourceTag/github_team}:*",
-          "*:${aws:ResourceTag/github_team}"
+         "*:$${aws:ResourceTag/github_team}:*",
+          "$${aws:ResourceTag/github_team}:*",
+          "*:$${aws:ResourceTag/github_team}"
         ]
       }
       condition {
