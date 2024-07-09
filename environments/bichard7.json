@@ -68,8 +68,8 @@
   "tags": {
     "application": "bichard7",
     "business-unit": "CJSE",
-    "infrastructure-support": "cjse@madetech.com",
-    "owner": "cjse@madetech.com"
+    "infrastructure-support": "moj-bichard7@madetech.com",
+    "owner": "moj-bichard7@madetech.com"
   },
   "github-oidc-team-repositories": [""]
 }
