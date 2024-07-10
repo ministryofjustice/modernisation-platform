@@ -29,6 +29,7 @@ We maintain a template of the `environments-networks/*.json` files [here](https:
 ## The `cidr` key
 
 The `cidr` key defines values used in the creation of networking resources:
+
 * `transit_gateway` has been deprecated as of [this pull request](https://github.com/ministryofjustice/modernisation-platform/pull/1345).
 * `protected` has likewise been deprecated as of [this pull request](https://github.com/ministryofjustice/modernisation-platform/pull/1345).
 * `subnet_sets` key contains its own nested keys to define additional networking values.
@@ -39,6 +40,7 @@ The `cidr` key defines values used in the creation of networking resources:
 ## The `options` key
 
 The `options` key defines values used in the creation of supplementary configuration items:
+
 * `bastion_linux` is a boolean which determines if a business-unit bastion instance should be created
 * `additional_cidrs` is used by the [vpc-nacls](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/vpc-nacls) module to allow access from external CIDRs such as PSN address ranges.
 * `aditional_endpoints` is used by the ["vpc"](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-vpc/vpc.tf#L85) module in `terraform/environments/core-vpc` to supply VPC endpoint names.
