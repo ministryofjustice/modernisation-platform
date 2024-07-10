@@ -35,8 +35,7 @@
           "nuke": "rebuild"
         }
       ],
-      "additional_reviewers": ["astrobinson"],
-      "github-oidc-team-repositories": ["modernisation-platform-environments"]
+      "additional_reviewers": ["astrobinson"]
     }
   ],
   "tags": {
