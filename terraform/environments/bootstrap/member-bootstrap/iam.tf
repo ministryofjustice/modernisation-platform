@@ -363,7 +363,12 @@ resource "aws_iam_policy" "member-access-us-east" {
 module "github_oidc_role" {
   count               = length(compact(jsondecode(data.http.environments_file.response_body).github-oidc-team-repositories)) > 0 ? 1 : 0
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=c3bde7c787038ff5536bfb1b73781072edbb74da" # v3.0.0
-  github_repositories = distinct(concat(jsondecode(data.http.environments_file.response_body).github-oidc-team-repositories[local.application_environment], jsondecode(data.http.environments_file.response_body).github-oidc-team-repositories["all"]))
+  # github_repositories = distinct(concat(jsondecode(data.http.environments_file.response_body).github-oidc-team-repositories[local.application_environment], jsondecode(data.http.environments_file.response_body).github-oidc-team-repositories["all"]))
+  github_repositories = [
+    for environment in jsondecode(data.http.environments_file.response_body).environments :
+    environment.github-oidc-team-repositories
+    if environment.name == local.application_environment
+  ]
   role_name           = "modernisation-platform-oidc-cicd"
   policy_jsons        = [data.aws_iam_policy_document.policy.json]
   tags                = local.tags
