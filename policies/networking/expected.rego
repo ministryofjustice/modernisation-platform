@@ -229,6 +229,7 @@ expected :=
           "ccms-ebs-development",
           "ccms-ebs-upgrade-development",
           "contract-work-administration-development",
+          "corporate-information-system-development",
           "edw-development",
           "laa-ccms-infra-azure-ad-sso",
           "laa-oem-development",
@@ -275,6 +276,7 @@ expected :=
         "accounts": [
           "apex-test",
           "contract-work-administration-test",
+          "corporate-information-system-test",
           "edw-test",
           "eric-test",
           "mlra-test",
@@ -331,6 +333,7 @@ expected :=
         "accounts": [
           "apex-production",
           "contract-work-administration-production",
+          "corporate-information-system-production",
           "edw-production",
           "eric-production",
           "mlra-production",
@@ -349,6 +352,7 @@ expected :=
         "accounts": [
           "apex-preproduction",
           "contract-work-administration-preproduction",
+          "corporate-information-system-preproduction",
           "edw-preproduction",
           "mlra-preproduction",
           "ccms-ebs-preproduction",
