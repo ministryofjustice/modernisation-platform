@@ -4,7 +4,7 @@ locals {
   environments = jsondecode(data.http.environments_file.response_body).environments
   github_repositories = [
     for environment in local.environments :
-    environment.github-oidc-team-repositories
+    lookup(environment, "github-oidc-team-repositories", [])
     if environment.name == local.application_environment
   ]
 }
