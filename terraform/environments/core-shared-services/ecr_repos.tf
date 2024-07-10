@@ -1230,12 +1230,11 @@ module "create_a_data_task_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-data-engineering-sandbox-a"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
     local.environment_management.account_ids["electronic-monitoring-data-development"],
-    local.environment_management.account_ids["analytical-platform-data-engineering-sandbox-"]
+    local.environment_management.account_ids["analytical-platform-data-engineering-sandboxa"]
   ]
 
   # Tags
