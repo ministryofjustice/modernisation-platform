@@ -6,7 +6,13 @@
   "environments": [
     {
       "name": "development",
-      "github-oidc-team-repositories": ["ministryofjustice/hmpps-delius-operational-automation"],
+      "github-oidc-team-repositories": [
+        "ministryofjustice/hmpps-delius-operational-automation",
+        "ministryofjustice/hmpps-openldap-container",
+        "ministryofjustice/hmpps-pwm",
+        "ministryofjustice/ndelius-um",
+        "ministryofjustice/hmpps-delius-docker-images"
+      ],
       "access": [
         {
           "github_slug": "hmpps-migration",
@@ -29,6 +35,10 @@
     },
     {
       "name": "test",
+      "github-oidc-team-repositories": [
+        "ministryofjustice/hmpps-delius-operational-automation",
+        "ministryofjustice/hmpps-openldap-container"
+      ],
       "access": [
         {
           "github_slug": "hmpps-migration",
@@ -47,6 +57,10 @@
     },
     {
       "name": "preproduction",
+      "github-oidc-team-repositories": [
+        "ministryofjustice/hmpps-delius-operational-automation",
+        "ministryofjustice/hmpps-openldap-container"
+      ],
       "access": [
         {
           "github_slug": "hmpps-migration",
@@ -65,6 +79,10 @@
     },
     {
       "name": "production",
+      "github-oidc-team-repositories": [
+        "ministryofjustice/hmpps-delius-operational-automation",
+        "ministryofjustice/hmpps-openldap-container"
+      ],
       "access": [
         {
           "github_slug": "hmpps-migration",
@@ -87,12 +105,5 @@
     "business-unit": "HMPPS",
     "infrastructure-support": "probation-webops@digital.justice.gov.uk",
     "owner": "probation-webops@digital.justice.gov.uk"
-  },
-  "github-oidc-team-repositories": [
-      "ministryofjustice/hmpps-delius-operational-automation",
-      "ministryofjustice/hmpps-openldap-container",
-      "ministryofjustice/hmpps-delius-docker-images",
-      "ministryofjustice/hmpps-pwm",
-      "ministryofjustice/ndelius-um"
-    ]
+  }
 }
