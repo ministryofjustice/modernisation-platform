@@ -35,6 +35,7 @@ This is our architecture decision log, made during the design and build of the M
 1. ♻ [How we deploy shared Active Directory controllers](0029-how-we-deploy-shared-active-directory-controllers.md)
 1. ✅ [Cross environment network access](0030-cross-environment-network-access.md)
 1. ✅ [LLMs will be hosted on the Analytical Platform](0031-llms-will-be-hosted-on-the-analytical-platform.md)
+1. 🤔 [NCSC PDNS will not be applied at platform level](0032-ncsc-pdns-not-at-platform-level.md)
 
 
 ## Statuses
