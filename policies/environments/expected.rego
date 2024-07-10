@@ -29,6 +29,7 @@ expected :=
     "core-security",
     "core-shared-services",
     "core-vpc",
+    "corporate-information-system",
     "corporate-staff-rostering",
     "dacp",
     "data-and-insights-wepi",
