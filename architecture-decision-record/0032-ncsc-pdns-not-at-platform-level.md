@@ -45,7 +45,7 @@ We investigated this as part of issue [#6121](https://github.com/ministryofjusti
 
 ## Decision
 
-Implementing PDNS is not appropriate at a platform level; from our investigation the solution is geared towards a whole-of-the-organisation approach, but the way that agencies are federated into the MoJ as a whole makes this unsuitable for us.
+Implementing PDNS is not appropriate at a platform level; from our investigation the solution is geared towards an organisation-wide approach, but the way that agencies are federated into the MoJ as a whole makes this unsuitable for us.
 Implementing AWS Route53 Resolver DNS Firewall offers a comparable level of protection that can be applied at a platform level.
 
 ## Consequences
