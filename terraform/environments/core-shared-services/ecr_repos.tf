@@ -1220,3 +1220,24 @@ module "electronic_monitoring_data_lambdas_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
+
+
+# Repo for generic data load and build tool image
+module "create_a_data_task_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "create-a-data-task"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-data-engineering-sandboxa"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["electronic-monitoring-data-development"],
+    local.environment_management.account_ids["analytical-platform-data-engineering-sandboxa"]
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
