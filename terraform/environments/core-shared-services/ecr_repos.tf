@@ -1235,7 +1235,7 @@ module "create_a_data_task_ecr_repo" {
 
   pull_principals = [
     local.environment_management.account_ids["electronic-monitoring-data-development"],
-    local.environment_management.account_ids["analytical-platform-data-engineering-sandboxa"]
+    local.environment_management.account_ids["analytical-platform-data-engineering-sandbox-a"]
   ]
 
   # Tags
