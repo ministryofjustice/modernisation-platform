@@ -1223,10 +1223,10 @@ module "electronic_monitoring_data_lambdas_ecr_repo" {
 
 
 # Repo for generic data load and build tool image
-module "data_engineering_generic_images_ecr_repo" {
+module "create_a_data_task_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
-  app_name = "data-engineering-generic-images"
+  app_name = "create-a-data-task"
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/modernisation-platform-oidc-cicd",
