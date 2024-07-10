@@ -179,7 +179,7 @@ EOL
 
 }
 
-testingsh() {
+testsh() {
   # Extract code owners from JSON file
 codeowners=$(jq -r 'try (.codeowners[] | "@ministryofjustice/" + .)' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
 
