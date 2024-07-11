@@ -45,8 +45,18 @@ jobs:
         run: |
           files=$(git diff --name-only --diff-filter=M @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | base64 )
           echo "files=$files" >> $GITHUB_OUTPUT
-      - name: Decode files
-        id: decode_files
+      - name: send notification
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
         run: |
           DECODED_FILES=$(echo ${{ steps.environment_json_changes.outputs.files }} | base64 --decode)
-          echo $DECODED_FILES
+          for file in $DECODED_FILES; do
+          PAYLOAD=$(cat <<EOF
+          {
+            "text": "The JSON file ${file}.json has been changed."
+          }
+          EOF
+          )
+          curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$SLACK_WEBHOOK_URL"
+          done
