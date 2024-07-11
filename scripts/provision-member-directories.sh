@@ -185,5 +185,33 @@ EOL
 
 }
 
+testingsh() {
+  # Extract code owners from JSON file
+codeowners=$(jq -r 'try (.codeowners[] | "@ministryofjustice/" + .)' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
+
+# Read the CODEOWNERS file, filter out comments and empty lines
+codeowners_entries=$(grep -v -e '^#' -e '^$' ${codeowners_file})
+
+# Find entries with missing or blank owners
+missing_codeowners=$(echo "${codeowners_entries}" | awk '$2 == "" {print $1}')
+
+# Output missing codeowners
+if [ -n "${missing_codeowners}" ]; then
+  echo "Entries with missing or blank code owners:"
+  echo "${missing_codeowners}"
+else
+  echo "No entries with missing or blank code owners found."
+fi
+
+# Optionally, you can also check for owners not listed in the JSON
+for entry in ${codeowners_entries}; do
+  path=$(echo ${entry} | awk '{print $1}')
+  owner=$(echo ${entry} | awk '{print $2}')
+  if ! [[ "${codeowners}" =~ "${owner}" ]]; then
+    echo "Owner ${owner} for path ${path} is not listed in the JSON."
+  fi
+done
+}
+
 provision_environment_directories
 generate_codeowners
