@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bashenvironments-networks/*.json
 
 # To test the script locally, uncomment the following two lines
 # core_repo_dir=.
@@ -145,6 +145,7 @@ echo "Writing codeowners file"
 * @ministryofjustice/modernisation-platform
 EOL
 
+
   for file in $environment_json_dir/*.json; do
     application_name=$(basename "$file" .json)
     directory=/terraform/environments/$application_name
@@ -152,9 +153,15 @@ EOL
     codeowners=$(jq -r 'try (.codeowners[] | "@ministryofjustice/" + .)' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
     github_slugs=$(jq -r '.environments[].access[].github_slug | "@ministryofjustice/" + .' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
 
+    # Read the CODEOWNERS file, filter out comments and empty lines
+    codeowners_entries=$(grep -v -e '^#' -e '^$' ${codeowners_file})
+
+    # Find entries with missing or blank owners
+    missing_codeowners=$(echo "${codeowners_entries}" | awk '$2 == "" {print $1}')
+
     if [ "$account_type" = "member" ]; then
       # if codeowners array has been defined in the json file, use that
-      if [ -n "$codeowners" ]; then
+      if [ -n "$codeowners" ] && ["$missing_codeowners" -ne 0 ]; then
         echo "Adding $directory $codeowners@ministryofjustice/modernisation-platform  to codeowners"
         echo "$directory $codeowners@ministryofjustice/modernisation-platform" >> $codeowners_file
       # otherwise, use the github_slugs array
@@ -163,7 +170,6 @@ EOL
         echo "$directory $github_slugs@ministryofjustice/modernisation-platform" >> $codeowners_file
       fi
     fi
-
   done
 
   cat >> $codeowners_file << EOL
@@ -177,34 +183,6 @@ EOL
 .devcontainer @ministryofjustice/devcontainer-community
 EOL
 
-}
-
-testingsh() {
-  # Extract code owners from JSON file
-codeowners=$(jq -r 'try (.codeowners[] | "@ministryofjustice/" + .)' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
-
-# Read the CODEOWNERS file, filter out comments and empty lines
-codeowners_entries=$(grep -v -e '^#' -e '^$' ${codeowners_file})
-
-# Find entries with missing or blank owners
-missing_codeowners=$(echo "${codeowners_entries}" | awk '$2 == "" {print $1}')
-
-# Output missing codeowners
-if [ -n "${missing_codeowners}" ]; then
-  echo "Entries with missing or blank code owners:"
-  echo "${missing_codeowners}"
-else
-  echo "No entries with missing or blank code owners found."
-fi
-
-# Optionally, you can also check for owners not listed in the JSON
-for entry in ${codeowners_entries}; do
-  path=$(echo ${entry} | awk '{print $1}')
-  owner=$(echo ${entry} | awk '{print $2}')
-  if ! [[ "${codeowners}" =~ "${owner}" ]]; then
-    echo "Owner ${owner} for path ${path} is not listed in the JSON."
-  fi
-done
 }
 
 provision_environment_directories
