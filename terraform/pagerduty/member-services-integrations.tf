@@ -2497,3 +2497,49 @@ resource "pagerduty_slack_connection" "ifs_slack" {
     priorities = ["*"]
   }
 }
+
+# Slack channel: #cdpt-chaps
+
+resource "pagerduty_service" "cdpt-chaps" {
+  name                    = "CHAPS loadbalancer alarm"
+  description             = "CHAPS loadbalancer 5xx alarm"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "cdpt_chaps_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.cdpt-chaps.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "chaps_slack" {
+  source_id = pagerduty_service.cdpt-chaps.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  channel_id = "CQQDV9N4R"  
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
