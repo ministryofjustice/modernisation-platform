@@ -1,4 +1,4 @@
-#!/bin/bashenvironments-networks/*.json
+#!/bin/bash
 
 # To test the script locally, uncomment the following two lines
 # core_repo_dir=.
