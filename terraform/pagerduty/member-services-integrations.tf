@@ -2516,10 +2516,10 @@ resource "pagerduty_service_integration" "cdpt_chaps_cloudwatch" {
 }
 
 resource "pagerduty_slack_connection" "chaps_slack" {
-  source_id = pagerduty_service.cdpt-chaps.id
-  source_type = "service_reference"
-  workspace_id = local.slack_workspace_id
-  channel_id = "CQQDV9N4R"  
+  source_id         = pagerduty_service.cdpt-chaps.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "CQQDV9N4R"
   notification_type = "responder"
   config {
     events = [
