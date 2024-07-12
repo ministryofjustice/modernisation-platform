@@ -280,6 +280,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "kinesisanalytics:List*",
       "kinesisanalytics:Describe*",
       "kinesisanalytics:DiscoverInputSchema",
+      "glue:GetConnections"
     ]
     resources = ["*"]
   }
@@ -1008,6 +1009,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "glue:GetJobRuns",
       "glue:StartTrigger",
       "glue:StopTrigger",
+      "glue:GetConnections",
       "logs:DescribeLogStreams",
       "logs:GetLogEvents",
       "dynamodb:BatchGet*",
