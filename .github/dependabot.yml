@@ -132,6 +132,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/corporate-information-system"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/corporate-staff-rostering"
     schedule:
       interval: "daily"
