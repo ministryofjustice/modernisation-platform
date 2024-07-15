@@ -83,6 +83,17 @@ resource "aws_secretsmanager_secret" "slack_webhook_url" {
   }
 }
 
+resource "aws_secretsmanager_secret" "slack_webhook_url_modernisation_platform_update" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "slack_webhook_url_modernisation_platform_update"
+  description = "Slack channel modernisation-platform-update webhook url for sending notifications to slack"
+  kms_key_id  = aws_kms_key.secrets_key.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}
+
 # Github CI user PAT
 # Not adding a secret version as this url is generated in Github cannot be added programatically
 # Secret should be manually set in the console.
@@ -200,4 +211,14 @@ resource "aws_secretsmanager_secret" "xsiam_secrets" {
   }
 }
 
+resource "aws_secretsmanager_secret" "gov_uk_notify_api_key" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "gov_uk_notify_api_key"
+  description = "API key for accessing the GOV.UK Notify service for sending email notifications"
+  kms_key_id  = aws_kms_key.secrets_key.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}
 
