@@ -789,6 +789,39 @@ data "aws_iam_policy_document" "instance-management-document" {
   statement {
     sid    = "ABACEc2Deny"
     effect = "Deny"
+    actions = [
+      "ec2:StartInstances",
+      "ec2:StopInstances",
+      "ec2:RebootInstances",
+      "ec2:ModifyImageAttribute",
+      "ec2:ModifyInstanceAttribute",
+      "ec2:ModifySnapshotAttribute",
+      "ec2:CopyImage",
+      "ec2:CreateImage",
+      "ec2:CopySnapshot",
+      "ec2:CreateSnapshot",
+      "ec2:CreateSnapshots",
+      "ec2:CreateTags",
+      "ec2:DescribeVolumes",
+      "ec2:DescribeInstances",
+      "ec2:DescribeInstanceTypes",
+      "ecs:ListServices",
+      "ecs:DescribeServices",
+      "ecs:UpdateService",
+      "kms:Decrypt*",
+      "kms:Encrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey",
+      "s3:List*",
+      "s3:Get*",
+      "s3:PutObject",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:ListSecret*",
+      "secretsmanager:GetSecretValue",
+      "ssm:*",
+      "ssm-guiconnect:*"
+    ]
     resources = ["*"]
     condition {
       test = "ForAnyValue:StringNotLike"
