@@ -804,7 +804,43 @@ data "aws_iam_policy_document" "instance-management-document" {
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   statement {
-    sid    = "databaseAllow"
+    sid    = "ABACEc2Deny"
+    effect = "Deny"
+    actions = [
+      "*"
+    ]
+    resources = ["*"]
+    condition {
+      test = "ForAnyValue:StringNotLike"
+      variable = "aws:PrincipalTag/Owner"
+      
+      values = [
+         "*:$${aws:ResourceTag/github_team}:*",
+          "$${aws:ResourceTag/github_team}:*",
+          "*:$${aws:ResourceTag/github_team}"
+        ]
+      }
+    condition {
+      test = "Null"
+      variable = "aws:ResourceTag/github_team" 
+      values = [
+            "False"
+      ]
+      }  
+    condition {
+      test = "StringEquals"
+      variable = "aws:PrincipalAccount"
+
+      values = [
+        local.environment_management.account_ids["core-shared-services-production"]
+      ]
+    }
+    
+    
+    
+  }
+  statement {
+    sid    = "databaseAllowNull"
     effect = "Allow"
     actions = [
       "application-autoscaling:ListTagsForResource",
@@ -858,9 +894,10 @@ data "aws_iam_policy_document" "instance-management-document" {
       "sso:ListDirectoryAssociations",
       "support:*"
     ]
+    
     resources = ["*"]
+    
   }
-
   statement {
     sid    = "SecretsManagerPut"
     effect = "Allow"
