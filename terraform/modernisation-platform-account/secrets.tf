@@ -211,4 +211,14 @@ resource "aws_secretsmanager_secret" "xsiam_secrets" {
   }
 }
 
+resource "aws_secretsmanager_secret" "gov_uk_notify_api_key" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "gov_uk_notify_api_key"
+  description = "API key for accessing the GOV.UK Notify service for sending email notifications"
+  kms_key_id  = aws_kms_key.secrets_key.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}
 
