@@ -376,4 +376,5 @@ module "modernisation-platform-terraform-aws-chatbot" {
     "chatbot",
     "slack"
   ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
