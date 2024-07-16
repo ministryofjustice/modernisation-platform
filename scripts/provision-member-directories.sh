@@ -155,7 +155,7 @@ EOL
 
     if [ "$account_type" = "member" ]; then
       # if codeowners array has been defined in the json file, use that
-      if [ -n "$codeowners" ] && ["$missing_codeowners" -ne 0 ]; then
+      if [ -n "$codeowners" ]; then
         echo "Adding $directory $codeowners@ministryofjustice/modernisation-platform  to codeowners"
         echo "$directory $codeowners@ministryofjustice/modernisation-platform" >> $codeowners_file
       # otherwise, use the github_slugs array
