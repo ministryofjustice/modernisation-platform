@@ -811,33 +811,33 @@ data "aws_iam_policy_document" "instance-management-document" {
     ]
     resources = ["*"]
     condition {
-      test = "ForAnyValue:StringNotLike"
+      test     = "ForAnyValue:StringNotLike"
       variable = "aws:PrincipalTag/Owner"
-      
+
       values = [
-         "*:$${aws:ResourceTag/github_team}:*",
-          "$${aws:ResourceTag/github_team}:*",
-          "*:$${aws:ResourceTag/github_team}"
-        ]
-      }
-    condition {
-      test = "Null"
-      variable = "aws:ResourceTag/github_team" 
-      values = [
-            "False"
+        "*:$${aws:ResourceTag/github_team}:*",
+        "$${aws:ResourceTag/github_team}:*",
+        "*:$${aws:ResourceTag/github_team}"
       ]
-      }  
+    }
     condition {
-      test = "StringEquals"
+      test     = "Null"
+      variable = "aws:ResourceTag/github_team"
+      values = [
+        "False"
+      ]
+    }
+    condition {
+      test     = "StringEquals"
       variable = "aws:PrincipalAccount"
 
       values = [
         local.environment_management.account_ids["core-shared-services-production"]
       ]
     }
-    
-    
-    
+
+
+
   }
   statement {
     sid    = "databaseAllowNull"
@@ -894,9 +894,9 @@ data "aws_iam_policy_document" "instance-management-document" {
       "sso:ListDirectoryAssociations",
       "support:*"
     ]
-    
+
     resources = ["*"]
-    
+
   }
   statement {
     sid    = "SecretsManagerPut"
