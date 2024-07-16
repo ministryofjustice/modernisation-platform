@@ -401,6 +401,7 @@ jobs:
           SLACK_WEBHOOK_URL_MODERNISATION_PLATFORM_UPDATE: ${{ secrets.SLACK_WEBHOOK_URL_MODERNISATION_PLATFORM_UPDATE }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
       - name: Send notification to Email
+        if: steps.environment_json_changes.outputs.files != ''
         run: |
           DECODED_FILES=$(echo ${{ steps.environment_json_changes.outputs.files }} | base64 --decode)
           python ./scripts/json-changes-notifier.py $DECODED_FILES
