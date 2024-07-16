@@ -185,6 +185,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "acm:AddTagsToCertificate",
       "acm:RemoveTagsFromCertificate",
       "application-autoscaling:ListTagsForResource",
+      "autoscaling:StartInstanceRefresh",
       "autoscaling:UpdateAutoScalingGroup",
       "autoscaling:SetDesiredCapacity",
       "athena:Get*",
@@ -215,6 +216,9 @@ data "aws_iam_policy_document" "developer_additional" {
       "ec2:DescribeVolumes",
       "ec2:DescribeInstances",
       "ec2:DescribeInstanceTypes",
+      "ec2:ImportImage",
+      "ec2:ImportSnapshot",
+      "ec2:RegisterImage",
       "ec2:ModifyInstanceAttribute",
       "ec2-instance-connect:SendSerialConsoleSSHPublicKey",
       "ecr:BatchDeleteImage",
@@ -276,6 +280,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "kinesisanalytics:List*",
       "kinesisanalytics:Describe*",
       "kinesisanalytics:DiscoverInputSchema",
+      "glue:GetConnections"
     ]
     resources = ["*"]
   }
@@ -324,6 +329,15 @@ data "aws_iam_policy_document" "developer_additional" {
       variable = "iam:PassedToService"
       values   = ["ecs.amazonaws.com"]
     }
+  }
+
+  statement {
+    sid    = "cloudWatchCrossAccountAllow"
+    effect = "Allow"
+    actions = [
+      "iam:CreateServiceLinkedRole"
+    ]
+    resources = ["arn:aws:iam::*:role/aws-service-role/cloudwatch-crossaccount.amazonaws.com/AWSServiceRoleForCloudWatchCrossAccount"]
   }
 
   statement {
@@ -397,6 +411,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "states:Start*",
       "states:RedriveExecution",
       "s3:PutBucketNotificationConfiguration",
+      "s3:GetBucketOwnershipControls"
     ]
     resources = ["*"]
   }
@@ -645,6 +660,8 @@ data "aws_iam_policy_document" "instance-access-document" {
     sid    = "InstanceAccess"
     effect = "Allow"
     actions = [
+      "athena:StartQueryExecution",
+      "athena:StopQueryExecution",
       "ec2:GetPasswordData",
       "kms:Decrypt*",
       "kms:Encrypt",
@@ -807,26 +824,29 @@ data "aws_iam_policy_document" "instance-management-document" {
       test = "Null"
       variable = "aws:ResourceTag/Owner" 
       values = [
-            "False"
+        "False"
       ]
-      }  
+    }
     condition {
-      test = "StringEquals"
+      test     = "StringEquals"
       variable = "aws:PrincipalAccount"
 
       values = [
         local.environment_management.account_ids["core-shared-services-production"]
       ]
     }
-    
-    
-    
+
+
+
   }
   statement {
     sid    = "databaseAllowNull"
     effect = "Allow"
     actions = [
       "application-autoscaling:ListTagsForResource",
+      "athena:StartQueryExecution",
+      "athena:StopQueryExecution",
+      "autoscaling:StartInstanceRefresh",
       "autoscaling:UpdateAutoScalingGroup",
       "autoscaling:SetDesiredCapacity",
       "aws-marketplace:ViewSubscriptions",
@@ -874,9 +894,9 @@ data "aws_iam_policy_document" "instance-management-document" {
       "sso:ListDirectoryAssociations",
       "support:*"
     ]
-    
+
     resources = ["*"]
-    
+
   }
   statement {
     sid    = "SecretsManagerPut"
@@ -1026,6 +1046,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "glue:GetJobRuns",
       "glue:StartTrigger",
       "glue:StopTrigger",
+      "glue:GetConnections",
       "logs:DescribeLogStreams",
       "logs:GetLogEvents",
       "dynamodb:BatchGet*",

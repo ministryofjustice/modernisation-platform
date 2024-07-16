@@ -14,11 +14,11 @@ body:
       placeholder: "As a… [who is the user?] 
               I need/want/expect to… [what does the user want to do?]
               So that… [why does the user want to do this?] "
-      value: "As a…  
+      value: "As a 
 
-              I need/want/expect to… 
+              I need/want/expect to 
 
-              So that…"
+              So that"
     validations:
       required: true
   - type: textarea
@@ -47,28 +47,11 @@ body:
     validations:
       required: false
   - type: textarea
-    id: proposal-unknowns
-    attributes:
-      description: Assumptions, Hypothesis, Questions, Unknowns
-      label: Proposal / Unknowns
-      value:
-        "### Hypothesis 
-        If we... [do a thing]
-        Then... [this will happ]
-
-        ### Proposal
-        A proposal that is something testable, don't worry whether it works or not, it's a place for ideas. 
-
-        ### Unknowns
-        Potential pitfalls that could cause the story to expand beyond its original scope. Ideally this section will remain blank."
-    validations:
-      required: false
-  - type: textarea
     id: dod
     attributes:
       description: Please clearly and concisely detail the Definition of Done. (example optional checklist below)
       label: Definition of Done
-      value:
+      placeholder:
 
         Example
         - [ ] Documentation has been written / updated
@@ -80,6 +63,9 @@ body:
         - [ ] Another team member has reviewed 
 
         - [ ] Tests are green
+      value: |
+        - [ ] First outcome
+        - [ ] Second outcome
     validations:
       required: true
   - type: markdown

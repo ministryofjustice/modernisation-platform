@@ -16,7 +16,7 @@ There are also other well known industry solutions such as [HashiCorp Vault](htt
 
 We've decided to use [Secrets Manager](https://aws.amazon.com/secrets-manager/) for our secrets storage.
 
-Parameter store can be used to store non secret parameters if needed for environment specific configuration, but the first choice should be using an app_variables.json like [here](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/terraform/environments/sprinkler/app_variables.json)
+Parameter store can be used to store non secret parameters if needed for environment specific configuration, but the first choice should be using an [`application_variables.json` such as this](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/terraform/environments/sprinkler/application_variables.json)
 
 ## Consequences
 

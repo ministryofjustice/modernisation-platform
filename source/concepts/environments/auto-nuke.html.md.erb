@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Auto-nuke and redeploy development environments on weekly basis
-last_reviewed_on: 2023-12-15
+last_reviewed_on: 2024-06-28
 review_in: 6 months
 ---
 
@@ -18,31 +18,31 @@ review_in: 6 months
 
 ## Feature description
 
-This feature automatically nukes and optionally recreates development environments on weekly basis. This is useful for environments with the sandbox permission, which allow users provisioning resources directly through the AWS web console as opposite to using terraform. In such cases, the auto-nuke will make sure the resources created manually will be cleared on weekly basis. If requested, the resources defined in terraform will then be recreated.
+This feature automatically destroys all resources in development environments on a weekly basis, and provides a utitily to recreate resources in these environments. This is useful for environments with the sandbox permission, which allow users to provision resources directly through the AWS web console alongside infrastructure as code (IaC). In such cases, the auto-nuke will make ensure the manually created resources will be regularly removed. If requested, resources defined in terraform can then be recreated.
 
 Every Sunday:
 
-- At 10.00pm the awsnuke.yml workflow is triggered. This workflow nukes all the configured development environments using the AWS Nuke tool (https://github.com/rebuy-de/aws-nuke).
-- At 12.00 noon the nuke-redeploy.yml workflow is triggered. If requested, this workflow redeploys the nuked environment using terraform apply.
+- At 22:00 the [awsnuke.yml workflow](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/workflows/awsnuke.yml) is triggered. This workflow nukes all the configured development environments using the [AWS Nuke tool](https://github.com/rebuy-de/aws-nuke).
+- At 12:00 the [nuke-redeploy.yml workflow](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/workflows/nuke-redeploy.yml) is triggered. If requested, this workflow redeploys IaC into the nuked environment using `terraform apply`.
 
-A sketch of the algorithm is as follows:
+An outline of the 'nuke' algorithm is as follows:
 
-- For every account in a dynamically generated list of all sandbox accounts
-- Assume the role MemberInfrastructureAccess under the account ID
-- Nuke the resources under the account ID
-- (Optionally) Perform terraform apply in order to recreate all resources from terraform
+- For every account in a dynamically generated list of all sandbox accounts:
+   - Assume the [`MemberInfrastructureAccess` role](https://github.com/ministryofjustice/modernisation-platform/blob/ab3eb5a6a8e6253afc9db794362034ba4ae1cd94/terraform/environments/bootstrap/member-bootstrap/iam.tf#L266) under the account ID
+   - Nuke the resources under the account ID
+   - (Optionally) Perform terraform apply in order to recreate all resources from terraform
 
 ## Configuration
 
 Auto-nuke consumes the following dynamically generated Github secrets stored in the Modernisation Platorm Environments repository:
 
-- `MODERNISATION_PLATFORM_AUTONUKE_BLOCKLIST`: Account aliases to always exclude from auto-nuke. This takes precedence over all other configuration options. Due to the destructive nature of the tool, AWS-Nuke (https://github.com/rebuy-de/aws-nuke) requires at least one Account ID in the configured blocklist. Our blocklist contains all production. preproduction and core accounts.
+- `MODERNISATION_PLATFORM_AUTONUKE_BLOCKLIST`: Account aliases to always exclude from auto-nuke. This takes precedence over all other configuration options. Due to the destructive nature of the tool, [AWS-Nuke](https://github.com/rebuy-de/aws-nuke) requires at least one account ID in the configured blocklist. Our blocklist contains all production, preproduction, and core accounts.
 
 - `MODERNISATION_PLATFORM_AUTONUKE`: Account aliases of sandbox accounts to be auto-nuked on weekly basis.
 
 - `MODERNISATION_PLATFORM_AUTONUKE_REBUILD`: Accounts to be rebuilt after auto-nuke runs. This secret is consumed by the `nuke-redeploy.yml` workflow.
 
-The `nuke-config-template.txt` is populated with account and blocklist information during the runtime of the `awsnuke.yml` workflow, to produce a valid aws-nuke configuration file.
+The [`nuke-config-template.txt`](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/scripts/nuke-config-template.txt) is populated with account and blocklist information during the runtime of the `awsnuke.yml` workflow, to produce a valid aws-nuke configuration file.
 
 ### When new sandbox development environment is onboarded
 
@@ -67,8 +67,8 @@ Eg:
 
 Valid values are:
 
-`include` = nukes but doesn’t rebuild (default option if nothing added)
-`exclude` = doesn’t nuke or rebuild
-`rebuild` = nukes and rebuilds
+- `include` = nukes but doesn’t rebuild (default option if nothing added)
+- `exclude` = doesn’t nuke or rebuild
+- `rebuild` = nukes and rebuilds
 
 Please contact us in [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) channel for details.

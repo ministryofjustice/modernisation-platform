@@ -211,6 +211,48 @@
       ]
     },
     {
+      "username": "jason.green",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "delius-iaps-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "delius-iaps-production",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "philip.gilgunn",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "delius-iaps-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "delius-iaps-production",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "thomas.tipler",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "delius-iaps-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "delius-iaps-production",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
       "username": "nathan.brown",
       "github-username": "no-value-supplied",
       "accounts": [
@@ -320,6 +362,46 @@
       "accounts": [
         {
           "account-name": "nomis-development",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "joehyland.deeson",
+      "github-username": "joe-hd",
+      "accounts": [
+        {
+          "account-name": "nomis-test",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "yordi.tak",
+      "github-username": "yorditak",
+      "accounts": [
+        {
+          "account-name": "nomis-test",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "theo.phillips",
+      "github-username": "theo-phillips",
+      "accounts": [
+        {
+          "account-name": "nomis-test",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "chris.keep",
+      "github-username": "iamchriskeep",
+      "accounts": [
+        {
+          "account-name": "nomis-test",
           "access": "instance-management"
         }
       ]

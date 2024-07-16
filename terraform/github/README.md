@@ -11,7 +11,7 @@ The state is stored in S3, as defined in [backend.tf](backend.tf).
 
 ## How to create a new repository for a terraform module
 
-Say that we want to create a new repository for a terraform module named `bastion-linux`. We need to add the following section to [main.tf](main.tf)
+Say that we want to create a new repository for a terraform module named `bastion-linux`. We need to add the following section to [repositories.tf](repositories.tf)
 
 ```terraform
 module "terraform-module-bastion-linux" {

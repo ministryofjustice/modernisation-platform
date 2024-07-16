@@ -9,7 +9,6 @@
 # and firewall rules from terraform/environments/core-network-services
 
 module "ad_fixngo_ip_addresses" {
-  #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   source = "github.com/ministryofjustice/modernisation-platform-environments//terraform/modules/ip_addresses?ref=29c48e315aa5eeef5d604617169b2f6db953966e"
 }
 
@@ -46,6 +45,7 @@ locals {
       #     server-type = "DomainController"
       #     domain-name = "azure.hmpp.root"
       #     description = "domain controller for FixNGo azure.hmpp.root domain"
+      #     Patching    = "ad-live-eu-west-2a"
       #   }
       # }
       # ad-hmpp-dc-b = {
@@ -61,6 +61,7 @@ locals {
       #     server-type = "DomainController"
       #     domain-name = "azure.hmpp.root"
       #     description = "domain controller for FixNGo azure.hmpp.root domain"
+      #     Patching    = "ad-live-eu-west-2b"
       #   }
       # }
       # ad-hmpp-rdlic = {
@@ -76,6 +77,7 @@ locals {
       #     server-type = "RDLicensing"
       #     domain-name = "azure.hmpp.root"
       #     description = "remote desktop licensing server for FixNGo azure.hmpp.root domain"
+      #     Patching    = "rdlic-live-eu-west-2c"
       #   }
       # }
 
@@ -92,6 +94,7 @@ locals {
           server-type = "DomainController"
           domain-name = "azure.noms.root"
           description = "domain controller for FixNGo azure.noms.root domain"
+          Patching    = "ad-nonlive-eu-west-2a"
         }
       }
       ad-azure-dc-b = {
@@ -107,6 +110,7 @@ locals {
           server-type = "DomainController"
           domain-name = "azure.noms.root"
           description = "domain controller for FixNGo azure.noms.root domain"
+          Patching    = "ad-nonlive-eu-west-2b"
         }
       }
       # ad-azure-rdlic = {
@@ -122,6 +126,7 @@ locals {
       #     server-type = "RDLicensing"
       #     domain-name = "azure.noms.root"
       #     description = "remote desktop licensing server for FixNGo azure.noms.root domain"
+      #     Patching    = "rdlic-nonlive-eu-west-2c"
       #   }
       # }
     }
@@ -767,6 +772,54 @@ locals {
       }
     }
 
+    ssm_patching = {
+      # Non-live Domain Controllers
+      ad-fixngo-ssm-patching-nonlive-a = {
+        application-name = "ad-nonlive-a"
+        approval_days    = "9"
+        patch_schedule   = "cron(0 21 ? * TUE#2 *)" # 2nd Tues @ 9pm
+        patch_tag        = "ad-nonlive-eu-west-2a"
+        suffix           = "-ad-nl-2a"
+      }
+      ad-fixngo-ssm-patching-nonlive-b = {
+        application-name = "ad-nonlive-b"
+        approval_days    = "7"
+        patch_schedule   = "cron(0 21 ? * TUE#3 *)" # 3rd Tues @ 9pm
+        patch_tag        = "ad-nonlive-eu-west-2b"
+        suffix           = "-ad-nl-2b"
+      }
+      # Live Domain Controllers
+      ad-fixngo-ssm-patching-live-a = {
+        application-name = "ad-live-a"
+        approval_days    = "16"
+        patch_schedule   = "cron(0 21 ? * THU#3 *)" # 3rd Thurs @ 9pm
+        patch_tag        = "ad-live-eu-west-2a"
+        suffix           = "-ad-l-2a"
+      }
+      ad-fixngo-ssm-patching-live-b = {
+        application-name = "ad-live-b"
+        approval_days    = "14"
+        patch_schedule   = "cron(0 21 ? * THU#4 *)" # 4th Thurs @ 9pm
+        patch_tag        = "ad-live-eu-west-2b"
+        suffix           = "-ad-l-2b"
+      }
+      # RD Licensing
+      rdlic-fixngo-ssm-patching-nonlive = {
+        application-name = "rdlic-nonlive-c"
+        approval_days    = "7"
+        patch_schedule   = "cron(0 21 ? * WED#2 *)" # 2nd Weds @ 9pm
+        patch_tag        = "rdlic-nonlive-eu-west-2c"
+        suffix           = "-rdlic-nl-2c"
+      }
+      rdlic-fixngo-ssm-patching-live = {
+        application-name = "rdlic-live-c"
+        approval_days    = "14"
+        patch_schedule   = "cron(0 21 ? * WED#3 *)" # 3rd Weds @ 9pm
+        patch_tag        = "rdlic-live-eu-west-2c"
+        suffix           = "-rdlic-l-2c"
+      }
+    }
+
     tags = merge(local.tags, {
       environment-name       = terraform.workspace
       infrastructure-support = "DSO:digital-studio-operations-team@digital.justice.gov.uk"
@@ -1035,4 +1088,29 @@ resource "aws_ssm_parameter" "ad_fixngo" {
   tags = merge(local.tags, {
     Name = each.key
   })
+}
+
+module "ad_fixngo_ssm_patching" {
+  for_each = local.ad_fixngo.ssm_patching
+
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching.git?ref=d1be56ad6bceeee3fb0a1beb9ad0d61ea07d0259"
+
+  providers = {
+    aws.bucket-replication = aws
+  }
+
+  account_number       = local.environment_management.account_ids["core-shared-services-production"]
+  application_name     = each.value.application-name
+  approval_days        = each.value.approval_days
+  patch_schedule       = each.value.patch_schedule
+  operating_system     = "WINDOWS"
+  patch_tag            = each.value.patch_tag
+  suffix               = each.value.suffix
+  patch_classification = ["SecurityUpdates", "CriticalUpdates"]
+  tags = merge(
+    local.tags,
+    {
+      Name = each.value.application-name
+    },
+  )
 }

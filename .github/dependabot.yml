@@ -92,6 +92,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/cica-tariff"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/contract-work-administration"
     schedule:
       interval: "daily"
@@ -125,6 +129,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/core-vpc"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/environments/corporate-information-system"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
@@ -197,6 +205,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/example"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/environments/genesys-call-centre-data"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
@@ -285,6 +297,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/opg-lpa-data-store"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/environments/panda-cyber-appsec-lab"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"

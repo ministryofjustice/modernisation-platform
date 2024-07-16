@@ -10,7 +10,6 @@ module "core" {
     "aws",
     "documentation"
   ]
-  required_checks = ["run-opa-policy-tests"]
   secrets = {
     # Terraform GitHub token for the CI/CD user
     TERRAFORM_GITHUB_TOKEN = data.aws_secretsmanager_secret_version.github_ci_user_token.secret_string
@@ -33,6 +32,7 @@ module "terraform-module-baselines" {
     "aws-baselines",
     "moj-security",
   ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
 module "terraform-module-cross-account-access" {
@@ -65,19 +65,6 @@ module "terraform-module-iam-superadmins" {
   description = "Module for creating defined IAM users as superadmins"
   topics = [
     "aws",
-    "iam"
-  ]
-}
-
-module "terraform-module-s3-bucket-replication-role" {
-  source      = "./modules/repository"
-  name        = "modernisation-platform-terraform-s3-bucket-replication-role"
-  type        = "module"
-  description = "Module for creating an IAM role for S3 bucket replication"
-  topics = [
-    "aws",
-    "s3",
-    "s3-replication",
     "iam"
   ]
   secrets = nonsensitive(local.testing_ci_iam_user_keys)
@@ -262,9 +249,10 @@ module "modernisation-platform-environments" {
   required_checks = ["run-opa-policy-tests"]
   secrets = {
     # Terraform GitHub token for the CI/CD user
-    TERRAFORM_GITHUB_TOKEN                               = data.aws_secretsmanager_secret_version.github_ci_user_token.secret_string
     MODERNISATION_PLATFORM_CI_USER_ENVIRONMENTS_REPO_PAT = data.aws_secretsmanager_secret_version.github_ci_user_environments_repo_pat_token.secret_string
     MODERNISATION_PLATFORM_ACCOUNT_ID                    = local.modernisation_platform_account
+    SLACK_WEBHOOK_URL                                    = data.aws_secretsmanager_secret_version.slack_webhook_url.secret_string
+    TERRAFORM_GITHUB_TOKEN                               = data.aws_secretsmanager_secret_version.github_ci_user_token.secret_string
     TESTING_AWS_ACCESS_KEY_ID                            = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     TESTING_AWS_SECRET_ACCESS_KEY                        = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
@@ -296,6 +284,7 @@ module "modernisation-platform-terraform-member-vpc" {
     "platform",
     "member-vpc"
   ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
 module "modernisation-platform-cp-network-test" {
@@ -320,6 +309,7 @@ module "modernisation-platform-terraform-module-template" {
     "terraform",
     "module"
   ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
 module "modernisation-platform-terraform-pagerduty-integration" {
@@ -361,6 +351,7 @@ module "modernisation-platform-terraform-dns-certificates" {
     "terraform",
     "networking"
   ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
 module "modernisation-platform-security" {

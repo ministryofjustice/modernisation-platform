@@ -3,7 +3,12 @@
   "environments": [
     {
       "name": "production",
-      "access": []
+      "access": [
+        {
+          "github_slug": "modernisation-platform",
+          "level": "instance-management"
+        }
+      ]
     }
   ],
   "tags": {

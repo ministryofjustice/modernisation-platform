@@ -6,7 +6,8 @@
       "access": [
         {
           "github_slug": "operations-engineering",
-          "level": "sandbox"
+          "level": "sandbox",
+          "nuke": "exclude"
         }
       ]
     }

@@ -142,10 +142,11 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "logs:CreateLogGroup",
       "logs:DescribeLogGroups",
       "logs:DescribeResourcePolicies",
-      "logs:GetLogEvents",
+      "logs:Get*",
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
+      "logs:List*",
       "lambda:*",
       "s3:GetBucketLocation",
       "s3:ListBucket",
@@ -166,6 +167,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "iam:GetPolicy",
       "dms:List*",
       "iam:GetPolicyVersion",
+      "iam:DeletePolicyVersion",
       "dms:DescribeReplicationSubnetGroups",
       "dms:DescribeReplicationInstances",
       "dms:DescribeReplicationTasks",
@@ -235,6 +237,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "glue:CreateRegistry",
       "glue:CreateSchema",
       "glue:CreateTable",
+      "glue:GetTrigger",
       "glue:CreateTrigger",
       "glue:DeleteConnection",
       "glue:DeleteJob",
@@ -242,6 +245,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "glue:DeleteSchema",
       "glue:DeleteTable",
       "glue:DeleteTrigger",
+      "glue:GetConnection",
       "iam:TagRole"
     ]
     resources = ["*"]

@@ -7,12 +7,12 @@
         {
           "github_slug": "hmpps-electronic-monitoring-data-store",
           "level": "sandbox",
-          "nuke": "exclude"
+          "nuke": "rebuild"
         },
         {
           "github_slug": "hmpps-electronic-monitoring-data-store",
           "level": "migration",
-          "nuke": "exclude"
+          "nuke": "rebuild"
         }
       ]
     },
@@ -36,6 +36,8 @@
     "infrastructure-support": "dataengineering@digital.justice.gov.uk",
     "owner": "Data engineering: dataengineering@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [""],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/electronic-monitoring-data-lambda-functions"
+  ],
   "go-live-date": ""
 }

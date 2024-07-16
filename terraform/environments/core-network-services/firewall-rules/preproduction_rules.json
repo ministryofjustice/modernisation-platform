@@ -579,5 +579,12 @@
     "destination_ip": "${hmpps-preproduction}",
     "destination_port": "1521",
     "protocol": "TCP"
+  },
+  "nomis_combined_reporting_preprod_6400_6500_TCP_cms_connections": {
+    "action": "PASS",
+    "source_ip": "${noms-mgmt-live-vnet}",
+    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
+    "destination_port": "6400:6500",
+    "protocol": "TCP"
   }
 }

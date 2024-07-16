@@ -22,7 +22,7 @@ In order for users to access public facing services with a URL (Uniform Resource
 
 This will enable users to securely access services over HTTPS (Hypertext Transfer Protocol Secure).
 
-There are two main ways to use certificates for DNS on the Modernisation Platform; [ACM](https://aws.amazon.com/certificate-manager/) (Amazon Certificate Manager) public certificates, and [Gandi.net](https://operations-engineering.service.justice.gov.uk/documentation/services/SSL-certificate-management.html) certificates imported into ACM.
+There are two main ways to use certificates for DNS on the Modernisation Platform; [ACM](https://aws.amazon.com/certificate-manager/) (Amazon Certificate Manager) public certificates, and [Gandi.net](https://user-guide.operations-engineering.service.justice.gov.uk/documentation/services/sslcertmanage.html) certificates imported into ACM.
 
 Unless there is a good reason, ACM public certificates should be used as they are automatically managed and renewed.  Gandi.net certificates cost more and require manual renewal.
 
@@ -46,7 +46,7 @@ The following resources need to be created in different AWS accounts (see diagra
 
 Production environments should use a `service.justice.gov.uk` domain as per MoJ [naming domains](https://technical-guidance.service.justice.gov.uk/documentation/standards/naming-domains.html#naming-domains) guidance.
 
-The Modernisation Platform will need to request the delegation of the application domain (eg `my-application.service.justice.gov.uk`) from the [Operations Engineering](https://operations-engineering.service.justice.gov.uk/documentation/services/domain-management.html#domain-management) team via an email to the [domains mailbox](mailto:domains@digital.justice.gov.uk) with the details of the records to be added to the `service.justice.gov.uk` domain and to discuss if the subdomain name meets the MoJ naming domains standard.  Please contact the Modernisation Platform team in the [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) Slack channel to do this.
+The Modernisation Platform will need to request the delegation of the application domain (eg `my-application.service.justice.gov.uk`) from the [Operations Engineering](https://user-guide.operations-engineering.service.justice.gov.uk/documentation/services/domainmgt.html) team via an email to the [domains mailbox](mailto:domains@digital.justice.gov.uk) with the details of the records to be added to the `service.justice.gov.uk` domain and to discuss if the subdomain name meets the MoJ naming domains standard.  Please contact the Modernisation Platform team in the [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) Slack channel to do this.
 
 The Modernisation Platform team will then create a [hosted zone](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/route53.tf#L5) for your domain.
 Once this has been completed the following resources need to be created in different AWS accounts (see diagram above), the table details the resources and the AWS provider required for them.
@@ -69,7 +69,7 @@ Non production environments should use ACM public certificate as detailed above 
 
 ### Production environments
 
-The Modernisation Platform will need to request the delegation of the application domain (eg `my-application.service.justice.gov.uk`) from the [Operations Engineering](https://operations-engineering.service.justice.gov.uk/documentation/services/domain-management.html#domain-management) team, along with a new Gandi.net certificate.  Please contact the Modernisation Platform team in the [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) Slack channel to do this; to send an email to the [domains mailbox](mailto:domains@digital.justice.gov.uk) with the details of the records to be added to the `service.justice.gov.uk` domain and to discuss if the subdomain name meets the MoJ naming domains standard.
+The Modernisation Platform will need to request the delegation of the application domain (eg `my-application.service.justice.gov.uk`) from the [Operations Engineering](https://user-guide.operations-engineering.service.justice.gov.uk/documentation/services/domainmgt.html) team, along with a new Gandi.net certificate.  Please contact the Modernisation Platform team in the [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) Slack channel to do this; to send an email to the [domains mailbox](mailto:domains@digital.justice.gov.uk) with the details of the records to be added to the `service.justice.gov.uk` domain and to discuss if the subdomain name meets the MoJ naming domains standard.
 
 The Modernisation Platform team will then create a [hosted zone](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/route53.tf#L5) for your domain and a validation record for the Gandi.net certificate.
 Once this has been completed the following resources need to be created in different AWS accounts (see diagram above), the table details the resources and the AWS provider required for them.

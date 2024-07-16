@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Instance Access and Bastions
-last_reviewed_on: 2023-11-30
+last_reviewed_on: 2024-06-28
 review_in: 6 months
 ---
 
@@ -20,7 +20,7 @@ review_in: 6 months
 
 For most EC2 running modern Linux operating systems, [SSH](https://en.wikipedia.org/wiki/Secure_Shell_Protocol) access will be via [AWS Systems Manager Session Manager (SSM)](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html).
 
-This provides secure and auditable access to EC2s without the need to expose ports or use a bastion. This can also be used for port forwarding to access private web consoles, [RDS databases](https://aws.amazon.com/rds/) or Windows [RDP](https://en.wikipedia.org/wiki/Remote_Desktop_Protocol).
+This provides secure and auditable access to EC2s without the need to expose ports or use a bastion. This can also be used for port forwarding to access private web consoles, [RDS databases](https://aws.amazon.com/rds/) or [Windows Remote Desktop (RDP)](https://en.wikipedia.org/wiki/Remote_Desktop_Protocol).
 
 ## Bastions
 
@@ -29,9 +29,9 @@ For instances running older versions of Linux where the [SSM Agent](https://docs
 The bastion will be preconfigured with the relevant security and network connectivity required.
 You can then securely connect to this bastion host via Systems Manager, and then on to your instance.
 
-If you find the bastion is down (between 20:00 and 05:00) then you may need to restart it. The best way to do this is to amend the Auto Scaling Group called bastion_linux_daily to set the values to 1 where they are 0. This will build a bastion EC2 server.
+If you find the bastion is down (between 20:00 and 05:00) then you may need to restart it. The best way to do this is to amend the Auto Scaling Group called `bastion_linux_daily` to set the values to `1` where they are `0`. This will build a bastion EC2 server.
     
-There will only be 1 listed in most cases (bastion_linux_daily) so select that, click on edit in the top box and set all 3 values (desired capacity, minimum capacity and maximum capacity) to 1 and select Update. This will cause AWS to build a new instance and one will be available in around 5 minutes.    
+There will only be 1 listed in most cases (`bastion_linux_daily`) so select that, click on edit in the top box and set all 3 values (desired capacity, minimum capacity and maximum capacity) to `1` and select Update. This will cause AWS to build a new instance and one will be available in around 5 minutes.    
 
 ## How to connect
 For information on how to connect to instances or Bastions see [Accessing EC2s](../../user-guide/accessing-ec2s.html).

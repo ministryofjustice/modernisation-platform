@@ -66,6 +66,17 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     delius_core_nonprod_alarms           = pagerduty_service_integration.delius_core_nonprod_cloudwatch.integration_key
     delius_nextcloud_nonprod_alarms      = pagerduty_service_integration.delius_nextcloud_nonprod_cloudwatch.integration_key
     delius_nextcloud_prod_alarms         = pagerduty_service_integration.delius_nextcloud_prod_cloudwatch.integration_key
+    laa_cwa_nonprod_alarms               = pagerduty_service_integration.cwa_non_prod.integration_key
+    laa_cwa_prod_alarms                  = pagerduty_service_integration.cwa_prod.integration_key
+    nomis_data_hub_nonprod_alarms        = pagerduty_service_integration.ndh_non_prod.integration_key
+    nomis_data_hub_prod_alarms           = pagerduty_service_integration.ndh_prod.integration_key
+    laa_apex_nonprod_alarms              = pagerduty_service_integration.apex_non_prod.integration_key
+    laa_apex_prod_alarms                 = pagerduty_service_integration.apex_prod.integration_key
+    delius_mis_nonprod_alarms            = pagerduty_service_integration.delius_mis_non_prod.integration_key
+    delius_mis_prod_alarms               = pagerduty_service_integration.delius_mis_prod.integration_key
+    laa_edw_nonprod_alarms               = pagerduty_service_integration.edw_non_prod.integration_key
+    laa_edw_prod_alarms                  = pagerduty_service_integration.edw_prod.integration_key
+    cdpt-ifs-alarms                      = pagerduty_service_integration.cdpt_ifs_cloudwatch.integration_key
   })
 }
 

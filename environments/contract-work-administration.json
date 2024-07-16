@@ -6,7 +6,12 @@
       "access": [
         {
           "github_slug": "laa-aws-infrastructure",
-          "level": "sandbox"
+          "level": "sandbox",
+          "nuke": "exclude"
+        },
+        {
+          "github_slug": "laa-cwa-developer",
+          "level": "developer"
         }
       ]
     },
@@ -15,6 +20,10 @@
       "access": [
         {
           "github_slug": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "github_slug": "laa-cwa-developer",
           "level": "developer"
         }
       ]

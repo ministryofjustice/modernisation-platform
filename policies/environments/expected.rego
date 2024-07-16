@@ -1,5 +1,7 @@
 package main
 
+import rego.v1
+
 expected :=
 {
   "accounts": [
@@ -18,6 +20,7 @@ expected :=
     "cdpt-ifs",
     "cica-copilot",
     "cica-data-extraction",
+    "cica-tariff",
     "contract-work-administration",
     "cooker",
     "core-logging",
@@ -26,12 +29,12 @@ expected :=
     "core-security",
     "core-shared-services",
     "core-vpc",
+    "corporate-information-system",
     "corporate-staff-rostering",
     "dacp",
     "data-and-insights-wepi",
     "data-platform",
     "data-platform-apps-and-tools",
-    "data-platform-compute",
     "delius-core",
     "delius-iaps",
     "delius-jitbit",
@@ -43,8 +46,8 @@ expected :=
     "equip",
     "eric",
     "example",
+    "genesys-call-centre-data",
     "hmpps-domain-services",
-    "hmpps-intelligence-management",
     "hmpps-oem",
     "laa-ccms-infra-azure-ad-sso",
     "laa-oem",
@@ -65,6 +68,7 @@ expected :=
     "observability-platform",
     "operations-engineering",
     "opg-lpa-data-store",
+    "panda-cyber-appsec-lab",
     "performance-hub",
     "planetfm",
     "portal",
@@ -72,7 +76,6 @@ expected :=
     "pra-register",
     "refer-monitor",
     "sprinkler",
-    "tariff",
     "testing",
     "tipstaff",
     "tribunals",

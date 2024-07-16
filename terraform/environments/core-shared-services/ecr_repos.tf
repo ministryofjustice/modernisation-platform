@@ -141,10 +141,6 @@ module "delius_jitbit_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-test"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-preproduction"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-production"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-development"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-test"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-preproduction"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-jitbit-production"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
@@ -1047,6 +1043,44 @@ module "delius_core_weblogic_eis_ecr_repo" {
   tags_common = local.tags
 }
 
+module "delius_core_new_tech_pdfgenerator_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "delius-core-new-tech-pdfgenerator"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["delius-core-development"],
+    local.environment_management.account_ids["delius-core-test"],
+    local.environment_management.account_ids["delius-core-preproduction"],
+    local.environment_management.account_ids["delius-core-production"],
+  ]
+
+  tags_common = local.tags
+}
+
+module "delius_core_new_tech_web_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "delius-core-new-tech-web"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["delius-core-development"],
+    local.environment_management.account_ids["delius-core-test"],
+    local.environment_management.account_ids["delius-core-preproduction"],
+    local.environment_management.account_ids["delius-core-production"],
+  ]
+
+  tags_common = local.tags
+}
+
 module "analytical_platform_ingestion_notify_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
@@ -1149,7 +1183,6 @@ module "delius_nextcloud_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["delius-nextcloud-test"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-nextcloud-preproduction"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-nextcloud-production"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-nextcloud-development"]}:role/modernisation-platform-oidc-cicd",
   ]
 
   pull_principals = [
@@ -1157,6 +1190,51 @@ module "delius_nextcloud_ecr_repo" {
     local.environment_management.account_ids["delius-nextcloud-test"],
     local.environment_management.account_ids["delius-nextcloud-preproduction"],
     local.environment_management.account_ids["delius-nextcloud-production"]
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
+
+# Repo for electronic monitoring data account lambda
+module "electronic_monitoring_data_lambdas_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "electronic-monitoring-data-lambdas"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["electronic-monitoring-data-development"],
+    local.environment_management.account_ids["electronic-monitoring-data-production"]
+  ]
+
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-development"]}:function:*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-production"]}:function:*"
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
+
+
+# Repo for generic data load and build tool image
+module "create_a_data_task_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "create-a-data-task"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/modernisation-platform-oidc-cicd",
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["electronic-monitoring-data-development"],
+    local.environment_management.account_ids["analytical-platform-data-engineering-sandboxa"]
   ]
 
   # Tags

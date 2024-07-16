@@ -1,20 +1,24 @@
 {
   "account-type": "member",
+  "codeowners": ["studio-webops", "hmpps-migration", "hmpps-dba"],
   "environments": [
     {
       "name": "development",
       "access": [
         {
           "github_slug": "studio-webops",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "hmpps-migration",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "hmpps-dba",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "csr-application-support",
@@ -27,15 +31,18 @@
       "access": [
         {
           "github_slug": "studio-webops",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "hmpps-migration",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "hmpps-dba",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "csr-application-support",
@@ -48,15 +55,18 @@
       "access": [
         {
           "github_slug": "studio-webops",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "hmpps-migration",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "hmpps-dba",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "csr-application-support",
@@ -69,15 +79,18 @@
       "access": [
         {
           "github_slug": "studio-webops",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "hmpps-migration",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "hmpps-dba",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "csr-application-support",

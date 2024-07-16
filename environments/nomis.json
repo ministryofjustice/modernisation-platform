@@ -1,16 +1,14 @@
 {
   "account-type": "member",
+  "codeowners": ["studio-webops"],
   "environments": [
     {
       "name": "development",
       "access": [
         {
           "github_slug": "studio-webops",
-          "level": "developer"
-        },
-        {
-          "github_slug": "studio-webops",
-          "level": "instance-management"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "syscon-devs",
@@ -35,7 +33,8 @@
       "access": [
         {
           "github_slug": "studio-webops",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "syscon-devs",
@@ -60,7 +59,8 @@
       "access": [
         {
           "github_slug": "studio-webops",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "syscon-devs",
@@ -85,7 +85,8 @@
       "access": [
         {
           "github_slug": "studio-webops",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "syscon-devs",

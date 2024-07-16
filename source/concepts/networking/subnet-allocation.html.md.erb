@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Subnet Allocation
-last_reviewed_on: 2023-12-12
+last_reviewed_on: 2024-06-28
 review_in: 6 months
 ---
 
@@ -19,7 +19,7 @@ review_in: 6 months
 When we set up a VPC for an environment (AWS account) we provide subnets for transit gateway connection, protected reources such as VPC endpoints, along with a general subnet set.
 See the [subnets](./networking-approach.html#subnets) section for more information.
 
-Here we go into a bit more detail on how the [CIDR ranges](https://github.com/ministryofjustice/modernisation-platform/blob/main/cidr-allocation.md) have been created and how they are allocated.
+Here we go into a bit more detail on how the [CIDR ranges](https://aws.amazon.com/what-is/cidr/) have been created and [how they are allocated](https://github.com/ministryofjustice/modernisation-platform/blob/main/cidr-allocation.md).
 
 ## Transit Gateway and Protected subnets allocation
 
@@ -31,8 +31,7 @@ Here we go into a bit more detail on how the [CIDR ranges](https://github.com/mi
 
 ## How have we decided the ranges?
 
-Research was done on the existing MoJ network infrastructure to ensure that we didn't clash with any existing ranges.
-The modernisation platform [CIDR ranges](https://github.com/ministryofjustice/modernisation-platform/blob/main/cidr-allocation.md) are documented here.  By predefining IP ranges it makes it easier for us to onboard new applications.
+We analysed the existing MoJ network infrastructure to ensure that we didn't clash with any existing ranges. The modernisation platform [CIDR ranges](https://github.com/ministryofjustice/modernisation-platform/blob/main/cidr-allocation.md) are documented here. Predefining these IP ranges it makes it easier for us to onboard new applications.
 
 ## Example
 

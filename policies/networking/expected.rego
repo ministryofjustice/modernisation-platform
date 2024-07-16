@@ -1,5 +1,7 @@
 package main
 
+import rego.v1
+
 expected :=
 {
   "subnet_sets": {
@@ -51,7 +53,8 @@ expected :=
           "data-platform-development",
           "data-platform-apps-and-tools-development",
           "observability-platform-development",
-          "operations-engineering-development"
+          "operations-engineering-development",
+          "panda-cyber-appsec-lab-development"
         ]
       }
     },
@@ -74,7 +77,6 @@ expected :=
           "nomis-combined-reporting-development",
           "nomis-data-hub-development",
           "delius-core-development",
-          "hmpps-intelligence-management-development",
           "corporate-staff-rostering-development",
           "planetfm-development",
           "hmpps-oem-development",
@@ -117,9 +119,9 @@ expected :=
       "general": {
         "cidr": "10.26.32.0/21",
         "accounts": [
-          "tariff-development",
           "cica-copilot-development",
-          "cica-data-extraction-development"
+          "cica-data-extraction-development",
+          "cica-tariff-development"
         ]
       }
     },
@@ -139,7 +141,6 @@ expected :=
           "delius-nextcloud-production",
           "nomis-combined-reporting-production",
           "nomis-data-hub-production",
-          "hmpps-intelligence-management-production",
           "corporate-staff-rostering-production",
           "planetfm-production",
           "hmpps-oem-production",
@@ -228,6 +229,7 @@ expected :=
           "ccms-ebs-development",
           "ccms-ebs-upgrade-development",
           "contract-work-administration-development",
+          "corporate-information-system-development",
           "edw-development",
           "laa-ccms-infra-azure-ad-sso",
           "laa-oem-development",
@@ -274,6 +276,7 @@ expected :=
         "accounts": [
           "apex-test",
           "contract-work-administration-test",
+          "corporate-information-system-test",
           "edw-test",
           "eric-test",
           "mlra-test",
@@ -330,6 +333,7 @@ expected :=
         "accounts": [
           "apex-production",
           "contract-work-administration-production",
+          "corporate-information-system-production",
           "edw-production",
           "eric-production",
           "mlra-production",
@@ -348,6 +352,7 @@ expected :=
         "accounts": [
           "apex-preproduction",
           "contract-work-administration-preproduction",
+          "corporate-information-system-preproduction",
           "edw-preproduction",
           "mlra-preproduction",
           "ccms-ebs-preproduction",

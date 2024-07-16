@@ -9,7 +9,6 @@ module "core-team" {
     module.terraform-module-cross-account-access.repository.name,
     module.terraform-module-environments.repository.name,
     module.terraform-module-iam-superadmins.repository.name,
-    module.terraform-module-s3-bucket-replication-role.repository.name,
     module.terraform-module-s3-bucket.repository.name,
     module.terraform-module-bastion-linux.repository.name,
     module.terraform-module-aws-vm-import.repository.name,
