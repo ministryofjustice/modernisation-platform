@@ -41,6 +41,9 @@ module "baselines" {
     aws.us-west-2      = aws.workspace-eu-west-2
   }
 
+  # Selectively reduce pre prod backups on certain accounts
+  reduced_preprod_backup_retention = local.reduced_preprod_backup_retention
+
   # Selectively enable CloudTrail object-level logging
   enable_cloudtrail_s3_mgmt_events = local.enable-cloudtrail-events
 
