@@ -1,0 +1,27 @@
+---
+owner_slack: "#modernisation-platform"
+title: Resource restrictions based on ABAC
+last_reviewed_on: 2024-07-17
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+## Feature description
+
+This new feature allows to restrict access to resources based on the github team currently this is only implemented on the instance managment role and restricted to the core-shared-services account
+it will allow users to create ec2 instances for there team that only that team can control, this is all ased on the aws documentation that can be read about [here](https://aws.amazon.com/blogs/security/configure-aws-sso-abac-for-ec2-instances-and-systems-manager-session-manager).
+
+## Where is the code
+
+The code for this is located in the Modernisation platform repository [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/single-sign-on/policies.tf)
+If you look at the code you will see that we are using a double negative condition to do the restriction and also restricting based on principle account that leave room to expand this out to other accounts if we need to
