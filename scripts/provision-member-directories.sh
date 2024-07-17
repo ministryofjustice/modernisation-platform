@@ -145,11 +145,12 @@ echo "Writing codeowners file"
 * @ministryofjustice/modernisation-platform
 EOL
 
+
   for file in $environment_json_dir/*.json; do
     application_name=$(basename "$file" .json)
     directory=/terraform/environments/$application_name
     account_type=$(jq -r '."account-type"' ${environment_json_dir}/${application_name}.json)
-    codeowners=$(jq -r 'try (.codeowners[] | "@ministryofjustice/" + .)' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
+    codeowners=$(jq -r 'try (.codeowners[] | select(length > 0) | "@ministryofjustice/" + .)' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
     github_slugs=$(jq -r '.environments[].access[].github_slug | "@ministryofjustice/" + .' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
 
     if [ "$account_type" = "member" ]; then
@@ -163,7 +164,6 @@ EOL
         echo "$directory $github_slugs@ministryofjustice/modernisation-platform" >> $codeowners_file
       fi
     fi
-
   done
 
   cat >> $codeowners_file << EOL

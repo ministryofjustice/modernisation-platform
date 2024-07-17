@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating environments in the Modernisation Platform
-last_reviewed_on: 2024-03-20
+last_reviewed_on: 2024-07-18
 review_in: 6 months
 ---
 
@@ -190,7 +190,7 @@ Here are some examples of the environments JSON file that the Modernisation Plat
 
 - `account-type` determines if this is a core modernisation platform account or a user member account.
 - `isolated-network` is an optional field which can be set to 'true' if you require an isolated environment with no internet or shared network connectivity.
-- `codeowners` is an optional list of GitHub slugs if you want specific teams to review code changes before they are released into environments.
+- `codeowners` is an ***optional*** list of GitHub slugs if you want specific teams to review code changes before they are released into environments. It is **NOT** generally used. Compare the [Blank example](#blank-example) with [Another example](#another-example) below, to see it is unused. 
 - `environments` should be an array of objects for environments required. If the environment is `production`, retention periods, backup frequency, and similar will be different compared to non-production environments.
 - the `name` key and `access` object are required, see: [Another example](#another-example)
 - `github_action_reviewer` is an optional true/false for each team listed and determines if the team should be the approver for GitHub action runs.

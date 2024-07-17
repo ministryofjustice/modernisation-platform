@@ -365,3 +365,16 @@ module "modernisation-platform-security" {
   ]
   visibility = "internal"
 }
+
+module "modernisation-platform-terraform-aws-chatbot" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-aws-chatbot"
+  type        = "module"
+  description = "A Terraform module to create an AWS ChatBot Slack configuration."
+  topics = [
+    "aws",
+    "chatbot",
+    "slack"
+  ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
+}
