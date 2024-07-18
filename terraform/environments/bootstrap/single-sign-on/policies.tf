@@ -811,18 +811,18 @@ data "aws_iam_policy_document" "instance-management-document" {
     ]
     resources = ["*"]
     condition {
-      test = "ForAnyValue:StringNotLike"
+      test     = "ForAnyValue:StringNotLike"
       variable = "aws:PrincipalTag/github_team"
-      
+
       values = [
-         "*:$${aws:ResourceTag/Owner}:*",
-          "$${aws:ResourceTag/Owner}:*",
-          "*:$${aws:ResourceTag/Owner}"
-        ]
-      }
+        "*:$${aws:ResourceTag/Owner}:*",
+        "$${aws:ResourceTag/Owner}:*",
+        "*:$${aws:ResourceTag/Owner}"
+      ]
+    }
     condition {
-      test = "Null"
-      variable = "aws:ResourceTag/Owner" 
+      test     = "Null"
+      variable = "aws:ResourceTag/Owner"
       values = [
         "False"
       ]
