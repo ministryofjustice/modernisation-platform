@@ -16,12 +16,53 @@ review_in: 6 months
 
 # <%= current_page.data.title %>
 
+## Problem 
+
+The instance-management role is used to provide teams with a limited-access entrypoint into AWS accounts. For example, an application may want to provide support persons with a way to manage instances without having wider permissions. This works well in single-application situations such as our standard offering to customers (one account per application environment).
+
+However, in shared environments (such as our core-shared-services account) offering this role to multiple teams means that they will all have permissions across the account, granting them the ability to take actions on other resources provisioned for other teams.
+
 ## Feature description
 
 This new feature allows to restrict access to resources based on the github team currently this is only implemented on the instance managment role and restricted to the core-shared-services account
-it will allow users to create ec2 instances for there team that only that team can control, this is all ased on the aws documentation that can be read about [here](https://aws.amazon.com/blogs/security/configure-aws-sso-abac-for-ec2-instances-and-systems-manager-session-manager).
+it will allow users to create ec2 instances for there team that only that team can control.
 
 ## Where is the code
 
 The code for this is located in the Modernisation platform repository [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/single-sign-on/policies.tf)
 If you look at the code you will see that we are using a double negative condition to do the restriction and also restricting based on principle account that leave room to expand this out to other accounts if we need to
+
+## How do i use this new feature
+
+To Take advantage of this new feature a PR will need to be raised on the modernisation platform repository to grant your team access to the instance manage role on the core shared services account by amending the following file
+[core-shared-services-environment](https://github.com/ministryofjustice/modernisation-platform/blob/main/environments/core-shared-services.json) and add in your github_slug see example bellow.
+
+```
+{
+  "account-type": "core",
+  "environments": [
+    {
+      "name": "production",
+      "access": [
+        {
+          "github_slug": "modernisation-platform",
+          "level": "instance-management"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "modernisation-platform",
+    "business-unit": "Platforms",
+    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
+  },
+  "github-oidc-team-repositories": [""]
+}
+
+```
+
+## References
+Bellow are links to AWS documentation that talk about ABAC implementation.
+
+- [Configure AWS IAM Identity Center ABAC](https://aws.amazon.com/blogs/security/configure-aws-sso-abac-for-ec2-instances-and-systems-manager-session-manager)
