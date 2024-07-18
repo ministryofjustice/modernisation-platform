@@ -571,6 +571,18 @@ data "aws_iam_policy_document" "sandbox_additional" {
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
+  statement {
+    sid    = "sandboxSSOAllow"
+    actions = [
+      "sso:CreateApplicationAssignment"
+    ]
+    effect = "Allow"
+    # This allows the sandbox role to update QuickSight groups which are linked to Identity Center
+
+    resources = [
+      "arn:aws:sso::${local.environment_management.aws_organizations_root_account_id}:application/ssoins-7535d9af4f41fb26/*" #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+    ]
+  }
 }
 
 # migration policy - member SSO and collaborators
