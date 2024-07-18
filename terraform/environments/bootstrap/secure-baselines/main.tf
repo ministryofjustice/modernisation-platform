@@ -6,7 +6,7 @@ data "aws_kms_key" "cloudtrail_key" {
 
 #trivy:ignore:AVD-AWS-0136
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=06b43d06b300c058fccbaa4c27e8dca832165f0a" # v7.5.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=ccab150a5819aa5e9149fd658e2cf2e7b4461323" # v7.6.0
 
   providers = {
     # Default and replication regions
@@ -40,6 +40,9 @@ module "baselines" {
     aws.us-west-1      = aws.workspace-eu-west-2
     aws.us-west-2      = aws.workspace-eu-west-2
   }
+
+  # Selectively reduce pre prod backups on certain accounts
+  reduced_preprod_backup_retention = local.reduced_preprod_backup_retention
 
   # Selectively enable CloudTrail object-level logging
   enable_cloudtrail_s3_mgmt_events = local.enable-cloudtrail-events
