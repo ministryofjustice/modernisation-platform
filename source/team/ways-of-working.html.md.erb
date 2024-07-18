@@ -45,6 +45,7 @@ review_in: 6 months
 - Verify tests and pipeline completion before raising PRs
 - Provide clear PR descriptions with context
 - Review PRs thoroughly, approving only those you understand
+- Use GitHub PR for discussion of content, rather than Slack
 - Follow Semver for versioning
     - Provide a high-level `What's New` in the version release notes
     - Make us of GitHub's automatically generated release notes feature
@@ -70,14 +71,14 @@ The following table is to class the changes and to describe the process of commu
 | Requires user action                                    | These are changes that are not backwards compatible and require user's input to be completed (e.g. changes to platform files in the modernisation-platform-environments repository require deploying to users environments).                                                    | Agree within the team on the **deprecation period**. Once the changes are rolled out, communicate it in the ask and update channels. The information should include **what** is changing, its **impact** and **how long** is the deprecation period. During the deprecation period post reminders in the ask and update channels if not all users have actioned. When the deprecation period expires, reach out to users via email using the infrastructure-support contact information from the environment files. Making sure that all users have updated is part of the issue's DoD. | 
 
 ## Spikes
-- Timeboxed research tasks (max one sprint)
-- Use "SPIKE:" prefix in issue title
+- Timeboxed research tasks (maximum length one sprint)
+- Use `SPIKE:` prefix in issue title
 - Document findings and present to team
 - Create follow-up issues if proceeding
 - Create [Architectural Decision Record](https://github.com/ministryofjustice/modernisation-platform/tree/main/architecture-decision-record) if outcome is of architectural significance
 
 ## Firebreaks
 - Opportunities for platform improvements
-- Create issues with "firebreak" label
+- Backlog [issues]()(https://github.com/ministryofjustice/modernisation-platform/issues) with `firebreak` label
 - Schedule team firebreak sprint when sufficient issues accumulate
 - Current stock of labelled issues [here](https://github.com/orgs/ministryofjustice/projects/17/views/41)
