@@ -36,6 +36,7 @@ data "aws_iam_policy_document" "member-access" {
       "autoscaling:*",
       "backup:*",
       "backup-storage:MountCapsule",
+      "chatbot:*",
       "cloudformation:*",
       "cloudfront:*",
       "cloudwatch:*",
