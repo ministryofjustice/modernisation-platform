@@ -16,101 +16,56 @@ review_in: 6 months
 
 # <%= current_page.data.title %>
 
-## Annual Leave
+## Team Availability and Support
 
-We aim to maintain a minimum of two engineers available per sprint.
+- Maintain a minimum of two engineers per sprint
+- Provide notice for leave (generally twice the leave period)
+- Operate a [duty rota](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/duty-rota.html) for #ask-modernisation-platform channel support
 
-When arranging leave we try to offer sufficient notice. This will generally be twice the leave period.
+## Work and Task Management
 
-> **EG**. When taking **two** weeks off, this will be arranged and agreed **four** weeks in advance.
+- [GitHub projects](https://github.com/orgs/ministryofjustice/projects/17) are used to manage our workload
+- Work in two-week sprints
+- Longer term objectives tracked in team [roadmap](https://app.productplan.com/pr/rY8sb6v1YYLZl4_dSKNSrUbasx2Ivzob).
+- Ensure tasks meet Definition of Ready (DoR) before sprint planning
+- Backlog issues are adequately refined by the team
+- Issues in sprint can be: `To Do`, `In Progress`, `Blocked`, `Done`
+    - `To Do`: issues here should be adequately refined. If not, they should be removed from the sprint and placed onto the backlog.
+    - `In Progress`: issues here have an assigned team member. Updates are added as milestones are reach. Links to PRs and other useful information should be included.
+    - `Blocked`: issues here have external dependencies preventing their progress. Issues we expect to be blocked for the duration of a sprint should be place onto the backlog.
+    - `Done`: issues here have been implemented, tested, and reviewed.
+- When an issues is `Done` it should be closed
 
-## Duty Tech
 
-We currently run a rota on support for the __#ask-modernisation-platform__ channel, offering support during working hours. For more information see the [Duty Rota](../runbooks/duty-rota.html) page.
+## Git and GitHub Practices
 
-## Work and tasks management
+- Maintain good git hygiene (fetch/pull before branching, regular merging, squashing extensive commit lists)
+- Use meaningful branch naming (e.g., `feature/`, `fix/`, `docs/`)
+- Write meaningful commit messages
+- Verify tests and pipeline completion before raising PRs
+- Provide clear PR descriptions with context
+- Review PRs thoroughly, approving only those you understand
+- Use GitHub PR for discussion of content, rather than Slack
+- Follow [Semver](https://semver.org/) for versioning
+    - Provide a high-level `What's New` in the version release notes
+    - Make use of GitHub's automatically generated release notes feature
+    - Optionally trim the release notes down to commits affecting consumers
 
-[GitHub projects](https://github.com/orgs/ministryofjustice/projects/17) are used to manage our workload.
-We use a scrum board to help us visualise the work delivery progress and we work in two week sprints to deliver milestones.
+## Contributing to Modernisation Platform Modules
 
-When a task or story (GitHub issue) is created it will appear in a backlog of the project or in a backlog of a sprint that it was assigned to.
-While it is OK to create a placeholder task with a minimum description in a backlog, once it is planned in a certain sprint, the information in the task must be populated to meet the Definition of Ready (DoR).
-Make sure to update a task description before a refinement session or do not assign it to a sprint.
+[We work in the open](https://mojdigital.blog.gov.uk/2017/02/21/why-we-code-in-the-open/), and welcome contributions to our code.
+Anyone is welcome to submit fixes, features, or enhancements to our repositories where we maintain a standard [CONTRIBUTING.md](https://github.com/ministryofjustice/modernisation-platform/blob/main/CONTRIBUTING.md) document.
 
-Once the tasks are selected for development in the coming sprint, the board allows a task to be in one of four stages. When a ticket is read to work on, it will be displayed under __To Do__ stage column.
-When a ticket gets picked up by a team member it gets assigned to that team member and it is moved to the __In Progress__ stage.
-When a ticket gets implemented and tested, it is further moved to the __Done__ stage.
+### Review criteria
 
-Occasionally there are situations that work on a ticket gets blocked, the __Blocked__ stage is for such occasions.
+- Ensure builds are error-free
+- Maintain backwards compatibility for new features
+- Test thoroughly when amending existing features
+- Add tests for new features
+- Discuss reasons for removing features
+- If in any doubt, speak to team colleagues for assistance.
 
-As a team we have agreed to do the following for each stage:
-
-* __To Do__
-    * Tasks are roughly prioritised during a sprint planning session, but we are not obliged to take the one from the top.
-    We have the freedom of picking a task that we want to work on and we do not pre-assign team members to a task prior the start of a sprint.
-    * Tasks that are selected for a sprint should have all the necessary information in the task description, including a Definition of Done (DoD).
-    If it is not clear what is asked in the task, then it does not meet the DoR and therefore should be taken out of the sprint.
-
-* __In Progress__
-    * Adding progress notes to a task as we reach a milestone rather than daily updates.
-    * Including links to PRs, information about tests (if not part of the PR workflow) and other useful references in the task comments.
-    * When a task takes longer to complete than initially expected it is up to an individual to raise it with a team to get some help or to break down the task.
-    * We all should take part in reviewing tasks.
-
-* __Blocked__
-    * If you suspect that a task will be blocked for the whole sprint, take it out of the sprint.
-
-* __Done__
-    * Tasks can be closed when they have been implemented, tested and reviewed.
-    * Closing an issue moves a task to __Done__, where moving an issue to __Done__ does not close it, hence close it, rather than move it.
-
-## Working with Git and GitHub
-
-There is a number of things we can do to make collaborating on code seamless.
-Although we do not want to impose too many rules on our team members, the following list is what we agreed as a team to do as a minimum:
-
-* Keeping a good git hygiene `git fetch`/`git pull` in `main` before branching out when starting on a new task. Merging `main` regularly into your branch on local and resolving the merge conflicts or rebasing before committing and pushing to remote.
-* Adding meaningful messages when committing, such as what have you achieved in this step.
-* Running tests, verifying if the tests/SCA has passed and that the `terraform plan` and the pipeline runs clean before creating a PR.
-* Providing enough information in the PR description so that another team member has enough context to be able to understand the change and to review it.
-Adding explanation on what is implemented with the PR and why. Adding information on tests if they were run outside of the GitHub actions pipeline and other useful links or references that help to understand the changes (e.g. a link to the issue or a doc).
-* Not approving PRs that do not have a good description or commit messages.
-* Approving only PRs that you understand (it applies to PRs created within and outside the team), limiting reviews to the platform code only.
-* Verifying the pipeline run clean post merge.
-
-We also think it is good to:
-
-* use a meaningful branch naming, using prefixes such as `feature/`, `fix/`, `docs/` etc., including an issue number and making it a summary of what your goal is (e.g. `feature/2563-usingOIDC-in-base`),
-* squash commits before committing to remote, so that each commit represents a step in the implementation (combining  planned changes with fixes to errors),
-* ... and/or squash commits when merging a remote branch with the `main`.
-
-### Tags and Releases
-
-* Using the [Semver](https://semver.org/) versioning strategy, prefixed with a `v` e.g. `v1.*.*` to `v2.0.0` would represent a backwards incompatible API change.
-* Providing a descriptive title for the release, so it's easily identifiable and understood.
-* Providing a high level summary of `What's New` in the release, so consumers can easily understand the changes that have been made - and potentially any changes they may need to make when incrementing to the new version number
-* Making use of GitHub automatically generated release notes. These provide in depth detail of the release.
-    * These can be heavily populated general maintenance PRs. It is worth refining the commit list down to commits that will impact consumers. There is a full changelog link provided for people who want the additional information.
-
-### Reviewing Contributor Changes to Maintained Modules
-
-We provide access to a number of terraform modules for use in member accounts and we welcome contributions from users, whether that's fixing an issue or adding new features & enhancements. 
-
-These modules include:
-
-* [Baseline modules in the Modersation Platform Github Repo](https://github.com/ministryofjustice/modernisation-platform-environments/tree/main/terraform/modules/baseline)
-* Other modules in separate Github Repos such as https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-instance
-
-Should a PR be posted for one of these modules, consider using the review criteria below:
-
-* All changes. Ensure that either a plan or test output confirms the module builds correctly and no errors are reported. 
-* New features. These changes should maintain backwards compatibility with the existing version of the module and as such use should be optional.
-* Amending an existing feature. The change should be tested to ensure backwards compatibility for existing users and so tests should be undertaken to ensure this is the case. Understanding the reason for its removal is key here.
-* Removing an existing feature. Understanding the reasons for this should be the priority and so a conversation with the PR's author should be had. As with amending features, maintaining backwards compatability is crucial.
-
-If in any doubt, speak to team colleagues for assistance.
-
-## Rolling out changes to the Modernisation Platform
+## Change Management
 
 Some changes to our platform are safe to roll out at any point once they are reviewed and approved. Others need more caution and require communicating to our tenants and sometimes need actioning.
 The following table is to class the changes and to describe the process of communicating such changes.
@@ -123,27 +78,14 @@ The following table is to class the changes and to describe the process of commu
 | Requires user action                                    | These are changes that are not backwards compatible and require user's input to be completed (e.g. changes to platform files in the modernisation-platform-environments repository require deploying to users environments).                                                    | Agree within the team on the **deprecation period**. Once the changes are rolled out, communicate it in the ask and update channels. The information should include **what** is changing, its **impact** and **how long** is the deprecation period. During the deprecation period post reminders in the ask and update channels if not all users have actioned. When the deprecation period expires, reach out to users via email using the infrastructure-support contact information from the environment files. Making sure that all users have updated is part of the issue's DoD. | 
 
 ## Spikes
-
-Spikes are used to work out if an idea is feasible and if so how it should be implemented.
-
-When writing issues for spikes, use `SPIKE:` at the beginning of the issue title.
-
-All spikes should be timeboxed and last no longer than one sprint, the issue should state the timebox for the spike.
-
-The definition of done should include the following:
-
- - details of research / information learned / options should be added to the issue comments
- - output and options of the spike should be presented to the team so a decision on how to progress can be made, this decision should be recorded in the issue comments
- - if it is decided to continue, issues should be created for the work required (linking back to the original spike)
-
-If the decision (to proceed or not) is of architectural significance an [ADR (architectural decision record)](https://github.com/ministryofjustice/modernisation-platform/tree/main/architecture-decision-record) should be created.
+- Timeboxed research tasks (maximum length one sprint)
+- Use `SPIKE:` prefix in issue title
+- Document findings and present to team
+- Create follow-up issues if proceeding
+- Create [Architectural Decision Record](https://github.com/ministryofjustice/modernisation-platform/tree/main/architecture-decision-record) if outcome is of architectural significance
 
 ## Firebreaks
-
-Firebreaks provide the team with opportunities to explore improvements to the platform outside of our usual process.
-
-Team members are empowered to create issues on our [backlog](https://github.com/ministryofjustice/modernisation-platform/issues) with the `firebreak` label.
-
-Once we accumulate a sufficient quantity of `firebreak` issues, where all participants have an opportunity to pick up something, we then schedule a team `firebreak` sprint.
-
-We can see the current stock of labelled issues [here](https://github.com/orgs/ministryofjustice/projects/17/views/41).
+- Opportunities for platform improvements
+- Backlog [issues]()(https://github.com/ministryofjustice/modernisation-platform/issues) with `firebreak` label
+- Schedule team firebreak sprint when sufficient issues accumulate
+- Current stock of labelled issues [here](https://github.com/orgs/ministryofjustice/projects/17/views/41)
