@@ -405,6 +405,8 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "glue:List*",
       "glue:BatchGetJobs",
       "glue:*Trigger",
+      "lakeformation:GetDataLakeSettings",
+      "lakeformation:PutDataLakeSettings",
       "lambda:PutRuntimeManagementConfig",
       "states:Describe*",
       "states:List*",
@@ -574,7 +576,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
   statement {
-    sid    = "sandboxSSOAllow"
+    sid = "sandboxSSOAllow"
     actions = [
       "sso:CreateApplicationAssignment"
     ]
