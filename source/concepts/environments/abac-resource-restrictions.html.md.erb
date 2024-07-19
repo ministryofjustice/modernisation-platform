@@ -24,18 +24,54 @@ However, in shared environments (such as our core-shared-services account) offer
 
 ## Feature description
 
-This new feature allows to restrict access to resources based on the github team currently this is only implemented on the instance managment role and restricted to the core-shared-services account
+Using Attribute Based Access Control on the Modernisation Platform allows the ability restrict access to resources based on the github team currently this is only implemented on the instance managment role and restricted to the core-shared-services account
 it will allow users to create ec2 instances for there team that only that team can control.
 
 ## Where is the code
 
 The code for this is located in the Modernisation platform repository [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/single-sign-on/policies.tf)
-If you look at the code you will see that we are using a double negative condition to do the restriction and also restricting based on principle account that leave room to expand this out to other accounts if we need to
+If you look at the code you will see that we are using  a double negative condition to do the restriction and also restricting based on aws:AccountPrincipal that leave room to expand this out to other accounts if we need to, as you can see from the example below this is the code we used to impelment Using Attribute Based Access Control on the Modernisation Platform
 
-## How do i use this new feature
+```
+statement {
+    sid    = "ABACEc2Deny"
+    effect = "Deny"
+    actions = [
+      "*"
+    ]
+    resources = ["*"]
+    condition {
+      test = "ForAnyValue:StringNotLike"
+      variable = "aws:PrincipalTag/github_team"
+      
+      values = [
+         "*:$${aws:ResourceTag/Owner}:*",
+          "$${aws:ResourceTag/Owner}:*",
+          "*:$${aws:ResourceTag/Owner}"
+        ]
+      }
+    condition {
+      test = "Null"
+      variable = "aws:ResourceTag/Owner" 
+      values = [
+        "False"
+      ]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
 
-To Take advantage of this new feature a PR will need to be raised on the modernisation platform repository to grant your team access to the instance manage role on the core shared services account by amending the following file
-[core-shared-services-environment](https://github.com/ministryofjustice/modernisation-platform/blob/main/environments/core-shared-services.json) and add in your github_slug see example bellow.
+      values = [
+        local.environment_management.account_ids["core-shared-services-production"]
+      ]
+    }
+```
+
+
+## How do i use this feature
+
+To take advantage of this feature a PR will need to be raised on the modernisation platform repository to grant your team access to the instance manage role on the core shared services account by amending the following file
+[core-shared-services-environment](https://github.com/ministryofjustice/modernisation-platform/blob/main/environments/core-shared-services.json) and add in your github_slug see example below.
 
 ```
 {
@@ -63,6 +99,6 @@ To Take advantage of this new feature a PR will need to be raised on the moderni
 ```
 
 ## References
-Bellow are links to AWS documentation that talk about ABAC implementation.
+Below are links to AWS documentation that talk about ABAC implementation.
 
 - [Configure AWS IAM Identity Center ABAC](https://aws.amazon.com/blogs/security/configure-aws-sso-abac-for-ec2-instances-and-systems-manager-session-manager)
