@@ -503,6 +503,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "ds:Update*",
       "dynamodb:*",
       "ebs:*",
+      "ec2-instance-connect:SendSerialConsoleSSHPublicKey",
       "ec2:Describe*",
       "ec2:Get*",
       "ec2:*SecurityGroup*",
