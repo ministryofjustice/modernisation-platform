@@ -1,0 +1,111 @@
+---
+owner_slack: "#modernisation-platform"
+title: Platform User Roles
+last_reviewed_on: 2024-07-20
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+The Modernisation Platform offers a selection of user roles to suit different use cases.
+
+These are [defined in code](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/bootstrap/single-sign-on) and supplied through [single sign-on](../concepts/environments/single-sign-on.html).
+
+## Modernisation Platform Roles
+
+### view-only
+
+- Log into the console
+- See resources and basic metadata. You cannot see the content of resources such as logs or S3 buckets.
+
+
+### read-only
+
+- Log into the console
+- Comprehensive read-only visibility of the AWS environment. As this role provides access to contents of S3 and others, it is designed for users for whom view-only is insufficient.
+- Role makes use of AWS ReadOnly managed policy and is not at present configurable beyond that.
+
+### developer
+
+- Log into the console
+- Read only access to resources including things like logs and S3 buckets
+- View and Edit Secrets Manager secrets and Parameter Store values
+- Create and rotate access keys for the application deployment CI user
+- Connect to instances via SSM
+- Start, stop and reboot EC2 instances
+- Create and copy Snapshots
+- Put and delete S3 objects
+- Import certificates to ACM
+- Switch roles to view shared resources
+- Raise AWS Support cases
+
+### sandbox
+
+The sandbox access can only be used on a development environment account.
+
+- Log into the console
+- Same console read and write permissions as the pipelines have
+- This permission can only be attached to development accounts
+- Once a week the account will be cleared with AWS Nuke and then rebuilt from Terraform
+- The idea of sandbox access is that it gives you the freedom to experiment and modify things in the console to assist with creating your Terraform code.
+
+Anything not in code will be lost at the end of the week.
+
+### migration
+
+The migration role is a temporary role, given to assist with AWS managed migration services
+
+- Log into the console
+- Developer permissions
+- Permissions to use AWS Migration services
+- Once the migration is complete for an environment this role should be removed.
+
+### instance-management
+
+The instance-management role is a role given to assist database administrators.
+
+- Log into the console
+- Read only access to resources including things like logs and S3 buckets
+- Start, stop and reboot EC2 instances
+- Create and copy Snapshots
+- Connect to instances via SSM
+- Active Directory permissions
+
+### security-audit
+
+- Log into the console
+- See resources and metadata useful to security operations teams and security audit teams
+- Makes use of AWS managed SecurityAudit policy
+
+### reporting-operations
+
+- DMS Start, stop
+- SQL Workbench
+- Athena
+- Glue
+- Redshift
+
+### data-engineering
+
+Created for data engineers to have developer permissions as well as glue and athena permissions all in one policy.
+
+Log into the console.
+Data engineering permissions.
+
+### administrator
+
+Full admin access
+This is a legacy role and will not be generally available.
+
+## Assigning Roles to Environments
+
+## Creating New Roles
