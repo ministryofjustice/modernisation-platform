@@ -16,7 +16,7 @@
         },
         {
           "github_slug": "hmpps-delius-mis",
-          "level": "instance-management"
+          "level": "fleet-manager"
         }
       ]
     },
@@ -33,7 +33,7 @@
         },
         {
           "github_slug": "hmpps-delius-mis",
-          "level": "instance-management"
+          "level": "fleet-manager"
         }
       ]
     },
@@ -50,7 +50,7 @@
         },
         {
           "github_slug": "hmpps-delius-mis",
-          "level": "instance-management"
+          "level": "fleet-manager"
         }
       ]
     },
@@ -67,7 +67,7 @@
         },
         {
           "github_slug": "hmpps-delius-mis",
-          "level": "instance-management"
+          "level": "fleet-manager"
         }
       ]
     }
