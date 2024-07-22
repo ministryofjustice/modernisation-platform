@@ -23,7 +23,7 @@ module "baselines-modernisation-platform" {
     # Default and replication regions
     aws                    = aws.modernisation-platform-eu-west-2
     aws.replication-region = aws.modernisation-platform-eu-west-1
-    
+
     # Other regions
     aws.ap-northeast-1 = aws.modernisation-platform-ap-northeast-1
     aws.ap-northeast-2 = aws.modernisation-platform-ap-northeast-2
@@ -42,7 +42,7 @@ module "baselines-modernisation-platform" {
     aws.us-west-1      = aws.modernisation-platform-us-west-1
     aws.us-west-2      = aws.modernisation-platform-us-west-2
   }
-  
+
   # Selectively reduce pre prod backups on certain accounts
   reduced_preprod_backup_retention = local.reduced_preprod_backup_retention
 
