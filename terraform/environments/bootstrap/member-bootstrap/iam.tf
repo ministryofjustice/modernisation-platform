@@ -167,6 +167,7 @@ data "aws_iam_policy_document" "member-access" {
       "sso:GetApplicationAssignmentConfiguration",
       "sso:GetSharedSsoConfiguration",
       "sso:ListApplicationAssignments",
+      "sso:ListApplicationAssignmentsForPrincipal",
       "sso:ListDirectoryAssociations",
       "sso:GetManagedApplicationInstance",
       "sso:ListProfiles",
