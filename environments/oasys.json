@@ -38,6 +38,10 @@
         {
           "github_slug": "oasys-operator",
           "level": "instance-management"
+        },
+        {
+          "github_slug": "oasys-migration",
+          "level": "migration"
         }
       ]
     },
@@ -52,6 +56,10 @@
         {
           "github_slug": "oasys-operator",
           "level": "instance-access"
+        },
+        {
+          "github_slug": "oasys-migration",
+          "level": "migration"
         }
       ]
     }
