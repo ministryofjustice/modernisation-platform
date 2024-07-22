@@ -3,7 +3,7 @@
 data "aws_organizations_organization" "root_account" {}
 
 locals {
-  enable-cloudtrail-events = strcontains(terraform.workspace, "digital-prison-reporting") ? false : true
+  enable-cloudtrail-events         = strcontains(terraform.workspace, "digital-prison-reporting") ? false : true
   reduced_preprod_backup_retention = strcontains(terraform.workspace, "ccms-ebs") ? true : false
   enabled_baseline_regions = [
     "eu-central-1", # Europe (Frankfurt)
