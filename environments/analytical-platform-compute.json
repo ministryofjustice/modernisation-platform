@@ -9,6 +9,10 @@
           "github_slug": "analytical-platform",
           "level": "sandbox",
           "nuke": "exclude"
+        },
+        {
+          "github_slug": "analytical-platform",
+          "level": "data-engineer"
         }
       ]
     },
@@ -18,6 +22,10 @@
         {
           "github_slug": "analytical-platform",
           "level": "developer"
+        },
+        {
+          "github_slug": "analytical-platform",
+          "level": "data-engineer"
         }
       ]
     },
@@ -27,6 +35,10 @@
         {
           "github_slug": "analytical-platform",
           "level": "developer"
+        },
+        {
+          "github_slug": "analytical-platform",
+          "level": "data-engineer"
         }
       ]
     }
