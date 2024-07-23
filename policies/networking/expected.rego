@@ -301,6 +301,7 @@ expected :=
       "general": {
         "cidr": "10.26.112.0/21",
         "accounts": [
+          "cica-tariff-test"
         ]
       }
     },
@@ -367,6 +368,7 @@ expected :=
       "general": {
         "cidr": "10.27.80.0/21",
         "accounts": [
+          "cica-tariff-production"
         ]
       }
     },
@@ -374,6 +376,7 @@ expected :=
       "general": {
         "cidr": "10.27.88.0/21",
         "accounts": [
+          "cica-tariff-preproduction"
         ]
       }
     },

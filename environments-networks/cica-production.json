@@ -3,7 +3,9 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.27.80.0/21",
-        "accounts": []
+        "accounts": [
+          "cica-tariff-production"
+        ]
       }
     }
   },
