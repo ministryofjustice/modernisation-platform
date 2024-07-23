@@ -383,23 +383,6 @@ jobs:
       - name: Install the client
         if: steps.environment_json_changes.outputs.files != ''
         run: pip install notifications-python-client
-      - name: Send notification to Slack
-        if: steps.environment_json_changes.outputs.files != ''
-        run: |
-          DECODED_FILES=$(echo ${{ steps.environment_json_changes.outputs.files }} | base64 --decode)
-          for file in $DECODED_FILES; do
-          FILE_PATH="https://github.com/${GITHUB_REPO}/blob/main/environments/${file}"
-          PAYLOAD=$(cat <<EOF
-          {
-            "text": "The JSON file [${file}](${FILE_PATH}) has been changed."
-          }
-          EOF
-          )
-          curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$SLACK_WEBHOOK_URL_MODERNISATION_PLATFORM_UPDATE"
-          done
-        env:
-          SLACK_WEBHOOK_URL_MODERNISATION_PLATFORM_UPDATE: ${{ secrets.SLACK_WEBHOOK_URL_MODERNISATION_PLATFORM_UPDATE }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
       - name: Send notification to Email
         if: steps.environment_json_changes.outputs.files != ''
         run: |
