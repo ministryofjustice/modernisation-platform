@@ -94,8 +94,8 @@ body:
       label: Additional repository access
       description: Does this collaborator need `push` permissions for the following repositories?
       options:
-        - `modernisation-platform-environments`
-        - `modernisation-platform-ami-builds`
+        - modernisation-platform-environments
+        - modernisation-platform-ami-builds
     validations:
       required: false
   - type: dropdown
