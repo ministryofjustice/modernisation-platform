@@ -89,11 +89,9 @@ body:
     attributes:
       value: "## Additional information"
   - type: markdown
-    id: additional-repositories
     attributes:
-      label: Additional repository access
-      description: Does this collaborator need `push` permissions for the following repositories?
       value: |
+        Does this collaborator need `push` permissions for the following repositories?
         - [ ] "modernisation-platform-environments"
         - [ ] "modernisation-platform-ami-builds"
   - type: dropdown
