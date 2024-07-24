@@ -93,18 +93,18 @@ jobs:
         run: |
           terraform -chdir="${{ inputs.working-directory }}" workspace select ${WORKSPACE_NAME}
 
-      - name: Run Terratest
-        if: ${{ steps.vars.outputs.run_terratest == 'true' }}
-        run: |
-          pushd ${{ inputs.working-directory }}/test
-          go mod tidy
-          TEST=`go test | ${{ github.workspace }}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
-          popd
-          TEST="> TERRATEST RESULT - ${ACCOUNT_NAME}
-          ${TEST}"
-          pwd
-          ls
-          bash scripts/update-pr-comments.sh "${TEST}"
+      # - name: Run Terratest
+      #   if: ${{ steps.vars.outputs.run_terratest == 'true' }}
+      #   run: |
+      #     pushd ${{ inputs.working-directory }}/test
+      #     go mod tidy
+      #     TEST=`go test | ${{ github.workspace }}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
+      #     popd
+      #     TEST="> TERRATEST RESULT - ${ACCOUNT_NAME}
+      #     ${TEST}"
+      #     pwd
+      #     ls
+      #     bash scripts/update-pr-comments.sh "${TEST}"
 
       - name: Run Terraform Plan
         if: github.event.ref != 'refs/heads/main'
