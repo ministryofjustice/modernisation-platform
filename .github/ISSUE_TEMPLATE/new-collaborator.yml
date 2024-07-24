@@ -43,8 +43,8 @@ body:
       label: Collaborator email address
       description: Can you provide a valid email address for the new external collaborator?
       options:
-        - Yes
-        - No
+        - "Yes"
+        - "No"
     validations:
       required: true
   - type: input
@@ -94,8 +94,8 @@ body:
       label: Additional repository access
       description: Does this collaborator need `push` permissions for the following repositories?
       options:
-        - modernisation-platform-environments
-        - modernisation-platform-ami-builds
+        - "modernisation-platform-environments"
+        - "modernisation-platform-ami-builds"
     validations:
       required: false
   - type: dropdown
