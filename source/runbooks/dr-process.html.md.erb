@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Disaster Recovery Process
-last_reviewed_on: 2024-01-24
+last_reviewed_on: 2024-07-24
 review_in: 6 months
 ---
 
@@ -292,7 +292,7 @@ Our [NetworkingApproach](../concepts/networking/networking-approach.html) discus
 contains a detailed view of our shared VPCs.
 
 
-Our [Transit Gateway](../how-vpcs-access-the-internet.html) and how VPCs access the internet.
+Our [Transit Gateway](../runbooks/how-vpcs-access-the-internet.html) and how VPCs access the internet.
 
 
 
@@ -317,7 +317,7 @@ Located [here](https://github.com/ministryofjustice/modernisation-platform/actio
 ### Transit Gateway
 
 
-To rebuild the transit gateway in a new region, first find the code, located here, in core-network-services. https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-network-services
+To rebuild the transit gateway in a new region, first find the code, [located here]( https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-network-services), in core-network-services.
 
 
 Using the admin role, run a Terraform plan and apply. This hasn't been done from scratch since the platform's creation, so expect to debug issues.
@@ -332,7 +332,7 @@ We make use of AWS Network Firewalls in two ways. First, we use a centralised in
 Located in the Core-Network-Services account, DNS, networking and other network related infrastructure will be down.
 
 
-The firewall rules can be located here - https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-network-services/firewall-rules
+The firewall rules can be [found here](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-network-services/firewall-rules)
 
 
 Live data & non-live data.
