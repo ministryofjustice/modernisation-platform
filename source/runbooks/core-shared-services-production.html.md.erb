@@ -1,0 +1,100 @@
+---
+owner_slack: "#modernisation-platform"
+title: Querying VPC Flow Logs
+last_reviewed_on: 2024-07-23
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+## Overview
+
+Core shared services production account hosts shared services account resources. 
+
+| Resource | Description |
+|----------------- |------------------------------------------------
+| S3 | Stores essential logging data such as EC2 Image builder logs
+| KMS | Contains customer-managed CMK (with associated alias and key policy) used for encryption of EBS volumes and snapshots backing AMIs generated from image builder
+| ECR| Hosts docker container images for the deployment and management of containerized applications
+| IAM | Contains roles for various services, such as VPC Flow Logs, Image Builder, and cross-account access.
+| Microsoft Active Directory Controllers | Provide centralised identity and access management for customer environments
+| VPC | Contains live_data and non_live_data VPCs
+| Instance Scheduler Lambda | Manage start/stop schedules for non-critical instances, optimizing resource usage and cost-efficiency.
+
+
+## AWS Account Setup
+
+In the event that you need to receate this account, Use AWS Organizations to create a new account named "core-shared-services". 
+Ensure the account is part of the Modernisation Platform Core Organisational Unit (OU) and apply relevant Service Control Policies (SCPs) to the account.
+
+## Recreation of resources 
+
+This can be achieved by triggering core-shared-services deployment workflow run, which can be (found here)[https://github.com/ministryofjustice/modernisation-platform/actions/runs/10073457872/workflow]
+Alternatively, this can be done locally: 
+- Navigate to the 'modernisation-platfom repo' and change to the core-shared-services directory 
+- Initialise terraform and use the MP credentials
+- Run terraform plan in production workspace
+- Examine the output to ensure that all changes are as expected and no unintended changes are proposed.
+- Using admin credentials, execute terraform apply
+- Log into the account in the console and check that resources have been correctly provisioned and configured.
+
+If discrepancies are found, investigate the Terraform state and apply logs to identify potential issues.
+Make necessary adjustments and reapply Terraform configurations as needed.
+
+
+More details can be found in our [disaster recovery process] (https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/dr-process.html))
+
+## IAM Roles and Policies
+
+The following outlines some of the key IAM configurations in the core-shared services production account:
+
+| Role | Role Name | Purpose | Role Policy
+|----------------- |------------------------------------------------
+VPC Flow Logs IAM Role	| AWSVPCFlowLog | Allows VPC Flow Logs to publish logs to CloudWatch | Grants necessary permissions for log actions such as creating log groups and putting log events.
+Image Builder IAM Role |	Image-builder |	Allows EC2 Image Builder to use specified policies for creating and managing AMIs | Includes permissions for EC2 instance profile and SSM managed policies.
+Instance Scheduler Lambda IAM Role | InstanceSchedulerAccess | Allows the Lambda function to start and stop EC2 instances and publish logs to CloudWatch | Grants permissions for log actions and EC2 instance management.
+Cross-Account Access Roles | AWS-SSM-AutomationAdministrationRole | Allows cross-account access for SSM automation and administration tasks | Includes permissions for SSM actions and trust relationships.
+OIDC Configuration for Core-Shared Services| 	| Allows GitHub Actions to interact with AWS resources securely | Grants permissions for actions such as updating Lambda code and decrypting KMS keys.
+
+## KMS Keys
+
+For cross account encryption. Please refer to this document (https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/how-to-use-shared-kms-keys.html#how-to-use-shared-kms-keys) for more guidance.
+
+## Instance Scheduler
+
+Eventbridge is used to schedule and trigger Lambda functions that automatically start and stop instances on member accounts from Monday to Friday at scheduled times.
+
+For detailed guidance and setup, please refer to the Instance Scheduler repository (https://github.com/ministryofjustice/modernisation-platform-instance-scheduler).
+
+For monitoring and alerts - cloudwatch alarm set up and configued to notify SNS topic and integrated with PagerDuty.
+https://github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration - This module can be used for integrating SNS topics with PagerDuty & more guidance can be found at : https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/integrating-alarms-with-pagerduty-with-slack.html#integrating-cloudwatch-alarms-with-pagerduty-and-slack
+
+
+##  Microsoft Active Directory Controllers 
+
+Deploying EC2 instances to host Microsoft Domain Controller service in live and non_live VPCs. Azure.noms.root and azure.hmpp.root AD DS infrastructure migrated from Azure FixNGo and managed by DSO team.
+
+## VPC  
+Create two VPCs:
+- non_live_data VPC
+- live_data VPC
+Configure appropriate subnets, route tables, and security groups for each VPC and connect Transit Gateway for communication
+
+
+
+
+
+## References
+
+* [Accessing the AWS Console](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/accessing-the-aws-console.html)
+* [Disaster Recovery Process](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/dr-process.html)
+* [AWS VPC Flow Log fields](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html)
