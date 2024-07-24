@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Please complete this issue to facilitate adding a new external collaborator.
+        Please complete this template to facilitate adding a new external collaborator.
   - type: markdown
     attributes:
       value: "## Requestor details"
@@ -88,16 +88,14 @@ body:
   - type: markdown
     attributes:
       value: "## Additional information"
-  - type: dropdown
+  - type: markdown
     id: additional-repositories
     attributes:
       label: Additional repository access
       description: Does this collaborator need `push` permissions for the following repositories?
-      options:
-        - "modernisation-platform-environments"
-        - "modernisation-platform-ami-builds"
-    validations:
-      required: false
+      value: |
+        - [ ] "modernisation-platform-environments"
+        - [ ] "modernisation-platform-ami-builds"
   - type: dropdown
     id: additional-approve-deployments
     attributes:
