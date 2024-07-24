@@ -1,10 +1,10 @@
 ---
 name: core-shared-services-deployment
 
-on: 
+on:
   push:
     branches:
-      - main
+      - test/core-shared-services-workflow
     paths:
       - 'terraform/environments/core-shared-services/**'
       - 'terraform/modules/vpc-hub/**'

@@ -49,3 +49,6 @@ module "imagebuilder_log_bucket" {
 output "imagebuilder_log_bucket_id" {
   value = module.imagebuilder_log_bucket.bucket.id
 }
+output "imagebuilder_log_bucket_arn" {
+value = module.imagebuilder_log_bucket.bucket.arn
+}
