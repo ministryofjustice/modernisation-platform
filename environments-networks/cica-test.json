@@ -3,9 +3,7 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.26.112.0/21",
-        "accounts": [
-          "cica-tariff-test"
-        ]
+        "accounts": ["cica-tariff-test"]
       }
     }
   },
