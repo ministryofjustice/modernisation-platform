@@ -1,0 +1,64 @@
+---
+owner_slack: "#modernisation-platform"
+title: Adding a New SSO User Role
+last_reviewed_on: 2024-07-25
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+## Creating a New Role
+
+You will need to raise pull requests in the [ministryofjustice/modernisation-platform](https://github.com/ministryofjustice/modernisation-platform) repository.
+
+### Summary
+
+You will need the following:
+
+- An "aws_ssoadmin_permission_set"
+- An "aws_ssoadmin_account_assignment"
+- Any number of "aws_ssoadmin_managed_policy_attachment" 
+- An "aws_ssoadmin_customer_managed_policy_attachment" that will correspond to an IAM policy
+- An "aws_iam_policy" and "aws_iam_policy_document" to create the IAM policy for the new role
+- Adjustments to the relevant `policies/environment/*.rego` files to check for the presence of the new role
+
+### Setting up the role
+
+Modernisation Platform SSO roles are defined in code [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/single-sign-on/).
+
+You will need to raise a pull request that creates the following terraform resources:
+
+- `aws_ssoadmin_permission_set` to create the role
+- `aws_ssoadmin_account_assignment` to associate the role with Modernisation Platform accounts
+- `aws_ssoadmin_managed_policy_attachment` to attach AWS managed IAM policies to the role
+- `aws_ssoadmin_customer_managed_policy_attachment` to associate Modernisation Platform managed IAM policies to the role
+
+### Setting up the IAM policy
+
+Modernisation Platform IAM policies associated with SSO roles are defined in code [here](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/bootstrap/single-sign-on)
+
+You will need to raise a pull request that creates the following terraform resources:
+
+- `aws_iam_policy` to create the IAM policy.
+    - The name should correspond to the name used in your `aws_ssoadmin_customer_managed_policy_attachment`
+- `aws_iam_policy_document` to provide IAM policy statements for the new role
+
+### Amending the OPA policy
+
+OPA policy files are defined in code [here](https://github.com/ministryofjustice/modernisation-platform/tree/main/policies).
+
+You will need to raise a pull request that amends the following policy files:
+
+- `collaborators.rego` to check which roles external collaborators can be granted
+- `collaborators_test.rego` to run tests against allowed collaborator roles
+- `environments.rego` to check which roles can be assigned in an `environments/*.json` file
+- `environments_test.rego` to run tests against the allowed environments roles

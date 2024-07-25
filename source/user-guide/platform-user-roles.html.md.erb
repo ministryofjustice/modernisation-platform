@@ -162,31 +162,3 @@ For example, this snippet shows the addition of the `example-role` to `another-e
 
 New roles can be requested through [raising an issue](https://github.com/ministryofjustice/modernisation-platform/issues/new/choose) on GitHub, although we recommend you discuss your use case with us on Slack
 via the [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) channel.
-
-## Creating a New Role
-
-You will need to raise pull requests in both the [ministryofjustice/aws-root-account](https://github.com/ministryofjustice/aws-root-account) and the [ministryofjustice/modernisation-platform](https://github.com/ministryofjustice/modernisation-platform) repositories.
-
-### aws-root-account
-
-You can see an example PR [here](https://github.com/ministryofjustice/aws-root-account/pull/843/files).
-
-In short you will need to add the following:
-
-- An "aws_ssoadmin_permission_set" resource to creates the role
-- Any number of "aws_ssoadmin_managed_policy_attachment" resources that will generally attach AWS-managed policies to the role
-- An "aws_ssoadmin_customer_managed_policy_attachment" that will correspond to an IAM policy created in the `modernisation-platform` repository
-
-### modernisation-platform
-
-You can see an example PR [here](https://github.com/ministryofjustice/modernisation-platform/pull/5821/files) that adds a new policy document.
-
-You can see an example PR [here](https://github.com/ministryofjustice/modernisation-platform/pull/5824) that allows the role to be assigned through SSO.
-
-You can an example PR [here](https://github.com/ministryofjustice/modernisation-platform/pull/5836/files) that assigns the role to an account and updates our OPA tests.
-
-In short you will need the following:
-
-- An "aws_iam_policy" and "aws_iam_policy_document" to create the IAM policy for the new role (in `terraform/boostrap/single-sign-on`, unlike the example above)
-- An "aws_ssoadmin_permission_set" and "aws_ssoadmin_account_assignment" to associate the new role with Modernisation Platform accounts
-- Adjustments to the relevant `policies/environment/*.rego` files to check for the new role
