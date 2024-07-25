@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating VPCs in AWS
-last_reviewed_on: 2024-01-25
+last_reviewed_on: 2024-07-25
 review_in: 6 months
 ---
 
@@ -18,7 +18,7 @@ review_in: 6 months
 
 ## Overview
 
-Following these steps will allow you to create a new VPC for a business unit. Previously, we created VPCs when they were needed as part of the account creation process, however to cut down the number of steps to make it easier, and reduce the chance of error.
+Following these steps will allow you to create a new VPC for a business unit. Previously, we created VPCs when they were needed as part of the account creation process, however we have now cut down the number of steps to make it easier, and reduce the chance of error.
 
 Example PR for this work [here](https://github.com/ministryofjustice/modernisation-platform/pull/2283/files#diff-5ee99e84753771a6c78bed0261809c2a8ab275d1e63c7fddbe222cf426a50927)
 
@@ -30,9 +30,9 @@ Other information to build **extended DNS zones** and **NACLS** as well as any *
 
 ## Files to Change.
 
-Firstly, a cidr range needs to be reserved. The `cidr-allocation.md` file contains the ranges that can be reserved, depending on your environment, pick the correct table and put the business unit next to your range.
+Firstly, a cidr range needs to be reserved. The [`cidr-allocation.md`](https://github.com/ministryofjustice/modernisation-platform/blob/main/cidr-allocation.md) file contains the ranges that can be reserved. Depending on your environment, pick the correct table and put the business unit next to your range.
 
-Secondly, the `expected.rego` file needs to be edited under `policies/networking`. In here, we add the accounts that will go in this VPC, or leave it empty if you are building the vpc ahead of account creation.
+Secondly, the [`expected.rego`](https://github.com/ministryofjustice/modernisation-platform/blob/main/policies/networking/expected.rego) file needs to be edited under `policies/networking`. In here, we add the accounts that will go in this VPC, or leave it empty if you are building the vpc ahead of account creation.
 
 Here's an example of what to add.
 
