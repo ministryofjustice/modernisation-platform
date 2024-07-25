@@ -415,7 +415,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "lakeformation:ListLakeFormationOptIns",
       "lakeformation:CreateLakeFormationOptIn",
       "lakeformation:DeleteLakeFormationOptIn",
-      "lakeformation:lakeformation:GetDataAccess",
+      "lakeformation:GetDataAccess",
       "states:Describe*",
       "states:List*",
       "states:Stop*",
