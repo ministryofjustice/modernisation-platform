@@ -486,6 +486,7 @@ data "aws_iam_policy_document" "policy" {
       "kms:Encrypt",
       "kms:GenerateDataKey",
       "kms:CreateGrant",
+      "lambda:UpdateFunctionCode",
       "logs:CreateLogGroup",
       "logs:DescribeLogGroups",
       "logs:DescribeResourcePolicies",
