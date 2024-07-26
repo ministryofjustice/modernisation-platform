@@ -199,7 +199,30 @@ data "aws_iam_policy_document" "member-access" {
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
-
+  statement {
+    effect    = "Allow"
+    actions   = ["cloudtrail:DeleteTrail"]
+    resources = ["arn:aws:cloudtrail:*:*:trail/cloudtrail-test*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        local.environment_management.account_ids["testing-test"]
+      ]
+    }
+  }
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:DeleteObject"]
+    resources = ["arn:aws:s3:::cloudtrail-test*/*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        local.environment_management.account_ids["testing-test"]
+      ]
+    }
+  }
   statement {
     effect = "Deny"
     actions = [
