@@ -5,12 +5,12 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "sso_group_name": "laa-ccms-migration-team",
           "level": "sandbox",
           "nuke": "exclude"
         },
         {
-          "github_slug": "modernisation-platform-security",
+          "sso_group_name": "modernisation-platform-security",
           "level": "view-only"
         }
       ]
@@ -19,11 +19,11 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
         },
         {
-          "github_slug": "modernisation-platform-security",
+          "sso_group_name": "modernisation-platform-security",
           "level": "view-only"
         }
       ]
@@ -32,11 +32,11 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
         },
         {
-          "github_slug": "modernisation-platform-security",
+          "sso_group_name": "modernisation-platform-security",
           "level": "view-only"
         }
       ]
@@ -45,11 +45,11 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
         },
         {
-          "github_slug": "modernisation-platform-security",
+          "sso_group_name": "modernisation-platform-security",
           "level": "view-only"
         }
       ]

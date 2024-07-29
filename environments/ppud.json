@@ -5,11 +5,11 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "modernisation-platform",
+          "sso_group_name": "modernisation-platform",
           "level": "developer"
         },
         {
-          "github_slug": "ppud-replacement-devs",
+          "sso_group_name": "ppud-replacement-devs",
           "level": "fleet-manager"
         }
       ],
@@ -19,11 +19,11 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "ppud-replacement-devs",
+          "sso_group_name": "ppud-replacement-devs",
           "level": "developer"
         },
         {
-          "github_slug": "ppud-replacement-devs",
+          "sso_group_name": "ppud-replacement-devs",
           "level": "fleet-manager"
         }
       ],
@@ -33,7 +33,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "ppud-replacement-devs",
+          "sso_group_name": "ppud-replacement-devs",
           "level": "developer"
         }
       ],

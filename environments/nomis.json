@@ -6,24 +6,24 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "syscon-devs",
+          "sso_group_name": "syscon-devs",
           "level": "instance-management"
         },
         {
-          "github_slug": "syscon-nomis",
+          "sso_group_name": "syscon-nomis",
           "level": "instance-management"
         },
         {
-          "github_slug": "csr-application-support",
+          "sso_group_name": "csr-application-support",
           "level": "instance-management"
         },
         {
-          "github_slug": "nomis-access",
+          "sso_group_name": "nomis-access",
           "level": "instance-access"
         }
       ]
@@ -32,24 +32,24 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "syscon-devs",
+          "sso_group_name": "syscon-devs",
           "level": "instance-management"
         },
         {
-          "github_slug": "syscon-nomis",
+          "sso_group_name": "syscon-nomis",
           "level": "instance-management"
         },
         {
-          "github_slug": "csr-application-support",
+          "sso_group_name": "csr-application-support",
           "level": "instance-management"
         },
         {
-          "github_slug": "nomis-access",
+          "sso_group_name": "nomis-access",
           "level": "instance-access"
         }
       ]
@@ -58,24 +58,24 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "syscon-devs",
+          "sso_group_name": "syscon-devs",
           "level": "instance-access"
         },
         {
-          "github_slug": "syscon-nomis",
+          "sso_group_name": "syscon-nomis",
           "level": "instance-access"
         },
         {
-          "github_slug": "csr-application-support",
+          "sso_group_name": "csr-application-support",
           "level": "instance-access"
         },
         {
-          "github_slug": "nomis-access",
+          "sso_group_name": "nomis-access",
           "level": "instance-access"
         }
       ]
@@ -84,24 +84,24 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "syscon-devs",
+          "sso_group_name": "syscon-devs",
           "level": "instance-access"
         },
         {
-          "github_slug": "syscon-nomis",
+          "sso_group_name": "syscon-nomis",
           "level": "instance-access"
         },
         {
-          "github_slug": "csr-application-support",
+          "sso_group_name": "csr-application-support",
           "level": "instance-access"
         },
         {
-          "github_slug": "nomis-access",
+          "sso_group_name": "nomis-access",
           "level": "instance-access"
         }
       ]

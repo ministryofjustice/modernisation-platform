@@ -6,22 +6,22 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "hmpps-dba",
+          "sso_group_name": "hmpps-dba",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "csr-application-support",
+          "sso_group_name": "csr-application-support",
           "level": "instance-management"
         }
       ]
@@ -30,22 +30,22 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "hmpps-dba",
+          "sso_group_name": "hmpps-dba",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "csr-application-support",
+          "sso_group_name": "csr-application-support",
           "level": "instance-management"
         }
       ]
@@ -54,22 +54,22 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "hmpps-dba",
+          "sso_group_name": "hmpps-dba",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "csr-application-support",
+          "sso_group_name": "csr-application-support",
           "level": "instance-access"
         }
       ]
@@ -78,22 +78,22 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "hmpps-dba",
+          "sso_group_name": "hmpps-dba",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "csr-application-support",
+          "sso_group_name": "csr-application-support",
           "level": "instance-access"
         }
       ]

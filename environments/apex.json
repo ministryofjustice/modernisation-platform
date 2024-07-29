@@ -5,15 +5,15 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "migration"
         },
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
-          "github_slug": "laa-apex-developer",
+          "sso_group_name": "laa-apex-developer",
           "level": "developer"
         }
       ]
@@ -22,11 +22,11 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
-          "github_slug": "laa-apex-developer",
+          "sso_group_name": "laa-apex-developer",
           "level": "developer"
         }
       ]
@@ -35,11 +35,11 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
-          "github_slug": "laa-apex-developer",
+          "sso_group_name": "laa-apex-developer",
           "level": "developer"
         }
       ]
@@ -48,11 +48,11 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
-          "github_slug": "laa-apex-developer",
+          "sso_group_name": "laa-apex-developer",
           "level": "developer"
         }
       ]

@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "observability-platform",
+          "sso_group_name": "observability-platform",
           "level": "developer"
         }
       ]
@@ -14,7 +14,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "observability-platform",
+          "sso_group_name": "observability-platform",
           "level": "developer"
         }
       ]
