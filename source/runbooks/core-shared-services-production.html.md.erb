@@ -30,13 +30,12 @@ The core-shared-services-production AWS account hosts resources used by other Mo
 | Instance Scheduler Lambda | Manage start/stop schedules for non-critical instances
 
 ## Steps
-
-1. Account Creation 
+## 1. Account Creation 
 
 To initiate the account recreation process, go to the GitHub Actions page for the Modernisation Platform repository and trigger the new environment [workflow] (https://github.com/ministryofjustice/modernisation-platform/actions/workflows/new-environment.yml).
 This workflow should detect that the account no longer exists and propose to recreate the account. As part of this process, it will also execute the baseline runs for the account. 
 
-2. Deploy Core Shared Services Resources
+## 2. Deploy Core Shared Services Resources
 
 This can be achieved by triggering core-shared-services deployment workflow run, which can be [found here](https://github.com/ministryofjustice/modernisation-platform/actions/runs/10073457872/workflow).
 Alternatively, this can be done as manual deployment: 
@@ -44,11 +43,12 @@ Alternatively, this can be done as manual deployment:
 - Run `terraform plan` in the production workspace
 - Using admin credentials, execute `terraform apply`
 
-3. Verify Resources
+## 3. Verify Resources
+
 - Log into AWS Console for the core-shared-services account
 - Check and verify that resources have been correctly provisioned (KMS keys, VPC, etc.)
 
-4. Notify customers
+## 4. Notify customers
 - Inform our members that the account has been recreated
 - Liaise with owning teams to validate any rebuilds
 
