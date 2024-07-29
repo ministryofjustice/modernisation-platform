@@ -14,7 +14,8 @@
         {
           "github_slug": "hmpps-dba",
           "level": "developer",
-          "nuke": "exclude"
+          "nuke": "exclude",
+          "github_action_reviewer": "true"
         },
         {
           "github_slug": "unilink",
