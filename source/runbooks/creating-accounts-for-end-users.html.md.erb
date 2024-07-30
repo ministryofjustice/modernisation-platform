@@ -24,15 +24,15 @@ Here’s an example of an account request, and the steps that were taken in orde
 
 Customers will fill out the new-environment template via our public repository [here](https://github.com/ministryofjustice/modernisation-platform/issues/new/choose) and supply the required information.
 
-| Attribute                    | Description                                                                                                                                                                                                                              |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Application name (file name) | The name must be in lowercase and a maximum of 30 characters. For our example we have `data-and-insights-wepi`                                                                                                                           |
-| isolated-network             | If the user has requested an isolated network environment only complete the [New Environment Files](#new-environment-files) and stop when you reach the [Networking Stage](#networking-stage) as this is not required.                   |
-| GitHub team slug             | This is the name of your GitHub team that will be accessing the environment. Environments are accessed via single sign on (SSO), so to give people permissions to access your environment you just have to add them to your GitHub team. |
-| Access                       | For our example, sandbox access has been requested. To read more about access levels, click [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#application-name)              |
-| Environment                  | This is one of the four valid environments, development, test, preproduction or production                                                                                                                                               |
-| Tags                         | application, business-unit and owner are in tags, and they are used to tag your AWS resources inside of your account.                                                                                                                    |
-| Additional features          | This example has no additional features, but things VPN endpoints and extended DNS zones are requestable.                                                                                                                                |
+| Attribute                    | Description                                                                                                                                                                                                                                                                                     |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Application name (file name) | The name must be in lowercase and a maximum of 30 characters. For our example we have `data-and-insights-wepi`                                                                                                                                                                                  |
+| isolated-network             | If the user has requested an isolated network environment only complete the [New Environment Files](#new-environment-files) and stop when you reach the [Networking Stage](#networking-stage) as this is not required.                                                                          |
+| SSO Group Name               | This is the name of the Identity Center group used for SSO, which can be a GitHub team name that will be accessing the environment. Environments are accessed via single sign on (SSO), so to give people permissions to access your environment you just have to add them to your GitHub team. |
+| Access                       | For our example, sandbox access has been requested. To read more about access levels, click [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/creating-environments.html#application-name)                                                                     |
+| Environment                  | This is one of the four valid environments, development, test, preproduction or production                                                                                                                                                                                                      |
+| Tags                         | application, business-unit and owner are in tags, and they are used to tag your AWS resources inside of your account.                                                                                                                                                                           |
+| Additional features          | This example has no additional features, but things VPN endpoints and extended DNS zones are requestable.                                                                                                                                                                                       |
 
 ## New Environment Files
 
@@ -50,13 +50,13 @@ You can override this by defining `codeowners` as an attribute for that applicat
 
 `"codeowners": ["<owner-name>"],` Replace \<owner-name\> with a GitHub team such as `modernisation-platform`.
 
-This will restrict code approval to only the GitHub team slugs listed in the 'codeowners' attribute.
+This will restrict code approval to only the SSO group names listed in the 'codeowners' attribute.
 
 See [#5957](https://github.com/ministryofjustice/modernisation-platform/pull/5957) for an example of the change required.
 
 By default all teams listed in the access blocks for an environment can approve the corresponding Github action runs.
 
-Alternatively, if you wish to specify the GitHub team slugs that can approve the Github action runs for a specific environment, you can define `github_action_reviewer` as an attribute for that environment by setting `"github_action_reviewer" : "true"` in the access block for that environment/team.
+Alternatively, if you wish to specify the SSO group names that can approve the Github action runs for a specific environment, you can define `github_action_reviewer` as an attribute for that environment by setting `"github_action_reviewer" : "true"` in the access block for that environment/team.
 
 ```json
     "name": "development",
