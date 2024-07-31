@@ -80,21 +80,15 @@ locals {
     distinct(flatten([
       for application in local.environments_json : [
         for environment in application.environments : [
-          for access in environment.access : [
-            lookup(access, "github_slug", null),
-            lookup(access, "sso_group_name", null)
+          for access in environment.access :
+            (access.github_slug != null ? access.github_slug : access.sso_group_name)
+            if application.account-type == "member" && !contains(["modernisation-platform", "modernisation-platform-engineers"], (access.github_slug != null ? access.github_slug : access.sso_group_name))
           ]
-          if application.account-type == "member" &&
-          (
-            (!contains(["modernisation-platform", "modernisation-platform-engineers"], lookup(access, "github_slug", "")) &&
-            lookup(access, "github_slug", null) != null) ||
-            (!contains(["modernisation-platform", "modernisation-platform-engineers"], lookup(access, "sso_group_name", "")) &&
-            lookup(access, "sso_group_name", null) != null)
-          )
         ]
       ]
-    ]))
+    ))
   )
+
 
 
   # Create a list of repositories that we want our customers to be able to contribute to
