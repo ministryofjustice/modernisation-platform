@@ -81,7 +81,7 @@ locals {
     for application in local.environments_json : [
       for environment in application.environments : [
         for access in environment.access :
-          access if application.account_type == "member" && (
+          access if application.account-type == "member" && (
             (lookup(access, "github_slug", null) != null ? 
               !contains(["modernisation-platform", "modernisation-platform-engineers"], lookup(access, "github_slug", null)) 
               : 
