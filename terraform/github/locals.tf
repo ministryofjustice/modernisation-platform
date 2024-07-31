@@ -85,8 +85,12 @@ locals {
             lookup(access, "sso_group_name", null)
           ]
           if application.account-type == "member" &&
-          !contains(["modernisation-platform", "modernisation-platform-engineers"], lookup(access, "github_slug", "")) &&
-          !contains(["modernisation-platform", "modernisation-platform-engineers"], lookup(access, "sso_group_name", ""))
+          (
+            (!contains(["modernisation-platform", "modernisation-platform-engineers"], lookup(access, "github_slug", "")) &&
+            lookup(access, "github_slug", null) != null) ||
+            (!contains(["modernisation-platform", "modernisation-platform-engineers"], lookup(access, "sso_group_name", "")) &&
+            lookup(access, "sso_group_name", null) != null)
+          )
         ]
       ]
     ]))
