@@ -81,8 +81,25 @@ locals {
       for application in local.environments_json : [
         for environment in application.environments : [
           for access in environment.access :
-          coalesce(access.github_slug, access.sso_group_name)
-          if application.account-type == "member" && !contains(["modernisation-platform", "modernisation-platform-engineers"], coalesce(access.github_slug, access.sso_group_name))
+          (
+            contains(keys(access), "github_slug") && access.github_slug != "" ?
+            access.github_slug :
+            (
+              contains(keys(access), "sso_group_name") && access.sso_group_name != "" ?
+              access.sso_group_name :
+              null
+            )
+          )
+          if application.account-type == "member" &&
+          (
+            contains(keys(access), "github_slug") && access.github_slug != "" ?
+            !contains(["modernisation-platform", "modernisation-platform-engineers"], access.github_slug) :
+            (
+              contains(keys(access), "sso_group_name") && access.sso_group_name != "" ?
+              !contains(["modernisation-platform", "modernisation-platform-engineers"], access.sso_group_name) :
+              false
+            )
+          )
         ]
       ]
     ]))
