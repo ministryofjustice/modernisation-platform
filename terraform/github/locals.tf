@@ -80,30 +80,18 @@ locals {
     distinct(flatten([
       for application in local.environments_json : [
         for environment in application.environments : [
-          for access in environment.access :
-          (
-            contains(keys(access), "github_slug") && access.github_slug != "" ?
-            access.github_slug :
-            (
-              contains(keys(access), "sso_group_name") && access.sso_group_name != "" ?
-              access.sso_group_name :
-              null
-            )
-          )
+          for access in environment.access : [
+            lookup(access, "github_slug", null),
+            lookup(access, "sso_group_name", null)
+          ]
           if application.account-type == "member" &&
-          (
-            contains(keys(access), "github_slug") && access.github_slug != "" ?
-            !contains(["modernisation-platform", "modernisation-platform-engineers"], access.github_slug) :
-            (
-              contains(keys(access), "sso_group_name") && access.sso_group_name != "" ?
-              !contains(["modernisation-platform", "modernisation-platform-engineers"], access.sso_group_name) :
-              false
-            )
-          )
+          !contains(["modernisation-platform", "modernisation-platform-engineers"], lookup(access, "github_slug", "")) &&
+          !contains(["modernisation-platform", "modernisation-platform-engineers"], lookup(access, "sso_group_name", ""))
         ]
       ]
     ]))
   )
+
 
   # Create a list of repositories that we want our customers to be able to contribute to
   modernisation_platform_repositories = [
