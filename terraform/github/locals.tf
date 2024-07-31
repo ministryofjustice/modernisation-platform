@@ -75,19 +75,22 @@ locals {
     }, jsondecode(file("../../environments/${file}")))
   ]
 
-  application_github_slugs = concat(
-    ["all-org-members"],
-    distinct(flatten([
+  locals {
+    filtered_access = flatten([
       for application in local.environments_json : [
         for environment in application.environments : [
           for access in environment.access :
             if application.account_type == "member" && (access.github_slug != null ? !contains(["modernisation-platform", "modernisation-platform-engineers"], access.github_slug) : !contains(["modernisation-platform", "modernisation-platform-engineers"], access.sso_group_name)) :
-              (access.github_slug != null ? access.github_slug : access.sso_group_name)
+              access
           ]
         ]
       ]
-    ))
-  )
+    )
+
+    github_or_sso_slugs = [for access in local.filtered_access : coalesce(access.github_slug, access.sso_group_name)]
+  }
+
+  application_github_slugs = concat(["all-org-members"], distinct(local.github_or_sso_slugs))
 
 
 
