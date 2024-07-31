@@ -75,23 +75,34 @@ locals {
     }, jsondecode(file("../../environments/${file}")))
   ]
 
-  
+  # Filter and flatten access entries based on conditions
   filtered_access = flatten([
     for application in local.environments_json : [
       for environment in application.environments : [
         for access in environment.access :
-          if application.account_type == "member" && (access.github_slug != null ? !contains(["modernisation-platform", "modernisation-platform-engineers"], access.github_slug) : !contains(["modernisation-platform", "modernisation-platform-engineers"], access.sso_group_name)) :
+          if application.account_type == "member" && (
+            (lookup(access, "github_slug", null) != null ? 
+              !contains(["modernisation-platform", "modernisation-platform-engineers"], lookup(access, "github_slug", null)) 
+              : 
+              !contains(["modernisation-platform", "modernisation-platform-engineers"], lookup(access, "sso_group_name", null)))
+          ) :
             access
-        ]
       ]
     ]
-  )
+  ])
 
-  github_or_sso_slugs = [for access in local.filtered_access : coalesce(access.github_slug, access.sso_group_name)]
+  # Extract GitHub or SSO slugs
+  github_or_sso_slugs = [
+    for access in local.filtered_access : 
+      coalesce(lookup(access, "github_slug", null), lookup(access, "sso_group_name", null))
+  ]
+
+  # Final list including all-org-members and distinct slugs
   application_github_slugs = concat(
     ["all-org-members"],
     distinct(local.github_or_sso_slugs)
   )
+
 
 
   # Create a list of repositories that we want our customers to be able to contribute to
