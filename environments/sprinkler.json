@@ -6,31 +6,37 @@
       "access": [
         {
           "sso_group_name": "modernisation-platform",
+          "github_slug": "modernisation-platform",
           "level": "developer",
           "nuke": "rebuild"
         },
         {
           "sso_group_name": "modernisation-platform",
+          "github_slug": "modernisation-platform",
           "level": "reporting-operations",
           "nuke": "rebuild"
         },
         {
           "sso_group_name": "modernisation-platform",
+          "github_slug": "modernisation-platform",
           "level": "migration",
           "nuke": "rebuild"
         },
         {
           "sso_group_name": "modernisation-platform",
+          "github_slug": "modernisation-platform",
           "level": "data-engineer",
           "nuke": "rebuild"
         },
         {
           "sso_group_name": "modernisation-platform-security",
+          "github_slug": "modernisation-platform-security",
           "level": "instance-management",
           "nuke": "rebuild"
         },
         {
           "sso_group_name": "modernisation-platform",
+          "github_slug": "modernisation-platform",
           "level": "fleet-manager",
           "nuke": "rebuild"
         }
