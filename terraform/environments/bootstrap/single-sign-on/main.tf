@@ -36,7 +36,7 @@ data "aws_identitystore_group" "platform_admin" {
 # Get Identity Store groups
 data "aws_identitystore_group" "member" {
 
-  for_each = toset(local.sso_data[local.env_name][*].github_slug)
+  for_each = toset([for sso in local.sso_data[local.env_name] : lookup(sso, "github_slug", "") != "" ? sso.github_slug : sso.sso_group_name])
 
   provider = aws.sso-management
 
@@ -79,14 +79,13 @@ resource "aws_ssoadmin_account_assignment" "platform_engineer" {
 }
 
 resource "aws_ssoadmin_account_assignment" "view_only" {
-
   for_each = {
 
     for sso_assignment in local.sso_data[local.env_name][*] :
 
-    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
-
-    if(sso_assignment.level == "view-only")
+      "${coalesce(lookup(sso_assignment, "github_slug", null), lookup(sso_assignment, "sso_group_name", null))}-${sso_assignment.level}" => sso_assignment
+      
+      if (sso_assignment.level == "view-only") && (lookup(sso_assignment, "github_slug", null) != null || lookup(sso_assignment, "sso_group_name", null) != null)
   }
 
   provider = aws.sso-management
@@ -94,7 +93,7 @@ resource "aws_ssoadmin_account_assignment" "view_only" {
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.view-only
 
-  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_id   = data.aws_identitystore_group.member[coalesce(lookup(each.value, "github_slug", null), lookup(each.value, "sso_group_name", null))].group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
@@ -107,9 +106,9 @@ resource "aws_ssoadmin_account_assignment" "developer" {
 
     for sso_assignment in local.sso_data[local.env_name][*] :
 
-    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+    "${coalesce(lookup(sso_assignment, "github_slug", null), lookup(sso_assignment, "sso_group_name", null))}-${sso_assignment.level}" => sso_assignment
 
-    if(sso_assignment.level == "developer")
+    if(sso_assignment.level == "developer") && (lookup(sso_assignment, "github_slug", null) != null || lookup(sso_assignment, "sso_group_name", null) != null)
   }
 
   provider = aws.sso-management
@@ -117,7 +116,7 @@ resource "aws_ssoadmin_account_assignment" "developer" {
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.developer
 
-  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_id   = data.aws_identitystore_group.member[coalesce(lookup(each.value, "github_slug", null), lookup(each.value, "sso_group_name", null))].group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
@@ -130,7 +129,7 @@ resource "aws_ssoadmin_account_assignment" "sandbox" {
 
     for sso_assignment in local.sso_data[local.env_name][*] :
 
-    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+    "${coalesce(lookup(sso_assignment, "github_slug", null), lookup(sso_assignment, "sso_group_name", null))}-${sso_assignment.level}" => sso_assignment
 
     if(sso_assignment.level == "sandbox")
   }
@@ -140,7 +139,7 @@ resource "aws_ssoadmin_account_assignment" "sandbox" {
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.sandbox
 
-  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_id   = data.aws_identitystore_group.member[coalesce(lookup(each.value, "github_slug", null), lookup(each.value, "sso_group_name", null))].group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
@@ -153,9 +152,9 @@ resource "aws_ssoadmin_account_assignment" "migration" {
 
     for sso_assignment in local.sso_data[local.env_name][*] :
 
-    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+    "${coalesce(lookup(sso_assignment, "github_slug", null), lookup(sso_assignment, "sso_group_name", null))}-${sso_assignment.level}" => sso_assignment
 
-    if(sso_assignment.level == "migration")
+    if(sso_assignment.level == "migration") && (lookup(sso_assignment, "github_slug", null) != null || lookup(sso_assignment, "sso_group_name", null) != null)
   }
 
   provider = aws.sso-management
@@ -163,7 +162,7 @@ resource "aws_ssoadmin_account_assignment" "migration" {
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.migration
 
-  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_id   = data.aws_identitystore_group.member[coalesce(lookup(each.value, "github_slug", null), lookup(each.value, "sso_group_name", null))].group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
@@ -177,7 +176,7 @@ resource "aws_ssoadmin_account_assignment" "administator" {
 
     for sso_assignment in local.sso_data[local.env_name][*] :
 
-    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+    "${coalesce(lookup(sso_assignment, "github_slug", null), lookup(sso_assignment, "sso_group_name", null))}-${sso_assignment.level}" => sso_assignment
 
     if(sso_assignment.level == "administrator")
   }
@@ -187,7 +186,7 @@ resource "aws_ssoadmin_account_assignment" "administator" {
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.administrator
 
-  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_id   = data.aws_identitystore_group.member[coalesce(lookup(each.value, "github_slug", null), lookup(each.value, "sso_group_name", null))].group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
@@ -200,7 +199,7 @@ resource "aws_ssoadmin_account_assignment" "instance-access" {
 
     for sso_assignment in local.sso_data[local.env_name][*] :
 
-    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+    "${coalesce(lookup(sso_assignment, "github_slug", null), lookup(sso_assignment, "sso_group_name", null))}-${sso_assignment.level}" => sso_assignment
 
     if(sso_assignment.level == "instance-access")
   }
@@ -210,7 +209,7 @@ resource "aws_ssoadmin_account_assignment" "instance-access" {
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.instance_access
 
-  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_id   = data.aws_identitystore_group.member[coalesce(lookup(each.value, "github_slug", null), lookup(each.value, "sso_group_name", null))].group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
@@ -223,9 +222,9 @@ resource "aws_ssoadmin_account_assignment" "instance-management" {
 
     for sso_assignment in local.sso_data[local.env_name][*] :
 
-    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+    "${coalesce(lookup(sso_assignment, "github_slug", null), lookup(sso_assignment, "sso_group_name", null))}-${sso_assignment.level}" => sso_assignment
 
-    if(sso_assignment.level == "instance-management")
+    if(sso_assignment.level == "instance-management") && (lookup(sso_assignment, "github_slug", null) != null || lookup(sso_assignment, "sso_group_name", null) != null)
   }
 
   provider = aws.sso-management
@@ -233,7 +232,7 @@ resource "aws_ssoadmin_account_assignment" "instance-management" {
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.instance_management
 
-  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_id   = data.aws_identitystore_group.member[coalesce(lookup(each.value, "github_slug", null), lookup(each.value, "sso_group_name", null))].group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
@@ -246,9 +245,9 @@ resource "aws_ssoadmin_account_assignment" "security_audit" {
 
     for sso_assignment in local.sso_data[local.env_name][*] :
 
-    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+    "${coalesce(lookup(sso_assignment, "github_slug", null), lookup(sso_assignment, "sso_group_name", null))}-${sso_assignment.level}" => sso_assignment
 
-    if(sso_assignment.level == "security-audit")
+    if(sso_assignment.level == "security-audit") && (lookup(sso_assignment, "github_slug", null) != null || lookup(sso_assignment, "sso_group_name", null) != null)
   }
 
   provider = aws.sso-management
@@ -256,7 +255,7 @@ resource "aws_ssoadmin_account_assignment" "security_audit" {
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.security_audit
 
-  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_id   = data.aws_identitystore_group.member[coalesce(lookup(each.value, "github_slug", null), lookup(each.value, "sso_group_name", null))].group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
@@ -269,9 +268,9 @@ resource "aws_ssoadmin_account_assignment" "read_only" {
 
     for sso_assignment in local.sso_data[local.env_name][*] :
 
-    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+    "${coalesce(lookup(sso_assignment, "github_slug", null), lookup(sso_assignment, "sso_group_name", null))}-${sso_assignment.level}" => sso_assignment
 
-    if(sso_assignment.level == "read-only")
+    if(sso_assignment.level == "read-only") && (lookup(sso_assignment, "github_slug", null) != null || lookup(sso_assignment, "sso_group_name", null) != null)
   }
 
   provider = aws.sso-management
@@ -279,7 +278,7 @@ resource "aws_ssoadmin_account_assignment" "read_only" {
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.read_only
 
-  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_id   = data.aws_identitystore_group.member[coalesce(lookup(each.value, "github_slug", null), lookup(each.value, "sso_group_name", null))].group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
@@ -292,9 +291,9 @@ resource "aws_ssoadmin_account_assignment" "data_engineer" {
 
     for sso_assignment in local.sso_data[local.env_name][*] :
 
-    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+    "${coalesce(lookup(sso_assignment, "github_slug", null), lookup(sso_assignment, "sso_group_name", null))}-${sso_assignment.level}" => sso_assignment
 
-    if(sso_assignment.level == "data-engineer")
+    if(sso_assignment.level == "data-engineer") && (lookup(sso_assignment, "github_slug", null) != null || lookup(sso_assignment, "sso_group_name", null) != null)
   }
 
   provider = aws.sso-management
@@ -302,7 +301,7 @@ resource "aws_ssoadmin_account_assignment" "data_engineer" {
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.data_engineer
 
-  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_id   = data.aws_identitystore_group.member[coalesce(lookup(each.value, "github_slug", null), lookup(each.value, "sso_group_name", null))].group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
@@ -315,9 +314,9 @@ resource "aws_ssoadmin_account_assignment" "reporting-operations" {
 
     for sso_assignment in local.sso_data[local.env_name][*] :
 
-    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+    "${coalesce(lookup(sso_assignment, "github_slug", null), lookup(sso_assignment, "sso_group_name", null))}-${sso_assignment.level}" => sso_assignment
 
-    if(sso_assignment.level == "reporting-operations")
+    if(sso_assignment.level == "reporting-operations") && (lookup(sso_assignment, "github_slug", null) != null || lookup(sso_assignment, "sso_group_name", null) != null)
   }
 
   provider = aws.sso-management
@@ -325,7 +324,7 @@ resource "aws_ssoadmin_account_assignment" "reporting-operations" {
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.reporting_operations
 
-  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_id   = data.aws_identitystore_group.member[coalesce(lookup(each.value, "github_slug", null), lookup(each.value, "sso_group_name", null))].group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
@@ -338,9 +337,9 @@ resource "aws_ssoadmin_account_assignment" "mwaa_user" {
 
     for sso_assignment in local.sso_data[local.env_name][*] :
 
-    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+    "${coalesce(lookup(sso_assignment, "github_slug", null), lookup(sso_assignment, "sso_group_name", null))}-${sso_assignment.level}" => sso_assignment
 
-    if(sso_assignment.level == "mwaa-user")
+    if(sso_assignment.level == "mwaa-user") && (lookup(sso_assignment, "github_slug", null) != null || lookup(sso_assignment, "sso_group_name", null) != null)
   }
 
   provider = aws.sso-management
@@ -348,7 +347,7 @@ resource "aws_ssoadmin_account_assignment" "mwaa_user" {
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.mwaa_user
 
-  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_id   = data.aws_identitystore_group.member[coalesce(lookup(each.value, "github_slug", null), lookup(each.value, "sso_group_name", null))].group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
@@ -361,9 +360,9 @@ resource "aws_ssoadmin_account_assignment" "powerbi_user" {
 
     for sso_assignment in local.sso_data[local.env_name][*] :
 
-    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+    "${coalesce(lookup(sso_assignment, "github_slug", null), lookup(sso_assignment, "sso_group_name", null))}-${sso_assignment.level}" => sso_assignment
 
-    if(sso_assignment.level == "powerbi-user")
+    if(sso_assignment.level == "powerbi-user") && (lookup(sso_assignment, "github_slug", null) != null || lookup(sso_assignment, "sso_group_name", null) != null)
   }
 
   provider = aws.sso-management
@@ -371,7 +370,7 @@ resource "aws_ssoadmin_account_assignment" "powerbi_user" {
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.powerbi_user
 
-  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_id   = data.aws_identitystore_group.member[coalesce(lookup(each.value, "github_slug", null), lookup(each.value, "sso_group_name", null))].group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
@@ -384,9 +383,9 @@ resource "aws_ssoadmin_account_assignment" "fleet_manager" {
 
     for sso_assignment in local.sso_data[local.env_name][*] :
 
-    "${sso_assignment.github_slug}-${sso_assignment.level}" => sso_assignment
+    "${coalesce(lookup(sso_assignment, "github_slug", null), lookup(sso_assignment, "sso_group_name", null))}-${sso_assignment.level}" => sso_assignment
 
-    if(sso_assignment.level == "fleet-manager")
+    if(sso_assignment.level == "fleet-manager") && (lookup(sso_assignment, "github_slug", null) != null || lookup(sso_assignment, "sso_group_name", null) != null)
   }
 
   provider = aws.sso-management
@@ -394,7 +393,7 @@ resource "aws_ssoadmin_account_assignment" "fleet_manager" {
   instance_arn       = local.sso_instance_arn
   permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.fleet_manager
 
-  principal_id   = data.aws_identitystore_group.member[each.value.github_slug].group_id
+  principal_id   = data.aws_identitystore_group.member[coalesce(lookup(each.value, "github_slug", null), lookup(each.value, "sso_group_name", null))].group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
