@@ -33,6 +33,11 @@
           "sso_group_name": "modernisation-platform",
           "level": "fleet-manager",
           "nuke": "rebuild"
+        },
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "security-audit",
+          "nuke": "rebuild"
         }
       ],
       "additional_reviewers": ["astrobinson"]
