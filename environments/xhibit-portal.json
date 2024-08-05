@@ -5,11 +5,11 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "xhibit-portal-dev",
+          "sso_group_name": "xhibit-portal-dev",
           "level": "administrator"
         },
         {
-          "github_slug": "cjse-xhibit-portal-discovery",
+          "sso_group_name": "cjse-xhibit-portal-discovery",
           "level": "developer"
         }
       ]
@@ -18,7 +18,7 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "xhibit-portal-dev",
+          "sso_group_name": "xhibit-portal-dev",
           "level": "developer"
         }
       ]
@@ -27,7 +27,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "xhibit-portal-dev",
+          "sso_group_name": "xhibit-portal-dev",
           "level": "developer"
         }
       ]

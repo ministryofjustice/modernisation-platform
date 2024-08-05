@@ -6,7 +6,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "analytical-platform",
+          "sso_group_name": "analytical-platform",
           "level": "sandbox",
           "nuke": "exclude"
         }
@@ -16,7 +16,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "analytical-platform",
+          "sso_group_name": "analytical-platform",
           "level": "developer"
         }
       ]

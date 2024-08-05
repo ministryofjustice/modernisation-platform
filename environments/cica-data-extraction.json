@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "cica-extract-tool-admins",
+          "sso_group_name": "cica-extract-tool-admins",
           "level": "sandbox",
           "nuke": "rebuild"
         }

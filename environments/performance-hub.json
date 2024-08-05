@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "performance-hub-developers",
+          "sso_group_name": "performance-hub-developers",
           "level": "developer"
         }
       ]
@@ -14,7 +14,7 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "performance-hub-developers",
+          "sso_group_name": "performance-hub-developers",
           "level": "developer"
         }
       ]
@@ -23,7 +23,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "performance-hub-developers",
+          "sso_group_name": "performance-hub-developers",
           "level": "developer"
         }
       ]

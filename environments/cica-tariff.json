@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "cica-mp-tariff",
+          "sso_group_name": "cica-mp-tariff",
           "level": "developer"
         }
       ]
@@ -14,7 +14,7 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "cica-mp-tariff",
+          "sso_group_name": "cica-mp-tariff",
           "level": "developer"
         }
       ]
@@ -23,7 +23,7 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "cica-mp-tariff",
+          "sso_group_name": "cica-mp-tariff",
           "level": "developer"
         }
       ]
@@ -32,7 +32,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "cica-mp-tariff",
+          "sso_group_name": "cica-mp-tariff",
           "level": "developer"
         }
       ]

@@ -6,7 +6,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "sandbox",
           "nuke": "exclude",
           "github_action_reviewer": "true"
@@ -17,12 +17,12 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "national-applications-reporting-team",
+          "sso_group_name": "national-applications-reporting-team",
           "level": "instance-management"
         }
       ]
@@ -31,12 +31,12 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "national-applications-reporting-team",
+          "sso_group_name": "national-applications-reporting-team",
           "level": "instance-management"
         }
       ]
@@ -45,12 +45,12 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "national-applications-reporting-team",
+          "sso_group_name": "national-applications-reporting-team",
           "level": "instance-management"
         }
       ]

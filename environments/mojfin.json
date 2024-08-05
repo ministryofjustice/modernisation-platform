@@ -5,11 +5,11 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
-          "github_slug": "laa-mojfin-developers",
+          "sso_group_name": "laa-mojfin-developers",
           "level": "developer"
         }
       ]
@@ -18,11 +18,11 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
-          "github_slug": "laa-mojfin-developers",
+          "sso_group_name": "laa-mojfin-developers",
           "level": "developer"
         }
       ]
@@ -31,11 +31,11 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
-          "github_slug": "laa-mojfin-developers",
+          "sso_group_name": "laa-mojfin-developers",
           "level": "developer"
         }
       ]

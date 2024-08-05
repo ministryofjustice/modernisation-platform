@@ -5,11 +5,11 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer"
         },
         {
-          "github_slug": "hmpps-delius-jitbit-devs",
+          "sso_group_name": "hmpps-delius-jitbit-devs",
           "level": "instance-management"
         }
       ]
@@ -18,11 +18,11 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer"
         },
         {
-          "github_slug": "hmpps-delius-jitbit-devs",
+          "sso_group_name": "hmpps-delius-jitbit-devs",
           "level": "instance-management"
         }
       ]
@@ -31,11 +31,11 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer"
         },
         {
-          "github_slug": "hmpps-delius-jitbit-devs",
+          "sso_group_name": "hmpps-delius-jitbit-devs",
           "level": "instance-management"
         }
       ]
@@ -44,11 +44,11 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer"
         },
         {
-          "github_slug": "hmpps-delius-jitbit-devs",
+          "sso_group_name": "hmpps-delius-jitbit-devs",
           "level": "instance-management"
         }
       ]

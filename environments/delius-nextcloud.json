@@ -6,7 +6,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "sandbox",
           "nuke": "exclude",
           "github_action_reviewer": "true"
@@ -17,7 +17,7 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer",
           "github_action_reviewer": "true"
         }
@@ -27,7 +27,7 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer",
           "github_action_reviewer": "true"
         }
@@ -37,7 +37,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer",
           "github_action_reviewer": "true"
         }

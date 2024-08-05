@@ -5,24 +5,24 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "hmpps-digital-prison-reporting",
+          "sso_group_name": "hmpps-digital-prison-reporting",
           "level": "sandbox",
           "nuke": "exclude"
         },
         {
-          "github_slug": "hmpps-digital-prison-reporting",
+          "sso_group_name": "hmpps-digital-prison-reporting",
           "level": "reporting-operations"
         },
         {
-          "github_slug": "hmpps-digital-prison-reporting-non-cleared-team",
+          "sso_group_name": "hmpps-digital-prison-reporting-non-cleared-team",
           "level": "sandbox"
         },
         {
-          "github_slug": "hmpps-digital-prison-reporting-non-cleared-team",
+          "sso_group_name": "hmpps-digital-prison-reporting-non-cleared-team",
           "level": "reporting-operations"
         },
         {
-          "github_slug": "digital-prisons-reporting-development-data-engineer",
+          "sso_group_name": "digital-prisons-reporting-development-data-engineer",
           "level": "data-engineer"
         }
       ]
@@ -31,23 +31,23 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "hmpps-digital-prison-reporting",
+          "sso_group_name": "hmpps-digital-prison-reporting",
           "level": "developer"
         },
         {
-          "github_slug": "hmpps-digital-prison-reporting",
+          "sso_group_name": "hmpps-digital-prison-reporting",
           "level": "reporting-operations"
         },
         {
-          "github_slug": "hmpps-digital-prison-reporting-non-cleared-team",
+          "sso_group_name": "hmpps-digital-prison-reporting-non-cleared-team",
           "level": "developer"
         },
         {
-          "github_slug": "hmpps-digital-prison-reporting-non-cleared-team",
+          "sso_group_name": "hmpps-digital-prison-reporting-non-cleared-team",
           "level": "reporting-operations"
         },
         {
-          "github_slug": "digital-prisons-reporting-test-data-engineer",
+          "sso_group_name": "digital-prisons-reporting-test-data-engineer",
           "level": "data-engineer"
         }
       ]
@@ -56,15 +56,15 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "hmpps-digital-prison-reporting",
+          "sso_group_name": "hmpps-digital-prison-reporting",
           "level": "developer"
         },
         {
-          "github_slug": "hmpps-digital-prison-reporting",
+          "sso_group_name": "hmpps-digital-prison-reporting",
           "level": "reporting-operations"
         },
         {
-          "github_slug": "digital-prisons-reporting-preproduction-data-engineer",
+          "sso_group_name": "digital-prisons-reporting-preproduction-data-engineer",
           "level": "data-engineer"
         }
       ]
@@ -73,11 +73,11 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "hmpps-digital-prison-reporting",
+          "sso_group_name": "hmpps-digital-prison-reporting",
           "level": "developer"
         },
         {
-          "github_slug": "hmpps-digital-prison-reporting",
+          "sso_group_name": "hmpps-digital-prison-reporting",
           "level": "reporting-operations"
         }
       ]

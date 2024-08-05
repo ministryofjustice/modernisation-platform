@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "operations-engineering",
+          "sso_group_name": "operations-engineering",
           "level": "sandbox",
           "nuke": "exclude"
         }

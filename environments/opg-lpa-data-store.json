@@ -5,11 +5,11 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "opg-modernising-lpa-team",
+          "sso_group_name": "opg-modernising-lpa-team",
           "level": "administrator"
         },
         {
-          "github_slug": "opg-webops",
+          "sso_group_name": "opg-webops",
           "level": "administrator"
         }
       ]

@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "sandbox",
           "nuke": "rebuild"
         }
@@ -15,11 +15,11 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer"
         },
         {
-          "github_slug": "csr-application-support",
+          "sso_group_name": "csr-application-support",
           "level": "developer"
         }
       ]
@@ -28,11 +28,11 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer"
         },
         {
-          "github_slug": "csr-application-support",
+          "sso_group_name": "csr-application-support",
           "level": "developer"
         }
       ]
@@ -41,11 +41,11 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer"
         },
         {
-          "github_slug": "csr-application-support",
+          "sso_group_name": "csr-application-support",
           "level": "developer"
         }
       ]

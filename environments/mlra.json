@@ -5,11 +5,11 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
-          "github_slug": "laa-crime-apps-team",
+          "sso_group_name": "laa-crime-apps-team",
           "level": "data-engineer"
         }
       ]
@@ -18,11 +18,11 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
-          "github_slug": "laa-crime-apps-team",
+          "sso_group_name": "laa-crime-apps-team",
           "level": "data-engineer"
         }
       ]
@@ -31,11 +31,11 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
-          "github_slug": "laa-crime-apps-team",
+          "sso_group_name": "laa-crime-apps-team",
           "level": "data-engineer"
         }
       ]
@@ -44,11 +44,11 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
-          "github_slug": "laa-crime-apps-team",
+          "sso_group_name": "laa-crime-apps-team",
           "level": "data-engineer"
         }
       ]
