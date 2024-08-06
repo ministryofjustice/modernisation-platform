@@ -151,17 +151,17 @@ EOL
     directory=/terraform/environments/$application_name
     account_type=$(jq -r '."account-type"' ${environment_json_dir}/${application_name}.json)
     codeowners=$(jq -r 'try (.codeowners[] | select(length > 0) | "@ministryofjustice/" + .)' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
-    github_slugs=$(jq -r '.environments[].access[].github_slug | "@ministryofjustice/" + .' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
+    sso_group_names=$(jq -r '.environments[].access[].sso_group_name | "@ministryofjustice/" + .' ${environment_json_dir}/${application_name}.json | sort | uniq | tr '\n' ' ')
 
     if [ "$account_type" = "member" ]; then
       # if codeowners array has been defined in the json file, use that
       if [ -n "$codeowners" ]; then
         echo "Adding $directory $codeowners@ministryofjustice/modernisation-platform  to codeowners"
         echo "$directory $codeowners@ministryofjustice/modernisation-platform" >> $codeowners_file
-      # otherwise, use the github_slugs array
+      # otherwise, use the sso_group_names array
       else
-        echo "Adding $directory $github_slugs@ministryofjustice/modernisation-platform to codeowners"
-        echo "$directory $github_slugs@ministryofjustice/modernisation-platform" >> $codeowners_file
+        echo "Adding $directory $sso_group_names@ministryofjustice/modernisation-platform to codeowners"
+        echo "$directory $sso_group_names@ministryofjustice/modernisation-platform" >> $codeowners_file
       fi
     fi
   done

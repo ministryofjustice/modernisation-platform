@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "sso_group_name": "laa-ccms-migration-team",
           "level": "sandbox",
           "nuke": "exclude"
         }
@@ -15,7 +15,7 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "laa-ccms-migration-team",
+          "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
         }
       ]

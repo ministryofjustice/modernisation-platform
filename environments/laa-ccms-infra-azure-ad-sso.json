@@ -5,12 +5,12 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-ccms-webops",
+          "sso_group_name": "laa-ccms-webops",
           "level": "sandbox",
           "nuke": "exclude"
         },
         {
-          "github_slug": "modernisation-platform-security",
+          "sso_group_name": "modernisation-platform-security",
           "level": "view-only"
         }
       ]

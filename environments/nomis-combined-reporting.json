@@ -6,17 +6,17 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "national-applications-reporting-team",
+          "sso_group_name": "national-applications-reporting-team",
           "level": "instance-management"
         },
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "sandbox",
           "github_action_reviewer": "true",
           "nuke": "exclude"
         },
         {
-          "github_slug": "csr-application-support",
+          "sso_group_name": "csr-application-support",
           "level": "instance-management"
         }
       ]
@@ -25,16 +25,16 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "national-applications-reporting-team",
+          "sso_group_name": "national-applications-reporting-team",
           "level": "instance-management"
         },
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "csr-application-support",
+          "sso_group_name": "csr-application-support",
           "level": "instance-management"
         }
       ]
@@ -43,16 +43,16 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "national-applications-reporting-team",
+          "sso_group_name": "national-applications-reporting-team",
           "level": "instance-access"
         },
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "csr-application-support",
+          "sso_group_name": "csr-application-support",
           "level": "instance-access"
         }
       ]
@@ -61,16 +61,16 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "national-applications-reporting-team",
+          "sso_group_name": "national-applications-reporting-team",
           "level": "instance-access"
         },
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "csr-application-support",
+          "sso_group_name": "csr-application-support",
           "level": "instance-access"
         }
       ]

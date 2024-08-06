@@ -30,10 +30,10 @@ body:
     validations:
       required: true
   - type: input
-    id: github-slug
+    id: sso-group-name
     attributes:
-      label: GitHub team slug
-      description: The name of your GitHub team for environment access, this github team must be part of the ministryofjustice github organisation. You can have multiple GitHub teams with different access levels if required.
+      label: SSO Group Name
+      description: The Identity Center group name used for SSO, which can be a GitHub team name. This github team must be part of the ministryofjustice github organisation. You can have multiple GitHub teams with different access levels if required.
       value:
     validations:
       required: true

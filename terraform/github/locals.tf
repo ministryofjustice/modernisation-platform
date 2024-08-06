@@ -75,14 +75,14 @@ locals {
     }, jsondecode(file("../../environments/${file}")))
   ]
 
-  application_github_slugs = concat(
+  application_sso_group_names = concat(
     ["all-org-members"],
     distinct(flatten([
       for application in local.environments_json : [
         for environment in application.environments : [
           for access in environment.access :
-          access.github_slug
-          if application.account-type == "member" && !contains(["modernisation-platform", "modernisation-platform-engineers"], access.github_slug)
+          access.sso_group_name
+          if application.account-type == "member" && !contains(["modernisation-platform", "modernisation-platform-engineers"], access.sso_group_name)
         ]
       ]
     ]))

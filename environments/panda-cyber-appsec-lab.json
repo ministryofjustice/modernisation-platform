@@ -6,7 +6,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "panda-cyber-team",
+          "sso_group_name": "panda-cyber-team",
           "level": "sandbox"
         }
       ]

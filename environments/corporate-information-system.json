@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "sandbox",
           "nuke": "rebuild",
           "github_action_reviewer": "true"
@@ -16,7 +16,7 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         }
       ]
@@ -25,7 +25,7 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         }
       ]
@@ -34,7 +34,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "laa-aws-infrastructure",
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         }
       ]

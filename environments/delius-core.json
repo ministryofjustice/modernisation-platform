@@ -6,19 +6,19 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "sandbox",
           "nuke": "exclude",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "hmpps-dba",
+          "sso_group_name": "hmpps-dba",
           "level": "developer",
           "nuke": "exclude",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "unilink",
+          "sso_group_name": "unilink",
           "level": "developer",
           "nuke": "exclude",
           "github_action_reviewer": "true"
@@ -29,16 +29,16 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "hmpps-dba",
+          "sso_group_name": "hmpps-dba",
           "level": "developer"
         },
         {
-          "github_slug": "unilink",
+          "sso_group_name": "unilink",
           "level": "developer"
         }
       ]
@@ -47,16 +47,16 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "hmpps-dba",
+          "sso_group_name": "hmpps-dba",
           "level": "developer"
         },
         {
-          "github_slug": "unilink",
+          "sso_group_name": "unilink",
           "level": "developer"
         }
       ]
@@ -65,16 +65,16 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "hmpps-dba",
+          "sso_group_name": "hmpps-dba",
           "level": "developer"
         },
         {
-          "github_slug": "unilink",
+          "sso_group_name": "unilink",
           "level": "developer"
         }
       ]

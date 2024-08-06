@@ -5,12 +5,12 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "hmpps-electronic-monitoring-data-store",
+          "sso_group_name": "hmpps-electronic-monitoring-data-store",
           "level": "sandbox",
           "nuke": "rebuild"
         },
         {
-          "github_slug": "hmpps-electronic-monitoring-data-store",
+          "sso_group_name": "hmpps-electronic-monitoring-data-store",
           "level": "migration",
           "nuke": "rebuild"
         }
@@ -20,11 +20,11 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "hmpps-electronic-monitoring-data-store",
+          "sso_group_name": "hmpps-electronic-monitoring-data-store",
           "level": "data-engineer"
         },
         {
-          "github_slug": "hmpps-electronic-monitoring-data-store",
+          "sso_group_name": "hmpps-electronic-monitoring-data-store",
           "level": "migration"
         }
       ]

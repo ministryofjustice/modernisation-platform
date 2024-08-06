@@ -5,15 +5,15 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "analytical-platform-data-development-administrator",
+          "sso_group_name": "analytical-platform-data-development-administrator",
           "level": "administrator"
         },
         {
-          "github_slug": "analytical-platform-data-development-data-engineer",
+          "sso_group_name": "analytical-platform-data-development-data-engineer",
           "level": "data-engineer"
         },
         {
-          "github_slug": "data-platform-audit-and-security",
+          "sso_group_name": "data-platform-audit-and-security",
           "level": "security-audit"
         }
       ]
@@ -22,19 +22,19 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "analytical-platform-data-production-administrator",
+          "sso_group_name": "analytical-platform-data-production-administrator",
           "level": "administrator"
         },
         {
-          "github_slug": "analytical-platform-data-production-data-engineer",
+          "sso_group_name": "analytical-platform-data-production-data-engineer",
           "level": "data-engineer"
         },
         {
-          "github_slug": "data-platform-apps-and-tools-powerbi-authors",
+          "sso_group_name": "data-platform-apps-and-tools-powerbi-authors",
           "level": "powerbi-user"
         },
         {
-          "github_slug": "data-platform-audit-and-security",
+          "sso_group_name": "data-platform-audit-and-security",
           "level": "security-audit"
         }
       ]

@@ -5,7 +5,7 @@
       "name": "test-current",
       "access": [
         {
-          "github_slug": "cjse-bichard7-next",
+          "sso_group_name": "cjse-bichard7-next",
           "level": "administrator"
         }
       ]
@@ -14,7 +14,7 @@
       "name": "test-next",
       "access": [
         {
-          "github_slug": "cjse-bichard7-next",
+          "sso_group_name": "cjse-bichard7-next",
           "level": "administrator"
         }
       ]
@@ -23,7 +23,7 @@
       "name": "shared",
       "access": [
         {
-          "github_slug": "cjse-bichard7-next",
+          "sso_group_name": "cjse-bichard7-next",
           "level": "administrator"
         }
       ]
@@ -32,7 +32,7 @@
       "name": "sandbox-a",
       "access": [
         {
-          "github_slug": "cjse-bichard7-next",
+          "sso_group_name": "cjse-bichard7-next",
           "level": "administrator"
         }
       ]
@@ -41,7 +41,7 @@
       "name": "sandbox-b",
       "access": [
         {
-          "github_slug": "cjse-bichard7-next",
+          "sso_group_name": "cjse-bichard7-next",
           "level": "administrator"
         }
       ]
@@ -50,7 +50,7 @@
       "name": "sandbox-c",
       "access": [
         {
-          "github_slug": "cjse-bichard7-next",
+          "sso_group_name": "cjse-bichard7-next",
           "level": "administrator"
         }
       ]
@@ -59,7 +59,7 @@
       "name": "sandbox-shared",
       "access": [
         {
-          "github_slug": "cjse-bichard7-next",
+          "sso_group_name": "cjse-bichard7-next",
           "level": "administrator"
         }
       ]

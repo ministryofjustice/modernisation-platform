@@ -6,12 +6,12 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "sandbox",
           "nuke": "include"
         },
         {
-          "github_slug": "hmpps-dba",
+          "sso_group_name": "hmpps-dba",
           "level": "instance-management"
         }
       ]
@@ -20,11 +20,11 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer"
         },
         {
-          "github_slug": "hmpps-dba",
+          "sso_group_name": "hmpps-dba",
           "level": "instance-management"
         }
       ]
@@ -33,11 +33,11 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "hmpps-migration",
+          "sso_group_name": "hmpps-migration",
           "level": "developer"
         },
         {
-          "github_slug": "hmpps-dba",
+          "sso_group_name": "hmpps-dba",
           "level": "instance-management"
         }
       ]

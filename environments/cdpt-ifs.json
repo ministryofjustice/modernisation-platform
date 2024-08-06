@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "central-digital-product-team",
+          "sso_group_name": "central-digital-product-team",
           "level": "developer"
         }
       ]
@@ -14,7 +14,7 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "central-digital-product-team",
+          "sso_group_name": "central-digital-product-team",
           "level": "developer"
         }
       ]
@@ -23,7 +23,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "central-digital-product-team",
+          "sso_group_name": "central-digital-product-team",
           "level": "developer"
         }
       ]

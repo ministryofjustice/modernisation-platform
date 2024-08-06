@@ -6,7 +6,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "sandbox",
           "nuke": "rebuild",
           "github_action_reviewer": "true"
@@ -17,12 +17,12 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "oasys-operator",
+          "sso_group_name": "oasys-operator",
           "level": "instance-management"
         }
       ]
@@ -31,16 +31,16 @@
       "name": "preproduction",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "oasys-operator",
+          "sso_group_name": "oasys-operator",
           "level": "instance-management"
         },
         {
-          "github_slug": "oasys-migration",
+          "sso_group_name": "oasys-migration",
           "level": "migration"
         }
       ]
@@ -49,16 +49,16 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "studio-webops",
+          "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
         },
         {
-          "github_slug": "oasys-operator",
+          "sso_group_name": "oasys-operator",
           "level": "instance-access"
         },
         {
-          "github_slug": "oasys-migration",
+          "sso_group_name": "oasys-migration",
           "level": "migration"
         }
       ]

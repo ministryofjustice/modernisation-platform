@@ -5,11 +5,11 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "modernisation-platform",
+          "sso_group_name": "modernisation-platform",
           "level": "developer"
         },
         {
-          "github_slug": "modernisation-platform",
+          "sso_group_name": "modernisation-platform",
           "level": "instance-management"
         }
       ],

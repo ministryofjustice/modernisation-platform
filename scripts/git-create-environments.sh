@@ -162,10 +162,10 @@ main() {
       if [ "${account_type}" = "member" ]
       then
         # Check for teams that have the github_action_reviewer flag set to true
-        teams=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .access[] | select(.github_action_reviewer=="true") | .github_slug' $json_file)
+        teams=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .access[] | select(.github_action_reviewer=="true") | .sso_group_name' $json_file)
         # if teams is empty (none of the teams have the github_action_reviewer flag), get all teams
         if [ -z "$teams" ]; then
-          teams=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .access[].github_slug' $json_file)
+          teams=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .access[].sso_group_name' $json_file)
         fi
 
         echo "Teams for $environment: $teams"

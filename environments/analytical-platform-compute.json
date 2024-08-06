@@ -6,12 +6,12 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "analytical-platform",
+          "sso_group_name": "analytical-platform",
           "level": "sandbox",
           "nuke": "exclude"
         },
         {
-          "github_slug": "analytical-platform",
+          "sso_group_name": "analytical-platform",
           "level": "data-engineer"
         }
       ]
@@ -20,11 +20,11 @@
       "name": "test",
       "access": [
         {
-          "github_slug": "analytical-platform",
+          "sso_group_name": "analytical-platform",
           "level": "developer"
         },
         {
-          "github_slug": "analytical-platform",
+          "sso_group_name": "analytical-platform",
           "level": "data-engineer"
         }
       ]
@@ -33,11 +33,11 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "analytical-platform",
+          "sso_group_name": "analytical-platform",
           "level": "developer"
         },
         {
-          "github_slug": "analytical-platform",
+          "sso_group_name": "analytical-platform",
           "level": "data-engineer"
         }
       ]

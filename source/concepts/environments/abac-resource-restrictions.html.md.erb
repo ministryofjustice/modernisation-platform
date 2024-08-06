@@ -71,7 +71,7 @@ statement {
 ## How do i use this feature
 
 To take advantage of this feature a PR will need to be raised on the modernisation platform repository to grant your team access to the instance manage role on the core shared services account by amending the following file
-[core-shared-services-environment](https://github.com/ministryofjustice/modernisation-platform/blob/main/environments/core-shared-services.json) and add in your github_slug see example below. As this is only affecting the core-shared-services account exsisting uses of the instancemanagment role will not be affected by the ABAC resource restrictions
+[core-shared-services-environment](https://github.com/ministryofjustice/modernisation-platform/blob/main/environments/core-shared-services.json) and add in your sso_group_name see example below. As this is only affecting the core-shared-services account exsisting uses of the instancemanagment role will not be affected by the ABAC resource restrictions
 
 ```
 {
@@ -81,7 +81,7 @@ To take advantage of this feature a PR will need to be raised on the modernisati
       "name": "production",
       "access": [
         {
-          "github_slug": "modernisation-platform",
+          "sso_group_name": "modernisation-platform",
           "level": "instance-management"
         }
       ]

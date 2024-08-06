@@ -7,7 +7,7 @@
       "name": "development",
       "access": [
         {
-          "github_slug": "genesys-call-centre-data",
+          "sso_group_name": "genesys-call-centre-data",
           "level": "sandbox"
         }
       ]
@@ -16,7 +16,7 @@
       "name": "production",
       "access": [
         {
-          "github_slug": "genesys-call-centre-data",
+          "sso_group_name": "genesys-call-centre-data",
           "level": "view-only"
         }
       ]
