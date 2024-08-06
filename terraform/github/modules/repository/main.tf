@@ -53,13 +53,14 @@ resource "github_repository" "default" {
   }
 }
 
+# Re issue 17 required signed commits is enabled on all modernisaiton platform repositories with the exception of modernisation-platform-environments.
 resource "github_branch_protection" "default" {
   #checkov:skip=CKV_GIT_6:"Following discussions with other teams we will not be enforcing signed commits currently"
   repository_id  = github_repository.default.id
   pattern        = "main"
   enforce_admins = true
   #tfsec:ignore:github-branch_protections-require_signed_commits
-  require_signed_commits = false
+  require_signed_commits = var.name != "modernisation-platform-environments" ? true : false
 
   required_status_checks {
     strict   = false
