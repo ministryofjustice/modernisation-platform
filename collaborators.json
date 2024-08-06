@@ -225,34 +225,6 @@
       ]
     },
     {
-      "username": "philip.gilgunn",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "delius-iaps-preproduction",
-          "access": "instance-management"
-        },
-        {
-          "account-name": "delius-iaps-production",
-          "access": "instance-management"
-        }
-      ]
-    },
-    {
-      "username": "thomas.tipler",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "delius-iaps-preproduction",
-          "access": "instance-management"
-        },
-        {
-          "account-name": "delius-iaps-production",
-          "access": "instance-management"
-        }
-      ]
-    },
-    {
       "username": "nathan.brown",
       "github-username": "no-value-supplied",
       "accounts": [
