@@ -82,7 +82,7 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 # EC2 Backup and Restore
 
 ## 1. Set Up and Launch an EC2 Instance
-- Create an EC2 instance with a "Test" file
+- Create an EC2 instance with a "Test" file.
 
 ## 2. Set Up AWS Backup
 
@@ -114,17 +114,17 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 ## 5. Restore EC2 Instance
 
 - Go to the AWS Backup console
-- Click on "Backup vaults" and select your vault
+- Click on "Backup vaults" and select your vault.
 - Select the recovery point ARN and choose Restore.
 - This will bring you to a Restore backup screen that will have the configurations for the EC2 instance using the backed-up AMI.
-- Follow the prompts to complete the restoration
+- Follow the prompts to complete the restoration.
 - Check for your restored backup job under Restore jobs in the the AWS Backup console.
 
 
 ### 6. Verify the restored instance
 
 - Connect to the restored EC2 instance using SSH or AWS Systems Manager (SSM).
-- Navigate to the location of the test file
+- Navigate to the location of the test file.
 - Verify that the test file exists and contains the expected content.
 ---
 
