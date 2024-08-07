@@ -45,7 +45,7 @@ on:
 env:
   AWS_REGION: "eu-west-2"
   ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-  
+  TF_ENV: "preproduction"
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
