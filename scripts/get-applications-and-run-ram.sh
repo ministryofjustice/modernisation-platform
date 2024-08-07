@@ -9,7 +9,7 @@ echo "[+] environments-networks accounts to run RAM share on: ${accounts}"
 
 if [ ! -z "${accounts}" ]; then
   for account in ${accounts}; do
-    application=`echo ${account} | sed -e "s/-${environment}//g"`
+    application="${account%-${environment}}"
     echo "[+] *********************************************"
     echo "[+] Starting up RAM association for account ${account} of application ${application}"
     networking_file="./terraform/environments/${application}/networking.auto.tfvars.json"
