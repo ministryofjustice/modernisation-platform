@@ -1,0 +1,23 @@
+{
+    "account-type": "member",
+    "environments": [
+      {
+        "name": "development",
+        "access": [
+          {
+            "sso_group_name": "modernisation-platform",
+            "level": "developer",
+            "nuke": "rebuild"
+          }
+        ]
+      }
+    ],
+    "tags": {
+      "application": "modernisation-platform",
+      "business-unit": "Platforms",
+      "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+      "owner": "Modernisation Platform : modernisation-platform@digital.justice.gov.uk"
+    },
+    "go-live-date": "",
+    "github-oidc-team-repositories": [""]
+  }

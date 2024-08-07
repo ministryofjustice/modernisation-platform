@@ -75,6 +75,7 @@ expected :=
     "portal",
     "ppud",
     "pra-register",
+    "ram-test",
     "refer-monitor",
     "sprinkler",
     "testing",
