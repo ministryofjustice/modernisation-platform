@@ -50,7 +50,6 @@ expected :=
     "hmpps-domain-services",
     "hmpps-oem",
     "laa-ccms-infra-azure-ad-sso",
-    "laa-mail-relay",
     "laa-oem",
     "long-term-storage",
     "mi-platform",
