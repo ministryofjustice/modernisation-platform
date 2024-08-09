@@ -117,11 +117,6 @@ deny contains msg if {
 }
 
 deny contains msg if {
-  not has_field(input, "github-oidc-team-repositories")
-  msg := sprintf("`%v` is missing the `github-oidc-team-repositories` key", [input.filename])
-}
-
-deny contains msg if {
   not regex.match(`^\S+@\S+$`, input.tags["infrastructure-support"])
  msg := sprintf("`%v` infrastructure-support value is not a valid email address", [input.filename])
 }
