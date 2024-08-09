@@ -6,7 +6,7 @@ data "aws_kms_key" "cloudtrail_key" {
 
 #trivy:ignore:AVD-AWS-0136
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=5eccb0b2a0911de0def6b374345f0711d9cbbb77" # v7.6.0
+  source = "/Users/markroberts/git/modernisation-platform-terraform-baselines" # v7.6.0
 
   providers = {
     # Default and replication regions
