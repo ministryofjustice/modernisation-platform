@@ -232,6 +232,7 @@ expected :=
           "corporate-information-system-development",
           "edw-development",
           "laa-ccms-infra-azure-ad-sso",
+          "laa-mail-relay-development",
           "laa-oem-development",
           "maat-development",
           "maatdb-development",
