@@ -283,6 +283,7 @@ expected :=
           "mlra-test",
           "ccms-ebs-test",
           "ccms-ebs-upgrade-test",
+          "laa-mail-relay-test",
           "laa-oem-test",
           "maat-test",
           "oas-test",
