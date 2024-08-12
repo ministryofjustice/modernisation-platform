@@ -45,7 +45,7 @@
         },
         {
           "sso_group_name": "hmpps-dba",
-          "level": "reporting-operations",
+          "level": "reporting-operations"
         },         
         {
           "sso_group_name": "unilink",
