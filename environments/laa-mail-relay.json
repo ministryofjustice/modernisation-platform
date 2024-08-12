@@ -9,6 +9,15 @@
           "level": "sandbox"
         }
       ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        }
+      ]
     }
   ],
   "tags": {
