@@ -344,6 +344,7 @@ expected :=
           "maat-production",
           "oas-production",
           "portal-production",
+          "laa-mail-relay-production",
           "laa-oem-production",
           "mojfin-production"
         ]
@@ -362,6 +363,7 @@ expected :=
           "maat-preproduction",
           "oas-preproduction",
           "portal-preproduction",
+          "laa-mail-relay-preproduction",
           "laa-oem-preproduction"
         ]
       }
