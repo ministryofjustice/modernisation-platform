@@ -59,7 +59,7 @@ resource "github_branch_protection" "default" {
   pattern        = "main"
   enforce_admins = true
   #tfsec:ignore:github-branch_protections-require_signed_commits
-  require_signed_commits = false
+  require_signed_commits = var.name == "modernisation-platform-environments" ? false : true
 
   required_status_checks {
     strict   = false
