@@ -14,6 +14,7 @@ locals {
     ncas          = "neutral-citation-allocation.service.justice.gov.uk",
     pra-register  = "parental-responsibility-agreement.service.justice.gov.uk",
     tipstaff      = "tipstaff.service.justice.gov.uk",
+    tribunals     = "tribunals.gov.uk",
     wardship      = "wardship-agreements-register.service.justice.gov.uk"
   }
 
