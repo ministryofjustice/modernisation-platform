@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "logging-bucket" {
   }
 }
 
-data "aws_iam_policy_document" "logging-queue" {
+data "aws_iam_policy_document" "logging-sqs" {
   statement {
     sid    = "AllowSendMessage"
     effect = "Allow"
@@ -75,7 +75,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "logging" {
 
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm     = "aws:kms"
+      sse_algorithm = "aws:kms"
     }
   }
 }
@@ -91,6 +91,6 @@ resource "aws_sqs_queue" "logging" {
 }
 
 resource "aws_sqs_queue_policy" "logging" {
-  policy    = data.aws_iam_policy_document.logging-queue.json
+  policy    = data.aws_iam_policy_document.logging-sqs.json
   queue_url = aws_sqs_queue.logging.url
 }
