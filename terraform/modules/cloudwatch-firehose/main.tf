@@ -2,6 +2,18 @@ resource "random_id" "name" {
   byte_length = 4
 }
 
+resource "aws_kms_key" "firehose" {
+  description             = "KMS key for Firehose delivery streams"
+  deletion_window_in_days = 7
+  policy                  = data.aws_iam_policy_document.firehose-key-policy.json
+  tags                    = var.tags
+}
+
+resource "aws_kms_alias" "firehose" {
+  name          = "firehose-log-delivery"
+  target_key_id = aws_kms_key.firehose.id
+}
+
 resource "aws_iam_role" "firehose-to-s3" {
   assume_role_policy = data.aws_iam_policy_document.firehose-trust-policy.json
   name_prefix        = "firehose-to-s3"
@@ -69,6 +81,9 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose-to-s3" {
         }
       }
     }
+
+    kms_key_arn = aws_kms_key.firehose.arn
+
   }
 
   tags = var.tags
