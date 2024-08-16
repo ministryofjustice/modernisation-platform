@@ -17,6 +17,36 @@ data "aws_iam_policy_document" "logging-bucket" {
       values   = [1.2]
     }
   }
+  statement {
+    sid    = "AllowFirehosePutObject"
+    effect = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["firehose.amazonaws.com"]
+    }
+    actions = [
+      "s3:AbortMultipartUpload",
+      "s3:GetBucketLocation",
+      "s3:GetObject",
+      "s3:ListBucket",
+      "s3:ListBucketMultipartUploads",
+      "s3:PutObject"
+    ]
+    resources = [
+      aws_s3_bucket.logging.arn,
+      "${aws_s3_bucket.logging.arn}/*"
+    ]
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+    condition {
+      test     = "ArnLike"
+      variable = "aws:SourceArn"
+      values   = ["arn:aws:firehose:*:*:*"]
+    }
+  }
 }
 
 data "aws_iam_policy_document" "logging-sqs" {
