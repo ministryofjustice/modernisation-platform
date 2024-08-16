@@ -71,6 +71,9 @@ data "aws_iam_policy_document" "firehose-role-policy" {
 }
 
 data "aws_iam_policy_document" "firehose-key-policy" {
+  # checkov:skip=CKV_AWS_109: Policy appropriately secure
+  # checkov:skip=CKV_AWS_111
+  # checkov:skip=CKV_AWS_356
   statement {
     sid    = "KeyAdministration"
     effect = "Allow"

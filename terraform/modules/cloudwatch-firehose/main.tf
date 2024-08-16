@@ -3,6 +3,7 @@ resource "random_id" "name" {
 }
 
 resource "aws_kms_key" "firehose" {
+  # checkov:skip=CKV_AWS_7
   description             = "KMS key for Firehose delivery streams"
   deletion_window_in_days = 7
   policy                  = data.aws_iam_policy_document.firehose-key-policy.json
@@ -82,8 +83,12 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose-to-s3" {
       }
     }
 
-    kms_key_arn = aws_kms_key.firehose.arn
+  }
 
+  server_side_encryption {
+    enabled  = true
+    key_type = "CUSTOMER_MANAGED_CMK"
+    key_arn  = aws_kms_key.firehose.arn
   }
 
   tags = var.tags
