@@ -70,6 +70,9 @@ data "aws_iam_policy_document" "logging-sqs" {
 }
 
 resource "aws_s3_bucket" "logging" {
+  #  checkov:skip:CKV_AWS_18: Access logs not presently required
+  #  checkov:skip:CKV_AWS_21: Versioning of log objects not required
+  #  checkov:skip:CKV_AWS_144:Replication of log objects not required
   bucket_prefix = terraform.workspace
   tags          = local.tags
 }
@@ -83,6 +86,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "example" {
   bucket = aws_s3_bucket.logging.id
 
   rule {
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
     id = "rule-1"
     filter {}
     expiration {
@@ -93,7 +99,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "example" {
 }
 
 resource "aws_s3_bucket_notification" "logging" {
-  bucket = aws_s3_bucket.logging.bucket
+  bucket = aws_s3_bucket.logging.id
   queue {
     queue_arn = aws_sqs_queue.logging.arn
     events    = ["s3:ObjectCreated:*"] # Events to trigger the notification
@@ -101,8 +107,16 @@ resource "aws_s3_bucket_notification" "logging" {
 }
 
 resource "aws_s3_bucket_policy" "logging" {
-  bucket = aws_s3_bucket.logging.bucket
+  bucket = aws_s3_bucket.logging.id
   policy = data.aws_iam_policy_document.logging-bucket.json
+}
+
+resource "aws_s3_bucket_public_access_block" "example" {
+  bucket                  = aws_s3_bucket.logging.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "logging" {
