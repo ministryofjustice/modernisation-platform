@@ -1,5 +1,3 @@
-
-
 data "aws_iam_policy_document" "logging-bucket" {
   statement {
     sid     = "EnforceTLSv12orHigher"
@@ -46,9 +44,17 @@ resource "aws_s3_bucket" "logging" {
   tags          = local.tags
 }
 
-resource "aws_s3_bucket_policy" "logging" {
-  bucket = aws_s3_bucket.logging.bucket
-  policy = data.aws_iam_policy_document.logging-bucket.json
+resource "aws_s3_bucket_lifecycle_configuration" "example" {
+  bucket = aws_s3_bucket.logging.id
+
+  rule {
+    id = "rule-1"
+    filter {}
+    expiration {
+      days = 14
+    }
+    status = "Enabled"
+  }
 }
 
 resource "aws_s3_bucket_notification" "logging" {
@@ -56,6 +62,21 @@ resource "aws_s3_bucket_notification" "logging" {
   queue {
     queue_arn = aws_sqs_queue.logging.arn
     events    = ["s3:ObjectCreated:*"] # Events to trigger the notification
+  }
+}
+
+resource "aws_s3_bucket_policy" "logging" {
+  bucket = aws_s3_bucket.logging.bucket
+  policy = data.aws_iam_policy_document.logging-bucket.json
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "logging" {
+  bucket = aws_s3_bucket.logging.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm     = "aws:kms"
+    }
   }
 }
 
