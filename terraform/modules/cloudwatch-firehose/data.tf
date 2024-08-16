@@ -1,5 +1,3 @@
-data "aws_caller_identity" "destination" {}
-
 data "aws_iam_policy_document" "firehose-role-policy" {
   version = "2012-10-17"
 
