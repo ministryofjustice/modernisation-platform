@@ -2,6 +2,8 @@ data "aws_caller_identity" "modernisation-platform" {
   provider = aws.modernisation-platform
 }
 
+data "aws_organizations_organization" "root_account" {}
+
 locals {
   application_name           = "core-logging"
   environment_management     = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
