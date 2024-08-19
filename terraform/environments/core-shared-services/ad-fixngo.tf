@@ -113,22 +113,22 @@ locals {
           Patching    = "ad-nonlive-eu-west-2b"
         }
       }
-      # ad-azure-rdlic = {
-      #   ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
-      #   availability_zone         = "eu-west-2c"
-      #   iam_instance_profile_role = "ad-fixngo-ec2-nonlive-role"
-      #   instance_type             = "t3.medium"
-      #   key_name                  = "ad-fixngo-ec2-nonlive"
-      #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-azure-rdlic"]
-      #   subnet_id                 = module.vpc["non_live_data"].non_tgw_subnet_ids_map.private[2]
-      #   vpc_security_group_name   = "ad_azure_rdlic_sg"
-      #   tags = {
-      #     server-type = "RDLicensing"
-      #     domain-name = "azure.noms.root"
-      #     description = "remote desktop licensing server for FixNGo azure.noms.root domain"
-      #     Patching    = "rdlic-nonlive-eu-west-2c"
-      #   }
-      # }
+      ad-azure-rdlic = {
+        ami_name                  = "hmpps_windows_server_2022_release_2024-08-02T00-00-40.717Z"
+        availability_zone         = "eu-west-2c"
+        iam_instance_profile_role = "ad-fixngo-ec2-nonlive-role"
+        instance_type             = "t3.medium"
+        key_name                  = "ad-fixngo-ec2-nonlive"
+        private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-azure-rdlic"]
+        subnet_id                 = module.vpc["non_live_data"].non_tgw_subnet_ids_map.private[2]
+        vpc_security_group_name   = "ad_azure_rdlic_sg"
+        tags = {
+          server-type = "RDLicensing"
+          domain-name = "azure.noms.root"
+          description = "remote desktop licensing server for FixNGo azure.noms.root domain"
+          Patching    = "rdlic-nonlive-eu-west-2c"
+        }
+      }
     }
 
     ec2_iam_roles = {
