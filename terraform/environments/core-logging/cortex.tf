@@ -77,11 +77,6 @@ resource "aws_s3_bucket" "logging" {
   tags          = local.tags
 }
 
-resource "aws_s3_bucket_acl" "bucket_acl" {
-  bucket = aws_s3_bucket.logging.id
-  acl    = "private"
-}
-
 resource "aws_s3_bucket_lifecycle_configuration" "example" {
   bucket = aws_s3_bucket.logging.id
 
