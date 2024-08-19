@@ -427,7 +427,7 @@ data "aws_iam_policy_document" "policy" {
       "athena:GetQueryExecution",
       "autoscaling:PutScheduledUpdateGroupAction",
       "autoscaling:SetDesiredCapacity",
-      "backup:Start*",
+      "backup:*",
       "cloudwatch:PutMetricData",
       "codebuild:Start*",
       "codebuild:StartBuild",
