@@ -1,3 +1,4 @@
+# Because we can't use wildcards beyond "*" in a principal identifier
 data "aws_iam_policy_document" "logging-bucket" {
   statement {
     sid    = "AllowFirehosePutObject"

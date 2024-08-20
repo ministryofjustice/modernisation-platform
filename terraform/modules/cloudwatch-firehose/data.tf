@@ -57,13 +57,9 @@ data "aws_iam_policy_document" "firehose-role-policy" {
     sid    = "FirehoseToS3"
     effect = "Allow"
     actions = [
-      "s3:AbortMultipartUpload",
-      "s3:GetBucketLocation",
       "s3:GetObject",
-      "s3:ListBucket",
-      "s3:ListBucketMultipartUploads",
       "s3:PutObject",
-      "s3:PutObjectACL"
+      "s3:PutObjectAcl"
     ]
     resources = [
       var.destination_bucket_arn,

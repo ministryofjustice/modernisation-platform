@@ -60,7 +60,7 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose-to-s3" {
     buffering_size      = 64
     buffering_interval  = 60
     role_arn            = aws_iam_role.firehose-to-s3.arn
-    prefix              = "logs/!{partitionKeyFromQuery:logGroupName}/"
+    prefix              = "logs/!{timestamp:yyyy/MM/dd}/"
     error_output_prefix = "errors/!{firehose:error-output-type}/!{timestamp:yyyy/MM/dd}/"
 
     cloudwatch_logging_options {
@@ -70,9 +70,9 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose-to-s3" {
     }
 
     dynamic_partitioning_configuration {
-      enabled = true
+      enabled = false
     }
-
+/*
     processing_configuration {
       enabled = true
 
@@ -88,7 +88,7 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose-to-s3" {
         }
       }
     }
-
+*/
   }
 
   server_side_encryption {
