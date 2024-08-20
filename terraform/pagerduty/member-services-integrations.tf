@@ -2547,7 +2547,7 @@ resource "pagerduty_slack_connection" "chaps_slack" {
 locals {
   services = {
     csr_preproduction = {
-      slack_channel_id = "C07J1UFEK25" # alarms_non_prod_csr
+      slack_channel_id = "C07J1UFEK25" # alarms_nonprod_csr
     }
     csr_production = {
       slack_channel_id = "C07HQ17MY11" # alarms_prod_csr
