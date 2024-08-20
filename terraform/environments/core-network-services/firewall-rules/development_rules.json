@@ -34,6 +34,13 @@
     "destination_port": "389",
     "protocol": "TCP"
   },
+  "cp_to_hmpps_development_ldaps": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "636",
+    "protocol": "TCP"
+  },
   "cp_to_hmpps_development_pgres": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
@@ -235,6 +242,13 @@
     "source_ip": "${delius-mis-dev}",
     "destination_ip": "${hmpps-development}",
     "destination_port": "389",
+    "protocol": "TCP"
+  },
+  "delius_mis_dev_to_hmpps_development_ldaps": {
+    "action": "PASS",
+    "source_ip": "${delius-mis-dev}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "636",
     "protocol": "TCP"
   },
   "delius_mis_dev_to_hmpps_development_icmp": {
