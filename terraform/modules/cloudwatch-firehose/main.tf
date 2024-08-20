@@ -11,7 +11,7 @@ resource "aws_kms_key" "firehose" {
 }
 
 resource "aws_kms_alias" "firehose" {
-  name          = "firehose-log-delivery"
+  name          = "alias/firehose-log-delivery"
   target_key_id = aws_kms_key.firehose.id
 }
 
@@ -54,14 +54,18 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose-to-s3" {
   name        = "cloudwatch-to-s3-${random_id.name.hex}"
 
   extended_s3_configuration {
-    bucket_arn = var.destination_bucket_arn
-    role_arn   = aws_iam_role.firehose-to-s3.arn
-
+    bucket_arn          = var.destination_bucket_arn
+    buffering_size      = 64
+    buffering_interval  = 60
+    role_arn            = aws_iam_role.firehose-to-s3.arn
     prefix              = "logs/!{partitionKeyFromQuery:logGroupName}/"
     error_output_prefix = "errors/!{firehose:error-output-type}/!{timestamp:yyyy/MM/dd}/"
 
-    buffer_size     = 64
-    buffer_interval = 60
+    cloudwatch_logging_options {
+      enabled         = true
+      log_group_name  = aws_cloudwatch_log_group.kinesis.name
+      log_stream_name = "DestinationDelivery"
+    }
 
     dynamic_partitioning_configuration {
       enabled = true
@@ -74,7 +78,7 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose-to-s3" {
         type = "MetadataExtraction"
         parameters {
           parameter_name  = "JsonParsingEngine"
-          parameter_value = "JQ"
+          parameter_value = "JQ-1.6"
         }
         parameters {
           parameter_name  = "MetadataExtractionQuery"
@@ -91,6 +95,11 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose-to-s3" {
     key_arn  = aws_kms_key.firehose.arn
   }
 
+  tags = var.tags
+}
+
+resource "aws_cloudwatch_log_group" "kinesis" {
+  name = "/aws/kinesisfirehose/cloudwatch-to-s3-${random_id.name.hex}"
   tags = var.tags
 }
 

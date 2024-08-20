@@ -21,16 +21,13 @@ data "aws_iam_policy_document" "logging-bucket" {
     sid    = "AllowFirehosePutObject"
     effect = "Allow"
     principals {
-      type        = "Service"
-      identifiers = ["firehose.amazonaws.com"]
+      type        = "AWS"
+      identifiers = ["*"]
     }
     actions = [
-      "s3:AbortMultipartUpload",
-      "s3:GetBucketLocation",
       "s3:GetObject",
-      "s3:ListBucket",
-      "s3:ListBucketMultipartUploads",
-      "s3:PutObject"
+      "s3:PutObject",
+      "s3:PutObjectAcl"
     ]
     resources = [
       aws_s3_bucket.logging.arn,
@@ -40,11 +37,6 @@ data "aws_iam_policy_document" "logging-bucket" {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalOrgPaths"
       values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
-    }
-    condition {
-      test     = "ArnLike"
-      variable = "aws:SourceArn"
-      values   = ["arn:aws:firehose:*:*:*"]
     }
   }
 }
@@ -119,7 +111,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "logging" {
 
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "aws:kms"
+      sse_algorithm = "AES256"
     }
   }
 }

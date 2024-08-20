@@ -9,13 +9,13 @@ data "aws_iam_policy_document" "cloudwatch-logs-trust-policy" {
 
     principals {
       type        = "Service"
-      identifiers = ["logs.amazonaws.com", ]
+      identifiers = ["logs.eu-west-2.amazonaws.com", ]
     }
 
     condition {
       test     = "StringLike"
       variable = "aws:SourceArn"
-      values   = ["arn:aws:logs:region:${data.aws_caller_identity.destination.account_id}:*"]
+      values   = ["arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:*"]
     }
   }
 }
@@ -27,10 +27,11 @@ data "aws_iam_policy_document" "cloudwatch-logs-role-policy" {
     sid    = "FirehoseToDeliveryStream"
     effect = "Allow"
     actions = [
-      "firehose:PutRecord"
+      "firehose:PutRecord",
+      "firehose:PutRecordBatch"
     ]
     resources = [
-      "arn:aws:firehose:*:account-id:deliverystream/delivery-stream-name"
+      aws_kinesis_firehose_delivery_stream.firehose-to-s3.arn
     ]
   }
 }
@@ -61,11 +62,35 @@ data "aws_iam_policy_document" "firehose-role-policy" {
       "s3:GetObject",
       "s3:ListBucket",
       "s3:ListBucketMultipartUploads",
-      "s3:PutObject"
+      "s3:PutObject",
+      "s3:PutObjectACL"
     ]
     resources = [
       var.destination_bucket_arn,
       "${var.destination_bucket_arn}/*"
+    ]
+  }
+  statement {
+    sid    = "FirehoseUseKMS"
+    effect = "Allow"
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:GenerateDataKey",
+      "kms:DescribeKey"
+    ]
+    resources = [
+      aws_kms_key.firehose.arn
+    ]
+  }
+  statement {
+    sid    = "FirehosPutLogs"
+    effect = "Allow"
+    actions = [
+      "logs:PutLogEvents"
+    ]
+    resources = [
+      "${aws_cloudwatch_log_group.kinesis.arn}:log-stream:DestinationDelivery"
     ]
   }
 }
@@ -88,12 +113,15 @@ data "aws_iam_policy_document" "firehose-key-policy" {
   }
 
   statement {
-    sid    = "AllowFirehose"
+    sid    = "AllowFirehoseRole"
     effect = "Allow"
 
     principals {
-      type        = "Service"
-      identifiers = ["firehose.amazonaws.com"]
+      identifiers = [
+        aws_iam_role.cloudwatch-to-firehose.arn,
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+      ]
+      type = "AWS"
     }
 
     actions = [
@@ -103,13 +131,6 @@ data "aws_iam_policy_document" "firehose-key-policy" {
       "kms:GenerateDataKey*",
       "kms:DescribeKey"
     ]
-
     resources = ["*"]
-
-    condition {
-      test     = "StringEquals"
-      variable = "kms:ViaService"
-      values   = ["firehose.amazonaws.com"]
-    }
   }
 }
