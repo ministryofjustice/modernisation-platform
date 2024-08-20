@@ -80,6 +80,8 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     csr_preproduction                    = pagerduty_service_integration.csr_preproduction.integration_key
     csr_production                       = pagerduty_service_integration.csr_production.integration_key
   })
+
+  depends_on = [ pager_service_integration.integrations ]
 }
 
 # Pagerduty token
