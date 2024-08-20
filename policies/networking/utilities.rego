@@ -2,7 +2,7 @@ package main
 
 import rego.v1
 
-has_field(object, field) if {
-	object[field]
-	object[field] != ""
+has_field(obj, field) if {
+	obj[field]
+	obj[field] != ""
 }
