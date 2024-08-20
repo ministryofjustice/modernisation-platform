@@ -64,22 +64,22 @@ locals {
       #     Patching    = "ad-live-eu-west-2b"
       #   }
       # }
-      # ad-hmpp-rdlic = {
-      #   ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
-      #   availability_zone         = "eu-west-2c"
-      #   iam_instance_profile_role = "ad-fixngo-ec2-live-role"
-      #   instance_type             = "t3.medium"
-      #   key_name                  = "ad-fixngo-ec2-live"
-      #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-rdlic"]
-      #   subnet_id                 = aws_subnet.live-data-additional["eu-west-2c"].id
-      #   vpc_security_group_name   = "ad_hmpp_rdlic_sg"
-      #   tags = {
-      #     server-type = "RDLicensing"
-      #     domain-name = "azure.hmpp.root"
-      #     description = "remote desktop licensing server for FixNGo azure.hmpp.root domain"
-      #     Patching    = "rdlic-live-eu-west-2c"
-      #   }
-      # }
+      ad-hmpp-rdlic = {
+        ami_name                  = "hmpps_windows_server_2022_release_2024-08-02T00-00-40.717Z"
+        availability_zone         = "eu-west-2c"
+        iam_instance_profile_role = "ad-fixngo-ec2-live-role"
+        instance_type             = "t3.medium"
+        key_name                  = "ad-fixngo-ec2-live"
+        private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-rdlic"]
+        subnet_id                 = aws_subnet.live-data-additional["eu-west-2c"].id
+        vpc_security_group_name   = "ad_hmpp_rdlic_sg"
+        tags = {
+          server-type = "RDLicensing"
+          domain-name = "azure.hmpp.root"
+          description = "remote desktop licensing server for FixNGo azure.hmpp.root domain"
+          Patching    = "rdlic-live-eu-west-2c"
+        }
+      }
 
       ad-azure-dc-a = {
         ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
@@ -943,7 +943,8 @@ resource "aws_instance" "ad_fixngo" {
     volume_type = "gp3"
 
     tags = merge(local.ad_fixngo.tags, each.value.tags, {
-      Name = join("-", [each.key, "root", data.aws_ami.ad_fixngo[each.value.ami_name].root_device_name])
+      backup = "false" # exclude the ebs volume from backup as it gets backed up as part of the EC2 anyway
+      Name   = join("-", [each.key, "root", data.aws_ami.ad_fixngo[each.value.ami_name].root_device_name])
     })
   }
 
