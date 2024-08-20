@@ -76,9 +76,43 @@ resource "github_branch_protection" "default" {
   }
 }
 
-resource "github_repository_tag_protection" "default" {
-  repository = github_repository.default.id
-  pattern    = "*"
+resource "github_repository_ruleset" "default" {
+  repository  = github_repository.default.id
+  name        = "Tag Protection Ruleset"
+  enforcement = "active"
+  target      = "tag"
+
+  conditions {
+    ref_name {
+      include = ["~ALL"]
+      exclude = []
+    }
+  }
+
+  bypass_actors {
+    actor_id    = 1
+    actor_type  = "OrganizationAdmin"
+    bypass_mode = "always"
+  }
+
+  bypass_actors {
+    actor_id    = 2
+    actor_type  = "RepositoryRole"
+    bypass_mode = "always"
+  }
+
+  bypass_actors {
+    actor_id    = 5
+    actor_type  = "RepositoryRole"
+    bypass_mode = "always"
+  }
+
+  rules {
+    creation            = true
+    update              = true
+    deletion            = true
+    required_signatures = true
+  }
 }
 
 # Secrets
