@@ -2547,29 +2547,29 @@ resource "pagerduty_slack_connection" "chaps_slack" {
 locals {
   services = {
     csr_preproduction = {
-      # slack_channel_id = "TBD" # alarms_nonprod_csr
+      slack_channel_id = "C07J1UFEK25" # alarms_non_prod_csr
     }
     csr_production = {
-      # slack_channel_id = "TBD" # alarms_prod_csr
+      slack_channel_id = "C07HQ17MY11" # alarms_prod_csr
     }
-    nomis_development = {
-      # slack_channel_id = "TBD" # alarms_nonprod_nomis
-    }
-    nomis_test = {
-      # slack_channel_id = "TBD" # alarms_nonprod_nomis
-    }
-    nomis_preproduction = {
-      # slack_channel_id = "TBD" # alarms_nonprod_nomis
-    }
-    nomis_production = {
-      # slack_channel_id = "TBD" # alarms_prod_nomis
-    }
-    planetfm_preproduction = {
-      # slack_channel_id = "TBD" # alarms_nonprod_planetfm
-    }
-    planetfm_production = {
-      # slack_channel_id = "TBD" # alarms_prod_planetfm
-    }
+    # nomis_development = {
+    #   # slack_channel_id = "TBD" # alarms_nonprod_nomis
+    # }
+    # nomis_test = {
+    #   # slack_channel_id = "TBD" # alarms_nonprod_nomis
+    # }
+    # nomis_preproduction = {
+    #   # slack_channel_id = "TBD" # alarms_nonprod_nomis
+    # }
+    # nomis_production = {
+    #   # slack_channel_id = "TBD" # alarms_prod_nomis
+    # }
+    # planetfm_preproduction = {
+    #   # slack_channel_id = "TBD" # alarms_nonprod_planetfm
+    # }
+    # planetfm_production = {
+    #   # slack_channel_id = "TBD" # alarms_prod_planetfm
+    # }
   }
   slack_events = [
     "incident.triggered",
