@@ -2609,11 +2609,11 @@ resource "pagerduty_service_integration" "integrations" {
 }
 
 resource "pagerduty_slack_connection" "connections" {
-  for_each          = pagerduty_service.services
-  source_id         = each.value.id
+  for_each          = local.services
+  source_id         = pagerduty_service.services[each.key].id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
-  channel_id        = local.services[each.key].slack_channel_id
+  channel_id        = each.value.slack_channel_id
   notification_type = "responder"
   config {
     events     = local.slack_events
