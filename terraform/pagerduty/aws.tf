@@ -77,11 +77,9 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     laa_edw_nonprod_alarms               = pagerduty_service_integration.edw_non_prod.integration_key
     laa_edw_prod_alarms                  = pagerduty_service_integration.edw_prod.integration_key
     cdpt-ifs-alarms                      = pagerduty_service_integration.cdpt_ifs_cloudwatch.integration_key
-    csr_preproduction                    = pagerduty_service_integration.csr_preproduction.integration_key
-    csr_production                       = pagerduty_service_integration.csr_production.integration_key
+    csr_preproduction                    = pagerduty_service_integration.integrations["csr_preproduction"].integration_key
+    csr_production                       = pagerduty_service_integration.integrations["csr_production"].integration_key
   })
-
-  depends_on = [ pager_service_integration.integrations ]
 }
 
 # Pagerduty token
