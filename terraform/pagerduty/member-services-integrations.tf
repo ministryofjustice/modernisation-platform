@@ -2543,3 +2543,80 @@ resource "pagerduty_slack_connection" "chaps_slack" {
     priorities = ["*"]
   }
 }
+
+locals {
+  services = {
+    csr_preproduction = {
+      # slack_channel_id = "TBD" # alarms_nonprod_csr
+    }
+    csr_production = {
+      # slack_channel_id = "TBD" # alarms_prod_csr
+    }
+    nomis_development = {
+      # slack_channel_id = "TBD" # alarms_nonprod_nomis
+    }
+    nomis_test = {
+      # slack_channel_id = "TBD" # alarms_nonprod_nomis
+    }
+    nomis_preproduction = {
+      # slack_channel_id = "TBD" # alarms_nonprod_nomis
+    }
+    nomis_production = {
+      # slack_channel_id = "TBD" # alarms_prod_nomis
+    }
+    planetfm_preproduction = {
+      # slack_channel_id = "TBD" # alarms_nonprod_planetfm
+    }
+    planetfm_production = {
+      # slack_channel_id = "TBD" # alarms_prod_planetfm
+    }
+  }
+  slack_events = [
+    "incident.triggered",
+    "incident.acknowledged",
+    "incident.escalated",
+    "incident.resolved",
+    "incident.reassigned",
+    "incident.annotated",
+    "incident.unacknowledged",
+    "incident.delegated",
+    "incident.priority_updated",
+    "incident.responder.added",
+    "incident.responder.replied",
+    "incident.action_invocation.created",
+    "incident.action_invocation.terminated",
+    "incident.action_invocation.updated",
+    "incident.status_update_published",
+    "incident.reopened"
+  ]
+}
+
+resource "pagerduty_service" "services" {
+  for_each = local.services
+
+  name                    = "${each.key}_alarms"
+  description             = "${each.key}_alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+resource "pagerduty_service_integration" "integrations" {
+  for_each = pagerduty_service.services
+  name     = data.pagerduty_vendor.cloudwatch.name
+  service  = each.value.id
+  vendor   = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "connections" {
+  for_each          = pagerduty_service.services
+  source_id         = each.value.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = local.services[each.key].slack_channel_id
+  notification_type = "responder"
+  config {
+    events     = local.slack_events
+    priorities = ["*"]
+  }
+}
