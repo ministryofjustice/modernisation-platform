@@ -22,8 +22,9 @@ resource "aws_iam_role" "firehose-to-s3" {
 }
 
 resource "aws_iam_policy" "firehose-to-s3" {
-  policy = data.aws_iam_policy_document.firehose-role-policy.json
-  tags   = var.tags
+  name_prefix = "firehose-to-s3"
+  policy      = data.aws_iam_policy_document.firehose-role-policy.json
+  tags        = var.tags
 }
 
 resource "aws_iam_policy_attachment" "firehose-to-s3" {
@@ -39,8 +40,9 @@ resource "aws_iam_role" "cloudwatch-to-firehose" {
 }
 
 resource "aws_iam_policy" "cloudwatch-to-firehose" {
-  policy = data.aws_iam_policy_document.cloudwatch-logs-role-policy.json
-  tags   = var.tags
+  name_prefix = "cloudwatch-to-firehose"
+  policy      = data.aws_iam_policy_document.cloudwatch-logs-role-policy.json
+  tags        = var.tags
 }
 
 resource "aws_iam_policy_attachment" "cloudwatch-to-firehose" {

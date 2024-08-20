@@ -1,23 +1,5 @@
 data "aws_iam_policy_document" "logging-bucket" {
   statement {
-    sid     = "EnforceTLSv12orHigher"
-    effect  = "Deny"
-    actions = ["s3:*"]
-    resources = [
-      aws_s3_bucket.logging.arn,
-      "${aws_s3_bucket.logging.arn}/*"
-    ]
-    principals {
-      identifiers = ["*"]
-      type        = "AWS"
-    }
-    condition {
-      test     = "NumericLessThan"
-      variable = "s3:TlsVersion"
-      values   = [1.2]
-    }
-  }
-  statement {
     sid    = "AllowFirehosePutObject"
     effect = "Allow"
     principals {
