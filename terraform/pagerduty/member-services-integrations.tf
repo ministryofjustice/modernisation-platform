@@ -2594,7 +2594,7 @@ locals {
 resource "pagerduty_service" "services" {
   for_each = local.services
 
-  name                    = "${each.key}_alarms"
+  name                    = "${each.key}"
   description             = "${each.key}_alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
