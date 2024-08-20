@@ -2546,30 +2546,14 @@ resource "pagerduty_slack_connection" "chaps_slack" {
 
 locals {
   services = {
-    csr_preproduction = {
-      slack_channel_id = "C07J1UFEK25" # alarms_nonprod_csr
-    }
-    csr_production = {
-      slack_channel_id = "C07HQ17MY11" # alarms_prod_csr
-    }
-    # nomis_development = {
-    #   # slack_channel_id = "TBD" # alarms_nonprod_nomis
-    # }
-    # nomis_test = {
-    #   # slack_channel_id = "TBD" # alarms_nonprod_nomis
-    # }
-    # nomis_preproduction = {
-    #   # slack_channel_id = "TBD" # alarms_nonprod_nomis
-    # }
-    # nomis_production = {
-    #   # slack_channel_id = "TBD" # alarms_prod_nomis
-    # }
-    # planetfm_preproduction = {
-    #   # slack_channel_id = "TBD" # alarms_nonprod_planetfm
-    # }
-    # planetfm_production = {
-    #   # slack_channel_id = "TBD" # alarms_prod_planetfm
-    # }
+    corporate-staff-rostering-preproduction = { slack_channel_id = "C07J1UFEK25" } # corporate-staff-rostering-alarms-non-prod
+    corporate-staff-rostering-production    = { slack_channel_id = "C07HQ17MY11" } # corporate-staff-rostering-alarms-prod
+    # nomis_development = { slack_channel_id = "TBD" } # nomis-alarms-non-prod
+    # nomis_test = { slack_channel_id = "TBD" } # nomis-alarms-non-prod
+    # nomis_preproduction = { slack_channel_id = "TBD" } # nomis-alarms-non-prod
+    # nomis_production = { slack_channel_id = "TBD" } # nomis-alarms-prod
+    # planetfm_preproduction = { slack_channel_id = "TBD" } # planetfm-alarms-non-prod
+    # planetfm_production = { slack_channel_id = "TBD" } # planetfm-alarms-prod
   }
   slack_events = [
     "incident.triggered",
@@ -2594,7 +2578,7 @@ locals {
 resource "pagerduty_service" "services" {
   for_each = local.services
 
-  name                    = "${each.key}"
+  name                    = each.key
   description             = "${each.key}_alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
