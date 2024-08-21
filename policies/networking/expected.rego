@@ -54,7 +54,8 @@ expected :=
           "data-platform-apps-and-tools-development",
           "observability-platform-development",
           "operations-engineering-development",
-          "panda-cyber-appsec-lab-development"
+          "panda-cyber-appsec-lab-development",
+          "test-bugfix-development"
         ]
       }
     },
