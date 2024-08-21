@@ -1,4 +1,5 @@
-# Because we can't use wildcards beyond "*" in a principal identifier
+# Because we can't use wildcards beyond "*" in a principal identifier, we use a policy condition to scope access only
+# to accounts in our OU, where the role matches the name created through the cloudwatch-firehose module
 data "aws_iam_policy_document" "logging-bucket" {
   statement {
     sid    = "AllowFirehosePutObject"
