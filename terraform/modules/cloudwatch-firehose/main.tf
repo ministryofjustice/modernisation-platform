@@ -59,6 +59,7 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose-to-s3" {
     bucket_arn          = var.destination_bucket_arn
     buffering_size      = 64
     buffering_interval  = 60
+    compression_format  = "GZIP"
     role_arn            = aws_iam_role.firehose-to-s3.arn
     prefix              = "logs/!{timestamp:yyyy/MM/dd}/"
     error_output_prefix = "errors/!{firehose:error-output-type}/!{timestamp:yyyy/MM/dd}/"
@@ -72,7 +73,7 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose-to-s3" {
     dynamic_partitioning_configuration {
       enabled = false
     }
-/*
+    /*
     processing_configuration {
       enabled = true
 
@@ -101,8 +102,9 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose-to-s3" {
 }
 
 resource "aws_cloudwatch_log_group" "kinesis" {
-  name = "/aws/kinesisfirehose/cloudwatch-to-s3-${random_id.name.hex}"
-  tags = var.tags
+  name              = "/aws/kinesisfirehose/cloudwatch-to-s3-${random_id.name.hex}"
+  retention_in_days = 14
+  tags              = var.tags
 }
 
 resource "aws_cloudwatch_log_subscription_filter" "cloudwatch-to-firehose" {
