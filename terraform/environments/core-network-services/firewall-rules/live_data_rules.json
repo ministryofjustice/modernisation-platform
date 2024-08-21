@@ -11,7 +11,7 @@
     "source_ip": "$AD_HMPP_DCS",
     "destination_ip": "${dom1-dcs}",
     "destination_port": "$DOMAIN_CONTROLLER_UDP",
-    "protocol": "TCP"
+    "protocol": "UDP"
   },
   "mojo_to_mp_ad_hmpp_dcs_TCP": {
     "action": "PASS",
