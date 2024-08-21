@@ -2,6 +2,7 @@
   "IP_SETS": {
     "IP_SET_EXAMPLE": ["1.1.1.1/32", "1.0.0.1/32"],
     "AD_HMPP_DCS": ["${ad-hmpp-dc-a}", "${ad-hmpp-dc-b}"],
+    "AD_HMPP_RD_LICENSING": ["${ad-hmpp-rdlic}"],
     "DATA_ENGINEERING": [
       "${data-engineering-dev}",
       "${data-engineering-prod}",
@@ -23,6 +24,7 @@
       "9389",
       "49152:65535"
     ],
-    "DOMAIN_CONTROLLER_UDP": ["53", "88", "123", "389", "464"]
+    "DOMAIN_CONTROLLER_UDP": ["53", "88", "123", "389", "464"],
+    "RD_LICENSING_TCP": ["135", "139", "445", "49152:65535" ]
   }
 }
