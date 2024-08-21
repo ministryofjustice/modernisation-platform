@@ -55,7 +55,6 @@ expected :=
           "observability-platform-development",
           "operations-engineering-development",
           "panda-cyber-appsec-lab-development",
-          "test-bugfix-development"
         ]
       }
     },
