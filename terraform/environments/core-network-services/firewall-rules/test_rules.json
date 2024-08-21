@@ -216,6 +216,13 @@
     "destination_port": "389",
     "protocol": "TCP"
   },
+  "delius_test_to_hmpps_test_ldaps": {
+    "action": "PASS",
+    "source_ip": "${delius-test}",
+    "destination_ip": "${hmpps-test}",
+    "destination_port": "636",
+    "protocol": "TCP"
+  },
   "mp_hmpps_test_to_noms_mgmt_vnet_ntp": {
     "action": "PASS",
     "source_ip": "${hmpps-test}",
@@ -312,6 +319,13 @@
     "source_ip": "${cloud-platform}",
     "destination_ip": "${hmpps-test}",
     "destination_port": "389",
+    "protocol": "TCP"
+  },
+  "cp_to_mp_hmpps_test_ldaps": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${hmpps-test}",
+    "destination_port": "636",
     "protocol": "TCP"
   }
 }
