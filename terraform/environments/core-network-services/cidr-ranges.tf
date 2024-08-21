@@ -86,6 +86,7 @@ locals {
     dom1-dcs              = "10.0.0.0/8"
     ad-hmpp-dc-a          = "10.27.136.5/32" # see https://github.com/ministryofjustice/modernisation-platform/issues/5970
     ad-hmpp-dc-b          = "10.27.137.5/32" # and https://dsdmoj.atlassian.net/wiki/x/3oCKGAE
+    ad-hmpp-rdlic         = "10.27.138.6/32" # ditto
   }
 
   all_cidr_ranges = merge(
