@@ -1101,59 +1101,6 @@ resource "pagerduty_slack_connection" "laa_maat_prod_connection" {
 
 # Slack channel: #mp-laa-alerts-maat-prod
 
-# Slack channel: #csr_alerts_modernisation_platform
-resource "pagerduty_service" "csr" {
-  name                    = "Csr Alarms"
-  description             = "Csr Alarms"
-  auto_resolve_timeout    = 345600
-  acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
-  alert_creation          = "create_alerts_and_incidents"
-}
-
-resource "pagerduty_service_integration" "csr_cloudwatch" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.csr.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
-}
-
-resource "pagerduty_slack_connection" "csr_connection" {
-  source_id         = pagerduty_service.csr.id
-  source_type       = "service_reference"
-  workspace_id      = local.slack_workspace_id
-  channel_id        = "C0617EZEVNZ" # Sending to csr_alerts_modernisation_platform
-  notification_type = "responder"
-  lifecycle {
-    ignore_changes = [
-      config,
-    ]
-  }
-  config {
-    events = [
-      "incident.triggered",
-      "incident.acknowledged",
-      "incident.escalated",
-      "incident.resolved",
-      "incident.reassigned",
-      "incident.annotated",
-      "incident.unacknowledged",
-      "incident.delegated",
-      "incident.priority_updated",
-      "incident.action_invocation.created",
-      "incident.action_invocation.terminated",
-      "incident.action_invocation.updated",
-      "incident.responder.added",
-      "incident.responder.replied",
-      "incident.status_update_published",
-      "incident.reopened"
-    ]
-
-    priorities = ["*"]
-  }
-}
-
-# Slack channel: #csr_alerts_modernisation_platform
-
 # DPR Non Prod
 
 resource "pagerduty_service" "dpr_nonprod" {
@@ -2546,14 +2493,14 @@ resource "pagerduty_slack_connection" "chaps_slack" {
 
 locals {
   services = {
-    corporate-staff-rostering-preproduction = { slack_channel_id = "C07J1UFEK25" } # corporate-staff-rostering-alarms-non-prod
-    corporate-staff-rostering-production    = { slack_channel_id = "C07HQ17MY11" } # corporate-staff-rostering-alarms-prod
+    corporate-staff-rostering-preproduction = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
+    corporate-staff-rostering-production    = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
     # nomis_development = { slack_channel_id = "TBD" } # nomis-alarms-non-prod
     # nomis_test = { slack_channel_id = "TBD" } # nomis-alarms-non-prod
     # nomis_preproduction = { slack_channel_id = "TBD" } # nomis-alarms-non-prod
     # nomis_production = { slack_channel_id = "TBD" } # nomis-alarms-prod
-    # planetfm_preproduction = { slack_channel_id = "TBD" } # planetfm-alarms-non-prod
-    # planetfm_production = { slack_channel_id = "TBD" } # planetfm-alarms-prod
+    planetfm_preproduction = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
+    planetfm_production = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
   }
   slack_events = [
     "incident.triggered",
@@ -2579,7 +2526,7 @@ resource "pagerduty_service" "services" {
   for_each = local.services
 
   name                    = each.key
-  description             = "${each.key}_alarms"
+  description             = "${each.key}-alarms"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
   escalation_policy       = pagerduty_escalation_policy.member_policy.id

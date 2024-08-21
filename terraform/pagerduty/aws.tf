@@ -46,7 +46,6 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     laa_portal_prod_alarms                  = pagerduty_service_integration.laa_portal_prod_cloudwatch.integration_key
     laa_maat_nonprod_alarms                 = pagerduty_service_integration.laa_maat_nonprod_cloudwatch.integration_key,
     laa_maat_prod_alarm                     = pagerduty_service_integration.laa_maat_prod_cloudwatch.integration_key,
-    csr_alarms                              = pagerduty_service_integration.csr_cloudwatch.integration_key,
     dpr_nonprod_alarms                      = pagerduty_service_integration.dpr_nonprod_cloudwatch.integration_key,
     planetfm_alarms                         = pagerduty_service_integration.planetfm_cloudwatch.integration_key,
     ncas_non_prod_alarms                    = pagerduty_service_integration.ncas_non_prod_cloudwatch.integration_key,
@@ -79,6 +78,12 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     cdpt-ifs-alarms                         = pagerduty_service_integration.cdpt_ifs_cloudwatch.integration_key
     corporate-staff-rostering-preproduction = pagerduty_service_integration.integrations["corporate-staff-rostering-preproduction"].integration_key
     corporate-staff-rostering-production    = pagerduty_service_integration.integrations["corporate-staff-rostering-production"].integration_key
+    nomis-development                       = pagerduty_service_integration.integrations["nomis-development"].integration_key
+    nomis-preproduction                     = pagerduty_service_integration.integrations["nomis-preproduction"].integration_key
+    nomis-production                        = pagerduty_service_integration.integrations["nomis-production"].integration_key
+    nomis-test                              = pagerduty_service_integration.integrations["nomis-test"].integration_key
+    planetfm-preproduction                  = pagerduty_service_integration.integrations["planetfm-preproduction"].integration_key
+    planetfm-production                     = pagerduty_service_integration.integrations["planetfm-production"].integration_key
   })
 }
 
