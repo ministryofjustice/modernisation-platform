@@ -77,6 +77,7 @@ expected :=
     "pra-register",
     "refer-monitor",
     "sprinkler",
+    "test-bugfix",
     "testing",
     "tipstaff",
     "tribunals",
