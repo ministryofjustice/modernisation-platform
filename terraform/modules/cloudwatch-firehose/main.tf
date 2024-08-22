@@ -85,6 +85,8 @@ resource "aws_kinesis_firehose_delivery_stream" "firehose-to-s3" {
 }
 
 resource "aws_cloudwatch_log_group" "kinesis" {
+  #  checkov:skip=CKV_AWS_338:Short life error logs don't need long term retention
+  #  checkov:skip=CKV_AWS_158:Default log encryption OK for short life error logs
   name              = "/aws/kinesisfirehose/cloudwatch-to-s3-${random_id.name.hex}"
   retention_in_days = 14
   tags              = var.tags

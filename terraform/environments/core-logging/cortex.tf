@@ -56,6 +56,7 @@ resource "aws_s3_bucket" "logging" {
   #  checkov:skip=CKV_AWS_18: Access logs not presently required
   #  checkov:skip=CKV_AWS_21: Versioning of log objects not required
   #  checkov:skip=CKV_AWS_144:Replication of log objects not required
+  #  checkov:skip=CKV_AWS_145:SSE Encryption OK as interim measure
   bucket_prefix = terraform.workspace
   tags          = local.tags
 }
