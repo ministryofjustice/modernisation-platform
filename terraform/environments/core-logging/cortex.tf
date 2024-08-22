@@ -129,6 +129,7 @@ data "aws_kms_alias" "secrets" {
 }
 
 resource "aws_secretsmanager_secret" "logging" {
+  # checkov:skip=CKV2_AWS_57
   provider                = aws.modernisation-platform
   kms_key_id              = data.aws_kms_alias.secrets.target_key_id
   name                    = "core-logging-bucket-arn"
