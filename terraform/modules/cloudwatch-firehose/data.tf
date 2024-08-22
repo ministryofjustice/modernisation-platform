@@ -80,7 +80,7 @@ data "aws_iam_policy_document" "firehose-role-policy" {
     ]
   }
   statement {
-    sid    = "FirehosPutLogs"
+    sid    = "FirehosePutLogs"
     effect = "Allow"
     actions = [
       "logs:PutLogEvents"
