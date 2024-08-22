@@ -38,9 +38,10 @@ locals {
   preproduction_rules   = fileexists("./firewall-rules/preproduction_rules.json") ? jsondecode(templatefile("./firewall-rules/preproduction_rules.json", local.all_cidr_ranges)) : {}
   production_rules      = fileexists("./firewall-rules/production_rules.json") ? jsondecode(templatefile("./firewall-rules/production_rules.json", local.all_cidr_ranges)) : {}
   live_data_rules       = fileexists("./firewall-rules/live_data_rules.json") ? jsondecode(templatefile("./firewall-rules/live_data_rules.json", local.all_cidr_ranges)) : {}
+  non_live_data_rules   = fileexists("./firewall-rules/non_live_data_rules.json") ? jsondecode(templatefile("./firewall-rules/non_live_data_rules.json", local.all_cidr_ranges)) : {}
   fqdn_firewall_rules   = fileexists("./firewall-rules/fqdn_rules.json") ? jsondecode(file("./firewall-rules/fqdn_rules.json")) : {}
   inline_firewall_rules = fileexists("./firewall-rules/inline_rules.json") ? jsondecode(templatefile("./firewall-rules/inline_rules.json", local.all_cidr_ranges)) : {}
-  firewall_rules        = merge(local.development_rules, local.test_rules, local.preproduction_rules, local.production_rules, local.live_data_rules)
+  firewall_rules        = merge(local.development_rules, local.test_rules, local.preproduction_rules, local.production_rules, local.live_data_rules, local.non_live_data_rules)
   firewall_sets         = fileexists("./firewall-rules/sets.json") ? jsondecode(templatefile("./firewall-rules/sets.json", local.all_cidr_ranges)) : {}
 
   vpn_attachments = fileexists("./vpn_attachments.json") ? jsondecode(file("./vpn_attachments.json")) : {}

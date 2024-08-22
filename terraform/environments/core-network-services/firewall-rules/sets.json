@@ -3,6 +3,10 @@
     "IP_SET_EXAMPLE": ["1.1.1.1/32", "1.0.0.1/32"],
     "AD_HMPP_DCS": ["${ad-hmpp-dc-a}", "${ad-hmpp-dc-b}"],
     "AD_HMPP_RD_LICENSING": ["${ad-hmpp-rdlic}"],
+    "AD_AZURE_DCS": ["${ad-azure-dc-a}", "${ad-azure-dc-b}"],
+    "AD_AZURE_RD_LICENSING": ["${ad-azure-rdlic}"],
+    "AZURE_PROD": ["${noms-live-vnet}", "${noms-mgmt-live-vnet}", "${noms-live-dr-vnet}", "${noms-mgmt-live-dr-vnet}"],
+    "AZURE_DEVTEST": ["${noms-test-vnet}", "${noms-mgmt-vnet}"],
     "DATA_ENGINEERING": [
       "${data-engineering-dev}",
       "${data-engineering-prod}",
