@@ -47,6 +47,7 @@
 
 # # Slack channel: #my-application-alarm-slack-channel
 
+# IMPORTANT: BEING RE_USED FOR MULTIPLE SERVICES - DELETE THIS LAST
 # Nomis
 resource "pagerduty_service" "nomis" {
   name                    = "Nomis Alarms"
@@ -100,6 +101,7 @@ resource "pagerduty_slack_connection" "nomis_connection" {
 
 # Slack channel: #dso_alerts_modernisation_platform
 
+# IMPORTANT: BEING RE_USED FOR MULTIPLE SERVICES - DELETE THIS LAST
 # Nomis Non Prod
 
 resource "pagerduty_service" "nomis_nonprod" {
@@ -1153,58 +1155,6 @@ resource "pagerduty_slack_connection" "dpr_nonprod_connection" {
 }
 
 # DPR Non Prod
-
-# Slack channel: #planetfm_alerts_modernisation_platform
-resource "pagerduty_service" "planetfm" {
-  name                    = "PlanetFM Alarms"
-  description             = "PlanetFM Alarms"
-  auto_resolve_timeout    = 345600
-  acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
-  alert_creation          = "create_alerts_and_incidents"
-}
-
-resource "pagerduty_service_integration" "planetfm_cloudwatch" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.planetfm.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
-}
-
-resource "pagerduty_slack_connection" "planetfm_connection" {
-  source_id         = pagerduty_service.planetfm.id
-  source_type       = "service_reference"
-  workspace_id      = local.slack_workspace_id
-  channel_id        = "C064KHB3HB9" # Sending to planetfm_alerts_modernisation_platform
-  notification_type = "responder"
-  lifecycle {
-    ignore_changes = [
-      config,
-    ]
-  }
-  config {
-    events = [
-      "incident.triggered",
-      "incident.acknowledged",
-      "incident.escalated",
-      "incident.resolved",
-      "incident.reassigned",
-      "incident.annotated",
-      "incident.unacknowledged",
-      "incident.delegated",
-      "incident.priority_updated",
-      "incident.action_invocation.created",
-      "incident.action_invocation.terminated",
-      "incident.action_invocation.updated",
-      "incident.responder.added",
-      "incident.responder.replied",
-      "incident.status_update_published",
-      "incident.reopened"
-    ]
-
-    priorities = ["*"]
-  }
-}
-# Slack channel: #planetfm_alerts_modernisation_platform
 
 # NCAS non prod
 resource "pagerduty_service" "ncas_non_prod" {
@@ -2495,12 +2445,32 @@ locals {
   services = {
     corporate-staff-rostering-preproduction = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
     corporate-staff-rostering-production    = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
-    nomis-development                       = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
-    nomis-test                              = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
-    nomis-preproduction                     = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
-    nomis-production                        = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_prod
-    planetfm-preproduction                  = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
-    planetfm-production                     = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
+    hmpps-domain-services-development = { slack_channel_id = "C07J1TAG9JN" } # hmpps_domain_services_alarms_non_prod
+    hmpps-domain-services-test = { slack_channel_id = "C07J1TAG9JN" } # hmpps_domain_services_alarms_non_prod
+    hmpps-domain-services-preproduction = { slack_channel_id = "C07J1TAG9JN" } # hmpps_domain_services_alarms_non_prod
+    hmpps-domain-services-production = { slack_channel_id = "C07JQM7FY72" } # hmpps_domain_services_alarms_prod
+    hmpps-oem-development = { slack_channel_id = "C07J1QBJXC3" } # hmpps_oem_alarms_non_prod
+    hmpps-oem-test = { slack_channel_id = "C07J1QBJXC3" } # hmpps_oem_alarms_non_prod
+    hmpps-oem-preproduction = { slack_channel_id = "C07J1QBJXC3" } # hmpps_oem_alarms_non_prod
+    hmpps-oem-production = { slack_channel_id = "C07JEHTH95F" } # hmpps_oem_alarms_prod
+    nomis-development = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
+    nomis-test = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
+    nomis-preproduction = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
+    nomis-production = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_prod
+    nomis-combined-reporting-test = { slack_channel_id = "C07JE9TL03T" } # nomis_combined_reporting_alarms_non_prod
+    nomis-combined-reporting-preproduction = { slack_channel_id = "C07JE9TL03T" } # nomis_combined_reporting_alarms_non_prod
+    nomis-combined-reporting-production = { slack_channel_id = "C07HYP62DT7"} # nomis_combined_reporting_alarms_prod
+    nomis-data-hub-test = { slack_channel_id = "C07J1TP869Y" } # nomis_data_hub_alarms_non_prod
+    nomis-data-hub-preproduction = { slack_channel_id = "C07J1TP869Y" } # nomis_data_hub_alarms_non_prod
+    nomis-data-hub-production = { slack_channel_id = "C07HZ1VRP8V" } # nomis_data_hub_alarms_prod
+    oasys-test = { slack_channel_id = "C07HMBMC8KH" } # oasys_alarms_non_prod
+    oasys-preproduction = { slack_channel_id = "C07HMBMC8KH" } # oasys_alarms_non_prod
+    oasys-production = { slack_channel_id = "C07J4CVFVC4" } # oasys_alarms_prod
+    oasys-national-reporting-test = { slack_channel_id = "C07HZ24GMGV" } # oasys_national_reporting_alarms_non_prod
+    oasys-national-reporting-preproduction = { slack_channel_id = "C07HZ24GMGV" } # oasys_national_reporting_alarms_non_prod
+    oasys-national-reporting-production = { slack_channel_id = "C07J1U3SN66" } # oasys_national_reporting_alarms_prod
+    planetfm-preproduction = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
+    planetfm-production = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
   }
   slack_events = [
     "incident.triggered",
