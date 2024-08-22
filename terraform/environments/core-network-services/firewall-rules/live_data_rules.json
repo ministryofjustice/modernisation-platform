@@ -40,5 +40,12 @@
     "destination_ip": "${dom1-dcs}",
     "destination_port": "$DOMAIN_CONTROLLER_UDP",
     "protocol": "UDP"
+  },
+  "azure_prod_to_mp_ad_azure_rdlic_TCP": {
+    "action": "PASS",
+    "source_ip": "$AZURE_PROD",
+    "destination_ip": "$AD_HMPP_RD_LICENSING",
+    "destination_port": "$RD_LICENSING_TCP",
+    "protocol": "TCP"
   }
 }
