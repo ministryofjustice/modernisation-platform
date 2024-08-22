@@ -122,3 +122,16 @@ resource "aws_sqs_queue_policy" "logging" {
   policy    = data.aws_iam_policy_document.logging-sqs.json
   queue_url = aws_sqs_queue.logging.url
 }
+
+resource "aws_secretsmanager_secret" "logging" {
+  provider                = aws.modernisation-platform
+  name                    = "core-logging-bucket-arn"
+  recovery_window_in_days = 0
+  tags                    = local.tags
+}
+
+resource "aws_secretsmanager_secret_version" "logging" {
+  provider      = aws.modernisation-platform
+  secret_id     = aws_secretsmanager_secret.logging.id
+  secret_string = aws_s3_bucket.logging.arn
+}
