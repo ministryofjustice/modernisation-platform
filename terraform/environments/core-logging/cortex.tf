@@ -61,7 +61,7 @@ resource "aws_s3_bucket" "logging" {
   tags          = local.tags
 }
 
-resource "aws_s3_bucket_lifecycle_configuration" "example" {
+resource "aws_s3_bucket_lifecycle_configuration" "logging" {
   bucket = aws_s3_bucket.logging.id
 
   rule {
@@ -90,7 +90,7 @@ resource "aws_s3_bucket_policy" "logging" {
   policy = data.aws_iam_policy_document.logging-bucket.json
 }
 
-resource "aws_s3_bucket_public_access_block" "example" {
+resource "aws_s3_bucket_public_access_block" "logging" {
   bucket                  = aws_s3_bucket.logging.id
   block_public_acls       = true
   block_public_policy     = true
@@ -121,4 +121,24 @@ resource "aws_sqs_queue" "logging" {
 resource "aws_sqs_queue_policy" "logging" {
   policy    = data.aws_iam_policy_document.logging-sqs.json
   queue_url = aws_sqs_queue.logging.url
+}
+
+data "aws_kms_alias" "secrets" {
+  provider = aws.modernisation-platform
+  name     = "alias/secrets_key"
+}
+
+resource "aws_secretsmanager_secret" "logging" {
+  # checkov:skip=CKV2_AWS_57
+  provider                = aws.modernisation-platform
+  kms_key_id              = data.aws_kms_alias.secrets.target_key_id
+  name                    = "core-logging-bucket-arn"
+  recovery_window_in_days = 0
+  tags                    = local.tags
+}
+
+resource "aws_secretsmanager_secret_version" "logging" {
+  provider      = aws.modernisation-platform
+  secret_id     = aws_secretsmanager_secret.logging.id
+  secret_string = aws_s3_bucket.logging.arn
 }
