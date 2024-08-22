@@ -2495,12 +2495,12 @@ locals {
   services = {
     corporate-staff-rostering-preproduction = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
     corporate-staff-rostering-production    = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
-    nomis-development = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
-    nomis-test = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
-    nomis-preproduction = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
-    nomis-production = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_prod
-    planetfm-preproduction = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
-    planetfm-production = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
+    nomis-development                       = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
+    nomis-test                              = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
+    nomis-preproduction                     = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
+    nomis-production                        = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_prod
+    planetfm-preproduction                  = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
+    planetfm-production                     = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
   }
   slack_events = [
     "incident.triggered",
