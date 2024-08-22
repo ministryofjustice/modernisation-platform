@@ -14,7 +14,15 @@ locals {
   is-production = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production"
 
   # This local allows us to references the key / value pairs held in xsiam_secrets.
-  xsiam = jsondecode(data.aws_secretsmanager_secret_version.xsiam_secret_arn_version.secret_string)
+  xsiam                 = jsondecode(data.aws_secretsmanager_secret_version.xsiam_secret_arn_version.secret_string)
+  cloudwatch_log_bucket = data.aws_secretsmanager_secret_version.core_logging_bucket_arn.secret_string
+  cloudwatch_log_groups = local.is-production ? concat([
+    aws_cloudwatch_log_group.external_inspection.name,
+    aws_cloudwatch_log_group.tgw_flowlog_group.name,
+    module.firewall_logging.cloudwatch_log_group_name],
+    [for key, value in module.vpc_inspection : value.vpc_cloudwatch_name],
+    [for key, value in module.vpc_inspection : value.fw_cloudwatch_name]
+  ) : []
 
   tags = {
     business-unit = "Platforms"
