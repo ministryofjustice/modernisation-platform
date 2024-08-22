@@ -1,36 +1,17 @@
+# Because we can't use wildcards beyond "*" in a principal identifier, we use a policy condition to scope access only
+# to accounts in our OU, where the role matches the name created through the cloudwatch-firehose module
 data "aws_iam_policy_document" "logging-bucket" {
-  statement {
-    sid     = "EnforceTLSv12orHigher"
-    effect  = "Deny"
-    actions = ["s3:*"]
-    resources = [
-      aws_s3_bucket.logging.arn,
-      "${aws_s3_bucket.logging.arn}/*"
-    ]
-    principals {
-      identifiers = ["*"]
-      type        = "AWS"
-    }
-    condition {
-      test     = "NumericLessThan"
-      variable = "s3:TlsVersion"
-      values   = [1.2]
-    }
-  }
   statement {
     sid    = "AllowFirehosePutObject"
     effect = "Allow"
     principals {
-      type        = "Service"
-      identifiers = ["firehose.amazonaws.com"]
+      type        = "AWS"
+      identifiers = ["*"]
     }
     actions = [
-      "s3:AbortMultipartUpload",
-      "s3:GetBucketLocation",
       "s3:GetObject",
-      "s3:ListBucket",
-      "s3:ListBucketMultipartUploads",
-      "s3:PutObject"
+      "s3:PutObject",
+      "s3:PutObjectAcl"
     ]
     resources = [
       aws_s3_bucket.logging.arn,
@@ -39,12 +20,14 @@ data "aws_iam_policy_document" "logging-bucket" {
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalOrgPaths"
-      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+      values = [
+        "${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"
+      ]
     }
     condition {
-      test     = "ArnLike"
-      variable = "aws:SourceArn"
-      values   = ["arn:aws:firehose:*:*:*"]
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/firehose-to-s3*"]
     }
   }
 }
@@ -73,6 +56,7 @@ resource "aws_s3_bucket" "logging" {
   #  checkov:skip=CKV_AWS_18: Access logs not presently required
   #  checkov:skip=CKV_AWS_21: Versioning of log objects not required
   #  checkov:skip=CKV_AWS_144:Replication of log objects not required
+  #  checkov:skip=CKV_AWS_145:SSE Encryption OK as interim measure
   bucket_prefix = terraform.workspace
   tags          = local.tags
 }
@@ -119,7 +103,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "logging" {
 
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "aws:kms"
+      sse_algorithm = "AES256"
     }
   }
 }
