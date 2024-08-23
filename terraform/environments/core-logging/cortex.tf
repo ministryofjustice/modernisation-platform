@@ -13,10 +13,10 @@ data "aws_iam_policy_document" "logging-bucket" {
       "s3:PutObject",
       "s3:PutObjectAcl"
     ]
-    resources = [
-      aws_s3_bucket.logging.arn,
-      "${aws_s3_bucket.logging.arn}/*"
-    ]
+    resources = flatten([
+      for bucket in aws_s3_bucket.logging :
+      [bucket.arn, "${bucket.arn}/*"]
+    ])
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalOrgPaths"
@@ -42,14 +42,18 @@ data "aws_iam_policy_document" "logging-sqs" {
     }
     actions = ["sqs:SendMessage"]
     resources = [
-      aws_sqs_queue.logging.arn
+      for key in aws_sqs_queue.logging : key.arn
     ]
     condition {
       test     = "ArnEquals"
       variable = "aws:SourceArn"
-      values   = [aws_s3_bucket.logging.arn]
+      values   = [for key in aws_s3_bucket.logging : key.arn]
     }
   }
+}
+
+locals {
+  cortex_logging_buckets = toset(["vpc-flow-logs", "r53-resolver-logs", "generic-logs"])
 }
 
 resource "aws_s3_bucket" "logging" {
@@ -57,12 +61,14 @@ resource "aws_s3_bucket" "logging" {
   #  checkov:skip=CKV_AWS_21: Versioning of log objects not required
   #  checkov:skip=CKV_AWS_144:Replication of log objects not required
   #  checkov:skip=CKV_AWS_145:SSE Encryption OK as interim measure
-  bucket_prefix = terraform.workspace
+  for_each      = local.cortex_logging_buckets
+  bucket_prefix = "${local.application_name}-${each.key}"
   tags          = local.tags
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "logging" {
-  bucket = aws_s3_bucket.logging.id
+  for_each = local.cortex_logging_buckets
+  bucket   = aws_s3_bucket.logging[each.key].id
 
   rule {
     abort_incomplete_multipart_upload {
@@ -78,20 +84,23 @@ resource "aws_s3_bucket_lifecycle_configuration" "logging" {
 }
 
 resource "aws_s3_bucket_notification" "logging" {
-  bucket = aws_s3_bucket.logging.id
+  for_each = local.cortex_logging_buckets
+  bucket   = aws_s3_bucket.logging[each.key].id
   queue {
-    queue_arn = aws_sqs_queue.logging.arn
+    queue_arn = aws_sqs_queue.logging[each.key].arn
     events    = ["s3:ObjectCreated:*"] # Events to trigger the notification
   }
 }
 
 resource "aws_s3_bucket_policy" "logging" {
-  bucket = aws_s3_bucket.logging.id
-  policy = data.aws_iam_policy_document.logging-bucket.json
+  for_each = local.cortex_logging_buckets
+  bucket   = aws_s3_bucket.logging[each.key].id
+  policy   = data.aws_iam_policy_document.logging-bucket.json
 }
 
 resource "aws_s3_bucket_public_access_block" "logging" {
-  bucket                  = aws_s3_bucket.logging.id
+  for_each                = local.cortex_logging_buckets
+  bucket                  = aws_s3_bucket.logging[each.key].id
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -99,7 +108,8 @@ resource "aws_s3_bucket_public_access_block" "logging" {
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "logging" {
-  bucket = aws_s3_bucket.logging.id
+  for_each = local.cortex_logging_buckets
+  bucket   = aws_s3_bucket.logging[each.key].id
 
   rule {
     apply_server_side_encryption_by_default {
@@ -109,7 +119,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "logging" {
 }
 
 resource "aws_sqs_queue" "logging" {
-  name_prefix                = terraform.workspace
+  for_each                   = local.cortex_logging_buckets
+  name_prefix                = "${local.application_name}-${each.key}"
   delay_seconds              = 0      # The default is 0 but can be up to 15 minutes
   max_message_size           = 262144 # 256k which is the max size
   message_retention_seconds  = 345600 # This is 4 days. The max is 14 days
@@ -119,8 +130,9 @@ resource "aws_sqs_queue" "logging" {
 }
 
 resource "aws_sqs_queue_policy" "logging" {
+  for_each  = local.cortex_logging_buckets
   policy    = data.aws_iam_policy_document.logging-sqs.json
-  queue_url = aws_sqs_queue.logging.url
+  queue_url = aws_sqs_queue.logging[each.key].url
 }
 
 data "aws_kms_alias" "secrets" {
@@ -132,13 +144,16 @@ resource "aws_secretsmanager_secret" "logging" {
   # checkov:skip=CKV2_AWS_57
   provider                = aws.modernisation-platform
   kms_key_id              = data.aws_kms_alias.secrets.target_key_id
-  name                    = "core_logging_bucket_arn"
+  name                    = "core_logging_bucket_arns"
   recovery_window_in_days = 0
   tags                    = local.tags
 }
 
 resource "aws_secretsmanager_secret_version" "logging" {
-  provider      = aws.modernisation-platform
-  secret_id     = aws_secretsmanager_secret.logging.id
-  secret_string = aws_s3_bucket.logging.arn
+  provider  = aws.modernisation-platform
+  secret_id = aws_secretsmanager_secret.logging.id
+  secret_string = jsonencode({
+    for key in local.cortex_logging_buckets :
+    key => aws_s3_bucket.logging[key].arn
+  })
 }
