@@ -34,6 +34,7 @@ data "aws_iam_policy_document" "logging-bucket" {
 }
 
 data "aws_iam_policy_document" "logging-sqs" {
+  for_each = local.cortex_logging_buckets
   statement {
     sid    = "AllowSendMessage"
     effect = "Allow"
@@ -42,13 +43,11 @@ data "aws_iam_policy_document" "logging-sqs" {
       identifiers = ["s3.amazonaws.com"]
     }
     actions = ["sqs:SendMessage"]
-    resources = [
-      for key in aws_sqs_queue.logging : key.arn
-    ]
+    resources = [aws_sqs_queue.logging[each.key].arn]
     condition {
       test     = "ArnEquals"
       variable = "aws:SourceArn"
-      values   = [for key in aws_s3_bucket.logging : key.arn]
+      values   = [aws_s3_bucket.logging[each.key].arn]
     }
   }
 }
@@ -160,7 +159,7 @@ resource "aws_sqs_queue" "logging" {
 
 resource "aws_sqs_queue_policy" "logging" {
   for_each  = local.cortex_logging_buckets
-  policy    = data.aws_iam_policy_document.logging-sqs.json
+  policy    = data.aws_iam_policy_document.logging-sqs[each.key].json
   queue_url = aws_sqs_queue.logging[each.key].url
 }
 
