@@ -2445,32 +2445,32 @@ locals {
   services = {
     corporate-staff-rostering-preproduction = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
     corporate-staff-rostering-production    = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
-    hmpps-domain-services-development = { slack_channel_id = "C07J1TAG9JN" } # hmpps_domain_services_alarms_non_prod
-    hmpps-domain-services-test = { slack_channel_id = "C07J1TAG9JN" } # hmpps_domain_services_alarms_non_prod
-    hmpps-domain-services-preproduction = { slack_channel_id = "C07J1TAG9JN" } # hmpps_domain_services_alarms_non_prod
-    hmpps-domain-services-production = { slack_channel_id = "C07JQM7FY72" } # hmpps_domain_services_alarms_prod
-    hmpps-oem-development = { slack_channel_id = "C07J1QBJXC3" } # hmpps_oem_alarms_non_prod
-    hmpps-oem-test = { slack_channel_id = "C07J1QBJXC3" } # hmpps_oem_alarms_non_prod
-    hmpps-oem-preproduction = { slack_channel_id = "C07J1QBJXC3" } # hmpps_oem_alarms_non_prod
-    hmpps-oem-production = { slack_channel_id = "C07JEHTH95F" } # hmpps_oem_alarms_prod
-    nomis-development = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
-    nomis-test = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
-    nomis-preproduction = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
-    nomis-production = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_prod
-    nomis-combined-reporting-test = { slack_channel_id = "C07JE9TL03T" } # nomis_combined_reporting_alarms_non_prod
-    nomis-combined-reporting-preproduction = { slack_channel_id = "C07JE9TL03T" } # nomis_combined_reporting_alarms_non_prod
-    nomis-combined-reporting-production = { slack_channel_id = "C07HYP62DT7"} # nomis_combined_reporting_alarms_prod
-    nomis-data-hub-test = { slack_channel_id = "C07J1TP869Y" } # nomis_data_hub_alarms_non_prod
-    nomis-data-hub-preproduction = { slack_channel_id = "C07J1TP869Y" } # nomis_data_hub_alarms_non_prod
-    nomis-data-hub-production = { slack_channel_id = "C07HZ1VRP8V" } # nomis_data_hub_alarms_prod
-    oasys-test = { slack_channel_id = "C07HMBMC8KH" } # oasys_alarms_non_prod
-    oasys-preproduction = { slack_channel_id = "C07HMBMC8KH" } # oasys_alarms_non_prod
-    oasys-production = { slack_channel_id = "C07J4CVFVC4" } # oasys_alarms_prod
-    oasys-national-reporting-test = { slack_channel_id = "C07HZ24GMGV" } # oasys_national_reporting_alarms_non_prod
-    oasys-national-reporting-preproduction = { slack_channel_id = "C07HZ24GMGV" } # oasys_national_reporting_alarms_non_prod
-    oasys-national-reporting-production = { slack_channel_id = "C07J1U3SN66" } # oasys_national_reporting_alarms_prod
-    planetfm-preproduction = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
-    planetfm-production = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
+    hmpps-domain-services-development       = { slack_channel_id = "C07J1TAG9JN" } # hmpps_domain_services_alarms_non_prod
+    hmpps-domain-services-test              = { slack_channel_id = "C07J1TAG9JN" } # hmpps_domain_services_alarms_non_prod
+    hmpps-domain-services-preproduction     = { slack_channel_id = "C07J1TAG9JN" } # hmpps_domain_services_alarms_non_prod
+    hmpps-domain-services-production        = { slack_channel_id = "C07JQM7FY72" } # hmpps_domain_services_alarms_prod
+    hmpps-oem-development                   = { slack_channel_id = "C07J1QBJXC3" } # hmpps_oem_alarms_non_prod
+    hmpps-oem-test                          = { slack_channel_id = "C07J1QBJXC3" } # hmpps_oem_alarms_non_prod
+    hmpps-oem-preproduction                 = { slack_channel_id = "C07J1QBJXC3" } # hmpps_oem_alarms_non_prod
+    hmpps-oem-production                    = { slack_channel_id = "C07JEHTH95F" } # hmpps_oem_alarms_prod
+    nomis-development                       = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
+    nomis-test                              = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
+    nomis-preproduction                     = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
+    nomis-production                        = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_prod
+    nomis-combined-reporting-test           = { slack_channel_id = "C07JE9TL03T" } # nomis_combined_reporting_alarms_non_prod
+    nomis-combined-reporting-preproduction  = { slack_channel_id = "C07JE9TL03T" } # nomis_combined_reporting_alarms_non_prod
+    nomis-combined-reporting-production     = { slack_channel_id = "C07HYP62DT7" } # nomis_combined_reporting_alarms_prod
+    nomis-data-hub-test                     = { slack_channel_id = "C07J1TP869Y" } # nomis_data_hub_alarms_non_prod
+    nomis-data-hub-preproduction            = { slack_channel_id = "C07J1TP869Y" } # nomis_data_hub_alarms_non_prod
+    nomis-data-hub-production               = { slack_channel_id = "C07HZ1VRP8V" } # nomis_data_hub_alarms_prod
+    oasys-test                              = { slack_channel_id = "C07HMBMC8KH" } # oasys_alarms_non_prod
+    oasys-preproduction                     = { slack_channel_id = "C07HMBMC8KH" } # oasys_alarms_non_prod
+    oasys-production                        = { slack_channel_id = "C07J4CVFVC4" } # oasys_alarms_prod
+    oasys-national-reporting-test           = { slack_channel_id = "C07HZ24GMGV" } # oasys_national_reporting_alarms_non_prod
+    oasys-national-reporting-preproduction  = { slack_channel_id = "C07HZ24GMGV" } # oasys_national_reporting_alarms_non_prod
+    oasys-national-reporting-production     = { slack_channel_id = "C07J1U3SN66" } # oasys_national_reporting_alarms_prod
+    planetfm-preproduction                  = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
+    planetfm-production                     = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
   }
   slack_events = [
     "incident.triggered",
