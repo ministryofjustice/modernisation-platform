@@ -31,6 +31,28 @@ data "aws_iam_policy_document" "logging-bucket" {
       values   = ["arn:aws:iam::*:role/firehose-to-s3*"]
     }
   }
+  statement {
+    sid    = "AllowXSIAMGetObject"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = [aws_iam_user.cortex_xsiam_user.arn]
+    }
+    actions = [
+      "s3:GetObject"
+    ]
+    resources = [
+      aws_s3_bucket.logging[each.key].arn,
+      "${aws_s3_bucket.logging[each.key].arn}/*"
+    ]
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values = [
+        "${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"
+      ]
+    }
+  }
 }
 
 data "aws_iam_policy_document" "logging-sqs" {
@@ -57,6 +79,7 @@ data "aws_iam_policy_document" "sqs_queue_read_document" {
     sid    = "SQSQueueReceiveMessages"
     effect = "Allow"
     actions = [
+      "sqs:ChangeMessageVisibility",
       "sqs:ReceiveMessage",
       "sqs:DeleteMessage",
       "sqs:GetQueueAttributes",
