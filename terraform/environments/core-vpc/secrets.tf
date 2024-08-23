@@ -21,15 +21,15 @@ data "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
   secret_id = data.aws_secretsmanager_secret.pagerduty_integration_keys.id
 }
 
-# Get the ARNs of the logging buckets in `core-logging`
-data "aws_secretsmanager_secret" "core_logging_bucket_arns" {
+# Get the ARN of the logging bucket in `core-logging`
+data "aws_secretsmanager_secret" "core_logging_bucket_arn" {
   provider = aws.modernisation-platform
-  name     = "core_logging_bucket_arns"
+  name     = "core_logging_bucket_arn"
 }
 
-data "aws_secretsmanager_secret_version" "core_logging_bucket_arns" {
+data "aws_secretsmanager_secret_version" "core_logging_bucket_arn" {
   provider  = aws.modernisation-platform
-  secret_id = data.aws_secretsmanager_secret.core_logging_bucket_arns.id
+  secret_id = data.aws_secretsmanager_secret.core_logging_bucket_arn.id
 }
 
 # Data for Firehose Endpoint URL & Key that are held in secrets manager.
