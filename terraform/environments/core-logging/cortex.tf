@@ -53,6 +53,34 @@ data "aws_iam_policy_document" "logging-sqs" {
   }
 }
 
+data "aws_iam_policy_document" "sqs_queue_read_document" {
+  statement {
+    sid    = "SQSQueueReceiveMessages"
+    effect = "Allow"
+    actions = [
+      "sqs:ReceiveMessage",
+      "sqs:DeleteMessage",
+      "sqs:GetQueueAttributes",
+      "sqs:GetQueueUrl",
+      "sqs:ListQueues"
+    ]
+    resources = flatten([
+      aws_sqs_queue.mp_cloudtrail_log_queue.arn,
+    [ for key in aws_sqs_queue.logging : key.arn ]
+    ])
+  }
+  statement {
+    sid       = "SQSReadLoggingS3"
+    effect    = "Allow"
+    actions   = ["s3:GetObject"]
+    resources = concat(
+      [module.s3-bucket-cloudtrail.bucket.arn, "${module.s3-bucket-cloudtrail.bucket.arn}/*"],
+     [ for key in aws_s3_bucket.logging : key.arn ],
+     [ for key in aws_s3_bucket.logging : "${key.arn}/*"]
+    )
+  }
+}
+
 locals {
   cortex_logging_buckets = toset(["vpc-flow-logs", "r53-resolver-logs", "generic-logs"])
 }
@@ -157,4 +185,21 @@ resource "aws_secretsmanager_secret_version" "logging" {
     for key in local.cortex_logging_buckets :
     key => aws_s3_bucket.logging[key].arn
   })
+}
+
+resource "aws_iam_user" "cortex_xsiam_user" {
+  #checkov:skip=CKV_AWS_273: This has been agreed by the TA that for this purpose an IAM user account can be used.
+  name = "cortex_xsiam_user"
+}
+
+resource "aws_iam_policy" "sqs_queue_read_policy" {
+  name        = "sqs-queue-read-policy"
+  description = "Allows the access to the created SQS queue"
+  policy      = data.aws_iam_policy_document.sqs_queue_read_document.json
+}
+
+resource "aws_iam_user_policy_attachment" "sqs_queue_read_policy_attachment" {
+  #checkov:skip=CKV_AWS_40: User account only has a single purpose so no role or group is needed
+  user       = "cortex_xsiam_user"
+  policy_arn = aws_iam_policy.sqs_queue_read_policy.arn
 }
