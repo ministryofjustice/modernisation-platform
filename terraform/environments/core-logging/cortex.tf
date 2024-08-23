@@ -199,6 +199,6 @@ resource "aws_iam_policy" "sqs_queue_read_policy" {
 
 resource "aws_iam_user_policy_attachment" "sqs_queue_read_policy_attachment" {
   #checkov:skip=CKV_AWS_40: User account only has a single purpose so no role or group is needed
-  user       = "cortex_xsiam_user"
+  user       = aws_iam_user.cortex_xsiam_user.name
   policy_arn = aws_iam_policy.sqs_queue_read_policy.arn
 }
