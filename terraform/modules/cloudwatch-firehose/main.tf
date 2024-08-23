@@ -11,7 +11,7 @@ resource "aws_kms_key" "firehose" {
 }
 
 resource "aws_kms_alias" "firehose" {
-  name          = "alias/firehose-log-delivery"
+  name_prefix   = "alias/firehose-log-delivery"
   target_key_id = aws_kms_key.firehose.id
 }
 
