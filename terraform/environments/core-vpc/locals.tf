@@ -20,12 +20,10 @@ locals {
   build_firehose = anytrue([local.is-development, local.is-production]) ? true : false
 
   # Secrets used by Firehose resources which we only require for development & production VPCs.
-  xsiam                 = jsondecode(data.aws_secretsmanager_secret_version.xsiam_secret_arn_version.secret_string)
-  cloudwatch_log_bucket = data.aws_secretsmanager_secret_version.core_logging_bucket_arn.secret_string
-  cloudwatch_log_groups = local.is-production ? concat(
-    [for env in module.route_53_resolver_logs : env.r53_resolver_log_name],
-    [for key, value in module.vpc : value.vpc_flow_log]
-  ) : []
+  xsiam                              = jsondecode(data.aws_secretsmanager_secret_version.xsiam_secret_arn_version.secret_string)
+  cloudwatch_log_buckets             = jsondecode(data.aws_secretsmanager_secret_version.core_logging_bucket_arns.secret_string)
+  cloudwatch_r53_resolver_log_groups = local.is-production ? [for env in module.route_53_resolver_logs : env.r53_resolver_log_name] : []
+  cloudwatch_vpc_flow_log_groups     = local.is-production ? [for key, value in module.vpc : value.vpc_flow_log] : []
 
   tags = {
     business-unit = "Platforms"
