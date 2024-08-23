@@ -24,7 +24,7 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     networking_cloudwatch                   = pagerduty_service_integration.networking_cloudwatch.integration_key,
     operations_cloudwatch                   = pagerduty_service_integration.operations_cloudwatch.integration_key,
     security_cloudwatch                     = pagerduty_service_integration.security_cloudwatch.integration_key,
-    nomis_alarms                            = pagerduty_service_integration.nomis_cloudwatch.integration_key, # do not delete yet
+    nomis_alarms                            = pagerduty_service_integration.nomis_cloudwatch.integration_key,         # do not delete yet
     nomis_nonprod_alarms                    = pagerduty_service_integration.nomis_nonprod_cloudwatch.integration_key, # do not delete yet
     laa_mlra_nonprod_alarms                 = pagerduty_service_integration.laa_mlra_nonprod_cloudwatch.integration_key,
     laa_mlra_prod_alarms                    = pagerduty_service_integration.laa_mlra_prod_cloudwatch.integration_key,
