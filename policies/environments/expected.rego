@@ -23,6 +23,7 @@ expected :=
     "cica-tariff",
     "contract-work-administration",
     "cooker",
+    "core-billing",
     "core-logging",
     "core-network-services",
     "core-sandbox",
