@@ -6,10 +6,6 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
-          "level": "migration"
-        },
-        {
-          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
@@ -21,6 +17,11 @@
     {
       "name": "test",
       "access": [
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "sandbox",
+          "nuke": "exclude"
+        },
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
@@ -36,6 +37,10 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
+          "level": "migration"
+        },
+        {
+          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
@@ -47,6 +52,10 @@
     {
       "name": "production",
       "access": [
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "migration"
+        },
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
