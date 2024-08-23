@@ -1,6 +1,7 @@
 # Because we can't use wildcards beyond "*" in a principal identifier, we use a policy condition to scope access only
 # to accounts in our OU, where the role matches the name created through the cloudwatch-firehose module
 data "aws_iam_policy_document" "logging-bucket" {
+  for_each = local.cortex_logging_buckets
   statement {
     sid    = "AllowFirehosePutObject"
     effect = "Allow"
@@ -13,10 +14,10 @@ data "aws_iam_policy_document" "logging-bucket" {
       "s3:PutObject",
       "s3:PutObjectAcl"
     ]
-    resources = flatten([
-      for bucket in aws_s3_bucket.logging :
-      [bucket.arn, "${bucket.arn}/*"]
-    ])
+    resources = [
+      aws_s3_bucket.logging[each.key].arn,
+      "${aws_s3_bucket.logging[each.key].arn}/*"
+    ]
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalOrgPaths"
@@ -95,7 +96,7 @@ resource "aws_s3_bucket_notification" "logging" {
 resource "aws_s3_bucket_policy" "logging" {
   for_each = local.cortex_logging_buckets
   bucket   = aws_s3_bucket.logging[each.key].id
-  policy   = data.aws_iam_policy_document.logging-bucket.json
+  policy   = data.aws_iam_policy_document.logging-bucket[each.key].json
 }
 
 resource "aws_s3_bucket_public_access_block" "logging" {
