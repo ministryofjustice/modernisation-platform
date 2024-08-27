@@ -25,7 +25,7 @@
     "business-unit": "Platforms",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
     "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
-    "slack-channel": "modernisation-platform"
+    "slack-channel": "cloud-platform"
   },
   "github-oidc-team-repositories": [""],
   "go-live-date": ""
