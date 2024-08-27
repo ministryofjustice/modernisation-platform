@@ -104,6 +104,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/environments/core-billing"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/environments/core-logging"
     schedule:
       interval: "daily"
@@ -385,6 +389,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/app-ecr-repo"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/modules/cloudwatch-firehose"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
