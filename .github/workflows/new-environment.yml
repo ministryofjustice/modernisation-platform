@@ -67,17 +67,15 @@ jobs:
             continue
           fi
           echo "Slack channel found: $slack_channel"
+          webhook_url=$(echo ${{ secrets.SLACK_WEBHOOKS }} | jq -r --arg channel "$slack_channel" '.[$channel]')
           PAYLOAD=$(cat <<EOF
           {
           "text": "The JSON file <${FILE_PATH}|${file}> has been changed."
           }
           EOF
           )
-          curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$SLACK_WEBHOOKS"
+          curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$webhook_url"
           done
-        env:
-          SLACK_WEBHOOKS: ${{ secrets.SLACK_WEBHOOKS }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
       - name: Send notification to Email
         if: steps.environment_json_changes.outputs.files != ''
         run: |
