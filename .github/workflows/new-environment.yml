@@ -68,7 +68,10 @@ jobs:
           fi
           echo "Slack channel found: $slack_channel"
           webhook_url=$(echo $SLACK_WEBHOOKS | jq -r --arg channel "$slack_channel" '.[$channel]')
-          if [[ ! -z "$webhook_url" ]]; then
+          if [[ -z "$webhook_url" ]]; then
+          echo "No webhook URL found for channel $slack_channel. Skipping notification."
+          continue
+          fi
           echo "Webhook URL found for channel $slack_channel"
           PAYLOAD=$(cat <<EOF
           {
@@ -77,9 +80,6 @@ jobs:
           EOF
           )
           curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$webhook_url"
-          else
-          echo "No webhook URL found for channel $slack_channel. Skipping notification."
-          fi
           done
         env:
           SLACK_WEBHOOKS: ${{ secrets.SLACK_WEBHOOKS }}
