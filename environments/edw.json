@@ -7,6 +7,10 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-edw-developer",
+          "level": "developer"
         }
       ]
     },
