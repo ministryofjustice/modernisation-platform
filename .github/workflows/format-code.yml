@@ -69,11 +69,11 @@ jobs:
         if: env.changes == 'true'
         uses: planetscale/ghcommit-action@c7915d6c18d5ce4eb42b0eff3f10a29fe0766e4c #v1.44
         with:
-          commit_message: "🤖 fmt"
+          commit_message: "Updates from GitHub Actions Format Code workflow"
           repo: ${{ github.repository }}
           branch: ${{ github.head_ref || github.ref_name }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Push Changes  
         if: env.changes == 'true'
