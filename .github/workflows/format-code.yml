@@ -25,6 +25,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 #v4.1.1
         with:
+          ref: ${{ github.head_ref }}
           token: '${{ secrets.GITHUB_TOKEN }}'
           fetch-depth: 0
 
@@ -39,13 +40,8 @@ jobs:
 
       - name: Checkout existing branch
         run: |
-          # Define the branch name you want to check out
           branch_name="issue/7690"
-          
-          # Fetch all branches (if needed)
           git fetch
-          
-          # Checkout the specified branch
           git checkout $branch_name
 
       - name: Run linter
