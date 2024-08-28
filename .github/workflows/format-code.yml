@@ -5,6 +5,9 @@ on:
   workflow_dispatch: null
   schedule:
     - cron: 45 4 * * 1-5
+  pull_request:
+    branches:
+      - issue/7690
 
 permissions:
   contents: write
