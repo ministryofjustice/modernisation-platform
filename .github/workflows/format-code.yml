@@ -31,11 +31,22 @@ jobs:
       - name: Prepare Git options
         run: bash ./scripts/git-setup.sh
 
-      - name: Create new branch
+      # - name: Create new branch
+      #   run: |
+      #     date=$(date +%Y_%m_%d)
+      #     branch_name="date_$date"
+      #     git checkout -b $branch_name
+
+      - name: Checkout existing branch
         run: |
-          date=$(date +%Y_%m_%d)
-          branch_name="date_$date"
-          git checkout -b $branch_name
+          # Define the branch name you want to check out
+          branch_name="issue/7690"
+          
+          # Fetch all branches (if needed)
+          git fetch
+          
+          # Checkout the specified branch
+          git checkout $branch_name
 
       - name: Run linter
         id: ml
