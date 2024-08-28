@@ -84,13 +84,13 @@ jobs:
             echo "changes=true" >> $GITHUB_ENV
           fi
 
-      - name: Push Changes  
-        if: env.changes == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          git config --global push.autoSetupRemote true
-          git push
+      # - name: Push Changes  
+      #   if: env.changes == 'true'
+      #   env:
+      #     GH_TOKEN: ${{ github.token }}
+      #   run: |
+      #     git config --global push.autoSetupRemote true
+      #     git push
 
       - name: Create pull request
         if: env.changes == 'true'
