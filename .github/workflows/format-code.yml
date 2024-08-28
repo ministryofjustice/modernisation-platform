@@ -38,12 +38,6 @@ jobs:
       #     branch_name="date_$date"
       #     git checkout -b $branch_name
 
-      - name: Checkout existing branch
-        run: |
-          branch_name="issue/7690"
-          git fetch
-          git checkout $branch_name
-
       - name: Run linter
         id: ml
         # You can override MegaLinter flavor used to have faster performances
@@ -65,18 +59,11 @@ jobs:
           MARKDOWN_MARKDOWNLINT_FILTER_REGEX_EXCLUDE: (terraform/modules/.*/.*.md)
           REPORT_OUTPUT_FOLDER: none
 
-      - name: Check for changes
+      - name: Add changes from linter
         run: |
           git add .
-          if [ -z "$changes" ]; then
-            echo "No changes detected."
-          else
-            echo "Changes detected."
-            echo "changes=true" >> $GITHUB_ENV
-          fi
 
       - name: Generate signed commit if changes exist
-        if: env.changes == 'true'
         uses: planetscale/ghcommit-action@c7915d6c18d5ce4eb42b0eff3f10a29fe0766e4c #v1.44
         with:
           commit_message: "Updates from GitHub Actions Format Code workflow"
@@ -84,6 +71,18 @@ jobs:
           branch: ${{ github.head_ref || github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
+
+      # Note we need to run this check before the commit action above. 
+      - name: Check for Changes
+        run: |
+          branch_name=$(git branch --show-current)
+          changes=$(git diff origin/main...$branch_name --name-only)
+          if [ -z "$changes" ]; then
+            echo "No changes detected."
+          else
+            echo "Changes detected."
+            echo "changes=true" >> $GITHUB_ENV
+          fi
 
       - name: Push Changes  
         if: env.changes == 'true'
