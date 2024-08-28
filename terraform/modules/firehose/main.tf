@@ -24,8 +24,8 @@ resource "aws_kinesis_firehose_delivery_stream" "delivery_stream" {
   }
 
   http_endpoint_configuration {
-    url                = var.xsiam_endpoint
-    name               = format("%s-%s-%s", var.resource_prefix, "delivery-stream-endpoint-", random_string.firehose_rnd.result)
+    url = var.xsiam_endpoint
+    name  = format("%s-%s-%s", var.resource_prefix, "delivery-stream-endpoint-", random_string.firehose_rnd.result)
     access_key         = var.xsiam_secret
     buffering_size     = 5
     buffering_interval = 300
