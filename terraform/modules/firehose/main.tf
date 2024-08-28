@@ -14,8 +14,8 @@ resource "aws_kinesis_firehose_delivery_stream" "delivery_stream" {
   #checkov:skip=CKV_AWS_241: We are using the default key for encryption.
   name        = format("%s-%s-%s", var.resource_prefix, "delivery-stream", random_string.firehose_rnd.result)
   destination = "http_endpoint"
-  tags = merge(var.tags,{
-      Name = format("%s-%s-%s", var.resource_prefix, "delivery-stream", random_string.firehose_rnd.result)
+  tags = merge(var.tags, {
+    Name = format("%s-%s-%s", var.resource_prefix, "delivery-stream", random_string.firehose_rnd.result)
     }
   )
 
@@ -25,8 +25,8 @@ resource "aws_kinesis_firehose_delivery_stream" "delivery_stream" {
 
   http_endpoint_configuration {
     url                = var.xsiam_endpoint
-    name = format("%s-%s-%s", var.resource_prefix, "delivery-stream-endpoint-", random_string.firehose_rnd.result)
-    access_key = var.xsiam_secret
+    name               = format("%s-%s-%s", var.resource_prefix, "delivery-stream-endpoint-", random_string.firehose_rnd.result)
+    access_key         = var.xsiam_secret
     buffering_size     = 5
     buffering_interval = 300
     role_arn           = aws_iam_role.delivery_stream_role.arn
