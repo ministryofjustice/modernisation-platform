@@ -58,21 +58,22 @@ jobs:
       - name: Check for changes
         run: |
           git add .
-          git commit -m "Updates from GitHub Actions Format Code workflow" || true
           branch_name=$(git branch --show-current)
-          changes=$(git diff origin/main...$branch_name --name-only)
-          if [ -z "$changes" ]; then
+          if git diff --cached --quiet; then
             echo "No changes detected."
           else
             echo "Changes detected."
             echo "changes=true" >> $GITHUB_ENV
           fi
-
-      - name: Push changes
-        if: env.changes == 'true'
-        run: |
-          git config --global push.autoSetupRemote true
-          git push
+  
+      - name: Generate signed commit for any changes that may exist
+        uses: planetscale/ghcommit-action@c7915d6c18d5ce4eb42b0eff3f10a29fe0766e4c #v1.44
+        with:
+          commit_message: "Updates from GitHub Actions Format Code workflow"
+          repo: ${{ github.repository }}
+          branch: ${{ github.head_ref || github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Create pull request
         if: env.changes == 'true'
