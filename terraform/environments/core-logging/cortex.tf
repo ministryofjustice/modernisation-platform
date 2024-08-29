@@ -1,3 +1,7 @@
+locals {
+  cortex_logging_buckets = toset(["vpc-flow-logs", "r53-resolver-logs", "generic-logs"])
+}
+
 # Because we can't use wildcards beyond "*" in a principal identifier, we use a policy condition to scope access only
 # to accounts in our OU, where the role matches the name created through the cloudwatch-firehose module
 data "aws_iam_policy_document" "logging-bucket" {
@@ -34,6 +38,7 @@ data "aws_iam_policy_document" "logging-bucket" {
 }
 
 data "aws_iam_policy_document" "logging-sqs" {
+  for_each = local.cortex_logging_buckets
   statement {
     sid    = "AllowSendMessage"
     effect = "Allow"
@@ -42,19 +47,41 @@ data "aws_iam_policy_document" "logging-sqs" {
       identifiers = ["s3.amazonaws.com"]
     }
     actions = ["sqs:SendMessage"]
-    resources = [
-      for key in aws_sqs_queue.logging : key.arn
-    ]
+    resources = [aws_sqs_queue.logging[each.key].arn]
     condition {
       test     = "ArnEquals"
       variable = "aws:SourceArn"
-      values   = [for key in aws_s3_bucket.logging : key.arn]
+      values   = [aws_s3_bucket.logging[each.key].arn]
     }
   }
 }
 
-locals {
-  cortex_logging_buckets = toset(["vpc-flow-logs", "r53-resolver-logs", "generic-logs"])
+data "aws_iam_policy_document" "cortex_user_policy" {
+  statement {
+    sid    = "SQSQueueReceiveMessages"
+    effect = "Allow"
+    actions = [
+      "sqs:ChangeMessageVisibility",
+      "sqs:ReceiveMessage",
+      "sqs:DeleteMessage",
+      "sqs:GetQueueAttributes",
+      "sqs:GetQueueUrl",
+      "sqs:ListQueues"
+    ]
+    resources = flatten([
+      aws_sqs_queue.mp_cloudtrail_log_queue.arn,
+    [ for key in aws_sqs_queue.logging : key.arn ]
+    ])
+  }
+  statement {
+    sid       = "S3GetLogs"
+    effect    = "Allow"
+    actions   = ["s3:GetObject"]
+    resources = concat(
+      [module.s3-bucket-cloudtrail.bucket.arn, "${module.s3-bucket-cloudtrail.bucket.arn}/*"],
+     [ for key in aws_s3_bucket.logging : "${key.arn}/*"]
+    )
+  }
 }
 
 resource "aws_s3_bucket" "logging" {
@@ -122,17 +149,13 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "logging" {
 resource "aws_sqs_queue" "logging" {
   for_each                   = local.cortex_logging_buckets
   name_prefix                = "${local.application_name}-${each.key}"
-  delay_seconds              = 0      # The default is 0 but can be up to 15 minutes
-  max_message_size           = 262144 # 256k which is the max size
-  message_retention_seconds  = 345600 # This is 4 days. The max is 14 days
   sqs_managed_sse_enabled    = true   # Using managed encryption
-  visibility_timeout_seconds = 30     # This is only useful for queues that have multiple subscribers
   tags                       = local.tags
 }
 
 resource "aws_sqs_queue_policy" "logging" {
   for_each  = local.cortex_logging_buckets
-  policy    = data.aws_iam_policy_document.logging-sqs.json
+  policy    = data.aws_iam_policy_document.logging-sqs[each.key].json
   queue_url = aws_sqs_queue.logging[each.key].url
 }
 
@@ -157,4 +180,21 @@ resource "aws_secretsmanager_secret_version" "logging" {
     for key in local.cortex_logging_buckets :
     key => aws_s3_bucket.logging[key].arn
   })
+}
+
+resource "aws_iam_user" "cortex_xsiam_user" {
+  #checkov:skip=CKV_AWS_273: This has been agreed by the TA that for this purpose an IAM user account can be used.
+  name = "cortex_xsiam_user"
+}
+
+resource "aws_iam_policy" "cortex_user_policy" {
+  name        = "cortex-user-policy"
+  description = "Allows the access to the created SQS queue"
+  policy      = data.aws_iam_policy_document.cortex_user_policy.json
+}
+
+resource "aws_iam_user_policy_attachment" "sqs_queue_read_policy_attachment" {
+  #checkov:skip=CKV_AWS_40: User account only has a single purpose so no role or group is needed
+  user       = aws_iam_user.cortex_xsiam_user.name
+  policy_arn = aws_iam_policy.cortex_user_policy.arn
 }
