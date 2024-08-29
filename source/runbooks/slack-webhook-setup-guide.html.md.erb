@@ -18,7 +18,7 @@ review_in: 6 months
 
 This guide will walk you through the steps to update your environments.json file, set up a Slack webhook, and securely share the webhook URL with the Modernisation Platform team.
 
-# Step 1: Update Your environments.json File
+## Update Your environments.json File
 
 To receive notifications when there is a change in your `environments.json` file, include the `slack-channel` key in your JSON configuration. Ensure the key reflects the actual name of your Slack channel.
 
@@ -50,7 +50,7 @@ To receive notifications when there is a change in your `environments.json` file
 
 Replace "your-slack-channel-name" with the actual name of your Slack channel.
 
-## Step 2: Create a Slack Webhook
+## Create a Slack Webhook
 
 If you do not already have a Slack webhook for the channel where you want to receive alerts, follow these steps:
 
@@ -66,11 +66,11 @@ If you do not already have a Slack webhook for the channel where you want to rec
     - Select the Slack channel where you want to receive notifications and click **"Allow"**.
     - Copy the generated webhook URL.
 
-## Step 3: Store the Slack Webhook as a Secret
+## Store the Slack Webhook as a Secret
 
 Store the Slack webhook URL securely as a secret in Secrets Manager in one of the your AWS accounts managed by the Modernisation Platform.
 
-## Step 4: Create a Ticket in the Modernisation Platform Repository
+## Create a Ticket in the Modernisation Platform Repository
 
 To complete the setup,[create a ticket in the Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues/new?assignees=&labels=alerting&projects=&template=provide-slack-webhook-info.yml&title=Request+to+Integrate+Slack+Webhook+for+%3CYour+Slack+Channel+Name%3E) with the following information:
 
@@ -78,7 +78,7 @@ To complete the setup,[create a ticket in the Modernisation Platform repository]
 - **AWS account name**: The account where you have stored the webhook URL.
 - **Name of the secret**: The name you used for the secret, suggested as `slack_webhook_url`.
 
-## Step 5: Regular Renewal of Slack Webhook URLs
+## Regular Renewal of Slack Webhook URLs
 
 It is recommended to renew the Slack webhook URL every 3 months to ensure security and prevent any potential misuse.
 
