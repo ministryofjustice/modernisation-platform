@@ -191,9 +191,9 @@ jobs:
           if [[ ${#accounts[@]} -gt 0 ]]; then
             for i in "${accounts[@]}"; do
               echo "[+] Running delegate-access baseline for account ${i}"
-              # bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
-              # bash scripts/setup-baseline.sh terraform/environments/bootstrap/delegate-access "${i}" plan
-              # bash scripts/setup-baseline.sh terraform/environments/bootstrap/delegate-access "${i}" apply
+              bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
+              bash scripts/setup-baseline.sh terraform/environments/bootstrap/delegate-access "${i}" plan
+              bash scripts/setup-baseline.sh terraform/environments/bootstrap/delegate-access "${i}" apply
             done
           else
             echo "[+] There were no AWS member accounts to process"
@@ -291,9 +291,9 @@ jobs:
           if [[ ${#accounts[@]} -gt 0 ]]; then
             for i in "${accounts[@]}"; do
               echo "[+] Running secure baseline for account ${i}"
-              # bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
-              # bash scripts/setup-baseline.sh terraform/environments/bootstrap/secure-baselines "${i}" plan
-              # bash scripts/setup-baseline.sh terraform/environments/bootstrap/secure-baselines "${i}" apply
+              bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
+              bash scripts/setup-baseline.sh terraform/environments/bootstrap/secure-baselines "${i}" plan
+              bash scripts/setup-baseline.sh terraform/environments/bootstrap/secure-baselines "${i}" apply
             done
           else
             echo "[+] There were no AWS member accounts to process"
@@ -341,9 +341,9 @@ jobs:
           if [[ ${#accounts[@]} -gt 0 ]]; then
             for i in "${accounts[@]}"; do
               echo "[+] Running single sign on baseline for account ${i}"
-              # bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
-              # bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on "$ {i}" plan
-              # bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on "${i}" apply
+              bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
+              bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on "$ {i}" plan
+              bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on "${i}" apply
             done
           else
             echo "[+] There were no AWS member accounts to process"
@@ -446,9 +446,9 @@ jobs:
           if [[ ${#accounts[@]} -gt 0 ]]; then
             for i in "${accounts[@]}"; do
               echo "[+] Running secure baseline for account ${i}"
-              # bash scripts/terraform-init.sh terraform/environments/bootstrap/member-bootstrap
-              # bash scripts/setup-baseline.sh terraform/environments/bootstrap/member-bootstrap "${i}" plan
-              # bash scripts/setup-baseline.sh terraform/environments/bootstrap/member-bootstrap "${i}" apply
+              bash scripts/terraform-init.sh terraform/environments/bootstrap/member-bootstrap
+              bash scripts/setup-baseline.sh terraform/environments/bootstrap/member-bootstrap "${i}" plan
+              bash scripts/setup-baseline.sh terraform/environments/bootstrap/member-bootstrap "${i}" apply
             done
           else
             echo "[+] There were no AWS member accounts to process"
