@@ -23,7 +23,7 @@ locals {
 }
 
 resource "aws_sns_topic" "sprinkler_sns" {
-    name = "sprinkler_sns"
+  name  = "sprinkler_sns" 
 }
 
 # link the sns topic to the service
