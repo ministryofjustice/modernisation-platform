@@ -183,11 +183,11 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ' ' | awk '{$1=$1};1')
+          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
           echo "files=$files" >> $GITHUB_OUTPUT
       - name: Run delegate access
         run: |
-          accounts=("${{ steps.new_account.outputs.files }}")
+          IFS=',' read -r -a accounts <<< "${{ steps.new_account.outputs.files }}"
           if [[ ${#accounts[@]} -gt 0 ]]; then
             for i in "${accounts[@]}"; do
               echo "[+] Running delegate-access baseline for account ${i}"
