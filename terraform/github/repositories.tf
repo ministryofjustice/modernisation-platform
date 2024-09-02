@@ -378,3 +378,18 @@ module "modernisation-platform-terraform-aws-chatbot" {
   ]
   secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
+
+module "modernisation-platform-terraform-aws-data-firehose" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-aws-data-firehose"
+  type        = "module"
+  description = "Module for creating AWS Data Streams to stream logs from CloudWatch Log Groups."
+  topics = [
+    "aws",
+    "cloudwatch",
+    "kinesis-data-streams",
+    "module",
+    "terraform"
+  ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
+}
