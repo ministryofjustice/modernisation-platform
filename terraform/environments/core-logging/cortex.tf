@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "logging-sqs" {
       type        = "Service"
       identifiers = ["s3.amazonaws.com"]
     }
-    actions = ["sqs:SendMessage"]
+    actions   = ["sqs:SendMessage"]
     resources = [aws_sqs_queue.logging[each.key].arn]
     condition {
       test     = "ArnEquals"
@@ -70,16 +70,16 @@ data "aws_iam_policy_document" "cortex_user_policy" {
     ]
     resources = flatten([
       aws_sqs_queue.mp_cloudtrail_log_queue.arn,
-    [ for key in aws_sqs_queue.logging : key.arn ]
+      [for key in aws_sqs_queue.logging : key.arn]
     ])
   }
   statement {
-    sid       = "S3GetLogs"
-    effect    = "Allow"
-    actions   = ["s3:GetObject"]
+    sid     = "S3GetLogs"
+    effect  = "Allow"
+    actions = ["s3:GetObject"]
     resources = concat(
       [module.s3-bucket-cloudtrail.bucket.arn, "${module.s3-bucket-cloudtrail.bucket.arn}/*"],
-     [ for key in aws_s3_bucket.logging : "${key.arn}/*"]
+      [for key in aws_s3_bucket.logging : "${key.arn}/*"]
     )
   }
 }
@@ -147,10 +147,10 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "logging" {
 }
 
 resource "aws_sqs_queue" "logging" {
-  for_each                   = local.cortex_logging_buckets
-  name_prefix                = "${local.application_name}-${each.key}"
-  sqs_managed_sse_enabled    = true   # Using managed encryption
-  tags                       = local.tags
+  for_each                = local.cortex_logging_buckets
+  name_prefix             = "${local.application_name}-${each.key}"
+  sqs_managed_sse_enabled = true # Using managed encryption
+  tags                    = local.tags
 }
 
 resource "aws_sqs_queue_policy" "logging" {
