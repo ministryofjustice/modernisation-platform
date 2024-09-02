@@ -54,7 +54,6 @@ locals {
 
   # Security engineers performing reviews on the platform or member accounts
   security = [
-    "joelefejuku",
     "isaacthomasMOJ"
   ]
 
