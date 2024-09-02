@@ -58,7 +58,7 @@ jobs:
       - name: Send notification to Slack
         if: steps.environment_json_changes.outputs.files != ''
         run: |
-          IFS=',' read -r -a files <<< "${{ step.environment_json_changes.outputs.files }}"
+          IFS=',' read -r -a files <<< "${{ steps.environment_json_changes.outputs.files }}"
           for file in $files; do
             FILE_PATH="https://github.com/${GITHUB_REPOSITORY}/blob/main/environments/${file}"
             slack_channel=$(jq -r '.tags["slack-channel"] // empty' "environments/$file")
