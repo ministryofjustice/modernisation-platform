@@ -35,6 +35,5 @@ def main(file_names):
         )
 
 if __name__ == "__main__":
-    arg = sys.argv[1]
-    file_names = arg.split(",")
+    file_names = sys.argv[1:]
     main(file_names)
