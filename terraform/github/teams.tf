@@ -30,7 +30,8 @@ module "core-team" {
     module.terraform-module-ecs-cluster.repository.name,
     module.modernisation-platform-terraform-dns-certificates.repository.name,
     module.modernisation-platform-security.repository.name,
-    module.modernisation-platform-terraform-aws-chatbot.repository.name
+    module.modernisation-platform-terraform-aws-chatbot.repository.name,
+    module.modernisation-platform-terraform-aws-data-firehose.repository.name
   ]
 
   maintainers = local.maintainers
