@@ -60,26 +60,26 @@ jobs:
         run: |
           IFS=',' read -r -a files <<< "${{ steps.environment_json_changes.outputs.files }}"
           for file in $files; do
-            FILE_PATH="https://github.com/${GITHUB_REPOSITORY}/blob/main/environments/${file}"
-            slack_channel=$(jq -r '.tags["slack-channel"] // empty' "environments/$file")
-            if [[ -z "$slack_channel" ]]; then
-              echo "No Slack channel specified in the $file or the field does not exist. Skipping."
-              continue
-            fi
-            echo "Slack channel found: $slack_channel"
-            webhook_url=$(echo $SLACK_WEBHOOKS | jq -r --arg channel "$slack_channel" '.[$channel]')
-            if [[  -z "$webhook_url" || "$webhook_url" == "null" ]]; then
-              echo "No webhook URL found for channel $slack_channel. Skipping notification."
-              continue
-            fi
-            echo "Webhook URL found for channel $slack_channel"
-            PAYLOAD=$(cat <<EOF
-            {
-              "text": "The JSON file <${FILE_PATH}|${file}> has been changed."
-            }
-            EOF
-            )
-            curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$webhook_url"
+          FILE_PATH="https://github.com/${GITHUB_REPOSITORY}/blob/main/environments/${file}"
+          slack_channel=$(jq -r '.tags["slack-channel"] // empty' "environments/$file")
+          if [[ -z "$slack_channel" ]]; then
+          echo "No Slack channel specified in the $file or the field does not exist. Skipping."
+          continue
+          fi
+          echo "Slack channel found: $slack_channel"
+          webhook_url=$(echo $SLACK_WEBHOOKS | jq -r --arg channel "$slack_channel" '.[$channel]')
+          if [[  -z "$webhook_url" || "$webhook_url" == "null" ]]; then
+          echo "No webhook URL found for channel $slack_channel. Skipping notification."
+          continue
+          fi
+          echo "Webhook URL found for channel $slack_channel"
+          PAYLOAD=$(cat <<EOF
+          {
+            "text": "The JSON file <${FILE_PATH}|${file}> has been changed."
+          }
+          EOF
+          )
+          curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$webhook_url"
           done
         env:
           SLACK_WEBHOOKS: ${{ secrets.SLACK_WEBHOOKS }}
