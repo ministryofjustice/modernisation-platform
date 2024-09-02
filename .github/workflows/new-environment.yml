@@ -77,7 +77,7 @@ jobs:
             {
               "text": "The JSON file <${FILE_PATH}|${file}> has been changed."
             }
-              EOF
+            EOF
             )
             curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$webhook_url"
           done
