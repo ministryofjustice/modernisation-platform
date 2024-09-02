@@ -223,7 +223,6 @@ module "terraform-module-ec2-instance" {
   secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
-
 module "terraform-module-lambda-function" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-lambda-function"
@@ -375,6 +374,21 @@ module "modernisation-platform-terraform-aws-chatbot" {
     "aws",
     "chatbot",
     "slack"
+  ]
+  secrets = nonsensitive(local.testing_ci_iam_user_keys)
+}
+
+module "modernisation-platform-terraform-aws-data-firehose" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-aws-data-firehose"
+  type        = "module"
+  description = "Module for creating AWS Data Streams to stream logs from CloudWatch Log Groups."
+  topics = [
+    "aws",
+    "cloudwatch",
+    "kinesis-data-streams",
+    "module",
+    "terraform"
   ]
   secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
