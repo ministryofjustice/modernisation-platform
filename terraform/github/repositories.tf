@@ -223,7 +223,6 @@ module "terraform-module-ec2-instance" {
   secrets = nonsensitive(local.testing_ci_iam_user_keys)
 }
 
-
 module "terraform-module-lambda-function" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-lambda-function"
