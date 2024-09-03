@@ -2108,6 +2108,6 @@ resource "pagerduty_slack_connection" "connections" {
   notification_type = "responder"
   config {
     events     = local.slack_events
-    priorities = ["*"]
+    priorities = [data.pagerduty_priority.p5.id]
   }
 }
