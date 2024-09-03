@@ -2091,6 +2091,7 @@ resource "pagerduty_service" "services" {
   acknowledgement_timeout = "null"
   escalation_policy       = pagerduty_escalation_policy.member_policy.id
   alert_creation          = "create_alerts_and_incidents"
+
 }
 resource "pagerduty_service_integration" "integrations" {
   for_each = pagerduty_service.services
@@ -2108,6 +2109,23 @@ resource "pagerduty_slack_connection" "connections" {
   notification_type = "responder"
   config {
     events     = local.slack_events
-    priorities = [data.pagerduty_priority.p5.id]
+    priorities = ["*"]
+  }
+}
+
+resource "pagerduty_event_orchestration_service" "default" {
+  for_each                               = pagerduty_service.services
+  service                                = each.value.id
+  enable_event_orchestration_for_service = true
+  set {
+    id = "default"
+    rule {
+      actions {
+        priority = data.pagerduty_priority.p5.id
+      }
+    }
+  }
+  catch_all {
+    actions {}
   }
 }
