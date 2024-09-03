@@ -2453,9 +2453,9 @@ locals {
     hmpps-oem-test                          = { slack_channel_id = "C07J1QBJXC3" } # hmpps_oem_alarms_non_prod
     hmpps-oem-preproduction                 = { slack_channel_id = "C07J1QBJXC3" } # hmpps_oem_alarms_non_prod
     hmpps-oem-production                    = { slack_channel_id = "C07JEHTH95F" } # hmpps_oem_alarms_prod
-    nomis-development                       = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
-    nomis-test                              = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
-    nomis-preproduction                     = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_non_prod
+    nomis-development                       = { slack_channel_id = "C07HW4A8K19" } # nomis_alarms_non_prod
+    nomis-test                              = { slack_channel_id = "C07HW4A8K19" } # nomis_alarms_non_prod
+    nomis-preproduction                     = { slack_channel_id = "C07HW4A8K19" } # nomis_alarms_non_prod
     nomis-production                        = { slack_channel_id = "C07HFLM47QX" } # nomis_alarms_prod
     nomis-combined-reporting-test           = { slack_channel_id = "C07JE9TL03T" } # nomis_combined_reporting_alarms_non_prod
     nomis-combined-reporting-preproduction  = { slack_channel_id = "C07JE9TL03T" } # nomis_combined_reporting_alarms_non_prod
