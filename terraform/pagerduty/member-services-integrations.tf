@@ -2469,6 +2469,7 @@ locals {
     oasys-national-reporting-test           = { slack_channel_id = "C07HZ24GMGV" } # oasys_national_reporting_alarms_non_prod
     oasys-national-reporting-preproduction  = { slack_channel_id = "C07HZ24GMGV" } # oasys_national_reporting_alarms_non_prod
     oasys-national-reporting-production     = { slack_channel_id = "C07J1U3SN66" } # oasys_national_reporting_alarms_prod
+    sprinkler-development                   = { slack_channel_id = "C07J1U3SN66" } # sprinkler-development
     planetfm-preproduction                  = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
     planetfm-production                     = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
   }
@@ -2533,12 +2534,12 @@ resource "pagerduty_service" "sprinkler-development" {
 
 resource "pagerduty_service_integration" "sprinkler-integration" {
   #name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.sprinkler.id
+  service = pagerduty_service.sprinkler-development.id
   #vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
 resource "pagerduty_slack_connection" "sprinkler_connection" {
-  source_id         = pagerduty_service.sprinkler.id
+  source_id         = pagerduty_service.sprinkler-development.id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
   channel_id        = "C04QGQML68P"
