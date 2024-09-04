@@ -143,11 +143,12 @@ resource "aws_cloudwatch_event_target" "noms-vpn-event-target-sns" {
 }
 
 resource "aws_sns_topic" "noms-vpn-sns-topic" {
-  name = "noms_vpn_sns_topic"
+  name              = "noms_vpn_sns_topic"
+  kms_master_key_id = "alias/aws/sns"
 }
 
 module "core-networks-chatbot" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot?ref=485d70f865876de922db6796d27b1f91fac25263" // v1.0.0
 
   slack_channel_id = "CDLAJTGRG" // #dba_alerts_prod
   sns_topic_arns   = ["arn:aws:sns:eu-west-2:${local.environment_management.account_ids[terraform.workspace]}:${aws_sns_topic.noms-vpn-sns-topic.name}"]
