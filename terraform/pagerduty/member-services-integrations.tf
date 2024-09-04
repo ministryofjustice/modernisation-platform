@@ -2115,49 +2115,49 @@ resource "pagerduty_slack_connection" "ndh_non_prod" {
 
 # Slack channel: #dso_alerts_devtest_modernisation_platform
 
-resource "pagerduty_service" "ndh_prod" {
-  name                    = "Nomis Data Hub Production Alarms"
-  description             = "Nomis Data Hub Production Alarms"
-  auto_resolve_timeout    = 345600
-  acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
-  alert_creation          = "create_alerts_and_incidents"
-}
+# resource "pagerduty_service" "ndh_prod" {
+#   name                    = "Nomis Data Hub Production Alarms"
+#   description             = "Nomis Data Hub Production Alarms"
+#   auto_resolve_timeout    = 345600
+#   acknowledgement_timeout = "null"
+#   escalation_policy       = pagerduty_escalation_policy.member_policy.id
+#   alert_creation          = "create_alerts_and_incidents"
+# }
 
-resource "pagerduty_service_integration" "ndh_prod" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.ndh_prod.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
-}
+# resource "pagerduty_service_integration" "ndh_prod" {
+#   name    = data.pagerduty_vendor.cloudwatch.name
+#   service = pagerduty_service.ndh_prod.id
+#   vendor  = data.pagerduty_vendor.cloudwatch.id
+# }
 
-resource "pagerduty_slack_connection" "ndh_prod" {
-  source_id         = pagerduty_service.ndh_prod.id
-  source_type       = "service_reference"
-  workspace_id      = local.slack_workspace_id
-  channel_id        = "C04E4FM3KS7"
-  notification_type = "responder"
-  config {
-    events = [
-      "incident.triggered",
-      "incident.acknowledged",
-      "incident.escalated",
-      "incident.resolved",
-      "incident.reassigned",
-      "incident.annotated",
-      "incident.unacknowledged",
-      "incident.delegated",
-      "incident.priority_updated",
-      "incident.responder.added",
-      "incident.responder.replied",
-      "incident.action_invocation.created",
-      "incident.action_invocation.terminated",
-      "incident.action_invocation.updated",
-      "incident.status_update_published",
-      "incident.reopened"
-    ]
-    priorities = ["*"]
-  }
-}
+# resource "pagerduty_slack_connection" "ndh_prod" {
+#   source_id         = pagerduty_service.ndh_prod.id
+#   source_type       = "service_reference"
+#   workspace_id      = local.slack_workspace_id
+#   channel_id        = "C04E4FM3KS7"
+#   notification_type = "responder"
+#   config {
+#     events = [
+#       "incident.triggered",
+#       "incident.acknowledged",
+#       "incident.escalated",
+#       "incident.resolved",
+#       "incident.reassigned",
+#       "incident.annotated",
+#       "incident.unacknowledged",
+#       "incident.delegated",
+#       "incident.priority_updated",
+#       "incident.responder.added",
+#       "incident.responder.replied",
+#       "incident.action_invocation.created",
+#       "incident.action_invocation.terminated",
+#       "incident.action_invocation.updated",
+#       "incident.status_update_published",
+#       "incident.reopened"
+#     ]
+#     priorities = ["*"]
+#   }
+# }
 
 # Slack channel: #dso_alerts_modernisation_platform
 
@@ -2469,7 +2469,7 @@ locals {
     oasys-national-reporting-test           = { slack_channel_id = "C07HZ24GMGV" } # oasys_national_reporting_alarms_non_prod
     oasys-national-reporting-preproduction  = { slack_channel_id = "C07HZ24GMGV" } # oasys_national_reporting_alarms_non_prod
     oasys-national-reporting-production     = { slack_channel_id = "C07J1U3SN66" } # oasys_national_reporting_alarms_prod
-    sprinkler-development                   = { slack_channel_id = "C07J1U3SN66" } # sprinkler-development
+    sprinkler-development                   = { slack_channel_id = "C02PFCG8M1R" } # sprinkler-development
     planetfm-preproduction                  = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
     planetfm-production                     = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
   }
@@ -2533,16 +2533,17 @@ resource "pagerduty_service" "sprinkler-development" {
 }
 
 resource "pagerduty_service_integration" "sprinkler-integration" {
-  #name    = data.pagerduty_vendor.cloudwatch.name
+  name    = "Test creation"
+  # data.pagerduty_vendor.cloudwatch.name
   service = pagerduty_service.sprinkler-development.id
-  #vendor  = data.pagerduty_vendor.cloudwatch.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
 resource "pagerduty_slack_connection" "sprinkler_connection" {
   source_id         = pagerduty_service.sprinkler-development.id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
-  channel_id        = "C04QGQML68P"
+  channel_id        = "C02PFCG8M1R"
   notification_type = "responder"
   lifecycle {
     ignore_changes = [
