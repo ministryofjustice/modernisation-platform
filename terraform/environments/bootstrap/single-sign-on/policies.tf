@@ -1274,9 +1274,10 @@ data "aws_iam_policy_document" "fleet-manager-document" {
 }
 
 resource "aws_iam_policy" "s3_upload_policy" {
-  name   = "s3_upload_policy"
-  path   = "/"
-  policy = data.aws_iam_policy_document.s3_upload_policy_document.json
+  provider = aws.workspace
+  name     = "s3_upload_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.s3_upload_policy_document.json
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
