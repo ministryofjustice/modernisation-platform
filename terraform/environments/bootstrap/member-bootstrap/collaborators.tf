@@ -215,3 +215,28 @@ module "collaborator_fleet_manager_role" {
 data "aws_iam_policy" "fleet_manager" {
   name = "fleet_manager_policy"
 }
+
+# s3-upload role for collaborators
+module "collaborator_s3_upload_role" {
+  # checkov:skip=CKV_TF_1:
+
+  count  = local.account_data.account-type == "member" ? 1 : 0
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+
+  trusted_role_arns = [
+    local.modernisation_platform_account.id
+  ]
+
+  create_role       = true
+  role_name         = "s3-upload"
+  role_requires_mfa = true
+
+  custom_role_policy_arns = [
+    data.aws_iam_policy.s3_upload.arn
+  ]
+  number_of_custom_role_policy_arns = 1
+}
+
+data "aws_iam_policy" "s3_upload" {
+  name = "s3_upload_policy"
+}
