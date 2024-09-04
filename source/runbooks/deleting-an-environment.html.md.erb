@@ -28,18 +28,17 @@ In `modernisation-platform/scripts/account-deletion` we have a set of bash scrip
 
 1. `delete-tf-state.sh` - Removes the AWS account from Modernisation Platform state management
 1. `update-files.sh`- Removes the environment definition in `environments/*.json`
-1.  `delete-tf-resources`- Deletes Terraform resources for the environment (in the MP and MP Environments repos)
+1. `delete-tf-resources`- Deletes Terraform resources for the environment (in the MP and MP Environments repos)
 1. `delete-tf-workspaces.sh`- Deletes Terraform workspaces for the environment in `terraform/environments/bootstrap/*`
-1.  `delete-files.sh`- Removes Environment Files (only if removing all environments for an application)
+1. `delete-files.sh`- Removes Environment Files (only if removing all environments for an application)
 
 They are all triggered in sequence by the `delete-accounts.sh` script.
 
->Be aware that some resources such as s3 buckets cannot be destroyed until you manually empty all the objects and versions in them.
+> Be aware that some resources such as s3 buckets cannot be destroyed until you manually empty all the objects and versions in them.
 
->Ensure that you have fetched the most recent updates in your local MP and MPE directories by executing a `git pull` command.
+> Ensure that you have fetched the most recent updates in your local MP and MPE directories by executing a `git pull` command.
 
->Ensure that you have deleted all local `.terraform` and `.terraform.lock.hcl` files 
-
+> Ensure that you have deleted all local `.terraform` and `.terraform.lock.hcl` files
 
 To use the scripts, follow these steps:
 
@@ -51,15 +50,17 @@ To use the scripts, follow these steps:
 1. Execute the script using the command: `./delete-accounts.sh`
 1. While the script is running you will need to respond to prompts to confirm your actions at various stages
 
->The script execution logs will be written to a file called `execution_log.txt` which show the progress being made and help to debug any issues that may arise.
+> The script execution logs will be written to a file called `execution_log.txt` which show the progress being made and help to debug any issues that may arise.
 
->If the script fails at any point you can try to re-run the `account-deletion.sh` script or manually run a combination of the individual scripts that it calls using the order mentioned above.
+> If the script fails at any point you can try to re-run the `account-deletion.sh` script or manually run a combination of the individual scripts that it calls using the order mentioned above.
 
->Where the script has made changes to files in the MP/MP Environments repos it will have created them on a new branch with a unique name. You will need to merge these in at a later stage of the process. 
+> Where the script has made changes to files in the MP/MP Environments repos it will have created them on a new branch with a unique name. You will need to merge these in at a later stage of the process.
 
-## Move the account to the root organizational unit
+## AWS Organizational Configuration
 
 > Note that a user with root account permissions will need to do this. Contact the MP teams TA/Lead Webops Engineer.
+
+### Move the account to the root organizational unit
 
 This is to move the account out of an organizational unit where there is an SCP preventing any actions by the root user.
 
@@ -67,25 +68,19 @@ Log into the AWS Console and navigate to AWS Organizations, find the account and
 
 Now the AWS account can be deleted.
 
-## Delete the actual AWS account
+### Delete the actual AWS account
 
 > This process cannot be undone. Proceed carefully.
 
-Follow the [AWS documentation on closing an AWS account](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/close-account.html#closing-the-account).
+Navigate to the `root` OU and find the account, select the checkbox then go `Action` and choose `Close`.
 
-You need the root IAM user's email address to delete the AWS account. You can get this from the [AWS SSO login page](https://moj.awsapps.com/start#/)
+### Move the account to the closed accounts organizational unit
 
-You will need access to the [AWS - notifications](https://groups.google.com/a/digital.justice.gov.uk/g/aws) Google Group which will receive the password reset email.
-
-## Move the account to the closed accounts organizational unit
-
-> Note that a user with root account permissions will need to do this. Contact the MP teams TA/Lead Webops Engineer.
-
-Log into the AWS Console and navigate to AWS Oraganizations, find the account and move it to the `Closed accounts` OU.
+ensure the account is selected and then move it to the `Closed accounts` OU.
 
 ## Merge in your file changes
 
-Raise a PR to merge in your file changes (created by the scripts above) in both the MP and MP Environments repositories which will trigger Terraform to perform the remaining clean up needed. 
+Raise a PR to merge in your file changes (created by the scripts above) in both the MP and MP Environments repositories which will trigger Terraform to perform the remaining clean up needed.
 
 Check for any automated PRs that have been raised in the MP Environments repo to update the `.github/CODEOWNERS` file. Here is an [example PR](https://github.com/ministryofjustice/modernisation-platform-environments/pull/5317/files). These will need to be merged in.
 
