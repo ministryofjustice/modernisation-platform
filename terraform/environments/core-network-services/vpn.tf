@@ -121,3 +121,34 @@ resource "aws_dx_gateway_association_proposal" "this" {
   dx_gateway_owner_account_id = try(each.value.dx_gateway_owner_account_id, null)
   associated_gateway_id       = aws_customer_gateway.this[each.key].id
 }
+
+# Enable Slack alerting to #dba_alerts_prod channel when we receive AWS Health notifications for upcoming tunnel endpoint replacements
+resource "aws_cloudwatch_event_rule" "noms-vpn-event-rule" {
+  name        = "noms-vpn-health-event-rule"
+  description = "Check for any NOMS VPN related health events"
+  event_pattern = jsonencode({
+    "resources" = [
+      aws_vpn_connection.this["NOMS-Transit-Live-VPN-VNG_1"].id,
+      aws_vpn_connection.this["NOMS-Transit-Live-VPN-VNG_2"].id
+    ]
+  })
+}
+
+resource "aws_cloudwatch_event_target" "noms-vpn-event-target-sns" {
+  rule      = aws_cloudwatch_event_rule.noms-vpn-event-rule.name
+  target_id = "SendToSNS"
+  arn       = aws_sns_topic.noms-vpn-sns-topic.arn
+}
+
+resource "aws_sns_topic" "noms-vpn-sns-topic" {
+  name = "noms_vpn_sns_topic"
+}
+
+module "core-networks-chatbot" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot"
+
+  slack_channel_id = "CDLAJTGRG" // #dba_alerts_prod
+  sns_topic_arns   = ["arn:aws:sns:eu-west-2:${local.environment_management.account_ids[terraform.workspace]}:${aws_sns_topic.noms-vpn-sns-topic.name}"]
+  tags             = local.tags
+  application_name = local.application_name
+}
