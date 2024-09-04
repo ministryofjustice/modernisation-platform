@@ -28,12 +28,15 @@ locals {
       email = "sukesh.reddygade${local.digital_email_suffix}"
       role  = "user"
     },
+<<<<<<< HEAD
     stephen_linden = {
       name  = "Steve Linden"
 >>>>>>> 22f998dd (Additional change to get pagerduty working in Sprinkler)
       email = "stephen.linden${local.digital_email_suffix}"
       role  = "user"
     },
+=======
+>>>>>>> 48946d67 (Fruther changes)
     modernisation_platform = {
       name  = "Modernisation Platform Team"
       email = "modernisation-platform${local.digital_email_suffix}"
