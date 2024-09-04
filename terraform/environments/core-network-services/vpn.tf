@@ -127,6 +127,8 @@ resource "aws_cloudwatch_event_rule" "noms-vpn-event-rule" {
   name        = "noms-vpn-health-event-rule"
   description = "Check for any NOMS VPN related health events"
   event_pattern = jsonencode({
+    "source" : ["aws.health"],
+    "detail-type" : ["AWS Health Event"],
     "resources" = [
       aws_vpn_connection.this["NOMS-Transit-Live-VPN-VNG_1"].id,
       aws_vpn_connection.this["NOMS-Transit-Live-VPN-VNG_2"].id
