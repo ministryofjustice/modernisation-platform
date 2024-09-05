@@ -269,6 +269,12 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       variable = "aws:PrincipalArn"
       values   = ["arn:aws:iam::*:role/github-actions"]
     }
+
+    condition {
+      test     = "StringEquals"
+      variable = "s3:ExistingObjectTag/PermittedAccount"
+      values   = ["&{aws:PrincipalAccount}"]
+    }
   }
 
   statement {
