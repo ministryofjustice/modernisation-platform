@@ -1,4 +1,4 @@
-package main
+package policies.networking
 
 import rego.v1
 

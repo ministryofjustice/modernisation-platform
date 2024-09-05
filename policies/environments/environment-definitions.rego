@@ -1,4 +1,4 @@
-package main
+package policies.environments
 
 import rego.v1
 
