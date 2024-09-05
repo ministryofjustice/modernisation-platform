@@ -2524,7 +2524,7 @@ resource "pagerduty_slack_connection" "connections" {
 }
 
 resource "pagerduty_service" "sprinkler-development" {
-  name                    = "sptinkler-development"
+  name                    = "sprinkler-development"
   description             = "sprinkler-development"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
@@ -2532,11 +2532,18 @@ resource "pagerduty_service" "sprinkler-development" {
   alert_creation          = "create_alerts_and_incidents"
 }
 
-resource "pagerduty_service_integration" "sprinkler-integration" {
+ resource "pagerduty_team" "sprinkler-development" {
+   name = "sprinkler-development"
+ }
+
+#resource "pagerduty_service_integration" "sprinkler-integration" {
+resource "pagerduty_event_orchestration" "sprinkler-integration" {
+  # depends_on = [pagerduty_team.sprinkler-development] 
+  team = pagerduty_service.sprinkler-development.id 
   name    = "Test creation"
   # data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.sprinkler-development.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
+  # service = pagerduty_service.sprinkler-development.id
+  # vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
 resource "pagerduty_slack_connection" "sprinkler_connection" {
