@@ -14,13 +14,9 @@ locals {
   is-production = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production"
   is-live_data  = (substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production") || (substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction")
 
-  # This applies the same logic as above but to determine whether the environment is the development environment. Required for firehose resources.
+  # This applies the same logic as above but to determine whether the environment is the development environment.
   is-development = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-development"
-  # Determines if Firehose should be built in an environment.
-  build_firehose = anytrue([local.is-development, local.is-production]) ? true : false
 
-  # Secrets used by Firehose resources which we only require for development & production VPCs.
-  xsiam                              = jsondecode(data.aws_secretsmanager_secret_version.xsiam_secret_arn_version.secret_string)
   cloudwatch_log_buckets             = jsondecode(data.aws_secretsmanager_secret_version.core_logging_bucket_arns.secret_string)
   cloudwatch_r53_resolver_log_groups = local.is-production ? [for env in module.route_53_resolver_logs : env.r53_resolver_log_name] : []
   cloudwatch_vpc_flow_log_groups     = local.is-production ? [for key, value in module.vpc : value.vpc_flow_log] : []
