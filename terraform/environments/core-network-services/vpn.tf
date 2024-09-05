@@ -11,36 +11,38 @@ resource "aws_customer_gateway" "this" {
 }
 
 resource "aws_vpn_connection" "this" {
-  for_each                             = local.vpn_attachments
-  transit_gateway_id                   = aws_ec2_transit_gateway.transit-gateway.id
-  customer_gateway_id                  = aws_customer_gateway.this[each.key].id
-  static_routes_only                   = try(each.value.static_routes_only, false)
-  type                                 = "ipsec.1"
-  tunnel1_dpd_timeout_action           = try(each.value.tunnel_dpd_timeout_action, null)
-  tunnel1_dpd_timeout_seconds          = try(each.value.tunnel_dpd_timeout_seconds, "30")
-  tunnel1_phase1_dh_group_numbers      = [try(each.value.tunnel_phase1_dh_group_numbers, null)]
-  tunnel1_phase1_encryption_algorithms = [try(each.value.tunnel_phase1_encryption_algorithms, null)]
-  tunnel1_phase1_integrity_algorithms  = [try(each.value.tunnel_phase1_integrity_algorithms, null)]
-  tunnel1_phase1_lifetime_seconds      = try(each.value.tunnel_phase1_lifetime_seconds, null)
-  tunnel1_phase2_dh_group_numbers      = [try(each.value.tunnel_phase2_dh_group_numbers, null)]
-  tunnel1_phase2_encryption_algorithms = [try(each.value.tunnel_phase2_encryption_algorithms, null)]
-  tunnel1_phase2_integrity_algorithms  = [try(each.value.tunnel_phase2_integrity_algorithms, null)]
-  tunnel1_phase2_lifetime_seconds      = try(each.value.tunnel_phase2_lifetime_seconds, null)
-  tunnel1_inside_cidr                  = try(each.value.tunnel1_inside_cidr, null)
-  tunnel1_startup_action               = try(each.value.tunnel_startup_action, null)
-  tunnel2_dpd_timeout_action           = try(each.value.tunnel_dpd_timeout_action, null)
-  tunnel2_dpd_timeout_seconds          = try(each.value.tunnel_dpd_timeout_seconds, "30")
-  tunnel2_phase1_dh_group_numbers      = [try(each.value.tunnel_phase1_dh_group_numbers, null)]
-  tunnel2_phase1_encryption_algorithms = [try(each.value.tunnel_phase1_encryption_algorithms, null)]
-  tunnel2_phase1_integrity_algorithms  = [try(each.value.tunnel_phase1_integrity_algorithms, null)]
-  tunnel2_phase1_lifetime_seconds      = try(each.value.tunnel_phase1_lifetime_seconds, null)
-  tunnel2_phase2_dh_group_numbers      = [try(each.value.tunnel_phase2_dh_group_numbers, null)]
-  tunnel2_phase2_encryption_algorithms = [try(each.value.tunnel_phase2_encryption_algorithms, null)]
-  tunnel2_phase2_integrity_algorithms  = [try(each.value.tunnel_phase2_integrity_algorithms, null)]
-  tunnel2_phase2_lifetime_seconds      = try(each.value.tunnel_phase2_lifetime_seconds, null)
-  tunnel2_inside_cidr                  = try(each.value.tunnel2_inside_cidr, null)
-  tunnel2_startup_action               = try(each.value.tunnel_startup_action, null)
-  remote_ipv4_network_cidr             = try(each.value.remote_ipv4_network_cidr, local.core-vpcs[each.value.modernisation_platform_vpc].cidr.subnet_sets["general"].cidr)
+  for_each                                = local.vpn_attachments
+  transit_gateway_id                      = aws_ec2_transit_gateway.transit-gateway.id
+  customer_gateway_id                     = aws_customer_gateway.this[each.key].id
+  static_routes_only                      = try(each.value.static_routes_only, false)
+  type                                    = "ipsec.1"
+  tunnel1_dpd_timeout_action              = try(each.value.tunnel_dpd_timeout_action, null)
+  tunnel1_dpd_timeout_seconds             = try(each.value.tunnel_dpd_timeout_seconds, "30")
+  tunnel1_phase1_dh_group_numbers         = [try(each.value.tunnel_phase1_dh_group_numbers, null)]
+  tunnel1_phase1_encryption_algorithms    = [try(each.value.tunnel_phase1_encryption_algorithms, null)]
+  tunnel1_phase1_integrity_algorithms     = [try(each.value.tunnel_phase1_integrity_algorithms, null)]
+  tunnel1_phase1_lifetime_seconds         = try(each.value.tunnel_phase1_lifetime_seconds, null)
+  tunnel1_phase2_dh_group_numbers         = [try(each.value.tunnel_phase2_dh_group_numbers, null)]
+  tunnel1_phase2_encryption_algorithms    = [try(each.value.tunnel_phase2_encryption_algorithms, null)]
+  tunnel1_phase2_integrity_algorithms     = [try(each.value.tunnel_phase2_integrity_algorithms, null)]
+  tunnel1_phase2_lifetime_seconds         = try(each.value.tunnel_phase2_lifetime_seconds, null)
+  tunnel1_inside_cidr                     = try(each.value.tunnel1_inside_cidr, null)
+  tunnel1_startup_action                  = try(each.value.tunnel_startup_action, null)
+  tunnel1_enable_tunnel_lifecycle_control = try(each.value.tunnel1_enable_tunnel_lifecycle_control, false)
+  tunnel2_dpd_timeout_action              = try(each.value.tunnel_dpd_timeout_action, null)
+  tunnel2_dpd_timeout_seconds             = try(each.value.tunnel_dpd_timeout_seconds, "30")
+  tunnel2_phase1_dh_group_numbers         = [try(each.value.tunnel_phase1_dh_group_numbers, null)]
+  tunnel2_phase1_encryption_algorithms    = [try(each.value.tunnel_phase1_encryption_algorithms, null)]
+  tunnel2_phase1_integrity_algorithms     = [try(each.value.tunnel_phase1_integrity_algorithms, null)]
+  tunnel2_phase1_lifetime_seconds         = try(each.value.tunnel_phase1_lifetime_seconds, null)
+  tunnel2_phase2_dh_group_numbers         = [try(each.value.tunnel_phase2_dh_group_numbers, null)]
+  tunnel2_phase2_encryption_algorithms    = [try(each.value.tunnel_phase2_encryption_algorithms, null)]
+  tunnel2_phase2_integrity_algorithms     = [try(each.value.tunnel_phase2_integrity_algorithms, null)]
+  tunnel2_phase2_lifetime_seconds         = try(each.value.tunnel_phase2_lifetime_seconds, null)
+  tunnel2_inside_cidr                     = try(each.value.tunnel2_inside_cidr, null)
+  tunnel2_startup_action                  = try(each.value.tunnel_startup_action, null)
+  tunnel2_enable_tunnel_lifecycle_control = try(each.value.tunnel2_enable_tunnel_lifecycle_control, false)
+  remote_ipv4_network_cidr                = try(each.value.remote_ipv4_network_cidr, local.core-vpcs[each.value.modernisation_platform_vpc].cidr.subnet_sets["general"].cidr)
 
   tunnel1_log_options {
     cloudwatch_log_options {
@@ -118,4 +120,97 @@ resource "aws_dx_gateway_association_proposal" "this" {
   dx_gateway_id               = try(each.value.dx_gateway_id, null)
   dx_gateway_owner_account_id = try(each.value.dx_gateway_owner_account_id, null)
   associated_gateway_id       = aws_customer_gateway.this[each.key].id
+}
+
+# Enable Slack alerting to #dba_alerts_prod channel when we receive AWS Health notifications for upcoming tunnel endpoint replacements
+resource "aws_cloudwatch_event_rule" "noms-vpn-event-rule" {
+  name        = "noms-vpn-health-event-rule"
+  description = "Check for any NOMS VPN related health events"
+  event_pattern = jsonencode({
+    "source" : ["aws.health"],
+    "detail-type" : ["AWS Health Event"],
+    "resources" = [
+      aws_vpn_connection.this["NOMS-Transit-Live-VPN-VNG_1"].id,
+      aws_vpn_connection.this["NOMS-Transit-Live-VPN-VNG_2"].id
+    ]
+  })
+}
+
+resource "aws_cloudwatch_event_target" "noms-vpn-event-target-sns" {
+  rule      = aws_cloudwatch_event_rule.noms-vpn-event-rule.name
+  target_id = "SendToSNS"
+  arn       = aws_sns_topic.noms-vpn-sns-topic.arn
+}
+
+resource "aws_sns_topic" "noms-vpn-sns-topic" {
+  name              = "noms_vpn_sns_topic"
+  kms_master_key_id = aws_kms_key.sns_kms_key.id
+}
+
+resource "aws_kms_key" "sns_kms_key" {
+  description         = "KMS key for SNS topic encryption"
+  enable_key_rotation = true
+  policy              = data.aws_iam_policy_document.sns-kms.json
+}
+
+resource "aws_kms_alias" "sns_kms_alias" {
+  name          = "alias/sns-kms-key"
+  target_key_id = aws_kms_key.sns_kms_key.id
+}
+
+# Static code analysis ignores:
+# - CKV_AWS_109 and CKV_AWS_111: Ignore warnings regarding resource = ["*"]. See https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html
+#   Specifically: "In a key policy, the value of the Resource element is "*", which means "this KMS key." The asterisk ("*") identifies the KMS key to which the key policy is attached."
+data "aws_iam_policy_document" "sns-kms" {
+  # checkov:skip=CKV_AWS_109: "Key policy requires asterisk resource - see note above"
+  # checkov:skip=CKV_AWS_111: "Key policy requires asterisk resource - see note above"
+  # checkov:skip=CKV_AWS_356: "Key policy requires asterisk resource - see note above"
+
+  statement {
+    sid    = "Allow management access of the key to the core-network-services account"
+    effect = "Allow"
+    actions = [
+      "kms:*"
+    ]
+    resources = [
+      "*"
+    ]
+    principals {
+      type = "AWS"
+      identifiers = [
+        data.aws_caller_identity.current.account_id
+      ]
+    }
+  }
+  statement {
+    sid     = "Allow SNS and Eventbridge services to use the key"
+    effect  = "Allow"
+    actions = ["kms:*"]
+
+    resources = ["*"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["sns.amazonaws.com"]
+    }
+
+    principals {
+      type        = "Service"
+      identifiers = ["events.amazonaws.com"]
+    }
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+  }
+}
+
+module "core-networks-chatbot" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot?ref=485d70f865876de922db6796d27b1f91fac25263" // v1.0.0
+
+  slack_channel_id = "CDLAJTGRG" // #dba_alerts_prod
+  sns_topic_arns   = ["arn:aws:sns:eu-west-2:${local.environment_management.account_ids[terraform.workspace]}:${aws_sns_topic.noms-vpn-sns-topic.name}"]
+  tags             = local.tags
+  application_name = local.application_name
 }
