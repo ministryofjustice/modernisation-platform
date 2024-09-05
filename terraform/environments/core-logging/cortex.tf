@@ -3,7 +3,7 @@ locals {
 }
 
 # Because we can't use wildcards beyond "*" in a principal identifier, we use a policy condition to scope access only
-# to accounts in our OU, where the role matches the name created through the modernisation-platform-terraform-aws-data-stream module
+# to accounts in our OU, where the role matches the name created through the modernisation-platform-terraform-aws-data-firehose module
 data "aws_iam_policy_document" "logging-bucket" {
   for_each = local.cortex_logging_buckets
   statement {
