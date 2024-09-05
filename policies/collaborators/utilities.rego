@@ -1,4 +1,4 @@
-package main
+package policies.collaborators
 
 import rego.v1
 
