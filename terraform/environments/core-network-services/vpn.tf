@@ -144,7 +144,66 @@ resource "aws_cloudwatch_event_target" "noms-vpn-event-target-sns" {
 
 resource "aws_sns_topic" "noms-vpn-sns-topic" {
   name              = "noms_vpn_sns_topic"
-  kms_master_key_id = "alias/aws/sns"
+  kms_master_key_id = aws_kms_key.sns_kms_key.id
+}
+
+resource "aws_kms_key" "sns_kms_key" {
+  description         = "KMS key for SNS topic encryption"
+  enable_key_rotation = true
+  policy              = data.aws_iam_policy_document.sns-kms.json
+}
+
+resource "aws_kms_alias" "sns_kms_alias" {
+  name          = "alias/sns-kms-key"
+  target_key_id = aws_kms_key.sns_kms_key.id
+}
+
+# Static code analysis ignores:
+# - CKV_AWS_109 and CKV_AWS_111: Ignore warnings regarding resource = ["*"]. See https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html
+#   Specifically: "In a key policy, the value of the Resource element is "*", which means "this KMS key." The asterisk ("*") identifies the KMS key to which the key policy is attached."
+data "aws_iam_policy_document" "sns-kms" {
+  # checkov:skip=CKV_AWS_109: "Key policy requires asterisk resource - see note above"
+  # checkov:skip=CKV_AWS_111: "Key policy requires asterisk resource - see note above"
+  # checkov:skip=CKV_AWS_356: "Key policy requires asterisk resource - see note above"
+
+  statement {
+    sid    = "Allow management access of the key to the core-network-services account"
+    effect = "Allow"
+    actions = [
+      "kms:*"
+    ]
+    resources = [
+      "*"
+    ]
+    principals {
+      type = "AWS"
+      identifiers = [
+        data.aws_caller_identity.current.account_id
+      ]
+    }
+  }
+  statement {
+    sid     = "Allow SNS and Eventbridge services to use the key"
+    effect  = "Allow"
+    actions = ["kms:*"]
+
+    resources = ["*"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["sns.amazonaws.com"]
+    }
+
+    principals {
+      type        = "Service"
+      identifiers = ["events.amazonaws.com"]
+    }
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+  }
 }
 
 module "core-networks-chatbot" {
