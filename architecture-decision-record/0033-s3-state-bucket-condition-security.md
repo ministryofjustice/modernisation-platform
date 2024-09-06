@@ -22,7 +22,7 @@ This has been rectified since the ticket was raised.
 
 ## Options
 
-- Adding condition to policy [here](https://github.com/ministryofjustice/modernisation-platform/pull/7860/files)
+- Adding condition to policy [here](https://github.com/ministryofjustice/modernisation-platform/blob/4def4ef9b80eaf233b0597e3bc109493e7c00a21/terraform/modernisation-platform-account/locals.tf)
 - This requires changes to the state bucket tagging
 
 ### 1. Implement bucket policy checking principal account number when switching roles
