@@ -410,6 +410,7 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
   }
 }
 
+
 # Modernisation Platform QuickSight Administrator
 resource "aws_ssoadmin_permission_set" "modernisation_platform_quicksight_admin" {
   provider         = aws.sso-management
@@ -446,4 +447,3 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
     path = "/"
   }
 }
-

@@ -60,9 +60,10 @@ output "read_only" {
 }
 
 output "quicksight_admin" {
-  value = data.aws_ssoadmin_permission_set.modernisation_platform_quicksight_admin.arn
+  value = aws_ssoadmin_permission_set.modernisation_platform_quicksight_admin.arn
 }
 
 output "ssoadmin_instances" {
   value = data.aws_ssoadmin_instances.default
 }
+
