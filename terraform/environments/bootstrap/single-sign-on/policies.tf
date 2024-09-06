@@ -296,21 +296,6 @@ data "aws_iam_policy_document" "developer_additional" {
   }
 
   statement {
-    sid = "sesAllow"
-    effect = "Allow"
-    principals {
-    type        = "Service"
-    identifiers = ["ses.amazonaws.com"]
-    }
-    actions = [
-      "kms:GenerateDataKey",
-      "kms:Decrypt"
-    ]
-    resources = ["*"]
-
-  }
-
-  statement {
     sid    = "lambdaAllow"
     effect = "Allow"
     actions = [
