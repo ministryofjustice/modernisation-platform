@@ -2441,6 +2441,48 @@ resource "pagerduty_slack_connection" "chaps_slack" {
   }
 }
 
+resource "pagerduty_service" "sprinkler-development" {
+  name                    = "sprinkler-development"
+  description             = "sprinkler-development"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+ resource "pagerduty_team" "sprinkler-development" {
+   name = "sprinkler-development"
+ }
+
+#resource "pagerduty_service_integration" "sprinkler-integration" {
+resource "pagerduty_event_orchestration" "sprinkler-integration" {
+  # depends_on = [pagerduty_team.sprinkler-development] 
+  team = pagerduty_service.sprinkler-development.id 
+  name    = "Test creation"
+  # data.pagerduty_vendor.cloudwatch.name
+  # service = pagerduty_service.sprinkler-development.id
+  # vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "sprinkler_connection" {
+  source_id         = pagerduty_service.sprinkler-development.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C02PFCG8M1R"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.resolved"
+    ]
+    priorities = ["*"]
+  }
+}
+
 locals {
   services = {
     corporate-staff-rostering-preproduction = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
@@ -2519,48 +2561,6 @@ resource "pagerduty_slack_connection" "connections" {
   notification_type = "responder"
   config {
     events     = local.slack_events
-    priorities = ["*"]
-  }
-}
-
-resource "pagerduty_service" "sprinkler-development" {
-  name                    = "sprinkler-development"
-  description             = "sprinkler-development"
-  auto_resolve_timeout    = 345600
-  acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
-  alert_creation          = "create_alerts_and_incidents"
-}
-
- resource "pagerduty_team" "sprinkler-development" {
-   name = "sprinkler-development"
- }
-
-#resource "pagerduty_service_integration" "sprinkler-integration" {
-resource "pagerduty_event_orchestration" "sprinkler-integration" {
-  # depends_on = [pagerduty_team.sprinkler-development] 
-  team = pagerduty_service.sprinkler-development.id 
-  name    = "Test creation"
-  # data.pagerduty_vendor.cloudwatch.name
-  # service = pagerduty_service.sprinkler-development.id
-  # vendor  = data.pagerduty_vendor.cloudwatch.id
-}
-
-resource "pagerduty_slack_connection" "sprinkler_connection" {
-  source_id         = pagerduty_service.sprinkler-development.id
-  source_type       = "service_reference"
-  workspace_id      = local.slack_workspace_id
-  channel_id        = "C02PFCG8M1R"
-  notification_type = "responder"
-  lifecycle {
-    ignore_changes = [
-      config,
-    ]
-  }
-  config {
-    events = [
-      "incident.resolved"
-    ]
     priorities = ["*"]
   }
 }
