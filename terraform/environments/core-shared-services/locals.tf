@@ -17,6 +17,10 @@ locals {
   # the string leftover is `-production`, if it isn't (e.g. core-vpc-non-production => -non-production) then it sets the var to false.
   is-production = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production"
 
+  cloudwatch_log_buckets             = jsondecode(data.aws_secretsmanager_secret_version.core_logging_bucket_arns.secret_string)
+  cloudwatch_r53_resolver_log_groups = local.is-production ? [for env in module.route_53_resolver_logs : env.r53_resolver_log_name] : []
+  cloudwatch_vpc_flow_log_groups     = local.is-production ? [for key, value in module.vpc : value.vpc_cloudwatch_name] : []
+
   # This produces a distinct list of business units after reading all the JSON files in the environments directory
   environment_files = [
     for file in fileset("../../../environments", "*.json") :

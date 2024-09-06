@@ -65,6 +65,14 @@ locals {
   }
 }
 
+module "route_53_resolver_logs" {
+  source      = "../../modules/r53-resolver-logs"
+  for_each    = { for key, value in module.vpc : key => value["vpc_id"] }
+  tags_common = local.tags
+  vpc_id      = each.value
+  vpc_name    = each.key
+}
+
 resource "aws_vpc_endpoint" "vpc_interface_endpoints" {
   for_each            = local.vpc_interface_endpoints
   vpc_id              = module.vpc[each.value.vpc_name].vpc_id
