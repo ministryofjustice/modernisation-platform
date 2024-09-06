@@ -548,7 +548,7 @@ data "aws_iam_policy_document" "policy" {
  statement {
     effect = "Allow"
     actions = [
-      "kms:CreateGrant",
+      "kms:CreateGrant"
     ]
 
  resources = ["arn:aws:kms:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:alias/rds-*"]
