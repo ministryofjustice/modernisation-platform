@@ -26,6 +26,10 @@
         {
           "sso_group_name": "analytical-platform",
           "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "analytical-platform",
+          "level": "quicksight-admin"
         }
       ]
     },
@@ -39,6 +43,10 @@
         {
           "sso_group_name": "analytical-platform",
           "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "analytical-platform",
+          "level": "quicksight-admin"
         }
       ]
     }
