@@ -415,7 +415,7 @@ resource "aws_ssoadmin_account_assignment" "quicksight_admin" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.quicksight-admin
+  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.quicksight_admin
 
   principal_id   = data.aws_identitystore_group.member[each.value.sso_group_name].group_id
   principal_type = "GROUP"
