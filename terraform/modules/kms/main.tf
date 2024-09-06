@@ -122,7 +122,10 @@ data "aws_iam_policy_document" "kms-general" {
 
     principals {
       type        = "Service"
-      identifiers = ["cloudwatch.amazonaws.com"]
+      identifiers = [
+        "cloudwatch.amazonaws.com",
+        "ses.amazonaws.com"
+      ]
     }
   }
 }
