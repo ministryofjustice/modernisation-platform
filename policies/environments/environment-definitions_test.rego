@@ -43,7 +43,7 @@ test_business_units_character if {
 }
 
 test_unexpected_access if {
-  deny["`example.json` uses an unexpected access level: got `incorrect-access`, expected one of: administrator, data-engineer, developer, instance-access, instance-management, migration, mwaa-user, read-only, reporting-operations, sandbox, security-audit, view-only, powerbi-user, fleet-manager"] with input as { "filename": "example.json", "environments": [{"access": [{"level": "incorrect-access"}]}]}
+  deny["`example.json` uses an unexpected access level: got `incorrect-access`, expected one of: administrator, data-engineer, developer, instance-access, instance-management, migration, mwaa-user, read-only, reporting-operations, sandbox, security-audit, view-only, powerbi-user, fleet-manager, quicksight-admin"] with input as { "filename": "example.json", "environments": [{"access": [{"level": "incorrect-access"}]}]}
 }
 
 test_unexpected_access_assignment if {
