@@ -557,8 +557,13 @@ data "aws_iam_policy_document" "policy" {
       variable = "kms:GrantIsForAWSResource"
       values   = ["true"]
     }
+   # Further limit to operations that involve the RDS service only
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["rds.eu-west-2.amazonaws.com"]
+    }
   }
-
 }
 
 # MemberInfrastructureBedrockEuCentral
