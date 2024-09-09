@@ -509,7 +509,6 @@ data "aws_iam_policy_document" "policy" {
       "kms:Decrypt",
       "kms:Encrypt",
       "kms:GenerateDataKey",
-      "kms:CreateGrant",
       "lambda:UpdateFunctionCode",
       "logs:CreateLogGroup",
       "logs:DescribeLogGroups",
@@ -544,6 +543,26 @@ data "aws_iam_policy_document" "policy" {
       "ssm:TerminateSession"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+  }
+
+ statement {
+    effect = "Allow"
+    actions = [
+      "kms:CreateGrant"
+    ]
+
+ resources = ["arn:aws:kms:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:alias/rds-*"]
+    condition {
+      test     = "Bool"
+      variable = "kms:GrantIsForAWSResource"
+      values   = ["true"]
+    }
+   # Further limit to operations that involve the RDS service only
+    condition {
+      test     = "StringEquals"
+      variable = "kms:ViaService"
+      values   = ["rds.eu-west-2.amazonaws.com"]
+    }
   }
 }
 
