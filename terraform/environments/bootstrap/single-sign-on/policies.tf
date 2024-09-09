@@ -1348,7 +1348,7 @@ data "aws_iam_policy_document" "s3_upload_policy_document" {
       "s3:ListBucket"
     ]
     resources = [
-      ""arn:aws:s3:::mod-platform-image-artefact-bucket20230203091453221500000001",
+      "arn:aws:s3:::mod-platform-image-artefact-bucket20230203091453221500000001",
       "arn:aws:s3:::mod-platform-image-artefact-bucket20230203091453221500000001/*"
     ]
   }
