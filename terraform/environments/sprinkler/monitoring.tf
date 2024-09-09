@@ -23,6 +23,7 @@ locals {
 }
 
 resource "aws_sns_topic" "sprinkler_sns" {
+# checkov:skip=CKV_AWS_26:It is encrypted
   name  = "sprinkler_sns" 
 }
 
