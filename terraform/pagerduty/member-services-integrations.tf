@@ -2003,7 +2003,6 @@ resource "pagerduty_slack_connection" "connections" {
     priorities = ["*"]
   }
 }
-
 resource "pagerduty_event_orchestration_service" "default" {
   for_each = {
     for k, v in pagerduty_service.services : k => v
