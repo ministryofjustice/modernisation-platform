@@ -91,6 +91,7 @@ resource "aws_s3_bucket" "logging" {
   # checkov:skip=CKV_AWS_145: SSE Encryption OK as interim measure
   # checkov:skip=CKV2_AWS_6:  Public access blocked with for_each
   # checkov:skip=CKV2_AWS_61: Lifecycle configuration present with for_each
+  # checkov:skip=CKV2_AWS_62: Notifications present with for_each
   for_each      = local.cortex_logging_buckets
   bucket_prefix = "${local.application_name}-${each.key}"
   tags          = local.tags
