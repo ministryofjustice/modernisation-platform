@@ -1999,7 +1999,7 @@ resource "pagerduty_event_orchestration_service" "corporate-staff-rostering-prep
   set {
     id = "check-trainab-http-endpoint"
     rule {
-      label = "Route trainab-http- events to Saturday check"
+      label = "Route trainab-http- events to Weekend check"
       condition {
         expression = "event.summary matches regex '^trainab-http-'"
       }
