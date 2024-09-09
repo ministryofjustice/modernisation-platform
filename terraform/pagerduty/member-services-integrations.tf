@@ -2013,7 +2013,7 @@ resource "pagerduty_event_orchestration_service" "corporate-staff-rostering-prep
     rule {
       label = "Check if it's Saturday after 05:00 UTC"
       condition {
-        expression = "now in Sat 05:00:00 to 24:00:00"
+        expression = "now in Sat 05:00:00 to 23:59:59 Etc/UTC)"
       }
       actions {
         suppress = true
@@ -2022,7 +2022,7 @@ resource "pagerduty_event_orchestration_service" "corporate-staff-rostering-prep
     rule {
       label = "Check if it's Sunday"
       condition {
-        expression = "now in Sun"
+        expression = "now in Sun 00:00:00 to 23:59:59 Etc/UTC)"
       }
       actions {
         suppress = true
@@ -2031,7 +2031,7 @@ resource "pagerduty_event_orchestration_service" "corporate-staff-rostering-prep
     rule {
       label = "Check if it's Monday before 06:05 UTC"
       condition {
-        expression = "now in Mon 00:00:00 to 06:05:00"
+        expression = "now in Mon 00:00:00 to 06:04:59 Etc/UTC)"
       }
       actions {
         suppress = true
