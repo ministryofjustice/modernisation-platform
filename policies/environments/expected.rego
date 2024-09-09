@@ -1,4 +1,4 @@
-package main
+package policies.environments
 
 import rego.v1
 
@@ -23,7 +23,6 @@ expected :=
     "cica-tariff",
     "contract-work-administration",
     "cooker",
-    "core-billing",
     "core-logging",
     "core-network-services",
     "core-sandbox",

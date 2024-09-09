@@ -222,3 +222,13 @@ resource "aws_secretsmanager_secret" "gov_uk_notify_api_key" {
   }
 }
 
+resource "aws_secretsmanager_secret" "slack_webhooks" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "slack_webhooks"
+  description = "Used for sending notifications to specified Slack channels when environment JSON files are modified"
+  kms_key_id  = aws_kms_key.secrets_key.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}

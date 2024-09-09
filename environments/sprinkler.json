@@ -33,6 +33,11 @@
           "sso_group_name": "modernisation-platform",
           "level": "fleet-manager",
           "nuke": "rebuild"
+        },
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "quicksight-admin",
+          "nuke": "rebuild"
         }
       ],
       "additional_reviewers": ["astrobinson"]
@@ -42,7 +47,8 @@
     "application": "modernisation-platform",
     "business-unit": "Platforms",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
-    "owner": "Modernisation Platform : modernisation-platform@digital.justice.gov.uk"
+    "owner": "Modernisation Platform : modernisation-platform@digital.justice.gov.uk",
+    "slack-channel": "modernisation-platform"
   },
   "go-live-date": "",
   "github-oidc-team-repositories": [""]

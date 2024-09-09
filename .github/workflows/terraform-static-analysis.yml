@@ -25,7 +25,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Run Analysis
-        uses: ministryofjustice/github-actions/terraform-static-analysis@8e1bfc920f829ce408a5ef84118fbc160e559066 # v18.1.2
+        uses: ministryofjustice/github-actions/terraform-static-analysis@9fc6d8a5d34d3ea803d123ced4f24d9e26751c66 # v18.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -52,7 +52,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Run Analysis
-        uses: ministryofjustice/github-actions/terraform-static-analysis@8e1bfc920f829ce408a5ef84118fbc160e559066 # v18.1.2
+        uses: ministryofjustice/github-actions/terraform-static-analysis@9fc6d8a5d34d3ea803d123ced4f24d9e26751c66 # v18.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -76,7 +76,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Run Analysis
-        uses: ministryofjustice/github-actions/terraform-static-analysis@8e1bfc920f829ce408a5ef84118fbc160e559066 # v18.1.2
+        uses: ministryofjustice/github-actions/terraform-static-analysis@9fc6d8a5d34d3ea803d123ced4f24d9e26751c66 # v18.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -89,7 +89,7 @@ jobs:
           tflint_exclude: terraform_unused_declarations
           tflint_call_module_type: none
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@70cd7be8e40a46e8b0eced40b0de447bdb42f68e # v1.26.0
+        uses: slackapi/slack-github-action@37ebaef184d7626c5f204ab8d3baff4262dd30f0 # v1.27.0
         with:
           payload: |
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}

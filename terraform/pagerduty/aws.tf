@@ -24,8 +24,6 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     networking_cloudwatch                   = pagerduty_service_integration.networking_cloudwatch.integration_key,
     operations_cloudwatch                   = pagerduty_service_integration.operations_cloudwatch.integration_key,
     security_cloudwatch                     = pagerduty_service_integration.security_cloudwatch.integration_key,
-    nomis_alarms                            = pagerduty_service_integration.nomis_cloudwatch.integration_key,         # do not delete yet
-    nomis_nonprod_alarms                    = pagerduty_service_integration.nomis_nonprod_cloudwatch.integration_key, # do not delete yet
     laa_mlra_nonprod_alarms                 = pagerduty_service_integration.laa_mlra_nonprod_cloudwatch.integration_key,
     laa_mlra_prod_alarms                    = pagerduty_service_integration.laa_mlra_prod_cloudwatch.integration_key,
     laa_oas_nonprod_alarms                  = pagerduty_service_integration.laa_oas_nonprod_cloudwatch.integration_key,
@@ -36,11 +34,6 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     iaps_prod_alarms                        = pagerduty_service_integration.iaps_prod_cloudwatch.integration_key,
     laa_mojfin_prod_alarms                  = pagerduty_service_integration.laa_mojfin_prod_cloudwatch.integration_key,
     laa_mojfin_non_prod_alarms              = pagerduty_service_integration.laa_mojfin_non_prod_cloudwatch.integration_key,
-    hmpps_shef_dba_high_priority            = pagerduty_service_integration.hmpps_shef_dba_high_priority.integration_key,
-    hmpps_shef_dba_low_priority             = pagerduty_service_integration.hmpps_shef_dba_low_priority.integration_key,
-    hmpps_shef_dba_non_prod                 = pagerduty_service_integration.hmpps_shef_dba_non_prod.integration_key,
-    oasys_alarms                            = pagerduty_service_integration.oasys_cloudwatch.integration_key,
-    oasys_nonprod_alarms                    = pagerduty_service_integration.oasys_nonprod_cloudwatch.integration_key
     test_alarms                             = pagerduty_service_integration.test_alarms.integration_key,
     laa_portal_nonprod_alarms               = pagerduty_service_integration.laa_portal_nonprod_cloudwatch.integration_key,
     laa_portal_prod_alarms                  = pagerduty_service_integration.laa_portal_prod_cloudwatch.integration_key
@@ -59,15 +52,11 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     dacp_prod_alarms                        = pagerduty_service_integration.dacp_prod_cloudwatch.integration_key,
     laa_maat_api_nonprod_alarms             = pagerduty_service_integration.laa_maat_api_nonprod_cloudwatch.integration_key,
     laa_maat_api_prod_alarms                = pagerduty_service_integration.laa_maat_api_prod_cloudwatch.integration_key,
-    hmpps_domain_services_prod_alarms       = pagerduty_service_integration.hmpps_domain_services_prod_cloudwatch.integration_key,
-    hmpps_domain_services_nonprod_alarms    = pagerduty_service_integration.hmpps_domain_services_nonprod_cloudwatch.integration_key
     delius_core_nonprod_alarms              = pagerduty_service_integration.delius_core_nonprod_cloudwatch.integration_key
     delius_nextcloud_nonprod_alarms         = pagerduty_service_integration.delius_nextcloud_nonprod_cloudwatch.integration_key
     delius_nextcloud_prod_alarms            = pagerduty_service_integration.delius_nextcloud_prod_cloudwatch.integration_key
     laa_cwa_nonprod_alarms                  = pagerduty_service_integration.cwa_non_prod.integration_key
     laa_cwa_prod_alarms                     = pagerduty_service_integration.cwa_prod.integration_key
-    nomis_data_hub_nonprod_alarms           = pagerduty_service_integration.ndh_non_prod.integration_key
-    # nomis_data_hub_prod_alarms            = pagerduty_service_integration.ndh_prod.integration_key
     laa_apex_nonprod_alarms                 = pagerduty_service_integration.apex_non_prod.integration_key
     laa_apex_prod_alarms                    = pagerduty_service_integration.apex_prod.integration_key
     delius_mis_nonprod_alarms               = pagerduty_service_integration.delius_mis_non_prod.integration_key

@@ -1,4 +1,4 @@
-package main
+package policies.environments
 
 import rego.v1
 
@@ -27,7 +27,8 @@ allowed_access := [
   "security-audit",
   "view-only",
   "powerbi-user",
-  "fleet-manager"
+  "fleet-manager",
+  "quicksight-admin"
 ]
 
 allowed_nuke := [

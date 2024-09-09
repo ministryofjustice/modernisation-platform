@@ -15,7 +15,8 @@
     "application": "example",
     "business-unit": "Platforms",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
-    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
+    "slack-channel": "modernisation-platform"
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/modernisation-platform",

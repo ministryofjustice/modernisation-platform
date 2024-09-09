@@ -47,219 +47,6 @@
 
 # # Slack channel: #my-application-alarm-slack-channel
 
-# IMPORTANT: BEING RE_USED FOR MULTIPLE SERVICES - DELETE THIS LAST
-# Nomis
-resource "pagerduty_service" "nomis" {
-  name                    = "Nomis Alarms"
-  description             = "Nomis Alarms"
-  auto_resolve_timeout    = 345600
-  acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
-  alert_creation          = "create_alerts_and_incidents"
-}
-
-resource "pagerduty_service_integration" "nomis_cloudwatch" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.nomis.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
-}
-
-resource "pagerduty_slack_connection" "nomis_connection" {
-  source_id         = pagerduty_service.nomis.id
-  source_type       = "service_reference"
-  workspace_id      = local.slack_workspace_id
-  channel_id        = "C04E4FM3KS7"
-  notification_type = "responder"
-  lifecycle {
-    ignore_changes = [
-      config,
-    ]
-  }
-  config {
-    events = [
-      "incident.triggered",
-      "incident.acknowledged",
-      "incident.escalated",
-      "incident.resolved",
-      "incident.reassigned",
-      "incident.annotated",
-      "incident.unacknowledged",
-      "incident.delegated",
-      "incident.priority_updated",
-      "incident.action_invocation.created",
-      "incident.action_invocation.terminated",
-      "incident.action_invocation.updated",
-      "incident.responder.added",
-      "incident.responder.replied",
-      "incident.status_update_published",
-      "incident.reopened"
-    ]
-
-    priorities = ["*"]
-  }
-}
-
-# Slack channel: #dso_alerts_modernisation_platform
-
-# IMPORTANT: BEING RE_USED FOR MULTIPLE SERVICES - DELETE THIS LAST
-# Nomis Non Prod
-
-resource "pagerduty_service" "nomis_nonprod" {
-  name                    = "Nomis Alarms Non Prod"
-  description             = "Nomis Alarms Non Prod"
-  auto_resolve_timeout    = 345600
-  acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
-  alert_creation          = "create_alerts_and_incidents"
-}
-
-resource "pagerduty_service_integration" "nomis_nonprod_cloudwatch" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.nomis_nonprod.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
-}
-
-resource "pagerduty_slack_connection" "nomis_nonprod_connection" {
-  source_id         = pagerduty_service.nomis_nonprod.id
-  source_type       = "service_reference"
-  workspace_id      = local.slack_workspace_id
-  channel_id        = "C04QGQML68P"
-  notification_type = "responder"
-  lifecycle {
-    ignore_changes = [
-      config,
-    ]
-  }
-  config {
-    events = [
-      "incident.triggered",
-      "incident.acknowledged",
-      "incident.escalated",
-      "incident.resolved",
-      "incident.reassigned",
-      "incident.annotated",
-      "incident.unacknowledged",
-      "incident.delegated",
-      "incident.action_invocation.created",
-      "incident.action_invocation.terminated",
-      "incident.action_invocation.updated",
-      "incident.priority_updated",
-      "incident.responder.added",
-      "incident.responder.replied",
-      "incident.status_update_published",
-      "incident.reopened"
-    ]
-    priorities = ["*"]
-  }
-}
-
-# Slack channel: #dso_alerts_devtest_modernisation_platform
-
-# OASys
-resource "pagerduty_service" "oasys" {
-  name                    = "OASys Alarms"
-  description             = "OASys Alarms"
-  auto_resolve_timeout    = 345600
-  acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
-  alert_creation          = "create_alerts_and_incidents"
-}
-
-resource "pagerduty_service_integration" "oasys_cloudwatch" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.oasys.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
-}
-
-resource "pagerduty_slack_connection" "oasys_connection" {
-  source_id         = pagerduty_service.oasys.id
-  source_type       = "service_reference"
-  workspace_id      = local.slack_workspace_id
-  channel_id        = "C04E4FM3KS7"
-  notification_type = "responder"
-  lifecycle {
-    ignore_changes = [
-      config,
-    ]
-  }
-  config {
-    events = [
-      "incident.triggered",
-      "incident.acknowledged",
-      "incident.escalated",
-      "incident.resolved",
-      "incident.reassigned",
-      "incident.annotated",
-      "incident.unacknowledged",
-      "incident.delegated",
-      "incident.priority_updated",
-      "incident.action_invocation.created",
-      "incident.action_invocation.terminated",
-      "incident.action_invocation.updated",
-      "incident.responder.added",
-      "incident.responder.replied",
-      "incident.status_update_published",
-      "incident.reopened"
-    ]
-    priorities = ["*"]
-  }
-}
-
-# Slack channel: #dso_alerts_modernisation_platform
-
-# OASys Non Prod
-
-resource "pagerduty_service" "oasys_nonprod" {
-  name                    = "OASys Alarms Non Prod"
-  description             = "OASys Alarms Non Prod"
-  auto_resolve_timeout    = 345600
-  acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
-  alert_creation          = "create_alerts_and_incidents"
-}
-
-resource "pagerduty_service_integration" "oasys_nonprod_cloudwatch" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.oasys_nonprod.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
-}
-
-resource "pagerduty_slack_connection" "oasys_nonprod_connection" {
-  source_id         = pagerduty_service.oasys_nonprod.id
-  source_type       = "service_reference"
-  workspace_id      = local.slack_workspace_id
-  channel_id        = "C04QGQML68P"
-  notification_type = "responder"
-  lifecycle {
-    ignore_changes = [
-      config,
-    ]
-  }
-  config {
-    events = [
-      "incident.triggered",
-      "incident.acknowledged",
-      "incident.escalated",
-      "incident.resolved",
-      "incident.reassigned",
-      "incident.annotated",
-      "incident.unacknowledged",
-      "incident.delegated",
-      "incident.priority_updated",
-      "incident.action_invocation.created",
-      "incident.action_invocation.terminated",
-      "incident.action_invocation.updated",
-      "incident.responder.added",
-      "incident.responder.replied",
-      "incident.status_update_published",
-      "incident.reopened"
-    ]
-    priorities = ["*"]
-  }
-}
-
-# Slack channel: #dso_alerts_devtest_modernisation_platform
-
 # LAA MLRA Non Prod
 resource "pagerduty_service" "laa_mlra_nonprod" {
   name                    = "Legal Aid Agency MLRA Application Non Prod"
@@ -803,158 +590,6 @@ resource "pagerduty_slack_connection" "laa_mojfin_non_prod_connection" {
 }
 
 # # Slack channel: #mp-laa-alerts-mojfin-non-prod
-
-
-# NOTE: Update escalation_policy once alarms have been tested
-resource "pagerduty_service" "hmpps_shef_dba_high_priority" {
-  name                    = "HMPPS Sheffield DBA High Priority Alarms"
-  description             = "Production alarms requiring immediate attention by Sheffield DBAs, i.e. worthy of overnight callout"
-  auto_resolve_timeout    = 345600
-  acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
-  alert_creation          = "create_alerts_and_incidents"
-}
-resource "pagerduty_service_integration" "hmpps_shef_dba_high_priority" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.hmpps_shef_dba_high_priority.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
-}
-
-resource "pagerduty_slack_connection" "hmpps_shef_dba_high_priority_connection" {
-  source_id         = pagerduty_service.hmpps_shef_dba_high_priority.id
-  source_type       = "service_reference"
-  workspace_id      = local.slack_workspace_id
-  channel_id        = "CDLAJTGRG"
-  notification_type = "responder"
-  lifecycle {
-    ignore_changes = [
-      config,
-    ]
-  }
-  config {
-    events = [
-      "incident.triggered",
-      "incident.acknowledged",
-      "incident.escalated",
-      "incident.resolved",
-      "incident.reassigned",
-      "incident.annotated",
-      "incident.unacknowledged",
-      "incident.delegated",
-      "incident.priority_updated",
-      "incident.action_invocation.created",
-      "incident.action_invocation.terminated",
-      "incident.action_invocation.updated",
-      "incident.responder.added",
-      "incident.responder.replied",
-      "incident.status_update_published",
-      "incident.reopened"
-    ]
-    priorities = ["*"]
-  }
-}
-
-# Slack channel: dba_alerts_prod
-
-resource "pagerduty_service" "hmpps_shef_dba_low_priority" {
-  name                    = "HMPPS Sheffield DBA Low Priority Alarms"
-  description             = "Low priority production alarms for attention of Sheffield DBAs"
-  auto_resolve_timeout    = 345600
-  acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
-  alert_creation          = "create_alerts_and_incidents"
-}
-resource "pagerduty_service_integration" "hmpps_shef_dba_low_priority" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.hmpps_shef_dba_low_priority.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
-}
-
-resource "pagerduty_slack_connection" "hmpps_shef_dba_low_priority_connection" {
-  source_id         = pagerduty_service.hmpps_shef_dba_low_priority.id
-  source_type       = "service_reference"
-  workspace_id      = local.slack_workspace_id
-  channel_id        = "CDLAJTGRG"
-  notification_type = "responder"
-  lifecycle {
-    ignore_changes = [
-      config,
-    ]
-  }
-  config {
-    events = [
-      "incident.triggered",
-      "incident.acknowledged",
-      "incident.escalated",
-      "incident.resolved",
-      "incident.reassigned",
-      "incident.annotated",
-      "incident.unacknowledged",
-      "incident.delegated",
-      "incident.priority_updated",
-      "incident.action_invocation.created",
-      "incident.action_invocation.terminated",
-      "incident.action_invocation.updated",
-      "incident.responder.added",
-      "incident.responder.replied",
-      "incident.status_update_published",
-      "incident.reopened"
-    ]
-    priorities = ["*"]
-  }
-}
-
-# Slack channel: dba_alerts_prod
-
-resource "pagerduty_service" "hmpps_shef_dba_non_prod" {
-  name                    = "HMPPS Sheffield DBA Non-Production Alarms"
-  description             = "Non-production alarms for attention of Sheffield DBAs"
-  auto_resolve_timeout    = 345600
-  acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
-  alert_creation          = "create_alerts_and_incidents"
-}
-resource "pagerduty_service_integration" "hmpps_shef_dba_non_prod" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.hmpps_shef_dba_non_prod.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
-}
-
-resource "pagerduty_slack_connection" "hmpps_shef_dba_non_prod_connection" {
-  source_id         = pagerduty_service.hmpps_shef_dba_non_prod.id
-  source_type       = "service_reference"
-  workspace_id      = local.slack_workspace_id
-  channel_id        = "CE7F6CQGH"
-  notification_type = "responder"
-  lifecycle {
-    ignore_changes = [
-      config,
-    ]
-  }
-  config {
-    events = [
-      "incident.triggered",
-      "incident.acknowledged",
-      "incident.escalated",
-      "incident.resolved",
-      "incident.reassigned",
-      "incident.annotated",
-      "incident.unacknowledged",
-      "incident.delegated",
-      "incident.priority_updated",
-      "incident.action_invocation.created",
-      "incident.action_invocation.terminated",
-      "incident.action_invocation.updated",
-      "incident.responder.added",
-      "incident.responder.replied",
-      "incident.status_update_published",
-      "incident.reopened"
-    ]
-    priorities = ["*"]
-  }
-}
-
-# Slack channel: dba_alerts_devtest
 
 resource "pagerduty_service" "test_alarms" {
   name                    = "Modernisation Platform Test Alarms"
@@ -1729,111 +1364,6 @@ resource "pagerduty_slack_connection" "laa_maat_api_prod_connection" {
 }
 # Slack channel: #laa-alerts-maat-prod
 
-# HMPPS Domain Services Prod
-resource "pagerduty_service" "hmpps_domain_services_prod" {
-  name                    = "HMPPS Domain Services Alarms Prod"
-  description             = "HMPPS Domain Services Alarms Prod"
-  auto_resolve_timeout    = 345600
-  acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
-  alert_creation          = "create_alerts_and_incidents"
-}
-
-resource "pagerduty_service_integration" "hmpps_domain_services_prod_cloudwatch" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.hmpps_domain_services_prod.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
-}
-
-resource "pagerduty_slack_connection" "hmpps_domain_services_prod_connection" {
-  source_id         = pagerduty_service.hmpps_domain_services_prod.id
-  source_type       = "service_reference"
-  workspace_id      = local.slack_workspace_id
-  channel_id        = "C04E4FM3KS7"
-  notification_type = "responder"
-  lifecycle {
-    ignore_changes = [
-      config,
-    ]
-  }
-  config {
-    events = [
-      "incident.triggered",
-      "incident.acknowledged",
-      "incident.escalated",
-      "incident.resolved",
-      "incident.reassigned",
-      "incident.annotated",
-      "incident.unacknowledged",
-      "incident.delegated",
-      "incident.priority_updated",
-      "incident.action_invocation.created",
-      "incident.action_invocation.terminated",
-      "incident.action_invocation.updated",
-      "incident.responder.added",
-      "incident.responder.replied",
-      "incident.status_update_published",
-      "incident.reopened"
-    ]
-
-    priorities = ["*"]
-  }
-}
-
-# Slack channel: #dso_alerts_modernisation_platform
-
-# HMPPS Domain Services Non Prod
-resource "pagerduty_service" "hmpps_domain_services_nonprod" {
-  name                    = "HMPPS Domain Services Alarms Non Prod"
-  description             = "HMPPS Domain Services Alarms Non Prod"
-  auto_resolve_timeout    = 345600
-  acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
-  alert_creation          = "create_alerts_and_incidents"
-}
-
-resource "pagerduty_service_integration" "hmpps_domain_services_nonprod_cloudwatch" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.hmpps_domain_services_nonprod.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
-}
-
-resource "pagerduty_slack_connection" "hmpps_domain_services_nonprod_connection" {
-  source_id         = pagerduty_service.hmpps_domain_services_nonprod.id
-  source_type       = "service_reference"
-  workspace_id      = local.slack_workspace_id
-  channel_id        = "C04QGQML68P"
-  notification_type = "responder"
-  lifecycle {
-    ignore_changes = [
-      config,
-    ]
-  }
-  config {
-    events = [
-      "incident.triggered",
-      "incident.acknowledged",
-      "incident.escalated",
-      "incident.resolved",
-      "incident.reassigned",
-      "incident.annotated",
-      "incident.unacknowledged",
-      "incident.delegated",
-      "incident.action_invocation.created",
-      "incident.action_invocation.terminated",
-      "incident.action_invocation.updated",
-      "incident.priority_updated",
-      "incident.responder.added",
-      "incident.responder.replied",
-      "incident.status_update_published",
-      "incident.reopened"
-    ]
-    priorities = ["*"]
-  }
-}
-# Slack channel: #dso_alerts_devtest_modernisation_platform
-
-
 # Slack channel: #hmpps-delius-core-alerts-nonprod
 # Delius Core Non Prod
 resource "pagerduty_service" "delius_core_nonprod" {
@@ -2068,98 +1598,6 @@ resource "pagerduty_slack_connection" "cwa_prod" {
 }
 
 # Slack channel: #mp-laa-alerts-cwa-prod
-
-resource "pagerduty_service" "ndh_non_prod" {
-  name                    = "Nomis Data Hub Non-Production Alarms"
-  description             = "Nomis Data Hub Non-Production Alarms"
-  auto_resolve_timeout    = 345600
-  acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
-  alert_creation          = "create_alerts_and_incidents"
-}
-
-resource "pagerduty_service_integration" "ndh_non_prod" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.ndh_non_prod.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
-}
-
-resource "pagerduty_slack_connection" "ndh_non_prod" {
-  source_id         = pagerduty_service.ndh_non_prod.id
-  source_type       = "service_reference"
-  workspace_id      = local.slack_workspace_id
-  channel_id        = "C04QGQML68P"
-  notification_type = "responder"
-  config {
-    events = [
-      "incident.triggered",
-      "incident.acknowledged",
-      "incident.escalated",
-      "incident.resolved",
-      "incident.reassigned",
-      "incident.annotated",
-      "incident.unacknowledged",
-      "incident.delegated",
-      "incident.priority_updated",
-      "incident.responder.added",
-      "incident.responder.replied",
-      "incident.action_invocation.created",
-      "incident.action_invocation.terminated",
-      "incident.action_invocation.updated",
-      "incident.status_update_published",
-      "incident.reopened"
-    ]
-    priorities = ["*"]
-  }
-}
-
-# Slack channel: #dso_alerts_devtest_modernisation_platform
-
-# resource "pagerduty_service" "ndh_prod" {
-#   name                    = "Nomis Data Hub Production Alarms"
-#   description             = "Nomis Data Hub Production Alarms"
-#   auto_resolve_timeout    = 345600
-#   acknowledgement_timeout = "null"
-#   escalation_policy       = pagerduty_escalation_policy.member_policy.id
-#   alert_creation          = "create_alerts_and_incidents"
-# }
-
-# resource "pagerduty_service_integration" "ndh_prod" {
-#   name    = data.pagerduty_vendor.cloudwatch.name
-#   service = pagerduty_service.ndh_prod.id
-#   vendor  = data.pagerduty_vendor.cloudwatch.id
-# }
-
-# resource "pagerduty_slack_connection" "ndh_prod" {
-#   source_id         = pagerduty_service.ndh_prod.id
-#   source_type       = "service_reference"
-#   workspace_id      = local.slack_workspace_id
-#   channel_id        = "C04E4FM3KS7"
-#   notification_type = "responder"
-#   config {
-#     events = [
-#       "incident.triggered",
-#       "incident.acknowledged",
-#       "incident.escalated",
-#       "incident.resolved",
-#       "incident.reassigned",
-#       "incident.annotated",
-#       "incident.unacknowledged",
-#       "incident.delegated",
-#       "incident.priority_updated",
-#       "incident.responder.added",
-#       "incident.responder.replied",
-#       "incident.action_invocation.created",
-#       "incident.action_invocation.terminated",
-#       "incident.action_invocation.updated",
-#       "incident.status_update_published",
-#       "incident.reopened"
-#     ]
-#     priorities = ["*"]
-#   }
-# }
-
-# Slack channel: #dso_alerts_modernisation_platform
 
 resource "pagerduty_service" "apex_non_prod" {
   name                    = "APEX Non-Production Alarms"
@@ -2544,6 +1982,7 @@ resource "pagerduty_service" "services" {
   acknowledgement_timeout = "null"
   escalation_policy       = pagerduty_escalation_policy.member_policy.id
   alert_creation          = "create_alerts_and_incidents"
+
 }
 resource "pagerduty_service_integration" "integrations" {
   for_each = pagerduty_service.services
@@ -2562,5 +2001,96 @@ resource "pagerduty_slack_connection" "connections" {
   config {
     events     = local.slack_events
     priorities = ["*"]
+  }
+}
+
+resource "pagerduty_event_orchestration_service" "default" {
+  for_each = {
+    for k, v in pagerduty_service.services : k => v
+    if k != "corporate-staff-rostering-preproduction"
+  }
+  service                                = each.value.id
+  enable_event_orchestration_for_service = true
+  set {
+    id = "start"
+    rule {
+      label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
+      actions {
+        priority = data.pagerduty_priority.p5.id
+      }
+    }
+  }
+  catch_all {
+    actions {}
+  }
+}
+
+resource "pagerduty_event_orchestration_service" "corporate-staff-rostering-preproduction" {
+  count                                  = contains(keys(pagerduty_service.services), "corporate-staff-rostering-preproduction") ? 1 : 0
+  service                                = pagerduty_service.services["corporate-staff-rostering-preproduction"].id
+  enable_event_orchestration_for_service = true
+  set {
+    id = "start"
+    rule {
+      label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
+      actions {
+        priority = data.pagerduty_priority.p5.id
+        route_to = "check-trainab-http-endpoint"
+      }
+    }
+  }
+  set {
+    id = "check-trainab-http-endpoint"
+    rule {
+      label = "Route trainab-http- events to Weekend check"
+      condition {
+        expression = "event.summary matches regex '^trainab-http-'"
+      }
+      actions {
+        route_to = "weekend-check"
+      }
+    }
+  }
+  set {
+    id = "weekend-check"
+    rule {
+      label = "Check if it's Saturday after 05:00 UTC"
+      condition {
+        expression = "now.weekday() == 6 and now.hour() >= 5"
+      }
+      actions {
+        suppress = true
+      }
+    }
+    rule {
+      label = "Check if it's Sunday"
+      condition {
+        expression = "now.weekday() == 0"
+      }
+      actions {
+        suppress = true
+      }
+    }
+    rule {
+      label = "Check if it's Monday before 06:00 UTC"
+      condition {
+        expression = "now.weekday() == 1 and now.hour() < 6"
+      }
+      actions {
+        suppress = true
+      }
+    }
+    rule {
+      label = "Check if it's Monday 06:00 - 06:04 UTC"
+      condition {
+        expression = "now.weekday() == 1 and now.hour() == 6 and now.minute() < 5"
+      }
+      actions {
+        suppress = true
+      }
+    }
+  }
+  catch_all {
+    actions {}
   }
 }

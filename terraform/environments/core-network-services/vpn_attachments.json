@@ -33,7 +33,9 @@
     "tunnel2_inside_cidr": "169.254.22.128/30",
     "tunnel_dpd_timeout_action": "restart",
     "tunnel_dpd_timeout_seconds": "45",
-    "tunnel_startup_action": "start"
+    "tunnel_startup_action": "start",
+    "tunnel1_enable_tunnel_lifecycle_control": "true",
+    "tunnel2_enable_tunnel_lifecycle_control": "true"
   },
   "NOMS-Transit-Live-VPN-VNG_2": {
     "bgp_asn": "64522",
@@ -45,7 +47,9 @@
     "tunnel2_inside_cidr": "169.254.22.132/30",
     "tunnel_dpd_timeout_action": "restart",
     "tunnel_dpd_timeout_seconds": "45",
-    "tunnel_startup_action": "start"
+    "tunnel_startup_action": "start",
+    "tunnel1_enable_tunnel_lifecycle_control": "true",
+    "tunnel2_enable_tunnel_lifecycle_control": "true"
   },
   "Parole-Board-VPN": {
     "bgp_asn": "65535",

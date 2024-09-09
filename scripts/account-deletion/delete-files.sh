@@ -15,6 +15,10 @@ if [[ $COMPLETE_DELETION = "yes" ]]; then
     cd $USER_MP_DIR/policies/environments
     sed -i '' -e "/$APPLICATION_NAME/d" expected.rego
 
+    # Delete MP terraform/environments files
+    echo "Deleting $USER_MP_DIR/terraform/environments/$APPLICATION_NAME"
+    rm -rf $USER_MP_DIR/terraform/environments/$APPLICATION_NAME
+
     # Git setup for MP Environments repository
     echo "Creating a branch in the MP Environments repository"
     timestamp=$(date +%s)
