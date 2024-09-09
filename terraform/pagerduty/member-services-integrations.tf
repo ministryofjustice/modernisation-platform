@@ -1962,7 +1962,10 @@ resource "pagerduty_slack_connection" "connections" {
 }
 
 resource "pagerduty_event_orchestration_service" "default" {
-  for_each                               = pagerduty_service.services
+  for_each = {
+    for k, v in pagerduty_service.services : k => v
+    if k != "corporate-staff-rostering-preproduction"
+  }
   service                                = each.value.id
   enable_event_orchestration_for_service = true
   set {
@@ -1971,16 +1974,34 @@ resource "pagerduty_event_orchestration_service" "default" {
       label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
       actions {
         priority = data.pagerduty_priority.p5.id
-        route_to = "suppress-at-weekend"
+      }
+    }
+  }
+  catch_all {
+    actions {}
+  }
+}
+
+resource "pagerduty_event_orchestration_service" "corporate-staff-rostering-preproduction" {
+  count                                  = contains(keys(pagerduty_service.services), "corporate-staff-rostering-preproduction") ? 1 : 0
+  service                                = pagerduty_service.services["corporate-staff-rostering-preproduction"].id
+  enable_event_orchestration_for_service = true
+  set {
+    id = "start"
+    rule {
+      label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
+      actions {
+        priority = data.pagerduty_priority.p5.id
+        route_to = "suppress-weekend-trainab-http-enpoint-alarms"
       }
     }
   }
   set {
-    id = "suppress-at-weekend"
+    id = "suppress-weekend-trainab-hhtp-endpoint-alarms"
     rule {
-      label = "Suppress incidents starting with trainab- on Saturday after 05:00, all of Sunday or Monday before 06:05 (UTC)"
+      label = "Suppress trainab-http- endpoint alarms on Saturday after 05:00, all of Sunday or Monday before 06:05 (UTC)"
       condition {
-        expression = "event.summary matches regex '^trainab-' and ((now.weekday() == 6 and now.hour >= 5) or now.weekday() == 0 or (now.weekday() == 1 and (now.hour < 6 or (now.hour == 6 and now.minute < 5))))"
+        expression = "event.summary matches regex '^trainab-http-' and ((now.weekday() == 6 and now.hour >= 5) or now.weekday() == 0 or (now.weekday() == 1 and (now.hour < 6 or (now.hour == 6 and now.minute < 5))))"
       }
       actions {
         suppress = true
