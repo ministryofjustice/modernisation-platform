@@ -1992,16 +1992,55 @@ resource "pagerduty_event_orchestration_service" "corporate-staff-rostering-prep
       label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
       actions {
         priority = data.pagerduty_priority.p5.id
-        route_to = "suppress-weekend-trainab-http-enpoint-alarms"
+        route_to = "check-trainab-http-endpoint"
       }
     }
   }
   set {
-    id = "suppress-weekend-trainab-hhtp-endpoint-alarms"
+    id = "check-trainab-http-endpoint"
     rule {
-      label = "Suppress trainab-http- endpoint alarms on Saturday after 05:00, all of Sunday or Monday before 06:05 (UTC)"
+      label = "Route trainab-http- events to Saturday check"
       condition {
-        expression = "event.summary matches regex '^trainab-http-' and ((now.weekday() == 6 and now.hour >= 5) or now.weekday() == 0 or (now.weekday() == 1 and (now.hour < 6 or (now.hour == 6 and now.minute < 5))))"
+        expression = "event.summary matches regex '^trainab-http-'"
+      }
+      actions {
+        route_to = "weekend-check"
+      }
+    }
+  }
+  set {
+    id = "weekend-check"
+    rule {
+      label = "Check if it's Saturday after 05:00 UTC"
+      condition {
+        expression = "now.weekday() == 6 and now.hour() >= 5"
+      }
+      actions {
+        suppress = true
+      }
+    }
+    rule {
+      label = "Check if it's Sunday"
+      condition {
+        expression = "now.weekday() == 0"
+      }
+      actions {
+        suppress = true
+      }
+    }
+    rule {
+      label = "Check if it's Monday before 06:00 UTC"
+      condition {
+        expression = "now.weekday() == 1 and now.hour() < 6"
+      }
+      actions {
+        suppress = true
+      }
+    }
+    rule {
+      label = "Check if it's Monday 06:00 - 06:04 UTC"
+      condition {
+        expression = "now.weekday() == 1 and now.hour() == 6 and now.minute() < 5"
       }
       actions {
         suppress = true
