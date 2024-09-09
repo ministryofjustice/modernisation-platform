@@ -1971,6 +1971,19 @@ resource "pagerduty_event_orchestration_service" "default" {
       label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
       actions {
         priority = data.pagerduty_priority.p5.id
+        route_to = "suppress-at-weekend"
+      }
+    }
+  }
+  set {
+    id = "suppress-at-weekend"
+    rule {
+      label = "Suppress incidents starting with trainab- on Saturday after 05:00, all of Sunday or Monday before 06:05 (UTC)"
+      condition {
+        expression = "event.summary matches regex '^trainab-' and ((now.weekday() == 6 and now.hour >= 5) or now.weekday() == 0 or (now.weekday() == 1 and (now.hour < 6 or (now.hour == 6 and now.minute < 5))))"
+      }
+      actions {
+        suppress = true
       }
     }
   }
