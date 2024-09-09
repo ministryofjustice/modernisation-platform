@@ -104,10 +104,6 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
-    directory: "/terraform/environments/core-billing"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
     directory: "/terraform/environments/core-logging"
     schedule:
       interval: "daily"
@@ -157,10 +153,6 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/data-platform-apps-and-tools"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/data-platform-compute"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
@@ -217,10 +209,6 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/environments/hmpps-domain-services"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/hmpps-intelligence-management"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
@@ -336,15 +324,7 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
-    directory: "/terraform/environments/remote-supervision"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
     directory: "/terraform/environments/sprinkler"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/tariff"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
@@ -389,10 +369,6 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/app-ecr-repo"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/cloudwatch-firehose"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
