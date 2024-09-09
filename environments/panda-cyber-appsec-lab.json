@@ -8,7 +8,7 @@
         {
           "sso_group_name": "panda-cyber-team",
           "level": "sandbox",
-          "nuke": "rebuild"
+          "nuke": "exclude"
         }
       ]
     }
