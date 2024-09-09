@@ -2013,7 +2013,7 @@ resource "pagerduty_event_orchestration_service" "corporate-staff-rostering-prep
     rule {
       label = "Check if it's Saturday after 05:00 UTC"
       condition {
-        expression = "now.weekday() == 6 and now.hour() >= 5"
+        expression = "now in Sat 05:00:00 to 24:00:00"
       }
       actions {
         suppress = true
@@ -2022,25 +2022,16 @@ resource "pagerduty_event_orchestration_service" "corporate-staff-rostering-prep
     rule {
       label = "Check if it's Sunday"
       condition {
-        expression = "now.weekday() == 0"
+        expression = "now in Sun"
       }
       actions {
         suppress = true
       }
     }
     rule {
-      label = "Check if it's Monday before 06:00 UTC"
+      label = "Check if it's Monday before 06:05 UTC"
       condition {
-        expression = "now.weekday() == 1 and now.hour() < 6"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Monday 06:00 - 06:04 UTC"
-      condition {
-        expression = "now.weekday() == 1 and now.hour() == 6 and now.minute() < 5"
+        expression = "now in Mon 00:00:00 to 06:05:00"
       }
       actions {
         suppress = true
