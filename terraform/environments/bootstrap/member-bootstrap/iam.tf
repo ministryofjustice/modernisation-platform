@@ -545,6 +545,7 @@ data "aws_iam_policy_document" "policy" {
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
+}
 
 # MemberInfrastructureBedrockEuCentral
 module "member-access-eu-central" {
