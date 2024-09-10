@@ -6,6 +6,12 @@
       "name": "development",
       "access": [
         {
+          "sso_group_name": "hosting-migrations",
+          "level": "sandbox",
+          "nuke": "exclude",
+          "github_action_reviewer": "true"
+        },
+        {
           "sso_group_name": "studio-webops",
           "level": "sandbox",
           "nuke": "exclude",
@@ -16,6 +22,11 @@
     {
       "name": "test",
       "access": [
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
         {
           "sso_group_name": "studio-webops",
           "level": "developer",
@@ -31,6 +42,11 @@
       "name": "preproduction",
       "access": [
         {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
           "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
@@ -44,6 +60,11 @@
     {
       "name": "production",
       "access": [
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
         {
           "sso_group_name": "studio-webops",
           "level": "developer",

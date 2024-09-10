@@ -10,6 +10,12 @@
           "level": "instance-management"
         },
         {
+          "sso_group_name": "hosting-migrations",
+          "level": "sandbox",
+          "github_action_reviewer": "true",
+          "nuke": "exclude"
+        },
+        {
           "sso_group_name": "studio-webops",
           "level": "sandbox",
           "github_action_reviewer": "true",
@@ -27,6 +33,11 @@
         {
           "sso_group_name": "national-applications-reporting-team",
           "level": "instance-management"
+        },
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "studio-webops",
@@ -47,6 +58,11 @@
           "level": "instance-access"
         },
         {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
           "sso_group_name": "studio-webops",
           "level": "developer",
           "github_action_reviewer": "true"
@@ -63,6 +79,11 @@
         {
           "sso_group_name": "national-applications-reporting-team",
           "level": "instance-access"
+        },
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "studio-webops",
