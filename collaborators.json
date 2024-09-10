@@ -377,6 +377,36 @@
           "access": "instance-management"
         }
       ]
+    },
+    {
+      "username": "carl.last",
+      "github-username": "carldevcap",
+      "accounts": [
+        {
+          "account-name": "oasys-development",
+          "access": "s3-upload"
+        }
+      ]
+    },
+    {
+      "username": "martin.hiorns",
+      "github-username": "martinhiorns-capita",
+      "accounts": [
+        {
+          "account-name": "oasys-development",
+          "access": "s3-upload"
+        }
+      ]
+    },
+    {
+      "username": "morgan.boniface",
+      "github-username": "morgan-boniface",
+      "accounts": [
+        {
+          "account-name": "oasys-development",
+          "access": "s3-upload"
+        }
+      ]
     }
   ]
 }
