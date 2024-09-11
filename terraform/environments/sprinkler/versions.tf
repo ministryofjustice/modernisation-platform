@@ -9,5 +9,9 @@ terraform {
       source  = "hashicorp/http"
     }
   }
+  pagerduty = {
+    source  = "pagerduty/pagerduty"
+    version = ">= 2.2.1"
+  }  
   required_version = "~> 1.0"
 }

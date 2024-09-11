@@ -27,6 +27,7 @@ locals {
 
   is_live       = [substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production" || substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction" ? "live" : "non-live"]
   provider_name = "core-vpc-${local.environment}"
+  slack_workspace_id  = "slack.com"
 
   # environment specfic variables
   # example usage:
