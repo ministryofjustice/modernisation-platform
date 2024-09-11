@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: How to setup code scanning software locally
-last_reviewed_on: 2024-09-02
+last_reviewed_on: 2024-09-11
 review_in: 6 months
 ---
 
@@ -18,9 +18,7 @@ review_in: 6 months
 
 ## Introduction
 
-At present we use checkov and trivy to do static code analsys this is done via github actions and use of a terraform module. 
-There has been a request to have the ability run these progams locally so that issue can be idenified before pushng a pull request up to the repository,
-this document will give direction on how to install the software and run them with the correct paramiters.
+Currently, we use Checkov and Trivy for static code analysis, which is performed via GitHub Actions and use of a Terraform module. There has been a request to enable running these programs locally so that issues can be identified before pushing a pull request to the repository. This document provides instructions on how to install the software and run it with the correct parameters.
 
 ### How to setup Checkov locally
 
@@ -43,7 +41,7 @@ brew install checkov
 
 ### Running Checkov
 
-To run checkov from the command line you will have to setup some variable first and populate them with the nesasary information but the basic checkov command looks like the following
+To run checkov from the command line you will have to setup some variables first and populate them with the necessary information but the basic checkov command looks like the following
 
 ```
 checkov --quiet -d "$terraform_working_dir" --skip-check "${INPUT_CHECKOV_EXCLUDE}" --download-external-modules "${INPUT_CHECKOV_EXTERNAL_MODULES}"
