@@ -25,6 +25,18 @@ resource "aws_kms_alias" "s3_state_bucket_multi_region" {
   target_key_id = aws_kms_key.s3_state_bucket_multi_region.id
 }
 
+resource "aws_kms_replica_key" "s3_state_bucket_multi_region_replica" {
+  description             = "AWS Secretsmanager CMK replica key"
+  deletion_window_in_days = 30
+  primary_key_arn         = aws_kms_key.s3_state_bucket_multi_region.arn
+  provider                = aws.modernisation-platform-eu-west-1
+}
+
+resource "aws_kms_alias" "s3_state_bucket_multi_region_replica" {
+  name          = "alias/s3-state-bucket-multi-region-replica"
+  target_key_id = aws_kms_replica_key.s3_state_bucket_multi_region_replica.id
+}
+
 data "aws_iam_policy_document" "kms_state_bucket" {
   # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
   # checkov:skip=CKV_AWS_356: "policy is directly related to the resource"

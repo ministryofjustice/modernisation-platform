@@ -164,7 +164,7 @@ resource "aws_sqs_queue_policy" "logging" {
 
 data "aws_kms_alias" "secrets" {
   provider = aws.modernisation-platform
-  name     = "alias/secrets_key"
+  name     = "alias/secrets-key-multi-region"
 }
 
 resource "aws_secretsmanager_secret" "logging" {
