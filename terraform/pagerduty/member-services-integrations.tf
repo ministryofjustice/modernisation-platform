@@ -2044,7 +2044,7 @@ resource "pagerduty_event_orchestration_service" "corporate-staff-rostering-prep
 }
 
 resource "pagerduty_service" "sprinkler-development" {
-  name                    = "sptinkler-development"
+  name                    = "sprinkler-development"
   description             = "sprinkler-development"
   auto_resolve_timeout    = 345600
   acknowledgement_timeout = "null"
@@ -2053,9 +2053,7 @@ resource "pagerduty_service" "sprinkler-development" {
 }
 
 resource "pagerduty_service_integration" "sprinkler-integration" {
-  #name    = data.pagerduty_vendor.cloudwatch.name
   service = pagerduty_service.sprinkler-development.id
-  #vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
 resource "pagerduty_slack_connection" "sprinkler_connection" {
