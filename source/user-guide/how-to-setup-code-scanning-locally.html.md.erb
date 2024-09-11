@@ -1,0 +1,89 @@
+---
+owner_slack: "#modernisation-platform"
+title: How to setup code scanning software locally
+last_reviewed_on: 2024-09-02
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+## Introduction
+
+At present we use checkov and trivy to do static code analsys this is done via github actions and use of a terraform module. 
+There has been a request to have the ability run these progams locally so that issue can be idenified before pushng a pull request up to the repository,
+this document will give direction on how to install the software and run them with the correct paramiters.
+
+### How to setup Checkov locally
+
+There are two ways to install checkov you can use homebrew to install or you can use python to install the most common way is to use python.
+
+To install using pyton please use the bellow commands
+
+```
+pip install checkov
+
+or
+
+pip3 install checkov
+```
+To install using brew run the bellow commands
+
+```
+brew install checkov
+```
+
+### Running Checkov
+
+To run checkov from the command line you will have to setup some variable first and populate them with the nesasary information but the basic checkov command looks like the following
+
+```
+checkov --quiet -d "$terraform_working_dir" --skip-check "${INPUT_CHECKOV_EXCLUDE}" --download-external-modules "${INPUT_CHECKOV_EXTERNAL_MODULES}"
+```
+
+If you look at the repository that you want to run the command for you will find in most cases that  the variable ${INPUT_CHECKOV_EXCLUDE} will be set to the following input CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39, But feel free to add anyother that you want to exclude to this input
+
+The $terraform_working_dir is basicaly the folder that you want to scan within the repository the last variable ${INPUT_CHECKOV_EXTERNAL_MODULES} can be set tp false as this is what it is normaly setup within the github actions run.
+
+### How to setup Trivy locally
+
+Trivy is available in most common distribution channels. The full list of installation options is available in the Installation page. Here are a few popular examples:
+
+- brew install trivy
+- docker run aquasec/trivy
+- Download binary from https://github.com/aquasecurity/trivy/releases/latest/
+
+See Installation for more
+Trivy is integrated with many popular platforms and applications. The complete list of integrations is available in the Ecosystem page. Here are a few popular examples:
+
+GitHub Actions
+Kubernetes operator
+VS Code plugin
+See Ecosystem for more
+Canary builds
+There are canary builds (Docker Hub, GitHub, ECR images and binaries) as generated every push to main branch.
+
+Please be aware: canary builds might have critical bugs, it's not recommended for use in production.
+
+### Running Trivy
+
+Once trivy is installed you will need to change to the directory that you want to scan andrun the following command
+
+```
+trivy fs --scanners vuln,misconfig,secret --exit-code 1  --ignorefile ./modernisation-platform/.trivyignore.yaml  --skip-dirs '' --no-progress  --severity HIGH,CRITICAL ./modernisation-platform
+```
+
+The above is an example that we can run on the modernisation platform repo you will need to change the following elements of the command to make it work for you.
+
+- the first element is the --ignorefile this is the location of the local ignore file fo that repo it is stored in the root of the repo folder
+- the second element is the folder you want to scan if you want to scan the foler your in simply change the ./modernisation-platform to a ./ instead
+
+You can also use the > to output to a file for easyier reading.
