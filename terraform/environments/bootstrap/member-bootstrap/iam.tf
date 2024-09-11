@@ -433,6 +433,12 @@ data "aws_iam_policy_document" "policy" {
       "codebuild:StartBuild",
       "codebuild:BatchGetBuilds",
       "codepipeline:StartPipelineExecution",
+      "datasync:Create*",
+      "datasync:Delete*",
+      "datasync:Describe*",
+      "datasync:List*",
+      "datasync:StartTaskExecution",
+      "datasync:*Tag*",
       "dms:StartReplicationTask",
       "dms:StopReplicationTask",
       "dms:TestConnection",
@@ -445,12 +451,6 @@ data "aws_iam_policy_document" "policy" {
       "ds:DescribeDirectories",
       "dynamodb:GetItem",
       "dynamodb:PutItem",
-      "datasync:Create*",
-      "datasync:Delete*",
-      "datasync:Describe*",
-      "datasync:List*",
-      "datasync:*Tag*",
-      "datasync:StartTaskExecution",
       "ecs:*Service*",
       "ecs:*Task*",
       "ecs:*Tag*",
@@ -508,7 +508,6 @@ data "aws_iam_policy_document" "policy" {
       "kms:DescribeKey",
       "kms:Decrypt",
       "kms:Encrypt",
-      "kms:CreateGrant",
       "kms:GenerateDataKey",
       "lambda:UpdateFunctionCode",
       "logs:CreateLogGroup",
@@ -544,6 +543,19 @@ data "aws_iam_policy_document" "policy" {
       "ssm:TerminateSession"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+  }
+   statement {
+    effect = "Allow"
+    actions = [
+      "kms:CreateGrant"
+    ]
+
+ resources = ["arn:aws:kms:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:key/*"]
+    condition {
+      test     = "Bool"
+      variable = "kms:GrantIsForAWSResource"
+      values   = ["true"]
+    }
   }
 }
 
