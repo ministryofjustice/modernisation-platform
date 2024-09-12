@@ -2053,7 +2053,9 @@ resource "pagerduty_service" "sprinkler-development" {
 }
 
 resource "pagerduty_service_integration" "sprinkler-integration" {
+  name    = data.pagerduty_vendor.cloudwatch.name
   service = pagerduty_service.sprinkler-development.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
 resource "pagerduty_slack_connection" "sprinkler_connection" {
