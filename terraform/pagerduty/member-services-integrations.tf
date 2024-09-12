@@ -2052,10 +2052,11 @@ resource "pagerduty_service" "sprinkler-development" {
   alert_creation          = "create_alerts_and_incidents"
 }
 
-resource "pagerduty_service_integration" "sprinkler-integration" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.sprinkler-development.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
+resource "pagerduty_event_orchestration" "monitor-sprinkler-integration" {
+  depends_on = [ pagerduty_team.modernisation_platform ]
+  name = "Monitor sprinkler for orchestration"
+  description = "Integrates sprinkler-development account with PagerDuty"
+  team = pagerduty_team.modernisation_platform.id
 }
 
 resource "pagerduty_slack_connection" "sprinkler_connection" {
