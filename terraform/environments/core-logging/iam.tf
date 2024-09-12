@@ -57,7 +57,7 @@ resource "aws_iam_role_policy_attachment" "vpc_flow_log_publish_policy" {
 # Grafana-Athena Role
 resource "aws_iam_role" "grafana_athena" {
   name               = "grafana-athena"
-  assume_role_policy = data.aws_iam_policy_document.grafana-athena.json
+  assume_role_policy = data.aws_iam_policy_document.grafana_athena.json
 }
 
 # Grafana-Athena Policy
@@ -79,7 +79,7 @@ data "aws_iam_policy_document" "grafana_athena_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = [aws_iam_role.ssm_role.arn]
+      identifiers = [aws_iam_role.grafana_athena.arn]
     }
   }
 }
