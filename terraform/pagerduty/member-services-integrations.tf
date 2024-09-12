@@ -2052,11 +2052,23 @@ resource "pagerduty_service" "sprinkler-development" {
   alert_creation          = "create_alerts_and_incidents"
 }
 
-resource "pagerduty_service_integration" "sprinkler-integration" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.sprinkler-development.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
+resource "pagerduty_team" "sprinkler-development" {
+  name = "sprinkler-development"
 }
+
+resource "pagerduty_event_orchestration" "monitor-sprinkler-integration" {
+  depends_on = [ pagerduty_team.sprinkler-development  ]
+  name = "My Monitoring Orchestration of Sprinkler"
+  description = "Testing the orchestration"
+  team = pagerduty_team.sprinkler-development.id
+}
+
+# Original definition.
+# resource "pagerduty_service_integration" "sprinkler-integration" {
+#   name    = data.pagerduty_vendor.cloudwatch.name
+#   service = pagerduty_service.sprinkler-development.id
+#   vendor  = data.pagerduty_vendor.cloudwatch.id
+# }
 
 resource "pagerduty_slack_connection" "sprinkler_connection" {
   source_id         = pagerduty_service.sprinkler-development.id
