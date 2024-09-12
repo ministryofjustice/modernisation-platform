@@ -82,6 +82,20 @@ locals {
     hmpps-preproduction-general-private-subnets = "10.27.0.0/22"
     hmpps-production-general-private-subnets    = "10.27.10.0/22"
 
+    # cica cidr ranges
+    cica-aws-ss-a       = "10.10.10.0/24"
+    cica-aws-ss-b       = "10.10.110.0/24"
+    cica-aws-dev-a      = "10.11.10.0/24"
+    cica-aws-dev-b      = "10.11.110.0/24"
+    cica-aws-dev-data-a = "10.11.20.0/24"
+    cica-aws-dev-data-b = "10.11.120.0/24"
+    cica-aws-uat-a      = "10.12.10.0/24"
+    cica-aws-uat-b      = "10.12.110.0/24"
+    cica-aws-uat-data-a = "10.12.20.0/24"
+    cica-aws-uat-data-b = "10.12.120.0/24"
+
+
+
     mojo-end-user-devices = "10.0.0.0/8"
     dom1-dcs              = "10.0.0.0/8"
     ad-hmpp-dc-a          = "10.27.136.5/32" # see https://github.com/ministryofjustice/modernisation-platform/issues/5970

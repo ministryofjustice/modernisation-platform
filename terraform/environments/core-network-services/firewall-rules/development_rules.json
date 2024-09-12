@@ -495,5 +495,26 @@
     "destination_ip": "${moj-smtp-relay2}",
     "destination_port": "587",
     "protocol": "TCP"
+  },
+  "cica_aws_uat_a_to_cica_tariff_dev": {
+    "action": "PASS",
+    "source_ip": "${cica-aws-uat-a}",
+    "destination_ip": "${cica-development}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "cica_aws_uat_a_to_cica_tariff_dev_icmp": {
+    "action": "PASS",
+    "source_ip": "${cica-aws-uat-a}",
+    "destination_ip": "${cica-development}",
+    "destination_port": "ANY",
+    "protocol": "ICMP"
+  },
+  "cica_tariff_dev_to_cica_aws_uat_a": {
+    "action": "PASS",
+    "source_ip": "${cica-development}",
+    "destination_ip": "${cica-aws-uat-a}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
   }
 }
