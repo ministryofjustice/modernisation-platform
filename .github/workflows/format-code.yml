@@ -9,7 +9,7 @@
   permissions:
     contents: write
     pull-requests: write
-    actions: write  # Allows automatic commit signing
+    actions: write  # Necessary for API-based commit signing
   
   concurrency:
     group: '${{ github.ref }}-${{ github.workflow }}'
@@ -54,9 +54,7 @@
         - name: Check for changes
           run: |
             git add .
-            git commit -m "Automated formatting fixes from GitHub Actions" || true
-            branch_name=$(git branch --show-current)
-            changes=$(git diff origin/main...$branch_name --name-only)
+            changes=$(git diff --staged --name-only)
             if [ -z "$changes" ]; then
               echo "No changes detected."
             else
@@ -64,13 +62,53 @@
               echo "changes=true" >> $GITHUB_ENV
             fi
   
-        - name: Push changes
+        - name: Create verified commit using GraphQL API
           if: env.changes == 'true'
           run: |
-            git config --global push.autoSetupRemote true
-            git push
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            # Gather commit information
+            commit_message="Automated formatting fixes from GitHub Actions"
+            branch_name=$(git branch --show-current)
+            
+            # Create commit using GitHub GraphQL API
+            curl -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}" \
+                 -X POST \
+                 -d '{
+                   "query": "mutation($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { oid message } } }",
+                   "variables": {
+                     "input": {
+                       "branch": {
+                         "repositoryNameWithOwner": "${{ github.repository }}",
+                         "branchName": "'"$branch_name"'"
+                       },
+                       "message": {
+                         "headline": "'"$commit_message"'"
+                       },
+                       "fileChanges": {
+                         "additions": [{
+                           "path": "workflow-output.txt",
+                           "contents": "'"$(base64 workflow-output.txt)"'"
+                         }]
+                       },
+                       "expectedHeadOid": "$(git rev-parse HEAD)"
+                     }
+                   }'
+                 https://api.github.com/graphql
+  
+        - name: Push changes using GraphQL API
+          if: env.changes == 'true'
+          run: |
+            curl -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}" \
+                 -X POST \
+                 -d '{
+                   "query": "mutation($input: CreateRefInput!) { createRef(input: $input) { ref { name } } }",
+                   "variables": {
+                     "input": {
+                       "repositoryNameWithOwner": "${{ github.repository }}",
+                       "refName": "refs/heads/'"$branch_name"'",
+                       "oid": "$(git rev-parse HEAD)"
+                     }
+                   }'
+                 https://api.github.com/graphql
   
         - name: Create pull request
           if: env.changes == 'true'
@@ -83,12 +121,4 @@
             pr_head="${{ github.repository_owner }}:${branch_name}"
             pr_base="main"
             gh pr create --title "$pr_title" --body "$pr_body" --head "$pr_head" --base "$pr_base" --label "code quality"
-  
-        # Optionally, call GitHub GraphQL API for further operations (optional)
-        - name: Call GitHub GraphQL API
-          run: |
-            curl -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}" \
-                 -X POST \
-                 -d '{"query": "query { repository(owner:\"${{ github.repository_owner }}\", name:\"${{ github.event.repository.name }}\") { object(expression:\"main\") { ... on Commit { history(first: 5) { edges { node { message } } } } } } }"}' \
-                 https://api.github.com/graphql
   
