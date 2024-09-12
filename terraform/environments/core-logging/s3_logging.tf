@@ -398,5 +398,7 @@ module "s3-grafana-athena-query-results" {
     }
   ]
 
-  tags                 = local.tags
+  tags = merge(local.tags,
+   { Name = lower(format("s3-bucket-%s-%s-grafana-athena", local.application_name, local.environment))  }
+  )
 }
