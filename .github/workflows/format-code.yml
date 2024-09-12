@@ -1,162 +1,94 @@
 ---
-name: 'Format Code: ensure code formatting guidelines are met'
-
-on:
-  workflow_dispatch: null
-  schedule:
-    - cron: 45 4 * * 1-5
-
-permissions:
-  contents: write
-  pull-requests: write
-
-concurrency:
-  group: '${{ github.ref }}-${{ github.workflow }}'
-  cancel-in-progress: true
-
-jobs:
-  build:
-    name: MegaLinter
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 #v4.1.1
-        with:
-          token: '${{ secrets.GITHUB_TOKEN }}'
-          fetch-depth: 0
-
-      - name: Prepare Git options
-        run: bash ./scripts/git-setup.sh
-
-      - name: Create new branch
-        run: |
-          date=$(date +%Y_%m_%d)
-          branch_name="date_$date"
-          git checkout -b $branch_name
-
-      - name: Run linter
-        id: ml
-        # You can override MegaLinter flavor used to have faster performances
-        # More info at https://megalinter.io/flavors/
-        uses: oxsecurity/megalinter/flavors/terraform@c217fe8f7bc9207062a084e989bd97efd56e7b9a #v8.0.0
-        env:
-          # All available variables are described in documentation
-          # https://megalinter.io/configuration/#shared-variables
-          # ADD YOUR CUSTOM ENV VARIABLES HERE OR DEFINE THEM IN A FILE .mega-linter.yml AT THE ROOT OF YOUR REPOSITORY
-          APPLY_FIXES: all # When active, APPLY_FIXES must also be defined as environment variable (in github/workflows/mega-linter.yml or other CI tool)
-          APPLY_FIXES_EVENT: all # Decide which event triggers application of fixes in a commit or a PR (pull_request, push, all)
-          APPLY_FIXES_MODE: pull_request # If APPLY_FIXES is used, defines if the fixes are directly committed (commit) or posted in a PR (pull_request)
-          DISABLE_ERRORS: true
-          EMAIL_REPORTER: false
-          ENABLE_LINTERS: JSON_PRETTIER,YAML_PRETTIER,TERRAFORM_TERRAFORM_FMT,MARKDOWN_MARKDOWNLINT
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-          VALIDATE_ALL_CODEBASE: true
-          YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (.github/*)
-          MARKDOWN_MARKDOWNLINT_FILTER_REGEX_EXCLUDE: (terraform/modules/.*/.*.md)
-          REPORT_OUTPUT_FOLDER: none
-
-      - name: Check for changes
-        run: |
-          git add .
-          git commit -m "Updates from GitHub Actions Format Code workflow" || true
-          branch_name=$(git branch --show-current)
-          changes=$(git diff origin/main...$branch_name --name-only)
-          if [ -z "$changes" ]; then
-            echo "No changes detected."
-          else
-            echo "Changes detected."
-            echo "changes=true" >> $GITHUB_ENV
-          fi
-
-      - name: Create Commit on Branch using GraphQL API
-        if: env.changes == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "Branch: $branch"
-          # Define GraphQL mutation
-          mutation='mutation($input: CreateCommitOnBranchInput!) {
-            createCommitOnBranch(input: $input) {
-              commit {
-                url
-              }
-            }
-          }'
-          
-          # Define the branch and repository
-          branch=$(git branch --show-current)
-          repositoryNameWithOwner="${{ github.repository_owner }}/modernisation-platform"  # Combine owner and repository name
-
-          # Define the commit message as a key-value object (headline and body)
-          message_headline="Automated commit"
-          message_body="This commit was created via the GitHub GraphQL API."
-      
-          # Convert file content to Base64 encoding
-          filePath="README.md"  # The file you want to modify
-          fileContent="This is an automated update."
-          base64FileContent=$(echo -n "$fileContent" | base64)
-      
-      
-          # Define the commit message as a key-value object (headline and body)
-          message_headline="Automated commit"
-          message_body="This commit was created via the GitHub GraphQL API."
-      
-          # Get the latest commit SHA for the branch (expectedHeadOid)
-          expectedHeadOid=$(curl -s -X POST \
-            -H "Authorization: bearer $GITHUB_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d '{"query": "query { repository(name: \"modernisation-platform\", owner: \"${{ github.repository_owner }}\") { ref(qualifiedName: \"refs/heads/'$branch'\") { target { ... on Commit { oid } } } } }" }' \
-            https://api.github.com/graphql | jq -r '.data.repository.ref.target.oid')
-      
-          # Create the payload for the mutation
-          payload=$(jq -n \
-            --arg mutation "$mutation" \
-            --arg branch "$branch" \
-            --arg message_headline "$message_headline" \
-            --arg message_body "$message_body" \
-            --arg filePath "$filePath" \
-            --arg base64FileContent "$base64FileContent" \
-            --arg repositoryNameWithOwner "$repositoryNameWithOwner" \
-            --arg expectedHeadOid "$expectedHeadOid" \
-            '{
-              "query": $mutation,
-              "variables": {
-                "input": {
-                  "branch": {
-                    "repositoryNameWithOwner": $repositoryNameWithOwner,
-                    "branchName": $branch
-                  },
-                  "message": {
-                    "headline": $message_headline,
-                    "body": $message_body
-                  },
-                  "fileChanges": {
-                    "additions": [{
-                      "path": $filePath,
-                      "contents": $base64FileContent
-                    }]
-                  },
-                  "expectedHeadOid": $expectedHeadOid
-                }
-              }
-            }'
-          )
-      
-          # Make the API call
-          curl -X POST \
-            -H "Authorization: bearer $GITHUB_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d "$payload" \
-            https://api.github.com/graphql
-      
-      - name: Create pull request
-        if: env.changes == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          pr_title="GitHub Actions Code Formatter workflow"
-          pr_body="This pull request includes updates from the GitHub Actions Code Formatter workflow. Please review the changes and merge if everything looks good."
-          branch_name=$(git branch --show-current)
-          pr_head="${{ github.repository_owner }}:${branch_name}"
-          pr_base="main"
-          gh pr create --title "$pr_title" --body "$pr_body" --head "$pr_head" --base "$pr_base" --label "code quality"
+  name: 'Format Code: ensure code formatting guidelines are met'
+  
+  on:
+    workflow_dispatch: null
+    schedule:
+      - cron: 45 4 * * 1-5
+  
+  permissions:
+    contents: write
+    pull-requests: write
+    actions: write  # Allows automatic commit signing
+  
+  concurrency:
+    group: '${{ github.ref }}-${{ github.workflow }}'
+    cancel-in-progress: true
+  
+  jobs:
+    build:
+      name: MegaLinter
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout Code
+          uses: actions/checkout@v3
+          with:
+            token: '${{ secrets.GITHUB_TOKEN }}'
+            fetch-depth: 0
+  
+        - name: Prepare Git options
+          run: bash ./scripts/git-setup.sh
+  
+        - name: Create new branch
+          run: |
+            date=$(date +%Y_%m_%d)
+            branch_name="format_fixes_$date"
+            git checkout -b $branch_name
+  
+        - name: Run linter
+          id: ml
+          uses: oxsecurity/megalinter/flavors/terraform@v8.0.0
+          env:
+            APPLY_FIXES: all
+            APPLY_FIXES_EVENT: all
+            APPLY_FIXES_MODE: pull_request
+            DISABLE_ERRORS: true
+            EMAIL_REPORTER: false
+            ENABLE_LINTERS: JSON_PRETTIER,YAML_PRETTIER,TERRAFORM_TERRAFORM_FMT,MARKDOWN_MARKDOWNLINT
+            GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+            VALIDATE_ALL_CODEBASE: true
+            YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (.github/*)
+            MARKDOWN_MARKDOWNLINT_FILTER_REGEX_EXCLUDE: (terraform/modules/.*/.*.md)
+            REPORT_OUTPUT_FOLDER: none
+  
+        - name: Check for changes
+          run: |
+            git add .
+            git commit -m "Automated formatting fixes from GitHub Actions" || true
+            branch_name=$(git branch --show-current)
+            changes=$(git diff origin/main...$branch_name --name-only)
+            if [ -z "$changes" ]; then
+              echo "No changes detected."
+            else
+              echo "Changes detected."
+              echo "changes=true" >> $GITHUB_ENV
+            fi
+  
+        - name: Push changes
+          if: env.changes == 'true'
+          run: |
+            git config --global push.autoSetupRemote true
+            git push
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+        - name: Create pull request
+          if: env.changes == 'true'
+          env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          run: |
+            pr_title="Automated code formatting updates"
+            pr_body="This PR contains formatting fixes applied by the Format Code GitHub Actions workflow."
+            branch_name=$(git branch --show-current)
+            pr_head="${{ github.repository_owner }}:${branch_name}"
+            pr_base="main"
+            gh pr create --title "$pr_title" --body "$pr_body" --head "$pr_head" --base "$pr_base" --label "code quality"
+  
+        # Optionally, call GitHub GraphQL API for further operations (optional)
+        - name: Call GitHub GraphQL API
+          run: |
+            curl -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}" \
+                 -X POST \
+                 -d '{"query": "query { repository(owner:\"${{ github.repository_owner }}\", name:\"${{ github.event.repository.name }}\") { object(expression:\"main\") { ... on Commit { history(first: 5) { edges { node { message } } } } } } }"}' \
+                 https://api.github.com/graphql
+  
