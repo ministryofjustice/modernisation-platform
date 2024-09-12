@@ -73,7 +73,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-        
+          echo "Branch: $branch"
           # Define GraphQL mutation
           mutation='mutation($input: CreateCommitOnBranchInput!) {
             createCommitOnBranch(input: $input) {
