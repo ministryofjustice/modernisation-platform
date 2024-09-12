@@ -68,12 +68,77 @@ jobs:
             echo "changes=true" >> $GITHUB_ENV
           fi
 
-      - name: Push changes
+      - name: Create Commit on Branch using GraphQL API
         if: env.changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config --global push.autoSetupRemote true
-          git push
-
+        
+          # Define GraphQL mutation
+          mutation='mutation($input: CreateCommitOnBranchInput!) {
+            createCommitOnBranch(input: $input) {
+              commit {
+                url
+              }
+            }
+          }'
+          
+          # Define the branch and repository
+          branch=$(git branch --show-current)
+          repositoryNameWithOwner="${{ github.repository_owner }}/modernisation-platform"  # Combine owner and repository name
+      
+          # Define the commit message as a key-value object (headline and body)
+          message_headline="Automated commit"
+          message_body="This commit was created via the GitHub GraphQL API."
+      
+          # Get the latest commit SHA for the branch (expectedHeadOid)
+          expectedHeadOid=$(curl -s -X POST \
+            -H "Authorization: bearer $GITHUB_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"query": "query { repository(name: \"house-of-fun\", owner: \"${{ github.repository_owner }}\") { ref(qualifiedName: \"refs/heads/'$branch'\") { target { ... on Commit { oid } } } } }" }' \
+            https://api.github.com/graphql | jq -r '.data.repository.ref.target.oid')
+      
+          # Create the payload for the mutation
+          payload=$(jq -n \
+            --arg mutation "$mutation" \
+            --arg branch "$branch" \
+            --arg message_headline "$message_headline" \
+            --arg message_body "$message_body" \
+            --arg filePath "$filePath" \
+            --arg base64FileContent "$base64FileContent" \
+            --arg repositoryNameWithOwner "$repositoryNameWithOwner" \
+            --arg expectedHeadOid "$expectedHeadOid" \
+            '{
+              "query": $mutation,
+              "variables": {
+                "input": {
+                  "branch": {
+                    "repositoryNameWithOwner": $repositoryNameWithOwner,
+                    "branchName": $branch
+                  },
+                  "message": {
+                    "headline": $message_headline,
+                    "body": $message_body
+                  },
+                  "fileChanges": {
+                    "additions": [{
+                      "path": $filePath,
+                      "contents": $base64FileContent
+                    }]
+                  },
+                  "expectedHeadOid": $expectedHeadOid
+                }
+              }
+            }'
+          )
+      
+          # Make the API call
+          curl -X POST \
+            -H "Authorization: bearer $GITHUB_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$payload" \
+            https://api.github.com/graphql
+      
       - name: Create pull request
         if: env.changes == 'true'
         env:
