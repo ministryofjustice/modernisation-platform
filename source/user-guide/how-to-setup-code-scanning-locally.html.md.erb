@@ -22,9 +22,9 @@ Currently, we use Checkov and Trivy for static code analysis, which is performed
 
 ### How to setup Checkov locally
 
-There are two ways to install checkov you can use homebrew to install or you can use python to install the most common way is to use python.
+There are two ways to install checkov you can use homebrew to install, or you can use python to install the most common way is to use python.
 
-To install using pyton please use the bellow commands
+To install using python please use the bellow commands
 
 ```
 pip install checkov
@@ -47,9 +47,9 @@ To run checkov from the command line you will have to setup some variables first
 checkov --quiet -d "$terraform_working_dir" --skip-check "${INPUT_CHECKOV_EXCLUDE}" --download-external-modules "${INPUT_CHECKOV_EXTERNAL_MODULES}"
 ```
 
-If you look at the repository that you want to run the command for you will find in most cases that  the variable ${INPUT_CHECKOV_EXCLUDE} will be set to the following input CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39, But feel free to add anyother that you want to exclude to this input
+If you look at the repository that you want to run the command for you will find in most cases that  the variable ${INPUT_CHECKOV_EXCLUDE} will be set to the following input CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39, But feel free to add any other that you want to exclude to this input
 
-The $terraform_working_dir is basicaly the folder that you want to scan within the repository the last variable ${INPUT_CHECKOV_EXTERNAL_MODULES} can be set tp false as this is what it is normaly setup within the github actions run.
+The $terraform_working_dir is basically the folder that you want to scan within the repository the last variable ${INPUT_CHECKOV_EXTERNAL_MODULES} can be set tp false as this is what it is normally setup within the github actions run.
 
 ### How to setup Trivy locally
 
@@ -69,11 +69,11 @@ See Ecosystem for more
 Canary builds
 There are canary builds (Docker Hub, GitHub, ECR images and binaries) as generated every push to main branch.
 
-Please be aware: canary builds might have critical bugs, it's not recommended for use in production.
+Please be aware: canary builds might have critical bugs; it's not recommended for use in production.
 
 ### Running Trivy
 
-Once trivy is installed you will need to change to the directory that you want to scan andrun the following command
+Once trivy is installed you will need to change to the directory that you want to scan and run the following command
 
 ```
 trivy fs --scanners vuln,misconfig,secret --exit-code 1  --ignorefile ./modernisation-platform/.trivyignore.yaml  --skip-dirs '' --no-progress  --severity HIGH,CRITICAL ./modernisation-platform
@@ -81,7 +81,7 @@ trivy fs --scanners vuln,misconfig,secret --exit-code 1  --ignorefile ./modernis
 
 The above is an example that we can run on the modernisation platform repo you will need to change the following elements of the command to make it work for you.
 
-- the first element is the --ignorefile this is the location of the local ignore file fo that repo it is stored in the root of the repo folder
-- the second element is the folder you want to scan if you want to scan the foler your in simply change the ./modernisation-platform to a ./ instead
+- the first element is the --ignorefile this is the location of the local ignore file of that repo it is stored in the root of the repo folder
+- the second element is the folder you want to scan if you want to scan the folder you’re in simply change the ./modernisation-platform to a ./ instead
 
-You can also use the > to output to a file for easyier reading.
+You can also use the > to output to a file for easier reading.
