@@ -85,11 +85,6 @@ provider "aws" {
   alias  = "modernisation-platform-us-west-2"
 }
 
-provider "aws" {
-  alias  = "modernisation-platform-eu-west-1"
-  region = "eu-west-1"
-}
-
 # AWS provider for core-logging
 provider "aws" {
   alias  = "core-logging"
