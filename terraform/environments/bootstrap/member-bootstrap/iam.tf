@@ -544,13 +544,13 @@ data "aws_iam_policy_document" "policy" {
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
-   statement {
+  statement {
     effect = "Allow"
     actions = [
       "kms:CreateGrant"
     ]
 
- resources = ["arn:aws:kms:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:key/*"]
+    resources = ["arn:aws:kms:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:key/*"]
     condition {
       test     = "Bool"
       variable = "kms:GrantIsForAWSResource"
