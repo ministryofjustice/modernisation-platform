@@ -86,6 +86,16 @@ jobs:
           # Define the branch and repository
           branch=$(git branch --show-current)
           repositoryNameWithOwner="${{ github.repository_owner }}/modernisation-platform"  # Combine owner and repository name
+
+          # Define the commit message as a key-value object (headline and body)
+          message_headline="Automated commit"
+          message_body="This commit was created via the GitHub GraphQL API."
+      
+          # Convert file content to Base64 encoding
+          filePath="README.md"  # The file you want to modify
+          fileContent="This is an automated update."
+          base64FileContent=$(echo -n "$fileContent" | base64)
+      
       
           # Define the commit message as a key-value object (headline and body)
           message_headline="Automated commit"
