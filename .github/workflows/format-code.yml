@@ -65,11 +65,19 @@
         - name: Create verified commit using GraphQL API
           if: env.changes == 'true'
           run: |
-            # Gather commit information
-            commit_message="Automated formatting fixes from GitHub Actions"
-            branch_name=$(git branch --show-current)
-            
-            # Create commit using GitHub GraphQL API
+            # Get list of file changes from the previous step
+            changed_files=$(git diff --staged --name-only)
+  
+            # Prepare the contents of the changes for the commit
+            files_for_commit=$(echo "$changed_files" | while read -r file; do
+              encoded_content=$(base64 "$file")
+              echo "{ \"path\": \"$file\", \"contents\": \"$encoded_content\" },"
+            done)
+  
+            # Remove trailing comma
+            files_for_commit=$(echo "$files_for_commit" | sed '$ s/,$//')
+  
+            # GraphQL mutation to create a commit
             curl -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}" \
                  -X POST \
                  -d '{
@@ -81,13 +89,10 @@
                          "branchName": "'"$branch_name"'"
                        },
                        "message": {
-                         "headline": "'"$commit_message"'"
+                         "headline": "Automated formatting fixes from GitHub Actions"
                        },
                        "fileChanges": {
-                         "additions": [{
-                           "path": "workflow-output.txt",
-                           "contents": "'"$(base64 workflow-output.txt)"'"
-                         }]
+                         "additions": ['"$files_for_commit"']
                        },
                        "expectedHeadOid": "$(git rev-parse HEAD)"
                      }
