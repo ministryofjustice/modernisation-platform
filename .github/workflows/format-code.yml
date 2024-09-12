@@ -105,7 +105,7 @@ jobs:
           expectedHeadOid=$(curl -s -X POST \
             -H "Authorization: bearer $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
-            -d '{"query": "query { repository(name: \"house-of-fun\", owner: \"${{ github.repository_owner }}\") { ref(qualifiedName: \"refs/heads/'$branch'\") { target { ... on Commit { oid } } } } }" }' \
+            -d '{"query": "query { repository(name: \"modernisation-platform\", owner: \"${{ github.repository_owner }}\") { ref(qualifiedName: \"refs/heads/'$branch'\") { target { ... on Commit { oid } } } } }" }' \
             https://api.github.com/graphql | jq -r '.data.repository.ref.target.oid')
       
           # Create the payload for the mutation
