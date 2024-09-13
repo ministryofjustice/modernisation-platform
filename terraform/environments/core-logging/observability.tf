@@ -52,7 +52,7 @@ data "aws_iam_policy_document" "grafana_athena_policy" {
 # Attach AmazonGrafanaAthenaAccess policy
 resource "aws_iam_role_policy_attachment" "grafana_athena_attachment" {
   role       = aws_iam_role.grafana_athena.id
-  policy_arn = "arn:aws:iam::aws:policy/AmazonGrafanaAthenaAccess"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonGrafanaAthenaAccess"
 }
 
 # S3 bucket for Grafana Athena query results
