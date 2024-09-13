@@ -81,6 +81,20 @@ resource "aws_kms_alias" "environment_management_multi_region" {
   target_key_id = aws_kms_key.environment_management_multi_region.id
 }
 
+resource "aws_kms_replica_key" "environment_management_multi_region_replica" {
+  description             = "AWS Secretsmanager CMK replica key"
+  deletion_window_in_days = 30
+  primary_key_arn         = aws_kms_key.environment_management_multi_region.arn
+  provider                = aws.modernisation-platform-eu-west-1
+}
+
+resource "aws_kms_alias" "environment_management_multi_region_replica" {
+  name          = "alias/environment-management-multi-region-replica"
+  target_key_id = aws_kms_replica_key.environment_management_multi_region_replica.id
+}
+
+
+
 data "aws_iam_policy_document" "kms_environment_management" {
 
   # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"

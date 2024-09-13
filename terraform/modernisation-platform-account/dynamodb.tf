@@ -32,6 +32,18 @@ resource "aws_kms_alias" "dynamo_encryption_multi_region" {
   target_key_id = aws_kms_key.dynamo_encryption_multi_region.id
 }
 
+resource "aws_kms_replica_key" "dynamo_encryption_multi_region_replica" {
+  description             = "AWS Secretsmanager CMK replica key"
+  deletion_window_in_days = 30
+  primary_key_arn         = aws_kms_key.dynamo_encryption_multi_region.arn
+  provider                = aws.modernisation-platform-eu-west-1
+}
+
+resource "aws_kms_alias" "dynamo_encryption_multi_region_replica" {
+  name          = "alias/dynamo-encryption-multi-region-replica"
+  target_key_id = aws_kms_replica_key.dynamo_encryption_multi_region_replica.id
+}
+
 data "aws_iam_policy_document" "dynamo_encryption" {
 
   # checkov:skip=CKV_AWS_109: "Key policy requires asterisk resource"
