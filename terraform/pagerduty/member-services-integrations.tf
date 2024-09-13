@@ -1907,6 +1907,7 @@ locals {
     oasys-national-reporting-test           = { slack_channel_id = "C07HZ24GMGV" } # oasys_national_reporting_alarms_non_prod
     oasys-national-reporting-preproduction  = { slack_channel_id = "C07HZ24GMGV" } # oasys_national_reporting_alarms_non_prod
     oasys-national-reporting-production     = { slack_channel_id = "C07J1U3SN66" } # oasys_national_reporting_alarms_prod
+    sprinkler-development                   = { slack_channel_id = "C07J1U3SN66" } # sprinkler-development
     planetfm-preproduction                  = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
     planetfm-production                     = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
   }
@@ -2053,7 +2054,6 @@ resource "pagerduty_service" "sprinkler-development" {
 }
 
 resource "pagerduty_event_orchestration" "monitor-sprinkler-integration" {
-  depends_on = [ pagerduty_team.modernisation_platform ]
   name = "Monitor sprinkler for orchestration"
   description = "Integrates sprinkler-development account with PagerDuty"
   team = pagerduty_team.modernisation_platform.id
