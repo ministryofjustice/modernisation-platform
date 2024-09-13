@@ -50,6 +50,14 @@
             YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (.github/*)
             MARKDOWN_MARKDOWNLINT_FILTER_REGEX_EXCLUDE: (terraform/modules/.*/.*.md)
             REPORT_OUTPUT_FOLDER: none
+        - name: Get repository ID
+          id: get_repo_id
+          run: |
+            repo_id=$(curl -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}" \
+                  -X POST \
+                  -d '{ "query": "query { repository(owner: \"ministryofjustice\", name: \"modernisation-platform\") { id } }" }' \
+                  https://api.github.com/graphql | jq -r '.data.repository.id')
+            echo "REPO_ID=$repo_id" >> $GITHUB_ENV
   
         - name: Check for changes
           run: |
@@ -106,20 +114,21 @@
             # Store current branch name and commit SHA
             branch_name=$(git branch --show-current)
             commit_oid=$(git rev-parse HEAD)
-
+            
             # GraphQL mutation to push the commit by creating a ref
             curl -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}" \
                 -X POST \
-                -d '{
-                  "query": "mutation($input: CreateRefInput!) { createRef(input: $input) { ref { name } } }",
-                  "variables": {
-                    "input": {
-                      "repositoryNameWithOwner": "ministryofjustice/modernisation-platform",
-                      "refName": "refs/heads/'"$branch_name"'",
-                      "oid": "'"$commit_oid"'"
+                -d "{
+                  \"query\": \"mutation(\$input: CreateRefInput!) { createRef(input: \$input) { ref { name } } }\",
+                  \"variables\": {
+                    \"input\": {
+                      \"repositoryId\": \"${{ env.REPO_ID }}\",
+                      \"name\": \"refs/heads/$branch_name\",
+                      \"oid\": \"$commit_oid\"
                     }
                   }
-                }' https://api.github.com/graphql
+                }" https://api.github.com/graphql
+
 
   
         - name: Create pull request
