@@ -100,22 +100,27 @@
                      }
                    }" https://api.github.com/graphql
     
-  
         - name: Push changes using GraphQL API
           if: env.changes == 'true'
           run: |
+            # Store current branch name and commit SHA
+            branch_name=$(git branch --show-current)
+            commit_oid=$(git rev-parse HEAD)
+
+            # GraphQL mutation to push the commit by creating a ref
             curl -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}" \
-                 -X POST \
-                 -d '{
-                   "query": "mutation($input: CreateRefInput!) { createRef(input: $input) { ref { name } } }",
-                   "variables": {
-                     "input": {
-                       "repositoryNameWithOwner": "${{ github.repository }}",
-                       "refName": "refs/heads/'"$branch_name"'",
-                       "oid": "$(git rev-parse HEAD)"
-                     }
-                   }'
-                 https://api.github.com/graphql
+                -X POST \
+                -d '{
+                  "query": "mutation($input: CreateRefInput!) { createRef(input: $input) { ref { name } } }",
+                  "variables": {
+                    "input": {
+                      "repositoryNameWithOwner": "ministryofjustice/modernisation-platform",
+                      "refName": "refs/heads/'"$branch_name"'",
+                      "oid": "'"$commit_oid"'"
+                    }
+                  }
+                }' https://api.github.com/graphql
+
   
         - name: Create pull request
           if: env.changes == 'true'
