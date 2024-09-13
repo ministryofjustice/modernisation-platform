@@ -129,6 +129,18 @@ This is a legacy role and will not be generally available.
 
 - Full administrator access
 
+### s3-upload
+
+Created for users who need to manage S3 buckets
+
+- Log into the Console
+- If the S3 bucket is in the same AWS account, you can view and manage the bucket directly through the S3 console interface.
+- If the S3 bucket is located in a different AWS account, you will not see it directly in your console. Instead, use the following URL format to access the bucket:
+
+  [Access the S3 bucket in a different account](https://eu-west-2.console.aws.amazon.com/s3/buckets/<bucketname>?region=eu-west-2&bucketType=general&tab=objects)
+  
+  Replace `<bucketname>` with the actual name of the bucket you wish to access.
+
 ## Assigning Roles to Environments
 
 Roles are assigned to environments through modifying the relevant `environments/*.json` file for an application.
