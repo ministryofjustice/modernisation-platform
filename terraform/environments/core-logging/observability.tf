@@ -6,9 +6,58 @@ module "observability_platform_tenant" {
 
   tags = local.tags
 }
+# Grafana-Athena Role
+resource "aws_iam_role" "grafana_athena" {
+  name               = "grafana-athena"
+  assume_role_policy = data.aws_iam_policy_document.grafana_athena_assume_role_policy.json
+}
 
+# Assume Role Policy for Grafana-Athena
+data "aws_iam_policy_document" "grafana_athena_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["athena.amazonaws.com"]
+    }
+  }
+}
+
+# Grafana-Athena S3 Access Policy (Note: remove aws_iam_role reference)
+data "aws_iam_policy_document" "grafana_athena_policy" {
+  statement {
+    sid    = "s3Access"
+    effect = "Allow"
+
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:ListBucket"
+    ]
+
+    resources = [
+      module.s3-grafana-athena-query-results.bucket.arn,
+      "${module.s3-grafana-athena-query-results.bucket.arn}/*"
+    ]
+
+    principals {
+      type        = "AWS"
+      # Use a placeholder ARN for the role to avoid circular dependency
+      identifiers = [data.aws_caller_identity.current.account_id]
+    }
+  }
+}
+
+# Attach AmazonGrafanaAthenaAccess policy
+resource "aws_iam_role_policy_attachment" "grafana_athena_attachment" {
+  role       = aws_iam_role.grafana_athena.id
+  policy_arn = "arn:aws:iam::aws:policy/AmazonGrafanaAthenaAccess"
+}
+
+# S3 bucket for Grafana Athena query results
 module "s3-grafana-athena-query-results" {
-  source              = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=4e17731f72ef24b804207f55b182f49057e73ec9" # v8.1.0
+  source              = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=4e17731f72ef24b804207f55b182f49057e73ec9"
   bucket_prefix       = "grafana-athena-query-results-"
   versioning_enabled  = true
   ownership_controls  = "BucketOwnerEnforced"
@@ -58,7 +107,5 @@ module "s3-grafana-athena-query-results" {
     }
   ]
 
-  tags = merge(local.tags,
-   { Name = lower(format("s3-bucket-%s-%s-grafana-athena", local.application_name, local.environment))  }
-  )
+  tags = local.tags
 }
