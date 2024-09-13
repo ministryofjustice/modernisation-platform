@@ -89,6 +89,7 @@ resource "aws_kms_replica_key" "environment_management_multi_region_replica" {
 }
 
 resource "aws_kms_alias" "environment_management_multi_region_replica" {
+  provider      = aws.modernisation-platform-eu-west-1
   name          = "alias/environment-management-multi-region-replica"
   target_key_id = aws_kms_replica_key.environment_management_multi_region_replica.id
 }
