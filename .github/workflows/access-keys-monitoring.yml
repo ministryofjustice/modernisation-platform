@@ -1,8 +1,8 @@
-name: Superadmin Access Key Deletion
+name: Access Key Monitoring and Cleanup
 
 on:
   schedule:
-    - cron: '30 7 1-15/14 * *'  # trigger every 15 days at 07:30am
+    - cron: '30 7 * * MON'  # trigger every Monday at 07:30am
   workflow_dispatch:
 
 env:
@@ -43,15 +43,22 @@ jobs:
       - name: Install the client
         run: pip install notifications-python-client
 
+      - name: Remove Collaborator Access Keys
+        run: bash ./scripts/iam-monitoring/access-key-monitoring/delete_access_keys.sh
+        env:
+          threshold: 90
+          group_name: "collaborators"
+
       - name: Remove Superadmin Access Keys
-        run: bash ./scripts/iam-monitoring/superadmin-access-key-monitoring/delete_superadmin_access_keys.sh
+        run: bash ./scripts/iam-monitoring/access-key-monitoring/delete_access_keys.sh
         env:
           threshold: 30
+          group_name: "superadmins"
 
       - name: Send Notification
         run: |
-          if [ -f unique_inactive_users.list ]; then
-            python ./scripts/iam-monitoring/superadmin-access-key-monitoring/notify_access_key_deletion.py unique_inactive_users.list
+          if [ -s superadmins.list ]; then
+            python ./scripts/iam-monitoring/access-key-monitoring/notify_access_key_deletion.py superadmins.list
           else
             echo "No superadmin access keys found inactive for 30 days or more."
           fi
