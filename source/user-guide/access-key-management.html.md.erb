@@ -1,0 +1,35 @@
+---
+owner_slack: "#modernisation-platform"
+title: Access Key Management
+last_reviewed_on: 2024-09-13
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+This section describes how access keys for **superadmins** and **collaborators** are managed:
+
+### Superadmin Users
+
+If a superadmin user's access keys have never been used, or if they have not been used within the last 30 days, the access keys will be automatically deleted.
+
+### Collaborator Users
+
+Similarly, if a collaborator's access keys have never been used, or if they have not been used within the last 90 days, the collaborator's access keys will be deleted.
+
+### Automated Process
+
+An automated process runs every Monday at 7:30 AM to manage and delete unused access keys according to the criteria outlined for superadmin and collaborator users.
+
+### Regaining Access After Key Deletion
+
+If your access keys have been deleted and you need to regain access, you will need to create new access keys. Follow the standard process to generate and configure new keys.
