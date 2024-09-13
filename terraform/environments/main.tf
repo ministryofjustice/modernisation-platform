@@ -24,12 +24,17 @@ provider "aws" {
   }
 }
 
+# AWS provider (Modernisation Platform): the Modernisation Platform account in eu-west-1 (replica region)
+provider "aws" {
+  alias  = "modernisation-platform-eu-west-1"
+  region = "eu-west-1"
+
+  assume_role {
+    role_arn = "arn:aws:iam::${local.modernisation_platform_account.id}:role/OrganizationAccountAccessRole"
+  }
+}
+
 provider "github" {
   owner = "ministryofjustice"
   token = var.github_token
-}
-
-provider "aws" {
-  alias  = "modernisation-platform-eu-west-1"  # Alias for the provider
-  region = "eu-west-1"
 }
