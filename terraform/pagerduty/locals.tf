@@ -42,6 +42,11 @@ locals {
       email = "modernisation-platform${local.digital_email_suffix}"
       role  = "user"
     },
+    stephen_linden = {
+      name  = "Steve Linden"
+      email = "stephen.linden${local.digital_email_suffix}"
+      role  = "user"
+    },
   }
 
   slack_workspace_id = "T02DYEB3A"
