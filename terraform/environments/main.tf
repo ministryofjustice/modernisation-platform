@@ -28,3 +28,8 @@ provider "github" {
   owner = "ministryofjustice"
   token = var.github_token
 }
+
+provider "aws" {
+  alias  = "modernisation-platform-eu-west-1"  # Alias for the provider
+  region = "eu-west-1"
+}
