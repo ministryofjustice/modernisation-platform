@@ -181,6 +181,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "states:ListStateMachineVersions",
       "events:ListTargetsByRule",
       "states:ListTagsForResource",
+      "states:ValidateStateMachineDefinition",
       "iam:CreateRole",
       "iam:CreatePolicy",
       "iam:DeleteRole",
