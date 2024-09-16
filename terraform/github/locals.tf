@@ -10,11 +10,10 @@ locals {
   modernisation_platform_account = local.environment_management.modernisation_platform_account_id
 
   # GitHub usernames for the Modernisation Platform team maintainers
-  # NB: Terraform shows a perputal difference in roles if someone is an organisation owner
+  # NB: Terraform shows a perpetual difference in roles if someone is an organisation owner
   # and will attempt to change them from `maintainer` to `member`, so owners should go in here.
   maintainers = [
     "ewastempel",
-    "SteveMarshall",
     "davidkelliott",
     "connormaglynn"
   ]
@@ -30,7 +29,7 @@ locals {
   # GitHub usernames for team members who don't need full AWS access
   general_members = [
     "kcbotsh",
-    "SteveMarshall",
+    "seanprivett",
     "SimonPPledger",
     "imkatiewatson"
   ]
