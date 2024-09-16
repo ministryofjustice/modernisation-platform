@@ -247,7 +247,12 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "glue:DeleteTable",
       "glue:DeleteTrigger",
       "glue:GetConnection",
-      "iam:TagRole"
+      "iam:TagRole",
+      "scheduler:CreateSchedule",
+      "scheduler:DeleteSchedule",
+      "scheduler:UpdateSchedule",
+      "scheduler:TagSchedule",
+      "scheduler:UntagSchedule"
     ]
     resources = ["*"]
   }
