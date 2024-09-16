@@ -62,6 +62,9 @@ jobs:
 
 
       - name: Store commit data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Store the current commit OID and branch name
           commit_oid=$(git rev-parse HEAD)
