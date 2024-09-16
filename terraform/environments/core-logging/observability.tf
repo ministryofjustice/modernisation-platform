@@ -109,3 +109,19 @@ module "s3-grafana-athena-query-results" {
 
   tags = local.tags
 }
+
+resource "aws_athena_workgroup" "mod-platform-cur-reports" {
+  name = "mod-platform"
+
+  configuration {
+    enforce_workgroup_configuration    = true
+    publish_cloudwatch_metrics_enabled = true
+
+    result_configuration {
+      output_location = "s3://${module.s3-grafana-athena-query-results.bucket.id}/"
+      encryption_configuration {
+        encryption_option = "SSE_S3"
+      }
+    }
+  }
+}
