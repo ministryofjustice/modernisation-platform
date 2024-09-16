@@ -17,26 +17,15 @@ jobs:
   build:
     name: MegaLinter
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 #v4.1.1
         with:
+          token: '${{ secrets.GITHUB_TOKEN }}'
           fetch-depth: 0
 
-      - name: Run linter
-        id: ml
-        uses: oxsecurity/megalinter/flavors/terraform@v8.0.0
-        env:
-          APPLY_FIXES: all
-          APPLY_FIXES_EVENT: all
-          APPLY_FIXES_MODE: pull_request
-          DISABLE_ERRORS: true
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-          VALIDATE_ALL_CODEBASE: true
-
+      - name: Prepare Git options
+        run: bash ./scripts/git-setup.sh
       - name: Check for changes
         id: check_changes
         run: |
