@@ -51,15 +51,22 @@
             MARKDOWN_MARKDOWNLINT_FILTER_REGEX_EXCLUDE: (terraform/modules/.*/.*.md)
             REPORT_OUTPUT_FOLDER: none
             
-        - name: Get repository ID (with fallback to deprecated id)
+        - name: Get repo ID
           id: get_repo_id
           run: |
             repo_id=$(curl -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}" \
                   -X POST \
-                  -d '{ "query": "query { repository(owner: \"ministryofjustice\", name: \"modernisation-platform\") { id nextGlobalId } }" }' \
-                  https://api.github.com/graphql | jq -r '.data.repository.id // .data.repository.nextGlobalId')
+                  -d '{ "query": "query { repository(owner: \"ministryofjustice\", name: \"modernisation-platform\") { id } }" }' \
+                  https://api.github.com/graphql | jq -r '.data.repository.id')
+
+            if [ -z "$repo_id" ]; then
+              echo "Failed to fetch repository ID"
+              exit 1
+            fi
+
             echo "REPO_ID=$repo_id" >> $GITHUB_ENV
             echo "Fetched repository ID: $repo_id"
+
 
 
 
@@ -137,6 +144,7 @@
                     }
                   }
                 }" https://api.github.com/graphql
+
 
   
         - name: Create pull request
