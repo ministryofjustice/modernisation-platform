@@ -42,7 +42,7 @@ data "aws_iam_policy_document" "grafana_athena_policy" {
     ]
 
     principals {
-      type        = "AWS"
+      type = "AWS"
       # Use a placeholder ARN for the role to avoid circular dependency
       identifiers = [data.aws_caller_identity.current.account_id]
     }
