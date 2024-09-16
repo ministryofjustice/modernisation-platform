@@ -13,9 +13,10 @@ locals {
   # NB: Terraform shows a perpetual difference in roles if someone is an organisation owner
   # and will attempt to change them from `maintainer` to `member`, so owners should go in here.
   maintainers = [
-    "ewastempel",
+    "connormaglynn",
     "davidkelliott",
-    "connormaglynn"
+    "ewastempel",
+    "seanprivett",
   ]
 
   # GitHub usernames for CI users
