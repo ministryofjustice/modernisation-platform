@@ -27,9 +27,6 @@ jobs:
       - name: Prepare Git options
         run: bash ./scripts/git-setup.sh
 
-      - name: Prepare Git options
-        run: bash ./scripts/git-setup.sh
-
       - name: Run linter
         id: ml
         # You can override MegaLinter flavor used to have faster performances
