@@ -111,7 +111,7 @@ module "s3-grafana-athena-query-results" {
 }
 
 resource "aws_athena_workgroup" "mod-platform-cur-reports" {
-  name = "mod-platform"
+  name = "mod-platform-cur-reports"
 
   configuration {
     enforce_workgroup_configuration    = true
