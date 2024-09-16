@@ -52,7 +52,6 @@ jobs:
           REPORT_OUTPUT_FOLDER: none
           
       - name: Check for changes
-        id: check_changes
         run: |
           git add .
           changes=$(git diff --staged --name-only)
@@ -62,6 +61,8 @@ jobs:
             echo "Changes detected."
             echo "changes=true" >> $GITHUB_ENV
             git diff --staged --name-only > changed_files.txt
+          fi
+
 
       - name: Commit changes using GitHub GraphQL API
         if: env.changes == 'true'
