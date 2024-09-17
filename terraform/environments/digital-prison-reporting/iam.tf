@@ -253,7 +253,11 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "scheduler:DeleteSchedule",
       "scheduler:UpdateSchedule",
       "scheduler:TagSchedule",
-      "scheduler:UntagSchedule"
+      "scheduler:UntagSchedule",
+      "scheduler:GetSchedule",
+      "scheduler:ListSchedules",
+      "scheduler:TagResource",
+      "scheduler:UntagResource"
     ]
     resources = ["*"]
   }
