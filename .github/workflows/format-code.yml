@@ -122,8 +122,9 @@ jobs:
       - name: Push changes using GraphQL
         if: env.changes == 'true'
         run: |
-          # Push the created commit
-          echo "Commit pushed successfully via GraphQL."
+          git config --global push.autoSetupRemote true
+          git push
+          echo "Commit pushed successfully."
 
       - name: Create pull request
         if: env.changes == 'true'
