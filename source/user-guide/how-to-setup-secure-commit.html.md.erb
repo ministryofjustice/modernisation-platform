@@ -1,0 +1,170 @@
+---
+owner_slack: "#modernisation-platform"
+title: How to setup secure commit
+last_reviewed_on: 2024-08-20
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+## Introduction
+
+On the Modernisation Platform we have moved to requiring a secure commit on pushing code to our repositories. To this end this guide has been created to show you how to setup your mac or windows laptop to work with secure commits.
+
+### How to create GPG key and import it into Github
+
+Note: Before generating a new GPG key, make sure you've verified your email address. If you haven't verified your email address, you won't be able to sign commits and tags with GPG. For more information, see "Verifying your email address."
+
+- Download and install the GPG command line tools for your operating system. We generally recommend installing the latest version for your operating system.
+
+- Open Terminal.
+
+- Generate a GPG key pair. Since there are multiple versions of GPG, you may need to consult the relevant man page to find the appropriate key generation command.
+
+If you are on version 2.1.17 or greater, paste the text below to generate a GPG key pair.
+
+
+```
+gpg --full-generate-key
+```
+
+If you are not on version 2.1.17 or greater, the gpg --full-generate-key command doesn't work. Paste the text below and skip to step 6.
+
+
+```
+gpg --default-new-key-algo rsa4096 --gen-key
+```
+
+- At the prompt, specify the kind of key you want, or press Enter to accept the default.
+
+- At the prompt, specify the key size you want, or press Enter to accept the default.
+
+- Enter the length of time the key should be valid. Press Enter to specify the default selection, indicating that the key doesn't expire. Unless you require an expiration date, we recommend accepting this default.
+
+- Verify that your selections are correct.
+
+- Enter your user ID information.
+
+Note: When asked to enter your email address, ensure that you enter the verified email address for your GitHub account. To keep your email address private, use your GitHub-provided no-reply email address. For more information, see "Verifying your email address" and "Setting your commit email address."
+
+- Type a secure passphrase.
+
+- Use the gpg --list-secret-keys --keyid-format=long command to list the long form of the GPG keys for which you have both a public and private key. A private key is required for signing commits or tags.
+
+
+```
+gpg --list-secret-keys --keyid-format=long
+```
+
+Note: Some GPG installations on Linux may require you to use gpg2 --list-keys --keyid-format LONG to view a list of your existing keys instead. In this case you will also need to configure Git to use gpg2 by running git config --global gpg.program gpg2.
+
+- From the list of GPG keys, copy the long form of the GPG key ID you'd like to use. In this example, the GPG key ID is 3AA5C34371567BD2:
+
+
+```
+$ gpg --list-secret-keys --keyid-format=long
+/Users/hubot/.gnupg/secring.gpg
+------------------------------------
+sec   4096R/3AA5C34371567BD2 2016-03-10 [expires: 2017-03-10]
+uid                          Hubot <hubot@example.com>
+ssb   4096R/4BB6D45482678BE3 2016-03-10
+```
+
+- Paste the text below, substituting in the GPG key ID you'd like to use. In this example, the GPG key ID is 3AA5C34371567BD2:
+
+
+```
+gpg --armor --export 3AA5C34371567BD2
+# Prints the GPG key ID, in ASCII armor format
+```
+
+- Copy your GPG key, beginning with -----BEGIN PGP PUBLIC KEY BLOCK----- and ending with -----END PGP PUBLIC KEY BLOCK-----.
+
+One you have the key you will need to add it to your github account to do this follow the bellow instructions
+
+- In the upper-right corner of any page on GitHub, click your profile photo, then click  Settings.
+- In the "Access" section of the sidebar, click  SSH and GPG keys.
+- Next to the "GPG keys" header, click New GPG key.
+- In the "Title" field, type a name for your GPG key.
+- In the "Key" field, paste the GPG key you copied when you generated your GPG key.
+- Click Add GPG key.
+- If prompted, authenticate to your GitHub account to confirm the action.
+
+
+### Telling git about the key
+
+If you have multiple GPG keys, you need to tell Git which one to use.
+
+Open Terminal.
+
+If you have previously configured Git to use a different key format when signing with --gpg-sign, unset this configuration so the default format of openpgp will be used.
+
+```
+git config --global --unset gpg.format
+```
+Use the 
+
+```
+gpg --list-secret-keys --keyid-format=long command to list the long form of the GPG keys for which you have both a public and private key. A private key is required for signing commits or tags.
+
+gpg --list-secret-keys --keyid-format=long
+```
+
+Note: Some GPG installations on Linux may require you to use gpg2 --list-keys --keyid-format LONG to view a list of your existing keys instead. In this case you will also need to configure Git to use gpg2 by running git config --global gpg.program gpg2.
+
+From the list of GPG keys, copy the long form of the GPG key ID you'd like to use. In this example, the GPG key ID is 3AA5C34371567BD2:
+
+```
+$ gpg --list-secret-keys --keyid-format=long
+/Users/hubot/.gnupg/secring.gpg
+------------------------------------
+sec   4096R/3AA5C34371567BD2 2016-03-10 [expires: 2017-03-10]
+uid                          Hubot <hubot@example.com>
+ssb   4096R/4BB6D45482678BE3 2016-03-10
+To set your primary GPG signing key in Git, paste the text below, substituting in the GPG primary key ID you'd like to use. In this example, the GPG key ID is 3AA5C34371567BD2:
+
+git config --global user.signingkey 3AA5C34371567BD2
+```
+Alternatively, you may want to use a subkey. In this example, the GPG subkey ID is 4BB6D45482678BE3:
+
+```
+git config --global user.signingkey 4BB6D45482678BE3
+```
+If you use multiple keys and subkeys, then you should append an exclamation mark ! to the key to tell git that this is your preferred key. Sometimes you may need to escape the exclamation mark with a back slash: \!.
+
+Optionally, to configure Git to sign all commits by default, enter the following command:
+
+```
+git config --global commit.gpgsign true
+```
+For more information, see "Signing commits."
+
+If you aren't using the GPG suite, run the following command in the zsh shell to add the GPG key to your .zshrc file, if it exists, or your .zprofile file:
+
+```
+$ if [ -r ~/.zshrc ]; then echo -e '\nexport GPG_TTY=$(tty)' >> ~/.zshrc; \
+  else echo -e '\nexport GPG_TTY=$(tty)' >> ~/.zprofile; fi
+```
+
+Alternatively, if you use the bash shell, run this command:
+
+```
+$ if [ -r ~/.bash_profile ]; then echo -e '\nexport GPG_TTY=$(tty)' >> ~/.bash_profile; \
+  else echo -e '\nexport GPG_TTY=$(tty)' >> ~/.profile; fi
+```
+Optionally, to prompt you to enter a PIN or passphrase when required, install pinentry-mac. For example, using Homebrew:
+
+```
+brew install pinentry-mac
+echo "pinentry-program $(which pinentry-mac)" >> ~/.gnupg/gpg-agent.conf
+killall gpg-agent
+```
