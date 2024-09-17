@@ -66,53 +66,53 @@ jobs:
             git diff --staged --name-only > changed_files.txt
           fi
 
-          - name: Store the current commit OID and branch name
-          env:
-            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          run: |
-            # Store the current commit OID and branch name
-            commit_oid=$(git rev-parse HEAD)
-            branch_name=$(git branch --show-current)
-        
-            # Fetch the repository ID using GitHub CLI
-            repo_id=$(gh api graphql -f query='
-            query {
-              repository(owner:"ministryofjustice", name:"modernisation-platform") {
-                id
+      - name: Store the current commit OID and branch name
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Store the current commit OID and branch name
+          commit_oid=$(git rev-parse HEAD)
+          branch_name=$(git branch --show-current)
+      
+          # Fetch the repository ID using GitHub CLI
+          repo_id=$(gh api graphql -f query='
+          query {
+            repository(owner:"ministryofjustice", name:"modernisation-platform") {
+              id
+            }
+          }' --jq '.data.repository.id')
+      
+          echo "Repository ID: $repo_id"
+      
+          # Create a list of changed files
+          files_for_commit=$(jq -n '[inputs | { "path": ., "contents": input | @base64 }]' < changed_files.txt)
+      
+          # Create the GraphQL mutation payload
+          mutation_payload=$(jq -n --arg branch_name "$branch_name" --arg commit_oid "$commit_oid" --arg repo_id "$repo_id" --arg commit_message "Automated code formatting fixes" --argjson files_for_commit "$files_for_commit" '{
+            query: "mutation($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { oid } } }",
+            variables: {
+              input: {
+                branch: {
+                  repositoryNameWithOwner: "ministryofjustice/modernisation-platform",
+                  branchName: $branch_name
+                },
+                message: {
+                  headline: $commit_message
+                },
+                fileChanges: {
+                  additions: $files_for_commit
+                },
+                expectedHeadOid: $commit_oid
               }
-            }' --jq '.data.repository.id')
-        
-            echo "Repository ID: $repo_id"
-        
-            # Create a list of changed files
-            files_for_commit=$(jq -n '[inputs | { "path": ., "contents": input | @base64 }]' < changed_files.txt)
-        
-            # Create the GraphQL mutation payload
-            mutation_payload=$(jq -n --arg branch_name "$branch_name" --arg commit_oid "$commit_oid" --arg repo_id "$repo_id" --arg commit_message "Automated code formatting fixes" --argjson files_for_commit "$files_for_commit" '{
-              query: "mutation($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { oid } } }",
-              variables: {
-                input: {
-                  branch: {
-                    repositoryNameWithOwner: "ministryofjustice/modernisation-platform",
-                    branchName: $branch_name
-                  },
-                  message: {
-                    headline: $commit_message
-                  },
-                  fileChanges: {
-                    additions: $files_for_commit
-                  },
-                  expectedHeadOid: $commit_oid
-                }
-              }
-            }')
-        
-            # Send the mutation request to GitHub's GraphQL API
-            curl -X POST -H "Authorization: bearer $GITHUB_TOKEN" \
-              -H "Content-Type: application/json" \
-              -d "$mutation_payload" https://api.github.com/graphql
-        
+            }
+          }')
+      
+          # Send the mutation request to GitHub's GraphQL API
+          curl -X POST -H "Authorization: bearer $GITHUB_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$mutation_payload" https://api.github.com/graphql
+      
 
       - name: Push changes using GraphQL
         if: env.changes == 'true'
