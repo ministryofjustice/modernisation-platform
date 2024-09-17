@@ -248,6 +248,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "glue:DeleteTrigger",
       "glue:GetConnection",
       "iam:TagRole",
+      "iam:UpdateAssumeRolePolicy",
       "scheduler:CreateSchedule",
       "scheduler:DeleteSchedule",
       "scheduler:UpdateSchedule",
