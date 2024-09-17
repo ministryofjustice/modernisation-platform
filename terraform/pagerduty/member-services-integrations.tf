@@ -70,9 +70,6 @@ resource "pagerduty_slack_connection" "laa_mlra_nonprod_connection" {
   channel_id        = "C022CSULB1V"
   notification_type = "responder"
   lifecycle {
-    ignore_changes = [
-      config,
-    ]
   }
   config {
     events = [
