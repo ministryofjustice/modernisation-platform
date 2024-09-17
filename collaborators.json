@@ -37,20 +37,6 @@
       ]
     },
     {
-      "username": "andy.land",
-      "github-username": "andylandroc",
-      "accounts": [
-        {
-          "account-name": "equip-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "jonny.davey",
       "github-username": "jonny190",
       "accounts": [
