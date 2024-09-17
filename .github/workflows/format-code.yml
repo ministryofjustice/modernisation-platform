@@ -27,6 +27,12 @@ jobs:
       - name: Prepare Git options
         run: bash ./scripts/git-setup.sh
 
+      - name: Create new branch
+        run: |
+          date=$(date +%Y_%m_%d)
+          branch_name="date_$date"
+          git checkout -b $branch_name
+
       - name: Run linter
         id: ml
         # You can override MegaLinter flavor used to have faster performances
