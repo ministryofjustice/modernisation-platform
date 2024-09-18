@@ -1,0 +1,64 @@
+---
+owner_slack: "#modernisation-platform"
+title: Core Shared Services Account Setup
+last_reviewed_on: 2024-07-29
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+## Overview
+
+The `Modernisation Platform` AWS account hosts resources used by other Modernisation Platform accounts.
+
+| Resource        | Description                                                                                                   |
+|-----------------|---------------------------------------------------------------------------------------------------------------|
+| S3              | Stores Terraform state files for Modernisation Platform accounts, account-local AWS Config info, cost reports |
+| DynamoDB        | Holds state locking table for Terraform                                                                       |
+| Secrets Manager | Stores values used by Modernisation Platform accounts                                                         |
+| IAM             | Contains accounts for external collaborators                                                                  |
+| KMS             | Encryption keys, some account local, but one used to secure PagerDuty secrets                                 |
+
+## Steps
+## 1. Account Creation 
+
+Configuration to create the `Modernisation Platform` account is stored in code in the [aws-root-account](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-accounts-platforms-and-architecture-modernisation-platform.tf) repository.
+
+To recreate the `Modernisation Platform` account, a person with appropriate access can run GitHub actions in [aws-root-account](https://github.com/ministryofjustice/aws-root-account/actions) repository.
+
+## 2. Deploy Modernisation Platform Resources
+
+Configuration of resources in the `Modernisation Platform` account is stored in code in [modernisation-platform](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modernisation-platform-account) repository.
+
+To recreate these resources you can run the [Terraform: modernisation-platform-account](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/modernisation-platform-account.yml) action in GitHub.
+
+Alternatively, this can be done as manual deployment: 
+- Navigate to the `modernisation-platfom` repository and access the `terraform/modernisation-platform-account` directory
+- Run `terraform plan` in the default workspace
+- Using admin credentials, execute `terraform apply`
+
+## 3. Verify Resources
+
+- Log into the AWS Console for the `Modernisation Platform` account.
+- Verify that resources have been correctly configured.
+- Confirm that Modernisation Platform member accounts can retrieve information such as AWS Secrets Manager secret values.
+
+## 4. Notify customers
+
+- Inform Modernisation Platform team of rebuild process
+- Inform customers that account has been recreated
+- Work with customers to import cached Terraform statefile objects into S3
+
+## References
+
+* [Accessing the AWS Console](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/accessing-the-aws-console.html)
+* [Disaster Recovery Process](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/dr-process.html)
