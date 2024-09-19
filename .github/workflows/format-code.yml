@@ -127,8 +127,19 @@ jobs:
         if: env.changes == 'true'
         run: |
           git config --global push.autoSetupRemote true
-          git pull
-          git push
+
+          # Check if the branch exists on the remote
+          branch_exists=$(git ls-remote --heads origin $branch_name)
+          
+          if [ -n "$branch_exists" ]; then
+            echo "Branch exists on the remote. Pulling the latest changes..."
+            git pull origin $branch_name
+          else
+            echo "Branch does not exist on the remote. Proceeding with the push..."
+          fi
+    
+          # Push the changes
+          git push origin $branch_name
           echo "Commit pushed successfully."
 
       - name: Create pull request
