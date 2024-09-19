@@ -68,13 +68,12 @@ jobs:
 
       - name: Store the current commit OID and branch name
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Store the current commit OID and branch name
           commit_oid=$(git rev-parse HEAD)
           branch_name=$(git branch --show-current)
-      
+
           # Fetch the repository ID using GitHub CLI
           repo_id=$(gh api graphql -f query='
           query {
@@ -82,12 +81,22 @@ jobs:
               id
             }
           }' --jq '.data.repository.id')
-      
+
           echo "Repository ID: $repo_id"
-      
-          # Create a list of changed files
-          files_for_commit=$(jq -n '[inputs | { "path": ., "contents": input | @base64 }]' < changed_files.txt)
-      
+
+          # Ensure that changed_files.txt is not empty
+          if [ ! -s changed_files.txt ]; then
+            echo "No files to commit."
+            exit 0
+          fi
+
+          # Prepare the list of changed files for commit
+          files_for_commit=$(jq -Rn '
+            [inputs | { "path": ., "contents": (inputs | @base64) }] 
+          ' < changed_files.txt)
+
+          echo "Files for commit: $files_for_commit"
+
           # Create the GraphQL mutation payload
           mutation_payload=$(jq -n --arg branch_name "$branch_name" --arg commit_oid "$commit_oid" --arg repo_id "$repo_id" --arg commit_message "Automated code formatting fixes" --argjson files_for_commit "$files_for_commit" '{
             query: "mutation($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { oid } } }",
@@ -107,12 +116,12 @@ jobs:
               }
             }
           }')
-      
+
           # Send the mutation request to GitHub's GraphQL API
           curl -X POST -H "Authorization: bearer $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
             -d "$mutation_payload" https://api.github.com/graphql
-      
+
 
       - name: Push changes using GraphQL
         if: env.changes == 'true'
