@@ -2053,7 +2053,6 @@ resource "pagerduty_service" "sprinkler-development" {
 }
 
 resource "pagerduty_event_orchestration" "monitor-sprinkler-integration" {
-  depends_on  = [pagerduty_team.modernisation_platform]
   name        = "Monitor sprinkler for orchestration"
   description = "Integrates sprinkler-development account with PagerDuty"
   team        = pagerduty_team.modernisation_platform.id
