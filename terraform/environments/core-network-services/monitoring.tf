@@ -212,7 +212,7 @@ resource "aws_cloudwatch_metric_alarm" "nat_packets_drop_count" {
   alarm_name          = "nat_packets_drop_count_${each.key}"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 5
-  threshold           = "100" # Adjust this threshold as needed
+  threshold           = 100 # Adjust this threshold as needed
   alarm_description   = "NAT Gateway ${each.value.id} in ${each.value.env} environment is dropping packets. This might indicate an issue with the NAT Gateway."
 
   metric_query {
