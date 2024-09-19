@@ -186,3 +186,86 @@ module "pagerduty_networking_general" {
   sns_topics                = [aws_sns_topic.networking_general.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["networking_cloudwatch"]
 }
+
+# Create map of NAT gateway IDs
+locals {
+  nat_gateway_ids = {
+    live     = data.aws_nat_gateways.live.ids
+    non_live = data.aws_nat_gateways.non_live.ids
+  }
+
+  # Flatten the map for easier iteration
+  all_nat_gateways = flatten([
+    for env, ids in local.nat_gateway_ids : [
+      for id in ids : {
+        env = env
+        id  = id
+      }
+    ]
+  ])
+}
+
+# Create CloudWatch alarms for each NAT gateway's packet drop count
+resource "aws_cloudwatch_metric_alarm" "nat_packets_drop_count" {
+  for_each = { for nat in local.all_nat_gateways : "${nat.env}_${nat.id}" => nat }
+
+  alarm_name          = "nat_packets_drop_count_${each.key}"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 5
+  threshold           = 100 # Adjust this threshold as needed
+  alarm_description   = "NAT Gateway ${each.value.id} in ${each.value.env} environment is dropping packets. This might indicate an issue with the NAT Gateway."
+
+  metric_query {
+    id          = "e1"
+    expression  = "m1"
+    label       = "Dropped Packets"
+    return_data = "true"
+  }
+
+  metric_query {
+    id = "m1"
+    metric {
+      metric_name = "PacketsDropCount"
+      namespace   = "AWS/NATGateway"
+      period      = 60
+      stat        = "Sum"
+      dimensions = {
+        NatGatewayId = each.value.id
+      }
+    }
+  }
+
+  alarm_actions = [data.aws_sns_topic.security_hub_arn.arn]
+  tags          = local.tags
+}
+
+# CloudTrail log metric filter for NAT Gateway port allocation errors
+resource "aws_cloudwatch_log_metric_filter" "NATGatewayErrorPortAllocation" {
+  name           = "nat_gateway_error_port_allocation_filter"
+  pattern        = "{ $.eventSource = \"ec2.amazonaws.com\" && $.eventName = \"CreateNatGateway\" && $.errorCode = \"*\" && $.errorMessage = \"*Port Allocation*\" }"
+  log_group_name = "cloudtrail"
+
+  metric_transformation {
+    name      = "ErrorPortAllocation"
+    namespace = "NAT/Gateway"
+    value     = "1"
+  }
+}
+
+# CloudWatch alarm for NAT Gateway port allocation errors
+resource "aws_cloudwatch_metric_alarm" "ErrorPortAllocation" {
+  alarm_name        = "nat_gateway_error_port_allocation"
+  alarm_description = "This alarm detects when the NAT Gateway is unable to allocate ports to new connections."
+  alarm_actions     = [data.aws_sns_topic.security_hub_arn.arn]
+
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "ErrorPortAllocation"
+  namespace           = "NAT/Gateway"
+  period              = "300"
+  statistic           = "Sum"
+  threshold           = "0"
+  treat_missing_data  = "notBreaching"
+
+  tags = local.tags
+}
