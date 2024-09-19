@@ -2052,7 +2052,7 @@ resource "pagerduty_service" "sprinkler-development" {
   alert_creation          = "create_alerts_and_incidents"
 }
 
-resource "pagerduty_event_orchestration" "monitor-sprinkler-integration" {
+resource ""pagerduty_event_orchestration" "monitor-sprinkler-integration""" {
   name        = "Monitor sprinkler for orchestration"
   description = "Integrates sprinkler-development account with PagerDuty"
   team        = pagerduty_team.modernisation_platform.id
