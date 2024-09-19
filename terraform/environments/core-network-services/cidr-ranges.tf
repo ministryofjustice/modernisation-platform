@@ -93,6 +93,8 @@ locals {
     cica-aws-uat-b      = "10.12.110.0/24"
     cica-aws-uat-data-a = "10.12.20.0/24"
     cica-aws-uat-data-b = "10.12.120.0/24"
+    cica-onprem-uat     = "192.168.4.0/24"
+    cica-onprem-prod    = "10.2.30.0/24"
 
 
 
