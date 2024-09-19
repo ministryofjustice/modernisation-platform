@@ -1,3 +1,4 @@
+
 name: 'Format Code: ensure code formatting guidelines are met'
 
 on:
@@ -32,7 +33,6 @@ jobs:
           date=$(date +%Y_%m_%d)
           branch_name="date_$date"
           git checkout -b $branch_name
-
       - name: Run linter
         id: ml
         # You can override MegaLinter flavor used to have faster performances
@@ -65,7 +65,6 @@ jobs:
             echo "changes=true" >> $GITHUB_ENV
             git diff --staged --name-only > changed_files.txt
           fi
-
       - name: Store the current commit OID and branch name
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -73,7 +72,6 @@ jobs:
           # Store the current commit OID and branch name
           commit_oid=$(git rev-parse HEAD)
           branch_name=$(git branch --show-current)
-
           # Fetch the repository ID using GitHub CLI
           repo_id=$(gh api graphql -f query='
           query {
@@ -81,22 +79,17 @@ jobs:
               id
             }
           }' --jq '.data.repository.id')
-
           echo "Repository ID: $repo_id"
-
           # Ensure that changed_files.txt is not empty
           if [ ! -s changed_files.txt ]; then
             echo "No files to commit."
             exit 0
           fi
-
           # Prepare the list of changed files for commit
           files_for_commit=$(jq -Rn '
             [inputs | { "path": ., "contents": (inputs | @base64) }] 
           ' < changed_files.txt)
-
           echo "Files for commit: $files_for_commit"
-
           # Create the GraphQL mutation payload
           mutation_payload=$(jq -n --arg branch_name "$branch_name" --arg commit_oid "$commit_oid" --arg repo_id "$repo_id" --arg commit_message "Automated code formatting fixes" --argjson files_for_commit "$files_for_commit" '{
             query: "mutation($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { oid } } }",
@@ -116,41 +109,21 @@ jobs:
               }
             }
           }')
-
           # Send the mutation request to GitHub's GraphQL API
           curl -X POST -H "Authorization: bearer $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
             -d "$mutation_payload" https://api.github.com/graphql
-
-
       - name: Push changes using GraphQL
         if: env.changes == 'true'
         run: |
-          # Configure git
           git config --global push.autoSetupRemote true
-
-          # Check if the branch exists on the remote
-          branch_exists=$(git ls-remote --heads origin $branch_name)
-
-          if [ -n "$branch_exists" ]; then
-            echo "Branch exists on the remote. Pulling the latest changes..."
-            # Pull the latest changes from the remote branch
-            git pull origin $branch_name --rebase
-          else
-            echo "Branch does not exist on the remote. Proceeding with the push..."
-          fi
-
-          # Push the changes
-          git push origin $branch_name
+          git push
           echo "Commit pushed successfully."
-
-
       - name: Create pull request
         if: env.changes == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          git diff
           pr_title="GitHub Actions Code Formatter workflow"
           pr_body="This pull request includes updates from the GitHub Actions Code Formatter workflow. Please review the changes and merge if everything looks good."
           branch_name=$(git branch --show-current)
