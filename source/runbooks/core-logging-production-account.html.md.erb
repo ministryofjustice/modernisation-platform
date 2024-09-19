@@ -22,12 +22,11 @@ The core-logging AWS account is responsible for managing all core logging resour
 
 | Resource | Description |
 |----------------- |------------------------------------------------
-| S3 | Stores logs and provides scalable, secure storage for log data
-| KMS | Manages encryption keys used to securely encrypt the contents of S3 buckets and other resources.
-| PagerDuty | Hosts resources used by PagerDuty for alerting and incident management
+| S3 | Stores logs such as cloudtrail and core logging VPC flow logs
+| KMS | Manages encryption keys used to securely encrypt the contents of S3 buckets
+| PagerDuty | Hosts resources used by PagerDuty
 | VPC | Provides networking resources
-| Athena| Provides an interactive query service to analyze log data stored in S3 using standard SQL queries
-| Firehose| 	Manages data streams and processes that collect, transform, and load log data into storage destinations
+| Athena| Service to analyze log data stored in S3
 
 ## Steps
 ## 1. Account Creation 
