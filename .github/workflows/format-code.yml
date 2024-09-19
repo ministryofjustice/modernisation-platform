@@ -135,6 +135,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          git diff
           pr_title="GitHub Actions Code Formatter workflow"
           pr_body="This pull request includes updates from the GitHub Actions Code Formatter workflow. Please review the changes and merge if everything looks good."
           branch_name=$(git branch --show-current)
