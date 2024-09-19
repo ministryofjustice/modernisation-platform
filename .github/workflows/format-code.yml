@@ -56,8 +56,14 @@ jobs:
           
       - name: Check for changes
         run: |
+          # Show the status and diff before attempting to pull/push
+          echo "===== Git Status ====="
+          git status
+      
+          echo "===== Git Diff ====="
+          git diff
+          
           git add .
-          echo git diff
           changes=$(git diff --staged --name-only)
           if [ -z "$changes" ]; then
             echo "No changes detected."
