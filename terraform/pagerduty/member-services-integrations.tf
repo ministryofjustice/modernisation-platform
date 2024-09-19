@@ -2091,7 +2091,7 @@ resource "pagerduty_slack_connection" "sprinkler_connection" {
 }
 
 
-# Slack channel: #delius-aws-oracle-dev-alerts
+# Slack channel for non-production Oracle alerts: #delius-aws-oracle-dev-alerts
 
 resource "pagerduty_service" "delius_oracle_nonprod" {
   name                    = "Delius Oracle Non Prod"
