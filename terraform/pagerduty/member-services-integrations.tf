@@ -2069,22 +2069,22 @@ resource "pagerduty_slack_connection" "sprinkler_connection" {
   }
   config {
     events = [
-    "incident.triggered",
-    "incident.acknowledged",
-    "incident.escalated",
-    "incident.resolved",
-    "incident.reassigned",
-    "incident.annotated",
-    "incident.unacknowledged",
-    "incident.delegated",
-    "incident.priority_updated",
-    "incident.responder.added",
-    "incident.responder.replied",
-    "incident.action_invocation.created",
-    "incident.action_invocation.terminated",
-    "incident.action_invocation.updated",
-    "incident.status_update_published",
-    "incident.reopened"
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
     ]
     priorities = ["*"]
   }
