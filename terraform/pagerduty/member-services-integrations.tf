@@ -2063,7 +2063,7 @@ resource "pagerduty_slack_connection" "sprinkler_connection" {
   source_id         = pagerduty_service.sprinkler-development.id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
-  channel_id        = "C04QGQML68P"
+  channel_id        = "C02PMCG8M1R"
   notification_type = "responder"
   lifecycle {
   }
