@@ -126,21 +126,24 @@ jobs:
       - name: Push changes using GraphQL
         if: env.changes == 'true'
         run: |
+          # Configure git
           git config --global push.autoSetupRemote true
 
           # Check if the branch exists on the remote
           branch_exists=$(git ls-remote --heads origin $branch_name)
-          
+
           if [ -n "$branch_exists" ]; then
             echo "Branch exists on the remote. Pulling the latest changes..."
-            git pull origin $branch_name
+            # Pull the latest changes from the remote branch
+            git pull origin $branch_name --rebase
           else
             echo "Branch does not exist on the remote. Proceeding with the push..."
           fi
-    
+
           # Push the changes
           git push origin $branch_name
           echo "Commit pushed successfully."
+
 
       - name: Create pull request
         if: env.changes == 'true'
