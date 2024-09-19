@@ -57,6 +57,7 @@ jobs:
       - name: Check for changes
         run: |
           git add .
+          git diff
           changes=$(git diff --staged --name-only)
           if [ -z "$changes" ]; then
             echo "No changes detected."
