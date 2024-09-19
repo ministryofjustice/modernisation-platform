@@ -37,7 +37,7 @@ This workflow should detect that the account no longer exists and propose to rec
 
 ## 2. Deploy Core Logging Production Resources
 
-This can be achieved by triggering core-shared-services deployment workflow run, which can be [found here](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/core-logging-deployment.yml).
+This can be achieved by triggering core-logging deployment workflow run, which can be [found here](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/core-logging-deployment.yml).
 Alternatively, this can be done as manual deployment: 
 - Navigate to the `modernisation-platfom repo` and change to the `core-logging directory`
 - Run `terraform plan` in the production workspace
@@ -49,8 +49,8 @@ Alternatively, this can be done as manual deployment:
 - Check and verify that resources have been correctly provisioned (KMS keys, S3, etc.)
 
 ## 4. Notify customers
-- Inform our members that the account has been recreated
-- Liaise with owning teams to validate any rebuilds
+- Inform the Mod Platform team that the account has been recreated
+- Liaise with the team to validate any rebuilds
 
 
 ## References
