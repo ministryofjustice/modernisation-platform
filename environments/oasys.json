@@ -54,10 +54,6 @@
         {
           "sso_group_name": "oasys-operator",
           "level": "instance-management"
-        },
-        {
-          "sso_group_name": "oasys-migration",
-          "level": "migration"
         }
       ]
     },
@@ -77,10 +73,6 @@
         {
           "sso_group_name": "oasys-operator",
           "level": "instance-access"
-        },
-        {
-          "sso_group_name": "oasys-migration",
-          "level": "migration"
         }
       ]
     }
