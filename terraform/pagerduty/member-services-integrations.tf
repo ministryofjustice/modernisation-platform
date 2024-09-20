@@ -2055,12 +2055,12 @@ resource "pagerduty_event_orchestration_service" "hmpps-domain-services-test" {
       label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
       actions {
         priority = data.pagerduty_priority.p5.id
-        route_to = "check-public-https-test-rdgw-endpoint"
+        route_to = "filter-lb-alarms"
       }
     }
   }
   set {
-    id = "check-public-https-test-rdgw-endpoint"
+    id = "filter-lb-alarms"
     rule {
       label = "Route public-https-test-rdgw- events to time check"
       condition {
@@ -2074,108 +2074,27 @@ resource "pagerduty_event_orchestration_service" "hmpps-domain-services-test" {
   set {
     id = "weekend-and-overnite-check"
     rule {
-      label = "Check if it's Saturday"
+      label = "Check if it's Saturday or Sunday"
       condition {
-        expression = "now in Sat 00:00:00 to 23:59:59 Etc/UTC"
+        expression = "now in Sat,Sun 00:00:00 to 23:59:59 Etc/UTC"
       }
       actions {
         suppress = true
       }
     }
     rule {
-      label = "Check if it's Sunday"
+      label = "Check if it's during the week before 05:05 UTC"
       condition {
-        expression = "now in Sun 00:00:00 to 23:59:59 Etc/UTC"
+        expression = "now in Mon,Tue,Wed,Thu,Fri 00:00:00 to 05:04:59 Etc/UTC"
       }
       actions {
         suppress = true
       }
     }
     rule {
-      label = "Check if it's Monday before 05:05 UTC"
+      label = "Check if it's during the week after 20:10 UTC"
       condition {
-        expression = "now in Mon 00:00:00 to 05:04:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Monday after 20:10 UTC"
-      condition {
-        expression = "now in Mon 20:10:00 to 23:59:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Tuesday before 05:05 UTC"
-      condition {
-        expression = "now in Tue 00:00:00 to 05:04:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Tuesday after 20:10 UTC"
-      condition {
-        expression = "now in Tue 20:10:00 to 23:59:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Wednesday before 05:05 UTC"
-      condition {
-        expression = "now in Wed 00:00:00 to 05:04:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Wednesday after 20:10 UTC"
-      condition {
-        expression = "now in Wed 20:10:00 to 23:59:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Thursday before 05:05 UTC"
-      condition {
-        expression = "now in Thu 00:00:00 to 05:04:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Thursday after 20:10 UTC"
-      condition {
-        expression = "now in Thu 20:10:00 to 23:59:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Friday before 05:05 UTC"
-      condition {
-        expression = "now in Fri 00:00:00 to 05:04:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Friday after 20:10 UTC"
-      condition {
-        expression = "now in Fri 20:10:00 to 23:59:59 Etc/UTC"
+        expression = "now in Mon,Tue,Wed,Thu,Fri 20:10:00 to 23:59:59 Etc/UTC"
       }
       actions {
         suppress = true
@@ -2197,12 +2116,12 @@ resource "pagerduty_event_orchestration_service" "hmpps-domain-services-preprodu
       label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
       actions {
         priority = data.pagerduty_priority.p5.id
-        route_to = "check-public-https-pp-endpoint"
+        route_to = "filter-lb-alarms"
       }
     }
   }
   set {
-    id = "check-public-https-pp-endpoint"
+    id = "filter-lb-alarms"
     rule {
       label = "Route public-https-pp- events to time check"
       condition {
@@ -2216,108 +2135,27 @@ resource "pagerduty_event_orchestration_service" "hmpps-domain-services-preprodu
   set {
     id = "weekend-and-overnite-check"
     rule {
-      label = "Check if it's Saturday"
+      label = "Check if it's Saturday or Sunday"
       condition {
-        expression = "now in Sat 00:00:00 to 23:59:59 Etc/UTC"
+        expression = "now in Sat,Sun 00:00:00 to 23:59:59 Etc/UTC"
       }
       actions {
         suppress = true
       }
     }
     rule {
-      label = "Check if it's Sunday"
+      label = "Check if it's during the week before 05:05 UTC"
       condition {
-        expression = "now in Sun 00:00:00 to 23:59:59 Etc/UTC"
+        expression = "now in Mon,Tue,Wed,Thu,Fri 00:00:00 to 05:04:59 Etc/UTC"
       }
       actions {
         suppress = true
       }
     }
     rule {
-      label = "Check if it's Monday before 05:05 UTC"
+      label = "Check if it's during the week after 20:10 UTC"
       condition {
-        expression = "now in Mon 00:00:00 to 05:04:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Monday after 20:10 UTC"
-      condition {
-        expression = "now in Mon 20:10:00 to 23:59:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Tuesday before 05:05 UTC"
-      condition {
-        expression = "now in Tue 00:00:00 to 05:04:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Tuesday after 20:10 UTC"
-      condition {
-        expression = "now in Tue 20:10:00 to 23:59:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Wednesday before 05:05 UTC"
-      condition {
-        expression = "now in Wed 00:00:00 to 05:04:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Wednesday after 20:10 UTC"
-      condition {
-        expression = "now in Wed 20:10:00 to 23:59:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Thursday before 05:05 UTC"
-      condition {
-        expression = "now in Thu 00:00:00 to 05:04:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Thursday after 20:10 UTC"
-      condition {
-        expression = "now in Thu 20:10:00 to 23:59:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Friday before 05:05 UTC"
-      condition {
-        expression = "now in Fri 00:00:00 to 05:04:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Friday after 20:10 UTC"
-      condition {
-        expression = "now in Fri 20:10:00 to 23:59:59 Etc/UTC"
+        expression = "now in Mon,Tue,Wed,Thu,Fri 20:10:00 to 23:59:59 Etc/UTC"
       }
       actions {
         suppress = true
