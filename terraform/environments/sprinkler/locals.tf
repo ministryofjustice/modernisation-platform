@@ -20,9 +20,9 @@ locals {
 
   )
 
-  environment       = "sandbox"
+  environment     = "sandbox"
   vpc_name        = var.networking[0].business-unit
-  subnet_set        = var.networking[0].set
+  subnet_set      = var.networking[0].set
   vpc_all         = "${local.vpc_name}-${local.environment}"
   subnet_set_name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}"
 
