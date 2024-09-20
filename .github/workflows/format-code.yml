@@ -67,8 +67,8 @@ jobs:
           changes=$(git diff --staged --name-only)
           if [ -z "$changes" ]; then
             echo "No changes detected."
-            echo "Exiting workflow using status 1 without reporting an error"
-            exit 1
+            echo "Exiting workflow using status 0 without reporting an error"
+            exit 0
           else
             echo "Changes detected."
             echo "changes=true" >> $GITHUB_ENV
