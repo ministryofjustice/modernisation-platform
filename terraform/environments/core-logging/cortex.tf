@@ -35,6 +35,70 @@ data "aws_iam_policy_document" "logging-bucket" {
       values   = ["arn:aws:iam::*:role/firehose-to-s3*"]
     }
   }
+  statement {
+    sid    = "AWSLogDeliveryWrite"
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["delivery.logs.amazonaws.com"]
+    }
+
+    actions   = ["s3:PutObject"]
+    resources = ["${aws_s3_bucket.logging[each.key].arn}/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "s3:x-amz-acl"
+      values   = ["bucket-owner-full-control"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values = [
+        "${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"
+      ]
+    }
+  }
+  statement {
+    sid    = "AWSLogDeliveryCheck"
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["delivery.logs.amazonaws.com"]
+    }
+
+    actions   = ["s3:GetBucketAcl"]
+    resources = [aws_s3_bucket.logging[each.key].arn]
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values = [
+        "${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"
+      ]
+    }
+  }
+  statement {
+    sid     = "EnforceTLSv12orHigher"
+    effect  = "Deny"
+    actions = ["s3:*"]
+    resources = [
+      aws_s3_bucket.logging[each.key].arn,
+      "${aws_s3_bucket.logging[each.key].arn}/*"
+    ]
+    principals {
+      identifiers = ["*"]
+      type        = "AWS"
+    }
+    condition {
+      test     = "NumericLessThan"
+      variable = "s3:TlsVersion"
+      values   = [1.2]
+    }
+  }
 }
 
 data "aws_iam_policy_document" "logging-sqs" {
