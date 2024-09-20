@@ -91,7 +91,7 @@ module "vpc" {
 
   # VPC Flow Logs
   vpc_flow_log_iam_role       = aws_iam_role.vpc_flow_log.arn
-  flow_log_s3_destination_arn = local.cloudwatch_log_buckets["vpc-flow-logs"]
+  flow_log_s3_destination_arn = local.is-production ? local.cloudwatch_log_buckets["vpc-flow-logs"] : ""
 
   # Variables required for Firehose integration. We are not building this in all environments hence the "build_firehose" condition below.
   build_firehose                 = local.build_firehose
