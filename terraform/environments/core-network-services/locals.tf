@@ -17,7 +17,6 @@ locals {
   xsiam                          = jsondecode(data.aws_secretsmanager_secret_version.xsiam_secret_arn_version.secret_string)
   cloudwatch_log_buckets         = jsondecode(data.aws_secretsmanager_secret_version.core_logging_bucket_arns.secret_string)
   cloudwatch_generic_log_groups  = concat([module.firewall_logging.cloudwatch_log_group_name], [for key, value in module.vpc_inspection : value.fw_cloudwatch_name])
-  cloudwatch_vpc_flow_log_groups = concat([aws_cloudwatch_log_group.external_inspection.name, aws_cloudwatch_log_group.tgw_flowlog_group.name], [for key, value in module.vpc_inspection : value.vpc_cloudwatch_name])
 
   tags = {
     business-unit = "Platforms"
