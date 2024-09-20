@@ -9,6 +9,12 @@ variable "cloudwatch_kms_key_id" {
   type        = string
 }
 
+variable "flow_log_s3_destination_arn" {
+  description = "Optionally supply an ARN of an S3 bucket to send flow logs to"
+  default     = ""
+  type        = string
+}
+
 variable "fw_allowed_domains" {
   description = "List of strings containing allowed domains"
   type        = list(string)

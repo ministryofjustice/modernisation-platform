@@ -23,6 +23,9 @@ locals {
     sync_state.availability_zone => sync_state.attachment[0].endpoint_id
   }
 
+  # Custom VPC flow log statement
+  custom_flow_log_format = "$${version} $${account-id} $${interface-id} $${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${start} $${end} $${action} $${log-status} $${vpc-id} $${subnet-id} $${instance-id} $${tcp-flags} $${type} $${pkt-srcaddr} $${pkt-dstaddr} $${region} $${az-id} $${sublocation-type} $${sublocation-id} $${pkt-src-aws-service} $${pkt-dst-aws-service} $${flow-direction} $${traffic-path}"
+
 }
 
 ### VPC ###
@@ -70,6 +73,23 @@ resource "aws_flow_log" "cloudwatch" {
   tags = merge(
     var.tags_common,
     { Name = format("%s-vpc-flow-logs", var.tags_prefix) }
+  )
+}
+
+resource "aws_flow_log" "s3" {
+  for_each                 = var.flow_log_s3_destination_arn != "" ? toset([var.flow_log_s3_destination_arn]) : toset([])
+  log_destination          = each.key
+  log_destination_type     = "s3"
+  log_format               = local.custom_flow_log_format
+  max_aggregation_interval = "60"
+  traffic_type             = "ALL"
+  vpc_id                   = aws_vpc.main.id
+
+  tags = merge(
+    var.tags_common,
+    {
+      Name = "${var.tags_prefix}-vpc-flow-logs-s3-${random_string.main.result}"
+    }
   )
 }
 
