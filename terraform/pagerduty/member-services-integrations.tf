@@ -2055,12 +2055,12 @@ resource "pagerduty_event_orchestration_service" "hmpps-domain-services-test" {
       label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
       actions {
         priority = data.pagerduty_priority.p5.id
-        route_to = "check-public-https-test-rdgw-endpoint"
+        route_to = "filter-lb-alarms"
       }
     }
   }
   set {
-    id = "check-public-https-test-rdgw-endpoint"
+    id = "filter-lb-alarms"
     rule {
       label = "Route public-https-test-rdgw- events to time check"
       condition {
@@ -2116,12 +2116,12 @@ resource "pagerduty_event_orchestration_service" "hmpps-domain-services-preprodu
       label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
       actions {
         priority = data.pagerduty_priority.p5.id
-        route_to = "check-public-https-pp-endpoint"
+        route_to = "filter-lb-alarms"
       }
     }
   }
   set {
-    id = "check-public-https-pp-endpoint"
+    id = "filter-lb-alarms"
     rule {
       label = "Route public-https-pp- events to time check"
       condition {
