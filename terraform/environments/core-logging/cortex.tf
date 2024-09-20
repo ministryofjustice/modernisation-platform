@@ -54,10 +54,10 @@ data "aws_iam_policy_document" "logging-bucket" {
     }
 
     condition {
-      test     = "ForAnyValue:StringLike"
-      variable = "aws:PrincipalOrgPaths"
+      test     = "StringEquals"
+      variable = "aws:SourceOrgID"
       values = [
-        "${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"
+        "${data.aws_organizations_organization.root_account.id}"
       ]
     }
   }
@@ -74,10 +74,10 @@ data "aws_iam_policy_document" "logging-bucket" {
     resources = [aws_s3_bucket.logging[each.key].arn]
 
     condition {
-      test     = "ForAnyValue:StringLike"
-      variable = "aws:PrincipalOrgPaths"
+      test     = "StringEquals"
+      variable = "aws:SourceOrgID"
       values = [
-        "${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"
+        "${data.aws_organizations_organization.root_account.id}"
       ]
     }
   }
