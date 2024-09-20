@@ -68,7 +68,7 @@ jobs:
           if [ -z "$changes" ]; then
             echo "No changes detected."
             echo "Exiting workflow using status 1 without reporting an error"
-            exit 1
+            exit 0
           else
             echo "Changes detected."
             echo "changes=true" >> $GITHUB_ENV
