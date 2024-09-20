@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "logging-bucket" {
       test     = "StringEquals"
       variable = "aws:SourceOrgID"
       values = [
-        "${data.aws_organizations_organization.root_account.id}"
+        data.aws_organizations_organization.root_account.id
       ]
     }
   }
@@ -77,7 +77,7 @@ data "aws_iam_policy_document" "logging-bucket" {
       test     = "StringEquals"
       variable = "aws:SourceOrgID"
       values = [
-        "${data.aws_organizations_organization.root_account.id}"
+        data.aws_organizations_organization.root_account.id
       ]
     }
   }
