@@ -39,18 +39,23 @@ To recreate the `Modernisation Platform` account, a person with appropriate acce
 
 Configuration of resources in the `Modernisation Platform` account is stored in code in [modernisation-platform](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modernisation-platform-account) repository.
 
+SSO roles in the `Modernisation Platform` account will be provisioned by AWS IAM Identity Center in the [aws-root-account](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/sso-admin-account-assignments.tf) repository.
+
 To recreate these resources you can run the [Terraform: modernisation-platform-account](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/modernisation-platform-account.yml) action in GitHub.
 
-Alternatively, this can be done as manual deployment: 
+If a GitHub Actions deployment is not available the resources can be redeployed locally: 
 - Navigate to the `modernisation-platfom` repository and access the `terraform/modernisation-platform-account` directory
-- Run `terraform plan` in the default workspace
-- Using admin credentials, execute `terraform apply`
+- Using admin credentials, execute `terraform apply` from the `default` workspace
 
 ## 3. Verify Resources
 
 - Log into the AWS Console for the `Modernisation Platform` account.
-- Verify that resources have been correctly configured.
-- Confirm that Modernisation Platform member accounts can retrieve information such as AWS Secrets Manager secret values.
+- Verify that resources have been correctly created.
+  - Does an S3 bucket exist for Terraform state files?
+  - Does a DynamoDB table exist for Terraform state locking?
+  - Do Secrets Manager secrets exist and are they populated?
+  - Are KMS keys created with correct aliases?
+  - Have collaborator IAM accounts been recreated?
 
 ## 4. Notify customers
 
