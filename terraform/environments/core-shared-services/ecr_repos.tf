@@ -1204,17 +1204,21 @@ module "electronic_monitoring_data_lambdas_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/modernisation-platform-oidc-cicd"
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/modernisation-platform-oidc-cicd",
   ]
 
   pull_principals = [
     local.environment_management.account_ids["electronic-monitoring-data-development"],
-    local.environment_management.account_ids["electronic-monitoring-data-production"]
+    local.environment_management.account_ids["electronic-monitoring-data-production"],
+    local.environment_management.account_ids["electronic-monitoring-data-test"]
+
   ]
 
   enable_retrieval_policy_for_lambdas = [
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-development"]}:function:*",
-    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-production"]}:function:*"
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-production"]}:function:*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-test"]}:function:*",
   ]
 
   # Tags
