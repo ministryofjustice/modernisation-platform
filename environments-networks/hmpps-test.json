@@ -17,7 +17,8 @@
           "hmpps-oem-test",
           "hmpps-domain-services-test",
           "delius-core-test",
-          "oasys-national-reporting-test"
+          "oasys-national-reporting-test",
+          "electronic-monitoring-data-test"
         ]
       }
     }
