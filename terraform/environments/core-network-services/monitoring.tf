@@ -151,6 +151,21 @@ resource "aws_flow_log" "tgw_flowlog" {
   tags                          = local.tags
 }
 
+resource "aws_flow_log" "tgw_flowlog_s3" {
+  log_destination               = local.cloudwatch_log_buckets["vpc-flow-logs"]
+  log_destination_type          = "s3"
+  log_format                    = local.custom_flow_log_format
+  max_aggregation_interval      = "60"
+  traffic_type                  = "ALL"
+  transit_gateway_attachment_id = aws_ec2_transit_gateway.transit-gateway.id
+  tags = merge(
+    local.tags,
+    {
+      Name = "${aws_vpc.external_inspection.id}-vpc-flow-logs-s3"
+    }
+  )
+}
+
 resource "aws_cloudwatch_metric_alarm" "firewall-traffic-drop-alarm" {
   alarm_name          = "firewall-traffic-dropped"
   comparison_operator = "GreaterThanOrEqualToThreshold"
