@@ -128,6 +128,31 @@ data "aws_iam_policy_document" "kms-general" {
       ]
     }
   }
+  statement {
+    effect = "Allow"
+    
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
+    ]
+
+    resources = ["*"]
+
+    principals {
+      type = "Service"
+      identifiers = [
+        "logs.eu-west-2.amazonaws.com"
+      ]
+    }
+    condition {
+      test     = "ArnLike"
+      variable = "kms:EncryptionContext:aws:logs:arn"
+      values   = ["arn:aws:logs:eu-west-2:${data.aws_caller_identity.current.account_id}:*"]
+    }
+  }
 }
 
 data "aws_iam_policy_document" "combined-kms-general" {
