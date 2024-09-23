@@ -73,6 +73,22 @@ resource "aws_flow_log" "external_inspection" {
   )
 }
 
+resource "aws_flow_log" "external_inspection_s3" {
+  log_destination          = local.cloudwatch_log_buckets["vpc-flow-logs"]
+  log_destination_type     = "s3"
+  log_format               = local.custom_vpc_flow_log_format
+  max_aggregation_interval = "60"
+  traffic_type             = "ALL"
+  vpc_id                   = aws_vpc.external_inspection.id
+
+  tags = merge(
+    local.tags,
+    {
+      Name = "external-inspection-vpc-flow-logs-s3"
+    }
+  )
+}
+
 ########################
 # Inspection VPC Subnets
 ########################
