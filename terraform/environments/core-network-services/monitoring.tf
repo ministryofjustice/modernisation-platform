@@ -154,7 +154,7 @@ resource "aws_flow_log" "tgw_flowlog" {
 resource "aws_flow_log" "tgw_flowlog_s3" {
   log_destination          = local.cloudwatch_log_buckets["vpc-flow-logs"]
   log_destination_type     = "s3"
-  log_format               = local.custom_flow_log_format
+  log_format               = local.custom_tgw_flow_log_format
   max_aggregation_interval = "60"
   traffic_type             = "ALL"
   transit_gateway_id       = aws_ec2_transit_gateway.transit-gateway.id
