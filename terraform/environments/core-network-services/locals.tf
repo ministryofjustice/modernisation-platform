@@ -5,9 +5,7 @@ data "aws_caller_identity" "modernisation-platform" {
 data "aws_organizations_organization" "root_account" {}
 
 locals {
-  application_name = "core-network-services"
-  # Custom VPC flow log statement
-  custom_flow_log_format     = "$${version} $${account-id} $${interface-id} $${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${start} $${end} $${action} $${log-status} $${vpc-id} $${subnet-id} $${instance-id} $${tcp-flags} $${type} $${pkt-srcaddr} $${pkt-dstaddr} $${region} $${az-id} $${sublocation-type} $${sublocation-id} $${pkt-src-aws-service} $${pkt-dst-aws-service} $${flow-direction} $${traffic-path}"
+  application_name           = "core-network-services"
   environment_management     = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
   pagerduty_integration_keys = jsondecode(data.aws_secretsmanager_secret_version.pagerduty_integration_keys.secret_string)
 
