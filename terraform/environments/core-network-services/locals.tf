@@ -15,7 +15,7 @@ locals {
 
   # This local allows us to references the key / value pairs held in xsiam_secrets.
   xsiam                         = jsondecode(data.aws_secretsmanager_secret_version.xsiam_secret_arn_version.secret_string)
-  cloudwatch_log_buckets        = jsondecode(data.aws_secretsmanager_secret_version.core_logging_bucket_arns.secret_string)
+  cloudwatch_log_buckets        = nonsensitive(jsondecode(data.aws_secretsmanager_secret_version.core_logging_bucket_arns.secret_string))
   cloudwatch_generic_log_groups = concat([module.firewall_logging.cloudwatch_log_group_name], [for key, value in module.vpc_inspection : value.fw_cloudwatch_name])
 
   tags = {
