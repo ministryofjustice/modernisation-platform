@@ -32,18 +32,6 @@ data "aws_secretsmanager_secret_version" "core_logging_bucket_arns" {
   secret_id = data.aws_secretsmanager_secret.core_logging_bucket_arns.id
 }
 
-# Data for Firehose Endpoint URL & Key that are held in secrets manager.
-
-data "aws_secretsmanager_secret" "xsiam_secret_arn" {
-  provider = aws.modernisation-platform
-  name     = "xsiam_secrets"
-}
-
-data "aws_secretsmanager_secret_version" "xsiam_secret_arn_version" {
-  provider  = aws.modernisation-platform
-  secret_id = data.aws_secretsmanager_secret.xsiam_secret_arn.id
-}
-
 # Environment logging secret KMS key
 resource "aws_kms_key" "environment_logging" {
   description             = "environment-logging"
