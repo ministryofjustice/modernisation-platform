@@ -7,11 +7,6 @@ variable "fw_arn" {
   description = "ARN of firewall for logging configuration"
   type        = string
 }
-variable "s3_log_bucket" {
-  description = "Optional ARN of an S3 bucket to ship logs to"
-  default     = ""
-  type        = string
-}
 
 variable "tags" {
   description = "A map of keys and values used to create resource metadata tags"
