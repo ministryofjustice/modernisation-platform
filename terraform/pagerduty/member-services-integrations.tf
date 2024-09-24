@@ -1847,7 +1847,7 @@ resource "pagerduty_service" "cdpt-chaps" {
 resource "pagerduty_event_orchestration" "cdpt_chaps_cloudwatch" {
   name        = data.pagerduty_vendor.cloudwatch.name  
   description = "Integrates with PagerDuty"
-  team        = pagerduty_service.cdpt-chaps.id
+  team        = pagerduty_team.modernisation_platform.id
 }
 #   name    = data.pagerduty_vendor.cloudwatch.name
 #   service = pagerduty_service.cdpt-chaps.id
