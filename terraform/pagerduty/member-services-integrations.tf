@@ -1844,11 +1844,15 @@ resource "pagerduty_service" "cdpt-chaps" {
   alert_creation          = "create_alerts_and_incidents"
 }
 
-resource "pagerduty_service_integration" "cdpt_chaps_cloudwatch" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.cdpt-chaps.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
+resource "pagerduty_event_orchestration" "cdpt_chaps_cloudwatch" {
+  name        = data.pagerduty_vendor.cloudwatch.name  
+  description = "Integrates with PagerDuty"
+  team        = pagerduty_service_integration.cdpt_ifs_cloudwatch.integration_key
 }
+#   name    = data.pagerduty_vendor.cloudwatch.name
+#   service = pagerduty_service.cdpt-chaps.id
+#   vendor  = data.pagerduty_vendor.cloudwatch.id
+# }
 
 resource "pagerduty_slack_connection" "chaps_slack" {
   source_id         = pagerduty_service.cdpt-chaps.id
@@ -2181,7 +2185,6 @@ resource "pagerduty_service" "sprinkler-development" {
 }
 
 resource "pagerduty_event_orchestration" "monitor-sprinkler-integration" {
-  depends_on  = [pagerduty_team.modernisation_platform]
   name        = "Monitor sprinkler for orchestration"
   description = "Integrates sprinkler-development account with PagerDuty"
   team        = pagerduty_team.modernisation_platform.id
@@ -2191,7 +2194,7 @@ resource "pagerduty_slack_connection" "sprinkler_connection" {
   source_id         = pagerduty_service.sprinkler-development.id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
-  channel_id        = "C04QGQML68P"
+  channel_id        = "C02PFCG8M1R"
   notification_type = "responder"
   lifecycle {
   }
