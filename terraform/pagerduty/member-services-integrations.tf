@@ -1844,11 +1844,16 @@ resource "pagerduty_service" "cdpt-chaps" {
   alert_creation          = "create_alerts_and_incidents"
 }
 
-resource "pagerduty_service_integration" "cdpt_chaps_cloudwatch" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.cdpt-chaps.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
+resource "pagerduty_event_orchestration" "cdpt_chaps_cloudwatch" {
+  name        = data.pagerduty_vendor.cloudwatch.name  
+  # = "Monitor sprinkler for cdpt_chaps"
+  description = "Integrates with PagerDuty"
+  team        = pagerduty_service_integration.cdpt_ifs_cloudwatch.integration_key
 }
+#   name    = data.pagerduty_vendor.cloudwatch.name
+#   service = pagerduty_service.cdpt-chaps.id
+#   vendor  = data.pagerduty_vendor.cloudwatch.id
+# }
 
 resource "pagerduty_slack_connection" "chaps_slack" {
   source_id         = pagerduty_service.cdpt-chaps.id
