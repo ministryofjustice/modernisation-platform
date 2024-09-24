@@ -32,6 +32,7 @@
 | [aws_ec2_transit_gateway_vpc_attachment.attachments-inspection](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_vpc_attachment) | resource |
 | [aws_eip.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
 | [aws_flow_log.cloudwatch](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/flow_log) | resource |
+| [aws_flow_log.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/flow_log) | resource |
 | [aws_internet_gateway.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway) | resource |
 | [aws_nat_gateway.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway) | resource |
 | [aws_network_acl.inspection](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_acl) | resource |
@@ -75,6 +76,7 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_application_name"></a> [application\_name](#input\_application\_name) | Application name, eg `core-shared-services` or `core-network-services` | `string` | n/a | yes |
 | <a name="input_cloudwatch_kms_key_id"></a> [cloudwatch\_kms\_key\_id](#input\_cloudwatch\_kms\_key\_id) | Optional KMS key ID to use in encrypting VPC flow logs CloudWatch group. | `string` | `""` | no |
+| <a name="input_flow_log_s3_destination_arn"></a> [flow\_log\_s3\_destination\_arn](#input\_flow\_log\_s3\_destination\_arn) | Optionally supply an ARN of an S3 bucket to send flow logs to | `string` | `""` | no |
 | <a name="input_fw_allowed_domains"></a> [fw\_allowed\_domains](#input\_fw\_allowed\_domains) | List of strings containing allowed domains | `list(string)` | n/a | yes |
 | <a name="input_fw_delete_protection"></a> [fw\_delete\_protection](#input\_fw\_delete\_protection) | Boolean to enable or disable firewall deletion protection | `bool` | `true` | no |
 | <a name="input_fw_home_net_ips"></a> [fw\_home\_net\_ips](#input\_fw\_home\_net\_ips) | List of strings covering firewall HOME\_NET values | `list(string)` | n/a | yes |
