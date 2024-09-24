@@ -1846,7 +1846,6 @@ resource "pagerduty_service" "cdpt-chaps" {
 
 resource "pagerduty_event_orchestration" "cdpt_chaps_cloudwatch" {
   name        = data.pagerduty_vendor.cloudwatch.name  
-  # = "Monitor sprinkler for cdpt_chaps"
   description = "Integrates with PagerDuty"
   team        = pagerduty_service_integration.cdpt_ifs_cloudwatch.integration_key
 }
@@ -2067,7 +2066,7 @@ resource "pagerduty_slack_connection" "sprinkler_connection" {
   source_id         = pagerduty_service.sprinkler-development.id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
-  channel_id        = "C02PMCG8M1R"
+  channel_id        = "C02PFCG8M1R"
   notification_type = "responder"
   lifecycle {
   }
