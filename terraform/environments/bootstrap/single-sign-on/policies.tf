@@ -1050,6 +1050,7 @@ data "aws_iam_policy_document" "reporting-operations" {
     actions = [
       "dms:DescribeReplicationInstances",
       "dms:DescribeReplicationTasks",
+      "dms:ModifyReplicationTask",
       "dms:StartReplicationTaskAssessmentRun",
       "dms:StartReplicationTask",
       "dms:StopReplicationTask",
