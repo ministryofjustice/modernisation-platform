@@ -14,6 +14,16 @@ resource "aws_networkfirewall_logging_configuration" "main" {
       log_destination_type = "CloudWatchLogs"
       log_type             = "ALERT"
     }
+    dynamic "log_destination_config" {
+      for_each = var.s3_log_bucket != "" ? toset([var.s3_log_bucket]) : []
+      content {
+        log_destination = {
+          bucketName = log_destination_config.value
+        }
+        log_destination_type = "S3"
+        log_type             = "ALERT"
+      }
+    }
   }
 }
 
