@@ -1847,7 +1847,7 @@ resource "pagerduty_service" "cdpt-chaps" {
 resource "pagerduty_event_orchestration" "cdpt_chaps_cloudwatch" {
   name        = data.pagerduty_vendor.cloudwatch.name  
   description = "Integrates with PagerDuty"
-  team        = pagerduty_team.modernisation_platform.id
+  team        = pagerduty_team.modernisation_platform_members.id
 }
 #   name    = data.pagerduty_vendor.cloudwatch.name
 #   service = pagerduty_service.cdpt-chaps.id
@@ -2173,8 +2173,6 @@ resource "pagerduty_event_orchestration_service" "hmpps-domain-services-preprodu
 
 # END - DSO Squad alarms
 
-# Sprinkler development alarms
-
 resource "pagerduty_service" "sprinkler-development" {
   name                    = "sprinkler-development"
   description             = "sprinkler-development"
@@ -2220,7 +2218,6 @@ resource "pagerduty_slack_connection" "sprinkler_connection" {
     priorities = ["*"]
   }
 }
-
 
 # Slack channel: #delius-aws-oracle-dev-alerts
 
@@ -2272,3 +2269,4 @@ resource "pagerduty_slack_connection" "delius_oracle_nonprod_connection" {
     priorities = ["*"]
   }
 }
+
