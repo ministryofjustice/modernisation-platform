@@ -32,8 +32,8 @@ jobs:
         run: |
           date=$(date +%Y_%m_%d)
           branch_name="date_$date"
-          echo branch_name >> $GITHUB_ENV
           git checkout -b $branch_name
+          echo "branch_name=$branch_name" >> $GITHUB_ENV
 
       - name: Run linter
         id: ml
