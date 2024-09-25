@@ -1798,10 +1798,10 @@ resource "pagerduty_service" "cdpt-ifs" {
   alert_creation          = "create_alerts_and_incidents"
 }
 
-resource "pagerduty_service_integration" "cdpt_ifs_cloudwatch" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.cdpt-ifs.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
+resource "pagerduty_event_orchestration" "cdpt_ifs_cloudwatch" {
+  name        = data.pagerduty_vendor.cloudwatch.name  
+  description = "Integrates with PagerDuty"
+  team        = pagerduty_team.modernisation_platform_members.id
 }
 
 resource "pagerduty_slack_connection" "ifs_slack" {
