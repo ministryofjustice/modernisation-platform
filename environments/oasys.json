@@ -1,6 +1,6 @@
 {
   "account-type": "member",
-  "codeowners": ["studio-webops"],
+  "codeowners": ["hosting-migrations", "studio-webops"],
   "environments": [
     {
       "name": "development",
