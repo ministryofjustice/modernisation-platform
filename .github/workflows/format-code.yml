@@ -31,7 +31,8 @@ jobs:
       - name: Create new branch
         run: |
           date=$(date +%Y_%m_%d)
-          echo branch_name="date_$date" >> $GITHUB_ENV
+          branch_name="date_$date"
+          echo branch_name >> $GITHUB_ENV
           git checkout -b $branch_name
 
       - name: Run linter
@@ -126,7 +127,7 @@ jobs:
               }
             }
           }')
-          
+
           # Send the mutation request to GitHub's GraphQL API
           curl -X POST -H "Authorization: bearer $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
