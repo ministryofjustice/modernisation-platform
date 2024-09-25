@@ -75,7 +75,6 @@ jobs:
             echo "Changes detected."
             echo "changes=true" >> $GITHUB_ENV
             git diff --staged --name-only > changed_files.txt
-            cat changed_files.txt
           fi
 
       - name: Generate the Signed Commit
@@ -130,14 +129,7 @@ jobs:
             -H "Content-Type: application/json" \
             -d "$mutation_payload" https://api.github.com/graphql
         
-      # - name: Push changes using GraphQL
-      #   if: env.changes == 'true'
-      #   run: |
-      #     git status
-      #     git pull $branch_name
-      #     git config --global push.autoSetupRemote true
-      #     git push
-      #     echo "Commit pushed successfully."
+
       - name: Create pull request
         if: env.changes == 'true'
         env:
