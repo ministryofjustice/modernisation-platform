@@ -1,4 +1,4 @@
----
+
 name: 'Format Code: ensure code formatting guidelines are met'
 
 on:
@@ -30,9 +30,13 @@ jobs:
 
       - name: Create new branch
         run: |
-          date=$(date +%Y_%m_%d)
-          branch_name="date_$date"
+          date=$(date +%Y_%m_%d_%H_%M)
+          branch_name="code_formatter_$date"
           git checkout -b $branch_name
+          echo "branch_name=$branch_name" >> $GITHUB_ENV
+          # Push the empty branch to remote
+          git push -u origin $branch_name 
+
 
       - name: Run linter
         id: ml
@@ -54,26 +58,84 @@ jobs:
           YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (.github/*)
           MARKDOWN_MARKDOWNLINT_FILTER_REGEX_EXCLUDE: (terraform/modules/.*/.*.md)
           REPORT_OUTPUT_FOLDER: none
-
+          
       - name: Check for changes
         run: |
+          # Show the git status, stage any changes and then test whether changes were detected.
+          echo "===== Git Status ====="
+          git status
+          echo "===== Stage changes ====="
           git add .
-          git commit -m "Updates from GitHub Actions Format Code workflow" || true
-          branch_name=$(git branch --show-current)
-          changes=$(git diff origin/main...$branch_name --name-only)
+          changes=$(git diff --staged --name-only)
           if [ -z "$changes" ]; then
             echo "No changes detected."
+            echo "Exiting workflow using status 0 without reporting an error"
+            exit 0
           else
             echo "Changes detected."
             echo "changes=true" >> $GITHUB_ENV
+            git diff --staged --name-only > changed_files.txt
+            cat changed_files.txt
           fi
 
-      - name: Push changes
+      - name: Generate the Signed Commit
+        if: env.changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Store the current commit OID and branch name
+          commit_oid=$(git rev-parse HEAD)
+          # Fetch the repository ID using GitHub CLI
+          repo_id=$(gh api graphql -f query='
+          query {
+            repository(owner:"ministryofjustice", name:"modernisation-platform") {
+              id
+            }
+          }' --jq '.data.repository.id')
+          echo "Repository ID: $repo_id"
+
+          # Prepare the list of changed files for commit
+          files_for_commit=$(jq -Rn '
+            [inputs | { "path": ., "contents": (inputs | @base64) }] 
+          ' < changed_files.txt)
+          echo "Files for commit: $files_for_commit"
+
+          # Create the GraphQL mutation payload
+          mutation_payload=$(jq -n \
+            --arg branch_name "$branch_name" \
+            --arg commit_oid "$commit_oid" \
+            --arg repo_id "$repo_id" \
+            --arg commit_message "Automated code formatting fixes" \
+            --argjson files_for_commit "$files_for_commit" \
+            '{query: "mutation($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { oid } } }",
+            variables: {
+              input: {
+                branch: {
+                  repositoryNameWithOwner: "ministryofjustice/modernisation-platform",
+                  branchName: $branch_name
+                },
+                message: {
+                  headline: $commit_message
+                },
+                fileChanges: {
+                  additions: $files_for_commit
+                },
+                expectedHeadOid: $commit_oid
+              }
+            }
+          }')
+
+          # Send the mutation request to GitHub's GraphQL API
+          curl -X POST -H "Authorization: bearer $GITHUB_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$mutation_payload" https://api.github.com/graphql
+        
+      - name: Push changes using GraphQL
         if: env.changes == 'true'
         run: |
           git config --global push.autoSetupRemote true
           git push
-
+          echo "Commit pushed successfully."
       - name: Create pull request
         if: env.changes == 'true'
         env:
