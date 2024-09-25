@@ -9,6 +9,19 @@ resource "aws_route53_resolver_query_log_config_association" "main" {
   resource_id                  = var.vpc_id
 }
 
+resource "aws_route53_resolver_query_log_config" "s3" {
+  count           = var.s3_destination_arn != "" ? 1 : 0
+  name            = format("%s-r53-resolver-logs-s3", var.vpc_name)
+  destination_arn = var.s3_destination_arn
+  tags            = var.tags_common
+}
+
+resource "aws_route53_resolver_query_log_config_association" "s3" {
+  count           = var.s3_destination_arn != "" ? 1 : 0
+  resolver_query_log_config_id = aws_route53_resolver_query_log_config.s3[0].id
+  resource_id                  = var.vpc_id
+}
+
 #tfsec:ignore:aws-cloudwatch-log-group-customer-key
 resource "aws_cloudwatch_log_group" "main" {
   #checkov:skip=CKV_AWS_158:"Standard encryption is enough"
