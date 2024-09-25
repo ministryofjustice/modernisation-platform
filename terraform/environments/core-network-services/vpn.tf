@@ -139,7 +139,7 @@ resource "aws_cloudwatch_event_rule" "noms-vpn-event-rule" {
 resource "aws_cloudwatch_event_target" "noms-vpn-event-target-sns" {
   rule      = aws_cloudwatch_event_rule.noms-vpn-event-rule.name
   target_id = "SendToSNS"
-  arn       = aws_sns_topic.noms-vpn-sns-topic.arn
+  arn       = aws_sns_topic.noms_vpn_sns_topic.arn
 }
 
 resource "aws_sns_topic" "noms_vpn_sns_topic" {
@@ -161,7 +161,7 @@ data "aws_iam_policy_document" "noms_vpn_sns_topic_policy" {
       "SNS:Publish",
     ]
     resources = [
-      aws_sns_topic.test.arn,
+      aws_sns_topic.noms_vpn_sns_topic.arn,
     ]
     condition {
       test     = "StringEquals"
@@ -244,7 +244,7 @@ module "core-networks-chatbot" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot?ref=73280f80ce8a4557cec3a76ee56eb913452ca9aa" // v2.0.0
 
   slack_channel_id = "CDLAJTGRG" // #dba_alerts_prod
-  sns_topic_arns   = ["arn:aws:sns:eu-west-2:${local.environment_management.account_ids[terraform.workspace]}:${aws_sns_topic.noms-vpn-sns-topic.name}"]
+  sns_topic_arns   = ["arn:aws:sns:eu-west-2:${local.environment_management.account_ids[terraform.workspace]}:${aws_sns_topic.noms_vpn_sns_topic.name}"]
   tags             = local.tags
   application_name = local.application_name
 }
