@@ -142,9 +142,43 @@ resource "aws_cloudwatch_event_target" "noms-vpn-event-target-sns" {
   arn       = aws_sns_topic.noms-vpn-sns-topic.arn
 }
 
-resource "aws_sns_topic" "noms-vpn-sns-topic" {
+resource "aws_sns_topic" "noms_vpn_sns_topic" {
   name              = "noms_vpn_sns_topic"
   kms_master_key_id = aws_kms_key.sns_kms_key.id
+}
+resource "aws_sns_topic_policy" "noms_vpn_sns_topic" {
+  arn    = aws_sns_topic.noms_vpn_sns_topic.arn
+  policy = data.aws_iam_policy_document.noms_vpn_sns_topic_policy.json
+}
+
+data "aws_iam_policy_document" "noms_vpn_sns_topic_policy" {
+  policy_id = "nomis vpn sns topic policy"
+
+  statement {
+    sid    = "Allow eventbrdige to publish messages to sns topic"
+    effect = "Allow"
+    actions = [
+      "SNS:Publish",
+    ]
+    resources = [
+      aws_sns_topic.test.arn,
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceOwner"
+      values = [
+        local.environment_management.account_ids["core-network-services-production"]
+      ]
+    }
+    principals {
+      type = "Service"
+      identifiers = [
+        "events.amazonaws.com"
+      ]
+    }
+
+
+  }
 }
 
 resource "aws_kms_key" "sns_kms_key" {
