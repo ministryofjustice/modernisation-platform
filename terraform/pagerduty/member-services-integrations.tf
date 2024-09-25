@@ -1845,7 +1845,7 @@ resource "pagerduty_service" "cdpt-chaps" {
 }
 
 resource "pagerduty_event_orchestration" "cdpt_chaps_cloudwatch" {
-  name        = data.pagerduty_vendor.cloudwatch.name  
+  name        = data.pagerduty_vendor.cloudwatch.name
   description = "Integrates with PagerDuty"
   team        = pagerduty_team.modernisation_platform_members.id
 }
@@ -1860,7 +1860,7 @@ resource "pagerduty_slack_connection" "chaps_slack" {
   workspace_id      = local.slack_workspace_id
   channel_id        = "CQQDV9N4R"
   notification_type = "responder"
-    config {
+  config {
     events = [
       "incident.triggered",
       "incident.acknowledged",
