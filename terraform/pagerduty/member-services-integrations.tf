@@ -1849,10 +1849,6 @@ resource "pagerduty_event_orchestration" "cdpt_chaps_cloudwatch" {
   description = "Integrates with PagerDuty"
   team        = pagerduty_team.modernisation_platform_members.id
 }
-#   name    = data.pagerduty_vendor.cloudwatch.name
-#   service = pagerduty_service.cdpt-chaps.id
-#   vendor  = data.pagerduty_vendor.cloudwatch.id
-# }
 
 resource "pagerduty_slack_connection" "chaps_slack" {
   source_id         = pagerduty_service.cdpt-chaps.id
