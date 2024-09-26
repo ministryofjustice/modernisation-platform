@@ -17,7 +17,6 @@ locals {
 
   # Secrets used by Firehose resources which we only require for development & production VPCs.
   cloudwatch_log_buckets             = nonsensitive(jsondecode(data.aws_secretsmanager_secret_version.core_logging_bucket_arns.secret_string))
-  cloudwatch_r53_resolver_log_groups = local.is-production ? [for env in module.route_53_resolver_logs : env.r53_resolver_log_name] : []
 
   tags = {
     business-unit = "Platforms"
