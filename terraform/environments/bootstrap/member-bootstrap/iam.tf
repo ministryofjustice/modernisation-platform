@@ -446,7 +446,7 @@ data "aws_iam_policy_document" "policy" {
       "dms:StartReplicationTaskAssessmentRun",
       "dms:DescribeEndpoints",
       "dms:DescribeEndpointSettings",
-      "dms:ImportCertificate",
+      "dms:*Certificate",
       "dms:ModifyEndpoint",
       "dms:RebootReplicationInstance",
       "ds:ResetUserPassword",
