@@ -1861,7 +1861,6 @@ resource "pagerduty_slack_connection" "chaps_slack" {
   channel_id        = "CQQDV9N4R"
   notification_type = "responder"
   config {
-
     events = [
       "incident.triggered",
       "incident.acknowledged",

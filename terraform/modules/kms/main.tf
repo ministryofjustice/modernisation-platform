@@ -130,7 +130,7 @@ data "aws_iam_policy_document" "kms-general" {
   }
   statement {
     effect = "Allow"
-    
+
     actions = [
       "kms:Encrypt",
       "kms:Decrypt",

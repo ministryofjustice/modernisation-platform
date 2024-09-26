@@ -1,6 +1,11 @@
 {
   "account-type": "member",
-  "codeowners": ["studio-webops", "hmpps-migration", "hmpps-dba"],
+  "codeowners": [
+    "hosting-migrations",
+    "studio-webops",
+    "hmpps-migration",
+    "hmpps-dba"
+  ],
   "environments": [
     {
       "name": "development",
