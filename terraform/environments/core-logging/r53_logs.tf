@@ -12,6 +12,7 @@ resource "aws_route53_resolver_query_log_config" "cloudwatch" {
 
 #Temporarily unencrypted while I consider a suitable KMS policy
 resource "aws_cloudwatch_log_group" "r53_resolver_logs" {
+  #checkov:skip=CKV_AWS_158
   name_prefix       = "r53-resolver-logs"
   retention_in_days = 365
   tags              = local.tags
@@ -37,7 +38,7 @@ resource "aws_ram_resource_association" "resolver_query_share" {
 }
 
 resource "aws_ram_principal_association" "resolver_query_share" {
-  principal          = "${data.aws_organizations_organization.root_account.arn}/${local.environment_management.modernisation_platform_organisation_unit_id}"
+  principal          = replace("${data.aws_organizations_organization.root_account.arn}/${local.environment_management.modernisation_platform_organisation_unit_id}", "organization/", "ou/")
   resource_share_arn = aws_ram_resource_share.resolver_query_share.arn
 }
 
