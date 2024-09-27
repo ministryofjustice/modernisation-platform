@@ -1,8 +1,8 @@
 name: Upload Cost Explorer CSV to S3
 on:
   schedule:
-    # Runs on the first day of every month at 6:30 AM
-    - cron: '30 6 1 * *'
+    # Runs on the second day of every month at 6:30 AM
+    - cron: '30 6 2 * *'
   workflow_dispatch:
 env:
   AWS_REGION: "eu-west-2"
