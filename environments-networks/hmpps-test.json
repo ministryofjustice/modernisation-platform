@@ -7,7 +7,6 @@
           "nomis-test",
           "oasys-test",
           "delius-jitbit-test",
-          "delius-mis-test",
           "delius-nextcloud-test",
           "digital-prison-reporting-test",
           "nomis-combined-reporting-test",
