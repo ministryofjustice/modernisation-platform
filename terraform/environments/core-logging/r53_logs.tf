@@ -45,6 +45,7 @@ resource "aws_kms_key" "r53_resolver_logs" {
   description         = "KMS key used to encrypt R53 Resolver Logs CloudWatch log group"
   enable_key_rotation = true
   multi_region        = true
+  policy              = data.aws_iam_policy_document.r53_resolver_logs_kms.json
   tags                = local.tags
 }
 
