@@ -139,29 +139,28 @@ jobs:
 
           # Prepare the mutation payload
           mutation_payload=$(jq -n \
-            --arg branch_name $branch_name \
-            --arg commit_oid $commit_oid \
+            --arg branch_name "$branch_name" \
+            --arg commit_oid "$commit_oid" \
             --arg repo_id "$repo_id" \
-            --arg commit_message $commit_message \
-            --argjson files_for_commit "$(cat files_for_commit.json)" \
+            --arg commit_message "$commit_message" \
+            --argjson fileChanges "$(jq -c . < files_for_commit.json)" \
             '{
               query: "mutation($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { oid } } }",
               variables: {
                 input: {
                   branch: {
-                    repositoryNameWithOwner: "ministryofjustice/modernisation-platform",
+                    repositoryNameWithOwner: $repo_id,
                     branchName: $branch_name
                   },
                   message: {
                     headline: $commit_message
                   },
-                  fileChanges: {
-                    additions: $files_for_commit.additions
-                  },
+                  fileChanges: $fileChanges,
                   expectedHeadOid: $commit_oid
                 }
               }
             }')
+            
           echo "Mutation Payload: $mutation_payload"    
       
           # Send the mutation request to GitHub's GraphQL API and capture the response
