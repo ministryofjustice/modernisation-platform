@@ -2,6 +2,8 @@ locals {
   cortex_logging_buckets = toset(["vpc-flow-logs", "r53-resolver-logs", "generic-logs"])
 }
 
+resource "random_uuid" "cortex" {}
+
 # Because we can't use wildcards beyond "*" in a principal identifier, we use a policy condition to scope access only
 # to accounts in our OU, where the role matches the name created through the modernisation-platform-terraform-aws-data-firehose module
 data "aws_iam_policy_document" "logging-bucket" {
@@ -148,6 +150,27 @@ data "aws_iam_policy_document" "cortex_user_policy" {
   }
 }
 
+data "aws_iam_policy_document" "cortex_trust_policy" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${aws_ssm_parameter.cortex_account_id.value}:root"]
+      # Palo Alto Cortex AWS Account ID
+      # Taken from https://docs-cortex.paloaltonetworks.com/r/Cortex-XDR/Cortex-XDR-Pro-Administrator-Guide/Create-an-Assumed-Role
+    }
+
+    actions = ["sts:AssumeRole"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "sts:ExternalId"
+      values   = [sensitive(random_uuid.cortex.result)]
+    }
+  }
+}
+
 resource "aws_s3_bucket" "logging" {
   # checkov:skip=CKV_AWS_18:  Access logs not presently required
   # checkov:skip=CKV_AWS_21:  Versioning of log objects not required
@@ -252,6 +275,7 @@ resource "aws_secretsmanager_secret_version" "logging" {
 resource "aws_iam_user" "cortex_xsiam_user" {
   #checkov:skip=CKV_AWS_273: This has been agreed by the TA that for this purpose an IAM user account can be used.
   name = "cortex_xsiam_user"
+  tags = local.tags
 }
 
 resource "aws_iam_policy" "cortex_user_policy" {
@@ -264,4 +288,16 @@ resource "aws_iam_user_policy_attachment" "sqs_queue_read_policy_attachment" {
   #checkov:skip=CKV_AWS_40: User account only has a single purpose so no role or group is needed
   user       = aws_iam_user.cortex_xsiam_user.name
   policy_arn = aws_iam_policy.cortex_user_policy.arn
+}
+
+resource "aws_iam_role" "cortex_xsiam_role" {
+  description        = "Role utilised by Palo Alto Cortex XSIAM"
+  name_prefix        = "cortex_xsiam"
+  assume_role_policy = data.aws_iam_policy_document.cortex_trust_policy.json
+  tags               = local.tags
+}
+
+resource "aws_iam_role_policy_attachment" "cortex_xsiam_role" {
+  policy_arn = aws_iam_policy.cortex_user_policy.arn
+  role       = aws_iam_role.cortex_xsiam_role.name
 }
