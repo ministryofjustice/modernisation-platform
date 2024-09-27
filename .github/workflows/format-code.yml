@@ -1,10 +1,9 @@
-
 name: 'Format Code: ensure code formatting guidelines are met'
 
 on:
   workflow_dispatch: null
   schedule:
-    - cron: 45 4 * * 1-5
+    - cron: '45 4 * * 1-5'
 
 permissions:
   contents: write
@@ -82,23 +81,6 @@ jobs:
             cat changed_files.txt
           fi
 
-          # Prepare file additions for the GraphQL mutation
-          FILE_ADDITIONS="[]"
-
-          for FILE in $changed_files; do
-            if [[ -f "$FILE" ]]; then
-              # Encode the file content in base64
-              FILE_CONTENT=$(base64 "$FILE" | tr -d '\n')
-              
-              # Create a JSON object for the file addition
-              FILE_ADDITIONS+=("{
-                \"path\": \"$FILE\",
-                \"contents\": \"$FILE_CONTENT\"
-              }")
-            fi
-          done
-
-
       - name: Prepare the Changes for GraphQL
         run: |
           commit_oid=$(git rev-parse HEAD)
@@ -112,7 +94,7 @@ jobs:
             if [[ -f "$file" ]]; then
               # Add a newline to the end of the content
               file_content="$(cat "$file")"$'\n'
-    
+
               # Base64 encode the contents of the file
               base64_content=$(base64 -w 0 <<< "$file_content")
 
@@ -125,8 +107,12 @@ jobs:
           # Output the final JSON array
           echo "$files_for_commit" > files_for_commit.json
           cat files_for_commit.json
-  
-
+          
+          # Error handling for `jq` output
+          if ! jq . files_for_commit.json; then
+            echo "Error processing files_for_commit.json"
+            exit 1
+          fi
 
       - name: Commit changes via GraphQL
         env:
@@ -134,14 +120,19 @@ jobs:
         run: |
           commit_message="Automated code formatting fixes"
           files_for_commit="$(cat files_for_commit.json)"
-          jq . files_for_commit.json
-
+          
+          # Error handling for `jq` output
+          if ! jq . files_for_commit.json; then
+            echo "Error reading files_for_commit.json"
+            exit 1
+          fi
+      
           mutation_payload=$(jq -n \
             --arg branch_name $branch_name \
             --arg commit_oid $commit_oid \
             --arg repo_id "$repo_id" \
             --arg commit_message $commit_message \
-            --argjson files_for_commit "$(echo "$files_for_commit" | jq -c .)" \
+            --argjson files_for_commit "$(cat files_for_commit.json)" \
             '{
               query: "mutation($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { oid } } }",
               variables: {
@@ -154,29 +145,30 @@ jobs:
                     headline: $commit_message
                   },
                   fileChanges: {
-                    additions: $files_for_commit
+                    additions: $files_for_commit.additions
                   },
                   expectedHeadOid: $commit_oid
                 }
               }
             }')
-  
-          # Send the mutation request to GitHub's GraphQL API
-          curl -X POST -H "Authorization: bearer $GITHUB_TOKEN" \
+      
+          # Send the mutation request to GitHub's GraphQL API and capture the response
+          RESPONSE=$(curl -X POST -H "Authorization: bearer $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
-            -d "$mutation_payload" https://api.github.com/graphql
-
-                # Parse the commit OID from the response
-                COMMIT_OID=$(echo "$RESPONSE" | jq -r '.data.createCommitOnBranch.commit.oid')
-
-                # Check if the commit was successfully created
-                if [ "$COMMIT_OID" != "null" ]; then
-                  echo "Commit successfully created with OID: $COMMIT_OID"
-                else
-                  echo "Error creating commit: $RESPONSE"
-                fi
-
+            -d "$mutation_payload" https://api.github.com/graphql)
+      
+          # Parse the commit OID from the response
+          COMMIT_OID=$(echo "$RESPONSE" | jq -r '.data.createCommitOnBranch.commit.oid')
+      
+          # Check if the commit was successfully created
+          if [ "$COMMIT_OID" != "null" ]; then
+            echo "Commit successfully created with OID: $COMMIT_OID"
+          else
+            echo "Error creating commit: $RESPONSE"
+          fi
         
+
+          
 
       # - name: Create pull request
       #   if: env.changes == 'true'
