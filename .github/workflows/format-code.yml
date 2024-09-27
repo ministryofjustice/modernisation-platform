@@ -149,7 +149,7 @@ jobs:
               variables: {
                 input: {
                   branch: {
-                    repositoryNameWithOwner: $repo_id,
+                    repositoryNameWithOwner: "ministryofjustice/modernisation-platform",
                     branchName: $branch_name
                   },
                   message: {
@@ -160,7 +160,7 @@ jobs:
                 }
               }
             }')
-            
+
           echo "Mutation Payload: $mutation_payload"    
       
           # Send the mutation request to GitHub's GraphQL API and capture the response
