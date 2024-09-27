@@ -103,7 +103,6 @@ expected :=
           "oasys-test",
           "digital-prison-reporting-test",
           "delius-jitbit-test",
-          "delius-mis-test",
           "delius-nextcloud-test",
           "nomis-combined-reporting-test",
           "nomis-data-hub-test",
