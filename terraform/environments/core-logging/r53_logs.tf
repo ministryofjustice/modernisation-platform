@@ -35,7 +35,7 @@ resource "aws_ram_principal_association" "resolver_query_share" {
 }
 
 resource "aws_cloudwatch_log_group" "r53_resolver_logs" {
-  kms_key_id        = aws_kms_key.r53_resolver_logs.id
+  kms_key_id        = aws_kms_key.r53_resolver_logs.arn
   name_prefix       = "r53-resolver-logs"
   retention_in_days = 365
   tags              = local.tags
