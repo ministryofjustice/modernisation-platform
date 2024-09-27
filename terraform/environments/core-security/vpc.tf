@@ -20,7 +20,7 @@ module "vpc" {
   gateway = "transit"
 
   # VPC Flow Logs
-  vpc_flow_log_iam_role = aws_iam_role.vpc_flow_log.arn
+  vpc_flow_log_iam_role       = aws_iam_role.vpc_flow_log.arn
   flow_log_s3_destination_arn = each.key == "live_data" ? local.cloudwatch_log_buckets["vpc-flow-logs"] : ""
 
   # Transit Gateway ID
