@@ -16,7 +16,7 @@ locals {
   is-live_data   = (substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production") || (substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction")
 
   # Secrets used by Firehose resources which we only require for development & production VPCs.
-  cloudwatch_log_buckets             = nonsensitive(jsondecode(data.aws_secretsmanager_secret_version.core_logging_bucket_arns.secret_string))
+  cloudwatch_log_buckets = nonsensitive(jsondecode(data.aws_secretsmanager_secret_version.core_logging_bucket_arns.secret_string))
 
   tags = {
     business-unit = "Platforms"
