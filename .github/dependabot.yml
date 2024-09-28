@@ -396,10 +396,6 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
-    directory: "/terraform/modules/firehose"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
     directory: "/terraform/modules/firewall-logging"
     schedule:
       interval: "daily"
@@ -413,10 +409,6 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/modules/kms"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/r53-resolver-logs"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
