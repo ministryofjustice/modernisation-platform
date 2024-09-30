@@ -16,7 +16,7 @@ locals {
   # the string leftover is `-production`, if it isn't (e.g. core-vpc-non-production => -non-production) then it sets the var to false.
   is-production = substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production"
 
-  cloudwatch_log_buckets        = nonsensitive(jsondecode(data.aws_secretsmanager_secret_version.core_logging_bucket_arns.secret_string))
+  core_logging_bucket_arns = jsondecode(data.aws_ssm_parameter.core_logging_bucket_arns.insecure_value)
   cloudwatch_generic_log_groups = concat([module.firewall_logging.cloudwatch_log_group_name], [for key, value in module.vpc_inspection : value.fw_cloudwatch_name])
 
   tags = {

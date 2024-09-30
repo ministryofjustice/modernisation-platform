@@ -45,7 +45,7 @@ locals {
     ]
   }
 
-  cloudwatch_log_buckets = nonsensitive(jsondecode(data.aws_secretsmanager_secret_version.core_logging_bucket_arns.secret_string))
+  core_logging_bucket_arns = jsondecode(data.aws_ssm_parameter.core_logging_bucket_arns.insecure_value)
 
   tags = {
     business-unit = "Platforms"

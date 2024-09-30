@@ -11,7 +11,7 @@ module "vpc_inspection" {
 
   source                      = "../../modules/vpc-inspection"
   application_name            = local.application_name
-  flow_log_s3_destination_arn = each.key == "live_data" ? local.cloudwatch_log_buckets["vpc-flow-logs"] : ""
+  flow_log_s3_destination_arn = each.key == "live_data" ? local.core_logging_bucket_arns["vpc-flow-logs"] : ""
   fw_allowed_domains          = local.fqdn_firewall_rules.fw_allowed_domains
   fw_home_net_ips             = local.fqdn_firewall_rules.fw_home_net_ips
   fw_kms_arn                  = data.aws_kms_key.general_shared.arn
