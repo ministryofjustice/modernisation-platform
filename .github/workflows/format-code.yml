@@ -51,7 +51,6 @@ jobs:
           APPLY_FIXES_MODE: pull_request # If APPLY_FIXES is used, defines if the fixes are directly committed (commit) or posted in a PR (pull_request)
           DISABLE_ERRORS: true
           EMAIL_REPORTER: false
-          ENABLE_LINTERS: JSON_PRETTIER,YAML_PRETTIER,TERRAFORM_TERRAFORM_FMT,MARKDOWN_MARKDOWNLINT
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
           VALIDATE_ALL_CODEBASE: true
           YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (.github/*)
@@ -82,6 +81,7 @@ jobs:
           fi
 
       - name: Prepare the Changes for GraphQL
+        if: env.changes == 'true'
         run: |
           commit_oid=$(git rev-parse HEAD)
           echo "commit_oid=$commit_oid" >> $GITHUB_ENV
@@ -115,6 +115,7 @@ jobs:
           fi
 
       - name: Commit changes via GraphQL
+        if: env.changes == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
