@@ -94,7 +94,7 @@ jobs:
           while IFS= read -r file; do
             if [[ -f "$file" ]]; then
               # Add a newline to the end of the content
-              file_content="$(cat "$file")"$'\n'
+              file_content="$(cat "$file")"
 
               # Base64 encode the contents of the file
               base64_content=$(base64 -w 0 <<< "$file_content")
