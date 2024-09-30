@@ -156,7 +156,7 @@ data "aws_iam_policy_document" "cortex_trust_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${aws_ssm_parameter.cortex_account_id.value}:root"]
+      identifiers = ["arn:aws:iam::${aws_ssm_parameter.cortex_account_id.insecure_value}:root"]
       # Palo Alto Cortex AWS Account ID
       # Taken from https://docs-cortex.paloaltonetworks.com/r/Cortex-XDR/Cortex-XDR-Pro-Administrator-Guide/Create-an-Assumed-Role
     }
