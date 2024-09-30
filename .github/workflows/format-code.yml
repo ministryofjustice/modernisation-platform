@@ -82,6 +82,7 @@ jobs:
           fi
 
       - name: Prepare the Changes for GraphQL
+        if: env.changes == 'true'
         run: |
           commit_oid=$(git rev-parse HEAD)
           echo "commit_oid=$commit_oid" >> $GITHUB_ENV
@@ -115,6 +116,7 @@ jobs:
           fi
 
       - name: Commit changes via GraphQL
+        if: env.changes == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
