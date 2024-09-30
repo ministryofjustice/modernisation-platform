@@ -3,12 +3,12 @@ resource "aws_ssm_parameter" "cortex_account_id" {
   lifecycle {
     ignore_changes = [value]
   }
-  provider    = aws.modernisation-platform
-  description = "Account ID for Palo Alto Cortex XSIAM cross-account role."
-  name        = "cortex_account_id"
-  type        = "String"
-  value       = "Placeholder"
-  tags        = local.tags
+  provider       = aws.modernisation-platform
+  description    = "Account ID for Palo Alto Cortex XSIAM cross-account role."
+  name           = "cortex_account_id"
+  type           = "String"
+  insecure_value = "Placeholder"
+  tags           = local.tags
 }
 
 resource "aws_ssm_parameter" "core_logging_bucket_arns" {
@@ -17,7 +17,7 @@ resource "aws_ssm_parameter" "core_logging_bucket_arns" {
   description = "Bucket ARNs in core-logging for Palo Alto Cortex XSIAM."
   name        = "core_logging_bucket_arns"
   type        = "String"
-  value = jsonencode({
+  insecure_value = jsonencode({
     for key in local.cortex_logging_buckets :
     key => aws_s3_bucket.logging[key].arn
   })
