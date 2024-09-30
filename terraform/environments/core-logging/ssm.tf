@@ -1,7 +1,7 @@
 resource "aws_ssm_parameter" "cortex_account_id" {
   #checkov:skip=CKV2_AWS_34: "Parameter is not sensitive; account ID is publicly available."
   lifecycle {
-    ignore_changes = [value]
+    ignore_changes = [insecure_value]
   }
   provider       = aws.modernisation-platform
   description    = "Account ID for Palo Alto Cortex XSIAM cross-account role."
@@ -16,6 +16,7 @@ resource "aws_ssm_parameter" "core_logging_bucket_arns" {
   provider    = aws.modernisation-platform
   description = "Bucket ARNs in core-logging for Palo Alto Cortex XSIAM."
   name        = "core_logging_bucket_arns"
+  overwrite   = true
   type        = "String"
   insecure_value = jsonencode({
     for key in local.cortex_logging_buckets :
