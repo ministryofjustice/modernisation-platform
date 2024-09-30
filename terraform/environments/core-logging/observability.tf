@@ -1,11 +1,10 @@
 module "observability_platform_tenant" {
-
   source = "github.com/ministryofjustice/terraform-aws-observability-platform-tenant?ref=fbbe5c8282786bcc0a00c969fe598e14f12eea9b" # v1.2.0
 
   observability_platform_account_id = local.environment_management.account_ids["observability-platform-production"]
 
   additional_policies = {
-    athena_policy = resource.aws_iam_policy_document.additional_athena_policy
+    additional_athena_policy = aws_iam_policy.additional_athena_policy.arn
   }
 
   tags = local.tags
@@ -29,7 +28,7 @@ data "aws_iam_policy_document" "grafana_athena_assume_role_policy" {
   }
 }
 
-# Grafana-Athena S3 Access Policy (Note: remove aws_iam_role reference)
+# Grafana-Athena S3 Access Policy
 data "aws_iam_policy_document" "grafana_athena_policy" {
   statement {
     sid    = "s3Access"
@@ -170,6 +169,7 @@ module "s3-moj-cur-reports-modplatform" {
   tags = local.tags
 }
 
+# Athena Workgroup for CUR Reports
 resource "aws_athena_workgroup" "mod-platform-cur-reports" {
   name = "mod-platform-cur-reports"
 
@@ -186,8 +186,9 @@ resource "aws_athena_workgroup" "mod-platform-cur-reports" {
   }
 }
 
-resource "aws_iam_policy_document" "additional_athena_policy" {
-  statement = {
+# Additional Athena Policy
+data "aws_iam_policy_document" "additional_athena_policy" {
+  statement {
     sid     = "AthenaQueryAccess"
     effect  = "Allow"
     actions = [
@@ -204,13 +205,12 @@ resource "aws_iam_policy_document" "additional_athena_policy" {
       "athena:StartQueryExecution",
       "athena:StopQueryExecution"
     ]
-
-    Resource = ["*"]
+    resources = ["*"]
   }
   statement {
     sid = "GlueReadAccess"
     effect = "Allow"
-    action = [
+    actions = [
       "glue:GetDatabase",
       "glue:GetDatabases",
       "glue:GetTable",
@@ -219,12 +219,12 @@ resource "aws_iam_policy_document" "additional_athena_policy" {
       "glue:GetPartitions",
       "glue:BatchGetPartition"
     ]
-    Resource = ["*"]
+    resources = ["*"]
   }
   statement {
     sid = "AthenaS3Access"
     effect = "Allow"
-    action = [
+    actions = [
       "s3:GetBucketLocation",
       "s3:GetObject",
       "s3:ListBucket",
@@ -233,12 +233,18 @@ resource "aws_iam_policy_document" "additional_athena_policy" {
       "s3:AbortMultipartUpload",
       "s3:PutObject"
     ]
-    Resource = ["arn:aws:s3:::aws-athena-query-results-*"]
+    resources = ["arn:aws:s3:::aws-athena-query-results-*"]
   }
   statement {
     sid = "AthenaCURReportsAccess"
     effect = "Allow"
-    action = ["s3:GetObject", "s3:ListBucket"]
-    resource = ["arn:aws:s3:::moj-cur-reports-modplatform*"]
+    actions = ["s3:GetObject", "s3:ListBucket"]
+    resources = ["arn:aws:s3:::moj-cur-reports-modplatform*"]
   }
+}
+
+# Create an IAM policy from the additional Athena policy document
+resource "aws_iam_policy" "additional_athena_policy" {
+  name   = "additional-athena-policy"
+  policy = data.aws_iam_policy_document.additional_athena_policy.json
 }
