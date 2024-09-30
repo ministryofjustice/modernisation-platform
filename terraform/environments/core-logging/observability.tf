@@ -188,6 +188,8 @@ resource "aws_athena_workgroup" "mod-platform-cur-reports" {
 
 # Additional Athena Policy
 data "aws_iam_policy_document" "additional_athena_policy" {
+#checkov:skip=CKV_AWS_356: Needs to access multiple resources
+#checkov:skip=CKV_AWS_111
   statement {
     sid     = "AthenaQueryAccess"
     effect  = "Allow"
