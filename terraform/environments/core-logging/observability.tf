@@ -233,7 +233,7 @@ data "aws_iam_policy_document" "additional_athena_policy" {
       "s3:AbortMultipartUpload",
       "s3:PutObject"
     ]
-    resources = ["arn:aws:s3:::aws-athena-query-results-*"]
+    resources = ["arn:aws:s3:::grafana-athena-query-results-*"]
   }
   statement {
     sid = "AthenaCURReportsAccess"
