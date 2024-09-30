@@ -11,18 +11,6 @@ module "observability_platform_tenant" {
   tags = local.tags
 }
 
-# Assume Role Policy for Grafana-Athena
-data "aws_iam_policy_document" "grafana_athena_assume_role_policy" {
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["athena.amazonaws.com"]
-    }
-  }
-}
-
 # Grafana-Athena Role
 resource "aws_iam_role" "grafana_athena" {
   name               = "grafana-athena"
