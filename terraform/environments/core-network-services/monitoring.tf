@@ -152,7 +152,7 @@ resource "aws_flow_log" "tgw_flowlog" {
 }
 
 resource "aws_flow_log" "tgw_flowlog_s3" {
-  log_destination          = local.cloudwatch_log_buckets["vpc-flow-logs"]
+  log_destination          = local.core_logging_bucket_arns["vpc-flow-logs"]
   log_destination_type     = "s3"
   log_format               = local.custom_tgw_flow_log_format
   max_aggregation_interval = "60"
