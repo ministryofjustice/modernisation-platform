@@ -1792,6 +1792,50 @@ resource "pagerduty_slack_connection" "edw_prod" {
 
 # Slack channel: #cdpt-chaps
 
+resource "pagerduty_service" "cdpt-ifs" {
+  name                    = "IFS loadbalancer alarm"
+  description             = "IFS loadbalancer 5xx alarm"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_event_orchestration" "cdpt_ifs_cloudwatch" {
+  name        = data.pagerduty_vendor.cloudwatch.name
+  description = "Integrates with PagerDuty"
+  team        = pagerduty_team.modernisation_platform_members.id
+}
+
+resource "pagerduty_slack_connection" "ifs_slack" {
+  source_id         = pagerduty_service.cdpt-ifs.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "CQ02MKXQU"
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
 resource "pagerduty_service" "cdpt-chaps" {
   name                    = "CHAPS loadbalancer alarm"
   description             = "CHAPS loadbalancer 5xx alarm"
