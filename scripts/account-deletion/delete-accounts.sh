@@ -1,5 +1,26 @@
 #!/bin/bash
 
+# Check required programs are installed
+check_requirements() {
+   local required_programs=("terraform" "jq")
+   local missing =0
+
+   for program in "${required_programs[@]}"; do
+        if ! command -v "$program" &> /dev/null; then
+            echo "Error: $program is not installed."
+            missing=1
+        fi
+    done
+   
+   if [ $missing -eq 1 ]; then
+        echo "Please install the missing programs and try again."
+        exit 1
+    else
+        echo "All required programs are installed."
+    fi
+}
+
+check_requirements
 
 # Define script names
 script1="./delete-tf-state.sh"
