@@ -25,7 +25,6 @@ The Modernisation Platform shares data from a number of sources with the Securit
 The data is shared using AWS Data Firehose for the following categories of data:
 
 - Managed member account VPC Flow Log Data via cloudwatch logs. 
-- Route53 resolver logs for managed member accounts.
 - Network firewall inspection log data for live, non-live and external.
 - VPC flow log data for the three network firewall vpcs.
 - VPC flow log data for core-shared-services, core-logging and core-security.
@@ -37,20 +36,6 @@ One exception is Cloudtrail log data in S3 held in the core-logging account. Thi
 The terraform for these Data Firehose & associated resources can be found here:
 
 - Managed member account VPC flow log data - https://github.com/ministryofjustice/modernisation-platform/blob/b629292a791bd8ce99b6bff6e0ddd888953cb76a/terraform/environments/core-vpc/vpc.tf#L85
-
-- Route53 resolver logs for managed member accounts - https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-vpc/firehose.tf
-
-- Network firewall inspection log data - https://github.com/ministryofjustice/modernisation-platform/blob/b629292a791bd8ce99b6bff6e0ddd888953cb76a/terraform/environments/core-network-services/firehose.tf#L17
-
-- VPC flow log data for network firewalls - https://github.com/ministryofjustice/modernisation-platform/blob/b629292a791bd8ce99b6bff6e0ddd888953cb76a/terraform/environments/core-network-services/firehose.tf#L30
-
-- VPC flow log data for shared accounts:
-
-        - https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/firehose.tf
-
-        - https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-security/firehose.tf
-
-        - https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-shared-services/firehose.tf
 
 - Cloudtrail log data - https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/sqs.tf
 
