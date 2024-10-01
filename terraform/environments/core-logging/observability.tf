@@ -188,11 +188,11 @@ resource "aws_athena_workgroup" "mod-platform-cur-reports" {
 
 # Additional Athena Policy
 data "aws_iam_policy_document" "additional_athena_policy" {
-#checkov:skip=CKV_AWS_356: Needs to access multiple resources
-#checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+  #checkov:skip=CKV_AWS_111
   statement {
-    sid     = "AthenaQueryAccess"
-    effect  = "Allow"
+    sid    = "AthenaQueryAccess"
+    effect = "Allow"
     actions = [
       "athena:ListDatabases",
       "athena:ListDataCatalogs",
@@ -210,7 +210,7 @@ data "aws_iam_policy_document" "additional_athena_policy" {
     resources = ["*"]
   }
   statement {
-    sid = "GlueReadAccess"
+    sid    = "GlueReadAccess"
     effect = "Allow"
     actions = [
       "glue:GetDatabase",
@@ -224,7 +224,7 @@ data "aws_iam_policy_document" "additional_athena_policy" {
     resources = ["*"]
   }
   statement {
-    sid = "AthenaS3Access"
+    sid    = "AthenaS3Access"
     effect = "Allow"
     actions = [
       "s3:GetBucketLocation",
@@ -238,9 +238,9 @@ data "aws_iam_policy_document" "additional_athena_policy" {
     resources = ["arn:aws:s3:::grafana-athena-query-results-*"]
   }
   statement {
-    sid = "AthenaCURReportsAccess"
-    effect = "Allow"
-    actions = ["s3:GetObject", "s3:ListBucket"]
+    sid       = "AthenaCURReportsAccess"
+    effect    = "Allow"
+    actions   = ["s3:GetObject", "s3:ListBucket"]
     resources = ["arn:aws:s3:::moj-cur-reports-modplatform*"]
   }
 }
