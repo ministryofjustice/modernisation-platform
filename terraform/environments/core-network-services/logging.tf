@@ -1,11 +1,3 @@
-module "logging-generic-logs" {
-  source                     = "github.com/ministryofjustice/modernisation-platform-terraform-aws-data-firehose?ref=2e58c8fd0b43ca8461dfd0c8cc5f43a1a9c49987" #v1.1.0
-  for_each                   = local.is-production ? { "build" = true } : {}
-  cloudwatch_log_group_names = local.cloudwatch_generic_log_groups
-  destination_bucket_arn     = local.core_logging_bucket_arns["generic-logs"]
-  tags                       = local.tags
-}
-
 locals {
   resolver_query_log_config_names = toset(["core-logging-rlq-cloudwatch", "core-logging-rlq-s3"])
   vpc_ids                         = { for key, value in module.vpc_inspection : key => value["vpc_id"] if key == "live_data" }
