@@ -1789,6 +1789,9 @@ resource "pagerduty_slack_connection" "edw_prod" {
 
 # Slack channel: #cdpt-integrated-fraud-system
 
+
+# Slack channel: #cdpt-chaps
+
 resource "pagerduty_service" "cdpt-ifs" {
   name                    = "IFS loadbalancer alarm"
   description             = "IFS loadbalancer 5xx alarm"
@@ -1798,10 +1801,10 @@ resource "pagerduty_service" "cdpt-ifs" {
   alert_creation          = "create_alerts_and_incidents"
 }
 
-resource "pagerduty_service_integration" "cdpt_ifs_cloudwatch" {
-  name    = data.pagerduty_vendor.cloudwatch.name
-  service = pagerduty_service.cdpt-ifs.id
-  vendor  = data.pagerduty_vendor.cloudwatch.id
+resource "pagerduty_event_orchestration" "cdpt_ifs_cloudwatch" {
+  name        = data.pagerduty_vendor.cloudwatch.name
+  description = "Integrates with PagerDuty"
+  team        = pagerduty_team.modernisation_platform_members.id
 }
 
 resource "pagerduty_slack_connection" "ifs_slack" {
@@ -1833,8 +1836,6 @@ resource "pagerduty_slack_connection" "ifs_slack" {
   }
 }
 
-# Slack channel: #cdpt-chaps
-
 resource "pagerduty_service" "cdpt-chaps" {
   name                    = "CHAPS loadbalancer alarm"
   description             = "CHAPS loadbalancer 5xx alarm"
@@ -1849,11 +1850,6 @@ resource "pagerduty_event_orchestration" "cdpt_chaps_cloudwatch" {
   description = "Integrates with PagerDuty"
   team        = pagerduty_team.modernisation_platform_members.id
 }
-#   name    = data.pagerduty_vendor.cloudwatch.name
-#   service = pagerduty_service.cdpt-chaps.id
-#   vendor  = data.pagerduty_vendor.cloudwatch.id
-# }
-
 resource "pagerduty_slack_connection" "chaps_slack" {
   source_id         = pagerduty_service.cdpt-chaps.id
   source_type       = "service_reference"
@@ -2186,6 +2182,11 @@ resource "pagerduty_event_orchestration" "monitor-sprinkler-integration" {
   name        = "Monitor sprinkler for orchestration"
   description = "Integrates sprinkler-development account with PagerDuty"
   team        = pagerduty_team.modernisation_platform.id
+}
+
+resource "pagerduty_event_orchestration_integration" "sprinkler_development_integration" {
+  event_orchestration = pagerduty_event_orchestration.monitor-sprinkler-integration.id
+  label               = "Sprinkler development"
 }
 
 resource "pagerduty_slack_connection" "sprinkler_connection" {
