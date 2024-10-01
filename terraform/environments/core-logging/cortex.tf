@@ -254,24 +254,6 @@ data "aws_kms_alias" "secrets" {
   name     = "alias/secrets_key"
 }
 
-resource "aws_secretsmanager_secret" "logging" {
-  # checkov:skip=CKV2_AWS_57
-  provider                = aws.modernisation-platform
-  kms_key_id              = data.aws_kms_alias.secrets.target_key_id
-  name                    = "core_logging_bucket_arns"
-  recovery_window_in_days = 0
-  tags                    = local.tags
-}
-
-resource "aws_secretsmanager_secret_version" "logging" {
-  provider  = aws.modernisation-platform
-  secret_id = aws_secretsmanager_secret.logging.id
-  secret_string = jsonencode({
-    for key in local.cortex_logging_buckets :
-    key => aws_s3_bucket.logging[key].arn
-  })
-}
-
 resource "aws_iam_user" "cortex_xsiam_user" {
   #checkov:skip=CKV_AWS_273: This has been agreed by the TA that for this purpose an IAM user account can be used.
   name = "cortex_xsiam_user"
