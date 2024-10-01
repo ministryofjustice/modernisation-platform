@@ -5,38 +5,8 @@ locals {
 resource "random_uuid" "cortex" {}
 
 # Because we can't use wildcards beyond "*" in a principal identifier, we use a policy condition to scope access only
-# to accounts in our OU, where the role matches the name created through the modernisation-platform-terraform-aws-data-firehose module
 data "aws_iam_policy_document" "logging-bucket" {
   for_each = local.cortex_logging_buckets
-  statement {
-    sid    = "AllowFirehosePutObject"
-    effect = "Allow"
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-    actions = [
-      "s3:GetObject",
-      "s3:PutObject",
-      "s3:PutObjectAcl"
-    ]
-    resources = [
-      aws_s3_bucket.logging[each.key].arn,
-      "${aws_s3_bucket.logging[each.key].arn}/*"
-    ]
-    condition {
-      test     = "ForAnyValue:StringLike"
-      variable = "aws:PrincipalOrgPaths"
-      values = [
-        "${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"
-      ]
-    }
-    condition {
-      test     = "ForAnyValue:StringLike"
-      variable = "aws:PrincipalArn"
-      values   = ["arn:aws:iam::*:role/firehose-to-s3*"]
-    }
-  }
   statement {
     sid    = "AWSLogDeliveryWrite"
     effect = "Allow"
