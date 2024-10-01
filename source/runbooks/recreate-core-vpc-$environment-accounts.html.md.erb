@@ -1,6 +1,6 @@
 ---
 owner_slack: "#modernisation-platform"
-title: Core VPC Environment Accounts Setup
+title: Core VPC Environments Accounts Setup
 last_reviewed_on: 2024-09-30
 review_in: 6 months
 ---
@@ -18,15 +18,14 @@ review_in: 6 months
 
 ## Overview
 
-The core-logging AWS account is responsible for managing all core logging resources.
+The core-vpc AWS accounts are responsible for creating the core VPC resources in the VPC accounts.
 
 | Resource | Description |
 |----------------- |------------------------------------------------
-| VPCs| Stores logs such as cloudtrail and core logging VPC flow logs
-| RAM shares, | Manages encryption keys used to securely encrypt the contents of S3 buckets
-| VPC endpoints| Hosts resources used by PagerDuty
-| VPC | Provides networking resources
-| Transit Gateway connectivity| Service to analyze log data stored in S3
+| VPCs| Provides networking resources 
+| VPC endpoints| Enables secure access to services without internet 
+| RAM shares | Shares AWS resources across accounts securely   
+| Transit Gateway connectivity| Provides scalable and flexible networking connections
 
 ## Steps
 ## 1. Account Creation 
@@ -36,29 +35,35 @@ Please note that aliases do not have a retention period. If an alias still exist
 To initiate the account recreation process, go to the GitHub Actions page for the Modernisation Platform repository and trigger the new environment [workflow] (https://github.com/ministryofjustice/modernisation-platform/actions/workflows/new-environment.yml).
 This workflow should detect that the account no longer exists and propose to recreate the account. As part of this process, it will also execute the baseline runs for the account. 
 
-## 2. Deploy Core Logging Production Resources
+## 2. Deploy The Core VPC Resources
 
-To recreate the resources run the [core-logging-deployment](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/core-logging-deployment.yml) action in GitHub.
+To recreate the resources run the actions below in Github
+
+- [core-vpc-test-deployment](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/core-vpc-test-deployment.yml)
+- [core-vpc-development-deployment](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/core-vpc-development-deployment.yml)
+- [core-vpc-preproduction-deployment](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/core-vpc-preproduction-deployment.yml)
+- [core-vpc-production-deployment](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/core-vpc-production-deployment.yml)
+
 
 If a GitHub Actions deployment is not available the resources can be redeployed locally:  
 
-- Navigate to the `modernisation-platform` repo and change to the `terraform/environments/core-logging` directory
-- Using MP admin credentials, execute `terraform apply` from the `core-logging-production` workspace
+- Navigate to the `modernisation-platform` repo and change to the `terraform/environments/core-vpc` directory
+- Using MP admin credentials, execute `terraform apply` from the `core-vpc-$environment` workspace
 
 ## 3. Verify Resources
 
-- Log into AWS Console for the `core-logging` account
+- Log into AWS Console for the `core-vpc-$environment` account
 - Verify that resources have been correctly provisioned:
-  - Do S3 buckets exist for CloudTrail logs, VPC Flow logs and R53 Resolver logs?
-  - Are KMS keys created with correct aliases?
-  - Check Athena is available to query CloudTrail logs
-  - Check SNS topics are associated with PagerDuty for core alerts
+  - Do VPCs exist with the correct configurations?
+  - Verify that CloudTrail is configured to log API activity related to VPC changes and VPC Flow Logs.
+  - Are VPC endpoints created for necessary services, and are they properly configured?
+  - Are RAM shares properly established to share resources across accounts?
+  - Is Transit Gateway connectivity correctly set up and functioning for all connected VPCs?
 
 
 ## 4. Notify Mod Platform Team
 - Inform Modernisation Platform team of rebuild process
 - Inform customers that account has been recreated
-- Verify with the SOC that they are still able to ingest logs into their tooling
 
 
 ## References
