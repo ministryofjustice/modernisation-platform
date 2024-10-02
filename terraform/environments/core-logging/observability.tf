@@ -188,7 +188,7 @@ data "aws_iam_policy_document" "moj_cur_bucket_replication_policy" {
       "s3:ReplicateTags",
       "s3:ReplicateDelete"
     ]
-    resources = ["arn:aws:s3:::moj-cur-reports-modplatform-*"]
+    resources = ["${module.s3-moj-cur-reports-modplatform.bucket.arn}/*"]
   }
 }
 
