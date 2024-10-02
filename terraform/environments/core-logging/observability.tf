@@ -177,8 +177,8 @@ data "aws_iam_policy_document" "moj_cur_bucket_replication_policy" {
     principals {
       type        = "AWS"
       identifiers = [
-        "arn:aws:iam::624384546187:root}",
-        "arn:aws:iam::295814833350:root}"            
+        "arn:aws:iam::624384546187:root",
+        "arn:aws:iam::295814833350:root"            
       ]
     }
     actions = [
