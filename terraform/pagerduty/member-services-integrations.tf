@@ -1806,6 +1806,10 @@ resource "pagerduty_event_orchestration" "cdpt_ifs_cloudwatch" {
   description = "Integrates with PagerDuty"
   team        = pagerduty_team.modernisation_platform_members.id
 }
+resource "pagerduty_event_orchestration_integration" "cdpt_ifs_cloudwatch_integration" {
+  event_orchestration = pagerduty_event_orchestration.cdpt_ifs_cloudwatch.id
+  label               = "CDPT IFS CloudWatch Integration"
+}
 
 resource "pagerduty_slack_connection" "ifs_slack" {
   source_id         = pagerduty_service.cdpt-ifs.id
