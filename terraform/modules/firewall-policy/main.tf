@@ -68,22 +68,26 @@ resource "aws_networkfirewall_rule_group" "stateful" {
         }
       }
     }
-    rule_variables {
-      dynamic "ip_sets" {
-        for_each = var.ip_sets
-        content {
-          key = upper(ip_sets.key)
-          ip_set {
-            definition = tolist(ip_sets.value)
+    dynamic "rule_variables" {
+      for_each = length(var.ip_sets) > 0 || length(var.port_sets) > 0 ? [1] : []
+      content {
+        dynamic "ip_sets" {
+          for_each = var.ip_sets
+          content {
+            key = upper(ip_sets.key)
+            ip_set {
+              definition = tolist(ip_sets.value)
+            }
           }
         }
-      }
-      dynamic "port_sets" {
-        for_each = var.port_sets
-        content {
-          key = upper(port_sets.key)
-          port_set {
-            definition = tolist(port_sets.value)
+
+        dynamic "port_sets" {
+          for_each = var.port_sets
+          content {
+            key = upper(port_sets.key)
+            port_set {
+              definition = tolist(port_sets.value)
+            }
           }
         }
       }
