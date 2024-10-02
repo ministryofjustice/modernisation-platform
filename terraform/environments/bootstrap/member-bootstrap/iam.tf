@@ -552,7 +552,12 @@ data "aws_iam_policy_document" "policy" {
       "kms:CreateGrant"
     ]
 
-    resources = ["arn:aws:kms:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:key/*"]
+    resources = [
+      "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:key/*",
+      "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-development"]}:key/*",
+      "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-test"]}:key/*",
+      "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-production"]}:key/*"
+    ]
     condition {
       test     = "Bool"
       variable = "kms:GrantIsForAWSResource"
