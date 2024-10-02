@@ -121,6 +121,7 @@ module "s3-moj-cur-reports-modplatform" {
   versioning_enabled  = true
   ownership_controls  = "BucketOwnerEnforced"
   replication_enabled = false
+  bucket_policy       = [data.aws_iam_policy_document.moj_cur_bucket_replication_policy.json]
   providers = {
     aws.bucket-replication = aws
   }
@@ -167,6 +168,28 @@ module "s3-moj-cur-reports-modplatform" {
   ]
 
   tags = local.tags
+}
+
+data "aws_iam_policy_document" "moj_cur_bucket_replication_policy" {
+  statement {
+    sid    = "ReplicationPermissions"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = [
+        "arn:aws:iam::624384546187:root}",
+        "arn:aws:iam::295814833350:root}"            
+      ]
+    }
+    actions = [
+      "s3:ReplicateObject",
+      "s3:ObjectOwnerOverrideToBucketOwner",
+      "s3:GetObjectVersionTagging",
+      "s3:ReplicateTags",
+      "s3:ReplicateDelete"
+    ]
+    resources = ["arn:aws:s3:::moj-cur-reports-modplatform-*"]
+  }
 }
 
 # Athena Workgroup for CUR Reports
