@@ -452,12 +452,12 @@ resource "pagerduty_service" "delius_mis_non_prod" {
   alert_creation          = "create_alerts_and_incidents"
 }
 
-resource "pagerduty_event_orchestration" "delius_mis_non_prod" {
+resource "pagerduty_event_orchestration" "delius_mis_non_prod_integration" {
   name        = "delius_mis_non_prod integration"
   description = "Integrates delius_mis_non_prod account with PagerDuty"
   team        = pagerduty_team.modernisation_platform.id
 }
-resource "pagerduty_event_orchestration_integration" "delius_mis_non_prod_integration" {
+resource "pagerduty_event_orchestration_integration" "delius_mis_non_prod" {
   event_orchestration = pagerduty_event_orchestration.delius_mis_non_prod_integration.id
   label               = "delius_mis_non_prod development"
 }
