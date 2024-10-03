@@ -3,6 +3,7 @@ locals {
   modernisation-platform-internal-domain = "modernisation-platform.internal"
 
   application-zones = {
+    apex          = "apex.service.justice.gov.uk",
     ccms-ebs      = "ccms-ebs.service.justice.gov.uk",
     cdpt-chaps    = "correspondence-handling-and-processing.service.justice.gov.uk",
     cdpt-ifs      = "integrated-fraud-system.service.justice.gov.uk",
