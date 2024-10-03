@@ -9,6 +9,10 @@
           "level": "sandbox",
           "nuke": "rebuild",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-cis-team",
+          "level": "instance-management"
         }
       ]
     },
