@@ -1802,7 +1802,7 @@ resource "pagerduty_service" "cdpt-ifs" {
 }
 
 resource "pagerduty_event_orchestration" "cdpt_ifs_cloudwatch" {
-  name        = data.pagerduty_vendor.cloudwatch.name
+  name        = "cdpt_ifs_cloudwatch orchestration integration"
   description = "Integrates with PagerDuty"
   team        = pagerduty_team.modernisation_platform_members.id
 }
