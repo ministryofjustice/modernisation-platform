@@ -21,7 +21,8 @@ module "collaborators_group" {
 
   custom_group_policy_arns = [
     data.aws_iam_policy.ForceMFA.arn,
-    aws_iam_policy.collaborator_local_plan.arn
+    aws_iam_policy.collaborator_local_plan.arn,
+    aws_iam_policy.modernisation_account_limited_read.arn
   ]
 }
 
@@ -152,6 +153,18 @@ data "aws_iam_policy_document" "modernisation_account_limited_read" {
     effect    = "Deny"
     actions   = ["s3:*"]
     resources = ["arn:aws:s3:::*"]
+  }
+  statement {
+    sid    = "ViewConsoleHome"
+    effect = "Allow"
+    actions = [
+      "ec2:DescribeRegions",
+      "notifications:ListNotificationHubs",
+      "health:DescribeEventAggregates",
+      "cost-optimization-hub:ListEnrollmentStatuses",
+      "ce:GetCostAndUsage"
+    ]
+    resources = ["*"]
   }
 }
 resource "aws_iam_policy" "modernisation_account_limited_read" {
