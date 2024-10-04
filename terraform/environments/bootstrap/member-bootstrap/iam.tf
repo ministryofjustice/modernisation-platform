@@ -511,6 +511,7 @@ data "aws_iam_policy_document" "policy" {
       "kms:Decrypt",
       "kms:Encrypt",
       "kms:GenerateDataKey",
+      "lambda:GetCodeSigningConfig",
       "lambda:UpdateFunctionCode",
       "logs:CreateLogGroup",
       "logs:DescribeLogGroups",
