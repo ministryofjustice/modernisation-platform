@@ -457,7 +457,7 @@ resource "pagerduty_event_orchestration" "delius_mis_non_prod_integration" {
   description = "Integrates delius_mis_non_prod account with PagerDuty"
   team        = pagerduty_team.modernisation_platform.id
 }
-resource "pagerduty_event_orchestration_integration" "delius_mis_non_prod" {
+resource "pagerduty_event_orchestration_integration" "delius_mis_non_prod_integration" {
   event_orchestration = pagerduty_event_orchestration.delius_mis_non_prod_integration.id
   label               = "delius_mis_non_prod development"
 }
@@ -1810,7 +1810,7 @@ resource "pagerduty_event_orchestration" "cdpt_ifs_cloudwatch_integration" {
   team        = pagerduty_team.modernisation_platform_members.id
 }
 
-resource "pagerduty_event_orchestration_integration" "cdpt_ifs_cloudwatch" {
+resource "pagerduty_event_orchestration_integration" "cdpt_ifs_cloudwatch_integration" {
   event_orchestration = pagerduty_event_orchestration.cdpt_ifs_cloudwatch_integration.id
   label               = "delius_mis_non_prod development"
 }
