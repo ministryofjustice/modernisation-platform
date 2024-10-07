@@ -452,15 +452,20 @@ resource "pagerduty_service" "delius_mis_non_prod" {
   alert_creation          = "create_alerts_and_incidents"
 }
 
-resource "pagerduty_event_orchestration" "delius_mis_non_prod_integration" {
-  name        = "delius_mis_non_prod integration"
-  description = "Integrates delius_mis_non_prod account with PagerDuty"
-  team        = pagerduty_team.modernisation_platform.id
+# resource "pagerduty_event_orchestration" "delius_mis_non_prod" {
+#   name        = "delius_mis_non_prod integration"
+#   description = "Integrates delius_mis_non_prod account with PagerDuty"
+#   team        = pagerduty_team.modernisation_platform.id
+# }
+resource "pagerduty_service_integration" "delius_mis_non_prod" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.delius_mis_non_prod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
 }
-resource "pagerduty_event_orchestration_integration" "delius_mis_non_prod_integration" {
-  event_orchestration = pagerduty_event_orchestration.delius_mis_non_prod_integration.id
-  label               = "delius_mis_non_prod development"
-}
+# resource "pagerduty_event_orchestration_integration" "delius_mis_non_prod_integration" {
+#   event_orchestration = pagerduty_event_orchestration.delius_mis_non_prod.id
+#   label               = "delius_mis_non_prod development"
+# }
 resource "pagerduty_slack_connection" "delius_mis_non_prod" {
   source_id         = pagerduty_service.delius_mis_non_prod.id
   source_type       = "service_reference"
@@ -1804,15 +1809,15 @@ resource "pagerduty_service" "cdpt-ifs" {
   alert_creation          = "create_alerts_and_incidents"
 }
 
-resource "pagerduty_event_orchestration" "cdpt_ifs_cloudwatch_integration" {
-  name        = "cdpt_ifs_cloudwatch orchestration integration"
+resource "pagerduty_event_orchestration" "cdpt_ifs_cloudwatch" {
+  name        = "cdpt_ifs_cloudwatch orchestration"
   description = "Integrates with PagerDuty"
   team        = pagerduty_team.modernisation_platform_members.id
 }
 
 resource "pagerduty_event_orchestration_integration" "cdpt_ifs_cloudwatch_integration" {
-  event_orchestration = pagerduty_event_orchestration.cdpt_ifs_cloudwatch_integration.id
-  label               = "delius_mis_non_prod development"
+  event_orchestration = pagerduty_event_orchestration.cdpt_ifs_cloudwatch.id
+  label               = "CDPT IFS CloudWatch Integration"
 }
 
 resource "pagerduty_slack_connection" "ifs_slack" {
