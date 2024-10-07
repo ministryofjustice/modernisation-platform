@@ -129,5 +129,5 @@ deny contains msg if {
 
 deny contains msg if {
   not has_field(input,"critical-national-infastructure")
-  msg := sprintf("`v` is missing the `critical-national-infastructure` key", [input.filename])
+  msg := sprintf("is missing the `critical-national-infastructure` field", [input.filename])
 }
