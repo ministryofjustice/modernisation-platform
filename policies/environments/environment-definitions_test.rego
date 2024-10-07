@@ -28,7 +28,7 @@ test_empty_values if {
   deny["`example.json` is missing the `application` tag"] with input as { "filename": "example.json", "tags": {"application": ""} }
   deny["`example.json` is missing the `business-unit` tag"] with input as { "filename": "example.json", "tags": {"business-unit": ""} }
   deny["`example.json` is missing the `owner` tag"] with input as { "filename": "example.json", "tags": {"owner": ""} }
-  deny["`example.json` is missing boolen for `critical-national-infastructure` ] with input as {"filename": "example.json", "critical-national-infastructure": ""}
+  deny["`example.json` is missing boolen for `critical-national-infastructure` "] with input as {"filename": "example.json", "critical-national-infastructure": ""}
 }
 
 test_unexpected_business_units if {
