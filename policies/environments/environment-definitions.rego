@@ -128,6 +128,12 @@ deny contains msg if {
 }
 
 deny contains msg if {
-  not has_field(input,"critical-national-infastructure")
-  msg := sprintf("is missing the `critical-national-infastructure` field", [input.filename])
+    not has_field(input,"critical-national-infastructure")
+    msg := sprintf("`%v` is missing the `critical-national-infastructure` field", [input.filename])
+}
+
+deny contains msg if {
+    value := input["critical-national-infastructure"]
+    not value in ["Yes", "No"]
+    msg := sprintf("`%v` has invalid critical-national-infastructure value: got `%v`, expected 'Yes' or 'No'", [input.filename, value])
 }
