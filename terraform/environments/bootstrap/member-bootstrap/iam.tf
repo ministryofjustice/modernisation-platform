@@ -161,6 +161,7 @@ data "aws_iam_policy_document" "member-access" {
       "shield:*",
       "signer:TagResource",
       "signer:GetSigningPlatform",
+      "signer:GetSigningProfile",
       "signer:PutSigningProfile",
       "signer:UntagResource",
       "sns:*",
