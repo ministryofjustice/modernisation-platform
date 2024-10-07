@@ -1804,10 +1804,15 @@ resource "pagerduty_service" "cdpt-ifs" {
   alert_creation          = "create_alerts_and_incidents"
 }
 
-resource "pagerduty_event_orchestration" "cdpt_ifs_cloudwatch" {
+resource "pagerduty_event_orchestration" "cdpt_ifs_cloudwatch_integration" {
   name        = "cdpt_ifs_cloudwatch orchestration integration"
   description = "Integrates with PagerDuty"
   team        = pagerduty_team.modernisation_platform_members.id
+}
+
+resource "pagerduty_event_orchestration_integration" "cdpt_ifs_cloudwatch" {
+  event_orchestration = pagerduty_event_orchestration.cdpt_ifs_cloudwatch_integration.id
+  label               = "delius_mis_non_prod development"
 }
 
 resource "pagerduty_slack_connection" "ifs_slack" {
