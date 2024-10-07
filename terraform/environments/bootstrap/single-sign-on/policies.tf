@@ -234,6 +234,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "eks:Describe*",
       "eks:List*",
       "elasticloadbalancing:modifyListener",
+      "elasticloadbalancing:AddListenerCertificates",
       "events:DisableRule",
       "events:EnableRule",
       "identitystore:DescribeUser",
