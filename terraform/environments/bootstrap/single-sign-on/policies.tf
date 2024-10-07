@@ -233,6 +233,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "eks:AccessKubernetesApi",
       "eks:Describe*",
       "eks:List*",
+
       "events:DisableRule",
       "events:EnableRule",
       "identitystore:DescribeUser",
