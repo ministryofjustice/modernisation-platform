@@ -22,5 +22,6 @@
     "ministryofjustice/modernisation-platform",
     "ministryofjustice/modernisation-platform-configuration-management"
   ],
-  "go-live-date": ""
+  "go-live-date": "",
+  "critical-national-infastructure": "No"
 }
