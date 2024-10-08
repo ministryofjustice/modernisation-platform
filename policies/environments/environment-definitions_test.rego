@@ -65,7 +65,7 @@ test_critical_national_infrastructure_empty if {
     }
     
     count(denial) > 0
-    denial[msg]
+    some msg in denial
     msg == "`example.json` is missing boolean for `critical-national-infrastructure`"
 }
 
@@ -76,7 +76,7 @@ test_critical_national_infrastructure_invalid if {
     }
     
     count(denial) > 0
-    denial[msg]
+    some msg in denial
     msg == "`example.json` critical-national-infrastructure must be either 'Yes' or 'No'"
 }
 
