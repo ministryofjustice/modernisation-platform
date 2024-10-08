@@ -73,7 +73,7 @@ test_critical_national_infastructure_invalid if {
 }
 
 test_critical_national_infastructure_valid if {
-    not deny[_] with input as {
+    denials := deny with input as {
         "filename": "example.json",
         "critical-national-infastructure": "Yes",
         "environments": [{"name": "development"}],
@@ -83,4 +83,6 @@ test_critical_national_infastructure_valid if {
             "owner": "owner@example.com"
         }
     }
+    
+    count(denials) == 0
 }
