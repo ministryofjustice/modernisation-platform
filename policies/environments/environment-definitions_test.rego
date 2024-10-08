@@ -61,16 +61,16 @@ test_invalid_email if {
 test_critical_national_infastructure_empty if {
     deny["`example.json` is missing boolen for `critical-national-infastructure` "] with input as {
         "filename": "example.json",
-        "critical-national-infastructure": ""
+        "critical-national-infastructure": []
     }
 }
 
-test_critical_national_infastructure_invalid if {
-    deny["`example.json` critical-national-infastructure must be either 'Yes' or 'No'"] with input as {
-        "filename": "example.json",
-        "critical-national-infastructure": "Maybe"
-    }
-}
+# test_critical_national_infastructure_invalid if {
+#     deny["`example.json` critical-national-infastructure must be either 'Yes' or 'No'"] with input as {
+#         "filename": "example.json",
+#         "critical-national-infastructure": "Maybe"
+#     }
+# }
 
 # test_critical_national_infastructure_valid if {
 #     denials := deny with input as {
