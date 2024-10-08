@@ -58,20 +58,42 @@ test_invalid_email if {
   deny["`example.json` infrastructure-support value is not a valid email address"] with input as { "filename": "example.json", "tags": { "infrastructure-support": "not-a-valid-email-address" } }
 }
 
-deny[msg] {
-    input["critical-national-infrastructure"] == ""
-    msg := sprintf("`%v` is missing boolean for `critical-national-infrastructure`", [input.filename])
+test_critical_national_infrastructure_empty if {
+    denial := deny with input as {
+        "filename": "example.json",
+        "critical-national-infrastructure": ""
+    }
+    
+    count(denial) > 0
+    denial[msg]
+    msg == "`example.json` is missing boolean for `critical-national-infrastructure`"
 }
 
-deny[msg] {
-    value := input["critical-national-infrastructure"]
-    value != ""
-    not valid_cni_value(value)
-    msg := sprintf("`%v` critical-national-infrastructure must be either 'Yes' or 'No'", [input.filename])
+test_critical_national_infrastructure_invalid if {
+    denial := deny with input as {
+        "filename": "example.json",
+        "critical-national-infrastructure": "Maybe"
+    }
+    
+    count(denial) > 0
+    denial[msg]
+    msg == "`example.json` critical-national-infrastructure must be either 'Yes' or 'No'"
 }
 
-valid_cni_value(value) {
-    value == "Yes"
-} else {
-    value == "No"
+test_critical_national_infrastructure_valid_yes if {
+    denial := deny with input as {
+        "filename": "example.json",
+        "critical-national-infrastructure": "Yes"
+    }
+    
+    count(denial) == 0
+}
+
+test_critical_national_infrastructure_valid_no if {
+    denial := deny with input as {
+        "filename": "example.json",
+        "critical-national-infrastructure": "No"
+    }
+    
+    count(denial) == 0
 }
