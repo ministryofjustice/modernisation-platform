@@ -59,10 +59,7 @@ test_invalid_email if {
 }
 
 test_critical_national_infastructure_empty if {
-    deny["`example.json` is missing boolen for `critical-national-infastructure` "] with input as {
-        "filename": "example.json",
-        "critical-national-infastructure": []
-    }
+    deny["`example.json` is missing input for `critical-national-infastructure` "] with input as { "filename": "example.json", "critical-national-infastructure": [] }
 }
 
 # test_critical_national_infastructure_invalid if {
