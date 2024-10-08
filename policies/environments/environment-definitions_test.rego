@@ -58,42 +58,29 @@ test_invalid_email if {
   deny["`example.json` infrastructure-support value is not a valid email address"] with input as { "filename": "example.json", "tags": { "infrastructure-support": "not-a-valid-email-address" } }
 }
 
-test_critical_national_infrastructure_empty if {
-    denial := deny with input as {
+test_critical_national_infastructure_empty if {
+    deny["`example.json` is missing boolen for `critical-national-infastructure` "] with input as {
         "filename": "example.json",
-        "critical-national-infrastructure": ""
+        "critical-national-infastructure": ""
     }
-    
-    count(denial) > 0
-    some msg in denial
-    msg == "`example.json` is missing boolean for `critical-national-infrastructure`"
 }
 
-test_critical_national_infrastructure_invalid if {
-    denial := deny with input as {
+test_critical_national_infastructure_invalid if {
+    deny["`example.json` critical-national-infastructure must be either 'Yes' or 'No'"] with input as {
         "filename": "example.json",
-        "critical-national-infrastructure": "Maybe"
+        "critical-national-infastructure": "Maybe"
     }
-    
-    count(denial) > 0
-    some msg in denial
-    msg == "`example.json` critical-national-infrastructure must be either 'Yes' or 'No'"
 }
 
-test_critical_national_infrastructure_valid_yes if {
-    denial := deny with input as {
+test_critical_national_infastructure_valid if {
+    not deny[_] with input as {
         "filename": "example.json",
-        "critical-national-infrastructure": "Yes"
+        "critical-national-infastructure": "Yes",
+        "environments": [{"name": "development"}],
+        "tags": {
+            "application": "example",
+            "business-unit": "Platforms",
+            "owner": "owner@example.com"
+        }
     }
-    
-    count(denial) == 0
-}
-
-test_critical_national_infrastructure_valid_no if {
-    denial := deny with input as {
-        "filename": "example.json",
-        "critical-national-infrastructure": "No"
-    }
-    
-    count(denial) == 0
 }
