@@ -28,7 +28,7 @@ resource "aws_route53_resolver_query_log_config_association" "core_logging" {
 }
 
 module "stream_firewall_logs" {
-  source                     = "github.com/ministryofjustice/modernisation-platform-terraform-aws-data-firehose?ref=fe5220c39053d52e33ef6feeec0245d65a8157f3"
+  source                     = "github.com/ministryofjustice/modernisation-platform-terraform-aws-data-firehose?ref=cebe39c438390ffb5355827ec9469cfe9b09c22c" # v1.2.1
   cloudwatch_log_group_names = [module.vpc_inspection["live_data"].fw_cloudwatch_name, aws_cloudwatch_log_group.external_inspection.name]
   destination_http_endpoint  = data.aws_ssm_parameter.cortex_xsiam_endpoint.value
   tags                       = local.tags
