@@ -57,3 +57,29 @@ test_unexpected_nuke if {
 test_invalid_email if {
   deny["`example.json` infrastructure-support value is not a valid email address"] with input as { "filename": "example.json", "tags": { "infrastructure-support": "not-a-valid-email-address" } }
 }
+
+test_critical_national_infastructure_empty if {
+    deny["`example.json` is missing input for `critical-national-infastructure` "] with input as { "filename": "example.json", "critical-national-infastructure": [] }
+}
+
+# test_critical_national_infastructure_invalid if {
+#     deny["`example.json` critical-national-infastructure must be either 'Yes' or 'No'"] with input as {
+#         "filename": "example.json",
+#         "critical-national-infastructure": "Maybe"
+#     }
+# }
+
+# test_critical_national_infastructure_valid if {
+#     denials := deny with input as {
+#         "filename": "example.json",
+#         "critical-national-infastructure": "Yes",
+#         "environments": [{"name": "development"}],
+#         "tags": {
+#             "application": "example",
+#             "business-unit": "Platforms",
+#             "owner": "owner@example.com"
+#         }
+#     }
+    
+#     count(denials) == 0
+# }
