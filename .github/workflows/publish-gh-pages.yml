@@ -32,7 +32,7 @@ jobs:
         run: |
           /scripts/deploy.sh
       - name: Upload artifact to be published
-        uses: actions/upload-artifact@604373da6381bf24206979c74d06a550515601b9 # v3.1.0
+        uses: actions/upload-artifact@84480863f228bb9747b473957fcc9e309aa96097 # v3.1.0
         with:
           name: github-pages
           path: artifact.tar
