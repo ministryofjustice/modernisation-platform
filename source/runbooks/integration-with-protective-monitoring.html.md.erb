@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
-title: Sharing of Platform Operational Data with Security Operations via AWS Data Firehose
-last_reviewed_on: 2024-06-13
+title: Platform logging integration with Cortex XSIAM
+last_reviewed_on: 2024-10-09
 review_in: 6 months
 ---
 
@@ -18,32 +18,35 @@ review_in: 6 months
 
 ## Introduction
 
-The Modernisation Platform shares data from a number of sources with the Security Operations team's Cortex Xsiam platform for purpose of the protective monitoring of the platform and the applications hosted on it.
+The Modernisation Platform shares data  with the Security Operations Cortex XSIAM application for purpose of the protective monitoring.
 
 ## Categories of data shared with Security Operations
 
-The data is shared using AWS Data Firehose for the following categories of data:
+The following data is collected for Cortex XSIAM consumption:
+- `core-logging` Aggregated Cloudtrail log data from all Modernisation Platform accounts.
 
-- Managed member account VPC Flow Log Data via cloudwatch logs. 
-- Network firewall inspection log data for live, non-live and external.
-- VPC flow log data for the three network firewall vpcs.
-- VPC flow log data for core-shared-services, core-logging and core-security.
+- `core-network-services` Network Firewall `alert` logs.
 
-One exception is Cloudtrail log data in S3 held in the core-logging account. This is accessed by a Cortex Xsiam plugin for S3 using SQS that has events published via an Event Notification resource. The plugin uses an IAM user account to access the core-logging account.
+- `core-vpc-production` Route53 Resolver Query Log data. 
+- `core-*` Route53 Resolver Query Log data `live_data` VPCs.
 
-## Terraform Source
+- `core-network-services` VPC Flow Log data for the `external_inspection` VPC.
+- `core-vpc-production` VPC Flow Log data. 
+- `core-*` VPC Flow Log data for `live_data` VPCs.
 
-The terraform for these Data Firehose & associated resources can be found here:
+## Log delivery methods
 
-- Managed member account VPC flow log data - https://github.com/ministryofjustice/modernisation-platform/blob/b629292a791bd8ce99b6bff6e0ddd888953cb76a/terraform/environments/core-vpc/vpc.tf#L85
+The Cortex XSIAM application consumes data using S3 as a preferential source from the following:
+- VPC Flow Log data is pulled from the `core-logging-vpc-flow-logs` S3 bucket in the `core-logging` account.
+- Route 53 Resolver Query Log data is pulled from the `core-logging-r53-resolver-logs` S3 bucket in the `core-logging` account.
+- Cloudtrail log data is pulled from the `modernisation-platform-logs-cloudtrail` S3 bucket in the `core-logging` account.
 
-- Cloudtrail log data - https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/sqs.tf
-
-Each Data Firehose resource has an endpoint & key that is obtained from a common AWS Secrets Manager resource held in the Modernisation Platform account called "xsiam_secrets" for vpc flow logs, firewall logs and r53 resolver logs. 
+The Cortex XSIAM application receives Network Firewall `alert` logs by way of an Amazon Data Stream configured in the `core-network-services` account.
 
 ## Known Maintenance Requirements
 
-- The user access key for the IAM account needs to be rotated every 6 months and the new value shared with the SecOps team. See the runbook page for [Rotating Secrets](rotating-secrets.html) for further information.
+- While an access key and secret key are currently in use, we have prepared an AWS IAM role that the Cortex application can assume so that we can retire the keys.
+- This role - `cortex_xsiam*` - is available in the `core-logging` account and has the same IAM policy as the `cortex_xsiam` user.
 
 ## Known Contacts:
 
