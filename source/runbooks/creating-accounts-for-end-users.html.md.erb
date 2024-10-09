@@ -101,7 +101,7 @@ If the environment is being created for an account type of member-unrestricted i
 
 > Note - These PRs are only created the first time an environment for an application is created, eg the first time you create a new application.json file. If you add to an existing environment the PRs will not be created.
 
-> The new-environment workflow may fail if the account alias is already in use. If this happens, add the environment name to the [skip-alias local](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/locals.tf#L30). Merging this PR will run the required jobs again.
+> The new-environment workflow may fail if the account alias is already in use. If this happens, add the environment name to the [skip-alias local](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/member-bootstrap/locals.tf#L57). Merging this PR will run the required jobs again.
 
 #### 5. Merge the pull request created in the modernisation-platform repo (step 4.1)
 
