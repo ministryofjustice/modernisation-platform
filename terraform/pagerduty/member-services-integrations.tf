@@ -1958,13 +1958,15 @@ resource "pagerduty_service" "services" {
 }
 resource "pagerduty_service_integration" "integrations" {
   for_each = pagerduty_service.services
-  name     = data.pagerduty_vendor.cloudwatch.name
-  service  = each.value.id
-  vendor   = data.pagerduty_vendor.cloudwatch.id
+
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = each.value.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
 resource "pagerduty_slack_connection" "connections" {
-  for_each          = local.services
+  for_each = local.services
+
   source_id         = pagerduty_service.services[each.key].id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
@@ -1977,10 +1979,8 @@ resource "pagerduty_slack_connection" "connections" {
 }
 
 resource "pagerduty_event_orchestration_service" "default" {
-  for_each = {
-    for k, v in pagerduty_service.services : k => v
-    if k != "corporate-staff-rostering-preproduction"
-  }
+  for_each = pagerduty_service.services
+
   service                                = each.value.id
   enable_event_orchestration_for_service = true
   set {
@@ -1989,189 +1989,6 @@ resource "pagerduty_event_orchestration_service" "default" {
       label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
       actions {
         priority = data.pagerduty_priority.p5.id
-      }
-    }
-  }
-  catch_all {
-    actions {}
-  }
-}
-
-resource "pagerduty_event_orchestration_service" "corporate-staff-rostering-preproduction" {
-  count                                  = contains(keys(pagerduty_service.services), "corporate-staff-rostering-preproduction") ? 1 : 0
-  service                                = pagerduty_service.services["corporate-staff-rostering-preproduction"].id
-  enable_event_orchestration_for_service = true
-  set {
-    id = "start"
-    rule {
-      label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
-      actions {
-        priority = data.pagerduty_priority.p5.id
-        route_to = "check-trainab-http-endpoint"
-      }
-    }
-  }
-  set {
-    id = "check-trainab-http-endpoint"
-    rule {
-      label = "Route trainab-http- events to Weekend check"
-      condition {
-        expression = "event.summary matches regex '^trainab-http-'"
-      }
-      actions {
-        route_to = "weekend-check"
-      }
-    }
-  }
-  set {
-    id = "weekend-check"
-    rule {
-      label = "Check if it's Saturday after 05:00 UTC"
-      condition {
-        expression = "now in Sat 05:00:00 to 23:59:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Sunday"
-      condition {
-        expression = "now in Sun 00:00:00 to 23:59:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's Monday before 06:05 UTC"
-      condition {
-        expression = "now in Mon 00:00:00 to 06:04:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-  }
-  catch_all {
-    actions {}
-  }
-}
-
-resource "pagerduty_event_orchestration_service" "hmpps-domain-services-test" {
-  count                                  = contains(keys(pagerduty_service.services), "hmpps-domain-services-test") ? 1 : 0
-  service                                = pagerduty_service.services["hmpps-domain-services-test"].id
-  enable_event_orchestration_for_service = true
-  set {
-    id = "start"
-    rule {
-      label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
-      actions {
-        priority = data.pagerduty_priority.p5.id
-        route_to = "filter-lb-alarms"
-      }
-    }
-  }
-  set {
-    id = "filter-lb-alarms"
-    rule {
-      label = "Route public-https-test-rdgw- events to time check"
-      condition {
-        expression = "event.summary matches regex '^public-https-test-rdgw-'"
-      }
-      actions {
-        route_to = "weekend-and-overnite-check"
-      }
-    }
-  }
-  set {
-    id = "weekend-and-overnite-check"
-    rule {
-      label = "Check if it's Saturday or Sunday"
-      condition {
-        expression = "now in Sat,Sun 00:00:00 to 23:59:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's during the week before 05:05 UTC"
-      condition {
-        expression = "now in Mon,Tue,Wed,Thu,Fri 00:00:00 to 05:04:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's during the week after 20:10 UTC"
-      condition {
-        expression = "now in Mon,Tue,Wed,Thu,Fri 20:10:00 to 23:59:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-  }
-  catch_all {
-    actions {}
-  }
-}
-
-resource "pagerduty_event_orchestration_service" "hmpps-domain-services-preproduction" {
-  count                                  = contains(keys(pagerduty_service.services), "hmpps-domain-services-preproduction") ? 1 : 0
-  service                                = pagerduty_service.services["hmpps-domain-services-preproduction"].id
-  enable_event_orchestration_for_service = true
-  set {
-    id = "start"
-    rule {
-      label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
-      actions {
-        priority = data.pagerduty_priority.p5.id
-        route_to = "filter-lb-alarms"
-      }
-    }
-  }
-  set {
-    id = "filter-lb-alarms"
-    rule {
-      label = "Route public-https-pp- events to time check"
-      condition {
-        expression = "event.summary matches regex '^public-https-pp-'"
-      }
-      actions {
-        route_to = "weekend-and-overnite-check"
-      }
-    }
-  }
-  set {
-    id = "weekend-and-overnite-check"
-    rule {
-      label = "Check if it's Saturday or Sunday"
-      condition {
-        expression = "now in Sat,Sun 00:00:00 to 23:59:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's during the week before 05:05 UTC"
-      condition {
-        expression = "now in Mon,Tue,Wed,Thu,Fri 00:00:00 to 05:04:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
-      }
-    }
-    rule {
-      label = "Check if it's during the week after 20:10 UTC"
-      condition {
-        expression = "now in Mon,Tue,Wed,Thu,Fri 20:10:00 to 23:59:59 Etc/UTC"
-      }
-      actions {
-        suppress = true
       }
     }
   }
@@ -2283,4 +2100,3 @@ resource "pagerduty_slack_connection" "delius_oracle_nonprod_connection" {
     priorities = ["*"]
   }
 }
-
