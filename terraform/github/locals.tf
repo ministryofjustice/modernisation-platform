@@ -38,7 +38,6 @@ locals {
   # GitHub usernames for engineers who need full AWS access
   engineers = [
     "davidkelliott",
-    "stevelinden",
     "markgov",
     "dms1981", # David Sibley
     "ep-93",   # Edward Proctor
