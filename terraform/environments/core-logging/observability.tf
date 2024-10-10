@@ -282,6 +282,11 @@ resource "aws_kms_key" "moj-cur-reports" {
   tags                = local.tags
 }
 
+resource "aws_kms_alias" "moj-cur-reports" {
+  name          = "alias/moj-cur-reports-key"
+  target_key_id = aws_kms_key.moj-cur-reports.id
+}
+
 data "aws_iam_policy_document" "moj-cur-reports_kms" {
   #checkov:skip=CKV_AWS_109:"Policy is directly related to the resource"
   #checkov:skip=CKV_AWS_111:"Policy is directly related to the resource"
