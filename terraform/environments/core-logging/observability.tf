@@ -178,7 +178,7 @@ data "aws_iam_policy_document" "moj_cur_bucket_replication_policy" {
       type = "AWS"
       identifiers = [
         "arn:aws:iam::624384546187:root",
-        "arn:aws:iam::295814833350:root"
+        "arn:aws:iam::295814833350:role/moj-cur-reports-replication-role"
       ]
     }
     actions = [
@@ -272,4 +272,54 @@ data "aws_iam_policy_document" "additional_athena_policy" {
 resource "aws_iam_policy" "additional_athena_policy" {
   name   = "additional-athena-policy"
   policy = data.aws_iam_policy_document.additional_athena_policy.json
+}
+
+resource "aws_kms_key" "moj-cur-reports" {
+  description         = "KMS key used to encrypt moj-cur-reports"
+  enable_key_rotation = true
+  multi_region        = true
+  policy              = data.aws_iam_policy_document.moj-cur-reports_kms.json
+  tags                = local.tags
+}
+
+data "aws_iam_policy_document" "moj-cur-reports_kms" {
+  #checkov:skip=CKV_AWS_109:"Policy is directly related to the resource"
+  #checkov:skip=CKV_AWS_111:"Policy is directly related to the resource"
+  #checkov:skip=CKV_AWS_356:"Policy is directly related to the resource"
+  statement {
+    sid    = "Allow management access of the key to the logging account"
+    effect = "Allow"
+    actions = [
+      "kms:*"
+    ]
+    resources = [
+      "*"
+    ]
+    principals {
+      type = "AWS"
+      identifiers = [
+        data.aws_caller_identity.current.account_id
+      ]
+    }
+  }
+  statement {
+    sid    = "Allow AWS S3 service to use key"
+    effect = "Allow"
+    actions = [
+      "kms:Encrypt*",
+      "kms:Decrypt*",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:Describe*"
+    ]
+    resources = [
+      "*"
+    ]
+    principals {
+      type = "Service"
+      identifiers = [
+        "s3.amazonaws.com"
+      ]
+    }
+  }
 }
