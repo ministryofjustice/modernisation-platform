@@ -43,11 +43,6 @@ The Cortex XSIAM application consumes data using S3 as a preferential source fro
 
 The Cortex XSIAM application receives Network Firewall `alert` logs by way of an Amazon Data Stream configured in the `core-network-services` account.
 
-## Known Maintenance Requirements
-
-- While an access key and secret key are currently in use, we have prepared an AWS IAM role that the Cortex application can assume so that we can retire the keys.
-- This role - `cortex_xsiam*` - is available in the `core-logging` account and has the same IAM policy as the `cortex_xsiam` user.
-
 ## Known Contacts:
 
 - Leonardo Marini - Leonardo.Marini@justice.gov.uk. Contractor who implements the Cortex Xsiam endpoints that receive the Firehose transfers. (https://www.paloaltonetworks.com/cortex/cortex-xsiam)

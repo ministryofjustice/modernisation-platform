@@ -224,22 +224,10 @@ data "aws_kms_alias" "secrets" {
   name     = "alias/secrets_key"
 }
 
-resource "aws_iam_user" "cortex_xsiam_user" {
-  #checkov:skip=CKV_AWS_273: This has been agreed by the TA that for this purpose an IAM user account can be used.
-  name = "cortex_xsiam_user"
-  tags = local.tags
-}
-
-resource "aws_iam_policy" "cortex_user_policy" {
+resource "aws_iam_policy" "cortex_xsiam_policy" {
   name        = "cortex-user-policy"
   description = "Allows the access to the created SQS queue"
   policy      = data.aws_iam_policy_document.cortex_user_policy.json
-}
-
-resource "aws_iam_user_policy_attachment" "sqs_queue_read_policy_attachment" {
-  #checkov:skip=CKV_AWS_40: User account only has a single purpose so no role or group is needed
-  user       = aws_iam_user.cortex_xsiam_user.name
-  policy_arn = aws_iam_policy.cortex_user_policy.arn
 }
 
 resource "aws_iam_role" "cortex_xsiam_role" {
@@ -250,6 +238,6 @@ resource "aws_iam_role" "cortex_xsiam_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "cortex_xsiam_role" {
-  policy_arn = aws_iam_policy.cortex_user_policy.arn
+  policy_arn = aws_iam_policy.cortex_xsiam_policy.arn
   role       = aws_iam_role.cortex_xsiam_role.name
 }
