@@ -38,7 +38,7 @@ This workflow should detect that the account no longer exists and propose to rec
 
 This can be achieved by triggering core-network-services deployment workflow run, which can be [found here](https://github.com/ministryofjustice/modernisation-platform/actions/runs/10073457872/workflow).
 Alternatively, this can be done as manual deployment: 
-- Navigate to the `modernisation-platfom repo` and change to the `core-network-services` directory
+- Navigate to the `modernisation-platform repo` and change to the `core-network-services` directory
 - Run `terraform plan` in the production workspace
 - Using admin credentials, execute `terraform apply`
 
@@ -51,7 +51,7 @@ As the core network services account holds the networking for the platform toget
 The Egress VPC is primarily used for egress traffic to the Internet and is composed of public/private subnets in up to three availability zones (AZs).
 
   1. Go to VPC -> Endpoints, you should expect `live_data`, `non_live_data` and `external_inspection`.
-  2. NAT gateways, there should be multiple listed inlcuding `live_data-public-eu-west` and `non_live_data-public` all regions.
+  2. NAT gateways, there should be multiple listed including `live_data-public-eu-west` and `non_live_data-public` all regions.
 
 ### Inspection VPC (with Network Firewall)
 
