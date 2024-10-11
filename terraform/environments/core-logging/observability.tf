@@ -183,14 +183,32 @@ data "aws_iam_policy_document" "moj_cur_bucket_replication_policy" {
       ]
     }
     actions = [
-      "s3:ReplicateObject",
-      "s3:ObjectOwnerOverrideToBucketOwner",
+      "s3:GetBucketVersioning",
       "s3:GetObjectVersionTagging",
-      "s3:ReplicateTags",
-      "s3:ReplicateDelete"
+      "s3:List*",
+      "s3:ObjectOwnerOverrideToBucketOwner",
+      "s3:PutBucketVersioning",
+      "s3:ReplicateDelete",
+      "s3:ReplicateObject",
+      "s3:ReplicateTags"
     ]
     resources = ["${module.s3-moj-cur-reports-modplatform.bucket.arn}/*"]
   }
+  statement {
+    sid    = "AllowS3ReplicationSourceRoleToUseTheKey"
+    effect = "Allow"
+    principals {
+      type = "AWS"
+        identifiers = [
+          "arn:aws:iam::295814833350:role/moj-cur-reports-replication-role"
+        ]
+    }
+    actions = [
+      "kms:GenerateDataKey", 
+      "kms:Encrypt"
+    ]
+    resources = "*"
+    }
 }
 
 # Athena Workgroup for CUR Reports
