@@ -172,24 +172,44 @@ module "s3-moj-cur-reports-modplatform" {
 }
 
 data "aws_iam_policy_document" "moj_cur_bucket_replication_policy" {
+#checkov:skip=CKV_AWS_111:"Policy is directly related to the resource"
+#checkov:skip=CKV_AWS_356:"Policy is directly related to the resource"
   statement {
     sid    = "ReplicationPermissions"
     effect = "Allow"
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::624384546187:root",
-        "arn:aws:iam::295814833350:role/moj-cur-reports-replication-role"
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root",
+        "arn:aws:iam::${data.aws_organizations_organization.root_account.master_account_id}:role/moj-cur-reports-replication-role"
       ]
     }
     actions = [
-      "s3:ReplicateObject",
-      "s3:ObjectOwnerOverrideToBucketOwner",
+      "s3:GetBucketVersioning",
       "s3:GetObjectVersionTagging",
-      "s3:ReplicateTags",
-      "s3:ReplicateDelete"
+      "s3:List*",
+      "s3:ObjectOwnerOverrideToBucketOwner",
+      "s3:PutBucketVersioning",
+      "s3:ReplicateDelete",
+      "s3:ReplicateObject",
+      "s3:ReplicateTags"
     ]
     resources = ["${module.s3-moj-cur-reports-modplatform.bucket.arn}/*"]
+  }
+  statement {
+    sid    = "AllowS3ReplicationSourceRoleToUseTheKey"
+    effect = "Allow"
+    principals {
+      type = "AWS"
+        identifiers = [
+          "arn:aws:iam::${data.aws_organizations_organization.root_account.master_account_id}:role/moj-cur-reports-replication-role"
+        ]
+    }
+    actions = [
+      "kms:GenerateDataKey", 
+      "kms:Encrypt"
+    ]
+    resources = ["*"]
   }
 }
 
