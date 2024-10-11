@@ -172,6 +172,8 @@ module "s3-moj-cur-reports-modplatform" {
 }
 
 data "aws_iam_policy_document" "moj_cur_bucket_replication_policy" {
+#checkov:skip=CKV_AWS_111:"Policy is directly related to the resource"
+#checkov:skip=CKV_AWS_356:"Policy is directly related to the resource"
   statement {
     sid    = "ReplicationPermissions"
     effect = "Allow"
