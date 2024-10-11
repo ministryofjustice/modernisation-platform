@@ -207,8 +207,8 @@ data "aws_iam_policy_document" "moj_cur_bucket_replication_policy" {
       "kms:GenerateDataKey", 
       "kms:Encrypt"
     ]
-    resources = "*"
-    }
+    resources = ["*"]
+  }
 }
 
 # Athena Workgroup for CUR Reports
