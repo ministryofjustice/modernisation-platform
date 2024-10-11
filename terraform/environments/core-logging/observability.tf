@@ -180,8 +180,8 @@ data "aws_iam_policy_document" "moj_cur_bucket_replication_policy" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::624384546187:root",
-        "arn:aws:iam::295814833350:role/moj-cur-reports-replication-role"
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root",
+        "arn:aws:iam::${data.aws_organizations_organization.root_account.master_account_id}:role/moj-cur-reports-replication-role"
       ]
     }
     actions = [
@@ -202,7 +202,7 @@ data "aws_iam_policy_document" "moj_cur_bucket_replication_policy" {
     principals {
       type = "AWS"
         identifiers = [
-          "arn:aws:iam::295814833350:role/moj-cur-reports-replication-role"
+          "arn:aws:iam::${data.aws_organizations_organization.root_account.master_account_id}:role/moj-cur-reports-replication-role"
         ]
     }
     actions = [
