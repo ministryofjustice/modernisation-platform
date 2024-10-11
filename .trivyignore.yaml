@@ -39,6 +39,7 @@ vulnerabilities:
 
 misconfigurations:
 - id: AVD-GIT-0001
+- id: AVD-GIT-0004
 - id: AVD-AWS-0031
 - id: AVD-AWS-0039
 - id: AVD-AWS-0057
