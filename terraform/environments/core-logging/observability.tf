@@ -121,6 +121,7 @@ module "s3-moj-cur-reports-modplatform" {
   versioning_enabled  = true
   ownership_controls  = "BucketOwnerEnforced"
   replication_enabled = false
+  custom_kms_key      = aws_kms_key.moj-cur-reports.arn
   bucket_policy       = [data.aws_iam_policy_document.moj_cur_bucket_replication_policy.json]
   providers = {
     aws.bucket-replication = aws
