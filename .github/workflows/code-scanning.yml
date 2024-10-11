@@ -54,7 +54,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Trivy vulnerability scanner in repo mode
-        uses: aquasecurity/trivy-action@a20de5420d57c4102486cdd9578b45609c99d7eb
+        uses: aquasecurity/trivy-action@5681af892cd0f4997658e2bacc62bd0a894cf564
         with:
           scan-type: 'fs'
           scanners: misconfig,vuln,secret
