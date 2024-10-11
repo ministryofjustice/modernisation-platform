@@ -172,8 +172,6 @@ module "s3-moj-cur-reports-modplatform" {
 }
 
 data "aws_iam_policy_document" "moj_cur_bucket_replication_policy" {
-#checkov:skip=CKV_AWS_111:"Policy is directly related to the resource"
-#checkov:skip=CKV_AWS_356:"Policy is directly related to the resource"
   statement {
     sid    = "ReplicationPermissions"
     effect = "Allow"
@@ -195,21 +193,6 @@ data "aws_iam_policy_document" "moj_cur_bucket_replication_policy" {
       "s3:ReplicateTags"
     ]
     resources = ["${module.s3-moj-cur-reports-modplatform.bucket.arn}/*"]
-  }
-  statement {
-    sid    = "AllowS3ReplicationSourceRoleToUseTheKey"
-    effect = "Allow"
-    principals {
-      type = "AWS"
-        identifiers = [
-          "arn:aws:iam::${data.aws_organizations_organization.root_account.master_account_id}:role/moj-cur-reports-replication-role"
-        ]
-    }
-    actions = [
-      "kms:GenerateDataKey", 
-      "kms:Encrypt"
-    ]
-    resources = ["*"]
   }
 }
 
@@ -347,5 +330,20 @@ data "aws_iam_policy_document" "moj-cur-reports_kms" {
         "s3.amazonaws.com"
       ]
     }
+  }
+  statement {
+    sid    = "AllowS3ReplicationSourceRoleToUseTheKey"
+    effect = "Allow"
+    principals {
+      type = "AWS"
+        identifiers = [
+          "arn:aws:iam::${data.aws_organizations_organization.root_account.master_account_id}:role/moj-cur-reports-replication-role"
+        ]
+    }
+    actions = [
+      "kms:GenerateDataKey", 
+      "kms:Encrypt"
+    ]
+    resources = ["*"]
   }
 }
