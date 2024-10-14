@@ -339,12 +339,12 @@ data "aws_iam_policy_document" "moj-cur-reports_kms" {
     effect = "Allow"
     principals {
       type = "AWS"
-        identifiers = [
-          "arn:aws:iam::${data.aws_organizations_organization.root_account.master_account_id}:role/moj-cur-reports-replication-role"
-        ]
+      identifiers = [
+        "arn:aws:iam::${data.aws_organizations_organization.root_account.master_account_id}:role/moj-cur-reports-replication-role"
+      ]
     }
     actions = [
-      "kms:GenerateDataKey", 
+      "kms:GenerateDataKey",
       "kms:Encrypt"
     ]
     resources = ["*"]
