@@ -72,7 +72,7 @@ test_critical_national_infastructure_empty if {
 # test_critical_national_infastructure_valid if {
 #     denials := deny with input as {
 #         "filename": "example.json",
-#         "critical-national-infastructure": "Yes",
+#         "critical-national-infrastructure": "Yes",
 #         "environments": [{"name": "development"}],
 #         "tags": {
 #             "application": "example",
