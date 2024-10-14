@@ -192,7 +192,10 @@ data "aws_iam_policy_document" "moj_cur_bucket_replication_policy" {
       "s3:ReplicateObject",
       "s3:ReplicateTags"
     ]
-    resources = ["${module.s3-moj-cur-reports-modplatform.bucket.arn}/*"]
+    resources = [
+      module.s3-moj-cur-reports-modplatform.bucket.arn,
+      "${module.s3-moj-cur-reports-modplatform.bucket.arn}/*"
+    ]
   }
 }
 
