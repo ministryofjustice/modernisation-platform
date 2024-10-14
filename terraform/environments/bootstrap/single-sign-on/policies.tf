@@ -408,6 +408,8 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "glue:List*",
       "glue:BatchGetJobs",
       "glue:*Trigger",
+      "glue:TagResource",
+      "glue:UntagResource",
       "lakeformation:GetDataLakeSettings",
       "lakeformation:PutDataLakeSettings",
       "lambda:PutRuntimeManagementConfig",
