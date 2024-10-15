@@ -70,11 +70,7 @@ test_critical_national_infastructure_invalid if {
     deny_result := deny with input as test_input
     count(deny_result) > 0
     deny_message := sprintf("`%v` has invalid `critical-national-infrastructure` value: got `%v`, expected 'Yes' or 'No'", [test_input.filename, test_input["critical-national-infrastructure"]])
-    deny_result[_] == deny_message
-
-    # Add debug output
-    trace(sprintf("Deny result: %v", [deny_result]))
-    trace(sprintf("Expected deny message: %v", [deny_message]))
+    deny_message in deny_result
 }
 
 # test_critical_national_infastructure_invalid if {

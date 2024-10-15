@@ -136,7 +136,4 @@ deny contains msg if {
     value := input["critical-national-infrastructure"]
     not value in ["Yes", "No"]
     msg := sprintf("`%v` has invalid `critical-national-infrastructure` value: got `%v`, expected 'Yes' or 'No'", [input.filename, value])
-    
-    # Add debug output
-    trace(sprintf("Evaluating critical-national-infrastructure: %v", [value]))
 }
