@@ -10,6 +10,16 @@
           "nuke": "exclude"
         }
       ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "cica-copilot-llm-maintainers",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
+        }
+      ]
     }
   ],
   "tags": {
