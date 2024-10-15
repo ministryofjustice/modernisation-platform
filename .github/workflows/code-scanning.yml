@@ -39,7 +39,7 @@ jobs:
         run: tflint --disable-rule=terraform_unused_declarations --format sarif > tflint.sarif
       - name: Upload SARIF file
         if: success() || failure()
-        uses: github/codeql-action/upload-sarif@c36620d31ac7c881962c3d9dd939c40ec9434f2b # v3.26.12
+        uses: github/codeql-action/upload-sarif@f779452ac5af1c261dce0346a8f964149f49322b # v3.26.13
         with:
           sarif_file: tflint.sarif
   trivy:
@@ -64,7 +64,7 @@ jobs:
 
       - name: Upload Trivy scan results to GitHub Security tab
         if: success() || failure()
-        uses: github/codeql-action/upload-sarif@c36620d31ac7c881962c3d9dd939c40ec9434f2b # v3.26.12
+        uses: github/codeql-action/upload-sarif@f779452ac5af1c261dce0346a8f964149f49322b # v3.26.13
         with:
           sarif_file: 'trivy-results.sarif'
   checkov:
@@ -92,6 +92,6 @@ jobs:
           skip_check: CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
       - name: Upload SARIF file
         if: success() || failure()
-        uses: github/codeql-action/upload-sarif@c36620d31ac7c881962c3d9dd939c40ec9434f2b # v3.26.12
+        uses: github/codeql-action/upload-sarif@f779452ac5af1c261dce0346a8f964149f49322b # v3.26.13
         with:
           sarif_file: ./checkov.sarif
