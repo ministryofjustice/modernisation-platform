@@ -7,7 +7,7 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "sandbox",
-          "nuke": "rebuild",
+          "nuke": "exclude",
           "github_action_reviewer": "true"
         },
         {
