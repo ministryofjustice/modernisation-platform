@@ -62,35 +62,14 @@ test_critical_national_infastructure_empty if {
     deny["`example.json` is missing the `critical-national-infrastructure` field"] with input as { "filename": "example.json" }
 }
 
-test_critical_national_infastructure_invalid if {
+test_critical_national_infrastructure_invalid if {
     test_input := {
         "filename": "example.json",
         "critical-national-infrastructure": "Maybe"
     }
     deny_result := deny with input as test_input
     count(deny_result) > 0
-    deny_message := sprintf("`%v` has invalid `critical-national-infrastructure` value: got `%v`, expected 'Yes' or 'No'", [test_input.filename, test_input["critical-national-infrastructure"]])
+    deny_message := sprintf("`%v` has invalid `critical-national-infrastructure` value: got `%v`, expected a boolean (true or false)", [test_input.filename, test_input["critical-national-infrastructure"]])
     deny_message in deny_result
 }
 
-# test_critical_national_infastructure_invalid if {
-#     deny["`%v` has invalid `critical-national-infrastructure` value: got `%v`, expected 'Yes' or 'No'"] with input as {
-#         "filename": "example.json",
-#         "critical-national-infrastructure": "Maybe"
-#     }
-# }
-
-# test_critical_national_infastructure_valid if {
-#     denials := deny with input as {
-#         "filename": "example.json",
-#         "critical-national-infrastructure": "Yes",
-#         "environments": [{"name": "development"}],
-#         "tags": {
-#             "application": "example",
-#             "business-unit": "Platforms",
-#             "owner": "owner@example.com"
-#         }
-#     }
-    
-#     count(denials) == 0
-# }

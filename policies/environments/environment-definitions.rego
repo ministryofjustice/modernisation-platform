@@ -37,6 +37,9 @@ allowed_nuke := [
   "rebuild"
 ]
 
+is_boolean(x) if { x == true }
+is_boolean(x) if { x == false }
+
 deny contains msg if {
   without_filename := object.remove(input, ["filename"])
 
@@ -133,7 +136,6 @@ deny contains msg if {
 }
 
 deny contains msg if {
-    value := input["critical-national-infrastructure"]
-    not value in ["Yes", "No"]
-    msg := sprintf("`%v` has invalid `critical-national-infrastructure` value: got `%v`, expected 'Yes' or 'No'", [input.filename, value])
+    not is_boolean(input["critical-national-infrastructure"])
+    msg := sprintf("`%v` has invalid `critical-national-infrastructure` value: got `%v`, expected a boolean (true or false)", [input.filename, input["critical-national-infrastructure"]])
 }

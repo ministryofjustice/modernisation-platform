@@ -52,5 +52,5 @@
   },
   "go-live-date": "",
   "github-oidc-team-repositories": [""],
-  "critical-national-infrastructure": "No"
+  "critical-national-infrastructure": false
 }
