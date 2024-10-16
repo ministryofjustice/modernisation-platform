@@ -37,9 +37,6 @@ allowed_nuke := [
   "rebuild"
 ]
 
-is_boolean(x) if { x == true }
-is_boolean(x) if { x == false }
-
 deny contains msg if {
   without_filename := object.remove(input, ["filename"])
 
