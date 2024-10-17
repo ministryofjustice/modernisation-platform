@@ -2,18 +2,14 @@
 
 # This script generates the github issue and then notifies the owner via a call to a separate python script.
 
-# First we get the json from the output file and add the json to an environment variable.
-json_output="$(cat output.json)"
-
-# Error handling for `jq` output
-if ! jq . $json_output; then
+# Validate that the output from the previous step is valid.
+if ! jq . output.json; then
     echo "Error processing json."
     exit 1
 fi
 
-
-# Iterate through each environment
-for file in $(echo "$json_input" | jq -r '.[].file'); do
+# Iterate through each environment from the file.
+for file in $(jq -r '.[].file' "output.json"); do
 
     # For now we only test with sprinkler
     if [ "$file" == "sprinkler" ]; then
@@ -46,4 +42,4 @@ for file in $(echo "$json_input" | jq -r '.[].file'); do
             echo "An issue already exists for environment $file"
         fi
     fi
-done <<< "$(cat $json_output)"
+done
