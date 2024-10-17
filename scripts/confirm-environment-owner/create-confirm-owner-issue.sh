@@ -9,7 +9,11 @@ if ! jq . output.json; then
 fi
 
 # Iterate through each environment from the file.
-for file in $(jq -r '.[].file' "output.json"); do
+for row in $(jq -c '.[]' "output.json"); do
+
+    # Extract the file and owner values using jq
+    file=$(echo "$row" | jq -r '.file')
+    owner=$(echo "$row" | jq -r '.owner')
 
     # For now we only test with sprinkler
     if [ "$file" == "sprinkler" ]; then
@@ -26,10 +30,11 @@ for file in $(jq -r '.[].file' "output.json"); do
             # Creating GitHub Issue to Notify Owner & get the URL link for the issue.
             echo "Creating GitHub Issue to confirm the owner $owner for environment $file"
             issue_url=$(gh issue create \
-                --title "Confirmation of Onwer Details Required - Environment: $file" \
+                --title "Confirmation of Owner Details Required - Environment: $file" \
                 --label security \
                 --project "Modernisation Platform" \
-                --body "Can you please review the contact details provide in the Owner field in environments/$file.json and create a PR if an update is necessary. Consult [this documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/reviewing-owners.html#review-owner) which describes how to update these details." --json url -q ".url")
+                --body "Can you please review the contact details provided in the Owner field in environments/$file.json and create a PR if an update is necessary. Consult [this documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/reviewing-owners.html#review-owner)" \
+            )
             echo "issue_url=$issue_url" >> $GITHUB_ENV
             echo "created_issue=true" >> $GITHUB_ENV    
 
