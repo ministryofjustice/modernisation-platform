@@ -36,7 +36,7 @@ jobs:
               aws-region: ${{ env.AWS_REGION }}
 
           - name: Run ECS/EKS AMI Monitoring Script
-            run: bash ./scripts/check-ecs-eks-amis.sh
+            run: bash ./scripts/check-ecs-eks-ami.sh
 
           - name: Upload AMI CSV file
             uses: actions/upload-artifact@v4
