@@ -11,7 +11,7 @@ ROLE_NAME="ModernisationPlatformAccess"
 OUTDATED_AMIS_FILE="outdated-amis.csv"
 
 # Initialize the file with headers
-echo " Account Name,Region, Instance ID,Service Type (ECS/EKS),AMI ID > $OUTDATED_AMIS_FILE
+echo " Account Name,Region, Instance ID,Service Type (ECS/EKS),AMI ID" > $OUTDATED_AMIS_FILE
 
 # Assume Role Function
 getAssumeRoleCfg() {
