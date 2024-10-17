@@ -33,16 +33,16 @@ jq -c '.[]' "output.json" | while IFS= read -r row; do
             issue_url=$(gh issue create \
                 --title "Confirmation of Owner Details Required - Environment: $file" \
                 --label security \
-                --project "ministryofjustice/17" \
+                --project "Modernisation Platform" \
                 --body "Can you please review the contact details provided in the Owner field in environments/$file.json and create a PR if an update is necessary. Consult [this documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/reviewing-owners.html#review-owner)" \
             )
             echo "issue_url=$issue_url" >> $GITHUB_ENV
             echo "created_issue=true" >> $GITHUB_ENV    
 
             if [ "$created_issue" != "true" ] && [ -z "$issue_url" ]; then
-                echo "Error - No environment owners have been identified."
+                echo "Error - Github issue not created."
             else
-                echo "Notify python here"
+                echo "Notify python here..........................."
             fi
         else
             echo "An issue already exists for environment $file"
