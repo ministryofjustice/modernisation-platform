@@ -33,7 +33,7 @@ jq -c '.[]' "output.json" | while IFS= read -r row; do
             issue_url=$(gh issue create \
                 --title "Confirmation of Owner Details Required - Environment: $file" \
                 --label security \
-                --project "Modernisation Platform" \
+                --project "ministryofjustice/17" \
                 --body "Can you please review the contact details provided in the Owner field in environments/$file.json and create a PR if an update is necessary. Consult [this documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/reviewing-owners.html#review-owner)" \
             )
             echo "issue_url=$issue_url" >> $GITHUB_ENV
