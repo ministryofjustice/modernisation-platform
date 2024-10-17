@@ -133,5 +133,6 @@
   "github-oidc-team-repositories": [
     "ministryofjustice/hmpps-delius-operational-automation",
     "ministryofjustice/dso-modernisation-platform-automation"
-  ]
+  ],
+  "critical-national-infrastructure": false
 }

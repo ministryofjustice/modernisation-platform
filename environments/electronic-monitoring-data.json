@@ -49,5 +49,6 @@
     "ministryofjustice/electronic-monitoring-data-lambda-functions",
     "ministryofjustice/create-a-data-task"
   ],
-  "go-live-date": ""
+  "go-live-date": "",
+  "critical-national-infrastructure": false
 }

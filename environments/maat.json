@@ -47,5 +47,6 @@
   "github-oidc-team-repositories": [
     "ministryofjustice/laa-maat-application",
     "ministryofjustice/laa-maat-court-data-api"
-  ]
+  ],
+  "critical-national-infrastructure": true
 }

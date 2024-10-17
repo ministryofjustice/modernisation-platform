@@ -54,5 +54,6 @@
     "ministryofjustice/hmpps-delius-operational-automation",
     "ministryofjustice/hmpps-delius-nextcloud-container"
   ],
-  "go-live-date": ""
+  "go-live-date": "",
+  "critical-national-infrastructure": true
 }

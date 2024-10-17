@@ -40,5 +40,6 @@
     "owner": "dom.tomkins@digital.justice.gov.uk"
   },
   "github-oidc-team-repositories": [""],
-  "go-live-date": "2022-03-25"
+  "go-live-date": "2022-03-25",
+  "critical-national-infrastructure": false
 }

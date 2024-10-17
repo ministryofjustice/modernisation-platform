@@ -48,5 +48,6 @@
     "owner": "william.moran@justice.gov.uk"
   },
   "github-oidc-team-repositories": [""],
-  "go-live-date": "2023-07-05"
+  "go-live-date": "2023-07-05",
+  "critical-national-infrastructure": false
 }

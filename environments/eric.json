@@ -26,5 +26,6 @@
     "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
     "owner": "get-acccess-service-improvement@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [""],
+  "critical-national-infrastructure": false
 }

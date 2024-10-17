@@ -48,5 +48,6 @@
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/analytical-platform-jml-report"
-  ]
+  ],
+  "critical-national-infrastructure": false
 }

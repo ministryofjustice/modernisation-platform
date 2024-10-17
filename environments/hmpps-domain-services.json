@@ -88,5 +88,6 @@
   "github-oidc-team-repositories": [
     "ministryofjustice/dso-modernisation-platform-automation"
   ],
-  "go-live-date": "2023-08-22"
+  "go-live-date": "2023-08-22",
+  "critical-national-infrastructure": false
 }

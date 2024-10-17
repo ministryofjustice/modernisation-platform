@@ -59,5 +59,6 @@
     "ministryofjustice/LandsChamberTribunal",
     "ministryofjustice/Transport",
     "ministryofjustice/dts-legacy-tribunals-ftp"
-  ]
+  ],
+  "critical-national-infrastructure": false
 }

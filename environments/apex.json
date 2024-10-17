@@ -72,5 +72,6 @@
     "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
     "owner": "aws-webops-laa@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": ["ministryofjustice/laa-apex"]
+  "github-oidc-team-repositories": ["ministryofjustice/laa-apex"],
+  "critical-national-infrastructure": false
 }

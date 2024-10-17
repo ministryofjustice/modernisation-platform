@@ -45,5 +45,6 @@
     "infrastructure-support": "donovan.artz@digital.justice.gov.uk",
     "owner": "donovan.artz@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [""],
+  "critical-national-infrastructure": false
 }

@@ -33,5 +33,6 @@
     "ministryofjustice/analytical-platform-ingestion-scan",
     "ministryofjustice/analytical-platform-ingestion-transfer"
   ],
-  "go-live-date": ""
+  "go-live-date": "",
+  "critical-national-infrastructure": true
 }

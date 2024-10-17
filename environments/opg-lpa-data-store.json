@@ -21,5 +21,6 @@
     "infrastructure-support": "opgteam+modernising-lpa@digital.justice.gov.uk",
     "owner": "OPG MLPA: opgteam+modernising-lpa@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [""],
+  "critical-national-infrastructure": false
 }

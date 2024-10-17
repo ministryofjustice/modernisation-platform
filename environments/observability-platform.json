@@ -28,5 +28,6 @@
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/observability-platform-grafana-api-key-rotator"
-  ]
+  ],
+  "critical-national-infrastructure": false
 }

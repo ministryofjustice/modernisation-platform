@@ -44,5 +44,6 @@
     "infrastructure-support": "Infrastructure@cica.gov.uk",
     "owner": "alan.terry@cica.gov.uk"
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [""],
+  "critical-national-infrastructure": true
 }

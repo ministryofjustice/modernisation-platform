@@ -63,5 +63,6 @@
     "infrastructure-support": "dataplatform@digital.justice.gov.uk",
     "owner": "dataplatform@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": ["ministryofjustice/data-platform"]
+  "github-oidc-team-repositories": ["ministryofjustice/data-platform"],
+  "critical-national-infrastructure": false
 }

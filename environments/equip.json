@@ -29,5 +29,6 @@
     "owner": "kathy.anderson@justice.gov.uk"
   },
   "github-oidc-team-repositories": [""],
-  "go-live-date": "2022-06-17"
+  "go-live-date": "2022-06-17",
+  "critical-national-infrastructure": false
 }

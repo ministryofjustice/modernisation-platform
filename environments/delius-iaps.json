@@ -52,5 +52,6 @@
   "github-oidc-team-repositories": [
     "ministryofjustice/hmpps-delius-operational-automation"
   ],
-  "go-live-date": "2023-05-15"
+  "go-live-date": "2023-05-15",
+  "critical-national-infrastructure": true
 }
