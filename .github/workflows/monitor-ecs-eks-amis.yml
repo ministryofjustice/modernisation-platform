@@ -1,12 +1,9 @@
 name: "ECS/EKS AMIs Check"
 
 on:
-  pull_request:
-    branches:
-        - test/ecs-eks-ami-script
-    paths:
-        - '.github/workflows/monitor-ecs-eks-amis.yml'
-  workflow_dispatch:
+    workflow_dispatch:
+    push:
+      branches: test/ecs-eks-ami-script
 
 env:
   AWS_REGION: "eu-west-2"
