@@ -65,11 +65,13 @@ json_output+="
 
 # Assign the final JSON string to a file to be used across other steps in the job.
 # Note that as these values are already public we don't need to redact them.
-echo $json_output > output.json
+printf "%s" "$json_output" > output.json
 
 # Validate the json.
 if ! jq . output.json; then
     echo "Error processing json."
     exit 1
+else
+    echo "Json output is valid"
 fi
 
