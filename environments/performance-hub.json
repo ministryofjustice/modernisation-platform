@@ -36,5 +36,6 @@
     "owner": "hubusers@justice.gov.uk"
   },
   "github-oidc-team-repositories": ["ministryofjustice/performance-hub"],
-  "go-live-date": "2021-11-10"
+  "go-live-date": "2021-11-10",
+  "critical-national-infrastructure": false
 }

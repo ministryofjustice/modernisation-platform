@@ -36,5 +36,6 @@
     "owner": "DTS-ITServiceDesk@justice.gov.uk"
   },
   "github-oidc-team-repositories": ["ministryofjustice/Wardship"],
-  "go-live-date": "2023-12-22"
+  "go-live-date": "2023-12-22",
+  "critical-national-infrastructure": false
 }

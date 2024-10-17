@@ -87,5 +87,6 @@
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/dso-modernisation-platform-automation"
-  ]
+  ],
+  "critical-national-infrastructure": true
 }

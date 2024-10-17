@@ -103,5 +103,6 @@
     "ministryofjustice/hmpps-delius-docker-images",
     "ministryofjustice/hmpps-pwm",
     "ministryofjustice/ndelius-um"
-  ]
+  ],
+  "critical-national-infrastructure": true
 }

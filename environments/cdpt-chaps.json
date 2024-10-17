@@ -37,5 +37,6 @@
     "infrastructure-support": "central-digital-product-team@digital.justice.gov.uk"
   },
   "github-oidc-team-repositories": ["ministryofjustice/CHAPS"],
-  "go-live-date": "20-02-2024"
+  "go-live-date": "20-02-2024",
+  "critical-national-infrastructure": false
 }

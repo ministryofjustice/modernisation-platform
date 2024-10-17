@@ -20,5 +20,6 @@
     "owner": "appsec@digital.justice.gov.uk"
   },
   "github-oidc-team-repositories": [""],
-  "go-live-date": ""
+  "go-live-date": "",
+  "critical-national-infrastructure": false
 }

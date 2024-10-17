@@ -62,5 +62,6 @@
     "owner": "donovan.artz@digital.justice.gov.uk"
   },
   "github-oidc-team-repositories": [""],
-  "go-live-date": "2023-05-26"
+  "go-live-date": "2023-05-26",
+  "critical-national-infrastructure": true
 }

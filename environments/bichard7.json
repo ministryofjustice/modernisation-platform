@@ -71,5 +71,6 @@
     "infrastructure-support": "moj-bichard7@madetech.com",
     "owner": "moj-bichard7@madetech.com"
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [""],
+  "critical-national-infrastructure": false
 }
