@@ -6,13 +6,13 @@
 # Note that it assumes that if multiple fields in "owner" it will take the 2nd field and delimit using ":"
 
 # Directory containing JSON files
-DIR="environments"
+DIR="$GITHUB_WORKSPACE/environments"
 
 # The nested field for owner within tags.
 NESTED_FIELD="tags.owner"
 
 # Change to the directory containing the files.
-cd $DIR
+echo "$DIR"
 
 # Initialize an empty JSON array as a variable
 json_output="["
