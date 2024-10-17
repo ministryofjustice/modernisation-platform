@@ -452,6 +452,7 @@ data "aws_iam_policy_document" "policy" {
       "dms:RebootReplicationInstance",
       "ds:ResetUserPassword",
       "ds:DescribeDirectories",
+      "ds-data:*",
       "dynamodb:GetItem",
       "dynamodb:PutItem",
       "ecs:*Service*",
