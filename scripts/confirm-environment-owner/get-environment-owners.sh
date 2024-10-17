@@ -6,7 +6,7 @@
 # Note that it assumes that if multiple fields in "owner" it will take the 2nd field and delimit using ":"
 
 # Directory containing JSON files
-DIR="/Users/mikereid/git/modernisation-platform/environments"
+DIR="environments"
 
 # The nested field for owner within tags.
 NESTED_FIELD="tags.owner"
