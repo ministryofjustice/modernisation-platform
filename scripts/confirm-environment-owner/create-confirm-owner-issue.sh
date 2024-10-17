@@ -8,18 +8,18 @@ if ! jq . output.json; then
     exit 1
 fi
 
-# Iterate through each environment from the file.
-for row in $(jq -c '.[]' "output.json"); do
+# Iterate through each environment from the file. We use this method because some owners have spaces in the text.
+jq -c '.[]' "output.json" | while IFS= read -r row; do
 
     # Extract the file and owner values using jq
     file=$(echo "$row" | jq -r '.file')
     owner=$(echo "$row" | jq -r '.owner')
+    echo "File: $file, Owner: $owner"
 
     # For now we only test with sprinkler
     if [ "$file" == "sprinkler" ]; then
 
-        echo "$file"
-        echo "$owner"
+        echo "Processing Sprinkler"
 
         # Check if there is an existing open issue to the owner confirmation of the environment     
         open_issue=$(gh issue list -R ministryofjustice/modernisation-platform --search "Confirmation of Onwer Details Required - Environment: $file in:title" --state open)
