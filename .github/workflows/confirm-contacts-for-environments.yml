@@ -8,6 +8,14 @@ on:
   #schedule:
   #  - cron: '30 9 */100,1-7 * 1' # First Monday of month every 3 months
 
+
+env:
+    GH_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+
+permissions:
+    contents: read # This is required for actions/checkout
+    issues: write # This is required to create issues
+
 defaults:
   run:
     shell: bash
@@ -44,6 +52,8 @@ jobs:
     # 3. Create an issue in github with the requried text and notify the owners with the issue link.
 
       - name: create-issue-and-notify-owner
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd $GITHUB_WORKSPACE
           pwd
