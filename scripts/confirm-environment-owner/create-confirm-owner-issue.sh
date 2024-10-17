@@ -3,13 +3,14 @@
 # This script generates the github issue and then notifies the owner via a call to a separate python script.
 
 # First we get the json from the output file and add the json to an environment variable.
-json_output=$(jq -c . "output.json" 2>/dev/null)
+json_output="$(cat output.json)"
 
-# Check if jq returned an error. If so then exit the script.
-if [ $? -ne 0 ]; then
-    echo "Error: The output file contains invalid JSON."
+# Error handling for `jq` output
+if ! jq . $json_output; then
+    echo "Error processing json."
     exit 1
 fi
+
 
 # Iterate through each environment
 for file in $(echo "$json_input" | jq -r '.[].file'); do
