@@ -45,8 +45,10 @@ jobs:
 
       - name: create-issue-and-notify-owner
         run: |
-          chmod 700 /scripts/confirm-environment-owner/create-confirm-owner-issue.sh
-          bash ./scripts/confirm-environment-owner/create-confirm-owner-issue.sh
+          cd $GITHUB_WORKSPACE
+          pwd
+          chmod +x scripts/confirm-environment-owner/create-confirm-owner-issue.sh
+          ./scripts/confirm-environment-owner/create-confirm-owner-issue.sh
 
 
 

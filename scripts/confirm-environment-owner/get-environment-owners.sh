@@ -46,7 +46,7 @@ for file in "$DIR"/*.json; do
         json_output+=","
       fi
       
-      # Append the file name (without .json) and the determined owner part as a JSON object to the variable
+      # Add the file name (without .json) and the owner as a JSON object to the variable
       json_output+="
   {
     \"file\": \"$FILE_NAME\",
