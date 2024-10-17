@@ -11,9 +11,6 @@ DIR="$GITHUB_WORKSPACE/environments"
 # The nested field for owner within tags.
 NESTED_FIELD="tags.owner"
 
-# Change to the directory containing the files.
-echo "$DIR"
-
 # Initialize an empty JSON array as a variable
 json_output="["
 
@@ -67,7 +64,7 @@ json_output+="
 printf "%s" "$json_output" > output.json 2> /dev/null
 
 # Validate the json.
-if ! jq . output.json; then
+if ! jq . output.json > /dev/null 2>&1; then
     echo "Error processing json."
     exit 1
 else

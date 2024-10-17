@@ -3,9 +3,11 @@
 # This script generates the github issue and then notifies the owner via a call to a separate python script.
 
 # Validate that the output from the previous step is valid.
-if ! jq . output.json; then
+if ! jq . output.json > /dev/null 2>&1; then
     echo "Error processing json."
     exit 1
+else
+    echo "Valid JSON input"
 fi
 
 # Iterate through each environment from the file. We use this method because some owners have spaces in the text.
@@ -14,7 +16,6 @@ jq -c '.[]' "output.json" | while IFS= read -r row; do
     # Extract the file and owner values using jq
     file=$(echo "$row" | jq -r '.file')
     owner=$(echo "$row" | jq -r '.owner')
-    echo "File: $file, Owner: $owner"
 
     # For now we only test with sprinkler
     if [ "$file" == "sprinkler" ]; then
