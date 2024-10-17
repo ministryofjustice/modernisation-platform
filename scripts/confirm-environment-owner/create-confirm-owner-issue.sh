@@ -4,9 +4,7 @@
 
 json_output=$(cat output.json)
 
-echo "$json_output"
-
-if [ -z $json_output ]; then
+if [ -f output.json ]; then
 
     # Iterate through each environment
     for file in $(echo "$json_input" | jq -r '.[].file'); do
