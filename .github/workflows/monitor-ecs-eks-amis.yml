@@ -3,7 +3,7 @@ name: "ECS/EKS AMIs Check"
 on:
   pull_request:
     branches:
-        - main
+        - test/ecs-eks-ami-script
     paths:
         - '.github/workflows/monitor-ecs-eks-amis.yml'
   workflow_dispatch:
