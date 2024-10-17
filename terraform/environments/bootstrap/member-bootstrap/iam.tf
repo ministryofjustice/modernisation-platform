@@ -77,6 +77,7 @@ data "aws_iam_policy_document" "member-access" {
       "ds:RestoreFromSnapshot",
       "ds:StartSchemaExtension",
       "ds:Update*",
+      "ds-data:*",
       "dynamodb:*",
       "ebs:*",
       "ec2:CreateVpc",
