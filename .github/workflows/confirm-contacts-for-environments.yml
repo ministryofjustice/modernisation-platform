@@ -36,8 +36,10 @@ jobs:
 
       - name: get-environment-owners
         run: |
-          chmod 700 $GITHUB_WORKSPACE/scripts/confirm-environment-owner/get-environment-owners.sh
-          bash . $GITHUB_WORKSPACE/scripts/confirm-environment-owner/get-environment-owners.sh
+          cd $GITHUB_WORKSPACE
+          pwd
+          chmod 700 scripts/confirm-environment-owner/get-environment-owners.sh
+          bash . scripts/confirm-environment-owner/get-environment-owners.sh
 
     # 3. Create an issue in github with the requried text and notify the owners with the issue link.
 
