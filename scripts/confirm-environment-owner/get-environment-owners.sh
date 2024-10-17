@@ -67,8 +67,8 @@ json_output+="
 # Final output for testing purposes.
 echo "$json_output"
 
-# Assign the final JSON string to a a GITHUB_ENV variable to be used across other steps in the job.
+# Assign the final JSON string to a file to be used across other steps in the job.
 # Note that as these values are already public we don't need to redact them.
-echo $json_output >> $GITHUB_ENV
+echo $json_output > output.json
 
 

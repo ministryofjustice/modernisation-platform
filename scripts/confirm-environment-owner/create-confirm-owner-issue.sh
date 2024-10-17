@@ -2,6 +2,10 @@
 
 # This script generates the github issue and then notifies the owner via a call to a separate python script.
 
+json_output=$(cat output.json)
+
+echo "$json_output"
+
 if [ -z $json_output ]; then
 
     # Iterate through each environment
