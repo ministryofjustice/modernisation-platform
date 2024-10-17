@@ -2,6 +2,9 @@ name: Confirm Contacts for Environments
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      'issue/7047'
   #schedule:
   #  - cron: '30 9 */100,1-7 * 1' # First Monday of month every 3 months
 
