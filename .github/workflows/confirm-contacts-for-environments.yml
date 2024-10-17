@@ -1,0 +1,47 @@
+name: Confirm Contacts for Environments
+
+on:
+  workflow_dispatch:
+  #schedule:
+  #  - cron: '30 9 */100,1-7 * 1' # First Monday of month every 3 months
+
+defaults:
+  run:
+    shell: bash
+
+
+jobs:
+
+  confirm-contacts-for-environments:
+    runs-on: ubuntu-latest
+ 
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+    # 1. Install Python
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' 
+
+    # 2. Iterate through all environments/*.json files and get the contact details for each environment as a $GITHUB_OUTPUT var.
+
+      - name: get-environment-owners
+        run: |
+          chmod 700 /scripts/confirm-environment-owner/get-environment-owners.sh
+          bash ./scripts/confirm-environment-owner/get-environment-owners.sh
+
+    # 3. Create an issue in github with the requried text and notify the owners with the issue link.
+
+      - name: create-issue-and-notify-owner
+        run: |
+          chmod 700 /scripts/confirm-environment-owner/create-confirm-owner-issue.sh
+          bash ./scripts/confirm-environment-owner/create-confirm-owner-issue.sh
+
+
+
+
+
