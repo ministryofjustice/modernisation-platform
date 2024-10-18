@@ -34,7 +34,7 @@ jq -c '.[]' "output.json" | while IFS= read -r row; do
             issue_url=$(gh issue create \
                 -t "Confirmation of Owner Details Required - Environment: $file" \
                 -l "security" \
-                -p "Modernisation Platform" \
+                # -p "Modernisation Platform" \
                 -b "Test Issue Please Ignore" \
                 # --body "Can you please review the contact details provided in the Owner field in environments/$file.json and create a PR if an update is necessary. Consult [this documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/reviewing-owners.html#review-owner)" \
             )
