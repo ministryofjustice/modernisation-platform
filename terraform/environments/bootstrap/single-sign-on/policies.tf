@@ -621,6 +621,14 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "organizations:Describe*",
       "organizations:List*",
       "quicksight:*",
+      "ram:Get*",
+      "ram:List*",
+      "ram:UpdateResourceShare",
+      "ram:DeleteResourceShare",
+      "ram:AssociateResourceShare",
+      "ram:DisassociateResourceShare",
+      "ram:GetResourceShares",
+      "ram:AssociateResourceSharePermission",
       "rds-db:*",
       "rds:*",
       "rds-data:*",
@@ -659,6 +667,18 @@ data "aws_iam_policy_document" "sandbox_additional" {
     resources = [
       "arn:aws:sso::${local.environment_management.aws_organizations_root_account_id}:application/ssoins-7535d9af4f41fb26/*" #tfsec:ignore:AWS099 tfsec:ignore:AWS097
     ]
+  }
+  statement {
+    sid = "AllowRamSharingofGlueResources"
+    actions = [
+       "ram:CreateResourceShare"
+    ]
+    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+    condition {
+       test     = "StringLikeIfExists
+       variable = "ram:RequestedResourceType"
+       values   = ["glue:Table", "glue:Database", "glue:Catalog"]
+    }
   }
 }
 
