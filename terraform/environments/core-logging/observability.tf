@@ -47,7 +47,6 @@ data "aws_iam_policy_document" "grafana_athena_policy" {
 
     principals {
       type = "AWS"
-      # Use a placeholder ARN for the role to avoid circular dependency
       identifiers = [data.aws_caller_identity.current.account_id]
     }
   }
@@ -171,6 +170,7 @@ module "s3-moj-cur-reports-modplatform" {
   tags = local.tags
 }
 
+# MOJ CUR Bucket Replication Policy
 data "aws_iam_policy_document" "moj_cur_bucket_replication_policy" {
   statement {
     sid    = "ReplicationPermissions"
@@ -216,6 +216,23 @@ resource "aws_athena_workgroup" "mod-platform-cur-reports" {
   }
 }
 
+data "aws_iam_policy_document" "crawler_assume_permission" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["glue.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+data "aws_iam_policy" "glue_service_role_policy" {
+  arn = "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"
+}
+
 # Additional Athena Policy
 data "aws_iam_policy_document" "additional_athena_policy" {
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
@@ -240,16 +257,20 @@ data "aws_iam_policy_document" "additional_athena_policy" {
     resources = ["*"]
   }
   statement {
-    sid    = "GlueReadAccess"
+    sid    = "GluePermission"
     effect = "Allow"
     actions = [
+      "glue:BatchGetPartition",
+      "glue:CreateTable",
       "glue:GetDatabase",
       "glue:GetDatabases",
       "glue:GetTable",
       "glue:GetTables",
       "glue:GetPartition",
       "glue:GetPartitions",
-      "glue:BatchGetPartition"
+      "glue:ImportCatalogToGlue",
+      "glue:UpdateDatabase",
+      "glue:UpdateTable",
     ]
     resources = ["*"]
   }
@@ -272,6 +293,65 @@ data "aws_iam_policy_document" "additional_athena_policy" {
     effect    = "Allow"
     actions   = ["s3:GetObject", "s3:ListBucket"]
     resources = ["arn:aws:s3:::moj-cur-reports-modplatform*"]
+  }
+
+  statement {
+    sid = "S3DecryptPermission"
+    effect = "Allow"
+    actions = ["kms:Decrypt"]
+    resources = ["*"] 
+  }
+
+  statement {
+    sid = "CloudWatchPermission"
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogStream",
+      "logs:CreateLogGroup",
+      "logs:PutLogEvents",
+    ]
+    resources = [
+      "arn:aws:logs:*:*:*"
+    ]
+  }
+}
+
+data "archive_file" "cur_initializer_lambda_code" {
+  type        = "zip"
+  source_dir  = "lambda_cur/cur-crawler-initializer.py"
+  output_path = "lambda_cur/moj_cur_crawler_lambda.zip"
+}
+
+data "aws_iam_policy_document" "crawler_lambda_assume" {
+  statement {
+    effect = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+data "aws_iam_policy_document" "crawler_lambda_policy" {
+  statement {
+    sid    = "CloudWatch"
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "logs:CreateLogGroup",
+    ]
+    resources = ["${aws_cloudwatch_log_group.default.arn}:*"]
+  }
+
+  statement {
+    sid    = "Glue"
+    effect = "Allow"
+    actions = [
+      "glue:StartCrawler",
+    ]
+    resources = ["*"]
   }
 }
 
@@ -349,4 +429,129 @@ data "aws_iam_policy_document" "moj-cur-reports_kms" {
     ]
     resources = ["*"]
   }
+}
+
+resource "aws_glue_crawler" "cost_and_usage_report_crawler" {
+  name          = "moj-cur-reports-crawler"
+  database_name = aws_glue_catalog_database.cost_and_usage_report_db.name
+  role          = aws_iam_role.crawler_role.name
+
+  s3_target {
+    path = "s3://${module.s3-moj-cur-reports-modplatform.bucket.id}/CUR-ATHENA/MOJ-CUR-ATHENA/MOJ-CUR-ATHENA/"
+    exclusions = [
+      "**.json",
+      "**.yml",
+      "**.sql",
+      "**.csv",
+      "**.gz",
+      "**.zip",
+    ]
+  }
+  schema_change_policy {
+    delete_behavior = "DELETE_FROM_DATABASE"
+    update_behavior = "UPDATE_IN_DATABASE"
+  }
+}
+
+resource "aws_iam_role" "crawler_role" {
+  name               = "MOJ-CUR-ATHENA-crawler-role"
+  assume_role_policy = data.aws_iam_policy_document.crawler_assume_permission.json
+}
+
+resource "aws_iam_role_policy_attachment" "glue_service_role_policy_attach" {
+  policy_arn = data.aws_iam_policy.glue_service_role_policy.arn
+  role       = aws_iam_role.crawler_role.name
+}
+
+resource "aws_iam_role_policy" "crawler" {
+  name   = "MOJ-CUR-ATHENA-crawler-policy"
+  role   = aws_iam_role.crawler_role.name
+  policy = data.aws_iam_policy_document.additional_athena_policy.json
+}
+
+resource "aws_glue_catalog_database" "cost_and_usage_report_db" {
+  name        = lower("MOJ-CUR-ATHENA-db")
+  description = "Contains CUR data based on contents from the S3 bucket '${module.s3-moj-cur-reports-modplatform.bucket.id}'"
+}
+
+resource "aws_glue_catalog_table" "cur_report_status_table" {
+  name          = "cost_and_usage_data_status"
+  database_name = aws_glue_catalog_database.cost_and_usage_report_db.name
+  table_type    = "EXTERNAL_TABLE"
+
+  storage_descriptor {
+    location      = "s3://${module.s3-grafana-athena-query-results.bucket.id}/CUR-ATHENA/MOJ-CUR-ATHENA/cost_and_usage_data_status/"
+    input_format  = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat"
+    output_format = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat"
+    ser_de_info {
+      serialization_library = "org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe"
+    }
+    columns {
+      name = "status"
+      type = "string"
+    }
+  }
+  depends_on = [aws_glue_catalog_database.cost_and_usage_report_db]
+  lifecycle {
+    ignore_changes = [
+      parameters,
+    ]
+  }
+}
+
+resource "aws_cloudwatch_log_group" "default" {
+  name              = "/aws/lambda/moj_cur_crawler_lambda"
+  retention_in_days = 90
+}
+
+resource "aws_lambda_permission" "allow_s3_bucket" {
+  statement_id   = "AllowS3ToInvokeLambda"
+  action         = "lambda:InvokeFunction"
+  function_name  = aws_lambda_function.cur_initializer.function_name
+  source_account = data.aws_caller_identity.current.account_id
+  principal      = "s3.amazonaws.com"
+  source_arn     = module.s3-grafana-athena-query-results.bucket.arn
+}
+
+resource "aws_iam_role" "cur_initializer_lambda_executor" {
+  name               = "MOJ-CUR-ATHENA-lambda-executor"
+  assume_role_policy = data.aws_iam_policy_document.crawler_lambda_assume.json
+}
+
+resource "aws_iam_role_policy" "crawler_policy" {
+  name   = "MOJ-CUR-ATHENA-lambda-executor-policy"
+  role   = aws_iam_role.cur_initializer_lambda_executor.name
+  policy = data.aws_iam_policy_document.crawler_lambda_policy.json
+}
+
+resource "aws_lambda_function" "cur_initializer" {
+  function_name                  = "moj_cur_crawler_lambda"
+  filename                       = "moj_cur_crawler_lambda.zip"
+  handler                        = "moj_cur_crawler_lambda.lambda_handler"
+  runtime                        = "python3.9"
+  reserved_concurrent_executions = 1
+  role                           = aws_iam_role.cur_initializer_lambda_executor.arn
+  timeout                        = 30
+  source_code_hash               = data.archive_file.cur_initializer_lambda_code.output_base64sha256
+  environment {
+    variables = {
+      CRAWLER_NAME = "${aws_glue_crawler.cost_and_usage_report_crawler.name}"
+    }
+  }
+  depends_on = [aws_cloudwatch_log_group.default]
+}
+
+resource "aws_s3_bucket_notification" "cur_initializer_lambda_trigger" {
+  bucket = module.s3-grafana-athena-query-results.bucket.id
+
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.cur_initializer.arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_prefix       = "CUR-ATHENA/MOJ-CUR-ATHENA/"
+    filter_suffix       = ".parquet"
+  }
+
+  depends_on = [
+    aws_lambda_permission.allow_s3_bucket,
+  ]
 }
