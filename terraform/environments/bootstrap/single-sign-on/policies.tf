@@ -614,6 +614,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "kinesis:*",
       "kms:*",
       "lambda:*",
+      "lakeformation:*",
       "logs:*",
       "mgn:*",
       "mgh:*",
