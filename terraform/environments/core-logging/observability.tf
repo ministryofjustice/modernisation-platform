@@ -318,8 +318,8 @@ data "aws_iam_policy_document" "additional_athena_policy" {
 
 data "archive_file" "cur_initializer_lambda_code" {
   type        = "zip"
-  source_dir  = "${path.module}/source"
-  output_path = "moj_cur_crawler_lambda.zip"
+  source_dir  = "lambda_cur/cur-crawler-initializer.py"
+  output_path = "lambda_cur/moj_cur_crawler_lambda.zip"
 }
 
 data "aws_iam_policy_document" "crawler_lambda_assume" {
