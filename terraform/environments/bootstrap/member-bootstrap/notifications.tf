@@ -19,6 +19,10 @@ data "aws_sns_topic" "backup_vault_failure_topic" {
 
 }
 
+data "aws_sns_topic" "securityhub_topic" {
+  name = "sechub_findings_sns_topic"
+}
+
 # Link the sns topics to the pagerduty service
 module "pagerduty_core_alerts" {
   count = (local.account_data.account-type != "member-unrestricted") ? 1 : 0
@@ -28,6 +32,16 @@ module "pagerduty_core_alerts" {
   source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
   sns_topics                = compact([local.existing_topic_name, local.backup_topic_name])
   pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
+}
+
+module "pagerduty_core_alerts_securityhub" {
+  count = (local.account_data.account-type != "member-unrestricted") ? 1 : 0
+  depends_on = [
+    data.aws_sns_topic.securityhub_topic
+  ]
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
+  sns_topics                = [data.aws_sns_topic.securityhub_topic.name]
+  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_securityhub"]
 }
 
 # Cloudwatch metric alarm required for errors

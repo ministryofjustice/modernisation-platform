@@ -21,6 +21,12 @@ resource "pagerduty_service_integration" "core_alerts_cloudwatch" {
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
 
+resource "pagerduty_service_integration" "core_alerts_securityhub" {
+  name    = data.pagerduty_vendor.security_hub.name
+  service = pagerduty_service.core_alerts.id
+  vendor  = data.pagerduty_vendor.security_hub.id
+}
+
 resource "pagerduty_service_event_rule" "mfa-console-access" {
   service  = pagerduty_service.core_alerts.id
   position = 0
