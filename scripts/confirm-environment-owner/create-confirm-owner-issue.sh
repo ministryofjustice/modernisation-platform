@@ -23,7 +23,6 @@ jq -c '.[]' "output.json" | while IFS= read -r row; do
         echo "Processing Sprinkler"
 
         # Check if there is an existing open issue to the owner confirmation of the environment
-        gh issue list -R ministryofjustice/modernisation-platform --state open     
         open_issue=$(gh issue list -R ministryofjustice/modernisation-platform --search "Confirmation of Onwer Details Required - Environment: $file in:title" --state open)
 
         # Test whether an issue already exists for the environment in question. If not, then proceed.
