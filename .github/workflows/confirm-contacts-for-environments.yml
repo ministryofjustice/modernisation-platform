@@ -9,7 +9,7 @@ on:
   #  - cron: '30 9 */100,1-7 * 1' # First Monday of month every 3 months
 
 env:
-    GH_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 defaults:
   run:
