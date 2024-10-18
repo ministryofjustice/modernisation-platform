@@ -671,13 +671,13 @@ data "aws_iam_policy_document" "sandbox_additional" {
   statement {
     sid = "AllowRamSharingofGlueResources"
     actions = [
-       "ram:CreateResourceShare"
+      "ram:CreateResourceShare"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
     condition {
-       test     = "StringLikeIfExists
-       variable = "ram:RequestedResourceType"
-       values   = ["glue:Table", "glue:Database", "glue:Catalog"]
+      test     = "StringLikeIfExists"
+      variable = "ram:RequestedResourceType"
+      values   = ["glue:Table", "glue:Database", "glue:Catalog"]
     }
   }
 }
