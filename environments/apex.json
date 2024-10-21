@@ -70,8 +70,8 @@
     "application": "apex",
     "business-unit": "LAA",
     "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
-    "owner": "aws-webops-laa@digital.justice.gov.uk"
+    "owner": "aws-webops-laa@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": ["ministryofjustice/laa-apex"],
-  "critical-national-infrastructure": false
+  "github-oidc-team-repositories": ["ministryofjustice/laa-apex"]
 }

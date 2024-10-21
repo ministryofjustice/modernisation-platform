@@ -10,8 +10,8 @@
     "application": "core-sandbox",
     "business-unit": "Platforms",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
-    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [""],
-  "critical-national-infrastructure": false
+  "github-oidc-team-repositories": [""]
 }

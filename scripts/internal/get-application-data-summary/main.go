@@ -13,7 +13,16 @@ import (
 type Environment struct {
 	AccountType string `json:"account-type"`
 	GoLiveDate  string `json:"go-live-date"`
-	CriticalNationalInfrastructure bool `json:"critical-national-infrastructure"`
+	Tags        Tags   `json:"tags"`
+}
+
+type Tags struct {
+    Application                 string `json:"application"`
+    BusinessUnit               string `json:"business-unit"`
+    InfrastructureSupport      string `json:"infrastructure-support"`
+    Owner                      string `json:"owner"`
+    SlackChannel              string `json:"slack-channel"`
+    CriticalNationalInfrastructure bool   `json:"critical-national-infrastructure"`
 }
 
 func main() {
@@ -80,7 +89,7 @@ func main() {
 			coreFiles = append(coreFiles, application_name)
 		}
 
-		if env.CriticalNationalInfrastructure == true {
+		if env.Tags.CriticalNationalInfrastructure == true {
 			criticaltrue = append(criticaltrue, application_name)
 		}
 

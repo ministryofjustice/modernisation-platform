@@ -34,8 +34,8 @@
     "application": "data-and-insights-wepi",
     "business-unit": "HQ",
     "infrastructure-support": "william.rose@justice.gov.uk",
-    "owner": "william.rose@justice.gov.uk"
+    "owner": "william.rose@justice.gov.uk",
+    "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [""],
-  "critical-national-infrastructure": false
+  "github-oidc-team-repositories": [""]
 }

@@ -33,9 +33,9 @@
     "application": "dacp",
     "business-unit": "HMCTS",
     "infrastructure-support": "DTS-ITServiceDesk@justice.gov.uk",
-    "owner": "DTS-ITServiceDesk@justice.gov.uk"
+    "owner": "DTS-ITServiceDesk@justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": ["ministryofjustice/Dacp"],
-  "go-live-date": "2023-10-04",
-  "critical-national-infrastructure": false
+  "go-live-date": "2023-10-04"
 }

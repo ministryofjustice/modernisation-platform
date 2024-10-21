@@ -20,8 +20,8 @@
     "application": "laa-ccms-infra-azure-ad-sso",
     "business-unit": "LAA",
     "infrastructure-support": "donovan.artz@digital.justice.gov.uk",
-    "owner": "donovan.artz@digital.justice.gov.uk"
+    "owner": "donovan.artz@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [""],
-  "critical-national-infrastructure": false
+  "github-oidc-team-repositories": [""]
 }

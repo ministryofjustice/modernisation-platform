@@ -81,11 +81,11 @@
     "application": "oasys",
     "business-unit": "HMPPS",
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
-    "owner": "digital-studio-operations-team@digital.justice.gov.uk"
+    "owner": "digital-studio-operations-team@digital.justice.gov.uk",
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/dso-modernisation-platform-automation"
   ],
-  "go-live-date": "2023-04-16",
-  "critical-national-infrastructure": true
+  "go-live-date": "2023-04-16"
 }

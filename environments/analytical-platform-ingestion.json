@@ -26,13 +26,13 @@
     "application": "analytical-platform-ingestion",
     "business-unit": "Platforms",
     "infrastructure-support": "analytical-platform@digital.justice.gov.uk",
-    "owner": "Analytical Platform"
+    "owner": "Analytical Platform",
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/analytical-platform-ingestion-notify",
     "ministryofjustice/analytical-platform-ingestion-scan",
     "ministryofjustice/analytical-platform-ingestion-transfer"
   ],
-  "go-live-date": "",
-  "critical-national-infrastructure": true
+  "go-live-date": ""
 }

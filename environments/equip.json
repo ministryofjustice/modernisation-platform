@@ -26,9 +26,9 @@
     "application": "equip",
     "business-unit": "HMPPS",
     "infrastructure-support": "equip.admin@justice.gov.uk",
-    "owner": "kathy.anderson@justice.gov.uk"
+    "owner": "kathy.anderson@justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""],
-  "go-live-date": "2022-06-17",
-  "critical-national-infrastructure": false
+  "go-live-date": "2022-06-17"
 }

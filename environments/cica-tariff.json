@@ -42,8 +42,8 @@
     "application": "cica-tariff",
     "business-unit": "CICA",
     "infrastructure-support": "Infrastructure@cica.gov.uk",
-    "owner": "alan.terry@cica.gov.uk"
+    "owner": "alan.terry@cica.gov.uk",
+    "critical-national-infrastructure": true
   },
-  "github-oidc-team-repositories": [""],
-  "critical-national-infrastructure": true
+  "github-oidc-team-repositories": [""]
 }

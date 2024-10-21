@@ -42,11 +42,11 @@
     "application": "Means Assessment Administration Tool - MAAT",
     "business-unit": "LAA",
     "infrastructure-support": "laa-role-sre@digital.justice.gov.uk",
-    "owner": "laa-crime-apps@digital.justice.gov.uk"
+    "owner": "laa-crime-apps@digital.justice.gov.uk",
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/laa-maat-application",
     "ministryofjustice/laa-maat-court-data-api"
-  ],
-  "critical-national-infrastructure": true
+  ]
 }

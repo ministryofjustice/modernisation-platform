@@ -16,9 +16,9 @@
     "application": "cica-data-extraction",
     "business-unit": "CICA",
     "infrastructure-support": "infrastructure@cica.gov.uk",
-    "owner": "CICA: infrastructure@cica.gov.uk"
+    "owner": "CICA: infrastructure@cica.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""],
-  "go-live-date": "",
-  "critical-national-infrastructure": false
+  "go-live-date": ""
 }

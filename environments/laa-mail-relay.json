@@ -42,9 +42,9 @@
     "application": "laa-mail-relay",
     "business-unit": "LAA",
     "infrastructure-support": "laa_ops@digital.justice.gov.uk",
-    "owner": "laa_ops@digital.justice.gov.uk"
+    "owner": "laa_ops@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [],
-  "go-live-date": "",
-  "critical-national-infrastructure": false
+  "go-live-date": ""
 }

@@ -34,9 +34,9 @@
     "application": "cdpt-chaps",
     "business-unit": "HQ",
     "owner": "central-digital-product-team@digital.justice.gov.uk",
-    "infrastructure-support": "central-digital-product-team@digital.justice.gov.uk"
+    "infrastructure-support": "central-digital-product-team@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": ["ministryofjustice/CHAPS"],
-  "go-live-date": "20-02-2024",
-  "critical-national-infrastructure": false
+  "go-live-date": "20-02-2024"
 }

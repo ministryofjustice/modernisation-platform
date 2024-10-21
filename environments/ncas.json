@@ -33,9 +33,9 @@
     "application": "ncas",
     "business-unit": "HMCTS",
     "infrastructure-support": "dts-legacy-apps-support-team@hmcts.net",
-    "owner": "dts-legacy-apps-support-team@hmcts.net"
+    "owner": "dts-legacy-apps-support-team@hmcts.net",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": ["ministryofjustice/ncas"],
-  "go-live-date": "2023-11-07",
-  "critical-national-infrastructure": false
+  "go-live-date": "2023-11-07"
 }

@@ -128,11 +128,11 @@
     "application": "hmpps-oem",
     "business-unit": "HMPPS",
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
-    "owner": "digital-studio-operations-team@digital.justice.gov.uk: probation-webops@digital.justice.gov.uk"
+    "owner": "digital-studio-operations-team@digital.justice.gov.uk: probation-webops@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/hmpps-delius-operational-automation",
     "ministryofjustice/dso-modernisation-platform-automation"
-  ],
-  "critical-national-infrastructure": false
+  ]
 }

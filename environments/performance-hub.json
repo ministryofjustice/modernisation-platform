@@ -33,9 +33,9 @@
     "application": "performance-hub",
     "business-unit": "HMPPS",
     "infrastructure-support": "performance-hub@digital.justice.gov.uk",
-    "owner": "hubusers@justice.gov.uk"
+    "owner": "hubusers@justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": ["ministryofjustice/performance-hub"],
-  "go-live-date": "2021-11-10",
-  "critical-national-infrastructure": false
+  "go-live-date": "2021-11-10"
 }

@@ -58,9 +58,9 @@
     "application": "mlra",
     "business-unit": "LAA",
     "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
-    "owner": "laa-crime-apps@digital.justice.gov.uk"
+    "owner": "laa-crime-apps@digital.justice.gov.uk",
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": ["ministryofjustice/laa-mlra-application"],
-  "go-live-date": "2023-08-28",
-  "critical-national-infrastructure": true
+  "go-live-date": "2023-08-28"
 }

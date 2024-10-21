@@ -59,11 +59,11 @@
     "application": "delius-jitbit",
     "business-unit": "HMPPS",
     "infrastructure-support": "probation-webops@digital.justice.gov.uk",
-    "owner": "Probation WebOps: probation-webops@digital.justice.gov.uk"
+    "owner": "Probation WebOps: probation-webops@digital.justice.gov.uk",
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/hmpps-cr-ancillary-jitbit-app"
   ],
-  "go-live-date": "2023-09-18",
-  "critical-national-infrastructure": true
+  "go-live-date": "2023-09-18"
 }
