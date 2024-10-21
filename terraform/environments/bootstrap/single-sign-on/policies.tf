@@ -391,7 +391,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "dynamodb:DescribeTable",
       "dynamodb:GetItem",
       "dynamodb:PutItem",
-      "dynamodb:DeleteItem"
+      "dynamodb:DeleteItem",
       "glue:Batch*Partition",
       "glue:BatchDeleteTable",
       "glue:CreateDatabase",
