@@ -44,8 +44,7 @@
     "application": "analytical-platform-data",
     "business-unit": "Platforms",
     "infrastructure-support": "analytical_platform@digital.justice.gov.uk",
-    "owner": "Analytical Platform: analytical_platform@digital.justice.gov.uk",
-    "critical-national-infrastructure": false
+    "owner": "Analytical Platform: analytical_platform@digital.justice.gov.uk"
   },
   "github-oidc-team-repositories": [""]
 }
