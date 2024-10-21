@@ -37,7 +37,8 @@
     "application": "xhibit-portal",
     "business-unit": "HMCTS",
     "infrastructure-support": "xpsupport@digital.justice.gov.uk",
-    "owner": "dom.tomkins@digital.justice.gov.uk"
+    "owner": "dom.tomkins@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""],
   "go-live-date": "2022-03-25"

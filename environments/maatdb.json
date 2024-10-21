@@ -15,7 +15,8 @@
     "application": "maatdb",
     "business-unit": "LAA",
     "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
-    "owner": "laa-crime-apps@digital.justice.gov.uk"
+    "owner": "laa-crime-apps@digital.justice.gov.uk",
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [""]
 }

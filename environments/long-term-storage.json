@@ -15,7 +15,8 @@
     "application": "long-term-storage",
     "business-unit": "Platforms",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
-    "owner": "hosting-leads@digital.justice.gov.uk"
+    "owner": "hosting-leads@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""]
 }

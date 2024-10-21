@@ -46,7 +46,8 @@
     "application": "edw",
     "business-unit": "LAA",
     "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
-    "owner": "aws-webops-laa@digital.justice.gov.uk"
+    "owner": "aws-webops-laa@digital.justice.gov.uk",
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [""]
 }

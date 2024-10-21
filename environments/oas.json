@@ -46,7 +46,8 @@
     "application": "oas",
     "business-unit": "LAA",
     "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
-    "owner": "get-acccess-service-improvement@digital.justice.gov.uk"
+    "owner": "get-acccess-service-improvement@digital.justice.gov.uk",
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [""]
 }

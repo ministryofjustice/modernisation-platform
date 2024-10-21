@@ -55,7 +55,8 @@
     "application": "electronic-monitoring-data",
     "business-unit": "HMPPS",
     "infrastructure-support": "dataengineering@digital.justice.gov.uk",
-    "owner": "Data engineering: dataengineering@digital.justice.gov.uk"
+    "owner": "Data engineering: dataengineering@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/electronic-monitoring-data-lambda-functions",

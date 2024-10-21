@@ -51,7 +51,8 @@
     "application": "contract-work-administration",
     "business-unit": "LAA",
     "infrastructure-support": "laa_ops@digital.justice.gov.uk",
-    "owner": "laa_ops@digital.justice.gov.uk"
+    "owner": "laa_ops@digital.justice.gov.uk",
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [""],
   "go-live-date": ""

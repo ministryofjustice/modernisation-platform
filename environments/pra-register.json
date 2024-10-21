@@ -34,7 +34,8 @@
     "application": "pra-register",
     "business-unit": "HMCTS",
     "infrastructure-support": "dts-legacy-apps-support-team@hmcts.net",
-    "owner": "dts-legacy-apps-support-team@hmcts.net"
+    "owner": "dts-legacy-apps-support-team@hmcts.net",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": ["ministryofjustice/PRA"],
   "go-live-date": "2023-11-20"

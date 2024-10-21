@@ -69,7 +69,8 @@
     "application": "bichard7",
     "business-unit": "CJSE",
     "infrastructure-support": "moj-bichard7@madetech.com",
-    "owner": "moj-bichard7@madetech.com"
+    "owner": "moj-bichard7@madetech.com",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""]
 }

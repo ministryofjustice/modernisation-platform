@@ -19,7 +19,8 @@
     "application": "opg-lpa-data-store",
     "business-unit": "OPG",
     "infrastructure-support": "opgteam+modernising-lpa@digital.justice.gov.uk",
-    "owner": "OPG MLPA: opgteam+modernising-lpa@digital.justice.gov.uk"
+    "owner": "OPG MLPA: opgteam+modernising-lpa@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""]
 }

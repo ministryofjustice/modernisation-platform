@@ -81,7 +81,8 @@
     "application": "Oasys National Reporting/ONR",
     "business-unit": "HMPPS",
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
-    "owner": "Mark Richardson"
+    "owner": "Mark Richardson",
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/dso-modernisation-platform-automation"

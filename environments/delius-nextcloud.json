@@ -48,7 +48,8 @@
     "application": "delius-nextcloud",
     "business-unit": "HMPPS",
     "infrastructure-support": "probation-webops@digital.justice.gov.uk",
-    "owner": "probation-webops@digital.justice.gov.uk"
+    "owner": "probation-webops@digital.justice.gov.uk",
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/hmpps-delius-operational-automation",

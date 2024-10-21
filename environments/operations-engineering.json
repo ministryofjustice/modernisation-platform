@@ -16,7 +16,8 @@
     "application": "operations-engineering",
     "business-unit": "Platforms",
     "infrastructure-support": "operations-engineering@digital.justice.gov.uk",
-    "owner": "operations-engineering@digital.justice.gov.uk"
+    "owner": "operations-engineering@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""],
   "go-live-date": ""

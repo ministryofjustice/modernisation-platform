@@ -34,7 +34,8 @@
     "application": "tipstaff",
     "business-unit": "HMCTS",
     "infrastructure-support": "DTS-ITServiceDesk@justice.gov.uk",
-    "owner": "DTS-ITServiceDesk@justice.gov.uk"
+    "owner": "DTS-ITServiceDesk@justice.gov.uk",
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": ["ministryofjustice/Tipstaff"],
   "go-live-date": "2023-08-09"

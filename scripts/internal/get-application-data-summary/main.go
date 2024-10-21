@@ -13,6 +13,16 @@ import (
 type Environment struct {
 	AccountType string `json:"account-type"`
 	GoLiveDate  string `json:"go-live-date"`
+	Tags        Tags   `json:"tags"`
+}
+
+type Tags struct {
+    Application                 string `json:"application"`
+    BusinessUnit               string `json:"business-unit"`
+    InfrastructureSupport      string `json:"infrastructure-support"`
+    Owner                      string `json:"owner"`
+    SlackChannel              string `json:"slack-channel"`
+    CriticalNationalInfrastructure bool   `json:"critical-national-infrastructure"`
 }
 
 func main() {
@@ -31,6 +41,7 @@ func main() {
 	coreFiles := []string{}
 	futureGoLiveFiles := []string{}
 	pastGoLiveFiles := []string{}
+	criticaltrue := []string{}
 
 	// Get today's date
 	today := time.Now().Truncate(24 * time.Hour)
@@ -78,6 +89,10 @@ func main() {
 			coreFiles = append(coreFiles, application_name)
 		}
 
+		if env.Tags.CriticalNationalInfrastructure == true {
+			criticaltrue = append(criticaltrue, application_name)
+		}
+
 		if env.GoLiveDate != "" {
 			parsedDate, err := time.Parse("2006-01-02", env.GoLiveDate)
 			if err != nil {
@@ -117,6 +132,11 @@ func main() {
 
 	fmt.Printf("\nLive in production applications (%d):\n", len(pastGoLiveFiles))
 	for _, file := range pastGoLiveFiles {
+		fmt.Println(file)
+	}
+
+	fmt.Printf("\nCritical National Infrastructure applications (%d):\n", len(criticaltrue))
+	for _, file := range criticaltrue {
 		fmt.Println(file)
 	}
 }

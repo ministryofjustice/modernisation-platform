@@ -126,3 +126,13 @@ deny contains msg if {
   not regex.match(`^\S+@\S+$`, input.tags["infrastructure-support"])
  msg := sprintf("`%v` infrastructure-support value is not a valid email address", [input.filename])
 }
+
+deny contains msg if {
+  not has_field(input.tags, "critical-national-infrastructure")
+  msg := sprintf("`%v` is missing the `critical-national-infrastructure` field", [input.filename])
+}
+
+deny contains msg if {
+  not is_boolean(input.tags["critical-national-infrastructure"])
+  msg := sprintf("`%v` has invalid `critical-national-infrastructure` value: got `%v`, expected a boolean (true or false)", [input.filename, input.tags["critical-national-infrastructure"]])
+}
