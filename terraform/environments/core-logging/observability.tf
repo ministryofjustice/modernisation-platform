@@ -398,7 +398,7 @@ data "aws_iam_policy_document" "moj_cur_reports_kms" {
     }
   }
   statement {
-    sid     = "Allow AWS S3 & Logs service to use key"
+    sid     = "Allow AWS S3, lambda & Logs service to use key"
     effect  = "Allow"
     actions = [
       "kms:Encrypt*",
@@ -414,7 +414,8 @@ data "aws_iam_policy_document" "moj_cur_reports_kms" {
       type = "Service"
       identifiers = [
         "s3.amazonaws.com",
-        "logs.amazonaws.com"
+        "logs.amazonaws.com",
+        "lambda.amazonaws.com"
       ]
     }
   }
@@ -563,7 +564,7 @@ resource "aws_lambda_function" "cur_initializer" {
   role                           = aws_iam_role.cur_initializer_lambda_executor.arn
   timeout                        = 30
   source_code_hash               = data.archive_file.cur_initializer_lambda_code.output_base64sha256
-  kms_key_arn                    = aws_kms_alias.moj_cur_reports.arn
+  kms_key_arn                    = aws_kms_key.moj_cur_reports.arn
   environment {
     variables = {
       CRAWLER_NAME = aws_glue_crawler.cost_and_usage_report_crawler.name
