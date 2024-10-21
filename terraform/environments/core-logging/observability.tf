@@ -115,13 +115,13 @@ module "s3-grafana-athena-query-results" {
 }
 
 # S3 bucket for CUR Reports
-module "s3-moj-cur-reports-modplatform" {
+module "s3_moj_cur_reports_modplatform" {
   source              = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=4e17731f72ef24b804207f55b182f49057e73ec9" # v8.1.0
   bucket_prefix       = "moj-cur-reports-modplatform-"
   versioning_enabled  = true
   ownership_controls  = "BucketOwnerEnforced"
   replication_enabled = false
-  custom_kms_key      = aws_kms_key.moj-cur-reports.arn
+  custom_kms_key      = aws_kms_alias.moj_cur_reports.arn
   bucket_policy       = [data.aws_iam_policy_document.moj_cur_bucket_replication_policy.json]
   providers = {
     aws.bucket-replication = aws
@@ -194,8 +194,8 @@ data "aws_iam_policy_document" "moj_cur_bucket_replication_policy" {
       "s3:ReplicateTags"
     ]
     resources = [
-      module.s3-moj-cur-reports-modplatform.bucket.arn,
-      "${module.s3-moj-cur-reports-modplatform.bucket.arn}/*"
+      module.s3_moj_cur_reports_modplatform.bucket.arn,
+      "${module.s3_moj_cur_reports_modplatform.bucket.arn}/*"
     ]
   }
 }
@@ -319,7 +319,7 @@ data "aws_iam_policy_document" "additional_athena_policy" {
 
 data "archive_file" "cur_initializer_lambda_code" {
   type        = "zip"
-  source_file = "lambda_cur/cur-crawler-initializer.py"
+  source_file = "lambda_cur/cur_crawler_initializer.py"
   output_path = "lambda_cur/moj_cur_crawler_lambda.zip"
 }
 
@@ -364,20 +364,20 @@ resource "aws_iam_policy" "additional_athena_policy" {
   policy = data.aws_iam_policy_document.additional_athena_policy.json
 }
 
-resource "aws_kms_key" "moj-cur-reports" {
+resource "aws_kms_key" "moj_cur_reports" {
   description         = "KMS key used to encrypt moj-cur-reports"
   enable_key_rotation = true
   multi_region        = true
-  policy              = data.aws_iam_policy_document.moj-cur-reports_kms.json
+  policy              = data.aws_iam_policy_document.moj_cur_reports_kms.json
   tags                = local.tags
 }
 
-resource "aws_kms_alias" "moj-cur-reports" {
+resource "aws_kms_alias" "moj_cur_reports" {
   name          = "alias/moj-cur-reports-key"
-  target_key_id = aws_kms_key.moj-cur-reports.id
+  target_key_id = aws_kms_key.moj_cur_reports.id
 }
 
-data "aws_iam_policy_document" "moj-cur-reports_kms" {
+data "aws_iam_policy_document" "moj_cur_reports_kms" {
   #checkov:skip=CKV_AWS_109:"Policy is directly related to the resource"
   #checkov:skip=CKV_AWS_111:"Policy is directly related to the resource"
   #checkov:skip=CKV_AWS_356:"Policy is directly related to the resource"
@@ -442,7 +442,7 @@ resource "aws_glue_crawler" "cost_and_usage_report_crawler" {
   security_configuration = aws_glue_security_configuration.cost_and_usage_report_sc.name
 
   s3_target {
-    path = "s3://${module.s3-moj-cur-reports-modplatform.bucket.id}/CUR-ATHENA/MOJ-CUR-ATHENA/MOJ-CUR-ATHENA/"
+    path = "s3://${module.s3_moj_cur_reports_modplatform.bucket.id}/CUR-ATHENA/MOJ-CUR-ATHENA/MOJ-CUR-ATHENA/"
     exclusions = [
       "**.json",
       "**.yml",
@@ -459,22 +459,22 @@ resource "aws_glue_crawler" "cost_and_usage_report_crawler" {
 }
 
 resource "aws_glue_security_configuration" "cost_and_usage_report_sc" {
-  name = "example"
+  name = "cost-and-usage-report-security-configuration"
 
   encryption_configuration {
     cloudwatch_encryption {
       cloudwatch_encryption_mode = "SSE-KMS"
-      kms_key_arn                = aws_kms_key.moj-cur-reports.arn
+      kms_key_arn                = aws_kms_alias.moj_cur_reports.arn
     }
 
     job_bookmarks_encryption {
       job_bookmarks_encryption_mode = "CSE-KMS"
-      kms_key_arn                   = aws_kms_key.moj-cur-reports.arn
+      kms_key_arn                   = aws_kms_alias.moj_cur_reports.arn
     }
 
     s3_encryption {
       s3_encryption_mode = "SSE-KMS"
-      kms_key_arn        = aws_kms_key.moj-cur-reports.arn
+      kms_key_arn        = aws_kms_alias.moj_cur_reports.arn
     }
   }
 }
@@ -496,7 +496,7 @@ resource "aws_iam_role_policy" "crawler" {
 
 resource "aws_glue_catalog_database" "cost_and_usage_report_db" {
   name        = lower("moj-cur-athena-db")
-  description = "Contains CUR data based on contents from the S3 bucket '${module.s3-moj-cur-reports-modplatform.bucket.id}'"
+  description = "Contains CUR data based on contents from the S3 bucket '${module.s3_moj_cur_reports_modplatform.bucket.id}'"
 }
 
 resource "aws_glue_catalog_table" "cur_report_status_table" {
@@ -526,7 +526,7 @@ resource "aws_glue_catalog_table" "cur_report_status_table" {
 
 resource "aws_cloudwatch_log_group" "default" {
   name              = "/aws/lambda/moj_cur_crawler_lambda"
-  kms_key_id        = aws_kms_key.moj-cur-reports.arn
+  kms_key_id        = aws_kms_alias.moj_cur_reports.arn
   retention_in_days = 365
 }
 
@@ -563,7 +563,7 @@ resource "aws_lambda_function" "cur_initializer" {
   role                           = aws_iam_role.cur_initializer_lambda_executor.arn
   timeout                        = 30
   source_code_hash               = data.archive_file.cur_initializer_lambda_code.output_base64sha256
-  kms_key_arn                    = aws_kms_key.moj-cur-reports.arn
+  kms_key_arn                    = aws_kms_alias.moj_cur_reports
   environment {
     variables = {
       CRAWLER_NAME = aws_glue_crawler.cost_and_usage_report_crawler.name
