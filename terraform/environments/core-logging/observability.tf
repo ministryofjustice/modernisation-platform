@@ -556,14 +556,14 @@ resource "aws_lambda_function" "cur_initializer" {
   # checkov:skip=CKV_AWS_116: "DLQ not required"
   # checkov:skip=CKV_AWS_272: "Code signing not required"
   function_name                  = "moj_cur_crawler_lambda"
-  filename                       = "moj_cur_crawler_lambda.zip"
+  filename                       = "lambda_cur/moj_cur_crawler_lambda.zip"
   handler                        = "moj_cur_crawler_lambda.lambda_handler"
   runtime                        = "python3.12"
   reserved_concurrent_executions = 1
   role                           = aws_iam_role.cur_initializer_lambda_executor.arn
   timeout                        = 30
   source_code_hash               = data.archive_file.cur_initializer_lambda_code.output_base64sha256
-  kms_key_arn                    = aws_kms_alias.moj_cur_reports
+  kms_key_arn                    = aws_kms_alias.moj_cur_reports.arn
   environment {
     variables = {
       CRAWLER_NAME = aws_glue_crawler.cost_and_usage_report_crawler.name
