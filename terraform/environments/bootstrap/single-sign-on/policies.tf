@@ -201,6 +201,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "codebuild:ImportSourceCredentials",
       "codebuild:PersistOAuthToken",
       "cur:DescribeReportDefinitions",
+      "ds:AccessDSData",
       "ds:*Tags*",
       "ds:*Snapshot*",
       "ds:ResetUserPassword",
