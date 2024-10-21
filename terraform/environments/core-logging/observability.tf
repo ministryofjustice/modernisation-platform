@@ -398,7 +398,7 @@ data "aws_iam_policy_document" "moj-cur-reports_kms" {
     }
   }
   statement {
-    sid     = "Allow AWS S3 service to use key"
+    sid     = "Allow AWS S3 & Logs service to use key"
     effect  = "Allow"
     actions = [
       "kms:Encrypt*",
@@ -413,7 +413,8 @@ data "aws_iam_policy_document" "moj-cur-reports_kms" {
     principals {
       type = "Service"
       identifiers = [
-        "s3.amazonaws.com"
+        "s3.amazonaws.com",
+        "logs.amazonaws.com"
       ]
     }
   }
