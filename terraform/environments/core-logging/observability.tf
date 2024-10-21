@@ -506,7 +506,7 @@ resource "aws_glue_catalog_table" "cur_report_status_table" {
   table_type    = "EXTERNAL_TABLE"
 
   storage_descriptor {
-    location      = "s3://${module.s3-grafana-athena-query-results.bucket.id}/CUR-ATHENA/MOJ-CUR-ATHENA/cost_and_usage_data_status/"
+    location      = "s3://${module.s3-grafana-athena-query-results.bucket.id}/CUR-ATHENA/MOJ-CUR-ATHENA/"
     input_format  = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat"
     output_format = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat"
     ser_de_info {
