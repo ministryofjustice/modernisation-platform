@@ -215,8 +215,6 @@ Supply the ETAs, lead incident numbers, links to where updates will be posted et
 Below are the repositories owned by the Modernisation Platform. The next step will be to create new tags for the current releases with any hardcoded region values changed.
 
 
-`0.0.0`
-
 Use the version number stated so these changes are easily recognisable. The version of these modules will then need to be updated on our
 `Modernisation Platform` repository, along with any variables changed that are needed. This should go in one large PR with many reviewers.
 
@@ -225,25 +223,25 @@ Use the version number stated so these changes are easily recognisable. The vers
 |--------------------------- |-------------------------------------------------------------------------------------------------- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |----------------------- |
 | Main Repo | https://github.com/ministryofjustice/modernisation-platform | Houses all of the Terraform that builds the platform, many modules will be referenced in here and will need the variables changed. | Variable |
 | Environments Repo | https://github.com/ministryofjustice/modernisation-platform-environments | Customers responsibility (although we might need to help) | - |
-| Bastion Linux | https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux | Used by teams to create a bastion EC2 instance, module tests have a hard coded region but the module itself has a variable when called, no change required to the module. | No, region variable when called. |
-| ConfigurationManagement | https://github.com/ministryofjustice/modernisation-platform-configuration-management | This repository contains configuration management of the ec2 infrastructure hosted on the ModernisationPlatform. Requires hardcoded eu-west-2 to be changed. | Yes |
-| Instance Scheduler | https://github.com/ministryofjustice/modernisation-platform-instance-scheduler | A Go lambda function for stopping and starting instances, RDS resources and autoscaling groups. | Yes |
-| S3 Bucket | https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket | A Terraform module to standardise S3 buckets with sensible defaults. | No, region variable when called. |
-| AWS VM Import | https://github.com/ministryofjustice/modernisation-platform-terraform-aws-vm-import | | Yes in providers.tf |
-| SSM Patching | https://github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching | Automated patching module. | Yes in providers.tf |
-| EC2 Autoscaling | https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-autoscaling-group | For ec2 autoscaling | No, region variable when called. |
-| AMI Builds | https://github.com/ministryofjustice/modernisation-platform-ami-builds | This repository contains the Modernisation Platform AMI build code and workflows. | Yes, in multiple areas. |
-| Terraform Baselines | https://github.com/ministryofjustice/modernisation-platform-terraform-baselines | Terraform module for enabling and configuring the MoJ Security Guidance baseline for AWS accounts, alongside some extra reasonable security, identity and compliance services.| No, region variable when called. |
+| Bastion Linux | https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux | Used by teams to create a bastion EC2 instance, module tests have a hard coded region but the module itself has a variable when called, no change required to the module. | Region variable |
+| ConfigurationManagement | https://github.com/ministryofjustice/modernisation-platform-configuration-management | This repository contains configuration management of the ec2 infrastructure hosted on the ModernisationPlatform. Requires hardcoded eu-west-2 to be changed. | User managed repo |
+| Instance Scheduler | https://github.com/ministryofjustice/modernisation-platform-instance-scheduler | A Go lambda function for stopping and starting instances, RDS resources and autoscaling groups. | Not required for DR |
+| S3 Bucket | https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket | A Terraform module to standardise S3 buckets with sensible defaults. | No, region variable when called. | Region variable |
+| AWS VM Import | https://github.com/ministryofjustice/modernisation-platform-terraform-aws-vm-import | | Region variable |
+| SSM Patching | https://github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching | Automated patching module. | Region variable |
+| EC2 Autoscaling | https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-autoscaling-group | For ec2 autoscaling | Region variable |
+| AMI Builds | https://github.com/ministryofjustice/modernisation-platform-ami-builds | This repository contains the Modernisation Platform AMI build code and workflows. | User managed repo |
+| Terraform Baselines | https://github.com/ministryofjustice/modernisation-platform-terraform-baselines | Terraform module for enabling and configuring the MoJ Security Guidance baseline for AWS accounts, alongside some extra reasonable security, identity and compliance services.| Region variable |
 | Cross Account Access | https://github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access | A simple Terraform module to configure an IAM role that is assumable from another account. | No |
 | DNS Certificates | https://github.com/ministryofjustice/modernisation-platform-terraform-dns-certificates | Template | No |
-| Load Balancer | https://github.com/ministryofjustice/modernisation-platform-terraform-loadbalancer | | No, region variable when called. |
+| Load Balancer | https://github.com/ministryofjustice/modernisation-platform-terraform-loadbalancer | | Region variable |
 | GitHub OIDC Role | https://github.com/ministryofjustice/modernisation-platform-github-oidc-role | | No |
-| Terraform Member VPC | https://github.com/ministryofjustice/modernisation-platform-terraform-member-vpc | This module creates the member accounts VPC and networking. | Yes |
+| Terraform Member VPC | https://github.com/ministryofjustice/modernisation-platform-terraform-member-vpc | This module creates the member accounts VPC and networking. | No |
 | Terraform IAM Superadmins | https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins | This repository holds a Terraform module that creates set IAM accounts and associated configuration, such as: account password policies, administrator groups, user accounts. | No |
-| EC2 Instance | https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-instance | Module for an ec2 instance creation. | No, region variable when called. |
+| EC2 Instance | https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-instance | Module for an ec2 instance creation. | Region variable |
 | GitHub OIDC Provider | https://github.com/ministryofjustice/modernisation-platform-github-oidc-provider | This module allows users to create an OIDC Provider and the associated IAM resources required to make use of the connect provider. | No |
-| ECS Cluster | https://github.com/ministryofjustice/modernisation-platform-terraform-ecs-cluster | This repository provides 2 Terraform Modules: Cluster and Service | No, region variable when called. |
-| Pagerduty | https://github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration | | No, region variable when called. |
+| ECS Cluster | https://github.com/ministryofjustice/modernisation-platform-terraform-ecs-cluster | This repository provides 2 Terraform Modules: Cluster and Service | Region variable |
+| Pagerduty | https://github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration | | Region variable |
 | Terraform Module Template | https://github.com/ministryofjustice/modernisation-platform-terraform-module-template | | No |
 | Incident Response | https://github.com/ministryofjustice/modernisation-platform-incident-response | | No |
 | Trusted Advisor | https://github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor | | No |

@@ -945,14 +945,20 @@ module "delius_core_openldap_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd"
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-preproduction"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-production"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
     local.environment_management.account_ids["delius-core-development"],
     local.environment_management.account_ids["delius-core-test"],
+    local.environment_management.account_ids["delius-core-preproduction"],
+    local.environment_management.account_ids["delius-core-production"],
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd"
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-preproduction"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-production"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   # Tags
@@ -1115,14 +1121,25 @@ module "analytical_platform_ingestion_scan_ecr_repo" {
   pull_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:role/modernisation-platform-oidc-cicd",
     local.environment_management.account_ids["analytical-platform-ingestion-development"],
-    local.environment_management.account_ids["analytical-platform-ingestion-production"]
+    local.environment_management.account_ids["analytical-platform-ingestion-production"],
+    # Electronic monitoring data store accounts.
+    local.environment_management.account_ids["electronic-monitoring-data-development"],
+    local.environment_management.account_ids["electronic-monitoring-data-production"],
+    local.environment_management.account_ids["electronic-monitoring-data-test"]
   ]
 
   enable_retrieval_policy_for_lambdas = [
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:function:scan*",
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-ingestion-production"]}:function:scan*",
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-ingestion-development"]}:function:definition-upload*",
-    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-ingestion-production"]}:function:definition-upload*"
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-ingestion-production"]}:function:definition-upload*",
+    # Electronic monitoring data store accounts.
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-development"]}:function:scan*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-production"]}:function:scan*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-test"]}:function:scan*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-development"]}:function:definition-upload*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-production"]}:function:definition-upload*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-test"]}:function:definition-upload*",
   ]
 
   # Tags

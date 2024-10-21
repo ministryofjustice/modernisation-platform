@@ -155,10 +155,17 @@ data "aws_iam_policy_document" "noms_vpn_sns_topic_policy" {
   policy_id = "nomis vpn sns topic policy"
 
   statement {
-    sid    = "Allow eventbrdige to publish messages to sns topic"
+    sid    = "Allow topic owner to manage sns topic"
     effect = "Allow"
     actions = [
-      "SNS:Publish",
+      "sns:Publish",
+      "sns:RemovePermission",
+      "sns:SetTopicAttributes",
+      "sns:DeleteTopic",
+      "sns:ListSubscriptionsByTopic",
+      "sns:GetTopicAttributes",
+      "sns:AddPermission",
+      "sns:Subscribe"
     ]
     resources = [
       aws_sns_topic.noms_vpn_sns_topic.arn,
@@ -171,13 +178,27 @@ data "aws_iam_policy_document" "noms_vpn_sns_topic_policy" {
       ]
     }
     principals {
+      type = "AWS"
+      identifiers = [
+        "*"
+      ]
+    }
+  }
+  statement {
+    sid    = "Allow eventbridge to publish messages to sns topic"
+    effect = "Allow"
+    actions = [
+      "sns:Publish",
+    ]
+    resources = [
+      aws_sns_topic.noms_vpn_sns_topic.arn,
+    ]
+    principals {
       type = "Service"
       identifiers = [
         "events.amazonaws.com"
       ]
     }
-
-
   }
 }
 
