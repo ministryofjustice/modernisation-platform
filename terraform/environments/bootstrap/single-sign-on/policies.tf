@@ -359,7 +359,7 @@ data "aws_iam_policy_document" "developer_additional" {
   }
 }
 
-# data engineerin policy (developer + glue + some athena)
+# data engineering policy (developer + glue + some athena)
 resource "aws_iam_policy" "data_engineering" {
   provider = aws.workspace
   name     = "data_engineering_policy"
@@ -388,6 +388,10 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "dms:StartReplicationTask",
       "dms:StopReplicationTask",
       "dms:ModifyReplicationTask",
+      "dynamodb:DescribeTable",
+      "dynamodb:GetItem",
+      "dynamodb:PutItem",
+      "dynamodb:DeleteItem",
       "glue:Batch*Partition",
       "glue:BatchDeleteTable",
       "glue:CreateDatabase",
