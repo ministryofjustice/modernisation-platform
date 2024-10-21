@@ -69,8 +69,9 @@
   "tags": {
     "application": "apex",
     "business-unit": "LAA",
-    "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
-    "owner": "aws-webops-laa@digital.justice.gov.uk"
+    "infrastructure-support": "laa_ops@digital.justice.gov.uk",
+    "owner": "laa_ops@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": ["ministryofjustice/laa-apex"]
+  "github-oidc-team-repositories": ["ministryofjustice/laa-apex"],
+  "go-live-date": "2024-11-07"
 }
