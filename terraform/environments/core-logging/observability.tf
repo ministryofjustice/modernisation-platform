@@ -297,14 +297,14 @@ data "aws_iam_policy_document" "additional_athena_policy" {
   }
 
   statement {
-    sid = "S3DecryptPermission"
-    effect = "Allow"
-    actions = ["kms:Decrypt"]
-    resources = ["*"] 
+    sid       = "S3DecryptPermission"
+    effect    = "Allow"
+    actions   = ["kms:Decrypt"]
+    resources = ["*"]
   }
 
   statement {
-    sid = "CloudWatchPermission"
+    sid    = "CloudWatchPermission"
     effect = "Allow"
     actions = [
       "logs:CreateLogStream",
@@ -335,8 +335,8 @@ data "aws_iam_policy_document" "crawler_lambda_assume" {
 }
 
 data "aws_iam_policy_document" "crawler_lambda_policy" {
-# checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
-# checkov:skip=CKV_AWS_356: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_356: "policy is directly related to the resource"
   statement {
     sid    = "CloudWatch"
     effect = "Allow"
@@ -382,8 +382,8 @@ data "aws_iam_policy_document" "moj_cur_reports_kms" {
   #checkov:skip=CKV_AWS_111:"Policy is directly related to the resource"
   #checkov:skip=CKV_AWS_356:"Policy is directly related to the resource"
   statement {
-    sid     = "Allow management access of the key to the logging account"
-    effect  = "Allow"
+    sid    = "Allow management access of the key to the logging account"
+    effect = "Allow"
     actions = [
       "kms:*"
     ]
@@ -398,8 +398,8 @@ data "aws_iam_policy_document" "moj_cur_reports_kms" {
     }
   }
   statement {
-    sid     = "Allow AWS S3, lambda & Logs service to use key"
-    effect  = "Allow"
+    sid    = "Allow AWS S3, lambda & Logs service to use key"
+    effect = "Allow"
     actions = [
       "kms:Encrypt*",
       "kms:Decrypt*",
