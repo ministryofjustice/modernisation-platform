@@ -24,6 +24,10 @@ data "aws_kms_key" "environment_management" {
   key_id = "alias/environment-management"
 }
 
+data "aws_kms_key" "environment_management" {
+  key_id = "alias/environment-management-multi-region"
+}
+
 data "aws_kms_key" "pagerduty" {
   key_id = "alias/pagerduty-secret"
 }
