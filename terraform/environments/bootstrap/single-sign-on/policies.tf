@@ -453,6 +453,13 @@ data "aws_iam_policy_document" "data_engineering_additional" {
     actions   = ["iam:PassRole"]
     resources = ["arn:aws:iam::${local.environment_management.account_ids["analytical-platform-data-production"]}:role/data-first-data-science", "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/glue-notebook-role-tf"]
   }
+
+  statement {
+    sid       = "AllowAssumeAnalyticalPlatformDataEngineeringStateAccessRole"
+    effect    = "Allow"
+    actions   = ["sts:AssumeRole"]
+    resources = ["arn:aws:iam::${local.environment_management.account_ids["analytical-platform-management-production"]}:role/data-engineering-state-access"]
+  }
 }
 
 # quicksight administrator policy (IAM permissions needed to manage QuickSight subscription)
