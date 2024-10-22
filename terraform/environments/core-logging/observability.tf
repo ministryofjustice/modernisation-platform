@@ -167,8 +167,12 @@ module "s3_moj_cur_reports_modplatform" {
       }
     }
   ]
-
-  tags = local.tags
+  tags = merge(
+  local.tags,
+  {
+    GrafanaDataSource = "true"
+  },
+  )
 }
 
 # MOJ CUR Bucket Replication Policy
