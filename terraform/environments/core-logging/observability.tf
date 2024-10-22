@@ -41,8 +41,8 @@ data "aws_iam_policy_document" "grafana_athena_policy" {
     ]
 
     resources = [
-      module.s3-grafana-athena-query-results.bucket.arn,
-      "${module.s3-grafana-athena-query-results.bucket.arn}/*"
+      module.s3_moj_cur_reports_modplatform.bucket.arn,
+      "${module.s3_moj_cur_reports_modplatform.bucket.arn}/*"
     ]
 
     principals {
@@ -57,65 +57,6 @@ data "aws_iam_policy_document" "grafana_athena_policy" {
 resource "aws_iam_role_policy_attachment" "grafana_athena_attachment" {
   role       = aws_iam_role.grafana_athena.id
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonGrafanaAthenaAccess"
-}
-
-# S3 bucket for Grafana Athena query results
-module "s3-grafana-athena-query-results" {
-  source              = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=4e17731f72ef24b804207f55b182f49057e73ec9" # v8.1.0
-  bucket_prefix       = "grafana-athena-query-results-"
-  versioning_enabled  = true
-  ownership_controls  = "BucketOwnerEnforced"
-  replication_enabled = false
-  providers = {
-    aws.bucket-replication = aws
-  }
-
-  lifecycle_rule = [
-    {
-      id      = "main"
-      enabled = "Enabled"
-      prefix  = ""
-
-      tags = {
-        rule      = "log"
-        autoclean = "true"
-      }
-
-      transition = [
-        {
-          days          = 90
-          storage_class = "STANDARD_IA"
-          }, {
-          days          = 365
-          storage_class = "GLACIER"
-        }
-      ]
-
-      expiration = {
-        days = 730
-      }
-
-      noncurrent_version_transition = [
-        {
-          days          = 90
-          storage_class = "STANDARD_IA"
-          }, {
-          days          = 365
-          storage_class = "GLACIER"
-        }
-      ]
-
-      noncurrent_version_expiration = {
-        days = 730
-      }
-    }
-  ]
-  tags = merge(
-    local.tags,
-    {
-    GrafanaDataSource = "true"
-  },
-  )
 }
 
 # S3 bucket for CUR Reports
@@ -212,7 +153,7 @@ resource "aws_athena_workgroup" "mod-platform-cur-reports" {
     publish_cloudwatch_metrics_enabled = true
 
     result_configuration {
-      output_location = "s3://${module.s3-grafana-athena-query-results.bucket.id}/"
+      output_location = "s3://${module.s3_moj_cur_reports_modplatform.bucket.id}/workgroup/"
       encryption_configuration {
         encryption_option = "SSE_S3"
       }
@@ -290,7 +231,7 @@ data "aws_iam_policy_document" "additional_athena_policy" {
       "s3:AbortMultipartUpload",
       "s3:PutObject"
     ]
-    resources = ["arn:aws:s3:::grafana-athena-query-results-*"]
+    resources = ["arn:aws:s3:::moj-cur-reports-modplatform*"]
   }
   statement {
     sid       = "AthenaCURReportsAccess"
@@ -509,7 +450,7 @@ resource "aws_glue_catalog_table" "cur_report_status_table" {
   table_type    = "EXTERNAL_TABLE"
 
   storage_descriptor {
-    location      = "s3://${module.s3-grafana-athena-query-results.bucket.id}/CUR-ATHENA/MOJ-CUR-ATHENA/cost_and_usage_data_status/"
+    location      = "s3://${module.s3_moj_cur_reports_modplatform.bucket.id}/CUR-ATHENA/MOJ-CUR-ATHENA/cost_and_usage_data_status/"
     input_format  = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat"
     output_format = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat"
     ser_de_info {
@@ -540,7 +481,7 @@ resource "aws_lambda_permission" "allow_s3_bucket" {
   function_name  = aws_lambda_function.cur_initializer.function_name
   source_account = data.aws_caller_identity.current.account_id
   principal      = "s3.amazonaws.com"
-  source_arn     = module.s3-grafana-athena-query-results.bucket.arn
+  source_arn     = module.s3_moj_cur_reports_modplatform.bucket.arn
 }
 
 resource "aws_iam_role" "cur_initializer_lambda_executor" {
