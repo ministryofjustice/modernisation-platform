@@ -110,8 +110,12 @@ module "s3-grafana-athena-query-results" {
       }
     }
   ]
-
-  tags = local.tags
+  tags = merge(
+    local.tags,
+    {
+    GrafanaDataSource = "true"
+  },
+  )
 }
 
 # S3 bucket for CUR Reports
@@ -167,12 +171,7 @@ module "s3_moj_cur_reports_modplatform" {
       }
     }
   ]
-  tags = merge(
-  local.tags,
-  {
-    GrafanaDataSource = "true"
-  },
-  )
+  tags = local.tags
 }
 
 # MOJ CUR Bucket Replication Policy
