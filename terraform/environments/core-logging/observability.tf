@@ -153,7 +153,7 @@ resource "aws_athena_workgroup" "mod-platform-cur-reports" {
     publish_cloudwatch_metrics_enabled = true
 
     result_configuration {
-      output_location = "s3://${module.s3_moj_cur_reports_modplatform.bucket.id}/"
+      output_location = "s3://${module.s3_moj_cur_reports_modplatform.bucket.id}/workgroup/"
       encryption_configuration {
         encryption_option = "SSE_S3"
       }
