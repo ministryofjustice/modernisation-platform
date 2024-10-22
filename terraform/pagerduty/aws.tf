@@ -6,7 +6,7 @@ resource "aws_secretsmanager_secret" "pagerduty_integration_keys" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
   description = "Pager Duty integration keys"
-  kms_key_id  = aws_kms_key.pagerduty.id
+  kms_key_id  = aws_kms_key.pagerduty_multi_region.id
   name        = "pagerduty_integration_keys"
   policy      = data.aws_iam_policy_document.pagerduty_secret.json
   tags        = local.tags
@@ -105,7 +105,7 @@ resource "aws_secretsmanager_secret" "pagerduty_token" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "pagerduty_token"
   description = "PagerDuty api token, used by PagerDuty Terraform to manage most PagerDuty resources"
-  kms_key_id  = aws_kms_key.pagerduty.id
+  kms_key_id  = aws_kms_key.pagerduty_multi_region.id
   tags        = local.tags
   replica {
     region = local.replica_region
@@ -118,7 +118,7 @@ resource "aws_secretsmanager_secret" "pagerduty_token" {
 resource "aws_secretsmanager_secret" "pagerduty_user_token" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "pagerduty_userapi_token"
-  kms_key_id  = aws_kms_key.pagerduty.id
+  kms_key_id  = aws_kms_key.pagerduty_multi_region.id
   description = "PagerDuty api user level token, used to link services to Slack channels.  A valid PD and Slack user needed (to authorise against a slack user), needed in addition to the org level token"
   tags        = local.tags
   replica {
