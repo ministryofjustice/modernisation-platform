@@ -24,7 +24,7 @@ data "aws_kms_key" "environment_management" {
   key_id = "alias/environment-management"
 }
 
-data "aws_kms_key" "environment_management" {
+data "aws_kms_key" "environment_management_multi_region" {
   key_id = "alias/environment-management-multi-region"
 }
 
