@@ -110,8 +110,12 @@ module "s3-grafana-athena-query-results" {
       }
     }
   ]
-
-  tags = local.tags
+  tags = merge(
+    local.tags,
+    {
+    GrafanaDataSource = "true"
+  },
+  )
 }
 
 # S3 bucket for CUR Reports
@@ -167,7 +171,6 @@ module "s3_moj_cur_reports_modplatform" {
       }
     }
   ]
-
   tags = local.tags
 }
 
@@ -574,7 +577,7 @@ resource "aws_lambda_function" "cur_initializer" {
 }
 
 resource "aws_s3_bucket_notification" "cur_initializer_lambda_trigger" {
-  bucket = module.s3-grafana-athena-query-results.bucket.id
+  bucket = module.s3_moj_cur_reports_modplatform.bucket.arn
 
   lambda_function {
     lambda_function_arn = aws_lambda_function.cur_initializer.arn
