@@ -577,7 +577,7 @@ resource "aws_lambda_function" "cur_initializer" {
 }
 
 resource "aws_s3_bucket_notification" "cur_initializer_lambda_trigger" {
-  bucket = module.s3_moj_cur_reports_modplatform.bucket.arn
+  bucket = module.s3_moj_cur_reports_modplatform.bucket.id
 
   lambda_function {
     lambda_function_arn = aws_lambda_function.cur_initializer.arn
