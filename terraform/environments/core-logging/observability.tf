@@ -145,7 +145,7 @@ data "aws_iam_policy_document" "moj_cur_bucket_replication_policy" {
 }
 
 # Athena Workgroup for CUR Reports
-resource "aws_athena_workgroup" "mod-platform-cur-reports" {
+resource "aws_athena_workgroup" "mod_platform_cur_reports" {
   name = "mod-platform-cur-reports"
 
   configuration {
@@ -270,7 +270,7 @@ data "aws_iam_policy_document" "additional_athena_policy" {
 
 data "archive_file" "cur_initializer_lambda_code" {
   type        = "zip"
-  source_file = "lambda_cur/cur_crawler_initializer.py"
+  source_file = "lambda_cur/moj_cur_crawler_lambda.py"
   output_path = "lambda_cur/moj_cur_crawler_lambda.zip"
 }
 
