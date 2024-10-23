@@ -18,7 +18,7 @@ locals {
 # Secure baselines (GuardDuty, Config, SecurityHub, etc)
 #trivy:ignore:AVD-AWS-0136 trivy:ignore:AVD-AWS-0132
 module "baselines-modernisation-platform" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=9d62fce5d0493e7da26f08c6331c627c4ae2ddfb" # v7.7.1
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=55841c7044d20fafd756a06961d0690bf7607c1c" # v7.9.0
   providers = {
     # Default and replication regions
     aws                    = aws.modernisation-platform-eu-west-2
@@ -71,5 +71,8 @@ module "baselines-modernisation-platform" {
 
   # Regions to enable IMDSv2 in
   enabled_imdsv2_regions = local.enabled_baseline_regions
+
+  # Pass in pagerduty integration key for security hub alerts
+  pagerduty_integration_key = local.pagerduty_integration_keys["security_hub"]
 }
 
