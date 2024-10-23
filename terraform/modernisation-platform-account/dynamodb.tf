@@ -89,7 +89,7 @@ resource "aws_dynamodb_table" "state-lock" {
 
   server_side_encryption {
     enabled     = true
-    kms_key_arn = aws_kms_key.dynamo_encryption.arn
+    kms_key_arn = aws_kms_key.dynamo_encryption_multi_region.arn
   }
 
   point_in_time_recovery {
