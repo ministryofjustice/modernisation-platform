@@ -156,6 +156,7 @@ data "aws_iam_policy_document" "member-access" {
       "rds:*",
       "rds-data:*",
       "route53:*",
+      "route53resolver:*",
       "s3:*",
       "secretsmanager:*",
       "ses:*",
