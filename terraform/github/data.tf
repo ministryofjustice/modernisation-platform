@@ -20,6 +20,10 @@ data "aws_kms_key" "dynamodb_state_lock" {
   key_id = "alias/dynamodb-state-lock"
 }
 
+data "aws_kms_key" "dynamodb_state_lock_multi_region" {
+  key_id = "alias/dynamodb-state-lock-multi-region"
+}
+
 data "aws_kms_key" "environment_management" {
   key_id = "alias/environment-management"
 }
