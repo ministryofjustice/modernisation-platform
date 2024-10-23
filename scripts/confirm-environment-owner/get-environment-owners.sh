@@ -16,9 +16,6 @@ DIR="$GITHUB_WORKSPACE/$REMOTE_DIR"
 
 NESTED_FIELD="tags.owner"
 
-# This variable determines the number of months we look back for created dates.
-PERIOD="6"
-
 # Initialize an empty JSON array as a variable
 json_output="["
 
@@ -52,28 +49,22 @@ for file in "$DIR"/*.json; do
 
     # Convert $creation_date into a date variable.
     formatted_date=$(date -d "$creation_date" '+%Y-%m-%d') || { echo "Invalid date format for Created Date"; return 1; }
-    echo "Formatted Created Date = $formatted_date"
 
     # Get today's date.
     current_date=$(date '+%Y-%m-%d')
-    echo "Current Date = $current_date"
-
-    # Get the date `months_ago` months ago in "M" format as a dif between the today's date and the created date.
     
-    # Convert both dates to seconds since 1970-01-01
+    # Convert both dates to seconds since 1970-01-01. 
     current_timestamp=$(date -d "$current_date" '+%s') || { echo "Invalid current date"; exit 1; }
-    echo "current_timestamp = $current_timestamp"
     formatted_timestamp=$(date -d "$formatted_date" '+%s') || { echo "Invalid formatted date"; exit 1; }
-    echo "formatted_timestamp = $formatted_timestamp"
 
     diff_in_seconds=$((current_timestamp - formatted_timestamp))
+
+    # Now get the diff as months
     months_ago=$((diff_in_seconds / 2592000))
 
     echo "Commit date is $months_ago months old"
 
-    if (( months_ago % 6 == 0 )); then
-
-      # No need to check whether the date is the first as we will run the job on that date.
+    if (( months_ago % $PERIOD == 0 )); then
           
       VALUE=$(jq -r ".$NESTED_FIELD" "$file" 2>/dev/null)
         
@@ -118,7 +109,11 @@ if [ "$first" = true ]; then
   echo "No files to be processed. Job will stop"
   printf "%s" "true" > stop.json 2> /dev/null
   exit 0
+else
+  echo "Environments identified as in scope"
 fi
+
+echo "Validating JSON Output"
 
 # Validate json.
 if ! jq . output.json > /dev/null 2>&1; then

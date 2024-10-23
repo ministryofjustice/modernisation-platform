@@ -11,7 +11,9 @@ on:
 
 env:
     API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
-    TEMPLATE_ID: "THE TEMPLATE ID"
+    TEMPLATE_ID: "93afef96-ea0b-470f-bd20-edf44e0acdb9"
+    # This variable determines the number of months we look back for created dates. For production it will be 6.
+    PERIOD: "4"
 
 defaults:
   run:
@@ -56,14 +58,17 @@ jobs:
       - name: Install the Notifications Client
         run: pip install notifications-python-client
         
-    # 3. Create an issue in github with the requried text and notify the owners with the issue link.
+    # 3. Create an issue in github with the requried text and notify the owners via email with the issue link.
 
-#      - name: Create Issue and Notify Owner
-#        run: |
-#          cd $GITHUB_WORKSPACE
-#          pwd
-#          chmod +x scripts/confirm-environment-owner/create-confirm-owner-issue.sh
-#          ./scripts/confirm-environment-owner/create-confirm-owner-issue.sh
+      - name: Create Issue and Notify Owner
+        env:
+          GITHUB_REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
+        run: |
+          cd $GITHUB_WORKSPACE
+          pwd
+          chmod +x scripts/confirm-environment-owner/create-confirm-owner-issue.sh
+          ./scripts/confirm-environment-owner/create-confirm-owner-issue.sh
 
 
 

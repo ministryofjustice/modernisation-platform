@@ -2,6 +2,9 @@
 
 # This script generates the github issue and then notifies the owner via a call to a separate python script.
 
+# The repository
+REPO=$GITHUB_REPO
+
 # Validate that the output from the previous step of the job.
 if ! jq . output.json > /dev/null 2>&1; then
     echo "Error processing json."
@@ -16,7 +19,7 @@ jq -c '.[]' "output.json" | while IFS= read -r row; do
     file=$(echo "$row" | jq -r '.file')
     owner=$(echo "$row" | jq -r '.owner')
 
-    # For now we only test with sprinkler
+    # For now we only test with sprinkler.
     if [ "$file" == "sprinkler" ]; then
 
         echo "Processing Sprinkler"
@@ -31,7 +34,7 @@ jq -c '.[]' "output.json" | while IFS= read -r row; do
             issue_url=$(gh issue create \
                 -t "Confirmation of Owner Details Required - Environment: $file" \
                 -l "security" \
-                -b "Can you please review the contact details provided in the Owner field in environments/$file.json and create a PR if an update is necessary. Consult [this documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/reviewing-owners.html#review-owner)" \
+                -b "Can you please review the contact details provided in the owner tag in [environments/$file.json](https://github.com/$REPO/blob/main/environments/$file.json) and create a PR to update it if required. Consult this [documentation](https://technical-guidance.service.justice.gov.uk/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use) for further information."
             )
   
             if [ -z "$issue_url" ]; then
@@ -42,7 +45,7 @@ jq -c '.[]' "output.json" | while IFS= read -r row; do
                 echo "$file"
                 echo "$owner"
                 echo "$issue_url"
-                python ./scripts/confirm-environment-owner/owner-notification.py "$file" "$owner" "$issue_url"
+                python ./scripts/confirm-environment-owner/owner-notification.py "$file" "$issue_url" "$owner"
             fi
         else
             echo "An open issue already exists for environment $file. See $open_issue"
