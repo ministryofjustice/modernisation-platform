@@ -97,6 +97,10 @@
         {
           "account-name": "ppud-preproduction",
           "access": "developer"
+        },
+        {
+          "account-name": "ppud-production",
+          "access": "developer"
         }
       ]
     },
