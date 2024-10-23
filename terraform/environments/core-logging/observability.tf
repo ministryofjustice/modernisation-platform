@@ -155,7 +155,8 @@ resource "aws_athena_workgroup" "mod-platform-cur-reports" {
     result_configuration {
       output_location = "s3://${module.s3_moj_cur_reports_modplatform.bucket.id}/workgroup/"
       encryption_configuration {
-        encryption_option = "SSE_S3"
+        encryption_option = "SSE_KMS"
+        kms_key_arn       = aws_kms_alias.moj_cur_reports.arn
       }
     }
   }
@@ -231,13 +232,19 @@ data "aws_iam_policy_document" "additional_athena_policy" {
       "s3:AbortMultipartUpload",
       "s3:PutObject"
     ]
-    resources = ["arn:aws:s3:::moj-cur-reports-modplatform*"]
+    resources = [
+      module.s3_moj_cur_reports_modplatform.bucket.arn,
+      "${module.s3_moj_cur_reports_modplatform.bucket.arn}/*"
+    ]
   }
   statement {
     sid       = "AthenaCURReportsAccess"
     effect    = "Allow"
     actions   = ["s3:GetObject", "s3:ListBucket"]
-    resources = ["arn:aws:s3:::moj-cur-reports-modplatform*"]
+    resources = [
+      module.s3_moj_cur_reports_modplatform.bucket.arn,
+      "${module.s3_moj_cur_reports_modplatform.bucket.arn}/*"
+    ]
   }
 
   statement {
