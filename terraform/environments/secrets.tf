@@ -4,7 +4,7 @@ resource "aws_secretsmanager_secret" "environment_management" {
   provider    = aws.modernisation-platform
   name        = "environment_management"
   description = "IDs for AWS-specific resources for environment management, such as organizational unit IDs"
-  kms_key_id  = aws_kms_key.environment_management.id
+  kms_key_id  = aws_kms_key.environment_management_multi_region.id
   policy      = data.aws_iam_policy_document.environment_management.json
   tags        = local.environments
   replica {
