@@ -87,6 +87,20 @@
       ]
     },
     {
+      "username": "sajid.habib",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "ppud-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "ppud-preproduction",
+          "access": "developer"
+        }
+      ]
+    },
+    {
       "username": "umesh.ray",
       "github-username": "umeshc-roy",
       "accounts": [
