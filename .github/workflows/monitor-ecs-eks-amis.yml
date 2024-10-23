@@ -3,7 +3,7 @@ name: "ECS/EKS AMIs Check"
 on:
     workflow_dispatch:
     push:
-      branches: test/ecs-eks-ami-script
+      branches: feature/ecs-eks-ami-monitoring
 
 env:
   AWS_REGION: "eu-west-2"
