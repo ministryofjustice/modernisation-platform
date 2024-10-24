@@ -34,17 +34,23 @@ jq -c '.[]' "output.json" | while IFS= read -r row; do
             issue_url=$(gh issue create \
                 -t "Confirmation of Owner Details Required - Environment: $file" \
                 -l "security" \
-                -b "Can you please review the contact details provided in the owner tag in [environments/$file.json](https://github.com/$REPO/blob/main/environments/$file.json) and create a PR to update it if required. Consult this [documentation](https://technical-guidance.service.justice.gov.uk/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use) for further information."
-            )
-  
+                -b "Can you please review the contact details provided in the owner tag in [environments/$file.json](https://github.com/$REPO/blob/main/environments/$file.json) and confirm they are correct.
+At present the email address we have is $owner. If it needs to be changed you either:
+    - Contact the team via the [#ask-modernisation-team](https://moj.enterprise.slack.com/archives/C01A7QK5VM1) slack channel, or
+    - Add a comment to this issue and we will update the email address details, or
+    - Create a pull request with the change and contact us on the #ask-modernisation-team slack channel to review it.
+For further information please read this [documentation](https://technical-guidance.service.justice.gov.uk/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use)."
+)
+
+            # Now we send a notification email via Gov.UK Notify. (https://www.notifications.service.gov.uk/)
             if [ -z "$issue_url" ]; then
                 echo "Error - Github issue not created."
                 exit 1
             else
                 echo "Notifying the Owner via email using Gov Notify"
                 echo "$file"
-                echo "$owner"
                 echo "$issue_url"
+                echo "$owner"
                 python ./scripts/confirm-environment-owner/owner-notification.py "$file" "$issue_url" "$owner"
             fi
         else
