@@ -26,7 +26,7 @@ resource "aws_kms_alias" "s3_state_bucket_multi_region" {
 }
 
 resource "aws_kms_replica_key" "s3_state_bucket_multi_region_replica" {
-  description             = "AWS Secretsmanager CMK replica key"
+  description             = "AWS S3 bucket replica key"
   deletion_window_in_days = 30
   primary_key_arn         = aws_kms_key.s3_state_bucket_multi_region.arn
   provider                = aws.modernisation-platform-eu-west-1
@@ -122,8 +122,8 @@ module "state-bucket" {
   suffix_name                = "-terraform-state"
   replication_enabled        = true
   replication_region         = "eu-west-1"
-  custom_kms_key             = aws_kms_key.s3_state_bucket.arn
-  custom_replication_kms_key = aws_kms_key.s3_state_bucket_eu-west-1_replication.arn
+  custom_kms_key             = aws_kms_key.s3_state_bucket_multi_region.arn
+  custom_replication_kms_key = aws_kms_replica_key.s3_state_bucket_multi_region_replica.arn
   tags                       = local.tags
 
   lifecycle_rule = [
@@ -327,7 +327,7 @@ module "cost-management-bucket" {
   }
   bucket_policy       = [data.aws_iam_policy_document.cost_management_bucket_policy.json]
   bucket_name         = "mp-cost-explorer-reports"
-  custom_kms_key      = aws_kms_key.s3_state_bucket.arn
+  custom_kms_key      = aws_kms_key.s3_state_bucket_multi_region.arn
   replication_enabled = false
   lifecycle_rule = [
     {
