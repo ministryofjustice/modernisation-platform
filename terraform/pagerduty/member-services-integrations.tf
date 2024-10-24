@@ -2025,7 +2025,7 @@ resource "pagerduty_service_integration" "az_dso_alerts" {
 resource "pagerduty_slack_connection" "az_dso_alerts" {
   for_each = local.dso_az_alerts.channel_ids
 
-  source_id         = pagerduty_service.services[each.key].id
+  source_id         = pagerduty_service.az_dso_alerts[each.key].id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
   channel_id        = each.value
