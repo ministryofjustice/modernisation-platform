@@ -1994,6 +1994,68 @@ resource "pagerduty_event_orchestration_service" "default" {
 
 # END - DSO Squad alarms
 
+# DSO Azure alerts
+
+locals {
+  dso_az_alerts = {
+    channel_ids = {
+      az-noms-production-1-alerts = "C07TC0DCYJE"
+    }
+  }
+}
+
+resource "pagerduty_service" "az_dso_alerts" {
+  for_each = local.dso_az_alerts.channel_ids
+
+  name                    = each.key
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "az_dso_alerts" {
+  for_each = pagerduty_service.az_dso_alerts
+
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = each.value.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "az_dso_alerts" {
+  for_each = local.dso_az_alerts.channel_ids
+
+  source_id         = pagerduty_service.az_dso_alerts[each.key].id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = each.value
+  notification_type = "responder"
+
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened",
+    ]
+    priorities = ["*"]
+  }
+}
+
+# END - DSO Azure alerts
+
 resource "pagerduty_service" "sprinkler-development" {
   name                    = "sprinkler-development"
   description             = "sprinkler-development"
