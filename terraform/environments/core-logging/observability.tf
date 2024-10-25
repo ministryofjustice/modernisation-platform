@@ -237,9 +237,9 @@ data "aws_iam_policy_document" "additional_athena_policy" {
     ]
   }
   statement {
-    sid       = "AthenaCURReportsAccess"
-    effect    = "Allow"
-    actions   = ["s3:GetObject", "s3:ListBucket"]
+    sid     = "AthenaCURReportsAccess"
+    effect  = "Allow"
+    actions = ["s3:GetObject", "s3:ListBucket"]
     resources = [
       module.s3_moj_cur_reports_modplatform.bucket.arn,
       "${module.s3_moj_cur_reports_modplatform.bucket.arn}/*"
