@@ -61,10 +61,10 @@ for file in "$DIR"/*.json; do
       months_ago=$((diff_in_seconds / 2592000))
 
       echo "Commit date is $months_ago months old"
-      echo "\n"
-      echo "\n"
+      echo " "
+      echo " "
       echo "-------------------------------------"
-      echo "\n"
+      echo " "
 
       # This tests that the months_ago value is divisible by the PERIOD. For a 6 month cycle it will ensure it is included just once. 
       if (( months_ago % $PERIOD == 0 )); then

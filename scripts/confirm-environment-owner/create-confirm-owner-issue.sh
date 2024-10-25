@@ -40,13 +40,13 @@ jq -c '.[]' "output.json" | while IFS= read -r row; do
                 -l "security" \
                 -b "Can you please review the contact details provided in the owner tag in [environments/$file.json](https://github.com/$REPO/blob/main/environments/$file.json) and confirm they are correct. At present the email address we have is $owner. If it needs to be changed you can either:
 
-    - Check whether or not any other email addresses are listed in the .json file and include those.
+- Check whether or not any other email addresses are listed in the .json file and include those.
  
-    - Contact the team via the [#ask-modernisation-team](https://moj.enterprise.slack.com/archives/C01A7QK5VM1) slack channel, or
+ - Contact the team via the [#ask-modernisation-team](https://moj.enterprise.slack.com/archives/C01A7QK5VM1) slack channel, or
 
-    - Add a comment to this issue and we will update the email address details, or
+- Add a comment to this issue and we will update the email address details, or
 
-    - Create a pull request with the change and contact us on the #ask-modernisation-team slack channel to review it.
+- Create a pull request with the change and contact us on the #ask-modernisation-team slack channel to review it.
 
 For further information please read this [documentation](https://technical-guidance.service.justice.gov.uk/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use)."
 )
