@@ -16,7 +16,7 @@ DIR="$GITHUB_WORKSPACE/$REMOTE_DIR"
 NESTED_FIELD="tags.owner"
 
 # The list of Modernisation Platform environments that are to be excluded from the json output
-MP_ENVS=('cooker' 'example' 'sprinkler' 'testing')
+MP_ENVS=("cooker" "example" "sprinkler" "testing")
 
 # Initialize an empty JSON array as a variable
 json_output="["

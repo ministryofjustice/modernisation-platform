@@ -7,13 +7,12 @@ on:
       - issue/7047
 
   #schedule:
-  #  - cron: '30 9 */100,1-7 * 1' # First Monday of month every 3 months
+  #  - cron: '00 9 */30,1-7 * 1' # First Monday of month
 
 env:
     API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
     TEMPLATE_ID: "93afef96-ea0b-470f-bd20-edf44e0acdb9"
-    # This variable determines the number of months we look back for created dates. For production it will be 6.
-    PERIOD: "4"
+    PERIOD: "6" # This variable determines the number of months we look back for created dates. For production it will be 6.
 
 defaults:
   run:
