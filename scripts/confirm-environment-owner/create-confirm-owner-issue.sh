@@ -5,6 +5,7 @@
 # The repository
 REPO=$GITHUB_REPO
 
+
 # Validate that the output from the previous step of the job.
 if ! jq . output.json > /dev/null 2>&1; then
     echo "Error processing json."
@@ -19,20 +20,23 @@ jq -c '.[]' "output.json" | while IFS= read -r row; do
     file=$(echo "$row" | jq -r '.file')
     owner=$(echo "$row" | jq -r '.owner')
 
+    # Github issue title
+    GITHUB_ISSUE_TITLE="Confirmation of Owner Details Required - Environment: $file"
+
     # For now we only test with one account.
     if [ "$file" == "operations-engineering" ]; then
 
         echo "Processing Sprinkler"
 
         # Check if there is an existing open issue for the environment as we don't want duplicates.
-        open_issue=$(gh issue list -R ministryofjustice/modernisation-platform --search "Confirmation of Onwer Details Required - Environment: $file in:title" --state open)
+        open_issue=$(gh issue list -R ministryofjustice/modernisation-platform --search " $GITHUB_ISSUE_TITLE in:title" --state open)
 
         if [ -z "$open_issue" ]; then
 
             # Creating GitHub Issue.
             echo "Creating GitHub Issue to confirm the owner $owner for environment $file"
             issue_url=$(gh issue create \
-                -t "Confirmation of Owner Details Required - Environment: $file" \
+                -t "$GITHUB_ISSUE_TITLE" \
                 -l "security" \
                 -b "Can you please review the contact details provided in the owner tag in [environments/$file.json](https://github.com/$REPO/blob/main/environments/$file.json) and confirm they are correct. At present the email address we have is $owner. If it needs to be changed you can either:
 
