@@ -219,11 +219,6 @@ resource "aws_sqs_queue_policy" "logging" {
   queue_url = aws_sqs_queue.logging[each.key].url
 }
 
-data "aws_kms_alias" "secrets" {
-  provider = aws.modernisation-platform
-  name     = "alias/secrets_key"
-}
-
 resource "aws_iam_policy" "cortex_xsiam_policy" {
   name        = "cortex-user-policy"
   description = "Allows the access to the created SQS queue"
