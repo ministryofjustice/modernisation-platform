@@ -351,11 +351,12 @@ data "aws_iam_policy_document" "moj_cur_reports_kms" {
     sid    = "Allow AWS S3, lambda & Logs service to use key"
     effect = "Allow"
     actions = [
-      "kms:Encrypt*",
+      "kms:AssociateEncryptionContext",
       "kms:Decrypt*",
-      "kms:ReEncrypt*",
+      "kms:Describe*",
+      "kms:Encrypt*",
       "kms:GenerateDataKey*",
-      "kms:Describe*"
+      "kms:ReEncrypt*"
     ]
     resources = [
       "*"
@@ -365,7 +366,8 @@ data "aws_iam_policy_document" "moj_cur_reports_kms" {
       identifiers = [
         "s3.amazonaws.com",
         "logs.amazonaws.com",
-        "lambda.amazonaws.com"
+        "lambda.amazonaws.com",
+        "glue.amazonaws.com"
       ]
     }
   }
