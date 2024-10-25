@@ -1,18 +1,6 @@
 # Slack channel modernisation-platform-notifications webhook url for sending notifications to slack
 # Not adding a secret version as this url is provided by slack and cannot be added programatically
 # Secret should be manually set in the console.
-resource "aws_kms_key" "secrets_key" {
-  description             = "AWS Secretsmanager CMK"
-  policy                  = data.aws_iam_policy_document.kms_secrets_key.json
-  enable_key_rotation     = true
-  deletion_window_in_days = 30
-}
-
-resource "aws_kms_alias" "secrets_key" {
-  name          = "alias/secrets_key"
-  target_key_id = aws_kms_key.secrets_key.id
-}
-
 resource "aws_kms_key" "secrets_key_multi_region" {
   description             = "AWS Secretsmanager CMK"
   policy                  = data.aws_iam_policy_document.kms_secrets_key.json

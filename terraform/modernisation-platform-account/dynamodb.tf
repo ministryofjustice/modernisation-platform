@@ -1,20 +1,3 @@
-resource "aws_kms_key" "dynamo_encryption" {
-  enable_key_rotation = true
-  policy              = data.aws_iam_policy_document.dynamo_encryption.json
-
-  tags = merge(
-    local.tags,
-    {
-      Name = "dynamo_encryption"
-    }
-  )
-}
-
-resource "aws_kms_alias" "dynamo_encryption" {
-  name          = "alias/dynamodb-state-lock"
-  target_key_id = aws_kms_key.dynamo_encryption.id
-}
-
 resource "aws_kms_key" "dynamo_encryption_multi_region" {
   enable_key_rotation = true
   policy              = data.aws_iam_policy_document.dynamo_encryption.json
