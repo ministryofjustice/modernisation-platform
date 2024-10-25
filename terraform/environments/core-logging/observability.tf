@@ -36,8 +36,9 @@ data "aws_iam_policy_document" "grafana_athena_policy" {
 
     actions = [
       "s3:GetObject",
-      "s3:PutObject",
-      "s3:ListBucket"
+      "s3:ListBucket",
+      "s3:PutObject"
+      
     ]
 
     resources = [
@@ -186,15 +187,15 @@ data "aws_iam_policy_document" "additional_athena_policy" {
     sid    = "AthenaQueryAccess"
     effect = "Allow"
     actions = [
-      "athena:ListDatabases",
-      "athena:ListDataCatalogs",
-      "athena:ListWorkGroups",
       "athena:GetDatabase",
       "athena:GetDataCatalog",
       "athena:GetQueryExecution",
       "athena:GetQueryResults",
       "athena:GetTableMetadata",
       "athena:GetWorkGroup",
+      "athena:ListDatabases",
+      "athena:ListDataCatalogs",
+      "athena:ListWorkGroups",
       "athena:ListTableMetadata",
       "athena:StartQueryExecution",
       "athena:StopQueryExecution"
@@ -223,12 +224,12 @@ data "aws_iam_policy_document" "additional_athena_policy" {
     sid    = "AthenaS3Access"
     effect = "Allow"
     actions = [
+      "s3:AbortMultipartUpload",
       "s3:GetBucketLocation",
       "s3:GetObject",
       "s3:ListBucket",
       "s3:ListBucketMultipartUploads",
       "s3:ListMultipartUploadParts",
-      "s3:AbortMultipartUpload",
       "s3:PutObject"
     ]
     resources = [
@@ -257,6 +258,7 @@ data "aws_iam_policy_document" "additional_athena_policy" {
     sid    = "CloudWatchPermission"
     effect = "Allow"
     actions = [
+      "logs:AssociateKmsKey",
       "logs:CreateLogStream",
       "logs:CreateLogGroup",
       "logs:PutLogEvents",
@@ -291,9 +293,10 @@ data "aws_iam_policy_document" "crawler_lambda_policy" {
     sid    = "CloudWatch"
     effect = "Allow"
     actions = [
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
+      "logs:AssociateKmsKey",
       "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
     ]
     resources = ["${aws_cloudwatch_log_group.default.arn}:*"]
   }
@@ -351,11 +354,11 @@ data "aws_iam_policy_document" "moj_cur_reports_kms" {
     sid    = "Allow AWS S3, lambda & Logs service to use key"
     effect = "Allow"
     actions = [
-      "kms:Encrypt*",
       "kms:Decrypt*",
-      "kms:ReEncrypt*",
+      "kms:Describe*",
+      "kms:Encrypt*",
       "kms:GenerateDataKey*",
-      "kms:Describe*"
+      "kms:ReEncrypt*"
     ]
     resources = [
       "*"
@@ -363,9 +366,10 @@ data "aws_iam_policy_document" "moj_cur_reports_kms" {
     principals {
       type = "Service"
       identifiers = [
-        "s3.amazonaws.com",
+        "glue.amazonaws.com",
+        "lambda.amazonaws.com",
         "logs.amazonaws.com",
-        "lambda.amazonaws.com"
+        "s3.amazonaws.com"
       ]
     }
   }
@@ -379,8 +383,8 @@ data "aws_iam_policy_document" "moj_cur_reports_kms" {
       ]
     }
     actions = [
-      "kms:GenerateDataKey",
-      "kms:Encrypt"
+      "kms:Encrypt",
+      "kms:GenerateDataKey"
     ]
     resources = ["*"]
   }
