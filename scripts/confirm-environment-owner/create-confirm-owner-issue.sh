@@ -48,9 +48,6 @@ For further information please read this [documentation](https://technical-guida
                 exit 1
             else
                 echo "Notifying the Owner via email using Gov Notify"
-                echo "$file"
-                echo "$issue_url"
-                echo "$owner"
                 python ./scripts/confirm-environment-owner/owner-notification.py "$file" "$issue_url" "$owner"
             fi
         else
