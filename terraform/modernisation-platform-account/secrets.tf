@@ -26,7 +26,6 @@ resource "aws_kms_alias" "secrets_key_multi_region" {
   target_key_id = aws_kms_key.secrets_key_multi_region.id
 }
 
-
 resource "aws_kms_replica_key" "secrets_key_multi_region_replica" {
   description             = "AWS Secretsmanager CMK replica key"
   deletion_window_in_days = 30
@@ -72,26 +71,32 @@ data "aws_iam_policy_document" "kms_secrets_key" {
   }
 }
 
-resource "aws_secretsmanager_secret" "slack_webhook_url" {
+# CircleCI Organisation ID
+resource "aws_secretsmanager_secret" "circleci" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
-  name        = "slack_webhook_url"
-  description = "Slack channel modernisation-platform-notifications webhook url for sending notifications to slack"
+  name        = "mod-platform-circleci"
+  description = "CircleCI organisation ID for ministryofjustice, used for OIDC IAM policies"
   kms_key_id  = aws_kms_key.secrets_key_multi_region.id
-  tags        = local.tags
+
   replica {
     region = local.replica_region
   }
 }
 
-resource "aws_secretsmanager_secret" "slack_webhook_url_modernisation_platform_update" {
-  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
-  name        = "slack_webhook_url_modernisation_platform_update"
-  description = "Slack channel modernisation-platform-update webhook url for sending notifications to slack"
-  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
-  tags        = local.tags
-  replica {
-    region = local.replica_region
+resource "aws_secretsmanager_secret_version" "circleci" {
+  secret_id = aws_secretsmanager_secret.circleci.id
+  secret_string = jsonencode({
+    organisation_id = "CHANGE_ME_IN_THE_CONSOLE" # change this value manually in the console once the secret is created
+  })
+
+  lifecycle {
+    ignore_changes = [secret_string]
   }
+}
+
+# Data call to fetch changed value
+data "aws_secretsmanager_secret_version" "circleci" {
+  secret_id = aws_secretsmanager_secret.circleci.id
 }
 
 # Github CI user PAT
@@ -136,6 +141,17 @@ resource "aws_secretsmanager_secret" "github_ci_user_password" {
   }
 }
 
+resource "aws_secretsmanager_secret" "gov_uk_notify_api_key" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "gov_uk_notify_api_key"
+  description = "API key for accessing the GOV.UK Notify service for sending email notifications"
+  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}
+
 # Account IDs to be excluded from auto-nuke
 resource "aws_secretsmanager_secret" "nuke_account_blocklist" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
@@ -160,47 +176,21 @@ resource "aws_secretsmanager_secret" "nuke_account_ids" {
   }
 }
 
-# Reflection of what is in member accounts, needed here as well so that the same code works for collaborators
-resource "aws_ssm_parameter" "modernisation_platform_account_id" {
-  #checkov:skip=CKV_AWS_337: Standard key is fine here
-  name  = "modernisation_platform_account_id"
-  type  = "SecureString"
-  value = data.aws_caller_identity.current.id
-  tags  = local.tags
-}
-
-# CircleCI Organisation ID
-resource "aws_secretsmanager_secret" "circleci" {
+resource "aws_secretsmanager_secret" "slack_webhook_url" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
-  name        = "mod-platform-circleci"
-  description = "CircleCI organisation ID for ministryofjustice, used for OIDC IAM policies"
+  name        = "slack_webhook_url"
+  description = "Slack channel modernisation-platform-notifications webhook url for sending notifications to slack"
   kms_key_id  = aws_kms_key.secrets_key_multi_region.id
-
+  tags        = local.tags
   replica {
     region = local.replica_region
   }
 }
 
-resource "aws_secretsmanager_secret_version" "circleci" {
-  secret_id = aws_secretsmanager_secret.circleci.id
-  secret_string = jsonencode({
-    organisation_id = "CHANGE_ME_IN_THE_CONSOLE" # change this value manually in the console once the secret is created
-  })
-
-  lifecycle {
-    ignore_changes = [secret_string]
-  }
-}
-
-# Data call to fetch changed value
-data "aws_secretsmanager_secret_version" "circleci" {
-  secret_id = aws_secretsmanager_secret.circleci.id
-}
-
-resource "aws_secretsmanager_secret" "gov_uk_notify_api_key" {
+resource "aws_secretsmanager_secret" "slack_webhook_url_modernisation_platform_update" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
-  name        = "gov_uk_notify_api_key"
-  description = "API key for accessing the GOV.UK Notify service for sending email notifications"
+  name        = "slack_webhook_url_modernisation_platform_update"
+  description = "Slack channel modernisation-platform-update webhook url for sending notifications to slack"
   kms_key_id  = aws_kms_key.secrets_key_multi_region.id
   tags        = local.tags
   replica {
@@ -217,4 +207,13 @@ resource "aws_secretsmanager_secret" "slack_webhooks" {
   replica {
     region = local.replica_region
   }
+}
+
+# Reflection of what is in member accounts, needed here as well so that the same code works for collaborators
+resource "aws_ssm_parameter" "modernisation_platform_account_id" {
+  #checkov:skip=CKV_AWS_337: Standard key is fine here
+  name  = "modernisation_platform_account_id"
+  type  = "SecureString"
+  value = data.aws_caller_identity.current.id
+  tags  = local.tags
 }
