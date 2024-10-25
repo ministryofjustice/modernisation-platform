@@ -1,16 +1,3 @@
-# State bucket KMS Source
-resource "aws_kms_key" "s3_state_bucket" {
-  description             = "s3-state-bucket"
-  policy                  = data.aws_iam_policy_document.kms_state_bucket.json
-  enable_key_rotation     = true
-  deletion_window_in_days = 30
-}
-
-resource "aws_kms_alias" "s3_state_bucket" {
-  name          = "alias/s3-state-bucket"
-  target_key_id = aws_kms_key.s3_state_bucket.id
-}
-
 # State bucket KMS multi-Region
 resource "aws_kms_key" "s3_state_bucket_multi_region" {
   description             = "s3-state-bucket-multi-region"
