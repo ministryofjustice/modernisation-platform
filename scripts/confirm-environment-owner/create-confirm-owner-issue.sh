@@ -5,7 +5,6 @@
 # The repository
 REPO=$GITHUB_REPO
 
-
 # Validate that the output from the previous step of the job.
 if ! jq . output.json > /dev/null 2>&1; then
     echo "Error processing json."
@@ -23,26 +22,21 @@ jq -c '.[]' "output.json" | while IFS= read -r row; do
     # Github issue title
     GITHUB_ISSUE_TITLE="Confirmation of Owner Details Required - Environment: $file"
 
-    # For now we only test with one account.
-    if [ "$file" == "operations-engineering" ]; then
+    # Check if there is an existing open issue for the environment as we don't want duplicates.
+    open_issue=$(gh issue list -R ministryofjustice/modernisation-platform --search " $GITHUB_ISSUE_TITLE in:title" --state open)
 
-        echo "Processing Sprinkler"
+    if [ -z "$open_issue" ]; then
 
-        # Check if there is an existing open issue for the environment as we don't want duplicates.
-        open_issue=$(gh issue list -R ministryofjustice/modernisation-platform --search " $GITHUB_ISSUE_TITLE in:title" --state open)
-
-        if [ -z "$open_issue" ]; then
-
-            # Creating GitHub Issue.
-            echo "Creating GitHub Issue to confirm the owner $owner for environment $file"
-            issue_url=$(gh issue create \
-                -t "$GITHUB_ISSUE_TITLE" \
-                -l "security" \
-                -b "Can you please review the contact details provided in the owner tag in [environments/$file.json](https://github.com/$REPO/blob/main/environments/$file.json) and confirm they are correct. At present the email address we have is $owner. If it needs to be changed you can either:
+        # Creating GitHub Issue.
+        echo "Creating GitHub Issue to confirm the owner $owner for environment $file"
+        issue_url=$(gh issue create \
+            -t "$GITHUB_ISSUE_TITLE" \
+            -l "security" \
+            -b "Can you please review the contact details provided in the owner tag in [environments/$file.json](https://github.com/$REPO/blob/main/environments/$file.json) and confirm they are correct. At present the email address we have is $owner. If it needs to be changed you can either:
 
 - Check whether or not any other email addresses are listed in the .json file and include those.
  
- - Contact the team via the [#ask-modernisation-team](https://moj.enterprise.slack.com/archives/C01A7QK5VM1) slack channel, or
+- Contact the team via the [#ask-modernisation-team](https://moj.enterprise.slack.com/archives/C01A7QK5VM1) slack channel, or
 
 - Add a comment to this issue and we will update the email address details, or
 
@@ -51,16 +45,16 @@ jq -c '.[]' "output.json" | while IFS= read -r row; do
 For further information please read this [documentation](https://technical-guidance.service.justice.gov.uk/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use)."
 )
 
-            # Now we send a notification email via Gov.UK Notify. (https://www.notifications.service.gov.uk/)
-            if [ -z "$issue_url" ]; then
-                echo "Error - Github issue not created."
-                exit 1
-            else
-                echo "Notifying the Owner via email using Gov Notify"
-                python ./scripts/confirm-environment-owner/owner-notification.py "$file" "$issue_url" "$owner"
-            fi
+        # Now we send a notification email via Gov.UK Notify. (https://www.notifications.service.gov.uk/)
+        if [ -z "$issue_url" ]; then
+            echo "Error - Github issue not created."
+            exit 1
         else
-            echo "An open issue already exists for environment $file. See $open_issue"
+            echo "Notifying the Owner via email using Gov Notify"
+            python ./scripts/confirm-environment-owner/owner-notification.py "$file" "$issue_url" "$owner"
         fi
+    else
+        echo "An open issue already exists for environment $file. See $open_issue"
     fi
+
 done

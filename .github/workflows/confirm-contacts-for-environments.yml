@@ -30,7 +30,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
-          ref: issue/7047
+          ref: main
 
     # 1. Iterate through all environments/*.json files and get the environment name & contact details for each as a json file.
 
