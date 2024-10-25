@@ -12,26 +12,18 @@ data "aws_caller_identity" "modernisation_platform" {
 
 }
 
-data "aws_kms_key" "s3_state_bucket" {
-  key_id = "alias/s3-state-bucket"
-}
-
-data "aws_kms_key" "dynamodb_state_lock" {
-  key_id = "alias/dynamodb-state-lock"
+data "aws_kms_key" "s3_state_bucket_multi_region" {
+  key_id = "alias/s3-state-bucket-multi-region"
 }
 
 data "aws_kms_key" "dynamodb_state_lock_multi_region" {
   key_id = "alias/dynamodb-state-lock-multi-region"
 }
 
-data "aws_kms_key" "environment_management" {
-  key_id = "alias/environment-management"
-}
-
 data "aws_kms_key" "environment_management_multi_region" {
   key_id = "alias/environment-management-multi-region"
 }
 
-data "aws_kms_key" "pagerduty" {
-  key_id = "alias/pagerduty-secret"
+data "aws_kms_key" "pagerduty_multi_region" {
+  key_id = "alias/pagerduty-secret-multi-region"
 }
