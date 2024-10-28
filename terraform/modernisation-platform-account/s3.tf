@@ -12,6 +12,11 @@ resource "aws_kms_alias" "s3_state_bucket_multi_region" {
   target_key_id = aws_kms_key.s3_state_bucket_multi_region.id
 }
 
+resource "aws_kms_alias" "s3_state_bucket" {
+  name          = "alias/s3-state-bucket"
+  target_key_id = aws_kms_key.s3_state_bucket_multi_region.id
+}
+
 resource "aws_kms_replica_key" "s3_state_bucket_multi_region_replica" {
   description             = "AWS S3 bucket replica key"
   deletion_window_in_days = 30
