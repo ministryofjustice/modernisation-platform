@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "eu-west-2"
-  alias  = "secondary"  # Provider for Account B
-}
 
 # IAM Role in Account B to allow cross-account access to S3 in Account A
 resource "aws_iam_role" "ssm_inventory_sync_role" {
@@ -40,8 +36,8 @@ resource "aws_iam_policy" "ssm_inventory_sync_policy" {
         "s3:PutObjectAcl"
       ],
       "Resource": [
-        "arn:aws:s3:::ssm-inventory-sync-bucket-236861075084-euw2",
-        "arn:aws:s3:::ssm-inventory-sync-bucket-236861075084-euw2/*"
+        "arn:aws:s3:::ssm-inventory-sync-bucket-euw2",
+        "arn:aws:s3:::ssm-inventory-sync-bucket-euw2/*"
       ]
     }
   ]
@@ -58,10 +54,10 @@ resource "aws_iam_role_policy_attachment" "ssm_inventory_sync_policy_attach" {
 
 resource "aws_ssm_association" "ssm_inventory" {
   name = "AWS-GatherSoftwareInventory"
-  schedule_expression = "rate(30 minutes)"
+  schedule_expression = ""
   targets {
     key    = "InstanceIds"
-    values = ["i-087c0f253c9b5b1c6", "i-0936cca4e6be2988c", "i-05311a4161a5fbc29"]
+    values = [""]
   }
 }
 
@@ -69,7 +65,7 @@ resource "aws_ssm_association" "ssm_inventory" {
 resource "aws_ssm_resource_data_sync" "account_a_data_sync" {
   name = "ResourceDataSyncAccountA"
   s3_destination {
-    bucket_name = "ssm-inventory-sync-bucket-236861075084-euw2"
+    bucket_name = "ssm-inventory-sync-bucket-euw2"
     region      = "eu-west-2"
     sync_format = "JsonSerDe"
     prefix      = "ssm-data-sync/"   # Added prefix to store data under this folder
