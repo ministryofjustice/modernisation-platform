@@ -7,6 +7,8 @@ on:
     - cron: '0 9 1 * *'
 
 env:
+    GITHUB_REPO: ${{ github.repository }}
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
     API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
     TEMPLATE_ID: "93afef96-ea0b-470f-bd20-edf44e0acdb9"
     PERIOD: "6" # This variable determines the number of months we look back for created dates. For production it will be 6.
@@ -29,19 +31,13 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-        with:
-          ref: main
 
     # 1. Iterate through all environments/*.json files and get the environment name & contact details for each as a json file.
 
-      - name: Get Environment Owners        
-        env:
-          GITHUB_REPO: ${{ github.repository }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
+      - name: Get Environment Owners         
         run: |
           cd $GITHUB_WORKSPACE
           pwd
-          chmod +x scripts/confirm-environment-owner/get-environment-owners.sh
           ./scripts/confirm-environment-owner/get-environment-owners.sh
 
     # 2. Setup Python.
@@ -56,14 +52,10 @@ jobs:
         
     # 3. Create an issue in github with the requried text and notify the owners via email with the issue link.
 
-      - name: Create Issue and Notify Owner
-        env:
-          GITHUB_REPO: ${{ github.repository }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
+      - name: Create Issue and Notify Owner  
         run: |
           cd $GITHUB_WORKSPACE
           pwd
-          chmod +x scripts/confirm-environment-owner/create-confirm-owner-issue.sh
           ./scripts/confirm-environment-owner/create-confirm-owner-issue.sh
 
 
