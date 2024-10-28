@@ -26,6 +26,15 @@
       ]
     },
     {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "hmpps-electronic-monitoring-data-store",
+          "level": "data-engineer"
+        }
+      ]
+    },
+    {
       "name": "production",
       "access": [
         {
