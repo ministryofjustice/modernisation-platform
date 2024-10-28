@@ -24,13 +24,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: ministryofjustice/tech-docs-github-pages-publisher:v3.0.1
+      image: ministryofjustice/tech-docs-github-pages-publisher:v4.0.0
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Compile Markdown to HTML and create artifact
         run: |
-          /scripts/deploy.sh
+          /usr/local/bin/package
       - name: Upload artifact to be published
         uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v3.1.0
         with:
