@@ -29,6 +29,14 @@ body:
       value:
     validations:
       required: true
+  - type: textarea
+    id: context-background
+    attributes:
+      description: Outline the background for this ticket such as how or where the requirement originated.
+      label: Context / Background
+      value:
+    validations:
+      required: true
   - type: input
     id: useful-contacts
     attributes:
