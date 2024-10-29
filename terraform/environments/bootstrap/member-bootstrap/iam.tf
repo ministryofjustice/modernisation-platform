@@ -279,7 +279,7 @@ data "aws_iam_policy_document" "member-access" {
   statement {
     actions   = ["iam:PassRole"]
     effect    = "Deny"
-    resources = ["arn:aws:iam:*:role/MemberInfrastructureAccess"]
+    resources = ["arn:aws:iam::*:role/MemberInfrastructureAccess"]
   }
 }
 
@@ -400,7 +400,7 @@ data "aws_iam_policy_document" "member-access-us-east" {
   statement {
     actions   = ["iam:PassRole"]
     effect    = "Deny"
-    resources = ["arn:aws:iam:*:role/MemberInfrastructureAccessUSEast"]
+    resources = ["arn:aws:iam::*:role/MemberInfrastructureAccessUSEast"]
   }
 }
 
