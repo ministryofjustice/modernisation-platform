@@ -66,7 +66,11 @@ for file in "$DIR"/*.json; do
       echo "-------------------------------------"
       echo " "
 
-      # This tests that the months_ago value is divisible by the PERIOD. For a 6 month cycle it will ensure it is included just once. 
+      # This tests that the months_ago value is divisible by the PERIOD which determines how frequently the environment's owner is contacted.
+      # For example, a PERIOD value of 12 will notify the owner approx once per year whereas a value of 1 will result in a notificatyion every month. A value of 6 will contact the owners twice a year.
+      # Note that values greater than 12 have not been tested.
+      # This PERIOD value can be adjusted to avoid over-notification of owners via the email addresses.
+      
       if (( months_ago % $PERIOD == 0 )); then
             
         VALUE=$(jq -r ".$NESTED_FIELD" "$file" 2>/dev/null)
