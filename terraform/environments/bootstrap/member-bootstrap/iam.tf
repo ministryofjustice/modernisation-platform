@@ -275,6 +275,12 @@ data "aws_iam_policy_document" "member-access" {
     ]
     resources = ["arn:aws:iam::*:user/cicd-member-user"]
   }
+
+  statement {
+    actions   = ["iam:PassRole"]
+    effect    = "Deny"
+    resources = ["arn:aws:iam:*:role/MemberInfrastructureAccess"]
+  }
 }
 
 resource "aws_iam_policy" "member-access" {
@@ -389,6 +395,12 @@ data "aws_iam_policy_document" "member-access-us-east" {
       "iam:UpdateUser"
     ]
     resources = ["*"]
+  }
+
+  statement {
+    actions   = ["iam:PassRole"]
+    effect    = "Deny"
+    resources = ["arn:aws:iam:*:role/MemberInfrastructureAccessUSEast"]
   }
 }
 
