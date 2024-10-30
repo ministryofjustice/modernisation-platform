@@ -19,7 +19,7 @@ locals {
     { "source-code" = "https://github.com/ministryofjustice/modernisation-platform" }
   )
 
-  environment     =   "sandbox"
+  environment     = "sandbox"
   vpc_name        = var.networking[0].business-unit
   subnet_set      = var.networking[0].set
   vpc_all         = "${local.vpc_name}-${local.environment}"
@@ -34,4 +34,3 @@ locals {
   # example_data = local.application_data.accounts[local.environment].example_var
   application_data = fileexists("./application_variables.json") ? jsondecode(file("./application_variables.json")) : {}
 }
-
