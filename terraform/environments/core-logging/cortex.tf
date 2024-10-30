@@ -234,5 +234,6 @@ resource "aws_iam_role" "cortex_xsiam_role" {
 
 resource "aws_iam_role_policy_attachment" "cortex_xsiam_role" {
   policy_arn = aws_iam_policy.cortex_xsiam_policy.arn
-  role       = aws_iam_role.cortex_xsiam_role.name
+
+  role = aws_iam_role.cortex_xsiam_role.name
 }
