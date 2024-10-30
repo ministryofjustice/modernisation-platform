@@ -25,23 +25,24 @@ expected :=
       "general": {
         "cidr": "10.27.0.0/21",
         "accounts": [
-          "performance-hub-preproduction",
-          "oasys-preproduction",
-          "nomis-preproduction",
-          "ppud-preproduction",
+          "corporate-staff-rostering-preproduction",
+          "delius-core-preproduction",
           "delius-iaps-preproduction",
           "delius-jitbit-preproduction",
           "delius-mis-preproduction",
           "delius-nextcloud-preproduction",
+          "digital-prison-reporting-preproduction",
+          "electronic-monitoring-data-preproduction",
+          "hmpps-domain-services-preproduction",
+          "hmpps-oem-preproduction",
+          "nomis-preproduction",
           "nomis-combined-reporting-preproduction",
           "nomis-data-hub-preproduction",
-          "digital-prison-reporting-preproduction",
-          "corporate-staff-rostering-preproduction",
+          "oasys-preproduction",
+          "oasys-national-reporting-preproduction",
+          "performance-hub-preproduction",
           "planetfm-preproduction",
-          "hmpps-oem-preproduction",
-          "hmpps-domain-services-preproduction",
-          "delius-core-preproduction",
-          "oasys-national-reporting-preproduction"
+          "ppud-preproduction"
         ]
       }
     },

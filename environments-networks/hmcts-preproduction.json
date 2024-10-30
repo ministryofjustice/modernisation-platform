@@ -4,13 +4,13 @@
       "general": {
         "cidr": "10.27.24.0/21",
         "accounts": [
-          "xhibit-portal-preproduction",
+          "dacp-preproduction",
+          "ncas-preproduction",
+          "pra-register-preproduction",
           "tipstaff-preproduction",
           "tribunals-preproduction",
-          "dacp-preproduction",
-          "pra-register-preproduction",
-          "ncas-preproduction",
-          "wardship-preproduction"
+          "wardship-preproduction",
+          "xhibit-portal-preproduction"
         ]
       }
     }
