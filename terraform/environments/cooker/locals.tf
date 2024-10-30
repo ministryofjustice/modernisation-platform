@@ -1,6 +1,6 @@
 locals {
 
-  application_name = "cooker"
+  application_name =  "cooker"
 
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 
@@ -19,7 +19,7 @@ locals {
     { "source-code" = "https://github.com/ministryofjustice/modernisation-platform" }
   )
 
-  environment     = "sandbox"
+  environment     =   "sandbox"
   vpc_name        = var.networking[0].business-unit
   subnet_set      = var.networking[0].set
   vpc_all         = "${local.vpc_name}-${local.environment}"
