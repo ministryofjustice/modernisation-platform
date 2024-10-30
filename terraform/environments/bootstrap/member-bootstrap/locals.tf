@@ -60,6 +60,7 @@ locals {
     "apex-production",
     "apex-test",
     "data-platform-production",
+    "electronic-monitoring-data-preproduction",
     "eric-test",
     "eric-production",
     "nomis-production",
