@@ -32,7 +32,7 @@ for file in "$DIR"/*.json; do
     FILE_NAME=$(basename "$file" .json)
 
     # Ensures we ignore the Modernisaiton Platform environments.
-    if [[ ! " ${MP_ENVS[@]} " =~ " $file " ]]; then
+    if [[ ! " ${MP_ENVS[@]} " =~ " $FILE_NAME " ]]; then
 
       file_path="$REMOTE_DIR/$FILE_NAME.json"
   
