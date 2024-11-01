@@ -1,10 +1,11 @@
 name: Confirm Contacts for Environments
 
 on:
-
   # Runs on the first day of each month at 9am
   schedule:
     - cron: '0 9 1 * *'
+  # Allows for manual exec
+  workflow_dispatch:
 
 env:
     GITHUB_REPO: ${{ github.repository }}
@@ -56,6 +57,7 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE
           pwd
+          chmod +x scripts/confirm-environment-owner/create-confirm-owner-issue.sh
           ./scripts/confirm-environment-owner/create-confirm-owner-issue.sh
 
 
