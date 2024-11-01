@@ -522,7 +522,6 @@ data "aws_iam_policy_document" "policy" {
       "iam:listInstanceProfilesForRole",
       "iam:listRolePolicies",
       "iam:ListRoles",
-      "iam:PassRole",
       "kinesis:PutRecord",
       "kms:DescribeKey",
       "kms:Decrypt",
@@ -564,6 +563,13 @@ data "aws_iam_policy_document" "policy" {
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
+
+  statement {
+    actions   = ["iam:PassRole"]
+    effect    = "Allow"
+    resources = ["*"]
+  }
+
   statement {
     effect = "Allow"
     actions = [
