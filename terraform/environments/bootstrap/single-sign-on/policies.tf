@@ -328,9 +328,7 @@ data "aws_iam_policy_document" "developer_additional" {
   statement {
     sid    = "iamForECSAllow"
     effect = "Allow"
-    actions = [
-      "iam:PassRole"
-    ]
+    actions = ["iam:PassRole"]
     resources = ["*"]
     condition {
       test     = "StringEquals"
@@ -1166,7 +1164,6 @@ data "aws_iam_policy_document" "reporting-operations" {
       "dynamodb:Get*",
       "dynamodb:Query",
       "dynamodb:Scan",
-      "iam:PassRole",
       "redshift:*",
       "redshift-data:*",
       "redshift-serverless:*",
@@ -1192,6 +1189,13 @@ data "aws_iam_policy_document" "reporting-operations" {
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
+
+  statement {
+    actions   = ["iam:PassRole"]
+    effect    = "Allow"
+    resources = ["*"]
+  }
+
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
