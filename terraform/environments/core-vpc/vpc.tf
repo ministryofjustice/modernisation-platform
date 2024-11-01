@@ -316,8 +316,7 @@ resource "aws_iam_role_policy" "member-delegation" {
 
 # Read only role for developer sso plans and for viewing via the console
 resource "aws_iam_role" "member_delegation_read_only" {
-  name                = "member-delegation-read-only"
-  managed_policy_arns = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]
+  name = "member-delegation-read-only"
   assume_role_policy = jsonencode( # checkov:skip=CKV_AWS_60: "the policy is secured with the condition"
     {
       "Version" : "2012-10-17",
@@ -343,4 +342,9 @@ resource "aws_iam_role" "member_delegation_read_only" {
       Name = "member-delegation-read-only"
     },
   )
+}
+
+resource "aws_iam_role_policy_attachments_exclusive" "member_delegation_read_only" {
+  policy_arns = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]
+  role_name   = aws_iam_role.member_delegation_read_only.name
 }
