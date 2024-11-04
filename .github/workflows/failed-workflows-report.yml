@@ -2,9 +2,6 @@ name: 'Generates Report of all Failed Workflows'
 
 on:
     workflow_dispatch: 
-    push:
-        branches:
-            - issue/7902
 
 permissions:
     actions: read
@@ -35,25 +32,27 @@ jobs:
         # Creates a json file listing the latest action for a workflow that:
         #  - failed in the previous number of days as set by $REPORTING_PERIOD, and
         #  - does not have a successful run.
-        - name: Get Failed Issues     
+        - name: Get Failed Workflows   
+          id: get-failed-workflows
           run: |
             cd $GITHUB_WORKSPACE
             pwd
-            chmod +x scripts/failed-workflows-report/get-failed-actions.sh
-            ./scripts/failed-workflows-report/get-failed-actions.sh
+            chmod +x scripts/failed-workflows-report/get-failed-workflows.sh
+            ./scripts/failed-workflows-report/get-failed-workflows.sh
 
         # Creates a JSON file with the markdown-formatted report for slack
         - name: Create the Slack Report
-          id: create_slack_report
+          if: ${{ steps.get-failed-workflows.outputs.sendreport != 'false' }}
           run: |
             chmod +x scripts/failed-workflows-report/create-slack-report.sh
             ./scripts/failed-workflows-report/create-slack-report.sh
 
         # Sends the json file to the MP Team via the slack webhook
         - name: Send Report via Slack
+          if: ${{ steps.get-failed-workflows.outputs.sendreport != 'false' }}
           run: |
             chmod +x scripts/failed-workflows-report/send-report-via-slack.sh
-            ./scripts/failed-workflows-report/send-report-via-slack.sh $SLACK_WEBHOOK_URL slack_message.json
+#            ./scripts/failed-workflows-report/send-report-via-slack.sh $SLACK_WEBHOOK_URL slack_message.json
 
 
 

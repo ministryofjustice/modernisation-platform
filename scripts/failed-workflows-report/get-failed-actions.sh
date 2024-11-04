@@ -38,11 +38,15 @@ recent_failures=$(echo "$response" | jq -r '
 ')
 
 # This checks the contents of $recent_failures and if not empty it saves the variable to a file for use in the next step.
-if [[ -n "$recent_failures" ]]; then
+if [[ "$recent_failures" == "[]" ]]; then
+  echo "No workflow failures without subsequent successful completion that finished since $formatted_date ."
+  nofailures="true"
+  echo "nofailures=$nofailures" >> $GITHUB_ENV  
+elif [[ -n "$recent_failures" ]]; then
   echo "Most recent failed GitHub Actions without subsequent success that finished since $formatted_date :"
   echo "$recent_failures" > recent_failures.json
   cat recent_failures.json
 else
-  echo "No workflow failures without subsequent successful completion that finished since $formatted_date ."
+  echo "ERROR generating failed workflows list ."
+  exit 1
 fi
-
