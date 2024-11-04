@@ -12,7 +12,7 @@ if jq empty recent_failures.json > /dev/null 2>&1; then
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": ":no_entry: *Attention - Failed GitHub Actions in \($repository)*"
+                "text": ":no_entry: *Attention - Failed GitHub Actions Report - \($repository)*"
             }
             },
             {
@@ -47,7 +47,26 @@ if jq empty recent_failures.json > /dev/null 2>&1; then
     }'
     )
 else
-    echo "No failed workflows found."
+    slack_message=$(jq -n --arg formatted_date "$formatted_date" --arg repository "$GITHUB_REPO" '
+    {
+    "blocks": [
+        {
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": ":no_entry: *Failed GitHub Actions Report in \($repository)*"
+        }
+        },
+        {
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": "No failed workflows were found since \($formatted_date)."
+        }
+        }
+    ]
+    }'
+    )
 fi
 
 
