@@ -7,12 +7,7 @@
         {
           "sso_group_name": "hmpps-electronic-monitoring-data-store",
           "level": "sandbox",
-          "nuke": "rebuild"
-        },
-        {
-          "sso_group_name": "hmpps-electronic-monitoring-data-store",
-          "level": "migration",
-          "nuke": "rebuild"
+          "nuke": "exclude"
         }
       ]
     },
