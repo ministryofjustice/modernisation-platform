@@ -326,9 +326,9 @@ data "aws_iam_policy_document" "developer_additional" {
   }
 
   statement {
-    sid    = "iamForECSAllow"
-    effect = "Allow"
-    actions = ["iam:PassRole"]
+    sid       = "iamForECSAllow"
+    effect    = "Allow"
+    actions   = ["iam:PassRole"]
     resources = ["*"]
     condition {
       test     = "StringEquals"
