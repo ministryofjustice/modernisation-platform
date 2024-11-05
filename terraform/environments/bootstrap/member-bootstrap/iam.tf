@@ -464,6 +464,7 @@ data "aws_iam_policy_document" "policy" {
       "dms:*Certificate",
       "dms:ModifyEndpoint",
       "dms:RebootReplicationInstance",
+      "ds:AccessDSData",
       "ds:DescribeDirectories",
       "ds:EnableDirectoryDataAccess",
       "ds:ResetUserPassword",
