@@ -126,7 +126,8 @@ data "aws_iam_policy_document" "kms-general" {
       identifiers = [
         "cloudwatch.amazonaws.com",
         "ses.amazonaws.com",
-        "s3.amazonaws.com"
+        "s3.amazonaws.com",
+        "dms.amazonaws.com"
       ]
     }
   }
