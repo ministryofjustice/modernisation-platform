@@ -568,6 +568,11 @@ data "aws_iam_policy_document" "policy" {
     actions   = ["iam:PassRole"]
     effect    = "Allow"
     resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      values   = ["ssm.amazonaws.com"]
+      variable = "iam:PassedToService"
+    }
   }
 
   statement {
