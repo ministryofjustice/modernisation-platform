@@ -58,5 +58,12 @@ jobs:
             chmod +x scripts/failed-workflows-report/send-report-via-slack.sh
             ./scripts/failed-workflows-report/send-report-via-slack.sh $SLACK_WEBHOOK_URL slack_message.json
 
+        - name: Slack failure notification
+          uses: slackapi/slack-github-action@37ebaef184d7626c5f204ab8d3baff4262dd30f0 # v1.27.0
+          with:
+            payload: |
+              {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+          if: ${{ failure() }}
+
 
 
