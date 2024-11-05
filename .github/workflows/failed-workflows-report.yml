@@ -1,0 +1,69 @@
+name: 'Generates Report of all Failed Workflows'
+
+on:
+    workflow_dispatch:
+    schedule:
+      - cron: '45 8 * * 1-5'
+
+permissions:
+    actions: read
+    statuses: read  
+    contents: read
+
+env:
+    GITHUB_REPO: ${{ github.repository }}
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+    REPORTING_PERIOD: "24" # This variable sets the number of hours against which the report will be compiled.
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+
+  generate-report:
+    runs-on: ubuntu-latest
+
+    steps:
+
+        - name: Checkout Repository
+          uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+        # Creates a json file listing the latest action for a workflow that:
+        #  - failed in the previous number of hours as set by $REPORTING_PERIOD, and
+        #  - does not have a successful run.
+        - name: Get Failed Workflows   
+          id: get-failed-workflows
+          run: |
+            cd $GITHUB_WORKSPACE
+            pwd
+            chmod +x scripts/failed-workflows-report/get-failed-workflows.sh
+            ./scripts/failed-workflows-report/get-failed-workflows.sh
+
+        # Creates a JSON file with the markdown-formatted report for slack
+        - name: Create the Slack Report
+          if: ${{ steps.get-failed-workflows.outputs.sendreport == 'true' }}
+          env:
+            formatted_date: "${{ steps.get-failed-workflows.outputs.formatted_date }}"
+          run: |
+            chmod +x scripts/failed-workflows-report/create-slack-report.sh
+            ./scripts/failed-workflows-report/create-slack-report.sh
+
+        # Sends the json file to the MP Team via the slack webhook
+        - name: Send Report via Slack
+          if: ${{ steps.get-failed-workflows.outputs.sendreport == 'true' }}
+          run: |
+            chmod +x scripts/failed-workflows-report/send-report-via-slack.sh
+            ./scripts/failed-workflows-report/send-report-via-slack.sh $SLACK_WEBHOOK_URL slack_message.json
+
+        - name: Slack failure notification
+          uses: slackapi/slack-github-action@37ebaef184d7626c5f204ab8d3baff4262dd30f0 # v1.27.0
+          with:
+            payload: |
+              {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+          if: ${{ failure() }}
+
+
+
