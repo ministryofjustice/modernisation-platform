@@ -1136,6 +1136,7 @@ module "analytical_platform_ingestion_scan_ecr_repo" {
     local.environment_management.account_ids["analytical-platform-ingestion-production"],
     # Electronic monitoring data store accounts.
     local.environment_management.account_ids["electronic-monitoring-data-development"],
+    local.environment_management.account_ids["electronic-monitoring-data-preproduction"],
     local.environment_management.account_ids["electronic-monitoring-data-production"],
     local.environment_management.account_ids["electronic-monitoring-data-test"]
   ]
@@ -1147,9 +1148,11 @@ module "analytical_platform_ingestion_scan_ecr_repo" {
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-ingestion-production"]}:function:definition-upload*",
     # Electronic monitoring data store accounts.
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-development"]}:function:scan*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:function:scan*",
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-production"]}:function:scan*",
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-test"]}:function:scan*",
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-development"]}:function:definition-upload*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:function:definition-upload*",
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-production"]}:function:definition-upload*",
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-test"]}:function:definition-upload*",
   ]
@@ -1233,12 +1236,14 @@ module "electronic_monitoring_data_lambdas_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/modernisation-platform-oidc-cicd",
   ]
 
   pull_principals = [
     local.environment_management.account_ids["electronic-monitoring-data-development"],
+    local.environment_management.account_ids["electronic-monitoring-data-preproduction"],
     local.environment_management.account_ids["electronic-monitoring-data-production"],
     local.environment_management.account_ids["electronic-monitoring-data-test"]
 
@@ -1246,6 +1251,7 @@ module "electronic_monitoring_data_lambdas_ecr_repo" {
 
   enable_retrieval_policy_for_lambdas = [
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-development"]}:function:*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:function:*",
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-production"]}:function:*",
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-test"]}:function:*",
   ]
