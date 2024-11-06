@@ -3,6 +3,9 @@ name: Check Inactive Collaborators
 on:
   schedule:
     - cron: '30 9 */100,1-7 * 1'
+  pull_request:
+    branches:
+      main
 
 env:
     AWS_REGION: "eu-west-2"
