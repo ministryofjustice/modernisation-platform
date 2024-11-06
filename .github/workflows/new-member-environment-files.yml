@@ -29,17 +29,17 @@ jobs:
           path: modernisation-platform-environments
           persist-credentials: false
         env:  
-          TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+          TERRAFORM_GITHUB_TOKEN: ${{ secrets.MP_GITHUB_CI_USER_PAT_TEST }}
       - name: Provision member environment directories
         run: bash ./core-repo/scripts/provision-member-directories.sh
       - name: Commit changes to GitHub
         run: bash ./core-repo/scripts/git-setup.sh ./modernisation-platform-environments
       - run: bash ./core-repo/scripts/git-commit.sh . ./modernisation-platform-environments
         env:  
-          TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }} # use this token as writing to a different repo
+          TERRAFORM_GITHUB_TOKEN: ${{ secrets.MP_GITHUB_CI_USER_PAT_TEST }} # use this token as writing to a different repo
       - run: bash ./core-repo/scripts/git-pull-request.sh terraform/environments ./modernisation-platform-environments
         env:
-          TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+          TERRAFORM_GITHUB_TOKEN: ${{ secrets.MP_GITHUB_CI_USER_PAT_TEST }}
       - name: Slack failure notification
         uses: slackapi/slack-github-action@37ebaef184d7626c5f204ab8d3baff4262dd30f0 # v1.27.0
         with:
