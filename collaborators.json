@@ -381,16 +381,6 @@
           "access": "s3-upload"
         }
       ]
-    },
-    {
-      "username": "morgan.boniface",
-      "github-username": "morgan-boniface",
-      "accounts": [
-        {
-          "account-name": "oasys-development",
-          "access": "s3-upload"
-        }
-      ]
     }
   ]
 }
