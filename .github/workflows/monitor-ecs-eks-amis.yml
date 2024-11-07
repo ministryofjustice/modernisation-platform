@@ -42,7 +42,7 @@ jobs:
             run: bash ./scripts/check-ecs-eks-amis.sh
 
           - name: Upload AMI CSV file
-            uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+            uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 #v4.4.3
             with:
               name: ecs-eks-ami-results
               path: ./outdated-amis.csv
