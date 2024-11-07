@@ -31,8 +31,7 @@ locals {
   general_members = [
     "kcbotsh",
     "seanprivett",
-    "SimonPPledger",
-    "imkatiewatson"
+    "SimonPPledger"
   ]
 
   # GitHub usernames for engineers who need full AWS access
