@@ -569,7 +569,7 @@ data "aws_iam_policy_document" "policy" {
     resources = ["*"]
     condition {
       test     = "StringEquals"
-      values   = ["ssm.amazonaws.com", "ecs.amazonaws.com"]
+      values   = ["ssm.amazonaws.com", "ecs.amazonaws.com", "ecs-tasks.amazonaws.com"]
       variable = "iam:PassedToService"
     }
   }
