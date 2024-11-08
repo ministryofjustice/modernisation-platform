@@ -6,7 +6,8 @@
       "access": [
         {
           "sso_group_name": "performance-hub-developers",
-          "level": "developer"
+          "level": "sandbox",
+          "nuke": "exclude"
         }
       ]
     },
