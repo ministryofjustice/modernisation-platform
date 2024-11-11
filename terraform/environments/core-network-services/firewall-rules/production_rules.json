@@ -307,6 +307,13 @@
     "destination_port": "5432",
     "protocol": "TCP"
   },
+  "platforms_production_to_cloud_platform_pgres": {
+    "action": "PASS",
+    "source_ip": "${platforms-production}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "5432",
+    "protocol": "TCP"
+  },
   "rfc_10-0-0-0-8_to_ppud_production_https": {
     "action": "PASS",
     "source_ip": "10.0.0.0/8",
