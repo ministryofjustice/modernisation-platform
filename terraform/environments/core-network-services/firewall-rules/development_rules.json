@@ -125,6 +125,13 @@
     "destination_port": "5432",
     "protocol": "TCP"
   },
+  "platforms_development_to_cloud_platform_pgres": {
+    "action": "PASS",
+    "source_ip": "${platforms-development}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "5432",
+    "protocol": "TCP"
+  },
   "noms_test_dr_vnet_to_mp_hmpps_development": {
     "action": "PASS",
     "source_ip": "${noms-test-dr-vnet}",
