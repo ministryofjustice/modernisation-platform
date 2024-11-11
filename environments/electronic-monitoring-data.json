@@ -35,22 +35,6 @@
         {
           "sso_group_name": "hmpps-electronic-monitoring-data-store",
           "level": "data-engineer"
-        },
-        {
-          "sso_group_name": "hmpps-electronic-monitoring-data-store",
-          "level": "migration"
-        },
-        {
-          "sso_group_name": "hmpps-electronic-monitoring-data-store-appsec-202410",
-          "level": "read-only"
-        },
-        {
-          "sso_group_name": "hmpps-electronic-monitoring-data-store-appsec-202410",
-          "level": "view-only"
-        },
-        {
-          "sso_group_name": "hmpps-electronic-monitoring-data-store-appsec-202410",
-          "level": "security-audit"
         }
       ]
     }
