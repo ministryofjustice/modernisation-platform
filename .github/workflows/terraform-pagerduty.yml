@@ -35,7 +35,7 @@ jobs:
       working-directory: "terraform/pagerduty"
     secrets:
       modernisation_platform_environments: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-      gh_workflow_token: ${{ secrets.MP_GITHUB_CI_USER_PAT_TEST }}
+      # gh_workflow_token: ${{ secrets.MP_GITHUB_CI_USER_PAT_TEST }}
       pagerduty_token: ${{ secrets.PAGERDUTY_TOKEN }}
       pagerduty_userapi_token: ${{ secrets.PAGERDUTY_USERAPI_TOKEN}}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
