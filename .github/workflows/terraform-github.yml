@@ -41,7 +41,7 @@ jobs:
       working-directory: "terraform/github"
     secrets:
       modernisation_platform_environments: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-      gh_workflow_token: ${{ secrets.MP_GITHUB_CI_USER_PAT_TEST }}
+      gh_workflow_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   create-github-environments:
@@ -55,12 +55,12 @@ jobs:
         run: bash ./scripts/git-create-environments.sh
         env:
           DRY_RUN: true
-          TERRAFORM_GITHUB_TOKEN: ${{ secrets.MP_GITHUB_CI_USER_PAT_TEST }}
+          TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
       - name: Create GitHub member environments apply
         if: github.event.ref == 'refs/heads/main'
         run: bash ./scripts/git-create-environments.sh
         env:
-          TERRAFORM_GITHUB_TOKEN: ${{ secrets.MP_GITHUB_CI_USER_PAT_TEST }}
+          TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
       - name: Slack failure notification
         if: ${{ failure() }}
         uses: slackapi/slack-github-action@37ebaef184d7626c5f204ab8d3baff4262dd30f0 # v1.27.0
