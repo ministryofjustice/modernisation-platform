@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Cost Metrics
-last_reviewed_on: 2024-10-29
+last_reviewed_on: 2024-11-12
 review_in: 6 months
 ---
 
@@ -20,18 +20,30 @@ review_in: 6 months
 
 Our Grafana dashboard, **"athena-cost-and-usage-report,"** provides visibility into detailed AWS cost and usage metrics, powered by data from AWS Cost and Usage Reports (CUR) processed by Athena. This document explains where to find the dashboard, what data it displays, and how the underlying setup operates.
 
-![moj-dashboard](..//images/cur-dashboard.png)
+![moj-dashboard](../images/cur-dashboard.png)
 
 ## Accessing the Dashboard
 
-1. **Use this link:** [Athena-Cost-And-Usage-Report](https://g-9d213fbc19.grafana-workspace.eu-west-2.amazonaws.com/d/be1r6gxhztzi8d/athena-cost-and-usage-report)
-
-OR
-
+1. **Use this link:** [Athena-Cost-And-Usage-Report](https://g-9d213fbc19.grafana-workspace.eu-west-2.amazonaws.com/d/be1r6garztzi8d/athena-cost-and-usage-report)  
+   OR
 1. **Log into Grafana** with your user credentials.
 1. **Navigate to Dashboards** from the left sidebar.
 1. **Open the "modernisation-platform" folder**
-1. **Open the "athena-cost-and-usage-report" dashboard** under the platform metrics section.
+1. **Select the "athena-cost-and-usage-report" dashboard** under the platform metrics section.
+
+## Using the `account_id` Filter
+
+With the new `account_id` filter, you can view cost metrics specific to individual accounts:
+
+- **Account-Specific Metrics:** Select an account from the `account_id` dropdown at the top of the dashboard to display cost metrics for that account. This allows you to track expenses by environment, providing greater cost transparency across projects.
+
+Use the dropdown list to select your account number:  
+![cost1.gif](../images/costs1.gif)
+
+Alternatively, type (or paste) your account number directly into the `account_id` field:  
+![cost2.gif](../images/costs2.gif)
+
+**TIP:** If you plan on regularly checking your cost metrics, bookmark the URL after selecting your `account_id(s)`. The bookmark will automatically populate these selections for future use.
 
 ## Data Flow and Components
 
@@ -40,11 +52,11 @@ The data displayed in this dashboard is updated continuously based on AWS CUR fi
 ### 1. Cost and Usage Report (CUR) Setup
 
 - CUR is generated in the master account and stored in an S3 bucket.
-- For security and accessibility, the data is replicated to a secondary bucket in the core-logging account using S3 cross-account replication for Grafana to access.
+- For security and accessibility, the data is replicated to a secondary bucket in the core-logging account using S3 cross-account replication for Grafana access.
 
 ### 2. Lambda Functions for Automation
 
-- A Lambda function triggers the AWS Glue crawler based on the arrival of new CUR files in the S3 bucket.
+- A Lambda function triggers the AWS Glue crawler when new CUR files arrive in the S3 bucket.
 - This function ensures the data remains up-to-date, automating updates to the Athena table.
 
 ### 3. AWS Glue Jobs for Data Processing
@@ -62,6 +74,5 @@ The data displayed in this dashboard is updated continuously based on AWS CUR fi
 The "athena-cost-and-usage-report" dashboard offers:
 
 - **Monthly cost overviews** to track AWS usage trends.
-- **Service-specific costs** for more granular insight into spending patterns.
-
-- **Upcoming...** per account cost breakdown, so watch this space!
+- **Service-specific costs** for a more granular view of spending patterns.
+- **Account-specific costs** using the `account_id` filter, so users can view metrics tailored to selected accounts and environments.
