@@ -252,6 +252,34 @@ resource "aws_iam_role_policy_attachment" "modernisation_account_terraform_state
   policy_arn = aws_iam_policy.modernisation_account_terraform_state.arn
 }
 
+# OIDC Provider for GitHub Actions Plan
+module "github_oidc_plan_role" {
+  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=82f546bd5f002674138a2ccdade7d7618c6758b3" # v3.0.0
+  role_name              = "github-actions-plan"
+  additional_permissions = data.aws_iam_policy_document.oidc_assume_plan_role_member[0].json
+  github_repositories    = ["ministryofjustice/modernisation-platform:pull_request", "ministryofjustice/modernisation-platform-ami-builds:pull_request", "ministryofjustice/modernisation-platform-security:pull_request"]
+  tags_common            = { "Name" = format("%s-oidc-plan", terraform.workspace) }
+  tags_prefix            = ""
+}
+data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
+  # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
+  statement {
+    sid       = "AllowOIDCToDecryptKMS"
+    effect    = "Allow"
+    resources = ["*"]
+    actions   = ["kms:Decrypt"]
+  }
+
+  statement {
+    sid       = "AllowOIDCReadState"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*", "arn:aws:s3:::modernisation-platform-terraform-state/"]
+    actions = ["s3:Get*",
+    "s3:List*"]
+  }
+}
+
 
 # OIDC resources
 
