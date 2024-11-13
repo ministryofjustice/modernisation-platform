@@ -401,16 +401,6 @@
           "access": "read-only"
         }
       ]
-    },
-    {
-      "username": "darren.brooke",
-      "github-username": "d4rrenb",
-      "accounts": [
-        {
-          "account-name": "analytical-platform-ingestion-production",
-          "access": "security-audit"
-        }
-      ]
     }
   ]
 }
