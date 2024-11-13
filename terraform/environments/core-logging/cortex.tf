@@ -1,5 +1,6 @@
 locals {
   cortex_logging_buckets = toset(["vpc-flow-logs", "r53-resolver-logs", "generic-logs"])
+  max_queue_message_age = 28800 # value in seconds. 
 }
 
 resource "random_uuid" "cortex" {}
@@ -236,4 +237,30 @@ resource "aws_iam_role_policy_attachment" "cortex_xsiam_role" {
   policy_arn = aws_iam_policy.cortex_xsiam_policy.arn
 
   role = aws_iam_role.cortex_xsiam_role.name
+}
+
+# This adds a cloudwatch alarm for each of the sqs queues that monitor for a build up of messages.
+# We will output this to modernisation-platform as well as the agreed channel id provided by SecOps.
+resource "aws_cloudwatch_metric_alarm" "sqs_approximate_age_of_oldest_message" {
+  for_each = local.cortex_logging_buckets
+  alarm_name          = "${each.key}-ApproximateAgeOfOldestMessage"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "ApproximateAgeOfOldestMessage"
+  namespace           = "AWS/SQS"
+  period              = "300"
+  statistic           = "Maximum"
+  threshold           = local.max_queue_message_age
+  alarm_description   = "Alarm for ApproximateAgeOfOldestMessage over ${local.max_queue_message_age} for SQS queue ${each.key}"
+  treat_missing_data  = "notBreaching"
+  dimensions = {
+    QueueName = aws_sqs_queue.logging[each.key].name
+  }
+  alarm_actions = [aws_sns_topic.sqs_alarm_topic.arn]
+  tags          = local.tags
+}
+
+resource "aws_sns_topic" "sqs_alarm_topic" {
+  name = "sqs_alarm_topic"
+  tags = local.tags
 }
