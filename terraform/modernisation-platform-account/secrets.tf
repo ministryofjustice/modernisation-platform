@@ -205,3 +205,14 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
   value = data.aws_caller_identity.current.id
   tags  = local.tags
 }
+
+resource "aws_secretsmanager_secret" "test" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "test"
+  description = "test secret"
+  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}
