@@ -215,6 +215,20 @@
       ]
     },
     {
+      "username": " laimute.taylor ",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "delius-iaps-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "delius-iaps-production",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
       "username": "jason.green",
       "github-username": "no-value-supplied",
       "accounts": [
