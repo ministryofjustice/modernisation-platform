@@ -358,7 +358,7 @@ module "vpc-eu-west-1" {
     aws = aws.modernisation-platform-eu-west-1
   }
   for_each             = local.vpcs["core-vpc-sandbox"]
-  source               = "/Users/edward.proctor/moj-devops/modernisation-platform-terraform-member-vpc/" # v3.0.0
+  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=0ba18bb790c4259512768ffb6db9c2852654b82f" # v3.0.0
   additional_endpoints = each.value.options.additional_endpoints
   subnet_sets          = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
   transit_gateway_id   = data.aws_ec2_transit_gateway.transit-gateway.id
