@@ -348,3 +348,26 @@ resource "aws_iam_role_policy_attachments_exclusive" "member_delegation_read_onl
   policy_arns = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]
   role_name   = aws_iam_role.member_delegation_read_only.name
 }
+
+
+################### eu-west-1 ##############################
+
+
+module "vpc-eu-west-1" {
+   providers = {
+    aws = aws.modernisation-platform-eu-west-1
+  }
+  for_each             = local.vpcs["core-vpc-sandbox"]
+  source               = "/Users/edward.proctor/moj-devops/modernisation-platform-terraform-member-vpc/" # v3.0.0
+  additional_endpoints = each.value.options.additional_endpoints
+  subnet_sets          = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
+  transit_gateway_id   = data.aws_ec2_transit_gateway.transit-gateway.id
+
+  # VPC Flow Logs
+  vpc_flow_log_iam_role       = aws_iam_role.vpc_flow_log.arn
+  flow_log_s3_destination_arn = local.is-production ? local.core_logging_bucket_arns["vpc-flow-logs"] : ""
+
+  # Tags
+  tags_common = local.tags
+  tags_prefix = each.key
+}
