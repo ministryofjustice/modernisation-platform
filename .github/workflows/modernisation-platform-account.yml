@@ -61,6 +61,7 @@ jobs:
         run: bash scripts/terraform-plan.sh terraform/modernisation-platform-account
   modernisation-platform-account-apply:
     runs-on: ubuntu-latest
+    needs: modernisation-platform-account-plan
     steps:
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
