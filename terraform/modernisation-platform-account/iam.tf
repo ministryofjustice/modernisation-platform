@@ -281,7 +281,7 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
 }
 
 # OIDC Provider for GitHub Actions Apply
-module "github-oidc" {
+module "github_oidc_apply_role" {
   source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=82f546bd5f002674138a2ccdade7d7618c6758b3" # v3.0.0
   role_name                   = "github-actions-apply"
   additional_permissions      = data.aws_iam_policy_document.oidc-deny-specific-actions.json
