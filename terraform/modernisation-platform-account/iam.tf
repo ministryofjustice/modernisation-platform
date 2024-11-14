@@ -252,6 +252,47 @@ resource "aws_iam_role_policy_attachment" "modernisation_account_terraform_state
   policy_arn = aws_iam_policy.modernisation_account_terraform_state.arn
 }
 
+# OIDC Provider for GitHub Actions Plan
+
+module "github_actions_plan_role" {
+  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=62b8a16c73d8e4422cd81923e46948e8f4b5cf48" # v3.2.0
+  github_repositories = ["ministryofjustice/modernisation-platform", "ministryofjustice/modernisation-platform-ami-builds", "ministryofjustice/modernisation-platform-security"]
+  role_name           = "github-actions-plan"
+  policy_jsons        = [data.aws_iam_policy_document.oidc_assume_plan_role_member.json]
+  subject_claim       = "pull_request"
+  tags                = { "Name" = "GitHub Actions Plan" }
+}
+
+data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
+  # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
+  statement {
+    sid       = "AllowOIDCToDecryptKMS"
+    effect    = "Allow"
+    resources = ["*"]
+    actions   = ["kms:Decrypt"]
+  }
+
+  statement {
+    sid       = "AllowOIDCReadState"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*", "arn:aws:s3:::modernisation-platform-terraform-state/"]
+    actions = ["s3:Get*",
+    "s3:List*"]
+  }
+}
+
+# OIDC Provider for GitHub Actions Apply
+
+module "github_actions_apply_role" {
+  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=62b8a16c73d8e4422cd81923e46948e8f4b5cf48" # v3.2.0
+  github_repositories = ["ministryofjustice/modernisation-platform", "ministryofjustice/modernisation-platform-ami-builds", "ministryofjustice/modernisation-platform-security"]
+  role_name           = "github-actions-apply"
+  policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
+  policy_jsons        = [data.aws_iam_policy_document.oidc-deny-specific-actions.json]
+  subject_claim       = "ref:refs/heads/main"
+  tags                = { "Name" = "GitHub Actions Apply" }
+}
 
 # OIDC resources
 
