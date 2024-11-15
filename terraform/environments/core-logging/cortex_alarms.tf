@@ -26,7 +26,7 @@ resource "aws_cloudwatch_metric_alarm" "sqs_cortex_age_of_oldest_message" {
   alarm_description   = "Alarm for ApproximateAgeOfOldestMessage over ${local.max_queue_message_age} seconds for SQS queue ${each.key}"
   treat_missing_data  = "notBreaching"
   dimensions = {
-    QueueName = aws_sqs_queue.cortex_logging_buckets[each.key].name
+    QueueName = aws_sqs_queue.logging[each.key].name
   }
   alarm_actions = [for topic in local.cortex_topic_names : aws_sns_topic[topic.name].arn]
   tags          = local.tags
