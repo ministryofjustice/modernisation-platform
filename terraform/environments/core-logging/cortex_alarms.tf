@@ -58,9 +58,7 @@ data "aws_iam_policy_document" "sns_kms_policy" {
     actions = [
       "kms:*"
     ]
-    resources = [
-      "*"
-    ]
+    resources = [aws_kms_key.sns_kms_key.arn]
     principals {
       type = "AWS"
       identifiers = [
@@ -75,7 +73,7 @@ data "aws_iam_policy_document" "sns_kms_policy" {
       "kms:GenerateDataKey*",
       "kms:Decrypt"
     ]
-    resources = ["*"]
+    resources = [aws_kms_key.sns_kms_key.arn]
     principals {
       type        = "Service"
       identifiers = ["sns.amazonaws.com"]
@@ -94,10 +92,11 @@ data "aws_iam_policy_document" "sns_kms_policy" {
 resource "aws_sns_topic_policy" "sqs_sns_topic_policy" {
   for_each = { for topic in local.cortex_topic_names : topic.name => topic }
   arn    = aws_sns_topic.cortex_sqs_sns_topic[each.key].arn
-  policy = data.aws_iam_policy_document.sqs_sns_topic_policy.json
+  policy = data.aws_iam_policy_document.sqs_sns_topic_policy[each.key].json
 }
 
 data "aws_iam_policy_document" "sqs_sns_topic_policy" {
+  for_each = { for topic in local.cortex_topic_names : topic.name => topic }
   policy_id = "sqs sns topic policy"
   statement {
     sid    = "Allow topic owner to manage sns topic"
@@ -113,7 +112,7 @@ data "aws_iam_policy_document" "sqs_sns_topic_policy" {
       "sns:AddPermission",
       "sns:Subscribe"
     ]
-    resources = ["*"]
+    resources = [aws_sns_topic.cortex_sqs_sns_topic[each.key].arn]
     principals {
       type        = "AWS"
       identifiers = [
