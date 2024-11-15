@@ -9,7 +9,8 @@ allowed_access := [
   "sandbox",
   "migration",
   "instance-management",
-  "fleet-manager"
+  "fleet-manager",
+  "security-read-only"
 ]
 
 deny contains msg if {

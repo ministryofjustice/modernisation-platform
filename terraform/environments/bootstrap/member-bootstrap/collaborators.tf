@@ -240,3 +240,28 @@ module "collaborator_s3_upload_role" {
 data "aws_iam_policy" "s3_upload" {
   name = "s3_upload_policy"
 }
+
+# collaborator security_read_only role
+
+module "collaborator_security_read_only_role" {
+  # checkov:skip=CKV_TF_1:
+
+  count  = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+
+  max_session_duration = 43200
+
+  create_role       = true
+  role_name         = "security-read-only"
+  role_requires_mfa = true
+
+  custom_role_policy_arns = [
+    "arn:aws:iam::aws:policy/SecurityAudit",
+    "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  ]
+
+  # Allow created users to assume these roles
+  trusted_role_arns = [
+    local.modernisation_platform_account.id
+  ]
+}
