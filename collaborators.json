@@ -412,7 +412,7 @@
       "accounts": [
         {
           "account-name": "analytical-platform-ingestion-production",
-          "access": "read-only"
+          "access": "security-read-only"
         }
       ]
     },
@@ -422,7 +422,7 @@
       "accounts": [
         {
           "account-name": "analytical-platform-ingestion-production",
-          "access": "read-only"
+          "access": "security-read-only"
         }
       ]
     }
