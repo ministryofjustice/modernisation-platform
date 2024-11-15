@@ -8,7 +8,7 @@ locals {
         {name   = "secops", channel_id = "C080Y6ZA81K"}
     ]
 
-    max_queue_message_age = 28800 # Value in seconds
+    max_queue_message_age = 60 # Value in seconds. Suggested default value is 28800.
 }
 
 # This creates one cloudwatch alarm for each of the cortex logging buckets.
