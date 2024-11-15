@@ -28,7 +28,7 @@ resource "aws_cloudwatch_metric_alarm" "sqs_cortex_age_of_oldest_message" {
   dimensions = {
     QueueName = aws_sqs_queue.logging[each.key].name
   }
-  alarm_actions = [for topic in local.cortex_topic_names : aws_sns_topic[topic.name].arn]
+  alarm_actions = [for topic_name in local.cortex_topic_names : aws_sns_topic[topic_name].arn]
   tags          = local.tags
 }
 
