@@ -350,7 +350,7 @@ data "aws_iam_policy_document" "cost_management_bucket_policy" {
 
 # SSM Inventory Sync Bucket
 module "ssm-inventory-sync-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=cadab519b10a7d28dfa3b77d407725db6b37614a" # v8.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=52a40b0dd18aaef0d7c5565d93cc8997aad79636" # v8.2.0
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
