@@ -1,6 +1,5 @@
 locals {
   cortex_logging_buckets = toset(["vpc-flow-logs", "r53-resolver-logs", "generic-logs"])
-  max_queue_message_age = 28800 # value in seconds. 
 }
 
 resource "random_uuid" "cortex" {}
