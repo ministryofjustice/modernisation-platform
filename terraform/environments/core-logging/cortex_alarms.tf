@@ -58,7 +58,7 @@ data "aws_iam_policy_document" "sns_kms_policy" {
     actions = [
       "kms:*"
     ]
-    resources = [aws_kms_key.sns_kms_key.arn]
+    resources = ["*"]
     principals {
       type = "AWS"
       identifiers = [
@@ -73,7 +73,7 @@ data "aws_iam_policy_document" "sns_kms_policy" {
       "kms:GenerateDataKey*",
       "kms:Decrypt"
     ]
-    resources = [aws_kms_key.sns_kms_key.arn]
+    resources = ["*"]
     principals {
       type        = "Service"
       identifiers = ["sns.amazonaws.com"]
