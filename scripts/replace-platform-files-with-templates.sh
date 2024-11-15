@@ -17,12 +17,8 @@ do
           if [ -f "$file" ]; then
             filename=$(basename "$file")
             echo "    $filename"
-            if [ "$filename" == "platform_versions.tf" ]; then
-              echo "Skipping $filename"
-            else
-              cp "$file" "$subfolder/$filename"
-              sed -i '' "s/$token/$application_name/g" "$subfolder/$filename"
-            fi
+            cp "$file" "$subfolder/$filename"
+            sed -i '' "s/$token/$application_name/g" "$subfolder/$filename"
           fi
       done
     fi
@@ -30,4 +26,4 @@ do
 done
 
 echo
-echo "NOTE: This script skips sprinkler and cooker, and all platform_versions.tf files"
+echo "NOTE: This script skips sprinkler and cooker directories."
