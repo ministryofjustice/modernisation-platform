@@ -415,6 +415,16 @@
           "access": "read-only"
         }
       ]
+    },
+    {
+      "username": "aaron.willetts",
+      "github-username": "Aaron-Salus",
+      "accounts": [
+        {
+          "account-name": "analytical-platform-ingestion-production",
+          "access": "read-only"
+        }
+      ]
     }
   ]
 }
