@@ -259,7 +259,6 @@ module "github_actions_plan_role" {
   github_repositories = ["ministryofjustice/modernisation-platform", "ministryofjustice/modernisation-platform-ami-builds", "ministryofjustice/modernisation-platform-security"]
   role_name           = "github-actions-plan"
   policy_jsons        = [data.aws_iam_policy_document.oidc_assume_plan_role_member.json]
-  subject_claim       = "pull_request"
   tags                = { "Name" = "GitHub Actions Plan" }
 }
 
@@ -267,10 +266,33 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
   # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
   statement {
-    sid       = "AllowOIDCToDecryptKMS"
     effect    = "Allow"
     resources = ["*"]
-    actions   = ["kms:Decrypt"]
+    actions   = [
+      "kms:Decrypt",
+      "secretsmanager:GetSecretValue"
+    ]
+  }
+
+  statement {
+    sid    = "AllowDynamoDBAccess"
+    effect = "Allow"
+    actions = [
+      "dynamodb:DescribeTable",
+      "dynamodb:GetItem",
+      "dynamodb:PutItem",
+      "dynamodb:DeleteItem"
+    ]
+    resources = ["arn:aws:dynamodb:eu-west-2:${data.aws_caller_identity.current.account_id}:table/modernisation-platform-terraform-state-lock"]
+  }
+
+  statement {
+    sid    = "AssumeRole"
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
+    resources = ["arn:aws:iam::${local.environment_management.account_ids["core-logging-production"]}:role/ModernisationPlatformAccess"]
   }
 
   statement {
