@@ -31,26 +31,23 @@ GitHub SSO is currently managed through Auth0, which acts as our authentication 
 
 SSO workflow diagram can be found [here](../../images/single-sign-on.png)
 
-### Workflow
+## Workflow
 
-1. **SSO Login**:  
-   Users access the SSO login portal at [https://moj.awsapps.com/start](https://moj.awsapps.com/start), hosted by AWS Identity Center.
+### 1. SSO Auth0 GitHub authentication
 
-2. **Auth0 as Identity Provider**:  
-   AWS SSO redirects users to an Auth0 SSO login page. Auth0 is configured to use GitHub as the identity provider, prompting users to log in with their GitHub credentials.
+- Users access the SSO login portal via the link [https://moj.awsapps.com/start](https://moj.awsapps.com/start). This URL is hosted via the AWS SSO component.
+- AWS SSO is configured to use Auth0 as an application and sets the associated Application ACS URL. Auth0 will be the primary authentication endpoint providing the SSO with GitHub via SAML 2.0.
+- The SAML Assertion Consumer Service (ACS) URL is [used to identify where the service provider accepts SAML assertions](<https://mojoauth.com/glossary/saml-assertion-consumer-service/#:~:text=A%20SAML%20Assertion%20Consumer%20Service,the%20identity%20provider%20(IdP).>).
+- AWS SSO redirects users to an Auth0 SSO URL login page. Auth0 is configured to used GitHub as its IdP (Identity Provider) and prompts users to authenticate using their GitHub credentials. If authentication is successful (or if the user is already authenticated on Auth0, this step will be skipped) Auth0 sends an encoded SAML response to the browser.
+- The browser sends the SAML response (SAML Assertion) to AWS SSO (service provider for verification). Once verified, the user is able to login to the AWS SSO portal.
 
-3. **SAML Authentication**:  
-   If authentication is successful, Auth0 sends a SAML response to AWS SSO, which verifies it and grants the user access to the AWS SSO portal.
-
-   - [The SAML Assertion Consumer Service (ACS)](<https://mojoauth.com/glossary/saml-assertion-consumer-service/#:~:text=A%20SAML%20Assertion%20Consumer%20Service,the%20identity%20provider%20(IdP).>) URL is used to identify where the service provider accepts SAML assertions.
-
-4. **System for Cross-Domain Identity Management (SCIM) Sync**:
+### 2. System for Cross-Domain Identity Management (SCIM) Sync:
 
 - AWS SSO provides support for SCIM v2.0 standard. SCIM keeps your AWS SSO identities in sync with identities from your IdP (GitHub).
 - A [scheduled Lambda job (index.js)](https://github.com/ministryofjustice/moj-terraform-scim-github) is used for SCIM provisioning from GitHub. A Node.js script uses the the GitHub API package Octokit to sync GitHub Groups and Users to AWS SSO. It does this by calling the AWS SSO SCIM endpoint.
 - SCIM will populate AWS SSO Groups and Users with the GitHub data.
 
-5. **Permission Sets**:
+### 3. Permission Sets:
 
 - A permission set is a collection of administrator-defined policies that AWS SSO uses to determine a user’s effective permissions to access a given AWS account. The root permissions sets are managed in the [sso-admin-permission-sets.tf](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/sso-admin-permission-sets.tf) file whilst Modernisation Platform-specific permission sets are managed in [sso-permission-sets.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/single-sign-on/sso-permission-sets.tf).
 - The permission set is [mapped](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/single-sign-on/main.tf#L56) using Terraform to the associated AWS account as part of the baseline workflow..
