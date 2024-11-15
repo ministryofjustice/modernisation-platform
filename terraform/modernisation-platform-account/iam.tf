@@ -265,10 +265,11 @@ module "github_actions_plan_role" {
 data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
   # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_108: "Allowing secretsmanager:GetSecretValue with open resource due to specific use case"
   statement {
     effect    = "Allow"
     resources = ["*"]
-    actions   = [
+    actions = [
       "kms:Decrypt",
       "secretsmanager:GetSecretValue"
     ]
