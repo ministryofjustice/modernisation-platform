@@ -92,8 +92,7 @@ data "aws_iam_policy_document" "sns_kms_policy" {
 ## Here we use a common data statement for the two sns topic policies.
 
 resource "aws_sns_topic_policy" "sqs_sns_topic_policy" {
-  for_each = { for topic in local.cortex_topic_names : topic.name => topic }
-  arn    = aws_sns_topic.cortex_sqs_sns_topic[each.key].arn
+  arn = aws_sns_topic.cortex_sqs_sns_topic[*].arn[0]
   policy = data.aws_iam_policy_document.sqs_sns_topic_policy.json
 }
 
