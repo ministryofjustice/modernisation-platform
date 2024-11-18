@@ -308,6 +308,7 @@ resource "aws_ssoadmin_account_assignment" "data_engineer" {
 }
 
 resource "aws_ssoadmin_managed_policy_attachment" "data_engineer_lakeformation_crossaccountmanager" {
+  provider   = aws.sso-management
   depends_on = [aws_ssoadmin_account_assignment.data_engineer]
 
   instance_arn       = local.sso_instance_arn
