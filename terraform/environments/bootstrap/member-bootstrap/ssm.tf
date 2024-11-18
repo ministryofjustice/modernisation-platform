@@ -127,3 +127,14 @@ resource "aws_ssm_resource_data_sync" "security_account" {
     kms_key_arn = local.environment_management.ssm_resource_sync_kms_arn
   }
 }
+
+# Mod Platform SSM Inventory Resource Data Sync
+# This will gather inventory data from all MP accounts and deliver to a central S3 bucket hosted in the organisation-security account
+resource "aws_ssm_resource_data_sync" "mod_platform_inventory_sync" {
+  name = "mod-platform-inventory-resource-data-sync"
+  s3_destination {
+    bucket_name = local.environment_management.mp_ssm_inventory_resource_data_sync_bucket_name
+    region      = data.aws_region.current.name
+    sync_format = "JsonSerDe"
+  }
+}
