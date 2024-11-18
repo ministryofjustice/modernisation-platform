@@ -5,7 +5,6 @@ locals {
 }
 
 # Get MP-specific AWS SSO permission sets
-
 data "terraform_remote_state" "mp-sso-permissions-sets" {
   backend = "s3"
   config = {
@@ -16,7 +15,6 @@ data "terraform_remote_state" "mp-sso-permissions-sets" {
     encrypt = "true"
   }
 }
-
 
 # Get Identity Store groups
 data "aws_identitystore_group" "platform_admin" {
@@ -31,7 +29,6 @@ data "aws_identitystore_group" "platform_admin" {
     }
   }
 }
-
 
 # Get Identity Store groups
 data "aws_identitystore_group" "member" {
@@ -50,6 +47,7 @@ data "aws_identitystore_group" "member" {
   }
 }
 
+# Create account assignments
 resource "aws_ssoadmin_account_assignment" "platform_admin" {
 
   provider = aws.sso-management
