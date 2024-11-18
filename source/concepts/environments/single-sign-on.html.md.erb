@@ -31,26 +31,23 @@ GitHub SSO is currently managed through Auth0, which acts as our authentication 
 
 SSO workflow diagram can be found [here](../../images/single-sign-on.png)
 
-### Workflow
+## Workflow
 
-1. **SSO Login**:  
-   Users access the SSO login portal at [https://moj.awsapps.com/start](https://moj.awsapps.com/start), hosted by AWS Identity Center.
+### 1. SSO Auth0 GitHub authentication
 
-2. **Auth0 as Identity Provider**:  
-   AWS SSO redirects users to an Auth0 SSO login page. Auth0 is configured to use GitHub as the identity provider, prompting users to log in with their GitHub credentials.
+- Users access the SSO login portal via the link [https://moj.awsapps.com/start](https://moj.awsapps.com/start). This URL is hosted via the AWS SSO component.
+- AWS SSO is configured to use Auth0 as an application and sets the associated Application ACS URL. Auth0 will be the primary authentication endpoint providing the SSO with GitHub via SAML 2.0.
+- The SAML Assertion Consumer Service (ACS) URL is [used to identify where the service provider accepts SAML assertions](<https://mojoauth.com/glossary/saml-assertion-consumer-service/#:~:text=A%20SAML%20Assertion%20Consumer%20Service,the%20identity%20provider%20(IdP).>).
+- AWS SSO redirects users to an Auth0 SSO URL login page. Auth0 is configured to used GitHub as its IdP (Identity Provider) and prompts users to authenticate using their GitHub credentials. If authentication is successful (or if the user is already authenticated on Auth0, this step will be skipped) Auth0 sends an encoded SAML response to the browser.
+- The browser sends the SAML response (SAML Assertion) to AWS SSO (service provider for verification). Once verified, the user is able to login to the AWS SSO portal.
 
-3. **SAML Authentication**:  
-   If authentication is successful, Auth0 sends a SAML response to AWS SSO, which verifies it and grants the user access to the AWS SSO portal.
-
-   - [The SAML Assertion Consumer Service (ACS)](<https://mojoauth.com/glossary/saml-assertion-consumer-service/#:~:text=A%20SAML%20Assertion%20Consumer%20Service,the%20identity%20provider%20(IdP).>) URL is used to identify where the service provider accepts SAML assertions.
-
-4. **System for Cross-Domain Identity Management (SCIM) Sync**:
+### 2. System for Cross-Domain Identity Management (SCIM) Sync:
 
 - AWS SSO provides support for SCIM v2.0 standard. SCIM keeps your AWS SSO identities in sync with identities from your IdP (GitHub).
 - A [scheduled Lambda job (index.js)](https://github.com/ministryofjustice/moj-terraform-scim-github) is used for SCIM provisioning from GitHub. A Node.js script uses the the GitHub API package Octokit to sync GitHub Groups and Users to AWS SSO. It does this by calling the AWS SSO SCIM endpoint.
 - SCIM will populate AWS SSO Groups and Users with the GitHub data.
 
-5. **Permission Sets**:
+### 3. Permission Sets:
 
 - A permission set is a collection of administrator-defined policies that AWS SSO uses to determine a user’s effective permissions to access a given AWS account. The root permissions sets are managed in the [sso-admin-permission-sets.tf](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/sso-admin-permission-sets.tf) file whilst Modernisation Platform-specific permission sets are managed in [sso-permission-sets.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/single-sign-on/sso-permission-sets.tf).
 - The permission set is [mapped](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/single-sign-on/main.tf#L56) using Terraform to the associated AWS account as part of the baseline workflow..
@@ -62,19 +59,23 @@ SSO workflow diagram can be found [here](../../images/single-sign-on.png)
 **Overview**  
 Microsoft Entra ID enables users to access AWS with `justice.gov.uk` credentials, aiming to provide a more integrated and secure authentication experience.
 
-### Workflow
+## Workflow
 
-1. **SSO Login**:  
-   Users can access the AWS SSO login portal at [https://moj.awsapps.com/start](https://moj.awsapps.com/start), where they can choose to authenticate via Entra ID.
+### 1. SSO Login:
 
-2. **Entra ID Authentication**:  
-   Entra ID manages authentication using MoJ’s `justice.gov.uk` credentials, supporting MoJ’s unified identity strategy.
+Users can access the AWS SSO login portal at [https://moj.awsapps.com/start](https://moj.awsapps.com/start), where they can choose to authenticate via Entra ID.
 
-3. **Automatic Group Syncing**:  
-   AWS Identity Center supports SCIM to sync Entra ID groups and users automatically, ensuring that permissions reflect current Entra ID group memberships.
+### 2. Entra ID Authentication:
 
-4. **Permission Sets**:  
-   Permission sets for Entra ID are defined in AWS Identity Center, mapping Entra ID groups to AWS accounts, making it easier to manage consistent permissions across environments.
+Entra ID manages authentication using MoJ’s `justice.gov.uk` credentials, supporting MoJ’s unified identity strategy.
+
+### 3. Automatic Group Syncing:
+
+AWS Identity Center supports SCIM to sync Entra ID groups and users automatically, ensuring that permissions reflect current Entra ID group memberships.
+
+### 4. Permission Sets:
+
+Permission sets for Entra ID are defined in AWS Identity Center, mapping Entra ID groups to AWS accounts, making it easier to manage consistent permissions across environments.
 
 ---
 
@@ -84,17 +85,18 @@ Microsoft Entra ID enables users to access AWS with `justice.gov.uk` credentials
 
 If you are a Modernisation Platform customer, you can configure Entra ID groups to manage access:
 
-1. **Create a Group in Entra ID**
+### 1. Create a Group in Entra ID
 
-   - Log in to the Azure Portal, navigate to Entra ID > Manage > Groups, and create a group for your team with the naming prefix `azure-aws-sso-<yourteam>`.
-   - Add users with `justice.gov.uk` emails and set yourself as the group owner to manage memberships.
+- Log in to the Azure Portal, navigate to Entra ID > Manage > Groups, and create a group for your team with the naming prefix `azure-aws-sso-<yourteam>`.
+- Add users with `justice.gov.uk` emails and set yourself as the group owner to manage memberships.
 
-2. **Automatic Syncing with AWS Identity Center**
+### 2. Automatic Syncing with AWS Identity Center
 
-   - Entra ID groups will automatically sync with AWS Identity Center, ensuring that any changes in group membership reflect in AWS access permissions.
+- Entra ID groups will automatically sync with AWS Identity Center, ensuring that any changes in group membership reflect in AWS access permissions.
 
-3. **Updating Environment Files**
-   - In the Modernisation Platform, update the `sso-group` field in your environment files to use the Entra ID group name. This allows AWS Identity Center to recognize and sync permissions automatically.
+### 3. Updating Environment Files
+
+- In the Modernisation Platform, update the `sso-group` field in your environment files to use the Entra ID group name. This allows AWS Identity Center to recognize and sync permissions automatically.
 
 ---
 
