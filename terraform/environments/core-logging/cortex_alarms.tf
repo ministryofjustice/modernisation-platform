@@ -41,7 +41,7 @@ resource "aws_kms_key" "sns_kms_key" {
 }
 
 resource "aws_kms_alias" "sns_kms_alias" {
-  name          = "alias/sns-kms-key"
+  name          = "alias/sqs-sns-kms-key"
   target_key_id = aws_kms_key.sns_kms_key.id
 }
 
@@ -97,7 +97,7 @@ resource "aws_sns_topic_policy" "sqs_sns_topic_policy" {
 
 data "aws_iam_policy_document" "sqs_sns_topic_policy" {
   for_each = { for topic in local.cortex_topic_names : topic.name => topic }
-  policy_id = "sqs sns topic policy"
+  policy_id = "${each.value.name}-sqs-sns-topic-policy"
   statement {
     sid    = "Allow topic owner to manage sns topic"
     effect = "Allow"
@@ -126,8 +126,9 @@ data "aws_iam_policy_document" "sqs_sns_topic_policy" {
 
 resource "aws_sns_topic" "cortex_sqs_sns_topic" {
   for_each = { for topic in local.cortex_topic_names : topic.name => topic }
-  name              = "${each.value.name}-sqs_sns_topic"
+  name              = "${each.value.name}-sqs-sns-topic"
   kms_master_key_id = aws_kms_key.sns_kms_key.id
+  tags = local.tags
 }
 
 module "mp-sqs-sns-chatbot" {
