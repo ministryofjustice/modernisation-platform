@@ -261,6 +261,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "s3:PutObject",
       "s3:DeleteObject",
       "s3:DeleteObjectVersion",
+      "s3:GetObjectAcl",
       "s3:PutObjectAcl",
       "s3:RestoreObject",
       "s3:*StorageLens*",
