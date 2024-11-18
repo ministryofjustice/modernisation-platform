@@ -59,19 +59,23 @@ SSO workflow diagram can be found [here](../../images/single-sign-on.png)
 **Overview**  
 Microsoft Entra ID enables users to access AWS with `justice.gov.uk` credentials, aiming to provide a more integrated and secure authentication experience.
 
-### Workflow
+## Workflow
 
-1. **SSO Login**:  
-   Users can access the AWS SSO login portal at [https://moj.awsapps.com/start](https://moj.awsapps.com/start), where they can choose to authenticate via Entra ID.
+### 1. SSO Login:
 
-2. **Entra ID Authentication**:  
-   Entra ID manages authentication using MoJ’s `justice.gov.uk` credentials, supporting MoJ’s unified identity strategy.
+Users can access the AWS SSO login portal at [https://moj.awsapps.com/start](https://moj.awsapps.com/start), where they can choose to authenticate via Entra ID.
 
-3. **Automatic Group Syncing**:  
-   AWS Identity Center supports SCIM to sync Entra ID groups and users automatically, ensuring that permissions reflect current Entra ID group memberships.
+### 2. Entra ID Authentication:
 
-4. **Permission Sets**:  
-   Permission sets for Entra ID are defined in AWS Identity Center, mapping Entra ID groups to AWS accounts, making it easier to manage consistent permissions across environments.
+Entra ID manages authentication using MoJ’s `justice.gov.uk` credentials, supporting MoJ’s unified identity strategy.
+
+### 3. Automatic Group Syncing:
+
+AWS Identity Center supports SCIM to sync Entra ID groups and users automatically, ensuring that permissions reflect current Entra ID group memberships.
+
+### 4. Permission Sets:
+
+Permission sets for Entra ID are defined in AWS Identity Center, mapping Entra ID groups to AWS accounts, making it easier to manage consistent permissions across environments.
 
 ---
 
@@ -81,17 +85,18 @@ Microsoft Entra ID enables users to access AWS with `justice.gov.uk` credentials
 
 If you are a Modernisation Platform customer, you can configure Entra ID groups to manage access:
 
-1. **Create a Group in Entra ID**
+### 1. Create a Group in Entra ID
 
-   - Log in to the Azure Portal, navigate to Entra ID > Manage > Groups, and create a group for your team with the naming prefix `azure-aws-sso-<yourteam>`.
-   - Add users with `justice.gov.uk` emails and set yourself as the group owner to manage memberships.
+- Log in to the Azure Portal, navigate to Entra ID > Manage > Groups, and create a group for your team with the naming prefix `azure-aws-sso-<yourteam>`.
+- Add users with `justice.gov.uk` emails and set yourself as the group owner to manage memberships.
 
-2. **Automatic Syncing with AWS Identity Center**
+### 2. Automatic Syncing with AWS Identity Center
 
-   - Entra ID groups will automatically sync with AWS Identity Center, ensuring that any changes in group membership reflect in AWS access permissions.
+- Entra ID groups will automatically sync with AWS Identity Center, ensuring that any changes in group membership reflect in AWS access permissions.
 
-3. **Updating Environment Files**
-   - In the Modernisation Platform, update the `sso-group` field in your environment files to use the Entra ID group name. This allows AWS Identity Center to recognize and sync permissions automatically.
+### 3. Updating Environment Files
+
+- In the Modernisation Platform, update the `sso-group` field in your environment files to use the Entra ID group name. This allows AWS Identity Center to recognize and sync permissions automatically.
 
 ---
 
