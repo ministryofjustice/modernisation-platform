@@ -1390,3 +1390,74 @@ data "aws_iam_policy_document" "s3_upload_policy_document" {
     ]
   }
 }
+# IAM Policy for GuardDuty Malware Protection
+resource "aws_iam_policy" "guardduty_policy" {
+  name        = "GuardDutyMalwareProtectionPolicy"
+  description = "Policy for GuardDuty Malware Protection Plan"
+  policy      = aws_iam_policy_document.guardduty_policy_document.json
+}
+
+# IAM Policy Document for GuardDuty Malware Protection
+resource "aws_iam_policy_document" "guardduty_policy_document" {
+  statement {
+    sid     = "EventBridgeActionsForGuardDuty"
+    effect  = "Allow"
+    actions = [
+      "events:PutRule",
+      "events:DeleteRule",
+      "events:PutTargets",
+      "events:RemoveTargets",
+      "events:DescribeRule",
+      "events:ListTargetsByRule"
+    ]
+    resources = [
+      "arn:aws:events:eu-west-2:${local.environment_management.modernisation_platform_account_id}:rule/DO-NOT-DELETE-AmazonGuardDutyMalwareProtectionS3*"
+    ]
+    condition {
+      test     = "StringLike"
+      variable = "events:ManagedBy"
+      values   = ["malware-protection-plan.guardduty.amazonaws.com"]
+    }
+  }
+
+  statement {
+    sid     = "S3ActionsForGuardDuty"
+    effect  = "Allow"
+    actions = [
+      "s3:PutObjectTagging",
+      "s3:GetObjectTagging",
+      "s3:PutObjectVersionTagging",
+      "s3:GetObjectVersionTagging",
+      "s3:PutBucketNotification",
+      "s3:GetBucketNotification",
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:GetObjectVersion",
+      "s3:GetBucketAcl",
+      "s3:ListBucket",
+      "s3:PutObjectAcl"
+    ]
+    resources = [
+      "arn:aws:s3:::*/malware-protection-resource-validation-object",
+      "arn:aws:s3:::*"
+    ]
+    condition {
+      test     = "StringEqualsIfExists"
+      variable = "aws:CalledVia"
+      values   = ["malware-protection-plan.guardduty.amazonaws.com"]
+    }
+  }
+
+  statement {
+    sid     = "AllowPassGuardDutyRole"
+    effect  = "Allow"
+    actions = ["iam:PassRole"]
+    resources = ["arn:aws:iam::*:role/GuardDutyMalwareProtectionRole"]
+    condition {
+      test     = "StringEqualsIfExists"
+      variable = "iam:PassedToService"
+      values   = ["malware-protection-plan.guardduty.amazonaws.com"]
+    }
+  }
+}
+

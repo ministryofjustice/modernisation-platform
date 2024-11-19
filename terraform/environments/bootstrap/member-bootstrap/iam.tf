@@ -780,3 +780,29 @@ resource "aws_iam_account_alias" "alias" {
   count         = (local.account_data.account-type != "member-unrestricted") && !(contains(local.skip_alias, terraform.workspace)) ? 1 : 0
   account_alias = terraform.workspace
 }
+# GuardDuty Malware Protection Role
+module "guardduty_malware_protection_role" {
+  # checkov:skip=CKV_TF_1:
+
+  count  = local.account_data.account-type == "member" ? 1 : 0
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=e20e0b9a42084bbc885fd5abb18b8744810bd567" # v5.48.0
+
+  trusted_role_services = [
+    "malware-protection-plan.guardduty.amazonaws.com"
+  ]
+trusted_role_arns = [
+    local.modernisation_platform_account.id
+  ]
+  create_role = true
+  role_name   = "GuardDutyMalwareProtectionRole"
+  role_requires_mfa = true
+
+  custom_role_policy_arns = [
+    data.aws_iam_policy.guardduty_malware.arn
+  ]
+  number_of_custom_role_policy_arns = 1
+}
+
+data "aws_iam_policy" "guardduty_malware" {
+  name = "GuardDutyMalwareProtectionPolicy"
+}
