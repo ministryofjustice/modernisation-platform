@@ -360,10 +360,13 @@ resource "aws_iam_role_policy_attachments_exclusive" "member_delegation_read_onl
 
 
 module "vpc-eu-west-1" {
-   providers = {
+  providers = {
     aws = aws.modernisation-platform-eu-west-1
   }
-  for_each             = local.vpcs["core-vpc-recovery"]
+
+  # Only build the module when the workspace is sandbox
+  for_each = contains(regexall("sandbox", terraform.workspace), "sandbox") ? local.vpcs["core-vpc-recovery"] : {}
+
   source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=fb5be075e16ccc3d2053c173e5a42c2c22d65bff" # v3.0.1
   additional_endpoints = each.value.options.additional_endpoints
   subnet_sets          = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
