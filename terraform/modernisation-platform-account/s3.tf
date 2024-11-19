@@ -422,7 +422,7 @@ data "aws_iam_policy_document" "ssm_inventory_sync_bucket_policy" {
     condition {
       test     = "StringEquals"
       variable = "aws:SourceOrgID"
-      values   = ["${data.aws_organizations_organization.root_account.id}"]
+      values   = [data.aws_organizations_organization.root_account.id]
     }
   }
 
