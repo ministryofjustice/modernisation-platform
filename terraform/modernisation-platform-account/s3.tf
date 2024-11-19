@@ -420,9 +420,9 @@ data "aws_iam_policy_document" "ssm_inventory_sync_bucket_policy" {
       values   = ["bucket-owner-full-control"]
     }
     condition {
-      test     = "ForAnyValue:StringLike"
-      variable = "aws:PrincipalOrgPaths"
-      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+      test     = "StringEquals"
+      variable = "aws:SourceOrgID"
+      values   = ["${data.aws_organizations_organization.root_account.id}"]
     }
   }
 
