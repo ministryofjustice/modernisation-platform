@@ -1437,6 +1437,20 @@ data "aws_iam_policy_document" "guardduty_policy_document" {
       values   = ["malware-protection-plan.guardduty.amazonaws.com"]
     }
   }
+  statement {
+    sid     = "AllowDecryptForMalwareScan"
+    effect  = "Allow"
+    actions = [
+      "kms:GenerateDataKey",
+      "kms:Decrypt"
+    ]
+    resources = ["${aws_kms_key.malware_protection_key.arn}"]
+    condition {
+      test     = "StringLike"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+  }
 
   statement {
     sid     = "AllowPassGuardDutyRole"
