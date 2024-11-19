@@ -795,7 +795,7 @@ trusted_role_arns = [
   ]
   create_role = true
   role_name   = "GuardDutyMalwareProtectionRole"
-  role_requires_mfa = true
+  role_requires_mfa = false
 
   custom_role_policy_arns = [
     data.aws_iam_policy.guardduty_malware.arn
