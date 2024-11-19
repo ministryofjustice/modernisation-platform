@@ -1444,7 +1444,7 @@ data "aws_iam_policy_document" "guardduty_policy_document" {
       "kms:GenerateDataKey",
       "kms:Decrypt"
     ]
-    resources = ["${aws_kms_key.malware_protection_key.arn}"]
+    resources = ["*"]
     condition {
       test     = "StringLike"
       variable = "kms:ViaService"
