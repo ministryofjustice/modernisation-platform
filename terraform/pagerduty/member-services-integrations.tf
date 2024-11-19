@@ -1999,7 +1999,7 @@ resource "pagerduty_event_orchestration_service" "default" {
 locals {
   dso_az_alerts = {
     channel_ids = {
-      az-noms-production-1-alerts = "C07TC0DCYJE"
+      az-noms-production-1-alerts          = "C07TC0DCYJE"
       az-noms-dev-test-environments-alerts = "C0817BKDQ5T"
     }
   }
