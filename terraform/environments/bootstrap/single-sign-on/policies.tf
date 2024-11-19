@@ -1390,7 +1390,7 @@ data "aws_iam_policy_document" "s3_upload_policy_document" {
     ]
   }
 }
-IAM Policy for GuardDuty Malware Protection
+# IAM Policy for GuardDuty Malware Protection
 resource "aws_iam_policy" "guardduty_policy" {
   name        = "GuardDutyMalwareProtectionPolicy"
   description = "Policy for GuardDuty Malware Protection Plan"
