@@ -48,6 +48,12 @@ locals {
       for file in fileset("../../../environments-networks", "*-sandbox.json") :
       replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))
     }
+  
+    # VPCs that sit within the core vpc sandbox account
+    core-vpc-recovery = {
+      for file in fileset("../../../environments-networks", "*-recovery.json") :
+      replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))
+    }  
 
   }
 
@@ -357,7 +363,7 @@ module "vpc-eu-west-1" {
    providers = {
     aws = aws.modernisation-platform-eu-west-1
   }
-  for_each             = local.vpcs["core-vpc-sandbox"]
+  for_each             = local.vpcs["core-vpc-recovery"]
   source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=fb5be075e16ccc3d2053c173e5a42c2c22d65bff" # v3.0.1
   additional_endpoints = each.value.options.additional_endpoints
   subnet_sets          = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
