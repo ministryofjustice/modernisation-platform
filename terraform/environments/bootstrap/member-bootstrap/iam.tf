@@ -800,7 +800,7 @@ data "aws_iam_policy_document" "malware_protection_assume_role_policy" {
 resource "aws_iam_role_policy_attachment" "guardduty_malware_policy_attachment" {
   count     = local.account_data.account-type == "member" ? 1 : 0
   role      = aws_iam_role.guardduty_malware_protection_role[0].name
-  policy_arn = data.aws_iam_policy.guardduty_policy.arn
+  policy_arn = aws_iam_policy.guardduty_policy.arn
+  depends_on = [aws_iam_policy.guardduty_policy]
 }
-
 
