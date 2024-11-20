@@ -11,6 +11,20 @@ module "github-oidc" {
 
 data "aws_iam_policy_document" "oidc_deny_specific_actions" {
   statement {
+    sid    = "AllowOIDCToAssumeRoles"
+    effect = "Allow"
+    resources = [
+      format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
+      format("arn:aws:iam::%s:role/modernisation-account-terraform-state-member-access", local.environment_management.modernisation_platform_account_id)
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values   = [local.environment_management.account_ids[terraform.workspace]]
+    }
+    actions = ["sts:AssumeRole"]
+  }
+  statement {
     effect = "Deny"
     actions = [
       "iam:ChangePassword",
