@@ -780,11 +780,13 @@ resource "aws_iam_account_alias" "alias" {
   count         = (local.account_data.account-type != "member-unrestricted") && !(contains(local.skip_alias, terraform.workspace)) ? 1 : 0
   account_alias = terraform.workspace
 }
+
 # GuardDuty Malware Protection For S3 Role
 resource "aws_iam_role" "guardduty_malware_protection_role" {
   count             = local.account_data.account-type == "member" ? 1 : 0
   name              = "MalwareProtectionForS3"
   assume_role_policy = data.aws_iam_policy_document.malware_protection_assume_role_policy.json
+
 }
 data "aws_iam_policy_document" "malware_protection_assume_role_policy" {
   statement {
