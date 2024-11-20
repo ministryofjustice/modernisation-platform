@@ -16,6 +16,7 @@ data "aws_iam_roles" "member-sso-admin-access" {
 }
 
 data "aws_iam_role" "sprinkler_oidc" {
+  count = (terraform.workspace == "sprinkler-development") ? 1 : 0
   name  = "github-actions"
 }
 
