@@ -1392,12 +1392,12 @@ data "aws_iam_policy_document" "s3_upload_policy_document" {
 }
 # IAM Policy for GuardDuty Malware Protection
 resource "aws_iam_policy" "guardduty_policy" {
-  name        = "GuardDutyMalwareProtectionPolicy"
-  description = "Policy for GuardDuty Malware Protection Plan"
+  name        = "MalwareProtectionForS3Policy"
+  description = "Policy for GuardDuty S3 Malware Protection Plan"
   policy      = data.aws_iam_policy_document.guardduty_policy_document.json
 }
 
-# IAM Policy Document for GuardDuty Malware Protection
+# IAM Policy Document for GuardDuty Malware Protection For S3
 data "aws_iam_policy_document" "guardduty_policy_document" {
   statement {
     sid    = "EventBridgeActionsForGuardDuty"
@@ -1449,18 +1449,6 @@ data "aws_iam_policy_document" "guardduty_policy_document" {
       test     = "StringLike"
       variable = "kms:ViaService"
       values   = ["s3.eu-west-2.amazonaws.com"]
-    }
-  }
-
-  statement {
-    sid       = "AllowPassGuardDutyRole"
-    effect    = "Allow"
-    actions   = ["iam:PassRole"]
-    resources = ["arn:aws:iam::*:role/GuardDutyMalwareProtectionRole"]
-    condition {
-      test     = "StringEqualsIfExists"
-      variable = "iam:PassedToService"
-      values   = ["malware-protection-plan.guardduty.amazonaws.com"]
     }
   }
 }
