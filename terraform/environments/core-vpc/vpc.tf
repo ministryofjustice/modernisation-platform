@@ -348,3 +348,5 @@ resource "aws_iam_role_policy_attachments_exclusive" "member_delegation_read_onl
   policy_arns = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]
   role_name   = aws_iam_role.member_delegation_read_only.name
 }
+
+## test
