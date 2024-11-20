@@ -790,11 +790,11 @@ module "guardduty_malware_protection_role" {
   trusted_role_services = [
     "malware-protection-plan.guardduty.amazonaws.com"
   ]
-trusted_role_arns = [
+  trusted_role_arns = [
     local.modernisation_platform_account.id
   ]
-  create_role = true
-  role_name   = "GuardDutyMalwareProtectionRole"
+  create_role       = true
+  role_name         = "GuardDutyMalwareProtectionRole"
   role_requires_mfa = false
 
   custom_role_policy_arns = [

@@ -1400,11 +1400,11 @@ resource "aws_iam_policy" "guardduty_policy" {
 # IAM Policy Document for GuardDuty Malware Protection
 data "aws_iam_policy_document" "guardduty_policy_document" {
   statement {
-    sid     = "EventBridgeActionsForGuardDuty"
-    effect  = "Allow"
+    sid    = "EventBridgeActionsForGuardDuty"
+    effect = "Allow"
     actions = [
-    "events:*Rule",
-    "events:*Targets"
+      "events:*Rule",
+      "events:*Targets"
     ]
     resources = [
       "arn:aws:events:eu-west-2:${local.environment_management.modernisation_platform_account_id}:rule/DO-NOT-DELETE-AmazonGuardDutyMalwareProtectionS3*"
@@ -1417,15 +1417,15 @@ data "aws_iam_policy_document" "guardduty_policy_document" {
   }
 
   statement {
-    sid     = "S3ActionsForGuardDuty"
-    effect  = "Allow"
+    sid    = "S3ActionsForGuardDuty"
+    effect = "Allow"
     actions = [
-    "s3:PutObject*",
-    "s3:GetObject*",
-    "s3:GetBucket*",
-    "s3:ListBucket",
-    "s3:PutBucketNotification",
-    "s3:GetBucketNotification"
+      "s3:PutObject*",
+      "s3:GetObject*",
+      "s3:GetBucket*",
+      "s3:ListBucket",
+      "s3:PutBucketNotification",
+      "s3:GetBucketNotification"
     ]
     resources = [
       "arn:aws:s3:::*/malware-protection-resource-validation-object",
@@ -1438,8 +1438,8 @@ data "aws_iam_policy_document" "guardduty_policy_document" {
     }
   }
   statement {
-    sid     = "AllowDecryptForMalwareScan"
-    effect  = "Allow"
+    sid    = "AllowDecryptForMalwareScan"
+    effect = "Allow"
     actions = [
       "kms:GenerateDataKey",
       "kms:Decrypt"
@@ -1453,9 +1453,9 @@ data "aws_iam_policy_document" "guardduty_policy_document" {
   }
 
   statement {
-    sid     = "AllowPassGuardDutyRole"
-    effect  = "Allow"
-    actions = ["iam:PassRole"]
+    sid       = "AllowPassGuardDutyRole"
+    effect    = "Allow"
+    actions   = ["iam:PassRole"]
     resources = ["arn:aws:iam::*:role/GuardDutyMalwareProtectionRole"]
     condition {
       test     = "StringEqualsIfExists"
@@ -1464,4 +1464,3 @@ data "aws_iam_policy_document" "guardduty_policy_document" {
     }
   }
 }
-
