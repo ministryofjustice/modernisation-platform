@@ -12,6 +12,15 @@ module "member-access" {
   role_name              = "MemberInfrastructureAccess"
 }
 
+module "member-access-sprinkler" {
+  count                  = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
+  account_id             = local.modernisation_platform_account.id
+  additional_trust_roles = [data.sprinkler_oidc.arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  policy_arn             = aws_iam_policy.member-access[0].id
+  role_name              = "MemberInfrastructureAccess"
+}
+
 # lots of SCA ignores and skips on this one as it is the main role allowing members to build most things in the platform
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "member-access" {
@@ -331,6 +340,15 @@ module "member-access-us-east" {
   role_name              = "MemberInfrastructureAccessUSEast"
 }
 
+module "member-access-us-east-sprinkler" {
+  count                  = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
+  account_id             = local.modernisation_platform_account.id
+  additional_trust_roles = [data.sprinkler_oidc.arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  policy_arn             = aws_iam_policy.member-access-us-east[0].id
+  role_name              = "MemberInfrastructureAccessUSEast"
+}
+
 # lots of SCA ignores and skips on this one as it is the main role allowing members to build most things in the platform
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "member-access-us-east" {
@@ -601,6 +619,15 @@ module "member-access-eu-central" {
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
   account_id             = local.modernisation_platform_account.id
   additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  policy_arn             = aws_iam_policy.member-access-eu-central[0].id
+  role_name              = "MemberInfrastructureBedrockEuCentral"
+}
+
+module "member-access-eu-central-sprinkler" {
+  count                  = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
+  account_id             = local.modernisation_platform_account.id
+  additional_trust_roles = [data.sprinkler_oidc.arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access-eu-central[0].id
   role_name              = "MemberInfrastructureBedrockEuCentral"
 }
