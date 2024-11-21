@@ -70,7 +70,8 @@ resource "pagerduty_schedule" "primary" {
       local.edward_proctor,
       local.ewa_stempel,
       local.mark_roberts,
-      local.aaron_robinson
+      local.aaron_robinson,
+      local.sukesh_reddygade
     ]
   }
 
@@ -99,8 +100,9 @@ resource "pagerduty_schedule" "secondary" {
       local.david_sibley,
       local.ewa_stempel,
       local.edward_proctor,
-      local.aaron_robinson,
-      local.mark_roberts
+      local.sukesh_reddygade,
+      local.mark_roberts,
+      local.aaron_robinson
     ]
   }
 
