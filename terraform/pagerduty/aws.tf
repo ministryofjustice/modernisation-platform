@@ -71,9 +71,9 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     {
       for key, integration in pagerduty_service_integration.integrations : key => integration.integration_key
     },
-    #{
-    #  for key, integration in pagerduty_service_integration.az_dso_alerts : key => integration.integration_key
-    #}
+    {
+      for key, integration in pagerduty_service_integration.az_dso_alerts : key => integration.integration_key
+    }
   ))
 }
 
