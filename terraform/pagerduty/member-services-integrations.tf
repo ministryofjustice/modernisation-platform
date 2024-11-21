@@ -1919,6 +1919,7 @@ locals {
     oasys-national-reporting-production     = { slack_channel_id = "C07J1U3SN66" } # oasys_national_reporting_alarms_prod
     planetfm-preproduction                  = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
     planetfm-production                     = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
+    dso-pipelines                           = { slack_channel_id = "C01PWKWDB9D" } # dso_alerts_pipeline
   }
   slack_events = [
     "incident.triggered",
