@@ -18,7 +18,24 @@
         }
       ],
       "additional_reviewers": ["astrobinson"]
-    }
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "sandbox"
+        }
+      ]
+    }    
   ],
   "tags": {
     "application": "modernisation-platform",
