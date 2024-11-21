@@ -289,7 +289,6 @@ data "aws_iam_policy_document" "developer_additional" {
       "kinesisanalytics:List*",
       "kinesisanalytics:Describe*",
       "kinesisanalytics:DiscoverInputSchema",
-      "glue:GetConnection",
       "glue:GetConnections"
     ]
     resources = ["*"]
