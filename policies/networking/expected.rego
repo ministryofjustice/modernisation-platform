@@ -5,6 +5,14 @@ import rego.v1
 expected :=
 {
   "subnet_sets": {
+    "dr-recovery": {
+      "general": {
+        "cidr": "10.231.16.0/21",
+        "accounts": [
+          "cooker-development"
+        ]
+      }
+    },    
     "garden-sandbox": {
       "general": {
         "cidr": "10.231.0.0/21",
@@ -17,7 +25,6 @@ expected :=
       "general": {
         "cidr": "10.231.8.0/21",
         "accounts": [
-          "cooker-development"
         ]
       }
     },
