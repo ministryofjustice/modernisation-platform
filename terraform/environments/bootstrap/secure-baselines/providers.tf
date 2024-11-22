@@ -7,7 +7,7 @@ provider "aws" {
   alias  = "modernisation-secret-read"
   region = "eu-west-2"
   assume_role {
-    role_arn = "arn:aws:iam::${local.environment_management.modernisation_platform_account_id}:role/modernisation-account-limited-read-member-access"
+    role_arn = "arn:aws:iam::348456244381:role/test-secret-role"
   }
 
 }
