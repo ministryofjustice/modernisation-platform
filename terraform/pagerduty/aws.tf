@@ -16,7 +16,7 @@ resource "aws_secretsmanager_secret" "pagerduty_integration_keys" {
 }
 resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
   secret_id = aws_secretsmanager_secret.pagerduty_integration_keys.id
-  secret_string = jsonencode({
+  secret_string = jsonencode(merge({
     core_alerts_cloudwatch          = pagerduty_service_integration.core_alerts_cloudwatch.integration_key,
     security_hub                    = pagerduty_service_integration.security_hub.integration_key,
     ddos_cloudwatch                 = pagerduty_service_integration.ddos_cloudwatch.integration_key,
@@ -61,41 +61,20 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     laa_apex_nonprod_alarms         = pagerduty_service_integration.apex_non_prod.integration_key
     laa_apex_prod_alarms            = pagerduty_service_integration.apex_prod.integration_key
     # delius_mis_non_prod                     = pagerduty_event_orchestration_integration.delius_mis_non_prod_integration.parameters[0].routing_key
-    delius_mis_nonprod_alarms               = pagerduty_service_integration.delius_mis_non_prod.integration_key
-    delius_mis_prod_alarms                  = pagerduty_service_integration.delius_mis_prod.integration_key
-    laa_edw_nonprod_alarms                  = pagerduty_service_integration.edw_non_prod.integration_key
-    laa_edw_prod_alarms                     = pagerduty_service_integration.edw_prod.integration_key
-    cdpt-ifs-alarms                         = pagerduty_service_integration.cdpt_ifs_cloudwatch.integration_key
-    sprinkler_development                   = pagerduty_event_orchestration_integration.sprinkler_development_integration.parameters[0].routing_key
-    corporate-staff-rostering-preproduction = pagerduty_service_integration.integrations["corporate-staff-rostering-preproduction"].integration_key
-    corporate-staff-rostering-production    = pagerduty_service_integration.integrations["corporate-staff-rostering-production"].integration_key
-    hmpps-domain-services-development       = pagerduty_service_integration.integrations["hmpps-domain-services-development"].integration_key
-    hmpps-domain-services-preproduction     = pagerduty_service_integration.integrations["hmpps-domain-services-preproduction"].integration_key
-    hmpps-domain-services-production        = pagerduty_service_integration.integrations["hmpps-domain-services-production"].integration_key
-    hmpps-domain-services-test              = pagerduty_service_integration.integrations["hmpps-domain-services-test"].integration_key
-    hmpps-oem-development                   = pagerduty_service_integration.integrations["hmpps-oem-development"].integration_key
-    hmpps-oem-preproduction                 = pagerduty_service_integration.integrations["hmpps-oem-preproduction"].integration_key
-    hmpps-oem-production                    = pagerduty_service_integration.integrations["hmpps-oem-production"].integration_key
-    hmpps-oem-test                          = pagerduty_service_integration.integrations["hmpps-oem-test"].integration_key
-    nomis-development                       = pagerduty_service_integration.integrations["nomis-development"].integration_key
-    nomis-preproduction                     = pagerduty_service_integration.integrations["nomis-preproduction"].integration_key
-    nomis-production                        = pagerduty_service_integration.integrations["nomis-production"].integration_key
-    nomis-test                              = pagerduty_service_integration.integrations["nomis-test"].integration_key
-    nomis-combined-reporting-preproduction  = pagerduty_service_integration.integrations["nomis-combined-reporting-preproduction"].integration_key
-    nomis-combined-reporting-production     = pagerduty_service_integration.integrations["nomis-combined-reporting-production"].integration_key
-    nomis-combined-reporting-test           = pagerduty_service_integration.integrations["nomis-combined-reporting-test"].integration_key
-    nomis-data-hub-preproduction            = pagerduty_service_integration.integrations["nomis-data-hub-preproduction"].integration_key
-    nomis-data-hub-production               = pagerduty_service_integration.integrations["nomis-data-hub-production"].integration_key
-    nomis-data-hub-test                     = pagerduty_service_integration.integrations["nomis-data-hub-test"].integration_key
-    oasys-preproduction                     = pagerduty_service_integration.integrations["oasys-preproduction"].integration_key
-    oasys-production                        = pagerduty_service_integration.integrations["oasys-production"].integration_key
-    oasys-test                              = pagerduty_service_integration.integrations["oasys-test"].integration_key
-    oasys-national-reporting-preproduction  = pagerduty_service_integration.integrations["oasys-national-reporting-preproduction"].integration_key
-    oasys-national-reporting-production     = pagerduty_service_integration.integrations["oasys-national-reporting-production"].integration_key
-    oasys-national-reporting-test           = pagerduty_service_integration.integrations["oasys-national-reporting-test"].integration_key
-    planetfm-preproduction                  = pagerduty_service_integration.integrations["planetfm-preproduction"].integration_key
-    planetfm-production                     = pagerduty_service_integration.integrations["planetfm-production"].integration_key
-  })
+    delius_mis_nonprod_alarms = pagerduty_service_integration.delius_mis_non_prod.integration_key
+    delius_mis_prod_alarms    = pagerduty_service_integration.delius_mis_prod.integration_key
+    laa_edw_nonprod_alarms    = pagerduty_service_integration.edw_non_prod.integration_key
+    laa_edw_prod_alarms       = pagerduty_service_integration.edw_prod.integration_key
+    cdpt-ifs-alarms           = pagerduty_service_integration.cdpt_ifs_cloudwatch.integration_key
+    sprinkler_development     = pagerduty_event_orchestration_integration.sprinkler_development_integration.parameters[0].routing_key
+    },
+    {
+      for key, integration in pagerduty_service_integration.integrations : key => integration.integration_key
+    },
+    {
+      for key, integration in pagerduty_service_integration.az_dso_alerts : key => integration.integration_key
+    }
+  ))
 }
 
 # Pagerduty token
