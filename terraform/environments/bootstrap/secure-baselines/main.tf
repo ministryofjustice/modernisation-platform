@@ -86,6 +86,7 @@ data "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
 
 # Get the map of pagerduty integration keys
 data "aws_secretsmanager_secret" "pagerduty_integration_keys" {
+  provider = aws.modernisation-secret-read
   name = "pagerduty_integration_keys"
 }
 
