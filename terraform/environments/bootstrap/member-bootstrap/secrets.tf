@@ -1,6 +1,6 @@
 # Get secret by name for environment management
 data "aws_secretsmanager_secret" "environment_management" {
-  provider = aws.modernisation-platform
+  provider = aws.modernisation-secret-read
   name     = "environment_management"
 }
 
