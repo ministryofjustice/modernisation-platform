@@ -2,6 +2,10 @@
 # We use that to ensure a Modernisation Platform member account remains part of the AWS Organization.
 data "aws_organizations_organization" "root_account" {}
 
+data "aws_ssm_parameter" "modernisation_platform_account_id" {
+  name = "modernisation_platform_account_id"
+}
+
 locals {
   enable-cloudtrail-events         = strcontains(terraform.workspace, "digital-prison-reporting") ? false : true
   reduced_preprod_backup_retention = strcontains(terraform.workspace, "ccms-ebs") ? true : false
