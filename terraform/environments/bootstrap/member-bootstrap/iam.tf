@@ -345,7 +345,6 @@ data "aws_iam_policy_document" "assume_role_policy" {
   }
 }
 
-
 # IAM role to be assumed
 resource "aws_iam_role" "testing_member_infrastructure_access_role" {
   count              = terraform.workspace == "testing-test" ? 1 : 0
