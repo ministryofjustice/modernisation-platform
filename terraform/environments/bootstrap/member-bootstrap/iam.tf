@@ -7,9 +7,31 @@ module "member-access" {
   count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
   account_id             = local.modernisation_platform_account.id
-  additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)] 
   policy_arn             = aws_iam_policy.member-access[0].id
   role_name              = "MemberInfrastructureAccess"
+}
+
+data "aws_iam_role" "member_infrastructure_access" {
+  name = "MemberInfrastructureAccess"
+}
+
+data "aws_iam_policy_document" "assume_role_policy_service" {
+  statement {
+    effect = "Allow"
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = [
+        "malware-protection-plan.guardduty.amazonaws.com"
+      ]
+    }
+  }
+}
+
+resource "aws_iam_role_policy" "update_trust_policy" {
+  role   = data.aws_iam_role.member_infrastructure_access.name
+  policy = data.aws_iam_policy_document.assume_role_policy_service.json
 }
 
 module "member-access-sprinkler" {
@@ -20,7 +42,6 @@ module "member-access-sprinkler" {
   policy_arn             = aws_iam_policy.member-access[0].id
   role_name              = "MemberInfrastructureAccess"
 }
-
 # lots of SCA ignores and skips on this one as it is the main role allowing members to build most things in the platform
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "member-access" {
@@ -234,6 +255,25 @@ data "aws_iam_policy_document" "member-access" {
       ]
     }
   }
+    statement {
+    sid       = "GuardDutyMalwareProtectionActions"
+    effect    = "Allow"
+    actions   = [
+      "guardduty:CreateMalwareProtectionPlan",
+      "guardduty:UpdateMalwareProtectionPlan",
+      "guardduty:DeleteMalwareProtectionPlan",
+      "guardduty:ListDetectors"
+    ]
+    resources = [
+      "arn:aws:guardduty:eu-west-2:*:malware-protection-plan/*"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:CalledVia"
+      values   = ["malware-protection-plan.guardduty.amazonaws.com"]
+    }
+  }
+
   statement {
     effect = "Deny"
     actions = [
@@ -290,7 +330,6 @@ data "aws_iam_policy_document" "member-access" {
     resources = ["arn:aws:iam::*:role/MemberInfrastructureAccess"]
   }
 }
-
 resource "aws_iam_policy" "member-access" {
   count       = local.account_data.account-type == "member" ? 1 : 0
   name        = "MemberInfrastructureAccessActions"
@@ -315,6 +354,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
     }
   }
 }
+
 
 # IAM role to be assumed
 resource "aws_iam_role" "testing_member_infrastructure_access_role" {
