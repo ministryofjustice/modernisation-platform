@@ -8,22 +8,23 @@ locals {
 resource "github_repository" "default" {
   name                   = var.name
   description            = join(" • ", [var.description, "This repository is defined and managed in Terraform"])
-  homepage_url           = var.homepage_url
-  visibility             = var.visibility
+  allow_merge_commit     = true
+  allow_squash_merge     = true
+  allow_rebase_merge     = true
+  allow_update_branch    = true
+  archived               = false
+  archive_on_destroy     = true
+  auto_init              = false
+  delete_branch_on_merge = true
   has_issues             = true
   has_projects           = true
   has_wiki               = var.type == "core" ? true : false
   has_downloads          = true
+  homepage_url           = var.homepage_url
   is_template            = var.type == "template" ? true : false
-  allow_merge_commit     = true
-  allow_squash_merge     = true
-  allow_rebase_merge     = true
-  delete_branch_on_merge = true
-  auto_init              = false
-  archived               = false
-  archive_on_destroy     = true
-  vulnerability_alerts   = true
   topics                 = concat(local.topics, var.topics)
+  visibility             = var.visibility
+  vulnerability_alerts   = true
 
   security_and_analysis {
     dynamic "advanced_security" {
