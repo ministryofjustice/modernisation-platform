@@ -3,6 +3,15 @@ provider "aws" {
   region = "eu-west-2"
 }
 
+provider "aws" {
+  alias  = "modernisation-secret-read"
+  region = "eu-west-2"
+  assume_role {
+    role_arn = "arn:aws:iam::${local.environment_management.modernisation_platform_account_id}:role/modernisation-account-limited-read-member-access"
+  }
+
+}
+
 # AWS provider (workspace): the workspace account. Required for assuming a role into an account for bootstrapping
 provider "aws" {
   alias  = "workspace"
