@@ -4,7 +4,7 @@
 locals {
 
     cortex_topic_names = [
-        {name   = "modplatform", channel_id = "C080Y6XT3C5"},
+        {name   = "modplatform", channel_id = "C02PFCG8M1R"},
         {name   = "secops", channel_id = "C080Y6ZA81K"}
     ]
 
