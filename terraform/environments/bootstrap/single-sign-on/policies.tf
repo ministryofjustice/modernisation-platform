@@ -1390,3 +1390,90 @@ data "aws_iam_policy_document" "s3_upload_policy_document" {
     ]
   }
 }
+# IAM Policy for GuardDuty Malware Protection
+resource "aws_iam_policy" "guardduty_policy" {
+  provider    = aws.workspace
+  name        = "MalwareProtectionForS3Policy"
+  description = "Policy for GuardDuty Malware Protection Plan"
+  policy      = data.aws_iam_policy_document.guardduty_policy_document.json
+}
+
+# IAM Policy Document for GuardDuty Malware Protection
+data "aws_iam_policy_document" "guardduty_policy_document" {
+  statement {
+  sid       = "GuardDutyMalwareProtectionActions"
+  effect    = "Allow"
+  actions   = [
+    "guardduty:CreateMalwareProtectionPlan",
+    "guardduty:UpdateMalwareProtectionPlan",
+    "guardduty:DeleteMalwareProtectionPlan",
+    "guardduty:ListDetectors"
+  ]
+  resources = [
+    "arn:aws:guardduty:eu-west-2:*:malware-protection-plan/*"
+  ]
+}
+  statement {
+    sid     = "EventBridgeActionsForGuardDuty"
+    effect  = "Allow"
+    actions = [
+      "events:PutRule",
+      "events:DeleteRule",
+      "events:PutTargets",
+      "events:RemoveTargets",
+      "events:DescribeRule",
+      "events:ListTargetsByRule"
+    ]
+    resources = [
+      "arn:aws:events:eu-west-2:*:rule/DO-NOT-DELETE-AmazonGuardDutyMalwareProtectionS3*"
+    ]
+    condition {
+      test     = "StringLike"
+      variable = "events:ManagedBy"
+      values   = ["malware-protection-plan.guardduty.amazonaws.com"]
+    }
+  }
+
+  statement {
+    sid     = "S3ActionsForGuardDuty"
+    effect  = "Allow"
+    actions = [
+      "s3:PutObjectTagging",
+      "s3:GetObjectTagging",
+      "s3:PutObjectVersionTagging",
+      "s3:GetObjectVersionTagging",
+      "s3:PutBucketNotification",
+      "s3:GetBucketNotification",
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:GetObjectVersion",
+      "s3:GetBucketAcl",
+      "s3:ListBucket",
+      "s3:PutObjectAcl"
+    ]
+    resources = [
+      "arn:aws:s3:::*/malware-protection-resource-validation-object",
+      "arn:aws:s3:::*"
+    ]
+    condition {
+      test     = "StringEqualsIfExists"
+      variable = "aws:CalledVia"
+      values   = ["malware-protection-plan.guardduty.amazonaws.com"]
+    }
+  }
+   statement {
+    sid     = "AllowDecryptForMalwareScan"
+    effect  = "Allow"
+    actions = [
+      "kms:GenerateDataKey",
+      "kms:Decrypt"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringLike"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+  }
+}
+
