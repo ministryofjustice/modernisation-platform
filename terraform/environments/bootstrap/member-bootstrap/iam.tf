@@ -10,29 +10,22 @@ module "member-access" {
   additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)] 
   policy_arn             = aws_iam_policy.member-access[0].id
   role_name              = "MemberInfrastructureAccess"
-}
-
-data "aws_iam_role" "member_infrastructure_access" {
-  name = "MemberInfrastructureAccess"
-}
-
-data "aws_iam_policy_document" "assume_role_policy_service" {
-  statement {
-    effect = "Allow"
-    actions = ["sts:AssumeRole"]
-    principals {
-      type        = "Service"
-      identifiers = [
-        "malware-protection-plan.guardduty.amazonaws.com"
+  additional_trust_statements = [
+    jsonencode({
+      Version = "2012-10-17",
+      Statement = [
+        {
+          Effect = "Allow",
+          Action = "sts:AssumeRole",
+          Principal = {
+            Service = "malware-protection-plan.guardduty.amazonaws.com"
+          }
+        }
       ]
-    }
-  }
+    })
+  ]
 }
 
-resource "aws_iam_role_policy" "update_trust_policy" {
-  role   = data.aws_iam_role.member_infrastructure_access.name
-  policy = data.aws_iam_policy_document.assume_role_policy_service.json
-}
 
 module "member-access-sprinkler" {
   count                  = (terraform.workspace == "sprinkler-development") ? 1 : 0
@@ -41,6 +34,20 @@ module "member-access-sprinkler" {
   additional_trust_roles = [data.aws_iam_role.sprinkler_oidc[0].arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access[0].id
   role_name              = "MemberInfrastructureAccess"
+  additional_trust_statements = [
+    jsonencode({
+      Version = "2012-10-17",
+      Statement = [
+        {
+          Effect = "Allow",
+          Action = "sts:AssumeRole",
+          Principal = {
+            Service = "malware-protection-plan.guardduty.amazonaws.com"
+          }
+        }
+      ]
+    })
+  ]
 }
 # lots of SCA ignores and skips on this one as it is the main role allowing members to build most things in the platform
 #tfsec:ignore:aws-iam-no-policy-wildcards
