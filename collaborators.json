@@ -405,26 +405,6 @@
           "access": "s3-upload"
         }
       ]
-    },
-    {
-      "username": "darren.brooke",
-      "github-username": "d4rrenb",
-      "accounts": [
-        {
-          "account-name": "analytical-platform-ingestion-production",
-          "access": "security-read-only"
-        }
-      ]
-    },
-    {
-      "username": "aaron.willetts",
-      "github-username": "Aaron-Salus",
-      "accounts": [
-        {
-          "account-name": "analytical-platform-ingestion-production",
-          "access": "security-read-only"
-        }
-      ]
     }
   ]
 }
