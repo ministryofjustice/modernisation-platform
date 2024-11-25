@@ -251,9 +251,9 @@ data "aws_iam_policy_document" "member-access" {
     actions = [
       "guardduty:CreateMalwareProtectionPlan",
       "guardduty:DeleteMalwareProtectionPlan",
-      "guardduty:DeleteMalwareProtectionPlan", "guardduty:ListDetectors",
+      "guardduty:ListDetectors",
       "guardduty:TagResource",
-
+      "guardduty:UpdateMalwareProtectionPlan"
     ]
     resources = [
       "arn:aws:guardduty:eu-west-2:*:malware-protection-plan/*"
