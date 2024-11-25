@@ -15,6 +15,11 @@ data "aws_iam_roles" "member-sso-admin-access" {
   path_prefix = "/aws-reserved/sso.amazonaws.com/"
 }
 
+data "aws_iam_role" "sprinkler_oidc" {
+  count = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  name  = "github-actions"
+}
+
 data "http" "environments_file" {
   url = format("https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/%s.json", local.application_name)
 }

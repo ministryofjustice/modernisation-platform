@@ -347,3 +347,93 @@ data "aws_iam_policy_document" "cost_management_bucket_policy" {
     }
   }
 }
+
+# SSM Inventory Sync Bucket
+module "ssm-inventory-sync-bucket" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=52a40b0dd18aaef0d7c5565d93cc8997aad79636" # v8.2.0
+  providers = {
+    aws.bucket-replication = aws.modernisation-platform-eu-west-1
+  }
+  bucket_policy       = [data.aws_iam_policy_document.ssm_inventory_sync_bucket_policy.json]
+  bucket_name         = "ssm-inventory-sync-bucket-euw2"
+  custom_kms_key      = aws_kms_key.s3_state_bucket_multi_region.arn
+  replication_enabled = false
+  lifecycle_rule = [
+    {
+      id      = "main"
+      enabled = "Enabled"
+      tags    = {}
+      transition = [
+        {
+          days          = 90
+          storage_class = "STANDARD_IA"
+          }, {
+          days          = 700
+          storage_class = "GLACIER"
+        }
+      ]
+      expiration = {
+        days = 730
+      }
+      noncurrent_version_transition = [
+        {
+          days          = 90
+          storage_class = "STANDARD_IA"
+          }, {
+          days          = 700
+          storage_class = "GLACIER"
+        }
+      ]
+      noncurrent_version_expiration = {
+        days = 730
+      }
+    }
+  ]
+  tags = local.tags
+}
+
+# SSM Inventory Sync Bucket Policy
+data "aws_iam_policy_document" "ssm_inventory_sync_bucket_policy" {
+  statement {
+    sid    = "SSMBucketPermissionsCheck"
+    effect = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["ssm.amazonaws.com"]
+    }
+    actions   = ["s3:GetBucketAcl"]
+    resources = ["arn:aws:s3:::ssm-inventory-sync-bucket-euw2"]
+  }
+
+  statement {
+    sid    = "SSMBucketDelivery"
+    effect = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["ssm.amazonaws.com"]
+    }
+    actions   = ["s3:PutObject"]
+    resources = ["arn:aws:s3:::ssm-inventory-sync-bucket-euw2/*/accountid=*/*"]
+    condition {
+      test     = "StringEquals"
+      variable = "s3:x-amz-acl"
+      values   = ["bucket-owner-full-control"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceOrgID"
+      values   = [data.aws_organizations_organization.root_account.id]
+    }
+  }
+
+  statement {
+    sid    = "SSMBucketDeliveryTagging"
+    effect = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["ssm.amazonaws.com"]
+    }
+    actions   = ["s3:PutObjectTagging"]
+    resources = ["arn:aws:s3:::ssm-inventory-sync-bucket-euw2/*/accountid=*/*"]
+  }
+}

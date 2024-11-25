@@ -252,6 +252,82 @@ resource "aws_iam_role_policy_attachment" "modernisation_account_terraform_state
   policy_arn = aws_iam_policy.modernisation_account_terraform_state.arn
 }
 
+# OIDC Provider for GitHub Actions Plan
+
+module "github_actions_plan_role" {
+  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=62b8a16c73d8e4422cd81923e46948e8f4b5cf48" # v3.2.0
+  github_repositories = ["ministryofjustice/modernisation-platform", "ministryofjustice/modernisation-platform-ami-builds", "ministryofjustice/modernisation-platform-security"]
+  role_name           = "github-actions-plan"
+  policy_jsons        = [data.aws_iam_policy_document.oidc_assume_plan_role_member.json]
+  tags                = { "Name" = "GitHub Actions Plan" }
+}
+
+data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
+  # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_108: "Allowing secretsmanager:GetSecretValue with open resource due to specific use case"
+  statement {
+    effect    = "Allow"
+    resources = ["*"]
+    actions = [
+      "kms:Decrypt",
+      "secretsmanager:GetSecretValue"
+    ]
+  }
+
+  statement {
+    sid    = "AllowDynamoDBAccess"
+    effect = "Allow"
+    actions = [
+      "dynamodb:DescribeTable",
+      "dynamodb:GetItem",
+      "dynamodb:PutItem",
+      "dynamodb:DeleteItem"
+    ]
+    resources = ["arn:aws:dynamodb:eu-west-2:${data.aws_caller_identity.current.account_id}:table/modernisation-platform-terraform-state-lock"]
+  }
+
+  statement {
+    sid    = "AssumeRole"
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
+    resources = [
+      "arn:aws:iam::${local.environment_management.account_ids["core-logging-production"]}:role/ModernisationPlatformAccess",
+      "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/ModernisationPlatformAccess",
+      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-development"]}:role/ModernisationPlatformAccess",
+      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-preproduction"]}:role/ModernisationPlatformAccess",
+      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-production"]}:role/ModernisationPlatformAccess",
+      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-sandbox"]}:role/ModernisationPlatformAccess",
+      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-test"]}:role/ModernisationPlatformAccess",
+      "arn:aws:iam::${local.environment_management.account_ids["core-security-production"]}:role/ModernisationPlatformAccess",
+      "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/ModernisationPlatformAccess",
+      "arn:aws:iam::${local.environment_management.account_ids["testing-test"]}:role/ModernisationPlatformAccess",
+      "arn:aws:iam::${local.environment_management.aws_organizations_root_account_id}:role/ModernisationPlatformSSOAdministrator"
+    ]
+  }
+
+  statement {
+    sid       = "AllowOIDCReadState"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*", "arn:aws:s3:::modernisation-platform-terraform-state/"]
+    actions = ["s3:Get*",
+    "s3:List*"]
+  }
+}
+
+# OIDC Provider for GitHub Actions Apply
+
+module "github_actions_apply_role" {
+  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=62b8a16c73d8e4422cd81923e46948e8f4b5cf48" # v3.2.0
+  github_repositories = ["ministryofjustice/modernisation-platform", "ministryofjustice/modernisation-platform-ami-builds", "ministryofjustice/modernisation-platform-security"]
+  role_name           = "github-actions-apply"
+  policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
+  policy_jsons        = [data.aws_iam_policy_document.oidc-deny-specific-actions.json]
+  subject_claim       = "ref:refs/heads/main"
+  tags                = { "Name" = "GitHub Actions Apply" }
+}
 
 # OIDC resources
 

@@ -1919,6 +1919,7 @@ locals {
     oasys-national-reporting-production     = { slack_channel_id = "C07J1U3SN66" } # oasys_national_reporting_alarms_prod
     planetfm-preproduction                  = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
     planetfm-production                     = { slack_channel_id = "C064KHB3HB9" } # planetfm_alarms
+    dso-pipelines                           = { slack_channel_id = "C01PWKWDB9D" } # dso_alerts_pipeline
   }
   slack_events = [
     "incident.triggered",
@@ -1999,7 +2000,8 @@ resource "pagerduty_event_orchestration_service" "default" {
 locals {
   dso_az_alerts = {
     channel_ids = {
-      az-noms-production-1-alerts = "C07TC0DCYJE"
+      az-noms-production-1-alerts          = "C07TC0DCYJE"
+      az-noms-dev-test-environments-alerts = "C0817BKDQ5T"
     }
   }
 }
@@ -2051,6 +2053,25 @@ resource "pagerduty_slack_connection" "az_dso_alerts" {
       "incident.reopened",
     ]
     priorities = ["*"]
+  }
+}
+
+resource "pagerduty_event_orchestration_service" "az_dso_alerts" {
+  for_each = pagerduty_service.az_dso_alerts
+
+  service                                = each.value.id
+  enable_event_orchestration_for_service = true
+  set {
+    id = "start"
+    rule {
+      label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
+      actions {
+        priority = data.pagerduty_priority.p5.id
+      }
+    }
+  }
+  catch_all {
+    actions {}
   }
 }
 

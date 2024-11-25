@@ -4,14 +4,34 @@ locals {
 }
 
 module "member-access" {
-  count                  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
-  account_id             = local.modernisation_platform_account.id
-  additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
-  policy_arn             = aws_iam_policy.member-access[0].id
-  role_name              = "MemberInfrastructureAccess"
+  count                       = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  source                      = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
+  account_id                  = local.modernisation_platform_account.id
+  additional_trust_roles      = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  policy_arn                  = aws_iam_policy.member-access[0].id
+  role_name                   = "MemberInfrastructureAccess"
+  additional_trust_statements = [data.aws_iam_policy_document.additional_trust_policy.json]
 }
 
+module "member-access-sprinkler" {
+  count                       = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  source                      = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
+  account_id                  = local.modernisation_platform_account.id
+  additional_trust_roles      = [data.aws_iam_role.sprinkler_oidc[0].arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  policy_arn                  = aws_iam_policy.member-access[0].id
+  role_name                   = "MemberInfrastructureAccess"
+  additional_trust_statements = [data.aws_iam_policy_document.additional_trust_policy.json]
+}
+data "aws_iam_policy_document" "additional_trust_policy" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["malware-protection-plan.guardduty.amazonaws.com"]
+    }
+  }
+}
 # lots of SCA ignores and skips on this one as it is the main role allowing members to build most things in the platform
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "member-access" {
@@ -187,6 +207,7 @@ data "aws_iam_policy_document" "member-access" {
       "sso-directory:DescribeUser",
       "sso-directory:DescribeGroup",
       "states:*",
+      "synthetics:*",
       "waf:*",
       "wafv2:*",
       "resource-groups:*",
@@ -222,6 +243,26 @@ data "aws_iam_policy_document" "member-access" {
       values = [
         local.environment_management.account_ids["testing-test"]
       ]
+    }
+  }
+  statement {
+    sid    = "GuardDutyMalwareProtectionActions"
+    effect = "Allow"
+    actions = [
+      "guardduty:CreateMalwareProtectionPlan",
+      "guardduty:DeleteMalwareProtectionPlan",
+      "guardduty:ListDetectors",
+      "guardduty:ListTagsForResource",
+      "guardduty:TagResource",
+      "guardduty:UpdateMalwareProtectionPlan"
+    ]
+    resources = [
+      "arn:aws:guardduty:eu-west-2:*:malware-protection-plan/*"
+    ]
+    condition {
+      test     = "ForAnyValue:StringEquals"
+      variable = "aws:CalledVia"
+      values   = ["guardduty.amazonaws.com"]
     }
   }
   statement {
@@ -273,14 +314,19 @@ data "aws_iam_policy_document" "member-access" {
     ]
     resources = ["arn:aws:iam::*:user/cicd-member-user"]
   }
-
   statement {
     actions   = ["iam:PassRole"]
     effect    = "Deny"
     resources = ["arn:aws:iam::*:role/MemberInfrastructureAccess"]
+    condition {
+      test     = "StringNotEquals"
+      variable = "iam:PassedToService"
+      values = [
+        "malware-protection-plan.guardduty.amazonaws.com"
+      ]
+    }
   }
 }
-
 resource "aws_iam_policy" "member-access" {
   count       = local.account_data.account-type == "member" ? 1 : 0
   name        = "MemberInfrastructureAccessActions"
@@ -322,10 +368,19 @@ resource "aws_iam_role_policy_attachment" "testing_member_infrastructure_access_
 
 # MemberInfrastructureAccessUSEast
 module "member-access-us-east" {
-  count                  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
+  count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
   account_id             = local.modernisation_platform_account.id
   additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  policy_arn             = aws_iam_policy.member-access-us-east[0].id
+  role_name              = "MemberInfrastructureAccessUSEast"
+}
+
+module "member-access-us-east-sprinkler" {
+  count                  = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
+  account_id             = local.modernisation_platform_account.id
+  additional_trust_roles = [data.aws_iam_role.sprinkler_oidc[0].arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access-us-east[0].id
   role_name              = "MemberInfrastructureAccessUSEast"
 }
@@ -596,10 +651,19 @@ data "aws_iam_policy_document" "policy" {
 
 # MemberInfrastructureBedrockEuCentral
 module "member-access-eu-central" {
-  count                  = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
+  count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
   account_id             = local.modernisation_platform_account.id
   additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  policy_arn             = aws_iam_policy.member-access-eu-central[0].id
+  role_name              = "MemberInfrastructureBedrockEuCentral"
+}
+
+module "member-access-eu-central-sprinkler" {
+  count                  = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
+  account_id             = local.modernisation_platform_account.id
+  additional_trust_roles = [data.aws_iam_role.sprinkler_oidc[0].arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access-eu-central[0].id
   role_name              = "MemberInfrastructureBedrockEuCentral"
 }
@@ -700,7 +764,7 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
 
 # Github OIDC provider
 module "github-oidc" {
-  count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test") ? 1 : 0
+  count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
   source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=82f546bd5f002674138a2ccdade7d7618c6758b3" # v3.0.0
   additional_permissions = data.aws_iam_policy_document.oidc_assume_role_member[0].json
   github_repositories    = ["ministryofjustice/modernisation-platform-environments:*"]
@@ -709,7 +773,7 @@ module "github-oidc" {
 }
 
 data "aws_iam_policy_document" "oidc_assume_role_member" {
-  count = local.account_data.account-type == "member" && terraform.workspace != "testing-test" ? 1 : 0
+  count = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
   statement {
     sid    = "AllowOIDCToAssumeRoles"
     effect = "Allow"
@@ -719,8 +783,7 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
       format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
       format("arn:aws:iam::%s:role/modernisation-account-terraform-state-member-access", local.environment_management.modernisation_platform_account_id),
       format("arn:aws:iam::%s:role/ModernisationPlatformSSOReadOnly", local.environment_management.aws_organizations_root_account_id),
-      # the two below are required as sprinkler and cooker have development accounts but are in the sandbox vpc
-      local.application_name == "sprinkler" ? format("arn:aws:iam::%s:role/member-delegation-garden-sandbox", local.environment_management.account_ids["core-vpc-sandbox"]) : format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
+      # the following are required as cooker have development accounts but are in the sandbox vpc
       local.application_name == "cooker" ? format("arn:aws:iam::%s:role/member-delegation-house-sandbox", local.environment_management.account_ids["core-vpc-sandbox"]) : format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id)
     ]
     condition {

@@ -167,7 +167,6 @@ EOL
   done
 
   cat >> $codeowners_file << EOL
-**/providers.tf @ministryofjustice/modernisation-platform
 **/backend.tf @ministryofjustice/modernisation-platform
 **/subnet_share.tf @ministryofjustice/modernisation-platform
 **/networking.auto.tfvars.json @ministryofjustice/modernisation-platform

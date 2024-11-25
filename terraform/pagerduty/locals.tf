@@ -28,6 +28,11 @@ locals {
       email = "sukesh.reddygade${local.digital_email_suffix}"
       role  = "user"
     },
+    mike_reid = {
+      name  = "Mike Reid"
+      email = "mike.reid${local.digital_email_suffix}"
+      role  = "user"
+    },
     modernisation_platform = {
       name  = "Modernisation Platform Team"
       email = "modernisation-platform${local.digital_email_suffix}"

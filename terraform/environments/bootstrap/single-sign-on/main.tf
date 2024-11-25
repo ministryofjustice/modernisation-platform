@@ -5,7 +5,6 @@ locals {
 }
 
 # Get MP-specific AWS SSO permission sets
-
 data "terraform_remote_state" "mp-sso-permissions-sets" {
   backend = "s3"
   config = {
@@ -16,7 +15,6 @@ data "terraform_remote_state" "mp-sso-permissions-sets" {
     encrypt = "true"
   }
 }
-
 
 # Get Identity Store groups
 data "aws_identitystore_group" "platform_admin" {
@@ -31,7 +29,6 @@ data "aws_identitystore_group" "platform_admin" {
     }
   }
 }
-
 
 # Get Identity Store groups
 data "aws_identitystore_group" "member" {
@@ -50,6 +47,7 @@ data "aws_identitystore_group" "member" {
   }
 }
 
+# Create account assignments
 resource "aws_ssoadmin_account_assignment" "platform_admin" {
 
   provider = aws.sso-management
@@ -307,6 +305,15 @@ resource "aws_ssoadmin_account_assignment" "data_engineer" {
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
   target_type = "AWS_ACCOUNT"
+}
+
+resource "aws_ssoadmin_managed_policy_attachment" "data_engineer_lakeformation_crossaccountmanager" {
+  provider   = aws.sso-management
+  depends_on = [aws_ssoadmin_account_assignment.data_engineer]
+
+  instance_arn       = local.sso_instance_arn
+  managed_policy_arn = "arn:aws:iam::aws:policy/AWSLakeFormationCrossAccountManager"
+  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.data_engineer
 }
 
 resource "aws_ssoadmin_account_assignment" "reporting-operations" {

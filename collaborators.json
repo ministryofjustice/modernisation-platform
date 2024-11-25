@@ -87,24 +87,6 @@
       ]
     },
     {
-      "username": "sajid.habib",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "ppud-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "ppud-preproduction",
-          "access": "developer"
-        },
-        {
-          "account-name": "ppud-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "umesh.ray",
       "github-username": "umeshc-roy",
       "accounts": [
@@ -203,6 +185,20 @@
     {
       "username": "michaela.blowers",
       "github-username": "MichaelaB21",
+      "accounts": [
+        {
+          "account-name": "delius-iaps-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "delius-iaps-production",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "laimute.taylor",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "delius-iaps-preproduction",

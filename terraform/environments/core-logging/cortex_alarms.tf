@@ -8,13 +8,13 @@ locals {
         {name   = "secops", channel_id = "C080Y6ZA81K"}
     ]
 
-    max_queue_message_age = 3600 # Value in seconds. Suggested default value is 3600 seconds (1 hour)
+  max_queue_message_age = 3600 # Value in seconds. Suggested default value is 3600 seconds (1 hour)
 }
 
 # This creates one cloudwatch alarm for each of the cortex logging buckets.
 
 resource "aws_cloudwatch_metric_alarm" "sqs_cortex_age_of_oldest_message" {
-  for_each = local.cortex_logging_buckets
+  for_each            = local.cortex_logging_buckets
   alarm_name          = "${each.key}-ApproximateAgeOfOldestMessage"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -67,8 +67,8 @@ data "aws_iam_policy_document" "sns_kms_policy" {
     }
   }
   statement {
-    sid     = "Allow SNS service to use the key"
-    effect  = "Allow"
+    sid    = "Allow SNS service to use the key"
+    effect = "Allow"
     actions = [
       "kms:GenerateDataKey*",
       "kms:Decrypt"
@@ -91,12 +91,12 @@ data "aws_iam_policy_document" "sns_kms_policy" {
 
 resource "aws_sns_topic_policy" "sqs_sns_topic_policy" {
   for_each = { for topic in local.cortex_topic_names : topic.name => topic }
-  arn    = aws_sns_topic.cortex_sqs_sns_topic[each.key].arn
-  policy = data.aws_iam_policy_document.sqs_sns_topic_policy[each.key].json
+  arn      = aws_sns_topic.cortex_sqs_sns_topic[each.key].arn
+  policy   = data.aws_iam_policy_document.sqs_sns_topic_policy[each.key].json
 }
 
 data "aws_iam_policy_document" "sqs_sns_topic_policy" {
-  for_each = { for topic in local.cortex_topic_names : topic.name => topic }
+  for_each  = { for topic in local.cortex_topic_names : topic.name => topic }
   policy_id = "${each.value.name}-sqs-sns-topic-policy"
   statement {
     sid    = "Allow topic owner to manage sns topic"
@@ -114,7 +114,7 @@ data "aws_iam_policy_document" "sqs_sns_topic_policy" {
     ]
     resources = [aws_sns_topic.cortex_sqs_sns_topic[each.key].arn]
     principals {
-      type        = "AWS"
+      type = "AWS"
       identifiers = [
         "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
       ]
@@ -125,18 +125,17 @@ data "aws_iam_policy_document" "sqs_sns_topic_policy" {
 # Slack Chatbot Integration
 
 resource "aws_sns_topic" "cortex_sqs_sns_topic" {
-  for_each = { for topic in local.cortex_topic_names : topic.name => topic }
+  for_each          = { for topic in local.cortex_topic_names : topic.name => topic }
   name              = "${each.value.name}-sqs-sns-topic"
   kms_master_key_id = aws_kms_key.sns_kms_key.id
-  tags = local.tags
+  tags              = local.tags
 }
 
 module "mp-sqs-sns-chatbot" {
-  for_each = { for topic in local.cortex_topic_names : topic.name => topic }
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot?ref=73280f80ce8a4557cec3a76ee56eb913452ca9aa" // v2.0.0
+  for_each         = { for topic in local.cortex_topic_names : topic.name => topic }
+  source           = "github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot?ref=73280f80ce8a4557cec3a76ee56eb913452ca9aa" // v2.0.0
   slack_channel_id = each.value.channel_id
   sns_topic_arns   = [aws_sns_topic.cortex_sqs_sns_topic[each.key].arn]
   tags             = local.tags
   application_name = "${each.value.name}-sqs-alarm-chatbot"
 }
-

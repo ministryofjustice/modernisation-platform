@@ -240,3 +240,4 @@ module "collaborator_s3_upload_role" {
 data "aws_iam_policy" "s3_upload" {
   name = "s3_upload_policy"
 }
+
