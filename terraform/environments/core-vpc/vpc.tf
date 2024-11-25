@@ -48,12 +48,12 @@ locals {
       for file in fileset("../../../environments-networks", "*-sandbox.json") :
       replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))
     }
-  
+
     # VPCs that sit within the core vpc sandbox account
     core-vpc-recovery = {
       for file in fileset("../../../environments-networks", "*-recovery.json") :
       replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))
-    }  
+    }
 
   }
 
