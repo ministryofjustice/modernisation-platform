@@ -8,6 +8,7 @@ data "aws_caller_identity" "modernisation-platform" {
 
 # To Get Modernisation Platform Account Number
 data "aws_ssm_parameter" "modernisation_platform_account_id" {
+  provider = aws.modernisation-platform
   name = "modernisation_platform_account_id"
 }
 
