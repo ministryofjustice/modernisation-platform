@@ -2056,6 +2056,25 @@ resource "pagerduty_slack_connection" "az_dso_alerts" {
   }
 }
 
+resource "pagerduty_event_orchestration_service" "az_dso_alerts" {
+  for_each = pagerduty_service.az_dso_alerts
+
+  service                                = each.value.id
+  enable_event_orchestration_for_service = true
+  set {
+    id = "start"
+    rule {
+      label = "Set the default priority to P5 so breaches appear in the PagerDuty UI"
+      actions {
+        priority = data.pagerduty_priority.p5.id
+      }
+    }
+  }
+  catch_all {
+    actions {}
+  }
+}
+
 # END - DSO Azure alerts
 
 resource "pagerduty_service" "sprinkler-development" {
