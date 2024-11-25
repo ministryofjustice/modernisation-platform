@@ -48,13 +48,6 @@ locals {
       for file in fileset("../../../environments-networks", "*-sandbox.json") :
       replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))
     }
-
-    # VPCs that sit within the core vpc sandbox account
-    core-vpc-recovery = {
-      for file in fileset("../../../environments-networks", "*-recovery.json") :
-      replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))
-    }
-
   }
 
   account_numbers = flatten([
@@ -353,30 +346,4 @@ resource "aws_iam_role" "member_delegation_read_only" {
 resource "aws_iam_role_policy_attachments_exclusive" "member_delegation_read_only" {
   policy_arns = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]
   role_name   = aws_iam_role.member_delegation_read_only.name
-}
-
-
-################### eu-west-1 ##############################
-
-
-module "vpc-eu-west-1" {
-  providers = {
-    aws = aws.modernisation-platform-eu-west-1
-  }
-
-  # Only build the module when the workspace is sandbox
-  for_each = contains(regexall("sandbox", terraform.workspace), "sandbox") ? local.vpcs["core-vpc-recovery"] : {}
-
-  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=fb5be075e16ccc3d2053c173e5a42c2c22d65bff" # v3.0.1
-  additional_endpoints = each.value.options.additional_endpoints
-  subnet_sets          = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
-  transit_gateway_id   = data.aws_ec2_transit_gateway.transit-gateway.id
-
-  # VPC Flow Logs
-  vpc_flow_log_iam_role       = aws_iam_role.vpc_flow_log.arn
-  flow_log_s3_destination_arn = local.is-production ? local.core_logging_bucket_arns["vpc-flow-logs"] : ""
-
-  # Tags
-  tags_common = local.tags
-  tags_prefix = each.key
 }
