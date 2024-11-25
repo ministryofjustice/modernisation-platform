@@ -252,6 +252,7 @@ data "aws_iam_policy_document" "member-access" {
       "guardduty:CreateMalwareProtectionPlan",
       "guardduty:DeleteMalwareProtectionPlan",
       "guardduty:ListDetectors",
+      "guardduty:ListTagsForResource",
       "guardduty:TagResource",
       "guardduty:UpdateMalwareProtectionPlan"
     ]
@@ -264,7 +265,6 @@ data "aws_iam_policy_document" "member-access" {
       values   = ["guardduty.amazonaws.com"]
     }
   }
-
   statement {
     effect = "Deny"
     actions = [
