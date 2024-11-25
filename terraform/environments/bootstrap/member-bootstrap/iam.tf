@@ -250,20 +250,21 @@ data "aws_iam_policy_document" "member-access" {
     effect = "Allow"
     actions = [
       "guardduty:CreateMalwareProtectionPlan",
-      "guardduty:UpdateMalwareProtectionPlan",
       "guardduty:DeleteMalwareProtectionPlan",
-      "guardduty:ListDetectors"
+      "guardduty:ListDetectors",
+      "guardduty:ListTagsForResource",
+      "guardduty:TagResource",
+      "guardduty:UpdateMalwareProtectionPlan"
     ]
     resources = [
       "arn:aws:guardduty:eu-west-2:*:malware-protection-plan/*"
     ]
     condition {
-      test     = "StringEquals"
+      test     = "ForAnyValue:StringEquals"
       variable = "aws:CalledVia"
-      values   = ["malware-protection-plan.guardduty.amazonaws.com"]
+      values   = ["guardduty.amazonaws.com"]
     }
   }
-
   statement {
     effect = "Deny"
     actions = [
@@ -313,11 +314,17 @@ data "aws_iam_policy_document" "member-access" {
     ]
     resources = ["arn:aws:iam::*:user/cicd-member-user"]
   }
-
   statement {
     actions   = ["iam:PassRole"]
     effect    = "Deny"
     resources = ["arn:aws:iam::*:role/MemberInfrastructureAccess"]
+    condition {
+      test     = "StringNotEquals"
+      variable = "iam:PassedToService"
+      values = [
+        "malware-protection-plan.guardduty.amazonaws.com"
+      ]
+    }
   }
 }
 resource "aws_iam_policy" "member-access" {
