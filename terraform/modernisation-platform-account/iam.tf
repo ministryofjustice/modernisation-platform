@@ -209,7 +209,10 @@ data "aws_iam_policy_document" "modernisation_account_terraform_state_role" {
       "s3:GetObject",
       "s3:PutObject",
     ]
-    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
+    resources = [
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*",
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*"
+    ]
   }
 }
 

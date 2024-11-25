@@ -3,8 +3,13 @@ module "cross-account-access" {
   providers = {
     aws = aws.workspace
   }
-  account_id             = local.modernisation_platform_account.id
-  policy_arn             = "arn:aws:iam::aws:policy/AdministratorAccess"
-  role_name              = "ModernisationPlatformAccess"
-  additional_trust_roles = terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : []
+  account_id = local.modernisation_platform_account.id
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+  role_name  = "ModernisationPlatformAccess"
+  additional_trust_roles = concat(
+    [
+      "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions"
+    ],
+    terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : []
+  )
 }
