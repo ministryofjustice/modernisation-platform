@@ -260,7 +260,7 @@ data "aws_iam_policy_document" "member-access" {
       "arn:aws:guardduty:eu-west-2:*:malware-protection-plan/*"
     ]
     condition {
-      test     = "ForAllValues:StringEquals"
+      test     = "ForAnyValue:StringEquals"
       variable = "aws:CalledVia"
       values   = ["guardduty.amazonaws.com"]
     }
