@@ -23,6 +23,10 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "laa-ccms-migration-team",
+          "level": "instance-management"
+        },        
+        {
           "sso_group_name": "modernisation-platform-security",
           "level": "view-only"
         }
@@ -36,6 +40,10 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "laa-ccms-migration-team",
+          "level": "instance-management"
+        },          
+        {
           "sso_group_name": "modernisation-platform-security",
           "level": "view-only"
         }
@@ -48,6 +56,10 @@
           "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
         },
+        {
+          "sso_group_name": "laa-ccms-migration-team",
+          "level": "instance-management"
+        },        
         {
           "sso_group_name": "modernisation-platform-security",
           "level": "view-only"
