@@ -3,10 +3,10 @@
 
 locals {
 
-    cortex_topic_names = [
-        {name   = "modplatform", channel_id = "C02PFCG8M1R"}, #modernisation-platform-low-priority-alarms
-        {name   = "secops", channel_id = "C080Y6ZA81K"} #test-sns-secops
-    ]
+  cortex_topic_names = [
+    { name = "modplatform", channel_id = "C02PFCG8M1R" }, #modernisation-platform-low-priority-alarms
+    { name = "secops", channel_id = "C080Y6ZA81K" }       #test-sns-secops
+  ]
 
   max_queue_message_age = 3600 # Value in seconds. Suggested default value is 3600 seconds (1 hour)
 }
