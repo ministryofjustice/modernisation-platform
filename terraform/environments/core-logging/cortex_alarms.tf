@@ -1,11 +1,11 @@
 # This adds a cloudwatch alarm for each of the sqs queues that monitor for a build up of messages.
-# We will output this to modernisation-platform-low-priority-alarms as well as the agreed channel id provided by SecOps.
+# We will output this to modernisation-platform-low-priority-alarms as well as the xsiam-alerts channel id that has been provided by SecOps.
 
 locals {
 
   cortex_topic_names = [
     { name = "modplatform", channel_id = "C02PFCG8M1R" }, #modernisation-platform-low-priority-alarms
-    { name = "secops", channel_id = "C080Y6ZA81K" }       #test-sns-secops
+    { name = "secops", channel_id = "C082F6H8A2Z" }       #xsiam-alerts
   ]
 
   max_queue_message_age = 3600 # Value in seconds. Suggested default value is 3600 seconds (1 hour)
