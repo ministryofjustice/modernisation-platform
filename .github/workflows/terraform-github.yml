@@ -36,24 +36,20 @@ permissions:
 
 jobs:
   github-plan-and-apply:
+    uses: ./.github/workflows/reusable_terraform_plan_apply.yml
+    with:
+      working-directory: "terraform/github"
+    secrets:
+      modernisation_platform_environments: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
+      gh_workflow_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  slack-notification-for-plan-and-apply:
     runs-on: ubuntu-latest
+    needs: [ github-plan-and-apply ]
+    if: ${{ failure() }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-        with:
-          fetch-depth: 0 # or "2" To retrieve the preceding commit.
-
-      - name: Run reusable Terraform workflow
-        uses: ./.github/workflows/reusable_terraform_plan_apply.yml
-        with:
-          working-directory: "terraform/github"
-        env:
-          MODERNISATION_PLATFORM_ENVIRONMENTS: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-          TERRAFORM_GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-      - name: Slack failure notification
-        if: ${{ failure() }}
+      - name: Send Slack notification
         uses: slackapi/slack-github-action@485a9d42d3a73031f12ec201c457e2162c45d02d # v2.0.0
         with:
           payload: |
