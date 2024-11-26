@@ -3,6 +3,12 @@
 data "http" "environments_file" {
   url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/${local.testing_application_name}.json"
 }
+
+# Fetch all teams in the organization
+data "github_organization_teams" "all_teams" {
+  summary_only = true
+}
+
 locals {
   testing_application_name = "testing"
 
@@ -45,7 +51,7 @@ locals {
     "connormaglynn",
     "richgreen-moj",   # Richard Green
     "khatraf",         # Khatra Farah
-    "sukeshreddyg",    # Sukesh Reddy Gade 
+    "sukeshreddyg",    # Sukesh Reddy Gade
     "mikereiddigital", # Mike Reid
     "Kudzai-moj"       # Kudzai Mtoko
   ]
@@ -71,14 +77,19 @@ locals {
     }, jsondecode(file("../../environments/${file}")))
   ]
 
-  application_sso_group_names = concat(
+  all_team_slugs = [
+    for team in data.github_organization_teams.all_teams.teams : team.slug
+  ]
+
+  application_github_group_names = concat( # intentional rename: this is only applicable to Github teams
     ["all-org-members"],
     distinct(flatten([
       for application in local.environments_json : [
         for environment in application.environments : [
           for access in environment.access :
           access.sso_group_name
-          if application.account-type == "member" && !contains(["modernisation-platform", "modernisation-platform-engineers"], access.sso_group_name)
+          if application.account-type == "member" && !contains(["modernisation-platform", "modernisation-platform-engineers"], access.sso_group_name) &&
+          contains(local.all_team_slugs, access.sso_group_name) # Filter out invalid Github teams (ex. azure-aws-sso-*)
         ]
       ]
     ]))
