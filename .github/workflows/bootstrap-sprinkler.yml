@@ -223,7 +223,9 @@ jobs:
           terraform_wrapper: false
       - name: Terraform Init
         working-directory: "terraform/environments/bootstrap/single-sign-on"
-        run: terraform init -backend-config=assume_role={role_arn=\"arn:aws:iam::${{env.BACKEND_NUMBER}}:role/modernisation-account-terraform-state-member-access\"} 
+        run: terraform init -backend-config="bucket=modernisation-platform-terraform-state" \
+                            -backend-config="key=single-sign-on/terraform.tfstate" \
+                            -backend-config=assume_role={role_arn=\"arn:aws:iam::${{env.BACKEND_NUMBER}}:role/modernisation-account-terraform-state-member-access\"} 
       - run: bash scripts/terraform-apply.sh terraform/environments/bootstrap/single-sign-on
 
   member-bootstrap-apply:
