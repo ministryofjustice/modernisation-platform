@@ -59,6 +59,7 @@
     "ministryofjustice/HMLandsRegistry",
     "ministryofjustice/LandsChamberTribunal",
     "ministryofjustice/Transport",
+    "ministryofjustice/AsylumSupport",
     "ministryofjustice/dts-legacy-tribunals-ftp"
   ]
 }
