@@ -10,28 +10,32 @@ module "github-oidc" {
 }
 
 data "aws_iam_policy_document" "oidc_deny_specific_actions" {
+  # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
   statement {
-    sid    = "AllowOIDCToAssumeRoles"
+    sid       = "AllowOIDCToDecryptKMS"
+    effect    = "Allow"
+    resources = ["*"]
+    actions   = ["kms:Decrypt"]
+  }
+
+  statement {
+    sid       = "AllowOIDCReadState"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*", "arn:aws:s3:::modernisation-platform-terraform-state/"]
+    actions = [
+    "s3:List*"]
+  }
+
+  statement {
+    sid    = "AllowOIDCWriteState"
     effect = "Allow"
     resources = [
-      format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
-      format("arn:aws:iam::%s:role/modernisation-account-terraform-state-member-access", local.environment_management.modernisation_platform_account_id)
+      "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/terraform.tfstate",
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/terraform.tfstate"
     ]
-    condition {
-      test     = "StringEquals"
-      variable = "aws:PrincipalAccount"
-      values   = [local.environment_management.account_ids[terraform.workspace]]
-    }
-    actions = ["sts:AssumeRole"]
-  }
-  statement {
-    effect = "Deny"
-    actions = [
-      "iam:ChangePassword",
-      "iam:CreateLoginProfile",
-      "iam:DeleteUser",
-      "iam:DeleteVirtualMFADevice"
-    ]
-    resources = ["*"]
+    actions = ["s3:PutObject",
+      "s3:PutObjectAcl",
+    "s3:GetObject"]
   }
 }
