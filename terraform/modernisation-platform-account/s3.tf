@@ -310,6 +310,24 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       identifiers = tolist(data.aws_iam_roles.sso-admin-access.arns)
     }
   }
+
+  statement {
+    sid    = "AllowSprinklerGithubActionRole"
+    effect = "Allow"
+    actions = [
+      "s3:PutObject",
+      "s3:PutObjectAcl",
+      "s3:GetObject"
+    ]
+    resources = [
+      "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/terraform.tfstate",
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/terraform.tfstate"
+    ]
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions"]
+    }
+  }
 }
 
 module "cost-management-bucket" {
