@@ -1,0 +1,50 @@
+---
+owner_slack: "#modernisation-platform"
+title: Adding Admin Data Lake Formation Permissions
+last_reviewed_on: 2024-11-28
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+
+
+
+## Enabling AWS Shield Advanced
+
+In order to use Date lake formation correctly, without permission errors you need to add the two roles below to your list of Data Lake Administrators.
+
+*	CI user role for AWS Nuke purposes.
+
+*	Sandbox role for your account.
+
+Please see example code below,
+
+```hcl
+
+data "aws_iam_role" "github_actions_role" {
+  name = "github-actions"
+}
+
+data "aws_iam_roles" "modernisation_platform_sandbox_role" {
+  name_regex  = "AWSReservedSSO_modernisation-platform-sandbox_.*"
+  path_prefix = "/aws-reserved/sso.amazonaws.com/"
+}
+
+resource "aws_lakeformation_data_lake_settings" "your_lake_settings_name" {
+  admins = [
+    "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-reserved/sso.amazonaws.com/${data.aws_region.current.name}/${one(data.aws_iam_roles.modernisation_platform_sandbox_role.names)}",
+     data.aws_iam_role.github_actions_role.arn
+  ]
+} 
+
+```
