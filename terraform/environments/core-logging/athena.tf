@@ -4,7 +4,7 @@ data "aws_caller_identity" "mod-platform" {
 
 data "aws_kms_alias" "environment_management" {
   provider = aws.modernisation-platform
-  name     = "alias/environment-management"
+  name     = "alias/environment-management-multi-region"
 }
 
 #S3 Bucket for Athena temp SQL queries 
