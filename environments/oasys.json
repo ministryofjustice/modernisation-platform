@@ -16,6 +16,10 @@
           "level": "sandbox",
           "nuke": "rebuild",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "oasys-access",
+          "level": "instance-access"
         }
       ]
     },
@@ -35,6 +39,10 @@
         {
           "sso_group_name": "oasys-operator",
           "level": "instance-management"
+        },
+        {
+          "sso_group_name": "oasys-access",
+          "level": "instance-access"
         }
       ]
     },
@@ -54,6 +62,10 @@
         {
           "sso_group_name": "oasys-operator",
           "level": "instance-management"
+        },
+        {
+          "sso_group_name": "oasys-access",
+          "level": "instance-access"
         }
       ]
     },
@@ -72,6 +84,10 @@
         },
         {
           "sso_group_name": "oasys-operator",
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "oasys-access",
           "level": "instance-access"
         }
       ]
