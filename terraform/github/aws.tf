@@ -60,3 +60,13 @@ data "aws_secretsmanager_secret" "github_ci_user_environments_repo_pat_token" {
 data "aws_secretsmanager_secret_version" "github_ci_user_environments_repo_pat_token" {
   secret_id = data.aws_secretsmanager_secret.github_ci_user_environments_repo_pat_token.id
 }
+
+# Get secret by name for modernisation_repo_pat_multirepo
+data "aws_secretsmanager_secret" "modernisation_repo_pat_multirepo" {
+  name = "modernisation_repo_pat_multirepo"
+}
+
+# Get latest secret value with ID from above. This secret stores PAT token
+data "aws_secretsmanager_secret_version" "modernisation_repo_pat_multirepo" {
+  secret_id = data.aws_secretsmanager_secret.modernisation_repo_pat_multirepo.id
+}

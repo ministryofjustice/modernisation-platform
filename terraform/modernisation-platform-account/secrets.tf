@@ -129,6 +129,20 @@ resource "aws_secretsmanager_secret" "github_ci_user_password" {
   }
 }
 
+# Github CI user environments repo PAT
+# Not adding a secret version as this url is generated in Github cannot be added programatically
+# Secret should be manually set in the console.
+resource "aws_secretsmanager_secret" "modernisation_repo_pat_multirepo" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "modernisation_repo_pat_multirepo"
+  description = "This PAT token is used in pipelines of the modernisation-platform repository. This is so that the CI user can read/write issues and read/update github secrets."
+  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}
+
 resource "aws_secretsmanager_secret" "gov_uk_notify_api_key" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "gov_uk_notify_api_key"
