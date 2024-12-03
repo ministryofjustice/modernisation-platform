@@ -24,7 +24,7 @@
       "name": "preproduction",
       "access": [
         {
-          "sso_group_name": "hmpps-electronic-monitoring-data-store",
+          "sso_group_name": "azure-aws-sso-electronic-monitoring-data",
           "level": "data-engineer"
         }
       ]
