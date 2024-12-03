@@ -103,3 +103,9 @@ data "aws_secretsmanager_secret" "pagerduty_integration_keys" {
 locals {
   pagerduty_integration_keys = jsondecode(data.aws_secretsmanager_secret_version.pagerduty_integration_keys.secret_string)
 }
+
+# Subscribe SNS topics in member accounts to pagerduty for core monitoring
+module "core_monitoring" {
+  source                     = "../../../modules/core-monitoring"
+  pagerduty_integration_keys = local.pagerduty_integration_keys
+}

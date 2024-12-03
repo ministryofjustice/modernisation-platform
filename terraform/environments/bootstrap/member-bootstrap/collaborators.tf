@@ -13,7 +13,7 @@ module "collaborator_readonly_role" {
 
   # Allow created users to assume these roles
   trusted_role_arns = [
-    local.modernisation_platform_account.id
+    data.aws_ssm_parameter.modernisation_platform_account_id.value
   ]
 }
 
@@ -40,7 +40,7 @@ module "collaborator_security_audit_role" {
 
   # Allow created users to assume these roles
   trusted_role_arns = [
-    local.modernisation_platform_account.id
+    data.aws_ssm_parameter.modernisation_platform_account_id.value
   ]
 }
 
@@ -52,7 +52,7 @@ module "collaborator_developer_role" {
   source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
 
   trusted_role_arns = [
-    local.modernisation_platform_account.id
+    data.aws_ssm_parameter.modernisation_platform_account_id.value
   ]
 
   create_role       = true
@@ -79,7 +79,7 @@ module "collaborator_sandbox_role" {
   source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
 
   trusted_role_arns = [
-    local.modernisation_platform_account.id
+    data.aws_ssm_parameter.modernisation_platform_account_id.value
   ]
 
   create_role       = true
@@ -110,7 +110,7 @@ module "collaborator_migration_role" {
   source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
 
   trusted_role_arns = [
-    local.modernisation_platform_account.id
+    data.aws_ssm_parameter.modernisation_platform_account_id.value
   ]
 
   create_role       = true
@@ -143,7 +143,7 @@ module "collaborator_instance_access_role" {
   source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
 
   trusted_role_arns = [
-    local.modernisation_platform_account.id
+    data.aws_ssm_parameter.modernisation_platform_account_id.value
   ]
 
   create_role       = true
@@ -170,7 +170,7 @@ module "collaborator_database_mgmt_role" {
   source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
 
   trusted_role_arns = [
-    local.modernisation_platform_account.id
+    data.aws_ssm_parameter.modernisation_platform_account_id.value
   ]
 
   create_role       = true
@@ -197,7 +197,7 @@ module "collaborator_fleet_manager_role" {
   source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
 
   trusted_role_arns = [
-    local.modernisation_platform_account.id
+    data.aws_ssm_parameter.modernisation_platform_account_id.value
   ]
 
   create_role       = true
@@ -224,7 +224,7 @@ module "collaborator_s3_upload_role" {
   source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
 
   trusted_role_arns = [
-    local.modernisation_platform_account.id
+    data.aws_ssm_parameter.modernisation_platform_account_id.value
   ]
 
   create_role       = true
