@@ -8,6 +8,11 @@
           "sso_group_name": "hmpps-electronic-monitoring-data-store",
           "level": "sandbox",
           "nuke": "exclude"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-electronic-monitoring-data",
+          "level": "sandbox",
+          "nuke": "exclude"
         }
       ]
     },
@@ -16,6 +21,10 @@
       "access": [
         {
           "sso_group_name": "hmpps-electronic-monitoring-data-store",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-electronic-monitoring-data",
           "level": "data-engineer"
         }
       ]
@@ -38,6 +47,10 @@
       "access": [
         {
           "sso_group_name": "hmpps-electronic-monitoring-data-store",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-electronic-monitoring-data",
           "level": "data-engineer"
         }
       ]
