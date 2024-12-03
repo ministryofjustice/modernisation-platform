@@ -19,6 +19,8 @@ module "core" {
     PAGERDUTY_TOKEN = data.aws_secretsmanager_secret_version.pagerduty_token.secret_string
     # Pagerduty User api token
     PAGERDUTY_USERAPI_TOKEN = data.aws_secretsmanager_secret_version.pagerduty_user_token.secret_string
+    # PAT token for CI User
+    MODERNISATION_PAT_MULTIREPO = data.aws_secretsmanager_secret_version.modernisation_pat_multirepo.secret_string
   }
 }
 
