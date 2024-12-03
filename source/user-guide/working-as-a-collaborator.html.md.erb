@@ -49,7 +49,7 @@ Once you have been [set up as a collaborator](../runbooks/adding-collaborators.h
 |instance-access|Role for login access to EC2 instances and secret access controlled by instance-access-policy resource tag| Used by application support teams.
 |instance-management|Role for use by instance management with permissions for EC2 and RDS instances and all secrets| Used by database or EC2 administrators  to migrate services and perform tasks.| instance-management-policy resource tag on secrets can give permissions to put secrets
 |security-audit|Role with AWS managed SecurityAudit policy | Used by members of security and audit teams.
-|s3-upload| Role for managing S3 buckets. Access buckets in the same AWS account via the S3 console or cross-account buckets using: https://eu-west-2.console.aws.amazon.com/s3/buckets/my-test-bucket?region=eu-west-2&bucketType=general&tab=objects. Replace my-test-bucket with the actual name of the bucket you wish to access.| Used by collaborators requiring cross-account S3 bucket access.
+|S3-upload| Role for managing S3 buckets. Access buckets in the same AWS account via the S3 console or cross-account buckets using: https://eu-west-2.console.aws.amazon.com/s3/buckets/my-test-bucket?region=eu-west-2&bucketType=general&tab=objects. Replace my-test-bucket with the actual name of the bucket you wish to access.| Used by collaborators requiring cross-account S3 bucket access.
 
 
 You can see the accounts and roles assigned to you [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/collaborators.json).
