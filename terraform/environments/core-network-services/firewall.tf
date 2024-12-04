@@ -59,11 +59,11 @@ resource "aws_cloudwatch_log_group" "external_inspection" {
 resource "aws_flow_log" "external_inspection" {
   iam_role_arn             = aws_iam_role.vpc_flow_log.arn
   log_destination          = aws_cloudwatch_log_group.external_inspection.arn
+  log_format               = local.custom_vpc_flow_log_format
   traffic_type             = "ALL"
   log_destination_type     = "cloud-watch-logs"
   max_aggregation_interval = "60"
   vpc_id                   = aws_vpc.external_inspection.id
-  log_format               = "$${version} $${account-id} $${interface-id} $${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${start} $${end} $${action} $${pkt-srcaddr} $${pkt-dstaddr} $${flow-direction} $${traffic-path}"
 
   tags = merge(
     local.tags,
