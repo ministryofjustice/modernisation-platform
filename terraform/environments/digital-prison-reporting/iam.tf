@@ -172,6 +172,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "iam:DeletePolicyVersion",
       "dms:DescribeReplicationSubnetGroups",
       "dms:DescribeReplicationInstances",
+      "dms:ModifyReplicationInstance",
       "dms:DescribeReplicationTasks",
       "dms:ModifyReplicationTask",
       "dms:DeleteReplicationTask",
