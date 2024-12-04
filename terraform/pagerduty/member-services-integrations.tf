@@ -2133,6 +2133,7 @@ resource "pagerduty_slack_connection" "sprinkler_connection" {
 resource "pagerduty_service" "delius_oracle_nonprod" {
   name                    = "Delius Oracle Non Prod"
   description             = "Delius Oracle Non Prod Alarms"
+  auto_resolve_timeout    = "null"
   acknowledgement_timeout = "null"
   escalation_policy       = pagerduty_escalation_policy.member_policy.id
   alert_creation          = "create_alerts_and_incidents"
