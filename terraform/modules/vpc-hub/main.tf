@@ -140,8 +140,9 @@ resource "aws_cloudwatch_log_group" "default" {
 resource "aws_flow_log" "cloudwatch" {
   iam_role_arn             = var.vpc_flow_log_iam_role
   log_destination          = aws_cloudwatch_log_group.default.arn
-  traffic_type             = "ALL"
   log_destination_type     = "cloud-watch-logs"
+  log_format               = local.custom_flow_log_format
+  traffic_type             = "ALL"
   max_aggregation_interval = "60"
   vpc_id                   = aws_vpc.default.id
 
