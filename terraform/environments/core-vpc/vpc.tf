@@ -84,7 +84,7 @@ locals {
 
 module "vpc" {
   for_each             = local.vpcs[terraform.workspace]
-  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=0ba18bb790c4259512768ffb6db9c2852654b82f" # v3.0.0
+  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=1366ebe0812d4c129c0b31cfc5bf2a4b0540672c" # v3.1.0
   additional_endpoints = each.value.options.additional_endpoints
   subnet_sets          = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
   transit_gateway_id   = data.aws_ec2_transit_gateway.transit-gateway.id
