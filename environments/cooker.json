@@ -15,6 +15,10 @@
         {
           "sso_group_name": "modernisation-platform",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "MoJRedTeam",
+          "level": "sandbox"
         }
       ],
       "additional_reviewers": ["astrobinson"]
