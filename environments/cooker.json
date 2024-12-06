@@ -6,17 +6,17 @@
       "access": [
         {
           "sso_group_name": "modernisation-platform",
-          "level": "developer"
+          "level": "developer",
           "nuke": "exclude"
         },
         {
           "sso_group_name": "modernisation-platform",
-          "level": "instance-management"
+          "level": "instance-management",
           "nuke": "exclude"
         },
         {
           "sso_group_name": "modernisation-platform",
-          "level": "sandbox"
+          "level": "sandbox",
           "nuke": "exclude"
         },
         {
