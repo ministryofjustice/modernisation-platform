@@ -41,13 +41,13 @@ variable "secrets" {
 variable "squash_merge_commit_message" {
   type        = bool
   description = "Should squash merge commit message be set to MERGE_MESSAGE?"
-  default     = false
+  default     = true
 }
 
 variable "squash_merge_commit_title" {
   type        = bool
   description = "Should squash merge commit title be set to PR_TITLE?"
-  default     = false
+  default     = true
 }
 
 variable "topics" {
