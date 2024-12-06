@@ -18,7 +18,8 @@
         },
         {
           "sso_group_name": "MoJRedTeam",
-          "level": "sandbox"
+          "level": "sandbox",
+          "nuke": "exclude"
         }
       ],
       "additional_reviewers": ["astrobinson"]
