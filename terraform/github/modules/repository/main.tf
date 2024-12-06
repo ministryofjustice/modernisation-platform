@@ -6,25 +6,27 @@ locals {
 
 # Repository basics
 resource "github_repository" "default" {
-  name                   = var.name
-  description            = join(" • ", [var.description, "This repository is defined and managed in Terraform"])
-  allow_merge_commit     = true
-  allow_squash_merge     = true
-  allow_rebase_merge     = true
-  allow_update_branch    = true
-  archived               = false
-  archive_on_destroy     = true
-  auto_init              = false
-  delete_branch_on_merge = true
-  has_issues             = true
-  has_projects           = true
-  has_wiki               = var.type == "core" ? true : false
-  has_downloads          = true
-  homepage_url           = var.homepage_url
-  is_template            = var.type == "template" ? true : false
-  topics                 = concat(local.topics, var.topics)
-  visibility             = var.visibility
-  vulnerability_alerts   = true
+  name                        = var.name
+  description                 = join(" • ", [var.description, "This repository is defined and managed in Terraform"])
+  allow_merge_commit          = true
+  allow_squash_merge          = true
+  allow_rebase_merge          = true
+  allow_update_branch         = true
+  archived                    = false
+  archive_on_destroy          = true
+  auto_init                   = false
+  delete_branch_on_merge      = true
+  has_issues                  = true
+  has_projects                = true
+  has_wiki                    = var.type == "core" ? true : false
+  has_downloads               = true
+  homepage_url                = var.homepage_url
+  is_template                 = var.type == "template" ? true : false
+  squash_merge_commit_title   = var.squash_merge_commit_message == true ? "PR_TITLE" : null
+  squash_merge_commit_message = var.squash_merge_commit_title == true ? "COMMIT_MESSAGES" : null
+  topics                      = concat(local.topics, var.topics)
+  visibility                  = var.visibility
+  vulnerability_alerts        = true
 
   security_and_analysis {
     dynamic "advanced_security" {
