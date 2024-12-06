@@ -387,6 +387,26 @@
           "access": "s3-upload"
         }
       ]
+    },
+    {
+      "username": "antonios.mougkras",
+      "github-username": "morgan-boniface",
+      "accounts": [
+        {
+          "account-name": "moj-network-operations-centre-production",
+          "access": "read-only"
+        }
+      ]
+    },
+    {
+      "username": "ryan.roberts",
+      "github-username": "morgan-boniface",
+      "accounts": [
+        {
+          "account-name": "moj-network-operations-centre-production",
+          "access": "read-only"
+        }
+      ]
     }
   ]
 }
