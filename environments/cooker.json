@@ -7,17 +7,17 @@
         {
           "sso_group_name": "modernisation-platform",
           "level": "developer"
-          "nuke": "exclude",
+          "nuke": "exclude"
         },
         {
           "sso_group_name": "modernisation-platform",
           "level": "instance-management"
-          "nuke": "exclude",
+          "nuke": "exclude"
         },
         {
           "sso_group_name": "modernisation-platform",
           "level": "sandbox"
-          "nuke": "exclude",
+          "nuke": "exclude"
         },
         {
           "sso_group_name": "MoJRedTeam",
