@@ -1,0 +1,50 @@
+--
+owner_slack: "#modernisation-platform"
+title: oracle licence discovery
+last_reviewed_on: 2024-12-05
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+# Centrally Track Oracle Database Licenses in AWS Organizations
+
+## Introduction
+
+AWS License Manager and AWS Systems Manager can be used together to centrally track Oracle database licenses across an AWS Organization. This approach helps ensure compliance and optimize license usage.
+
+## Steps
+
+Set Up AWS License Manager:
+Create a license configuration for Oracle databases.
+Define rules and terms for license usage.
+
+Integrate with AWS Systems Manager:
+Use Systems Manager to discover Oracle databases running on EC2 instances.
+Collect inventory data and track license usage.
+To find the state associated with automation, go to the "Automation" section under Systems Manager.
+View the automation executions and their status in the "Automation" section.
+Use the runbook OracleDbLTS-Orchestrate for the discovery process.
+
+Sync Data to Athena:
+Sync the data from the discovery process to an Athena database.
+Use the following SQL script to bring back the data into a table that can be exported:
+
+
+
+## Benefits
+   Compliance: Ensure adherence to Oracle licensing terms.
+   Cost Optimization: Avoid over-provisioning and under-utilization of licenses.
+   Centralized Control: Simplify license management across multiple AWS accounts.
+   
+## Conclusion
+   By leveraging AWS License Manager and AWS Systems Manager, the modernisation platform can effectively manage and track Oracle database licenses on EC2 and RDS instances, ensuring compliance and optimizing costs. As well as providing a way to share the license usage data with the Oracle team so that they can make informed decisions about licensing requirements.
