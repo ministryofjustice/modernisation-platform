@@ -50,10 +50,12 @@ module "terraform-module-cross-account-access" {
 }
 
 module "terraform-module-environments" {
-  source      = "./modules/repository"
-  name        = "modernisation-platform-terraform-environments"
-  type        = "module"
-  description = "Module for creating organizational units and accounts within AWS Organizations from JSON files"
+  source                      = "./modules/repository"
+  name                        = "modernisation-platform-terraform-environments"
+  type                        = "module"
+  description                 = "Module for creating organizational units and accounts within AWS Organizations from JSON files"
+  squash_merge_commit_message = false
+  squash_merge_commit_title   = false
   topics = [
     "organizational-units",
     "aws"
