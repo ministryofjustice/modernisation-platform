@@ -1946,7 +1946,7 @@ resource "pagerduty_service" "services" {
 
   name                    = each.key
   description             = "${each.key}-alarms"
-  auto_resolve_timeout    = 345600
+  auto_resolve_timeout    = "null"
   acknowledgement_timeout = "null"
   escalation_policy       = pagerduty_escalation_policy.member_policy.id
   alert_creation          = "create_alerts_and_incidents"
@@ -2010,7 +2010,7 @@ resource "pagerduty_service" "az_dso_alerts" {
   for_each = local.dso_az_alerts.channel_ids
 
   name                    = each.key
-  auto_resolve_timeout    = 345600
+  auto_resolve_timeout    = "null"
   acknowledgement_timeout = "null"
   escalation_policy       = pagerduty_escalation_policy.member_policy.id
   alert_creation          = "create_alerts_and_incidents"
