@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: How to configure DNS for public services
-last_reviewed_on: 2024-08-20
+last_reviewed_on: 2024-12-06
 review_in: 6 months
 ---
 
@@ -44,7 +44,7 @@ The following resources need to be created in different AWS accounts (see diagra
 
 ### Production environments
 
-Production environments should use a `service.justice.gov.uk` domain as per MoJ [naming domains](https://technical-guidance.service.justice.gov.uk/documentation/standards/naming-domains.html#naming-domains) guidance.
+Production environments should use a `service.justice.gov.uk` domain as per MoJ [naming domains](https://user-guide.operations-engineering.service.justice.gov.uk/documentation/services/domain-naming-standard.html) guidance.
 
 The Modernisation Platform will need to request the delegation of the application domain (eg `my-application.service.justice.gov.uk`) from the [Operations Engineering](https://user-guide.operations-engineering.service.justice.gov.uk/documentation/services/domainmgt.html) team via an email to the [domains mailbox](mailto:domains@digital.justice.gov.uk) with the details of the records to be added to the `service.justice.gov.uk` domain and to discuss if the subdomain name meets the MoJ naming domains standard.  Please contact the Modernisation Platform team in the [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) Slack channel to do this.
 
