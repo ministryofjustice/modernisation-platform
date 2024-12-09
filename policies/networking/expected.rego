@@ -356,16 +356,17 @@ expected :=
         "cidr": "10.27.72.0/21",
         "accounts": [
           "apex-preproduction",
+          "ccms-ebs-preproduction",
           "contract-work-administration-preproduction",
           "corporate-information-system-preproduction",
           "edw-preproduction",
-          "mlra-preproduction",
-          "ccms-ebs-preproduction",
-          "maat-preproduction",
-          "oas-preproduction",
-          "portal-preproduction",
           "laa-mail-relay-preproduction",
           "laa-oem-preproduction"
+          "maat-preproduction",
+          "mlra-preproduction",
+          "mojfin-preproduction",
+          "oas-preproduction",
+          "portal-preproduction",
         ]
       }
     },
