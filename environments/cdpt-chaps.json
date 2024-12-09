@@ -5,6 +5,10 @@
       "name": "development",
       "access": [
         {
+          "sso_group_name": "azure-aws-sso-cdpt",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "central-digital-product-team",
           "level": "developer"
         }
@@ -15,6 +19,10 @@
       "name": "preproduction",
       "access": [
         {
+          "sso_group_name": "azure-aws-sso-cdpt",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "central-digital-product-team",
           "level": "developer"
         }
@@ -23,6 +31,10 @@
     {
       "name": "production",
       "access": [
+        {
+          "sso_group_name": "azure-aws-sso-cdpt",
+          "level": "developer"
+        },
         {
           "sso_group_name": "central-digital-product-team",
           "level": "developer"
