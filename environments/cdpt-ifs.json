@@ -7,6 +7,10 @@
         {
           "sso_group_name": "azure-aws-sso-cdpt",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "central-digital-product-team",
+          "level": "developer"
         }
       ]
     },
@@ -16,6 +20,10 @@
         {
           "sso_group_name": "azure-aws-sso-cdpt",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "central-digital-product-team",
+          "level": "developer"
         }
       ]
     },
@@ -24,6 +32,10 @@
       "access": [
         {
           "sso_group_name": "azure-aws-sso-cdpt",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "central-digital-product-team",
           "level": "developer"
         }
       ]
