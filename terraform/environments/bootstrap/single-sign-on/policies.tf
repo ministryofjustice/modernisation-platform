@@ -658,6 +658,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "sqs:*",
       "ssm:*",
       "ssm-guiconnect:*",
+      "ssm-quicksetup:*",
       "sso:ListDirectoryAssociations",
       "states:*",
       "support:*",
