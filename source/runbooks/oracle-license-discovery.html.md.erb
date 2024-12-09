@@ -1,6 +1,6 @@
 ---
 owner_slack: "#modernisation-platform"
-title: oracle licence discovery
+title: oracle license discovery
 last_reviewed_on: 2024-12-05
 review_in: 6 months
 ---
@@ -16,24 +16,24 @@ review_in: 6 months
 
 # <%= current_page.data.title %>
 
-# Centrally Track Oracle Database Licences in AWS Organisations
+# Centrally Track Oracle Database licenses in AWS Organisations
 
 ## Introduction
 
-AWS Licence Manager and AWS Systems Manager can be used together to centrally track Oracle database Licences across an AWS Organization. This approach helps ensure compliance and optimise Licence usage.
+AWS license Manager and AWS Systems Manager can be used together to centrally track Oracle database licenses across an AWS Organization. This approach helps ensure compliance and optimise license usage.
 
-### Where to find the oracle Licence discovery
+### Where to find the oracle license discovery
 
-The oracle Licence discovery can be found in the organisation security account it is broken down into the following elements:
+The oracle license discovery can be found in the organisation security account it is broken down into the following elements:
 
-### AWS Licence Manager
-AWS Licence Manager makes it easier to manage your software Licences from vendors such as Microsoft, SAP, Oracle, and IBM across AWS and on-premises environments. It helps you manage, track, and control software Licences to ensure compliance and reduce costs.
+### AWS license Manager
+AWS license Manager makes it easier to manage your software licenses from vendors such as Microsoft, SAP, Oracle, and IBM across AWS and on-premises environments. It helps you manage, track, and control software licenses to ensure compliance and reduce costs.
 
-To find out the state of the Licence manager go to the "AWS Licence Manager" and under the section  "self managed Licences" in the AWS console.
-   - look for a self managed licence called "OracleDbEELicenceConfiguration"
-   - this will show you the EC2 Licence usage for oracle databases.
+To find out the state of the license manager go to the "AWS license Manager" and under the section  "self managed licenses" in the AWS console.
+   - look for a self managed license called "OracleDbEElicenseConfiguration"
+   - this will show you the EC2 license usage for oracle databases.
 
-![List of EC2 instances](images/Licence_manager_setup.png) 
+![List of EC2 instances](images/license_manager_setup.png) 
 
 ### AWS Systems Manager
 AWA Systems Manager helps you automate operational tasks across your AWS resources. You can create automation workflows, manage patch compliance, and configure operating systems.
@@ -47,7 +47,7 @@ To look at the automation document or the automation executions go to the "Syste
 
    ![automation location ](images/automation_section.png)
 
-   - To find the state associated with automation, go to the "State Manager" section under Systems Manager this will show you the last run state of the automation and when the frequency of the automation, you can also apply the association from here to force a run of the automation.
+   - To find the state associated with automation, go to the "State Manager" section under Systems Manager this will show you the last run state of the automation and when the frequency of the automation. You can also apply the association from here to force a run of the automation.
    
    ![state manager location ](images/state_manager_section.png)
 
@@ -57,7 +57,7 @@ Currently the automation is restricted to three organization accounts, this can 
 ### Athena
 
 Athena is an interactive query service that makes it easy to analyse data in Amazon S3 using standard SQL. Athena is serverless, so there is no infrastructure to manage, and you pay only for the queries that you run.
-   - since the is data is synchronised from the discovery process to an s3 bucket we can use Athena to query the data using sql.
+   - Since the is data is synchronised from the discovery process to an s3 bucket we can use Athena to query the data using sql.
    - Use the following SQL script to bring back the data into a table that can be exported:
    
    ```
@@ -76,10 +76,9 @@ The results will look like the following:
 ![Athena results](images/athena_results.png)
 
 ## Benefits
-   Compliance: Ensure adherence to Oracle licensing terms.
-   Cost Optimization: Avoid over-provisioning and under-utilization of Licences.
-   Centralized Control: Simplify Licence management across multiple AWS accounts.
-   
-## Conclusion
-   By leveraging AWS Licence Manager and AWS Systems Manager, the modernisation platform can effectively manage and track Oracle database Licences on EC2 and RDS instances, ensuring compliance and optimizing costs. As well as providing a way to share the Licence usage data with the Oracle team so that they can make informed decisions about licensing requirements.
+Compliance: Ensure adherence to Oracle licensing terms.
+Cost Optimisation: Avoid over-provisioning and under-utilisation of licenses.
+Centralised Control: Simplify license management across multiple AWS accounts.
 
+## Conclusion
+By leveraging AWS license Manager and AWS Systems Manager, the modernisation platform can effectively manage and track Oracle database licenses on EC2 and RDS instances, ensuring compliance and optimising costs. As well as providing a way to share the license usage data with the Oracle team so that they can make informed decisions about licensing requirements.
