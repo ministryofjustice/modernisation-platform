@@ -28,6 +28,19 @@
       ]
     },
     {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-mojfin-developers",
+          "level": "developer"
+        }
+      ]
+    },
+    {
       "name": "production",
       "access": [
         {
