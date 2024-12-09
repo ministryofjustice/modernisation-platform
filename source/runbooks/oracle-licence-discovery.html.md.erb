@@ -16,34 +16,34 @@ review_in: 6 months
 
 # <%= current_page.data.title %>
 
-# Centrally Track Oracle Database Licenses in AWS Organizations
+# Centrally Track Oracle Database Licences in AWS Organisations
 
 ## Introduction
 
-AWS License Manager and AWS Systems Manager can be used together to centrally track Oracle database licenses across an AWS Organization. This approach helps ensure compliance and optimize license usage.
+AWS Licence Manager and AWS Systems Manager can be used together to centrally track Oracle database Licences across an AWS Organization. This approach helps ensure compliance and optimise Licence usage.
 
-### Where to find the oracle license discovery
+### Where to find the oracle Licence discovery
 
-The oracle license discovery can be found in the organiaation security account it is broken down into the following elements:
+The oracle Licence discovery can be found in the organisation security account it is broken down into the following elements:
 
-### AWS License Manager
-AWS License Manager makes it easier to manage your software licenses from vendors such as Microsoft, SAP, Oracle, and IBM across AWS and on-premises environments. It helps you manage, track, and control software licenses to ensure compliance and reduce costs.
+### AWS Licence Manager
+AWS Licence Manager makes it easier to manage your software Licences from vendors such as Microsoft, SAP, Oracle, and IBM across AWS and on-premises environments. It helps you manage, track, and control software Licences to ensure compliance and reduce costs.
 
-To find the out the state of the license manager go to the "AWS License Manager" and under the section  "self managed licenses" in the AWS console.
-   - look for a slef managed licence called "OracleDbEELicenseConfiguration"
-   - this will show you the EC2 license usage for oracle databases.
+To find out the state of the Licence manager go to the "AWS Licence Manager" and under the section  "self managed Licences" in the AWS console.
+   - look for a self managed licence called "OracleDbEELicenceConfiguration"
+   - this will show you the EC2 Licence usage for oracle databases.
 
-![List of EC2 instances](images/license_manager_setup.png) 
+![List of EC2 instances](images/Licence_manager_setup.png) 
 
 ### AWS Systems Manager
 AWA Systems Manager helps you automate operational tasks across your AWS resources. You can create automation workflows, manage patch compliance, and configure operating systems.
 
 To look at the automation document or the automation executions go to the "Systems Manager" section in the AWS console.
-   - The automation documents are stored in the "documents" section under the self owend tab.
+   - The automation documents are stored in the "documents" section under the self owned tab.
 
    ![automation documents location ](images/documents_section.png)
 
-   - To view the automation click on the automation section on the left hand side and click on the execution id next to the runbook name of "OracleDbLTS-Orchestrate" from here you will be able to see the successful and failed executions and dig down further.
+   - To view the automation, click on the automation section on the left hand side and click on the execution id next to the runbook name of "OracleDbLTS-Orchestrate" from here you will be able to see the successful and failed executions and dig down further.
 
    ![automation location ](images/automation_section.png)
 
@@ -51,12 +51,12 @@ To look at the automation document or the automation executions go to the "Syste
    
    ![state manager location ](images/state_manager_section.png)
 
- <%= warning_text('The current run of the automation is set to run once every week, this can be changed by creating a PR in the [AWS root account repo](https://github.com/ministryofjustice/aws-root-account/blob/main/organisation-security/terraform/license-manager.tf). This will need to be reviewed by the #ask-root-account team.
-Currently the automation is restricted to three organiaation accounts, this can be changed by creating a PR in the [AWS root account repo](https://github.com/ministryofjustice/aws-root-account/blob/main/organisation-security/terraform/locals.tf). Amending the locals file to include the organiaation OU that you want to include in the automation.
+ <%= warning_text('The current run of the automation is set to run once every week, this can be changed by creating a PR in the [AWS root account repo](https://github.com/ministryofjustice/aws-root-account/blob/main/organisation-security/terraform/Licence-manager.tf). This will need to be reviewed by the #ask-root-account team.
+Currently the automation is restricted to three organization accounts, this can be changed by creating a PR in the [AWS root account repo](https://github.com/ministryofjustice/aws-root-account/blob/main/organisation-security/terraform/locals.tf). Amending the locals file to include the organization OU that you want to include in the automation.
 ') %>
 ### Athena
 
-Athena is an interactive query service that makes it easy to analyze data in Amazon S3 using standard SQL. Athena is serverless, so there is no infrastructure to manage, and you pay only for the queries that you run.
+Athena is an interactive query service that makes it easy to analyse data in Amazon S3 using standard SQL. Athena is serverless, so there is no infrastructure to manage, and you pay only for the queries that you run.
    - since the is data is synchronised from the discovery process to an s3 bucket we can use Athena to query the data using sql.
    - Use the following SQL script to bring back the data into a table that can be exported:
    
@@ -75,11 +75,11 @@ Athena is an interactive query service that makes it easy to analyze data in Ama
 The results will look like the following:
 ![Athena results](images/athena_results.png)
 
-
 ## Benefits
    Compliance: Ensure adherence to Oracle licensing terms.
-   Cost Optimization: Avoid over-provisioning and under-utilization of licenses.
-   Centralized Control: Simplify license management across multiple AWS accounts.
+   Cost Optimization: Avoid over-provisioning and under-utilization of Licences.
+   Centralized Control: Simplify Licence management across multiple AWS accounts.
    
 ## Conclusion
-   By leveraging AWS License Manager and AWS Systems Manager, the modernisation platform can effectively manage and track Oracle database licenses on EC2 and RDS instances, ensuring compliance and optimizing costs. As well as providing a way to share the license usage data with the Oracle team so that they can make informed decisions about licensing requirements.
+   By leveraging AWS Licence Manager and AWS Systems Manager, the modernisation platform can effectively manage and track Oracle database Licences on EC2 and RDS instances, ensuring compliance and optimizing costs. As well as providing a way to share the Licence usage data with the Oracle team so that they can make informed decisions about licensing requirements.
+
