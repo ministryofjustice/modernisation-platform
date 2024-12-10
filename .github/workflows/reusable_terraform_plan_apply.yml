@@ -101,6 +101,7 @@ jobs:
         if: ${{ inputs.environment }}
         run: |
           terraform -chdir="${{ inputs.working-directory }}" workspace select ${WORKSPACE_NAME}
+          echo "workflow_id=${WORKSPACE_NAME}" >> $GITHUB_OUTPUT # Capture workspace name
 
       - name: Run Terratest
         if: ${{ steps.vars.outputs.run_terratest == 'true' }}
@@ -127,7 +128,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const workflowId = "${{ inputs.workflow_id }}";
+            const workflowId = "${{ steps.workspace-select.outputs.workflow_id }}";
             const identifierPrefix = workflowId ? `_${workflowId}_\n` : '';
             const summary = `\`${{ steps.show.outputs.summary }}\``;
             const issue_number = context.payload.pull_request.number;
