@@ -108,9 +108,24 @@ jobs:
 
       - name: Run Terraform Plan
         if: github.event.ref != 'refs/heads/main'
+        id: show
         run: |
           bash scripts/terraform-plan.sh ${{ inputs.working-directory }}
 
+      - name: Post Comment
+        if: github.event.ref != 'refs/heads/main'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const summary = `\`${{ steps.show.outputs.summary }}\``;
+            const issue_number = context.payload.pull_request.number;
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number,
+              body: `### Terraform Plan Summary\n${summary}`
+            });
+            
       - name: terraform apply
         if: github.event.ref == 'refs/heads/main'
         run: bash scripts/terraform-apply.sh ${{ inputs.working-directory }}

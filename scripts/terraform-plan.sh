@@ -18,9 +18,24 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+plan_summary=""
+
 if [ ! -z "$2" ]; then
   options="$2"
-  terraform -chdir="$1" plan -input=false -no-color $options | ./scripts/redact-output.sh
+  if tty -s; then # Check if a terminal is available
+    plan_summary=$(terraform -chdir="$1" plan -input=false -no-color $options | tee /dev/tty | ./scripts/redact-output.sh | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')
+  else
+    plan_summary=$(terraform -chdir="$1" plan -input=false -no-color $options | ./scripts/redact-output.sh | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')
+  fi
 else
-  terraform -chdir="$1" plan -input=false -no-color | ./scripts/redact-output.sh
+  if tty -s; then
+    plan_summary=$(terraform -chdir="$1" plan -input=false -no-color | tee /dev/tty | ./scripts/redact-output.sh | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')
+  else
+    plan_summary=$(terraform -chdir="$1" plan -input=false -no-color | ./scripts/redact-output.sh | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')
+  fi
 fi
+
+echo "summary<<EOF" >> $GITHUB_OUTPUT
+echo "$plan_summary" >> $GITHUB_OUTPUT
+echo "EOF" >> $GITHUB_OUTPUT
+
