@@ -22,20 +22,16 @@ plan_summary=""
 
 if [ ! -z "$2" ]; then
   options="$2"
-  if tty -s; then # Check if a terminal is available
-    plan_summary=$(terraform -chdir="$1" plan -input=false -no-color $options | tee /dev/tty | ./scripts/redact-output.sh | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')
-  else
-    plan_summary=$(terraform -chdir="$1" plan -input=false -no-color $options | ./scripts/redact-output.sh | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')
-  fi
+  plan_summary=$(terraform -chdir="$1" plan -input=false -no-color "$options" | ./scripts/redact-output.sh | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')
+  echo "$plan_summary" | tee /dev/tty
 else
-  if tty -s; then
-    plan_summary=$(terraform -chdir="$1" plan -input=false -no-color | tee /dev/tty | ./scripts/redact-output.sh | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')
-  else
-    plan_summary=$(terraform -chdir="$1" plan -input=false -no-color | ./scripts/redact-output.sh | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')
-  fi
+  plan_summary=$(terraform -chdir="$1" plan -input=false -no-color | ./scripts/redact-output.sh | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')
+  echo "$plan_summary" | tee /dev/tty
 fi
+
 
 echo "summary<<EOF" >> $GITHUB_OUTPUT
 echo "$plan_summary" >> $GITHUB_OUTPUT
-echo "EOF" >> $GITHUB_OUTPUT
+echo "EOF" >> $GITHUB_OUTPUT_OUTPUT
+
 
