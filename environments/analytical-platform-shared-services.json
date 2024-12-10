@@ -1,0 +1,44 @@
+{
+  "account-type": "member",
+  "isolated-network": "false",
+  "codeowners": ["analytical-platform"],
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "analytical-platform",
+          "level": "sandbox",
+          "nuke": "rebuild"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "analytical-platform",
+          "level": "developer"
+        }
+      ]
+    }
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "analytical-platform",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "analytical-platform-shared-services",
+    "business-unit": "platforms",
+    "critical-national-infrastructure": false,
+    "infrastructure-support": "analytical-platform@digital.justice.gov.uk",
+    "owner": "analytical-platform@digital.justice.gov.uk"
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}
