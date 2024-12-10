@@ -61,6 +61,7 @@ jobs:
     with:
       working-directory: "terraform/environments/core-vpc"
       environment: development
+      calling_job_name: core-vpc-development-deployment
     secrets:
       modernisation_platform_environments: "${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}"
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -20,6 +20,10 @@ on:
         required: false
         description: "The terraform version to use"
         default: "~1"
+      calling_job_name:  # New input for the calling job name
+        description: 'Name of the calling job'
+        required: false
+        type: string
     secrets:
       modernisation_platform_environments:
         required: true
@@ -124,11 +128,13 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const summary = `\`${{ steps.show.outputs.summary }}\``;
+            const callingJobName = "${{ inputs.calling_job_name }}"; # Access the input
+            const jobNamePrefix = callingJobName ? `${callingJobName}\n` : ''; # Conditional prefix
             const issue_number = context.payload.pull_request.number;
             await github.rest.issues.createComment({
               ...context.repo,
               issue_number,
-              body: `### Terraform Plan Summary\n${summary}`
+              body: `### Terraform Plan Summary\n${jobNamePrefix}${summary}` # Add prefix to body
             });
 
       - name: terraform apply
