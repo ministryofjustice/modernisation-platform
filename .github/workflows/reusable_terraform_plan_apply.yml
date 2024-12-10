@@ -20,6 +20,10 @@ on:
         required: false
         description: "The terraform version to use"
         default: "~1"
+      workflow_id:   # This is the unique ID of the calling workflow
+        description: 'Unique ID for the calling workflow'
+        required: false
+        type: string
     secrets:
       modernisation_platform_environments:
         required: true
@@ -123,12 +127,14 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const workflowId = "${{ inputs.workflow_id }}";
+            const identifierPrefix = workflowId ? `_${workflowId}_\n` : '';
             const summary = `\`${{ steps.show.outputs.summary }}\``;
             const issue_number = context.payload.pull_request.number;
             await github.rest.issues.createComment({
               ...context.repo,
               issue_number,
-              body: `### Terraform Plan Summary\n${summary}`
+              body: `### Terraform Plan Summary\n${identifierPrefix}${summary}`
             });
 
       - name: terraform apply
