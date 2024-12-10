@@ -33,6 +33,16 @@ locals {
       email = "mike.reid${local.digital_email_suffix}"
       role  = "user"
     },
+    khatra_farah = {
+      name  = "Khatra Farah"
+      email = "khatra.farah${local.digital_email_suffix}"
+      role  = "user"
+    },
+    kudzai_mtoko = {
+      name  = "Kudzai Mtoko"
+      email = "kudzai.mtoko${local.digital_email_suffix}"
+      role  = "user"
+    },
     modernisation_platform = {
       name  = "Modernisation Platform Team"
       email = "modernisation-platform${local.digital_email_suffix}"
