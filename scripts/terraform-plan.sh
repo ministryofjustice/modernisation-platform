@@ -23,15 +23,20 @@ plan_summary=""
 if [ ! -z "$2" ]; then
   options="$2"
   plan_summary=$(terraform -chdir="$1" plan -input=false -no-color "$options" | ./scripts/redact-output.sh | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')
-  echo "$plan_summary" | tee /dev/tty
+  if tty -s; then  # Check if a tty is available
+    echo "$plan_summary" | tee /dev/tty  # Use tee only if a tty exists
+  else
+    echo "$plan_summary"  # Otherwise, just echo the summary
+  fi
 else
   plan_summary=$(terraform -chdir="$1" plan -input=false -no-color | ./scripts/redact-output.sh | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')
-  echo "$plan_summary" | tee /dev/tty
+  if tty -s; then
+    echo "$plan_summary" | tee /dev/tty
+  else
+    echo "$plan_summary"
+  fi
 fi
-
 
 echo "summary<<EOF" >> $GITHUB_OUTPUT
 echo "$plan_summary" >> $GITHUB_OUTPUT
-echo "EOF" >> $GITHUB_OUTPUT_OUTPUT
-
-
+echo "EOF" >> $GITHUB_OUTPUT
