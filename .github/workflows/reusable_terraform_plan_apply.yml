@@ -39,6 +39,10 @@ env:
   TF_VAR_pagerduty_token: ${{ secrets.pagerduty_token }}
   TF_VAR_pagerduty_user_token: ${{ secrets.pagerduty_userapi_token }}
 
+permissions:
+  issues: write
+  pull-requests: write
+
 jobs:
   plan-and-apply:
     runs-on: ubuntu-latest
