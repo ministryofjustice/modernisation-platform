@@ -110,11 +110,6 @@ locals {
 #   pagerduty_integration_keys = local.pagerduty_integration_keys
 # }
 
-# Data source to get the ARN of securityhub-alarms SNS topic
-data "aws_sns_topic" "securityhub_alarms_topic" {
-  name = "securityhub-alarms"
-}
-
 # Create lambda function to send notifications to pagerduty
 resource "aws_lambda_function" "send_notifications_to_pagerduty" {
   filename         = "function.zip"
@@ -183,4 +178,22 @@ resource "aws_iam_policy" "send_notifications_to_pagerduty" {
 resource "aws_iam_role_policy_attachment" "send_notifications_to_pagerduty" {
   role       = aws_iam_role.send_notifications_to_pagerduty.name
   policy_arn = aws_iam_policy.send_notifications_to_pagerduty.arn
+}
+
+# Subscribe the lambda function to the SNS topic
+data "aws_sns_topic" "securityhub_alarms_topic" {
+  name = "securityhub-alarms"
+}
+resource "aws_lambda_permission" "sns_permission" {
+  statement_id  = "AllowSNSInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.send_notifications_to_pagerduty.function_name
+  principal     = "sns.amazonaws.com"
+  source_arn    = data.aws_sns_topic.securityhub_alarms_topic.arn
+}
+
+resource "aws_sns_topic_subscription" "sns_to_lambda" {
+  topic_arn = data.aws_sns_topic.securityhub_alarms_topic.arn
+  protocol  = "lambda"
+  endpoint  = aws_lambda_function.send_notifications_to_pagerduty.arn
 }
