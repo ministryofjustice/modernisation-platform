@@ -138,7 +138,6 @@ resource "aws_lambda_function" "send_notifications_to_pagerduty" {
 data "archive_file" "lambda" {
   type        = "zip"
   source_file = "main.go"
-  source_dir  = "lambda"
   output_path = "function.zip"
 }
 
@@ -160,7 +159,7 @@ resource "aws_iam_role" "send_notifications_to_pagerduty" {
 }
 
 #Create IAM policy for lambda function
-data "aws_iam_policy_document" "lambda" {
+data "aws_iam_policy_document" "send_notifications_to_pagerduty" {
   statement {
     effect    = "Allow"
     actions   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
@@ -177,8 +176,7 @@ data "aws_iam_policy_document" "lambda" {
 resource "aws_iam_policy" "send_notifications_to_pagerduty" {
   name        = "send_notifications_to_pagerduty"
   description = "Policy to send notifications to pagerduty"
-  policy      = data.aws_iam_policy_document.assume_role.json
-
+  policy      = data.aws_iam_policy_document.send_notifications_to_pagerduty.json
 }
 
 # Attach policy to role
