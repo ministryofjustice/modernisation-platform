@@ -366,7 +366,7 @@ expected :=
           "mlra-preproduction",
           "mojfin-preproduction",
           "oas-preproduction",
-          "portal-preproduction",
+          "portal-preproduction"
         ]
       }
     },
