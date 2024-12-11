@@ -121,7 +121,7 @@ resource "aws_lambda_function" "send_notifications_to_pagerduty" {
   function_name    = "send_notifications_to_pagerduty"
   role             = aws_iam_role.send_notifications_to_pagerduty.arn
   handler          = "main"
-  source_code_hash = filebase64sha256("function.zip")
+  source_code_hash = data.archive_file.lambda.output_base64sha256
   runtime          = "go1.x"
   timeout          = 60
   memory_size      = 128
