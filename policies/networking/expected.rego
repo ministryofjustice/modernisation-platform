@@ -447,6 +447,6 @@ expected := {
         "accounts": [
         ]
       }
-    },
+    }
   }
 }
