@@ -300,7 +300,7 @@
     "destination_port": "389",
     "protocol": "TCP"
   },
-  "cp_to_mp_hmpps_productionldaps": {
+  "cp_to_mp_hmpps_production_ldaps": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
     "destination_ip": "${hmpps-production}",
