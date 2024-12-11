@@ -272,20 +272,6 @@
     "destination_port": "389",
     "protocol": "TCP"
   },
-  "cp_to_mp_hmpps_stage_ldap": {
-    "action": "PASS",
-    "source_ip": "${cloud-platform}",
-    "destination_ip": "${hmpps-stage}",
-    "destination_port": "389",
-    "protocol": "TCP"
-  },
-  "cp_to_mp_hmpps_stage_ldaps": {
-    "action": "PASS",
-    "source_ip": "${cloud-platform}",
-    "destination_ip": "${hmpps-stage}",
-    "destination_port": "636",
-    "protocol": "TCP"
-  },
   "cp_to_mp_hmpps_preproduction_ldap": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
