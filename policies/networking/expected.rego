@@ -419,6 +419,34 @@ expected :=
         "accounts": [
         ]
       }
+    },
+    "yjb-development": {
+      "general": {
+        "cidr": "10.26.144.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "yjb-test": {
+      "general": {
+        "cidr": "10.26.152.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "yjb-preproduction": {
+      "general": {
+        "cidr": "10.27.144.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "yjb-production": {
+      "general": {
+        "cidr": "10.27.152.0/21",
+        "accounts": [
+        ]
+      }
     }
   }
 }
