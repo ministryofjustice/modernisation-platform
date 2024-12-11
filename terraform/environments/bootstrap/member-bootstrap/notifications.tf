@@ -115,7 +115,7 @@ resource "aws_lambda_function" "send_notifications_to_pagerduty" {
   filename         = "function.zip"
   function_name    = "send_notifications_to_pagerduty"
   role             = aws_iam_role.send_notifications_to_pagerduty.arn
-  handler          = "main"
+  handler          = "bootstrap"
   source_code_hash = data.archive_file.lambda.output_base64sha256
   runtime          = "provided.al2023"
   timeout          = 60
