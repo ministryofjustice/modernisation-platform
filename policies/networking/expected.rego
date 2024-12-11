@@ -361,7 +361,7 @@ expected :=
           "corporate-information-system-preproduction",
           "edw-preproduction",
           "laa-mail-relay-preproduction",
-          "laa-oem-preproduction"
+          "laa-oem-preproduction",
           "maat-preproduction",
           "mlra-preproduction",
           "mojfin-preproduction",
