@@ -104,8 +104,85 @@ locals {
   pagerduty_integration_keys = jsondecode(data.aws_secretsmanager_secret_version.pagerduty_integration_keys.secret_string)
 }
 
-# Subscribe SNS topics in member accounts to pagerduty for core monitoring
-module "core_monitoring" {
-  source                     = "../../../modules/core-monitoring"
-  pagerduty_integration_keys = local.pagerduty_integration_keys
+# # Subscribe SNS topics in member accounts to pagerduty for core monitoring
+# module "core_monitoring" {
+#   source                     = "../../../modules/core-monitoring"
+#   pagerduty_integration_keys = local.pagerduty_integration_keys
+# }
+
+# Data source to get the ARN of securityhub-alarms SNS topic
+data "aws_sns_topic" "securityhub_alarms_topic" {
+  name = "securityhub-alarms"
+}
+
+# Create lambda function to send notifications to pagerduty
+resource "aws_lambda_function" "send_notifications_to_pagerduty" {
+  filename         = "function.zip"
+  function_name    = "send_notifications_to_pagerduty"
+  role             = aws_iam_role.send_notifications_to_pagerduty.arn
+  handler          = "main"
+  source_code_hash = filebase64sha256("function.zip")
+  runtime          = "go1.x"
+  timeout          = 60
+  memory_size      = 128
+
+  environment {
+    variables = {
+      PAGERDUTY_INTEGRATION_KEY = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
+    }
+  }
+
+  tags = local.tags
+}
+
+data "archive_file" "lambda" {
+  type        = "zip"
+  source_file = "main.go"
+  source_dir  = "lambda"
+  output_path = "function.zip"
+}
+
+# Create IAM role for lambda function
+resource "aws_iam_role" "send_notifications_to_pagerduty" {
+  name = "send_notifications_to_pagerduty"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole",
+        Effect = "Allow",
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+#Create IAM policy for lambda function
+data "aws_iam_policy_document" "lambda" {
+  statement {
+    effect    = "Allow"
+    actions   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
+    resources = ["arn:aws:logs:*:*:*"]
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["iam:ListAccountAliases"]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "send_notifications_to_pagerduty" {
+  name        = "send_notifications_to_pagerduty"
+  description = "Policy to send notifications to pagerduty"
+  policy      = data.aws_iam_policy_document.assume_role.json
+
+}
+
+# Attach policy to role
+resource "aws_iam_role_policy_attachment" "send_notifications_to_pagerduty" {
+  role       = aws_iam_role.send_notifications_to_pagerduty.name
+  policy_arn = aws_iam_policy.send_notifications_to_pagerduty.arn
 }
