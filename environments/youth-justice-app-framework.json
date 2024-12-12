@@ -1,0 +1,32 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform-engineers",
+          "level": "sandbox"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform-engineers",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "youth-justice-app-framework",
+    "business-unit": "YJB",
+    "infrastructure-support": "YJAFoperationsAWS@necsws.com",
+    "owner": "YJAFoperationsAWS@necsws.com",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}
