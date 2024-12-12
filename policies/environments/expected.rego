@@ -81,6 +81,7 @@ expected :=
     "tipstaff",
     "tribunals",
     "wardship",
-    "xhibit-portal"
+    "xhibit-portal",
+    "youth-justice-app-framework"
     ]
 }
