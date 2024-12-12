@@ -36,6 +36,11 @@ vulnerabilities:
 - id: CVE-2024-21626
   expired_at: 2024-08-19
   statement: "Review in 6 months"
+- id: CVE-2024-45337
+  expired_at: 2025-01-12
+  statement: "Review in 1 month, check terratests crypto version in latest release."
+
+  CVE-2024-45337
 
 misconfigurations:
 - id: AVD-GIT-0001
