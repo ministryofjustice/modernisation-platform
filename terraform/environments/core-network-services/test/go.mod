@@ -34,7 +34,7 @@ require (
 	github.com/tmccombs/hcl2json v0.6.4 // indirect
 	github.com/ulikunitz/xz v0.5.10 // indirect
 	github.com/zclconf/go-cty v1.15.0 // indirect
-	golang.org/x/crypto v0.29.0 // indirect
+	golang.org/x/crypto v0.31.0 // indirect
 	golang.org/x/mod v0.18.0 // indirect
 	golang.org/x/net v0.31.0 // indirect
 	golang.org/x/sync v0.9.0 // indirect
