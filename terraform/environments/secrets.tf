@@ -174,5 +174,5 @@ resource "github_actions_secret" "autonuke" {
   secret_name = "MODERNISATION_PLATFORM_AUTONUKE"
   repository  = "modernisation-platform-environments"
   # testing-test, cooker-development, and example-development are internal test account which are not sandpits but require nuking.
-  plaintext_value = jsonencode(concat(module.environments.environment_nuke_accounts, ["testing-test", "cooker-development", "example-development"]))
+  plaintext_value = jsonencode(concat(module.environments.environment_nuke_accounts, ["testing-test", "example-development"]))
 }
