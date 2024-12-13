@@ -16,6 +16,10 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "view-only"
+        },
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "instance-management"
         }
       ]
     }
