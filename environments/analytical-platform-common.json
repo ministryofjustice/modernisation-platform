@@ -1,0 +1,21 @@
+{
+  "account-type": "member-unrestricted",
+  "environments": [
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "analytical-platform",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "analytical-platform-common",
+    "business-unit": "Platforms",
+    "infrastructure-support": "analytical_platform@digital.justice.gov.uk",
+    "owner": "Analytical Platform: analytical_platform@digital.justice.gov.uk"
+  },
+  "github-oidc-team-repositories": [""]
+}

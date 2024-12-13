@@ -6,6 +6,7 @@ expected :=
 {
   "accounts": [
     "analytical-platform",
+    "analytical-platform-common",
     "analytical-platform-compute",
     "analytical-platform-data",
     "analytical-platform-data-engineering",
