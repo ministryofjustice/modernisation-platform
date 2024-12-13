@@ -130,9 +130,26 @@ resource "aws_lambda_function" "send_notifications_to_pagerduty" {
   tags = local.tags
 }
 
+resource "null_resource" "build_go_binary" {
+  provisioner "local-exec" {
+    command = <<EOT
+      # Set environment variables for cross-compilation
+      export GOOS=linux GOARCH=amd64 CGO_ENABLED=0
+      # Compile the Go binary
+      go build -o bootstrap main.go
+    EOT
+  }
+
+  triggers = {
+    # Rebuild if the source file changes
+    source_hash = filemd5("main.go")
+  }
+}
+
 data "archive_file" "lambda" {
+  depends_on  = [null_resource.build_go_binary]
   type        = "zip"
-  source_file = "main.go"
+  source_file = "bootstrap"
   output_path = "function.zip"
 }
 

@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -23,9 +24,10 @@ type PagerDutyEvent struct {
 }
 
 type PagerDutyPayload struct {
-	Summary  string `json:"summary"`
-	Source   string `json:"source"`
-	Severity string `json:"severity"`
+	Summary       string                 `json:"summary"`
+	Source        string                 `json:"source"`
+	Severity      string                 `json:"severity"`
+	CustomDetails map[string]interface{} `json:"custom_details"`
 }
 
 func getAccountAlias(sess *session.Session) (string, error) {
@@ -91,26 +93,49 @@ func handler(ctx context.Context, snsEvent events.SNSEvent) error {
 		// Extract relevant fields (modify as needed for your SNS payload)
 		alarmName := alarmDetails["AlarmName"].(string)
 		accountID := alarmDetails["AWSAccountId"].(string)
-		reason := alarmDetails["NewStateReason"].(string)
+		alarmArn := alarmDetails["AlarmArn"].(string)
+		alarmDescription := alarmDetails["AlarmDescription"].(string)
+		newStateReason := alarmDetails["NewStateReason"].(string)
+		newStateValue := alarmDetails["NewStateValue"].(string)
+		stateChangeTime := alarmDetails["StateChangeTime"].(string)
+		// Construct custom details
+		customDetails := map[string]interface{}{
+			"Account Name":      accountAlias,
+			"AWS Account Id":    accountID,
+			"Alarm Name":        alarmName,
+			"Alarm Arn":         alarmArn,
+			"Alarm Description": alarmDescription,
+			"New State Reason":  newStateReason,
+			"New State Value":   newStateValue,
+			"State Change Time": stateChangeTime,
+		}
 
 		// Construct PagerDuty event
 		pagerDutyEvent := PagerDutyEvent{
 			RoutingKey:  os.Getenv("PAGERDUTY_INTEGRATION_KEY"), // Set in Lambda environment variables
 			EventAction: "trigger",
 			Payload: PagerDutyPayload{
-				Summary:  fmt.Sprintf("Alarm Triggered: %s", alarmName),
-				Source:   fmt.Sprintf("AWS Account: %s (%s)", accountAlias, accountID),
-				Severity: "critical",
+				Summary:       fmt.Sprintf(":rotating_light: **Alarm Triggered:** %s\n**AWS Account:** %s (%s)", alarmName, accountAlias, accountID),
+				Source:        fmt.Sprintf("AWS Account: %s (%s)", accountAlias, accountID),
+				Severity:      "critical",
+				CustomDetails: customDetails,
 			},
 		}
 
-		// Add extra context from the alarm
-		pagerDutyEvent.Payload.Summary += fmt.Sprintf(" - %s", reason)
-
-		// Send the enriched alert to PagerDuty
-		if err := sendToPagerDuty(pagerDutyEvent); err != nil {
-			log.Printf("Failed to send alert to PagerDuty: %v", err)
-			continue
+		// Send the enriched alert to PagerDuty with retry and backoff
+		retries := 3
+		for i := 0; i < retries; i++ {
+			err := sendToPagerDuty(pagerDutyEvent)
+			if err != nil {
+				if i < retries-1 {
+					log.Printf("Retrying to send alert to PagerDuty: attempt %d", i+2)
+					time.Sleep(time.Duration(i+1) * time.Second) // Exponential backoff
+					continue
+				}
+				log.Printf("Failed to send alert to PagerDuty after %d attempts: %v", retries, err)
+			} else {
+				break
+			}
 		}
 	}
 
