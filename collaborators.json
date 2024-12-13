@@ -212,7 +212,7 @@
     },
     {
       "username": "jason.green",
-      "github-username": "no-value-supplied",
+      "github-username": "jasongreen-necsws",
       "accounts": [
         {
           "account-name": "delius-iaps-preproduction",
@@ -221,6 +221,14 @@
         {
           "account-name": "delius-iaps-production",
           "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "sandbox"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "developer"
         }
       ]
     },
@@ -405,6 +413,62 @@
         {
           "account-name": "moj-network-operations-centre-production",
           "access": "read-only"
+        }
+      ]
+    },
+    {
+      "username": "greg.whiting",
+      "github-username": "gregi2n",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "sandbox"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "thomas.tipler",
+      "github-username": "ttipler",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "sandbox"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "david.seekins",
+      "github-username": "davidseekins",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "sandbox"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "stephen.hobdon",
+      "github-username": "stephenhobden",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "sandbox"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "developer"
         }
       ]
     }
