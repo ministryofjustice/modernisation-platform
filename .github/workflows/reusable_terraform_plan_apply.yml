@@ -129,7 +129,7 @@ jobs:
             await github.rest.issues.createComment({
               ...context.repo,
               issue_number,
-              body: `### Terraform Plan Summary\n${identifierPrefix}${summary}`
+              body: `### Terraform Plan Summary\n${identifier}${summary}`
             });
 
       - name: terraform apply
