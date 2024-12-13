@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ ! -z "$2" ]; then
   GIT_DIR=$2
   cd $GIT_DIR
