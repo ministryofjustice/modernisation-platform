@@ -19,10 +19,6 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
-          "level": "migration"
-        },
-        {
-          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
@@ -36,10 +32,6 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
-          "level": "migration"
-        },
-        {
-          "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
         {
@@ -51,10 +43,6 @@
     {
       "name": "production",
       "access": [
-        {
-          "sso_group_name": "laa-aws-infrastructure",
-          "level": "migration"
-        },
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
@@ -74,5 +62,5 @@
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": ["ministryofjustice/laa-apex"],
-  "go-live-date": "2024-11-07"
+  "go-live-date": "2024-11-27"
 }
