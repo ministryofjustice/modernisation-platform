@@ -424,6 +424,7 @@ expected :=
       "general": {
         "cidr": "10.26.144.0/21",
         "accounts": [
+          "youth-justice-app-framework-development"
         ]
       }
     },
@@ -431,6 +432,7 @@ expected :=
       "general": {
         "cidr": "10.26.152.0/21",
         "accounts": [
+          "youth-justice-app-framework-test"
         ]
       }
     },
