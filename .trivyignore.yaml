@@ -40,8 +40,6 @@ vulnerabilities:
   expired_at: 2025-01-12
   statement: "Review in 1 month, check terratests crypto version in latest release."
 
-  CVE-2024-45337
-
 misconfigurations:
 - id: AVD-GIT-0001
 # Added AVD-GIT-0004 as Modernisation Platform Environments does not currently use signed commits. 
