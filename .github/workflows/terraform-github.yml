@@ -39,6 +39,7 @@ jobs:
     uses: ./.github/workflows/reusable_terraform_plan_apply.yml
     with:
       working-directory: "terraform/github"
+      workflow_id: "github"
     secrets:
       modernisation_platform_environments: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       gh_workflow_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}

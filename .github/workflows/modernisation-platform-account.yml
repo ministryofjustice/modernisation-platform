@@ -35,6 +35,7 @@ jobs:
     uses: ./.github/workflows/reusable_terraform_plan_apply.yml
     with:
       working-directory: "terraform/modernisation-platform-account"
+      workflow_id: "modernisation-platform-account"
     secrets:
       modernisation_platform_environments: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

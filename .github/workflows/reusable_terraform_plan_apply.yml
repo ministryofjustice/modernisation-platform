@@ -123,7 +123,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const workflowId = "${{ env.WORKSPACE_NAME }}";
-            const identifierPrefix = workflowId ? `_${workflowId}_\n` : '';
+            const identifier = workflowId ? `_${workflowId}_\n` : `_${{ inputs.workflow_id }}_\n`;
             const summary = `\`${{ steps.show.outputs.summary }}\``;
             const issue_number = context.payload.pull_request.number;
             await github.rest.issues.createComment({
