@@ -176,6 +176,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "dms:DescribeReplicationTasks",
       "dms:ModifyReplicationTask",
       "dms:DeleteReplicationTask",
+      "dms:MoveReplicationTask",
       "dms:ModifyReplicationSubnetGroup",
       "logs:ListTagsLogGroup",
       "events:DescribeRule",
