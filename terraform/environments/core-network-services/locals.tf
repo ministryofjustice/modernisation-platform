@@ -56,7 +56,7 @@ locals {
     local.non_live_data_rules
   )
 
-  firewall_rules = flatten([for rule in local.firewall_rules_list : [rule]])
+  firewall_rules = { for rule in flatten(firewall_rules_list) : rule.name => rule }
 
   vpn_attachments = fileexists("./vpn_attachments.json") ? jsondecode(file("./vpn_attachments.json")) : {}
 
