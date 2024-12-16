@@ -1,5 +1,5 @@
 {
-  "account-type": "member-unrestricted",
+  "account-type": "member",
   "environments": [
     {
       "name": "production",
