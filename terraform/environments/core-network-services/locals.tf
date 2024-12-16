@@ -36,12 +36,12 @@ locals {
     "core-network-services-live_data-attachment",
   ]
 
-  development_rules     = fileexists("./firewall-rules/development_rules.json") ? jsondecode(templatefile("./firewall-rules/development_rules.json", local.all_cidr_ranges)) : {}
-  test_rules            = fileexists("./firewall-rules/test_rules.json") ? jsondecode(templatefile("./firewall-rules/test_rules.json", local.all_cidr_ranges)) : {}
-  preproduction_rules   = fileexists("./firewall-rules/preproduction_rules.json") ? jsondecode(templatefile("./firewall-rules/preproduction_rules.json", local.all_cidr_ranges)) : {}
-  production_rules      = fileexists("./firewall-rules/production_rules.json") ? jsondecode(templatefile("./firewall-rules/production_rules.json", local.all_cidr_ranges)) : {}
-  live_data_rules       = fileexists("./firewall-rules/live_data_rules.json") ? jsondecode(templatefile("./firewall-rules/live_data_rules.json", local.all_cidr_ranges)) : {}
-  non_live_data_rules   = fileexists("./firewall-rules/non_live_data_rules.json") ? jsondecode(templatefile("./firewall-rules/non_live_data_rules.json", local.all_cidr_ranges)) : {}
+  development_rules     = fileexists("./firewall-rules/development_rules.json") ? [for k, v in jsondecode(templatefile("./firewall-rules/development_rules.json", local.all_cidr_ranges)) : merge({ name = k }, v)] : []
+  test_rules            = fileexists("./firewall-rules/test_rules.json") ? [for k, v in jsondecode(templatefile("./firewall-rules/test_rules.json", local.all_cidr_ranges)) : merge({ name = k }, v)] : []
+  preproduction_rules   = fileexists("./firewall-rules/preproduction_rules.json") ? [for k, v in jsondecode(templatefile("./firewall-rules/preproduction_rules.json", local.all_cidr_ranges)) : merge({ name = k }, v)] : []
+  production_rules      = fileexists("./firewall-rules/production_rules.json") ? [for k, v in jsondecode(templatefile("./firewall-rules/production_rules.json", local.all_cidr_ranges)) : merge({ name = k }, v)] : []
+  live_data_rules       = fileexists("./firewall-rules/live_data_rules.json") ? [for k, v in jsondecode(templatefile("./firewall-rules/live_data_rules.json", local.all_cidr_ranges)) : merge({ name = k }, v)] : []
+  non_live_data_rules   = fileexists("./firewall-rules/non_live_data_rules.json") ? [for k, v in jsondecode(templatefile("./firewall-rules/non_live_data_rules.json", local.all_cidr_ranges)) : merge({ name = k }, v)] : []
   fqdn_firewall_rules   = fileexists("./firewall-rules/fqdn_rules.json") ? jsondecode(file("./firewall-rules/fqdn_rules.json")) : {}
   inline_firewall_rules = fileexists("./firewall-rules/inline_rules.json") ? jsondecode(templatefile("./firewall-rules/inline_rules.json", local.all_cidr_ranges)) : {}
   #firewall_rules        = merge(local.development_rules, local.test_rules, local.preproduction_rules, local.production_rules, local.live_data_rules, local.non_live_data_rules)
