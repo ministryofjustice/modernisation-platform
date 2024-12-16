@@ -55,8 +55,9 @@ locals {
     local.live_data_rules,
     local.non_live_data_rules
   )
-  sorted_firewall_rules_list = sort([for rule in flatten(firewall_rules_list) : rule["name"]])
-  firewall_rules             = { for rule in flatten(firewall_rules_list) : rule["name"] => rule }
+  sorted_firewall_rules_list = sort([for rule in flatten(firewall_rules_list) : rule.name])
+
+  firewall_rules = { for rule in flatten(firewall_rules_list) : rule.name => rule }
 
   vpn_attachments = fileexists("./vpn_attachments.json") ? jsondecode(file("./vpn_attachments.json")) : {}
 
