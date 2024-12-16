@@ -47,14 +47,14 @@ locals {
   #firewall_rules        = merge(local.development_rules, local.test_rules, local.preproduction_rules, local.production_rules, local.live_data_rules, local.non_live_data_rules)
   firewall_sets = fileexists("./firewall-rules/sets.json") ? jsondecode(templatefile("./firewall-rules/sets.json", local.all_cidr_ranges)) : {}
 
-  firewall_rules_list = [
+  firewall_rules_list = concat(
     local.development_rules,
     local.test_rules,
     local.preproduction_rules,
     local.production_rules,
     local.live_data_rules,
     local.non_live_data_rules
-  ]
+  )
 
   firewall_rules = flatten([for rule in local.firewall_rules_list : [rule]])
 
