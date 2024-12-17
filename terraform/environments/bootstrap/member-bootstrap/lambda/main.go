@@ -115,7 +115,7 @@ func handler(ctx context.Context, snsEvent events.SNSEvent) error {
 			RoutingKey:  os.Getenv("PAGERDUTY_INTEGRATION_KEY"), // Set in Lambda environment variables
 			EventAction: "trigger",
 			Payload: PagerDutyPayload{
-				Summary:       fmt.Sprintf(":rotating_light: **Alarm Triggered:** %s\n**AWS Account:** %s (%s)", alarmName, accountAlias, accountID),
+				Summary:       fmt.Sprintf("Alarm Triggered: %s AWS Account: %s (%s)", alarmName, accountAlias, accountID),
 				Source:        fmt.Sprintf("AWS Account: %s (%s)", accountAlias, accountID),
 				Severity:      "critical",
 				CustomDetails: customDetails,
