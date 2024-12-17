@@ -14,6 +14,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/cloudtrail"
 	"github.com/aws/aws-sdk-go/service/iam"
 )
 
@@ -69,8 +70,56 @@ func sendToPagerDuty(event PagerDutyEvent) error {
 	return nil
 }
 
+func searchCloudTrailLogs(sess *session.Session, alarmArn string, stateChangeTime string) (string, error) {
+	ct := cloudtrail.New(sess)
+
+	// Parse the state change time
+	eventTime, err := time.Parse(time.RFC3339, stateChangeTime)
+	if err != nil {
+		return "", fmt.Errorf("failed to parse state change time: %v", err)
+	}
+
+	// Define the time range for the CloudTrail query
+	startTime := eventTime.Add(-5 * time.Minute)
+	endTime := eventTime.Add(5 * time.Minute)
+
+	// Query CloudTrail logs
+	input := &cloudtrail.LookupEventsInput{
+		StartTime: aws.Time(startTime),
+		EndTime:   aws.Time(endTime),
+		LookupAttributes: []*cloudtrail.LookupAttribute{
+			{
+				AttributeKey:   aws.String(cloudtrail.LookupAttributeKeyResourceName),
+				AttributeValue: aws.String(alarmArn),
+			},
+		},
+	}
+
+	result, err := ct.LookupEvents(input)
+	if err != nil {
+		return "", fmt.Errorf("failed to lookup CloudTrail events: %v", err)
+	}
+
+	// Extract the user identity from the CloudTrail logs
+	for _, event := range result.Events {
+		var eventData map[string]interface{}
+		if err := json.Unmarshal([]byte(*event.CloudTrailEvent), &eventData); err != nil {
+			log.Printf("Failed to parse CloudTrail event: %v", err)
+			continue
+		}
+
+		if userIdentity, ok := eventData["userIdentity"].(map[string]interface{}); ok {
+			if userName, ok := userIdentity["userName"].(string); ok {
+				return userName, nil
+			}
+		}
+	}
+
+	return "Unknown", nil
+}
+
 func handler(ctx context.Context, snsEvent events.SNSEvent) error {
-	// AWS session for fetching account alias
+	// AWS session for fetching account alias and CloudTrail logs
 	sess := session.Must(session.NewSession())
 	accountAlias, err := getAccountAlias(sess)
 	if err != nil {
@@ -98,6 +147,14 @@ func handler(ctx context.Context, snsEvent events.SNSEvent) error {
 		newStateReason := alarmDetails["NewStateReason"].(string)
 		newStateValue := alarmDetails["NewStateValue"].(string)
 		stateChangeTime := alarmDetails["StateChangeTime"].(string)
+
+		// Search CloudTrail logs to find the user identity
+		userIdentity, err := searchCloudTrailLogs(sess, alarmArn, stateChangeTime)
+		if err != nil {
+			log.Printf("Failed to search CloudTrail logs: %v", err)
+			userIdentity = "Unknown"
+		}
+
 		// Construct custom details
 		customDetails := map[string]interface{}{
 			"Account Name":      accountAlias,
@@ -108,6 +165,7 @@ func handler(ctx context.Context, snsEvent events.SNSEvent) error {
 			"New State Reason":  newStateReason,
 			"New State Value":   newStateValue,
 			"State Change Time": stateChangeTime,
+			"User Identity":     userIdentity,
 		}
 
 		// Construct PagerDuty event

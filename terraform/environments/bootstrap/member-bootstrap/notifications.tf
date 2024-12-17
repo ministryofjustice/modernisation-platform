@@ -136,7 +136,8 @@ resource "null_resource" "build_go_binary" {
       # Set environment variables for cross-compilation
       export GOOS=linux GOARCH=amd64 CGO_ENABLED=0
       # Compile the Go binary
-      go build -o bootstrap lambda/main.go
+      cd lambda
+      go build -o ../bootstrap main.go
     EOT
   }
 
@@ -149,7 +150,7 @@ resource "null_resource" "build_go_binary" {
 data "archive_file" "lambda" {
   depends_on  = [null_resource.build_go_binary]
   type        = "zip"
-  source_file = "lambda/bootstrap"
+  source_file = "bootstrap"
   output_path = "function.zip"
 }
 
