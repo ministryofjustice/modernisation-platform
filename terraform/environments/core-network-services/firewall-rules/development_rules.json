@@ -545,7 +545,7 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "DOM1_atos_arkf_ras_vpn_to_mp_development": {
+  "test_atos_arkf_ras_vpn_to_mp_det": {
     "action": "PASS",
     "source_ip": "${atos_arkf_ras}",
     "destination_ip": "${mp-development-test}",
