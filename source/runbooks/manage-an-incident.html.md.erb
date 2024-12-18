@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Incident Process
-last_reviewed_on: 2024-12-11
+last_reviewed_on: 2024-12-18
 review_in: 3 months
 ---
 
@@ -25,9 +25,12 @@ For ease of use the key steps are documented within the overview, with further d
 ###1.	Confirm that the event constitutes an incident
 > If this incident constitutes a security breach, you must also report it [here](https://goo.gl/forms/frsB1h8AGv3Zefwq2)
 
-###2.	Declare the incident – create a pager-duty incident (ensuring it is on the external status page) and a slack channel
-###3.	Agree roles – Incident Lead and Scribe are mandatory roles
-###4.	Communicate – how and who
+###2.	Declare the incident.
+ create a pager-duty incident (ensuring it is on the external status page) and a slack channel
+###3.	Assign roles.
+Incident Lead and Scribe are mandatory roles
+###4.	Managing the incident
+including communication - and who to tell
 ###5.	Fixing the problem
 ###6.	Post-incident procedure 
 
@@ -68,12 +71,14 @@ Declaring the incident will launch a form for you to complete, see an example of
 
 #### Which Priority to assign?
 
+We only use P1, P2 or P3
+
 | **Priority** | Description |
 |---|---|
 |P1|The whole platform is down or unavailable, all user applications are unavailable|
 |P2|Part of the platform is down or unavailable, some user applications are impacted or unavailable|
 |P3|Part of the platform is down or unavailable, user applications are still available|
-We only use P1, P2 or P3
+
 
 Tick the **Create a dedicated Public Slack channel for this incident** box.  You should use this channel to manage the incident.
 
@@ -163,7 +168,6 @@ Fill in the details for the update and publish it, this will also post an update
 It is important to use the External Status page as this feeds in to other services in PagerDuty dependant on the Modernisation Platform.
 
 ### 4.4 Transferring roles
-
 It may be necessary to transfer roles from one team member to another, e.g. during long-running incidents. In this case, it is the responsibility of whoever is in a role to ensure that someone else takes it over.
 
 Whoever assumes a role should announce it in the incident slack channel (or thread if the channel was not created), so that the team is aware.
