@@ -17,13 +17,14 @@ commit_message="Workflow: created files in ${1}"
 
 git checkout -b "$branch"
 git add "$1"
-git commit -m "$commit_message"
 
-commit_success=$?
-if [ $commit_success -ne 0 ]; then
-  echo "Nothing to commit"
+# Check if there are any changes to commit
+if git diff-index --quiet HEAD --; then
+  echo "Nothing to commit, working tree clean"
   exit 0
 fi
+
+git commit -m "$commit_message"
 
 git remote rm origin || true
 git remote add origin "https://${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
