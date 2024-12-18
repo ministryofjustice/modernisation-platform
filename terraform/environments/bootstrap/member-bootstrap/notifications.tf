@@ -184,6 +184,13 @@ data "aws_iam_policy_document" "send_notifications_to_pagerduty" {
     actions   = ["iam:ListAccountAliases"]
     resources = ["*"]
   }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["cloudtrail:LookupEvents"]
+    resources = ["*"]
+  }
+
 }
 
 resource "aws_iam_policy" "send_notifications_to_pagerduty" {
