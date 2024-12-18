@@ -15,6 +15,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/cloudtrail"
+	"github.com/aws/aws-sdk-go/service/cloudwatch"
 	"github.com/aws/aws-sdk-go/service/iam"
 )
 
@@ -86,14 +87,20 @@ func searchCloudTrailLogs(sess *session.Session, alarmArn string, stateChangeTim
 	startTime := eventTime.Add(-5 * time.Minute)
 	endTime := eventTime.Add(5 * time.Minute)
 
-	// Query CloudTrail logs
+	// Get the metric filter details
+	metricFilter, err := getMetricFilter(sess, alarmArn)
+	if err != nil {
+		return "", fmt.Errorf("failed to get metric filter: %v", err)
+	}
+
+	// Query CloudTrail logs using the metric filter pattern
 	input := &cloudtrail.LookupEventsInput{
 		StartTime: aws.Time(startTime),
 		EndTime:   aws.Time(endTime),
 		LookupAttributes: []*cloudtrail.LookupAttribute{
 			{
-				AttributeKey:   aws.String(cloudtrail.LookupAttributeKeyResourceName),
-				AttributeValue: aws.String(alarmArn),
+				AttributeKey:   aws.String(cloudtrail.LookupAttributeKeyEventName),
+				AttributeValue: aws.String(*metricFilter.FilterPattern),
 			},
 		},
 	}
@@ -119,6 +126,43 @@ func searchCloudTrailLogs(sess *session.Session, alarmArn string, stateChangeTim
 	}
 
 	return "Unknown", nil
+}
+
+func getMetricFilter(sess *session.Session, alarmArn string) (*cloudwatch.MetricFilter, error) {
+	cw := cloudwatch.New(sess)
+	input := &cloudwatch.DescribeAlarmsInput{
+		AlarmNames: []*string{aws.String(alarmArn)},
+	}
+
+	result, err := cw.DescribeAlarms(input)
+	if err != nil {
+		return nil, fmt.Errorf("failed to describe CloudWatch alarm: %v", err)
+	}
+
+	if len(result.MetricAlarms) == 0 {
+		return nil, fmt.Errorf("no metric alarms found for ARN: %s", alarmArn)
+	}
+
+	alarm := result.MetricAlarms[0]
+	if len(alarm.MetricName) == 0 || len(alarm.Namespace) == 0 {
+		return nil, fmt.Errorf("metric filter details not found in alarm: %s", alarmArn)
+	}
+
+	metricFilterInput := &cloudwatch.DescribeMetricFiltersInput{
+		MetricName: aws.String(*alarm.MetricName),
+		Namespace:  aws.String(*alarm.Namespace),
+	}
+
+	metricFilterResult, err := cw.DescribeMetricFilters(metricFilterInput)
+	if err != nil {
+		return nil, fmt.Errorf("failed to describe metric filters: %v", err)
+	}
+
+	if len(metricFilterResult.MetricFilters) == 0 {
+		return nil, fmt.Errorf("no metric filters found for metric: %s", *alarm.MetricName)
+	}
+
+	return metricFilterResult.MetricFilters[0], nil
 }
 
 func handler(ctx context.Context, snsEvent events.SNSEvent) error {
