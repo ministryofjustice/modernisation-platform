@@ -73,8 +73,11 @@ func sendToPagerDuty(event PagerDutyEvent) error {
 func searchCloudTrailLogs(sess *session.Session, alarmArn string, stateChangeTime string) (string, error) {
 	ct := cloudtrail.New(sess)
 
-	// Parse the state change time
-	eventTime, err := time.Parse(time.RFC3339, stateChangeTime)
+	// Define the custom time layout
+	const customTimeLayout = "2006-01-02T15:04:05.000-0700"
+
+	// Parse the state change time using the custom layout
+	eventTime, err := time.Parse(customTimeLayout, stateChangeTime)
 	if err != nil {
 		return "", fmt.Errorf("failed to parse state change time: %v", err)
 	}
