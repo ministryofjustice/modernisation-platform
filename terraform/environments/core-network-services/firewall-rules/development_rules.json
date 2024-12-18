@@ -544,5 +544,12 @@
     "destination_ip": "${cica-development}",
     "destination_port": "ANY",
     "protocol": "TCP"
+  },
+  "DOM1_atos_arkf_ras_vpn_to_mp_development": {
+    "action": "PASS",
+    "source_ip": "${atos_arkf_ras}",
+    "destination_ip": "${mp-development-test}",
+    "destination_port": "444",
+    "protocol": "TCP"
   }
 }
