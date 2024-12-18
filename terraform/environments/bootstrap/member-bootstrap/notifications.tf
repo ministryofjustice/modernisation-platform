@@ -191,6 +191,11 @@ data "aws_iam_policy_document" "send_notifications_to_pagerduty" {
     resources = ["*"]
   }
 
+  statement {
+    effect    = "Allow"
+    actions   = ["cloudwatch:DescribeAlarms"]
+    resources = ["*"]
+  }
 }
 
 resource "aws_iam_policy" "send_notifications_to_pagerduty" {

@@ -16,6 +16,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/cloudtrail"
 	"github.com/aws/aws-sdk-go/service/cloudwatch"
+	"github.com/aws/aws-sdk-go/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go/service/iam"
 )
 
@@ -128,41 +129,36 @@ func searchCloudTrailLogs(sess *session.Session, alarmArn string, stateChangeTim
 	return "Unknown", nil
 }
 
-func getMetricFilter(sess *session.Session, alarmArn string) (*cloudwatch.MetricFilter, error) {
+func getMetricFilter(sess *session.Session, alarmArn string) (*cloudwatchlogs.MetricFilter, error) {
 	cw := cloudwatch.New(sess)
-	input := &cloudwatch.DescribeAlarmsInput{
+
+	// Get Alarm Details
+	alarmDetails, err := cw.DescribeAlarms(&cloudwatch.DescribeAlarmsInput{
 		AlarmNames: []*string{aws.String(alarmArn)},
-	}
-
-	result, err := cw.DescribeAlarms(input)
+	})
 	if err != nil {
-		return nil, fmt.Errorf("failed to describe CloudWatch alarm: %v", err)
+		return nil, fmt.Errorf("failed to describe alarm: %v", err)
+	}
+	if len(alarmDetails.MetricAlarms) == 0 {
+		return nil, fmt.Errorf("alarm %s not found", alarmArn)
 	}
 
-	if len(result.MetricAlarms) == 0 {
-		return nil, fmt.Errorf("no metric alarms found for ARN: %s", alarmArn)
-	}
+	// Extract Metric Filter Name
+	alarm := alarmDetails.MetricAlarms[0]
+	logGroupName := aws.StringValue(alarm.Dimensions[0].Value) // Assumes log group is in first dimension; adjust if needed
 
-	alarm := result.MetricAlarms[0]
-	if len(alarm.MetricName) == 0 || len(alarm.Namespace) == 0 {
-		return nil, fmt.Errorf("metric filter details not found in alarm: %s", alarmArn)
-	}
-
-	metricFilterInput := &cloudwatch.DescribeMetricFiltersInput{
-		MetricName: aws.String(*alarm.MetricName),
-		Namespace:  aws.String(*alarm.Namespace),
-	}
-
-	metricFilterResult, err := cw.DescribeMetricFilters(metricFilterInput)
+	cwLogs := cloudwatchlogs.New(sess)
+	filters, err := cwLogs.DescribeMetricFilters(&cloudwatchlogs.DescribeMetricFiltersInput{
+		LogGroupName: aws.String(logGroupName),
+	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to describe metric filters: %v", err)
 	}
-
-	if len(metricFilterResult.MetricFilters) == 0 {
-		return nil, fmt.Errorf("no metric filters found for metric: %s", *alarm.MetricName)
+	if len(filters.MetricFilters) == 0 {
+		return nil, fmt.Errorf("no metric filters found for log group: %s", logGroupName)
 	}
 
-	return metricFilterResult.MetricFilters[0], nil
+	return filters.MetricFilters[0], nil
 }
 
 func handler(ctx context.Context, snsEvent events.SNSEvent) error {
