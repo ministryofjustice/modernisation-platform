@@ -125,7 +125,7 @@ jobs:
             const workflowId = "${{ env.WORKSPACE_NAME }}";
             const identifier = workflowId ? `_${workflowId}_\n` : `_${{ inputs.workflow_id }}_\n`;
             const summary = `\`${{ steps.show.outputs.summary }}\``;
-            const issue_number = context.payload.pull_request.number;
+            const issue_number = context.payload.pull_request ? context.payload.pull_request.number : null;
             if (!issue_number) {
               console.log('No issue number found, skipping comment.');
               return;
