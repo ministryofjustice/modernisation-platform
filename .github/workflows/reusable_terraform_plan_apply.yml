@@ -126,6 +126,10 @@ jobs:
             const identifier = workflowId ? `_${workflowId}_\n` : `_${{ inputs.workflow_id }}_\n`;
             const summary = `\`${{ steps.show.outputs.summary }}\``;
             const issue_number = context.payload.pull_request.number;
+            if (!issue_number) {
+              console.log('No issue number found, skipping comment.');
+              return;
+            }
             await github.rest.issues.createComment({
               ...context.repo,
               issue_number,
