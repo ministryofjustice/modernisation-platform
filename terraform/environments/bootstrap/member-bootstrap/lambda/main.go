@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -129,23 +130,39 @@ func searchCloudTrailLogs(sess *session.Session, alarmArn string, stateChangeTim
 	return "Unknown", nil
 }
 
-func getMetricFilter(sess *session.Session, alarmArn string) (*cloudwatchlogs.MetricFilter, error) {
+func getMetricFilteryes(sess *session.Session, alarmArn string) (*cloudwatchlogs.MetricFilter, error) {
 	cw := cloudwatch.New(sess)
+
+	// Extract the alarm name from the ARN
+	parts := strings.Split(alarmArn, ":")
+	if len(parts) < 7 {
+		return nil, fmt.Errorf("invalid alarm ARN: %s", alarmArn)
+	}
+	alarmName := parts[6]
 
 	// Get Alarm Details
 	alarmDetails, err := cw.DescribeAlarms(&cloudwatch.DescribeAlarmsInput{
-		AlarmNames: []*string{aws.String(alarmArn)},
+		AlarmNames: []*string{aws.String(alarmName)},
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to describe alarm: %v", err)
 	}
 	if len(alarmDetails.MetricAlarms) == 0 {
-		return nil, fmt.Errorf("alarm %s not found", alarmArn)
+		return nil, fmt.Errorf("alarm %s not found", alarmName)
 	}
 
 	// Extract Metric Filter Name
 	alarm := alarmDetails.MetricAlarms[0]
-	logGroupName := aws.StringValue(alarm.Dimensions[0].Value) // Assumes log group is in first dimension; adjust if needed
+	logGroupName := ""
+	for _, dim := range alarm.Dimensions {
+		if aws.StringValue(dim.Name) == "LogGroupName" { // Adjust key if needed
+			logGroupName = aws.StringValue(dim.Value)
+			break
+		}
+	}
+	if logGroupName == "" {
+		return nil, fmt.Errorf("no log group name found in alarm dimensions")
+	}
 
 	cwLogs := cloudwatchlogs.New(sess)
 	filters, err := cwLogs.DescribeMetricFilters(&cloudwatchlogs.DescribeMetricFiltersInput{
