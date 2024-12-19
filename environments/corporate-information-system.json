@@ -13,6 +13,11 @@
         {
           "sso_group_name": "laa-cis-team",
           "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-cis-dbas",
+          "level": "sandbox",
+          "nuke": "exclude"
         }
       ]
     },

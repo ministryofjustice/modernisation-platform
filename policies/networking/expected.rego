@@ -361,12 +361,12 @@ expected :=
           "corporate-information-system-preproduction",
           "edw-preproduction",
           "laa-mail-relay-preproduction",
-          "laa-oem-preproduction"
+          "laa-oem-preproduction",
           "maat-preproduction",
           "mlra-preproduction",
           "mojfin-preproduction",
           "oas-preproduction",
-          "portal-preproduction",
+          "portal-preproduction"
         ]
       }
     },
@@ -390,10 +390,11 @@ expected :=
       "general": {
         "cidr": "10.27.96.0/21",
         "accounts": [
+          "analytical-platform-common-production",
           "analytical-platform-ingestion-production",
           "data-platform-production",
-          "long-term-storage-production",
           "data-platform-apps-and-tools-production",
+          "long-term-storage-production",
           "observability-platform-production"
         ]
       }
@@ -416,6 +417,36 @@ expected :=
     "cjse-preproduction": {
       "general": {
         "cidr": "10.27.120.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "yjb-development": {
+      "general": {
+        "cidr": "10.26.144.0/21",
+        "accounts": [
+          "youth-justice-app-framework-development"
+        ]
+      }
+    },
+    "yjb-test": {
+      "general": {
+        "cidr": "10.26.152.0/21",
+        "accounts": [
+          "youth-justice-app-framework-test"
+        ]
+      }
+    },
+    "yjb-preproduction": {
+      "general": {
+        "cidr": "10.27.144.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "yjb-production": {
+      "general": {
+        "cidr": "10.27.152.0/21",
         "accounts": [
         ]
       }

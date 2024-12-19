@@ -29,12 +29,13 @@ defaults:
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
-
+  pull-requests: write
 jobs:
   modernisation-platform-account-plan-and-apply:
     uses: ./.github/workflows/reusable_terraform_plan_apply.yml
     with:
       working-directory: "terraform/modernisation-platform-account"
+      workflow_id: "modernisation-platform-account"
     secrets:
       modernisation_platform_environments: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

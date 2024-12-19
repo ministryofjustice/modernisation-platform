@@ -23,7 +23,7 @@ on:
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
-
+  pull-requests: write
 defaults:
   run:
     shell: bash
@@ -33,6 +33,7 @@ jobs:
     uses: ./.github/workflows/reusable_terraform_plan_apply.yml
     with:
       working-directory: "terraform/pagerduty"
+      workflow_id: "pagerduty"
     secrets:
       modernisation_platform_environments: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
       pagerduty_token: ${{ secrets.PAGERDUTY_TOKEN }}

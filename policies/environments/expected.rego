@@ -6,6 +6,7 @@ expected :=
 {
   "accounts": [
     "analytical-platform",
+    "analytical-platform-common",
     "analytical-platform-compute",
     "analytical-platform-data",
     "analytical-platform-data-engineering",
@@ -81,6 +82,7 @@ expected :=
     "tipstaff",
     "tribunals",
     "wardship",
-    "xhibit-portal"
+    "xhibit-portal",
+    "youth-justice-app-framework"
     ]
 }
