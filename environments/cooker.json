@@ -25,7 +25,8 @@
           "nuke": "exclude"
         }
       ],
-      "additional_reviewers": ["astrobinson"]
+      "additional_reviewers": ["astrobinson"],
+      "instance_scheduler_skip": ["true"]
     }
   ],
   "tags": {
