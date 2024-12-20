@@ -1,6 +1,6 @@
 module modernisation-platform/get-testing-creds
 
-go 1.18
+go 1.23
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.30.5
