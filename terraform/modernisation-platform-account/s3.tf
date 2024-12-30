@@ -365,3 +365,39 @@ data "aws_iam_policy_document" "cost_management_bucket_policy" {
     }
   }
 }
+
+module "member_information_bucket" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=cadab519b10a7d28dfa3b77d407725db6b37614a" # v8.0.0
+  providers = {
+    aws.bucket-replication = aws.modernisation-platform-eu-west-1
+  }
+  bucket_policy       = [data.aws_iam_policy_document.member_information_bucket_policy.json]
+  bucket_name         = "modernisation-member-information"
+  custom_kms_key      = aws_kms_key.s3_state_bucket_multi_region.arn
+  replication_enabled = false
+  lifecycle_rule = [
+    {
+      id      = "main"
+      enabled = "Disabled"
+    }
+  ]
+  tags = local.tags
+}
+
+
+data "aws_iam_policy_document" "member_information_bucket_policy" {
+  statement {
+    sid    = "AllowAdministratorAccessRole"
+    effect = "Allow"
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject"
+    ]
+    resources = ["${module.cost-management-bucket.bucket.arn}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.environment_management.modernisation_platform_account_id}:role/github-actions"]
+    }
+  }
+}
