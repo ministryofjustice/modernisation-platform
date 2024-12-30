@@ -13,6 +13,7 @@ expected :=
     "analytical-platform-ingestion",
     "analytical-platform-landing",
     "analytical-platform-management",
+    "analytical-platform-shared-services",
     "apex",
     "bichard7",
     "ccms-ebs",

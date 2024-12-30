@@ -2,8 +2,7 @@ package policies.networking
 
 import rego.v1
 
-expected :=
-{
+expected := {
   "subnet_sets": {
     "garden-sandbox": {
       "general": {
