@@ -393,7 +393,7 @@ data "aws_iam_policy_document" "member_information_bucket_policy" {
       "s3:PutObject",
       "s3:GetObject"
     ]
-    resources = ["${module.cost-management-bucket.bucket.arn}/*"]
+    resources = ["${module.member_information_bucket.bucket.arn}/*"]
 
     principals {
       type        = "AWS"
