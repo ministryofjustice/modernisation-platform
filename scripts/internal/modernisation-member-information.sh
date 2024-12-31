@@ -68,7 +68,7 @@ for json_file in "$JSON_DIR"/*.json; do
 
         readme_path="$README_REPO_DIR/$base_app_name/README.md"
 
-        service_info=$(extract_service_info "$readme_path")
+        service_info=$(extract_member_readme_info "$readme_path")
         incident_hours=$(echo "$service_info" | cut -d'|' -f1)
         incident_contact_details=$(echo "$service_info" | cut -d'|' -f2)
 
