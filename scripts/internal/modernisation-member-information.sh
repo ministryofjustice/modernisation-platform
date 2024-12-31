@@ -130,5 +130,5 @@ for json_file in "$JSON_DIR"/*.json; do
 done
 
 # Upload $csv_file to the S3 bucket
-aws s3 cp $csv_file s3://test/output1.csv
+aws s3 cp $csv_file $s3_file_path
 rm $csv_file
