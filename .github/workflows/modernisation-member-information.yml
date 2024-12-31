@@ -39,4 +39,4 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Fetch Member Information
-        run: bash ./scripts/internal/modernisation-member-information.sh
+        run: bash ./scripts/internal/modernisation-member-information.sh modernisation-member-information member_information.csv

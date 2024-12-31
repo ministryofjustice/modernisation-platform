@@ -1,11 +1,17 @@
 #!/bin/bash
 
+# Check if sufficient arguments are provided
+if [[ $# -lt 2 ]]; then
+    echo "Usage: $0 <s3_bucket_name> <output_csv_file>"
+    exit 1
+fi
+
 JSON_DIR="./environments"
 README_REPO_DIR="./modernisation-platform-environments/terraform/environments"
 
 # S3 bucket and file details
-bucket_name="modernisation-member-information"
-csv_file="member_information.csv"
+bucket_name="$1"
+csv_file="$2"
 s3_file_path="s3://$bucket_name/$csv_file"
 
 # Function to extract member readme info
