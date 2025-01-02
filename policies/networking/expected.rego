@@ -281,6 +281,7 @@ expected :=
           "laa-ccms-infra-azure-ad-sso",
           "laa-mail-relay-development",
           "laa-oem-development",
+          "laa-stabilisation-cdc-poc",
           "maat-development",
           "maatdb-development",
           "mlra-development",
