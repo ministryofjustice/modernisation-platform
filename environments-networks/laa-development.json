@@ -13,6 +13,7 @@
           "laa-ccms-infra-azure-ad-sso-development",
           "laa-mail-relay-development",
           "laa-oem-development",
+          "laa-stabilisation-cdc-poc-development",
           "maat-development",
           "maatdb-development",
           "mlra-development",
