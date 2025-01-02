@@ -53,6 +53,7 @@ expected :=
     "laa-ccms-infra-azure-ad-sso",
     "laa-mail-relay",
     "laa-oem",
+    "laa-stabilisation-cdc-poc",
     "long-term-storage",
     "mi-platform",
     "maat",
