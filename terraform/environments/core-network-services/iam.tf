@@ -57,7 +57,7 @@ resource "aws_iam_role_policy_attachment" "vpc_flow_log_publish_policy" {
 
 data "aws_route53_zone" "private-zones" {
   for_each     = local.private-application-zones
-  name         = each.value
+  name         = try(aws_route53_zone.private_application_zones[each.key].name, each.value)
   private_zone = true
 }
 
