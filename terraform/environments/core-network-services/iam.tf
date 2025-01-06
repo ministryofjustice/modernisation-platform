@@ -54,13 +54,6 @@ resource "aws_iam_role_policy_attachment" "vpc_flow_log_publish_policy" {
   policy_arn = aws_iam_policy.vpc_flow_log_publish_policy.arn
 }
 
-
-data "aws_route53_zone" "private-zones" {
-  for_each     = local.private-application-zones
-  name         = each.value
-  private_zone = true
-}
-
 # Role to allow ci/cd to update DNS records for ACM certificate validation
 resource "aws_iam_role" "dns" {
   #checkov:skip=CKV_AWS_60:Wildcard constrained by condition checks
@@ -130,7 +123,7 @@ resource "aws_iam_role_policy" "dns" {
         Action = ["route53:ChangeResourceRecordSets"],
         Resource = concat(
           [for zone in aws_route53_zone.application_zones : format("arn:aws:route53:::hostedzone/%s", zone.id)],
-          [for zone in data.aws_route53_zone.private-zones : format("arn:aws:route53:::hostedzone/%s", zone.id)],
+          [for zone in aws_route53_zone.private_application_zones : format("arn:aws:route53:::hostedzone/%s", zone.id)],
           [
             "arn:aws:route53:::hostedzone/${aws_route53_zone.modernisation-platform.id}",
             "arn:aws:route53:::hostedzone/${aws_route53_zone.modernisation-platform-internal.id}"
