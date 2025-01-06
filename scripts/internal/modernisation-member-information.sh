@@ -12,7 +12,7 @@ README_REPO_DIR="./modernisation-platform-environments/terraform/environments"
 # S3 bucket and file details
 bucket_name="$1"
 csv_file="$2"
-s3_file_path="s3://$bucket_name/$csv_file"
+s3_file_path="s3://$bucket_name/data/$csv_file"
 
 # Function to extract member readme info
 extract_member_readme_info() {
@@ -124,8 +124,8 @@ for json_file in "$JSON_DIR"/*.json; do
             service_url=$(echo "$service_url" | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//' | sed -E 's/(dev|preprod|test|prod): //g')
             aws_account_id=$(echo "$aws_account_id" | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
 
-            # Escape special characters and wrap in double quotes for CSV
-            csv_line="\"$(echo "$account_name" | sed 's/"/""/g')\",\"$(echo "$aws_account_id" | sed 's/"/""/g')\",\"$(echo "$slack_channel" | sed 's/"/""/g')\",\"$(echo "$infra_support_email" | sed 's/"/""/g')\",\"$(echo "$incident_hours" | sed 's/"/""/g')\",\"$(echo "$incident_contact_details" | sed 's/"/""/g')\",\"$(echo "$service_url" | sed 's/"/""/g')\""
+            # Create CSV line without double quotes
+            csv_line="$(echo "$account_name" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'),$(echo "$aws_account_id" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'),$(echo "$slack_channel" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'),$(echo "$infra_support_email" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'),$(echo "$incident_hours" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'),$(echo "$incident_contact_details" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'),$(echo "$service_url" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
 
             # Append only if the row doesn't already exist
             if ! grep -qF "$csv_line" $csv_file; then
