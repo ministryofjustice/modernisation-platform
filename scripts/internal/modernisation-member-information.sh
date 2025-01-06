@@ -50,6 +50,12 @@ extract_member_readme_info() {
     echo "$incident_hours|$incident_contact_details|$service_urls"
 }
 
+# Clean data for CSV line formation
+clean_field() {
+    local field="$1"
+    echo "$field" | sed 's/\n/ /g' | sed 's/\r//g' | sed 's/,/|/g' | sed 's/"/""/g' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//'
+}
+
 # Output the header for CSV
 echo "Account Name,AWS Account ID,Slack Channel,Infrastructure Support Email,Incident Hours,Incident Contact Details,Service URLs" > $csv_file
 
@@ -115,17 +121,18 @@ for json_file in "$JSON_DIR"/*.json; do
             service_url=${service_url:-N/A}
             aws_account_id=${aws_account_id:-N/A}
 
-            # Remove excessive whitespace and ensure clean formatting
-            account_name=$(echo "$account_name" | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
-            slack_channel=$(echo "$slack_channel" | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
-            infra_support_email=$(echo "$infra_support_email" | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
-            incident_hours=$(echo "$incident_hours" | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
-            incident_contact_details=$(echo "$incident_contact_details" | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
-            service_url=$(echo "$service_url" | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//' | sed -E 's/(dev|preprod|test|prod): //g')
-            aws_account_id=$(echo "$aws_account_id" | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
+            # Clean the data for CSV formatting
+            account_name=$(clean_field "$account_name")
+            slack_channel=$(clean_field "$slack_channel")
+            infra_support_email=$(clean_field "$infra_support_email")
+            incident_hours=$(clean_field "$incident_hours")
+            incident_contact_details=$(clean_field "$incident_contact_details")
+            service_url=$(clean_field "$service_url")
+            aws_account_id=$(clean_field "$aws_account_id")
+            service_url=$(echo "$service_url" | sed -E 's/(dev|preprod|test|prod): //g')
 
-            # Create CSV line without double quotes
-            csv_line="$(echo "$account_name" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'),$(echo "$aws_account_id" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'),$(echo "$slack_channel" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'),$(echo "$infra_support_email" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'),$(echo "$incident_hours" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'),$(echo "$incident_contact_details" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'),$(echo "$service_url" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+            # Create CSV line with double quotes
+            csv_line="\"$account_name\",\"$aws_account_id\",\"$slack_channel\",\"$infra_support_email\",\"$incident_hours\",\"$incident_contact_details\",\"$service_url\""
 
             # Append only if the row doesn't already exist
             if ! grep -qF "$csv_line" $csv_file; then
