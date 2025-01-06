@@ -20,7 +20,7 @@
           "nuke": "rebuild"
         },
         {
-          "sso_group_name": "MoJRedTeam",
+          "sso_group_name": "tvm-purple-team",
           "level": "sandbox",
           "nuke": "rebuild"
         }
