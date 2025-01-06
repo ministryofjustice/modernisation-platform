@@ -4,7 +4,7 @@
 
 echo $formatted_date
 
-# Check if recent_failures.json exists, is not empty (so more than just []) and contains valid JSON. Else send the no failures found message.
+# Check if recent_failures.json exists, is not empty (so more than just []) and contains valid JSON).
 if [ -f recent_failures.json ] && [ "$(jq '. | length' recent_failures.json)" -gt 0 ]; then
     # This generates the slack report of failed workflows as json.
     slack_message=$(jq -n --arg formatted_date "$formatted_date" --arg repository "$GITHUB_REPO" --slurpfile failures recent_failures.json '
@@ -47,27 +47,6 @@ if [ -f recent_failures.json ] && [ "$(jq '. | length' recent_failures.json)" -g
             }
         ))
         )
-    }'
-    )
-else
-    slack_message=$(jq -n --arg formatted_date "$formatted_date" --arg repository "$GITHUB_REPO" '
-    {
-    "blocks": [
-        {
-        "type": "section",
-        "text": {
-            "type": "mrkdwn",
-            "text": ":no_entry: *Failed GitHub Actions Report in \($repository)*"
-        }
-        },
-        {
-        "type": "section",
-        "text": {
-            "type": "mrkdwn",
-            "text": "No failed workflows were found since \($formatted_date)."
-        }
-        }
-    ]
     }'
     )
 fi
