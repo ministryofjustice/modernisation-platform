@@ -7,22 +7,22 @@
         {
           "sso_group_name": "modernisation-platform",
           "level": "developer",
-          "nuke": "exclude"
+          "nuke": "rebuild"
         },
         {
           "sso_group_name": "modernisation-platform",
           "level": "instance-management",
-          "nuke": "exclude"
+          "nuke": "rebuild"
         },
         {
           "sso_group_name": "modernisation-platform",
           "level": "sandbox",
-          "nuke": "exclude"
+          "nuke": "rebuild"
         },
         {
           "sso_group_name": "MoJRedTeam",
           "level": "sandbox",
-          "nuke": "exclude"
+          "nuke": "rebuild"
         }
       ],
       "additional_reviewers": ["astrobinson"]
