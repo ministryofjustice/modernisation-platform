@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: environments-networks json explained
-last_reviewed_on: 2024-07-04
+last_reviewed_on: 2024-01-06
 review_in: 6 months
 ---
 
@@ -43,9 +43,12 @@ The `options` key defines values used in the creation of supplementary configura
 
 * `bastion_linux` is a boolean which determines if a business-unit bastion instance should be created
 * `additional_cidrs` is used by the [vpc-nacls](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/vpc-nacls) module to allow access from external CIDRs such as PSN address ranges.
-* `aditional_endpoints` is used by the ["vpc"](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-vpc/vpc.tf#L85) module in `terraform/environments/core-vpc` to supply VPC endpoint names.
-* `additional_private_zones` is used by the [dns-zone-extend-private](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/dns-zone-extend-private) to create additional private DNS zones.
+* `additional_endpoints` is used by the [vpc](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-vpc/vpc.tf#L85) module in `terraform/environments/core-vpc` to supply VPC endpoint names.
+* `additional_private_zones` is used by the [dns-zone-extend-private](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/dns-zone-extend-private) module to create additional private DNS zones.
+
 > In practice, `additional_private_zones` are created directly by customers, leveraging the `core-vpc` provider rather than defining them here.
+
 * `additional_vpcs` is used by the [vpc-nacls](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/vpc-nacls) module to allow access from internal CIDRs such as other Modernisation Platform address ranges.
+
 > In practice, the use of `additional_vpcs` is something we want to avoid as we want to restrict the possibility of east/west traffic movement inside the Modernisation Platform.
 
