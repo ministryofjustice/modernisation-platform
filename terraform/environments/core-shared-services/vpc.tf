@@ -106,7 +106,7 @@ resource "aws_vpc_endpoint" "vpc_gateway_endpoints" {
 }
 
 resource "aws_vpc_endpoint_route_table_association" "vpc_gateway_endpoints" {
-  for_each = local.route_table_to_gateway_endpoint
+  for_each        = local.route_table_to_gateway_endpoint
   route_table_id  = each.key
   vpc_endpoint_id = each.value
 }
