@@ -1,11 +1,14 @@
-resource "aws_athena_workgroup" "member_information" {
-  name        = "member_information_workgroup"
+resource "aws_athena_workgroup" "mod_platform" {
+  name        = "modernisation-platform"
   state       = "ENABLED"
   description = "Athena Workgroup for CSV queries"
 
   configuration {
     result_configuration {
       output_location = "s3://${module.member_information_bucket.bucket.bucket}/query-results/"
+      encryption_configuration {
+        encryption_option = "SSE_S3"
+      }
     }
   }
 }
