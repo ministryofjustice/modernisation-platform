@@ -32,7 +32,7 @@
       "access": [
         {
           "sso_group_name": "national-applications-reporting-team",
-          "level": "instance-management"
+          "level": "developer"
         },
         {
           "sso_group_name": "hosting-migrations",
@@ -55,7 +55,7 @@
       "access": [
         {
           "sso_group_name": "national-applications-reporting-team",
-          "level": "instance-access"
+          "level": "developer"
         },
         {
           "sso_group_name": "hosting-migrations",
@@ -78,7 +78,7 @@
       "access": [
         {
           "sso_group_name": "national-applications-reporting-team",
-          "level": "instance-access"
+          "level": "developer"
         },
         {
           "sso_group_name": "hosting-migrations",
