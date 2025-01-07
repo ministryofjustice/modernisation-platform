@@ -45,7 +45,8 @@ sendreport="true"
 
 # This checks the contents of $recent_failures and if not empty it saves the variable to a file for use in the next step.
 if [[ "$recent_failures" == "[]" ]]; then
-  echo "No workflow failures without subsequent successful completion that finished since $formatted_date ." 
+  echo "No workflow failures without subsequent successful completion that finished since $formatted_date ."
+  sendreport="false"
 elif [[ -n "$recent_failures" ]]; then
   echo "Most recent failed GitHub Actions without subsequent success that finished since $formatted_date :"
   echo "$recent_failures" > recent_failures.json
