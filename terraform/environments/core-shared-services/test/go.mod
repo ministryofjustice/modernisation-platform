@@ -1,6 +1,6 @@
 module test
 
-go 1.21.1
+go 1.23
 
 require (
 	github.com/gruntwork-io/terratest v0.48.1
@@ -34,7 +34,7 @@ require (
 	github.com/zclconf/go-cty v1.15.0 // indirect
 	golang.org/x/crypto v0.31.0 // indirect
 	golang.org/x/mod v0.18.0 // indirect
-	golang.org/x/net v0.31.0 // indirect
+	golang.org/x/net v0.33.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
 	golang.org/x/text v0.21.0 // indirect

@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
-title: Running an emergency patch
-last_reviewed_on: 2024-06-27
+title: Running an emergency patch with AWS Systems Manager
+last_reviewed_on: 2024-12-30
 review_in: 6 months
 ---
 
@@ -19,27 +19,27 @@ review_in: 6 months
 ## Requirements
 
 - A list of all account numbers that you want to run the patch on.
-- The specific patch and version, saved in a yaml format in the core-shared-services accounts s3 bucket. (Bucket can be pre existing, but the module creates an s3 bucket if one is needed)
+- The specific patch and version, saved in `yaml` format in the `core-shared-services` S3 bucket. (Bucket can be pre existing, but the module creates an s3 bucket if one is needed)
 
 ## Stages
 
-1. Login to the core-shared-services account.
-2. Create a yaml file in the s3 bucket with the format listed below. (This will be used to run the patch on the accounts)
-3. From the Systems Manager page in the core-shared-services account, select automation.
-4. Select Run Automation, and select the document 'cross-account-single-patching-automation'
+1. Log in to the `core-shared-services` AWS account.
+2. Create a `yaml` file in the s3 bucket with the format listed below. (This will be used to run the patch on the accounts)
+3. From the Systems Manager page in the `core-shared-services` account, select automation.
+4. Select Run Automation, and select the document **cross-account-single-patching-automation**.
 5. Select Multi-account and Region option.
-6. Input the yaml file location you created in step 2, and also input the account numbers you want to run the patch on.
+6. Input the `yaml` file location you created in step 2, and also input the account numbers you want to run the patch on.
 7. Click run. This will run the patch on all the accounts you specified, with the patch you specified.
 
 ## Finding the emergency patch doc
 
-- Login to the core-shared-services account. From here, go to AWS Systems Manager and select Automation.
+- Login to the `core-shared-services` account. From here, go to AWS Systems Manager and select Automation.
 - Select the 'Automation' under 'Change Management' and select 'Execute Automation'.
-- Select the 'cross-account-single-patching-automation' document, which will be in 'Owned by me' section.
+- Select the **cross-account-single-patching-automation** document, which will be in 'Owned by me' section.
 
 ## Cross-account-single-patching-automation
 
-- Select the 'cross-account-single-patching-automation' document, and click next.
+- Select the **cross-account-single-patching-automation** document, and click next.
 - Select the Multi-account and Region option.
 - Type in the accounts to run against, in the Target accounts and Regions field.
 

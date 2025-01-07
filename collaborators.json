@@ -197,6 +197,20 @@
       ]
     },
     {
+      "username": "dale.tritschler",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "delius-iaps-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "delius-iaps-production",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
       "username": "laimute.taylor",
       "github-username": "no-value-supplied",
       "accounts": [
@@ -468,6 +482,30 @@
         },
         {
           "account-name": "youth-justice-app-framework-test",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "vidhya.bhushan",
+      "github-username": "vidhyamoj",
+      "accounts": [
+        {
+          "account-name": "genesys-call-centre-data-development",
+          "access": "sandbox"
+        },
+        {
+          "account-name": "genesys-call-centre-data-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "prasad.cherukuri",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "ppud-development",
           "access": "developer"
         }
       ]

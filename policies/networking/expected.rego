@@ -21,42 +21,114 @@ expected :=
         ]
       }
     },
-    "hmpps-preproduction": {
+    "cica-development": {
       "general": {
-        "cidr": "10.27.0.0/21",
+        "cidr": "10.26.32.0/21",
         "accounts": [
-          "corporate-staff-rostering-preproduction",
-          "delius-core-preproduction",
-          "delius-iaps-preproduction",
-          "delius-jitbit-preproduction",
-          "delius-mis-preproduction",
-          "delius-nextcloud-preproduction",
-          "digital-prison-reporting-preproduction",
-          "electronic-monitoring-data-preproduction",
-          "hmpps-domain-services-preproduction",
-          "hmpps-oem-preproduction",
-          "nomis-preproduction",
-          "nomis-combined-reporting-preproduction",
-          "nomis-data-hub-preproduction",
-          "oasys-preproduction",
-          "oasys-national-reporting-preproduction",
-          "performance-hub-preproduction",
-          "planetfm-preproduction",
-          "ppud-preproduction"
+          "cica-copilot-development",
+          "cica-data-extraction-development",
+          "cica-tariff-development"
         ]
       }
     },
-    "platforms-development": {
+    "cica-test": {
       "general": {
-        "cidr": "10.26.16.0/21",
+        "cidr": "10.26.112.0/21",
         "accounts": [
-          "analytical-platform-ingestion-development",
-          "example-development",
-          "data-platform-development",
-          "data-platform-apps-and-tools-development",
-          "observability-platform-development",
-          "operations-engineering-development",
-          "panda-cyber-appsec-lab-development"
+          "cica-tariff-test"
+        ]
+      }
+    },
+    "cica-preproduction": {
+      "general": {
+        "cidr": "10.27.88.0/21",
+        "accounts": [
+          "cica-tariff-preproduction"
+        ]
+      }
+    },
+    "cica-production": {
+      "general": {
+        "cidr": "10.27.80.0/21",
+        "accounts": [
+          "cica-tariff-production"
+        ]
+      }
+    },
+    "cjse-development": {
+      "general": {
+        "cidr": "10.26.80.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "cjse-test": {
+      "general": {
+        "cidr": "10.26.88.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "cjse-preproduction": {
+      "general": {
+        "cidr": "10.27.120.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "cjse-production": {
+      "general": {
+        "cidr": "10.27.112.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "hmcts-development": {
+      "general": {
+        "cidr": "10.26.40.0/21",
+        "accounts": [
+          "xhibit-portal-development",
+          "tipstaff-development",
+          "tribunals-development",
+          "dacp-development",
+          "pra-registe-development",
+          "ncas-development",
+          "wardship-development"
+        ]
+      }
+    },
+    "hmcts-test": {
+      "general": {
+        "cidr": "10.26.104.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "hmcts-preproduction": {
+      "general": {
+        "cidr": "10.27.24.0/21",
+        "accounts": [
+          "xhibit-portal-preproduction",
+          "tipstaff-preproduction",
+          "tribunals-preproduction",
+          "dacp-preproduction",
+          "pra-register-preproduction",
+          "ncas-preproduction",
+          "wardship-preproduction"
+        ]
+      }
+    },
+    "hmcts-production": {
+      "general": {
+        "cidr": "10.27.16.0/21",
+        "accounts": [
+          "xhibit-portal-production",
+          "tipstaff-production",
+          "tribunals-production",
+          "dacp-production",
+          "pra-register-production",
+          "ncas-production",
+          "wardship-production"
         ]
       }
     },
@@ -87,15 +159,6 @@ expected :=
         ]
       }
     },
-    "platforms-test": {
-      "general": {
-        "cidr": "10.26.0.0/21",
-        "accounts": [
-          "data-platform-test",
-          "testing-test"
-        ]
-      }
-    },
     "hmpps-test": {
       "general": {
         "cidr": "10.26.8.0/21",
@@ -116,13 +179,28 @@ expected :=
         ]
       }
     },
-    "cica-development": {
+    "hmpps-preproduction": {
       "general": {
-        "cidr": "10.26.32.0/21",
+        "cidr": "10.27.0.0/21",
         "accounts": [
-          "cica-copilot-development",
-          "cica-data-extraction-development",
-          "cica-tariff-development"
+          "corporate-staff-rostering-preproduction",
+          "delius-core-preproduction",
+          "delius-iaps-preproduction",
+          "delius-jitbit-preproduction",
+          "delius-mis-preproduction",
+          "delius-nextcloud-preproduction",
+          "digital-prison-reporting-preproduction",
+          "electronic-monitoring-data-preproduction",
+          "hmpps-domain-services-preproduction",
+          "hmpps-oem-preproduction",
+          "nomis-preproduction",
+          "nomis-combined-reporting-preproduction",
+          "nomis-data-hub-preproduction",
+          "oasys-preproduction",
+          "oasys-national-reporting-preproduction",
+          "performance-hub-preproduction",
+          "planetfm-preproduction",
+          "ppud-preproduction"
         ]
       }
     },
@@ -152,48 +230,6 @@ expected :=
         ]
       }
     },
-    "hmcts-development": {
-      "general": {
-        "cidr": "10.26.40.0/21",
-        "accounts": [
-          "xhibit-portal-development",
-          "tipstaff-development",
-          "tribunals-development",
-          "dacp-development",
-          "pra-registe-development",
-          "ncas-development",
-          "wardship-development"
-        ]
-      }
-    },
-    "hmcts-production": {
-      "general": {
-        "cidr": "10.27.16.0/21",
-        "accounts": [
-          "xhibit-portal-production",
-          "tipstaff-production",
-          "tribunals-production",
-          "dacp-production",
-          "pra-register-production",
-          "ncas-production",
-          "wardship-production"
-        ]
-      }
-    },
-    "hmcts-preproduction": {
-      "general": {
-        "cidr": "10.27.24.0/21",
-        "accounts": [
-          "xhibit-portal-preproduction",
-          "tipstaff-preproduction",
-          "tribunals-preproduction",
-          "dacp-preproduction",
-          "pra-register-preproduction",
-          "ncas-preproduction",
-          "wardship-preproduction"
-        ]
-      }
-    },
     "hq-development": {
       "general": {
         "cidr": "10.26.48.0/21",
@@ -209,6 +245,16 @@ expected :=
         "cidr": "10.26.120.0/21",
         "accounts": [
           "threat-and-vulnerability-mgmt-production"
+        ]
+      }
+    },
+    "hq-preproduction": {
+      "general": {
+        "cidr": "10.27.40.0/21",
+        "accounts": [
+          "data-and-insights-wepi-preproduction",
+          "cdpt-chaps-preproduction",
+          "cdpt-ifs-preproduction"
         ]
       }
     },
@@ -235,40 +281,13 @@ expected :=
           "laa-ccms-infra-azure-ad-sso",
           "laa-mail-relay-development",
           "laa-oem-development",
+          "laa-stabilisation-cdc-poc-development",
           "maat-development",
           "maatdb-development",
           "mlra-development",
           "oas-development",
           "portal-development",
           "mojfin-development"
-        ]
-      }
-    },
-    "opg-development": {
-      "general": {
-        "cidr": "10.26.72.0/21",
-        "accounts": [
-        ]
-      }
-    },
-    "opg-test": {
-      "general": {
-        "cidr": "10.26.64.0/21",
-        "accounts": [
-        ]
-      }
-    },
-    "cjse-development": {
-      "general": {
-        "cidr": "10.26.80.0/21",
-        "accounts": [
-        ]
-      }
-    },
-    "cjse-test": {
-      "general": {
-        "cidr": "10.26.88.0/21",
-        "accounts": [
         ]
       }
     },
@@ -293,41 +312,22 @@ expected :=
         ]
       }
     },
-    "hmcts-test": {
+    "laa-preproduction": {
       "general": {
-        "cidr": "10.26.104.0/21",
+        "cidr": "10.27.72.0/21",
         "accounts": [
-        ]
-      }
-    },
-    "cica-test": {
-      "general": {
-        "cidr": "10.26.112.0/21",
-        "accounts": [
-          "cica-tariff-test"
-        ]
-      }
-    },
-    "hq-preproduction": {
-      "general": {
-        "cidr": "10.27.40.0/21",
-        "accounts": ["data-and-insights-wepi-preproduction",
-                     "cdpt-chaps-preproduction",
-                     "cdpt-ifs-preproduction"
-        ]
-      }
-    },
-    "opg-production": {
-      "general": {
-        "cidr": "10.27.48.0/21",
-        "accounts": [
-        ]
-      }
-    },
-    "opg-preproduction": {
-      "general": {
-        "cidr": "10.27.56.0/21",
-        "accounts": [
+          "apex-preproduction",
+          "ccms-ebs-preproduction",
+          "contract-work-administration-preproduction",
+          "corporate-information-system-preproduction",
+          "edw-preproduction",
+          "laa-mail-relay-preproduction",
+          "laa-oem-preproduction",
+          "maat-preproduction",
+          "mlra-preproduction",
+          "mojfin-preproduction",
+          "oas-preproduction",
+          "portal-preproduction"
         ]
       }
     },
@@ -351,38 +351,62 @@ expected :=
         ]
       }
     },
-    "laa-preproduction": {
+    "opg-development": {
       "general": {
-        "cidr": "10.27.72.0/21",
+        "cidr": "10.26.72.0/21",
         "accounts": [
-          "apex-preproduction",
-          "ccms-ebs-preproduction",
-          "contract-work-administration-preproduction",
-          "corporate-information-system-preproduction",
-          "edw-preproduction",
-          "laa-mail-relay-preproduction",
-          "laa-oem-preproduction",
-          "maat-preproduction",
-          "mlra-preproduction",
-          "mojfin-preproduction",
-          "oas-preproduction",
-          "portal-preproduction"
         ]
       }
     },
-    "cica-production": {
+    "opg-test": {
       "general": {
-        "cidr": "10.27.80.0/21",
+        "cidr": "10.26.64.0/21",
         "accounts": [
-          "cica-tariff-production"
         ]
       }
     },
-    "cica-preproduction": {
+    "opg-preproduction": {
       "general": {
-        "cidr": "10.27.88.0/21",
+        "cidr": "10.27.56.0/21",
         "accounts": [
-          "cica-tariff-preproduction"
+        ]
+      }
+    },
+    "opg-production": {
+      "general": {
+        "cidr": "10.27.48.0/21",
+        "accounts": [
+        ]
+      }
+    },
+    "platforms-development": {
+      "general": {
+        "cidr": "10.26.16.0/21",
+        "accounts": [
+          "analytical-platform-ingestion-development",
+          "example-development",
+          "data-platform-development",
+          "data-platform-apps-and-tools-development",
+          "observability-platform-development",
+          "operations-engineering-development",
+          "panda-cyber-appsec-lab-development"
+        ]
+      }
+    },
+    "platforms-test": {
+      "general": {
+        "cidr": "10.26.0.0/21",
+        "accounts": [
+          "data-platform-test",
+          "testing-test"
+        ]
+      }
+    },
+    "platforms-preproduction": {
+      "general": {
+        "cidr": "10.27.104.0/21",
+        "accounts": [
+          "data-platform-preproduction"
         ]
       }
     },
@@ -396,28 +420,6 @@ expected :=
           "data-platform-apps-and-tools-production",
           "long-term-storage-production",
           "observability-platform-production"
-        ]
-      }
-    },
-    "platforms-preproduction": {
-      "general": {
-        "cidr": "10.27.104.0/21",
-        "accounts": [
-          "data-platform-preproduction"
-        ]
-      }
-    },
-    "cjse-production": {
-      "general": {
-        "cidr": "10.27.112.0/21",
-        "accounts": [
-        ]
-      }
-    },
-    "cjse-preproduction": {
-      "general": {
-        "cidr": "10.27.120.0/21",
-        "accounts": [
         ]
       }
     },

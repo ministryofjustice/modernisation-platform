@@ -53,7 +53,8 @@ locals {
     for value in setproduct(keys(local.networking), local.vpc_interface_endpoint_service_names) :
     "${value[0]}-${value[1]}" => {
       vpc_name      = value[0],
-      endpoint_name = value[1]
+      endpoint_name = value[1],
+      rtb_ids       = local.private_route_tables[value[0]]
     }
   }
 
@@ -61,9 +62,18 @@ locals {
     for value in setproduct(keys(local.networking), local.vpc_gateway_endpoint_service_names) :
     "${value[0]}-${value[1]}" => {
       vpc_name      = value[0],
-      endpoint_name = value[1]
+      endpoint_name = value[1],
+      rtb_ids       = local.private_route_tables[value[0]]
     }
   }
+
+  route_table_to_gateway_endpoint = merge([
+    for key, value in local.private_route_tables : {
+      for rt_id in value :
+      rt_id => aws_vpc_endpoint.vpc_gateway_endpoints["${key}-${local.vpc_gateway_endpoint_service_names[0]}"].id
+    }
+  ]...)
+
 }
 
 resource "aws_vpc_endpoint" "vpc_interface_endpoints" {
@@ -87,13 +97,18 @@ resource "aws_vpc_endpoint" "vpc_gateway_endpoints" {
   vpc_endpoint_type = "Gateway"
   vpc_id            = module.vpc[each.value.vpc_name].vpc_id
   service_name      = each.value.endpoint_name
-  route_table_ids   = local.private_route_tables[each.value.vpc_name]
   tags = merge(
     local.tags,
     {
       Name = "${local.application_name}-${each.value.endpoint_name}"
     }
   )
+}
+
+resource "aws_vpc_endpoint_route_table_association" "vpc_gateway_endpoints" {
+  for_each        = local.route_table_to_gateway_endpoint
+  route_table_id  = each.key
+  vpc_endpoint_id = each.value
 }
 
 # Create security group for vpc endpoints

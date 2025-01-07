@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Adding VPC endpoints
-last_reviewed_on: 2024-07-04
+last_reviewed_on: 2025-01-06
 review_in: 6 months
 ---
 
@@ -25,18 +25,21 @@ Modernisation Platform customers can raise pull requests to add further VPC endp
 ## Default AWS VPC Endpoints
 
 Modernisation Platform `core-vpc-*` accounts contain per-business-unit VPCs which each have the following endpoints provisioned in their `protected` subnets:
+
 ```
 "com.amazonaws.eu-west-2.ec2",
 "com.amazonaws.eu-west-2.ec2messages",
 "com.amazonaws.eu-west-2.ssm",
 "com.amazonaws.eu-west-2.ssmmessages",
 ```
+
 No action is required to make use of these. 
 
 ## Adding supplementary AWS VPC Endpoints
 
 Additional VPC endpoints should be defined in the relevant `$business_unit-$environment.json` file in our [environments-networks](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments-networks) directory.
 You can raise a pull request similar to [this example](https://github.com/ministryofjustice/modernisation-platform/pull/7408) for any additions you require.
+
 ```
 {  
   ...

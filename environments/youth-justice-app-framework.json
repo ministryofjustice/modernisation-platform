@@ -18,6 +18,24 @@
           "level": "developer"
         }
       ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform-engineers",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform-engineers",
+          "level": "developer"
+        }
+      ]
     }
   ],
   "tags": {

@@ -107,5 +107,6 @@ locals {
 # Subscribe SNS topics in member accounts to pagerduty for core monitoring
 module "core_monitoring" {
   source                     = "../../../modules/core-monitoring"
+  depends_on                 = [data.aws_sns_topic.existing_topic]
   pagerduty_integration_keys = local.pagerduty_integration_keys
 }
