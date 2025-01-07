@@ -161,7 +161,6 @@ data "aws_iam_policy_document" "member-access" {
       "lakeformation:*",
       "lambda:*",
       "logs:*",
-      "macie2:*",
       "organizations:Describe*",
       "organizations:List*",
       "oam:*",
