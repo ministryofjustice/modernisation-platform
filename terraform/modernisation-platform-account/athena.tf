@@ -56,15 +56,15 @@ resource "aws_glue_catalog_table" "member_information" {
       name                  = "CSV Serde"
       serialization_library = "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe"
       parameters = {
-        "separatorChar"           = ","
-        "quoteChar"               = "\""
-        "field.delim"             = ","
-        "skip.header.line.count"  = "1"
-        "escapeChar"              = "\\"
+        "separatorChar"          = ","
+        "quoteChar"              = "\""
+        "field.delim"            = ","
+        "skip.header.line.count" = "1"
+        "escapeChar"             = "\\"
       }
     }
 
-    location = "s3://${module.member_information_bucket.bucket.bucket}/data/"
+    location      = "s3://${module.member_information_bucket.bucket.bucket}/data/"
     input_format  = "org.apache.hadoop.mapred.TextInputFormat"
     output_format = "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat"
   }
