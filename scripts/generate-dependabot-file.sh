@@ -45,11 +45,11 @@ done
 echo "    schedule:" >> $dependabot_file
 echo "      interval: \"daily\"" >> $dependabot_file
 
-for folder in $all_env_test_folders
-do
-echo "Generating entry for ${folder}"
+echo "Generating entry for Gomod ecosystem"
 echo "  - package-ecosystem: \"gomod\"" >> $dependabot_file
-echo "    directory: \"/${folder}\"" >> $dependabot_file
+echo "    directories:" >> $dependabot_file
+for folder in $all_env_test_folders; do
+  echo "      - \"/$folder\"" >> $dependabot_file
+done
 echo "    schedule:" >> $dependabot_file
 echo "      interval: \"daily\"" >> $dependabot_file
-done
