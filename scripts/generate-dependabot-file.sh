@@ -31,9 +31,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-  # Dependabot doesn't currently support wildcard or multiple directory declarations within
-  # a dependabot configuration, so we need to add all directories individually
-  # See: github.com/dependabot/dependabot-core/issues/2178
 EOL
 
 echo "Generating entry for Terraform ecosystem"
