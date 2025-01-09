@@ -765,7 +765,7 @@ module "data_platform_jml_ecr_repo" {
 
   enable_retrieval_policy_for_lambdas = [
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-apps-and-tools-production"]}:function:data_platform_jml_extract*",
-    "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-data-production"]}:function:data_platform_jml_extract*"
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-data-production"]}:function:data_platform_jml_extract*"
   ]
 
   # Tags
