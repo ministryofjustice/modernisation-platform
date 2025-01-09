@@ -765,7 +765,7 @@ module "data_platform_jml_ecr_repo" {
 
   enable_retrieval_policy_for_lambdas = [
     "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["data-platform-apps-and-tools-production"]}:function:data_platform_jml_extract*",
-    "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-data-production"]}:function:data_platform_jml_extract*"
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["analytical-platform-data-production"]}:function:data_platform_jml_extract*"
   ]
 
   # Tags
@@ -1107,6 +1107,29 @@ module "delius_core_new_tech_web_repo" {
 
   tags_common = local.tags
 }
+
+
+module "delius_core_oracle_observer_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "delius-core-oracle-observer"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["delius-core-development"],
+    local.environment_management.account_ids["delius-core-test"],
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
+
 
 module "analytical_platform_ingestion_notify_ecr_repo" {
   source = "../../modules/app-ecr-repo"

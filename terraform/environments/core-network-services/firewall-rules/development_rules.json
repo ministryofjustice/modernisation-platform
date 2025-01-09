@@ -272,6 +272,20 @@
     "destination_port": "ANY",
     "protocol": "ICMP"
   },
+  "delius_mis_dev_to_hmpps_development_oracledb_1521": {
+    "action": "PASS",
+    "source_ip": "${delius-mis-dev}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "delius_mis_dev_to_hmpps_development_oracledb_1522": {
+    "action": "PASS",
+    "source_ip": "${delius-mis-dev}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "1522",
+    "protocol": "TCP"
+  },
   "hmpps_development_to_delius-mis-dev_icmp": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
@@ -293,11 +307,18 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "hmpps_development_to_delius-mis-dev_oracledb": {
+  "hmpps_development_to_delius-mis-dev_oracledb_1521": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
     "destination_ip": "${delius-mis-dev}",
     "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "hmpps_development_to_delius-mis-dev_oracledb_1522": {
+    "action": "PASS",
+    "source_ip": "${hmpps-development}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "1522",
     "protocol": "TCP"
   },
   "hmpps_development_to_delius-mis-dev-2a_ad_all": {

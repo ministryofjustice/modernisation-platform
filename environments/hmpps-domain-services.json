@@ -1,6 +1,9 @@
 {
   "account-type": "member",
-  "codeowners": ["hosting-migrations", "studio-webops"],
+  "codeowners": [
+    "hosting-migrations",
+    "studio-webops"
+  ],
   "environments": [
     {
       "name": "development",
@@ -17,6 +20,10 @@
         },
         {
           "sso_group_name": "csr-application-support",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "national-applications-reporting-team",
           "level": "instance-management"
         }
       ]
@@ -37,6 +44,10 @@
         {
           "sso_group_name": "csr-application-support",
           "level": "instance-management"
+        },
+        {
+          "sso_group_name": "national-applications-reporting-team",
+          "level": "instance-management"
         }
       ]
     },
@@ -56,6 +67,10 @@
         {
           "sso_group_name": "csr-application-support",
           "level": "instance-management"
+        },
+        {
+          "sso_group_name": "national-applications-reporting-team",
+          "level": "instance-management"
         }
       ]
     },
@@ -74,6 +89,10 @@
         },
         {
           "sso_group_name": "csr-application-support",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "national-applications-reporting-team",
           "level": "instance-management"
         }
       ]
