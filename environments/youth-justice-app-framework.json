@@ -8,7 +8,8 @@
           "sso_group_name": "modernisation-platform-engineers",
           "level": "sandbox"
         }
-      ]
+      ],
+      "additional_reviewers": ["gregi2n", "davidseekins"]
     },
     {
       "name": "test",
@@ -17,7 +18,8 @@
           "sso_group_name": "modernisation-platform-engineers",
           "level": "developer"
         }
-      ]
+      ],
+      "additional_reviewers": ["gregi2n", "davidseekins"]        
     },
     {
       "name": "preproduction",
@@ -26,7 +28,8 @@
           "sso_group_name": "modernisation-platform-engineers",
           "level": "developer"
         }
-      ]
+      ],
+      "additional_reviewers": ["gregi2n", "davidseekins"]     
     },
     {
       "name": "production",
@@ -35,7 +38,8 @@
           "sso_group_name": "modernisation-platform-engineers",
           "level": "developer"
         }
-      ]
+      ],
+      "additional_reviewers": ["gregi2n", "davidseekins"]
     }
   ],
   "tags": {
