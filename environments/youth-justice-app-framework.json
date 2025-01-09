@@ -9,7 +9,7 @@
           "level": "sandbox"
         }
       ]
-      "additional_reviewers": ["gregi2n"]      
+      "additional_reviewers": ["gregi2n", "davidseekins"]
     },
     {
       "name": "test",
@@ -19,7 +19,7 @@
           "level": "developer"
         }
       ]
-      "additional_reviewers": ["gregi2n"]         
+      "additional_reviewers": ["gregi2n", "davidseekins"]        
     },
     {
       "name": "preproduction",
@@ -29,7 +29,7 @@
           "level": "developer"
         }
       ]
-      "additional_reviewers": ["gregi2n"]         
+      "additional_reviewers": ["gregi2n", "davidseekins"]     
     },
     {
       "name": "production",
@@ -39,7 +39,7 @@
           "level": "developer"
         }
       ]
-      "additional_reviewers": ["gregi2n"]         
+      "additional_reviewers": ["gregi2n", "davidseekins"]
     }
   ],
   "tags": {
