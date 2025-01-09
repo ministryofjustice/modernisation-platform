@@ -4,7 +4,7 @@ data "http" "environments_file" {
 }
 
 # TLS certificate data
+# tflint-ignore: terraform_unused_declarations
 data "tls_certificate" "circleci" {
-  # tflint-ignore: terraform_unused_declarations
   url = "https://oidc.circleci.com/org/${data.aws_secretsmanager_secret_version.circleci.secret_string}/.well-known/openid-configuration"
 }
