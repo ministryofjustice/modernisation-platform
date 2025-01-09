@@ -9,6 +9,7 @@
           "level": "sandbox"
         }
       ]
+      "additional_reviewers": ["gregi2n"]      
     },
     {
       "name": "test",
@@ -18,6 +19,7 @@
           "level": "developer"
         }
       ]
+      "additional_reviewers": ["gregi2n"]         
     },
     {
       "name": "preproduction",
@@ -27,6 +29,7 @@
           "level": "developer"
         }
       ]
+      "additional_reviewers": ["gregi2n"]         
     },
     {
       "name": "production",
@@ -36,6 +39,7 @@
           "level": "developer"
         }
       ]
+      "additional_reviewers": ["gregi2n"]         
     }
   ],
   "tags": {
