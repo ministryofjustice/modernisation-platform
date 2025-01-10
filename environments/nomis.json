@@ -98,6 +98,7 @@
           "level": "instance-access"
         }
       ]
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "production",
