@@ -97,8 +97,8 @@
           "sso_group_name": "nomis-access",
           "level": "instance-access"
         }
-      ]
-      "instance_scheduler_skip": ["true"],
+      ],
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "production",
