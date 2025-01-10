@@ -753,14 +753,14 @@ module "data_platform_jml_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-apps-and-tools-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-data-production"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["data-platform-apps-and-tools-production"],
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-apps-and-tools-production"]}:root",
   ]
 
   pull_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["data-platform-apps-and-tools-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-data-production"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["data-platform-apps-and-tools-production"],
+    "arn:aws:iam::${local.environment_management.account_ids["data-platform-apps-and-tools-production"]}:root",
   ]
 
   enable_retrieval_policy_for_lambdas = [
