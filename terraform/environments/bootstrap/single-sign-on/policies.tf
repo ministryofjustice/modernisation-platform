@@ -665,7 +665,8 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "textract:*",
       "wafv2:*",
       "wellarchitected:*",
-      "kinesisanalytics:*"
+      "kinesisanalytics:*",
+      "sagemaker:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
