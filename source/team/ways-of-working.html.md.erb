@@ -47,7 +47,6 @@ review_in: 6 months
     - `Done`: issues here have been implemented, tested, and reviewed.
 - When an issues is `Done` it should be closed
 
-
 ## Git and GitHub Practices
 
 - Maintain good git hygiene (fetch/pull before branching, regular merging, squashing extensive commit lists)
@@ -91,6 +90,7 @@ The following table is to class the changes and to describe the process of commu
 | Requires user action                                    | These are changes that are not backwards compatible and require user's input to be completed (e.g. changes to platform files in the modernisation-platform-environments repository require deploying to users environments).                                                    | Agree within the team on the **deprecation period**. Once the changes are rolled out, communicate it in the ask and update channels. The information should include **what** is changing, its **impact** and **how long** is the deprecation period. During the deprecation period post reminders in the ask and update channels if not all users have actioned. When the deprecation period expires, reach out to users via email using the infrastructure-support contact information from the environment files. Making sure that all users have updated is part of the issue's DoD. | 
 
 ## Spikes
+
 - Timeboxed research tasks (maximum length one sprint)
 - Use `SPIKE:` prefix in issue title
 - Document findings and present to team
@@ -98,7 +98,20 @@ The following table is to class the changes and to describe the process of commu
 - Create [Architectural Decision Record](https://github.com/ministryofjustice/modernisation-platform/tree/main/architecture-decision-record) if outcome is of architectural significance
 
 ## Firebreaks
-- Opportunities for platform improvements
-- Backlog [issues](https://github.com/ministryofjustice/modernisation-platform/issues) with `firebreak` label
-- Schedule team firebreak sprint when sufficient issues accumulate
-- Current stock of labelled issues [here](https://github.com/orgs/ministryofjustice/projects/17/views/41)
+
+A **Firebreak Sprint** is a dedicated sprint held once every quarter, designed to give the team a chance to step back from regular work and focus on tasks that inspire creativity, foster growth, and strengthen our platform and services. It’s a time to innovate, learn, and address areas that don’t fit into the usual sprint cadence.  
+
+### Why do we run Firebreak Sprints?
+
+- **Promote Learning and Growth**: Firebreaks provide the freedom to learn new skills, explore emerging technologies, and invest in personal and professional development.  
+- **Encourage Innovation**: A chance to experiment with tools, processes, or ideas that spark creativity and bring long-term value.  
+- **Enhance Platforms and Services**: Focus on meaningful improvements, like automating tasks or optimizing services, to improve efficiency and reliability.  
+- **Support Team Well-being**: A break from the regular sprint cycle helps refresh the team, prevent burnout, and create a positive and collaborative environment.  
+
+### How do we run Firebreak Sprints?
+
+- **Plan the Schedule**: Firebreak Sprints occur every 6 sprints (5 regular sprints followed by 1 Firebreak Sprint), aligning with a quarterly rhythm.  
+- **Continue Key Ceremonies**: Regular ceremonies, such as sprint planning, will take place to prepare for the following sprint. Team members can choose to work on this planned work during the Firebreak if preferred.  
+- **Encourage Individual Focus**: Team members can choose tasks that matter most to them—whether learning, platform improvements, service optimization, or automation.  
+- **Explore with Purpose**: Experimentation and innovation are highly encouraged. However, major changes to the platform or services may be delayed if they are considered too risky or experimental for immediate rollout.  
+- **Leverage the Ideas Backlog**: We maintain an optional **Firebreak** label on our board to highlight ideas suitable for Firebreak Sprints. These can include tasks focused on innovation, learning, or platform improvements. You can explore the current stock of labelled issues [here](https://github.com/orgs/ministryofjustice/projects/17/views/41).  
