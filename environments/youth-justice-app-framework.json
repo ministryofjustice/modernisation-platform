@@ -19,7 +19,7 @@
           "level": "developer"
         }
       ],
-      "additional_reviewers": ["gregi2n", "davidseekins"]        
+      "additional_reviewers": ["gregi2n", "davidseekins"]
     },
     {
       "name": "preproduction",
@@ -29,7 +29,7 @@
           "level": "developer"
         }
       ],
-      "additional_reviewers": ["gregi2n", "davidseekins"]     
+      "additional_reviewers": ["gregi2n", "davidseekins"]
     },
     {
       "name": "production",
