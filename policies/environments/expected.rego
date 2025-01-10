@@ -36,6 +36,7 @@ expected :=
     "data-and-insights-wepi",
     "data-platform",
     "data-platform-apps-and-tools",
+    "delius-alfresco",
     "delius-core",
     "delius-iaps",
     "delius-jitbit",
