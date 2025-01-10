@@ -4,20 +4,21 @@
       "general": {
         "cidr": "10.26.8.0/21",
         "accounts": [
-          "nomis-test",
-          "oasys-test",
+          "corporate-staff-rostering-test",
+          "delius-alfresco-test",
+          "delius-core-test",
           "delius-jitbit-test",
           "delius-nextcloud-test",
           "digital-prison-reporting-test",
+          "electronic-monitoring-data-test",
+          "hmpps-domain-services-test",
+          "hmpps-oem-test",
           "nomis-combined-reporting-test",
           "nomis-data-hub-test",
-          "corporate-staff-rostering-test",
-          "planetfm-test",
-          "hmpps-oem-test",
-          "hmpps-domain-services-test",
-          "delius-core-test",
+          "nomis-test",
           "oasys-national-reporting-test",
-          "electronic-monitoring-data-test"
+          "oasys-test",
+          "planetfm-test"
         ]
       }
     }

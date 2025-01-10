@@ -4,26 +4,27 @@
       "general": {
         "cidr": "10.26.24.0/21",
         "accounts": [
-          "performance-hub-development",
-          "digital-prison-reporting-development",
-          "electronic-monitoring-data-development",
-          "equip-development",
-          "ppud-development",
-          "refer-monitor-development",
-          "nomis-development",
-          "oasys-development",
+          "corporate-staff-rostering-development",
+          "delius-alfresco-development",
+          "delius-core-development",
           "delius-iaps-development",
           "delius-jitbit-development",
           "delius-mis-development",
           "delius-nextcloud-development",
+          "digital-prison-reporting-development",
+          "electronic-monitoring-data-development",
+          "equip-development",
+          "hmpps-domain-services-development",
+          "hmpps-oem-development",
           "nomis-combined-reporting-development",
           "nomis-data-hub-development",
-          "delius-core-development",
-          "corporate-staff-rostering-development",
+          "nomis-development",
+          "oasys-development",
+          "oasys-national-reporting-development",
+          "performance-hub-development",
           "planetfm-development",
-          "hmpps-oem-development",
-          "hmpps-domain-services-development",
-          "oasys-national-reporting-development"
+          "ppud-development",
+          "refer-monitor-development"
         ]
       }
     }
