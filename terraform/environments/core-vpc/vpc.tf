@@ -80,6 +80,26 @@ locals {
 
   modernisation-platform-domain          = "modernisation-platform.service.justice.gov.uk"
   modernisation-platform-internal-domain = "modernisation-platform.internal"
+
+  # These locals can be used to define custom allow or block list of domains on a per-VPC basis
+  dns_firewall_allowed_domains = {
+    core-vpc-production    = {}
+    core-vpc-preproduction = {}
+    core-vpc-test          = {}
+    core-vpc-development   = {}
+    core-vpc-sandbox = {
+      garden-sandbox = []
+    }
+  }
+  dns_firewall_blocked_domains = {
+    core-vpc-production    = {}
+    core-vpc-preproduction = {}
+    core-vpc-test          = {}
+    core-vpc-development   = {}
+    core-vpc-sandbox = {
+      garden-sandbox = []
+    }
+  }
 }
 
 module "vpc" {
@@ -347,4 +367,25 @@ resource "aws_iam_role" "member_delegation_read_only" {
 resource "aws_iam_role_policy_attachments_exclusive" "member_delegation_read_only" {
   policy_arns = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]
   role_name   = aws_iam_role.member_delegation_read_only.name
+}
+
+# R53 Resolver DNS Firewall
+# By default the AWS managed domain lists are set to ALERT - see https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-dns-firewall-managed-domain-lists.html
+# We will look to switch these to BLOCK in a future PR
+# A custom list of blocked or allowed domains can be defined in locals
+# R53 Query logging is enabled and sends logs to a CloudWatch log group where a metric filters for the firewall alerting on or blocking traffic
+# When the Cloudwatch alarm is triggered, it will send an alert to PagerDuty/Slack
+module "r53_dns_firewall" {
+  for_each = local.vpcs[terraform.workspace]
+  source   = "../../modules/r53-dns-firewall"
+
+  vpc_id = module.vpc[each.key].vpc_id
+
+  allowed_domains = lookup(local.dns_firewall_allowed_domains[terraform.workspace], each.key, [])
+  blocked_domains = lookup(local.dns_firewall_blocked_domains[terraform.workspace], each.key, [])
+
+  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
+
+  tags_prefix = each.key
+  tags_common = local.tags
 }
