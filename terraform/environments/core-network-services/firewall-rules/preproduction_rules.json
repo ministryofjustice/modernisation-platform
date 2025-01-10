@@ -607,5 +607,19 @@
     "destination_ip": "${hmpps-preproduction-general-private-subnets}",
     "destination_port": "6400:6500",
     "protocol": "TCP"
+  },
+  "laa_appstream_to_mp_laa_preproduction": {
+    "action": "PASS",
+    "source_ip": "${laa-appstream-vpc}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "laa_appstream_additional_to_mp_laa_preproduction": {
+    "action": "PASS",
+    "source_ip": "${laa-appstream-vpc_additional}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
   }
 }
