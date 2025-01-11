@@ -48,6 +48,7 @@ updates:
       - "/terraform/environments/data-platform"
       - "/terraform/environments/data-platform-apps-and-tools"
       - "/terraform/environments/delete-account"
+      - "/terraform/environments/delius-alfresco"
       - "/terraform/environments/delius-core"
       - "/terraform/environments/delius-iaps"
       - "/terraform/environments/delius-jitbit"
