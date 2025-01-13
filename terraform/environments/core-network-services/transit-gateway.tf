@@ -24,29 +24,29 @@ resource "aws_ec2_transit_gateway" "transit-gateway" {
   }
 }
 
-# resource "aws_ec2_transit_gateway" "transit-gateway-eu-west-1" {
-#   #checkov:skip=CKV_AWS_331
-#   provider    = aws.modernisation-platform-eu-west-1
-#   description = "Managed by Terraform"
+resource "aws_ec2_transit_gateway" "transit-gateway-eu-west-1" {
+  #checkov:skip=CKV_AWS_331
+  provider    = aws.modernisation-platform-eu-west-1
+  description = "Managed by Terraform"
 
-#   amazon_side_asn                 = "64589"
-#   auto_accept_shared_attachments  = "enable"
-#   default_route_table_association = "disable"
-#   default_route_table_propagation = "disable"
-#   dns_support                     = "enable"
-#   vpn_ecmp_support                = "enable"
+  amazon_side_asn                 = "64589"
+  auto_accept_shared_attachments  = "enable"
+  default_route_table_association = "disable"
+  default_route_table_propagation = "disable"
+  dns_support                     = "enable"
+  vpn_ecmp_support                = "enable"
 
-#   tags = merge(
-#     local.tags,
-#     {
-#       Name = "Modernisation Platform: Transit Gateway"
-#     },
-#   )
+  tags = merge(
+    local.tags,
+    {
+      Name = "Modernisation Platform: Transit Gateway"
+    },
+  )
 
-#   lifecycle {
-#     prevent_destroy = true
-#   }
-# }
+  lifecycle {
+    prevent_destroy = true
+  }
+}
 
 #########################
 # Route table and routes
