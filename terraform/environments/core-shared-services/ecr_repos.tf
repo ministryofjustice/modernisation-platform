@@ -1323,10 +1323,6 @@ module "yjaf_ecr_repo" {
   app_name = "youth-justice-app-framework"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-development"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-test"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-preproduction"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-production"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-development"]}:role/circleci_iam_role",
     "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-test"]}:role/circleci_iam_role",
   ]
