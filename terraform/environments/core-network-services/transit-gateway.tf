@@ -73,7 +73,7 @@ resource "aws_ec2_transit_gateway_route_table" "route-tables-eu-west-1" {
   provider = aws.modernisation-platform-eu-west-1
   for_each = local.networking
 
-  transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
+  transit_gateway_id = aws_ec2_transit_gateway.transit-gateway-eu-west-1.id
 
   tags = merge(
     local.tags,
