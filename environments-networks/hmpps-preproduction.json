@@ -5,6 +5,7 @@
         "cidr": "10.27.0.0/21",
         "accounts": [
           "corporate-staff-rostering-preproduction",
+          "delius-alfresco-preproduction",
           "delius-core-preproduction",
           "delius-iaps-preproduction",
           "delius-jitbit-preproduction",
