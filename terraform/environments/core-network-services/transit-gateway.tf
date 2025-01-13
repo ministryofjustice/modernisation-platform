@@ -69,6 +69,24 @@ resource "aws_ec2_transit_gateway_route_table" "route-tables" {
   }
 }
 
+resource "aws_ec2_transit_gateway_route_table" "route-tables-eu-west-1" {
+  provider = aws.modernisation-platform-eu-west-1
+  for_each = local.networking
+
+  transit_gateway_id = aws_ec2_transit_gateway.transit-gateway.id
+
+  tags = merge(
+    local.tags,
+    {
+      Name = each.key
+    },
+  )
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 # Associate the Inspection VPC attachments with the relevant Transit Gateway route table
 resource "aws_ec2_transit_gateway_route_table_association" "inspection_association" {
   for_each                       = local.networking
