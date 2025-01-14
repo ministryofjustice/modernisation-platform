@@ -13,6 +13,12 @@ provider "aws" {
 }
 
 provider "aws" {
+  alias  = "modernisation-platform-eu-west-1"
+  region = "eu-west-1"
+
+}
+
+provider "aws" {
   alias  = "aws-us-east-1"
   region = "us-east-1"
   assume_role {
