@@ -26,7 +26,7 @@ resource "aws_ec2_transit_gateway" "transit-gateway" {
 
 resource "aws_ec2_transit_gateway" "transit-gateway-eu-west-1" {
   #checkov:skip=CKV_AWS_331
-  provider    = aws.modernisation-platform-eu-west-1
+  provider    = aws.core-eu-west-1
   description = "Managed by Terraform"
 
   amazon_side_asn                 = "64589"
@@ -70,7 +70,7 @@ resource "aws_ec2_transit_gateway_route_table" "route-tables" {
 }
 
 resource "aws_ec2_transit_gateway_route_table" "route-tables-eu-west-1" {
-  provider = aws.modernisation-platform-eu-west-1
+  provider = aws.core-eu-west-1
   for_each = local.networking
 
   transit_gateway_id = aws_ec2_transit_gateway.transit-gateway-eu-west-1.id
