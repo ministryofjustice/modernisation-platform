@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Get IAM users in the "collaborators" group along with their last console login activity
 users=$(aws iam get-group --group-name collaborators --query 'Users[*].[UserName,PasswordLastUsed]' --output text)
 if [ $? -ne 0 ]; then
@@ -23,29 +22,40 @@ while read -r username lastactivity; do
       continue;
     fi
   fi
+  # Check if last console login activity is "None"
+  if [ "$lastactivity" == "None" ]; then
+    # Retrieve the creation date of the user
+    creation_date=$(aws iam get-user --user-name "$username" --query 'User.CreateDate' --output text)
 
-  # Check if last console login activity is more than or equal to threshold days or is "None"
-  if [ "$lastactivity" == "None" ] || [ "$(date -d "$lastactivity" +%s)" -le "$(date -d "now - $threshold days" +%s)" ]; then
-    # Get information about the access keys for the current user
-    access_keys=$(aws iam list-access-keys --user-name "$username" --query 'AccessKeyMetadata[].AccessKeyId' --output text)
-    
-    # Initialize a flag to track if the user meets the criteria
-    meets_criteria=1
-    
-    # Loop through each access key for the current user
-    for access_key_id in $access_keys; do
-      # Get the last used information for the access key
-      last_used=$(aws iam get-access-key-last-used --access-key-id "$access_key_id" --query 'AccessKeyLastUsed.LastUsedDate' --output text)
-      if [ "$last_used" != "None" ] && [ "$(date -d "$last_used" +%s)" -ge "$(date -d "now - $threshold days" +%s)" ]; then
-        # If any access key was used within the last threshold days, user does not meet the criteria
-        meets_criteria=0
-        break
-      fi
-    done
-    
-    # If user meets the criteria, add them to the final list
-    if [ "$meets_criteria" -eq 1 ]; then
+    # Compare the creation date with the threshold
+    if [ "$(date -d "$creation_date" +%s)" -le "$(date -d "now - $threshold days" +%s)" ]; then
+      # User's creation date is older than the threshold, add them to the final list
       final_users+=" $username"
+    fi
+  else
+    # Check if last console login activity is more than or equal to threshold days or is "None"
+    if [ "$(date -d "$lastactivity" +%s)" -le "$(date -d "now - $threshold days" +%s)" ]; then
+      # Get information about the access keys for the current user
+      access_keys=$(aws iam list-access-keys --user-name "$username" --query 'AccessKeyMetadata[].AccessKeyId' --output text)
+
+      # Initialize a flag to track if the user meets the criteria
+      meets_criteria=1
+
+      # Loop through each access key for the current user
+      for access_key_id in $access_keys; do
+        # Get the last used information for the access key
+        last_used=$(aws iam get-access-key-last-used --access-key-id "$access_key_id" --query 'AccessKeyLastUsed.LastUsedDate' --output text)
+        if [ "$last_used" != "None" ] && [ "$(date -d "$last_used" +%s)" -ge "$(date -d "now - $threshold days" +%s)" ]; then
+          # If any access key was used within the last threshold days, user does not meet the criteria
+          meets_criteria=0
+          break
+        fi
+      done
+    
+      # If user meets the criteria, add them to the final list
+      if [ "$meets_criteria" -eq 1 ]; then
+        final_users+=" $username"
+      fi
     fi
   fi
 done <<< "$users"
