@@ -49,6 +49,32 @@
     "owner": "YJAFoperationsAWS@necsws.com",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [""],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/yjaf-auth",
+    "ministryofjustice/yjaf-bands",
+    "ministryofjustice/yjaf-workflow",
+    "ministryofjustice/yjaf-sentences",
+    "ministryofjustice/yjaf-placements",
+    "ministryofjustice/yjaf-serious-incidents",
+    "ministryofjustice/yjaf-case",
+    "ministryofjustice/yjaf-cmm",
+    "ministryofjustice/yjaf-conversions",
+    "ministryofjustice/yjaf-documents",
+    "ministryofjustice/yjaf-dal",
+    "ministryofjustice/yjaf-bed-unlock",
+    "ministryofjustice/yjaf-refdata",
+    "ministryofjustice/yjaf-returns",
+    "ministryofjustice/yjaf-transfers",
+    "ministryofjustice/yjaf-views",
+    "ministryofjustice/yjaf-yp",
+    "ministryofjustice/yjaf-transitions",
+    "ministryofjustice/yjaf-gateway",
+    "ministryofjustice/yjaf-ui",
+    "ministryofjustice/yjaf-assets",
+    "ministryofjustice/yjsm-hub",
+    "ministryofjustice/yjsm-hubadmin",
+    "ministryofjustice/yjsm-ui",
+    "ministryofjustice/yjsm-hub-svc"
+  ],
   "go-live-date": ""
 }

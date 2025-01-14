@@ -32,7 +32,7 @@
   "tags": {
     "application": "dacp",
     "business-unit": "HMCTS",
-    "infrastructure-support": "DTS-ITServiceDesk@justice.gov.uk",
+    "infrastructure-support": "dts-legacy-apps-support-team@HMCTS.NET",
     "owner": "DTS-ITServiceDesk@justice.gov.uk",
     "critical-national-infrastructure": false
   },

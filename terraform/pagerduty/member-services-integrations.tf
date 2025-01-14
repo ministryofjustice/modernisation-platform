@@ -1423,6 +1423,57 @@ resource "pagerduty_slack_connection" "delius_core_nonprod_connection" {
   }
 }
 
+# Slack channel: #hmpps-delius-core-alerts-prod
+# Delius Core Prod
+resource "pagerduty_service" "delius_core_prod" {
+  name                    = "Delius Core Prod"
+  description             = "Delius Core Prod Alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "delius_core_prod_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.delius_core_prod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "delius_core_prod_connection" {
+  source_id         = pagerduty_service.delius_core_prod.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C07LTH1C5E0"
+  notification_type = "responder"
+  lifecycle {
+    ignore_changes = [
+      config,
+    ]
+  }
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
 # Slack channel: #hmpps-delius-nextcloud-alerts-nonprod
 # Delius Nextcloud Non Prod
 resource "pagerduty_service" "delius_nextcloud_nonprod" {
