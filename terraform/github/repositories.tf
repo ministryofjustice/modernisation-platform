@@ -263,6 +263,14 @@ module "modernisation-platform-environments" {
   dismissal_restrictions = ["ministryofjustice/modernisation-platform"]
 }
 
+module "modernisation-platform-github-actions" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-github-actions"
+  type        = "core"
+  description = "A collection of reusable GitHub Actions for the Modernisation Platform, designed to streamline and enhance workflows across our projects. This repository is defined and managed in Terraform."
+  topics      = ["modernisation-platform"]
+}
+
 module "terraform-module-aws-loadbalancer" {
   source      = "./modules/repository"
   name        = "modernisation-platform-terraform-loadbalancer"
