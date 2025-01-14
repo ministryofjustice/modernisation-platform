@@ -13,6 +13,10 @@
           "sso_group_name": "studio-webops",
           "level": "sandbox",
           "nuke": "rebuild"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
         }
       ]
     },
@@ -29,6 +33,10 @@
         },
         {
           "sso_group_name": "csr-application-support",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
           "level": "developer"
         }
       ]
@@ -63,6 +71,10 @@
         },
         {
           "sso_group_name": "csr-application-support",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
           "level": "developer"
         }
       ]
