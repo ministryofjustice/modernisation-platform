@@ -1,0 +1,160 @@
+---
+owner_slack: "#modernisation-platform"
+title: Modernisation Platform
+last_reviewed_on: 2025-01-06
+review_in: 6 months
+weight: 0
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+
+The Modernisation Platform is a hosting platform where Ministry of Justice teams can host and modernise applications which are not suitable for the [Cloud Platform](https://user-guide.cloud-platform.service.justice.gov.uk/#cloud-platform-user-guide).
+
+This repository holds the Ministry of Justice's Modernisation Platform concepts, team information, team guide, and user guide to help onboard and support the users of our service.
+
+
+## Who is this for?
+
+This documentation is for anyone interested in the Modernisation Platform and its core concepts; for users of the Modernisation Platform; and for the team.
+
+## User guide
+
+- [Should I use the Cloud Platform, or the Modernisation Platform?](user-guide/cloud-platform-or-modernisation-platform.html)
+- [Our offer to you](user-guide/our-offer-to-you.html)
+- [Sustainability](user-guide/sustainability.html)
+
+### Getting started
+- [Creating environments (aka AWS accounts)](user-guide/creating-environments.html)
+- [Creating networking resources](user-guide/creating-networking.html)
+- [Accessing the AWS Console](user-guide/accessing-the-aws-console.html)
+- [Getting AWS Credentials](user-guide/getting-aws-credentials.html)
+- [Creating resources](user-guide/creating-resources.html)
+- [Deploying your infrastructure](user-guide/deploying-your-infrastructure.html)
+- [Deploying your application](user-guide/deploying-your-application.html)
+- [Standard environment diagram](user-guide/environment-diagram.html)
+- [Working as a Collaborator](user-guide/working-as-a-collaborator.html)
+- [Production Ready Checklist](user-guide/production-ready-checklist.html)
+
+### How to guides
+- [Running Terraform plan locally](user-guide/running-terraform-plan-locally.html)
+- [Accessing EC2s](user-guide/accessing-ec2s.html)
+- [Wider MoJ Connectivity](user-guide/wider-moj-connectivity.html)
+- [How to add VPC endpoints](user-guide/adding-vpc-endpoints.html)
+- [How to configure DNS for public services](user-guide/how-to-configure-dns.html)
+- [How to import a public SSL certificate into AWS Certificate Manager](user-guide/certificate-import.html)
+- [How to view core account/shared resources as a Member Developer](user-guide/member-read-only-core-accounts.html)
+- [How to use shared KMS keys](user-guide/how-to-use-shared-kms-keys.html)
+- [How to integrate CloudWatch Alarms with PagerDuty and Slack](user-guide/integrating-alarms-with-pagerduty-with-slack.html)
+- [How to set up automated patching](user-guide/automated-patching.html)
+- [How to add an ECR for shared Docker images](user-guide/add-an-ecr-for-docker-images.html)
+- [How to setup code scanning locally](user-guide/how-to-setup-code-scanning-locally.html)
+- [How to setup secure commit for git hub](/user-guide/how-to-setup-secure-commit.html)
+
+## Concepts
+
+### Environments (AWS Accounts)
+- [The problem and our solution](concepts/environments/problem-and-solution.html)
+- [Environment Architecture](concepts/environments/architecture.html)
+- [Security](concepts/environments/security.html)
+- [Single Sign On](concepts/environments/single-sign-on.html)
+- [Backups](concepts/environments/backups.html)
+
+### Shared services and tools
+
+- [Auto-nuke](concepts/environments/auto-nuke.html)
+- [Instance Scheduling - automatically stop non-production instances overnight](concepts/environments/instance-scheduling.html)
+- [Platform user roles](user-guide/platform-user-roles.html)
+
+### Networking
+- [Networking approach](concepts/networking/networking-approach.html)
+- [Networking Architecture Diagram](concepts/networking/networking-diagram.html)
+- [Subnet CIDR Allocation](concepts/networking/subnet-allocation.html)
+- [Subnet NACLs](concepts/networking/subnet-nacls.html)
+- [Bastions and Instance Access](concepts/networking/instance-access-and-bastions.html)
+- [DNS](concepts/networking/dns.html)
+- [Certificate Services](concepts/networking/certificate-services.html)
+- [Network Firewall](concepts/networking/network-firewall.html)
+
+### Software Development Lifecycle
+- [Repositories](concepts/sdlc/repositories.html)
+- [Core Workflows (CI/CD)](concepts/sdlc/core-workflow.html)
+- [User Workflows (CI/CD)](concepts/sdlc/user-workflow.html)
+- [Testing Strategy](concepts/sdlc/testing-strategy.html)
+- [Sandbox and testing environments](concepts/sdlc/sandbox-testing-environments.html)
+- [Patching](concepts/sdlc/patching.html)
+
+## Modernisation Platform Team information
+- [Our alliance](team/alliance.html)
+- [Our roadmap](team/roadmap.html)
+- [Our team](team/team.html)
+- [Our vision](team/vision.html)
+- [Operational Processes](team/operational-processes.html)
+- [Our ways of working](team/ways-of-working.html)
+
+## Runbooks
+- [Accessing AWS accounts](runbooks/accessing-aws-accounts.html)
+- [Accessing the Observability Platform](runbooks/accessing-the-observability-platform.html)
+- [Adding a new SSO user role](runbooks/adding-a-new-sso-user-role.html)
+- [Adding a new team member to the Modernisation Platform](runbooks/adding-a-new-team-member.html)
+- [Adding collaborators](runbooks/adding-collaborators.html)
+- [Adding wider connectivity](runbooks/adding-wider-connectivity.html)
+- [Backup and Restore of Terraform Statefile & EC2](runbooks/backup-restore-process.html)
+- [Changing environment (AWS account) details](runbooks/changing-environment-details.html)
+- [CloudWatch networking alarms](runbooks/cloudwatch-networking-alarms.html)
+- [Creating Automated Terraform Documentation](user-guide/creating-automated-terraform-documentation.html)
+- [Creating new DNS zones](runbooks/creating-new-dns-zones.html)
+- [Creating new Private DNS zones](runbooks/creating-new-private-dns-zones.html)
+- [Creating VPCs](runbooks/creating-vpcs.html)
+- [Deleting an environment (AWS account)](runbooks/deleting-an-environment.html)
+- [Disaster recovery offering](runbooks/disaster-recovery.html)
+- [Disaster recovery steps](runbooks/dr-process.html)
+- [DoS Attack](runbooks/dos-attack.html)
+- [Duty Rota](runbooks/duty-rota.html)
+- [Enabling AWS Shield Advanced](runbooks/enabling-shield-advanced.html)
+- [Environments-networks json explained](user-guide/environments-networks-json-explained.html)
+- [How to create an AWS account for end users](runbooks/creating-accounts-for-end-users.html)
+- [How to rotate secrets](runbooks/rotating-secrets.html)
+- [How to update external status page](user-guide/how-to-update-pagerduty-status-page.html)
+- [How VPCs access the internet](runbooks/how-vpcs-access-the-internet.html)
+- [Joining the team](runbooks/joining-the-team.html)
+- [Manage an incident](runbooks/manage-an-incident.html)
+- [Main Platform Runbook](runbooks/runbook.html)
+- [Migrating an existing AWS account into the Modernisation Platform](runbooks/migrating-an-account-into-the-modernisation-platform.html)
+- [Modifying Service Control Policies (SCPs)](runbooks/modifying-scps.html)
+- [Querying CloudTrail logs with Athena](runbooks/using-athena.html)
+- [Querying VPC flow logs](runbooks/querying-vpc-flow-logs.html)
+- [Recreating the core-logging-production account](runbooks/recreate-core-logging-production-account.html)
+- [Recreating the core-network-services account](runbooks/recreate-core-network-services-account.html)
+- [Recreating the core-shared-services account](runbooks/recreate-core-shared-services-production.html)
+- [Recreating the core-vpc-$environments accounts](runbooks/recreate-core-vpc-$environment-accounts.html)
+- [Recreating the modernisation-platform account](runbooks/recreate-modernisation-platform-account.html)
+- [Removing a team member from the Modernisation Platform](runbooks/removing-a-team-member.html)
+- [Reviewing Dependabot PRs](runbooks/reviewing-dependabot-prs.html)
+- [Reviewing MP Environments PRs](runbooks/reviewing-mp-environments-prs.html)
+- [Revoke Network Access](runbooks/revoke-network-access.html)
+- [Revoking User Access](runbooks/revoking-user-access.html)
+- [Security Monitoring](runbooks/security-monitoring.html)
+- [Security Testing and ITHC](user-guide/security-testing-and-ithc.html)
+- [Excluding accounts from the Instance Scheduler](runbooks/instance-scheduler-excluding-accounts.html)
+- [Sharing of platform operational data with Security Operations](runbooks/integration-with-protective-monitoring.html)
+- [Terraform](runbooks/terraform.html)
+- [Useful scripts](runbooks/useful-scripts.html)
+- [Oracle License Discovery](runbooks/oracle-license-discovery.html)
+
+## Getting help
+- [Ask for help](getting-help)
+
+## Checking Modernisation platform status
+To check the operational status of the Modernisation Platform click on the link below, this page will display the current status of any incidents as well as any planned maintenance windows.
+
+[External status page](https://status.modernisation-platform.service.justice.gov.uk)
