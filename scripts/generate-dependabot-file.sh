@@ -31,22 +31,25 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+  # Dependabot doesn't currently support wildcard or multiple directory declarations within
+  # a dependabot configuration, so we need to add all directories individually
+  # See: github.com/dependabot/dependabot-core/issues/2178
 EOL
 
-echo "Generating entry for Terraform ecosystem"
+for folder in $all_tf_folders
+do
+echo "Generating entry for ${folder}"
 echo "  - package-ecosystem: \"terraform\"" >> $dependabot_file
-echo "    directories:" >> $dependabot_file
-for folder in $all_tf_folders; do
-  echo "      - \"/$folder\"" >> $dependabot_file
-done
+echo "    directory: \"/${folder}\"" >> $dependabot_file
 echo "    schedule:" >> $dependabot_file
 echo "      interval: \"daily\"" >> $dependabot_file
+done
 
-echo "Generating entry for Gomod ecosystem"
+for folder in $all_env_test_folders
+do
+echo "Generating entry for ${folder}"
 echo "  - package-ecosystem: \"gomod\"" >> $dependabot_file
-echo "    directories:" >> $dependabot_file
-for folder in $all_env_test_folders; do
-  echo "      - \"/$folder\"" >> $dependabot_file
-done
+echo "    directory: \"/${folder}\"" >> $dependabot_file
 echo "    schedule:" >> $dependabot_file
 echo "      interval: \"daily\"" >> $dependabot_file
+done

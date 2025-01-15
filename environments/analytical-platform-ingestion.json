@@ -10,7 +10,8 @@
           "level": "sandbox",
           "nuke": "exclude"
         }
-      ]
+      ],
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "production",
