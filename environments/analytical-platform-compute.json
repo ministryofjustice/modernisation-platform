@@ -13,7 +13,8 @@
           "sso_group_name": "analytical-platform",
           "level": "data-engineer"
         }
-      ]
+      ],
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "test",
@@ -30,7 +31,8 @@
           "sso_group_name": "analytical-platform",
           "level": "quicksight-admin"
         }
-      ]
+      ],
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "production",
