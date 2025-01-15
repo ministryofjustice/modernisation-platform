@@ -18,13 +18,13 @@ review_in: 6 months
 
 ## Background
 
-There are some categories of Modernisation Platform accounts that are meant to be excluded from the Instance Scheduler: 
+There are some Modernisation Platform accounts that should be excluded from the Instance Scheduler: 
 
 - Non-member accounts which do not have the cross-account role & policies added during deployment. Any attempt by the scheduler to access these accounts would fail with an AccessDenied error and as such they are excluded.
 
 - Production member accounts. These are out of the scope of the scheduler to avoid loss of service availability.
 
-- Those member accounts that users have requested are skipped by the scheduler.
+- Those non-production member accounts that users have requested are skipped by the scheduler.
 
 ## How Instance Scheduler Determines which accounts are in scope
 
@@ -38,7 +38,7 @@ The scheduler parses the each of the json files & from that data can identify th
 
 - The field "instance_scheduler_skip": ["true"] exists in the environment list for the account in question.
 
-### Setting an Account to be skipped by the Scheduler
+## Setting an Account to be skipped by the Scheduler
 
 Below is an example of an account .json file with the scheduler skip field added:
 
@@ -69,7 +69,7 @@ Below is an example of an account .json file with the scheduler skip field added
 
 ```
 
-### Checking whether an Account was Skipped
+## Checking whether an Account was Skipped
 
 The workflow "Build-test-push" workflow of the Instance Scheduler [repository](https://github.com/ministryofjustice/modernisation-platform-instance-scheduler) will show the log output of any unit tests of the Go source and specifically details of any accounts that were excluded & why.
 
@@ -83,3 +83,6 @@ extractNames - Skipping due to instance_scheduler_skip: nomis.preproduction
 extractNames - Skipping due to production: nomis.production
 ```
 
+## References:
+
+- https://github.com/ministryofjustice/modernisation-platform-instance-scheduler
