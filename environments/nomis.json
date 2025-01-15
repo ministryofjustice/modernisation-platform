@@ -73,6 +73,10 @@
         {
           "sso_group_name": "azure-aws-sso-nomis-access",
           "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
         }
       ]
     },
@@ -108,6 +112,10 @@
         {
           "sso_group_name": "azure-aws-sso-nomis-access",
           "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
         }
       ],
       "instance_scheduler_skip": ["true"]
@@ -144,6 +152,10 @@
         {
           "sso_group_name": "azure-aws-sso-nomis-access",
           "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
         }
       ]
     }

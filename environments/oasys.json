@@ -20,6 +20,10 @@
         {
           "sso_group_name": "oasys-access",
           "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
         }
       ]
     },
@@ -43,6 +47,10 @@
         {
           "sso_group_name": "oasys-access",
           "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
         }
       ]
     },
@@ -66,6 +74,10 @@
         {
           "sso_group_name": "oasys-access",
           "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
         }
       ]
     },
@@ -89,6 +101,10 @@
         {
           "sso_group_name": "oasys-access",
           "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
         }
       ]
     }
