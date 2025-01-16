@@ -42,6 +42,9 @@ jobs:
     needs: retrieve-secrets
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@ce6aae491e57d583c65ae6e83ae58cd7d02a13da # v1.0.0
         with:
