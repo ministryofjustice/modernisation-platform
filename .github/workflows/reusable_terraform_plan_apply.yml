@@ -51,6 +51,7 @@ jobs:
         with:
           environment_management: ${{ needs.retrieve-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.retrieve-secrets.outputs.slack_webhook_url }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
       - name: Set up variables
         id: vars
