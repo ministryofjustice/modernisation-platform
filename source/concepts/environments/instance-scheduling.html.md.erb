@@ -40,6 +40,52 @@ Here's a Terraform example of how to add the relevant tag for any EC2 and RDS in
 
 Ordering instances and automatically stopping them on public holidays is not supported using this option.
 
+## Setting non-production Member Accounts to the Skipped
+
+For convenience, it is possible to flag an entire non-production member account to be skipped. This is done via the addition of the field "instance_scheduler_skip": ["true"] to the environment list in the account .json file in modernisation-platform/environments.
+
+The example below shows this:
+
+```
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "developer",
+          "nuke": "rebuild"
+        },
+        ---
+      ],
+      "instance_scheduler_skip": ["true"]
+    }
+  ],
+  "tags": {
+    "application": "modernisation-platform",
+     ---
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}
+
+```
+
+To check whether an account being skipped or not, check the logs of the latest workflow "Build-test-push" in the Instance Scheduler [repository](https://github.com/ministryofjustice/modernisation-platform-instance-scheduler). It will show the log output of any unit tests of the Go source and specifically details of any accounts that were excluded & why.
+
+For example:
+
+```
+Account is of type member: nomis
+extractNames - Found name: nomis.development
+extractNames - Found name: nomis.test
+extractNames - Skipping due to instance_scheduler_skip: nomis.preproduction
+extractNames - Skipping due to production: nomis.production
+```
+
+
 ## Custom Shutdown & Startup Schedules
 
 For those teams that require the shutdown & startup of ec2 & rds resources in a specific order or at different times, the option exists to make use of github workflows & cron schedules to stop & start services.
