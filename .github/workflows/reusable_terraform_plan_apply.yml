@@ -51,6 +51,9 @@ jobs:
         with:
           environment_management: ${{ needs.retrieve-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.retrieve-secrets.outputs.slack_webhook_url }}
+          pagerduty_token: ${{ needs.retrieve-secrets.outputs.pagerduty_token }}
+          pagerduty_userapi_token: ${{ needs.retrieve-secrets.outputs.pagerduty_userapi_token }}
+          terraform_github_token: ${{ needs.retrieve-secrets.outputs.terraform_github_token }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
       - name: Set up variables

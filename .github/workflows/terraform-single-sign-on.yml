@@ -6,6 +6,7 @@ on:
       - 'terraform/single-sign-on/**'
       - '!**.md'
       - '.github/workflows/terraform-single-sign-on.yml'
+      - '.github/workflows/reusable_terraform_plan_apply.yml'
     branches:
       - main
   pull_request:
@@ -13,6 +14,7 @@ on:
       - 'terraform/single-sign-on/**'
       - '!**.md'
       - '.github/workflows/terraform-single-sign-on.yml'
+      - '.github/workflows/reusable_terraform_plan_apply.yml'
     branches:
       - main
     types: [opened, edited, reopened, synchronize]
@@ -33,5 +35,5 @@ jobs:
       working-directory: "terraform/single-sign-on"
       workflow_id: "single-sign-on"
     secrets:
-      modernisation_platform_environments: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: "${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}"
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}

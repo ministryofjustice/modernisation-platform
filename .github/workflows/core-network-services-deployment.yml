@@ -12,6 +12,7 @@ on:
       - 'terraform/modules/firewall-policy/**'
       - '!**.md'
       - '.github/workflows/core-network-services-deployment.yml'
+      - '.github/workflows/reusable_terraform_plan_apply.yml'
   pull_request:
     branches:
       - main
@@ -21,6 +22,7 @@ on:
       - 'terraform/modules/core-monitoring/**'
       - '!**.md'
       - '.github/workflows/core-network-services-deployment.yml'
+      - '.github/workflows/reusable_terraform_plan_apply.yml'
   workflow_dispatch:
 
 permissions:
@@ -38,5 +40,5 @@ jobs:
       working-directory: "terraform/environments/core-network-services"
       environment: production
     secrets:
-      modernisation_platform_environments: "${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}"
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: "${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}"
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}

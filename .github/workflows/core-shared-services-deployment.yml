@@ -12,6 +12,7 @@ on:
       - 'terraform/modules/kms/**'
       - '!**.md'
       - '.github/workflows/core-shared-services-deployment.yml'
+      - '.github/workflows/reusable_terraform_plan_apply.yml'
   pull_request:
     branches:
       - main
@@ -22,6 +23,7 @@ on:
       - 'terraform/modules/kms/**'
       - '!**.md'
       - '.github/workflows/core-shared-services-deployment.yml'
+      - '.github/workflows/reusable_terraform_plan_apply.yml'
   workflow_run:
     workflows: ["Terraform: New environment"]
     types: [completed]
@@ -43,5 +45,5 @@ jobs:
       working-directory: "terraform/environments/core-shared-services"
       environment: production
     secrets:
-      modernisation_platform_environments: "${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}"
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: "${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}"
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}

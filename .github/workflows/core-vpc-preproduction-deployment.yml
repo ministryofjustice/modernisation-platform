@@ -19,6 +19,7 @@ on:
       - 'terraform/modules/vpc-nacls/**'
       - 'terraform/modules/ram-resource-share/**'
       - 'terraform/modules/core-vpc-tgw-routes/**'
+      - '.github/workflows/reusable_terraform_plan_apply.yml'
       - '!**.md'
   pull_request:
     branches:
@@ -37,6 +38,7 @@ on:
       - 'terraform/modules/vpc-nacls/**'
       - 'terraform/modules/ram-resource-share/**'
       - 'terraform/modules/core-vpc-tgw-routes/**'
+      - '.github/workflows/reusable_terraform_plan_apply.yml'
       - '!**.md'
   workflow_dispatch:
 
@@ -59,8 +61,8 @@ jobs:
       working-directory: "terraform/environments/core-vpc"
       environment: preproduction
     secrets:
-      modernisation_platform_environments: "${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}"
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: "${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}"
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   member-account-ram-association:
     runs-on: [ ubuntu-latest ]
