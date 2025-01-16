@@ -24,25 +24,10 @@ on:
         description: 'Unique ID for the calling workflow'
         required: false
         type: string
-    secrets:
-      modernisation_platform_environments:
-        required: true
-      SLACK_WEBHOOK_URL:
-        required: true
-      pagerduty_token:
-        required: false
-      pagerduty_userapi_token:
-        required: false
-      gh_workflow_token: 
-        required: false
 
 env:
-  ENVIRONMENT_MANAGEMENT: "${{ secrets.modernisation_platform_environments }}"
-  TF_VAR_github_token: "${{ secrets.gh_workflow_token }}"
   TF_IN_AUTOMATION: true
-  TF_VAR_pagerduty_token: ${{ secrets.pagerduty_token }}
-  TF_VAR_pagerduty_user_token: ${{ secrets.pagerduty_userapi_token }}
-
+  
 jobs:
   plan-and-apply:
     runs-on: ubuntu-latest
