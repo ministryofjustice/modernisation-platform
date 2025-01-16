@@ -11,7 +11,6 @@ on:
       - 'terraform/modules/core-monitoring/**'
       - '!**.md'
       - '.github/workflows/core-security-deployment.yml'
-      - '.github/workflows/reusable_terraform_plan_apply.yml'
   pull_request:
     branches:
       - main
@@ -21,7 +20,6 @@ on:
       - 'terraform/modules/core-monitoring/**'
       - '!**.md'
       - '.github/workflows/core-security-deployment.yml'
-      - '.github/workflows/reusable_terraform_plan_apply.yml'
   workflow_dispatch:
 
 permissions:

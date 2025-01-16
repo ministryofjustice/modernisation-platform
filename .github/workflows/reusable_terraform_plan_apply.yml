@@ -24,16 +24,33 @@ on:
         description: 'Unique ID for the calling workflow'
         required: false
         type: string
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER:
+        required: true
+      PASSPHRASE:
+        required: true
 
 env:
   TF_IN_AUTOMATION: true
-  
+
 jobs:
+  retrieve-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@ce6aae491e57d583c65ae6e83ae58cd7d02a13da # v1.0.0
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
   plan-and-apply:
     runs-on: ubuntu-latest
+    needs: retrieve-secrets
     steps:
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@ce6aae491e57d583c65ae6e83ae58cd7d02a13da # v1.0.0
+        with:
+          environment_management: ${{ needs.retrieve-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.retrieve-secrets.outputs.slack_webhook_url }}
 
       - name: Set up variables
         id: vars
@@ -133,4 +150,4 @@ jobs:
           payload: |
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}

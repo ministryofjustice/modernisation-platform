@@ -7,7 +7,6 @@ on:
       - '!**.md'
       - '.github/workflows/modernisation-platform-account.yml'
       - 'collaborators.json'
-      - '.github/workflows/reusable_terraform_plan_apply.yml'
     branches:
       - main
   pull_request:
@@ -16,7 +15,6 @@ on:
       - '!**.md'
       - '.github/workflows/modernisation-platform-account.yml'
       - 'collaborators.json'
-      - '.github/workflows/reusable_terraform_plan_apply.yml'
     branches:
       - main
     types: [opened, edited, reopened, synchronize]

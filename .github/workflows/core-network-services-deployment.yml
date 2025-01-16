@@ -12,7 +12,6 @@ on:
       - 'terraform/modules/firewall-policy/**'
       - '!**.md'
       - '.github/workflows/core-network-services-deployment.yml'
-      - '.github/workflows/reusable_terraform_plan_apply.yml'
   pull_request:
     branches:
       - main
@@ -22,7 +21,6 @@ on:
       - 'terraform/modules/core-monitoring/**'
       - '!**.md'
       - '.github/workflows/core-network-services-deployment.yml'
-      - '.github/workflows/reusable_terraform_plan_apply.yml'
   workflow_dispatch:
 
 permissions:

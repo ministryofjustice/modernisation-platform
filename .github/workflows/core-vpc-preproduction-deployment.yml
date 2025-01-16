@@ -19,7 +19,6 @@ on:
       - 'terraform/modules/vpc-nacls/**'
       - 'terraform/modules/ram-resource-share/**'
       - 'terraform/modules/core-vpc-tgw-routes/**'
-      - '.github/workflows/reusable_terraform_plan_apply.yml'
       - '!**.md'
   pull_request:
     branches:
@@ -38,7 +37,6 @@ on:
       - 'terraform/modules/vpc-nacls/**'
       - 'terraform/modules/ram-resource-share/**'
       - 'terraform/modules/core-vpc-tgw-routes/**'
-      - '.github/workflows/reusable_terraform_plan_apply.yml'
       - '!**.md'
   workflow_dispatch:
 
