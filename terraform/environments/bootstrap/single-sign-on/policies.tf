@@ -214,7 +214,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "ec2:DescribeSnapshotTierStatus",
       "ec2:ModifySnapshotAttribute",
       "ec2:ModifyImageAttribute",
-      "ec2:ModifySnapshotTier"
+      "ec2:ModifySnapshotTier",
       # *************************************
       "cloudwatch:DisableAlarmActions",
       "cloudwatch:EnableAlarmActions",
