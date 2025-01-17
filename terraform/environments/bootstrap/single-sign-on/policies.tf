@@ -192,6 +192,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "athena:List*",
       "athena:St*",
       "aws-marketplace:ViewSubscriptions",
+      "backup:StartBackupJob",
       "cloudwatch:DisableAlarmActions",
       "cloudwatch:EnableAlarmActions",
       "cloudwatch:PutDashboard",
