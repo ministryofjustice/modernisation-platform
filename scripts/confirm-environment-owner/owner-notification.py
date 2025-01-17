@@ -40,7 +40,7 @@ def send_email(env_name, issue_url, email_address):
 
     client = NotificationsAPIClient(api_key=api_key)
 
-    print("These are the data fields defined in the Notify template which are used in the email:")
+    print("These are the data fields being passed in to populate the email:")
     print(env_name)
     print(email_address)
     print(issue_url)
@@ -48,7 +48,7 @@ def send_email(env_name, issue_url, email_address):
     # Prepare the dynamic subject
     subject = f"Modernisation Platform – Review & confirm owner contact details – {env_name}"
 
-    # This list are the parameters being added which are used by the gov notify template.
+    # This list is the parameters being used populate the email.
     personalisation = {
         "environment": env_name,
         "owner": email_address,
