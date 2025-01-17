@@ -42,14 +42,11 @@ on:
       - '!**.md'
   workflow_dispatch:
 
-env:
-  AWS_REGION: "eu-west-2"
-  ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-  TF_ENV: "preproduction"
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
   pull-requests: write
+  
 defaults:
   run:
     shell: bash
@@ -59,7 +56,8 @@ jobs:
     uses: ./.github/workflows/reusable_terraform_plan_apply.yml
     with:
       working-directory: "terraform/environments/core-vpc"
-      environment: preproduction
+      environment: "preproduction"
+      run_ram_association: true
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: "${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}"
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
