@@ -265,6 +265,8 @@ data "aws_iam_policy_document" "developer_additional" {
       "s3:PutObjectAcl",
       "s3:RestoreObject",
       "s3:*StorageLens*",
+      "sagemaker:Describe*",
+      "sagemaker:List*",
       "secretsmanager:Get*",
       "secretsmanager:DescribeSecret",
       "secretsmanager:ListSecretVersionIds",
