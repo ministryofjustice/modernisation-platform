@@ -12,7 +12,7 @@ env:
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
     API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
     TEMPLATE_ID: "1f0f5ccc-0f67-4ee2-942f-6e48804828ea"
-    EXPECTED_TEMPLATE_VERSION: 2 # Set the expected version here
+    EXPECTED_TEMPLATE_VERSION: 1 # Set the expected template version here
     PERIOD: "6" # This variable determines the number of months we look back for created dates. For production it will be 6.
 
 defaults:
@@ -61,7 +61,7 @@ jobs:
 
           client = NotificationsAPIClient(api_key)
           try:
-              template_details = client.get_template_by_id(template_id)
+              template_details = client.get_template(template_id)
               actual_version = template_details.get("version")
               if actual_version != expected_version:
                   print(f"Error: Template version mismatch! Expected: {expected_version}, Actual: {actual_version}")
