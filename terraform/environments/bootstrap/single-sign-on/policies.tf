@@ -267,6 +267,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "s3:*StorageLens*",
       "sagemaker:Describe*",
       "sagemaker:List*",
+      "sagemaker:Query*",
       "secretsmanager:Get*",
       "secretsmanager:DescribeSecret",
       "secretsmanager:ListSecretVersionIds",
