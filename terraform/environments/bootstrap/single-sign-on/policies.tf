@@ -195,6 +195,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "backup:DescribeBackupJob",
       "backup:DescribeBackupVault",
       "backup:ListBackupVaults",
+      "backup:PutBackupVaultAccessPolicy",
       "backup:StartBackupJob",
       "cloudwatch:DisableAlarmActions",
       "cloudwatch:EnableAlarmActions",
