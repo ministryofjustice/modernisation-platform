@@ -58,9 +58,9 @@ jobs:
 
       - name: set env variables
         run: |
-          echo "TF_VAR_github_token=$TF_VAR_TERRAFORM_GITHUB_TOKEN" >> $GITHUB_ENV
-          echo "TF_VAR_pagerduty_token=$TF_VAR_PAGERDUTY_TOKEN" >> $GITHUB_ENV
-          echo "TF_VAR_pagerduty_user_token=TF_VAR_PAGERDUTY_USERAPI_TOKEN" >> $GITHUB_ENV
+          echo "TF_VAR_github_token=$TERRAFORM_GITHUB_TOKEN" >> $GITHUB_ENV
+          echo "TF_VAR_pagerduty_token=$PAGERDUTY_TOKEN" >> $GITHUB_ENV
+          echo "TF_VAR_pagerduty_user_token=$PAGERDUTY_USERAPI_TOKEN" >> $GITHUB_ENV
 
       - name: Set up variables
         id: vars
