@@ -31,16 +31,16 @@ def send_email(env_name, issue_url, email_address):
         issue_url: The URL of the issue to include in the email.
         email_address: The email address of the owner.
     """
-    # Retrieve the API key and template ID from environment variables
+
     api_key = os.environ.get("API_KEY")
     template_id = os.environ.get("TEMPLATE_ID")
     if not api_key or not template_id:
         print("Error: API_KEY and TEMPLATE_ID must be set in environment variables.")
         sys.exit(1)
-    
+
     client = NotificationsAPIClient(api_key=api_key)
 
-    print("The are the data fields defined in the Notify template which are used in the email:")
+    print("These are the data fields defined in the Notify template which are used in the email:")
     print(env_name)
     print(email_address)
     print(issue_url)
@@ -64,7 +64,7 @@ def send_email(env_name, issue_url, email_address):
             template_id=template_id,
             personalisation=personalisation
         )
-        print(f"Email successfully sent to {email_address}. Response ID: {response['id']}")
+        print(f"Email successfully sent to {email_address}. Response: {response}")
     except Exception as e:
         print(f"Failed to send email: {e}")
         sys.exit(1)
