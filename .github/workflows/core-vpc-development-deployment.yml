@@ -55,15 +55,16 @@ env:
   AWS_REGION: "eu-west-2"
   ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
   TF_ENV: "development"
+  
 jobs:
   core-vpc-development-deployment-plan-apply:
     uses: ./.github/workflows/reusable_terraform_plan_apply.yml
     with:
       working-directory: "terraform/environments/core-vpc"
-      environment: development
+      environment: "development"
     secrets:
-      modernisation_platform_environments: "${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}"
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   member-account-ram-association:
     runs-on: [ ubuntu-latest ]
