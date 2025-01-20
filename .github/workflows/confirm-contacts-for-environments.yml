@@ -12,6 +12,7 @@ env:
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
     API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
     TEMPLATE_ID: "1f0f5ccc-0f67-4ee2-942f-6e48804828ea"
+    EXPECTED_TEMPLATE_VERSION: 1 # Set the expected template version here
     PERIOD: "6" # This variable determines the number of months we look back for created dates. For production it will be 6.
 
 defaults:
@@ -30,19 +31,11 @@ jobs:
  
     steps:
 
+      # Step 1: Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
-    # 1. Iterate through all environments/*.json files and get the environment name & contact details for each as a json file.
-
-      - name: Get Environment Owners         
-        run: |
-          cd $GITHUB_WORKSPACE
-          pwd
-          ./scripts/confirm-environment-owner/get-environment-owners.sh
-
-    # 2. Setup Python.
-
+      # Step 2: Setup Python
       - name: Install Python
         uses: actions/setup-python@v5.3.0 # Need to add this to dependabot
         with:
@@ -51,16 +44,45 @@ jobs:
       - name: Install the Notifications Client
         run: pip install notifications-python-client
         
-    # 3. Create an issue in github with the requried text and notify the owners via email with the issue link.
+      # Step 3: Validate Notify Template Version
+      - name: Validate Notify Template Version
+        env:
+          API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
+          TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
+          EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+        run: |
+          python <<EOF
+          from notifications_python_client.notifications import NotificationsAPIClient
+          import sys
 
+          api_key = "${{ secrets.GOV_UK_NOTIFY_API_KEY }}"
+          template_id = "${{ env.TEMPLATE_ID }}"
+          expected_version = int("${{ env.EXPECTED_TEMPLATE_VERSION }}")
+
+          client = NotificationsAPIClient(api_key)
+          try:
+              template_details = client.get_template(template_id)
+              actual_version = template_details.get("version")
+              if actual_version != expected_version:
+                  print(f"Error: Template version mismatch! Expected: {expected_version}, Actual: {actual_version}")
+                  sys.exit(1)
+              print(f"Template version {actual_version} validated successfully.")
+          except Exception as e:
+              print(f"Failed to fetch template details: {e}")
+              sys.exit(1)
+          EOF
+
+      # Step 4: Get Environment Owners
+      - name: Get Environment Owners         
+        run: |
+          cd $GITHUB_WORKSPACE
+          pwd
+          ./scripts/confirm-environment-owner/get-environment-owners.sh
+
+      # Step 5: Create GitHub Issue and Notify Owners
       - name: Create Issue and Notify Owner  
         run: |
           cd $GITHUB_WORKSPACE
           pwd
           chmod +x scripts/confirm-environment-owner/create-confirm-owner-issue.sh
           ./scripts/confirm-environment-owner/create-confirm-owner-issue.sh
-
-
-
-
-
