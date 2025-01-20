@@ -27,21 +27,23 @@ defaults:
     shell: bash
 
 jobs:
-  retrieve-secrets:
-    uses: ./.github/workflows/secrets-retrieval.yml
-    secrets: inherit
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@d9e930d93532b84efdcf7d7b82621506e96a15b0 # v1.0.0
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
   setup-prerequisites:
     runs-on: ubuntu-latest
-    needs: retrieve-secrets
+    needs: fetch-secrets
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ./.github/actions/decrypt-secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d9e930d93532b84efdcf7d7b82621506e96a15b0 # v1.0.0
         with:
-          environment_management: ${{ needs.retrieve-secrets.outputs.environment_management }}
-          passphrase: ${{ secrets.PASSPHRASE }}
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
@@ -68,15 +70,15 @@ jobs:
       matrix:
         workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
     runs-on: ubuntu-latest
-    needs: [retrieve-secrets,setup-prerequisites]
+    needs: [fetch-secrets,setup-prerequisites]
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ./.github/actions/decrypt-secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d9e930d93532b84efdcf7d7b82621506e96a15b0 # v1.0.0
         with:
-          environment_management: ${{ needs.retrieve-secrets.outputs.environment_management }}
-          slack_webhook_url: ${{ needs.retrieve-secrets.outputs.slack_webhook_url }}
-          passphrase: ${{ secrets.PASSPHRASE }}
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
@@ -120,15 +122,15 @@ jobs:
       matrix:
         workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
     runs-on: ubuntu-latest
-    needs: [retrieve-secrets,setup-prerequisites, delegate-access]
+    needs: [fetch-secrets,setup-prerequisites, delegate-access]
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ./.github/actions/decrypt-secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d9e930d93532b84efdcf7d7b82621506e96a15b0 # v1.0.0
         with:
-          environment_management: ${{ needs.retrieve-secrets.outputs.environment_management }}
-          slack_webhook_url: ${{ needs.retrieve-secrets.outputs.slack_webhook_url }}
-          passphrase: ${{ secrets.PASSPHRASE }}
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
@@ -172,15 +174,15 @@ jobs:
       matrix:
         workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
     runs-on: ubuntu-latest
-    needs: [retrieve-secrets,setup-prerequisites, delegate-access]
+    needs: [fetch-secrets,setup-prerequisites, delegate-access]
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ./.github/actions/decrypt-secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d9e930d93532b84efdcf7d7b82621506e96a15b0 # v1.0.0
         with:
-          environment_management: ${{ needs.retrieve-secrets.outputs.environment_management }}
-          slack_webhook_url: ${{ needs.retrieve-secrets.outputs.slack_webhook_url }}
-          passphrase: ${{ secrets.PASSPHRASE }}
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
@@ -224,15 +226,15 @@ jobs:
       matrix:
         workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
     runs-on: ubuntu-latest
-    needs: [retrieve-secrets,setup-prerequisites, single-sign-on]
+    needs: [fetch-secrets,setup-prerequisites, single-sign-on]
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ./.github/actions/decrypt-secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d9e930d93532b84efdcf7d7b82621506e96a15b0 # v1.0.0
         with:
-          environment_management: ${{ needs.retrieve-secrets.outputs.environment_management }}
-          slack_webhook_url: ${{ needs.retrieve-secrets.outputs.slack_webhook_url }}
-          passphrase: ${{ secrets.PASSPHRASE }}
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
@@ -272,15 +274,15 @@ jobs:
 
   update-permission-sets:
     runs-on: ubuntu-latest
-    needs: [retrieve-secrets,delegate-access,single-sign-on]
+    needs: [fetch-secrets,delegate-access,single-sign-on]
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ./.github/actions/decrypt-secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d9e930d93532b84efdcf7d7b82621506e96a15b0 # v1.0.0
         with:
-          environment_management: ${{ needs.retrieve-secrets.outputs.environment_management }}
-          slack_webhook_url: ${{ needs.retrieve-secrets.outputs.slack_webhook_url }}
-          passphrase: ${{ secrets.PASSPHRASE }}
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
