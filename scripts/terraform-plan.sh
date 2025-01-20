@@ -21,7 +21,7 @@ fi
 plan_output=""
 plan_summary=""
 
-TF_LOG=TRACE 
+export TF_LOG=TRACE
 
 if [ ! -z "$2" ]; then
   options="$2"
