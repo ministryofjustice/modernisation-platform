@@ -368,9 +368,9 @@ data "aws_iam_policy_document" "developer_additional" {
 
   # Additional statement that allows for the creation of on-demand AWS Backups.
   statement {
-    sid    = "AllowPassRoleForBackup"
-    effect = "Allow"
-    actions = ["iam:PassRole"]
+    sid       = "AllowPassRoleForBackup"
+    effect    = "Allow"
+    actions   = ["iam:PassRole"]
     resources = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSBackup"]
     condition {
       test     = "StringEquals"
@@ -577,6 +577,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "cloudwatch:*",
       "codebuild:ImportSourceCredentials",
       "codebuild:PersistOAuthToken",
+      "codedeploy:*",
       "cognito-identity:*",
       "cognito-idp:*",
       "cur:DescribeReportDefinitions",
