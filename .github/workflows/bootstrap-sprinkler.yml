@@ -101,6 +101,8 @@ jobs:
     needs: single-sign-on-plan
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          ref: issue/8617
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.account_ids["sprinkler-development"]' <<< $ENVIRONMENT_MANAGEMENT)

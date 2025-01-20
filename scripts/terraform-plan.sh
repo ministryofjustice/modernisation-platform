@@ -21,6 +21,8 @@ fi
 plan_output=""
 plan_summary=""
 
+TF_LOG=TRACE 
+
 if [ ! -z "$2" ]; then
   options="$2"
   plan_output=$(terraform -chdir="$1" plan -input=false -no-color "$options" | ./scripts/redact-output.sh)  # Capture full output
