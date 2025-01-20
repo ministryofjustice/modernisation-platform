@@ -11,8 +11,6 @@ locals {
   modernisation_platform_account = data.aws_caller_identity.modernisation-platform
   environment_management         = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 
-  member_account_id = local.environment_management.account_ids[terraform.workspace]
-
   defname = jsondecode(file("../../../../environments/${local.app_name}.json"))
 
   sso_data = { for data in local.defname.environments :
