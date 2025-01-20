@@ -3,7 +3,7 @@ name: "Bootstrap plan for Sprinkler"
 on:
   pull_request:
     branches:
-      - main
+      - issue/8617
     paths:
       - 'terraform/environments/bootstrap/**'
       - 'terraform/modules/iam_baseline/**'
