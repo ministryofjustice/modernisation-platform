@@ -25,30 +25,40 @@ on:
         required: false
         type: string
     secrets:
-      modernisation_platform_environments:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER:
         required: true
-      SLACK_WEBHOOK_URL:
+      PASSPHRASE:
         required: true
-      pagerduty_token:
-        required: false
-      pagerduty_userapi_token:
-        required: false
-      gh_workflow_token: 
-        required: false
 
 env:
-  ENVIRONMENT_MANAGEMENT: "${{ secrets.modernisation_platform_environments }}"
-  TF_VAR_github_token: "${{ secrets.gh_workflow_token }}"
   TF_IN_AUTOMATION: true
-  TF_VAR_pagerduty_token: ${{ secrets.pagerduty_token }}
-  TF_VAR_pagerduty_user_token: ${{ secrets.pagerduty_userapi_token }}
-
 jobs:
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@d9e930d93532b84efdcf7d7b82621506e96a15b0 # v1.0.0
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
   plan-and-apply:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d9e930d93532b84efdcf7d7b82621506e96a15b0 # v1.0.0
+        with:
+          environment_management: ${{ needs.retrieve-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.retrieve-secrets.outputs.slack_webhook_url }}
+          pagerduty_token: ${{ needs.retrieve-secrets.outputs.pagerduty_token }}
+          pagerduty_userapi_token: ${{ needs.retrieve-secrets.outputs.pagerduty_userapi_token }}
+          terraform_github_token: ${{ needs.retrieve-secrets.outputs.terraform_github_token }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: set env variables
+        run: |
+          echo "TF_VAR_github_token=$TERRAFORM_GITHUB_TOKEN" >> $GITHUB_ENV
+          echo "TF_VAR_pagerduty_token=$PAGERDUTY_TOKEN" >> $GITHUB_ENV
+          echo "TF_VAR_pagerduty_user_token=$PAGERDUTY_USERAPI_TOKEN" >> $GITHUB_ENV
 
       - name: Set up variables
         id: vars
@@ -148,4 +158,4 @@ jobs:
           payload: |
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
