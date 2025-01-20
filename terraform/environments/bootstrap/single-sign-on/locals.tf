@@ -13,8 +13,6 @@ locals {
 
   defname = jsondecode(file("../../../../environments/${local.app_name}.json"))
 
-  combined_name = "${local.app_name}-${local.env_name}"
-
   sso_data = { for data in local.defname.environments :
 
     data.name => data.access
