@@ -371,7 +371,7 @@ data "aws_iam_policy_document" "developer_additional" {
     sid    = "AllowPassRoleForBackup"
     effect = "Allow"
     actions = ["iam:PassRole"]
-    resources = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSBackup"]
+    resources = ["arn:aws:iam::${local.account_id}:role/AWSBackup"]
     condition {
       test     = "StringEquals"
       variable = "iam:PassedToService"
