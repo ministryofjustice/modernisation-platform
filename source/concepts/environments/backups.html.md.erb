@@ -57,6 +57,12 @@ Backups are retained for 30 days.
 
 If the above built in backup plans are not suitable, you can create your own backup plans via code in the modernisation-platform-environments repository, however we will not be responsible for your lifecycle rules, backups can be costly if not removed.
 
+## On-Demand backups
+
+We had added, to the developer role, the ability to take on-demand backups of resources for those occasions where a one-off backup required.  This can be done via the AWS Backup console or via the AWS CLI. As with other backups, these can be costly if long rention periods are used.
+
+Note that when using this feature, the backup IAM role AWSBackup must be selected. 
+
 ## How to find your backups
 
 You can view your backups my navigating to AWS Backup in the AWS console and clicking "Backup vaults".
