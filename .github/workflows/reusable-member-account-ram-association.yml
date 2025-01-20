@@ -26,7 +26,6 @@ jobs:
     
   member-account-ram-association:
     runs-on: [ ubuntu-latest ]
-    if: ${{ inputs.run_ram_association == true && github.ref == 'refs/heads/main' }}
     needs: fetch-secrets
     steps:
       - name: Checkout Repository
