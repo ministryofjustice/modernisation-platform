@@ -40,6 +40,7 @@ jobs:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
   plan-and-apply:
     runs-on: ubuntu-latest
+    needs: fetch-secrets
     steps:
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -47,11 +48,11 @@ jobs:
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d9e930d93532b84efdcf7d7b82621506e96a15b0 # v1.0.0
         with:
-          environment_management: ${{ needs.retrieve-secrets.outputs.environment_management }}
-          slack_webhook_url: ${{ needs.retrieve-secrets.outputs.slack_webhook_url }}
-          pagerduty_token: ${{ needs.retrieve-secrets.outputs.pagerduty_token }}
-          pagerduty_userapi_token: ${{ needs.retrieve-secrets.outputs.pagerduty_userapi_token }}
-          terraform_github_token: ${{ needs.retrieve-secrets.outputs.terraform_github_token }}
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          pagerduty_token: ${{ needs.fetch-secrets.outputs.pagerduty_token }}
+          pagerduty_userapi_token: ${{ needs.fetch-secrets.outputs.pagerduty_userapi_token }}
+          terraform_github_token: ${{ needs.fetch-secrets.outputs.terraform_github_token }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
       - name: set env variables
