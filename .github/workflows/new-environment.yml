@@ -25,7 +25,7 @@ env:
   AWS_REGION: "eu-west-2"
   ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
   API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
-  TEMPLATE_ID: "c529aa7e-685a-4907-90dd-ab93fc4791ef"
+  TEMPLATE_ID: "1f0f5ccc-0f67-4ee2-942f-6e48804828ea"
 
 permissions:
   id-token: write # This is required for requesting the JWT
