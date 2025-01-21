@@ -26,6 +26,7 @@ env:
   ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
   API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
   TEMPLATE_ID: "1f0f5ccc-0f67-4ee2-942f-6e48804828ea"
+  EXPECTED_TEMPLATE_VERSION: "1" # Update with your expected template version
 
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -391,7 +392,7 @@ jobs:
           fi
           echo "Slack channel found: $slack_channel"
           webhook_url=$(echo $SLACK_WEBHOOKS | jq -r --arg channel "$slack_channel" '.[$channel]')
-          if [[  -z "$webhook_url" || "$webhook_url" == "null" ]]; then
+          if [[ -z "$webhook_url" || "$webhook_url" == "null" ]]; then
           echo "No webhook URL found for channel $slack_channel. Skipping notification."
           continue
           fi
@@ -407,11 +408,40 @@ jobs:
         env:
           SLACK_WEBHOOKS: ${{ secrets.SLACK_WEBHOOKS }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+      - name: Validate Notify Template Version
+        env:
+          API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
+          TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
+          EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+        if: steps.environment_json_changes.outputs.files != ''
+        run: |
+          python <<EOF
+          from notifications_python_client.notifications import NotificationsAPIClient
+          import sys
+      
+          api_key = "${{ secrets.GOV_UK_NOTIFY_API_KEY }}"
+          template_id = "${{ env.TEMPLATE_ID }}"
+          expected_version = int("${{ env.EXPECTED_TEMPLATE_VERSION }}")
+    
+          client = NotificationsAPIClient(api_key)
+          try:
+              template_details = client.get_template(template_id)
+              actual_version = template_details.get("version")
+      
+              if actual_version != expected_version:
+                  print(f"Error: Template version mismatch! Expected: {expected_version}, Actual: {actual_version}")
+                  sys.exit(1)
+      
+              print(f"Template version {actual_version} validated successfully.")
+          except Exception as e:
+              print(f"Failed to fetch template details: {e}")
+              sys.exit(1)
+          EOF
       - name: Send notification to Email
         if: steps.environment_json_changes.outputs.files != ''
         run: |
           DECODED_FILES=$(echo ${{ steps.environment_json_changes.outputs.files }} | base64 --decode)
-          python ./scripts/json-changes-notifier.py $DECODED_FILES
+          python ./scripts/json-changes-notifier.py $DECODED_FILES      
   member-bootstrap:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
