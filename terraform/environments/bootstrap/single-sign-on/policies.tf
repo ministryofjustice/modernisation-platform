@@ -372,7 +372,7 @@ data "aws_iam_policy_document" "developer_additional" {
     sid       = "AllowPassRoleForBackup"
     effect    = "Allow"
     actions   = ["iam:PassRole"]
-    resources = ["arn:aws:iam::${local.environment_management[terraform.workspace]}:role/AWSBackup"]
+    resources = ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/AWSBackup"]
     condition {
       test     = "StringEquals"
       variable = "iam:PassedToService"
