@@ -10,12 +10,14 @@ env:
     ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
     API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
     TEMPLATE_ID: "1f0f5ccc-0f67-4ee2-942f-6e48804828ea"
+    EXPECTED_TEMPLATE_VERSION: "1"
     GH_TOKEN: ${{ secrets.MODERNISATION_PAT_MULTIREPO }}
 
 permissions:
     id-token: write # This is required for requesting the JWT
     contents: read # This is required for actions/checkout
     issues: write # This is required to create issues
+
 jobs:
   disable-login-for-inactive-collaborators:
     runs-on: ubuntu-latest
@@ -71,7 +73,36 @@ jobs:
 
       - name: Install the client
         run: pip install notifications-python-client
-    
+
+      - name: Validate Notify Template Version
+        env:
+          API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
+          TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
+          EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+        run: |
+          python <<EOF
+          from notifications_python_client.notifications import NotificationsAPIClient
+          import sys
+
+          api_key = "${{ secrets.GOV_UK_NOTIFY_API_KEY }}"
+          template_id = "${{ env.TEMPLATE_ID }}"
+          expected_version = int("${{ env.EXPECTED_TEMPLATE_VERSION }}")
+
+          client = NotificationsAPIClient(api_key)
+          try:
+              template_details = client.get_template(template_id)
+              actual_version = template_details.get("version")
+
+              if actual_version != expected_version:
+                  print(f"Error: Template version mismatch! Expected: {expected_version}, Actual: {actual_version}")
+                  sys.exit(1)
+
+              print(f"Template version {actual_version} validated successfully.")
+          except Exception as e:
+              print(f"Failed to fetch template details: {e}")
+              sys.exit(1)
+          EOF
+
       - name: Fetch Inactive Collaborators
         run: bash ./scripts/iam-monitoring/collaborators-inactivity-monitoring/check_inactive_users.sh
         env:
