@@ -367,6 +367,19 @@ data "aws_iam_policy_document" "developer_additional" {
     }
   }
 
+  # Additional statement that allows for the creation of on-demand AWS Backups.
+  statement {
+    sid       = "AllowPassRoleForBackup"
+    effect    = "Allow"
+    actions   = ["iam:PassRole"]
+    resources = ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/AWSBackup"]
+    condition {
+      test     = "StringEquals"
+      variable = "iam:PassedToService"
+      values   = ["backup.amazonaws.com"]
+    }
+  }
+
 }
 
 # data engineering policy (developer + glue + some athena)
