@@ -367,19 +367,6 @@ data "aws_iam_policy_document" "developer_additional" {
     }
   }
 
-  # Additional statement that allows for the creation of on-demand AWS Backups.
-  statement {
-    sid       = "AllowPassRoleForBackup"
-    effect    = "Allow"
-    actions   = ["iam:PassRole"]
-    resources = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSBackup"]
-    condition {
-      test     = "StringEquals"
-      variable = "iam:PassedToService"
-      values   = ["backup.amazonaws.com"]
-    }
-  }
-
 }
 
 # data engineering policy (developer + glue + some athena)
