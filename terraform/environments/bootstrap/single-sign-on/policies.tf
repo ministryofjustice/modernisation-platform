@@ -242,6 +242,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "elasticloadbalancing:AddListenerCertificates",
       "events:DisableRule",
       "events:EnableRule",
+      "iam:CreateServiceLinkedRole",
       "identitystore:DescribeUser",
       "kms:Decrypt*",
       "kms:Encrypt",
