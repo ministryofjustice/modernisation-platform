@@ -1,19 +1,16 @@
 # R53 Resolver DNS Firewall Resources - created on a per-VPC basis
 
-# Rule group
 resource "aws_route53_resolver_firewall_rule_group" "this" {
   name = "${var.tags_prefix}-r53-dns-firewall-rule-group"
   tags = var.tags_common
 }
 
-# Allowed domain list
 resource "aws_route53_resolver_firewall_domain_list" "allow" {
   name    = "${var.tags_prefix}-allow-domain-list"
   domains = [for domain in var.allowed_domains : "${domain}."]
   tags    = var.tags_common
 }
 
-# Blocked domain list
 resource "aws_route53_resolver_firewall_domain_list" "block" {
   name    = "${var.tags_prefix}-block-domain-list"
   domains = [for domain in var.blocked_domains : "${domain}."]
@@ -26,18 +23,14 @@ data "external" "aws_managed_domain_lists" {
   program = ["bash", "${path.module}/fetch-aws-managed-domain-lists.sh"]
 }
 resource "aws_route53_resolver_firewall_rule" "default_alert" {
-  for_each = data.external.aws_managed_domain_lists.result
-
-
+  for_each                = data.external.aws_managed_domain_lists.result
   action                  = "ALERT"
   firewall_domain_list_id = each.value
   priority                = each.key == "AWSManagedDomainsAggregateThreatList" ? 2 : each.key == "AWSManagedDomainsMalwareDomainList" ? 3 : each.key == "AWSManagedDomainsBotnetCommandandControl" ? 4 : 5
   firewall_rule_group_id  = aws_route53_resolver_firewall_rule_group.this.id
   name                    = "Alert_${each.key}"
-  # block_response          = var.block_response # Leaving this commented out until we turn on blocking in a future PR
 }
 
-# Rule to allow domains in the allow list (takes top priority)
 resource "aws_route53_resolver_firewall_rule" "allow" {
   action                  = "ALLOW"
   firewall_domain_list_id = aws_route53_resolver_firewall_domain_list.allow.id
@@ -46,7 +39,6 @@ resource "aws_route53_resolver_firewall_rule" "allow" {
   name                    = "Allow_${var.tags_prefix}_domain_list"
 }
 
-# Rule to block domains in the block list (takes lowest priority)
 resource "aws_route53_resolver_firewall_rule" "block" {
   action                  = "BLOCK"
   firewall_domain_list_id = aws_route53_resolver_firewall_domain_list.block.id
@@ -56,7 +48,6 @@ resource "aws_route53_resolver_firewall_rule" "block" {
   block_response          = var.block_response # defaults to NXDOMAIN
 }
 
-# Association of the rule group with the VPC
 resource "aws_route53_resolver_firewall_rule_group_association" "this" {
   firewall_rule_group_id = aws_route53_resolver_firewall_rule_group.this.id
   vpc_id                 = var.vpc_id
@@ -65,20 +56,18 @@ resource "aws_route53_resolver_firewall_rule_group_association" "this" {
   tags                   = var.tags_common
 }
 
-# Configures DNS Firewall logging to CloudWatch 
+# R53 Logging & Monitoring Resources
 resource "aws_route53_resolver_query_log_config" "dns_firewall_log_config" {
   name            = "${var.tags_prefix}-rqlc-cloudwatch"
   destination_arn = aws_cloudwatch_log_group.dns_firewall_log_group.arn
   tags            = var.tags_common
 }
 
-# Associate the DNS Firewall log config with the VPC
 resource "aws_route53_resolver_query_log_config_association" "dns_firewall_log_config_association" {
   resolver_query_log_config_id = aws_route53_resolver_query_log_config.dns_firewall_log_config.id
   resource_id                  = var.vpc_id
 }
 
-# Creates a CloudWatch log group for DNS Firewall logs (logs retained for 365 days)
 resource "aws_cloudwatch_log_group" "dns_firewall_log_group" {
   name              = "/aws/route53resolver/dns_firewall/${var.tags_prefix}"
   retention_in_days = 365
@@ -86,7 +75,6 @@ resource "aws_cloudwatch_log_group" "dns_firewall_log_group" {
   tags              = var.tags_common
 }
 
-# Creates a metric filter for DNS Firewall logs to count the number of domain matches that are blocked or alerted on
 resource "aws_cloudwatch_log_metric_filter" "dns_firewall_metric_filter" {
   name           = "${var.tags_prefix}-DNSFirewallMatches"
   log_group_name = aws_cloudwatch_log_group.dns_firewall_log_group.name
@@ -99,7 +87,6 @@ resource "aws_cloudwatch_log_metric_filter" "dns_firewall_metric_filter" {
   }
 }
 
-# Creates a CloudWatch alarm to alert on DNS Firewall matches and links to an SNS topic
 resource "aws_cloudwatch_metric_alarm" "dns_firewall_alarm" {
   alarm_name          = "${var.tags_prefix}-DNSFirewallMatchesAlarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -114,14 +101,12 @@ resource "aws_cloudwatch_metric_alarm" "dns_firewall_alarm" {
   tags          = var.tags_common
 }
 
-# Creates an SNS topic for DNS Firewall matches
 resource "aws_sns_topic" "dns_firewall_sns_topic" {
   name              = "${var.tags_prefix}-DNSFirewallMatchesTopic"
   kms_master_key_id = aws_kms_key.dns_firewall_kms_key.key_id
   tags              = var.tags_common
 }
 
-# Creates a KMS key for DNS Firewall SNS Topic encryption
 resource "aws_kms_key" "dns_firewall_kms_key" {
   description         = "KMS key for DNS Firewall SNS Topic Encryption"
   enable_key_rotation = true
@@ -134,7 +119,6 @@ resource "aws_kms_alias" "dns_firewall_kms_alias" {
   target_key_id = aws_kms_key.dns_firewall_kms_key.key_id
 }
 
-# Policy for the KMS key to allow SNS/Cloudwatch services to use the key
 data "aws_iam_policy_document" "dns_firewall_kms_policy" {
   # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
   # checkov:skip=CKV_AWS_109: "policy is directly related to the resource"
@@ -174,10 +158,8 @@ data "aws_iam_policy_document" "dns_firewall_kms_policy" {
   }
 }
 
-# Data source to get the current AWS account ID
 data "aws_caller_identity" "current" {}
 
-# Subscribes the SNS topic to PagerDuty
 module "pagerduty_r53_dns_firewall" {
   depends_on                = [aws_sns_topic.dns_firewall_sns_topic]
   source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
