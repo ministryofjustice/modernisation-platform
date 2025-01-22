@@ -10,8 +10,6 @@ This module creates the following resources per VPC:
   **1** - An allow rule for the `allowed_domains` list
   **2-5** - a set of rules that ALERT on any domains that match the [AWS-managed threat lists](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-dns-firewall-managed-domain-lists.html)
   **6** - A Block rule for the `blocked_domains` list
-- R53 Resolver query logging config to be associated with a cloudwatch log group
-- Cloudwatch alarm so any matching domains that the firewall acts on trigger a dedicated SNS topic which is hooked into PagerDuty (this is currently subscribed to the PagerDuty Core Alerts service - associated with the `#modernisation-platform-low-priority-alarms` Slack channel)
 
 # Example usage
 
@@ -74,19 +72,12 @@ If you're looking to raise an issue with this module, please create a new issue 
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_pagerduty_r53_dns_firewall"></a> [pagerduty\_r53\_dns\_firewall](#module\_pagerduty\_r53\_dns\_firewall) | github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration | 0179859e6fafc567843cd55c0b05d325d5012dc4 |
+No modules.
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aws_cloudwatch_log_group.dns_firewall_log_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
-| [aws_cloudwatch_log_metric_filter.dns_firewall_metric_filter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_metric_filter) | resource |
-| [aws_cloudwatch_metric_alarm.dns_firewall_alarm](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
-| [aws_kms_alias.dns_firewall_kms_alias](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
-| [aws_kms_key.dns_firewall_kms_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [aws_route53_resolver_firewall_domain_list.allow](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_domain_list) | resource |
 | [aws_route53_resolver_firewall_domain_list.block](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_domain_list) | resource |
 | [aws_route53_resolver_firewall_rule.allow](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_rule) | resource |
@@ -94,11 +85,6 @@ If you're looking to raise an issue with this module, please create a new issue 
 | [aws_route53_resolver_firewall_rule.default_alert](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_rule) | resource |
 | [aws_route53_resolver_firewall_rule_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_rule_group) | resource |
 | [aws_route53_resolver_firewall_rule_group_association.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_rule_group_association) | resource |
-| [aws_route53_resolver_query_log_config.dns_firewall_log_config](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_query_log_config) | resource |
-| [aws_route53_resolver_query_log_config_association.dns_firewall_log_config_association](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_query_log_config_association) | resource |
-| [aws_sns_topic.dns_firewall_sns_topic](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_iam_policy_document.dns_firewall_kms_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [external_external.aws_managed_domain_lists](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) | data source |
 
 ## Inputs
