@@ -348,3 +348,15 @@ resource "aws_iam_role_policy_attachments_exclusive" "member_delegation_read_onl
   policy_arns = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]
   role_name   = aws_iam_role.member_delegation_read_only.name
 }
+
+# R53 Resolver DNS Firewall
+module "r53_dns_firewall" {
+  for_each = local.vpcs[terraform.workspace]
+  source   = "../../modules/r53-dns-firewall"
+
+  vpc_id                    = module.vpc[each.key].vpc_id
+  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
+
+  tags_prefix = each.key
+  tags_common = local.tags
+}
