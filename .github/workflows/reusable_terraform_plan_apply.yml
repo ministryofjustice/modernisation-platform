@@ -128,12 +128,12 @@ jobs:
           bash scripts/terraform-plan.sh ${{ inputs.working-directory }}
 
       - name: Check Destroyed Resources
-        if: github.event.ref != 'refs/heads/main' && steps.show.outputs.plan_summary != ''
+        if: github.event.ref != 'refs/heads/main'
         run: |
           plan_output=${{ steps.show.outputs.plan_summary }}
           # Checks for the number of resources to be destroyed
           destroy_count=$(echo "$plan_output" | grep -oE 'Plan: [0-9]+ to add, [0-9]+ to change, [0-9]+ to destroy' | awk '{print $6}')
-      
+          echo $destroy_count
           if [ "$destroy_count" -gt 0 ]; then
             echo "Warning: There are $destroy_count resources to be destroyed in this plan."
             echo "destroy_count=$destroy_count" >> $GITHUB_ENV
