@@ -19,6 +19,8 @@
     "owner": "wendy.calverley@digital.justice.gov.uk",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [""],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/cdc-replacement"
+  ],
   "go-live-date": ""
 }
