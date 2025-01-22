@@ -23,8 +23,10 @@ data "aws_iam_policy_document" "oidc_deny_specific_actions" {
     sid       = "AllowOIDCReadState"
     effect    = "Allow"
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*", "arn:aws:s3:::modernisation-platform-terraform-state/"]
-    actions = [
-    "s3:List*"]
+    actions   = [
+      "s3:GetObject",
+      "s3:ListBucket"
+    ]
   }
 
   statement {
@@ -34,8 +36,19 @@ data "aws_iam_policy_document" "oidc_deny_specific_actions" {
       "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/terraform.tfstate",
       "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/terraform.tfstate"
     ]
-    actions = ["s3:PutObject",
-      "s3:PutObjectAcl",
-    "s3:GetObject"]
+    actions = [
+      "s3:PutObject",
+      "s3:PutObjectAcl"
+    ]
+  }
+
+  statement {
+    sid    = "AllowOIDCRemoveLock"
+    effect = "Allow"
+    resources = [
+      "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/*.tflock",
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*.tflock"
+    ]
+    actions = ["s3:DeleteObject"]
   }
 }
