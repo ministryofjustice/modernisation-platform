@@ -11,10 +11,10 @@ module "observability_platform_tenant" {
 }
 
 # Grafana-Athena Role
-resource "aws_iam_role" "grafana_athena" {
-  name               = "grafana-athena"
-  assume_role_policy = data.aws_iam_policy_document.grafana_athena_assume_role_policy.json
-}
+# resource "aws_iam_role" "grafana_athena" {
+#   name               = "grafana-athena"
+#   assume_role_policy = data.aws_iam_policy_document.grafana_athena_assume_role_policy.json
+# }
 
 # Assume Role Policy for Grafana-Athena
 data "aws_iam_policy_document" "grafana_athena_assume_role_policy" {

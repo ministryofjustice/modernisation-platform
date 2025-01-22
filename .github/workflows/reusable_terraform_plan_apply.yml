@@ -134,7 +134,7 @@ jobs:
           # Checks for the number of resources to be destroyed
           destroy_count=$(echo "$plan_output" | grep -oE 'Plan: [0-9]+ to add, [0-9]+ to change, [0-9]+ to destroy' | awk '{print $6}')
       
-          if [ "$destroy_count" -gt 1 ]; then
+          if [ "$destroy_count" -gt 0 ]; then
             echo "Warning: There are $destroy_count resources to be destroyed in this plan."
             echo "destroy_count=$destroy_count" >> $GITHUB_ENV
           else
