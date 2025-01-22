@@ -10,6 +10,12 @@
           "level": "sandbox",
           "nuke": "exclude",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "sandbox",
+          "nuke": "exclude",
+          "github_action_reviewer": "true"
         }
       ]
     },
@@ -18,6 +24,11 @@
       "access": [
         {
           "sso_group_name": "hmpps-migration",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hosting-migrations",
           "level": "developer",
           "github_action_reviewer": "true"
         }
@@ -30,6 +41,11 @@
           "sso_group_name": "hmpps-migration",
           "level": "developer",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
         }
       ]
     },
@@ -38,6 +54,11 @@
       "access": [
         {
           "sso_group_name": "hmpps-migration",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hosting-migrations",
           "level": "developer",
           "github_action_reviewer": "true"
         }
