@@ -354,11 +354,7 @@ module "r53_dns_firewall" {
   for_each = local.vpcs[terraform.workspace]
   source   = "../../modules/r53-dns-firewall"
 
-  vpc_id = module.vpc[each.key].vpc_id
-
-  allowed_domains = lookup(local.dns_firewall_allowed_domains[terraform.workspace], each.key, [])
-  blocked_domains = lookup(local.dns_firewall_blocked_domains[terraform.workspace], each.key, [])
-
+  vpc_id                    = module.vpc[each.key].vpc_id
   pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
 
   tags_prefix = each.key
