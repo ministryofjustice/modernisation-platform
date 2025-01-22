@@ -10,6 +10,10 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "hmpps-delius-jitbit-devs",
           "level": "instance-management"
         }
@@ -20,6 +24,10 @@
       "access": [
         {
           "sso_group_name": "hmpps-migration",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "hosting-migrations",
           "level": "developer"
         },
         {
@@ -36,6 +44,10 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "hmpps-delius-jitbit-devs",
           "level": "instance-management"
         }
@@ -46,6 +58,10 @@
       "access": [
         {
           "sso_group_name": "hmpps-migration",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "hosting-migrations",
           "level": "developer"
         },
         {

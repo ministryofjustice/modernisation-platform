@@ -11,6 +11,11 @@
           "nuke": "exclude"
         },
         {
+          "sso_group_name": "hosting-migrations",
+          "level": "sandbox",
+          "nuke": "exclude"
+        },
+        {
           "sso_group_name": "hmpps-dba",
           "level": "sandbox"
         },
@@ -28,6 +33,10 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "hmpps-dba",
           "level": "developer"
         },
@@ -42,6 +51,10 @@
       "access": [
         {
           "sso_group_name": "hmpps-migration",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "hosting-migrations",
           "level": "developer"
         },
         {
