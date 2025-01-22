@@ -1,25 +1,25 @@
 # Shared Elastic container repositories
-module "maat_api_ecr_repo" {
-  source = "../../modules/app-ecr-repo"
+# module "maat_api_ecr_repo" {
+#   source = "../../modules/app-ecr-repo"
 
-  app_name = "maat-cd-api"
+#   app_name = "maat-cd-api"
 
-  push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["maat-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["maat-development"]
-  ]
+#   push_principals = [
+#     "arn:aws:iam::${local.environment_management.account_ids["maat-development"]}:role/modernisation-platform-oidc-cicd",
+#     local.environment_management.account_ids["maat-development"]
+#   ]
 
-  pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["maat-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["maat-development"],
-    local.environment_management.account_ids["maat-test"],
-    local.environment_management.account_ids["maat-preproduction"],
-    local.environment_management.account_ids["maat-production"]
-  ]
+#   pull_principals = [
+#     "arn:aws:iam::${local.environment_management.account_ids["maat-development"]}:role/modernisation-platform-oidc-cicd",
+#     local.environment_management.account_ids["maat-development"],
+#     local.environment_management.account_ids["maat-test"],
+#     local.environment_management.account_ids["maat-preproduction"],
+#     local.environment_management.account_ids["maat-production"]
+#   ]
 
-  # Tags
-  tags_common = local.tags
-}
+#   # Tags
+#   tags_common = local.tags
+# }
 
 module "maat_ecr_repo" {
   source = "../../modules/app-ecr-repo"
