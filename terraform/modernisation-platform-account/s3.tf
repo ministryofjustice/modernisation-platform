@@ -228,6 +228,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       type        = "AWS"
       identifiers = ["*"]
     }
+
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalOrgPaths"
@@ -255,6 +256,32 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     actions = ["s3:PutObject"]
     resources = [
       "${module.state-bucket.bucket.arn}/environments/members/*",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/github-actions"]
+    }
+  }
+
+  statement {
+    sid     = "AllowGithubActionsRoleDeleteTFLock"
+    effect  = "Allow"
+    actions = ["s3:DeleteObject"]
+    resources = [
+      "${module.state-bucket.bucket.arn}/*/terraform.tfstate.tflock",
     ]
 
     principals {
