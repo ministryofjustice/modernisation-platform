@@ -133,10 +133,9 @@ jobs:
 
       - name: Get Destroy Count
         if: github.event_name == 'pull_request'
-        id: get_destroy_count
         env:
           DESTROY_THRESHOLD: ${{ env.TF_DESTROY_THRESHOLD }}
-          PLAN_DESTROY_CHECK: ${{ steps.show.outputs.plan_destroy_check }}
+          PLAN_DESTROY_CHECK: ${{ steps.show.outputs.summary }}
         run: |
             bash scripts/get-terraform-destroy-count.sh
 
@@ -153,6 +152,7 @@ jobs:
                 const repo = context.repo.repo;
                 const destroyCount = parseInt(process.env.DESTROY_COUNT, 10);
                 const destroyThreshold = parseInt(process.env.DESTROY_THRESHOLD, 10);
+                const summary = `\`${{ steps.show.outputs.summary }}\``;
                 const workflowId = "${{ env.WORKSPACE_NAME }}";
                 const identifier = workflowId ? `_${workflowId}_\n` : `_${{ inputs.workflow_id }}_\n`;
                 if (destroyCount >= destroyThreshold) {
@@ -160,8 +160,7 @@ jobs:
                         owner: owner,
                         repo: repo,
                         issue_number: context.payload.pull_request.number,
-                        body: `@${{ github.actor }}  Warning - Large Number of Resources to be Destroyed. \n
-                        ${identifier}\n
+                        body: `### Warning - Large Number of Resources to be Destroyed.\n ${identifier}${summary}\n
                         Terraform plan evaluation has detected that ${destroyCount} resources are to be destroyed. \n
                         Please check the plan output & confirm if you want to proceed with the apply operation.`
                     });
