@@ -274,6 +274,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     actions = ["s3:PutObject"]
     resources = [
       "${module.state-bucket.bucket.arn}/environments/members/testing/testing-test/terraform.tfstate",
+      "${module.state-bucket.bucket.arn}/environments/members/testing/testing-test/*.tflock",
     ]
 
     principals {
@@ -415,8 +416,24 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       "s3:GetObject"
     ]
     resources = [
-      "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/terraform.tfstate",
-      "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/terraform.tfstate"
+      "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/*",
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*"
+    ]
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions"]
+    }
+  }
+
+  statement {
+    sid    = "AllowSprinklerGithubActionRoleRemoveLock"
+    effect = "Allow"
+    actions = [
+      "s3:DeleteObject"
+    ]
+    resources = [
+      "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/*.tflock",
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*.tflock"
     ]
     principals {
       type        = "AWS"
