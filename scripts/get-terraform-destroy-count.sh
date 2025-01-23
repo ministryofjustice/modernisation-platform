@@ -21,6 +21,7 @@ echo "destroy_count=$destroy_count"
 if echo "$PLAN_SUMMARY" | grep -q "No changes. Your infrastructure matches the configuration."; then
     echo "No changes. Your infrastructure matches the configuration."
     destroy_count=0
+    exit 0
 fi
 
 # These tests will force an exit of the script if the values are not valid as we don't want to proceed if invalid.
