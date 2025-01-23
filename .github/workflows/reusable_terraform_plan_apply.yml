@@ -134,7 +134,7 @@ jobs:
         id: get_destroy_count
         env:
           DESTROY_THRESHOLD: ${{ env.TF_DESTROY_THRESHOLD }}
-          PLAN_SUMMARY: ${{ steps.show.outputs.plan_summarysummary }}
+          PLAN_SUMMARY: ${{ steps.show.outputs.plan_summary }}
         run: |
             bash scripts/get-terraform-destroy-count.sh
 
