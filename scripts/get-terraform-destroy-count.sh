@@ -2,12 +2,12 @@
 #!/bin/bash
 
 set -o pipefail
-set -e
+#set -e
 
 # This script reads the terraform plan summary and gets the count of resources to be destroyed and sets it to the variable destroy_count.
 # It also runs some checks to ensure that the values for the count and the threshold are valid.
 
-# Checks that PLAN_SUMMARY is set. Without this the script will fail so we force an exit.
+# Checks that PLAN_DESTROY_CHECK is set. Without this the script will fail so we force an exit.
 if [ -z "$PLAN_DESTROY_CHECK" ]; then
     echo "PLAN_DESTROY_CHECK is not set"
     exit 1

@@ -131,14 +131,6 @@ jobs:
         run: |
           bash scripts/terraform-plan.sh ${{ inputs.working-directory }}
 
-      - name: Get Plan Summary
-        if: github.event.ref != 'refs/heads/main'
-        id: get_plan_summary
-        env:
-          PLAN_SUMMARY: ${{ steps.show.outputs.plan_summary }}
-        run: |
-            echo "plan_summary=$(echo $PLAN_SUMMARY)"
-
       - name: Get Destroy Count
         if: github.event_name == 'pull_request'
         id: get_destroy_count
