@@ -1,91 +1,91 @@
 # Shared Elastic container repositories
-module "maat_api_ecr_repo" {
-  source = "../../modules/app-ecr-repo"
+# module "maat_api_ecr_repo" {
+#   source = "../../modules/app-ecr-repo"
 
-  app_name = "maat-cd-api"
+#   app_name = "maat-cd-api"
 
-  push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["maat-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["maat-development"]
-  ]
+#   push_principals = [
+#     "arn:aws:iam::${local.environment_management.account_ids["maat-development"]}:role/modernisation-platform-oidc-cicd",
+#     local.environment_management.account_ids["maat-development"]
+#   ]
 
-  pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["maat-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["maat-development"],
-    local.environment_management.account_ids["maat-test"],
-    local.environment_management.account_ids["maat-preproduction"],
-    local.environment_management.account_ids["maat-production"]
-  ]
+#   pull_principals = [
+#     "arn:aws:iam::${local.environment_management.account_ids["maat-development"]}:role/modernisation-platform-oidc-cicd",
+#     local.environment_management.account_ids["maat-development"],
+#     local.environment_management.account_ids["maat-test"],
+#     local.environment_management.account_ids["maat-preproduction"],
+#     local.environment_management.account_ids["maat-production"]
+#   ]
 
-  # Tags
-  tags_common = local.tags
-}
+#   # Tags
+#   tags_common = local.tags
+# }
 
-module "maat_ecr_repo" {
-  source = "../../modules/app-ecr-repo"
+# module "maat_ecr_repo" {
+#   source = "../../modules/app-ecr-repo"
 
-  app_name = "maat"
+#   app_name = "maat"
 
-  push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["maat-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["maat-development"]
-  ]
+#   push_principals = [
+#     "arn:aws:iam::${local.environment_management.account_ids["maat-development"]}:role/modernisation-platform-oidc-cicd",
+#     local.environment_management.account_ids["maat-development"]
+#   ]
 
-  pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["maat-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["maat-development"],
-    local.environment_management.account_ids["maat-test"],
-    local.environment_management.account_ids["maat-preproduction"],
-    local.environment_management.account_ids["maat-production"]
-  ]
+#   pull_principals = [
+#     "arn:aws:iam::${local.environment_management.account_ids["maat-development"]}:role/modernisation-platform-oidc-cicd",
+#     local.environment_management.account_ids["maat-development"],
+#     local.environment_management.account_ids["maat-test"],
+#     local.environment_management.account_ids["maat-preproduction"],
+#     local.environment_management.account_ids["maat-production"]
+#   ]
 
-  # Tags
-  tags_common = local.tags
-}
+#   # Tags
+#   tags_common = local.tags
+# }
 
-module "performance_hub_ecr_repo" {
-  source = "../../modules/app-ecr-repo"
+# module "performance_hub_ecr_repo" {
+#   source = "../../modules/app-ecr-repo"
 
-  app_name = "performance-hub"
+#   app_name = "performance-hub"
 
-  push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["performance-hub-development"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["performance-hub-preproduction"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["performance-hub-production"]}:role/modernisation-platform-oidc-cicd"
-  ]
+#   push_principals = [
+#     "arn:aws:iam::${local.environment_management.account_ids["performance-hub-development"]}:role/modernisation-platform-oidc-cicd",
+#     "arn:aws:iam::${local.environment_management.account_ids["performance-hub-preproduction"]}:role/modernisation-platform-oidc-cicd",
+#     "arn:aws:iam::${local.environment_management.account_ids["performance-hub-production"]}:role/modernisation-platform-oidc-cicd"
+#   ]
 
-  pull_principals = [
-    local.environment_management.account_ids["performance-hub-development"],
-    local.environment_management.account_ids["performance-hub-preproduction"],
-    local.environment_management.account_ids["performance-hub-production"]
-  ]
+#   pull_principals = [
+#     local.environment_management.account_ids["performance-hub-development"],
+#     local.environment_management.account_ids["performance-hub-preproduction"],
+#     local.environment_management.account_ids["performance-hub-production"]
+#   ]
 
-  # Tags
-  tags_common = local.tags
-}
+#   # Tags
+#   tags_common = local.tags
+# }
 
-module "mlra_ecr_repo" {
-  source = "../../modules/app-ecr-repo"
+# module "mlra_ecr_repo" {
+#   source = "../../modules/app-ecr-repo"
 
-  app_name = "mlra"
+#   app_name = "mlra"
 
-  push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["mlra-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["mlra-development"]
-  ]
+#   push_principals = [
+#     "arn:aws:iam::${local.environment_management.account_ids["mlra-development"]}:role/modernisation-platform-oidc-cicd",
+#     local.environment_management.account_ids["mlra-development"]
+#   ]
 
-  pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["mlra-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["mlra-development"],
-    local.environment_management.account_ids["mlra-test"],
-    local.environment_management.account_ids["mlra-preproduction"],
-    local.environment_management.account_ids["mlra-production"],
-    local.environment_management.account_ids["apex-development"]
-  ]
+#   pull_principals = [
+#     "arn:aws:iam::${local.environment_management.account_ids["mlra-development"]}:role/modernisation-platform-oidc-cicd",
+#     local.environment_management.account_ids["mlra-development"],
+#     local.environment_management.account_ids["mlra-test"],
+#     local.environment_management.account_ids["mlra-preproduction"],
+#     local.environment_management.account_ids["mlra-production"],
+#     local.environment_management.account_ids["apex-development"]
+#   ]
 
-  # Tags
-  tags_common = local.tags
-}
+#   # Tags
+#   tags_common = local.tags
+# }
 
 # ECR repo holding the APEX application container image
 module "apex_ecr_repo" {
