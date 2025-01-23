@@ -46,6 +46,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          ref: issue/8695
 
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d9e930d93532b84efdcf7d7b82621506e96a15b0 # v1.0.0
