@@ -169,20 +169,39 @@ main() {
         fi
 
         echo "Teams for $environment: $teams"
-        # Check if environment exists and that if has a team associated with it
+
+        # Filter out Azure teams (those starting with "azure-aws-sso")
+        filtered_teams=""
+        for team in $teams; do
+          if [[ ! $team == azure-aws-sso* ]]; then
+            filtered_teams+="$team "
+          else
+            echo "Skipping Azure team: $team"
+          fi
+        done
+
+        # Trim trailing whitespace
+        filtered_teams=$(echo $filtered_teams | xargs)
+
+        if [ -z "$filtered_teams" ]; then
+          echo "No non-Azure teams available for $environment, skipping..."
+          continue
+        fi
+
+        # Check if environment exists and if it has a team associated with it
         environment_exists="false"
         check_if_environment_exists "${environment}"
         change_to_application_json="false"
         check_if_change_to_application_json "${environment}"
         
-        if ([ "${environment_exists}" == "true" ] || [ "${teams}" == "" ]) && [ "${change_to_application_json}" == "false" ]
+        if ([ "${environment_exists}" == "true" ] || [ "${filtered_teams}" == "" ]) && [ "${change_to_application_json}" == "false" ]
         then
-          echo "${environment} already exists and there are no changes, or no GitHub team has been assigned, skipping..."
+          echo "${environment} already exists and there are no changes, or no valid GitHub team has been assigned, skipping..."
         else
           echo "Creating environment ${environment}"
           # Get GitHub team ids
           team_ids=()
-          for team in ${teams}
+          for team in ${filtered_teams}
           do
             team=$(echo "${team}" | xargs)  # Remove leading/trailing whitespace
             team_id=$(get_github_team_id "${team}")
