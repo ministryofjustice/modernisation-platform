@@ -30,8 +30,18 @@ data "aws_iam_policy_document" "testing_ci_policy" {
       "s3:PutObjectAcl",
     ]
     resources = [
+      "arn:aws:s3:::modernisation-platform-terraform-state/*.tflock",
       "arn:aws:s3:::modernisation-platform-terraform-state/terraform.tfstate",
       "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/testing/testing-test/terraform.tfstate"
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = ["s3:DeleteObject"]
+    resources = [
+      "arn:aws:s3:::modernisation-platform-terraform-state/*.tflock",
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/testing/testing-test/*.tflock"
     ]
   }
 

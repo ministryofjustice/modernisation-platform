@@ -41,7 +41,7 @@ data "aws_iam_policy_document" "oidc_deny_specific_actions" {
   }
 
   statement {
-    sid    = "AllowOIDCRemoveLock"
+    sid    = "AllowOIDCDeleteLock"
     effect = "Allow"
     resources = [
       "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/*.tflock",
