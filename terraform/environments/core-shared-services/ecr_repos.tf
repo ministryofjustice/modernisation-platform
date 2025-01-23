@@ -83,9 +83,9 @@
 #     local.environment_management.account_ids["apex-development"]
 #   ]
 
-  # Tags
-  tags_common = local.tags
-}
+#   # Tags
+#   tags_common = local.tags
+# }
 
 # ECR repo holding the APEX application container image
 module "apex_ecr_repo" {
