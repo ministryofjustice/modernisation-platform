@@ -198,6 +198,18 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
   }
 
   statement {
+    sid       = "AllowDeleteLockFromRootAccounts"
+    effect    = "Allow"
+    actions   = ["s3:DeleteObject"]
+    resources = ["${module.state-bucket.bucket.arn}/*.tflock"]
+
+    principals {
+      type        = "AWS"
+      identifiers = local.root_users_with_state_access
+    }
+  }
+
+  statement {
     sid       = "ListBucketFromModernisationPlatformOU"
     effect    = "Allow"
     actions   = ["s3:ListBucket"]
@@ -222,6 +234,26 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       "${module.state-bucket.bucket.arn}/terraform.tfstate",
       "${module.state-bucket.bucket.arn}/environments/members/*",
       "${module.state-bucket.bucket.arn}/environments/accounts/core-network-services/*"
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+  }
+
+  statement {
+    sid     = "DeleteLockFromModernisationPlatformOU"
+    effect  = "Allow"
+    actions = ["s3:GetObject"]
+    resources = [
+      "${module.state-bucket.bucket.arn}/*.tflock",
     ]
 
     principals {
@@ -277,11 +309,11 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
   }
 
   statement {
-    sid     = "AllowGithubActionsRoleDeleteTFLock"
+    sid     = "AllowGithubActionsRoleDeleteLock"
     effect  = "Allow"
     actions = ["s3:DeleteObject"]
     resources = [
-      "${module.state-bucket.bucket.arn}/*/terraform.tfstate.tflock",
+      "${module.state-bucket.bucket.arn}/*/*.tflock",
     ]
 
     principals {
@@ -327,10 +359,46 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
   }
 
   statement {
+    sid       = "AllowAdministratorAccessRoleDeleteLock"
+    effect    = "Allow"
+    actions   = ["s3:DeleteObject"]
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/*.tflock"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*"]
+    }
+  }
+
+  statement {
     sid       = "AllowMPAdministratorAccessRole"
     effect    = "Allow"
     actions   = ["s3:PutObject"]
     resources = ["${module.state-bucket.bucket.arn}/environments/accounts/*", ]
+
+    principals {
+      type        = "AWS"
+      identifiers = tolist(data.aws_iam_roles.sso-admin-access.arns)
+    }
+  }
+
+  statement {
+    sid       = "AllowMPAdministratorAccessRoleDeleteLock"
+    effect    = "Allow"
+    actions   = ["s3:DeleteObject"]
+    resources = ["${module.state-bucket.bucket.arn}/environments/accounts/*.tflock", ]
 
     principals {
       type        = "AWS"
