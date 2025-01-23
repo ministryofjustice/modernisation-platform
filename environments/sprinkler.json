@@ -44,8 +44,7 @@
           "level": "developer",
           "nuke": "rebuild"
         }
-      ],
-      "additional_reviewers": ["astrobinson"]
+      ]
     }
   ],
   "tags": {
