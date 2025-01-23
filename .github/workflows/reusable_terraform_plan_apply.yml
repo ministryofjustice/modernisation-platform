@@ -130,6 +130,7 @@ jobs:
           bash scripts/terraform-plan.sh ${{ inputs.working-directory }}
 
       - name: Get Destroy Count
+        if: github.event_name == 'pull_request' && steps.show.outputs.exitcode == '2'
         id: get_destroy_count
         env:
           DESTROY_THRESHOLD: ${{ env.TF_DESTROY_THRESHOLD }}
