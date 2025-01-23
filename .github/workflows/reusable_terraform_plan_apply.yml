@@ -32,6 +32,8 @@ on:
 
 env:
   TF_IN_AUTOMATION: true
+  TF_DESTROY_THRESHOLD: 1
+
 jobs:
   fetch-secrets:
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@d9e930d93532b84efdcf7d7b82621506e96a15b0 # v1.0.0
@@ -126,6 +128,30 @@ jobs:
         id: show
         run: |
           bash scripts/terraform-plan.sh ${{ inputs.working-directory }}
+
+      - name: Get Destroy Count
+        id: get_destroy_count
+        env:
+          DESTROY_THRESHOLD: ${{ env.TF_DESTROY_THRESHOLD }}
+          PLAN_SUMMARY: ${{ env.plan_summary }}
+        run: |
+          destroy_count=$(echo "$PLAN_SUMMARY" | grep -oE 'Plan: [0-9]+ to add, [0-9]+ to change, [0-9]+ to destroy' | awk '{print $8}')
+          if ! [[ "$destroy_count" =~ ^[0-9]+$ ]]; then
+              echo "Invalid destroy_count value: $destroy_count"
+              exit 1
+          fi
+          if ! [[ "$DESTROY_THRESHOLD" =~ ^[0-9]+$ ]]; then
+              echo "Invalid DESTROY_THRESHOLD value: $DESTROY_THRESHOLD"
+              exit 1
+          fi
+          if [ "$destroy_count" -gt "$DESTROY_THRESHOLD" ]; then
+              echo "Warning: There are $destroy_count resources to be destroyed in this plan."
+          elif [ "$destroy_count" -gt 0 ]; then
+              echo "There are $destroy_count resources to be destroyed, which is below the threshold."
+          else
+              echo "No resources to be destroyed"
+          fi
+          echo "destroy_count=$destroy_count" >> $GITHUB_ENV
 
       - name: Post Comment
         if: github.event.ref != 'refs/heads/main'
