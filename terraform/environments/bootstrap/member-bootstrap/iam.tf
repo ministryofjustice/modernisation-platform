@@ -804,8 +804,8 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
   }
 
   statement {
-    sid       = "AllowOIDCReadState"
-    effect    = "Allow"
+    sid    = "AllowOIDCReadState"
+    effect = "Allow"
     resources = [
       "arn:aws:s3:::modernisation-platform-terraform-state/*",
       "arn:aws:s3:::modernisation-platform-terraform-state/"
@@ -820,7 +820,7 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
     sid       = "AllowOIDCWriteState"
     effect    = "Allow"
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
-    actions   = [
+    actions = [
       "s3:PutObject",
       "s3:PutObjectAcl"
     ]
@@ -830,7 +830,7 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
     sid       = "AllowOIDCDeleteLock"
     effect    = "Allow"
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*.tflock"]
-    actions   = [
+    actions = [
       "s3:DeleteObject"
     ]
   }

@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "testing_ci_policy" {
   }
 
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = ["s3:DeleteObject"]
     resources = [
       "arn:aws:s3:::modernisation-platform-terraform-state/*.tflock",

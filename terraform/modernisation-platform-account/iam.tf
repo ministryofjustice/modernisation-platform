@@ -82,7 +82,7 @@ data "aws_iam_policy_document" "collaborator_local_plan" {
   }
 
   statement {
-    sid = "TerraformStateAccessDeleteLock"
+    sid     = "TerraformStateAccessDeleteLock"
     actions = ["s3:DeleteObject"]
 
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*.tflock"]
@@ -209,9 +209,9 @@ data "aws_iam_policy_document" "modernisation_account_terraform_state_role" {
     resources = ["arn:aws:dynamodb:eu-west-2:${data.aws_caller_identity.current.account_id}:table/modernisation-platform-terraform-state-lock"]
   }
   statement {
-    sid    = "AllowS3AccessList"
-    effect = "Allow"
-    actions = ["s3:ListBucket"]
+    sid       = "AllowS3AccessList"
+    effect    = "Allow"
+    actions   = ["s3:ListBucket"]
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state"]
   }
   statement {
