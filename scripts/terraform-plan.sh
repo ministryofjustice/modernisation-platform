@@ -38,8 +38,6 @@ else
     echo "$plan_output"                   # Output full redacted plan to stdout (GitHub Actions logs)
 fi
 
-echo "plan_destroy_check=$plan_summary" >> "$GITHUB_OUTPUT"
-
 echo "summary<<EOF" >> $GITHUB_OUTPUT
 echo "$plan_summary" >> $GITHUB_OUTPUT
 echo "EOF" >> $GITHUB_OUTPUT
