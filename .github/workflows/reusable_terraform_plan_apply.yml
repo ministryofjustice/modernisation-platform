@@ -137,7 +137,7 @@ jobs:
         env:
           PLAN_SUMMARY: ${{ steps.show.outputs.plan_summary }}
         run: |
-            echo "plan_summary=$(echo $PLAN_SUMMARY)
+            echo "plan_summary=$(echo $PLAN_SUMMARY)"
 
       - name: Get Destroy Count
         if: github.event_name == 'pull_request'
