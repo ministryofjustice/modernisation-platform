@@ -135,15 +135,25 @@ jobs:
           DESTROY_THRESHOLD: ${{ env.TF_DESTROY_THRESHOLD }}
           PLAN_SUMMARY: ${{ env.plan_summary }}
         run: |
-          destroy_count=$(echo "$PLAN_SUMMARY" | grep -oE 'Plan: [0-9]+ to add, [0-9]+ to change, [0-9]+ to destroy' | awk '{print $8}')
-          if ! [[ "$destroy_count" =~ ^[0-9]+$ ]]; then
-              echo "Invalid destroy_count value: $destroy_count"
-              exit 1
-          fi
+  
+          destroy_count=$(echo "$PLAN_SUMMARY" | grep -oE 'Plan: [0-9]+ to add, [0-9]+ to change, [0-9]+ to destroy.' | awk '{print $8}')
+ 
+          echo "destroy_count=$destroy_count"
+
           if ! [[ "$DESTROY_THRESHOLD" =~ ^[0-9]+$ ]]; then
               echo "Invalid DESTROY_THRESHOLD value: $DESTROY_THRESHOLD"
               exit 1
           fi
+
+          if echo "$PLAN_SUMMARY" | grep -q "No changes. Your infrastructure matches the configuration."; then
+              echo "No changes. Your infrastructure matches the configuration."
+              destroy_count=0
+          elif
+              ! [[ "$destroy_count" =~ ^[0-9]+$ ]]; then
+                  echo "Invalid destroy_count value: $destroy_count"
+                  exit 1
+          fi
+
           if [ "$destroy_count" -gt "$DESTROY_THRESHOLD" ]; then
               echo "Warning: There are $destroy_count resources to be destroyed in this plan."
           elif [ "$destroy_count" -gt 0 ]; then
