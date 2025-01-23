@@ -40,4 +40,5 @@ fi
 
 echo "summary<<EOF" >> $GITHUB_OUTPUT
 echo "$plan_summary" >> $GITHUB_OUTPUT
+echo "plan_summary=$plan_summary" >> $GITHUB_OUTPUT
 echo "EOF" >> $GITHUB_OUTPUT
