@@ -8,17 +8,17 @@ set -e
 # It also runs some checks to ensure that the values for the count and the threshold are valid.
 
 # Checks that PLAN_SUMMARY is set. Without this the script will fail so we force an exit.
-if [ -z "$PLAN_SUMMARY" ]; then
-    echo "PLAN_SUMMARY is not set"
+if [ -z "$PLAN_DESTROY_CHECK" ]; then
+    echo "PLAN_DESTROY_CHECK is not set"
     exit 1
 fi
 
-destroy_count=$(echo "$PLAN_SUMMARY" | grep -oE 'Plan: [0-9]+ to add, [0-9]+ to change, [0-9]+ to destroy.' | awk '{print $8}')
+destroy_count=$(echo "$PLAN_DESTROY_CHECK" | grep -oE 'Plan: [0-9]+ to add, [0-9]+ to change, [0-9]+ to destroy.' | awk '{print $8}')
 
 echo "destroy_threshold=$DESTROY_THRESHOLD"
 echo "destroy_count=$destroy_count"
 
-if echo "$PLAN_SUMMARY" | grep -q "No changes. Your infrastructure matches the configuration."; then
+if echo "$PLAN_DESTROY_CHECK" | grep -q "No changes. Your infrastructure matches the configuration."; then
     echo "No changes. Your infrastructure matches the configuration."
     destroy_count=0
     exit 0
