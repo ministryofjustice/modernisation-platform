@@ -34,6 +34,12 @@
           "level": "developer",
           "nuke": "exclude",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "zaizi-devs",
+          "level": "instance-access",
+          "nuke": "exclude",
+          "github_action_reviewer": "false"
         }
       ]
     },
