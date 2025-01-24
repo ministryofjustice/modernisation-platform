@@ -67,11 +67,26 @@ data "aws_iam_policy_document" "collaborator_local_plan" {
     ]
 
     resources = [
+      "arn:aws:s3:::modernisation-platform-terraform-state/*.tflock",
       "arn:aws:s3:::modernisation-platform-terraform-state/terraform.tfstate",
       "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*",
       "arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/core-network-services/*",
       "arn:aws:s3:::modernisation-platform-terraform-state"
     ]
+
+    condition {
+      test     = "BoolIfExists"
+      variable = "aws:MultiFactorAuthPresent"
+      values   = ["true"]
+    }
+  }
+
+  statement {
+    sid     = "TerraformStateAccessDeleteLock"
+    actions = ["s3:DeleteObject"]
+
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*.tflock"]
+
     condition {
       test     = "BoolIfExists"
       variable = "aws:MultiFactorAuthPresent"
@@ -194,11 +209,9 @@ data "aws_iam_policy_document" "modernisation_account_terraform_state_role" {
     resources = ["arn:aws:dynamodb:eu-west-2:${data.aws_caller_identity.current.account_id}:table/modernisation-platform-terraform-state-lock"]
   }
   statement {
-    sid    = "AllowS3AccessList"
-    effect = "Allow"
-    actions = [
-      "s3:ListBucket",
-    ]
+    sid       = "AllowS3AccessList"
+    effect    = "Allow"
+    actions   = ["s3:ListBucket"]
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state"]
   }
   statement {
@@ -315,8 +328,17 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
     sid       = "AllowOIDCReadState"
     effect    = "Allow"
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*", "arn:aws:s3:::modernisation-platform-terraform-state/"]
-    actions = ["s3:Get*",
-    "s3:List*"]
+    actions = [
+      "s3:Get*",
+      "s3:List*"
+    ]
+  }
+
+  statement {
+    sid       = "AllowOIDCDeleteLock"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*.tflock"]
+    actions   = ["s3:DeleteObject"]
   }
 }
 
