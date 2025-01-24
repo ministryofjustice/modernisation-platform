@@ -133,6 +133,7 @@ jobs:
 
       - name: Get Destroy Count
         if: github.event_name == 'pull_request'
+        id: get_destroy_count
         env:
           destroy_threshold: ${{ env.TF_DESTROY_THRESHOLD }}
           plan_summary: ${{ steps.show.outputs.summary }}
@@ -163,6 +164,45 @@ jobs:
                         body: `### Warning - Large Number of Resources to be Destroyed.\n ${identifier}${summary}\n`
                     });
                 }
+
+      - name: Check for Approval
+        id: check_approval
+        if: github.event_name == 'pull_request' && steps.get_destroy_count.outputs.destroy_notify == 'true'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          github-token: ${{ secrets.pipeline_github_token }}
+          script: |
+            const orgName = 'ministryofjustice';
+            const teamSlug = 'modernisation-platform';
+
+            const {data: reviews} = await github.rest.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+
+            const {data: team_members} = await github.rest.teams.listMembersInOrg({
+              org: orgName,
+              team_slug: teamSlug
+            });
+
+            const teamMemberLogins = team_members.map(member => member.login);
+            const approved = reviews.some(review => review.state === 'APPROVED' && teamMemberLogins.includes(review.user.login));
+
+            if (approved) {
+              core.notice('Pull request approved by a member of @ministryofjustice/modernisation-platform');
+            } 
+            else {
+              core.setFailed('Terraform plan evaluation detected that resources will be destroyed & so requires approval from a member of @ministryofjustice/modernisation-platform - please contact #ask-modernisation-platform for assistance');
+
+              await github.rest.pulls.createReview({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.payload.pull_request.number,
+                event: 'REQUEST_CHANGES',
+                body: 'Terraform plan evaluation detected that resources will be destroyed & so requires approval from @ministryofjustice/modernsation-platform - please contact #ask-modernisation-platform for assistance'
+              });
+            }
 
       - name: Post Comment
         if: github.event.ref != 'refs/heads/main'
