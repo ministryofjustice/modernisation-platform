@@ -17,12 +17,6 @@ destroy_count=$(echo "$plan_summary" | grep -oE 'Plan: [0-9]+ to add, [0-9]+ to 
 echo "destroy_threshold=$destroy_threshold"
 echo "destroy_count=$destroy_count"
 
-if echo "$plan_summary" | grep -q "No changes. Your infrastructure matches the configuration."; then
-    echo "No changes. Your infrastructure matches the configuration."
-    destroy_count=0
-    exit 0
-fi
-
 # These tests will force an exit of the script if the values are not valid as we don't want to proceed if invalid.
 if ! [[ "$destroy_threshold" =~ ^[0-9]+$ ]]; then
     echo "Invalid destroy_threshold value: $destroy_threshold"
@@ -30,6 +24,13 @@ if ! [[ "$destroy_threshold" =~ ^[0-9]+$ ]]; then
 elif ! [[ "$destroy_count" =~ ^[0-9]+$ ]]; then
     echo "Invalid destroy_count value: $destroy_count"
     exit 1
+fi
+
+# This looks for the summary output for no changes & exits the script if found.
+if echo "$plan_summary" | grep -q "No changes. Your infrastructure matches the configuration."; then
+    echo "No changes. Your infrastructure matches the configuration."
+    destroy_count=0
+    exit 0
 fi
 
 # These checks will print a warning if the destroy count is above the threshold. Useful for trouble-shooting.
