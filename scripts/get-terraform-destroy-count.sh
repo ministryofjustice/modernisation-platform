@@ -16,13 +16,13 @@ fi
 if echo "$plan_summary" | grep -q "No changes. Your infrastructure matches the configuration."; then
     echo "No changes. Your infrastructure matches the configuration."
     destroy_count=0
-    destroy_notify=false
+    destroy_notify="false"
     exit 0
 fi
 
 destroy_count=$(echo "$plan_summary" | grep -oE 'Plan: [0-9]+ to add, [0-9]+ to change, [0-9]+ to destroy.' | awk '{print $8}')
 
-destroy_notify=false
+destroy_notify="false"
 
 echo "destroy_threshold=$destroy_threshold"
 echo "destroy_count=$destroy_count"
@@ -39,11 +39,13 @@ fi
 # These checks will print a warning if the destroy count is above the threshold. Useful for trouble-shooting.
 if [ "$destroy_count" -gt "$destroy_threshold" ]; then
     echo "Warning: There are $destroy_count resources to be destroyed in this plan."
-    destroy_notify=true
+    destroy_notify="true"
 elif [ "$destroy_count" -gt 0 ]; then
     echo "There are $destroy_count resources to be destroyed, which is below the set threshold of $DESTROY_THRESHOLD."
+    destroy_notify="false"
 else
     echo "No resources to be destroyed"
+    destroy_notify="false"
 fi
 
 echo "destroy_count=$destroy_count" >> $GITHUB_OUTPUT

@@ -170,7 +170,7 @@ jobs:
         if: github.event_name == 'pull_request' && steps.get_destroy_count.outputs.destroy_notify == 'true'
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
-          github-token: ${{ secrets.pipeline_github_token }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const orgName = 'ministryofjustice';
             const teamSlug = 'modernisation-platform';
