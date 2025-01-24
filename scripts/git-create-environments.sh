@@ -11,21 +11,34 @@ get_existing_environments() {
   github_environments=""
 
   while :; do
-    # Capture both headers and body
+    # Capture response with headers and body
     response=$(curl -s -i \
       -H "Accept: application/vnd.github.v3+json" \
       -H "Authorization: token ${secret}" \
       "https://api.github.com/repos/${repository}/environments?per_page=100&page=${page}")
 
+    # Print response for debugging
+    echo "Response: $response"
+
     # Separate headers and body
     headers=$(echo "$response" | sed -n '/^$/q;p')
     body=$(echo "$response" | sed -n '/^$/,$p' | tail -n +2)
 
+    # Debug the response
+    echo "Headers: $headers"
+    echo "Body: $body"
+
+    # Handle empty or malformed JSON
+    if [ -z "$body" ] || ! echo "$body" | jq . > /dev/null 2>&1; then
+      echo "Error: Invalid or empty JSON response"
+      exit 1
+    fi
+
     # Parse environment names from the body
-    current_page_environments=$(echo "$body" | jq -r '.environments[].name')
+    current_page_environments=$(echo "$body" | jq -r '.environments[].name' || echo "Error parsing environments")
     github_environments="${github_environments} ${current_page_environments}"
 
-    # Check for a next link in the headers
+    # Check for a next link in headers
     next_link=$(echo "$headers" | grep -i '^link:' | grep -o '<[^>]*>; rel="next"' | sed -e 's/^<//' -e 's/>; rel="next"$//')
 
     if [ -z "$next_link" ]; then
