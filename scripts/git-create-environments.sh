@@ -27,19 +27,14 @@ get_existing_environments() {
     echo "Headers (page $page): $headers"
     echo "Body (page $page): $body"
 
-    # Validate the body is valid JSON
-    if ! echo "$body" | jq . > /dev/null 2>&1; then
-      echo "Error: Invalid or malformed JSON response on page $page"
-      exit 1
-    fi
+    # Extract environments
+    environments=$(echo "$body" | jq -r '.environments[].name // empty')
 
-    # Extract environment names from the body
-    current_page_environments=$(echo "$body" | jq -r '.environments[].name')
-    if [ -z "$current_page_environments" ]; then
+    if [ -z "$environments" ]; then
       echo "No environments found on page $page"
     else
-      echo "Environments on page $page: $current_page_environments"
-      github_environments="${github_environments} ${current_page_environments}"
+      echo "Environments on page $page: $environments"
+      github_environments="${github_environments} ${environments}"
     fi
 
     # Check the Link header for the next page
