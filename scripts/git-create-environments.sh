@@ -11,38 +11,40 @@ get_existing_environments() {
   github_environments=""
 
   while :; do
-    # Capture response with headers and body
-    response=$(curl -s -i \
+    echo "Fetching page $page..."
+
+    # Make the API call and capture the response
+    response=$(curl -s \
       -H "Accept: application/vnd.github.v3+json" \
       -H "Authorization: token ${secret}" \
       "https://api.github.com/repos/${repository}/environments?per_page=100&page=${page}")
 
-    # Print response for debugging
-    echo "Response: $response"
+    # Debug: Print the raw response
+    echo "Raw response (page $page): $response"
 
-    # Separate headers and body
-    headers=$(echo "$response" | sed -n '/^$/q;p')
-    body=$(echo "$response" | sed -n '/^$/,$p' | tail -n +2)
-
-    # Debug the response
-    echo "Headers: $headers"
-    echo "Body: $body"
-
-    # Handle empty or malformed JSON
-    if [ -z "$body" ] || ! echo "$body" | jq . > /dev/null 2>&1; then
-      echo "Error: Invalid or empty JSON response"
+    # Attempt to parse the response with jq
+    if ! echo "$response" | jq . > /dev/null 2>&1; then
+      echo "Error: Invalid or malformed JSON response on page $page"
       exit 1
     fi
 
-    # Parse environment names from the body
-    current_page_environments=$(echo "$body" | jq -r '.environments[].name' || echo "Error parsing environments")
-    github_environments="${github_environments} ${current_page_environments}"
+    # Extract environment names
+    current_page_environments=$(echo "$response" | jq -r '.environments[].name')
+    if [ -z "$current_page_environments" ]; then
+      echo "No environments found on page $page"
+    else
+      echo "Environments on page $page: $current_page_environments"
+      github_environments="${github_environments} ${current_page_environments}"
+    fi
 
-    # Check for a next link in headers
-    next_link=$(echo "$headers" | grep -i '^link:' | grep -o '<[^>]*>; rel="next"' | sed -e 's/^<//' -e 's/>; rel="next"$//')
+    # Debug: Check if there's a "next" link in the headers
+    next_link=$(echo "$response" | grep -i '^link:' | sed -n 's/.*<\(.*\)>; rel="next".*/\1/p')
+    echo "Next link (page $page): $next_link"
 
+    # Determine if we should continue fetching pages
     if [ -z "$next_link" ]; then
-      break  # No more pages to fetch
+      echo "No more pages to fetch."
+      break
     else
       page=$((page + 1))
     fi
