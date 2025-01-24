@@ -11,16 +11,22 @@ get_existing_environments() {
   github_environments=""
 
   while :; do
-    response=$(curl -s \
+    # Capture both headers and body
+    response=$(curl -s -i \
       -H "Accept: application/vnd.github.v3+json" \
       -H "Authorization: token ${secret}" \
       "https://api.github.com/repos/${repository}/environments?per_page=100&page=${page}")
 
-    current_page_environments=$(echo $response | jq -r '.environments[].name')
+    # Separate headers and body
+    headers=$(echo "$response" | sed -n '/^$/q;p')
+    body=$(echo "$response" | sed -n '/^$/,$p' | tail -n +2)
+
+    # Parse environment names from the body
+    current_page_environments=$(echo "$body" | jq -r '.environments[].name')
     github_environments="${github_environments} ${current_page_environments}"
 
-    # Check if there's a "next" link in the headers
-    next_link=$(echo "$response" | grep -i '^link:' | sed -n 's/.*<\(.*\)>; rel="next".*/\1/p')
+    # Check for a next link in the headers
+    next_link=$(echo "$headers" | grep -i '^link:' | grep -o '<[^>]*>; rel="next"' | sed -e 's/^<//' -e 's/>; rel="next"$//')
 
     if [ -z "$next_link" ]; then
       break  # No more pages to fetch
