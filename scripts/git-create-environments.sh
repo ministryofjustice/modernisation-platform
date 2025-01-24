@@ -13,23 +13,28 @@ get_existing_environments() {
   while :; do
     echo "Fetching page $page..."
 
-    # Make the API call and capture the response
-    response=$(curl -s \
+    # Fetch the response with headers and body
+    response=$(curl -s -i \
       -H "Accept: application/vnd.github.v3+json" \
       -H "Authorization: token ${secret}" \
       "https://api.github.com/repos/${repository}/environments?per_page=100&page=${page}")
 
-    # Debug: Print the raw response
-    echo "Raw response (page $page): $response"
+    # Separate headers and body
+    headers=$(echo "$response" | sed -n '/^$/q;p')
+    body=$(echo "$response" | sed -n '/^$/,$p' | tail -n +2)
 
-    # Attempt to parse the response with jq
-    if ! echo "$response" | jq . > /dev/null 2>&1; then
+    # Debug: Print the headers and body
+    echo "Headers (page $page): $headers"
+    echo "Body (page $page): $body"
+
+    # Validate the body is valid JSON
+    if ! echo "$body" | jq . > /dev/null 2>&1; then
       echo "Error: Invalid or malformed JSON response on page $page"
       exit 1
     fi
 
-    # Extract environment names
-    current_page_environments=$(echo "$response" | jq -r '.environments[].name')
+    # Extract environment names from the body
+    current_page_environments=$(echo "$body" | jq -r '.environments[].name')
     if [ -z "$current_page_environments" ]; then
       echo "No environments found on page $page"
     else
@@ -37,11 +42,11 @@ get_existing_environments() {
       github_environments="${github_environments} ${current_page_environments}"
     fi
 
-    # Debug: Check if there's a "next" link in the headers
-    next_link=$(echo "$response" | grep -i '^link:' | sed -n 's/.*<\(.*\)>; rel="next".*/\1/p')
+    # Check the Link header for the next page
+    next_link=$(echo "$headers" | grep -i '^link:' | grep -o '<[^>]*>; rel="next"' | sed -e 's/^<//' -e 's/>; rel="next"$//')
     echo "Next link (page $page): $next_link"
 
-    # Determine if we should continue fetching pages
+    # Determine if we should continue to the next page
     if [ -z "$next_link" ]; then
       echo "No more pages to fetch."
       break
