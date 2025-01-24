@@ -177,6 +177,8 @@ jobs:
           script: |
             const orgName = 'ministryofjustice';
             const teamSlug = 'modernisation-platform';
+            const destroyCount = parseInt(process.env.destroy_count, 10);
+            const destroyThreshold = parseInt(process.env.destroy_threshold, 10);
 
             const {data: reviews} = await github.rest.pulls.listReviews({
               owner: context.repo.owner,
