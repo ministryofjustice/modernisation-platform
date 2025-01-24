@@ -11,40 +11,27 @@ get_existing_environments() {
   github_environments=""
 
   while :; do
-    echo "Fetching page $page..."
-
-    # Fetch the response with headers and body
-    response=$(curl -s -i \
+    response=$(curl -si \
       -H "Accept: application/vnd.github.v3+json" \
       -H "Authorization: token ${secret}" \
       "https://api.github.com/repos/${repository}/environments?per_page=100&page=${page}")
 
     # Separate headers and body
-    headers=$(echo "$response" | sed -n '/^$/q;p')
-    body=$(echo "$response" | sed -n '/^$/,$p' | tail -n +2)
+    headers=$(echo "$response" | sed -n '/^\r$/q;p')
+    body=$(echo "$response" | sed -n '/^\r$/,$p' | sed '1d')
 
-    # Debug: Print the headers and body
-    echo "Headers (page $page): $headers"
-    echo "Body (page $page): $body"
+    # Debug output to see the body
+    # echo "Body for page ${page}:"
+    # echo "${body}"
 
-    # Extract environments
-    environments=$(echo "$body" | jq -r '.environments[].name // empty')
+    current_page_environments=$(echo "$body" | jq -r '.environments[].name')
+    github_environments="${github_environments} ${current_page_environments}"
 
-    if [ -z "$environments" ]; then
-      echo "No environments found on page $page"
-    else
-      echo "Environments on page $page: $environments"
-      github_environments="${github_environments} ${environments}"
-    fi
+    # Check if there's a "next" link in the headers
+    next_link=$(echo "$headers" | grep -i '^link:' | sed -n 's/.*<\(.*\)>; rel="next".*/\1/p')
 
-    # Check the Link header for the next page
-    next_link=$(echo "$headers" | grep -i '^link:' | grep -o '<[^>]*>; rel="next"' | sed -e 's/^<//' -e 's/>; rel="next"$//')
-    echo "Next link (page $page): $next_link"
-
-    # Determine if we should continue to the next page
     if [ -z "$next_link" ]; then
-      echo "No more pages to fetch."
-      break
+      break  # No more pages to fetch
     else
       page=$((page + 1))
     fi
