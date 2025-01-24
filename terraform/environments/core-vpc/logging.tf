@@ -11,6 +11,9 @@ locals {
       }
     }
   ]...)
+  vpc_cloudwatch_rlq_associations = {
+    for key, value in local.vpc_rlq_associations : key => value if can(regex("cloudwatch", key))
+  }
 }
 
 data "aws_route53_resolver_query_log_config" "core_logging" {
@@ -22,10 +25,7 @@ data "aws_route53_resolver_query_log_config" "core_logging" {
 }
 
 resource "aws_route53_resolver_query_log_config_association" "core_logging" {
-  for_each = {
-    for key, value in local.vpc_rlq_associations :
-    key => value if local.is-production || can(regex("core-logging-rlq-cloudwatch", key))
-  }
+  for_each                     = local.is-production ? local.vpc_rlq_associations : local.vpc_cloudwatch_rlq_associations
   resolver_query_log_config_id = each.value.rlq_id
   resource_id                  = each.value.vpc_id
 }
