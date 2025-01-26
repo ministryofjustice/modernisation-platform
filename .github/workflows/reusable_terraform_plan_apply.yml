@@ -161,7 +161,7 @@ jobs:
                         owner: owner,
                         repo: repo,
                         issue_number: context.payload.pull_request.number,
-                        body: `### Warning - Large Number of Resources to be Destroyed.\n ${identifier}${summary}\n`
+                        body: `### :warning: Warning - Large Number of Resources to be Destroyed.\n ${identifier}${summary}\n`
                     });
                 }
 
