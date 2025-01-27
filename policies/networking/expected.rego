@@ -456,6 +456,12 @@ expected :=
         "accounts": [
         ]
       }
+    },
+    "bug-test": {
+      "general": {
+        "cidr": "10.26.160.0/21",
+        "accounts": [
+        ]
     }
   }
 }
