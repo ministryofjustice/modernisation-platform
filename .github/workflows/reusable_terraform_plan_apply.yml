@@ -151,22 +151,25 @@ jobs:
             script: |
                 const owner = context.repo.owner;
                 const repo = context.repo.repo;
+                const orgName = 'ministryofjustice';
+                const teamSlug = 'modernisation-platform';
                 const destroyCount = parseInt(process.env.destroy_count, 10);
                 const destroyThreshold = parseInt(process.env.destroy_threshold, 10);
                 const summary = `\`${{ steps.show.outputs.summary }}\``;
                 const workflowId = "${{ env.WORKSPACE_NAME }}";
                 const identifier = workflowId ? `_${workflowId}_\n` : `_${{ inputs.workflow_id }}_\n`;
                 if (destroyCount >= destroyThreshold) {
-                    await github.rest.issues.createComment({
-                        owner: owner,
-                        repo: repo,
-                        issue_number: context.payload.pull_request.number,
-                        body: `### :warning: Warning - Large Number of Resources to be Destroyed.\n ${identifier}${summary}\n`
-                    });
+                  await github.rest.pulls.createReview({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    pull_number: context.payload.pull_request.number,
+                    event: 'REQUEST_CHANGES',
+                    body: 'Terraform plan evaluation detected a number of resources are to be deleted. Please review the plan and confirm the changes are expected.'
+                  });
                 }
 
-      - name: Check for Approval
-        id: check_approval
+      - name: Post Warning & Check for Approval
+        id: post_warning_check_approval
         if: github.event_name == 'pull_request'
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         env:
@@ -180,19 +183,13 @@ jobs:
             const destroyCount = parseInt(process.env.destroy_count, 10);
             const destroyThreshold = parseInt(process.env.destroy_threshold, 10);
 
-            const {data: reviews} = await github.rest.pulls.listReviews({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number
-            });
-
             if (destroyCount >= destroyThreshold) {
               await github.rest.pulls.createReview({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: context.payload.pull_request.number,
                 event: 'REQUEST_CHANGES',
-                body: 'Terraform plan evaluation detected a number of resources are to be deleted. Please review the plan and confirm the changes are expected.'
+                body: `### :warning: Warning - Large Number of Resources to be Destroyed.\n ${identifier}${summary}\n`. Please review the plan and confirm the changes are expected.'
               });
             }
         
