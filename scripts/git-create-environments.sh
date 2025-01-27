@@ -11,16 +11,31 @@ get_existing_environments() {
   github_environments=""
 
   while :; do
-    response=$(curl -s \
+    response=$(curl -si \
       -H "Accept: application/vnd.github.v3+json" \
       -H "Authorization: token ${secret}" \
       "https://api.github.com/repos/${repository}/environments?per_page=100&page=${page}")
 
-    current_page_environments=$(echo $response | jq -r '.environments[].name')
+    # Separate headers and body using awk
+    headers=$(echo "$response" | awk 'BEGIN {RS="\r\n\r\n"} NR==1 {print}')
+    body=$(echo "$response" | awk 'BEGIN {RS="\r\n\r\n"} NR==2 {print}')
+
+    # Debug output to see the headers and body
+    # echo "Headers for page ${page}:"
+    # echo "${headers}"
+    # echo "Body for page ${page}:"
+    # echo "${body}"
+
+    current_page_environments=$(echo "$body" | jq -r '.environments[].name')
+    if [ $? -ne 0 ]; then
+      echo "jq error: Failed to parse JSON"
+      exit 1
+    fi
+
     github_environments="${github_environments} ${current_page_environments}"
 
     # Check if there's a "next" link in the headers
-    next_link=$(echo "$response" | grep -i '^link:' | sed -n 's/.*<\(.*\)>; rel="next".*/\1/p')
+    next_link=$(echo "$headers" | grep -i '^link:' | sed -n 's/.*<\(.*\)>; rel="next".*/\1/p')
 
     if [ -z "$next_link" ]; then
       break  # No more pages to fetch
