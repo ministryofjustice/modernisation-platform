@@ -189,7 +189,7 @@ jobs:
                 repo: context.repo.repo,
                 pull_number: context.payload.pull_request.number,
                 event: 'REQUEST_CHANGES',
-                body: `### :warning: Warning - Large Number of Resources to be Destroyed.\n ${identifier}${summary}\n`. Please review the plan and confirm the changes are expected.'
+                body: `### :warning: Warning - Large Number of Resources to be Destroyed.\n ${identifier}${summary}\n Please review the plan and confirm the changes are expected.'
               });
             }
         
