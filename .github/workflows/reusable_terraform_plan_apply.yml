@@ -32,6 +32,7 @@ on:
 
 env:
   TF_IN_AUTOMATION: true
+  TF_DESTROY_THRESHOLD: 10 # Sets a threshold to alert if the number of resources shown to be destroyed in the plan output is equal or threater than this number.
 jobs:
   fetch-secrets:
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@d9e930d93532b84efdcf7d7b82621506e96a15b0 # v1.0.0
@@ -126,6 +127,43 @@ jobs:
         id: show
         run: |
           bash scripts/terraform-plan.sh ${{ inputs.working-directory }}
+
+      - name: Get Destroy Count
+        if: github.event_name == 'pull_request'
+        id: get_destroy_count
+        env:
+          destroy_threshold: ${{ env.TF_DESTROY_THRESHOLD }}
+          plan_summary: ${{ steps.show.outputs.summary }}
+        run: |
+            bash scripts/get-terraform-destroy-count.sh
+
+      - name: Post Warning & Check for Approval
+        id: post_warning_check_approval
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        env:
+          destroy_count: ${{ steps.get_destroy_count.outputs.destroy_count }}
+          destroy_threshold: ${{ env.TF_DESTROY_THRESHOLD }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const orgName = 'ministryofjustice';
+            const teamSlug = 'modernisation-platform';
+            const destroyCount = parseInt(process.env.destroy_count, 10);
+            const destroyThreshold = parseInt(process.env.destroy_threshold, 10);
+            const summary = `\`${{ steps.show.outputs.summary }}\``;
+            const workflowId = "${{ env.WORKSPACE_NAME }}";
+            const identifier = workflowId ? `_${workflowId}_\n` : `_${{ inputs.workflow_id }}_\n`;
+
+            if (destroyCount >= destroyThreshold) {
+              await github.rest.pulls.createReview({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.payload.pull_request.number,
+                event: 'REQUEST_CHANGES',
+                body: `### :warning: Warning - Large Number of Resources to be Destroyed.\n ${identifier}${summary}\n Please review the plan and confirm the changes are expected.`
+              });
+            }
 
       - name: Post Comment
         if: github.event.ref != 'refs/heads/main'
