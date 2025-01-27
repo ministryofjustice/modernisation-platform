@@ -182,6 +182,9 @@ jobs:
             const teamSlug = 'modernisation-platform';
             const destroyCount = parseInt(process.env.destroy_count, 10);
             const destroyThreshold = parseInt(process.env.destroy_threshold, 10);
+            const summary = `\`${{ steps.show.outputs.summary }}\``;
+            const workflowId = "${{ env.WORKSPACE_NAME }}";
+            const identifier = workflowId ? `_${workflowId}_\n` : `_${{ inputs.workflow_id }}_\n`;
 
             if (destroyCount >= destroyThreshold) {
               await github.rest.pulls.createReview({
