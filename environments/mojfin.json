@@ -11,6 +11,10 @@
         {
           "sso_group_name": "laa-mojfin-developers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-mojfin-database-access",
+          "level": "instance-management"
         }
       ]
     },
@@ -37,6 +41,10 @@
         {
           "sso_group_name": "laa-mojfin-developers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-mojfin-database-access",
+          "level": "instance-management"
         }
       ]
     },
@@ -57,7 +65,7 @@
   "tags": {
     "application": "mojfin",
     "business-unit": "LAA",
-    "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
+    "infrastructure-support": "laa_ops@digital.justice.gov.uk",
     "owner": "william.moran@justice.gov.uk",
     "critical-national-infrastructure": false
   },
