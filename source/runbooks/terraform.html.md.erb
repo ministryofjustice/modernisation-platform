@@ -54,24 +54,22 @@ $ terraform workspace select core-logging-production
 $ terraform plan
 ```
 
-You will likely get an error if you haven't changed your workspace from `default`.
+You will get errors if you haven't changed your workspace from `default`.
 
 ### Permissions required for `terraform/environments/` directory in [`modernisation-platform-environments`](https://github.com/ministryofjustice/modernisation-platform-environments) repo
 
 You can run `terraform plan` and `terraform apply` in customer directories using credentials for AdministratorAccess SSO role for the terraform workspace you're running against. For example, if you're want to run code in the `terraform/environments/nomis` directory in the `nomis-development` workspace, you will need to retrieve the [AWS SSO credentials](../user-guide/getting-aws-credentials.html) for the `nomis-development` account and paste them into your environment prior to running terraform commands.
 
-After pasting the credentials, use the following steps to run terraform in the `nomis` directory against `nomis-development` account:
+After pasting the credentials, use the following steps to run terraform in the `example` directory against `example-development` account:
 
 ```bash
 $ cd terraform/environments/nomis
-$ terraform init -backend-config=assume_role={role_arn=\"arn:aws:iam::<modernisation-platform account number>:role/modernisation-account-terraform-state-member-access\"}
+$ terraform init
 $ terraform workspace list
-$ terraform workspace select nomis-development
+$ terraform workspace select example-development
 $ terraform plan
 $ terraform apply
 ```
-
-NOTE, you are required to replace `<modernisation-platform account number>` with the actual account number of the `modernisation-platform` account in order to run the `terraform init` command.
 
 >If you encounter `Access Denied` error, try running `rm -rf .terraform` and rerun `terraform init`
 
