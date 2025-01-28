@@ -5,10 +5,10 @@ terraform {
   backend "s3" {
     acl                  = "bucket-owner-full-control"
     bucket               = "modernisation-platform-terraform-state"
-    dynamodb_table       = "modernisation-platform-terraform-state-lock"
     encrypt              = true
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
+    use_lockfile         = true
     workspace_key_prefix = "environments/members/$application_name" # This will store the object as environments/members/$application_name/${workspace}/terraform.tfstate
   }
 }
