@@ -457,9 +457,9 @@ expected :=
         ]
       }
     },
-    "bug-test": {
+    "bug-sandbox": {
       "general": {
-        "cidr": "10.26.160.0/21",
+        "cidr": "10.231.16.0/21",
         "accounts": [
         ]
     }
