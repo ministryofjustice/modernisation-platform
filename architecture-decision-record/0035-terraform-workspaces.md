@@ -18,3 +18,6 @@ We will continue the use of workspaces for separation. Code which uses the `defa
 
 * `terraform/modernisation-platform-account`
 * `terraform/github`
+* `terraform/pagerduty`
+* `terraform/single-sign-on`
+* `terraform/environments`
