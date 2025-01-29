@@ -1677,7 +1677,7 @@ resource "pagerduty_slack_connection" "apex_non_prod" {
   source_id         = pagerduty_service.apex_non_prod.id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
-  channel_id        = "C077JSH4DNE"
+  channel_id        = "C03P3DZHM0U"
   notification_type = "responder"
   config {
     events = [
@@ -1701,8 +1701,7 @@ resource "pagerduty_slack_connection" "apex_non_prod" {
     priorities = ["*"]
   }
 }
-
-# Slack channel: #mp-laa-alerts-apex-non-prod
+# Slack channel: #laa-alerts-apex-non-production
 
 resource "pagerduty_service" "apex_prod" {
   name                    = "APEX Production Alarms"
@@ -1723,7 +1722,7 @@ resource "pagerduty_slack_connection" "apex_prod" {
   source_id         = pagerduty_service.apex_prod.id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
-  channel_id        = "C077G0229U5"
+  channel_id        = "C03P0VARA59"
   notification_type = "responder"
   config {
     events = [
@@ -1747,8 +1746,7 @@ resource "pagerduty_slack_connection" "apex_prod" {
     priorities = ["*"]
   }
 }
-
-# Slack channel: #mp-laa-alerts-apex-prod
+# Slack channel: #laa-alerts-apex-production
 
 
 # EDW NonProd
