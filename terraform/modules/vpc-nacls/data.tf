@@ -1,9 +1,13 @@
-data "aws_vpc" "current" {
-  filter {
-    name   = "tag:Name"
-    values = [var.vpc_name]
-  }
-}
+# data "aws_vpc" "current" {
+#   filter {
+#     name   = "tag:Name"
+#     values = [var.vpc_name]
+#   }
+# }
+
+# locals {
+#   aws_vpc_current = var.vpc_id
+# }
 
 data "aws_vpc" "external" {
   for_each = toset(var.additional_vpcs)
@@ -13,23 +17,24 @@ data "aws_vpc" "external" {
   }
 }
 
-data "aws_subnets" "subnets_all" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.current.id]
-  }
-}
+# data "aws_subnets" "subnets_all" {
+#   filter {
+#     name = "vpc-id"
+#     # values = [data.aws_vpc.current.id]
+#     values = [var.vpc_id]
+#   }
+# }
 
-data "aws_subnet" "subnets_all" {
-  for_each = toset(data.aws_subnets.subnets_all.ids)
-  id       = each.value
-}
+# data "aws_subnet" "subnets_all" {
+#   for_each = toset(data.aws_subnets.subnets_all.ids)
+#   id       = each.value
+# }
 
 locals {
-  data_subnet_ids      = [for v in data.aws_subnet.subnets_all : v.id if(length(regexall("(?:data)", v.tags.Name)) > 0)]
-  private_subnet_ids   = [for v in data.aws_subnet.subnets_all : v.id if(length(regexall("(?:private)", v.tags.Name)) > 0)]
-  protected_subnet_ids = [for v in data.aws_subnet.subnets_all : v.id if(length(regexall("(?:protected)", v.tags.Name)) > 0)]
-  public_subnet_ids    = [for v in data.aws_subnet.subnets_all : v.id if(length(regexall("(?:public)", v.tags.Name)) > 0)]
+  data_subnet_ids      = var.data_subnet_ids
+  private_subnet_ids   = var.private_subnet_ids
+  protected_subnet_ids = var.protected_subnet_ids
+  public_subnet_ids    = var.public_subnet_ids
 
   external_vpc_cidrs = length(var.additional_vpcs) > 0 ? flatten([
     for v in data.aws_vpc.external : {
@@ -51,7 +56,7 @@ locals {
 
   static_acl_rules = {
     allow_vpc_cidr_in = {
-      cidr_block  = data.aws_vpc.current.cidr_block
+      cidr_block  = var.vpc_cidr
       egress      = false
       from_port   = null
       protocol    = "-1"
@@ -60,7 +65,7 @@ locals {
       to_port     = null
     },
     allow_vpc_cidr_out = {
-      cidr_block  = data.aws_vpc.current.cidr_block
+      cidr_block  = var.vpc_cidr
       egress      = true
       from_port   = null
       protocol    = "-1"
@@ -264,7 +269,7 @@ locals {
 
   endpoint_access_rules = {
     allow_https_in = {
-      cidr_block  = data.aws_vpc.current.cidr_block
+      cidr_block  = var.vpc_cidr
       egress      = false
       from_port   = 443
       protocol    = "tcp"
@@ -273,7 +278,7 @@ locals {
       to_port     = 443
     },
     allow_smtp-tls_in = {
-      cidr_block  = data.aws_vpc.current.cidr_block
+      cidr_block  = var.vpc_cidr
       egress      = false
       from_port   = 587
       protocol    = "tcp"
@@ -282,7 +287,7 @@ locals {
       to_port     = 587
     },
     allow_redshift_in = {
-      cidr_block  = data.aws_vpc.current.cidr_block
+      cidr_block  = var.vpc_cidr
       egress      = false
       from_port   = 5439
       protocol    = "tcp"
@@ -291,7 +296,7 @@ locals {
       to_port     = 5439
     },
     allow_dynamic_tcp_out = {
-      cidr_block  = data.aws_vpc.current.cidr_block
+      cidr_block  = var.vpc_cidr
       egress      = true
       from_port   = 1024
       protocol    = "tcp"
