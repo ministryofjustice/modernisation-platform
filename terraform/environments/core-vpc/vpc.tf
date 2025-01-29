@@ -80,14 +80,20 @@ locals {
 
   modernisation-platform-domain          = "modernisation-platform.service.justice.gov.uk"
   modernisation-platform-internal-domain = "modernisation-platform.internal"
+
+  private_route_tables = merge([
+    for vpc_key, vpc_value in local.vpcs[terraform.workspace] : {
+      for route_table_key, route_table_id in module.vpc[vpc_key].private_route_tables :
+      "${vpc_key}-${route_table_key}" => route_table_id
+    }
+  ]...)
 }
 
 module "vpc" {
   for_each             = local.vpcs[terraform.workspace]
-  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=1366ebe0812d4c129c0b31cfc5bf2a4b0540672c" # v3.1.0
+  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=bug/8874-tgw-circular-dependency"
   additional_endpoints = each.value.options.additional_endpoints
   subnet_sets          = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
-  transit_gateway_id   = data.aws_ec2_transit_gateway.transit-gateway.id
 
   # VPC Flow Logs
   vpc_flow_log_iam_role       = aws_iam_role.vpc_flow_log.arn
@@ -359,4 +365,17 @@ module "r53_dns_firewall" {
 
   tags_prefix = each.key
   tags_common = local.tags
+}
+
+resource "aws_route" "transit_gateway" {
+
+  depends_on = [
+    module.vpc_attachment,
+    module.vpc
+  ]
+
+  for_each               = local.private_route_tables
+  route_table_id         = each.value
+  destination_cidr_block = "0.0.0.0/0"
+  transit_gateway_id     = data.aws_ec2_transit_gateway.transit-gateway.id
 }

@@ -30,7 +30,8 @@ resource "aws_ram_principal_association" "transit_gateway_association" {
 # Attach the VPC to the central Transit Gateway
 module "vpc_attachment" {
   depends_on = [
-    aws_ram_principal_association.transit_gateway_association
+    aws_ram_principal_association.transit_gateway_association,
+    module.vpc
   ]
   for_each = toset(keys(local.vpcs[terraform.workspace]))
   source   = "../../modules/ec2-tgw-attachment"
