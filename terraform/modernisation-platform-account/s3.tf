@@ -251,7 +251,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
   statement {
     sid     = "DeleteLockFromModernisationPlatformOU"
     effect  = "Allow"
-    actions = ["s3:GetObject"]
+    actions = ["s3:DeleteObject","s3:GetObject","s3:PutObject"]
     resources = [
       "${module.state-bucket.bucket.arn}/*.tflock",
     ]
