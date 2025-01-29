@@ -90,9 +90,8 @@ locals {
 }
 
 module "vpc" {
-  for_each = local.vpcs[terraform.workspace]
-  # source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=bug/8874-tgw-circular-dependency"
-  source               = "/Users/richard.green/Documents/GitHub/modernisation-platform-terraform-member-vpc"
+  for_each             = local.vpcs[terraform.workspace]
+  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=bug/8874-tgw-circular-dependency"
   additional_endpoints = each.value.options.additional_endpoints
   subnet_sets          = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
 
