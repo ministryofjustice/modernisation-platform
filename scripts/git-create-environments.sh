@@ -11,16 +11,31 @@ get_existing_environments() {
   github_environments=""
 
   while :; do
-    response=$(curl -s \
+    response=$(curl -si \
       -H "Accept: application/vnd.github.v3+json" \
       -H "Authorization: token ${secret}" \
       "https://api.github.com/repos/${repository}/environments?per_page=100&page=${page}")
 
-    current_page_environments=$(echo $response | jq -r '.environments[].name')
+    # Separate headers and body using awk
+    headers=$(echo "$response" | awk 'BEGIN {RS="\r\n\r\n"} NR==1 {print}')
+    body=$(echo "$response" | awk 'BEGIN {RS="\r\n\r\n"} NR==2 {print}')
+
+    # Debug output to see the headers and body
+    # echo "Headers for page ${page}:"
+    # echo "${headers}"
+    # echo "Body for page ${page}:"
+    # echo "${body}"
+
+    current_page_environments=$(echo "$body" | jq -r '.environments[].name')
+    if [ $? -ne 0 ]; then
+      echo "jq error: Failed to parse JSON"
+      exit 1
+    fi
+
     github_environments="${github_environments} ${current_page_environments}"
 
     # Check if there's a "next" link in the headers
-    next_link=$(echo "$response" | grep -i '^link:' | sed -n 's/.*<\(.*\)>; rel="next".*/\1/p')
+    next_link=$(echo "$headers" | grep -i '^link:' | sed -n 's/.*<\(.*\)>; rel="next".*/\1/p')
 
     if [ -z "$next_link" ]; then
       break  # No more pages to fetch
@@ -169,20 +184,39 @@ main() {
         fi
 
         echo "Teams for $environment: $teams"
-        # Check if environment exists and that if has a team associated with it
+
+        # Filter out Azure teams (those starting with "azure-aws-sso")
+        filtered_teams=""
+        for team in $teams; do
+          if [[ ! $team == azure-aws-sso* ]]; then
+            filtered_teams+="$team "
+          else
+            echo "Skipping Azure team: $team"
+          fi
+        done
+
+        # Trim trailing whitespace
+        filtered_teams=$(echo $filtered_teams | xargs)
+
+        if [ -z "$filtered_teams" ]; then
+          echo "No non-Azure teams available for $environment, skipping..."
+          continue
+        fi
+
+        # Check if environment exists and if it has a team associated with it
         environment_exists="false"
         check_if_environment_exists "${environment}"
         change_to_application_json="false"
         check_if_change_to_application_json "${environment}"
         
-        if ([ "${environment_exists}" == "true" ] || [ "${teams}" == "" ]) && [ "${change_to_application_json}" == "false" ]
+        if ([ "${environment_exists}" == "true" ] || [ "${filtered_teams}" == "" ]) && [ "${change_to_application_json}" == "false" ]
         then
-          echo "${environment} already exists and there are no changes, or no GitHub team has been assigned, skipping..."
+          echo "${environment} already exists and there are no changes, or no valid GitHub team has been assigned, skipping..."
         else
           echo "Creating environment ${environment}"
           # Get GitHub team ids
           team_ids=()
-          for team in ${teams}
+          for team in ${filtered_teams}
           do
             team=$(echo "${team}" | xargs)  # Remove leading/trailing whitespace
             team_id=$(get_github_team_id "${team}")

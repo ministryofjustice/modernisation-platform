@@ -428,6 +428,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/modules/r53-dns-firewall"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/modules/ram-ec2-retagging"
     schedule:
       interval: "daily"
