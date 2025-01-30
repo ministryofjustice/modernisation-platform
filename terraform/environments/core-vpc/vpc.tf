@@ -134,13 +134,12 @@ locals {
 }
 
 module "resource-share" {
-  source = "../../modules/ram-resource-share"
-  for_each = {
-    for vpc in local.non-tgw-vpc-subnet : "${vpc.key}-${vpc.set}" => vpc
-  }
+  source   = "../../modules/ram-resource-share"
+  for_each = local.vpcs[terraform.workspace]
 
   # Subnet ARNs to attach to a resource share
-  resource_arns = [for key, subnet in each.value.arns : subnet]
+  # resource_arns = [for key, subnet in each.value.arns : subnet]
+  resource_arns = { for idx, arn in module.vpc[each.key].non_tgw_subnet_arns : idx => arn }
 
   # Tags
   tags_common = local.tags

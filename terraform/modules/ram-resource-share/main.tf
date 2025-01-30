@@ -13,7 +13,7 @@ resource "aws_ram_resource_share" "default" {
 }
 
 resource "aws_ram_resource_association" "default" {
-  for_each = local.resource_arns_map
+  for_each = var.resource_arns
 
   resource_arn       = each.value
   resource_share_arn = aws_ram_resource_share.default.arn
