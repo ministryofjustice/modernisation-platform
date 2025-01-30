@@ -20,7 +20,7 @@
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [
-    "ministryofjustice/cdc-replacement"
+    "ministryofjustice/laa-cdc-replacement"
   ],
   "go-live-date": ""
 }
