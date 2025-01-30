@@ -45,17 +45,6 @@ data "aws_iam_policy_document" "testing_ci_policy" {
     ]
   }
 
-  # Based on https://www.terraform.io/docs/language/settings/backends/s3.html#dynamodb-table-permissions
-  statement {
-    effect = "Allow"
-    actions = [
-      "dynamodb:GetItem",
-      "dynamodb:PutItem",
-      "dynamodb:DeleteItem"
-    ]
-    resources = ["arn:aws:dynamodb:eu-west-2:${data.aws_caller_identity.modernisation_platform.account_id}:table/modernisation-platform-terraform-state-lock"]
-  }
-
   # Based on https://docs.amazonaws.cn/en_us/AmazonS3/latest/userguide/UsingKMSEncryption.htm
   statement {
     effect = "Allow"
@@ -65,7 +54,6 @@ data "aws_iam_policy_document" "testing_ci_policy" {
     ]
     resources = [
       data.aws_kms_key.s3_state_bucket_multi_region.arn,
-      data.aws_kms_key.dynamodb_state_lock_multi_region.arn,
       data.aws_kms_key.environment_management_multi_region.arn,
       data.aws_kms_key.pagerduty_multi_region.arn
     ]
