@@ -10,6 +10,7 @@ env_repo_dir=modernisation-platform-environments
 basedir=$env_repo_dir/terraform/environments
 networkdir=$core_repo_dir/environments-networks
 templates=$core_repo_dir/terraform/templates/modernisation-platform-environments/*.*
+component_templates=$core_repo_dir/terraform/templates/modernisation-platform-environments-components/*.*
 isolated_templates=$core_repo_dir/terraform/templates/modernisation-platform-environments-isolated/*.*
 environment_json_dir=$core_repo_dir/environments
 codeowners_file=$env_repo_dir/.github/CODEOWNERS
@@ -114,6 +115,23 @@ provision_environment_directories() {
     if [ "$account_type" != "core" ]; then
       jq -rn --argjson DATA "${RAW_OUTPUT}" '{ networking: [ $DATA ] }' > "$directory"/networking.auto.tfvars.json
     fi
+
+    # Handle components
+    components=$(jq -r '.components | length' "$file")
+    if [ "$components" -gt 0 ]; then
+      echo "$application_name has components. Checking component directories."
+      for component in $(jq -r '.components[].name' "$file"); do
+        component_dir="$directory/$component"
+        if [ -d "$component_dir" ]; then
+          echo "Component directory $component_dir already exists. Skipping."
+        else
+          echo "Creating component directory: $component_dir"
+          mkdir -p "$component_dir"
+          cp "$directory/networking.auto.tfvars.json" "$component_dir/networking.auto.tfvars.json"
+          copy_component_templates "$component_dir" "$application_name" "$component"
+        fi
+      done
+    fi
   done
 }
 
@@ -133,6 +151,18 @@ copy_templates() {
     sed "s/\$application_name/${application_name}/g" "$file" > "$1/$filename"
   done
   echo "Finished copying templates."
+}
+
+copy_component_templates() {
+  local target_dir=$1
+  local app_name=$2
+  local component_name=$3
+  for file in $component_templates; do
+    filename=$(basename "$file")
+    echo "Copying $file to $target_dir, replacing placeholders with $app_name and $component_name"
+    sed -e "s/\$application_name/${app_name}/g" -e "s/\$component_name/${component_name}/g" "$file" > "$target_dir/$filename"
+  done
+  echo "Finished copying component templates."
 }
 
 generate_codeowners() {
@@ -163,6 +193,18 @@ EOL
         echo "Adding $directory $sso_group_names@ministryofjustice/modernisation-platform to codeowners"
         echo "$directory $sso_group_names@ministryofjustice/modernisation-platform" >> $codeowners_file
       fi
+      
+      components=$(jq -r '.components | length' "$file")
+        if [ "$components" -gt 0 ]; then
+            for component in $(jq -r '.components[].name' "$file"); do
+                component_directory="/terraform/environments/$application_name/$component"
+                component_sso_group_name=$(jq -r --arg comp "$component" '.components[] | select(.name == $comp) | .sso_group_name' "$file")
+                if [ -n "$component_sso_group_name" ] && [ "$component_sso_group_name" != "null" ]; then
+                    echo "Adding $component_directory $component_sso_group_name @ministryofjustice/modernisation-platform to CODEOWNERS"
+                    echo "$component_directory @ministryofjustice/$component_sso_group_name @ministryofjustice/modernisation-platform" >> $codeowners_file
+                fi
+            done
+        fi
     fi
   done
 
