@@ -80,14 +80,20 @@ locals {
 
   modernisation-platform-domain          = "modernisation-platform.service.justice.gov.uk"
   modernisation-platform-internal-domain = "modernisation-platform.internal"
+
+  private_route_tables = merge([
+    for vpc_key, vpc_value in local.vpcs[terraform.workspace] : {
+      for route_table_key, route_table_id in module.vpc[vpc_key].private_route_tables :
+      "${vpc_key}-${route_table_key}" => route_table_id
+    }
+  ]...)
 }
 
 module "vpc" {
   for_each             = local.vpcs[terraform.workspace]
-  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=1366ebe0812d4c129c0b31cfc5bf2a4b0540672c" # v3.1.0
+  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=bug/8874-tgw-circular-dependency"
   additional_endpoints = each.value.options.additional_endpoints
   subnet_sets          = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
-  transit_gateway_id   = data.aws_ec2_transit_gateway.transit-gateway.id
 
   # VPC Flow Logs
   vpc_flow_log_iam_role       = aws_iam_role.vpc_flow_log.arn
@@ -99,13 +105,20 @@ module "vpc" {
 }
 
 module "vpc_nacls" {
-  source           = "../../modules/vpc-nacls"
-  for_each         = local.vpcs[terraform.workspace]
-  additional_cidrs = each.value.options.additional_cidrs
-  additional_vpcs  = each.value.options.additional_vpcs
-  tags             = local.tags
-  tags_prefix      = each.key
-  vpc_name         = each.key
+  depends_on           = [module.vpc]
+  source               = "../../modules/vpc-nacls"
+  for_each             = local.vpcs[terraform.workspace]
+  additional_cidrs     = each.value.options.additional_cidrs
+  additional_vpcs      = each.value.options.additional_vpcs
+  tags                 = local.tags
+  tags_prefix          = each.key
+  vpc_name             = each.key
+  vpc_id               = module.vpc[each.key].vpc_id
+  vpc_cidr             = module.vpc[each.key].vpc_cidr
+  data_subnet_ids      = module.vpc[each.key].data_subnet_ids
+  private_subnet_ids   = module.vpc[each.key].private_subnet_ids
+  protected_subnet_ids = module.vpc[each.key].protected_subnet_ids
+  public_subnet_ids    = module.vpc[each.key].public_subnet_ids
 }
 
 locals {
@@ -121,13 +134,12 @@ locals {
 }
 
 module "resource-share" {
-  source = "../../modules/ram-resource-share"
-  for_each = {
-    for vpc in local.non-tgw-vpc-subnet : "${vpc.key}-${vpc.set}" => vpc
-  }
+  source   = "../../modules/ram-resource-share"
+  for_each = local.vpcs[terraform.workspace]
 
   # Subnet ARNs to attach to a resource share
-  resource_arns = [for key, subnet in each.value.arns : subnet]
+  # resource_arns = [for key, subnet in each.value.arns : subnet]
+  resource_arns = { for idx, arn in module.vpc[each.key].non_tgw_subnet_arns : idx => arn }
 
   # Tags
   tags_common = local.tags
@@ -359,4 +371,17 @@ module "r53_dns_firewall" {
 
   tags_prefix = each.key
   tags_common = local.tags
+}
+
+resource "aws_route" "transit_gateway" {
+
+  depends_on = [
+    module.vpc_attachment,
+    module.vpc
+  ]
+
+  for_each               = local.private_route_tables
+  route_table_id         = each.value
+  destination_cidr_block = "0.0.0.0/0"
+  transit_gateway_id     = data.aws_ec2_transit_gateway.transit-gateway.id
 }

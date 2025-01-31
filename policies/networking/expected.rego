@@ -456,6 +456,13 @@ expected :=
         "accounts": [
         ]
       }
+    },
+    "bug-sandbox": {
+      "general": {
+        "cidr": "10.231.16.0/21",
+        "accounts": [
+        ]
     }
   }
+}
 }

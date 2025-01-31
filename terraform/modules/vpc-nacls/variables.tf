@@ -25,3 +25,34 @@ variable "vpc_name" {
   description = "Selected VPC for NACL creation"
   type        = string
 }
+
+variable "vpc_id" {
+  description = "VPC ID for NACL creation"
+  type        = string
+}
+
+variable "vpc_cidr" {
+  description = "VPC CIDR block"
+  type        = string
+
+}
+
+variable "data_subnet_ids" {
+  description = "List of data subnet IDs"
+  type        = list(string)
+}
+
+variable "private_subnet_ids" {
+  description = "List of private subnet IDs"
+  type        = list(string)
+}
+
+variable "protected_subnet_ids" {
+  description = "List of protected subnet IDs"
+  type        = list(string)
+}
+
+variable "public_subnet_ids" {
+  description = "List of public subnet IDs"
+  type        = list(string)
+} 

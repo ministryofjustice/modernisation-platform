@@ -1,6 +1,7 @@
 resource "aws_network_acl" "general-public" {
   #checkov:skip=CKV2_AWS_1:These are attached to a subnet and a vpc
-  vpc_id     = data.aws_vpc.current.id
+  # vpc_id     = data.aws_vpc.current.id
+  vpc_id     = var.vpc_id
   subnet_ids = local.public_subnet_ids
   tags = merge(
     { "Name" = format("%s-public-nacl", var.tags_prefix) },
@@ -9,7 +10,8 @@ resource "aws_network_acl" "general-public" {
 }
 resource "aws_network_acl" "general-private" {
   #checkov:skip=CKV2_AWS_1:These are attached to a subnet and a vpc
-  vpc_id     = data.aws_vpc.current.id
+  # vpc_id     = data.aws_vpc.current.id
+  vpc_id     = var.vpc_id
   subnet_ids = local.private_subnet_ids
   tags = merge(
     { "Name" = format("%s-private-nacl", var.tags_prefix) },
@@ -18,7 +20,8 @@ resource "aws_network_acl" "general-private" {
 }
 resource "aws_network_acl" "general-data" {
   #checkov:skip=CKV2_AWS_1:These are attached to a subnet and a vpc
-  vpc_id     = data.aws_vpc.current.id
+  # vpc_id     = data.aws_vpc.current.id
+  vpc_id     = var.vpc_id
   subnet_ids = local.data_subnet_ids
   tags = merge(
     { "Name" = format("%s-data-nacl", var.tags_prefix) },
@@ -27,7 +30,8 @@ resource "aws_network_acl" "general-data" {
 }
 resource "aws_network_acl" "protected" {
   #checkov:skip=CKV2_AWS_1:These are attached to a subnet and a vpc
-  vpc_id     = data.aws_vpc.current.id
+  # vpc_id     = data.aws_vpc.current.id
+  vpc_id     = var.vpc_id
   subnet_ids = local.protected_subnet_ids
   tags = merge(
     { "Name" = format("%s-protected-nacl", var.tags_prefix) },
