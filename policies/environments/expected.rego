@@ -62,6 +62,7 @@ expected :=
     "mlra",
     "mojfin",
     "moj-network-operations-centre",
+    "mpe-components",
     "ncas",
     "nomis",
     "nomis-combined-reporting",
