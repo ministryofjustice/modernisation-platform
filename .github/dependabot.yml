@@ -472,6 +472,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
+    directory: "/terraform/templates/modernisation-platform-environments-components"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
     directory: "/terraform/templates/modernisation-platform-environments-isolated"
     schedule:
       interval: "daily"
