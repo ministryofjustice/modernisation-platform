@@ -33,7 +33,7 @@
     "application": "dacp",
     "business-unit": "HMCTS",
     "infrastructure-support": "dts-legacy-apps-support-team@HMCTS.NET",
-    "owner": "DTS-ITServiceDesk@justice.gov.uk",
+    "owner": "dts-legacy-apps-support-team@hmcts.net",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": ["ministryofjustice/Dacp"],
