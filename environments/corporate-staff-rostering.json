@@ -93,7 +93,7 @@
     "business-unit": "HMPPS",
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
     "owner": "digital-studio-operations-team@digital.justice.gov.uk",
-    "critical-national-infrastructure": true
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/dso-modernisation-platform-automation"

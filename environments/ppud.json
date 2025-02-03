@@ -45,7 +45,7 @@
     "business-unit": "HMPPS",
     "infrastructure-support": "PPUDnotification@justice.gov.uk",
     "owner": "deepee.mann-basra@digital.justice.gov.uk",
-    "critical-national-infrastructure": true
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""],
   "go-live-date": "2023-07-24"
