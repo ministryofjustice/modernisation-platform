@@ -225,28 +225,6 @@
       ]
     },
     {
-      "username": "jason.green",
-      "github-username": "jasongreen-necsws",
-      "accounts": [
-        {
-          "account-name": "delius-iaps-preproduction",
-          "access": "instance-management"
-        },
-        {
-          "account-name": "delius-iaps-production",
-          "access": "instance-management"
-        },
-        {
-          "account-name": "youth-justice-app-framework-development",
-          "access": "sandbox"
-        },
-        {
-          "account-name": "youth-justice-app-framework-test",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "nathan.brown",
       "github-username": "no-value-supplied",
       "accounts": [
@@ -257,16 +235,6 @@
         {
           "account-name": "delius-iaps-production",
           "access": "instance-management"
-        }
-      ]
-    },
-    {
-      "username": "madhu.kadiri",
-      "github-username": "madhu-k-sr2",
-      "accounts": [
-        {
-          "account-name": "electronic-monitoring-data-development",
-          "access": "sandbox"
         }
       ]
     },
@@ -353,16 +321,6 @@
     {
       "username": "yordi.tak",
       "github-username": "yorditak",
-      "accounts": [
-        {
-          "account-name": "nomis-test",
-          "access": "instance-management"
-        }
-      ]
-    },
-    {
-      "username": "theo.phillips",
-      "github-username": "theo-phillips",
       "accounts": [
         {
           "account-name": "nomis-test",
