@@ -1,5 +1,14 @@
 {
   "account-type": "member",
+  "components": [
+    {
+      "name": "playground",
+      "sso_group_name": "modernisation-platform"
+    },
+    {
+      "name": "testbed"
+    }
+  ],
   "environments": [
     {
       "name": "development",
