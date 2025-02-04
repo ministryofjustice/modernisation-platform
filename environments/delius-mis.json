@@ -8,16 +8,19 @@
         {
           "sso_group_name": "hmpps-migration",
           "level": "sandbox",
-          "nuke": "exclude"
+          "nuke": "exclude",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hosting-migrations",
           "level": "sandbox",
-          "nuke": "exclude"
+          "nuke": "exclude",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hmpps-dba",
-          "level": "sandbox"
+          "level": "sandbox",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hmpps-delius-mis",
@@ -30,11 +33,13 @@
       "access": [
         {
           "sso_group_name": "hmpps-migration",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hosting-migrations",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hmpps-dba",
@@ -51,11 +56,13 @@
       "access": [
         {
           "sso_group_name": "hmpps-migration",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hosting-migrations",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hmpps-dba",
@@ -76,8 +83,7 @@
     "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [
-    "ministryofjustice/hmpps-delius-operational-automation",
-    "ministryofjustice/hmpps-openldap-container"
+    "ministryofjustice/hmpps-delius-operational-automation"
   ],
   "go-live-date": ""
 }
