@@ -82,7 +82,7 @@
           "level": "developer"
         },
         {
-          "sso_group_name": "csr-migration",
+          "sso_group_name": "azure-aws-sso-csr-migration",
           "level": "migration"
         }
       ]
@@ -93,7 +93,7 @@
     "business-unit": "HMPPS",
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
     "owner": "digital-studio-operations-team@digital.justice.gov.uk",
-    "critical-national-infrastructure": true
+    "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/dso-modernisation-platform-automation"
