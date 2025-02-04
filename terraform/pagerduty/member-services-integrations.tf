@@ -2272,8 +2272,6 @@ resource "pagerduty_slack_connection" "electronic_monitoring_data_connection" {
   }
 }
 
-
-
 # CIS NonProd
 resource "pagerduty_service" "cis_non_prod" {
   name                    = "CIS Non-Production Alarms"
