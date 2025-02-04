@@ -83,11 +83,19 @@ locals {
 }
 
 module "vpc" {
-  for_each             = local.vpcs[terraform.workspace]
-  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=1366ebe0812d4c129c0b31cfc5bf2a4b0540672c" # v3.1.0
+  providers = {
+    aws                       = aws
+    aws.core-network-services = aws.core-network-services
+  }
+  for_each = local.vpcs[terraform.workspace]
+  # source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=1366ebe0812d4c129c0b31cfc5bf2a4b0540672c" # v3.1.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=bug/8874-migrate-tgw-attach-to-vpc-module"
+
   additional_endpoints = each.value.options.additional_endpoints
   subnet_sets          = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
   transit_gateway_id   = data.aws_ec2_transit_gateway.transit-gateway.id
+  type                 = local.is-live_data ? "live_data" : "non_live_data"
+
 
   # VPC Flow Logs
   vpc_flow_log_iam_role       = aws_iam_role.vpc_flow_log.arn
