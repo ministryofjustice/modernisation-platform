@@ -41,7 +41,6 @@ expected :=
     "delius-iaps",
     "delius-jitbit",
     "delius-mis",
-    "delius-nextcloud",
     "digital-prison-reporting",
     "edw",
     "electronic-monitoring-data",
