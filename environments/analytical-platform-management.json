@@ -5,7 +5,7 @@
       "name": "production",
       "access": [
         {
-          "sso_group_name": "analytical-platform-management-production-administrator",
+          "sso_group_name": "analytical-platform-engineers",
           "level": "administrator"
         },
         {
