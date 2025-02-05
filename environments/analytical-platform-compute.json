@@ -18,6 +18,10 @@
           "level": "quicksight-admin"
         },
         {
+          "sso_group_name": "analytical-platform-airflow",
+          "level": "mwaa-user"
+        },
+        {
           "sso_group_name": "data-platform-audit-and-security",
           "level": "security-audit"
         }
@@ -40,6 +44,10 @@
           "level": "quicksight-admin"
         },
         {
+          "sso_group_name": "analytical-platform-airflow",
+          "level": "mwaa-user"
+        },
+        {
           "sso_group_name": "data-platform-audit-and-security",
           "level": "security-audit"
         }
@@ -60,6 +68,10 @@
         {
           "sso_group_name": "analytical-platform-engineers",
           "level": "quicksight-admin"
+        },
+        {
+          "sso_group_name": "analytical-platform-airflow",
+          "level": "mwaa-user"
         },
         {
           "sso_group_name": "data-platform-audit-and-security",
