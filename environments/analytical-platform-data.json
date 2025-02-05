@@ -30,6 +30,10 @@
           "level": "data-engineer"
         },
         {
+          "sso_group_name": "analytical-platform-airflow",
+          "level": "mwaa-user"
+        },
+        {
           "sso_group_name": "data-platform-apps-and-tools-powerbi-authors",
           "level": "powerbi-user"
         },
