@@ -25,6 +25,11 @@ on:
         options:
           - deploy
           - destroy
+      component:
+        description: "Optional: Target a specific component for destroy. Defaults to 'root' to destroy the root or <application> folder."
+        required: false
+        default: "root"
+        type: string
 
 permissions:
   id-token: write  # This is required for requesting the JWT
@@ -61,7 +66,7 @@ jobs:
       environment: "development"
       action: "plan_apply"
       plan_apply_tfargs: "-destroy"
-      # If you need component logic on destroy, pass it here as well, e.g. component: ...
+      component: "${{ inputs.component }}"  # Targets a specific component for the destroy operation; defaults to 'root' if not specified.
     secrets:
       modernisation_platform_environments: "${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}"
       pipeline_github_token: "${{ secrets.MODERNISATION_PLATFORM_CI_USER_ENVIRONMENTS_REPO_PAT }}"
