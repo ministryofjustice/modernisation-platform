@@ -6,7 +6,7 @@ data "aws_kms_key" "cloudtrail_key" {
 
 #trivy:ignore:AVD-AWS-0136
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=89c50b7fd8811390e04e5dab054367626910690a" # testing DO NOT MERGE
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=4710a6dd49387f6a9ebba2770efac6c430965aba" # testing DO NOT MERGE
 
   providers = {
     # Default and replication regions
@@ -67,6 +67,7 @@ module "baselines" {
 
   cloudtrail_kms_key = data.aws_kms_key.cloudtrail_key.arn
   root_account_id    = local.root_account.master_account_id
+  current_account_id = local.environment_management.account_ids[terraform.workspace]
   tags               = local.environments
 
   # Regions to enable IMDSv2 in
