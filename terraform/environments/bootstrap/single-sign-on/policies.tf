@@ -540,6 +540,67 @@ data "aws_iam_policy_document" "quicksight_administrator_additional" {
   }
 }
 
+
+# policy for the platform engineer role
+resource "aws_iam_policy" "platform_engineer" {
+  provider = aws.workspace
+  name     = "platform_engineer_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.platform_engineer_additional_additional.json
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "platform_engineer_additional_additional" {
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_110
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+  statement {
+    sid    = "QuickSightConsoleAdmin"
+    effect = "Allow"
+
+    actions = [
+      "quicksight:*",
+      "iam:AttachRolePolicy",
+      "iam:DetachRolePolicy",
+      "iam:ListAttachedRolePolicies",
+      "iam:GetPolicy",
+      "iam:CreatePolicyVersion",
+      "iam:DeletePolicyVersion",
+      "iam:GetPolicyVersion",
+      "iam:ListPolicyVersions",
+      "iam:DeleteRole",
+      "iam:CreateRole",
+      "iam:GetRole",
+      "iam:ListRoles",
+      "iam:CreatePolicy",
+      "iam:ListEntitiesForPolicy",
+      "iam:ListPolicies",
+      "s3:ListAllMyBuckets",
+      "athena:ListDataCatalogs",
+      "athena:GetDataCatalog",
+      "sso:DescribeApplication",
+      "sso:DescribeInstance",
+      "sso:CreateApplication",
+      "sso:PutApplicationAuthenticationMethod",
+      "sso:PutApplicationGrant",
+      "sso:DeleteApplication",
+      "sso:DescribeGroup",
+      "sso:SearchGroups",
+      "sso:GetProfile",
+      "sso:CreateApplicationAssignment",
+      "sso:DeleteApplicationAssignment",
+      "sso:ListInstances",
+      "sso:DescribeRegisteredRegions",
+      "organizations:DescribeOrganization",
+    ]
+
+    resources = ["*"]
+  }
+}
+
+
 # sandbox policy - member SSO and collaborators, development accounts only
 resource "aws_iam_policy" "sandbox" {
   provider = aws.workspace
