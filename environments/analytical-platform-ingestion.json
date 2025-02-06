@@ -1,5 +1,6 @@
 {
   "account-type": "member",
+  "codeowners": ["analytical-platform-engineers"],
   "isolated-network": "true",
   "environments": [
     {
