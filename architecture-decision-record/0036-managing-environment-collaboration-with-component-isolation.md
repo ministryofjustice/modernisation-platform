@@ -1,4 +1,4 @@
-# 36. Managing Environment Collaboration through Component-Based Isolation 
+# 36. Managing Environment Collaboration through Component-Based Isolation
 
 Date: 2024-02-01
 
@@ -16,11 +16,11 @@ To address this challenge, we need a more scalable, efficient, and automated sol
 
 Instead of creating new accounts for each project or team, we will adopt a **component-based isolation** strategy within the existing account structure. The solution involves:
 
-#### Component Definition:
+#### Component Definition
 
 Each new component will be defined in the `<application>.json` configuration file. This provides a centralized and consistent approach to managing components.
 
-#### Automated Setup Process:
+#### Automated Setup Process
 
 Once a component is added to the `<application>.json`, an **automated process** will trigger the creation of the following within the root directory:
 
