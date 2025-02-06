@@ -1,12 +1,21 @@
 {
   "account-type": "member",
+  "codeowners": ["analytical-platform-engineers"],
   "environments": [
     {
       "name": "production",
       "access": [
         {
-          "sso_group_name": "analytical-platform",
+          "sso_group_name": "analytical-platform-engineers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "analytical-platform-airflow",
+          "level": "mwaa-user"
+        },
+        {
+          "sso_group_name": "data-platform-audit-and-security",
+          "level": "security-audit"
         }
       ]
     }

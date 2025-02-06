@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "sso_group_name": "analytical-platform-data-development-administrator",
+          "sso_group_name": "analytical-platform-engineers",
           "level": "administrator"
         },
         {
@@ -22,12 +22,16 @@
       "name": "production",
       "access": [
         {
-          "sso_group_name": "analytical-platform-data-production-administrator",
+          "sso_group_name": "analytical-platform-engineers",
           "level": "administrator"
         },
         {
           "sso_group_name": "analytical-platform-data-production-data-engineer",
           "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "analytical-platform-airflow",
+          "level": "mwaa-user"
         },
         {
           "sso_group_name": "data-platform-apps-and-tools-powerbi-authors",

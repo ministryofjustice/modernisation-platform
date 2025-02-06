@@ -55,8 +55,6 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     delius_core_nonprod_alarms        = pagerduty_service_integration.delius_core_nonprod_cloudwatch.integration_key
     delius_core_prod_alarms           = pagerduty_service_integration.delius_core_prod_cloudwatch.integration_key
     delius_oracle_nonprod_alarms      = pagerduty_service_integration.delius_oracle_nonprod_cloudwatch.integration_key
-    delius_nextcloud_nonprod_alarms   = pagerduty_service_integration.delius_nextcloud_nonprod_cloudwatch.integration_key
-    delius_nextcloud_prod_alarms      = pagerduty_service_integration.delius_nextcloud_prod_cloudwatch.integration_key
     laa_cwa_nonprod_alarms            = pagerduty_service_integration.cwa_non_prod.integration_key
     laa_cwa_prod_alarms               = pagerduty_service_integration.cwa_prod.integration_key
     laa_apex_nonprod_alarms           = pagerduty_service_integration.apex_non_prod.integration_key
@@ -69,6 +67,7 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     laa_edw_prod_alarms       = pagerduty_service_integration.edw_prod.integration_key
     cdpt-ifs-alarms           = pagerduty_service_integration.cdpt_ifs_cloudwatch.integration_key
     sprinkler_development     = pagerduty_event_orchestration_integration.sprinkler_development_integration.parameters[0].routing_key
+    laa_cis_nonprod_alarms    = pagerduty_service_integration.cis_non_prod.integration_key
     },
     {
       for key, integration in pagerduty_service_integration.integrations : key => integration.integration_key
