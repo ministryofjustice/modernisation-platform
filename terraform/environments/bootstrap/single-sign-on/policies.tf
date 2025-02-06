@@ -542,9 +542,9 @@ data "aws_iam_policy_document" "quicksight_administrator_additional" {
 
 
 # policy for the platform engineer role
-resource "aws_iam_policy" "platform_engineer" {
+resource "aws_iam_policy" "platform_engineer_admin" {
   provider = aws.workspace
-  name     = "platform_engineer_policy"
+  name     = "platform_engineer_admin_policy"
   path     = "/"
   policy   = data.aws_iam_policy_document.platform_engineer_additional_additional.json
 }
