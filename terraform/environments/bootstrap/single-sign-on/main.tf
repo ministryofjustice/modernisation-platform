@@ -422,7 +422,7 @@ resource "aws_ssoadmin_account_assignment" "quicksight_admin" {
   target_type = "AWS_ACCOUNT"
 }
 
-resource "aws_ssoadmin_account_assignment" "platform_engineer" {
+resource "aws_ssoadmin_account_assignment" "platform_engineer_admin" {
 
   for_each = {
 
@@ -430,13 +430,13 @@ resource "aws_ssoadmin_account_assignment" "platform_engineer" {
 
     "${sso_assignment.sso_group_name}-${sso_assignment.level}" => sso_assignment
 
-    if(sso_assignment.level == "platform_engineer")
+    if(sso_assignment.level == "platform_engineer_admin")
   }
 
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
-  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.platform_engineer
+  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.platform_engineer_admin
 
   principal_id   = data.aws_identitystore_group.member[each.value.sso_group_name].group_id
   principal_type = "GROUP"
