@@ -44,7 +44,7 @@
     "application": "ppud",
     "business-unit": "HMPPS",
     "infrastructure-support": "PPUDnotification@justice.gov.uk",
-    "owner": "deepee.mann-basra@digital.justice.gov.uk",
+    "owner": "Deepee.Mann-Basra1@justice.gov.uk",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""],
