@@ -23,7 +23,7 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIR
     echo "account: $account_id"
     getAssumeRoleCfg "$account_id"
     for region in $regions; do
-        #Set Values
+        # Set Values
         AWS_REGION=$region
         account_name=$(jq -r ".account_ids | to_entries[] | select(.value==\"$account_id\").key" <<< $ENVIRONMENT_MANAGEMENT)
 
@@ -40,8 +40,9 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIR
         echo "The alarm transitioned from OK to ALARM $count times in the last 7 days."
         echo "$account_id,$account_name,$count" >> unauthorized-api-calls.csv
 
-    export AWS_ACCESS_KEY_ID=$ROOT_AWS_ACCESS_KEY_ID
-    export AWS_SECRET_ACCESS_KEY=$ROOT_AWS_SECRET_ACCESS_KEY
-    export AWS_SESSION_TOKEN=$ROOT_AWS_SESSION_TOKEN
-    rm credentials.json
+        export AWS_ACCESS_KEY_ID=$ROOT_AWS_ACCESS_KEY_ID
+        export AWS_SECRET_ACCESS_KEY=$ROOT_AWS_SECRET_ACCESS_KEY
+        export AWS_SESSION_TOKEN=$ROOT_AWS_SESSION_TOKEN
+        rm credentials.json
+    done
 done
