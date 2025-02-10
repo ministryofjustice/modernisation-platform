@@ -540,6 +540,126 @@ data "aws_iam_policy_document" "quicksight_administrator_additional" {
   }
 }
 
+
+# policy for the platform engineer role
+resource "aws_iam_policy" "platform_engineer_admin" {
+  provider = aws.workspace
+  name     = "platform_engineer_admin_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.platform_engineer_additional_additional.json
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "platform_engineer_additional_additional" {
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_107
+  #checkov:skip=CKV_AWS_110
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+  statement {
+    sid    = "QuickSightConsoleAdmin"
+    effect = "Allow"
+
+    actions = [
+      "quicksight:*",
+      "ecr-public:*",
+      "ecr:*",
+      "ecs:*",
+      "datasync:*",
+      "dbqms:*",
+      "dlm:*",
+      "dms:*",
+      "drs:*",  
+      "kms:*",
+      "sagemaker:*",
+      "sqs:*",
+      "sns:*",      
+      "lakeformation:*",
+      "lambda:*",          
+      "iam:AttachRolePolicy",
+      "iam:DetachRolePolicy",
+      "iam:ListAttachedRolePolicies",
+      "iam:GetPolicy",
+      "iam:CreatePolicyVersion",
+      "iam:DeletePolicyVersion",
+      "iam:GetPolicyVersion",
+      "iam:ListPolicyVersions",
+      "iam:DeleteRole",
+      "iam:CreateRole",
+      "iam:GetRole",
+      "iam:ListRoles",
+      "iam:CreatePolicy",
+      "iam:ListEntitiesForPolicy",
+      "iam:ListPolicies",
+      "s3:ListAllMyBuckets",
+      "athena:ListDataCatalogs",
+      "athena:GetDataCatalog",
+      "sso:DescribeApplication",
+      "sso:DescribeInstance",
+      "sso:CreateApplication",
+      "sso:PutApplicationAuthenticationMethod",
+      "sso:PutApplicationGrant",
+      "sso:DeleteApplication",
+      "sso:DescribeGroup",
+      "sso:SearchGroups",
+      "sso:GetProfile",
+      "sso:CreateApplicationAssignment",
+      "sso:DeleteApplicationAssignment",
+      "sso:ListInstances",
+      "sso:DescribeRegisteredRegions",
+      "organizations:DescribeOrganization",
+      "bedrock:ListFoundationModels",
+      "bedrock:GetFoundationModel",
+      "bedrock:InvokeModel",
+      "bedrock:InvokeModelWithResponseStream",
+      "bedrock:CreateModelCustomizationJob",
+      "bedrock:GetModelCustomizationJob",
+      "bedrock:GetFoundationModelAvailability",
+      "bedrock:ListModelCustomizationJobs",
+      "bedrock:StopModelCustomizationJob",
+      "bedrock:GetCustomModel",
+      "bedrock:ListCustomModels",
+      "bedrock:DeleteCustomModel",
+      "bedrock:CreateProvisionedModelThroughput",
+      "bedrock:UpdateProvisionedModelThroughput",
+      "bedrock:GetProvisionedModelThroughput",
+      "bedrock:DeleteProvisionedModelThroughput",
+      "bedrock:ListProvisionedModelThroughputs",
+      "bedrock:ListTagsForResource",
+      "bedrock:UntagResource",
+      "bedrock:TagResource",
+      "bedrock:CreateAgent",
+      "bedrock:UpdateAgent",
+      "bedrock:GetAgent",
+      "bedrock:ListAgents",
+      "bedrock:CreateActionGroup",
+      "bedrock:UpdateActionGroup",
+      "bedrock:GetActionGroup",
+      "bedrock:ListActionGroups",
+      "bedrock:CreateAgentDraftSnapshot",
+      "bedrock:GetAgentVersion",
+      "bedrock:ListAgentVersions",
+      "bedrock:CreateAgentAlias",
+      "bedrock:UpdateAgentAlias",
+      "bedrock:GetAgentAlias",
+      "bedrock:ListAgentAliases",
+      "bedrock:InvokeAgent",
+      "bedrock:PutFoundationModelEntitlement",
+      "bedrock:GetModelInvocationLoggingConfiguration",
+      "bedrock:PutModelInvocationLoggingConfiguration",
+      "bedrock:CreateFoundationModelAgreement",
+      "bedrock:DeleteFoundationModelAgreement",
+      "bedrock:ListFoundationModelAgreementOffers",
+      "bedrock:GetUseCaseForModelAccess",
+      "bedrock:PutUseCaseForModelAccess"      
+    ]
+
+    resources = ["*"]
+  }
+}
+
+
 # sandbox policy - member SSO and collaborators, development accounts only
 resource "aws_iam_policy" "sandbox" {
   provider = aws.workspace
