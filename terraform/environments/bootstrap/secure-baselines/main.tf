@@ -67,6 +67,7 @@ module "baselines" {
 
   cloudtrail_kms_key = data.aws_kms_key.cloudtrail_key.arn
   root_account_id    = local.root_account.master_account_id
+  current_account_id = local.environment_management.account_ids[terraform.workspace]
   tags               = local.environments
 
   # Regions to enable IMDSv2 in
