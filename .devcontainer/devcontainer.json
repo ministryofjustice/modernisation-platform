@@ -1,5 +1,5 @@
 {
-  "name": "modernisation-platform-environments",
+  "name": "modernisation-platform",
   "image": "ghcr.io/ministryofjustice/devcontainer-base:latest",
   "features": {
     "ghcr.io/ministryofjustice/devcontainer-feature/aws:1": {},
