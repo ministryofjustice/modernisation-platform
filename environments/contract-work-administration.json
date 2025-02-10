@@ -11,7 +11,13 @@
         },
         {
           "sso_group_name": "laa-cwa-developer",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "laa-pcuam",
+          "level": "developer",
+          "github_action_reviewer": "false"
         }
       ]
     },

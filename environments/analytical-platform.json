@@ -5,16 +5,16 @@
       "name": "development",
       "access": [
         {
-          "sso_group_name": "analytical-platform-development-administrator",
+          "sso_group_name": "analytical-platform-engineers",
           "level": "administrator"
-        },
-        {
-          "sso_group_name": "data-platform-audit-and-security",
-          "level": "security-audit"
         },
         {
           "sso_group_name": "analytical-platform-data-development-data-engineer",
           "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "data-platform-audit-and-security",
+          "level": "security-audit"
         }
       ]
     },
@@ -22,7 +22,7 @@
       "name": "production",
       "access": [
         {
-          "sso_group_name": "analytical-platform-production-administrator",
+          "sso_group_name": "analytical-platform-engineers",
           "level": "administrator"
         },
         {

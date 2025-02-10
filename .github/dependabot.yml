@@ -184,10 +184,6 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
-    directory: "/terraform/environments/delius-nextcloud"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
     directory: "/terraform/environments/digital-prison-reporting"
     schedule:
       interval: "daily"
@@ -469,6 +465,10 @@ updates:
       interval: "daily"
   - package-ecosystem: "terraform"
     directory: "/terraform/templates/modernisation-platform-environments"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "terraform"
+    directory: "/terraform/templates/modernisation-platform-environments-components"
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"

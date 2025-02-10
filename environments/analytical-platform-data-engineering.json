@@ -5,7 +5,7 @@
       "name": "production",
       "access": [
         {
-          "sso_group_name": "analytical-platform-data-engineering-production-administrator",
+          "sso_group_name": "analytical-platform-engineers",
           "level": "administrator"
         },
         {
@@ -25,6 +25,10 @@
     {
       "name": "sandboxa",
       "access": [
+        {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "administrator"
+        },
         {
           "sso_group_name": "analytical-platform-data-engineering-sandboxa-administrator",
           "level": "administrator"

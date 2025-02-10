@@ -32,8 +32,8 @@
   "tags": {
     "application": "wardship",
     "business-unit": "HMCTS",
-    "infrastructure-support": "DTS-ITServiceDesk@justice.gov.uk",
-    "owner": "DTS-ITServiceDesk@justice.gov.uk",
+    "infrastructure-support": "dts-legacy-apps-support-team@HMCTS.NET",
+    "owner": "dts-legacy-apps-support-team@HMCTS.NET",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": ["ministryofjustice/Wardship"],

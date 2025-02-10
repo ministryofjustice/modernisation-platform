@@ -1,14 +1,19 @@
 {
   "account-type": "member",
+  "codeowners": ["analytical-platform-engineers"],
   "isolated-network": "true",
   "environments": [
     {
       "name": "development",
       "access": [
         {
-          "sso_group_name": "analytical-platform",
+          "sso_group_name": "analytical-platform-engineers",
           "level": "sandbox",
           "nuke": "exclude"
+        },
+        {
+          "sso_group_name": "data-platform-audit-and-security",
+          "level": "security-audit"
         }
       ],
       "instance_scheduler_skip": ["true"]
@@ -17,8 +22,12 @@
       "name": "production",
       "access": [
         {
-          "sso_group_name": "analytical-platform",
+          "sso_group_name": "analytical-platform-engineers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "data-platform-audit-and-security",
+          "level": "security-audit"
         }
       ]
     }
