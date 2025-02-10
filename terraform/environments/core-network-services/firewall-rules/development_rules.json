@@ -573,7 +573,7 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-   "mojo_alz_to_laa_development": {
+  "mojo_alz_to_laa_development": {
     "action": "PASS",
     "source_ip": "${mojo-azure-landing-zone}",
     "destination_ip": "${laa-development}",
