@@ -8,7 +8,7 @@ ROOT_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 ROOT_AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
 
 # Create csv file
-echo "Account ID,Account Name,Trigger Count, Max sum, Max sum timestamp" > unauthorized-api-calls.csv
+echo "Account ID,Account Name,Trigger Count, Max sum, Max sum timestamp, Top Event Name, Occurrences" > unauthorized-api-calls.csv
 
 # Assume Role Function
 getAssumeRoleCfg() {
@@ -58,8 +58,32 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIR
         echo "Max Sum: $max_sum"
         echo "Timestamp: $timestamp"
 
+        # Query the most commonly occurring eventName in the logs
+        log_group_name="cloudtrail"
+        query_string="fields @timestamp, eventName | filter errorCode = 'UnauthorizedOperation' or (errorCode = 'AccessDenied' and eventName not in ['ListDelegatedAdministrators', 'GetMacieSession']) | stats count(*) as occurrences by eventName | sort occurrences desc | limit 1"
+        query_id=$(aws logs start-query \
+            --log-group-name "$log_group_name" \
+            --start-time $(date --date='7 days ago' +%s) \
+            --end-time $(date +%s) \
+            --query-string "$query_string" \
+            --query "queryId" \
+            --output text)
+
+        # Wait for the query to complete
+        sleep 10
+
+        # Get the query results
+        query_result=$(aws logs get-query-results --query-id "$query_id")
+
+        # Extract the most common eventName and occurrences
+        common_event_name=$(echo "$query_result" | jq -r '.results[0][0].value')
+        occurrences=$(echo "$query_result" | jq -r '.results[0][1].value')
+
+        echo "Most Common Event Name: $common_event_name"
+        echo "Occurrences: $occurrences"
+
         # Write to csv file
-        echo "$account_id,$account_name,$count,$max_sum,$timestamp" >> unauthorized-api-calls.csv
+        echo "$account_id,$account_name,$count,$max_sum,$timestamp,$common_event_name,$occurrences" >> unauthorized-api-calls.csv
 
         export AWS_ACCESS_KEY_ID=$ROOT_AWS_ACCESS_KEY_ID
         export AWS_SECRET_ACCESS_KEY=$ROOT_AWS_SECRET_ACCESS_KEY
