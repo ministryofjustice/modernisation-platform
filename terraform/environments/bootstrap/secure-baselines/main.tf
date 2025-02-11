@@ -6,7 +6,7 @@ data "aws_kms_key" "cloudtrail_key" {
 
 #trivy:ignore:AVD-AWS-0136
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=dd8a60be4cc6d726803f49301930795d266188d8" # v7.10.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=b6f32014816e95c69039a7df051a834be10ee613" # v7.11.1
 
   providers = {
     # Default and replication regions
@@ -40,6 +40,9 @@ module "baselines" {
     aws.us-west-1      = aws.workspace-eu-west-2
     aws.us-west-2      = aws.workspace-eu-west-2
   }
+
+  # Ensure bucket policy references correct account
+  current_account_id = local.environment_management.account_ids[terraform.workspace]
 
   # Selectively reduce pre prod backups on certain accounts
   reduced_preprod_backup_retention = local.reduced_preprod_backup_retention
