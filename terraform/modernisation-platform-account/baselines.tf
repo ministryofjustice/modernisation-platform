@@ -44,7 +44,7 @@ module "baselines-modernisation-platform" {
   }
 
   # Ensure bucket policy references correct account
-  current_account_id = local.environment_management.account_ids[terraform.workspace]
+  current_account_id = local.environment_management.modernisation_platform_account_id
 
   # Selectively reduce pre prod backups on certain accounts
   reduced_preprod_backup_retention = local.reduced_preprod_backup_retention
