@@ -481,6 +481,205 @@
           "access": "developer"
         }
       ]
+    },
+    {
+      "username": "peter.wilson",
+      "github-username": "peter-bcl",
+      "accounts": [
+        {
+          "account-name": "delius-core-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-test",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "Michal Laskowski",
+      "github-username": "mlaskowski4",
+      "accounts": [
+        {
+          "account-name": "delius-core-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-test",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "Madan Thapa",
+      "github-username": "madan-thapa",
+      "accounts": [
+        {
+          "account-name": "delius-core-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-test",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "Sean Valmonte",
+      "github-username": "Seanvalmonte",
+      "accounts": [
+        {
+          "account-name": "delius-core-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-test",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "Dave Reid",
+      "github-username": "DavidJohnReid",
+      "accounts": [
+        {
+          "account-name": "delius-core-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-test",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "Yuri Fedkiv",
+      "github-username": "yfedkiv",
+      "accounts": [
+        {
+          "account-name": "delius-core-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-test",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "Andrew Richardson",
+      "github-username": "AndrewRichardson76",
+      "accounts": [
+        {
+          "account-name": "delius-core-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-test",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "Neale Davison",
+      "github-username": "ND406",
+      "accounts": [
+        {
+          "account-name": "delius-core-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-test",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "Linda Clarke",
+      "github-username": "Linda182",
+      "accounts": [
+        {
+          "account-name": "delius-core-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-test",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "delius-core-production",
+          "access": "developer"
+        }
+      ]
     }
   ]
 }
+	
