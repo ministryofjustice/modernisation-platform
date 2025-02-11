@@ -497,15 +497,11 @@
         {
           "account-name": "delius-core-preproduction",
           "access": "developer"
-        },
-        {
-          "account-name": "delius-core-production",
-          "access": "developer"
         }
       ]
     },
     {
-      "username": "Michal Laskowski",
+      "username": "michal.laskowski",
       "github-username": "mlaskowski4",
       "accounts": [
         {
@@ -519,15 +515,11 @@
         {
           "account-name": "delius-core-preproduction",
           "access": "developer"
-        },
-        {
-          "account-name": "delius-core-production",
-          "access": "developer"
         }
       ]
     },
     {
-      "username": "Madan Thapa",
+      "username": "madan.thapa",
       "github-username": "madan-thapa",
       "accounts": [
         {
@@ -541,15 +533,11 @@
         {
           "account-name": "delius-core-preproduction",
           "access": "developer"
-        },
-        {
-          "account-name": "delius-core-production",
-          "access": "developer"
         }
       ]
     },
     {
-      "username": "Sean Valmonte",
+      "username": "sean.valmonte",
       "github-username": "Seanvalmonte",
       "accounts": [
         {
@@ -563,15 +551,11 @@
         {
           "account-name": "delius-core-preproduction",
           "access": "developer"
-        },
-        {
-          "account-name": "delius-core-production",
-          "access": "developer"
         }
       ]
     },
     {
-      "username": "Dave Reid",
+      "username": "dave.reid",
       "github-username": "DavidJohnReid",
       "accounts": [
         {
@@ -585,15 +569,11 @@
         {
           "account-name": "delius-core-preproduction",
           "access": "developer"
-        },
-        {
-          "account-name": "delius-core-production",
-          "access": "developer"
         }
       ]
     },
     {
-      "username": "Yuri Fedkiv",
+      "username": "yuri.fedkiv",
       "github-username": "yfedkiv",
       "accounts": [
         {
@@ -607,15 +587,11 @@
         {
           "account-name": "delius-core-preproduction",
           "access": "developer"
-        },
-        {
-          "account-name": "delius-core-production",
-          "access": "developer"
         }
       ]
     },
     {
-      "username": "Andrew Richardson",
+      "username": "andrew.richardson",
       "github-username": "AndrewRichardson76",
       "accounts": [
         {
@@ -629,15 +605,11 @@
         {
           "account-name": "delius-core-preproduction",
           "access": "developer"
-        },
-        {
-          "account-name": "delius-core-production",
-          "access": "developer"
         }
       ]
     },
     {
-      "username": "Neale Davison",
+      "username": "neale.davison",
       "github-username": "ND406",
       "accounts": [
         {
@@ -651,15 +623,11 @@
         {
           "account-name": "delius-core-preproduction",
           "access": "developer"
-        },
-        {
-          "account-name": "delius-core-production",
-          "access": "developer"
         }
       ]
     },
     {
-      "username": "Linda Clarke",
+      "username": "linda.clarke",
       "github-username": "Linda182",
       "accounts": [
         {
@@ -672,10 +640,6 @@
         },
         {
           "account-name": "delius-core-preproduction",
-          "access": "developer"
-        },
-        {
-          "account-name": "delius-core-production",
           "access": "developer"
         }
       ]
