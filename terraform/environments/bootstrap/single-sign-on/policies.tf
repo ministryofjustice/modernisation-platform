@@ -418,6 +418,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "glue:BatchDeleteTable",
       "glue:CreateDatabase",
       "glue:CreatePartition",
+      "glue:StartCrawler",
       "glue:CreateSession",
       "glue:CreateTable",
       "glue:DeleteDatabase",
@@ -570,13 +571,13 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "dbqms:*",
       "dlm:*",
       "dms:*",
-      "drs:*",  
+      "drs:*",
       "kms:*",
       "sagemaker:*",
       "sqs:*",
-      "sns:*",      
+      "sns:*",
       "lakeformation:*",
-      "lambda:*",          
+      "lambda:*",
       "iam:AttachRolePolicy",
       "iam:DetachRolePolicy",
       "iam:ListAttachedRolePolicies",
@@ -652,7 +653,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "bedrock:DeleteFoundationModelAgreement",
       "bedrock:ListFoundationModelAgreementOffers",
       "bedrock:GetUseCaseForModelAccess",
-      "bedrock:PutUseCaseForModelAccess"      
+      "bedrock:PutUseCaseForModelAccess"
     ]
 
     resources = ["*"]
