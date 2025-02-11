@@ -43,6 +43,9 @@ module "baselines-modernisation-platform" {
     aws.us-west-2      = aws.modernisation-platform-us-west-2
   }
 
+  # Ensure bucket policy references correct account
+  current_account_id = local.environment_management.account_ids[terraform.workspace]
+
   # Selectively reduce pre prod backups on certain accounts
   reduced_preprod_backup_retention = local.reduced_preprod_backup_retention
 
