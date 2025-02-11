@@ -418,6 +418,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "glue:BatchDeleteTable",
       "glue:CreateDatabase",
       "glue:CreatePartition",
+      "glue:StartCrawler",
       "glue:CreateSession",
       "glue:CreateTable",
       "glue:DeleteDatabase",
