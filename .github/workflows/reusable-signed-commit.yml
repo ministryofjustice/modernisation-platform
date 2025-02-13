@@ -1,0 +1,105 @@
+name: Signed Commit & PR Workflow
+on:
+  workflow_call:
+    inputs:
+      pr_title:
+        description: "Title for the PR (only required if creating a new PR)"
+        required: false
+        type: string
+      pr_body:
+        description: "Body for the PR (only required if creating a new PR)"
+        required: false
+        type: string
+    secrets:
+      GH_TOKEN:
+        description: "GitHub token with permissions for signing commits"
+        required: true
+
+jobs:
+  commit-and-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: Detect if running on a PR
+        id: context
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "is_pr=true" >> $GITHUB_ENV
+            echo "branch_name=${{ github.head_ref }}" >> $GITHUB_ENV
+          else
+            echo "is_pr=false" >> $GITHUB_ENV
+          fi
+
+      - name: Generate new branch if not running on a PR
+        if: env.is_pr == 'false'
+        run: |
+          date=$(date +%Y_%m_%d_%H_%M)
+          branch_name="code_formatter_$date"
+          git checkout -b $branch_name
+          git push -u origin $branch_name
+          echo "branch_name=$branch_name" >> $GITHUB_ENV
+
+      - name: Get latest commit SHA
+        id: get_sha
+        run: |
+          latest_sha=$(git rev-parse HEAD)
+          echo "latest_sha=$latest_sha" >> $GITHUB_ENV
+
+      - name: Create signed commit using GraphQL
+        run: |
+          gh api graphql -f query='
+          mutation($repository: String!, $branchName: String!, $commitMessage: String!, $sha: GitObjectID!) {
+            createCommitOnBranch(input: {
+              branch: {
+                repositoryNameWithOwner: $repository
+                branchName: $branchName
+              }
+              message: {
+                headline: $commitMessage
+              }
+              expectedHeadOid: $sha
+            }) {
+              commit {
+                oid
+              }
+            }
+          }' \
+          -F repository="${{ github.repository }}" \
+          -F branchName="${{ env.branch_name }}" \
+          -F commitMessage="Automated commit by GitHub Actions" \
+          -F sha="${{ env.latest_sha }}" \
+          -H "Authorization: bearer ${{ secrets.GH_TOKEN }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Set default PR title and body
+        if: env.is_pr == 'false'
+        run: |
+          title="${{ inputs.pr_title }}"
+          body="${{ inputs.pr_body }}"
+          
+          if [ -z "$title" ]; then
+            title="Automated Signed Commit Update"
+          fi
+          
+          if [ -z "$body" ]; then
+            body="This PR was automatically created by a GitHub workflow to apply a signed commit update."
+          fi
+          
+          echo "PR_TITLE=$title" >> $GITHUB_ENV
+          echo "PR_BODY=$body" >> $GITHUB_ENV
+
+      - name: Create a PR if not running on a PR
+        if: env.is_pr == 'false'
+        run: |
+          gh pr create \
+            --base main \
+            --head ${{ env.branch_name }} \
+            --title "$PR_TITLE" \
+            --body "$PR_BODY"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
