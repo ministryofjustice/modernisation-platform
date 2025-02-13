@@ -165,6 +165,7 @@ data "aws_iam_policy_document" "member-access" {
       "organizations:List*",
       "oam:*",
       "quicksight:*",
+      "ram:AssociateResourceShare",
       "ram:CreateResourceShare",
       "ram:DeleteResourceShare",
       "ram:Get*",
