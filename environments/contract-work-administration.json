@@ -7,15 +7,15 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "sandbox",
-          "nuke": "exclude" 
+          "nuke": "exclude"
         },
         {
-          "sso_group_name": "laa-cwa-developer", 
+          "sso_group_name": "laa-cwa-developer",
           "level": "developer",
           "github_action_reviewer": "false"
         },
         {
-          "sso_group_name": "laa-pcuam", 
+          "sso_group_name": "laa-pcuam",
           "level": "developer",
           "github_action_reviewer": "false"
         }
