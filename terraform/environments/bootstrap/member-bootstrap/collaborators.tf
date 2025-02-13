@@ -247,7 +247,7 @@ module "collaborator_platform_engineer_admin_role" {
   count   = local.account_data.account-type == "member" ? 1 : 0
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 5"
- trusted_role_arns = [
+  trusted_role_arns = [
     local.modernisation_platform_account.id
   ]
   create_role       = true
@@ -262,4 +262,3 @@ module "collaborator_platform_engineer_admin_role" {
 data "aws_iam_policy" "platform_engineer_admin" {
   name = "platform_engineer_admin_policy"
 }
-
