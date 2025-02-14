@@ -11,7 +11,7 @@ on:
         required: false
         type: string
     secrets:
-      GH_TOKEN:
+      GITHUB_TOKEN:
         description: "GitHub token with permissions for signing commits"
         required: true
 
@@ -27,6 +27,11 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Git user
+        run: |
+          chmod +x ./scripts/git-setup.sh
+          ./scripts/git-setup.sh
 
       - name: Detect if running on a PR
         id: context
@@ -54,6 +59,8 @@ jobs:
           echo "latest_sha=$latest_sha" >> $GITHUB_ENV
 
       - name: Create signed commit using GraphQL
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh api graphql -f query='
           mutation($repository: String!, $branchName: String!, $commitMessage: String!, $sha: GitObjectID!) {
@@ -72,38 +79,19 @@ jobs:
               }
             }
           }' \
-          -F repository="${{ github.repository }}" \
-          -F branchName="${{ env.branch_name }}" \
-          -F commitMessage="Automated commit by GitHub Actions" \
-          -F sha="${{ env.latest_sha }}" \
-          -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set default PR title and body
-        if: env.is_pr == 'false'
-        run: |
-          title="${{ inputs.pr_title }}"
-          body="${{ inputs.pr_body }}"
-          
-          if [ -z "$title" ]; then
-            title="Automated Signed Commit Update"
-          fi
-          
-          if [ -z "$body" ]; then
-            body="This PR was automatically created by a GitHub workflow to apply a signed commit update."
-          fi
-          
-          echo "PR_TITLE=$title" >> $GITHUB_ENV
-          echo "PR_BODY=$body" >> $GITHUB_ENV
+          -f repository="${{ github.repository }}" \
+          -f branchName="${{ env.branch_name }}" \
+          -f commitMessage="Automated commit by GitHub Actions" \
+          -f sha="${{ env.latest_sha }}" \
+          -H "Authorization: bearer $GITHUB_TOKEN"
 
       - name: Create a PR if not running on a PR
         if: env.is_pr == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr create \
             --base main \
             --head ${{ env.branch_name }} \
-            --title "$PR_TITLE" \
-            --body "$PR_BODY"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            --title "${{ inputs.pr_title || 'Automated Signed Commit Update' }}" \
+            --body "${{ inputs.pr_body || 'This PR was automatically created by a GitHub workflow to apply a signed commit update.' }}"
