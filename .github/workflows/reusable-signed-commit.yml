@@ -10,10 +10,6 @@ on:
         description: "Body for the PR (only required if creating a new PR)"
         required: false
         type: string
-    secrets:
-      GITHUB_TOKEN:
-        description: "GitHub token with permissions for signing commits"
-        required: true
 
 permissions:
   contents: write
