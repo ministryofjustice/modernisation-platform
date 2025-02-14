@@ -495,7 +495,3 @@ updates:
     directory: "/terraform/environments/core-security/test"
     schedule:
       interval: "daily"
-  - package-ecosystem: "gomod"
-    directory: "/terraform/environments/core-shared-services/test"
-    schedule:
-      interval: "daily"
