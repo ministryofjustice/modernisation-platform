@@ -1,0 +1,156 @@
+---
+owner_slack: "#modernisation-platform"
+title: Terraform Style Guide
+last_reviewed_on: 2025-02-13
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+## Modernisation Platform Terraform Style Guide
+
+> This style guide is meant to be a series of guidelines to help Modernisation Platform team members produce
+> consistent, coherent Terraform. These guidelines **aren't** meant to restrict or constrain you. Hashicorp maintain a
+> style guide [here](https://developer.hashicorp.com/terraform/language/style) which provides us with a good starting
+> point.
+
+> First, and foremost, try and stay consistent with what you find in a repository. The same approach - even if it's not
+> the best approach - is easier to understand than multiple different approaches.
+
+## Naming
+
+Naming things is hard. We want naming structures to be consistent, and we want names to help explain what we're working
+with.
+
+- Use lower case characters
+- Use underscores as separators
+- Keep names comprehensible
+
+### Examples
+
+✅ lower cased, underscored, comprehensible
+> `resource "an_example" "this_looks_good" {}`
+
+❌ mixed case, no separation or inconsistent separation, no clear purpose
+> `resource "another_example" "SemaphoreCricketBrick-a-brack" {}`
+
+## Hard-coding values
+
+Hard-coding values can be unavoidable, but we want to be judicious about hard-coding things. We want our Terraform to be
+flexible and idempotent, and hard-coding things can work against this.
+
+- Keep this to a minimum
+- Ensure these aren't sensitive values
+- Retrieve values from an external source or local value
+
+### Examples
+
+✅ loads values in through an external file
+> ```hcl
+> locals {
+>   example_values    = jsondecode(./my-values.json)
+> }
+> resource "an_example" "hard_coded_values" {
+>   name              = local.example_values["application-name"]
+>   number_of_pickles = local.example_values["pickle-capacity"]
+>   password          = "set-me-in-the-console" # set this in the console
+> }
+> ```
+
+❌holds values in-line, displays sensitive value
+> ```hcl
+> resource "another_example" "hard_coded_values" {
+>   name              = "pickle-counter"
+>   number_of_pickles = "3" # because production needs three, we'll give all environments 3
+>   password          = "MyPickles1"
+> }
+> ```
+
+## Local values
+
+We make heavy use of local values. We use local values compute things at runtime, and create data structures that then
+let us do more challenging or complicated things.
+
+- Think about where your locals will sit as you add them
+  - `locals.tf` for locals used in multiple places
+  - `locals {}` in a single file for values used only in one place
+- Be judicious about using local values
+- Explain them if they're difficult to understand
+
+### Examples
+
+✅ clear, explains what the secondary map does, avoids overcomplexity
+> ```hcl
+> locals {
+>   my-files   = { 
+>     for f in fileset(path.module, "my-files/*.json") : 
+>     trimsuffix(basename(f), ".json") => jsondecode(file("${path.module}/${f}")) 
+>   }
+>   # constructs a map based on json file names that contains names and favourite hotdog style
+>   my-hotdogs = { 
+>     for key, value in local.my-files : 
+>       key => {
+>         name   = value["name"]
+>         hotdog = value["favourite-hotdog"]
+>      }
+>    } 
+> }
+> ```
+
+❌ horribly complex and unhelpful, lots of type conversions, cryptic names
+> ```hcl
+> locals {
+>  _x = { for i in flatten([for f in local.files : regexall("^(.+?).json$", f)]) : 
+>    replace(element(i, 0), "/[^a-zA-Z0-9]/", "_") => 
+>    try(jsondecode(file(coalesce("${path.module}/${i[0]}", "null.json"))), {}) 
+>  }
+> }
+> ```
+
+## Data sources
+
+Data sources allow the retrieval of values from resources not directly managed in code. We have no set structure for
+where data sources ought to live. A specified file such as `data.tf` is a sensible location, but as code scales then
+keeping the data sources close to the code that requires them is desirable.
+
+- Prefer outputs from resources over data sources
+- Prefer outputs from modules over data sources
+- Be sparing in the use of [external](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) data sources
+
+## Modules
+
+Terraform modules allow us to produce reusable blocks of code. If the need is specific to one repository consider the
+use of a smaller, in-line approach. When the need is more complicated, or has multiple potential customers consider the
+use of a separate repository.
+
+We have two approaches for our use of modules.
+
+- Large modules
+  - 100s of lines of Terraform
+  - Complex (eg, with sub-modules)
+  - Separated out into their own repositories
+  - Non-modernisation-platform users like application teams deploying to MP
+  - Unit tested
+- Small modules
+  - 10s of lines of Terraform
+  - Single purpose (eg, re-tagging RAM shared resources)
+  - Used inside a repository
+
+## Examples
+
+✅ Large modules
+- [modernisation-platform-oidc-role](https://github.com/ministryofjustice/modernisation-platform-github-oidc-role)
+- [modernisation-platform-terraform-environments](https://github.com/ministryofjustice/modernisation-platform-terraform-environments)
+
+✅ Small modules
+- Baselines [config](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines/tree/main/modules/config) module
+- GitHub [contributor](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/github/modules/contributor) access module
