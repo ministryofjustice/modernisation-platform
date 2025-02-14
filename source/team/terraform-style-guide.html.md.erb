@@ -116,9 +116,23 @@ let us do more challenging or complicated things.
 > }
 > ```
 
+## Data sources
+
+Data sources allow the retrieval of values from resources not directly managed in code. We have no set structure for
+where data sources ought to live. A specified file such as `data.tf` is a sensible location, but as code scales then
+keeping the data sources close to the code that requires them is desirable.
+
+- Prefer outputs from resources over data sources
+- Prefer outputs from modules over data sources
+- Be sparing in the use of [external](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) data sources
+
 ## Modules
 
-We use modules to produce reusable blocks of code. We have two approaches for our use of modules.
+Terraform modules allow us to produce reusable blocks of code. If the need is specific to one repository consider the
+use of a smaller, in-line approach. When the need is more complicated, or has multiple potential customers consider the
+use of a separate repository.
+
+We have two approaches for our use of modules.
 
 - Large modules
   - 100s of lines of Terraform
@@ -137,6 +151,6 @@ We use modules to produce reusable blocks of code. We have two approaches for ou
 - [modernisation-platform-oidc-role](https://github.com/ministryofjustice/modernisation-platform-github-oidc-role)
 - [modernisation-platform-terraform-environments](https://github.com/ministryofjustice/modernisation-platform-terraform-environments)
 
-✅ Small module
+✅ Small modules
 - Baselines [config](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines/tree/main/modules/config) module
 - GitHub [contributor](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/github/modules/contributor) access module
