@@ -23,7 +23,7 @@ jobs:
         run: bash ./scripts/generate-dependabot-file.sh
 
       - name: Call Signed Commit & PR Workflow
-        uses:  ministryofjustice/modernisation-platform/.github/workflows/reusable-signed-commit.yml@main
+        uses: ministryofjustice/modernisation-platform/.github/workflows/reusable-signed-commit.yml@main
         with:
           pr_title: "Automated Update: Dependabot File"
           pr_body: "This PR updates the Dependabot configuration file."
