@@ -15,14 +15,18 @@ on:
         description: "GitHub token with permissions for signing commits"
         required: true
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   commit-and-pr:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Detect if running on a PR
         id: context
@@ -72,9 +76,9 @@ jobs:
           -F branchName="${{ env.branch_name }}" \
           -F commitMessage="Automated commit by GitHub Actions" \
           -F sha="${{ env.latest_sha }}" \
-          -H "Authorization: bearer ${{ secrets.GH_TOKEN }}"
+          -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}"
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set default PR title and body
         if: env.is_pr == 'false'
@@ -102,4 +106,4 @@ jobs:
             --title "$PR_TITLE" \
             --body "$PR_BODY"
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
