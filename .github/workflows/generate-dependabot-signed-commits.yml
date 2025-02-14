@@ -3,7 +3,9 @@ name: Generate dependabot file Signed Commits
 on:
   workflow_dispatch:
 
-permissions: {}
+permissions:
+  contents: write
+  pull-requests: write
 
 defaults:
   run:
@@ -11,19 +13,17 @@ defaults:
 
 jobs:
   create-and-commit-dependabot-file:
-    permissions:
-      contents: write
-      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      
+
       - name: Generate Dependabot file
         run: bash ./scripts/generate-dependabot-file.sh
 
-      - name: Call Signed Commit & PR Workflow
-        uses: ./.github/workflows/reusable-signed-commit.yml
-        with:
-          pr_title: "Automated Update: Dependabot File"
-          pr_body: "This PR updates the Dependabot configuration file."
+  call-signed-commit-pr-workflow:
+    needs: create-and-commit-dependabot-file
+    uses: ministryofjustice/modernisation-platform/.github/workflows/reusable-signed-commit.yml@main
+    with:
+      pr_title: "Automated Update: Dependabot File"
+      pr_body: "This PR updates the Dependabot configuration file."
