@@ -1,0 +1,97 @@
+name: Signed Commit & PR Workflow
+on:
+  workflow_call:
+    inputs:
+      pr_title:
+        description: "Title for the PR (only required if creating a new PR)"
+        required: false
+        type: string
+      pr_body:
+        description: "Body for the PR (only required if creating a new PR)"
+        required: false
+        type: string
+    secrets:
+      GITHUB_TOKEN:
+        description: "GitHub token with permissions for signing commits"
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  commit-and-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Git user
+        run: |
+          chmod +x ./scripts/git-setup.sh
+          ./scripts/git-setup.sh
+
+      - name: Detect if running on a PR
+        id: context
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "is_pr=true" >> $GITHUB_ENV
+            echo "branch_name=${{ github.head_ref }}" >> $GITHUB_ENV
+          else
+            echo "is_pr=false" >> $GITHUB_ENV
+          fi
+
+      - name: Generate new branch if not running on a PR
+        if: env.is_pr == 'false'
+        run: |
+          date=$(date +%Y_%m_%d_%H_%M)
+          branch_name="code_formatter_$date"
+          git checkout -b $branch_name
+          git push -u origin $branch_name
+          echo "branch_name=$branch_name" >> $GITHUB_ENV
+
+      - name: Get latest commit SHA
+        id: get_sha
+        run: |
+          latest_sha=$(git rev-parse HEAD)
+          echo "latest_sha=$latest_sha" >> $GITHUB_ENV
+
+      - name: Create signed commit using GraphQL
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api graphql -f query='
+          mutation($repository: String!, $branchName: String!, $commitMessage: String!, $sha: GitObjectID!) {
+            createCommitOnBranch(input: {
+              branch: {
+                repositoryNameWithOwner: $repository
+                branchName: $branchName
+              }
+              message: {
+                headline: $commitMessage
+              }
+              expectedHeadOid: $sha
+            }) {
+              commit {
+                oid
+              }
+            }
+          }' \
+          -f repository="${{ github.repository }}" \
+          -f branchName="${{ env.branch_name }}" \
+          -f commitMessage="Automated commit by GitHub Actions" \
+          -f sha="${{ env.latest_sha }}" \
+          -H "Authorization: bearer $GITHUB_TOKEN"
+
+      - name: Create a PR if not running on a PR
+        if: env.is_pr == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --base main \
+            --head ${{ env.branch_name }} \
+            --title "${{ inputs.pr_title || 'Automated Signed Commit Update' }}" \
+            --body "${{ inputs.pr_body || 'This PR was automatically created by a GitHub workflow to apply a signed commit update.' }}"
