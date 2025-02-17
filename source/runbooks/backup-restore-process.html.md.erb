@@ -26,15 +26,17 @@ This [reference](https://docs.aws.amazon.com/aws-backup/latest/devguide/restorin
 
 1. The engineer undertaking the recovery should use the AdministratorAccess role to perform the recovery operation to ensure they have the necessary permissions to restore resources. As it stands, the ModernisationPlatformEngineer role does not have these permissions.
 
-2. It is strongly suggested to use the console for restoring one or two resources.
+2. Agree with the Product Team engineer(s) which resources are to be recovered, the recovery points to be used as the source and whether the recovery will be overwriting existing resources, for example EFS or EBS. This communication is vital to ensure that the correct resources are recovered and that the correct parameters are used.
 
-3. Each resource type will require its own specific parameters to be set. For example, an EBS volume or snapshot will require the volume ID the volume type, the availability zone to be added. It is suggested that these are provided by the product team or, failing that, obtained from the terraform source. As such it will be difficult to undertake a mass recovery of different resource types from multiple recovery points without scripting.
+3. It is strongly suggested to use the console for restoring one or two resources.
 
-4. The recovery proceess will require a role to be provided. It is suggested that the DEFAULT role is used as this will have all of the necessary permissions required. Using the AWSBackup role will not work.
+4. Each resource type will require its own specific parameters to be set. For example, an EBS volume or snapshot will require the volume ID the volume type, the availability zone to be added. It is suggested that these are provided by the product team or, failing that, obtained from the terraform source. As such it will be difficult to undertake a mass recovery of different resource types from multiple recovery points without scripting.
 
-5. Recovery Points will generally have one resource associated with them. There are exceptions, such as resources backed up to multiple regions.
+5. The recovery proceess will require a role to be provided. It is suggested that the DEFAULT role is used as this will have all of the necessary permissions required. Using the AWSBackup role will not work.
 
-6. CLI documentation for recovery can be found [here](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/backup/start-restore-job.html). Each resource type will have its own metadata requirements.
+6. Recovery Points will generally have one resource associated with them. There are exceptions, such as resources backed up to multiple regions.
+
+7. CLI documentation for recovery can be found [here](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/backup/start-restore-job.html). Each resource type will have its own metadata requirements.
 
 
 ## Backup & Restore Of Member StateFile
