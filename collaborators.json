@@ -713,6 +713,16 @@
           "access": "developer"
         }
       ]
+    },
+    {
+      "username": "mike.reid",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "sprinkler-development",
+          "access": "developer"
+        }
+      ]
     }
   ]
 }
