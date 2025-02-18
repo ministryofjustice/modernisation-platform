@@ -399,6 +399,14 @@
         {
           "account-name": "youth-justice-app-framework-test",
           "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "developer"
         }
       ]
     },
