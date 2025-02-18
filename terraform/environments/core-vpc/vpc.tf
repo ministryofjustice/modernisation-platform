@@ -83,11 +83,15 @@ locals {
 }
 
 module "vpc" {
-  for_each             = local.vpcs[terraform.workspace]
-  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=1366ebe0812d4c129c0b31cfc5bf2a4b0540672c" # v3.1.0
+  providers = {
+    aws.transit-gateway-host = aws.core-network-services
+  }
+  for_each = local.vpcs[terraform.workspace]
+  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=3295b6fdd9ddf7f015eea5eda479aa1d5d19c5a2" # v4.0.0
   additional_endpoints = each.value.options.additional_endpoints
   subnet_sets          = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
   transit_gateway_id   = data.aws_ec2_transit_gateway.transit-gateway.id
+  type                 = local.is-live_data ? "live_data" : "non_live_data"
 
   # VPC Flow Logs
   vpc_flow_log_iam_role       = aws_iam_role.vpc_flow_log.arn
