@@ -8,7 +8,7 @@
       "access": [
         {
           "sso_group_name": "analytical-platform-engineers",
-          "level": "sandbox",
+          "level": "platform-engineer-admin",
           "nuke": "exclude"
         },
         {
@@ -23,7 +23,7 @@
       "access": [
         {
           "sso_group_name": "analytical-platform-engineers",
-          "level": "developer"
+          "level": "platform-engineer-admin"
         },
         {
           "sso_group_name": "data-platform-audit-and-security",
