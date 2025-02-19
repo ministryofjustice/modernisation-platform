@@ -430,7 +430,7 @@ resource "aws_ssoadmin_account_assignment" "platform_engineer_admin" {
 
     "${sso_assignment.sso_group_name}-${sso_assignment.level}" => sso_assignment
 
-    if(sso_assignment.level == "platform_engineer_admin")
+    if(sso_assignment.level == "platform-engineer-admin")
   }
 
   provider = aws.sso-management
