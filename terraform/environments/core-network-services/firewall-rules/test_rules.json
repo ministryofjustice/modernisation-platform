@@ -300,7 +300,14 @@
     "destination_port": "138",
     "protocol": "UDP"
   },
-  "cp_to_mp_laa_test": {
+  "cp_to_mp_laa_test_1521": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${laa-test}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "cp_to_mp_laa_test_1522": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
     "destination_ip": "${laa-test}",

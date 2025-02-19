@@ -1,0 +1,138 @@
+name: Signed Commit & PR Workflow
+on:
+  workflow_call:
+    inputs:
+      pr_title:
+        description: "Title for the PR (only required if creating a new PR)"
+        required: false
+        type: string
+      pr_body:
+        description: "Body for the PR (only required if creating a new PR)"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  commit-and-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Git user
+        run: |
+          set -e
+          chmod +x ./scripts/git-setup.sh
+          ./scripts/git-setup.sh
+
+      - name: Detect if running on a PR
+        id: context
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "is_pr=true" >> $GITHUB_ENV
+            echo "branch_name=${{ github.head_ref }}" >> $GITHUB_ENV
+          else
+            echo "is_pr=false" >> $GITHUB_ENV
+          fi
+
+      - name: Generate a new branch if not running on a PR
+        if: ${{ env.is_pr == 'false' }}
+        run: |
+          date=$(date +%Y_%m_%d_%H_%M)
+          branch_name="signed_commit_$date"
+          git checkout -b $branch_name
+          git push -u origin $branch_name
+          echo "branch_name=$branch_name" >> $GITHUB_ENV
+
+      - name: Check for changes
+        run: |
+          set -e
+          git status
+          git diff
+          git add .
+          if git diff --staged --quiet; then
+            echo "No changes detected."
+            exit 0
+          fi
+          echo "Changes detected."
+          echo "changes=true" >> $GITHUB_ENV
+
+      - name: Prepare the Changes for GraphQL
+        if: ${{ env.changes == 'true' }}
+        run: |
+          set -e
+          commit_oid=$(git rev-parse HEAD)
+          echo "commit_oid=$commit_oid" >> $GITHUB_ENV
+
+          files_for_commit='{"additions": []}'
+          while IFS= read -r file; do
+            if [[ -f "$file" ]]; then
+              base64_content=$(base64 -w 0 < "$file")
+              files_for_commit=$(echo "$files_for_commit" | jq --arg path "$file" --arg content "$base64_content" \
+              '.additions += [{ "path": $path, "contents": $content }]')
+            fi
+          done < <(git diff --staged --name-only)
+
+          echo "$files_for_commit" > files_for_commit.json
+
+      - name: Create signed commit using GraphQL
+        if: ${{ env.changes == 'true' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          commit_message="Automated signed commit update"
+          files_for_commit=$(cat files_for_commit.json)
+
+          mutation_payload=$(jq -n \
+            --arg repository "${{ github.repository }}" \
+            --arg branch_name "$branch_name" \
+            --arg commit_oid "$commit_oid" \
+            --arg commit_message "$commit_message" \
+            --argjson fileChanges "$files_for_commit" \
+            '{
+              query: "mutation($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { oid } } }",
+              variables: {
+                input: {
+                  branch: {
+                    repositoryNameWithOwner: $repository,
+                    branchName: $branch_name
+                  },
+                  message: {
+                    headline: $commit_message
+                  },
+                  fileChanges: $fileChanges,
+                  expectedHeadOid: $commit_oid
+                }
+              }
+            }')
+
+          RESPONSE=$(curl -X POST -H "Authorization: bearer $GITHUB_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$mutation_payload" https://api.github.com/graphql)
+
+          COMMIT_OID=$(echo "$RESPONSE" | jq -r ".data.createCommitOnBranch.commit.oid")
+
+          if [ "$COMMIT_OID" != "null" ]; then
+            echo "Commit successfully created with OID: $COMMIT_OID"
+          else
+            echo "Error creating commit: $RESPONSE"
+            exit 1
+          fi
+
+      - name: Create a PR if not running on a PR
+        if: ${{ env.is_pr == 'false' && env.changes == 'true' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          gh pr create \
+            --base main \
+            --head "${{ env.branch_name }}" \
+            --title "${{ inputs.pr_title || 'Automated Signed Commit Update' }}" \
+            --body "${{ inputs.pr_body || 'This PR was automatically created by a GitHub workflow to apply a signed commit update.' }}"
