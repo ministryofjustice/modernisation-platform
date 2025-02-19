@@ -12,6 +12,10 @@
           "nuke": "exclude"
         },
         {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "sandbox"
+        },
+        {
           "sso_group_name": "data-platform-audit-and-security",
           "level": "security-audit"
         }
@@ -24,6 +28,10 @@
         {
           "sso_group_name": "analytical-platform-engineers",
           "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "developer"
         },
         {
           "sso_group_name": "data-platform-audit-and-security",
