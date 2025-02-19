@@ -608,6 +608,7 @@ data "aws_iam_policy_document" "policy" {
       "secretsmanager:PutSecretValue",
       "secretsmanager:RotateSecret",
       "secretsmanager:UpdateSecretVersionStage",
+      "ses:*SuppressedDestination",
       "ssm:GetParameter",
       "ssm:PutParameter",
       "ssm:DescribeSessions",
