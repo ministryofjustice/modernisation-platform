@@ -84,6 +84,7 @@ expected :=
     "tribunals",
     "wardship",
     "xhibit-portal",
-    "youth-justice-app-framework"
+    "youth-justice-app-framework",
+    "youth-justice-networking"
     ]
 }
