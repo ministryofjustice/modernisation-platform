@@ -575,6 +575,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "bedrock:*",
       "cloudformation:*",
       "cloudfront:*",
+      "cloudtrail:*",
       "cloudwatch:*",
       "cognito-identity:*",
       "cognito-idp:*",
