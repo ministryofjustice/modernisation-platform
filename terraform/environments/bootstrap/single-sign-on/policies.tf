@@ -90,7 +90,6 @@ data "aws_iam_policy_document" "common_statements" {
   }
 }
 
-
 # bedrock console policy -- to be retired when terraform support is introduced
 # bedrock policy - member SSO and collaborators
 resource "aws_iam_policy" "bedrock_policy" {
@@ -167,7 +166,6 @@ resource "aws_iam_policy" "developer" {
   path     = "/"
   policy   = data.aws_iam_policy_document.developer_additional.json
 }
-
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "developer_additional" {
@@ -541,7 +539,6 @@ data "aws_iam_policy_document" "quicksight_administrator_additional" {
   }
 }
 
-
 # policy for the platform engineer role
 resource "aws_iam_policy" "platform_engineer_admin" {
   provider = aws.workspace
@@ -561,110 +558,95 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
   statement {
     sid    = "PlatformEngineerAdmin"
     effect = "Allow"
-
     actions = [
-      "quicksight:*",
-      "ecr-public:*",
-      "ecr:*",
-      "ecs:*",
+      "acm:*",
+      "acm-pca:*",
+      "airflow:*",
+      "apigateway:*",
+      "application-autoscaling:*",
+      "appstream:*",
+      "athena:*",
+      "autoscaling:*",
+      "aws-marketplace:ViewSubscriptions",
+      "backup:*",
+      "bedrock:*",
+      "ce:*",
+      "cloudformation:*",
+      "cloudfront:*",
+      "cloudtrail:*",
+      "cloudwatch:*",
+      "codebuild:*",
+      "codedeploy:*",
+      "codepipeline:*",
+      "cognito-identity:*",
+      "cognito-idp:*",
+      "cur:DescribeReportDefinitions",
       "datasync:*",
       "dbqms:*",
+      "discovery:*",
       "dlm:*",
       "dms:*",
       "drs:*",
+      "ds:*",
+      "ds-data:*",
+      "dynamodb:*",
+      "ebs:*",
+      "ec2:*",
+      "ec2-instance-connect:*",
+      "ecr-public:*",
+      "ecr:*",
+      "ecs:*",
+      "eks:*",
+      "elasticache:*",
+      "elasticfilesystem:*",
+      "elasticloadbalancing:*",
+      "events:*",
+      "glacier:*",
+      "glue:*",
+      "iam:*",
+      "identitystore:*",
+      "kinesis:*",
+      "kinesisanalytics:*",
       "kms:*",
-      "sagemaker:*",
-      "sqs:*",
-      "sns:*",
       "lakeformation:*",
       "lambda:*",
-      "s3:*",
-      "athena:*",
-      "glue:*",
-      "cloudwatch:*",
-      "secretsmanager:*",
-      "ssm:*",
-      "iam:AttachRolePolicy",
-      "iam:DetachRolePolicy",
-      "iam:ListAttachedRolePolicies",
-      "iam:GetPolicy",
-      "iam:CreatePolicyVersion",
-      "iam:DeletePolicyVersion",
-      "iam:GetPolicyVersion",
-      "iam:ListPolicyVersions",
-      "iam:DeleteRole",
-      "iam:CreateRole",
-      "iam:GetRole",
-      "iam:ListRoles",
-      "iam:CreatePolicy",
-      "iam:ListEntitiesForPolicy",
-      "iam:ListPolicies",
-      "athena:ListDataCatalogs",
-      "athena:GetDataCatalog",
-      "sso:DescribeApplication",
-      "sso:DescribeInstance",
-      "sso:CreateApplication",
-      "sso:PutApplicationAuthenticationMethod",
-      "sso:PutApplicationGrant",
-      "sso:DeleteApplication",
-      "sso:DescribeGroup",
-      "sso:SearchGroups",
-      "sso:GetProfile",
-      "sso:CreateApplicationAssignment",
-      "sso:DeleteApplicationAssignment",
-      "sso:ListInstances",
-      "sso:DescribeRegisteredRegions",
+      "logs:*",
+      "mgh:*",
+      "mgn:*",
+      "migrationhub-strategy:*",
+      "oam:*",
       "organizations:DescribeOrganization",
-      "bedrock:ListFoundationModels",
-      "bedrock:GetFoundationModel",
-      "bedrock:InvokeModel",
-      "bedrock:InvokeModelWithResponseStream",
-      "bedrock:CreateModelCustomizationJob",
-      "bedrock:GetModelCustomizationJob",
-      "bedrock:GetFoundationModelAvailability",
-      "bedrock:ListModelCustomizationJobs",
-      "bedrock:StopModelCustomizationJob",
-      "bedrock:GetCustomModel",
-      "bedrock:ListCustomModels",
-      "bedrock:DeleteCustomModel",
-      "bedrock:CreateProvisionedModelThroughput",
-      "bedrock:UpdateProvisionedModelThroughput",
-      "bedrock:GetProvisionedModelThroughput",
-      "bedrock:DeleteProvisionedModelThroughput",
-      "bedrock:ListProvisionedModelThroughputs",
-      "bedrock:ListTagsForResource",
-      "bedrock:UntagResource",
-      "bedrock:TagResource",
-      "bedrock:CreateAgent",
-      "bedrock:UpdateAgent",
-      "bedrock:GetAgent",
-      "bedrock:ListAgents",
-      "bedrock:CreateActionGroup",
-      "bedrock:UpdateActionGroup",
-      "bedrock:GetActionGroup",
-      "bedrock:ListActionGroups",
-      "bedrock:CreateAgentDraftSnapshot",
-      "bedrock:GetAgentVersion",
-      "bedrock:ListAgentVersions",
-      "bedrock:CreateAgentAlias",
-      "bedrock:UpdateAgentAlias",
-      "bedrock:GetAgentAlias",
-      "bedrock:ListAgentAliases",
-      "bedrock:InvokeAgent",
-      "bedrock:PutFoundationModelEntitlement",
-      "bedrock:GetModelInvocationLoggingConfiguration",
-      "bedrock:PutModelInvocationLoggingConfiguration",
-      "bedrock:CreateFoundationModelAgreement",
-      "bedrock:DeleteFoundationModelAgreement",
-      "bedrock:ListFoundationModelAgreementOffers",
-      "bedrock:GetUseCaseForModelAccess",
-      "bedrock:PutUseCaseForModelAccess"
+      "quicksight:*",
+      "rds-data:*",
+      "rds-db:*",
+      "rds:*",
+      "redshift-data:*",
+      "redshift-serverless:*",
+      "redshift:*",
+      "rhelkb:GetRhelURL",
+      "route53:*",
+      "s3:*",
+      "sagemaker:*",
+      "scheduler:*",
+      "secretsmanager:*",
+      "servicequotas:*",
+      "ses:*",
+      "sns:*",
+      "sqs:*",
+      "sqlworkbench:*",
+      "ssm:*",
+      "ssm-guiconnect:*",
+      "sso:*",
+      "states:*",
+      "sts:*",
+      "support:*",
+      "textract:*",
+      "wafv2:*",
+      "wellarchitected:*"
     ]
-
     resources = ["*"]
   }
 }
-
 
 # sandbox policy - member SSO and collaborators, development accounts only
 resource "aws_iam_policy" "sandbox" {
@@ -1050,7 +1032,6 @@ resource "aws_iam_policy" "instance-management" {
   path     = "/"
   policy   = data.aws_iam_policy_document.instance-management-document.json
 }
-
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "instance-management-document" {
@@ -1494,7 +1475,6 @@ resource "aws_iam_policy" "fleet-manager-policy" {
   path     = "/"
   policy   = data.aws_iam_policy_document.fleet-manager-document.json
 }
-
 
 data "aws_iam_policy_document" "fleet-manager-document" {
   #checkov:skip=CKV_AWS_111 Needs to access multiple resources and the policy is attached to a role that is scoped to a specific account
