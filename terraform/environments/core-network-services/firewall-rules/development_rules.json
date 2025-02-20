@@ -610,7 +610,7 @@
   },
   "cica_tariff_dev_to_cica_devices": {
     "action": "PASS",
-    "source_ip": "$${cica-development}",
+    "source_ip": "${cica-development}",
     "destination_ip": "${cica-end-user-devices}",
     "destination_port": "ANY",
     "protocol": "TCP"
