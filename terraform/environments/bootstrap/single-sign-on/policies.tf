@@ -559,7 +559,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   statement {
-    sid    = "QuickSightConsoleAdmin"
+    sid    = "PlatformEngineerAdmin"
     effect = "Allow"
 
     actions = [
@@ -578,6 +578,12 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "sns:*",
       "lakeformation:*",
       "lambda:*",
+      "s3:*",
+      "athena:*",
+      "glue:*",
+      "cloudwatch:*",
+      "secretsmanager:*",
+      "ssm:*",
       "iam:AttachRolePolicy",
       "iam:DetachRolePolicy",
       "iam:ListAttachedRolePolicies",
@@ -593,7 +599,6 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "iam:CreatePolicy",
       "iam:ListEntitiesForPolicy",
       "iam:ListPolicies",
-      "s3:ListAllMyBuckets",
       "athena:ListDataCatalogs",
       "athena:GetDataCatalog",
       "sso:DescribeApplication",
