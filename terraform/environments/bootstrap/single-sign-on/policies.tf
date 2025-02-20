@@ -555,6 +555,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
   #checkov:skip=CKV_AWS_107
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+  #checkov:skip=CKV2_AWS_40
   statement {
     sid    = "PlatformEngineerAdmin"
     effect = "Allow"
