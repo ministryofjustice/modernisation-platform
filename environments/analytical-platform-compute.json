@@ -1,10 +1,15 @@
 {
   "account-type": "member",
   "codeowners": ["analytical-platform-engineers"],
+  "github_action_reviewers": ["analytical-platform-engineers"],
   "environments": [
     {
       "name": "development",
       "access": [
+        {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "platform-engineer-admin"
+        },
         {
           "sso_group_name": "analytical-platform-engineers",
           "level": "sandbox",
@@ -34,6 +39,10 @@
       "access": [
         {
           "sso_group_name": "analytical-platform-engineers",
+          "level": "platform-engineer-admin"
+        },
+        {
+          "sso_group_name": "analytical-platform-engineers",
           "level": "developer"
         },
         {
@@ -58,6 +67,10 @@
     {
       "name": "production",
       "access": [
+        {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "platform-engineer-admin"
+        },
         {
           "sso_group_name": "analytical-platform-engineers",
           "level": "developer"
