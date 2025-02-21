@@ -477,3 +477,40 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
     path = "/"
   }
 }
+
+# Modernisation Platform platform-engineer-admin role
+resource "aws_ssoadmin_permission_set" "modernisation_platform_platform_engineer_admin" {
+  provider         = aws.sso-management
+  name             = "platform-engineer-admin"
+  description      = "Modernisation Platform: platform-engineer-admin"
+  instance_arn     = local.sso_admin_instance_arn
+  session_duration = "PT8H"
+  tags             = {}
+}
+
+resource "aws_ssoadmin_managed_policy_attachment" "modernisation_platform_platform_engineer_admin" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  managed_policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_platform_engineer_admin.arn
+}
+
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_platform_engineer_admin" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_platform_engineer_admin.arn
+  customer_managed_policy_reference {
+    name = "platform_engineer_admin_policy"
+    path = "/"
+  }
+}
+
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_platform_engineer_admin_common" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_platform_engineer_admin.arn
+  customer_managed_policy_reference {
+    name = "common_policy"
+    path = "/"
+  }
+}
