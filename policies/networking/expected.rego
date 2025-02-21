@@ -236,7 +236,6 @@ expected :=
         "accounts": [
           "cdpt-chaps-development",
           "cdpt-ifs-development",
-          "data-and-insights-wepi-development"
         ]
       }
     },
@@ -252,7 +251,6 @@ expected :=
       "general": {
         "cidr": "10.27.40.0/21",
         "accounts": [
-          "data-and-insights-wepi-preproduction",
           "cdpt-chaps-preproduction",
           "cdpt-ifs-preproduction"
         ]
@@ -264,7 +262,6 @@ expected :=
         "accounts": [
           "cdpt-chaps-production",
           "cdpt-ifs-production",
-          "data-and-insights-wepi-production"
         ]
       }
     },

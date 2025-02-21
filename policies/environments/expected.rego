@@ -33,7 +33,6 @@ expected :=
     "corporate-information-system",
     "corporate-staff-rostering",
     "dacp",
-    "data-and-insights-wepi",
     "data-platform",
     "data-platform-apps-and-tools",
     "delius-alfresco",
