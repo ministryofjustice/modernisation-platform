@@ -235,7 +235,7 @@ expected :=
         "cidr": "10.26.48.0/21",
         "accounts": [
           "cdpt-chaps-development",
-          "cdpt-ifs-development",
+          "cdpt-ifs-development"
         ]
       }
     },
@@ -261,7 +261,7 @@ expected :=
         "cidr": "10.27.32.0/21",
         "accounts": [
           "cdpt-chaps-production",
-          "cdpt-ifs-production",
+          "cdpt-ifs-production"
         ]
       }
     },
