@@ -1,6 +1,6 @@
 locals {
 
-  application_name = "data-and-insights-wepi"
+  application_name = "youth-justice-networking"
 
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 
