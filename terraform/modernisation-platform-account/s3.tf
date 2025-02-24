@@ -440,6 +440,40 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions"]
     }
   }
+
+  statement {
+    sid       = "AllowAnalyticalPlatformEngineersAccess"
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/analytical-platform-*/*"]
+    principals {
+      type        = "AWS"
+      identifiers = "*"
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_platform-engineer-admin_*"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        # Analytical Platform's member account IDs
+        local.environment_management.account_ids["analytical-platform-common-production"],
+        local.environment_management.account_ids["analytical-platform-compute-development"],
+        local.environment_management.account_ids["analytical-platform-compute-test"],
+        local.environment_management.account_ids["analytical-platform-compute-production"],
+        local.environment_management.account_ids["analytical-platform-ingestion-development"],
+        local.environment_management.account_ids["analytical-platform-ingestion-production"]
+      ]
+    }
+  }
 }
 
 module "cost-management-bucket" {
