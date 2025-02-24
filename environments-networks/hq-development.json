@@ -3,10 +3,7 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.26.48.0/21",
-        "accounts": [
-          "cdpt-chaps-development",
-          "cdpt-ifs-development"
-        ]
+        "accounts": ["cdpt-chaps-development", "cdpt-ifs-development"]
       }
     }
   },
