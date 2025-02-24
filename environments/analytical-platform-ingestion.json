@@ -14,7 +14,8 @@
         },
         {
           "sso_group_name": "analytical-platform-engineers",
-          "level": "sandbox"
+          "level": "sandbox",
+          "nuke": "exclude"
         },
         {
           "sso_group_name": "data-platform-audit-and-security",
