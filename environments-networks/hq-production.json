@@ -5,8 +5,7 @@
         "cidr": "10.27.32.0/21",
         "accounts": [
           "cdpt-chaps-production",
-          "cdpt-ifs-production",
-          "data-and-insights-wepi-production"
+          "cdpt-ifs-production"
         ]
       }
     }
@@ -14,7 +13,7 @@
   "options": {
     "bastion_linux": true,
     "additional_cidrs": [],
-    "additional_endpoints": ["com.amazonaws.eu-west-2.redshift"],
+    "additional_endpoints": [],
     "additional_private_zones": [],
     "additional_vpcs": [],
     "dns_zone_extend": []
