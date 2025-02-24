@@ -448,7 +448,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     resources = ["${module.state-bucket.bucket.arn}/environments/members/analytical-platform-*/*"]
     principals {
       type        = "AWS"
-      identifiers = "*"
+      identifiers = ["*"]
     }
     condition {
       test     = "ForAnyValue:StringLike"
