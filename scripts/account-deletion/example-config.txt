@@ -14,10 +14,10 @@ MEMBER_ACCOUNT="yes"
 COMPLETE_DELETION="no"
 
 # Define the absolute path to the Modernisation Platform repo on your device
-USER_MP_DIR="/Users/kudzai.mtoko/mojgithub/modernisation-platform"
+USER_MP_DIR="/modernisation-platform"
 
 # Define the absolute path to the Modernisation Platform Environments repo on your device
-USER_MPE_DIR="/Users/kudzai.mtoko/mojgithub/modernisation-platform-environments"
+USER_MPE_DIR="/modernisation-platform-environments"
 
 # Copy and paste below the admin credentials for the Modernisation Platform account 
 MP_CREDENTIALS(){

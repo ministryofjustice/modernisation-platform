@@ -3,18 +3,14 @@
     "subnet_sets": {
       "general": {
         "cidr": "10.27.40.0/21",
-        "accounts": [
-          "data-and-insights-wepi-preproduction",
-          "cdpt-chaps-preproduction",
-          "cdpt-ifs-preproduction"
-        ]
+        "accounts": ["cdpt-chaps-preproduction", "cdpt-ifs-preproduction"]
       }
     }
   },
   "options": {
     "bastion_linux": false,
     "additional_cidrs": [],
-    "additional_endpoints": ["com.amazonaws.eu-west-2.redshift"],
+    "additional_endpoints": [],
     "additional_private_zones": [],
     "additional_vpcs": [],
     "dns_zone_extend": []
