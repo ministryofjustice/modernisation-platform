@@ -399,6 +399,18 @@
         {
           "account-name": "youth-justice-app-framework-test",
           "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-networking-production",
+          "access": "developer"
         }
       ]
     },
@@ -412,6 +424,10 @@
         },
         {
           "account-name": "youth-justice-app-framework-test",
+          "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-networking-production",
           "access": "developer"
         }
       ]
@@ -427,6 +443,10 @@
         {
           "account-name": "youth-justice-app-framework-test",
           "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-networking-production",
+          "access": "developer"
         }
       ]
     },
@@ -440,6 +460,10 @@
         },
         {
           "account-name": "youth-justice-app-framework-test",
+          "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-networking-production",
           "access": "developer"
         }
       ]
@@ -478,6 +502,10 @@
         },
         {
           "account-name": "youth-justice-app-framework-test",
+          "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-networking-production",
           "access": "developer"
         }
       ]
@@ -643,7 +671,86 @@
           "access": "developer"
         }
       ]
+    },
+    {
+      "username": "howard.brown",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "michael.bullen",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "mitul.dattani",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "craig.gordon",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "joy.parokkaran",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "mike.reid",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "sprinkler-development",
+          "access": "developer"
+        }
+      ]
     }
   ]
 }
-	

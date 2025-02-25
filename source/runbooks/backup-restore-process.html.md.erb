@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
-title: Backup and Restore of Terraform Statefile & EC2
-last_reviewed_on: 2024-08-06
+title: Backup and Recovery
+last_reviewed_on: 2025-02-17
 review_in: 6 months
 ---
 
@@ -16,15 +16,37 @@ review_in: 6 months
 
 # <%= current_page.data.title %>
 
+## Recovery - General Concepts
+
+### AWS Documentation
+
+This [reference](https://docs.aws.amazon.com/aws-backup/latest/devguide/restoring-a-backup.html) covers the general concepts of AWS and specific steps required to restore resource types from a vault. It is suggested being familiar with this guide before attempting any recovery operation, especially with the section for the resource type being recovered.
+
+### Key Points to Note
+
+1. The engineer undertaking the recovery should use the AdministratorAccess role to perform the recovery operation to ensure they have the necessary permissions to restore resources. As it stands, the ModernisationPlatformEngineer role does not have these permissions.
+
+2. Agree with the Product Team engineer(s) which resources are to be recovered, the recovery points to be used as the source and whether the recovery will be overwriting existing resources, for example EFS or EBS. This communication is vital to ensure that the correct resources are recovered and that the correct parameters are used.
+
+3. It is strongly suggested to use the console for restoring one or two resources.
+
+4. Each resource type will require its own specific parameters to be set. For example, an EBS volume or snapshot will require the volume ID the volume type, the availability zone to be added. It is suggested that these are provided by the product team or, failing that, obtained from the terraform source. As such it will be difficult to undertake a mass recovery of different resource types from multiple recovery points without scripting.
+
+5. The recovery proceess will require a role to be provided. It is suggested that the DEFAULT role is used as this will have all of the necessary permissions required. Using the AWSBackup role will not work.
+
+6. Recovery Points will generally have one resource associated with them. There are exceptions, such as resources backed up to multiple regions.
+
+7. CLI documentation for recovery can be found [here](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/backup/start-restore-job.html). Each resource type will have its own metadata requirements.
+
 
 ## Backup & Restore Of Member StateFile
 
-## Overview
+### Overview
 This runbook provides detailed instructions for backing up a replicated Terraform statefile from the `eu-west-1` region and restoring it to a new folder in the `eu-west-2` region. The statefile is stored in an S3 bucket with DynamoDB for state locking.
 
 ---
 
-## Step 1: Create a New Folder for Testing in S3
+### Step 1: Create a New Folder for Testing in S3
 
 1. **Log into AWS Management Console**:
    - Access the Modernisation Platform Account and navigate to the S3 service.
@@ -37,7 +59,7 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 
 ---
 
-## Step 2: Copy the Backup State File for Testing
+### Step 2: Copy the Backup State File for Testing
 
 1. **Locate and Copy the Backup State File**:
    - In the S3 bucket located in the `eu-west-1` region, find the backup state file.
@@ -54,7 +76,7 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 
 ---
 
-## Step 3: Verify the Copied State File in eu-west-2
+### Step 3: Verify the Copied State File in eu-west-2
 
 1. **Confirm State File Availability**:
    - Navigate to the `modernisation-platform-terraform-state` bucket in the `eu-west-2` region.
@@ -62,14 +84,14 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 
 ---
 
-## Step 4: Configure Terraform Backend for Testing
+### Step 4: Configure Terraform Backend for Testing
 
 1. **Update Terraform Configuration**:
    - Modify Terraform configuration file (e.g., `backend.tf`) to point the backend key to the new test path where the copied state file resides.
 
 ---
 
-## Step 5: Initialise and Test the Configuration
+### Step 5: Initialise and Test the Configuration
 
 1. **Reinitialise the Terraform Backend**:
    - Run `terraform init -reconfigure` to reinitialize the backend with the new test configuration. This step ensures that Terraform recognises the state file at the new location.
@@ -79,18 +101,18 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 
 ---
 
-# EC2 Backup and Restore
+## EC2 Backup and Restore
 
-## 1. Set Up and Launch an EC2 Instance
+### 1. Set Up and Launch an EC2 Instance
 - Create an EC2 instance with a "Test" file.
 
-## 2. Set Up AWS Backup
+### 2. Set Up AWS Backup
 
 - You can set up AWS Backup manually through the AWS Management Console or automate the process using Terraform. The setup involves creating a Backup Vault, an IAM role with necessary policies, and defining a backup plan.
 
 ### Create Backup Vault 
 
-### IAM Role and Policy Setup (create a new one or use default)
+#### IAM Role and Policy Setup (create a new one or use default)
 1. **Create IAM Role for AWS Backup:**
    - Create a new role with AWS Backup service as the trusted entity.
    - Attach the `AWSBackupServiceRolePolicyForBackup` managed policy.
@@ -111,7 +133,7 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 - Select EC2 as the resource type that you want to back up.
 - Choose the Instance ID of the EC2 resource that you want to protect.
 
-## 5. Restore EC2 Instance
+### 5. Restore EC2 Instance
 
 - Go to the AWS Backup console
 - Click on "Backup vaults" and select your vault.
@@ -130,4 +152,10 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 
 ## References
 
+* [AWS Backup Documentation](https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html)
+
+* [AWS Restore CLI Reference](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/backup/start-restore-job.html)
+
 * [EC2 Backup And Restore](https://aws.amazon.com/getting-started/hands-on/amazon-ec2-backup-and-restore-using-aws-backup/)
+
+

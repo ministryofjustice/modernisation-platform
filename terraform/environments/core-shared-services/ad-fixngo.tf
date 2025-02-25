@@ -134,7 +134,7 @@ locals {
     ec2_iam_roles = {
       # NOTE: roles will be granted access to relevant domain secrets in hmpps-domain-services accounts
       ad-fixngo-ec2-nonlive-role = {
-        description = "AD FixNGo EC2 instance role for SSM and accessing non-live Secrets"
+        description = "AD FixNGo EC2 instance role for SSM, VSS snapshots and accessing non-live Secrets"
         assume_role_policy = jsonencode({
           "Version" : "2012-10-17",
           "Statement" : [{
@@ -148,12 +148,13 @@ locals {
         })
         managed_policy_arns = [
           "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
+          "arn:aws:iam::aws:policy/AWSEC2VssSnapshotPolicy",
           "ad-fixngo-ec2-policy",
           "ad-fixngo-nonlive-secrets-policy",
         ]
       }
       ad-fixngo-ec2-live-role = {
-        description = "AD FixNGo EC2 instance role for SSM and accessing live Secrets"
+        description = "AD FixNGo EC2 instance role for SSM, VSS snapshots and accessing live Secrets"
         assume_role_policy = jsonencode({
           "Version" : "2012-10-17",
           "Statement" : [{
@@ -167,6 +168,7 @@ locals {
         })
         managed_policy_arns = [
           "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
+          "arn:aws:iam::aws:policy/AWSEC2VssSnapshotPolicy",
           "ad-fixngo-ec2-policy",
           "ad-fixngo-live-secrets-policy",
         ]

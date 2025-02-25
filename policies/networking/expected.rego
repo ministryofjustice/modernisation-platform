@@ -17,7 +17,8 @@ expected :=
       "general": {
         "cidr": "10.231.8.0/21",
         "accounts": [
-          "cooker-development"
+          "cooker-development",
+          "cooker-test"
         ]
       }
     },
@@ -235,8 +236,7 @@ expected :=
         "cidr": "10.26.48.0/21",
         "accounts": [
           "cdpt-chaps-development",
-          "cdpt-ifs-development",
-          "data-and-insights-wepi-development"
+          "cdpt-ifs-development"
         ]
       }
     },
@@ -252,7 +252,6 @@ expected :=
       "general": {
         "cidr": "10.27.40.0/21",
         "accounts": [
-          "data-and-insights-wepi-preproduction",
           "cdpt-chaps-preproduction",
           "cdpt-ifs-preproduction"
         ]
@@ -263,8 +262,7 @@ expected :=
         "cidr": "10.27.32.0/21",
         "accounts": [
           "cdpt-chaps-production",
-          "cdpt-ifs-production",
-          "data-and-insights-wepi-production"
+          "cdpt-ifs-production"
         ]
       }
     },
