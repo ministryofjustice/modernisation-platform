@@ -82,6 +82,8 @@ resource "aws_iam_role_policy_attachment" "terraform_plan_role_readonly" {
 }
 
 data "aws_iam_policy_document" "oidc_deny_specific_actions_test" {
+  # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
   # Allow OIDC role to decrypt using KMS
   statement {
     sid       = "AllowOIDCToDecryptKMS"
@@ -143,6 +145,7 @@ resource "aws_iam_role" "terraform_apply_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "terraform_apply_role" {
+  # checkov:skip=CKV_AWS_274: "AdministratorAccess is required for Terraform Apply role"
   role       = aws_iam_role.terraform_apply_role.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
