@@ -17,7 +17,8 @@ expected :=
       "general": {
         "cidr": "10.231.8.0/21",
         "accounts": [
-          "cooker-development"
+          "cooker-development",
+          "cooker-test"
         ]
       }
     },
@@ -395,8 +396,7 @@ expected :=
         "cidr": "10.26.0.0/21",
         "accounts": [
           "data-platform-test",
-          "testing-test",
-          "cooker-test"
+          "testing-test"
         ]
       }
     },
