@@ -7,7 +7,7 @@ body:
       value: |
         ## Out-of-Hours Support Request 
   - type: textarea
-    id: expected
+    id: change-details
     attributes:
       label: Change Details
       description: What should happen?
@@ -15,7 +15,7 @@ body:
     validations:
       required: true
   - type: textarea
-    id: actual
+    id: time
     attributes:
       label: Scheduled Time
       description: When is the change?
@@ -23,7 +23,7 @@ body:
     validations:
       required: true
   - type: textarea
-    id: actual
+    id: impact
     attributes:
       label: Impact Assesment
       description: When impact will this change have?
@@ -31,7 +31,7 @@ body:
     validations:
       required: true
   - type: textarea
-    id: actual
+    id: rollback
     attributes:
       label: Rollback Plan
       description: Whats the rollback plan?
