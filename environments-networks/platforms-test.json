@@ -6,7 +6,8 @@
         "accounts": [
           "analytical-platform-compute-test",
           "testing-test",
-          "data-platform-test"
+          "data-platform-test",
+          "cooker-test"
         ]
       }
     }

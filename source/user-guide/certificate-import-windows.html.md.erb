@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: How to import a public SSL certificate into AWS Certificate Manager on Windows
-last_reviewed_on: 2024-08-20
+last_reviewed_on: 2025-02-25
 review_in: 6 months
 ---
 
@@ -24,12 +24,12 @@ This assumes you have read how to [configure DNS](how-to-configure-dns.html) and
 
 The steps are:
 
-* Generate a certificate signing request (CSR)
-* Request a certificate using that CSR
-* Complete the certificate request
-* Export the complete certificate
-* Import the exported certificate data to your AWS account
-* Apply the certificate ARN to your app
+- Generate a certificate signing request (CSR)
+- Request a certificate using that CSR
+- Complete the certificate request
+- Export the complete certificate
+- Import the exported certificate data to your AWS account
+- Apply the certificate ARN to your app
 
 If you already have your exported SSL certificate in PFX format, skip direct to step 5 (certificate data extraction).
 
@@ -51,7 +51,7 @@ Note these will be plain text files with the body of the PEM-formatted server ce
 
 ## 3. Local certificate import
 
-In PowerShell, complete the certificate request, e.g.  `certreq -accept .\hmpps-your-app.service.justice.gov.uk.crt.txt`
+In PowerShell, complete the certificate request, e.g. `certreq -accept .\hmpps-your-app.service.justice.gov.uk.crt.txt`
 
 You should see something like:
 
@@ -68,11 +68,11 @@ Thumbprint: fad171bxxxxxxxx27d40f
 
 Use the Windows Certificate Manager MMC to export the certificate. It should be in "Personal".
 
-  * Say "Yes" to export the private key
-  * Use .PFX as the format
-  * Check "include all certificates in the certification path if possible"
-  * Specify a password (not a Windows user) for security
-  * Export to a file
+- Say "Yes" to export the private key
+- Use .PFX as the format
+- Check "include all certificates in the certification path if possible"
+- Specify a password (not a Windows user) for security
+- Export to a file
 
 **TODO** This step describes the GUI method. Investigate using PowerShell `Export-PfxCertificate` command (https://docs.microsoft.com/en-us/powershell/module/pki/export-pfxcertificate?view=windowsserver2022-ps)
 
@@ -90,11 +90,11 @@ In AWS Certificate Manager, import the certificate using the data in the exporte
 
 Developer access has permission to import certificates, so this can be done yourself through the console. Instructions on how to do this are in https://docs.aws.amazon.com/acm/latest/userguide/import-certificate-api-cli.html
 
-You can use the AWS Parameter Store to share the cert and key data with the Modernisation Platform team. The total length of the private key, certificate and chain exceeeds the 4096 character limit for parameters, so we suggest creating multiple parameters:
+You can use the AWS Parameter Store to share the cert and key data with the Modernisation Platform team. The total length of the private key, certificate and chain exceeds the 4096 character limit for parameters, so we suggest creating multiple parameters:
 
-* One for the private key
-* One for your main certificate block
-* One parameter **each** for each block in the certificate chain
+- One for the private key
+- One for your main certificate block
+- One parameter **each** for each block in the certificate chain
 
 If you are renewing an existing certificate, note that AWS Certificate Manager also allows you to re-import an existing certificate with new values. We suggest you avoid this in case something goes wrong. Importing a **new** certificate with the same domain as an existing certificate is allowed.
 
@@ -114,6 +114,6 @@ Test that your app working correctly, and check that the certificate expiry date
 
 Clean up any copies of your certificate data (plaintext or otherwise). Remove:
 
-* local copies of certificates from your cert store
-* local copies of certificate data in text files
-* certificate data in AWS parameter store
+- local copies of certificates from your cert store
+- local copies of certificate data in text files
+- certificate data in AWS parameter store
