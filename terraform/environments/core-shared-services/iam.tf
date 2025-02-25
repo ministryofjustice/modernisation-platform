@@ -263,6 +263,19 @@ data "aws_iam_policy_document" "oidc_assume_role_core" {
     resources = [module.instance_scheduler.lambda_function_arn]
     actions   = ["sts:AssumeRole"]
   }
+  # Restrict GitHub Actions from passing roles unless explicitly for GuardDuty Malware Protection Plan
+  statement {
+    sid       = "DenyPassRoleUnlessGuardDuty"
+    actions   = ["iam:PassRole"]
+    effect    = "Deny"
+    resources = ["arn:aws:iam::*:role/github-actions"]
+
+    condition {
+      test     = "StringNotEquals"
+      variable = "iam:PassedToService"
+      values   = ["malware-protection-plan.guardduty.amazonaws.com"]
+    }
+  }
 }
 
 ##### Cross Account Roles Admin #####
