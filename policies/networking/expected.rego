@@ -395,7 +395,8 @@ expected :=
         "cidr": "10.26.0.0/21",
         "accounts": [
           "data-platform-test",
-          "testing-test"
+          "testing-test",
+          "cooker-test"
         ]
       }
     },
