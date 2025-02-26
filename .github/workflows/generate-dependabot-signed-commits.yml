@@ -21,9 +21,9 @@ jobs:
       - name: Generate Dependabot file
         run: bash ./scripts/generate-dependabot-file.sh
 
-  call-signed-commit-pr-workflow:
-    needs: create-and-commit-dependabot-file
-    uses: ministryofjustice/modernisation-platform/.github/workflows/reusable-signed-commit.yml@main
-    with:
-      pr_title: "Automated Update: Dependabot File"
-      pr_body: "This PR updates the Dependabot configuration file."
+      - name: Commit and Create PR with Signed Commit
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@main
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_title: "Automated Update: Dependabot File"
+          pr_body: "This PR updates the Dependabot configuration file."

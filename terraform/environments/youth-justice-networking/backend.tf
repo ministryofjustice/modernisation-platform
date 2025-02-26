@@ -9,6 +9,6 @@ terraform {
     key                  = "terraform.tfstate"
     region               = "eu-west-2"
     use_lockfile         = true
-    workspace_key_prefix = "environments/accounts/data-and-insights-wepi" # This will store the object as environments/accounts/data-and-insights-wepi/${workspace}/terraform.tfstate
+    workspace_key_prefix = "environments/accounts/youth-justice-networking" # This will store the object as environments/accounts/youth-justice-networking/${workspace}/terraform.tfstate
   }
 }

@@ -67,3 +67,6 @@ output "ssoadmin_instances" {
   value = data.aws_ssoadmin_instances.default
 }
 
+output "platform_engineer_admin" {
+  value = aws_ssoadmin_permission_set.modernisation_platform_platform_engineer_admin.arn
+}

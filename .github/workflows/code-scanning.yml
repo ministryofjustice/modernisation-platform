@@ -25,7 +25,7 @@ jobs:
           token: '${{ secrets.GITHUB_TOKEN }}'
           fetch-depth: 0
       - name: Cache plugin dir
-        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
+        uses: actions/cache@0c907a75c2c80ebcb7f088228285e798b750cf8f # v4.2.1
         with:
           path: ~/.tflint.d/plugins
           key: '${{ matrix.os }}-tflint-${{ hashFiles(''.tflint.hcl'') }}'
@@ -39,7 +39,7 @@ jobs:
         run: tflint --disable-rule=terraform_unused_declarations --format sarif > tflint.sarif
       - name: Upload SARIF file
         if: success() || failure()
-        uses: github/codeql-action/upload-sarif@9e8d0789d4a0fa9ceb6b1738f7e269594bdd67f0 # v3.28.9
+        uses: github/codeql-action/upload-sarif@b56ba49b26e50535fa1e7f7db0f4f7b4bf65d80d # v3.28.10
         with:
           sarif_file: tflint.sarif
   trivy:
@@ -64,7 +64,7 @@ jobs:
 
       - name: Upload Trivy scan results to GitHub Security tab
         if: success() || failure()
-        uses: github/codeql-action/upload-sarif@9e8d0789d4a0fa9ceb6b1738f7e269594bdd67f0 # v3.28.9
+        uses: github/codeql-action/upload-sarif@b56ba49b26e50535fa1e7f7db0f4f7b4bf65d80d # v3.28.10
         with:
           sarif_file: 'trivy-results.sarif'
   checkov:
@@ -82,7 +82,7 @@ jobs:
           fetch-depth: 0
       - name: Run Checkov action
         id: checkov
-        uses: bridgecrewio/checkov-action@4dcc9609e7734e8bc66e77c5691a16ad0d247420 # v12.2961.0
+        uses: bridgecrewio/checkov-action@b84fab9a2c2e33d937b4fd028e69d7e1827e3eef # v12.2967.0
         with:
           directory: ./
           framework: terraform
@@ -92,6 +92,6 @@ jobs:
           skip_check: CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
       - name: Upload SARIF file
         if: success() || failure()
-        uses: github/codeql-action/upload-sarif@9e8d0789d4a0fa9ceb6b1738f7e269594bdd67f0 # v3.28.9
+        uses: github/codeql-action/upload-sarif@b56ba49b26e50535fa1e7f7db0f4f7b4bf65d80d # v3.28.10
         with:
           sarif_file: ./checkov.sarif
