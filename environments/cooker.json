@@ -27,6 +27,21 @@
       ],
       "additional_reviewers": ["astrobinson"],
       "instance_scheduler_skip": ["true"]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "developer",
+          "nuke": "exclude"
+        },
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "sandbox",
+          "nuke": "exclude"
+        }
+      ]
     }
   ],
   "tags": {
