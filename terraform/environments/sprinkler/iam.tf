@@ -66,8 +66,8 @@ resource "aws_iam_role" "terraform_plan_role" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect    = "Allow"
-        Action    = "sts:AssumeRole"
+        Effect = "Allow"
+        Action = "sts:AssumeRole"
         Principal = {
           AWS = "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-test"
         }
@@ -94,24 +94,24 @@ data "aws_iam_policy_document" "oidc_deny_specific_actions_test" {
 
   # Allow OIDC role to list S3 objects in a specific bucket
   statement {
-    sid       = "AllowOIDCReadState"
-    effect    = "Allow"
+    sid    = "AllowOIDCReadState"
+    effect = "Allow"
     resources = [
       "arn:aws:s3:::modernisation-platform-terraform-state/*",
       "arn:aws:s3:::modernisation-platform-terraform-state/"
     ]
-    actions   = ["s3:List*"]
+    actions = ["s3:List*"]
   }
 
   # Allow OIDC role to delete specific S3 lock files
   statement {
-    sid       = "AllowOIDCDeleteLock"
-    effect    = "Allow"
+    sid    = "AllowOIDCDeleteLock"
+    effect = "Allow"
     resources = [
       "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/*.tflock",
       "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*.tflock"
     ]
-    actions   = ["s3:DeleteObject"]
+    actions = ["s3:DeleteObject"]
   }
 }
 
@@ -134,8 +134,8 @@ resource "aws_iam_role" "terraform_apply_role" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect    = "Allow"
-        Action    = "sts:AssumeRole"
+        Effect = "Allow"
+        Action = "sts:AssumeRole"
         Principal = {
           AWS = "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-test"
         }
