@@ -263,6 +263,73 @@ data "aws_iam_policy_document" "oidc_assume_role_core" {
     resources = [module.instance_scheduler.lambda_function_arn]
     actions   = ["sts:AssumeRole"]
   }
+  # GuardDuty Permissions
+  statement {
+    sid    = "EventBridgeActionsForGuardDuty"
+    effect = "Allow"
+    actions = [
+      "events:PutRule",
+      "events:PutTargets",
+      "events:DescribeRule"
+    ]
+    resources = [
+      "arn:aws:events:eu-west-2:374269020027:rule/DO-NOT-DELETE-AmazonGuardDutyMalwareProtectionS3*"
+    ]
+    condition {
+      test     = "StringLike"
+      variable = "events:ManagedBy"
+      values   = ["malware-protection-plan.guardduty.amazonaws.com"]
+    }
+  }
+
+  statement {
+    sid    = "S3ActionsForGuardDuty"
+    effect = "Allow"
+    actions = [
+      "s3:PutObject*",
+      "s3:GetObject*",
+      "s3:GetBucket*",
+      "s3:ListBucket",
+      "s3:PutBucketNotification",
+      "s3:GetBucketNotification"
+    ]
+    resources = [
+      "arn:aws:s3:::*/malware-protection-resource-validation-object",
+      "arn:aws:s3:::*"
+    ]
+    condition {
+      test     = "StringEqualsIfExists"
+      variable = "aws:CalledVia"
+      values   = ["malware-protection-plan.guardduty.amazonaws.com"]
+    }
+  }
+
+  statement {
+    sid    = "AllowDecryptForMalwareScan"
+    effect = "Allow"
+    actions = [
+      "kms:GenerateDataKey",
+      "kms:Decrypt"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringLike"
+      variable = "kms:ViaService"
+      values   = ["s3.eu-west-2.amazonaws.com"]
+    }
+  }
+
+  statement {
+    sid       = "AllowPassGuardDutyRole"
+    effect    = "Allow"
+    actions   = ["iam:PassRole"]
+    resources = ["arn:aws:iam::*:role/github-actions"]
+    condition {
+      test     = "StringEqualsIfExists"
+      variable = "iam:PassedToService"
+      values   = ["malware-protection-plan.guardduty.amazonaws.com"]
+    }
+  }
 }
 
 ##### Cross Account Roles Admin #####
