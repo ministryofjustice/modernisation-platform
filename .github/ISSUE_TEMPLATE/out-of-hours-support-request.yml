@@ -1,6 +1,7 @@
 
 name: Modernisation Platform out-of-hours support request
 description: Create new Modernisation Platform support ticket for out-of-hours
+title: "Service name: "
 labels: ["support"]
 body:
   - type: markdown
