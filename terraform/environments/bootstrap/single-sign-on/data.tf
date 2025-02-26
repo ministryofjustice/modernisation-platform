@@ -8,3 +8,6 @@ data "aws_ssm_parameter" "modernisation_platform_account_id" {
   name = "modernisation_platform_account_id"
 }
 
+data "aws_caller_identity" "original_session" {
+  provider = aws.original-session
+}

@@ -6,6 +6,11 @@ provider "aws" {
   }
 }
 
+provider "aws" {
+  alias  = "original-session"
+  region = "eu-west-2"
+}
+
 # AWS provider (AWS root account for AWS SSO management)
 provider "aws" {
   region = "eu-west-2"
