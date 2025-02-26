@@ -1,6 +1,14 @@
 # AWS provider (default)
 provider "aws" {
   region = "eu-west-2"
+  assume_role {
+    role_arn = can(regex("githubactionssession", data.aws_caller_identity.original_session.arn)) ? "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/terraform-plan-role" : "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/terraform-apply-role"
+  }
+}
+
+provider "aws" {
+  alias  = "original-session"
+  region = "eu-west-2"
 }
 
 # AWS provider (AWS root account for AWS SSO management)
