@@ -445,11 +445,44 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     sid    = "AllowAnalyticalPlatformEngineersAccess"
     effect = "Allow"
     actions = [
-      "s3:DeleteObject",
       "s3:GetObject",
       "s3:PutObject"
     ]
     resources = ["${module.state-bucket.bucket.arn}/environments/members/analytical-platform-*/*"]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_platform-engineer-admin_*"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        # Analytical Platform's member account IDs
+        local.environment_management.account_ids["analytical-platform-common-production"],
+        local.environment_management.account_ids["analytical-platform-compute-development"],
+        local.environment_management.account_ids["analytical-platform-compute-test"],
+        local.environment_management.account_ids["analytical-platform-compute-production"],
+        local.environment_management.account_ids["analytical-platform-ingestion-development"],
+        local.environment_management.account_ids["analytical-platform-ingestion-production"]
+      ]
+    }
+  }
+
+  statement {
+    sid       = "AllowAnalyticalPlatformEngineersDeleteLock"
+    effect    = "Allow"
+    actions   = ["s3:DeleteObject"]
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/analytical-platform-*/*.tflock"]
     principals {
       type        = "AWS"
       identifiers = ["*"]
