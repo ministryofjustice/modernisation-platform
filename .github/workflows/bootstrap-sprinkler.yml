@@ -89,6 +89,10 @@ jobs:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-test"
           role-session-name: githubactionssession
           aws-region: ${{ env.AWS_REGION }}
+
+      - name: Debug AWS Credentials
+        run: aws sts get-caller-identity
+        
       - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
         with:
           terraform_version: "~1"
