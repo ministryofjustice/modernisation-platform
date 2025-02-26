@@ -1520,3 +1520,22 @@ data "aws_iam_policy_document" "s3_upload_policy_document" {
     ]
   }
 }
+
+resource "aws_iam_policy" "s3_read_policy" {
+  name     = "s3_read_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.s3_read_policy_document.json
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "s3_read_policy_document" {
+  statement {
+    sid    = "AllowS3Read"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:ListBucket"
+    ]
+    resources = ["*"]
+  }
+}
