@@ -284,7 +284,6 @@ data "aws_iam_policy_document" "oidc_assume_role_core" {
       values   = ["malware-protection-plan.guardduty.amazonaws.com"]
     }
   }
-
   statement {
     sid    = "S3ActionsForGuardDuty"
     effect = "Allow"
