@@ -7,7 +7,7 @@
       "access": [
         {
           "sso_group_name": "modernisation-platform-engineers",
-          "level": "developer"
+          "level": "migration"
         }
       ],
       "additional_reviewers": [
