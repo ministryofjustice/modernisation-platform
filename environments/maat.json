@@ -6,7 +6,8 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer"
+          "level": "sandbox",
+          "nuke": "exclude"
         }
       ]
     },
