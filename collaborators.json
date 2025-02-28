@@ -464,7 +464,7 @@
         },
         {
           "account-name": "youth-justice-networking-production",
-          "access": "developer"
+          "access": "migration"
         }
       ]
     },
