@@ -13,9 +13,6 @@ defaults:
 
 jobs:
   create-and-commit-dependabot-file:
-    permissions:
-      contents: write
-      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
