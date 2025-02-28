@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Managing Terraform State
-last_reviewed_on: 2025-02-27
+last_reviewed_on: 2025-02-28
 review_in: 6 months
 ---
 
@@ -20,11 +20,11 @@ review_in: 6 months
 
 In certain scenarios it may be necessary to perform one-off actions on your terraform state files, for instance...
 
--force-unlocking the TF state
--importing manually created resources
--removing resources you no longer wish to manage in state
+- force-unlocking the state
+- importing manually created resources to the state
+- removing resources you no longer wish to manage in state
 
-For these scenarios we have supplied a dedicated [Terraform State Management](https://github.com/ministryofjustice/modernisation-platform-environments/actions/workflows/terraform-state-management.yml) GitHub Action for managing your state files.
+For these scenarios we have supplied a [Terraform State Management](https://github.com/ministryofjustice/modernisation-platform-environments/actions/workflows/terraform-state-management.yml) GitHub Action for managing your state files.
 
 ## Using the GitHub Action 
 
@@ -33,6 +33,10 @@ For these scenarios we have supplied a dedicated [Terraform State Management](ht
 1. You will be presented with a series of options for the various operations available 
 
 ![Run Workflow Options](../../images/manage-tf-state-gh-action.png)
+
+> **Note:** If you are managing the state for a component directory (i.e. a subfolder in `terraform/environments/<application>`) then you will need to supply the name of the relevant directory in the `Component` field.
+
+> For most users this can be left as the default `root` value
 
 ## How to force unlock TF state
 
@@ -45,11 +49,31 @@ For these scenarios we have supplied a dedicated [Terraform State Management](ht
 1. If you are content to proceed select `review deployments`, select the relevant tick box for the environment and finally select `Approve and deploy`
 1. The deployment will continue and unlock the state. If any errors are encountered you can review the logs for further info.
 
-> **Note:** If you are unlocking the state for a component directory (i.e. a subfolder in `terraform/environments/<application>`) then you will need to supply the name of the relevant directory in the `Component` field.
-
-> For most users this can be left as the default `root` value
-
 ## How to import resources into the TF state
+
+> **Note:** Before using this operation you need to add the resources you are intending to import to your terraform config on a feature branch
+
+1. Select the `import` operation
+1. Enter your application name e.g. `apex`
+1. Select the relevant environment workspace e.g. `development`
+1. Enter `resource addresses` as required (these must be comma separated when handling multiple resources) 
+ - e.g. to import an s3 bucket/ec2 instance `aws_s3_bucket.test_import_bucket,aws_instance.test_import_instance`
+
+1. Enter the `resource IDs` as required (again comma separated and must match the `resource addresses` order)
+ - e.g. `test-s3-bucket-name,i-0c9c2b36e598cefea`
+1. Enter the name of the `feature branch` with your associated config for the imported resources
+1. Select `Run Workflow`, and follow the same steps as above to review/deploy the changes
+1. Once this has completed you can continue to raise a PR/merge your config changes as usual
 
 ## How to remove resources from the TF state
 
+1. Select the `remove` operation
+1. Enter your application name e.g. `apex`
+1. Select the relevant environment workspace e.g. `development`
+1. Enter `resource addresses` as required (these must be comma separated when handling multiple resources) 
+ - e.g. to remove an s3 bucket/ec2 instance `aws_s3_bucket.test_import_bucket,aws_instance.test_import_instance`
+1. Select `Run Workflow`, and follow the same steps as above to review/deploy the changes
+
+## Troubleshooting
+
+If any errors are encountered you can review the logs for more detailed information. If in doubt contact the Modernisation Platform team via the [ask channel](https://moj.enterprise.slack.com/archives/C01A7QK5VM1)
