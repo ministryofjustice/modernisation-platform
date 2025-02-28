@@ -27,7 +27,7 @@ jobs:
       - name: Set up Git user
         run: bash ./scripts/git-setup.sh
 
-      - name: Debug: Show Git Status
+      - name: Debug Show Git Status
         run: |
           echo "===== Git Status ====="
           git status
