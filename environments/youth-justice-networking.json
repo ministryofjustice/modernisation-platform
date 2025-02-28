@@ -1,5 +1,5 @@
 {
-  "account-type": "member",
+  "account-type": "member-unrestricted",
   "isolated-network": "true",
   "environments": [
     {
@@ -7,7 +7,7 @@
       "access": [
         {
           "sso_group_name": "modernisation-platform-engineers",
-          "level": "migration"
+          "level": "administrator"
         }
       ],
       "additional_reviewers": [
