@@ -35,7 +35,7 @@ jobs:
           git diff --name-only
 
       - name: Commit and Create PR with Signed Commit
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@your-branch-name # Replace with your branch
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@main
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated Update: Dependabot File"
