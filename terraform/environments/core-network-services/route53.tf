@@ -22,8 +22,8 @@ locals {
   private-application-zones = {
     yjaf-development   = "development.yjaf"
     yjaf-test          = "test.yjaf",
-    yjaf-preproduction = "preprod.yjaf",
-    yjaf-production    = "prod.yjaf"
+    yjaf-preproduction = "preproduction.yjaf",
+    yjaf-production    = "production.yjaf"
 
   }
 }
