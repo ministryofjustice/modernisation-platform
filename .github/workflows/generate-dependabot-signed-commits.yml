@@ -21,6 +21,16 @@ jobs:
       - name: Generate Dependabot file
         run: bash ./scripts/generate-dependabot-file.sh
 
+      - name: Set up Git user
+        run: bash ./scripts/git-setup.sh
+
+      - name: Debug Show Git Status
+        run: |
+          echo "===== Git Status ====="
+          git status
+          echo "===== Changed Files ====="
+          git diff --name-only
+
       - name: Commit and Create PR with Signed Commit
         uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@main
         with:
