@@ -27,14 +27,14 @@ jobs:
       - name: Prepare Git options
         run: bash ./scripts/git-setup.sh
 
-      - name: Create new branch
-        run: |
-          date=$(date +%Y_%m_%d_%H_%M)
-          branch_name="code_formatter_$date"
-          git checkout -b $branch_name
-          echo "branch_name=$branch_name" >> $GITHUB_ENV
-          # Push the empty branch to remote
-          git push -u origin $branch_name 
+      # - name: Create new branch
+      #   run: |
+      #     date=$(date +%Y_%m_%d_%H_%M)
+      #     branch_name="code_formatter_$date"
+      #     git checkout -b $branch_name
+      #     echo "branch_name=$branch_name" >> $GITHUB_ENV
+      #     # Push the empty branch to remote
+      #     git push -u origin $branch_name 
 
 
       - name: Run linter
