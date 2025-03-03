@@ -383,7 +383,6 @@ resource "aws_iam_role" "guardduty_s3_malware_scan" {
 }
 
 module "guardduty_s3_malware_scan" {
-  count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && !can(regex(".*-production$", terraform.workspace))) ? 1 : 0
   source     = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648"
   account_id = local.environment_management.account_ids["core-shared-services-production"]
   policy_arn = aws_iam_policy.guardduty_s3_malware_scan.id
@@ -392,6 +391,7 @@ module "guardduty_s3_malware_scan" {
 
 # IAM Policy Document for GuardDuty S3 Malware Scan Role
 data "aws_iam_policy_document" "guardduty_s3_malware_scan" {
+  #checkov:skip=CKV_AWS_356: requires access to multiple resources
   statement {
     sid    = "EventBridgeActionsForGuardDuty"
     effect = "Allow"
