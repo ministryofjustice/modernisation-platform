@@ -24,9 +24,9 @@ locals {
   )
 
   environment     = "sandbox"
-    vpc_name        = var.networking[0].business-unit
+  vpc_name        = var.networking[0].business-unit
   subnet_set      = var.networking[0].set
-    vpc_all         = "${local.vpc_name}-${local.environment}"
+  vpc_all         = "${local.vpc_name}-${local.environment}"
   subnet_set_name = "${var.networking[0].business-unit}-${local.environment}-${var.networking[0].set}"
 
   is_live       = [substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production" || substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction" ? "live" : "non-live"]
@@ -35,6 +35,6 @@ locals {
   # environment specfic variables
   # example usage:
   # example_data = local.application_data.accounts[local.environment].example_var
-      # Some text for formatter testing
+  # Some text for formatter testing
   application_data = fileexists("./application_variables.json") ? jsondecode(file("./application_variables.json")) : {}
 }
