@@ -189,17 +189,6 @@ resource "aws_secretsmanager_secret" "slack_webhook_url" {
   }
 }
 
-resource "aws_secretsmanager_secret" "slack_webhook_url_modernisation_platform_update" {
-  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
-  name        = "slack_webhook_url_modernisation_platform_update"
-  description = "Slack channel modernisation-platform-update webhook url for sending notifications to slack"
-  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
-  tags        = local.tags
-  replica {
-    region = local.replica_region
-  }
-}
-
 resource "aws_secretsmanager_secret" "slack_webhooks" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "slack_webhooks"
