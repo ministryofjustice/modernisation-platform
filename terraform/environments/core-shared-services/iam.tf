@@ -386,7 +386,7 @@ module "guardduty_s3_malware_scan" {
   count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && !can(regex(".*-production$", terraform.workspace))) ? 1 : 0
   source     = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648"
   account_id = local.environment_management.account_ids["core-shared-services-production"]
-  policy_arn = aws_iam_policy.guardduty_s3_malware_scan[0].id
+  policy_arn = aws_iam_policy.guardduty_s3_malware_scan.id
   role_name  = aws_iam_role.guardduty_s3_malware_scan.name
 }
 
@@ -401,7 +401,7 @@ data "aws_iam_policy_document" "guardduty_s3_malware_scan" {
       "events:DescribeRule"
     ]
     resources = [
-      "arn:aws:events:eu-west-2:${data.aws_caller_identity.current.account_id}:rule/DO-NOT-DELETE-AmazonGuardDutyMalwareProtectionS3*:rule/DO-NOT-DELETE-AmazonGuardDutyMalwareProtectionS3*"
+      "arn:aws:events:eu-west-2:${data.aws_caller_identity.current.account_id}:rule/DO-NOT-DELETE-AmazonGuardDutyMalwareProtectionS3*"
     ]
     condition {
       test     = "StringLike"
