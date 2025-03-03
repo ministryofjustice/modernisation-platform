@@ -1,5 +1,11 @@
 {
   "account-type": "member",
+  "components": [
+    {
+      "name": "anonymisation",
+      "sso_group_name": "laa-ccms-migration-team"
+    }
+  ],
   "environments": [
     {
       "name": "development",
