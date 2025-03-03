@@ -1,5 +1,11 @@
 {
   "account-type": "member",
+  "components": [
+    {
+      "name": "anonymisation",
+      "sso_group_name": "laa-ccms-migration-team"
+    }
+  ],
   "environments": [
     {
       "name": "development",
@@ -16,11 +22,18 @@
       "access": [
         {
           "sso_group_name": "laa-ccms-migration-team",
-          "level": "developer"
+          "level": "developer",
+          "nuke": "exclude"
         },
         {
           "sso_group_name": "laa-ccms-migration-team",
-          "level": "instance-management"
+          "level": "sandbox",
+          "nuke": "exclude"
+        },
+        {
+          "sso_group_name": "laa-ccms-migration-team",
+          "level": "instance-management",
+          "nuke": "exclude"
         }
       ]
     }

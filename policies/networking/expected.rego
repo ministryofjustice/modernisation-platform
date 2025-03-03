@@ -17,8 +17,7 @@ expected :=
       "general": {
         "cidr": "10.231.8.0/21",
         "accounts": [
-          "cooker-development",
-          "cooker-test"
+          "cooker-development"
         ]
       }
     },
