@@ -11,7 +11,7 @@
 ## Core Accounts CIDRs
 
 | CIDR        | mask | allocated to                        |
-|:------------|:-----| :---------------------------------- |
+|:------------|:-----|:------------------------------------|
 | 10.20.0.0   | /19  | core-network-services live_data     |
 | 10.20.32.0  | /19  | core-network-services non_live_data |
 | 10.20.64.0  | /19  | core-shared-services live_data      |
@@ -20,6 +20,7 @@
 | 10.20.160.0 | /19  | core-logging non_live_data          |
 | 10.20.192.0 | /20  | core-security live_data             |
 | 10.20.208.0 | /20  | core-security non_live_data         |
+| 10.20.224.0 | /21  | youth-justice-networking-production |
 |             |      |                                     |
 
 ### development and test /21s for member subnet-sets
