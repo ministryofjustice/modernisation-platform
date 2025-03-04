@@ -25,12 +25,8 @@
           "nuke": "rebuild"
         }
       ],
-      "additional_reviewers": [
-        "astrobinson"
-      ],
-      "instance_scheduler_skip": [
-        "true"
-      ]
+      "additional_reviewers": ["astrobinson"],
+      "instance_scheduler_skip": ["true"]
     }
   ],
   "tags": {
@@ -41,8 +37,6 @@
     "slack-channel": "modernisation-platform",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [
-    ""
-  ],
+  "github-oidc-team-repositories": [""],
   "go-live-date": ""
 }
