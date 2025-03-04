@@ -14,6 +14,7 @@ expected :=
     "analytical-platform-landing",
     "analytical-platform-management",
     "apex",
+    "bacway",
     "bichard7",
     "ccms-ebs",
     "ccms-ebs-upgrade",
