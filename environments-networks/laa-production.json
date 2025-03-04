@@ -5,6 +5,7 @@
         "cidr": "10.27.64.0/21",
         "accounts": [
           "apex-production",
+          "bacway-production",
           "ccms-ebs-production",
           "contract-work-administration-production",
           "corporate-information-system-production",
