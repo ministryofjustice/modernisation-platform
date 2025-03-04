@@ -270,6 +270,7 @@ expected :=
         "cidr": "10.26.56.0/21",
         "accounts": [
           "apex-development",
+          "bacway-development",
           "ccms-ebs-development",
           "ccms-ebs-upgrade-development",
           "contract-work-administration-development",
@@ -314,6 +315,7 @@ expected :=
         "cidr": "10.27.72.0/21",
         "accounts": [
           "apex-preproduction",
+          "bacway-preproduction",
           "ccms-ebs-preproduction",
           "contract-work-administration-preproduction",
           "corporate-information-system-preproduction",
@@ -333,6 +335,7 @@ expected :=
         "cidr": "10.27.64.0/21",
         "accounts": [
           "apex-production",
+          "bacway-production",
           "contract-work-administration-production",
           "corporate-information-system-production",
           "edw-production",
