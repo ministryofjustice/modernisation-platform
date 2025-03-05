@@ -558,6 +558,7 @@ data "aws_iam_policy_document" "policy" {
       "elasticfilesystem:Delete*",
       "elasticfilesystem:restore",
       "elasticloadbalancing:SetRulePriorities",
+      "elasticloadbalancing:ModifyRule",
       "glue:GetJobRuns",
       "glue:StartJobRun",
       "glue:GetJobs",
