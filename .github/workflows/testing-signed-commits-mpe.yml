@@ -33,6 +33,7 @@ jobs:
             cd ./modernisation-platform-environments/terraform/environments/sprinkler
             # Amend line 35 by adding a tab before the hash
             sed -i '35s/^/#/' platform_locals.tf
+            cd -
         shell: bash
 
       - name: Git Setup
