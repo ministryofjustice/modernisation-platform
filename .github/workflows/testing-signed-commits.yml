@@ -1,0 +1,47 @@
+name: New environment files
+
+on:
+  push:
+    paths:
+      - 'environments/**.json'
+      - 'environments-networks/**.json'
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  create-and-commit-files:
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Generate some changes to a terraform file
+        run: |
+            # Define the file path
+            file_path="terraform/environments/sprinkler/locals.tf"
+            # Append a new line of text to the file
+            echo '  # new_line_of_text' >> "$file_path"
+            # Amend line 35 by adding a tab before the hash
+            sed -i '35s/^/#/' "$file_path"
+        shell: bash
+
+      - name: Commit changes to GitHub
+        run: bash ./scripts/git-setup.sh
+
+      - name: Commit and Create PR with Signed Commit if Changes are Found
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@5983bbc5f697edc87d8d66fa723d340229d7649c # TESTING
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_title: "TESTING - New files for terraform/environments"
+          pr_body: "> TESTING - This PR was automatically created via a GitHub action workflow 🤖"
+        env:
+          SECRET: ${{ secrets.GITHUB_TOKEN }}
+
