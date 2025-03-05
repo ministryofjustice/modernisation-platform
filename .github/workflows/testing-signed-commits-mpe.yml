@@ -1,4 +1,4 @@
-name: Testing Signed Commits - New Files in MP
+name: Testing Signed Commits - New Files in MPEnvironments
 
 on:
   workflow_dispatch:
