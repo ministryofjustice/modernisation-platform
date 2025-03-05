@@ -40,6 +40,7 @@ on:
       - 'terraform/modules/vpc-nacls/**'
       - 'terraform/modules/ram-resource-share/**'
       - 'terraform/modules/core-vpc-tgw-routes/**'
+      - 'terraform/modules/r53-dns-firewall/**'
       - '.github/workflows/reusable-member-account-ram-association.yml'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
       - '!**.md'
