@@ -111,10 +111,40 @@ resource "aws_ssoadmin_permission_set_inline_policy" "modernisation_platform_dat
 
 data "aws_iam_policy_document" "modernisation_platform_data_mwaa_user" {
   statement {
-    actions = [
-      "airflow:CreateWebLoginToken"
+    sid     = "MWAAUIUserAccess"
+    effect  = "Allow"
+    actions = ["airflow:CreateWebLoginToken"]
+    resources = [
+      "arn:aws:airflow:eu-west-2:${local.environment_management.account_ids["analytical-platform-compute-development"]}:role/development/User",
+      "arn:aws:airflow:eu-west-2:${local.environment_management.account_ids["analytical-platform-compute-test"]}:role/test/User",
+      "arn:aws:airflow:eu-west-2:${local.environment_management.account_ids["analytical-platform-compute-production"]}:role/production/User",
     ]
-    resources = ["arn:aws:airflow:*:*:role/*/User"]
+  }
+  statement {
+    sid    = "SecretsManagerKMSAccess"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:GenerateDataKey"
+    ]
+    resources = formatlist("arn:aws:kms:%s:${local.environment_management.account_ids["analytical-platform-data-production"]}:key/mrk-15afdf54bde745d3b583a6818ee6c154", ["eu-west-1", "eu-west-2"])
+  }
+  statement {
+    sid       = "SecretsManagerAccess"
+    effect    = "Allow"
+    actions   = ["secretsmanager:ListSecrets"]
+    resources = ["*"]
+  }
+  statement {
+    sid    = "SecretsManagerSecretsAccess"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:PutSecretValue",
+      "secretsmanager:DescribeSecret"
+    ]
+    resources = formatlist("arn:aws:secretsmanager:%s:${local.environment_management.account_ids["analytical-platform-data-production"]}:secret:/airflow/*", ["eu-west-1", "eu-west-2"])
   }
 }
 
@@ -442,6 +472,43 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
   provider           = aws.sso-management
   instance_arn       = local.sso_admin_instance_arn
   permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_quicksight_admin.arn
+  customer_managed_policy_reference {
+    name = "common_policy"
+    path = "/"
+  }
+}
+
+# Modernisation Platform platform-engineer-admin role
+resource "aws_ssoadmin_permission_set" "modernisation_platform_platform_engineer_admin" {
+  provider         = aws.sso-management
+  name             = "platform-engineer-admin"
+  description      = "Modernisation Platform: platform-engineer-admin"
+  instance_arn     = local.sso_admin_instance_arn
+  session_duration = "PT8H"
+  tags             = {}
+}
+
+resource "aws_ssoadmin_managed_policy_attachment" "modernisation_platform_platform_engineer_admin" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  managed_policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_platform_engineer_admin.arn
+}
+
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_platform_engineer_admin" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_platform_engineer_admin.arn
+  customer_managed_policy_reference {
+    name = "platform_engineer_admin_policy"
+    path = "/"
+  }
+}
+
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_platform_engineer_admin_common" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_platform_engineer_admin.arn
   customer_managed_policy_reference {
     name = "common_policy"
     path = "/"

@@ -1,0 +1,42 @@
+
+name: Modernisation Platform out-of-hours support request
+description: Create new Modernisation Platform support ticket for out-of-hours
+title: "Service name: "
+labels: ["support"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Out-of-Hours Support Request 
+  - type: textarea
+    id: change-details
+    attributes:
+      label: Change Details
+      description: What should happen?
+      value: 
+    validations:
+      required: true
+  - type: textarea
+    id: time
+    attributes:
+      label: Scheduled Time
+      description: When is the change?
+      value: 
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact Assesment
+      description: When impact will this change have?
+      value: 
+    validations:
+      required: true
+  - type: textarea
+    id: rollback
+    attributes:
+      label: Rollback Plan
+      description: Whats the rollback plan?
+      value: 
+    validations:
+      required: true

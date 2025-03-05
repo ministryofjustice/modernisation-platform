@@ -235,8 +235,7 @@ expected :=
         "cidr": "10.26.48.0/21",
         "accounts": [
           "cdpt-chaps-development",
-          "cdpt-ifs-development",
-          "data-and-insights-wepi-development"
+          "cdpt-ifs-development"
         ]
       }
     },
@@ -252,7 +251,6 @@ expected :=
       "general": {
         "cidr": "10.27.40.0/21",
         "accounts": [
-          "data-and-insights-wepi-preproduction",
           "cdpt-chaps-preproduction",
           "cdpt-ifs-preproduction"
         ]
@@ -263,8 +261,7 @@ expected :=
         "cidr": "10.27.32.0/21",
         "accounts": [
           "cdpt-chaps-production",
-          "cdpt-ifs-production",
-          "data-and-insights-wepi-production"
+          "cdpt-ifs-production"
         ]
       }
     },
@@ -273,6 +270,7 @@ expected :=
         "cidr": "10.26.56.0/21",
         "accounts": [
           "apex-development",
+          "bacway-development",
           "ccms-ebs-development",
           "ccms-ebs-upgrade-development",
           "contract-work-administration-development",
@@ -317,6 +315,7 @@ expected :=
         "cidr": "10.27.72.0/21",
         "accounts": [
           "apex-preproduction",
+          "bacway-preproduction",
           "ccms-ebs-preproduction",
           "contract-work-administration-preproduction",
           "corporate-information-system-preproduction",
@@ -336,6 +335,7 @@ expected :=
         "cidr": "10.27.64.0/21",
         "accounts": [
           "apex-production",
+          "bacway-production",
           "contract-work-administration-production",
           "corporate-information-system-production",
           "edw-production",

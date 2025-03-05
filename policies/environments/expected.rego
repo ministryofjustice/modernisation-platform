@@ -14,6 +14,7 @@ expected :=
     "analytical-platform-landing",
     "analytical-platform-management",
     "apex",
+    "bacway",
     "bichard7",
     "ccms-ebs",
     "ccms-ebs-upgrade",
@@ -33,7 +34,6 @@ expected :=
     "corporate-information-system",
     "corporate-staff-rostering",
     "dacp",
-    "data-and-insights-wepi",
     "data-platform",
     "data-platform-apps-and-tools",
     "delius-alfresco",
@@ -84,6 +84,7 @@ expected :=
     "tribunals",
     "wardship",
     "xhibit-portal",
-    "youth-justice-app-framework"
+    "youth-justice-app-framework",
+    "youth-justice-networking"
     ]
 }

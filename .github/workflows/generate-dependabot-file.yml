@@ -1,4 +1,4 @@
-name: Generate dependabot file 
+name: Generate dependabot file
 
 on:
   schedule:
@@ -11,7 +11,9 @@ on:
       - 'scripts/generate-dependabot-file.sh'
   workflow_dispatch:
 
-permissions: {}
+permissions:
+  contents: write
+  pull-requests: write
 
 defaults:
   run:
@@ -24,15 +26,21 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Check out repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Generate file
         run: bash ./scripts/generate-dependabot-file.sh
-      - name: Commit changes to GitHub
+
+      - name: Set up Git user
         run: bash ./scripts/git-setup.sh
-      - run: bash ./scripts/git-commit.sh .github
-      - run: bash ./scripts/git-pull-request.sh dependabot
-        env:
-          SECRET: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit and Create PR with Signed Commit
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@41ce9117af6179f195ea00c3b7c06b3442d3e33c # v1.1.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_title: "Automated Update: Dependabot File"
+          pr_body: "This PR updates the Dependabot configuration file."
+
       - name: Slack failure notification
         uses: slackapi/slack-github-action@485a9d42d3a73031f12ec201c457e2162c45d02d # v2.0.0
         with:

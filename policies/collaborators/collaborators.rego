@@ -9,7 +9,8 @@ allowed_access := [
   "sandbox",
   "migration",
   "instance-management",
-  "fleet-manager"
+  "fleet-manager",
+  "platform-engineer-admin"
 ]
 
 deny contains msg if {

@@ -90,7 +90,6 @@ data "aws_iam_policy_document" "common_statements" {
   }
 }
 
-
 # bedrock console policy -- to be retired when terraform support is introduced
 # bedrock policy - member SSO and collaborators
 resource "aws_iam_policy" "bedrock_policy" {
@@ -167,7 +166,6 @@ resource "aws_iam_policy" "developer" {
   path     = "/"
   policy   = data.aws_iam_policy_document.developer_additional.json
 }
-
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "developer_additional" {
@@ -418,6 +416,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "glue:BatchDeleteTable",
       "glue:CreateDatabase",
       "glue:CreatePartition",
+      "glue:StartCrawler",
       "glue:CreateSession",
       "glue:CreateTable",
       "glue:DeleteDatabase",
@@ -536,6 +535,116 @@ data "aws_iam_policy_document" "quicksight_administrator_additional" {
       "organizations:DescribeOrganization",
     ]
 
+    resources = ["*"]
+  }
+}
+
+# policy for the platform engineer role
+resource "aws_iam_policy" "platform_engineer_admin" {
+  provider = aws.workspace
+  name     = "platform_engineer_admin_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.platform_engineer_additional_additional.json
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "platform_engineer_additional_additional" {
+  #checkov:skip=CKV_AWS_108
+  #checkov:skip=CKV_AWS_109
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_107
+  #checkov:skip=CKV_AWS_110
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+  #checkov:skip=CKV2_AWS_40
+  statement {
+    sid    = "PlatformEngineerAdmin"
+    effect = "Allow"
+    actions = [
+      "acm:*",
+      "acm-pca:*",
+      "airflow:*",
+      "apigateway:*",
+      "application-autoscaling:*",
+      "appstream:*",
+      "athena:*",
+      "autoscaling:*",
+      "aws-marketplace:ViewSubscriptions",
+      "backup:*",
+      "bedrock:*",
+      "ce:*",
+      "cloudformation:*",
+      "cloudfront:*",
+      "cloudtrail:*",
+      "cloudwatch:*",
+      "codebuild:*",
+      "codedeploy:*",
+      "codepipeline:*",
+      "cognito-identity:*",
+      "cognito-idp:*",
+      "cur:DescribeReportDefinitions",
+      "datasync:*",
+      "dbqms:*",
+      "discovery:*",
+      "dlm:*",
+      "dms:*",
+      "drs:*",
+      "ds:*",
+      "ds-data:*",
+      "dynamodb:*",
+      "ebs:*",
+      "ec2:*",
+      "ec2-instance-connect:*",
+      "ecr-public:*",
+      "ecr:*",
+      "ecs:*",
+      "eks:*",
+      "elasticache:*",
+      "elasticfilesystem:*",
+      "elasticloadbalancing:*",
+      "events:*",
+      "glacier:*",
+      "glue:*",
+      "iam:*",
+      "identitystore:*",
+      "kinesis:*",
+      "kinesisanalytics:*",
+      "kms:*",
+      "lakeformation:*",
+      "lambda:*",
+      "logs:*",
+      "mgh:*",
+      "mgn:*",
+      "migrationhub-strategy:*",
+      "oam:*",
+      "organizations:DescribeOrganization",
+      "quicksight:*",
+      "rds-data:*",
+      "rds-db:*",
+      "rds:*",
+      "redshift-data:*",
+      "redshift-serverless:*",
+      "redshift:*",
+      "rhelkb:GetRhelURL",
+      "route53:*",
+      "s3:*",
+      "sagemaker:*",
+      "scheduler:*",
+      "secretsmanager:*",
+      "servicequotas:*",
+      "ses:*",
+      "sns:*",
+      "sqs:*",
+      "sqlworkbench:*",
+      "ssm:*",
+      "ssm-guiconnect:*",
+      "sso:*",
+      "states:*",
+      "sts:*",
+      "support:*",
+      "textract:*",
+      "wafv2:*",
+      "wellarchitected:*"
+    ]
     resources = ["*"]
   }
 }
@@ -924,7 +1033,6 @@ resource "aws_iam_policy" "instance-management" {
   path     = "/"
   policy   = data.aws_iam_policy_document.instance-management-document.json
 }
-
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "instance-management-document" {
@@ -1368,7 +1476,6 @@ resource "aws_iam_policy" "fleet-manager-policy" {
   path     = "/"
   policy   = data.aws_iam_policy_document.fleet-manager-document.json
 }
-
 
 data "aws_iam_policy_document" "fleet-manager-document" {
   #checkov:skip=CKV_AWS_111 Needs to access multiple resources and the policy is attached to a role that is scoped to a specific account

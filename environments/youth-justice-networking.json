@@ -1,0 +1,30 @@
+{
+  "account-type": "member",
+  "isolated-network": "true",
+  "environments": [
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform-engineers",
+          "level": "migration"
+        }
+      ],
+      "additional_reviewers": [
+        "gregi2n",
+        "davidseekins",
+        "ttipler",
+        "jasongreen-necsws"
+      ]
+    }
+  ],
+  "tags": {
+    "application": "youth-justice-networking",
+    "business-unit": "YJB",
+    "infrastructure-support": "YJAFoperationsAWS@necsws.com",
+    "owner": "YJAFoperationsAWS@necsws.com",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}
