@@ -8,7 +8,7 @@ This module creates the following resources per VPC:
 - a custom list of allowed and blocked domains which can be defined via the `allowed_domains` and `blocked_domains` inputs
 - R53 Resolver Firewall Rules in the following priority:
   **1** - An allow rule for the `allowed_domains` list
-  **2-5** - a set of rules that ALERT on any domains that match the [AWS-managed threat lists](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-dns-firewall-managed-domain-lists.html)
+  **2-5** - a set of rules that BLOCK any domains that match the [AWS-managed threat lists](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-dns-firewall-managed-domain-lists.html)
   **6** - A Block rule for the `blocked_domains` list
 
 # Example usage
