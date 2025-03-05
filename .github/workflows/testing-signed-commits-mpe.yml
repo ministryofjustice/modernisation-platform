@@ -39,7 +39,7 @@ jobs:
         run: bash ./core-repo/scripts/git-setup.sh ./modernisation-platform-environments
 
       - name: Commit and Create PR with Signed Commit if Changes are Found
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@1f0f045010dae6a7a77f3e174d46747b377f374c # TESTING
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@ec146987626bda4278f5bbaa3fc4769110c1a97d # TESTING
         with:
           git_path: "."
           github_token: ${{ secrets.GITHUB_TOKEN }}
