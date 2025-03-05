@@ -316,9 +316,12 @@ data "aws_iam_policy_document" "member-access" {
     resources = ["arn:aws:iam::*:user/cicd-member-user"]
   }
   statement {
-    actions   = ["iam:PassRole"]
-    effect    = "Deny"
-    resources = ["arn:aws:iam::*:role/MemberInfrastructureAccess"]
+    actions = ["iam:PassRole"]
+    effect  = "Deny"
+    resources = [
+      "arn:aws:iam::*:role/MemberInfrastructureAccess",
+      "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/GuardDutyS3MalwareProtectionRole"
+    ]
     condition {
       test     = "StringNotEquals"
       variable = "iam:PassedToService"
