@@ -36,7 +36,7 @@ jobs:
         shell: bash
 
       - name: Git Setup
-        run: bash ./scripts/git-setup.sh
+        run: bash ./core-repo/scripts/git-setup.sh ./modernisation-platform-environments
 
       - name: Commit and Create PR with Signed Commit if Changes are Found
         uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@0aa453d7e35134618cacebb5d0ea7fc312459fa5 # TESTING
