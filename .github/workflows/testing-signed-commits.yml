@@ -1,12 +1,6 @@
 name: New environment files
 
 on:
-  push:
-    paths:
-      - 'environments/**.json'
-      - 'environments-networks/**.json'
-    branches:
-      - main
   workflow_dispatch:
 
 permissions: {}
