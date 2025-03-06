@@ -48,7 +48,7 @@ jobs:
           terraform_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
           remote_repository_path: "./modernisation-platform-environments"
           remote_repository: "ministryofjustice/modernisation-platform-environments"
-          pr_title: "TESTING - New files for terraform/environments"
+          pr_title: "TESTING - New files for terraform/environments/spinkler"
           pr_body: "> TESTING - This PR was automatically created via a GitHub action workflow 🤖"
         env:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
