@@ -33,20 +33,21 @@ jobs:
             cd ./modernisation-platform-environments/terraform/environments/sprinkler
             pwd
             ls -ltra
-            # Amend line 35 by adding a tab before the hash
-            sed -i '35s/^/#/' platform_locals.tf
+            # Add some text
+            echo '  # new_line_of_text' >> locals.tf
         shell: bash
 
       - name: Git Setup
         run: bash ./core-repo/scripts/git-setup.sh ./modernisation-platform-environments
 
       - name: Commit and Create PR with Signed Commit if Changes are Found
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@f519af1249d4d8b8704c3ca95fc0fee00cc5d5c5 # TESTING
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@5d0cad6d5eb8da687fa610723f52f8ce81a12d90 # TESTING
         with:
           git_path: "terraform/environments"
           github_token: ${{ secrets.GITHUB_TOKEN }}
           terraform_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
-          remote_repository: "./modernisation-platform-environments"
+          remote_repository_path: "./modernisation-platform-environments"
+          remote_repository: "ministryofjustice/modernisation-platform-environments"
           pr_title: "TESTING - New files for terraform/environments"
           pr_body: "> TESTING - This PR was automatically created via a GitHub action workflow 🤖"
         env:
