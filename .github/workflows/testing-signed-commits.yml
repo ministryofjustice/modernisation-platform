@@ -2,9 +2,9 @@ name: Testing Signed Commits - New Files in MP
 
 on:
   workflow_dispatch:
-  #push:
-  #  branches:
-  #    - testing-signed-commits
+  push:
+    branches:
+      - testing-signed-commits
 
 permissions: {}
 
