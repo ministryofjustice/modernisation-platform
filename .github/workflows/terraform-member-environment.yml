@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Set account number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(jq -r -e '.youth-justice-app-framework-development' <<< $ENVIRONMENT_MANAGEMENT)
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
       - name: Configure AWS credentials
