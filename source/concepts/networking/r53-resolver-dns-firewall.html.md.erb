@@ -1,0 +1,48 @@
+---
+owner_slack: "#modernisation-platform"
+title: AWS Route 53 Resolver DNS Firewall
+last_reviewed_on: 2025-03-06
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+We make use of AWS Route 53 Resolver DNS Firewall to control access to sites and block DNS-level threats for DNS queries going out from all Modernisation Platform VPCs. 
+
+We also benefit from using AWS's curated lists of domain names that are associated with malicious activity or other potential threats which are constantly updated from their own sources and partners such as [Recorded Future](https://www.recordedfuture.com/).
+
+### What is AWS R53 Resolver DNS Firewall?
+
+To learn more about how AWS R53 Resolver DNS firewall works see the following documentation:
+
+- [How Route 53 Resolver DNS Firewall works](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-dns-firewall-overview.html)
+- [Managed Domain Lists](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-dns-firewall-managed-domain-lists.html)
+
+### What's enabled by default?
+
+We have created a [r53-dns-firewall](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/r53-dns-firewall) terraform module to enable the service across all Mod Platform VPCs.
+
+This creates a standard set of rules per VPC which are applied in the following priority order:
+
+1. an `ALLOW` rule for a custom list of allowed domains (empty by default)
+2. a set of rules that `BLOCK` any domains that match the [AWS-managed threat domain lists](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-dns-firewall-managed-domain-lists.html)
+3. a `BLOCK` rule for a custom list of blocked domains (empty by default)
+
+If any queried domains match the `BLOCK` rules then they will not resolve. Instead they will return with an `NXDOMAIN` error message, indicating that the domain doesn’t exist.       
+
+This module also sets up some central alerting to make the Modernisation Platform aware of any blocked requests. If we are alerted to any spikes in activity then we will contact platform members directly. 
+
+### Custom domain lists
+
+In addition to the default protections enabled it is possible to add a set of custom domains to the allow or block lists that have been described above. The [README](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/r53-dns-firewall#example-usage) for the module gives an example of how this could be configured. 
+
+Please note that this is configured at VPC level and as they are shared per business area, any custom domains/rules updated would apply to all workloads within the VPC.
