@@ -41,7 +41,7 @@ jobs:
         run: bash ./core-repo/scripts/git-setup.sh ./modernisation-platform-environments
 
       - name: Commit and Create PR with Signed Commit if Changes are Found
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@38c7bcec2d1251ed13c35f509a8a117ba18ef08b # TESTING
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@53d14cdedca951ec0c03dc3a7dfd39d9e0c2faa5 # TESTING
         with:
           git_path: "terraform/environments/sprinkler"
           github_token: ${{ secrets.GITHUB_TOKEN }}
