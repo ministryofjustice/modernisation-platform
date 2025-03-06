@@ -43,12 +43,12 @@ jobs:
       - name: Commit and Create PR with Signed Commit if Changes are Found
         uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@05f3b65b0408b055d39d481b54cc98a528c325a7 # TESTING
         with:
-          git_path: "terraform/environments"
+          git_path: "terraform/environments/sprinkler"
           github_token: ${{ secrets.GITHUB_TOKEN }}
           terraform_github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
           remote_repository_path: "./modernisation-platform-environments"
           remote_repository: "ministryofjustice/modernisation-platform-environments"
-          pr_title: "TESTING - New files for terraform/environments/spinkler"
+          pr_title: "TESTING - New files for terraform/environments"
           pr_body: "> TESTING - This PR was automatically created via a GitHub action workflow 🤖"
         env:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
