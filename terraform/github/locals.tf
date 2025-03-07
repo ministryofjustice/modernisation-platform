@@ -76,10 +76,10 @@ locals {
   everyone = concat(local.all_maintainers, local.all_members)
 
   # Collaborators
-  collaborators = [
-    for key in jsondecode(data.http.collaborators_file.response_body).users : key.github-username
+  collaborators = {
+    for key in jsondecode(data.http.collaborators_file.response_body).users : key.username => key.github-username
     if key.github-username != "no-value-supplied"
-  ]
+  }
 
   environments_json = [
     for file in fileset("../../environments/", "*.json") : merge({
