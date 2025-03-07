@@ -2,13 +2,16 @@ name: Testing Signed Commits - New Files in MPEnvironments
 
 on:
   workflow_dispatch:
-
+  push:
+    branches:
+      - testing-signed-commits
 
 permissions: {}
 
 defaults:
   run:
     shell: bash
+
 
 jobs:
   create-and-commit-files:
@@ -39,7 +42,7 @@ jobs:
         run: bash ./core-repo/scripts/git-setup.sh ./modernisation-platform-environments
 
       - name: Commit and Create PR with Signed Commit if Changes are Found
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@30b20cfe1d4c6f966ba991d0c0df1a5fe20a14ab # TESTING
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@f0c5180ebac07518cd6f6c3cef906ddccf192f77 # TESTING
         with:
           git_path: "terraform/environments/sprinkler"
           github_token: ${{ secrets.GITHUB_TOKEN }}
