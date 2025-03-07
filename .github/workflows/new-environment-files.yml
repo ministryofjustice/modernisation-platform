@@ -28,7 +28,7 @@ jobs:
       - name: Commit changes to GitHub
         run: bash ./scripts/git-setup.sh
       - name: Commit and Create PR with Signed Commit
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@d1aa59f92c438bd85a21c1209c65b563d3dcb4be # v1.1.1
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@f5d2ee4678dae4338fc5d9d7cb84b365863b216f # v1.1.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           git_path: terraform/environments
