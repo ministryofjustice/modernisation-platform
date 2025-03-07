@@ -32,7 +32,7 @@ jobs:
         run: bash ./scripts/git-setup.sh
 
       - name: Commit and Create PR with Signed Commit if Changes are Found
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@f0c5180ebac07518cd6f6c3cef906ddccf192f77 # TESTING
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@f5d2ee4678dae4338fc5d9d7cb84b365863b216f # TESTING
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "TESTING - New files for terraform/environments"
