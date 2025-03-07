@@ -4,6 +4,7 @@ provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
   }
+  default_tags { tags = local.tags }
 }
 provider "aws" {
   region = "eu-west-1"
@@ -11,12 +12,14 @@ provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
   }
+  default_tags { tags = local.tags }
 }
 
 # AWS provider for the Modernisation Platform, to get things from there if required
 provider "aws" {
   alias  = "modernisation-platform"
   region = "eu-west-2"
+  default_tags { tags = local.tags }
 }
 
 provider "aws" {
@@ -25,4 +28,5 @@ provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
   }
+  default_tags { tags = local.tags }
 }
