@@ -2,7 +2,7 @@
   "users": [
     {
       "username": "test-user-1",
-      "github-username": "test-git-1",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "sprinkler-development",

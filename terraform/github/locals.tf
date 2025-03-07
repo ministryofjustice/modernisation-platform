@@ -4,6 +4,10 @@ data "http" "environments_file" {
   url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/${local.testing_application_name}.json"
 }
 
+data "http" "collaborators_file" {
+  url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/collaborators.json"
+}
+
 # Fetch all teams in the organization
 data "github_organization_teams" "all_teams" {
   summary_only = true
@@ -70,6 +74,12 @@ locals {
 
   # Everyone
   everyone = concat(local.all_maintainers, local.all_members)
+
+  # Collaborators
+  collaborators = [
+    for key in jsondecode(data.http.collaborators_file.response_body).users : key.github-username
+    if key.github-username != "no-value-supplied"
+  ]
 
   environments_json = [
     for file in fileset("../../environments/", "*.json") : merge({
