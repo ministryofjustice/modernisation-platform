@@ -115,7 +115,7 @@ locals {
       teams = merge(
         { "modernisation-platform" = "admin" },
         { "all-org-members" = "write" },
-        repo == "modernisation-platform-environments" ? { for team in local.application_github_group_names : team => "write"} : null ),
+      repo == "modernisation-platform-environments" ? { for team in local.application_github_group_names : team => "write" } : null),
       users = repo == "modernisation-platform-environments" ? { for user in local.collaborators : user => "push" } : {}
     }
   }
