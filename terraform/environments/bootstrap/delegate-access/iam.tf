@@ -10,6 +10,7 @@ module "cross-account-access" {
     [
       "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions"
     ],
-    terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : []
+    terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : [],
+    length(regexall("(development|test)$", terraform.workspace)) > 0 ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/github-actions-dev-test"] : []
   )
 }
