@@ -263,6 +263,39 @@ data "aws_iam_policy_document" "oidc_assume_role_core" {
     resources = [module.instance_scheduler.lambda_function_arn]
     actions   = ["sts:AssumeRole"]
   }
+  # GH action: to manage guardduty 
+  statement {
+    sid    = "GuardDutyMalwareProtectionActions"
+    effect = "Allow"
+    actions = [
+      "guardduty:CreateMalwareProtectionPlan",
+      "guardduty:DeleteMalwareProtectionPlan",
+      "guardduty:ListDetectors",
+      "guardduty:ListTagsForResource",
+      "guardduty:TagResource",
+      "guardduty:UpdateMalwareProtectionPlan"
+    ]
+    resources = [
+      "arn:aws:guardduty:eu-west-2:*:malware-protection-plan/*"
+    ]
+    condition {
+      test     = "ForAllValues:StringEquals"
+      variable = "aws:CalledVia"
+      values   = ["guardduty.amazonaws.com"]
+    }
+  }
+  statement {
+    actions   = ["iam:PassRole"]
+    effect    = "Allow"
+    resources = ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/GuardDutyS3MalwareProtectionRole"]
+    condition {
+      test     = "StringEquals"
+      variable = "iam:PassedToService"
+      values = [
+        "malware-protection-plan.guardduty.amazonaws.com"
+      ]
+    }
+  }
 }
 
 ##### Cross Account Roles Admin #####
