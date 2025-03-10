@@ -105,9 +105,37 @@ locals {
     ]))
   )
 
-  # Create a list of repositories that we want our customers to be able to contribute to
+  # Define a list of repositories that we want to apply permissions to
   modernisation_platform_repositories = [
-    for s in data.github_repositories.modernisation-platform-repositories.names : s if startswith(s, "modernisation-platform-")
+    "modernisation-platform",
+    "modernisation-platform-ami-builds",
+    "modernisation-platform-configuration-management",
+    "modernisation-platform-cp-network-test",
+    "modernisation-platform-environments",
+    "modernisation-platform-github-actions",
+    "modernisation-platform-github-oidc-provider",
+    "modernisation-platform-github-oidc-role",
+    "modernisation-platform-instance-scheduler",
+    "modernisation-platform-security",
+    "modernisation-platform-terraform-aws-chatbot",
+    "modernisation-platform-terraform-aws-data-firehose",
+    "modernisation-platform-terraform-aws-vm-import",
+    "modernisation-platform-terraform-baselines",
+    "modernisation-platform-terraform-bastion-linux",
+    "modernisation-platform-terraform-cross-account-access",
+    "modernisation-platform-terraform-dns-certificates",
+    "modernisation-platform-terraform-ec2-instance",
+    "modernisation-platform-terraform-ec2-autoscaling-group",
+    "modernisation-platform-terraform-ecs-cluster",
+    "modernisation-platform-terraform-environments",
+    "modernisation-platform-terraform-iam-superadmins",
+    "modernisation-platform-terraform-lambda-function",
+    "modernisation-platform-terraform-loadbalancer",
+    "modernisation-platform-terraform-member-vpc",
+    "modernisation-platform-terraform-module-template",
+    "modernisation-platform-terraform-pagerduty-integration",
+    "modernisation-platform-terraform-s3-bucket",
+    "modernisation-platform-terraform-ssm-patching",
   ]
 
   map_permissions_to_repositories = {
