@@ -78,27 +78,3 @@ module "contributor-access" {
   application_teams = local.application_github_group_names # Run only on valid Github teams
   repository_id     = each.key
 }
-
-# Manage all repository memberships
-resource "github_repository_collaborators" "main" {
-  for_each = toset([for s in local.modernisation_platform_repositories : s if s !="modernisation-platform-environments"])
-  repository = each.key
-}
-
-resource "github_repository_collaborators" "modernisation-platform-environments" {
-  repository = "modernisation-platform-environments"
-  dynamic "team" {
-    for_each = local.application_github_group_names
-    content {
-      team_id    = team.key
-      permission = "push"
-    }
-  }
-  dynamic "user" {
-    for_each = local.collaborators
-    content {
-      username   = user.value
-      permission = "push"
-    }
-  }
-}

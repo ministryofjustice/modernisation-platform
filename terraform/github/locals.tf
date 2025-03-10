@@ -110,6 +110,16 @@ locals {
     for s in data.github_repositories.modernisation-platform-repositories.names : s if startswith(s, "modernisation-platform-")
   ]
 
+  map_permissions_to_repositories = {
+    for repo in local.modernisation_platform_repositories : repo => {
+      teams = merge(
+        { "modernisation-platform" = "admin" },
+        { "all-org-members" = "write" },
+        repo == "modernisation-platform-environments" ? { for team in local.application_github_group_names : team => "write"} : null ),
+      users = repo == "modernisation-platform-environments" ? { for user in local.collaborators : user => "push" } : {}
+    }
+  }
+
   testing_tags = merge(
     jsondecode(data.http.environments_file.response_body).tags,
   { "source-code" = "https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/github" })
