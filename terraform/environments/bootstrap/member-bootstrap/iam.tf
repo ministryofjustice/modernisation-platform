@@ -863,3 +863,75 @@ resource "aws_iam_account_alias" "alias" {
   count         = (local.account_data.account-type != "member-unrestricted") && !(contains(local.skip_alias, terraform.workspace)) ? 1 : 0
   account_alias = terraform.workspace
 }
+
+# Github OIDC provider for development and test environments
+
+module "github_actions_dev_test_role" {
+  count               = can(regex("development$|test$", terraform.workspace)) ? 1 : 0
+  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=62b8a16c73d8e4422cd81923e46948e8f4b5cf48" # v3.2.0
+  github_repositories = ["ministryofjustice/modernisation-platform"]
+  role_name           = "github-actions-dev-test"
+  policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
+  policy_jsons        = [data.aws_iam_policy_document.oidc_assume_role_dev_test[0].json]
+  tags                = { "Name" = format("%s-oidc-dev-test", terraform.workspace) }
+}
+
+data "aws_iam_policy_document" "oidc_assume_role_dev_test" {
+  count = can(regex("development$|test$", terraform.workspace)) ? 1 : 0
+  statement {
+    sid    = "AllowOIDCToAssumeRoles"
+    effect = "Allow"
+    resources = [
+      format("arn:aws:iam::%s:role/ModernisationPlatformAccess", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)]),
+      format("arn:aws:iam::%s:role/ModernisationPlatformAccess", local.environment_management.account_ids["core-network-services-production"]),
+      format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id)
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.root_account.id]
+    }
+    actions = ["sts:AssumeRole"]
+  }
+
+  # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
+  statement {
+    sid       = "AllowOIDCToDecryptKMS"
+    effect    = "Allow"
+    resources = ["*"]
+    actions   = ["kms:Decrypt"]
+  }
+
+  statement {
+    sid    = "AllowOIDCReadState"
+    effect = "Allow"
+    resources = [
+      "arn:aws:s3:::modernisation-platform-terraform-state/*",
+      "arn:aws:s3:::modernisation-platform-terraform-state/"
+    ]
+    actions = [
+      "s3:Get*",
+      "s3:List*"
+    ]
+  }
+
+  statement {
+    sid       = "AllowOIDCWriteState"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/*"]
+    actions = [
+      "s3:PutObject",
+      "s3:PutObjectAcl"
+    ]
+  }
+
+  statement {
+    sid       = "AllowOIDCDeleteLock"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/accounts/*.tflock"]
+    actions = [
+      "s3:DeleteObject"
+    ]
+  }
+}
