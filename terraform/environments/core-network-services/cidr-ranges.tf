@@ -97,6 +97,7 @@ locals {
     cica-onprem-uat       = "192.168.4.0/24"
     cica-onprem-prod      = "10.2.30.0/24"
     cica-end-user-devices = "10.9.14.0/23"
+    cica-ras-nat          = "10.7.14.224/28"
 
 
 

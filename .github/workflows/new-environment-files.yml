@@ -27,8 +27,13 @@ jobs:
         run: bash ./scripts/provision-environment-directories.sh
       - name: Commit changes to GitHub
         run: bash ./scripts/git-setup.sh
-      - run: bash ./scripts/git-commit.sh terraform/environments
-      - run: bash ./scripts/git-pull-request.sh terraform/environments
+      - name: Commit and Create PR with Signed Commit
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@f5d2ee4678dae4338fc5d9d7cb84b365863b216f # v1.1.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          git_path: terraform/environments
+          pr_title: "New files for terraform/environments"
+          pr_body: "> This PR was automatically created via a GitHub action workflow 🤖"
         env:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
       - name: Slack failure notification

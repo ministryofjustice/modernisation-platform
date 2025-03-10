@@ -573,45 +573,31 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "cica_devices_to_cica_tariff_dev_oracle": {
+  "cica_devices_to_cica_tariff_dev": {
     "action": "PASS",
     "source_ip": "${cica-end-user-devices}",
     "destination_ip": "${cica-development}",
-    "destination_port": "1521",
+    "destination_port": "$TARIFF_TCP",
     "protocol": "TCP"
   },
-  "cica_devices_to_cica_tariff_dev_forms": {
+  "cica_ras_to_cica_tariff_dev": {
     "action": "PASS",
-    "source_ip": "${cica-end-user-devices}",
+    "source_ip": "${cica-ras-nat}",
     "destination_ip": "${cica-development}",
-    "destination_port": "8001",
-    "protocol": "TCP"
-  },
-  "cica_devices_to_cica_tariff_dev_reports": {
-    "action": "PASS",
-    "source_ip": "${cica-end-user-devices}",
-    "destination_ip": "${cica-development}",
-    "destination_port": "8002",
-    "protocol": "TCP"
-  },
-  "cica_devices_to_cica_tariff_dev_weblogic": {
-    "action": "PASS",
-    "source_ip": "${cica-end-user-devices}",
-    "destination_ip": "${cica-development}",
-    "destination_port": "7001",
-    "protocol": "TCP"
-  },
-  "cica_devices_to_cica_tariff_dev_weblogic2": {
-    "action": "PASS",
-    "source_ip": "${cica-end-user-devices}",
-    "destination_ip": "${cica-development}",
-    "destination_port": "7002",
+    "destination_port": "$TARIFF_TCP",
     "protocol": "TCP"
   },
   "cica_tariff_dev_to_cica_devices": {
     "action": "PASS",
     "source_ip": "${cica-development}",
     "destination_ip": "${cica-end-user-devices}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "cica_tariff_dev_to_cica_ras_nat": {
+    "action": "PASS",
+    "source_ip": "${cica-development}",
+    "destination_ip": "${cica-ras-nat}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
