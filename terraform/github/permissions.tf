@@ -2,8 +2,10 @@
 # to avoid any issues with circular dependencies
 resource "github_repository_collaborators" "this" {
   for_each    = local.map_permissions_to_repositories
-  ignore_team = ["organisation-security-auditor"]
   repository  = each.key
+  ignore_team {
+    team_id = "4380209" #organisation-security-auditor
+  }
   dynamic "team" {
     for_each = each.value.teams
     content {
