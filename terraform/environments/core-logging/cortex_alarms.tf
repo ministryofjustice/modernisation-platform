@@ -136,5 +136,6 @@ module "mp-sqs-sns-chatbot" {
   source           = "github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot?ref=73280f80ce8a4557cec3a76ee56eb913452ca9aa" // v2.0.0
   slack_channel_id = each.value.channel_id
   sns_topic_arns   = [aws_sns_topic.cortex_sqs_sns_topic[each.key].arn]
+  tags             = local.tags
   application_name = "${each.value.name}-sqs-alarm-chatbot"
 }
