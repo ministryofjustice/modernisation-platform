@@ -92,7 +92,7 @@ resource "pagerduty_slack_connection" "security_hub_members" {
   source_id         = pagerduty_service.security_hub_members.id
   source_type       = "service_reference"
   workspace_id      = local.slack_workspace_id
-  channel_id        = "C07SNBJBVC6" # Slack channel: #modernisation-platform-members-security-hub-alerts
+  channel_id        = "C08GRKZ1W4F" # Slack channel: #modernisation-platform-members-security-hub-alerts
   notification_type = "responder"
   config {
     events = [
