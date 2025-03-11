@@ -28,7 +28,7 @@ module "s3-bucket-athena" {
       }
     }
   ]
-
+  tags = local.tags
 }
 
 
