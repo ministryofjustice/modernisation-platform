@@ -50,6 +50,7 @@ jobs:
           fi
 
   github-plan-and-apply:
+    needs: [ github-status-check ]
     uses: ./.github/workflows/reusable_terraform_plan_apply.yml
     with:
       working-directory: "terraform/github"
