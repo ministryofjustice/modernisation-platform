@@ -319,16 +319,6 @@
       ]
     },
     {
-      "username": "yordi.tak",
-      "github-username": "yorditak",
-      "accounts": [
-        {
-          "account-name": "nomis-test",
-          "access": "instance-management"
-        }
-      ]
-    },
-    {
       "username": "chris.keep",
       "github-username": "iamchriskeep",
       "accounts": [
@@ -460,6 +450,14 @@
         },
         {
           "account-name": "youth-justice-app-framework-test",
+          "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
           "access": "developer"
         },
         {
