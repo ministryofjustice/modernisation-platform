@@ -70,11 +70,3 @@ module "long-term-storage" {
   maintainers = local.maintainers
   members     = local.long-term-storage
 }
-
-# Allow github users to contribute to our repos
-module "contributor-access" {
-  for_each          = toset(local.modernisation_platform_repositories)
-  source            = "./modules/contributor"
-  application_teams = local.application_github_group_names # Run only on valid Github teams
-  repository_id     = each.key
-}
