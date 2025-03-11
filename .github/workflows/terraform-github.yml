@@ -36,6 +36,19 @@ permissions:
   pull-requests: write
   
 jobs:
+  github-status-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check GitHub status
+        run: |
+          response=$(curl -s https://www.githubstatus.com/api/v2/summary.json)
+          status_indicator=$(echo "$response" | jq -r '.status.indicator')
+            
+          if [ "$status_indicator" != "none" ]; then
+            echo "GitHub Status check failed"
+            exit 1
+          fi
+
   github-plan-and-apply:
     uses: ./.github/workflows/reusable_terraform_plan_apply.yml
     with:
