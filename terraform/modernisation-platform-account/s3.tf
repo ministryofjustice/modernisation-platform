@@ -513,8 +513,8 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
   }
 
   statement {
-    sid       = "AllowDevTestGithubActionsRole"
-    effect    = "Allow"
+    sid    = "AllowDevTestGithubActionsRole"
+    effect = "Allow"
     actions = [
       "s3:GetObject",
       "s3:PutObject",
