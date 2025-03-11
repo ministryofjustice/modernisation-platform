@@ -113,7 +113,7 @@ module "s3_moj_cur_reports_modplatform" {
       }
     }
   ]
-
+  tags = local.tags
 }
 
 # MOJ CUR Bucket Replication Policy
