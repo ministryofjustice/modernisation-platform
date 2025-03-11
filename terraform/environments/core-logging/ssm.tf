@@ -8,7 +8,7 @@ resource "aws_ssm_parameter" "cortex_account_id" {
   name           = "cortex_account_id"
   type           = "String"
   insecure_value = "Placeholder"
-  tags           = local.tags
+
 }
 
 resource "aws_ssm_parameter" "cortex_endpoint_address" {
@@ -21,7 +21,7 @@ resource "aws_ssm_parameter" "cortex_endpoint_address" {
   name           = "cortex_xsiam_endpoint"
   type           = "String"
   insecure_value = "Placeholder"
-  tags           = local.tags
+
 }
 
 resource "aws_ssm_parameter" "core_logging_bucket_arns" {
@@ -35,5 +35,5 @@ resource "aws_ssm_parameter" "core_logging_bucket_arns" {
     for key in local.cortex_logging_buckets :
     key => aws_s3_bucket.logging[key].arn
   })
-  tags = local.tags
+
 }

@@ -8,19 +8,19 @@ locals {
 resource "aws_route53_resolver_query_log_config" "s3" {
   name            = format("%s-rlq-s3", local.application_name)
   destination_arn = aws_s3_bucket.logging["r53-resolver-logs"].arn
-  tags            = {}
+
 }
 
 resource "aws_route53_resolver_query_log_config" "cloudwatch" {
   name            = format("%s-rlq-cloudwatch", local.application_name)
   destination_arn = aws_cloudwatch_log_group.r53_resolver_logs.arn
-  tags            = {}
+
 }
 
 resource "aws_ram_resource_share" "resolver_query_share" {
   allow_external_principals = false
   name                      = format("%s-resolver-log-query-share", local.application_name)
-  tags                      = {}
+
 }
 
 resource "aws_ram_resource_association" "resolver_query_share" {
@@ -38,7 +38,7 @@ resource "aws_cloudwatch_log_group" "r53_resolver_logs" {
   kms_key_id        = aws_kms_key.r53_resolver_logs.arn
   name_prefix       = "r53-resolver-logs"
   retention_in_days = 365
-  tags              = {}
+
 }
 
 resource "aws_kms_key" "r53_resolver_logs" {
@@ -46,7 +46,7 @@ resource "aws_kms_key" "r53_resolver_logs" {
   enable_key_rotation = true
   multi_region        = true
   policy              = data.aws_iam_policy_document.r53_resolver_logs_kms.json
-  tags                = {}
+
 }
 
 data "aws_iam_policy_document" "r53_resolver_logs_kms" {
@@ -113,20 +113,20 @@ resource "aws_cloudwatch_metric_alarm" "r53_dns_firewall_alarm" {
   statistic           = "Sum"
   threshold           = "1"
   alarm_actions       = [aws_sns_topic.r53_dns_firewall.arn]
-  tags                = {}
+
 }
 
 resource "aws_sns_topic" "r53_dns_firewall" {
   name              = "r53-dns-firewall-sns-topic"
   kms_master_key_id = aws_kms_key.r53_dns_firewall.key_id
-  tags              = {}
+
 }
 
 resource "aws_kms_key" "r53_dns_firewall" {
   description         = "KMS key for DNS Firewall SNS Topic Encryption"
   enable_key_rotation = true
   policy              = data.aws_iam_policy_document.r53_dns_firewall_kms_policy.json
-  tags                = {}
+
 }
 
 resource "aws_kms_alias" "r53_dns_firewall" {

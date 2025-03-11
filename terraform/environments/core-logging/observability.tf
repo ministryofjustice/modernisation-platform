@@ -7,7 +7,7 @@ module "observability_platform_tenant" {
     additional_athena_policy = aws_iam_policy.additional_athena_policy.arn
   }
 
-  tags = local.tags
+
 }
 
 # Grafana-Athena Role
@@ -113,7 +113,7 @@ module "s3_moj_cur_reports_modplatform" {
       }
     }
   ]
-  tags = local.tags
+
 }
 
 # MOJ CUR Bucket Replication Policy
