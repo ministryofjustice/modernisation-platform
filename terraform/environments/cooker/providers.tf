@@ -44,3 +44,12 @@ provider "aws" {
   }
   default_tags { tags = local.tags }
 }
+
+# AWS provider (modernisation-secrets-read): Required for assuming a role into modernisation platform account to read secrets
+provider "aws" {
+  alias  = "modernisation-secrets-read"
+  region = "eu-west-2"
+  assume_role {
+    role_arn = "arn:aws:iam::${data.aws_ssm_parameter.modernisation_platform_account_id.value}:role/modernisation-account-limited-read-member-access"
+  }
+}

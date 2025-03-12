@@ -1,5 +1,6 @@
 # Get modernisation account id from ssm parameter
 data "aws_ssm_parameter" "modernisation_platform_account_id" {
+  provider = aws.modernisation-platform
   name = "modernisation_platform_account_id"
 }
 
@@ -7,13 +8,13 @@ data "aws_ssm_parameter" "modernisation_platform_account_id" {
 data "aws_secretsmanager_secret" "environment_management" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   # checkov:skip=CKV_AWS_149:No requirement currently to encrypt this secret with customer-managed KMS key
-  provider = aws.modernisation-platform
+  provider = aws.modernisation-secrets-read
   name     = "environment_management"
 }
 
 # Get latest secret value with ID from above. This secret stores account IDs for the Modernisation Platform sub-accounts
 data "aws_secretsmanager_secret_version" "environment_management" {
-  provider  = aws.modernisation-platform
+  provider  = aws.modernisation-secrets-read
   secret_id = data.aws_secretsmanager_secret.environment_management.id
 }
 
