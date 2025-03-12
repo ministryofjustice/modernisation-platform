@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Adding collaborators to Modernisation Platform accounts
-last_reviewed_on: 2024-09-27
+last_reviewed_on: 2025-03-12
 review_in: 6 month
 ---
 
@@ -35,14 +35,11 @@ You can request that a collaborator be added through the [New Collaborator](http
 
 ## Access to our GitHub repositories
 
-In order to create infrastructure, collaborators will need to have `push` permissions to the following repositories:
+In order to create infrastructure, collaborators will need to have `push` permissions to the [modernisation-platform-environments](https://github.com/ministryofjustice/modernisation-platform-environments)
+repository. This will be applied through our [GitHub](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/github) terraform code when a collaborator has a valid `github_username`.
 
-- [modernisation-platform-environments](https://github.com/ministryofjustice/modernisation-platform-environments) (only needed if writing infrastructure code)
-- [modernisation-platform-ami-builds](https://github.com/ministryofjustice/modernisation-platform-ami-builds) (only needed if building AMIs)
-
-Please follow the instructions in the MoJ [github-collaborators](https://github.com/ministryofjustice/github-collaborators) repository on how to add them.
-
-Under "reason" please put the name of the Modernisation Platform application that they require access to.
+> If no access to GitHub is required, setting their `github_username` to `no-value-supplied` will ensure they are not
+> granted `push` access to the modernisation-platform-environments repository .
 
 ## Access to the relevant AWS accounts
 
@@ -87,7 +84,7 @@ Once their IAM user has been created, log into the AWS console yourself and:
     },
     {
       "username": "test-collaborator-2",
-      "github-username": "test-git-2",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "sprinkler-development",
