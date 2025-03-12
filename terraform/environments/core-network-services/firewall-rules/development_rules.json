@@ -553,6 +553,13 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
+  "cica_tariff_dev_to_cica_aws_dev_icmp": {
+    "action": "PASS",
+    "source_ip": "${cica-development}",
+    "destination_ip": "$CICA_AWS_DEV",
+    "destination_port": "ANY",
+    "protocol": "ICMP"
+  },
   "cica_aws_uat_a_to_cica_tariff_dev": {
     "action": "PASS",
     "source_ip": "${cica-aws-uat-a}",
