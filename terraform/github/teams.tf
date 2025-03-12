@@ -10,12 +10,12 @@ module "core-team" {
 
 # People who need full AWS access
 module "aws-team" {
-  source      = "./modules/team"
-  name        = "modernisation-platform-engineers"
-  description = "Modernisation Platform team: people who require AWS access"
-  maintainers = local.maintainers
-  members     = local.engineers
-  ci          = local.ci_users
+  source         = "./modules/team"
+  name           = "modernisation-platform-engineers"
+  description    = "Modernisation Platform team: people who require AWS access"
+  maintainers    = local.maintainers
+  members        = local.engineers
+  ci             = local.ci_users
   parent_team_id = module.core-team.team_id
 }
 
