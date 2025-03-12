@@ -538,6 +538,28 @@
     "destination_port": "587",
     "protocol": "TCP"
   },
+  "cica_aws_dev_to_cica_tariff_dev": {
+    "action": "PASS",
+    "source_ip": "$CICA_AWS_DEV",
+    "destination_ip": "${cica-development}",
+    "destination_port": "$TARIFF_TCP",
+    "protocol": "TCP"
+
+  },
+  "cica_tariff_dev_to_cica_aws_dev": {
+    "action": "PASS",
+    "source_ip": "${cica-development}",
+    "destination_ip": "$CICA_AWS_DEV",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "cica_tariff_dev_to_cica_aws_dev_icmp": {
+    "action": "PASS",
+    "source_ip": "${cica-development}",
+    "destination_ip": "$CICA_AWS_DEV",
+    "destination_port": "ANY",
+    "protocol": "ICMP"
+  },
   "cica_aws_uat_a_to_cica_tariff_dev": {
     "action": "PASS",
     "source_ip": "${cica-aws-uat-a}",
@@ -556,20 +578,6 @@
     "action": "PASS",
     "source_ip": "${cica-development}",
     "destination_ip": "${cica-aws-uat-a}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "cica_tariff_dev_to_cica_onprem_uat": {
-    "action": "PASS",
-    "source_ip": "${cica-development}",
-    "destination_ip": "${cica-onprem-uat}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "cica_onprem_uat_to_cica_tariff_dev": {
-    "action": "PASS",
-    "source_ip": "${cica-onprem-uat}",
-    "destination_ip": "${cica-development}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
