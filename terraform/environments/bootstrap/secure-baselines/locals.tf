@@ -28,11 +28,7 @@ locals {
   root_account           = data.aws_organizations_organization.root_account
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
   mp_owned_workspaces = [
-    "cooker-development",
-    "example-development",
     "long-term-storage-production",
-    "sprinkler-development",
-    "testing-test",
     "^core-.*"
   ]
   is_core_account = length(regexall(join("|", local.mp_owned_workspaces), terraform.workspace)) > 0
