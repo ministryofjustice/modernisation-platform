@@ -220,6 +220,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        application: ${{ fromJson(needs.find-environments.outputs.directory_names) }}
         environment: [development, test]
     environment: ${{ matrix.environment }}
     env:
