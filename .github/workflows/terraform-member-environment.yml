@@ -101,22 +101,26 @@ jobs:
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
       - name: Setup Terraform
+        if: env.SKIP == 'false'
         id: setup
         uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
         with:
           terraform_version: "~1"
           terraform_wrapper: false
       - name: Terraform init
+        if: env.SKIP == 'false'
         id: init
         run: |
             echo "Running 'terraform init' in terraform/environments/${{ matrix.application }}" 
             scripts/terraform-init.sh terraform/environments/${{ matrix.application }}
       - name: Terraform workspace
+        if: env.SKIP == 'false'
         id: workspace
         run: |
           workspace="${{ matrix.application }}-${{ matrix.environment }}"
           terraform -chdir="terraform/environments/${{ matrix.application }}" workspace select "$workspace"
       - name: Terraform plan
+        if: env.SKIP == 'false'
         id: plan
         run: |
           scripts/terraform-plan.sh terraform/environments/${{ matrix.application }}
@@ -128,11 +132,7 @@ jobs:
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: ${{ failure() && (github.event.ref == 'refs/heads/main') }}
-      - name: Mark job skipped
-        if: ${{ steps.workspace.outputs.skip_plan == 'true' }}
-        run: |
-          echo "::warning ::Terraform plan was skipped as no valid workspace was found."
+        if: ${{ failure() && (github.event.ref == 'refs/heads/main') && env.SKIP == 'false' }}
 
   terraform-plan-preprod-prod:
     runs-on: ubuntu-latest
