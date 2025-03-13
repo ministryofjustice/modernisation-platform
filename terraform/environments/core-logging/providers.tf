@@ -34,7 +34,7 @@ provider "aws" {
   default_tags { tags = local.tags }
 }
 
-}
+
 
 # AWS provider (modernisation-secrets-read): Required for assuming a role into modernisation platform account to read secrets
 provider "aws" {
