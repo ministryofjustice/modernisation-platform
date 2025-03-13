@@ -52,6 +52,9 @@ jobs:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           modernisation_pat_multirepo: ${{ needs.fetch-secrets.outputs.modernisation_pat_multirepo }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Set env vars
+        run: |
+          echo "TF_VAR_github_token=$MODERNISATION_PAT_MULTIREPO" >> $GITHUB_ENV
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
@@ -94,7 +97,6 @@ jobs:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
           PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
-          TF_VAR_github_token: ${{ env.MODERNISATION_PAT_MULTIREPO }}
   create-environment:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
