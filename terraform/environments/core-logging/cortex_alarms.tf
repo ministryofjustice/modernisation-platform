@@ -29,7 +29,7 @@ resource "aws_cloudwatch_metric_alarm" "sqs_cortex_age_of_oldest_message" {
     QueueName = aws_sqs_queue.logging[each.key].name
   }
   alarm_actions = [for topic in local.cortex_topic_names : aws_sns_topic.cortex_sqs_sns_topic[topic.name].arn]
-
+  tags          = local.tags
 }
 
 # KMS Key & Policy for SNS Encryption
@@ -128,7 +128,7 @@ resource "aws_sns_topic" "cortex_sqs_sns_topic" {
   for_each          = { for topic in local.cortex_topic_names : topic.name => topic }
   name              = "${each.value.name}-sqs-sns-topic"
   kms_master_key_id = aws_kms_key.sns_kms_key.id
-
+  tags              = local.tags
 }
 
 module "mp-sqs-sns-chatbot" {
