@@ -38,11 +38,13 @@ To add a repository for your application deployment pipeline, follow the followi
 
 1. Once merged, to work you will need to reference the role in your repositories. See the example code below:
 
-<pre><code>- name: Configure AWS credentials
+```
+- name: Configure AWS credentials
   uses: aws-actions/configure-aws-credentials@v4
   with:
     role-to-assume: arn:aws:iam::${{ vars.ACCOUNT_ID }}:role/modernisation-platform-oidc-cicd
-    aws-region: ${{ env.AWS_REGION }}</code></pre>
+    aws-region: ${{ env.AWS_REGION }}
+```
 
   Here are a few examples of how other teams have implemented this:
 
