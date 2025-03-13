@@ -83,7 +83,7 @@ jobs:
         run: |
           APPLICATION_ENVIRONMENT="${{ matrix.application }}-${{ matrix.environment }}"
           echo "Application: $APPLICATION_ENVIRONMENT"
-          ACCOUNT_NUMBER=$(echo "$ENVIRONMENT_MANAGEMENT" | jq -r -e --arg app_env "$APPLICATION_ENVIRONMENT" '.account_ids[$app_env]')
+          ACCOUNT_NUMBER=$(jq -r -e --arg app_env "$APPLICATION_ENVIRONMENT" '.account_ids[$app_env]' <<< $ENVIRONMENT_MANAGEMENT)
           if [ -z "$ACCOUNT_NUMBER" ]; then
             echo "::warning::Account number not found for $APPLICATION_ENVIRONMENT, skipping..."
             echo "SKIP=true" >> $GITHUB_ENV
@@ -96,7 +96,7 @@ jobs:
         if: env.SKIP == 'false'
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
-          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-test"
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-dev-test"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
       - name: Setup Terraform
