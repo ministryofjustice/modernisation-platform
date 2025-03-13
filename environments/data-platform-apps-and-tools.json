@@ -7,20 +7,18 @@
       "access": [
         {
           "sso_group_name": "data-platform-apps-and-tools-development-sandbox",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "sandbox"
         },
         {
           "sso_group_name": "data-platform-apps-and-tools-airflow-users",
-          "level": "mwaa-user",
-          "nuke": "exclude"
+          "level": "mwaa-user"
         },
         {
           "sso_group_name": "data-platform-audit-and-security",
-          "level": "security-audit",
-          "nuke": "exclude"
+          "level": "security-audit"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "production",

@@ -8,13 +8,11 @@
         {
           "sso_group_name": "hmpps-migration",
           "level": "sandbox",
-          "nuke": "exclude",
           "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hosting-migrations",
           "level": "sandbox",
-          "nuke": "exclude",
           "github_action_reviewer": "true"
         },
         {
@@ -26,7 +24,8 @@
           "sso_group_name": "hmpps-delius-mis",
           "level": "fleet-manager"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "preproduction",

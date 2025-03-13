@@ -6,10 +6,10 @@
       "access": [
         {
           "sso_group_name": "laa-stabilisation-cdc",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "sandbox"
         }
-      ]
+      ],
+      "nuke": "exclude"
     }
   ],
   "tags": {

@@ -7,9 +7,9 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "sandbox",
-          "nuke": "exclude"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",

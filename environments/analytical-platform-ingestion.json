@@ -9,21 +9,19 @@
       "access": [
         {
           "sso_group_name": "analytical-platform-engineers",
-          "level": "platform-engineer-admin",
-          "nuke": "exclude"
+          "level": "platform-engineer-admin"
         },
         {
           "sso_group_name": "analytical-platform-engineers",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "sandbox"
         },
         {
           "sso_group_name": "data-platform-audit-and-security",
-          "level": "security-audit",
-          "nuke": "exclude"
+          "level": "security-audit"
         }
       ],
-      "instance_scheduler_skip": ["true"]
+      "instance_scheduler_skip": ["true"],
+      "nuke": "exclude"
     },
     {
       "name": "production",
