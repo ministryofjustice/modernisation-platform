@@ -138,12 +138,18 @@ locals {
     "modernisation-platform-terraform-ssm-patching",
   ]
 
+  repositories_with_full_team_access = [
+    "modernisation-platform-configuration-management",
+    "modernisation-platform-environments"
+    # Add other repositories that need full team access here
+  ]
+
   map_permissions_to_repositories = {
     for repo in local.modernisation_platform_repositories : repo => {
       teams = merge(
         { "modernisation-platform" = "admin" },
         { "all-org-members" = "push" },
-      repo == "modernisation-platform-environments" ? { for team in local.application_github_group_names : team => "push" } : null),
+        contains(local.repositories_with_full_team_access, repo) ? { for team in local.application_github_group_names : team => "push" } : null),
       users = repo == "modernisation-platform-environments" ? { for user in local.collaborators : user => "push" } : {}
     }
   }
