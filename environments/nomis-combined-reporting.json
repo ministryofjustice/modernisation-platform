@@ -12,14 +12,12 @@
         {
           "sso_group_name": "hosting-migrations",
           "level": "sandbox",
-          "github_action_reviewer": "true",
-          "nuke": "exclude"
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "studio-webops",
           "level": "sandbox",
-          "github_action_reviewer": "true",
-          "nuke": "exclude"
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "csr-application-support",
@@ -29,7 +27,8 @@
           "sso_group_name": "azure-aws-sso-digital-studio-operations",
           "level": "developer"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",

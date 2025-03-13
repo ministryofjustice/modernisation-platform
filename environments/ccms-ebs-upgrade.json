@@ -16,10 +16,10 @@
       "access": [
         {
           "sso_group_name": "laa-ccms-migration-team",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "sandbox"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",

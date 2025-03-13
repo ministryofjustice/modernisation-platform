@@ -6,10 +6,10 @@
       "access": [
         {
           "sso_group_name": "operations-engineering",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "sandbox"
         }
-      ]
+      ],
+      "nuke": "exclude"
     }
   ],
   "tags": {

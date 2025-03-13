@@ -8,13 +8,11 @@
         {
           "sso_group_name": "hosting-migrations",
           "level": "sandbox",
-          "nuke": "rebuild",
           "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "studio-webops",
           "level": "sandbox",
-          "nuke": "rebuild",
           "github_action_reviewer": "true"
         },
         {
@@ -25,7 +23,8 @@
           "sso_group_name": "azure-aws-sso-digital-studio-operations",
           "level": "developer"
         }
-      ]
+      ],
+      "nuke": "rebuild"
     },
     {
       "name": "test",

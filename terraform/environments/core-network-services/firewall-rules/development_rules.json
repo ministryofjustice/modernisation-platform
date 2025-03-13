@@ -544,7 +544,6 @@
     "destination_ip": "${cica-development}",
     "destination_port": "$TARIFF_TCP",
     "protocol": "TCP"
-
   },
   "cica_tariff_dev_to_cica_aws_dev": {
     "action": "PASS",

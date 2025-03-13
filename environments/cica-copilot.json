@@ -6,10 +6,10 @@
       "access": [
         {
           "sso_group_name": "cica-copilot-llm-maintainers",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "sandbox"
         }
-      ]
+      ],
+      "nuke": "exclude"
     }
   ],
   "tags": {
