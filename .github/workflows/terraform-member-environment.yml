@@ -83,7 +83,8 @@ jobs:
         run: |
           APPLICATION_ENVIRONMENT="${{ matrix.application }}-${{ matrix.environment }}"
           echo "Application: $APPLICATION_ENVIRONMENT"
-          ACCOUNT_NUMBER=$(jq -r -e --arg app_env "$APPLICATION_ENVIRONMENT" '.account_ids[$app_env]' <<< $ENVIRONMENT_MANAGEMENT)
+          ACCOUNT_NUMBER=$(echo "$ENVIRONMENT_MANAGEMENT" | jq -r --arg app_env "$APPLICATION_ENVIRONMENT" '.account_ids[$app_env] // empty')
+          echo $ACCOUNT_NUMBER
           if [ -z "$ACCOUNT_NUMBER" ]; then
             echo "::warning::Account number not found for $APPLICATION_ENVIRONMENT, skipping..."
             echo "SKIP=true" >> $GITHUB_ENV
