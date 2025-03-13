@@ -17,7 +17,7 @@
           "level": "developer"
         }
       ],
-          "nuke": "rebuild"
+      "nuke": "rebuild"
     },
     {
       "name": "test",
