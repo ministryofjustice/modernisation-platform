@@ -139,6 +139,7 @@ locals {
   ]
 
   repositories_with_full_team_access = [
+    "modernisation-platform-ami-builds",
     "modernisation-platform-configuration-management",
     "modernisation-platform-environments"
     # Add other repositories that need full team access here
