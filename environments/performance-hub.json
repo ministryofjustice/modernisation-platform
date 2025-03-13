@@ -6,10 +6,10 @@
       "access": [
         {
           "sso_group_name": "performance-hub-developers",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "sandbox"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "preproduction",

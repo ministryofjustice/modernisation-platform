@@ -15,45 +15,38 @@
       "access": [
         {
           "sso_group_name": "modernisation-platform",
-          "level": "developer",
-          "nuke": "rebuild"
+          "level": "developer"
         },
         {
           "sso_group_name": "modernisation-platform",
-          "level": "reporting-operations",
-          "nuke": "rebuild"
+          "level": "reporting-operations"
         },
         {
           "sso_group_name": "modernisation-platform",
-          "level": "migration",
-          "nuke": "rebuild"
+          "level": "migration"
         },
         {
           "sso_group_name": "modernisation-platform",
-          "level": "data-engineer",
-          "nuke": "rebuild"
+          "level": "data-engineer"
         },
         {
           "sso_group_name": "modernisation-platform-security",
-          "level": "instance-management",
-          "nuke": "rebuild"
+          "level": "instance-management"
         },
         {
           "sso_group_name": "modernisation-platform",
-          "level": "fleet-manager",
-          "nuke": "rebuild"
+          "level": "fleet-manager"
         },
         {
           "sso_group_name": "modernisation-platform",
-          "level": "quicksight-admin",
-          "nuke": "rebuild"
+          "level": "quicksight-admin"
         },
         {
           "sso_group_name": "azure-aws-sso-modernisation-platform",
-          "level": "developer",
-          "nuke": "rebuild"
+          "level": "developer"
         }
-      ]
+      ],
+      "nuke": "rebuild"
     }
   ],
   "tags": {

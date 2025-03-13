@@ -6,27 +6,24 @@
       "access": [
         {
           "sso_group_name": "modernisation-platform",
-          "level": "developer",
-          "nuke": "rebuild"
+          "level": "developer"
         },
         {
           "sso_group_name": "modernisation-platform",
-          "level": "instance-management",
-          "nuke": "rebuild"
+          "level": "instance-management"
         },
         {
           "sso_group_name": "modernisation-platform",
-          "level": "sandbox",
-          "nuke": "rebuild"
+          "level": "sandbox"
         },
         {
           "sso_group_name": "tvm-purple-team",
-          "level": "sandbox",
-          "nuke": "rebuild"
+          "level": "sandbox"
         }
       ],
       "additional_reviewers": ["astrobinson"],
-      "instance_scheduler_skip": ["true"]
+      "instance_scheduler_skip": ["true"],
+      "nuke": "rebuild"
     }
   ],
   "tags": {

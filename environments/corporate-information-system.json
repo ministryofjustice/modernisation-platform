@@ -7,7 +7,6 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "sandbox",
-          "nuke": "exclude",
           "github_action_reviewer": "true"
         },
         {
@@ -16,10 +15,10 @@
         },
         {
           "sso_group_name": "laa-cis-dbas",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "sandbox"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
