@@ -3,6 +3,9 @@
 resource "github_repository_collaborators" "this" {
   for_each   = local.map_permissions_to_repositories
   repository = each.key
+  ignore_team {
+    team_id = "4380209" #organisation-security-auditor
+  }
   dynamic "team" {
     for_each = each.value.teams
     content {

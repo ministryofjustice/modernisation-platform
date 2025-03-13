@@ -16,6 +16,12 @@
       "${data-engineering-dev}",
       "${data-engineering-prod}",
       "${data-engineering-stage}"
+    ],
+    "CICA_AWS_DEV": [
+      "${cica-aws-dev-a}",
+      "${cica-aws-dev-b}",
+      "${cica-aws-dev-data-a}",
+      "${cica-aws-dev-data-b}"
     ]
   },
   "PORT_SETS": {
