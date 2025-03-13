@@ -36,7 +36,23 @@ To add a repository for your application deployment pipeline, follow the followi
 
 1. Open a PR and have it merged by someone in the Modernisation Platform team.
 
-1. Once merged, to work you will need to reference the role in your repositories. Here's an [example.](https://github.com/ministryofjustice/hmpps-cr-ancillary-jitbit-app/blob/455d8af2a8685a8b4c4f4afdcf020d2242d31116/.github/workflows/enable-disable-ecs-scaling.yml#L29). Additionally, to learn more about configuring AWS credentials for GitHub Actions, including how Github Actions authenticates to AWS please see this [guide.](https://github.com/aws-actions/configure-aws-credentials)
+1. Once merged, to work you will need to reference the role in your repositories. Here's an 
+
+<pre><code>- name: Configure AWS credentials
+  uses: aws-actions/configure-aws-credentials@v4
+  with:
+    role-to-assume: arn:aws:iam::${{ vars.ACCOUNT_ID }}:role/modernisation-platform-oidc-cicd
+    aws-region: ${{ env.AWS_REGION }}</code></pre>
+
+  Here are a few examples of how other teams have done this,
+
+  * [hmpps-cr-ancillary-jitbit-app](https://github.com/ministryofjustice/hmpps-cr-ancillary-jitbit-app/blob/455d8af2a8685a8b4c4f4afdcf020d2242d31116/.github/workflows/enable-disable-ecs-scaling.yml#L26)
+
+  * [hmpps-pwm](https://github.com/ministryofjustice/hmpps-pwm/blob/f570a9b94b7b153ea8f559f4a523901b6bbe0919/.github/workflows/build-push.yml#L19)
+
+  * [laa-mlra-application](https://github.com/ministryofjustice/laa-mlra-application/blob/779542bcf5113272f9830be07940148be67e693d/.github/workflows/mlra-cicd-codebuild.yaml#L72)
+
+ Additionally, to learn more about configuring AWS credentials for GitHub Actions, including how Github Actions authenticates to AWS please and parameters like role session name see the  [README.md of the Configure AWS credentials action](https://github.com/aws-actions/configure-aws-credentials)
 
 
 
