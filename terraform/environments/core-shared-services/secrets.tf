@@ -1,7 +1,7 @@
 # Get modernisation account id from ssm parameter
 data "aws_ssm_parameter" "modernisation_platform_account_id" {
   provider = aws.modernisation-platform
-  name = "modernisation_platform_account_id"
+  name     = "modernisation_platform_account_id"
 }
 
 # Get secret by name for environment management
