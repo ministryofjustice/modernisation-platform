@@ -150,7 +150,7 @@ locals {
       teams = merge(
         { "modernisation-platform" = "admin" },
         { "all-org-members" = "push" },
-        contains(local.repositories_with_full_team_access, repo) ? { for team in local.application_github_group_names : team => "push" } : null),
+      contains(local.repositories_with_full_team_access, repo) ? { for team in local.application_github_group_names : team => "push" } : null),
       users = repo == "modernisation-platform-environments" ? { for user in local.collaborators : user => "push" } : {}
     }
   }
