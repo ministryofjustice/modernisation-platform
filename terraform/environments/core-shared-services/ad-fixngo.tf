@@ -304,8 +304,8 @@ locals {
     fsx_windows_file_systems = {
       ad-azure-fsx = {
         ad_dns_ips = [
-          module.ip_addresses.mp_ip.ad-azure-dc-a,
-          module.ip_addresses.mp_ip.ad-azure-dc-b,
+          module.ad_fixngo_ip_addresses.mp_ip.ad-azure-dc-a,
+          module.ad_fixngo_ip_addresses.mp_ip.ad-azure-dc-b,
         ]
         ad_domain_name                      = "azure.noms.root"
         ad_file_system_administrators_group = null
@@ -319,8 +319,8 @@ locals {
       }
       ad-hmpp-fsx = {
         ad_dns_ips = [
-          module.ip_addresses.azure_fixngo_ip.PCMCW0011,
-          module.ip_addresses.azure_fixngo_ip.PCMCW0012,
+          module.ad_fixngo_ip_addresses.azure_fixngo_ip.PCMCW0011,
+          module.ad_fixngo_ip_addresses.azure_fixngo_ip.PCMCW0012,
         ]
         ad_domain_name                      = "azure.hmpp.root"
         ad_file_system_administrators_group = "Domain Join"
