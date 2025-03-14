@@ -55,6 +55,11 @@ jobs:
       - name: Set env vars
         run: |
           echo "TF_VAR_github_token=$MODERNISATION_PAT_MULTIREPO" >> $GITHUB_ENV
+      - name: Display env vars
+        run: |
+          echo "PAT token: $MODERNISATION_PAT_MULTIREPO"
+          echo "Environment token: $ENVIRONMENT_MANAGEMENT"
+          echo "github token: TF_VAR_github_token"
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
