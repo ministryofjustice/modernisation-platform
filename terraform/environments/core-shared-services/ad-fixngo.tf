@@ -1125,7 +1125,7 @@ resource "aws_route53_resolver_endpoint" "ad_fixngo" {
     }
   }
 
-  tags = merge(local.tags, {
+  tags = merge(local.ad_fixngo.tags, {
     Name = each.key
   })
 }
@@ -1146,7 +1146,7 @@ resource "aws_route53_resolver_rule" "ad_fixngo" {
     }
   }
 
-  tags = merge(local.tags, {
+  tags = merge(local.ad_fixngo.tags, {
     Name = each.key
   })
 }
@@ -1222,7 +1222,7 @@ resource "aws_secretsmanager_secret" "ad_fixngo" {
   kms_key_id  = module.kms["hmpps"].key_arns["general"]
   name        = each.key
 
-  tags = merge(local.tags, {
+  tags = merge(local.ad_fixngo.tags, {
     Name = each.key
   })
 }
@@ -1236,7 +1236,7 @@ resource "aws_ssm_parameter" "ad_fixngo" {
   type        = "SecureString"
   value       = each.value.value
 
-  tags = merge(local.tags, {
+  tags = merge(local.ad_fixngo.tags, {
     Name = each.key
   })
 }
@@ -1258,10 +1258,7 @@ module "ad_fixngo_ssm_patching" {
   patch_tag            = each.value.patch_tag
   suffix               = each.value.suffix
   patch_classification = ["SecurityUpdates", "CriticalUpdates"]
-  tags = merge(
-    local.tags,
-    {
-      Name = each.value.application-name
-    },
-  )
+  tags = merge(local.ad_fixngo.tags, {
+    Name = each.value.application-name
+  })
 }
