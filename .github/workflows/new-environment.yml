@@ -46,12 +46,12 @@ jobs:
     needs: fetch-secrets
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d1aa59f92c438bd85a21c1209c65b563d3dcb4be # v1.1.1
-        with:
-          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
-          modernisation_pat_multirepo: ${{ needs.fetch-secrets.outputs.modernisation_pat_multirepo }}
-          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      # - name: Decrypt Secrets
+      #   uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d1aa59f92c438bd85a21c1209c65b563d3dcb4be # v1.1.1
+      #   with:
+      #     environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      #     modernisation_pat_multirepo: ${{ needs.fetch-secrets.outputs.modernisation_pat_multirepo }}
+      #     PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set env vars
         run: |
           echo "TF_VAR_github_token=$MODERNISATION_PAT_MULTIREPO" >> $GITHUB_ENV
