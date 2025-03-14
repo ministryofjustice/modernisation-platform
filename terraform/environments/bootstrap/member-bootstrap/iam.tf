@@ -177,6 +177,7 @@ data "aws_iam_policy_document" "member-access" {
       "route53resolver:*",
       "s3:*",
       "secretsmanager:*",
+      "securityhub:BatchUpdateFindings",
       "ses:*",
       "shield:*",
       "signer:*",
