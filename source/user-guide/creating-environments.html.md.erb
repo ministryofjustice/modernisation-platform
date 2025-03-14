@@ -126,15 +126,15 @@ Here are some examples of the environments JSON file that the Modernisation Plat
   "codeowners": [""],
   "environments": [
     {
-      "name": ""
+      "name": "",
       "access": [
         {
           "sso_group_name": "",
           "level": "",
-          "nuke": "",
           "github_action_reviewer": "true"
         }
-      ]
+      ],
+      "nuke": ""
     }
   ],
   "tags": {
@@ -163,11 +163,11 @@ An JSON definition for a nonsensical application called [`glados`](https://en.wi
       "access": [
         {
           "sso_group_name": "glados-team",
-          "level": "sandbox",
-          "nuke": "rebuild"
+          "level": "sandbox"
         }
       ],
-      "additional_reviewers": ["GitHubUsername1", "GitHubUsername2"]
+      "additional_reviewers": ["GitHubUsername1", "GitHubUsername2"], 
+      "nuke": "rebuild"
     },
     {
       "name": "production",
