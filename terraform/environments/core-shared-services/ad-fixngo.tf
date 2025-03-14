@@ -1216,6 +1216,8 @@ resource "aws_security_group_rule" "ad_fixngo" {
 }
 
 resource "aws_secretsmanager_secret" "ad_fixngo" {
+  #checkov:skip=CKV2_AWS_57:Ensure Secrets Manager secrets should have automatic rotation enabled; these are domain secrets, can't be rotated automatically
+
   for_each = local.ad_fixngo.secretsmanager_secrets
 
   description = each.value.description
