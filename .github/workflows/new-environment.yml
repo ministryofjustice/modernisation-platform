@@ -51,6 +51,8 @@ jobs:
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           modernisation_pat_multirepo: ${{ needs.fetch-secrets.outputs.modernisation_pat_multirepo }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set env vars
         run: |
