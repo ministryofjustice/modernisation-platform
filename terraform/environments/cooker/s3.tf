@@ -48,7 +48,7 @@ module "s3-bucket" {
 
       noncurrent_version_transition = [
         {
-          days          = 90
+          days          = 120
           storage_class = "STANDARD_IA"
           }, {
           days          = 365
