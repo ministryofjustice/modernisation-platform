@@ -120,6 +120,7 @@ resource "aws_kms_key" "s3_logging_cloudtrail_eu-west-1_replication" {
   policy                  = data.aws_iam_policy_document.kms_logging_cloudtrail_replication.json
   enable_key_rotation     = true
   deletion_window_in_days = 30
+  tags                    = { Name = "${local.application_name}-s3-logging-cloudtrail-kms" }
 }
 resource "aws_kms_alias" "s3_logging_cloudtrail_eu-west-1_replication" {
   provider = aws.modernisation-platform-eu-west-1
