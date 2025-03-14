@@ -54,12 +54,7 @@ jobs:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set env vars
         run: |
-          echo "Token is $modernisation_pat_multirepo"
-          echo "Token is $MODERNISATION_PAT_MULTIREPO"
-          echo "Token is $ENVIRONMENT_MANAGEMENT"
-          echo "Token is $environment_management"
           echo "TF_VAR_github_token=$MODERNISATION_PAT_MULTIREPO" >> $GITHUB_ENV
-          echo "TF var token is $TF_VAR_github_token"
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
