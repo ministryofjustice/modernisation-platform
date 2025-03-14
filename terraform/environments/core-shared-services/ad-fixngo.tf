@@ -301,6 +301,39 @@ locals {
       }
     }
 
+    fsx_windows_file_systems = {
+      ad-azure-fsx = {
+        ad_dns_ips = [
+          module.ad_fixngo_ip_addresses.mp_ip.ad-azure-dc-a,
+          module.ad_fixngo_ip_addresses.mp_ip.ad-azure-dc-b,
+        ]
+        ad_domain_name                      = "azure.noms.root"
+        ad_file_system_administrators_group = null
+        ad_username                         = "svc_join_domain"
+        deployment_type                     = "SINGLE_AZ_1"
+        security_group_name                 = "ad_azure_fsx_sg"
+        storage_capacity                    = 100
+        subnet_ids                          = [module.vpc["non_live_data"].non_tgw_subnet_ids_map.private[0]]
+        throughput_capacity                 = 32
+        weekly_maintenance_start_time       = "2:04:00" # tue 4am
+      }
+      ad-hmpp-fsx = {
+        ad_dns_ips = [
+          module.ad_fixngo_ip_addresses.azure_fixngo_ip.PCMCW0011,
+          module.ad_fixngo_ip_addresses.azure_fixngo_ip.PCMCW0012,
+        ]
+        ad_domain_name                      = "azure.hmpp.root"
+        ad_file_system_administrators_group = "Domain Join"
+        ad_username                         = "svc_fsx_windows"
+        deployment_type                     = "MULTI_AZ_1"
+        security_group_name                 = "az_hmpp_fsx_sg"
+        storage_capacity                    = 100
+        subnet_ids                          = module.vpc["live_data"].non_tgw_subnet_ids_map.private
+        throughput_capacity                 = 32
+        weekly_maintenance_start_time       = "4:04:00" # thu 4am
+      }
+    }
+
     route53_resolver_endpoints = {
       ad-fixngo-live-data = {
         direction           = "OUTBOUND"
@@ -479,7 +512,33 @@ locals {
           }
         }
       }
-
+      ad_hmpp_fsx_sg = {
+        description = "Security group for azure.hmpp.root FSX"
+        vpc_id      = module.vpc["live_data"].vpc_id
+        ingress = {
+          smb-tcp-445 = {
+            port        = 445
+            protocol    = "TCP"
+            cidr_blocks = ["10.0.0.0/8"]
+          }
+          winrm-tcp-5985-5986 = {
+            from_port = 5985
+            to_port   = 5986
+            protocol  = "TCP"
+            cidr_blocks = flatten([
+              module.ad_fixngo_ip_addresses.mp_cidr.hmpps-preproduction,
+              module.ad_fixngo_ip_addresses.mp_cidr.hmpps-production,
+            ])
+          }
+        }
+        egress = {
+          all = {
+            port        = 0
+            protocol    = -1
+            cidr_blocks = ["0.0.0.0/0"]
+          }
+        }
+      }
       ad_hmpp_rdlic_sg = {
         # requires RPC
         description = "security group for azure.hmpp.root remote desktop licensing server"
@@ -691,7 +750,33 @@ locals {
           }
         }
       }
-
+      ad_azure_fsx_sg = {
+        description = "Security group for azure.noms.root FSX"
+        vpc_id      = module.vpc["non_live_data"].vpc_id
+        ingress = {
+          smb-tcp-445 = {
+            port        = 445
+            protocol    = "TCP"
+            cidr_blocks = ["10.0.0.0/8"]
+          }
+          winrm-tcp-5985-5986 = {
+            from_port = 5985
+            to_port   = 5986
+            protocol  = "TCP"
+            cidr_blocks = flatten([
+              module.ad_fixngo_ip_addresses.mp_cidr.hmpps-development,
+              module.ad_fixngo_ip_addresses.mp_cidr.hmpps-test,
+            ])
+          }
+        }
+        egress = {
+          all = {
+            port        = 0
+            protocol    = -1
+            cidr_blocks = ["0.0.0.0/0"]
+          }
+        }
+      }
       ad_azure_rdlic_sg = {
         description = "security group for azure.noms.root remote desktop licensing server"
         vpc_id      = module.vpc["non_live_data"].vpc_id
@@ -764,6 +849,15 @@ locals {
       }
     }
 
+    secretsmanager_secrets = {
+      "/ad-fixngo/azure.noms.root/passwords" = {
+        description = "Passwords for azure.noms.root domain"
+      }
+      "/ad-fixngo/azure.hmpp.root/passwords" = {
+        description = "Passwords for azure.hmpp.root domain"
+      }
+    }
+
     ssm_parameters = {
       "/ad-fixngo/account_ids" = {
         description = "Account IDs used when provisioning the AD FixNGo EC2s"
@@ -828,6 +922,14 @@ locals {
       source-code            = "https://github.com/ministryofjustice/modernisation-platform"
     })
   }
+
+  #ad_fixngo_secret_strings = {
+  #  for key, value in data.aws_secretsmanager_secret_version.this : key => value.secret_string
+  #}
+
+  #ad_fixngo_secret_json = {
+  #  for key, value in local.ad_fixngo_secret_strings : key => jsondecode(value)
+  #}
 }
 
 data "aws_ami" "ad_fixngo" {
@@ -861,6 +963,12 @@ data "aws_iam_policy_document" "ad_fixngo" {
     }
   }
 }
+
+#data "aws_secretsmanager_secret_version" "ad_fixngo" {
+#  for_each = local.ad_fixngo.secretsmanager_secrets
+#
+#  secret_id = data.aws_secretsmanager_secret.ad_fixngo[each.key].id
+#}
 
 resource "aws_iam_policy" "ad_fixngo" {
   for_each = local.ad_fixngo.ec2_iam_policies
@@ -962,6 +1070,34 @@ resource "aws_instance" "ad_fixngo" {
   })
 }
 
+#resource "aws_fsx_windows_file_system" "ad_fixngo" {
+#  for_each = local.ad_fixngo.fsx_windows_file_systems
+#
+#  automatic_backup_retention_days = 0
+#  deployment_type                 = each.value.deployment_type
+#  kms_key_id                      = module.kms["hmpps"].key_arns["general"]
+#  preferred_subnet_id             = each.value.deployment_type == "MULTI_AZ_1" ? each.value.subnet_ids[0] : null
+#  security_group_ids              = [aws_security_group.ad_fixngo[each.value.security_group_name].id]
+#  skip_final_backup               = true
+#  storage_capacity                = each.value.storage_capacity
+#  subnet_ids                      = each.value.subnet_ids
+#  throughput_capacity             = each.value.throughput_capacity
+#  weekly_maintenance_start_time   = each.value.weekly_maintenance_start_time
+#
+#  self_managed_active_directory {
+#    dns_ips                          = each.value.ad_dns_ips
+#    domain_name                      = each.value.ad_domain_name
+#    file_system_administrators_group = each.value.file_system_administrators_group
+#    password                         = local.ad_fixngo_secret_json["/ad-fixngo/${each.value.ad_domain_name}/passwords"][each.value.ad_username]
+#    username                         = each.value.ad_username
+#  }
+#  tags = merge(local.ad_fixngo.tags, {
+#    Name        = each.key
+#    backup      = "true"
+#    description = "file share for ${each.value.ad_domain_name} domain"
+#  })
+#}
+
 resource "aws_key_pair" "ad_fixngo" {
   for_each = local.ad_fixngo.aws_key_pairs
 
@@ -989,7 +1125,7 @@ resource "aws_route53_resolver_endpoint" "ad_fixngo" {
     }
   }
 
-  tags = merge(local.tags, {
+  tags = merge(local.ad_fixngo.tags, {
     Name = each.key
   })
 }
@@ -1010,7 +1146,7 @@ resource "aws_route53_resolver_rule" "ad_fixngo" {
     }
   }
 
-  tags = merge(local.tags, {
+  tags = merge(local.ad_fixngo.tags, {
     Name = each.key
   })
 }
@@ -1079,6 +1215,20 @@ resource "aws_security_group_rule" "ad_fixngo" {
   security_group_id = aws_security_group.ad_fixngo[each.value.security_group_name].id
 }
 
+resource "aws_secretsmanager_secret" "ad_fixngo" {
+  #checkov:skip=CKV2_AWS_57:Ensure Secrets Manager secrets should have automatic rotation enabled; these are domain secrets, can't be rotated automatically
+
+  for_each = local.ad_fixngo.secretsmanager_secrets
+
+  description = each.value.description
+  kms_key_id  = module.kms["hmpps"].key_arns["general"]
+  name        = each.key
+
+  tags = merge(local.ad_fixngo.tags, {
+    Name = each.key
+  })
+}
+
 resource "aws_ssm_parameter" "ad_fixngo" {
   for_each = local.ad_fixngo.ssm_parameters
 
@@ -1088,7 +1238,7 @@ resource "aws_ssm_parameter" "ad_fixngo" {
   type        = "SecureString"
   value       = each.value.value
 
-  tags = merge(local.tags, {
+  tags = merge(local.ad_fixngo.tags, {
     Name = each.key
   })
 }
@@ -1110,10 +1260,7 @@ module "ad_fixngo_ssm_patching" {
   patch_tag            = each.value.patch_tag
   suffix               = each.value.suffix
   patch_classification = ["SecurityUpdates", "CriticalUpdates"]
-  tags = merge(
-    local.tags,
-    {
-      Name = each.value.application-name
-    },
-  )
+  tags = merge(local.ad_fixngo.tags, {
+    Name = each.value.application-name
+  })
 }
