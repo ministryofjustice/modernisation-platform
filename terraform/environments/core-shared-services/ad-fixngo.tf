@@ -326,7 +326,7 @@ locals {
         ad_file_system_administrators_group = "Domain Join"
         ad_username                         = "svc_fsx_windows"
         deployment_type                     = "MULTI_AZ_1"
-        security_group_name                 = "az_hmpp_fsx_sg"
+        security_group_name                 = "ad_hmpp_fsx_sg"
         storage_capacity                    = 100
         subnet_ids                          = module.vpc["live_data"].non_tgw_subnet_ids_map.private
         throughput_capacity                 = 32
