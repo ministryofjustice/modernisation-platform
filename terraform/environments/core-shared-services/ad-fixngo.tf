@@ -1087,7 +1087,7 @@ resource "aws_fsx_windows_file_system" "ad_fixngo" {
   self_managed_active_directory {
     dns_ips                          = each.value.ad_dns_ips
     domain_name                      = each.value.ad_domain_name
-    file_system_administrators_group = each.value.file_system_administrators_group
+    file_system_administrators_group = each.value.ad_file_system_administrators_group
     password                         = local.ad_fixngo_secret_json["/ad-fixngo/${each.value.ad_domain_name}/passwords"][each.value.ad_username]
     username                         = each.value.ad_username
   }
