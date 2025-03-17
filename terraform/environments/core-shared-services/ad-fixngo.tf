@@ -924,7 +924,7 @@ locals {
   }
 
   ad_fixngo_secret_strings = {
-    for key, value in data.aws_secretsmanager_secret_version.this : key => value.secret_string
+    for key, value in data.aws_secretsmanager_secret_version.ad_fixngo : key => value.secret_string
   }
 
   ad_fixngo_secret_json = {
