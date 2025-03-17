@@ -101,8 +101,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: fetch-secrets
-    env:
-      TF_VAR_github_token: $MODERNISATION_PAT_MULTIREPO
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
@@ -468,7 +466,7 @@ jobs:
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
       - name: Validate Notify Template Version
         env:
-          API_KEY: $GOV_UK_NOTIFY_API_KEY
+          API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
           TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
           EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
         if: steps.environment_json_changes.outputs.files != ''
