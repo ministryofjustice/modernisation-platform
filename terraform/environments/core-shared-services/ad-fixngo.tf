@@ -967,7 +967,7 @@ data "aws_iam_policy_document" "ad_fixngo" {
 data "aws_secretsmanager_secret_version" "ad_fixngo" {
   for_each = local.ad_fixngo.secretsmanager_secrets
 
-  secret_id = data.aws_secretsmanager_secret.ad_fixngo[each.key].id
+  secret_id = aws_secretsmanager_secret.ad_fixngo[each.key].id
 }
 
 resource "aws_iam_policy" "ad_fixngo" {
