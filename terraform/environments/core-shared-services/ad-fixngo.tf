@@ -32,38 +32,38 @@ locals {
       # rdlic        = remote desktop licensing server
       # a/b/c suffix = availability zone
 
-      # ad-hmpp-dc-a = {
-      #   ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
-      #   availability_zone         = "eu-west-2a"
-      #   iam_instance_profile_role = "ad-fixngo-ec2-live-role"
-      #   instance_type             = "t3.large"
-      #   key_name                  = "ad-fixngo-ec2-live"
-      #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-dc-a"]
-      #   subnet_id                 = aws_subnet.live-data-additional["eu-west-2a"].id
-      #   vpc_security_group_name   = "ad_hmpp_dc_sg"
-      #   tags = {
-      #     server-type = "DomainController"
-      #     domain-name = "azure.hmpp.root"
-      #     description = "domain controller for FixNGo azure.hmpp.root domain"
-      #     Patching    = "ad-live-eu-west-2a"
-      #   }
-      # }
-      # ad-hmpp-dc-b = {
-      #   ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
-      #   availability_zone         = "eu-west-2b"
-      #   iam_instance_profile_role = "ad-fixngo-ec2-live-role"
-      #   instance_type             = "t3.large"
-      #   key_name                  = "ad-fixngo-ec2-live"
-      #   private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-dc-b"]
-      #   subnet_id                 = aws_subnet.live-data-additional["eu-west-2b"].id
-      #   vpc_security_group_name   = "ad_hmpp_dc_sg"
-      #   tags = {
-      #     server-type = "DomainController"
-      #     domain-name = "azure.hmpp.root"
-      #     description = "domain controller for FixNGo azure.hmpp.root domain"
-      #     Patching    = "ad-live-eu-west-2b"
-      #   }
-      # }
+      ad-hmpp-dc-a = {
+        ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
+        availability_zone         = "eu-west-2a"
+        iam_instance_profile_role = "ad-fixngo-ec2-live-role"
+        instance_type             = "t3.large"
+        key_name                  = "ad-fixngo-ec2-live"
+        private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-dc-a"]
+        subnet_id                 = aws_subnet.live-data-additional["eu-west-2a"].id
+        vpc_security_group_name   = "ad_hmpp_dc_sg"
+        tags = {
+          server-type = "DomainJoin" # set to "DomainController" after initial testing
+          domain-name = "azure.hmpp.root"
+          description = "domain controller for FixNGo azure.hmpp.root domain"
+          Patching    = "ad-live-eu-west-2a"
+        }
+      }
+      ad-hmpp-dc-b = {
+        ami_name                  = "hmpps_windows_server_2022_release_2024-02-02T00-00-04.569Z"
+        availability_zone         = "eu-west-2b"
+        iam_instance_profile_role = "ad-fixngo-ec2-live-role"
+        instance_type             = "t3.large"
+        key_name                  = "ad-fixngo-ec2-live"
+        private_ip                = module.ad_fixngo_ip_addresses.mp_ip["ad-hmpp-dc-b"]
+        subnet_id                 = aws_subnet.live-data-additional["eu-west-2b"].id
+        vpc_security_group_name   = "ad_hmpp_dc_sg"
+        tags = {
+          server-type = "DomainJoin" # set to "DomainController" after initial testing
+          domain-name = "azure.hmpp.root"
+          description = "domain controller for FixNGo azure.hmpp.root domain"
+          Patching    = "ad-live-eu-west-2b"
+        }
+      }
       ad-hmpp-rdlic = {
         ami_name                  = "hmpps_windows_server_2022_release_2024-08-02T00-00-40.717Z"
         availability_zone         = "eu-west-2c"
@@ -317,21 +317,21 @@ locals {
         throughput_capacity                 = 32
         weekly_maintenance_start_time       = "2:04:00" # tue 4am
       }
-      ad-hmpp-fsx = {
-        ad_dns_ips = [
-          module.ad_fixngo_ip_addresses.azure_fixngo_ip.PCMCW0011,
-          module.ad_fixngo_ip_addresses.azure_fixngo_ip.PCMCW0012,
-        ]
-        ad_domain_name                      = "azure.hmpp.root"
-        ad_file_system_administrators_group = "Domain Join"
-        ad_username                         = "svc_fsx_windows"
-        deployment_type                     = "MULTI_AZ_1"
-        security_group_name                 = "az_hmpp_fsx_sg"
-        storage_capacity                    = 100
-        subnet_ids                          = module.vpc["live_data"].non_tgw_subnet_ids_map.private
-        throughput_capacity                 = 32
-        weekly_maintenance_start_time       = "4:04:00" # thu 4am
-      }
+      # ad-hmpp-fsx = {
+      #   ad_dns_ips = [
+      #     module.ad_fixngo_ip_addresses.azure_fixngo_ip.PCMCW0011,
+      #     module.ad_fixngo_ip_addresses.azure_fixngo_ip.PCMCW0012,
+      #   ]
+      #   ad_domain_name                      = "azure.hmpp.root"
+      #   ad_file_system_administrators_group = "Domain Join"
+      #   ad_username                         = "svc_fsx_windows"
+      #   deployment_type                     = "MULTI_AZ_1"
+      #   security_group_name                 = "az_hmpp_fsx_sg"
+      #   storage_capacity                    = 100
+      #   subnet_ids                          = module.vpc["live_data"].non_tgw_subnet_ids_map.private
+      #   throughput_capacity                 = 32
+      #   weekly_maintenance_start_time       = "4:04:00" # thu 4am
+      # }
     }
 
     route53_resolver_endpoints = {
@@ -923,13 +923,13 @@ locals {
     })
   }
 
-  #ad_fixngo_secret_strings = {
-  #  for key, value in data.aws_secretsmanager_secret_version.this : key => value.secret_string
-  #}
+  ad_fixngo_secret_strings = {
+    for key, value in data.aws_secretsmanager_secret_version.ad_fixngo : key => value.secret_string
+  }
 
-  #ad_fixngo_secret_json = {
-  #  for key, value in local.ad_fixngo_secret_strings : key => jsondecode(value)
-  #}
+  ad_fixngo_secret_json = {
+    for key, value in local.ad_fixngo_secret_strings : key => jsondecode(value)
+  }
 }
 
 data "aws_ami" "ad_fixngo" {
@@ -964,11 +964,11 @@ data "aws_iam_policy_document" "ad_fixngo" {
   }
 }
 
-#data "aws_secretsmanager_secret_version" "ad_fixngo" {
-#  for_each = local.ad_fixngo.secretsmanager_secrets
-#
-#  secret_id = data.aws_secretsmanager_secret.ad_fixngo[each.key].id
-#}
+data "aws_secretsmanager_secret_version" "ad_fixngo" {
+  for_each = local.ad_fixngo.secretsmanager_secrets
+
+  secret_id = aws_secretsmanager_secret.ad_fixngo[each.key].id
+}
 
 resource "aws_iam_policy" "ad_fixngo" {
   for_each = local.ad_fixngo.ec2_iam_policies
@@ -1070,33 +1070,33 @@ resource "aws_instance" "ad_fixngo" {
   })
 }
 
-#resource "aws_fsx_windows_file_system" "ad_fixngo" {
-#  for_each = local.ad_fixngo.fsx_windows_file_systems
-#
-#  automatic_backup_retention_days = 0
-#  deployment_type                 = each.value.deployment_type
-#  kms_key_id                      = module.kms["hmpps"].key_arns["general"]
-#  preferred_subnet_id             = each.value.deployment_type == "MULTI_AZ_1" ? each.value.subnet_ids[0] : null
-#  security_group_ids              = [aws_security_group.ad_fixngo[each.value.security_group_name].id]
-#  skip_final_backup               = true
-#  storage_capacity                = each.value.storage_capacity
-#  subnet_ids                      = each.value.subnet_ids
-#  throughput_capacity             = each.value.throughput_capacity
-#  weekly_maintenance_start_time   = each.value.weekly_maintenance_start_time
-#
-#  self_managed_active_directory {
-#    dns_ips                          = each.value.ad_dns_ips
-#    domain_name                      = each.value.ad_domain_name
-#    file_system_administrators_group = each.value.file_system_administrators_group
-#    password                         = local.ad_fixngo_secret_json["/ad-fixngo/${each.value.ad_domain_name}/passwords"][each.value.ad_username]
-#    username                         = each.value.ad_username
-#  }
-#  tags = merge(local.ad_fixngo.tags, {
-#    Name        = each.key
-#    backup      = "true"
-#    description = "file share for ${each.value.ad_domain_name} domain"
-#  })
-#}
+resource "aws_fsx_windows_file_system" "ad_fixngo" {
+  for_each = local.ad_fixngo.fsx_windows_file_systems
+
+  automatic_backup_retention_days = 0
+  deployment_type                 = each.value.deployment_type
+  kms_key_id                      = module.kms["hmpps"].key_arns["general"]
+  preferred_subnet_id             = each.value.deployment_type == "MULTI_AZ_1" ? each.value.subnet_ids[0] : null
+  security_group_ids              = [aws_security_group.ad_fixngo[each.value.security_group_name].id]
+  skip_final_backup               = true
+  storage_capacity                = each.value.storage_capacity
+  subnet_ids                      = each.value.subnet_ids
+  throughput_capacity             = each.value.throughput_capacity
+  weekly_maintenance_start_time   = each.value.weekly_maintenance_start_time
+
+  self_managed_active_directory {
+    dns_ips                          = each.value.ad_dns_ips
+    domain_name                      = each.value.ad_domain_name
+    file_system_administrators_group = each.value.ad_file_system_administrators_group
+    password                         = local.ad_fixngo_secret_json["/ad-fixngo/${each.value.ad_domain_name}/passwords"][each.value.ad_username]
+    username                         = each.value.ad_username
+  }
+  tags = merge(local.ad_fixngo.tags, {
+    Name        = each.key
+    backup      = "true"
+    description = "file share for ${each.value.ad_domain_name} domain"
+  })
+}
 
 resource "aws_key_pair" "ad_fixngo" {
   for_each = local.ad_fixngo.aws_key_pairs
