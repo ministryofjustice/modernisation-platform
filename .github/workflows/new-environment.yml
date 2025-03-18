@@ -36,7 +36,7 @@ defaults:
 
 jobs:
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@13cdf226e358ae839c27c7c8ab985bf374270418 # v2.0.0
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@13cdf226e358ae839c27c7c8ab985bf374270418 # v2.0.0
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           modernisation_pat_multirepo: ${{ needs.fetch-secrets.outputs.modernisation_pat_multirepo }}
@@ -104,7 +104,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@13cdf226e358ae839c27c7c8ab985bf374270418 # v2.0.0
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -150,7 +150,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@13cdf226e358ae839c27c7c8ab985bf374270418 # v2.0.0
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -194,7 +194,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@13cdf226e358ae839c27c7c8ab985bf374270418 # v2.0.0
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -250,7 +250,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@13cdf226e358ae839c27c7c8ab985bf374270418 # v2.0.0
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -305,7 +305,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@13cdf226e358ae839c27c7c8ab985bf374270418 # v2.0.0
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -361,7 +361,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@13cdf226e358ae839c27c7c8ab985bf374270418 # v2.0.0
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.0
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -417,7 +417,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@13cdf226e358ae839c27c7c8ab985bf374270418 # v2.0.0
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
         with:
           slack_webhooks: ${{ needs.fetch-secrets.outputs.slack_webhooks }}
           gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
@@ -465,19 +465,16 @@ jobs:
           SLACK_WEBHOOKS: ${{ env.SLACK_WEBHOOKS }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
       - name: Validate Notify Template Version
-        env:
-          API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
-          TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
-          EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
         if: steps.environment_json_changes.outputs.files != ''
         run: |
           python <<EOF
           from notifications_python_client.notifications import NotificationsAPIClient
           import sys
+          import os
       
-          api_key = $GOV_UK_NOTIFY_API_KEY
-          template_id = "${{ env.TEMPLATE_ID }}"
-          expected_version = int("${{ env.EXPECTED_TEMPLATE_VERSION }}")
+          api_key = os.getenv('GOV_UK_NOTIFY_API_KEY')
+          template_id = os.getenv('TEMPLATE_ID')
+          expected_version = int(os.environ.get('EXPECTED_TEMPLATE_VERSION'))
     
           client = NotificationsAPIClient(api_key)
           try:
@@ -507,7 +504,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@13cdf226e358ae839c27c7c8ab985bf374270418 # v2.0.0
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
