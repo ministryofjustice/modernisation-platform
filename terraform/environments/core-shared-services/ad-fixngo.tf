@@ -310,6 +310,7 @@ locals {
         ad_domain_name                      = "azure.noms.root"
         ad_file_system_administrators_group = null
         ad_username                         = "svc_join_domain"
+        aliases                             = ["fs.azure.noms.root"]
         deployment_type                     = "SINGLE_AZ_1"
         security_group_name                 = "ad_azure_fsx_sg"
         storage_capacity                    = 100
@@ -325,6 +326,7 @@ locals {
         ad_domain_name                      = "azure.hmpp.root"
         ad_file_system_administrators_group = "AWS FSx Admins"
         ad_username                         = "svc_fsx_windows"
+        aliases                             = ["fs.azure.hmpp.root"]
         deployment_type                     = "MULTI_AZ_1"
         security_group_name                 = "ad_hmpp_fsx_sg"
         storage_capacity                    = 100
@@ -1073,6 +1075,7 @@ resource "aws_instance" "ad_fixngo" {
 resource "aws_fsx_windows_file_system" "ad_fixngo" {
   for_each = local.ad_fixngo.fsx_windows_file_systems
 
+  aliases                         = each.value.aliases
   automatic_backup_retention_days = 0
   deployment_type                 = each.value.deployment_type
   kms_key_id                      = module.kms["hmpps"].key_arns["general"]
