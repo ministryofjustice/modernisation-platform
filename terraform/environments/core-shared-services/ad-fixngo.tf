@@ -932,7 +932,7 @@ locals {
   # since managed_policy_arns argument is now deprecated
   ad_fixngo_ec2_iam_roles_policy_attachment_list = flatten([
     for role_key, role_value in local.ad_fixngo.ec2_iam_roles : [
-      for policy_arn in value.managed_policy_arns : [{
+      for policy_arn in role_value.managed_policy_arns : [{
         key = "${role_key}-${policy_arn}"
         value = {
           iam_role_name = role_key
@@ -1024,7 +1024,7 @@ resource "aws_iam_role_policy_attachment" "ad_fixngo" {
   for_each = local.ad_fixngo_ec2_iam_roles_policy_attachments
 
   role       = aws_iam_role.ad_fixngo[each.value.iam_role_name]
-  policy_arn = try(aws_iam_policy.ad_fixngo[key_or_arn].arn, key_or_arn)
+  policy_arn = try(aws_iam_policy.ad_fixngo[each.value.key_or_arn].arn, each.value.key_or_arn)
 }
 
 resource "aws_iam_instance_profile" "ad_fixngo" {
