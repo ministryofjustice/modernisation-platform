@@ -5,8 +5,6 @@ on:
     paths:
       - 'terraform/github/**'
       - '!**.md'
-      - '.github/workflows/terraform-github.yml'
-      - 'environments/**.json'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
     branches:
       - main
@@ -14,8 +12,6 @@ on:
     paths:
       - 'terraform/github/**'
       - '!**.md'
-      - '.github/workflows/terraform-github.yml'
-      - 'environments/**.json'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
     branches:
       - main

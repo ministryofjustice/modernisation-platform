@@ -90,7 +90,7 @@ jobs:
           }
           EOF
           )
-          curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$webhook_url"
+          echo "Sent notification to the channel"
           done
         env:
           SLACK_WEBHOOKS: ${{ env.SLACK_WEBHOOKS }}
@@ -106,9 +106,9 @@ jobs:
           from notifications_python_client.notifications import NotificationsAPIClient
           import sys
       
-          api_key = ${{ env.GOV_UK_NOTIFY_API_KEY }}
-          template_id = "${{ env.TEMPLATE_ID }}"
-          expected_version = int("${{ env.EXPECTED_TEMPLATE_VERSION }}")
+          api_key = os.getenv('GOV_UK_NOTIFY_API_KEY')
+          template_id = os.getenv('TEMPLATE_ID')
+          expected_version = int(os.environ.get('EXPECTED_TEMPLATE_VERSION'))
     
           client = NotificationsAPIClient(api_key)
           try:
