@@ -1023,7 +1023,7 @@ resource "aws_iam_role" "ad_fixngo" {
 resource "aws_iam_role_policy_attachment" "ad_fixngo" {
   for_each = local.ad_fixngo_ec2_iam_roles_policy_attachments
 
-  role       = aws_iam_role.ad_fixngo[each.value.iam_role_name]
+  role       = aws_iam_role.ad_fixngo[each.value.iam_role_name].name
   policy_arn = try(aws_iam_policy.ad_fixngo[each.value.key_or_arn].arn, each.value.key_or_arn)
 }
 
