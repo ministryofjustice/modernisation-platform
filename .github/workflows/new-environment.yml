@@ -53,7 +53,79 @@ jobs:
           slack_webhooks: ${{ needs.fetch-secrets.outputs.slack_webhooks }}
           gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
-      - name: test
+      - name: Get modified JSON files
+        id: environment_json_changes
         run: |
-         echo ${{ env.GOV_UK_NOTIFY_API_KEY }}
-         echo ${{ env.SLACK_WEBHOOKS }}
+          files=$(git diff --name-only --diff-filter=M @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | base64 )
+          echo "files=$files" >> $GITHUB_OUTPUT
+      - name: Install Python
+        if: steps.environment_json_changes.outputs.files != ''
+        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5.1.1
+        with:
+          python-version: '3.10'
+      - name: Install the client
+        if: steps.environment_json_changes.outputs.files != ''
+        run: pip install notifications-python-client
+      - name: Send notification to Slack
+        if: steps.environment_json_changes.outputs.files != ''
+        run: |
+          DECODED_FILES=$(echo ${{ steps.environment_json_changes.outputs.files }} | base64 --decode)
+          for file in $DECODED_FILES; do
+          FILE_PATH="https://github.com/${GITHUB_REPOSITORY}/blob/main/environments/${file}"
+          slack_channel=$(jq -r '.tags["slack-channel"] // empty' "environments/$file")
+          if [[ -z "$slack_channel" ]]; then
+          echo "No Slack channel specified in the $file or the field does not exist. Skipping."
+          continue
+          fi
+          echo "Slack channel found: $slack_channel"
+          webhook_url=$(echo $SLACK_WEBHOOKS | jq -r --arg channel "$slack_channel" '.[$channel]')
+          if [[ -z "$webhook_url" || "$webhook_url" == "null" ]]; then
+          echo "No webhook URL found for channel $slack_channel. Skipping notification."
+          continue
+          fi
+          echo "Webhook URL found for channel $slack_channel"
+          PAYLOAD=$(cat <<EOF
+          {
+          "text": "The JSON file <${FILE_PATH}|${file}> has been changed."
+          }
+          EOF
+          )
+          curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$webhook_url"
+          done
+        env:
+          SLACK_WEBHOOKS: ${{ env.SLACK_WEBHOOKS }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+      - name: Validate Notify Template Version
+        env:
+          API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
+          TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
+          EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+        if: steps.environment_json_changes.outputs.files != ''
+        run: |
+          python <<EOF
+          from notifications_python_client.notifications import NotificationsAPIClient
+          import sys
+      
+          api_key = $GOV_UK_NOTIFY_API_KEY
+          template_id = "${{ env.TEMPLATE_ID }}"
+          expected_version = int("${{ env.EXPECTED_TEMPLATE_VERSION }}")
+    
+          client = NotificationsAPIClient(api_key)
+          try:
+              template_details = client.get_template(template_id)
+              actual_version = template_details.get("version")
+      
+              if actual_version != expected_version:
+                  print(f"Error: Template version mismatch! Expected: {expected_version}, Actual: {actual_version}")
+                  sys.exit(1)
+      
+              print(f"Template version {actual_version} validated successfully.")
+          except Exception as e:
+              print(f"Failed to fetch template details: {e}")
+              sys.exit(1)
+          EOF
+      - name: Send notification to Email
+        if: steps.environment_json_changes.outputs.files != ''
+        run: |
+          DECODED_FILES=$(echo ${{ steps.environment_json_changes.outputs.files }} | base64 --decode)
+          python ./scripts/json-changes-notifier.py $DECODED_FILES      

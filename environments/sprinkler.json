@@ -26,10 +26,6 @@
           "level": "migration"
         },
         {
-          "sso_group_name": "modernisation-platform",
-          "level": "data-engineer"
-        },
-        {
           "sso_group_name": "modernisation-platform-security",
           "level": "instance-management"
         },
