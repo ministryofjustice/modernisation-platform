@@ -323,7 +323,7 @@ locals {
           module.ad_fixngo_ip_addresses.azure_fixngo_ip.PCMCW0012,
         ]
         ad_domain_name                      = "azure.hmpp.root"
-        ad_file_system_administrators_group = "Domain Join"
+        ad_file_system_administrators_group = "AWS FSx Admins"
         ad_username                         = "svc_fsx_windows"
         deployment_type                     = "MULTI_AZ_1"
         security_group_name                 = "ad_hmpp_fsx_sg"
