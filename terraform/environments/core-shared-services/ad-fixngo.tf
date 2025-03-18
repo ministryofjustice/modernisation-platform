@@ -1015,10 +1015,6 @@ resource "aws_iam_role" "ad_fixngo" {
   max_session_duration = "3600"
   assume_role_policy   = each.value.assume_role_policy
 
-  managed_policy_arns = [
-    for key_or_arn in each.value.managed_policy_arns : try(aws_iam_policy.ad_fixngo[key_or_arn].arn, key_or_arn)
-  ]
-
   tags = merge(local.ad_fixngo.tags, {
     Name = each.key
   })
