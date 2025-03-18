@@ -96,10 +96,6 @@ jobs:
           SLACK_WEBHOOKS: ${{ env.SLACK_WEBHOOKS }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
       - name: Validate Notify Template Version
-        env:
-          API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
-          TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
-          EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
         if: steps.environment_json_changes.outputs.files != ''
         run: |
           python <<EOF

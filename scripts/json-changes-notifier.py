@@ -44,8 +44,8 @@ def main(file_names):
     Args:
         file_names: List of JSON file names.
     """
-    api_key = os.environ["API_KEY"]
-    template_id = os.environ["TEMPLATE_ID"]
+    api_key = os.environ.get("API_KEY")
+    template_id = os.environ.get("TEMPLATE_ID")
     # Create a NotificationsAPIClient instance
     client = NotificationsAPIClient(api_key=api_key)
     # Iterate over each JSON file name provided as arguments
