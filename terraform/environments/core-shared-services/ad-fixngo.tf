@@ -330,9 +330,12 @@ locals {
         deployment_type                     = "MULTI_AZ_1"
         security_group_name                 = "ad_hmpp_fsx_sg"
         storage_capacity                    = 100
-        subnet_ids                          = module.vpc["live_data"].non_tgw_subnet_ids_map.private
-        throughput_capacity                 = 32
-        weekly_maintenance_start_time       = "4:04:00" # thu 4am
+        subnet_ids = [
+          module.vpc["live_data"].non_tgw_subnet_ids_map.private[0],
+          module.vpc["live_data"].non_tgw_subnet_ids_map.private[1],
+        ]
+        throughput_capacity           = 32
+        weekly_maintenance_start_time = "4:04:00" # thu 4am
       }
     }
 
