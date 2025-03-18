@@ -105,6 +105,7 @@ jobs:
           python <<EOF
           from notifications_python_client.notifications import NotificationsAPIClient
           import sys
+          import os
       
           api_key = os.getenv('GOV_UK_NOTIFY_API_KEY')
           template_id = os.getenv('TEMPLATE_ID')
