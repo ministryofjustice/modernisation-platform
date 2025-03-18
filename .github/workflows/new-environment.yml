@@ -106,7 +106,7 @@ jobs:
           from notifications_python_client.notifications import NotificationsAPIClient
           import sys
       
-          api_key = $GOV_UK_NOTIFY_API_KEY
+          api_key = ${{ env.GOV_UK_NOTIFY_API_KEY }}
           template_id = "${{ env.TEMPLATE_ID }}"
           expected_version = int("${{ env.EXPECTED_TEMPLATE_VERSION }}")
     
