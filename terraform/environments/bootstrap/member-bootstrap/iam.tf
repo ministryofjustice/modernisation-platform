@@ -22,16 +22,7 @@ module "member-access-sprinkler" {
   role_name                   = "MemberInfrastructureAccess"
   additional_trust_statements = [data.aws_iam_policy_document.additional_trust_policy.json]
 }
-data "aws_iam_policy_document" "additional_trust_policy" {
-  statement {
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
-    principals {
-      type        = "Service"
-      identifiers = ["malware-protection-plan.guardduty.amazonaws.com"]
-    }
-  }
-}
+
 # lots of SCA ignores and skips on this one as it is the main role allowing members to build most things in the platform
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "member-access" {
@@ -320,7 +311,6 @@ data "aws_iam_policy_document" "member-access" {
     actions = ["iam:PassRole"]
     effect  = "Deny"
     resources = [
-      "arn:aws:iam::*:role/MemberInfrastructureAccess",
       "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/GuardDutyS3MalwareProtectionRole"
     ]
     condition {
