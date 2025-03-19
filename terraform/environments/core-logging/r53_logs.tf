@@ -126,7 +126,7 @@ resource "aws_kms_key" "r53_dns_firewall" {
   description         = "KMS key for DNS Firewall SNS Topic Encryption"
   enable_key_rotation = true
   policy              = data.aws_iam_policy_document.r53_dns_firewall_kms_policy.json
-  tags                = local.tags
+  tags                = merge(local.tags, { Name = "${local.application_name}-r53-kms" })
 }
 
 resource "aws_kms_alias" "r53_dns_firewall" {
