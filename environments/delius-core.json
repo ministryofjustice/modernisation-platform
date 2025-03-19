@@ -8,31 +8,26 @@
         {
           "sso_group_name": "hmpps-migration",
           "level": "sandbox",
-          "nuke": "exclude",
           "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hosting-migrations",
           "level": "sandbox",
-          "nuke": "exclude",
           "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hmpps-dba",
           "level": "developer",
-          "nuke": "exclude",
           "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hmpps-dba",
           "level": "reporting-operations",
-          "nuke": "exclude",
           "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "unilink",
           "level": "developer",
-          "nuke": "exclude",
           "github_action_reviewer": "true"
         },
         {
@@ -40,7 +35,8 @@
           "level": "developer",
           "github_action_reviewer": "false"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
