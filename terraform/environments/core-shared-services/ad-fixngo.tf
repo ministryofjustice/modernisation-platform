@@ -310,6 +310,7 @@ locals {
         ad_domain_name                      = "azure.noms.root"
         ad_file_system_administrators_group = null
         ad_username                         = "svc_join_domain"
+        aliases                             = ["fs.azure.noms.root"]
         deployment_type                     = "SINGLE_AZ_1"
         security_group_name                 = "ad_azure_fsx_sg"
         storage_capacity                    = 100
@@ -317,21 +318,25 @@ locals {
         throughput_capacity                 = 32
         weekly_maintenance_start_time       = "2:04:00" # tue 4am
       }
-      # ad-hmpp-fsx = {
-      #   ad_dns_ips = [
-      #     module.ad_fixngo_ip_addresses.azure_fixngo_ip.PCMCW0011,
-      #     module.ad_fixngo_ip_addresses.azure_fixngo_ip.PCMCW0012,
-      #   ]
-      #   ad_domain_name                      = "azure.hmpp.root"
-      #   ad_file_system_administrators_group = "Domain Join"
-      #   ad_username                         = "svc_fsx_windows"
-      #   deployment_type                     = "MULTI_AZ_1"
-      #   security_group_name                 = "az_hmpp_fsx_sg"
-      #   storage_capacity                    = 100
-      #   subnet_ids                          = module.vpc["live_data"].non_tgw_subnet_ids_map.private
-      #   throughput_capacity                 = 32
-      #   weekly_maintenance_start_time       = "4:04:00" # thu 4am
-      # }
+      ad-hmpp-fsx = {
+        ad_dns_ips = [
+          module.ad_fixngo_ip_addresses.azure_fixngo_ip.PCMCW0011,
+          module.ad_fixngo_ip_addresses.azure_fixngo_ip.PCMCW0012,
+        ]
+        ad_domain_name                      = "azure.hmpp.root"
+        ad_file_system_administrators_group = "AWS FSx Admins"
+        ad_username                         = "svc_fsx_windows"
+        aliases                             = ["fs.azure.hmpp.root"]
+        deployment_type                     = "MULTI_AZ_1"
+        security_group_name                 = "ad_hmpp_fsx_sg"
+        storage_capacity                    = 100
+        subnet_ids = [
+          module.vpc["live_data"].non_tgw_subnet_ids_map.private[0],
+          module.vpc["live_data"].non_tgw_subnet_ids_map.private[1],
+        ]
+        throughput_capacity           = 32
+        weekly_maintenance_start_time = "4:04:00" # thu 4am
+      }
     }
 
     route53_resolver_endpoints = {
@@ -923,10 +928,26 @@ locals {
     })
   }
 
+  # jiggery-pokery to get map of all policy attachments from ec2_iam_roles
+  # since managed_policy_arns argument is now deprecated
+  ad_fixngo_ec2_iam_roles_policy_attachment_list = flatten([
+    for role_key, role_value in local.ad_fixngo.ec2_iam_roles : [
+      for policy_arn in role_value.managed_policy_arns : [{
+        key = "${role_key}-${policy_arn}"
+        value = {
+          iam_role_name = role_key
+          key_or_arn    = policy_arn
+        }
+      }]
+    ]
+  ])
+  ad_fixngo_ec2_iam_roles_policy_attachments = {
+    for item in local.ad_fixngo_ec2_iam_roles_policy_attachment_list : item.key => item.value
+  }
+
   ad_fixngo_secret_strings = {
     for key, value in data.aws_secretsmanager_secret_version.ad_fixngo : key => value.secret_string
   }
-
   ad_fixngo_secret_json = {
     for key, value in local.ad_fixngo_secret_strings : key => jsondecode(value)
   }
@@ -994,13 +1015,16 @@ resource "aws_iam_role" "ad_fixngo" {
   max_session_duration = "3600"
   assume_role_policy   = each.value.assume_role_policy
 
-  managed_policy_arns = [
-    for key_or_arn in each.value.managed_policy_arns : try(aws_iam_policy.ad_fixngo[key_or_arn].arn, key_or_arn)
-  ]
-
   tags = merge(local.ad_fixngo.tags, {
     Name = each.key
   })
+}
+
+resource "aws_iam_role_policy_attachment" "ad_fixngo" {
+  for_each = local.ad_fixngo_ec2_iam_roles_policy_attachments
+
+  role       = aws_iam_role.ad_fixngo[each.value.iam_role_name].name
+  policy_arn = try(aws_iam_policy.ad_fixngo[each.value.key_or_arn].arn, each.value.key_or_arn)
 }
 
 resource "aws_iam_instance_profile" "ad_fixngo" {
@@ -1073,6 +1097,7 @@ resource "aws_instance" "ad_fixngo" {
 resource "aws_fsx_windows_file_system" "ad_fixngo" {
   for_each = local.ad_fixngo.fsx_windows_file_systems
 
+  aliases                         = each.value.aliases
   automatic_backup_retention_days = 0
   deployment_type                 = each.value.deployment_type
   kms_key_id                      = module.kms["hmpps"].key_arns["general"]
