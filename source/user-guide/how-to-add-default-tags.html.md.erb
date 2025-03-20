@@ -1,0 +1,53 @@
+---
+owner_slack: "#modernisation-platform"
+title: How to Add Default Tags
+last_reviewed_on: 2025-03-20
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+## Background
+As part of keeping track of our infrastructure we can add default tags to AWS providers, this will mean that at if people forget to add tags that at least we can have a few basic tags such as this resource was created in terraform.
+
+New tag: business-unit has been introduced org-wide for cost allocation for better reporting.
+
+This will need to be applied as a default tag to all MP accounts (including member accounts).
+
+## How to Add Default Tags
+
+To add default tags to AWS providers, you can use the following Terraform code:
+
+```hcl
+provider "aws" {
+  region = "eu-west-2"
+  default_tags {
+    tags = { tags = local.tags
+    }
+  }
+}
+```
+
+by simply adding ```default_tags {
+  tags = { tags = local.tags
+  }
+  ``` to your provider blocks. This will add the tags to all resources created by that provider.
+
+## Important Note on Modules
+  
+  When adding default tags, it's important to ensure they are applied consistently across all resources, including those created by modules. While default tags are reflected in the `tags_all` value for locally-created resources during a Terraform plan, this may not always be the case for resources created by modules.
+  
+  For example, when using the `modernisation-platform-terraform-ecs-cluster` module, removing the `tags {}` variable did not result in the default tags being applied automatically.
+  
+### Recommendation
+  
+  To ensure default tags are applied consistently, you can take a light-touch approach by adding the `default_tags {}` block to the provider statements and referencing the local tags within it. This ensures that all resources, including those created by modules, inherit the default tags.
