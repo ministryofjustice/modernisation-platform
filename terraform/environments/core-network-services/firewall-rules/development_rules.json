@@ -608,16 +608,16 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "mp_to_cica_tariff_uat": {
+  "ap-ingest-dev_to_cica_tariff_uat": {
     "action": "PASS",
-    "source_ip": "${mp-development-test}",
+    "source_ip": "${analytical-platform-ingest-dev}",
     "destination_ip": "${cica-aws-uat-a}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "mp-dev-test_to_cica_tariff_uat_icmp": {
+  "ap-ingest-dev-test_to_cica_tariff_uat_icmp": {
     "action": "PASS",
-    "source_ip": "${mp-development-test}",
+    "source_ip": "${analytical-platform-ingest-dev}",
     "destination_ip": "${cica-aws-uat-a}",
     "destination_port": "ANY",
     "protocol": "ICMP"
