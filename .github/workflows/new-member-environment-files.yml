@@ -39,7 +39,7 @@ jobs:
         with:
           github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }} # use this token as writing to a different repo
           git_path: "terraform/environments"
-          remote_repository: "modernisation-platform-environments"
+          remote_repository: "ministryofjustice/modernisation-platform-environments"
           remote_repository_path: "./modernisation-platform-environments"
           pr_title: "New files for terraform/environments"
           pr_body: "> This PR was automatically created via a GitHub action workflow 🤖"
