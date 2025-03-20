@@ -18,6 +18,7 @@ locals {
   other_cidr_ranges = {
     analytical-platform-airflow-dev  = "10.200.0.0/16"
     analytical-platform-airflow-prod = "10.201.0.0/16"
+    analytical-platform-ingest-dev   = "10.26.128.0/23"
     data-engineering-dev             = "172.24.0.0/16"
     data-engineering-prod            = "172.25.0.0/16"
     data-engineering-stage           = "172.26.0.0/16"
