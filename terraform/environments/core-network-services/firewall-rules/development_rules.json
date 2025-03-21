@@ -608,6 +608,20 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
+  "ap-ingest-dev_to_cica_tariff_uat": {
+    "action": "PASS",
+    "source_ip": "${analytical-platform-ingest-dev}",
+    "destination_ip": "${cica-aws-uat-a}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "ap-ingest-dev-test_to_cica_tariff_uat_icmp": {
+    "action": "PASS",
+    "source_ip": "${analytical-platform-ingest-dev}",
+    "destination_ip": "${cica-aws-uat-a}",
+    "destination_port": "ANY",
+    "protocol": "ICMP"
+  },
   "mojo_alz_to_laa_development": {
     "action": "PASS",
     "source_ip": "${mojo-azure-landing-zone}",

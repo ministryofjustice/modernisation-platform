@@ -4,34 +4,23 @@ locals {
 }
 
 module "member-access" {
-  count                       = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
-  source                      = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
-  account_id                  = data.aws_ssm_parameter.modernisation_platform_account_id.value
-  additional_trust_roles      = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
-  policy_arn                  = aws_iam_policy.member-access[0].id
-  role_name                   = "MemberInfrastructureAccess"
-  additional_trust_statements = [data.aws_iam_policy_document.additional_trust_policy.json]
+  count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
+  account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
+  additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  policy_arn             = aws_iam_policy.member-access[0].id
+  role_name              = "MemberInfrastructureAccess"
 }
 
 module "member-access-sprinkler" {
-  count                       = (terraform.workspace == "sprinkler-development") ? 1 : 0
-  source                      = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
-  account_id                  = data.aws_ssm_parameter.modernisation_platform_account_id.value
-  additional_trust_roles      = [data.aws_iam_role.sprinkler_oidc[0].arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
-  policy_arn                  = aws_iam_policy.member-access[0].id
-  role_name                   = "MemberInfrastructureAccess"
-  additional_trust_statements = [data.aws_iam_policy_document.additional_trust_policy.json]
+  count                  = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
+  account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
+  additional_trust_roles = [data.aws_iam_role.sprinkler_oidc[0].arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  policy_arn             = aws_iam_policy.member-access[0].id
+  role_name              = "MemberInfrastructureAccess"
 }
-data "aws_iam_policy_document" "additional_trust_policy" {
-  statement {
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
-    principals {
-      type        = "Service"
-      identifiers = ["malware-protection-plan.guardduty.amazonaws.com"]
-    }
-  }
-}
+
 # lots of SCA ignores and skips on this one as it is the main role allowing members to build most things in the platform
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "member-access" {
@@ -177,7 +166,6 @@ data "aws_iam_policy_document" "member-access" {
       "route53resolver:*",
       "s3:*",
       "secretsmanager:*",
-      "securityhub:BatchUpdateFindings",
       "ses:*",
       "shield:*",
       "signer:*",
@@ -320,7 +308,6 @@ data "aws_iam_policy_document" "member-access" {
     actions = ["iam:PassRole"]
     effect  = "Deny"
     resources = [
-      "arn:aws:iam::*:role/MemberInfrastructureAccess",
       "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/GuardDutyS3MalwareProtectionRole"
     ]
     condition {

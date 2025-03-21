@@ -274,6 +274,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "secretsmanager:UpdateSecret",
       "secretsmanager:RestoreSecret",
       "secretsmanager:RotateSecret",
+      "securityhub:BatchUpdateFindings",
       "servicequotas:*",
       "ses:DeleteSuppressedDestination",
       "ses:PutAccountDetails",
