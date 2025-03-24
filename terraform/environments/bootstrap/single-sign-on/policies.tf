@@ -651,16 +651,6 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
     ]
     resources = ["*"]
   }
-  statement {
-    sid    = "DetectiveDescribeOrganizationConfiguration"
-    effect = "Allow"
-    actions = [
-      "detective:DescribeOrganizationConfiguration"
-    ]
-    resources = [
-      "arn:aws:detective:eu-west-2:245753150946:graph:95e6ae38bd964bd3a9d4d60e0afd18db"
-    ]
-  }
 
 }
 
