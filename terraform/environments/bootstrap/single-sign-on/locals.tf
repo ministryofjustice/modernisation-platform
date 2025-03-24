@@ -2,7 +2,15 @@
 data "aws_caller_identity" "modernisation-platform" {
 }
 
+data "aws_organizations_account" "organisation-security-account" {
+  name = "organisation-security" # Replace with the name of the account
+}
+
 locals {
+
+  account_ids = {
+    detective_account = data.aws_organizations_account.organisation-security-account.id
+  }
 
   app_name = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, "/-([[:alnum:]]+)$/", ""))
 
