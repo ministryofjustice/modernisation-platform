@@ -651,7 +651,16 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
     ]
     resources = ["*"]
   }
-
+  statement {
+    sid    = "DetectiveDescribeOrganizationConfiguration"
+    effect = "Allow"
+    actions = [
+      "detective:*"
+    ]
+    resources = [
+      "arn:aws:detective:eu-west-2:${local.environment_management.account_ids["organisation-security"]}:graph:95e6ae38bd964bd3a9d4d60e0afd18db"
+    ]
+  }
 }
 
 # sandbox policy - member SSO and collaborators, development accounts only
