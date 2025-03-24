@@ -7,12 +7,12 @@
       "access": [
         {
           "sso_group_name": "hosting-migrations",
-          "level": "sandbox",
+          "level": "developer",
           "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "studio-webops",
-          "level": "sandbox",
+          "level": "developer",
           "github_action_reviewer": "true"
         },
         {
@@ -24,7 +24,6 @@
           "level": "developer"
         }
       ],
-      "nuke": "rebuild"
     },
     {
       "name": "test",
