@@ -23,31 +23,26 @@ iterate_environments_bootstrap() {
 # set friendly Parameter names
 BOOTSTRAP_TYPE="${1}"  # this value can equal (delegate-access, secure-baselines, single-sign-on or member-bootstrap)
 
+# List all state files once
+aws s3api list-objects-v2 --bucket modernisation-platform-terraform-state --prefix "environments/bootstrap/${BOOTSTRAP_TYPE}/" --query 'Contents[].Key' --output text | tr -s '[:space:]' '\n' > ${STATE_CACHE_DIR}/bootstrap_state_files.txt
 
 # Loop through each application json file
-for JSON_FILE in ${git_dir}/environments/*.json
-do
-APPLICATION=`basename "${JSON_FILE}" .json`
+for JSON_FILE in ${git_dir}/environments/*.json; do
+  APPLICATION=`basename "${JSON_FILE}" .json`
 
-  # Loop through each environment for specific application
-  for ENV in `cat "${JSON_FILE}" | jq -r --arg FILENAME "${APPLICATION}" '.environments[].name'`
-  do
-    # Check if state file exists in S3
-      aws s3api head-object --bucket modernisation-platform-terraform-state --key "environments/bootstrap/${BOOTSTRAP_TYPE}/${APPLICATION}-${ENV}/terraform.tfstate"  > /dev/null 2>&1
-      RETURN_CODE="${?}"
-
-    if [[ "${RETURN_CODE}" -ne 0 ]]
-    then
-      TERRAFORM_PATH="${git_dir}/terraform/environments/bootstrap/${BOOTSTRAP_TYPE}"
-      echo -en "BOOTSTRAP - ${BOOTSTRAP_TYPE} - ${APPLICATION}-${ENV} - ${YELLOW}CREATING${NORMAL}\n"
-      terraform -chdir="${TERRAFORM_PATH}" init > /dev/null
-      terraform -chdir="${TERRAFORM_PATH}" workspace new "${APPLICATION}-${ENV}"
-    else
-      echo -en "BOOTSTRAP - ${BOOTSTRAP_TYPE} - ${APPLICATION}-${ENV} - ${GREEN}EXISTS${NORMAL}\n"
-    fi
-
+  for ENV in $(jq -r --arg FILENAME "${APPLICATION}" '.environments[].name' "${JSON_FILE}"); do
+      STATE_FILE="environments/bootstrap/${BOOTSTRAP_TYPE}/${APPLICATION}-${ENV}/terraform.tfstate"
+      
+      if grep -qFx "${STATE_FILE}" ${STATE_CACHE_DIR}/bootstrap_state_files.txt; then
+        echo -en "BOOTSTRAP - ${BOOTSTRAP_TYPE} - ${APPLICATION}-${ENV} - ${GREEN}EXISTS${NORMAL}\n"
+      else
+        TERRAFORM_PATH="${git_dir}/terraform/environments/bootstrap/${BOOTSTRAP_TYPE}"
+        echo -en "BOOTSTRAP - ${BOOTSTRAP_TYPE} - ${APPLICATION}-${ENV} - ${YELLOW}CREATING${NORMAL}\n"
+        terraform -chdir="${TERRAFORM_PATH}" init > /dev/null
+        terraform -chdir="${TERRAFORM_PATH}" workspace new "${APPLICATION}-${ENV}"
+      fi
+    done
   done
-done
 }
 
 create_tmp_terraform_files() {
@@ -74,48 +69,58 @@ iterate_environments_member() {
 ENVIRONMENT_TYPE="${1}"  # this value can equal (* or an application name)
 
 # Loop through each application json file
-for JSON_FILE in ${git_dir}/environments/${ENVIRONMENT_TYPE}.json
-do
-  APPLICATION=`basename "${JSON_FILE}" .json`
+# List all state files with clean formatting
+aws s3api list-objects-v2 --bucket modernisation-platform-terraform-state --prefix "environments/accounts/" --query 'Contents[].Key' --output text | tr -s '[:space:]' '\n' > ${STATE_CACHE_DIR}/core_state_files.txt
+aws s3api list-objects-v2 --bucket modernisation-platform-terraform-state --prefix "environments/members/" --query 'Contents[].Key' --output text | tr -s '[:space:]' '\n' > ${STATE_CACHE_DIR}/member_state_files.txt
 
-  # Loop through each environment for specific application to check if state file exists in S3
-  for ENV in `cat "${JSON_FILE}" | jq -r --arg FILENAME "${APPLICATION}" '.environments[].name'`
-  do
-    # Check if state file exists in S3 for modernisation-platform repository
-    aws s3api head-object --bucket modernisation-platform-terraform-state --key "environments/accounts/${APPLICATION}/${APPLICATION}-${ENV}/terraform.tfstate" > /dev/null 2>&1
-    RETURN_CODE_CORE_REPO="${?}"
-    # Check if state file exists in S3 for modernisation-platform-environments repository
-    aws s3api head-object --bucket modernisation-platform-terraform-state --key "environments/members/${APPLICATION}/${APPLICATION}-${ENV}/terraform.tfstate" > /dev/null 2>&1
-    RETURN_CODE_MEMBER_REPO="${?}"
+for JSON_FILE in ${git_dir}/environments/${ENVIRONMENT_TYPE}.json; do
+  APPLICATION=$(basename "${JSON_FILE}" .json)
+  ACCOUNT_TYPE=$(jq -r '."account-type"' "${JSON_FILE}")
+
+  for ENV in $(jq -r --arg FILENAME "${APPLICATION}" '.environments[].name' "${JSON_FILE}"); do
+    CORE_STATE_FILE="environments/accounts/${APPLICATION}/${APPLICATION}-${ENV}/terraform.tfstate"
+    MEMBER_STATE_FILE="environments/members/${APPLICATION}/${APPLICATION}-${ENV}/terraform.tfstate"
 
     create_tmp_terraform_files
 
-    # Creating MEMBER account state file for modernisation-platform if it does not exist
-    TERRAFORM_PATH="${git_dir}/tmp"
-    if [[ "${RETURN_CODE_CORE_REPO}" -ne 0 ]]
-    then
+    # Core repo check
+    if grep -qFx "${CORE_STATE_FILE}" ${STATE_CACHE_DIR}/core_state_files.txt; then
+      echo -en "MEMBER ACCOUNT IN CORE REPO      - ${APPLICATION}-${ENV} - ${GREEN}EXISTS${NORMAL}\n"
+    else
+      TERRAFORM_PATH="${git_dir}/tmp"
       echo -en "MEMBER ACCOUNT IN CORE REPO      - ${APPLICATION}-${ENV} - ${YELLOW}CREATING${NORMAL}\n"
       terraform -chdir="${TERRAFORM_PATH}" init > /dev/null
       terraform -chdir="${TERRAFORM_PATH}" workspace new "${APPLICATION}-${ENV}"
-    else
-      echo -en "MEMBER ACCOUNT IN CORE REPO      - ${APPLICATION}-${ENV} - ${GREEN}EXISTS${NORMAL}\n"
     fi
 
-    # Creating MEMBER account state file for modernisation-platform-environments if it does not exist
+    # Member repo check
     create_tmp_terraform_files environments-repo
-
-    ACCOUNT_TYPE=$(jq -r '."account-type"' ${JSON_FILE})
-    if [[ "${RETURN_CODE_MEMBER_REPO}" -ne 0 && "${ACCOUNT_TYPE}" == "member" ]]
-    then
+      
+    if grep -qFx "${MEMBER_STATE_FILE}" ${STATE_CACHE_DIR}/member_state_files.txt; then
+      [[ ${ACCOUNT_TYPE} == "member" ]] && RESPONSE_TEXT="EXISTS" || RESPONSE_TEXT="CORE ACCOUNT - NOT REQUIRED IN MEMBER REPO"
+      echo -en "MEMBER ACCOUNT IN ENVIRONMENTS REPO - ${APPLICATION}-${ENV} - ${GREEN}${RESPONSE_TEXT}${NORMAL}\n"
+    elif [[ "${ACCOUNT_TYPE}" == "member" ]]; then
+      TERRAFORM_PATH="${git_dir}/tmp"
       echo -en "MEMBER ACCOUNT IN ENVIRONMENTS REPO - ${APPLICATION}-${ENV} - ${YELLOW}CREATING${NORMAL}\n"
       terraform -chdir="${TERRAFORM_PATH}" init > /dev/null
       terraform -chdir="${TERRAFORM_PATH}" workspace new "${APPLICATION}-${ENV}"
-    else
-      [[ ${ACCOUNT_TYPE} == "member" ]] && RESPONSE_TEXT="EXISTS" || RESPONSE_TEXT="CORE ACCOUNT - NOT REQUIRED IN MEMBER REPO"
-      echo -en "MEMBER ACCOUNT IN ENVIRONMENTS REPO - ${APPLICATION}-${ENV} - ${GREEN}${RESPONSE_TEXT}${NORMAL}\n"
     fi
   done
 done
+}
+
+setup_directories() {
+  # Create state cache directory if it doesn't exist
+  if [ ! -d "${STATE_CACHE_DIR}" ]; then
+      mkdir -p "${STATE_CACHE_DIR}"
+  fi
+}
+
+cleanup() {
+  # Only clean up state cache if it exists
+  if [ -d "${STATE_CACHE_DIR}" ]; then
+      rm -rf "${STATE_CACHE_DIR}"
+  fi
 }
 
 main() {
@@ -124,6 +129,12 @@ REQUEST_VALUE="${1}"  # this value can equal (bootstrap, all-environments or an 
 
 # Set root path to repository
 git_dir="$( git rev-parse --show-toplevel )"
+
+STATE_CACHE_DIR="${git_dir}/.state_cache"
+
+# Setup directories once at the start
+setup_directories
+trap cleanup EXIT
 
 # Determine workspace build type
 case "${REQUEST_VALUE}" in
