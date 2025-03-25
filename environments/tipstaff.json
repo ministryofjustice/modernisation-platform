@@ -6,10 +6,9 @@
       "access": [
         {
           "sso_group_name": "dts-legacy",
-          "level": "sandbox"
+          "level": "developer"
         }
-      ],
-      "nuke": "rebuild"
+      ]
     },
     {
       "name": "preproduction",
