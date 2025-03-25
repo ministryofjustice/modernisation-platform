@@ -11,7 +11,7 @@ data "aws_organizations_organizational_units" "platforms_architecture" {
 }
 
 data "aws_organizations_accounts" "organisation_security_accounts" {
-  parent_id = join("", [for ou in data.aws_organizations_organizational_units.organisation_security_ou.children : ou.id if ou.name == "Organisation Security"])
+  parent_id = join("", [for ou in data.aws_organizations_organizational_units.root_ous.children : ou.id if ou.name == "Organisation Security"])
 }
 
 data "aws_caller_identity" "current" {}
