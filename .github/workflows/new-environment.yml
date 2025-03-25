@@ -8,7 +8,6 @@ on:
       - '.github/workflows/new-environment.yml'
       - 'terraform/environments/*.tf'
       - 'environments/**.json'
-      - 'terraform/environments/bootstrap/**'
       - '!**.md'
   pull_request:
     branches:
