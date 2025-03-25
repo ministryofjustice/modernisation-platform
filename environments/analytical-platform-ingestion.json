@@ -41,6 +41,12 @@
       ]
     }
   ],
+  "components": [
+    {
+      "name": "transfer-family",
+      "sso_group_name": "analytical-platform"
+    }
+  ],
   "tags": {
     "application": "analytical-platform-ingestion",
     "business-unit": "Platforms",
