@@ -1,5 +1,11 @@
 {
   "account-type": "member",
+  "components": [
+    {
+      "name": "transfer-family",
+      "sso_group_name": "analytical-platform"
+    }
+  ],
   "codeowners": ["analytical-platform-engineers"],
   "github_action_reviewers": ["analytical-platform-engineers"],
   "isolated-network": "true",
@@ -39,12 +45,6 @@
           "level": "security-audit"
         }
       ]
-    }
-  ],
-  "components": [
-    {
-      "name": "transfer-family",
-      "sso_group_name": "analytical-platform"
     }
   ],
   "tags": {
