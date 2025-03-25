@@ -1,16 +1,12 @@
 # This data sources allows us to get the Modernisation Platform account information for use elsewhere
 data "aws_caller_identity" "modernisation-platform" {
 }
-
-data "aws_organizations_account" "organisation-security-account" {
-  name = "organisation-security" # Replace with the name of the account
+data "aws_secretsmanager_secret_version" "organisation_security_id" {
+  secret_id = "organisation_security_id" # Name of the secret in AWS Secrets Manager
 }
-
 locals {
 
-  account_ids = {
-    detective_account = data.aws_organizations_account.organisation-security-account.id
-  }
+  organisation_security_account_id = jsondecode(data.aws_secretsmanager_secret_version.organisation_security_id.secret_string)["organisation_security_id"]
 
   app_name = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, "/-([[:alnum:]]+)$/", ""))
 

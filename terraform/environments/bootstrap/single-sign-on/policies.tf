@@ -658,7 +658,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "detective:*"
     ]
     resources = [
-      "arn:aws:detective:eu-west-2:${local.account_ids["detective_account"]}:graph:95e6ae38bd964bd3a9d4d60e0afd18db"
+      "arn:aws:detective:eu-west-2:${local.organisation_security_account_id}:graph:95e6ae38bd964bd3a9d4d60e0afd18db"
     ]
   }
 }
