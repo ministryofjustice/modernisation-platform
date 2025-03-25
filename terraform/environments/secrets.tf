@@ -17,14 +17,7 @@ resource "aws_secretsmanager_secret_version" "environment_management" {
   secret_id = aws_secretsmanager_secret.environment_management.id
   secret_string = jsonencode(merge(
     local.environment_management,
-    {
-      account_ids = merge(
-        module.environments.environment_account_ids,
-        {
-          organisation_security_account_id = local.organisation_security_account_id
-        }
-      )
-    }
+    { account_ids : module.environments.environment_account_ids }
   ))
   depends_on = [data.aws_secretsmanager_secret_version.environment_management]
 }
