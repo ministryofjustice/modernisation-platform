@@ -2,6 +2,7 @@
 data "aws_caller_identity" "modernisation-platform" {
 }
 data "aws_secretsmanager_secret_version" "organisation_security_id" {
+  provider  = aws.modernisation-secrets-read
   secret_id = "organisation_security_id" # Name of the secret in AWS Secrets Manager
 }
 locals {
