@@ -6,8 +6,7 @@
       "access": [
         {
           "sso_group_name": "hmpps-digital-prison-reporting",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "sandbox"
         },
         {
           "sso_group_name": "hmpps-digital-prison-reporting",
@@ -25,7 +24,8 @@
           "sso_group_name": "digital-prisons-reporting-development-data-engineer",
           "level": "data-engineer"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",

@@ -6,10 +6,10 @@
       "access": [
         {
           "sso_group_name": "cica-extract-tool-admins",
-          "level": "sandbox",
-          "nuke": "rebuild"
+          "level": "sandbox"
         }
-      ]
+      ],
+      "nuke": "rebuild"
     }
   ],
   "tags": {

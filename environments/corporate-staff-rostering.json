@@ -6,13 +6,11 @@
       "access": [
         {
           "sso_group_name": "hosting-migrations",
-          "level": "sandbox",
-          "nuke": "rebuild"
+          "level": "developer"
         },
         {
           "sso_group_name": "studio-webops",
-          "level": "sandbox",
-          "nuke": "rebuild"
+          "level": "developer"
         },
         {
           "sso_group_name": "azure-aws-sso-digital-studio-operations",

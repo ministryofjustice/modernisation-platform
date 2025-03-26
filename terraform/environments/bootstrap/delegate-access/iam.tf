@@ -10,6 +10,33 @@ module "cross-account-access" {
     [
       "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions"
     ],
-    terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : []
+    terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : [],
+    length(regexall("(development|test)$", terraform.workspace)) > 0 ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/github-actions-dev-test"] : [],
+    terraform.workspace == "core-vpc-sandbox" ? [
+      "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-dev-test",
+      "arn:aws:iam::${local.environment_management.account_ids["cooker-development"]}:role/github-actions-dev-test"
+    ] : []
   )
+  additional_trust_statements = contains(["core-network-services-production", "core-vpc-test", "core-vpc-development"], terraform.workspace) ? [data.aws_iam_policy_document.additional_trust_policy.json] : []
+}
+
+data "aws_iam_policy_document" "additional_trust_policy" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/github-actions-dev-test"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+  }
 }

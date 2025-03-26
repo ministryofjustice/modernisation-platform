@@ -18,6 +18,7 @@ locals {
   other_cidr_ranges = {
     analytical-platform-airflow-dev  = "10.200.0.0/16"
     analytical-platform-airflow-prod = "10.201.0.0/16"
+    analytical-platform-ingest-dev   = "10.26.128.0/23"
     data-engineering-dev             = "172.24.0.0/16"
     data-engineering-prod            = "172.25.0.0/16"
     data-engineering-stage           = "172.26.0.0/16"
@@ -25,7 +26,7 @@ locals {
     atos_arkf_ras                    = "10.176.0.0/16" # for DOM1 devices connected to Cisco RAS VPN
     cloud-platform                   = "172.20.0.0/16"
     dom1-domain-controllers          = "10.172.68.146/29"
-    global-protect                   = "10.185.0.0/16"
+    global-protect                   = "10.184.0.0/14"
     i2n                              = "10.110.0.0/16"
     moj-core-azure-1                 = "10.50.25.0/27"
     moj-core-azure-2                 = "10.50.26.0/24"
@@ -97,6 +98,7 @@ locals {
     cica-onprem-uat       = "192.168.4.0/24"
     cica-onprem-prod      = "10.2.30.0/24"
     cica-end-user-devices = "10.9.14.0/23"
+    cica-ras-nat          = "10.7.14.224/28"
 
 
 

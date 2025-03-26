@@ -205,6 +205,7 @@ data "archive_file" "lambda_zip" {
 resource "aws_kms_key" "athena_logging" {
   enable_key_rotation = true
   policy              = data.aws_iam_policy_document.athena_logging.json
+  tags                = { Name = "${local.application_name}-athena-kms" }
 }
 
 resource "aws_kms_alias" "athena_logging" {

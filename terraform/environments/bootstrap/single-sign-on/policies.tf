@@ -274,6 +274,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "secretsmanager:UpdateSecret",
       "secretsmanager:RestoreSecret",
       "secretsmanager:RotateSecret",
+      "securityhub:BatchUpdateFindings",
       "servicequotas:*",
       "ses:DeleteSuppressedDestination",
       "ses:PutAccountDetails",
@@ -453,7 +454,8 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "states:RedriveExecution",
       "s3:PutBucketNotificationConfiguration",
       "s3:GetBucketOwnershipControls",
-      "s3:PutObjectAcl"
+      "s3:PutObjectAcl",
+      "s3tables:*"
     ]
     resources = ["*"]
   }
@@ -585,6 +587,8 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "datasync:*",
       "dbqms:*",
       "discovery:*",
+      "detective:*",
+      "graph:*",
       "dlm:*",
       "dms:*",
       "drs:*",
@@ -647,6 +651,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
     ]
     resources = ["*"]
   }
+
 }
 
 # sandbox policy - member SSO and collaborators, development accounts only

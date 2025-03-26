@@ -6,15 +6,14 @@
       "access": [
         {
           "sso_group_name": "hmpps-electronic-monitoring-data-store",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "sandbox"
         },
         {
           "sso_group_name": "azure-aws-sso-electronic-monitoring-data",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "sandbox"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",

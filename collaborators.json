@@ -2,7 +2,7 @@
   "users": [
     {
       "username": "test-user-1",
-      "github-username": "test-git-1",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "sprinkler-development",
@@ -319,16 +319,6 @@
       ]
     },
     {
-      "username": "yordi.tak",
-      "github-username": "yorditak",
-      "accounts": [
-        {
-          "account-name": "nomis-test",
-          "access": "instance-management"
-        }
-      ]
-    },
-    {
       "username": "chris.keep",
       "github-username": "iamchriskeep",
       "accounts": [
@@ -340,7 +330,7 @@
     },
     {
       "username": "carl.last",
-      "github-username": "carldevcap",
+      "github-username": "CarlDevCap",
       "accounts": [
         {
           "account-name": "oasys-development",
@@ -401,12 +391,22 @@
           "access": "developer"
         },
         {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "reporting-operations"
+        },
+        {
           "account-name": "youth-justice-app-framework-preproduction",
           "access": "developer"
+        },
+        { "account-name": "youth-justice-app-framework-preproduction",
+          "access": "reporting-operations"
         },
         {
           "account-name": "youth-justice-app-framework-production",
           "access": "developer"
+        },
+        { "account-name": "youth-justice-app-framework-production",
+          "access": "reporting-operations"
         },
         {
           "account-name": "youth-justice-networking-production",
@@ -427,6 +427,25 @@
           "access": "developer"
         },
         {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "reporting-operations"
+        }, 
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "developer"
+        },
+        { "account-name": "youth-justice-app-framework-preproduction",
+          "access": "reporting-operations"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "reporting-operations"
+        },
+        {
           "account-name": "youth-justice-networking-production",
           "access": "developer"
         }
@@ -445,9 +464,29 @@
           "access": "developer"
         },
         {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "reporting-operations"
+        },        
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "reporting-operations"
+        },        
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "reporting-operations"
+        },
+        {
           "account-name": "youth-justice-networking-production",
           "access": "developer"
-        }
+        }        
       ]
     },
     {
@@ -460,6 +499,14 @@
         },
         {
           "account-name": "youth-justice-app-framework-test",
+          "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
           "access": "developer"
         },
         {
@@ -754,7 +801,7 @@
     },
     {
       "username": "toby.petty",
-      "github-username": "staberinde",
+      "github-username": "Staberinde",
       "accounts": [
         {
           "account-name": "analytical-platform-ingestion-development",

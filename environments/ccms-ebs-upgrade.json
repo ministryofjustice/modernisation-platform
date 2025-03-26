@@ -4,6 +4,10 @@
     {
       "name": "anonymisation",
       "sso_group_name": "laa-ccms-migration-team"
+    },
+    {
+      "name": "sandbox",
+      "sso_group_name": "laa-ccms-migration-team"
     }
   ],
   "environments": [
@@ -12,10 +16,10 @@
       "access": [
         {
           "sso_group_name": "laa-ccms-migration-team",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "sandbox"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",

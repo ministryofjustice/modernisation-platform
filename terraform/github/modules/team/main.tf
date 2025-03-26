@@ -50,11 +50,3 @@ resource "github_team_membership" "members" {
 
   depends_on = [github_team_membership.ci]
 }
-
-# Repositories to give access to
-resource "github_team_repository" "default" {
-  for_each   = var.repositories
-  team_id    = github_team.default.id
-  repository = each.value
-  permission = "admin"
-}

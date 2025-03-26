@@ -69,6 +69,55 @@ resource "pagerduty_slack_connection" "security_hub" {
   }
 }
 
+resource "pagerduty_service" "security_hub_members" {
+  name                    = "Security Hub Alerts - Modernisation Platform Member Accounts"
+  description             = "Security Hub Alerts - Member Accounts"
+  auto_resolve_timeout    = 14400
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.low_priority.id
+  alert_creation          = "create_alerts_and_incidents"
+  incident_urgency_rule {
+    type    = "constant"
+    urgency = "low"
+  }
+}
+
+resource "pagerduty_service_integration" "security_hub_members" {
+  name    = data.pagerduty_vendor.security_hub.name
+  service = pagerduty_service.security_hub_members.id
+  vendor  = data.pagerduty_vendor.security_hub.id
+}
+
+resource "pagerduty_slack_connection" "security_hub_members" {
+  source_id         = pagerduty_service.security_hub_members.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C08GRKZ1W4F" # Slack channel: #modernisation-platform-members-security-hub-alerts
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
+
 resource "pagerduty_service_event_rule" "mfa-console-access" {
   service  = pagerduty_service.core_alerts.id
   position = 0

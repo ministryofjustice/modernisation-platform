@@ -4,6 +4,10 @@ data "http" "environments_file" {
   url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/${local.testing_application_name}.json"
 }
 
+data "http" "collaborators_file" {
+  url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/collaborators.json"
+}
+
 # Fetch all teams in the organization
 data "github_organization_teams" "all_teams" {
   summary_only = true
@@ -71,6 +75,12 @@ locals {
   # Everyone
   everyone = concat(local.all_maintainers, local.all_members)
 
+  # Collaborators
+  collaborators = {
+    for key in jsondecode(data.http.collaborators_file.response_body).users : key.username => key.github-username
+    if key.github-username != "no-value-supplied"
+  }
+
   environments_json = [
     for file in fileset("../../environments/", "*.json") : merge({
       name = replace(file, ".json", "")
@@ -95,10 +105,55 @@ locals {
     ]))
   )
 
-  # Create a list of repositories that we want our customers to be able to contribute to
+  # Define a list of repositories that we want to apply permissions to
   modernisation_platform_repositories = [
-    for s in data.github_repositories.modernisation-platform-repositories.names : s if startswith(s, "modernisation-platform-")
+    "modernisation-platform",
+    "modernisation-platform-ami-builds",
+    "modernisation-platform-configuration-management",
+    "modernisation-platform-cp-network-test",
+    "modernisation-platform-environments",
+    "modernisation-platform-github-actions",
+    "modernisation-platform-github-oidc-provider",
+    "modernisation-platform-github-oidc-role",
+    "modernisation-platform-instance-scheduler",
+    "modernisation-platform-security",
+    "modernisation-platform-terraform-aws-chatbot",
+    "modernisation-platform-terraform-aws-data-firehose",
+    "modernisation-platform-terraform-aws-vm-import",
+    "modernisation-platform-terraform-baselines",
+    "modernisation-platform-terraform-bastion-linux",
+    "modernisation-platform-terraform-cross-account-access",
+    "modernisation-platform-terraform-dns-certificates",
+    "modernisation-platform-terraform-ec2-instance",
+    "modernisation-platform-terraform-ec2-autoscaling-group",
+    "modernisation-platform-terraform-ecs-cluster",
+    "modernisation-platform-terraform-environments",
+    "modernisation-platform-terraform-iam-superadmins",
+    "modernisation-platform-terraform-lambda-function",
+    "modernisation-platform-terraform-loadbalancer",
+    "modernisation-platform-terraform-member-vpc",
+    "modernisation-platform-terraform-module-template",
+    "modernisation-platform-terraform-pagerduty-integration",
+    "modernisation-platform-terraform-s3-bucket",
+    "modernisation-platform-terraform-ssm-patching",
   ]
+
+  repositories_with_full_team_access = [
+    "modernisation-platform-ami-builds",
+    "modernisation-platform-configuration-management",
+    "modernisation-platform-environments"
+    # Add other repositories that need full team access here
+  ]
+
+  map_permissions_to_repositories = {
+    for repo in local.modernisation_platform_repositories : repo => {
+      teams = merge(
+        { "modernisation-platform" = "admin" },
+        { "all-org-members" = "push" },
+      contains(local.repositories_with_full_team_access, repo) ? { for team in local.application_github_group_names : team => "push" } : null),
+      users = repo == "modernisation-platform-environments" ? { for user in local.collaborators : user => "push" } : {}
+    }
+  }
 
   testing_tags = merge(
     jsondecode(data.http.environments_file.response_body).tags,

@@ -7,15 +7,14 @@
       "access": [
         {
           "sso_group_name": "data-platform-development-sandbox",
-          "level": "sandbox",
-          "nuke": "exclude"
+          "level": "sandbox"
         },
         {
           "sso_group_name": "data-platform-audit-and-security",
-          "level": "security-audit",
-          "nuke": "exclude"
+          "level": "security-audit"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
