@@ -1317,3 +1317,21 @@ module "yjaf_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
+
+module "observability_platform_grafana_sigv4_proxy_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "observability-platform-grafana-sigv4-proxy"
+
+  pull_principals = [
+    local.environment_management.account_ids["observability-platform-development"],
+    local.environment_management.account_ids["observability-platform-production"]
+  ]
+
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["observability-platform-development"]}:function:sigv4-proxy*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["observability-platform-production"]}:function:sigv4-proxy*"
+  ]
+
+  tags_common = local.tags
+}
