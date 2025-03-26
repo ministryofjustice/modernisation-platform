@@ -1324,7 +1324,7 @@ module "observability_platform_grafana_sigv4_proxy_ecr_repo" {
   app_name = "observability-platform-grafana-sigv4-proxy"
 
   push_principals = [
-    local.environment_management.account_ids["core-shared-services"]
+    local.environment_management.account_ids["core-shared-services-production"]
   ]
 
   pull_principals = [
