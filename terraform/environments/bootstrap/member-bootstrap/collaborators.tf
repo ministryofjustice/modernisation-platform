@@ -267,3 +267,30 @@ module "collaborator_platform_engineer_admin_role" {
 data "aws_iam_policy" "platform_engineer_admin" {
   name = "platform_engineer_admin_policy"
 }
+
+# Collaborator Reporting-Operations role
+module "collaborator_reporting_operations_role" {
+  # checkov:skip=CKV_TF_1:
+
+  count  = local.account_data.account-type == "member" ? 1 : 0
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+
+  trusted_role_arns = [
+    data.aws_ssm_parameter.modernisation_platform_account_id.value
+  ]
+
+  create_role       = true
+  role_name         = "reporting-operations"
+  role_requires_mfa = true
+
+  custom_role_policy_arns = [
+    "arn:aws:iam::aws:policy/ReadOnlyAccess",
+    data.aws_iam_policy.reporting_operations.arn,
+    data.aws_iam_policy.common_policy.arn,
+  ]
+  number_of_custom_role_policy_arns = 3
+}
+
+data "aws_iam_policy" "reporting_operations" {
+  name = "reporting_operations_policy"
+}
