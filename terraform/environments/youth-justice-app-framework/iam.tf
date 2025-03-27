@@ -33,7 +33,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "codedeploy:GetDeployment",
       "codedeploy:CreateDeployment",
       "codedeploy:ListDeploymentGroups",
-      "codedeploy:StopDeployment"
+      "codedeploy:StopDeployment",
       "codedeploy:CreateDeployment",
       "ecs:RegisterTaskDefinition",
       "ecs:UpdateService",
