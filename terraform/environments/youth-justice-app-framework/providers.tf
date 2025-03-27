@@ -42,7 +42,7 @@ provider "aws" {
 
 # Get secret by arn for environment management
 data "aws_secretsmanager_secret" "mod_plat_circleci" {
-  provider = aws.modernisation-platform
+  provider = aws.modernisation-secrets-read
   name     = "mod-platform-circleci"
 }
 
