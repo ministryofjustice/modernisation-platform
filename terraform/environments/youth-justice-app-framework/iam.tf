@@ -27,6 +27,13 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
   #checkov:skip=CKV_AWS_111
   statement {
     actions = [
+      "codedeploy:RegisterApplicationRevision",
+      "codedeploy:ListDeployments",
+      "codedeploy:GetDeploymentConfig",
+      "codedeploy:GetDeployment",
+      "codedeploy:CreateDeployment",
+      "codedeploy:ListDeploymentGroups",
+      "codedeploy:StopDeployment"
       "codedeploy:CreateDeployment",
       "ecs:RegisterTaskDefinition",
       "ecs:UpdateService",
