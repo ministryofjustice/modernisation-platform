@@ -66,8 +66,8 @@ These modules are used by the Modernisation Platform's core infrastructure
 | [modernisation-platform-instance-scheduler](https://github.com/ministryofjustice/modernisation-platform-instance-scheduler) | A Go lambda function for stopping and starting instance, rds resources and autoscaling groups. The lambda is used by the core platform and can be reused outside of the platform with minimal changes |
 | [modernisation-platform-cp-network-test](https://github.com/ministryofjustice/modernisation-platform-cp-network-test)       | Container bundled with utilities for network testing                                                                                                                                                  |
 
-[Standards Link]: https://github-community.cloud-platform.service.justice.gov.uk/repository-standards/modernisation-platform "Repo standards badge."
-[Standards Icon]: https://github-community.cloud-platform.service.justice.gov.uk/repository-standards/api/modernisation-platform/badge
+[Standards Link]: https://github-community.service.justice.gov.uk/repository-standards/modernisation-platform "Repo standards badge."
+[Standards Icon]: https://github-community.service.justice.gov.uk/repository-standards/api/modernisation-platform/badge
 [Format Code Icon]: https://img.shields.io/github/actions/workflow/status/ministryofjustice/modernisation-platform/format-code.yml?labelColor=231f20&style=for-the-badge&label=Formate%20Code
 [Format Code Link]: https://github.com/ministryofjustice/modernisation-platform/actions/workflows/format-code.yml
 [Scorecards Icon]: https://img.shields.io/github/actions/workflow/status/ministryofjustice/modernisation-platform/scorecards.yml?branch=main&labelColor=231f20&style=for-the-badge&label=Scorecards
