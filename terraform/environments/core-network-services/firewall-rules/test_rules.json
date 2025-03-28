@@ -13,6 +13,13 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
+  "apdep_to_hmpps_test_oracledb": {
+    "action": "PASS",
+    "source_ip": "${data-engineering-prod}",
+    "destination_ip": "${hmpps-test}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
   "az_noms_test_to_mp_hmpps_test_oracledb": {
     "action": "PASS",
     "source_ip": "${noms-test-vnet}",
