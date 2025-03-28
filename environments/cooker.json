@@ -34,6 +34,5 @@
     "slack-channel": "modernisation-platform",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [""],
-  "go-live-date": ""
+  "github-oidc-team-repositories": [""], "go-live-date": ""
 }
