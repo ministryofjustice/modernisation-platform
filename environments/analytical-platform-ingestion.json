@@ -2,6 +2,9 @@
   "account-type": "member",
   "components": [
     {
+      "name": "dms"
+    },
+    {
       "name": "transfer-family",
       "sso_group_name": "analytical-platform"
     }
