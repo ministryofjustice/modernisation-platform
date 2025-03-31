@@ -23,6 +23,7 @@ expected :=
     "cica-copilot",
     "cica-data-extraction",
     "cica-tariff",
+    "coat",
     "contract-work-administration",
     "cooker",
     "core-logging",

@@ -1,0 +1,33 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "cloud-optimisation-and-accountability",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": "rebuild"
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "cloud-optimisation-and-accountability",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "coat",
+    "business-unit": "Platforms",
+    "infrastructure-support": "CloudOptimisationAndAccountability@justice.gov.uk",
+    "owner": "CloudOptimisationAndAccountability@justice.gov.uk",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
