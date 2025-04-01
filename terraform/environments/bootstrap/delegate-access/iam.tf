@@ -16,7 +16,7 @@ module "cross-account-access" {
       "arn:aws:iam::${local.environment_management.account_ids["cooker-development"]}:role/github-actions-dev-test"
     ] : []
   )
-  additional_trust_statements = concat(contains(["core-network-services-production", "core-vpc-test", "core-vpc-development"], terraform.workspace) ? [data.aws_iam_policy_document.additional_trust_policy.json] : [], length(regexall("(development|test)$", terraform.workspace)) > 0 ? [data.aws_iam_policy_document.additional_trust_policy.json] : [])
+  additional_trust_statements = concat(contains(["core-network-services-production"], terraform.workspace) ? [data.aws_iam_policy_document.additional_trust_policy.json] : [], length(regexall("(development|test)$", terraform.workspace)) > 0 ? [data.aws_iam_policy_document.additional_trust_policy.json] : [])
 }
 
 data "aws_iam_policy_document" "additional_trust_policy" {
