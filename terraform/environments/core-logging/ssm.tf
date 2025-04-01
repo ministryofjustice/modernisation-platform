@@ -37,3 +37,16 @@ resource "aws_ssm_parameter" "core_logging_bucket_arns" {
   })
   tags = local.tags
 }
+
+resource "aws_ssm_parameter" "xdr_account_id" {
+  #checkov:skip=CKV2_AWS_34: "Parameter is not sensitive; account ID is publicly available."
+  lifecycle {
+    ignore_changes = [insecure_value]
+  }
+  provider       = aws.modernisation-platform
+  description    = "Account ID for Palo Alto Cortex XDR cross-account role."
+  name           = "xdr_account_id"
+  type           = "String"
+  insecure_value = "Placeholder"
+  tags           = local.tags
+}
