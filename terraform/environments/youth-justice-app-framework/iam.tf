@@ -29,6 +29,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
     actions = [
       "codedeploy:RegisterApplicationRevision",
       "codedeploy:ListDeployments",
+      "codedeploy:GetApplicationRevision",
       "codedeploy:GetDeploymentConfig",
       "codedeploy:GetDeployment",
       "codedeploy:CreateDeployment",
