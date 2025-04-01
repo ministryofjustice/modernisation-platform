@@ -588,6 +588,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "dbqms:*",
       "discovery:*",
       "detective:*",
+      "graph:*",
       "dlm:*",
       "dms:*",
       "drs:*",
@@ -650,6 +651,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
     ]
     resources = ["*"]
   }
+
 }
 
 # sandbox policy - member SSO and collaborators, development accounts only

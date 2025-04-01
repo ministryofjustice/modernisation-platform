@@ -8,7 +8,6 @@ on:
       - '.github/workflows/new-environment.yml'
       - 'terraform/environments/*.tf'
       - 'environments/**.json'
-      - 'terraform/environments/bootstrap/**'
       - '!**.md'
   pull_request:
     branches:
@@ -130,8 +129,6 @@ jobs:
           terraform_wrapper: false
       - name: Run terraform init in terraform/environments
         run: bash scripts/terraform-init.sh terraform/environments
-      - name: Run terraform plan in terraform/environments
-        run: bash scripts/terraform-plan.sh terraform/environments
       - name: Run terraform apply in terraform/environments
         run: bash scripts/terraform-apply.sh terraform/environments
       - name: Slack failure notification
@@ -226,7 +223,6 @@ jobs:
             for i in "${accounts[@]}"; do
               echo "[+] Running delegate-access baseline for account ${i}"
               bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
-              bash scripts/setup-baseline.sh terraform/environments/bootstrap/delegate-access "${i}" plan
               bash scripts/setup-baseline.sh terraform/environments/bootstrap/delegate-access "${i}" apply
             done
           else
@@ -337,7 +333,6 @@ jobs:
             for i in "${accounts[@]}"; do
               echo "[+] Running secure baseline for account ${i}"
               bash scripts/terraform-init.sh terraform/environments/bootstrap/secure-baselines
-              bash scripts/setup-baseline.sh terraform/environments/bootstrap/secure-baselines "${i}" plan
               bash scripts/setup-baseline.sh terraform/environments/bootstrap/secure-baselines "${i}" apply
             done
           else
@@ -393,7 +388,6 @@ jobs:
             for i in "${accounts[@]}"; do
               echo "[+] Running single sign on baseline for account ${i}"
               bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
-              bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on "${i}" plan
               bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on "${i}" apply
             done
           else
@@ -536,7 +530,6 @@ jobs:
             for i in "${accounts[@]}"; do
               echo "[+] Running secure baseline for account ${i}"
               bash scripts/terraform-init.sh terraform/environments/bootstrap/member-bootstrap
-              bash scripts/setup-baseline.sh terraform/environments/bootstrap/member-bootstrap "${i}" plan
               bash scripts/setup-baseline.sh terraform/environments/bootstrap/member-bootstrap "${i}" apply
             done
           else

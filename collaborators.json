@@ -87,24 +87,6 @@
       ]
     },
     {
-      "username": "umesh.ray",
-      "github-username": "umeshc-roy",
-      "accounts": [
-        {
-          "account-name": "ppud-development",
-          "access": "sandbox"
-        },
-        {
-          "account-name": "ppud-preproduction",
-          "access": "developer"
-        },
-        {
-          "account-name": "ppud-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "kofi.owusu",
       "github-username": "no-value-supplied",
       "accounts": [
@@ -391,12 +373,24 @@
           "access": "developer"
         },
         {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "reporting-operations"
+        },
+        {
           "account-name": "youth-justice-app-framework-preproduction",
           "access": "developer"
         },
         {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "reporting-operations"
+        },
+        {
           "account-name": "youth-justice-app-framework-production",
           "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "reporting-operations"
         },
         {
           "account-name": "youth-justice-networking-production",
@@ -417,12 +411,24 @@
           "access": "developer"
         },
         {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "reporting-operations"
+        },
+        {
           "account-name": "youth-justice-app-framework-preproduction",
           "access": "developer"
         },
         {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "reporting-operations"
+        },
+        {
           "account-name": "youth-justice-app-framework-production",
           "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "reporting-operations"
         },
         {
           "account-name": "youth-justice-networking-production",
@@ -443,12 +449,24 @@
           "access": "developer"
         },
         {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "reporting-operations"
+        },
+        {
           "account-name": "youth-justice-app-framework-preproduction",
           "access": "developer"
         },
         {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "reporting-operations"
+        },
+        {
           "account-name": "youth-justice-app-framework-production",
           "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "reporting-operations"
         },
         {
           "account-name": "youth-justice-networking-production",
@@ -502,6 +520,14 @@
       "accounts": [
         {
           "account-name": "ppud-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "ppud-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "ppud-production",
           "access": "developer"
         }
       ]
@@ -773,6 +799,16 @@
         {
           "account-name": "analytical-platform-ingestion-development",
           "access": "sandbox"
+        }
+      ]
+    },
+    {
+      "username": "ryan.smith",
+      "github-username": "RyanSmith",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "developer"
         }
       ]
     }

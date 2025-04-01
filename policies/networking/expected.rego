@@ -384,6 +384,7 @@ expected :=
         "cidr": "10.26.16.0/21",
         "accounts": [
           "analytical-platform-ingestion-development",
+          "coat-development",
           "example-development",
           "data-platform-development",
           "data-platform-apps-and-tools-development",
@@ -416,6 +417,7 @@ expected :=
         "accounts": [
           "analytical-platform-common-production",
           "analytical-platform-ingestion-production",
+          "coat-production",
           "data-platform-production",
           "data-platform-apps-and-tools-production",
           "long-term-storage-production",

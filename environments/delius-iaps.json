@@ -7,18 +7,17 @@
       "access": [
         {
           "sso_group_name": "hmpps-migration",
-          "level": "sandbox"
+          "level": "developer"
         },
         {
           "sso_group_name": "hosting-migrations",
-          "level": "sandbox"
+          "level": "developer"
         },
         {
           "sso_group_name": "hmpps-dba",
           "level": "instance-management"
         }
-      ],
-      "nuke": "include"
+      ]
     },
     {
       "name": "production",
