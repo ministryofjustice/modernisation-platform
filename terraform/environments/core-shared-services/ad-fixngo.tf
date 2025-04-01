@@ -531,6 +531,7 @@ locals {
             to_port   = 5986
             protocol  = "TCP"
             cidr_blocks = flatten([
+              module.ad_fixngo_ip_addresses.azure_fixngo_cidrs.prod,
               module.ad_fixngo_ip_addresses.mp_cidr.hmpps-preproduction,
               module.ad_fixngo_ip_addresses.mp_cidr.hmpps-production,
             ])
