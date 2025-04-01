@@ -11,13 +11,12 @@ module "cross-account-access" {
       "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions"
     ],
     terraform.workspace == "testing-test" ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:user/testing-ci"] : [],
-    length(regexall("(development|test)$", terraform.workspace)) > 0 ? ["arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/github-actions-dev-test"] : [],
     terraform.workspace == "core-vpc-sandbox" ? [
       "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-dev-test",
       "arn:aws:iam::${local.environment_management.account_ids["cooker-development"]}:role/github-actions-dev-test"
     ] : []
   )
-  additional_trust_statements = contains(["core-network-services-production", "core-vpc-test", "core-vpc-development"], terraform.workspace) ? [data.aws_iam_policy_document.additional_trust_policy.json] : []
+  additional_trust_statements = concat(contains(["core-network-services-production", "core-vpc-test", "core-vpc-development"], terraform.workspace) ? [data.aws_iam_policy_document.additional_trust_policy.json] : [], length(regexall("(development|test)$", terraform.workspace)) > 0 ? [data.aws_iam_policy_document.additional_trust_policy.json] : [])
 }
 
 data "aws_iam_policy_document" "additional_trust_policy" {
