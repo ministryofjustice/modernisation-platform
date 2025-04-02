@@ -6,6 +6,9 @@
     },
     {
       "name": "lakeformation"
+    },
+    {
+      "name": "central-digital-bedrock"
     }
   ],
   "codeowners": ["analytical-platform-engineers"],
