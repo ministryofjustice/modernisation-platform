@@ -96,7 +96,7 @@
     "application": "oasys-national-reporting",
     "business-unit": "HMPPS",
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
-    "owner": "Mark Richardson",
+    "owner": "mark.richardson@digital.justice.gov.uk",
     "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [
