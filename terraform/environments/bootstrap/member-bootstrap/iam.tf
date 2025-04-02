@@ -517,6 +517,7 @@ data "aws_iam_policy_document" "policy" {
       "ds-data:*",
       "dynamodb:GetItem",
       "dynamodb:PutItem",
+      "ecs:ExecuteCommand",
       "ecs:*Service*",
       "ecs:*Task*",
       "ecs:*Tag*",
