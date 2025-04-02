@@ -165,6 +165,7 @@ data "aws_iam_policy_document" "member-access" {
       "route53:*",
       "route53resolver:*",
       "s3:*",
+      "scheduler:*",
       "secretsmanager:*",
       "ses:*",
       "shield:*",
