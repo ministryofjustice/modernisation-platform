@@ -1334,6 +1334,17 @@ data "aws_iam_policy_document" "reporting-operations" {
     resources = ["*"]
   }
 
+  statement {
+    effect = "Allow"
+    actions = [
+      "secretsmanager:CreateSecret",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DeleteSecret",
+      "secretsmanager:TagResource"
+    ]
+    resources = ["arn:aws:secretsmanager:*:*:sqlworkbench!*"]
+  }
+
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
