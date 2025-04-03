@@ -42,10 +42,16 @@ jobs:
       - name: Check GitHub status
         run: |
           response=$(curl -s https://www.githubstatus.com/api/v2/summary.json)
-          status_indicator=$(echo "$response" | jq -r '.status.indicator')
-            
-          if [ "$status_indicator" != "none" ]; then
-            echo "GitHub Status check failed"
+
+          # Check status of key components
+          git_operations_status=$(echo "$response" | jq -r '.components[] | select(.name == "Git Operations") | .status')
+          api_status=$(echo "$response" | jq -r '.components[] | select(.name == "API Requests") | .status')
+    
+          # Only fail if components are not operational
+          if [ "$git_operations_status" = "operational" ] && [ "$api_status" = "operational" ]; then
+            echo "GitHub components are operational"
+          else
+            echo "GitHub components not fully operational - Git Operations: $git_operations_status, API: $api_status"
             exit 1
           fi
 

@@ -44,6 +44,10 @@
         {
           "sso_group_name": "azure-aws-sso-modernisation-platform",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "ssm-session-access"
         }
       ],
       "nuke": "rebuild"
