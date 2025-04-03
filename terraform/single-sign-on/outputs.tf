@@ -70,3 +70,7 @@ output "ssoadmin_instances" {
 output "platform_engineer_admin" {
   value = aws_ssoadmin_permission_set.modernisation_platform_platform_engineer_admin.arn
 }
+
+output "ssm_session_access" {
+  value = aws_ssoadmin_permission_set.modernisation_platform_ssm_session_access.arn
+}
