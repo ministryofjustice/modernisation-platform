@@ -787,6 +787,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "sagemaker:*",
       "scheduler:*",
       "secretsmanager:*",
+      "securityhub:BatchUpdateFindings",
       "ses:*",
       "sns:*",
       "sqlworkbench:*",
