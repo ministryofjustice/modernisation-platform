@@ -1565,7 +1565,7 @@ data "aws_iam_policy_document" "ssm_session_access" {
       "ssm:TerminateSession",
       "ssm:ResumeSession"
     ]
-    resources = ["arn:aws:ssm:*:*:session/${aws:username}-*"]
+    resources = ["arn:aws:ssm:*:*:session/$${aws:username}-*"]
   }
 
   statement {
