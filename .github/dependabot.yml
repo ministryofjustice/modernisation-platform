@@ -1,4 +1,4 @@
-# This file is auto-generated here, do not manually amend.
+# This file is auto-generated, do not manually amend.
 # https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/generate-dependabot.sh
 
 version: 2
@@ -8,494 +8,138 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-  # Dependabot doesn't currently support wildcard or multiple directory declarations within
-  # a dependabot configuration, so we need to add all directories individually
-  # See: github.com/dependabot/dependabot-core/issues/2178
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/analytical-platform"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/analytical-platform-common"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/analytical-platform-compute"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/analytical-platform-data"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/analytical-platform-data-engineering"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/analytical-platform-ingestion"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/analytical-platform-landing"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/analytical-platform-management"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/apex"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/bacway"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/bichard7"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/bootstrap/delegate-access"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/bootstrap/member-bootstrap"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/bootstrap/secure-baselines"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/bootstrap/single-sign-on"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/ccms-ebs"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/ccms-ebs-upgrade"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/cdpt-chaps"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/cdpt-ifs"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/cica-copilot"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/cica-data-extraction"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/cica-tariff"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/contract-work-administration"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/cooker"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/core-logging"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/core-network-services"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/core-sandbox"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/core-security"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/core-shared-services"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/core-shared-services/test/test_terraform"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/core-vpc"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/corporate-information-system"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/corporate-staff-rostering"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/dacp"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/data-platform"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/data-platform-apps-and-tools"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/delete-account"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/delius-alfresco"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/delius-core"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/delius-iaps"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/delius-jitbit"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/delius-mis"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/digital-prison-reporting"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/edw"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/electronic-monitoring-data"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/equip"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/eric"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/example"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/genesys-call-centre-data"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/hmpps-domain-services"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/hmpps-oem"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/laa-ccms-infra-azure-ad-sso"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/laa-mail-relay"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/laa-oem"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/laa-stabilisation-cdc-poc"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/long-term-storage"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/maat"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/maatdb"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/mi-platform"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/mlra"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/moj-network-operations-centre"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/mojfin"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/ncas"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/nomis"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/nomis-combined-reporting"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/nomis-data-hub"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/oas"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/oasys"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/oasys-national-reporting"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/observability-platform"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/operations-engineering"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/opg-lpa-data-store"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/panda-cyber-appsec-lab"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/performance-hub"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/planetfm"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/portal"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/ppud"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/pra-register"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/refer-monitor"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/sprinkler"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/testing"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/tipstaff"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/tribunals"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/wardship"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/xhibit-portal"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/youth-justice-app-framework"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/environments/youth-justice-networking"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/github"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/github/modules/contributor"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/github/modules/repository"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/github/modules/team"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modernisation-platform-account"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/app-ecr-repo"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/collaborators"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/core-monitoring"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/dns-zone"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/dns-zone-extend"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/dns-zone-extend-private"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/ec2-tgw-attachment"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/firewall-logging"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/firewall-policy"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/kms"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/r53-dns-firewall"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/ram-ec2-retagging"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/ram-principal-association"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/ram-resource-share"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/vpc-hub"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/vpc-inspection"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/modules/vpc-nacls"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/pagerduty"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/single-sign-on"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/templates/modernisation-platform"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/templates/modernisation-platform-environments"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/templates/modernisation-platform-environments-components"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "terraform"
-    directory: "/terraform/templates/modernisation-platform-environments-isolated"
+    groups:
+      action-dependencies:
+        patterns:
+          - "*"
+  - package-ecosystem: "terraform"
+    directories:
+      - "/terraform/environments"
+      - "/terraform/environments/analytical-platform"
+      - "/terraform/environments/analytical-platform-common"
+      - "/terraform/environments/analytical-platform-compute"
+      - "/terraform/environments/analytical-platform-data"
+      - "/terraform/environments/analytical-platform-data-engineering"
+      - "/terraform/environments/analytical-platform-ingestion"
+      - "/terraform/environments/analytical-platform-landing"
+      - "/terraform/environments/analytical-platform-management"
+      - "/terraform/environments/apex"
+      - "/terraform/environments/bacway"
+      - "/terraform/environments/bichard7"
+      - "/terraform/environments/bootstrap/delegate-access"
+      - "/terraform/environments/bootstrap/member-bootstrap"
+      - "/terraform/environments/bootstrap/secure-baselines"
+      - "/terraform/environments/bootstrap/single-sign-on"
+      - "/terraform/environments/ccms-ebs"
+      - "/terraform/environments/ccms-ebs-upgrade"
+      - "/terraform/environments/cdpt-chaps"
+      - "/terraform/environments/cdpt-ifs"
+      - "/terraform/environments/cica-copilot"
+      - "/terraform/environments/cica-data-extraction"
+      - "/terraform/environments/cica-tariff"
+      - "/terraform/environments/coat"
+      - "/terraform/environments/contract-work-administration"
+      - "/terraform/environments/cooker"
+      - "/terraform/environments/core-logging"
+      - "/terraform/environments/core-network-services"
+      - "/terraform/environments/core-sandbox"
+      - "/terraform/environments/core-security"
+      - "/terraform/environments/core-shared-services"
+      - "/terraform/environments/core-shared-services/test/test_terraform"
+      - "/terraform/environments/core-vpc"
+      - "/terraform/environments/corporate-information-system"
+      - "/terraform/environments/corporate-staff-rostering"
+      - "/terraform/environments/dacp"
+      - "/terraform/environments/data-platform"
+      - "/terraform/environments/data-platform-apps-and-tools"
+      - "/terraform/environments/delete-account"
+      - "/terraform/environments/delius-alfresco"
+      - "/terraform/environments/delius-core"
+      - "/terraform/environments/delius-iaps"
+      - "/terraform/environments/delius-jitbit"
+      - "/terraform/environments/delius-mis"
+      - "/terraform/environments/digital-prison-reporting"
+      - "/terraform/environments/edw"
+      - "/terraform/environments/electronic-monitoring-data"
+      - "/terraform/environments/equip"
+      - "/terraform/environments/eric"
+      - "/terraform/environments/example"
+      - "/terraform/environments/genesys-call-centre-data"
+      - "/terraform/environments/hmpps-domain-services"
+      - "/terraform/environments/hmpps-oem"
+      - "/terraform/environments/laa-ccms-infra-azure-ad-sso"
+      - "/terraform/environments/laa-mail-relay"
+      - "/terraform/environments/laa-oem"
+      - "/terraform/environments/laa-stabilisation-cdc-poc"
+      - "/terraform/environments/long-term-storage"
+      - "/terraform/environments/maat"
+      - "/terraform/environments/maatdb"
+      - "/terraform/environments/mi-platform"
+      - "/terraform/environments/mlra"
+      - "/terraform/environments/moj-network-operations-centre"
+      - "/terraform/environments/mojfin"
+      - "/terraform/environments/ncas"
+      - "/terraform/environments/nomis"
+      - "/terraform/environments/nomis-combined-reporting"
+      - "/terraform/environments/nomis-data-hub"
+      - "/terraform/environments/oas"
+      - "/terraform/environments/oasys"
+      - "/terraform/environments/oasys-national-reporting"
+      - "/terraform/environments/observability-platform"
+      - "/terraform/environments/operations-engineering"
+      - "/terraform/environments/opg-lpa-data-store"
+      - "/terraform/environments/panda-cyber-appsec-lab"
+      - "/terraform/environments/performance-hub"
+      - "/terraform/environments/planetfm"
+      - "/terraform/environments/portal"
+      - "/terraform/environments/ppud"
+      - "/terraform/environments/pra-register"
+      - "/terraform/environments/refer-monitor"
+      - "/terraform/environments/sprinkler"
+      - "/terraform/environments/testing"
+      - "/terraform/environments/tipstaff"
+      - "/terraform/environments/tribunals"
+      - "/terraform/environments/wardship"
+      - "/terraform/environments/xhibit-portal"
+      - "/terraform/environments/youth-justice-app-framework"
+      - "/terraform/environments/youth-justice-networking"
+      - "/terraform/github"
+      - "/terraform/github/modules/contributor"
+      - "/terraform/github/modules/repository"
+      - "/terraform/github/modules/team"
+      - "/terraform/modernisation-platform-account"
+      - "/terraform/modules/app-ecr-repo"
+      - "/terraform/modules/collaborators"
+      - "/terraform/modules/core-monitoring"
+      - "/terraform/modules/dns-zone"
+      - "/terraform/modules/dns-zone-extend"
+      - "/terraform/modules/dns-zone-extend-private"
+      - "/terraform/modules/ec2-tgw-attachment"
+      - "/terraform/modules/firewall-logging"
+      - "/terraform/modules/firewall-policy"
+      - "/terraform/modules/kms"
+      - "/terraform/modules/r53-dns-firewall"
+      - "/terraform/modules/ram-ec2-retagging"
+      - "/terraform/modules/ram-principal-association"
+      - "/terraform/modules/ram-resource-share"
+      - "/terraform/modules/vpc-hub"
+      - "/terraform/modules/vpc-inspection"
+      - "/terraform/modules/vpc-nacls"
+      - "/terraform/pagerduty"
+      - "/terraform/single-sign-on"
+      - "/terraform/templates/modernisation-platform"
+      - "/terraform/templates/modernisation-platform-environments"
+      - "/terraform/templates/modernisation-platform-environments-components"
+      - "/terraform/templates/modernisation-platform-environments-isolated"
     schedule:
       interval: "daily"
   - package-ecosystem: "gomod"
-    directory: "/scripts/internal/get-security-hub-findings"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "gomod"
-    directory: "/scripts/internal/get-testing-ci-user-creds"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "gomod"
-    directory: "/terraform/environments/core-logging/test"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "gomod"
-    directory: "/terraform/environments/core-network-services/test"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "gomod"
-    directory: "/terraform/environments/core-security/test"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "gomod"
-    directory: "/terraform/environments/core-shared-services/test"
+    directories:
+      - "/scripts/internal/get-security-hub-findings"
+      - "/scripts/internal/get-testing-ci-user-creds"
+      - "/terraform/environments/core-logging/test"
+      - "/terraform/environments/core-network-services/test"
+      - "/terraform/environments/core-security/test"
+      - "/terraform/environments/core-shared-services/test"
     schedule:
       interval: "daily"
