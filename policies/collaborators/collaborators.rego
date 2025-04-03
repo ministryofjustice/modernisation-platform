@@ -10,7 +10,8 @@ allowed_access := [
   "migration",
   "instance-management",
   "fleet-manager",
-  "platform-engineer-admin"
+  "platform-engineer-admin",
+  "ssm-session-access"
 ]
 
 deny contains msg if {
