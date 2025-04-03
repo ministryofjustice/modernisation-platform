@@ -514,3 +514,23 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
     path = "/"
   }
 }
+
+# Modernisation Platform SSM Session Access role
+resource "aws_ssoadmin_permission_set" "modernisation_platform_ssm_session_access" {
+  provider         = aws.sso-management
+  name             = "mp-ssm-session-access"
+  description      = "Modernisation Platform: ssm-session-access"
+  instance_arn     = local.sso_admin_instance_arn
+  session_duration = "PT8H"
+  tags             = {}
+}
+
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_ssm_session_access" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_ssm_session_access.arn
+  customer_managed_policy_reference {
+    name = "ssm_session_access_policy"
+    path = "/"
+  }
+}

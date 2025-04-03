@@ -294,3 +294,28 @@ module "collaborator_reporting_operations_role" {
 data "aws_iam_policy" "reporting_operations" {
   name = "reporting_operations_policy"
 }
+
+# SSM Session Access role
+module "collaborator_ssm_session_access_role" {
+  # checkov:skip=CKV_TF_1:
+
+  count  = local.account_data.account-type == "member" ? 1 : 0
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+
+  trusted_role_arns = [
+    data.aws_ssm_parameter.modernisation_platform_account_id.value
+  ]
+
+  create_role       = true
+  role_name         = "ssm-session-access"
+  role_requires_mfa = true
+
+  custom_role_policy_arns = [
+    data.aws_iam_policy.ssm_session_access.arn
+  ]
+  number_of_custom_role_policy_arns = 1
+}
+
+data "aws_iam_policy" "ssm_session_access" {
+  name = "ssm_session_access_policy"
+}

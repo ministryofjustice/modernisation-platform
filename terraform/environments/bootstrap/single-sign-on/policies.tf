@@ -1536,3 +1536,47 @@ data "aws_iam_policy_document" "s3_upload_policy_document" {
     ]
   }
 }
+
+resource "aws_iam_policy" "ssm_session_access" {
+  provider = aws.workspace
+  name     = "ssm_session_access_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.ssm_session_access.json
+}
+
+data "aws_iam_policy_document" "ssm_session_access" {
+  #checkov:skip=CKV_AWS_111 Needs to access multiple resources and the policy is attached to a role that is scoped to a specific account
+  #checkov:skip=CKV_AWS_356 Needs to access multiple resources and the policy is attached to a role that is scoped to a specific account
+
+  statement {
+    sid       = "AllowStartSessionOnEC2Instances"
+    effect    = "Allow"
+    actions   = ["ssm:StartSession"]
+    resources = [
+      "arn:aws:ec2:*:*:instance/*",
+      "arn:aws:ssm:*:*:document/SSM-SessionManagerRunShell"
+    ]
+  }
+
+  statement {
+    sid       = "AllowManageOwnSessions"
+    effect    = "Allow"
+    actions   = [
+      "ssm:TerminateSession",
+      "ssm:ResumeSession"
+    ]
+    resources = ["arn:aws:ssm:*:*:session/$${aws:username}-*"]
+  }
+
+  statement {
+    sid       = "AllowDescribeForSessionManagement"
+    effect    = "Allow"
+    actions   = [
+      "ssm:DescribeSessions",
+      "ssm:GetConnectionStatus",
+      "ssm:DescribeInstanceProperties",
+      "ec2:DescribeInstances"
+    ]
+    resources = ["*"]
+  }
+}
