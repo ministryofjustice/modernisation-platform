@@ -1,0 +1,113 @@
+name: Cleanup of Stale Branches (Deletes if branch and commits are 2+ months old)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  cleanup:
+    name: Cleanup Stale Branches in Modernisation Platform Repos
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ensure CLI tools are installed
+        run: |
+          command -v gh >/dev/null || (echo "❌ GitHub CLI (gh) is not installed" && exit 1)
+          command -v jq >/dev/null || (echo "❌ jq is not installed" && exit 1)
+
+      - name: Authenticate GitHub CLI
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+
+      - name: Cleanup stale branches across repositories
+        run: |
+          set -eo pipefail
+          DEBUG=false
+
+          repos=(
+            "ministryofjustice/modernisation-platform-terraform-bastion-linux"
+            "ministryofjustice/modernisation-platform-terraform-ecs-cluster"
+            "ministryofjustice/modernisation-platform-terraform-s3-bucket"
+            "ministryofjustice/modernisation-platform-terraform-aws-vm-import"
+            "ministryofjustice/modernisation-platform-terraform-pagerduty-integration"
+            "ministryofjustice/modernisation-platform-terraform-loadbalancer"
+            "ministryofjustice/modernisation-platform-terraform-ssm-patching"
+            "ministryofjustice/modernisation-platform-terraform-ec2-instance"
+            "ministryofjustice/modernisation-platform-terraform-ec2-autoscaling-group"
+            "ministryofjustice/modernisation-platform-terraform-lambda-function"
+            "ministryofjustice/modernisation-platform-terraform-baselines"
+            "ministryofjustice/modernisation-platform-terraform-cross-account-access"
+            "ministryofjustice/modernisation-platform-terraform-environments"
+            "ministryofjustice/modernisation-platform-terraform-iam-superadmins"
+            "ministryofjustice/modernisation-platform-terraform-member-vpc"
+            "ministryofjustice/modernisation-platform-github-oidc-provider"
+            "ministryofjustice/modernisation-platform-instance-scheduler"
+            "ministryofjustice/modernisation-platform-cp-network-test"
+            "ministryofjustice/modernisation-platform"
+            "ministryofjustice/modernisation-platform-terraform-module-template"
+          )
+
+          for repo in "${repos[@]}"; do
+            echo ""
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "🔍 STARTING REPO: $repo"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            {
+              branches=$(gh api repos/$repo/branches --jq '.[].name')
+              repo_summary="| Branch | Status | Reason |\n|--------|--------|--------|"
+              for branch in $branches; do
+                if [[ "$branch" == "main" ]]; then
+                  repo_summary+="\n| \`$branch\` | ⏭️ Skipped | Main branch |"
+                  continue
+                fi
+
+                allow_delete=$(gh api repos/$repo/branches/$branch/protection --silent 2>/dev/null | jq -r '.allow_deletions.enabled // "true"')
+                if [[ "$allow_delete" == "false" ]]; then
+                  repo_summary+="\n| \`$branch\` | ⏭️ Skipped | Protected from deletion |"
+                  continue
+                fi
+
+                if gh api repos/$repo/git/ref/tags/do-not-prune/$branch --silent >/dev/null 2>&1; then
+                  repo_summary+="\n| \`$branch\` | ⏭️ Skipped | Tagged do-not-prune |"
+                  continue
+                fi
+
+                last_commit_date=$(gh api "repos/$repo/commits?sha=$branch" --jq '.[0].commit.committer.date' || echo "")
+                last_commit_timestamp=$(date -d "$last_commit_date" +%s 2>/dev/null || echo 0)
+                two_months_ago_timestamp=$(date -d "2 months ago" +%s)
+
+                if [[ "$last_commit_timestamp" -eq 0 || "$last_commit_timestamp" -ge "$two_months_ago_timestamp" ]]; then
+                  repo_summary+="\n| \`$branch\` | ✅ Active | Recent commit |"
+                  continue
+                fi
+
+                first_commit=$(gh api "repos/$repo/commits?sha=$branch" --paginate --jq '.[].commit.committer.date' | tail -n 1)
+                branch_creation_timestamp=$(date -d "$first_commit" +%s 2>/dev/null || echo 0)
+
+                if [[ "$branch_creation_timestamp" -eq 0 || "$branch_creation_timestamp" -ge "$two_months_ago_timestamp" ]]; then
+                  repo_summary+="\n| \`$branch\` | ⏭️ Skipped | Too new |"
+                  continue
+                fi
+
+                echo "🗑️ Deleting branch: $branch from $repo"
+                if gh api -X DELETE repos/$repo/git/refs/heads/$branch; then
+                  repo_summary+="\n| \`$branch\` | 🔥 Deleted | Branch and commits are 2+ months old |"
+                else
+                  repo_summary+="\n| \`$branch\` | ⚠️ Failed | GitHub API deletion failed |"
+                fi
+              done
+
+              echo -e "$repo_summary"
+              echo "✅ DONE with $repo"
+              echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            } || {
+              echo "❌ Failed to process $repo — skipping to next."
+              continue
+            }
+          done
