@@ -13,7 +13,6 @@ on:
 env:
   TF_IN_AUTOMATION: true
   AWS_REGION: "eu-west-2"
-  ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
   TF_WORKSPACE: "sprinkler-development"
 
 permissions:
@@ -25,10 +24,23 @@ defaults:
     shell: bash
 
 jobs:
+
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
   delegate-access-plan:
     runs-on: ubuntu-latest
+    needs: fetch-secrets
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
@@ -49,9 +61,14 @@ jobs:
 
   secure-baselines-plan:
     runs-on: ubuntu-latest
-    needs: delegate-access-plan
+    needs: [delegate-access-plan, fetch-secrets]
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.account_ids["sprinkler-development"]' <<< $ENVIRONMENT_MANAGEMENT)
@@ -73,9 +90,14 @@ jobs:
 
   single-sign-on-plan:
     runs-on: ubuntu-latest
-    needs: delegate-access-plan
+    needs: [delegate-access-plan, fetch-secrets]
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.account_ids["sprinkler-development"]' <<< $ENVIRONMENT_MANAGEMENT)
@@ -97,9 +119,14 @@ jobs:
 
   member-bootstrap-plan:
     runs-on: ubuntu-latest
-    needs: single-sign-on-plan
+    needs: [single-sign-on-plan, fetch-secrets]
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.account_ids["sprinkler-development"]' <<< $ENVIRONMENT_MANAGEMENT)
@@ -121,9 +148,15 @@ jobs:
 
   delegate-access-apply:
     runs-on: ubuntu-latest
+    needs: fetch-secrets
     environment: production
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
@@ -144,10 +177,15 @@ jobs:
 
   secure-baselines-apply:
     runs-on: ubuntu-latest
-    needs: delegate-access-apply
+    needs: [delegate-access-apply, fetch-secrets]
     environment: production
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.account_ids["sprinkler-development"]' <<< $ENVIRONMENT_MANAGEMENT)
@@ -168,10 +206,15 @@ jobs:
 
   single-sign-on-apply:
     runs-on: ubuntu-latest
-    needs: delegate-access-apply
+    needs: [delegate-access-apply, fetch-secrets]
     environment: production
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.account_ids["sprinkler-development"]' <<< $ENVIRONMENT_MANAGEMENT)
@@ -192,10 +235,15 @@ jobs:
 
   member-bootstrap-apply:
     runs-on: ubuntu-latest
-    needs: single-sign-on-apply
+    needs: [single-sign-on-apply, fetch-secrets]
     environment: production
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.account_ids["sprinkler-development"]' <<< $ENVIRONMENT_MANAGEMENT)
