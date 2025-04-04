@@ -15,7 +15,7 @@
   },
   "apdep_to_hmpps_test_oracledb": {
     "action": "PASS",
-    "source_ip": "${data-engineering-prod}",
+    "source_ip": "${data-engineering-dev}",
     "destination_ip": "${hmpps-test}",
     "destination_port": "1521",
     "protocol": "TCP"

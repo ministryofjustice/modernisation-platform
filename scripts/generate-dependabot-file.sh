@@ -60,6 +60,10 @@ if [[ -n "$all_env_test_folders" ]]; then
   done <<< "$all_env_test_folders"
   echo "    schedule:" >> "$dependabot_file"
   echo "      interval: \"daily\"" >> "$dependabot_file"
+  echo "    groups:" >> "$dependabot_file"
+  echo "      gomod-dependencies:" >> "$dependabot_file"
+  echo "        patterns:" >> "$dependabot_file"
+  echo "          - \"*\"" >> "$dependabot_file"
 fi
 
 echo "dependabot.yml has been successfully generated."

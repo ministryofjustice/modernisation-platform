@@ -143,3 +143,7 @@ updates:
       - "/terraform/environments/core-shared-services/test"
     schedule:
       interval: "daily"
+    groups:
+      gomod-dependencies:
+        patterns:
+          - "*"
