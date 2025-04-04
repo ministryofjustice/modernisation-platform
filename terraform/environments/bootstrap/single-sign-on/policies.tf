@@ -1550,9 +1550,9 @@ data "aws_iam_policy_document" "ssm_session_access" {
   #checkov:skip=CKV_AWS_356 Needs to access multiple resources and the policy is attached to a role that is scoped to a specific account
 
   statement {
-    sid       = "AllowStartSessionOnEC2Instances"
-    effect    = "Allow"
-    actions   = ["ssm:StartSession"]
+    sid     = "AllowStartSessionOnEC2Instances"
+    effect  = "Allow"
+    actions = ["ssm:StartSession"]
     resources = [
       "arn:aws:ec2:*:*:instance/*",
       "arn:aws:ssm:*:*:document/SSM-SessionManagerRunShell"
@@ -1560,9 +1560,9 @@ data "aws_iam_policy_document" "ssm_session_access" {
   }
 
   statement {
-    sid       = "AllowManageOwnSessions"
-    effect    = "Allow"
-    actions   = [
+    sid    = "AllowManageOwnSessions"
+    effect = "Allow"
+    actions = [
       "ssm:TerminateSession",
       "ssm:ResumeSession"
     ]
@@ -1570,9 +1570,9 @@ data "aws_iam_policy_document" "ssm_session_access" {
   }
 
   statement {
-    sid       = "AllowDescribeForSessionManagement"
-    effect    = "Allow"
-    actions   = [
+    sid    = "AllowDescribeForSessionManagement"
+    effect = "Allow"
+    actions = [
       "ssm:DescribeSessions",
       "ssm:GetConnectionStatus",
       "ssm:DescribeInstanceProperties",
