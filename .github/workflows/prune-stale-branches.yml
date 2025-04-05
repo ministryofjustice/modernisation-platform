@@ -2,9 +2,6 @@ name: Cleanup of Stale Branches (Deletes if branch and commits are 2+ months old
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - feature-9556-automating-pruning-of-stale-branches
   schedule:
     - cron: '0 0 * * *'
 
@@ -27,11 +24,11 @@ jobs:
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
-      - name: Cleanup stale branches across repositories (Dry Run Mode)
+      - name: Cleanup stale branches across repositories
         run: |
           set -eo pipefail
           DEBUG=false
-          DRY_RUN=true  # Set to false to perform actual deletions
+          DRY_RUN=false
 
           # Exclusion list
           exclude_repos=(
