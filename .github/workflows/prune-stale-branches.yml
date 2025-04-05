@@ -2,6 +2,9 @@ name: Cleanup of Stale Branches (Deletes if branch and commits are 2+ months old
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - feature-9556-automating-pruning-of-stale-branches
   schedule:
     - cron: '0 0 * * *'
 
@@ -24,42 +27,36 @@ jobs:
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
-      - name: Cleanup stale branches across repositories
+      - name: Cleanup stale branches across repositories (Dry Run Mode)
         run: |
           set -eo pipefail
           DEBUG=false
+          DRY_RUN=true  # Set to false to perform actual deletions
 
-          repos=(
-            "ministryofjustice/modernisation-platform-terraform-bastion-linux"
-            "ministryofjustice/modernisation-platform-terraform-ecs-cluster"
-            "ministryofjustice/modernisation-platform-terraform-s3-bucket"
-            "ministryofjustice/modernisation-platform-terraform-aws-vm-import"
-            "ministryofjustice/modernisation-platform-terraform-pagerduty-integration"
-            "ministryofjustice/modernisation-platform-terraform-loadbalancer"
-            "ministryofjustice/modernisation-platform-terraform-ssm-patching"
-            "ministryofjustice/modernisation-platform-terraform-ec2-instance"
-            "ministryofjustice/modernisation-platform-terraform-ec2-autoscaling-group"
-            "ministryofjustice/modernisation-platform-terraform-lambda-function"
-            "ministryofjustice/modernisation-platform-terraform-baselines"
-            "ministryofjustice/modernisation-platform-terraform-cross-account-access"
-            "ministryofjustice/modernisation-platform-terraform-environments"
-            "ministryofjustice/modernisation-platform-terraform-iam-superadmins"
-            "ministryofjustice/modernisation-platform-terraform-member-vpc"
-            "ministryofjustice/modernisation-platform-github-oidc-provider"
-            "ministryofjustice/modernisation-platform-instance-scheduler"
-            "ministryofjustice/modernisation-platform-cp-network-test"
-            "ministryofjustice/modernisation-platform"
-            "ministryofjustice/modernisation-platform-terraform-module-template"
+          # Exclusion list
+          exclude_repos=(
+            "modernisation-platform-environments"
+            "modernisation-platform-ami-builds"
+            "modernisation-platform-configuration-management"
           )
 
-          for repo in "${repos[@]}"; do
+          # Fetch all repositories starting with "modernisation-platform" and exclude archived ones
+          repos=$(gh repo list ministryofjustice --limit 1000 --json name,isArchived --jq '.[] | select(.name | startswith("modernisation-platform")) | select(.isArchived == false) | .name')
+
+          for repo in $repos; do
+            # Skip excluded repositories
+            if [[ " ${exclude_repos[@]} " =~ " $repo " ]]; then
+              echo "⏭️ Skipping excluded repository: $repo"
+              continue
+            fi
+
             echo ""
             echo ""
             echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-            echo "🔍 STARTING REPO: $repo"
+            echo "🔍 STARTING REPO: ministryofjustice/$repo"
             echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
             {
-              branches=$(gh api repos/$repo/branches --jq '.[].name')
+              branches=$(gh api repos/ministryofjustice/$repo/branches --jq '.[].name')
               repo_summary="| Branch | Status | Reason |\n|--------|--------|--------|"
               for branch in $branches; do
                 if [[ "$branch" == "main" ]]; then
@@ -67,18 +64,18 @@ jobs:
                   continue
                 fi
 
-                allow_delete=$(gh api repos/$repo/branches/$branch/protection --silent 2>/dev/null | jq -r '.allow_deletions.enabled // "true"')
+                allow_delete=$(gh api repos/ministryofjustice/$repo/branches/$branch/protection --silent 2>/dev/null | jq -r '.allow_deletions.enabled // "true"')
                 if [[ "$allow_delete" == "false" ]]; then
                   repo_summary+="\n| \`$branch\` | ⏭️ Skipped | Protected from deletion |"
                   continue
                 fi
 
-                if gh api repos/$repo/git/ref/tags/do-not-prune/$branch --silent >/dev/null 2>&1; then
+                if gh api repos/ministryofjustice/$repo/git/ref/tags/do-not-prune/$branch --silent >/dev/null 2>&1; then
                   repo_summary+="\n| \`$branch\` | ⏭️ Skipped | Tagged do-not-prune |"
                   continue
                 fi
 
-                last_commit_date=$(gh api "repos/$repo/commits?sha=$branch" --jq '.[0].commit.committer.date' || echo "")
+                last_commit_date=$(gh api "repos/ministryofjustice/$repo/commits?sha=$branch" --jq '.[0].commit.committer.date' || echo "")
                 last_commit_timestamp=$(date -d "$last_commit_date" +%s 2>/dev/null || echo 0)
                 two_months_ago_timestamp=$(date -d "2 months ago" +%s)
 
@@ -87,7 +84,7 @@ jobs:
                   continue
                 fi
 
-                first_commit=$(gh api "repos/$repo/commits?sha=$branch" --paginate --jq '.[].commit.committer.date' | tail -n 1)
+                first_commit=$(gh api "repos/ministryofjustice/$repo/commits?sha=$branch" --paginate --jq '.[].commit.committer.date' | tail -n 1)
                 branch_creation_timestamp=$(date -d "$first_commit" +%s 2>/dev/null || echo 0)
 
                 if [[ "$branch_creation_timestamp" -eq 0 || "$branch_creation_timestamp" -ge "$two_months_ago_timestamp" ]]; then
@@ -95,19 +92,24 @@ jobs:
                   continue
                 fi
 
-                echo "🗑️ Deleting branch: $branch from $repo"
-                if gh api -X DELETE repos/$repo/git/refs/heads/$branch; then
-                  repo_summary+="\n| \`$branch\` | 🔥 Deleted | Branch and commits are 2+ months old |"
+                echo "🗑️ Deleting branch: $branch from ministryofjustice/$repo"
+                if [[ "$DRY_RUN" == "true" ]]; then
+                  echo "Dry Run: Skipping actual deletion of branch $branch"
+                  repo_summary+="\n| \`$branch\` | 📝 Dry Run | Branch and commits are 2+ months old |"
                 else
-                  repo_summary+="\n| \`$branch\` | ⚠️ Failed | GitHub API deletion failed |"
+                  if gh api -X DELETE repos/ministryofjustice/$repo/git/refs/heads/$branch; then
+                    repo_summary+="\n| \`$branch\` | 🔥 Deleted | Branch and commits are 2+ months old |"
+                  else
+                    repo_summary+="\n| \`$branch\` | ⚠️ Failed | GitHub API deletion failed |"
+                  fi
                 fi
               done
 
               echo -e "$repo_summary"
-              echo "✅ DONE with $repo"
+              echo "✅ DONE with ministryofjustice/$repo"
               echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
             } || {
-              echo "❌ Failed to process $repo — skipping to next."
+              echo "❌ Failed to process ministryofjustice/$repo — skipping to next."
               continue
             }
           done
