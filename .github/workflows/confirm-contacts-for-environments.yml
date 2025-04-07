@@ -14,6 +14,9 @@ env:
     EXPECTED_TEMPLATE_VERSION: 1 # Set the expected template version here
     PERIOD: "6" # This variable determines the number of months we look back for created dates. For production it will be 6.
 
+permissions:
+    id-token: write
+
 defaults:
   run:
     shell: bash

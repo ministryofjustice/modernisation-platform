@@ -9,6 +9,7 @@ permissions:
     actions: read
     statuses: read  
     contents: read
+    id-token: write
 
 env:
     GITHUB_REPO: ${{ github.repository }}
