@@ -52,7 +52,7 @@ jobs:
       # Step 4: Validate Notify Template Version
       - name: Validate Notify Template Version
         env:
-          API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
+          API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
           TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
           EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
         run: |
@@ -60,7 +60,7 @@ jobs:
           from notifications_python_client.notifications import NotificationsAPIClient
           import sys
 
-          api_key = "${{ secrets.GOV_UK_NOTIFY_API_KEY }}"
+          api_key = "${{ env.GOV_UK_NOTIFY_API_KEY }}"
           template_id = "${{ env.TEMPLATE_ID }}"
           expected_version = int("${{ env.EXPECTED_TEMPLATE_VERSION }}")
 
