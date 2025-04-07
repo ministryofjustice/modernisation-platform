@@ -36,7 +36,7 @@ An outline of the 'nuke' algorithm is as follows:
 
 Auto-nuke consumes the following dynamically generated Github secrets stored in the Modernisation Platorm Environments repository:
 
-- `MODERNISATION_PLATFORM_AUTONUKE_BLOCKLIST`: Account aliases to always exclude from auto-nuke. This takes precedence over all other configuration options. Due to the destructive nature of the tool, [AWS-Nuke](https://github.com/rebuy-de/aws-nuke) requires at least one account ID in the configured blocklist. Our blocklist contains all production, preproduction, and core accounts.
+- `MODERNISATION_PLATFORM_AUTONUKE_BLOCKLIST`: Account aliases to always exclude from auto-nuke. This takes precedence over all other configuration options. Due to the destructive nature of the tool, [AWS-Nuke](https://github.com/ekristen/aws-nuke) requires at least one account ID in the configured blocklist. Our blocklist contains all production, preproduction, and core accounts.
 
 - `MODERNISATION_PLATFORM_AUTONUKE`: Account aliases of sandbox accounts to be auto-nuked on weekly basis.
 
