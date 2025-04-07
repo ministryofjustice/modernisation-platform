@@ -49,7 +49,7 @@ jobs:
           REPORT_OUTPUT_FOLDER: none
           
       - name: Commit and Create PR with Signed Commit if Changes are Found
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@d1aa59f92c438bd85a21c1209c65b563d3dcb4be # v1.1.1
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v1.1.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "GitHub Actions Code Formatter workflow"
