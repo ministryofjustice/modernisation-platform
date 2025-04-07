@@ -22,7 +22,7 @@ This feature automatically destroys all resources in development environments on
 
 Every Sunday:
 
-- At 22:00 the [awsnuke.yml workflow](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/workflows/awsnuke.yml) is triggered. This workflow nukes all the configured development environments using the [AWS Nuke tool](https://github.com/rebuy-de/aws-nuke).
+- At 22:00 the [awsnuke.yml workflow](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/workflows/awsnuke.yml) is triggered. This workflow nukes all the configured development environments using the [AWS Nuke tool](https://github.com/ekristen/aws-nuke).
 - At 12:00 the [nuke-redeploy.yml workflow](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/workflows/nuke-redeploy.yml) is triggered. If requested, this workflow redeploys IaC into the nuked environment using `terraform apply`.
 
 An outline of the 'nuke' algorithm is as follows:
