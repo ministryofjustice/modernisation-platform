@@ -1245,13 +1245,11 @@ module "ad_fixngo_ssm_patching" {
   daily_definition_update = true
   account_number          = local.environment_management.account_ids["core-shared-services-production"]
   application_name        = "ad-fixngo-ssm-patching"
-  environment             = local.environment
+  environment             = "production"
   approval_days = {
     production = 14
   }
   patch_schedules             = local.ad_fixngo.ssm_patching.patch_schedules
-  maintenance_window_cutoff   = local.ad_fixngo.ssm_patching.maintenance_window_cutoff
-  maintenance_window_duration = local.ad_fixngo.ssm_patching.maintenance_window_duration
   patch_classifications       = local.ad_fixngo.ssm_patching.patch_classifications
   tags = merge(local.tags, {
     name   = "ad-fixngo-ssm-patching"
