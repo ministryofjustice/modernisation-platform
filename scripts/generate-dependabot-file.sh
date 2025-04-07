@@ -3,6 +3,9 @@ set -euo pipefail
 
 dependabot_file=".github/dependabot.yml"
 
+# Clear the dependabot file
+> "$dependabot_file"
+
 echo "Scanning for Terraform files..."
 # Find all directories containing .tf files, excluding .terraform
 tf_dirs=$(find . -type f -name "*.tf" ! -path "*/.terraform/*" -exec dirname {} \; | sed 's|^\./||' | sort -u)
