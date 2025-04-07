@@ -7,8 +7,6 @@ on:
 
 env:
     AWS_REGION: "eu-west-2"
-    ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-    API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
     TEMPLATE_ID: "1f0f5ccc-0f67-4ee2-942f-6e48804828ea"
     EXPECTED_TEMPLATE_VERSION: "1"  # Update with your expected template version
 
@@ -18,12 +16,28 @@ permissions:
     issues: write # This is required to create issues
 
 jobs:
+
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}  
+
   delete-superadmin-access-keys:
     runs-on: ubuntu-latest
+    needs: fetch-secrets
     steps:
       # Step 1: Checkout Repository
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      # Step 1.1: Decrypt Secrets
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
       # Step 2: Install Python
       - name: Install Python
