@@ -1555,6 +1555,7 @@ data "aws_iam_policy_document" "ssm_session_access" {
     actions = ["ssm:StartSession"]
     resources = [
       "arn:aws:ec2:*:*:instance/*",
+      "arn:aws:ssm:*:*:document/AWS-StartPortForwardingSessionToRemoteHost",
       "arn:aws:ssm:*:*:document/SSM-SessionManagerRunShell"
     ]
   }
