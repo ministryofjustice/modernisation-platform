@@ -16,7 +16,7 @@ echo "Writing dependabot.yml file"
 
 cat > "$dependabot_file" << EOL
 # This file is auto-generated, do not manually amend.
-# https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/generate-dependabot.sh
+# https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/generate-dependabot-file.sh
 
 version: 2
 
