@@ -42,10 +42,11 @@ locals {
         subnet_id                 = aws_subnet.live-data-additional["eu-west-2a"].id
         vpc_security_group_name   = "ad_hmpp_dc_sg"
         tags = {
-          server-type = "DomainJoin" # set to "DomainController" after initial testing
-          domain-name = "azure.hmpp.root"
-          description = "domain controller for FixNGo azure.hmpp.root domain"
-          Patching    = "ad-live-eu-west-2a"
+          server-type   = "DomainJoin" # set to "DomainController" after initial testing
+          domain-name   = "azure.hmpp.root"
+          description   = "domain controller for FixNGo azure.hmpp.root domain"
+          os-type       = "Windows"
+          patch-manager = "second-thurs"
         }
       }
       ad-hmpp-dc-b = {
@@ -58,10 +59,11 @@ locals {
         subnet_id                 = aws_subnet.live-data-additional["eu-west-2b"].id
         vpc_security_group_name   = "ad_hmpp_dc_sg"
         tags = {
-          server-type = "DomainJoin" # set to "DomainController" after initial testing
-          domain-name = "azure.hmpp.root"
-          description = "domain controller for FixNGo azure.hmpp.root domain"
-          Patching    = "ad-live-eu-west-2b"
+          server-type   = "DomainJoin" # set to "DomainController" after initial testing
+          domain-name   = "azure.hmpp.root"
+          description   = "domain controller for FixNGo azure.hmpp.root domain"
+          os-type       = "Windows"
+          patch-manager = "forth-thurs"
         }
       }
       ad-hmpp-rdlic = {
@@ -74,10 +76,11 @@ locals {
         subnet_id                 = aws_subnet.live-data-additional["eu-west-2c"].id
         vpc_security_group_name   = "ad_hmpp_rdlic_sg"
         tags = {
-          server-type = "RDLicensing"
-          domain-name = "azure.hmpp.root"
-          description = "remote desktop licensing server for FixNGo azure.hmpp.root domain"
-          Patching    = "rdlic-live-eu-west-2c"
+          server-type   = "RDLicensing"
+          domain-name   = "azure.hmpp.root"
+          description   = "remote desktop licensing server for FixNGo azure.hmpp.root domain"
+          os-type       = "Windows"
+          patch-manager = "forth-thurs"
         }
       }
 
@@ -91,10 +94,11 @@ locals {
         subnet_id                 = module.vpc["non_live_data"].non_tgw_subnet_ids_map.private[0]
         vpc_security_group_name   = "ad_azure_dc_sg"
         tags = {
-          server-type = "DomainController"
-          domain-name = "azure.noms.root"
-          description = "domain controller for FixNGo azure.noms.root domain"
-          Patching    = "ad-nonlive-eu-west-2a"
+          server-type   = "DomainController"
+          domain-name   = "azure.noms.root"
+          description   = "domain controller for FixNGo azure.noms.root domain"
+          os-type       = "Windows"
+          patch-manager = "second-thurs"
         }
       }
       ad-azure-dc-b = {
@@ -107,10 +111,11 @@ locals {
         subnet_id                 = module.vpc["non_live_data"].non_tgw_subnet_ids_map.private[1]
         vpc_security_group_name   = "ad_azure_dc_sg"
         tags = {
-          server-type = "DomainController"
-          domain-name = "azure.noms.root"
-          description = "domain controller for FixNGo azure.noms.root domain"
-          Patching    = "ad-nonlive-eu-west-2b"
+          server-type   = "DomainController"
+          domain-name   = "azure.noms.root"
+          description   = "domain controller for FixNGo azure.noms.root domain"
+          os-type       = "Windows"
+          patch-manager = "forth-thurs"
         }
       }
       ad-azure-rdlic = {
@@ -123,10 +128,11 @@ locals {
         subnet_id                 = module.vpc["non_live_data"].non_tgw_subnet_ids_map.private[2]
         vpc_security_group_name   = "ad_azure_rdlic_sg"
         tags = {
-          server-type = "RDLicensing"
-          domain-name = "azure.noms.root"
-          description = "remote desktop licensing server for FixNGo azure.noms.root domain"
-          Patching    = "rdlic-nonlive-eu-west-2c"
+          server-type   = "RDLicensing"
+          domain-name   = "azure.noms.root"
+          description   = "remote desktop licensing server for FixNGo azure.noms.root domain"
+          os-type       = "Windows"
+          patch-manager = "second-thurs"
         }
       }
     }
@@ -875,50 +881,12 @@ locals {
     }
 
     ssm_patching = {
-      # Non-live Domain Controllers
-      ad-fixngo-ssm-patching-nonlive-a = {
-        application-name = "ad-nonlive-a"
-        approval_days    = "9"
-        patch_schedule   = "cron(0 21 ? * TUE#2 *)" # 2nd Tues @ 9pm
-        patch_tag        = "ad-nonlive-eu-west-2a"
-        suffix           = "-ad-nl-2a"
+      patch_schedules = {
+        second-thurs = "cron(0 21 ? * THU#2 *)"
+        forth-thurs  = "cron(0 21 ? * THU#4 *)"
       }
-      ad-fixngo-ssm-patching-nonlive-b = {
-        application-name = "ad-nonlive-b"
-        approval_days    = "7"
-        patch_schedule   = "cron(0 21 ? * TUE#3 *)" # 3rd Tues @ 9pm
-        patch_tag        = "ad-nonlive-eu-west-2b"
-        suffix           = "-ad-nl-2b"
-      }
-      # Live Domain Controllers
-      ad-fixngo-ssm-patching-live-a = {
-        application-name = "ad-live-a"
-        approval_days    = "16"
-        patch_schedule   = "cron(0 21 ? * THU#3 *)" # 3rd Thurs @ 9pm
-        patch_tag        = "ad-live-eu-west-2a"
-        suffix           = "-ad-l-2a"
-      }
-      ad-fixngo-ssm-patching-live-b = {
-        application-name = "ad-live-b"
-        approval_days    = "14"
-        patch_schedule   = "cron(0 21 ? * THU#4 *)" # 4th Thurs @ 9pm
-        patch_tag        = "ad-live-eu-west-2b"
-        suffix           = "-ad-l-2b"
-      }
-      # RD Licensing
-      rdlic-fixngo-ssm-patching-nonlive = {
-        application-name = "rdlic-nonlive-c"
-        approval_days    = "7"
-        patch_schedule   = "cron(0 21 ? * WED#2 *)" # 2nd Weds @ 9pm
-        patch_tag        = "rdlic-nonlive-eu-west-2c"
-        suffix           = "-rdlic-nl-2c"
-      }
-      rdlic-fixngo-ssm-patching-live = {
-        application-name = "rdlic-live-c"
-        approval_days    = "14"
-        patch_schedule   = "cron(0 21 ? * WED#3 *)" # 3rd Weds @ 9pm
-        patch_tag        = "rdlic-live-eu-west-2c"
-        suffix           = "-rdlic-l-2c"
+      patch_classifications = {
+        WINDOWS = ["SecurityUpdates", "CriticalUpdates", "DefinitionUpdates"]
       }
     }
 
@@ -1270,23 +1238,21 @@ resource "aws_ssm_parameter" "ad_fixngo" {
 }
 
 module "ad_fixngo_ssm_patching" {
-  for_each = local.ad_fixngo.ssm_patching
-
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching.git?ref=d1be56ad6bceeee3fb0a1beb9ad0d61ea07d0259"
-
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching.git?ref=aeb25bbec66ae3575d9435841792c333f46fe614" # v4.0.0
   providers = {
     aws.bucket-replication = aws
   }
-
-  account_number       = local.environment_management.account_ids["core-shared-services-production"]
-  application_name     = each.value.application-name
-  approval_days        = each.value.approval_days
-  patch_schedule       = each.value.patch_schedule
-  operating_system     = "WINDOWS"
-  patch_tag            = each.value.patch_tag
-  suffix               = each.value.suffix
-  patch_classification = ["SecurityUpdates", "CriticalUpdates"]
-  tags = merge(local.ad_fixngo.tags, {
-    Name = each.value.application-name
+  daily_definition_update = true
+  account_number          = local.environment_management.account_ids["core-shared-services-production"]
+  application_name        = "ad-fixngo-ssm-patching"
+  environment             = "production"
+  approval_days = {
+    production = 14
+  }
+  patch_schedules             = local.ad_fixngo.ssm_patching.patch_schedules
+  patch_classifications       = local.ad_fixngo.ssm_patching.patch_classifications
+  tags = merge(local.tags, {
+    name   = "ad-fixngo-ssm-patching"
+    module = "ssm-patching-module"
   })
 }
