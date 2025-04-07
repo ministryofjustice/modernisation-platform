@@ -7,15 +7,22 @@ on:
 
 env:
     AWS_REGION: "eu-west-2"
-    ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
 
 permissions:
     id-token: write # This is required for requesting the JWT
     contents: read # This is required for actions/checkout
 
 jobs:
+
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}  
+
   member-information:
     runs-on: ubuntu-latest
+    needs: fetch-secrets
     steps:
       - name: Checkout modernisation-platform Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -26,6 +33,12 @@ jobs:
           repository: 'ministryofjustice/modernisation-platform-environments'
           token: ${{ secrets.GITHUB_TOKEN }}
           path: 'modernisation-platform-environments'
+
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management}}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
       - name: Set Account Number
         run: |
