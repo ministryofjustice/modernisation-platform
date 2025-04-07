@@ -7,11 +7,8 @@ on:
 
 env:
     AWS_REGION: "eu-west-2"
-    ENVIRONMENT_MANAGEMENT: ${{ secrets.MODERNISATION_PLATFORM_ENVIRONMENTS }}
-    API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
     TEMPLATE_ID: "1f0f5ccc-0f67-4ee2-942f-6e48804828ea"
     EXPECTED_TEMPLATE_VERSION: "1"
-    GH_TOKEN: ${{ secrets.MODERNISATION_PAT_MULTIREPO }}
 
 permissions:
     id-token: write # This is required for requesting the JWT
@@ -147,8 +144,10 @@ jobs:
 
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
+        env:
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          modernisation_pat_multirepo: ${{ needs.fetch-secrets.outputs.modernisation_pat_multirepo}}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
       - name: Set Account Number
@@ -170,4 +169,6 @@ jobs:
           threshold: 180
 
       - name: Create Deletion Issue
+        env:
+          GH_TOKEN: ${{ env.MODERNISATION_PAT_MULTIREPO }}
         run: bash ./scripts/iam-monitoring/collaborators-inactivity-monitoring/collaborator_user_deletion_issue.sh
