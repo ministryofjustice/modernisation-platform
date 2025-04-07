@@ -37,20 +37,6 @@
       ]
     },
     {
-      "username": "jonny.davey",
-      "github-username": "jonny190",
-      "accounts": [
-        {
-          "account-name": "equip-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "equip-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "pankaj.pant",
       "github-username": "pankaj-pant-lumen",
       "accounts": [
