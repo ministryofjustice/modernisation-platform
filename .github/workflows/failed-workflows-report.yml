@@ -13,7 +13,6 @@ permissions:
 env:
     GITHUB_REPO: ${{ github.repository }}
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     REPORTING_PERIOD: "24" # This variable sets the number of hours against which the report will be compiled.
 
 defaults:
@@ -22,13 +21,25 @@ defaults:
 
 jobs:
 
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}  
+
   generate-report:
     runs-on: ubuntu-latest
-
+    needs: fetch-secrets
     steps:
 
         - name: Checkout Repository
           uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+        - name: Decrypt Secrets
+          uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
+          with:
+            slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+            PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
         # Creates a json file listing the latest action for a workflow that:
         #  - failed in the previous number of hours as set by $REPORTING_PERIOD, and
@@ -53,6 +64,8 @@ jobs:
         # Sends the json file to the MP Team via the slack webhook
         - name: Send Report via Slack
           if: ${{ steps.get-failed-workflows.outputs.sendreport == 'true' }}
+          env:
+            SLACK_WEBHOOK_URL: "${{ env.SLACK_WEBHOOK_URL}}"
           run: |
             chmod +x scripts/failed-workflows-report/send-report-via-slack.sh
             ./scripts/failed-workflows-report/send-report-via-slack.sh $SLACK_WEBHOOK_URL slack_message.json
