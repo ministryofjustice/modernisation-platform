@@ -2,8 +2,6 @@
 set -euo pipefail
 
 dependabot_file=".github/dependabot.yml"
-echo "version: 2" > "$dependabot_file"
-echo "updates:" >> "$dependabot_file"
 
 echo "Scanning for Terraform files..."
 # Find all directories containing .tf files, excluding .terraform
