@@ -22,7 +22,7 @@ jobs:
         ref: ${{ github.event.pull_request.head.ref }}
 
     - name: Render terraform docs and push changes back to PR
-      uses: terraform-docs/gh-actions@aeae0038ed47a547e0c0fca5c059d3335f48fb25 # v1.3.0
+      uses: terraform-docs/gh-actions@7f8a667921aee9dd89af0f3c6dfa6160d7ebd8bb # v1.4.0
       with:
         find-dir: terraform/modules
         output-file: README.md
