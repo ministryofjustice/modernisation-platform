@@ -200,28 +200,6 @@ resource "aws_secretsmanager_secret" "slack_webhooks" {
   }
 }
 
-resource "aws_secretsmanager_secret" "testing_test_access_key_id" {
-  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
-  name        = "testing_test_access_key_id"
-  description = "Key ID used by unit tests in github repositories to access the testing-test account"
-  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
-  tags        = local.tags
-  replica {
-    region = local.replica_region
-  }
-}
-
-resource "aws_secretsmanager_secret" "testing_test_access_key" {
-  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
-  name        = "testing_test_access_key"
-  description = "Key value used by unit tests in github repositories to access the testing-test account"
-  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
-  tags        = local.tags
-  replica {
-    region = local.replica_region
-  }
-}
-
 # Reflection of what is in member accounts, needed here as well so that the same code works for collaborators
 resource "aws_ssm_parameter" "modernisation_platform_account_id" {
   #checkov:skip=CKV_AWS_337: Standard key is fine here
