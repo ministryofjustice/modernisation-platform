@@ -1037,12 +1037,12 @@ data "aws_iam_policy_document" "instance-access-document" {
     ]
     resources = ["*"]
     condition {
-      test = "StringEquals"
+      test     = "StringEquals"
       variable = "aws:ResourceTag/instance-access-policy"
-      values = ["sso-deny"]
+      values   = ["sso-deny"]
     }
     condition {
-      test = "StringEquals"
+      test     = "StringEquals"
       variable = "aws:userId"
       values = [
         "arn:aws:iam::*:user/sso-*"
