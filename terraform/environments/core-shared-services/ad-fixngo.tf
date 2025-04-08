@@ -1249,8 +1249,8 @@ module "ad_fixngo_ssm_patching" {
   approval_days = {
     production = 14
   }
-  patch_schedules             = local.ad_fixngo.ssm_patching.patch_schedules
-  patch_classifications       = local.ad_fixngo.ssm_patching.patch_classifications
+  patch_schedules       = local.ad_fixngo.ssm_patching.patch_schedules
+  patch_classifications = local.ad_fixngo.ssm_patching.patch_classifications
   tags = merge(local.tags, {
     name   = "ad-fixngo-ssm-patching"
     module = "ssm-patching-module"
