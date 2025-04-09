@@ -31,41 +31,25 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y jq
 
-      - name: Debug Raw Token Structure
-        run: |
-          token="${{ needs.fetch-secrets.outputs.MODERNISATION_PAT_MULTIREPO }}"
-          echo "🔐 Token starts with: ${token:0:10}..."
-          echo "Length: ${#token}"
-
-      - name: Base64 decode token (fallback-safe)
-        id: decode
-        run: |
-          token="${{ needs.fetch-secrets.outputs.MODERNISATION_PAT_MULTIREPO }}"
-          
-          # Attempt base64 decode
-          if echo "$token" | base64 -d > decrypted_token.txt 2>/dev/null; then
-            echo "✅ Successfully base64-decoded the token"
-          else
-            echo "⚠️ Not base64 — using raw token as-is"
-            echo "$token" > decrypted_token.txt
-          fi
-
-          cat decrypted_token.txt | head -c 10
-          echo "::add-mask::$(cat decrypted_token.txt)"
-          echo "decrypted_token=$(cat decrypted_token.txt)" >> "$GITHUB_OUTPUT"
+      - name: Decrypt Secrets
+        id: decrypt
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6
+        with:
+          terraform_github_token: ${{ needs.fetch-secrets.outputs.MODERNISATION_PAT_MULTIREPO }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
       - name: Debug Decrypted Token Length
         run: |
-          token="${{ steps.decode.outputs.decrypted_token }}"
+          token="${{ steps.decrypt.outputs.terraform_github_token }}"
           if [[ -z "$token" ]]; then
             echo "❌ Decrypted token is empty!"
             exit 1
           fi
-          echo "✅ Token ready. Length: ${#token}"
+          echo "✅ Decrypted token retrieved. Length: ${#token}"
 
       - name: Authenticate GitHub CLI
         run: |
-          echo "${{ steps.decode.outputs.decrypted_token }}" | gh auth login --with-token || {
+          echo "${{ steps.decrypt.outputs.terraform_github_token }}" | gh auth login --with-token || {
             echo "❌ Failed to authenticate with GitHub CLI."
             exit 1
           }
