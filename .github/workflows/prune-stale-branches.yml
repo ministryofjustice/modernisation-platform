@@ -26,36 +26,33 @@ jobs:
     needs: fetch-secrets
 
     steps:
-      - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v1.1.1
-        with:
-          terraform_github_token: ${{ needs.fetch-secrets.outputs.MODERNISATION_PAT_MULTIREPO }}
-          PASSPHRASE: ${{ secrets.PASSPHRASE }}
-
-      - name: Debug Secret Output
-        run: |
-          echo "🔐 Token starts with: ${MODERNISATION_PAT_MULTIREPO:0:4}..."
-          echo "Token length: ${#MODERNISATION_PAT_MULTIREPO}"
-        env:
-          MODERNISATION_PAT_MULTIREPO: ${{ needs.fetch-secrets.outputs.MODERNISATION_PAT_MULTIREPO }}
-
       - name: Ensure CLI tools are installed
         run: |
+          sudo apt-get update
+          sudo apt-get install -y gnupg
           command -v gh >/dev/null || (echo "❌ GitHub CLI (gh) is not installed" && exit 1)
           command -v jq >/dev/null || (echo "❌ jq is not installed" && exit 1)
 
-      - name: Debug Token Length
+      - name: Manually decrypt token
+        id: manual-decrypt
         run: |
-          token="${{ needs.fetch-secrets.outputs.MODERNISATION_PAT_MULTIREPO }}"
+          echo "${{ needs.fetch-secrets.outputs.MODERNISATION_PAT_MULTIREPO }}" > token.asc
+          gpg --batch --passphrase "${{ secrets.PASSPHRASE }}" --decrypt token.asc > decrypted_token.txt
+          echo "::add-mask::$(cat decrypted_token.txt)"
+          echo "decrypted_token=$(cat decrypted_token.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Debug Decrypted Token Length
+        run: |
+          token="${{ steps.manual-decrypt.outputs.decrypted_token }}"
           if [[ -z "$token" ]]; then
-            echo "❌ Token is empty or not retrieved!"
+            echo "❌ Decrypted token is empty!"
             exit 1
           fi
-          echo "✅ Token retrieved successfully. Length: ${#token}"
+          echo "✅ Decrypted token retrieved. Length: ${#token}"
 
       - name: Authenticate GitHub CLI
         run: |
-          echo "${{ needs.fetch-secrets.outputs.MODERNISATION_PAT_MULTIREPO }}" | gh auth login --with-token || {
+          echo "${{ steps.manual-decrypt.outputs.decrypted_token }}" | gh auth login --with-token || {
             echo "❌ Failed to authenticate with GitHub CLI."
             exit 1
           }
@@ -73,18 +70,15 @@ jobs:
           DEBUG=false
           DRY_RUN=false
 
-          # Exclusion list
           exclude_repos=(
             "modernisation-platform-environments"
             "modernisation-platform-ami-builds"
             "modernisation-platform-configuration-management"
           )
 
-          # Fetch all repositories starting with "modernisation-platform" and exclude archived ones
           repos=$(gh repo list ministryofjustice --limit 1000 --json name,isArchived --jq '.[] | select(.name | startswith("modernisation-platform")) | select(.isArchived == false) | .name')
 
           for repo in $repos; do
-            # Skip excluded repositories
             if [[ " ${exclude_repos[@]} " =~ " $repo " ]]; then
               echo "⏭️ Skipping excluded repository: $repo"
               continue
