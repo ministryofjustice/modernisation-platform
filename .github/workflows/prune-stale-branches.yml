@@ -35,14 +35,14 @@ jobs:
         id: decrypt
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6
         with:
-          terraform_github_token: ${{ needs.fetch-secrets.outputs.MODERNISATION_PAT_MULTIREPO }}
+          terraform_github_token: ${{ needs.fetch-secrets.outputs.terraform_github_token }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
       - name: Dump all step outputs for decrypt-secrets
         run: |
           echo "🔎 Outputs from decrypt step:"
           echo "terraform_github_token=${{ steps.decrypt.outputs.terraform_github_token }}"
-          echo "MODERNISATION_PAT_MULTIREPO=${{ steps.decrypt.outputs.MODERNISATION_PAT_MULTIREPO }}"
+          echo "terraform_github_token=${{ steps.decrypt.outputs.terraform_github_token }}"
           echo "token=${{ steps.decrypt.outputs.token }}"
           echo "raw=${{ steps.decrypt.outputs.raw }}"
 
@@ -51,7 +51,7 @@ jobs:
 
       - name: Debug Decrypted Token Length
         run: |
-          token="${{ steps.decrypt.outputs.MODERNISATION_PAT_MULTIREPO }}"
+          token="${{ steps.decrypt.outputs.terraform_github_token }}"
           if [[ -z "$token" ]]; then
             echo "❌ Decrypted token is empty!"
             exit 1
@@ -60,7 +60,7 @@ jobs:
 
       - name: Authenticate GitHub CLI
         run: |
-          echo "${{ steps.decrypt.outputs.MODERNISATION_PAT_MULTIREPO }}" | gh auth login --with-token || {
+          echo "${{ steps.decrypt.outputs.terraform_github_token }}" | gh auth login --with-token || {
             echo "❌ Failed to authenticate with GitHub CLI."
             exit 1
           }
