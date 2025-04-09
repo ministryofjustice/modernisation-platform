@@ -5,6 +5,9 @@ on:
   schedule:
     - cron: '0 0 * * *'
 
+  push:
+    branches: ["feature-9556-auto-pruning-stale-branches"]
+
 permissions:
   contents: write
   pull-requests: write
