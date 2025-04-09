@@ -4,20 +4,31 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
-  push:
-    branches:
-      - feature-9556-auto-pruning-stale-branches
 
 permissions:
   contents: write
   pull-requests: write
 
 jobs:
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v1.1.1
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
   cleanup:
     name: Cleanup Stale Branches in Modernisation Platform Repos
     runs-on: ubuntu-latest
-
+    needs: fetch-secrets
+    
     steps:
+
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v1.1.1
+        with:
+          terraform_github_token: ${{ needs.fetch-secrets.outputs.terraform_github_token }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
       - name: Ensure CLI tools are installed
         run: |
           command -v gh >/dev/null || (echo "❌ GitHub CLI (gh) is not installed" && exit 1)
@@ -25,7 +36,7 @@ jobs:
 
       - name: Authenticate GitHub CLI
         run: |
-          echo "${{ secrets.terraform_github_token }}" | gh auth login --with-token
+          echo "${{ env.TERRAFORM_GITHUB_TOKEN }}" | gh auth login --with-token
 
       - name: Cleanup stale branches across repositories
         run: |
