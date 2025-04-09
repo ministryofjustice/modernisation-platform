@@ -29,30 +29,43 @@ jobs:
       - name: Ensure CLI tools are installed
         run: |
           sudo apt-get update
-          sudo apt-get install -y gnupg
-          command -v gh >/dev/null || (echo "❌ GitHub CLI (gh) is not installed" && exit 1)
-          command -v jq >/dev/null || (echo "❌ jq is not installed" && exit 1)
+          sudo apt-get install -y jq
 
-      - name: Manually decrypt token
-        id: manual-decrypt
+      - name: Debug Raw Token Structure
         run: |
-          echo "${{ needs.fetch-secrets.outputs.MODERNISATION_PAT_MULTIREPO }}" > token.asc
-          gpg --batch --passphrase "${{ secrets.PASSPHRASE }}" --decrypt token.asc > decrypted_token.txt
+          token="${{ needs.fetch-secrets.outputs.MODERNISATION_PAT_MULTIREPO }}"
+          echo "🔐 Token starts with: ${token:0:10}..."
+          echo "Length: ${#token}"
+
+      - name: Base64 decode token (fallback-safe)
+        id: decode
+        run: |
+          token="${{ needs.fetch-secrets.outputs.MODERNISATION_PAT_MULTIREPO }}"
+          
+          # Attempt base64 decode
+          if echo "$token" | base64 -d > decrypted_token.txt 2>/dev/null; then
+            echo "✅ Successfully base64-decoded the token"
+          else
+            echo "⚠️ Not base64 — using raw token as-is"
+            echo "$token" > decrypted_token.txt
+          fi
+
+          cat decrypted_token.txt | head -c 10
           echo "::add-mask::$(cat decrypted_token.txt)"
           echo "decrypted_token=$(cat decrypted_token.txt)" >> "$GITHUB_OUTPUT"
 
       - name: Debug Decrypted Token Length
         run: |
-          token="${{ steps.manual-decrypt.outputs.decrypted_token }}"
+          token="${{ steps.decode.outputs.decrypted_token }}"
           if [[ -z "$token" ]]; then
             echo "❌ Decrypted token is empty!"
             exit 1
           fi
-          echo "✅ Decrypted token retrieved. Length: ${#token}"
+          echo "✅ Token ready. Length: ${#token}"
 
       - name: Authenticate GitHub CLI
         run: |
-          echo "${{ steps.manual-decrypt.outputs.decrypted_token }}" | gh auth login --with-token || {
+          echo "${{ steps.decode.outputs.decrypted_token }}" | gh auth login --with-token || {
             echo "❌ Failed to authenticate with GitHub CLI."
             exit 1
           }
