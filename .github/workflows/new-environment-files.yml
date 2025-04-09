@@ -9,7 +9,8 @@ on:
       - main
   workflow_dispatch:
 
-permissions: {}
+permissions: 
+  id-token: write
 
 defaults:
   run:
