@@ -20,7 +20,7 @@ locals {
   modernisation_platform_account = local.environment_management.modernisation_platform_account_id
 
   # Added local to obtain the gpg key passphrase for use with the reusable secrets manager workflow & action
-  decrypt_passphrase = data.aws_secretsmanager_secret_version.secrets_fetch_decrypt_passphrase.secret_string
+  decrypt_passphrase = data.aws_secretsmanager_secret_version.secrets-fetch-decrypt-passphrase.secret_string
 
   # GitHub usernames for the Modernisation Platform team maintainers
   # NB: Terraform shows a perpetual difference in roles if someone is an organisation owner
