@@ -19,6 +19,9 @@ locals {
   environment_management         = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
   modernisation_platform_account = local.environment_management.modernisation_platform_account_id
 
+  # Added local to obtain the gpg key passphrase for use with the reusable secrets manager workflow & action
+  decrypt_passphrase = data.aws_secretsmanager_secret_version.secrets_fetch_decrypt_passphrase.secret_string
+
   # GitHub usernames for the Modernisation Platform team maintainers
   # NB: Terraform shows a perpetual difference in roles if someone is an organisation owner
   # and will attempt to change them from `maintainer` to `member`, so owners should go in here.

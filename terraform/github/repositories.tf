@@ -34,7 +34,11 @@ module "terraform-module-baselines" {
     "aws-baselines",
     "moj-security",
   ]
-  secrets = nonsensitive(local.testing_ci_iam_user_keys)
+  secrets = merge(
+    nonsensitive(local.testing_ci_iam_user_keys),
+    {PASSPHRASE = local.decrypt_passphrase},
+    {MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account}
+  )
 }
 
 module "terraform-module-cross-account-access" {
