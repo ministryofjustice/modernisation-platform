@@ -31,9 +31,18 @@ jobs:
           command -v gh >/dev/null || (echo "❌ GitHub CLI (gh) is not installed" && exit 1)
           command -v jq >/dev/null || (echo "❌ jq is not installed" && exit 1)
 
+      - name: Debug Token Length
+        run: |
+          echo "Token length: ${#${{ needs.fetch-secrets.outputs.terraform_github_token }}}"
+        shell: bash
+
       - name: Authenticate GitHub CLI
         run: |
           echo "${{ needs.fetch-secrets.outputs.terraform_github_token }}" | gh auth login --with-token
+
+      - name: Verify Authentication
+        run: |
+          gh auth status
 
       - name: Cleanup stale branches across repositories
         run: |
