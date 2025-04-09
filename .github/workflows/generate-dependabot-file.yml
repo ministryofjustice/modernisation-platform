@@ -25,7 +25,9 @@ jobs:
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v2.0.1
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
-      PASSPHRASE: ${{ secrets.PASSPHRASE }}  
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+    permissions:
+      id-token: write
 
   create-and-commit-dependabot-file:
     permissions:
