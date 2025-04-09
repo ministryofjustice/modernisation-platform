@@ -26,6 +26,12 @@ jobs:
     needs: fetch-secrets
 
     steps:
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v1.1.1
+        with:
+          terraform_github_token: ${{ needs.fetch-secrets.outputs.terraform_github_token }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
       - name: Ensure CLI tools are installed
         run: |
           command -v gh >/dev/null || (echo "❌ GitHub CLI (gh) is not installed" && exit 1)
