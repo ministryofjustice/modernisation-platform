@@ -283,7 +283,6 @@ jobs:
           scripts/terraform-apply.sh terraform/environments/${{ matrix.application }}
 
   terraform-apply-preprod-prod:
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: [fetch-secrets, find-environments, terraform-plan-preprod-prod]
     strategy:
@@ -305,6 +304,8 @@ jobs:
       - name: Set account number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          echo "Account Number: $ACCOUNT_NUMBER"
+          echo "Environment: ${{ matrix.environment }}"
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
       - name: Configure AWS credentials
@@ -313,6 +314,7 @@ jobs:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
+          include-claim-keys: 'repository,ref'
       - name: Setup Terraform
         id: setup
         uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
