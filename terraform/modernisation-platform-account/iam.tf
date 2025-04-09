@@ -264,7 +264,6 @@ module "github_actions_apply_role" {
   role_name           = "github-actions-apply"
   policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
   policy_jsons        = [data.aws_iam_policy_document.oidc-deny-specific-actions.json]
-  subject_claim       = "ref:refs/heads/main"
   tags                = { "Name" = "GitHub Actions Apply" }
 }
 
