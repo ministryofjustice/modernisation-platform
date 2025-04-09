@@ -32,6 +32,13 @@ jobs:
           terraform_github_token: ${{ needs.fetch-secrets.outputs.MODERNISATION_PAT_MULTIREPO }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
+      - name: Debug Secret Output
+        run: |
+          echo "🔐 Token starts with: ${MODERNISATION_PAT_MULTIREPO:0:4}..."
+          echo "Token length: ${#MODERNISATION_PAT_MULTIREPO}"
+        env:
+          MODERNISATION_PAT_MULTIREPO: ${{ needs.fetch-secrets.outputs.MODERNISATION_PAT_MULTIREPO }}
+
       - name: Ensure CLI tools are installed
         run: |
           command -v gh >/dev/null || (echo "❌ GitHub CLI (gh) is not installed" && exit 1)
