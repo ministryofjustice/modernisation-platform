@@ -11,7 +11,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  id-token: write
+  id-token: write # Required for OIDC role usage in fetch-secrets job
 
 jobs:
   fetch-secrets:
@@ -33,16 +33,26 @@ jobs:
 
       - name: Debug Token Length
         run: |
-          echo "Token length: ${#${{ needs.fetch-secrets.outputs.terraform_github_token }}}"
-        shell: bash
+          token="${{ needs.fetch-secrets.outputs.terraform_github_token }}"
+          if [[ -z "$token" ]]; then
+            echo "❌ Token is empty or not retrieved!"
+            exit 1
+          fi
+          echo "✅ Token retrieved successfully. Length: ${#token}"
 
       - name: Authenticate GitHub CLI
         run: |
-          echo "${{ needs.fetch-secrets.outputs.terraform_github_token }}" | gh auth login --with-token
+          echo "${{ needs.fetch-secrets.outputs.terraform_github_token }}" | gh auth login --with-token || {
+            echo "❌ Failed to authenticate with GitHub CLI."
+            exit 1
+          }
 
       - name: Verify Authentication
         run: |
-          gh auth status
+          gh auth status || {
+            echo "❌ Authentication verification failed."
+            exit 1
+          }
 
       - name: Cleanup stale branches across repositories
         run: |
