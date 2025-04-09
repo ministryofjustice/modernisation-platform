@@ -314,6 +314,7 @@ jobs:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
+          include-claim-keys: 'repository,ref'
       - name: Setup Terraform
         id: setup
         uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
