@@ -38,6 +38,17 @@ jobs:
           terraform_github_token: ${{ needs.fetch-secrets.outputs.MODERNISATION_PAT_MULTIREPO }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
+      - name: Dump all step outputs for decrypt-secrets
+        run: |
+          echo "🔎 Outputs from decrypt step:"
+          echo "terraform_github_token=${{ steps.decrypt.outputs.terraform_github_token }}"
+          echo "MODERNISATION_PAT_MULTIREPO=${{ steps.decrypt.outputs.MODERNISATION_PAT_MULTIREPO }}"
+          echo "token=${{ steps.decrypt.outputs.token }}"
+          echo "raw=${{ steps.decrypt.outputs.raw }}"
+
+      - name: Dump environment (debug)
+        run: env
+
       - name: Debug Decrypted Token Length
         run: |
           token="${{ steps.decrypt.outputs.terraform_github_token }}"
