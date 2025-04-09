@@ -9,8 +9,7 @@ on:
       - main
   workflow_dispatch:
 
-permissions: 
-  id-token: write
+permissions: {}
 
 defaults:
   run:
@@ -28,6 +27,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      id-token: write
     runs-on: ubuntu-latest
     needs: fetch-secrets
     steps:
