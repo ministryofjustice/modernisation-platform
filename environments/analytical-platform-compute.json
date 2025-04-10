@@ -12,7 +12,7 @@
     }
   ],
   "codeowners": ["analytical-platform-engineers"],
-  "github_action_reviewers": ["analytical-platform-engineers"],
+  "github_action_reviewer": ["analytical-platform-engineers"],
   "environments": [
     {
       "name": "development",
