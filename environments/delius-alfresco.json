@@ -1,14 +1,14 @@
 {
   "account-type": "member",
   "codeowners": ["hosting-migrations"],
-  "github_action_reviewers": ["hosting-migrations"],
   "environments": [
     {
       "name": "development",
       "access": [
         {
           "sso_group_name": "hosting-migrations",
-          "level": "sandbox"
+          "level": "sandbox",
+          "github_action_reviewer": "true"
         }
       ],
       "nuke": "exclude"
@@ -18,7 +18,8 @@
       "access": [
         {
           "sso_group_name": "hosting-migrations",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         }
       ]
     },
@@ -27,7 +28,8 @@
       "access": [
         {
           "sso_group_name": "hosting-migrations",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         }
       ]
     },
@@ -36,7 +38,8 @@
       "access": [
         {
           "sso_group_name": "hosting-migrations",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         }
       ]
     }
