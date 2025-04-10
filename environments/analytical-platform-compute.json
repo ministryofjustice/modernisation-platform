@@ -12,14 +12,14 @@
     }
   ],
   "codeowners": ["analytical-platform-engineers"],
-  "github_action_reviewer": ["analytical-platform-engineers"],
   "environments": [
     {
       "name": "development",
       "access": [
         {
           "sso_group_name": "analytical-platform-engineers",
-          "level": "platform-engineer-admin"
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "analytical-platform-engineers",
@@ -50,7 +50,8 @@
       "access": [
         {
           "sso_group_name": "analytical-platform-engineers",
-          "level": "platform-engineer-admin"
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "analytical-platform-engineers",
@@ -80,7 +81,8 @@
       "access": [
         {
           "sso_group_name": "analytical-platform-engineers",
-          "level": "platform-engineer-admin"
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "analytical-platform-engineers",
