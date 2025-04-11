@@ -861,24 +861,6 @@
           "access": "developer"
         }
       ]
-    },
-    {
-      "username": "david.reid",
-      "github-username": "davidjohnreid",
-      "accounts": [
-        {
-          "account-name": "delius-core-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "delius-core-test",
-          "access": "developer"
-        },
-        {
-          "account-name": "delius-core-preproduction",
-          "access": "developer"
-        }
-      ]
     }
   ]
 }
