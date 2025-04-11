@@ -171,7 +171,7 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail_replication" {
 
 
 module "s3-bucket-cloudtrail" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=cadab519b10a7d28dfa3b77d407725db6b37614a" # v8.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" #v8.2.1
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
@@ -297,7 +297,7 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
 }
 
 module "s3-bucket-cloudtrail-logging" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=cadab519b10a7d28dfa3b77d407725db6b37614a" # v8.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" #v8.2.1
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
