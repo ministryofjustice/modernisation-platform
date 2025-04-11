@@ -1,4 +1,5 @@
-name: Signed Commit & PR Workflow
+name: 'Signed Commit & PR Workflow'
+
 on:
   workflow_call:
     inputs:
