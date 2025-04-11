@@ -677,5 +677,33 @@
     "destination_ip": "${laa-production}",
     "destination_port": "1521",
     "protocol": "TCP"
+  },
+  "ap-ingest-prod_to_cica_tariff_prod_a": {
+    "action": "PASS",
+    "source_ip": "${analytical-platform-ingest-prod}",
+    "destination_ip": "${cica-aws-prod-a}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "ap-ingest-prod_to_cica_tariff_prod_b": {
+    "action": "PASS",
+    "source_ip": "${analytical-platform-ingest-prod}",
+    "destination_ip": "${cica-aws-prod-b}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "ap-ingest-prod_to_cica_tariff_prod_c": {
+    "action": "PASS",
+    "source_ip": "${analytical-platform-ingest-prod}",
+    "destination_ip": "${cica-aws-prod-c}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "ap-ingest-prod_to_cica_tariff_prod_d": {
+    "action": "PASS",
+    "source_ip": "${analytical-platform-ingest-prod}",
+    "destination_ip": "${cica-aws-prod-d}",
+    "destination_port": "1521",
+    "protocol": "TCP"
   }
 }
