@@ -1030,6 +1030,26 @@ data "aws_iam_policy_document" "instance-access-document" {
     }
   }
 
+  statement {
+    effect = "Deny"
+    actions = [
+      "ec2:*"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:ResourceTag/instance-access-policy"
+      values   = ["sso-deny"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:userId"
+      values = [
+        "arn:aws:iam::*:user/sso-*"
+      ]
+    }
+  }
+
 }
 
 # instance management - member SSO and collaborators
