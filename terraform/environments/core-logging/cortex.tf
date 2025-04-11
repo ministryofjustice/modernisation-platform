@@ -163,7 +163,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "logging" {
       days_after_initiation = 7
     }
     id = "rule-1"
-    filter {}
+    filter {
+      prefix = ""
+    }
     expiration {
       days = 14
     }

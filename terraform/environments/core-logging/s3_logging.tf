@@ -171,7 +171,7 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail_replication" {
 
 
 module "s3-bucket-cloudtrail" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=cadab519b10a7d28dfa3b77d407725db6b37614a" # v8.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
@@ -190,6 +190,7 @@ module "s3-bucket-cloudtrail" {
     {
       id      = "main"
       enabled = "Enabled"
+      prefix  = ""
       tags    = {}
       transition = [
         {
@@ -218,8 +219,21 @@ module "s3-bucket-cloudtrail" {
     }
   ]
   log_bucket = module.s3-bucket-cloudtrail-logging.bucket.id
-  tags       = local.tags
+  log_buckets = tomap({
+    "log_bucket_name" : module.s3-bucket-cloudtrail-logging.bucket.id,
+    "log_bucket_arn" : module.s3-bucket-cloudtrail-logging.bucket.arn,
+    "log_bucket_policy" : module.s3-bucket-cloudtrail-logging.bucket_policy.policy,
+  })
+  log_prefix = ""
+
+  tags = local.tags
 }
+# Required for updating s3 bucket module to >v8.2.0 without breaking changes 
+moved {
+  from = module.s3-bucket-cloudtrail.aws_s3_bucket_logging.default["modernisation-platform-logs-cloudtrail-logging"]
+  to   = module.s3-bucket-cloudtrail.aws_s3_bucket_logging.default_bucket_object[0]
+}
+
 # Allow access to the bucket from the MoJ root account
 # Policy extrapolated from:
 # https://www.terraform.io/docs/backends/types/s3.html#s3-bucket-permissions
@@ -297,7 +311,7 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
 }
 
 module "s3-bucket-cloudtrail-logging" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=cadab519b10a7d28dfa3b77d407725db6b37614a" # v8.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
@@ -317,6 +331,7 @@ module "s3-bucket-cloudtrail-logging" {
     {
       id      = "main"
       enabled = "Enabled"
+      prefix  = ""
       tags    = {}
       transition = [
         {
