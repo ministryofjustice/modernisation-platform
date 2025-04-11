@@ -1029,27 +1029,6 @@ data "aws_iam_policy_document" "instance-access-document" {
       values   = ["full"]
     }
   }
-
-  statement {
-    effect = "Deny"
-    actions = [
-      "ec2:*"
-    ]
-    resources = ["*"]
-    condition {
-      test     = "StringEquals"
-      variable = "aws:ResourceTag/instance-access-policy"
-      values   = ["sso-deny"]
-    }
-    condition {
-      test     = "StringEquals"
-      variable = "aws:userId"
-      values = [
-        "arn:aws:iam::*:user/sso-*"
-      ]
-    }
-  }
-
 }
 
 # instance management - member SSO and collaborators
@@ -1207,6 +1186,28 @@ data "aws_iam_policy_document" "instance-management-document" {
       test     = "Bool"
       variable = "kms:GrantIsForAWSResource"
       values   = ["true"]
+    }
+  }
+
+
+  statement {
+    sid    = "DenySSOConnectionToEC2"
+    effect = "Deny"
+    actions = [
+      "ssm-guiconnect:StartConnection"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:ResourceTag/instance-access-policy"
+      values   = ["sso-deny"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "ssm-guiconnect:AuthType"
+      values = [
+        "SSO"
+      ]
     }
   }
 }
