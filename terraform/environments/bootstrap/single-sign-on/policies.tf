@@ -647,7 +647,8 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "support:*",
       "textract:*",
       "wafv2:*",
-      "wellarchitected:*"
+      "wellarchitected:*",
+      "guardduty:*"
     ]
     resources = ["*"]
   }
