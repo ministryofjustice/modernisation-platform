@@ -33,6 +33,9 @@ jobs:
     needs: fetch-secrets
     container:
       image: ghcr.io/ministryofjustice/tech-docs-github-pages-publisher@sha256:30d00879b5c82afa5d76264164db46189fa11d4358b37ca35b6a62e341d62bb7 # v5.1.0
+    defaults:
+      run:
+        shell: sh
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
