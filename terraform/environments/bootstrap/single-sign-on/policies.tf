@@ -608,7 +608,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "events:*",
       "glacier:*",
       "glue:*",
-      "guardduty:*"
+      "guardduty:*",
       "iam:*",
       "identitystore:*",
       "kinesis:*",
