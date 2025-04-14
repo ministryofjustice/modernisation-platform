@@ -244,6 +244,7 @@ module "modernisation-platform-instance-scheduler" {
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
+    CORE_SHARED_SERVICES_ACCOUNT_NUMBER   = local.core_shared_services_production_account
   }
 }
 
@@ -351,6 +352,10 @@ module "modernisation-platform-github-actions" {
   type        = "core"
   description = "A collection of reusable GitHub Actions for the Modernisation Platform, designed to streamline and enhance workflows across our projects. This repository is defined and managed in Terraform."
   topics      = ["modernisation-platform"]
+  secrets = {
+    PASSPHRASE                            = local.decrypt_passphrase
+    MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
+  }
 }
 
 module "terraform-module-aws-loadbalancer" {
@@ -488,6 +493,10 @@ module "modernisation-platform-security" {
     "security"
   ]
   visibility = "internal"
+  secrets = {
+    PASSPHRASE                            = local.decrypt_passphrase
+    MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
+  }
 }
 
 module "modernisation-platform-terraform-aws-chatbot" {
