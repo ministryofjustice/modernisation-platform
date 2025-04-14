@@ -75,7 +75,7 @@ data "aws_iam_policy" "developer" {
 module "collaborator_sandbox_role" {
   # checkov:skip=CKV_TF_1:
 
-  count  = local.account_data.account-type == "member" && local.application_environment == "development" ? 1 : 0
+  count  = (local.account_data.account-type == "member" && (local.application_environment == "development" || terraform.workspace == "youth-justice-app-framework-preproduction")) ? 1 : 0
   source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
 
   trusted_role_arns = [
