@@ -218,27 +218,6 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
   }
 
   statement {
-    sid    = "AssumeRole"
-    effect = "Allow"
-    actions = [
-      "sts:AssumeRole"
-    ]
-    resources = [
-      "arn:aws:iam::${local.environment_management.account_ids["core-logging-production"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-development"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-preproduction"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-production"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-sandbox"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-test"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["core-security-production"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["testing-test"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.aws_organizations_root_account_id}:role/ModernisationPlatformSSOAdministrator"
-    ]
-  }
-
-  statement {
     sid       = "AllowOIDCReadState"
     effect    = "Allow"
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*", "arn:aws:s3:::modernisation-platform-terraform-state/"]
