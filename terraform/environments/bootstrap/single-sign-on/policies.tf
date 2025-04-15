@@ -908,6 +908,11 @@ data "aws_iam_policy_document" "instance-access-document" {
     actions = [
       "athena:StartQueryExecution",
       "athena:StopQueryExecution",
+      "cloudwatch:GetDashboard",
+      "cloudwatch:GetMetricData",
+      "cloudwatch:GetMetricStatistics",
+      "cloudwatch:ListDashboards",
+      "cloudwatch:ListMetrics",
       "ec2:GetPasswordData",
       "kms:Decrypt*",
       "kms:Encrypt",
@@ -1080,8 +1085,6 @@ data "aws_iam_policy_document" "instance-management-document" {
       ]
     }
 
-
-
   }
   statement {
     sid    = "databaseAllowNull"
@@ -1094,6 +1097,11 @@ data "aws_iam_policy_document" "instance-management-document" {
       "autoscaling:UpdateAutoScalingGroup",
       "autoscaling:SetDesiredCapacity",
       "aws-marketplace:ViewSubscriptions",
+      "cloudwatch:GetDashboard",
+      "cloudwatch:GetMetricData",
+      "cloudwatch:GetMetricStatistics",
+      "cloudwatch:ListDashboards",
+      "cloudwatch:ListMetrics",
       "ds:*Tags*",
       "ds:*Snapshot*",
       "ds:ResetUserPassword",
