@@ -488,6 +488,10 @@ module "modernisation-platform-security" {
     "security"
   ]
   visibility = "internal"
+  secrets = {
+    PASSPHRASE                            = local.decrypt_passphrase
+    MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
+  }
 }
 
 module "modernisation-platform-terraform-aws-chatbot" {
