@@ -300,7 +300,7 @@ module "github_actions_read_secrets_role" {
     "ministryofjustice/modernisation-platform-instance-scheduler",
     "ministryofjustice/modernisation-platform-terraform-loadbalancer",
     "ministryofjustice/modernisation-platform-terraform-aws-data-firehose",
-    "ministryofjustice/modernisation-platform-terraform-cross-account-access"
+    "ministryofjustice/modernisation-platform-terraform-cross-account-access",
     "ministryofjustice/modernisation-platform-security"
   ]
   role_name    = "github-actions-read-secrets"
