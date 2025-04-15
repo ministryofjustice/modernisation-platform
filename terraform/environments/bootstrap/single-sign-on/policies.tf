@@ -1189,28 +1189,6 @@ data "aws_iam_policy_document" "instance-management-document" {
       values   = ["true"]
     }
   }
-
-
-  statement {
-    sid    = "DenySSOConnectionToEC2"
-    effect = "Deny"
-    actions = [
-      "ssm-guiconnect:StartConnection"
-    ]
-    resources = ["*"]
-    condition {
-      test     = "StringEquals"
-      variable = "aws:ResourceTag/instance-access-policy"
-      values   = ["sso-deny"]
-    }
-    condition {
-      test     = "StringEquals"
-      variable = "ssm-guiconnect:AuthType"
-      values = [
-        "SSO"
-      ]
-    }
-  }
 }
 
 # reporting-operations policy
