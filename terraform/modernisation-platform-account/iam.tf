@@ -218,27 +218,6 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
   }
 
   statement {
-    sid    = "AssumeRole"
-    effect = "Allow"
-    actions = [
-      "sts:AssumeRole"
-    ]
-    resources = [
-      "arn:aws:iam::${local.environment_management.account_ids["core-logging-production"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-development"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-preproduction"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-production"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-sandbox"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-test"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["core-security-production"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.account_ids["testing-test"]}:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.aws_organizations_root_account_id}:role/ModernisationPlatformSSOAdministrator"
-    ]
-  }
-
-  statement {
     sid       = "AllowOIDCReadState"
     effect    = "Allow"
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*", "arn:aws:s3:::modernisation-platform-terraform-state/"]
@@ -291,6 +270,58 @@ data "aws_iam_policy_document" "oidc-deny-specific-actions" {
     resources = ["*"]
   }
 }
+
+# OIDC Provider for GitHub Actions Secrets Reader
+
+module "github_actions_read_secrets_role" {
+  source = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=62b8a16c73d8e4422cd81923e46948e8f4b5cf48" # v3.2.0
+  github_repositories = [
+    "ministryofjustice/modernisation-platform",
+    "ministryofjustice/modernisation-platform-environments",
+    "ministryofjustice/modernisation-platform-terraform-baselines",
+    "ministryofjustice/modernisation-platform-ami-builds",
+    "ministryofjustice/modernisation-platform-terraform-bastion-linux",
+    "ministryofjustice/modernisation-platform-terraform-s3-bucket",
+    "ministryofjustice/modernisation-platform-terraform-aws-vm-import",
+    "ministryofjustice/modernisation-platform-terraform-ec2-instance",
+    "ministryofjustice/modernisation-platform-terraform-pagerduty-integration",
+    "ministryofjustice/modernisation-platform-terraform-iam-superadmins",
+    "ministryofjustice/modernisation-platform-terraform-ec2-autoscaling-group",
+    "ministryofjustice/modernisation-platform-terraform-member-vpc",
+    "ministryofjustice/modernisation-platform-terraform-module-template",
+    "ministryofjustice/modernisation-platform-github-oidc-role",
+    "ministryofjustice/modernisation-platform-terraform-environments",
+    "ministryofjustice/modernisation-platform-terraform-ecs-cluster",
+    "ministryofjustice/modernisation-platform-github-oidc-provider",
+    "ministryofjustice/modernisation-platform-terraform-ssm-patching",
+    "ministryofjustice/modernisation-platform-terraform-aws-chatbot",
+    "ministryofjustice/modernisation-platform-terraform-lambda-function",
+    "ministryofjustice/modernisation-platform-terraform-dns-certificates",
+    "ministryofjustice/modernisation-platform-instance-scheduler",
+    "ministryofjustice/modernisation-platform-terraform-loadbalancer",
+    "ministryofjustice/modernisation-platform-terraform-aws-data-firehose",
+    "ministryofjustice/modernisation-platform-terraform-cross-account-access",
+    "ministryofjustice/modernisation-platform-security"
+  ]
+  role_name    = "github-actions-read-secrets"
+  policy_jsons = [data.aws_iam_policy_document.oidc_assume_read_secrets_role_member.json]
+  tags         = { "Name" = "GitHub Actions Read Secrets" }
+}
+
+data "aws_iam_policy_document" "oidc_assume_read_secrets_role_member" {
+  # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_108: "Allowing secretsmanager:GetSecretValue with open resource due to specific use case"
+  statement {
+    effect    = "Allow"
+    resources = ["*"]
+    actions = [
+      "kms:Decrypt",
+      "secretsmanager:GetSecretValue"
+    ]
+  }
+}
+
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "sso_customer_managed_policy_engineer" {
