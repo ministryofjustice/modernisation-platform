@@ -62,11 +62,11 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "laa_uat_to_mp_laa_preproduction_oracle": {
+  "laa_uat_to_mp_laa_preproduction": {
     "action": "PASS",
     "source_ip": "${laa-lz-uat}",
     "destination_ip": "${laa-preproduction}",
-    "destination_port": "1521",
+    "destination_port": "ANY",
     "protocol": "TCP"
   },
   "laa_mgmt_production_to_mp_laa_preproduction": {
