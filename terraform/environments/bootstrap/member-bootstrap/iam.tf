@@ -46,6 +46,7 @@ data "aws_iam_policy_document" "member-access" {
       "autoscaling:*",
       "backup:*",
       "backup-storage:MountCapsule",
+      "bcm-data-exports:*",
       "bedrock:*",
       "chatbot:*",
       "cloudformation:*",
@@ -63,6 +64,10 @@ data "aws_iam_policy_document" "member-access" {
       "codedeploy:*",
       "codepipeline:*",
       "cognito-idp:*",
+      "cur:DeleteReportDefinition",
+      "cur:DescribeReportDefinitions",
+      "cur:ListTagsForResource",
+      "cur:PutReportDefinition",
       "datasync:*",
       "dbqms:*",
       "dlm:*",
@@ -622,7 +627,7 @@ data "aws_iam_policy_document" "policy" {
     resources = ["*"]
     condition {
       test     = "StringEquals"
-      values   = ["ssm.amazonaws.com", "ecs.amazonaws.com", "ecs-tasks.amazonaws.com"]
+      values   = ["ssm.amazonaws.com", "ecs.amazonaws.com", "ecs-tasks.amazonaws.com", "backup.amazonaws.com", "datasync.amazonaws.com"]
       variable = "iam:PassedToService"
     }
   }
