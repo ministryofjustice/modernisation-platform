@@ -27,7 +27,7 @@ defaults:
 
 jobs:
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v1.1.1
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@cf6e13565dc769b53644a230561ea14bfbc70008 # v1.1.1
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -39,7 +39,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v1.1.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@cf6e13565dc769b53644a230561ea14bfbc70008 # v1.1.1
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -73,7 +73,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v1.1.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@cf6e13565dc769b53644a230561ea14bfbc70008 # v1.1.1
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -125,7 +125,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v1.1.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@cf6e13565dc769b53644a230561ea14bfbc70008 # v1.1.1
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -177,7 +177,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v1.1.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@cf6e13565dc769b53644a230561ea14bfbc70008 # v1.1.1
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -229,7 +229,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v1.1.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@cf6e13565dc769b53644a230561ea14bfbc70008 # v1.1.1
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -277,7 +277,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@14db114ed50a5ab565c3a134cf9efac0627e75e6 # v1.1.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@cf6e13565dc769b53644a230561ea14bfbc70008 # v1.1.1
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
