@@ -36,7 +36,6 @@ expected :=
     "corporate-staff-rostering",
     "dacp",
     "data-platform",
-    "data-platform-apps-and-tools",
     "delius-alfresco",
     "delius-core",
     "delius-iaps",
