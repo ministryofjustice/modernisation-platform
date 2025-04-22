@@ -26,11 +26,12 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer"
+          "level": "sandbox"
         },
         {
           "sso_group_name": "laa-cwa-developer",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "false"
         }
       ]
     },
