@@ -29,6 +29,18 @@ data "aws_identitystore_group" "platform_admin" {
     }
   }
 }
+data "aws_identitystore_group" "mp_azure_aws_group" {
+  provider = aws.sso-management
+
+  identity_store_id = local.sso_identity_store_id
+
+  alternate_identifier {
+    unique_attribute {
+      attribute_path  = "DisplayName"
+      attribute_value = "azure-aws-sso-modernisation-platform"
+    }
+  }
+}
 
 # Get Identity Store groups
 data "aws_identitystore_group" "member" {
@@ -56,6 +68,18 @@ resource "aws_ssoadmin_account_assignment" "platform_admin" {
   permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.administrator
 
   principal_id   = data.aws_identitystore_group.platform_admin.group_id
+  principal_type = "GROUP"
+
+  target_id   = local.environment_management.account_ids[terraform.workspace]
+  target_type = "AWS_ACCOUNT"
+}
+resource "aws_ssoadmin_account_assignment" "mp_azure_admin" {
+  provider = aws.sso-management
+
+  instance_arn       = local.sso_instance_arn
+  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.administrator
+
+  principal_id   = data.aws_identitystore_group.mp_azure_aws_group.group_id
   principal_type = "GROUP"
 
   target_id   = local.environment_management.account_ids[terraform.workspace]
