@@ -11,16 +11,8 @@ module "core" {
     "documentation"
   ]
   secrets = {
-    # Terraform GitHub token for the CI/CD user
-    TERRAFORM_GITHUB_TOKEN = data.aws_secretsmanager_secret_version.github_ci_user_token.secret_string
     # Slack app webhook url
     SLACK_WEBHOOK_URL = data.aws_secretsmanager_secret_version.slack_webhook_url.secret_string
-    # Pagerduty api token
-    PAGERDUTY_TOKEN = data.aws_secretsmanager_secret_version.pagerduty_token.secret_string
-    # Pagerduty User api token
-    PAGERDUTY_USERAPI_TOKEN = data.aws_secretsmanager_secret_version.pagerduty_user_token.secret_string
-    # PAT token for CI User
-    MODERNISATION_PAT_MULTIREPO = data.aws_secretsmanager_secret_version.modernisation_pat_multirepo.secret_string
   }
 }
 

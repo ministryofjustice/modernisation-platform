@@ -29,8 +29,8 @@ There are as standard up to four different environments that can be used per app
  - preproduction
  - production
 
-In order to avoid having duplicate Terraform code for each environment, we use [Terraform Workspaces](https://www.terraform.io/docs/language/state/workspaces.html).
-This allows us to store the Terraform [state](https://www.terraform.io/docs/language/state/index.html) for each of those environments separately and deploy to the relevant environment by switching the workspace.
+In order to avoid having duplicate Terraform code for each environment, we use [Terraform Workspaces](https://developer.hashicorp.com/terraform/language/state/workspaces).
+This allows us to store the Terraform [state](https://developer.hashicorp.com/terraform/language/state) for each of those environments separately and deploy to the relevant environment by switching the workspace.
 
 You can choose which environments you want for your application with multiple configurations possible.
 
@@ -50,7 +50,7 @@ Environment workflow:
 We use [GitHub Environments](https://docs.github.com/en/actions/reference/environments) to create a manual approval gate before each deployment.
 This gives you chance to review the Terraform plan before approving the deployment.  The GitHub environments are automatically created by the [git-create-environments-script.sh](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/git-create-environments.sh) using your GitHub team as the reviewer, as part of the initial account creation process.
 
-After approving, the infrastructure is deployed with the [`terraform apply`](https://www.terraform.io/docs/cli/commands/apply.html) command.
+After approving, the infrastructure is deployed with the [`terraform apply`](https://developer.hashicorp.com/terraform/cli/commands/apply) command.
 
 ### Permissions
 
