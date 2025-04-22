@@ -33,7 +33,8 @@
           "level": "developer",
           "github_action_reviewer": "false"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "preproduction",
