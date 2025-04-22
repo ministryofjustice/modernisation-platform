@@ -46,7 +46,6 @@ expected :=
     "edw",
     "electronic-monitoring-data",
     "equip",
-    "eric",
     "example",
     "genesys-call-centre-data",
     "hmpps-domain-services",
