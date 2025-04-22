@@ -677,5 +677,12 @@
     "destination_ip": "${laa-production}",
     "destination_port": "1521",
     "protocol": "TCP"
+  },
+  "ap-ingest-prod_to_cica_tariff_prod": {
+    "action": "PASS",
+    "source_ip": "${analytical-platform-ingest-prod}",
+    "destination_ip": "$CICA_AWS_PROD",
+    "destination_port": "1521",
+    "protocol": "TCP"
   }
 }

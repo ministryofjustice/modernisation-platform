@@ -19,6 +19,7 @@ locals {
     analytical-platform-airflow-dev  = "10.200.0.0/16"
     analytical-platform-airflow-prod = "10.201.0.0/16"
     analytical-platform-ingest-dev   = "10.26.128.0/23"
+    analytical-platform-ingest-prod  = "10.27.128.0/23"
     data-engineering-dev             = "172.24.0.0/16"
     data-engineering-prod            = "172.25.0.0/16"
     data-engineering-stage           = "172.26.0.0/16"
@@ -99,6 +100,10 @@ locals {
     cica-onprem-prod      = "10.2.30.0/24"
     cica-end-user-devices = "10.9.14.0/23"
     cica-ras-nat          = "10.7.14.224/28"
+    cica-aws-prod-a       = "10.13.10.0/24"
+    cica-aws-prod-b       = "10.13.110.0/24"
+    cica-aws-prod-c       = "10.13.20.0/24"
+    cica-aws-prod-d       = "10.13.120.0/24"
 
 
 
