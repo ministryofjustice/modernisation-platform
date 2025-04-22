@@ -73,7 +73,7 @@ resource "aws_ssoadmin_account_assignment" "platform_admin" {
   target_id   = local.environment_management.account_ids[terraform.workspace]
   target_type = "AWS_ACCOUNT"
 }
-resource "aws_ssoadmin_account_assignment" "mp_azure_admin" {
+resource "aws_ssoadmin_account_assignment" "platform_admin_azure" {
   provider = aws.sso-management
 
   instance_arn       = local.sso_instance_arn
@@ -99,7 +99,19 @@ resource "aws_ssoadmin_account_assignment" "platform_engineer" {
   target_id   = local.environment_management.account_ids[terraform.workspace]
   target_type = "AWS_ACCOUNT"
 }
+resource "aws_ssoadmin_account_assignment" "platform_engineer_azure" {
 
+  provider = aws.sso-management
+
+  instance_arn       = local.sso_instance_arn
+  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.platform_engineer
+
+  principal_id   = data.aws_identitystore_group.mp_azure_aws_group.group_id
+  principal_type = "GROUP"
+
+  target_id   = local.environment_management.account_ids[terraform.workspace]
+  target_type = "AWS_ACCOUNT"
+}
 resource "aws_ssoadmin_account_assignment" "view_only" {
 
   for_each = {
