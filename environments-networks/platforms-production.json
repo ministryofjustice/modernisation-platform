@@ -8,7 +8,6 @@
           "analytical-platform-compute-production",
           "analytical-platform-ingestion-production",
           "coat-production",
-          "data-platform-apps-and-tools-production",
           "data-platform-production",
           "long-term-storage-production",
           "observability-platform-production"
