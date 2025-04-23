@@ -54,7 +54,6 @@ expected :=
     "laa-oem",
     "laa-stabilisation-cdc-poc",
     "long-term-storage",
-    "mi-platform",
     "maat",
     "maatdb",
     "mlra",
