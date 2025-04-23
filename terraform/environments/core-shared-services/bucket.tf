@@ -1,6 +1,6 @@
 # tfsec:ignore:aws-s3-enable-versioning tfsec:ignore:aws-s3-encryption-customer-key
 module "imagebuilder_log_bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=8688bc15a08fbf5a4f4eef9b7433c5a417df8df1" # v7.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
 
   providers = {
     aws.bucket-replication = aws.bucket-replication
@@ -14,6 +14,7 @@ module "imagebuilder_log_bucket" {
     {
       id      = "main"
       enabled = "Enabled"
+      prefix  = ""
       tags    = {}
       transition = [
         {
