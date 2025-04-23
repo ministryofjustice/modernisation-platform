@@ -103,7 +103,7 @@ resource "aws_kms_alias" "s3_state_bucket_eu-west-1_replication" {
 }
 
 module "state-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=cadab519b10a7d28dfa3b77d407725db6b37614a" # v8.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
 
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
@@ -122,6 +122,7 @@ module "state-bucket" {
     {
       id      = "main"
       enabled = "Enabled"
+      prefix  = ""
       tags    = {}
       transition = [
         {
@@ -540,7 +541,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
 }
 
 module "cost-management-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=cadab519b10a7d28dfa3b77d407725db6b37614a" # v8.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
@@ -552,6 +553,7 @@ module "cost-management-bucket" {
     {
       id      = "main"
       enabled = "Disabled"
+      prefix  = ""
     }
   ]
   tags = local.tags
@@ -576,7 +578,7 @@ data "aws_iam_policy_document" "cost_management_bucket_policy" {
 }
 
 module "member_information_bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=cadab519b10a7d28dfa3b77d407725db6b37614a" # v8.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
@@ -588,6 +590,7 @@ module "member_information_bucket" {
     {
       id      = "main"
       enabled = "Disabled"
+      prefix  = ""
     }
   ]
   tags = local.tags
