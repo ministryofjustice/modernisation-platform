@@ -7,10 +7,6 @@
         {
           "sso_group_name": "modernisation-platform",
           "level": "instance-management"
-        },
-        {
-          "sso_group_name": "azure-aws-sso-modernisation-platform",
-          "level": "developer"
         }
       ]
     }
