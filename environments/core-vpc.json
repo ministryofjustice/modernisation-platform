@@ -3,48 +3,23 @@
   "environments": [
     {
       "name": "production",
-      "access": [
-        {
-          "sso_group_name": "azure-aws-sso-modernisation-platform",
-          "level": "developer"
-        }
-      ]
+      "access": []
     },
     {
       "name": "preproduction",
-      "access": [
-        {
-          "sso_group_name": "azure-aws-sso-modernisation-platform",
-          "level": "developer"
-        }
-      ]
+      "access": []
     },
     {
       "name": "test",
-      "access": [
-        {
-          "sso_group_name": "azure-aws-sso-modernisation-platform",
-          "level": "developer"
-        }
-      ]
+      "access": []
     },
     {
       "name": "development",
-      "access": [
-        {
-          "sso_group_name": "azure-aws-sso-modernisation-platform",
-          "level": "developer"
-        }
-      ]
+      "access": []
     },
     {
       "name": "sandbox",
-      "access": [
-        {
-          "sso_group_name": "azure-aws-sso-modernisation-platform",
-          "level": "sandbox"
-        }
-      ]
+      "access": []
     }
   ],
   "tags": {
