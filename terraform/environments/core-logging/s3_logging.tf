@@ -228,11 +228,6 @@ module "s3-bucket-cloudtrail" {
 
   tags = local.tags
 }
-# Required for updating s3 bucket module to >v8.2.0 without breaking changes 
-moved {
-  from = module.s3-bucket-cloudtrail.aws_s3_bucket_logging.default["modernisation-platform-logs-cloudtrail-logging"]
-  to   = module.s3-bucket-cloudtrail.aws_s3_bucket_logging.default_bucket_object[0]
-}
 
 # Allow access to the bucket from the MoJ root account
 # Policy extrapolated from:
