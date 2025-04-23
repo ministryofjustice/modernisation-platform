@@ -3,12 +3,7 @@
   "environments": [
     {
       "name": "production",
-      "access": [
-        {
-          "sso_group_name": "azure-aws-sso-modernisation-platform",
-          "level": "developer"
-        }
-      ]
+      "access": []
     }
   ],
   "tags": {
