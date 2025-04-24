@@ -45,8 +45,6 @@ if [[ -n "$tf_dirs" ]]; then
   
   echo "    schedule:" >> "$dependabot_file"
   echo "      interval: \"daily\"" >> "$dependabot_file"
-  echo "    ignore:" >> "$dependabot_file"
-  echo "      - dependency-name: \"integrations/github\"" >> "$dependabot_file"
 fi
 
 # Add Go module ecosystem entries (dynamically only for top-level directories containing go.mod)
