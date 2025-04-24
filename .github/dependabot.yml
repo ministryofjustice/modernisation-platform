@@ -17,8 +17,6 @@ updates:
       - "terraform/**/*"
     schedule:
       interval: "daily"
-    ignore:
-      - dependency-name: "integrations/github"
   - package-ecosystem: "gomod"
     directories:
       - "scripts/**/*"
