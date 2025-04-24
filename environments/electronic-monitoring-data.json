@@ -11,6 +11,10 @@
         {
           "sso_group_name": "azure-aws-sso-electronic-monitoring-data",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-electronic-monitoring-data-non-prod",
+          "level": "sandbox"
         }
       ],
       "nuke": "exclude"
@@ -24,6 +28,10 @@
         },
         {
           "sso_group_name": "azure-aws-sso-electronic-monitoring-data",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-electronic-monitoring-data-non-prod",
           "level": "data-engineer"
         }
       ]
