@@ -41,6 +41,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "codedeploy:RegisterApplicationRevision",
       "codedeploy:RegisterApplicationRevision",
       "codedeploy:ListDeployments",
+      "codedeploy:ListApplicationRevisions",
       "ecs:RegisterTaskDefinition",
       "ecs:UpdateService",
       "ecs:deregisterTaskDefinition",
