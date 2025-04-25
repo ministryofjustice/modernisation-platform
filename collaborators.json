@@ -825,20 +825,6 @@
       ]
     },
     {
-      "username": "james.round",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "youth-justice-app-framework-preproduction",
-          "access": "read-only"
-        },
-        {
-          "account-name": "youth-justice-app-framework-preproduction",
-          "access": "sandbox"
-        }
-      ]
-    },
-    {
       "username": "andrew.richards",
       "github-username": "AndrewTRichards",
       "accounts": [
@@ -887,6 +873,48 @@
         {
           "account-name": "youth-justice-app-framework-production",
           "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "fraser.waller",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "read-only"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "sandbox"
+        }
+      ]
+    },
+    {
+      "username": "omkar.sardesai",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "read-only"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "sandbox"
+        }
+      ]
+    },
+    {
+      "username": "josh.sewell",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "read-only"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "sandbox"
         }
       ]
     }
