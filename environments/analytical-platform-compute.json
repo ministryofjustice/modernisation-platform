@@ -11,7 +11,7 @@
       "name": "central-digital-bedrock"
     },
     {
-      "name" : "powerbi"
+      "name": "powerbi"
     }
   ],
   "codeowners": ["analytical-platform-engineers"],
