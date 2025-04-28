@@ -49,7 +49,6 @@ expected :=
     "genesys-call-centre-data",
     "hmpps-domain-services",
     "hmpps-oem",
-    "laa-ccms-infra-azure-ad-sso",
     "laa-mail-relay",
     "laa-oem",
     "laa-stabilisation-cdc-poc",
