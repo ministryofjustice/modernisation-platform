@@ -218,6 +218,24 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
   }
 
   statement {
+    sid     = "AssumeRole"
+    effect  = "Allow"
+    actions = [
+      "sts:AssumeRole",
+    ]
+    resources = [
+      "arn:aws:iam::*:role/ModernisationPlatformAccess",
+    ]
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values = [
+       "${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"
+      ]
+    }
+  }
+
+  statement {
     sid       = "AllowOIDCReadState"
     effect    = "Allow"
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*", "arn:aws:s3:::modernisation-platform-terraform-state/"]
