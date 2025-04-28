@@ -22,6 +22,19 @@ review_in: 6 month
 
 This runbook describes the process required to delete an environment/s.
 
+## Search for, and remove any references to the existing account in the Modernisation-Platform repo that was added by users.
+
+There may be references to the to-be-deleted account that were added by users & so should be removed before the account-deletion process begins. For example any custom policies using the account name in a local, such as
+```
+local.environment_management.account_ids["example-account-name-to-be-deleted"]
+```
+
+## Disable the "Terraform: New environment" workflow.
+
+This is necessary as otherwise this running during this process could result in the account being re-created and some steps having to be re-run.
+
+See https://docs.github.com/en/actions/managing-workflow-runs-and-deployments/managing-workflow-runs/disabling-and-enabling-a-workflow for the steps to do this.
+
 ## Running account deletion scripts locally
 
 In `modernisation-platform/scripts/account-deletion` we have a set of bash scripts that are designed to automate the process of decommissioning an AWS account. The scripts perform the following tasks, in this order:
@@ -87,3 +100,7 @@ Check for any automated PRs that have been raised in the MP Environments repo to
 ## Delete Github environments
 
 Navigate to [https://github.com/ministryofjustice/modernisation-platform-environments/settings/environments](https://github.com/ministryofjustice/modernisation-platform-environments/settings/environments) and delete the relevant GitHub environments.
+
+## Re-enable the "Terraform: New environment" workflow.
+
+Refer to the github doc listed earlier.
