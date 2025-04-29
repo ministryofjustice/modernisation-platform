@@ -25,6 +25,10 @@ defaults:
   run:
     shell: bash
 
+concurrency: 
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   fetch-secrets:
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@cf6e13565dc769b53644a230561ea14bfbc70008 # v1.1.1
