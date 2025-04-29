@@ -12,6 +12,18 @@
     },
     {
       "name": "powerbi"
+    },
+    {
+      "name": "airflow"
+    },
+    {
+      "name": "mlflow"
+    },
+    {
+      "name": "sagemaker-ai"
+    },
+    {
+      "name": "actions-runner"
     }
   ],
   "codeowners": ["analytical-platform-engineers"],
