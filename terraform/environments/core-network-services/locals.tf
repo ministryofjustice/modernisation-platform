@@ -27,7 +27,7 @@ locals {
   }
 
   active_tgw_peering_attachments = [
-    "PTTP-Transit-Gateway-attachment-accepter"
+    "MOJ-TGW-attachment-accepter"
   ]
 
   active_tgw_vpc_attachments = [
