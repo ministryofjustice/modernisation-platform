@@ -16,7 +16,7 @@ data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_all" {
 data "aws_ec2_transit_gateway_peering_attachment" "moj_tgw" {
   filter {
     name   = "tag:Name"
-    values = ["MOJ-TGW-Gateway-attachment-accepter"]
+    values = ["PTTP-Transit-Gateway-attachment-accepter"]
   }
 }
 
