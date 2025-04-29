@@ -218,8 +218,8 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
   }
 
   statement {
-    sid     = "AssumeRole"
-    effect  = "Allow"
+    sid    = "AssumeRole"
+    effect = "Allow"
     actions = [
       "sts:AssumeRole",
     ]
@@ -230,7 +230,7 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalOrgPaths"
       values = [
-       "${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"
+        "${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"
       ]
     }
   }
