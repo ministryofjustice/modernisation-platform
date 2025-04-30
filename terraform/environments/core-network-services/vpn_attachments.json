@@ -67,5 +67,26 @@
     "tunnel_phase2_encryption_algorithms": "AES256",
     "tunnel_phase2_integrity_algorithms": "SHA2-256",
     "tunnel_startup_action": "start"
+  },
+  "YJB-Juniper-vSRX01-VPN": {
+    "bgp_asn": "64522",
+    "customer_gateway_ip": "13.42.107.40",
+    "remote_ipv4_network_cidr": "0.0.0.0/0",
+    "tunnel1_inside_cidr": "169.254.21.140/30",
+    "tunnel2_inside_cidr": "169.254.22.140/30",
+    "tunnel_dpd_timeout_action": "restart",
+    "tunnel_dpd_timeout_seconds": "45",
+    "tunnel_startup_action": "start"
+  },
+  "YJB-Juniper-vSRX02-VPN": {
+    "bgp_asn": "64522",
+    "customer_gateway_ip": "18.130.96.62",
+    "remote_ipv4_network_cidr": "0.0.0.0/0",
+    "tunnel1_inside_cidr": "169.254.21.144/30",
+    "tunnel2_inside_cidr": "169.254.22.144/30",
+    "tunnel_dpd_timeout_action": "restart", 
+    "tunnel_dpd_timeout_seconds": "45",
+    "tunnel_startup_action": "start"
+
   }
 }
