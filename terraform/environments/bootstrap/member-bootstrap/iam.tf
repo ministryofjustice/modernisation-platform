@@ -64,7 +64,7 @@ data "aws_iam_policy_document" "member-access" {
       "codedeploy:*",
       "codepipeline:*",
       "cognito-idp:*",
-      "config:*"
+      "config:*",
       "cur:DeleteReportDefinition",
       "cur:DescribeReportDefinitions",
       "cur:ListTagsForResource",
