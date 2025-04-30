@@ -86,7 +86,7 @@ resource "aws_ec2_transit_gateway_route_table_association" "vpn_attachments" {
 resource "aws_ec2_transit_gateway_route" "azure_static_routes" {
   for_each                       = toset(local.azure_static_routes)
   destination_cidr_block         = each.value
-  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.moj_tgw.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
