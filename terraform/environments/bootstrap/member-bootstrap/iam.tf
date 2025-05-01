@@ -137,6 +137,7 @@ data "aws_iam_policy_document" "member-access" {
       "ec2:*InternetGateway*",
       "ec2:*NatGateway*",
       "ec2:*TransitGatewayVpcAttachment*",
+      "ec2:*ManagedPrefixList*",
       "ecr-public:*",
       "ecr:*",
       "ecs:*",
