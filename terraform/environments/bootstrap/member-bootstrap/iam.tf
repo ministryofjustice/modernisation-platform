@@ -23,6 +23,7 @@ module "member-access-sprinkler" {
 
 # lots of SCA ignores and skips on this one as it is the main role allowing members to build most things in the platform
 #tfsec:ignore:aws-iam-no-policy-wildcards
+#trivy:ignore:AVD-AWS-0345: Required for member account access to S3
 data "aws_iam_policy_document" "member-access" {
   statement {
     #checkov:skip=CKV_AWS_108
@@ -32,7 +33,6 @@ data "aws_iam_policy_document" "member-access" {
     #checkov:skip=CKV_AWS_110
     #checkov:skip=CKV2_AWS_40
     #checkov:skip=CKV_AWS_356: Needs to access multiple resources
-    #trivy:ignore:AVD-AWS-0345: Required for member account access to S3
     effect = "Allow"
     actions = [
       "acm-pca:*",
@@ -778,6 +778,7 @@ module "github-oidc" {
   tags_prefix            = ""
 }
 
+#trivy:ignore:AVD-AWS-0345: Required for reading/writing Terraform state from S3
 data "aws_iam_policy_document" "oidc_assume_role_member" {
   count = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
   statement {
@@ -811,7 +812,7 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
   statement {
     sid    = "AllowOIDCReadState"
     effect = "Allow"
-    #trivy:ignore:AVD-AWS-0345: Required for reading Terraform state from S3
+
     resources = [
       "arn:aws:s3:::modernisation-platform-terraform-state/*",
       "arn:aws:s3:::modernisation-platform-terraform-state/"
@@ -823,9 +824,8 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
   }
 
   statement {
-    sid    = "AllowOIDCWriteState"
-    effect = "Allow"
-    #trivy:ignore:AVD-AWS-0345: Required for writing Terraform state to S3
+    sid       = "AllowOIDCWriteState"
+    effect    = "Allow"
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
     actions = [
       "s3:PutObject",

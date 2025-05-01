@@ -9,10 +9,10 @@ module "github-oidc" {
   tags_prefix                 = ""
 }
 
+#trivy:ignore:AVD-AWS-0345: Required for OIDC role to access Terraform state in S3
 data "aws_iam_policy_document" "oidc_deny_specific_actions" {
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
   # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
-  #trivy:ignore:AVD-AWS-0345: Required for OIDC role to access Terraform state in S3
   statement {
     sid       = "AllowOIDCToDecryptKMS"
     effect    = "Allow"
@@ -81,11 +81,10 @@ resource "aws_iam_role_policy_attachment" "terraform_plan_role_readonly" {
   role       = aws_iam_role.terraform_plan_role.name
   policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
 }
-
+#trivy:ignore:AVD-AWS-0345: Required for test OIDC role to access Terraform state in S3
 data "aws_iam_policy_document" "oidc_deny_specific_actions_test" {
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
   # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
-  #trivy:ignore:AVD-AWS-0345: Required for test OIDC role to access Terraform state in S3
   # Allow OIDC role to decrypt using KMS
   statement {
     sid       = "AllowOIDCToDecryptKMS"
