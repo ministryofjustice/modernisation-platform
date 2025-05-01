@@ -19,6 +19,19 @@ resource "pagerduty_escalation_policy" "on_call" {
   }
 }
 
+resource "pagerduty_escalation_policy" "high_priority" {
+  name  = "Modernisation Platform High Priority Policy"
+  teams = [pagerduty_team.modernisation_platform.id]
+
+  rule {
+    escalation_delay_in_minutes = 10
+    target {
+      type = "user_reference"
+      id   = pagerduty_user.pager_duty_users["modernisation_platform"].id
+    }
+  }
+}
+
 resource "pagerduty_escalation_policy" "low_priority" {
   name  = "Modernisation Platform Low Priority Policy"
   teams = [pagerduty_team.modernisation_platform.id]

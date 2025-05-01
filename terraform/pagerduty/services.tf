@@ -1,5 +1,6 @@
 
 # Note slack integrations for the service to the relevant channels must be done manually in pagerduty and slack
+# New pagerduty_service resources being added require the use of a "pagerduty_slack_connection" resource to add that integration.
 
 ### Core platform security hub, config and cloudtrail alerts
 resource "pagerduty_service" "core_alerts" {
@@ -20,6 +21,56 @@ resource "pagerduty_service_integration" "core_alerts_cloudwatch" {
   service = pagerduty_service.core_alerts.id
   vendor  = data.pagerduty_vendor.cloudwatch.id
 }
+
+### High Priority Alerts for where the on-call incident process is not required
+resource "pagerduty_service" "core_alerts_high_priority" {
+  name                    = "High Priority Alerts - Modernisation Platform"
+  description             = "High Priority Alerts"
+  auto_resolve_timeout    = 14400
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.high_priority.id
+  alert_creation          = "create_alerts_and_incidents"
+  incident_urgency_rule {
+    type    = "constant"
+    urgency = "high"
+  }
+}
+
+resource "pagerduty_service_integration" "core_alerts_high_priority_cloudwatch" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.core_alerts_high_priority.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "core_alerts_high_priority" {
+  source_id         = pagerduty_service.core_alerts_high_priority.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C03CY6451QT" # Slack channel: #modernisation-platform-high-priority-alarms
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
 
 resource "pagerduty_service" "security_hub" {
   name                    = "Security Hub Alerts - Modernisation Platform"
