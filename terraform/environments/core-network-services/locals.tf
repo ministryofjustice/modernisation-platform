@@ -28,7 +28,7 @@ locals {
 
   # We use the legacy name for the attachment because its defined in code outside of this repository
   active_tgw_peering_attachments = [
-    "PTTP-Transit-Gateway-attachment-accepter"
+    "MOJ-TGW-attachment-accepter"
   ]
 
   active_tgw_vpc_attachments = [
