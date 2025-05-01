@@ -48,14 +48,17 @@ jobs:
           TERRAFORM_GITHUB_TOKEN: ${{ env.TERRAFORM_GITHUB_TOKEN }}
       - name: Provision member environment directories
         run: bash ./core-repo/scripts/provision-member-directories.sh
-      - name: Commit changes to GitHub
+      - name: Setup GitHub
         run: bash ./core-repo/scripts/git-setup.sh ./modernisation-platform-environments
-      - run: bash ./core-repo/scripts/git-commit.sh . ./modernisation-platform-environments
-        env:  
-          TERRAFORM_GITHUB_TOKEN: ${{ env.TERRAFORM_GITHUB_TOKEN }} # use this token as writing to a different repo
-      - run: bash ./core-repo/scripts/git-pull-request.sh terraform/environments ./modernisation-platform-environments
-        env:
-          TERRAFORM_GITHUB_TOKEN: ${{ env.TERRAFORM_GITHUB_TOKEN }}
+      - name: Commit and Create PR with Signed Commit
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@cf6e13565dc769b53644a230561ea14bfbc70008 # v3.0.0
+        with:
+          github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }} # use this token as writing to a different repo
+          git_path: "terraform/environments"
+          remote_repository: "ministryofjustice/modernisation-platform-environments"
+          remote_repository_path: "./modernisation-platform-environments"
+          pr_title: "New files for terraform/environments"
+          pr_body: "> This PR was automatically created via a GitHub action workflow 🤖"
       - name: Slack failure notification
         uses: slackapi/slack-github-action@485a9d42d3a73031f12ec201c457e2162c45d02d # v2.0.0
         with:
