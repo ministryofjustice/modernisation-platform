@@ -97,6 +97,9 @@ jobs:
 
       # Step 5: Create GitHub Issue and Notify Owners
       - name: Create Issue and Notify Owner  
+        env:
+          API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
+          TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
         run: |
           cd $GITHUB_WORKSPACE
           pwd
