@@ -197,6 +197,7 @@ resource "aws_iam_role_policy_attachment" "modernisation_account_limited_read" {
 # OIDC Provider for GitHub Actions Plan
 
 module "github_actions_plan_role" {
+  #trivy:ignore:AVD-AWS-0345: Required for GitHub Actions to access Terraform state in S3
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=62b8a16c73d8e4422cd81923e46948e8f4b5cf48" # v3.2.0
   github_repositories = ["ministryofjustice/modernisation-platform", "ministryofjustice/modernisation-platform-ami-builds", "ministryofjustice/modernisation-platform-security"]
   role_name           = "github-actions-plan"
@@ -256,6 +257,7 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
 # OIDC Provider for GitHub Actions Apply
 
 module "github_actions_apply_role" {
+  #trivy:ignore:AVD-AWS-0345: Required for GitHub Actions to access Terraform state in S3
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=62b8a16c73d8e4422cd81923e46948e8f4b5cf48" # v3.2.0
   github_repositories = ["ministryofjustice/modernisation-platform", "ministryofjustice/modernisation-platform-ami-builds", "ministryofjustice/modernisation-platform-security"]
   role_name           = "github-actions-apply"
@@ -292,6 +294,7 @@ data "aws_iam_policy_document" "oidc-deny-specific-actions" {
 # OIDC Provider for GitHub Actions Secrets Reader
 
 module "github_actions_read_secrets_role" {
+  #trivy:ignore:AVD-AWS-0345:
   source = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=62b8a16c73d8e4422cd81923e46948e8f4b5cf48" # v3.2.0
   github_repositories = [
     "ministryofjustice/modernisation-platform",

@@ -32,6 +32,7 @@ data "aws_iam_policy_document" "member-access" {
     #checkov:skip=CKV_AWS_110
     #checkov:skip=CKV2_AWS_40
     #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+    #trivy:ignore:AVD-AWS-0345: Required for member account access to S3
     effect = "Allow"
     actions = [
       "acm-pca:*",
@@ -810,6 +811,7 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
   statement {
     sid    = "AllowOIDCReadState"
     effect = "Allow"
+    #trivy:ignore:AVD-AWS-0345: Required for reading Terraform state from S3
     resources = [
       "arn:aws:s3:::modernisation-platform-terraform-state/*",
       "arn:aws:s3:::modernisation-platform-terraform-state/"
@@ -821,8 +823,9 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
   }
 
   statement {
-    sid       = "AllowOIDCWriteState"
-    effect    = "Allow"
+    sid    = "AllowOIDCWriteState"
+    effect = "Allow"
+    #trivy:ignore:AVD-AWS-0345: Required for writing Terraform state to S3
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
     actions = [
       "s3:PutObject",

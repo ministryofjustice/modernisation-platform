@@ -558,6 +558,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   #checkov:skip=CKV2_AWS_40
+  #trivy:ignore:AVD-AWS-0345: Required for platform engineer access to S3 resources
   statement {
     sid    = "PlatformEngineerAdmin"
     effect = "Allow"
@@ -672,6 +673,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV2_AWS_40
   #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+  #trivy:ignore:AVD-AWS-0345: Required for sandbox environment S3 access
   # added as a source document to ease retirement
   statement {
     sid    = "sandboxAllow"
@@ -1208,6 +1210,7 @@ data "aws_iam_policy_document" "reporting-operations" {
   #checkov:skip=CKV_AWS_109
   #checkov:skip=CKV_AWS_110
   #checkov:skip=CKV_AWS_356:
+  #trivy:ignore:AVD-AWS-0345: Required for reporting operations access to S3 resources
   statement {
     sid    = "reportingOperationsAllow"
     effect = "Allow"
