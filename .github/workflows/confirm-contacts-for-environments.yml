@@ -8,6 +8,7 @@ on:
   workflow_dispatch:
 
 env:
+    API_KEY: ${{ secrets.GOV_UK_NOTIFY_API_KEY }}
     GITHUB_REPO: ${{ github.repository }}
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
     TEMPLATE_ID: "1f0f5ccc-0f67-4ee2-942f-6e48804828ea"
