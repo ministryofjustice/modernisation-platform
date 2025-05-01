@@ -13,11 +13,10 @@ data "aws_ec2_transit_gateway_vpc_attachment" "transit_gateway_all" {
   id       = each.key
 }
 
-# We use the legacy name for the attachment because its defined in code outside of this repository
 data "aws_ec2_transit_gateway_peering_attachment" "moj_tgw" {
   filter {
     name   = "tag:Name"
-    values = ["PTTP-Transit-Gateway-attachment-accepter"]
+    values = ["MOJ-TGW-attachment-accepter"]
   }
 }
 
