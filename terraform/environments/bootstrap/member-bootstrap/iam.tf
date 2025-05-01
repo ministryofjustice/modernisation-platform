@@ -64,6 +64,7 @@ data "aws_iam_policy_document" "member-access" {
       "codedeploy:*",
       "codepipeline:*",
       "cognito-idp:*",
+      "config:*",
       "cur:DeleteReportDefinition",
       "cur:DescribeReportDefinitions",
       "cur:ListTagsForResource",
@@ -642,6 +643,7 @@ data "aws_iam_policy_document" "policy" {
       "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:key/*",
       "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-development"]}:key/*",
       "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-test"]}:key/*",
+      "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:key/*",
       "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-production"]}:key/*"
     ]
     condition {
