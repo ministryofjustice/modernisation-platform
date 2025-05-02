@@ -383,6 +383,7 @@ expected :=
         "accounts": [
           "analytical-platform-ingestion-development",
           "coat-development",
+          "dummy-account-development",
           "example-development",
           "data-platform-development",
           "observability-platform-development",
