@@ -148,6 +148,7 @@ data "aws_iam_policy_document" "member-access" {
       "eks:*",
       "es:*",
       "events:*",
+      "fis:*",
       "fsx:*",
       "firehose:*",
       "glacier:*",
