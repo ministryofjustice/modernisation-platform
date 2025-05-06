@@ -1,9 +1,12 @@
 name: Cleanup of Stale Branches
 
 on:
+  push:
+    branches:
+      - fix/pagination-issue
   workflow_dispatch:
   schedule:
-  - cron: '0 0 * * 0'
+    - cron: '0 0 * * *'
 
 permissions:
   contents: write
@@ -25,7 +28,7 @@ jobs:
 
     env:
       DEBUG: false
-      DRY_RUN: false
+      DRY_RUN: true
       ORG: ministryofjustice
       PREFIX: modernisation-platform
       SKIP_BRANCHES: main
@@ -65,7 +68,7 @@ jobs:
             echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
             summary="| Branch | Status | Reason |\n|--------|--------|--------|"
-            branches=$(gh api "repos/$ORG/$repo/branches" --jq '.[].name' || echo "")
+            branches=$(gh api --paginate "repos/$ORG/$repo/branches" --jq '.[].name' || echo "")
 
             for branch in $branches; do
               if [[ "$SKIP_BRANCHES" == *"$branch"* ]]; then
