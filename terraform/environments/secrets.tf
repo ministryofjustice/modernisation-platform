@@ -176,8 +176,3 @@ resource "github_actions_secret" "autonuke" {
   # testing-test, cooker-development, and example-development are internal test account which are not sandpits but require nuking.
   plaintext_value = jsonencode(concat(module.environments.environment_nuke_accounts, ["testing-test"]))
 }
-
-resource "aws_secretsmanager_secret" "nonmp_account_ids" {
-  name        = "nonmp-account-ids"
-  description = "Map of account IDs not present in the environment_management secret (non-MP accounts)"
-}
