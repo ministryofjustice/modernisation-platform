@@ -1533,7 +1533,8 @@ data "aws_iam_policy_document" "s3_upload_policy_document" {
       "kms:Encrypt",
       "kms:GenerateDataKey*",
       "kms:ReEncrypt*",
-      "kms:DescribeKey"
+      "kms:DescribeKey",
+      "kms:ListAliases"
     ]
     resources = [
       data.aws_s3_bucket.mod_platform_artefact.arn,
