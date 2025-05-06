@@ -135,6 +135,7 @@
     "ministryofjustice/hmpps-openldap-container",
     "ministryofjustice/hmpps-delius-docker-images",
     "ministryofjustice/hmpps-pwm",
-    "ministryofjustice/ndelius-um"
+    "ministryofjustice/ndelius-um",
+    "ministryofjustice/delius-pdm-uplift-scripts"
   ]
 }
