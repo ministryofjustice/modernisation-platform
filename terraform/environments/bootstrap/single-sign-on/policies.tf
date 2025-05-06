@@ -1213,6 +1213,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "dms:StopReplicationTask",
       "dms:TestConnection",
       "dms:ReloadTables",
+      "dms:RebootReplicationInstance",
       "sqlworkbench:CreateFolder",
       "sqlworkbench:PutTab",
       "sqlworkbench:BatchDeleteFolder",
