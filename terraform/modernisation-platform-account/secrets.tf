@@ -219,3 +219,13 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
   value = data.aws_caller_identity.current.id
   tags  = local.tags
 }
+
+resource "aws_secretsmanager_secret" "nonmp_account_ids" {
+  name        = "nonmp-account-ids"
+  description = "Map of account IDs not present in the environment_management secret (non-MP accounts)"
+  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}
