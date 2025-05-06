@@ -2,7 +2,7 @@ locals {
   is_production       = can(regex("production|default", terraform.workspace))
   existing_topic_name = try(data.aws_sns_topic.existing_topic[0].name, null)
   backup_topic_name   = try(data.aws_sns_topic.backup_vault_failure_topic[0].name, null)
-  high_priority_topic = try(data.aws_sns_topic.high_priority_topic[0].name, null)
+  high_priority_topic = try(data.aws_sns_topic.high_priority_topic.name, null)
 }
 
 data "aws_region" "current" {}
