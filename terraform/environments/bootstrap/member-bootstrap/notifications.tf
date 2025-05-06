@@ -33,7 +33,7 @@ module "pagerduty_core_alerts" {
   ]
   source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
   sns_topics                = [local.high_priority_topic.name]
-  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_high_priority_cloudwatch"]
+  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
 }
 
 module "pagerduty_high_priority_alarms" {
@@ -43,7 +43,7 @@ module "pagerduty_high_priority_alarms" {
   ]
   source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
   sns_topics                = compact([local.])
-  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
+  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_high_priority_cloudwatch"]
 }
 
 # Cloudwatch metric alarm required for errors
