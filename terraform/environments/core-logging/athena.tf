@@ -10,7 +10,7 @@ data "aws_kms_alias" "environment_management" {
 #S3 Bucket for Athena temp SQL queries 
 
 module "s3-bucket-athena" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=8688bc15a08fbf5a4f4eef9b7433c5a417df8df1" # v7.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
@@ -22,6 +22,7 @@ module "s3-bucket-athena" {
     {
       id      = "main"
       enabled = "Enabled"
+      prefix  = ""
       tags    = {}
       expiration = {
         days = 7
@@ -89,105 +90,107 @@ resource "aws_athena_workgroup" "mod-platform" {
 }
 
 resource "aws_iam_role" "athena_lambda" {
-
-  name = "athena_lambda"
-
+  name               = "athena_lambda"
   assume_role_policy = data.aws_iam_policy_document.athena_assume_role_policy.json
+}
 
-  inline_policy {
-    name = "athena_lambda_policy"
+resource "aws_iam_policy" "athena_lambda_policy" {
+  name = "athena_lambda_policy"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "glue:GetDatabase",
+          "glue:GetTable",
+          "glue:GetTables",
+          "glue:CreateTable",
+          "glue:CreateDatabase",
+          "glue:CreateSchema",
+          "glue:CreatePartition",
+          "glue:GetDatabases",
+          "glue:GetPartitions",
+          "glue:DeleteTable"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Action = [
+          "athena:StartQueryExecution",
+        ]
+        Effect = "Allow"
+        Resource = [
+          aws_athena_workgroup.mod-platform.arn,
+          format("arn:aws:athena:eu-west-2:%s:workgroup/primary", data.aws_caller_identity.current.account_id)
+        ]
+      },
+      {
+        Action = [
+          "secretsmanager:GetSecretValue",
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.modernisation-platform.account_id}:secret:environment_management*"
+      },
+      {
+        Action = [
+          "ssm:GetParameter"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/environment_management_arn"
+      },
+      {
+        Action = [
+          "kms:Decrypt*",
+          "kms:GenerateDataKey"
+        ]
+        Effect = "Allow"
+        Resource = [
+          aws_kms_key.s3_logging_cloudtrail.arn,
+          aws_kms_key.athena_logging.arn,
+          data.aws_kms_alias.environment_management.target_key_arn
+        ]
+      },
+      {
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/environment_management_arn"
+      },
+      {
+        Action = [
+          "s3:*Object",
+          "s3:GetBucketLocation",
+          "s3:List*"
+        ]
+        Effect = "Allow"
+        Resource = [
+          "${module.s3-bucket-athena.bucket.arn}/*",
+          module.s3-bucket-athena.bucket.arn
+        ]
+      },
+      {
+        Action = [
+          "s3:GetBucketLocation",
+          "s3:List*",
+          "s3:Get*"
+        ]
+        Effect = "Allow"
+        Resource = [
+          module.s3-bucket-cloudtrail-logging.bucket.arn,
+          "${module.s3-bucket-cloudtrail-logging.bucket.arn}/*"
+        ]
+      }
+    ]
+  })
+}
 
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [
-        {
-          Action = [
-            "glue:GetDatabase",
-            "glue:GetTable",
-            "glue:GetTables",
-            "glue:CreateTable",
-            "glue:CreateDatabase",
-            "glue:CreateSchema",
-            "glue:CreatePartition",
-            "glue:GetDatabases",
-            "glue:GetPartitions",
-            "glue:DeleteTable"
-          ]
-          Effect   = "Allow"
-          Resource = "*"
-        },
-        {
-          Action = [
-            "athena:StartQueryExecution",
-          ]
-          Effect = "Allow"
-          Resource = [
-            aws_athena_workgroup.mod-platform.arn,
-            format("arn:aws:athena:eu-west-2:%s:workgroup/primary", data.aws_caller_identity.current.account_id)
-          ]
-        },
-        {
-          Action = [
-            "secretsmanager:GetSecretValue",
-          ]
-          Effect   = "Allow"
-          Resource = "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.modernisation-platform.account_id}:secret:environment_management*"
-        },
-        {
-          Action = [
-            "ssm:GetParameter"
-          ]
-          Effect   = "Allow"
-          Resource = "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/environment_management_arn"
-        },
-        {
-          Action = [
-            "kms:Decrypt*",
-            "kms:GenerateDataKey"
-          ]
-          Effect = "Allow"
-          Resource = [
-            aws_kms_key.s3_logging_cloudtrail.arn,
-            aws_kms_key.athena_logging.arn,
-            data.aws_kms_alias.environment_management.target_key_arn
-          ]
-        },
-        {
-          Action = [
-            "logs:CreateLogGroup",
-            "logs:CreateLogStream",
-            "logs:PutLogEvents"
-          ]
-          Effect   = "Allow"
-          Resource = "arn:aws:ssm:eu-west-2:${data.aws_caller_identity.current.account_id}:parameter/environment_management_arn"
-        },
-        {
-          Action = [
-            "s3:*Object",
-            "s3:GetBucketLocation",
-            "s3:List*"
-          ]
-          Effect = "Allow"
-          Resource = [
-            "${module.s3-bucket-athena.bucket.arn}/*",
-            module.s3-bucket-athena.bucket.arn
-          ]
-        },
-        {
-          Action = [
-            "s3:GetBucketLocation",
-            "s3:List*",
-            "s3:Get*"
-          ]
-          Effect = "Allow"
-          Resource = [
-            module.s3-bucket-cloudtrail-logging.bucket.arn,
-            "${module.s3-bucket-cloudtrail-logging.bucket.arn}/*"
-          ]
-        }
-      ]
-    })
-  }
+resource "aws_iam_role_policy_attachment" "athena_lambda_policy_attachment" {
+  role       = aws_iam_role.athena_lambda.name
+  policy_arn = aws_iam_policy.athena_lambda_policy.arn
 }
 
 #Create ZIP archive and lambda

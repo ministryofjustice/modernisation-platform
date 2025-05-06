@@ -297,7 +297,6 @@ expected :=
           "contract-work-administration-test",
           "corporate-information-system-test",
           "edw-test",
-          "eric-test",
           "mlra-test",
           "ccms-ebs-test",
           "ccms-ebs-upgrade-test",
@@ -339,7 +338,6 @@ expected :=
           "contract-work-administration-production",
           "corporate-information-system-production",
           "edw-production",
-          "eric-production",
           "mlra-production",
           "ccms-ebs-production",
           "maat-production",
@@ -385,9 +383,9 @@ expected :=
         "accounts": [
           "analytical-platform-ingestion-development",
           "coat-development",
+          "dummy-account-development",
           "example-development",
           "data-platform-development",
-          "data-platform-apps-and-tools-development",
           "observability-platform-development",
           "operations-engineering-development",
           "panda-cyber-appsec-lab-development"
@@ -419,7 +417,6 @@ expected :=
           "analytical-platform-ingestion-production",
           "coat-production",
           "data-platform-production",
-          "data-platform-apps-and-tools-production",
           "long-term-storage-production",
           "observability-platform-production"
         ]

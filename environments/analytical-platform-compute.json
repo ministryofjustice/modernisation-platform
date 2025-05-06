@@ -9,17 +9,32 @@
     },
     {
       "name": "central-digital-bedrock"
+    },
+    {
+      "name": "powerbi"
+    },
+    {
+      "name": "airflow"
+    },
+    {
+      "name": "mlflow"
+    },
+    {
+      "name": "sagemaker-ai"
+    },
+    {
+      "name": "actions-runner"
     }
   ],
   "codeowners": ["analytical-platform-engineers"],
-  "github_action_reviewers": ["analytical-platform-engineers"],
   "environments": [
     {
       "name": "development",
       "access": [
         {
           "sso_group_name": "analytical-platform-engineers",
-          "level": "platform-engineer-admin"
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "analytical-platform-engineers",
@@ -50,7 +65,8 @@
       "access": [
         {
           "sso_group_name": "analytical-platform-engineers",
-          "level": "platform-engineer-admin"
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "analytical-platform-engineers",
@@ -80,7 +96,8 @@
       "access": [
         {
           "sso_group_name": "analytical-platform-engineers",
-          "level": "platform-engineer-admin"
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "analytical-platform-engineers",

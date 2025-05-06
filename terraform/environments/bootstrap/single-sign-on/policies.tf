@@ -550,6 +550,7 @@ resource "aws_iam_policy" "platform_engineer_admin" {
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
+#trivy:ignore:AVD-AWS-0345: Required for platform engineer access to S3 resources
 data "aws_iam_policy_document" "platform_engineer_additional_additional" {
   #checkov:skip=CKV_AWS_108
   #checkov:skip=CKV_AWS_109
@@ -608,6 +609,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "events:*",
       "glacier:*",
       "glue:*",
+      "guardduty:*",
       "iam:*",
       "identitystore:*",
       "kinesis:*",
@@ -663,6 +665,7 @@ resource "aws_iam_policy" "sandbox" {
 }
 ##checks being skipped until policy has been amended##
 #tfsec:ignore:aws-iam-no-policy-wildcards
+#trivy:ignore:AVD-AWS-0345: Required for sandbox environment S3 access
 data "aws_iam_policy_document" "sandbox_additional" {
   #checkov:skip=CKV_AWS_108
   #checkov:skip=CKV_AWS_111
@@ -759,6 +762,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "elasticfilesystem:*",
       "elasticloadbalancing:*",
       "events:*",
+      "firehose:*",
       "glacier:*",
       "glue:*",
       "guardduty:get*",
@@ -1029,7 +1033,6 @@ data "aws_iam_policy_document" "instance-access-document" {
       values   = ["full"]
     }
   }
-
 }
 
 # instance management - member SSO and collaborators
@@ -1200,6 +1203,7 @@ resource "aws_iam_policy" "reporting-operations" {
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
+#trivy:ignore:AVD-AWS-0345: Required for reporting operations access to S3 resources
 data "aws_iam_policy_document" "reporting-operations" {
   #checkov:skip=CKV_AWS_108
   #checkov:skip=CKV_AWS_111
@@ -1219,6 +1223,7 @@ data "aws_iam_policy_document" "reporting-operations" {
       "dms:StopReplicationTask",
       "dms:TestConnection",
       "dms:ReloadTables",
+      "dms:RebootReplicationInstance",
       "sqlworkbench:CreateFolder",
       "sqlworkbench:PutTab",
       "sqlworkbench:BatchDeleteFolder",

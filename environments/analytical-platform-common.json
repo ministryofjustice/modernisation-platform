@@ -1,7 +1,6 @@
 {
   "account-type": "member",
   "codeowners": ["analytical-platform-engineers"],
-  "github_action_reviewers": ["analytical-platform-engineers"],
   "environments": [
     {
       "name": "production",
@@ -12,7 +11,8 @@
         },
         {
           "sso_group_name": "analytical-platform-engineers",
-          "level": "platform-engineer-admin"
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "analytical-platform-airflow",

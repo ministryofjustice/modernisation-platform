@@ -71,6 +71,7 @@ data "aws_iam_policy_document" "environment_logging" {
       "kms:GenerateDataKey*",
       "kms:Describe*"
     ]
+    resources = ["*"]
     condition {
       test     = "ArnLike"
       values   = ["arn:aws:logs:region:${data.aws_caller_identity.current.account_id}:*"]

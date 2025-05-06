@@ -23,6 +23,7 @@ module "member-access-sprinkler" {
 
 # lots of SCA ignores and skips on this one as it is the main role allowing members to build most things in the platform
 #tfsec:ignore:aws-iam-no-policy-wildcards
+#trivy:ignore:AVD-AWS-0345: Required for member account access to S3
 data "aws_iam_policy_document" "member-access" {
   statement {
     #checkov:skip=CKV_AWS_108
@@ -41,10 +42,13 @@ data "aws_iam_policy_document" "member-access" {
       "application-autoscaling:*",
       "applicationinsights:*",
       "aps:*",
+      "aoss:*",
       "athena:*",
       "autoscaling:*",
       "backup:*",
       "backup-storage:MountCapsule",
+      "bcm-data-exports:*",
+      "bedrock:*",
       "chatbot:*",
       "cloudformation:*",
       "cloudfront:*",
@@ -61,6 +65,11 @@ data "aws_iam_policy_document" "member-access" {
       "codedeploy:*",
       "codepipeline:*",
       "cognito-idp:*",
+      "config:*",
+      "cur:DeleteReportDefinition",
+      "cur:DescribeReportDefinitions",
+      "cur:ListTagsForResource",
+      "cur:PutReportDefinition",
       "datasync:*",
       "dbqms:*",
       "dlm:*",
@@ -129,6 +138,7 @@ data "aws_iam_policy_document" "member-access" {
       "ec2:*InternetGateway*",
       "ec2:*NatGateway*",
       "ec2:*TransitGatewayVpcAttachment*",
+      "ec2:*ManagedPrefixList*",
       "ecr-public:*",
       "ecr:*",
       "ecs:*",
@@ -138,6 +148,7 @@ data "aws_iam_policy_document" "member-access" {
       "eks:*",
       "es:*",
       "events:*",
+      "fis:*",
       "fsx:*",
       "firehose:*",
       "glacier:*",
@@ -620,7 +631,7 @@ data "aws_iam_policy_document" "policy" {
     resources = ["*"]
     condition {
       test     = "StringEquals"
-      values   = ["ssm.amazonaws.com", "ecs.amazonaws.com", "ecs-tasks.amazonaws.com"]
+      values   = ["ssm.amazonaws.com", "ecs.amazonaws.com", "ecs-tasks.amazonaws.com", "backup.amazonaws.com", "datasync.amazonaws.com"]
       variable = "iam:PassedToService"
     }
   }
@@ -635,6 +646,7 @@ data "aws_iam_policy_document" "policy" {
       "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:key/*",
       "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-development"]}:key/*",
       "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-test"]}:key/*",
+      "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:key/*",
       "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-production"]}:key/*"
     ]
     condition {
@@ -768,6 +780,7 @@ module "github-oidc" {
   tags_prefix            = ""
 }
 
+#trivy:ignore:AVD-AWS-0345: Required for reading/writing Terraform state from S3
 data "aws_iam_policy_document" "oidc_assume_role_member" {
   count = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
   statement {
@@ -801,6 +814,7 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
   statement {
     sid    = "AllowOIDCReadState"
     effect = "Allow"
+
     resources = [
       "arn:aws:s3:::modernisation-platform-terraform-state/*",
       "arn:aws:s3:::modernisation-platform-terraform-state/"

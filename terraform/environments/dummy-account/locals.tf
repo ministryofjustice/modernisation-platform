@@ -1,6 +1,6 @@
 locals {
 
-  application_name = "mi-platform"
+  application_name = "dummy-account"
 
   environment_management = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
 
