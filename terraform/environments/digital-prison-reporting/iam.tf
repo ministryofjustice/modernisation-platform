@@ -233,6 +233,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "logs:CreateLogGroup",
       "logs:DeleteLogGroup",
       "logs:TagLogGroup",
+      "logs:TagResource",
       "glue:CreateSecurityConfiguration",
       "glue:DeleteSecurityConfiguration",
       "glue:CreateUserDefinedFunction",
