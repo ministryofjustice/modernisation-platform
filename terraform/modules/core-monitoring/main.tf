@@ -3,3 +3,9 @@ module "pagerduty_core_alerts" {
   sns_topics                = ["config", "securityhub-alarms", "cloudtrail"]
   pagerduty_integration_key = var.pagerduty_integration_keys["core_alerts_cloudwatch"]
 }
+
+module "pagerduty_high_priority_alerts" {
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
+  sns_topics                = ["high-priority-alarms"]
+  pagerduty_integration_key = var.pagerduty_integration_keys["core_alerts_high_priority_cloudwatch"]
+}
