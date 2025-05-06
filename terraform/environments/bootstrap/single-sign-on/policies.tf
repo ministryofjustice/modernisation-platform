@@ -1534,7 +1534,11 @@ data "aws_iam_policy_document" "s3_upload_policy_document" {
       "s3:GetObject",
       "s3:ListBucket",
       "s3:ListBucketVersions",
-      "s3:PutObject"
+      "s3:PutObject",
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:ReEncrypt*",
+      "kms:DescribeKey"
     ]
     resources = [
       data.aws_s3_bucket.mod_platform_artefact.arn,
