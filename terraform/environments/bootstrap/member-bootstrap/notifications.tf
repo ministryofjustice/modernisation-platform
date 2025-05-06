@@ -32,7 +32,7 @@ module "pagerduty_core_alerts" {
     data.aws_sns_topic.existing_topic, data.aws_sns_topic.backup_vault_failure_topic
   ]
   source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
-  sns_topics                = compact([local.high_priority_topic.name])
+  sns_topics                = [local.high_priority_topic.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_high_priority_cloudwatch"]
 }
 
