@@ -71,28 +71,33 @@ resource "aws_iam_role" "ip_usage_metrics_read" {
   })
 }
 
-resource "aws_iam_role_policy" "ip_usage_metrics_policy" {
-  role = aws_iam_role.ip_usage_metrics_read.name
-
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Action = [
-          "ec2:DescribeSubnets",
-          "ec2:DescribeTags",
-          "ec2:DescribeVpcs"
-        ],
-        Effect   = "Allow",
-        Resource = "*"
-      },
-      {
-        Action = [
-          "cloudwatch:PutMetricData"
-        ],
-        Effect   = "Allow",
-        Resource = "*"
-      }
+data "aws_iam_policy_document" "ip_usage_metrics_policy" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "ec2:DescribeSubnets",
+      "ec2:DescribeTags",
+      "ec2:DescribeVpcs"
     ]
-  })
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "cloudwatch:PutMetricData"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "ip_usage_metrics_policy" {
+  name        = "IPUsageMetricsPolicy"
+  description = "Policy for IP usage metrics collection"
+  policy      = data.aws_iam_policy_document.ip_usage_metrics_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "ip_usage_metrics_attachment" {
+  role       = aws_iam_role.ip_usage_metrics_read.name
+  policy_arn = aws_iam_policy.ip_usage_metrics_policy.arn
 }
