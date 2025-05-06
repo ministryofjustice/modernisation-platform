@@ -2,6 +2,7 @@ locals {
   is_production       = can(regex("production|default", terraform.workspace))
   existing_topic_name = try(data.aws_sns_topic.existing_topic[0].name, null)
   backup_topic_name   = try(data.aws_sns_topic.backup_vault_failure_topic[0].name, null)
+  high_priority_topic = try(data.aws_sns_topic.high_priority_topic.name, null)
 }
 
 data "aws_region" "current" {}
@@ -19,6 +20,11 @@ data "aws_sns_topic" "backup_vault_failure_topic" {
 
 }
 
+# Data source to get the ARN of the high priority SNS topic
+data "aws_sns_topic" "high_priority_topic" {
+  name  = "high-priority-alarms"
+}
+
 # Link the sns topics to the pagerduty service
 module "pagerduty_core_alerts" {
   count = (local.account_data.account-type != "member-unrestricted") ? 1 : 0
@@ -28,6 +34,16 @@ module "pagerduty_core_alerts" {
   source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
   sns_topics                = compact([local.existing_topic_name, local.backup_topic_name])
   pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
+}
+
+module "pagerduty_high_priority_alarms" {
+  count = (local.account_data.account-type != "member-unrestricted") ? 1 : 0
+  depends_on = [
+    data.aws_sns_topic.high_priority_topic
+  ]
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
+  sns_topics                = compact([local.high_priority_topic.name])
+  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_high_priority_cloudwatch"]
 }
 
 # Cloudwatch metric alarm required for errors
