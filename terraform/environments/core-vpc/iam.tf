@@ -53,3 +53,46 @@ resource "aws_iam_role_policy_attachment" "vpc_flow_log_publish_policy" {
   role       = aws_iam_role.vpc_flow_log.id
   policy_arn = aws_iam_policy.vpc_flow_log_publish_policy.arn
 }
+
+# Cross-account IP Utilisation Role
+# This role is used by a lambda function in the core-logging account to read IP utilisation metrics from the core-vpc accounts
+resource "aws_iam_role" "ip_usage_metrics_read" {
+  name = "IPUsageMetricsReadRole"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect = "Allow",
+      Principal = {
+        AWS = "arn:aws:iam::${local.environment_management.account_ids["core-logging"]}:root"
+      },
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy" "ip_usage_metrics_policy" {
+  role = aws_iam_role.ip_usage_metrics_read.name
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = [
+          "ec2:DescribeSubnets",
+          "ec2:DescribeTags",
+          "ec2:DescribeVpcs"
+        ],
+        Effect   = "Allow",
+        Resource = "*"
+      },
+      {
+        Action = [
+          "cloudwatch:PutMetricData"
+        ],
+        Effect   = "Allow",
+        Resource = "*"
+      }
+    ]
+  })
+}
