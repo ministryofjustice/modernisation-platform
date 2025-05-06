@@ -45,10 +45,15 @@ data "archive_file" "ip_usage_lambda" {
 }
 
 resource "aws_lambda_function" "ip_usage" {
-  function_name = "IPUsageMonitoringFunction"
-  role          = aws_iam_role.ip_usage_lambda_exec.arn
-  handler       = "ip_usage_metrics.lambda_handler"
-  runtime       = "python3.11"
+  # checkov:skip=CKV_AWS_50: "X-ray tracing is not required"
+  # checkov:skip=CKV_AWS_117: "Lambda is not environment specific"
+  # checkov:skip=CKV_AWS_116: "DLQ not required"
+  # checkov:skip=CKV_AWS_272: "Code signing not required"
+  function_name                  = "IPUsageMonitoringFunction"
+  role                           = aws_iam_role.ip_usage_lambda_exec.arn
+  handler                        = "ip_usage_metrics.lambda_handler"
+  runtime                        = "python3.11"
+  reserved_concurrent_executions = 1
 
   filename         = data.archive_file.ip_usage_lambda.output_path
   source_code_hash = data.archive_file.ip_usage_lambda.output_base64sha256
