@@ -64,7 +64,7 @@ resource "aws_iam_role" "ip_usage_metrics_read" {
     Statement = [{
       Effect = "Allow",
       Principal = {
-        AWS = "arn:aws:iam::${local.environment_management.account_ids["core-logging"]}:root"
+        AWS = "arn:aws:iam::${local.environment_management.account_ids["core-logging-production"]}:root"
       },
       Action = "sts:AssumeRole"
     }]
