@@ -25,7 +25,7 @@ jobs:
 
     env:
       DEBUG: false
-      DRY_RUN: true
+      DRY_RUN: false
       ORG: ministryofjustice
       PREFIX: modernisation-platform
       SKIP_BRANCHES: main
