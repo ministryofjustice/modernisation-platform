@@ -543,6 +543,30 @@
           "access": "developer"
         },
         {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "reporting-operations"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "sandbox"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "reporting-operations"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "reporting-operations"
+        },
+        {
           "account-name": "youth-justice-networking-production",
           "access": "developer"
         }
