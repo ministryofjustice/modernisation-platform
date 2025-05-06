@@ -58,6 +58,8 @@ resource "aws_lambda_function" "ip_usage" {
   filename         = data.archive_file.ip_usage_lambda.output_path
   source_code_hash = data.archive_file.ip_usage_lambda.output_base64sha256
 
+  kms_key_arn = aws_kms_key.ip_usage.arn
+
   environment {
     variables = {
       ASSUME_ROLE_NAME = "IPUsageMetricsReadRole"
@@ -66,4 +68,66 @@ resource "aws_lambda_function" "ip_usage" {
       METRIC_NAMESPACE = "Custom/SubnetInfo"
     }
   }
+}
+
+# KMS key for Lambda encryption
+resource "aws_kms_key" "ip_usage" {
+  description             = "KMS key for IP Usage Lambda encryption"
+  deletion_window_in_days = 7
+  enable_key_rotation     = true
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "Enable IAM User Permissions"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Action   = "kms:*"
+        Resource = "*"
+      },
+      {
+        Sid    = "Allow Lambda to decrypt"
+        Effect = "Allow"
+        Principal = {
+          AWS = aws_iam_role.ip_usage_lambda_exec.arn
+        }
+        Action = [
+          "kms:Decrypt",
+          "kms:DescribeKey"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+
+  tags = {
+    Name = "ip-usage-lambda"
+  }
+}
+
+# KMS Alias for the key
+resource "aws_kms_alias" "ip_usage" {
+  name          = "alias/ip-usage-lambda"
+  target_key_id = aws_kms_key.ip_usage.key_id
+}
+
+# Add KMS permissions to Lambda execution role
+data "aws_iam_policy_document" "ip_usage_kms" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey"
+    ]
+    resources = [aws_kms_key.ip_usage.arn]
+  }
+}
+
+resource "aws_iam_role_policy" "ip_usage_kms" {
+  name   = "ip-usage-kms-decrypt"
+  role   = aws_iam_role.ip_usage_lambda_exec.name
+  policy = data.aws_iam_policy_document.ip_usage_kms.json
 }
