@@ -886,7 +886,7 @@ locals {
         forth-thurs  = "cron(0 21 ? * THU#4 *)"
       }
       patch_classifications = {
-        WINDOWS = ["SecurityUpdates", "CriticalUpdates", "DefinitionUpdates"]
+        WINDOWS = ["SecurityUpdates", "CriticalUpdates"]
       }
     }
 
@@ -1237,6 +1237,7 @@ resource "aws_ssm_parameter" "ad_fixngo" {
   })
 }
 
+#trivy:ignore:AVD-AWS-0345: Required for SSM patching module to access S3 buckets
 module "ad_fixngo_ssm_patching" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching.git?ref=aeb25bbec66ae3575d9435841792c333f46fe614" # v4.0.0
   providers = {

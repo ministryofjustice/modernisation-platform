@@ -27,7 +27,7 @@ locals {
   }
 
   active_tgw_peering_attachments = [
-    "PTTP-Transit-Gateway-attachment-accepter"
+    "MOJ-TGW-attachment-accepter"
   ]
 
   active_tgw_vpc_attachments = [
@@ -59,6 +59,9 @@ locals {
   vpn_attachments = fileexists("./vpn_attachments.json") ? jsondecode(file("./vpn_attachments.json")) : {}
 
   noms_vpn_attachment_ids = toset([for k in aws_vpn_connection.this : k.transit_gateway_attachment_id if(length(regexall("(?:NOMS)", k.tags.Name)) > 0)])
+
+  yjb_vpn_attachment_ids = toset([for k in aws_vpn_connection.this : k.transit_gateway_attachment_id if(length(regexall("(?:YJB)", k.tags.Name)) > 0)])
+
 
   azure_static_routes = [
     "10.0.0.0/11",

@@ -25,7 +25,8 @@
     "ccms-opa.uat.legalservices.gov.uk",
     "ccms-opa.stg.legalservices.gov.uk",
     "ccms-opa.legalservices.gov.uk",
-    ".csr.service.justice.gov.uk"
+    ".csr.service.justice.gov.uk",
+    "smtp.office365.com"
   ],
   "fw_home_net_ips": ["10.26.0.0/16", "10.27.0.0/16"]
 }

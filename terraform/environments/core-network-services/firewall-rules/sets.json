@@ -22,6 +22,12 @@
       "${cica-aws-dev-b}",
       "${cica-aws-dev-data-a}",
       "${cica-aws-dev-data-b}"
+    ],
+    "CICA_AWS_PROD": [
+      "${cica-aws-prod-a}",
+      "${cica-aws-prod-b}",
+      "${cica-aws-prod-c}",
+      "${cica-aws-prod-d}"
     ]
   },
   "PORT_SETS": {

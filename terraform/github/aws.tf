@@ -70,3 +70,13 @@ data "aws_secretsmanager_secret" "modernisation_pat_multirepo" {
 data "aws_secretsmanager_secret_version" "modernisation_pat_multirepo" {
   secret_id = data.aws_secretsmanager_secret.modernisation_pat_multirepo.id
 }
+
+# Get secret by name for secrets-fetch-decrypt-passphrase
+data "aws_secretsmanager_secret" "secrets-fetch-decrypt-passphrase" {
+  name = "secrets-fetch-decrypt-passphrase"
+}
+
+# Get latest secret value with ID from secrets-fetch-decrypt-passphrase
+data "aws_secretsmanager_secret_version" "secrets-fetch-decrypt-passphrase" {
+  secret_id = data.aws_secretsmanager_secret.secrets-fetch-decrypt-passphrase.id
+}

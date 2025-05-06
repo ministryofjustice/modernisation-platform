@@ -1,112 +1,106 @@
-name: Cleanup of Stale Branches (Deletes if branch and commits are 2+ months old)
+name: Cleanup of Stale Branches
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'
+  - cron: '0 0 * * 0'
 
 permissions:
   contents: write
   pull-requests: write
+  id-token: write
 
 jobs:
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@cf6e13565dc769b53644a230561ea14bfbc70008 # v1.1.1    
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
   cleanup:
     name: Cleanup Stale Branches in Modernisation Platform Repos
     runs-on: ubuntu-latest
+    needs: fetch-secrets
+
+
+    env:
+      DEBUG: false
+      DRY_RUN: false
+      ORG: ministryofjustice
+      PREFIX: modernisation-platform
+      SKIP_BRANCHES: main
+      INACTIVE_DAYS: 90
 
     steps:
-      - name: Ensure CLI tools are installed
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@cf6e13565dc769b53644a230561ea14bfbc70008 # v1.1.1
+        with:
+          terraform_github_token: ${{ needs.fetch-secrets.outputs.terraform_github_token }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Ensure CLI Tools Are Installed
         run: |
-          command -v gh >/dev/null || (echo "❌ GitHub CLI (gh) is not installed" && exit 1)
-          command -v jq >/dev/null || (echo "❌ jq is not installed" && exit 1)
+          for tool in gh jq; do
+            if ! command -v "$tool" &> /dev/null; then
+              echo "❌ Required tool '$tool' is not installed."
+              exit 1
+            fi
+          done
 
       - name: Authenticate GitHub CLI
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+          echo "${{ env.TERRAFORM_GITHUB_TOKEN }}" | gh auth login --with-token
 
-      - name: Cleanup stale branches across repositories
+      - name: Cleanup Stale Branches 
         run: |
-          set -eo pipefail
-          DEBUG=false
-          DRY_RUN=false
+          set -euo pipefail
 
-          # Exclusion list
-          exclude_repos=(
-            "modernisation-platform-environments"
-            "modernisation-platform-ami-builds"
-            "modernisation-platform-configuration-management"
-          )
-
-          # Fetch all repositories starting with "modernisation-platform" and exclude archived ones
-          repos=$(gh repo list ministryofjustice --limit 1000 --json name,isArchived --jq '.[] | select(.name | startswith("modernisation-platform")) | select(.isArchived == false) | .name')
+          threshold_ts=$(date -d "$INACTIVE_DAYS days ago" +%s)
+          repos=$(gh repo list "$ORG" --limit 1000 --json name,isArchived \
+                   --jq ".[] | select(.name | startswith(\"$PREFIX\")) | select(.isArchived == false) | .name")
 
           for repo in $repos; do
-            # Skip excluded repositories
-            if [[ " ${exclude_repos[@]} " =~ " $repo " ]]; then
-              echo "⏭️ Skipping excluded repository: $repo"
-              continue
-            fi
-
-            echo ""
-            echo ""
+            echo -e "\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "🔍 Processing repository: $ORG/$repo"
             echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-            echo "🔍 STARTING REPO: ministryofjustice/$repo"
-            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-            {
-              branches=$(gh api repos/ministryofjustice/$repo/branches --jq '.[].name')
-              repo_summary="| Branch | Status | Reason |\n|--------|--------|--------|"
-              for branch in $branches; do
-                if [[ "$branch" == "main" ]]; then
-                  repo_summary+="\n| \`$branch\` | ⏭️ Skipped | Main branch |"
-                  continue
-                fi
 
-                allow_delete=$(gh api repos/ministryofjustice/$repo/branches/$branch/protection --silent 2>/dev/null | jq -r '.allow_deletions.enabled // "true"')
-                if [[ "$allow_delete" == "false" ]]; then
-                  repo_summary+="\n| \`$branch\` | ⏭️ Skipped | Protected from deletion |"
-                  continue
-                fi
+            summary="| Branch | Status | Reason |\n|--------|--------|--------|"
+            branches=$(gh api --paginate "repos/$ORG/$repo/branches" --jq '.[].name' || echo "")
 
-                if gh api repos/ministryofjustice/$repo/git/ref/tags/do-not-prune/$branch --silent >/dev/null 2>&1; then
-                  repo_summary+="\n| \`$branch\` | ⏭️ Skipped | Tagged do-not-prune |"
-                  continue
-                fi
+            for branch in $branches; do
+              if [[ "$SKIP_BRANCHES" == *"$branch"* ]]; then
+                summary+="\n| \`$branch\` | ⏭️ Skipped | Protected branch |"
+                continue
+              fi
 
-                last_commit_date=$(gh api "repos/ministryofjustice/$repo/commits?sha=$branch" --jq '.[0].commit.committer.date' || echo "")
-                last_commit_timestamp=$(date -d "$last_commit_date" +%s 2>/dev/null || echo 0)
-                two_months_ago_timestamp=$(date -d "2 months ago" +%s)
+              # Get latest commit date
+              last_commit_date=$(gh api "repos/$ORG/$repo/commits?sha=$branch" --jq '.[0].commit.committer.date' 2>/dev/null || echo "")
+              last_commit_ts=$(date -d "$last_commit_date" +%s 2>/dev/null || echo 0)
 
-                if [[ "$last_commit_timestamp" -eq 0 || "$last_commit_timestamp" -ge "$two_months_ago_timestamp" ]]; then
-                  repo_summary+="\n| \`$branch\` | ✅ Active | Recent commit |"
-                  continue
-                fi
+              if [[ "$last_commit_ts" -eq 0 ]]; then
+                summary+="\n| \`$branch\` | ⚠️ Unknown | Failed to get latest commit |"
+                continue
+              fi
 
-                first_commit=$(gh api "repos/ministryofjustice/$repo/commits?sha=$branch" --paginate --jq '.[].commit.committer.date' | tail -n 1)
-                branch_creation_timestamp=$(date -d "$first_commit" +%s 2>/dev/null || echo 0)
+              if [[ "$last_commit_ts" -ge "$threshold_ts" ]]; then
+                summary+="\n| \`$branch\` | ✅ Active | Recent commit |"
+                continue
+              fi
 
-                if [[ "$branch_creation_timestamp" -eq 0 || "$branch_creation_timestamp" -ge "$two_months_ago_timestamp" ]]; then
-                  repo_summary+="\n| \`$branch\` | ⏭️ Skipped | Too new |"
-                  continue
-                fi
-
-                echo "🗑️ Deleting branch: $branch from ministryofjustice/$repo"
-                if [[ "$DRY_RUN" == "true" ]]; then
-                  echo "Dry Run: Skipping actual deletion of branch $branch"
-                  repo_summary+="\n| \`$branch\` | 📝 Dry Run | Branch and commits are 2+ months old |"
+              echo "🗑️ Stale branch: $branch (inactive > $INACTIVE_DAYS days)"
+              if [[ "$DRY_RUN" == "true" ]]; then
+                echo "💡 Dry Run: Not deleting $branch"
+                summary+="\n| \`$branch\` | 📝 Dry Run | No commits in $INACTIVE_DAYS+ days |"
+              else
+                if gh api -X DELETE "repos/$ORG/$repo/git/refs/heads/$branch"; then
+                  summary+="\n| \`$branch\` | 🔥 Deleted | No commits in $INACTIVE_DAYS+ days |"
                 else
-                  if gh api -X DELETE repos/ministryofjustice/$repo/git/refs/heads/$branch; then
-                    repo_summary+="\n| \`$branch\` | 🔥 Deleted | Branch and commits are 2+ months old |"
-                  else
-                    repo_summary+="\n| \`$branch\` | ⚠️ Failed | GitHub API deletion failed |"
-                  fi
+                  summary+="\n| \`$branch\` | ⚠️ Failed | GitHub deletion failed |"
                 fi
-              done
+              fi
+            done
 
-              echo -e "$repo_summary"
-              echo "✅ DONE with ministryofjustice/$repo"
-              echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-            } || {
-              echo "❌ Failed to process ministryofjustice/$repo — skipping to next."
-              continue
-            }
+            echo -e "$summary"
+            echo "✅ Finished $ORG/$repo"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           done

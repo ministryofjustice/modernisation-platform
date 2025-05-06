@@ -7,9 +7,9 @@
           "analytical-platform-compute-development",
           "analytical-platform-ingestion-development",
           "coat-development",
+          "dummy-account-development",
           "example-development",
           "data-platform-development",
-          "data-platform-apps-and-tools-development",
           "observability-platform-development",
           "operations-engineering-development",
           "panda-cyber-appsec-lab-development"

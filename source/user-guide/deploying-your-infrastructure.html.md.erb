@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Deploying Your Infrastructure
-last_reviewed_on: 2024-10-07
+last_reviewed_on: 2025-04-15
 review_in: 6 months
 ---
 
@@ -36,18 +36,18 @@ Here is a high level diagram of what the workflow file does.
 
 ### Jobs on pull request
 
- - a [Terraform plan](https://www.terraform.io/docs/cli/commands/plan.html) on the `development` and `test` environments (if you have them).
- - a [Terraform apply](https://www.terraform.io/docs/cli/commands/apply.html) on the `development` and `test` environments (if you have them), which is held until a reviewer from your GitHub team approves the deployment.
+ - a [Terraform plan](https://developer.hashicorp.com/terraform/cli/commands/plan) on the `development` and `test` environments (if you have them).
+ - a [Terraform apply](https://developer.hashicorp.com/terraform/cli/commands/apply) on the `development` and `test` environments (if you have them), which is held until a reviewer from your GitHub team approves the deployment.
 
 ### Jobs on merging a pull request
 
- - a [Terraform plan](https://www.terraform.io/docs/cli/commands/plan.html) on the `preproduction` and `production` environments (if you have them).
- - a [Terraform apply](https://www.terraform.io/docs/cli/commands/apply.html) on the `preproduction` and `production` environments (if you have them), which is held until a reviewer from your GitHub team approves the deployment.
+ - a [Terraform plan](https://developer.hashicorp.com/terraform/cli/commands/plan) on the `preproduction` and `production` environments (if you have them).
+ - a [Terraform apply](https://developer.hashicorp.com/terraform/cli/commands/apply) on the `preproduction` and `production` environments (if you have them), which is held until a reviewer from your GitHub team approves the deployment.
 
 ### Jobs on a manual trigger
 
- - a [Terraform plan](https://www.terraform.io/docs/cli/commands/plan.html) on the `development` and `test` environments (if you have them), if your action is manually triggered with the `deploy` action.
- - a [Terraform apply](https://www.terraform.io/docs/cli/commands/apply.html) on the `development` and `test` environments (if you have them), if your action was manually triggered with the `deploy` action, which is held until a reviewer from your GitHub team approves the deployment.
+ - a [Terraform plan](https://developer.hashicorp.com/terraform/cli/commands/plan) on the `development` and `test` environments (if you have them), if your action is manually triggered with the `deploy` action.
+ - a [Terraform apply](https://developer.hashicorp.com/terraform/cli/commands/apply) on the `development` and `test` environments (if you have them), if your action was manually triggered with the `deploy` action, which is held until a reviewer from your GitHub team approves the deployment.
  - a [Terraform plan destroy](https://developer.hashicorp.com/terraform/cli/commands/plan#planning-modes) on the `development` and `test` environments (if you have them), if your action is manually triggered with the `destroy` action.
  - a [Terraform apply destroy](https://developer.hashicorp.com/terraform/cli/commands/destroy) on the `development` and `test` environments (if you have them), if your action was manually triggered with the `destroy` action, which is held until a reviewer from your GitHub team approves the deployment.
 
@@ -60,7 +60,7 @@ Here is a high level diagram of what the workflow file does.
 
 ### Approving deployments
 
-The Modernisation Platform uses [Terraform Workspaces](https://www.terraform.io/docs/language/state/workspaces.html) and [GitHub Environments](https://docs.github.com/en/actions/reference/environments) for deployments and approvals to your different environments.
+The Modernisation Platform uses [Terraform Workspaces](https://developer.hashicorp.com/terraform/language/state/workspaces) and [GitHub Environments](https://docs.github.com/en/actions/reference/environments) for deployments and approvals to your different environments.
 
 1. Navigate to the [Actions](https://github.com/ministryofjustice/modernisation-platform-environments/actions) tab in the environments repository.
 1. Find the relevant workflow run (the name is the name of your pull request or merge commit)

@@ -86,7 +86,7 @@ resource "aws_ec2_transit_gateway_route_table_association" "vpn_attachments" {
 resource "aws_ec2_transit_gateway_route" "azure_static_routes" {
   for_each                       = toset(local.azure_static_routes)
   destination_cidr_block         = each.value
-  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.pttp-tgw.id
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.moj_tgw.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
@@ -268,4 +268,10 @@ module "core-networks-chatbot" {
   sns_topic_arns   = ["arn:aws:sns:eu-west-2:${local.environment_management.account_ids[terraform.workspace]}:${aws_sns_topic.noms_vpn_sns_topic.name}"]
   tags             = local.tags
   application_name = local.application_name
+}
+
+resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_yjb_routes_to_firewall" {
+  for_each                       = local.yjb_vpn_attachment_ids
+  transit_gateway_attachment_id  = each.key
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }

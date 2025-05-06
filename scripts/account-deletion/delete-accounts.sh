@@ -3,7 +3,7 @@
 # Check required programs are installed
 check_requirements() {
    local required_programs=("terraform" "jq")
-   local missing =0
+   local missing=0
 
    for program in "${required_programs[@]}"; do
         if ! command -v "$program" &> /dev/null; then
