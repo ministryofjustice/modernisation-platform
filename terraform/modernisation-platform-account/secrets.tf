@@ -220,6 +220,10 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
   tags  = local.tags
 }
 
+data "aws_caller_identity" "mod-platform" {
+  provider = aws.modernisation-platform
+}
+
 data "aws_kms_alias" "environment_management" {
   provider = aws.modernisation-platform
   name     = "alias/environment-management-multi-region"
