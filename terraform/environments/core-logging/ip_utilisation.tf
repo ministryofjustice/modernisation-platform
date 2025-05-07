@@ -38,6 +38,11 @@ data "aws_iam_policy_document" "assume_target_roles" {
   }
 }
 
+resource "aws_iam_role_policy_attachment" "assume_target_roles" {
+  role       = aws_iam_role.ip_usage_lambda_exec.name
+  policy_arn = aws_iam_policy.assume_target_roles.arn
+}
+
 data "archive_file" "ip_usage_lambda" {
   type        = "zip"
   source_dir  = "${path.module}/lambda/ip_utilisation"
