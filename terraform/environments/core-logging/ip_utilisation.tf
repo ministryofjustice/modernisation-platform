@@ -20,6 +20,30 @@ resource "aws_iam_policy_attachment" "ip_usage_lambda_exec" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+resource "aws_iam_policy" "ip_usage_cloudwatch_metrics" {
+  name        = "LambdaCloudWatchMetricsPolicy"
+  description = "Allows publishing CloudWatch metrics"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "cloudwatch:PutMetricData"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ip_usage_cloudwatch_metrics" {
+  role       = aws_iam_role.ip_usage_lambda_exec.name
+  policy_arn = aws_iam_policy.ip_usage_cloudwatch_metrics.arn
+
+}
+
 locals {
   core_vpc_accounts = [
     for key, value in local.environment_management.account_ids :
@@ -60,11 +84,12 @@ resource "aws_lambda_function" "ip_usage" {
   # checkov:skip=CKV_AWS_117: "Lambda is not environment specific"
   # checkov:skip=CKV_AWS_116: "DLQ not required"
   # checkov:skip=CKV_AWS_272: "Code signing not required"
-  function_name                  = "IPUsageMonitoringFunction"
+  function_name                  = "ip_usage_monitoring"
   role                           = aws_iam_role.ip_usage_lambda_exec.arn
   handler                        = "ip_usage_metrics.lambda_handler"
   runtime                        = "python3.11"
   reserved_concurrent_executions = 1
+  timeout                        = 300
 
   filename         = data.archive_file.ip_usage_lambda.output_path
   source_code_hash = data.archive_file.ip_usage_lambda.output_base64sha256
