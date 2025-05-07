@@ -163,6 +163,7 @@ data "aws_iam_policy_document" "modernisation_account_limited_read" {
       "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.current.account_id}:secret:environment_management-??????",
       "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.current.account_id}:secret:pagerduty_integration_keys-??????",
       "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.current.account_id}:secret:mod-platform-circleci-??????",
+      "arn:aws:secretsmanager:eu-west-2:${data.aws_caller_identity.current.account_id}:secret:nonmp-account-ids-??????",
     ]
   }
   statement {
