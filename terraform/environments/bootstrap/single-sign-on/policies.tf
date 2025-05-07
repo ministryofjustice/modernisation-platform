@@ -1534,17 +1534,24 @@ data "aws_iam_policy_document" "s3_upload_policy_document" {
       "s3:GetObject",
       "s3:ListBucket",
       "s3:ListBucketVersions",
-      "s3:PutObject",
+      "s3:PutObject"
+    ]
+    resources = [
+      data.aws_s3_bucket.mod_platform_artefact.arn,
+      "${data.aws_s3_bucket.mod_platform_artefact.arn}/*"
+    ]
+  }
+  statement {
+    sid    = "AllowS3UploadKms"
+    effect = "Allow"
+    actions = [
       "kms:Encrypt",
       "kms:GenerateDataKey*",
       "kms:ReEncrypt*",
       "kms:DescribeKey",
       "kms:ListAliases"
     ]
-    resources = [
-      data.aws_s3_bucket.mod_platform_artefact.arn,
-      "${data.aws_s3_bucket.mod_platform_artefact.arn}/*"
-    ]
+    resources = ["arn:aws:kms:*:${local.environment_management.account_ids["core-shared-services-production"]}:key/90121e65-c5fa-43a9-8075-6f3410d2a025"]
   }
 }
 
