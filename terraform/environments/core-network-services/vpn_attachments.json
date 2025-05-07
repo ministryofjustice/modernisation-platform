@@ -84,7 +84,9 @@
     "tunnel_phase1_integrity_algorithms": "SHA2-256",
     "tunnel_phase2_dh_group_numbers": "19",
     "tunnel_phase2_encryption_algorithms": "AES256",
-    "tunnel_phase2_integrity_algorithms": "SHA2-256"
+    "tunnel_phase2_integrity_algorithms": "SHA2-256",
+    "tunnel1_ike_versions": "ikev2",
+    "tunnel2_ike_versions": "ikev2"
   },
   "YJB-Juniper-vSRX02-VPN": {
     "bgp_asn": "64523",
@@ -102,6 +104,8 @@
     "tunnel_phase1_integrity_algorithms": "SHA2-256",
     "tunnel_phase2_dh_group_numbers": "19",
     "tunnel_phase2_encryption_algorithms": "AES256",
-    "tunnel_phase2_integrity_algorithms": "SHA2-256"
+    "tunnel_phase2_integrity_algorithms": "SHA2-256",
+    "tunnel1_ike_versions": "ikev2",
+    "tunnel2_ike_versions": "ikev2"
   }
 }
