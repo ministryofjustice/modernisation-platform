@@ -89,13 +89,12 @@ def publish_metrics(cw_client, dims: list, metrics: list[tuple]):
     cw_client.put_metric_data(Namespace=METRIC_NAMESPACE, MetricData=metric_data)
 
 
-def process_account(account_id: str, region: str):
+def process_account(account_id: str, region: str, central_cloudwatch):
     """
-    For a single account: assume role, fetch subnets, compute and publish metrics.
+    For a single account: assume role, fetch subnets, and compute metrics.
     """
     session = assume_role_session(account_id, ASSUME_ROLE_NAME)
     ec2 = session.client('ec2', region_name=region)
-    cw = session.client('cloudwatch', region_name=region)
 
     subnets = fetch_all_subnets(ec2)
     logger.info(f"[{account_id}] Found {len(subnets)} subnets in {region}")
@@ -111,7 +110,7 @@ def process_account(account_id: str, region: str):
                 ('TotalIPs', total, 'Count'),
                 ('IPUtilizationPercentage', pct, 'Percent')
             ]
-            publish_metrics(cw, dims, metrics)
+            publish_metrics(central_cloudwatch, dims, metrics)
 
             logger.info(
                 f"{s['SubnetId']} ({s['AvailabilityZone']}, {s['VpcId']}) "
@@ -126,14 +125,16 @@ def process_account(account_id: str, region: str):
 
     logger.info(f"[{account_id}] Published metrics for {processed}/{len(subnets)} subnets")
 
-
 def lambda_handler(event, context):
     region = os.getenv('AWS_REGION', 'us-east-1')
     logger.info(f"Starting subnet scan across accounts: {TARGET_ACCOUNTS} in {region}")
 
+    # Create CloudWatch client in the central account
+    central_cloudwatch = boto3.client('cloudwatch', region_name=region)
+
     for account in TARGET_ACCOUNTS:
         try:
-            process_account(account, region)
+            process_account(account, region, central_cloudwatch)
         except Exception:
             logger.exception(f"Failed to process account {account}")
 
