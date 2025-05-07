@@ -1551,7 +1551,7 @@ data "aws_iam_policy_document" "s3_upload_policy_document" {
       "kms:DescribeKey",
       "kms:ListAliases"
     ]
-    resources = ["arn:aws:kms:*:${local.environment_management.account_ids["core-shared-services-production"]}:key/90121e65-c5fa-43a9-8075-6f3410d2a025"]
+    resources = ["*"]
   }
 }
 
