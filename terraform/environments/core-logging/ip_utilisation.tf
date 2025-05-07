@@ -27,6 +27,12 @@ locals {
   ]
 }
 
+resource "aws_iam_policy" "assume_target_roles" {
+  name        = "AssumeTargetRolesPolicy"
+  description = "Policy allowing Lambda to assume roles in core-vpc accounts"
+  policy      = data.aws_iam_policy_document.assume_target_roles.json
+}
+
 data "aws_iam_policy_document" "assume_target_roles" {
   dynamic "statement" {
     for_each = local.core_vpc_accounts
