@@ -108,7 +108,7 @@ resource "aws_lambda_function" "ip_usage" {
 resource "aws_cloudwatch_event_rule" "ip_usage_schedule" {
   name                = "ip-usage-schedule"
   description         = "Trigger IP Usage Lambda every 1 day"
-  schedule_expression = "rate(1 day)"
+  schedule_expression = "cron(0 10 * * ? *)" # run daily at 10:00 UTC
 }
 
 resource "aws_cloudwatch_event_target" "ip_usage_lambda_target" {
