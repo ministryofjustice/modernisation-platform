@@ -6,7 +6,7 @@ data "aws_kms_key" "cloudtrail_key" {
 
 #trivy:ignore:AVD-AWS-0136
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=0199ed7d841a456ca93f8bd62f8b6572b2760452" # vTesting Only
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=77033fd5e70ab554ee4046e35776185fb29442c2" # vTesting Only
   providers = {
     # Default and replication regions
     aws                    = aws.workspace-eu-west-2
@@ -81,7 +81,7 @@ module "baselines" {
   pagerduty_integration_key = local.is_core_account ? local.pagerduty_integration_keys["security_hub"] : local.pagerduty_integration_keys["security_hub_members"]
 
   # PagerDuty Key for High Priority Alarms
-  #high_priority_pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_high_priority_cloudwatch"]
+  high_priority_pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_high_priority_cloudwatch"]
 }
 
 # Keys for pagerduty
