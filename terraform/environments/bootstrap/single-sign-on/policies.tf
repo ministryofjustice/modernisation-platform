@@ -648,6 +648,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "sts:*",
       "support:*",
       "textract:*",
+      "tiros:*",
       "wafv2:*",
       "wellarchitected:*"
     ]
@@ -1542,6 +1543,8 @@ data "aws_iam_policy_document" "s3_upload_policy_document" {
     ]
   }
   statement {
+    #checkov:skip=CKV_AWS_111 ListAliases only supports a wildcard
+    #checkov:skip=CKV_AWS_356 ListAliases only supports a wildcard
     sid    = "AllowS3UploadKms"
     effect = "Allow"
     actions = [
