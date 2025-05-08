@@ -22,17 +22,17 @@ jobs:
               repo: context.repo.repo,
               title: "🔔 Biannual Backup and Restore Check-In",
               body: `
-### Tasks:
-- [ ] Check the backup for statefiles in core accounts
-- [ ] Carry out the backup workflow located here - https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/backup-restore-process.html#backup-and-recovery
-- [ ] Edit docs if required
+            ### Tasks:
+            - [ ] Check the backup for statefiles in core accounts
+            - [ ] Carry out the backup workflow located here - https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/backup-restore-process.html#backup-and-recovery
+            - [ ] Edit docs if required
 
----
+            ---
 
-### Notes:
-NCSC - carry out regular restore tests
+            ### Notes:
+            NCSC - carry out regular restore tests
 
-This ticket is raised every 6 months and is part of our aim to test the restore process for EC2 instances, and terraform statefiles.
+            This ticket is raised every 6 months and is part of our aim to test the restore process for EC2 instances, and terraform statefiles.
               `,
               labels: ['supportability']
             });
