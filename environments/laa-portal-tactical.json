@@ -25,7 +25,7 @@
     "tags": {
       "application": "laa-portal-tactical",
       "business-unit": "LAA",
-      "infrastructure-support": "ApplicationOperations@justice.gov.uk",
+      "infrastructure-support": "applicationoperations@justice.gov.uk",
       "owner": "donovan.artz@digital.justice.gov.uk",
       "critical-national-infrastructure": false
     },
