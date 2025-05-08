@@ -338,12 +338,12 @@ module "collaborator_quicksight_admin_role" {
 
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/ReadOnlyAccess",
-    data.aws_iam_policy.quicksight_admin_access.arn,
+    data.aws_iam_policy.quicksight_administrator.arn,
     data.aws_iam_policy.common_policy.arn,
   ]
   number_of_custom_role_policy_arns = 3
 }
 
-data "aws_iam_policy" "quicksight_admin_access" {
-  name = "quicksight_admin_access_policy"
+data "aws_iam_policy" "quicksight_administrator" {
+  name = "quicksight_administrator_policy"
 }
