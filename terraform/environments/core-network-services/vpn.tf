@@ -11,14 +11,17 @@ resource "aws_customer_gateway" "this" {
 }
 
 resource "aws_vpn_connection" "this" {
-  for_each                                = local.vpn_attachments
-  transit_gateway_id                      = aws_ec2_transit_gateway.transit-gateway.id
-  customer_gateway_id                     = aws_customer_gateway.this[each.key].id
-  static_routes_only                      = try(each.value.static_routes_only, false)
-  type                                    = "ipsec.1"
-  tunnel1_dpd_timeout_action              = try(each.value.tunnel_dpd_timeout_action, null)
-  tunnel1_dpd_timeout_seconds             = try(each.value.tunnel_dpd_timeout_seconds, "30")
-  tunnel1_ike_versions                    = [try(each.value.tunnel1_ike_versions, null)]
+  for_each                    = local.vpn_attachments
+  transit_gateway_id          = aws_ec2_transit_gateway.transit-gateway.id
+  customer_gateway_id         = aws_customer_gateway.this[each.key].id
+  static_routes_only          = try(each.value.static_routes_only, false)
+  type                        = "ipsec.1"
+  tunnel1_dpd_timeout_action  = try(each.value.tunnel_dpd_timeout_action, null)
+  tunnel1_dpd_timeout_seconds = try(each.value.tunnel_dpd_timeout_seconds, "30")
+  tunnel1_ike_versions = try(
+    each.value.tunnel1_ike_versions != null ? [each.value.tunnel1_ike_versions] : ["ikev1", "ikev2"],
+    ["ikev1", "ikev2"]
+  )
   tunnel1_inside_cidr                     = try(each.value.tunnel1_inside_cidr, null)
   tunnel1_phase1_dh_group_numbers         = [try(each.value.tunnel_phase1_dh_group_numbers, null)]
   tunnel1_phase1_encryption_algorithms    = [try(each.value.tunnel_phase1_encryption_algorithms, null)]
@@ -32,16 +35,19 @@ resource "aws_vpn_connection" "this" {
   tunnel1_enable_tunnel_lifecycle_control = try(each.value.tunnel1_enable_tunnel_lifecycle_control, false)
   tunnel2_dpd_timeout_action              = try(each.value.tunnel_dpd_timeout_action, null)
   tunnel2_dpd_timeout_seconds             = try(each.value.tunnel_dpd_timeout_seconds, "30")
-  tunnel2_ike_versions                    = [try(each.value.tunnel2_ike_versions, null)]
-  tunnel2_inside_cidr                     = try(each.value.tunnel2_inside_cidr, null)
-  tunnel2_phase1_dh_group_numbers         = [try(each.value.tunnel_phase1_dh_group_numbers, null)]
-  tunnel2_phase1_encryption_algorithms    = [try(each.value.tunnel_phase1_encryption_algorithms, null)]
-  tunnel2_phase1_integrity_algorithms     = [try(each.value.tunnel_phase1_integrity_algorithms, null)]
-  tunnel2_phase1_lifetime_seconds         = try(each.value.tunnel_phase1_lifetime_seconds, null)
-  tunnel2_phase2_dh_group_numbers         = [try(each.value.tunnel_phase2_dh_group_numbers, null)]
-  tunnel2_phase2_encryption_algorithms    = [try(each.value.tunnel_phase2_encryption_algorithms, null)]
-  tunnel2_phase2_integrity_algorithms     = [try(each.value.tunnel_phase2_integrity_algorithms, null)]
-  tunnel2_phase2_lifetime_seconds         = try(each.value.tunnel_phase2_lifetime_seconds, null)
+  tunnel2_ike_versions = try(
+    each.value.tunnel2_ike_versions != null ? [each.value.tunnel2_ike_versions] : ["ikev1", "ikev2"],
+    ["ikev1", "ikev2"]
+  )
+  tunnel2_inside_cidr                  = try(each.value.tunnel2_inside_cidr, null)
+  tunnel2_phase1_dh_group_numbers      = [try(each.value.tunnel_phase1_dh_group_numbers, null)]
+  tunnel2_phase1_encryption_algorithms = [try(each.value.tunnel_phase1_encryption_algorithms, null)]
+  tunnel2_phase1_integrity_algorithms  = [try(each.value.tunnel_phase1_integrity_algorithms, null)]
+  tunnel2_phase1_lifetime_seconds      = try(each.value.tunnel_phase1_lifetime_seconds, null)
+  tunnel2_phase2_dh_group_numbers      = [try(each.value.tunnel_phase2_dh_group_numbers, null)]
+  tunnel2_phase2_encryption_algorithms = [try(each.value.tunnel_phase2_encryption_algorithms, null)]
+  tunnel2_phase2_integrity_algorithms  = [try(each.value.tunnel_phase2_integrity_algorithms, null)]
+  tunnel2_phase2_lifetime_seconds      = try(each.value.tunnel_phase2_lifetime_seconds, null)
 
   tunnel2_startup_action                  = try(each.value.tunnel_startup_action, null)
   tunnel2_enable_tunnel_lifecycle_control = try(each.value.tunnel2_enable_tunnel_lifecycle_control, false)
@@ -70,9 +76,9 @@ resource "aws_vpn_connection" "this" {
 
   lifecycle {
     ignore_changes = [
-      tunnel1_ike_versions, tunnel1_phase1_dh_group_numbers, tunnel1_phase1_encryption_algorithms, tunnel1_phase1_integrity_algorithms,
+      tunnel1_phase1_dh_group_numbers, tunnel1_phase1_encryption_algorithms, tunnel1_phase1_integrity_algorithms,
       tunnel1_phase2_dh_group_numbers, tunnel1_phase2_encryption_algorithms, tunnel1_phase2_integrity_algorithms,
-      tunnel2_ike_versions, tunnel2_phase1_dh_group_numbers, tunnel2_phase1_encryption_algorithms, tunnel2_phase1_integrity_algorithms,
+      tunnel2_phase1_dh_group_numbers, tunnel2_phase1_encryption_algorithms, tunnel2_phase1_integrity_algorithms,
       tunnel2_phase2_dh_group_numbers, tunnel2_phase2_encryption_algorithms, tunnel2_phase2_integrity_algorithms,
     ]
   }
