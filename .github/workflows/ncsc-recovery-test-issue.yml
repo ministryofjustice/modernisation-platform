@@ -1,10 +1,8 @@
-name: Biannual Issue and Project Board Automation
+name: Test Biannual Issue Creation
 
 on:
-  schedule:
-    # Runs at 00:00 UTC on Jan 1 and July 1
-    - cron: 0 0 1 1,7 *
-  workflow_dispatch:  # Allows manual trigger
+  push:              # For testing
+  workflow_dispatch: #
 
 jobs:
   create-and-track-issue:
@@ -22,25 +20,24 @@ jobs:
               repo: context.repo.repo,
               title: "🔔 Biannual Backup and Restore Check-In",
               body: `
-                ### Tasks:
-                - [ ] Check the backup for statefiles in core accounts
-                - [ ] Carry out the backup workflow located here - https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/backup-restore-process.html#backup-and-recovery
-                - [ ] Edit docs if required
+### Tasks:
+- [ ] Check the backup for statefiles in core accounts
+- [ ] Carry out the backup workflow located here - https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/backup-restore-process.html#backup-and-recovery
+- [ ] Edit docs if required
 
-                ---
+---
 
-                ### Notes:
-                NCSC - carry out regular restore tests
+### Notes:
+NCSC - carry out regular restore tests
 
-                This ticket is raised every 6 months and is part of our aim to test the restore process for EC2 instances, and terraform statefiles.
-                            `,
-                            labels: ['supportability']
-                            });
+This ticket is raised every 6 months and is part of our aim to test the restore process for EC2 instances, and terraform statefiles.
+              `,
+              labels: ['supportability']
+            });
 
             core.setOutput("issue_node_id", issue.data.node_id);
 
-      - name: Add Issue to Modernisation Platform Project
-        id: add_to_project
+      - name: Add Issue to Project
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -48,7 +45,7 @@ jobs:
             const projectId = "PVT_kwDOACGfts4AAftW";  // Modernisation Platform Project ID
             const contentId = core.getInput("issue_node_id");
 
-            const result = await github.graphql(`
+            await github.graphql(`
               mutation($projectId: ID!, $contentId: ID!) {
                 addProjectV2ItemById(input: {
                   projectId: $projectId,
@@ -59,36 +56,7 @@ jobs:
                   }
                 }
               }
-            `, { projectId, contentId });
-
-            core.setOutput("item_id", result.addProjectV2ItemById.item.id);
-
-      - name: Add Issue to Modernisation Platform Project
-        if: success()
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const projectId = "PVT_kwDOACGfts4AAftW";
-            const itemId = core.getOutput("item_id");
-
-            await github.graphql(`
-              mutation SetStoryPoints($projectId: ID!, $itemId: ID!, $fieldId: ID!) {
-                updateProjectV2ItemFieldValue(input: {
-                  projectId: $projectId,
-                  itemId: $itemId,
-                  fieldId: $fieldId,
-                  value: {
-                    number: 3
-                  }
-                }) {
-                  projectV2Item {
-                    id
-                  }
-                }
-              }
             `, {
               projectId,
-              itemId,
-              fieldId: storyPointsFieldId
+              contentId
             });
