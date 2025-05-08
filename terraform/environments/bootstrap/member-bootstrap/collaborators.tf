@@ -321,7 +321,7 @@ data "aws_iam_policy" "ssm_session_access" {
 }
 
 
-# Quicksight Admin Access role
+# Quicksight admin role
 module "collaborator_quicksight_admin_role" {
   # checkov:skip=CKV_TF_1:
 
