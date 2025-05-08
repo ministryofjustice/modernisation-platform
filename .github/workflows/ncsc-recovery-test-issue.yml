@@ -42,23 +42,23 @@ jobs:
       - name: Add Issue to Project
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const projectId = "PVT_kwDOACGfts4AAftW";  // Modernisation Platform Project ID
-            const contentId = core.getOutput("issue_node_id");
-
-            await github.graphql(`
-              mutation($projectId: ID!, $contentId: ID!) {
-                addProjectV2ItemById(input: {
-                  projectId: $projectId,
-                  contentId: $contentId
-                }) {
-                  item {
-                    id
-                  }
-                }
-              }
-            `, {
-              projectId,
-              contentId
-            });
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            script: |
+                const projectId = "PVT_kwDOACGfts4AAftW";
+                const contentId = "${{ steps.create_issue.outputs.issue_node_id }}";
+        
+                await github.graphql(`
+                    mutation($projectId: ID!, $contentId: ID!) {
+                    addProjectV2ItemById(input: {
+                        projectId: $projectId,
+                        contentId: $contentId
+                    }) {
+                        item {
+                        id
+                        }
+                    }
+                    }
+                `, {
+                    projectId,
+                    contentId
+                });
