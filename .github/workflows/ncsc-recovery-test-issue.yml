@@ -45,7 +45,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const projectId = "PVT_kwDOACGfts4AAftW";  // Modernisation Platform Project ID
-            const contentId = core.getInput("issue_node_id");
+            const contentId = core.getOutput("issue_node_id");
 
             await github.graphql(`
               mutation($projectId: ID!, $contentId: ID!) {
