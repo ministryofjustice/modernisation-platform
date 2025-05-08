@@ -18,7 +18,7 @@ resource "aws_vpn_connection" "this" {
   type                                    = "ipsec.1"
   tunnel1_dpd_timeout_action              = try(each.value.tunnel_dpd_timeout_action, null)
   tunnel1_dpd_timeout_seconds             = try(each.value.tunnel_dpd_timeout_seconds, "30")
-  tunnel1_ike_versions                    = [try(each.value.tunnel_ike_versions, null)]
+  tunnel1_ike_versions                    = [try(each.value.tunnel1_ike_versions, null)]
   tunnel1_inside_cidr                     = try(each.value.tunnel1_inside_cidr, null)
   tunnel1_phase1_dh_group_numbers         = [try(each.value.tunnel_phase1_dh_group_numbers, null)]
   tunnel1_phase1_encryption_algorithms    = [try(each.value.tunnel_phase1_encryption_algorithms, null)]
