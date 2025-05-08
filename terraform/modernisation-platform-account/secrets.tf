@@ -221,7 +221,7 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
 }
 
 data "aws_kms_alias" "environment_management" {
-  name     = "alias/environment-management-multi-region"
+  name = "alias/environment-management-multi-region"
 }
 
 resource "aws_secretsmanager_secret" "nonmp_account_ids" {
