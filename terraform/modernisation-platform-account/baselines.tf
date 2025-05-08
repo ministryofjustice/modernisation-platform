@@ -80,5 +80,8 @@ module "baselines-modernisation-platform" {
 
   # Pass in pagerduty integration key for security hub alerts
   pagerduty_integration_key = local.pagerduty_integration_keys["security_hub"]
+
+  # PagerDuty Key for High Priority Alarms
+  high_priority_pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_high_priority_cloudwatch"]
 }
 
