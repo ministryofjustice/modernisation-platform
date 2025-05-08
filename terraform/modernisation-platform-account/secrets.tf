@@ -220,12 +220,14 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
   tags  = local.tags
 }
 
+data "aws_kms_alias" "environment_management" {
+  name = "alias/environment-management-multi-region"
+}
+
 resource "aws_secretsmanager_secret" "nonmp_account_ids" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "nonmp-account-ids"
   description = "Map of account IDs not present in the environment_management secret (non-MP accounts)"
-  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
+  kms_key_id  = data.aws_kms_alias.environment_management.target_key_id
   tags        = local.tags
-  replica {
-    region = local.replica_region
-  }
 }
