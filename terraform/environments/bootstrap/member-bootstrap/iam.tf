@@ -606,6 +606,7 @@ data "aws_iam_policy_document" "policy" {
       "s3:ListAllMyBuckets",
       "s3:*Object*",
       "s3:*Tag*",
+      "quicksight:*",
       "secretsmanager:DescribeSecret",
       "secretsmanager:GetResourcePolicy",
       "secretsmanager:GetSecretValue",
