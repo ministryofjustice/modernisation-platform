@@ -319,3 +319,31 @@ module "collaborator_ssm_session_access_role" {
 data "aws_iam_policy" "ssm_session_access" {
   name = "ssm_session_access_policy"
 }
+
+
+# Quicksight Admin Access role
+module "collaborator_quicksight_admin_role" {
+  # checkov:skip=CKV_TF_1:
+
+  count  = local.account_data.account-type == "member" ? 1 : 0
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+
+  trusted_role_arns = [
+    data.aws_ssm_parameter.modernisation_platform_account_id.value
+  ]
+
+  create_role       = true
+  role_name         = "quicksight-admin-access"
+  role_requires_mfa = true
+
+  custom_role_policy_arns = [
+    "arn:aws:iam::aws:policy/ReadOnlyAccess",
+    data.aws_iam_policy.quicksight_admin_access.arn,
+    data.aws_iam_policy.common_policy.arn,
+  ]
+  number_of_custom_role_policy_arns = 3
+}
+
+data "aws_iam_policy" "quicksight_admin_access" {
+  name = "quicksight_admin_access_policy"
+}
