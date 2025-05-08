@@ -1,8 +1,10 @@
-name: Test Biannual Issue Creation
+name: Biannual Issue and Project Board Automation
 
 on:
-  push:              # For testing
-  workflow_dispatch: #
+  schedule:
+    # Runs at 00:00 UTC on Jan 1 and July 1
+    - cron: '0 0 1 1,7 *'
+  workflow_dispatch:  # Allows manual trigger
 
 jobs:
   create-and-track-issue:
