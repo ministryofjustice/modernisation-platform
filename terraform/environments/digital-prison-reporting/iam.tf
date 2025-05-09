@@ -263,7 +263,8 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "scheduler:GetSchedule",
       "scheduler:ListSchedules",
       "scheduler:TagResource",
-      "scheduler:UntagResource"
+      "scheduler:UntagResource",
+      "lakeformation:RevokePermissions"
     ]
     resources = ["*"]
   }
