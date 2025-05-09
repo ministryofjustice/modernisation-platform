@@ -239,7 +239,7 @@ resource "aws_cloudwatch_metric_alarm" "ip_usage_high" {
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 1
   period              = 86400 # 1 day in seconds
-  threshold           = 70
+  threshold           = 90
   statistic           = "Average"
 
   metric_name = "SubnetUtilization"
