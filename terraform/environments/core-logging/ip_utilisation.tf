@@ -260,12 +260,3 @@ resource "aws_cloudwatch_metric_alarm" "ip_usage_high" {
     aws_sns_topic.ip_usage_alerts.arn
   ]
 }
-
-module "ip-usage-chatbot" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot?ref=73280f80ce8a4557cec3a76ee56eb913452ca9aa" // v2.0.0
-
-  slack_channel_id = "C02PFCG8M1R" // #modernisation-platform-low-priority-alerts
-  sns_topic_arns   = ["arn:aws:sns:eu-west-2:${local.environment_management.account_ids[terraform.workspace]}:${aws_sns_topic.ip_usage_alerts.name}"]
-  tags             = local.tags
-  application_name = local.application_name
-}
