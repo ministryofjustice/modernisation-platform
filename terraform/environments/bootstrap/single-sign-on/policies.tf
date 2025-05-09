@@ -502,7 +502,16 @@ data "aws_iam_policy_document" "quicksight_administrator_additional" {
     effect = "Allow"
 
     actions = [
-      "quicksight:*",
+      "athena:ListDataCatalogs",
+      "athena:GetDataCatalog",
+      "ds:AuthorizeApplication",
+      "ds:UnauthorizeApplication",
+      "ds:CheckAlias",
+      "ds:CreateAlias",
+      "ds:DescribeDirectories",
+      "ds:DescribeTrusts",
+      "ds:DeleteDirectory",
+      "ds:CreateIdentityPoolDirectory"
       "iam:AttachRolePolicy",
       "iam:DetachRolePolicy",
       "iam:ListAttachedRolePolicies",
@@ -518,9 +527,9 @@ data "aws_iam_policy_document" "quicksight_administrator_additional" {
       "iam:CreatePolicy",
       "iam:ListEntitiesForPolicy",
       "iam:ListPolicies",
+      "organizations:DescribeOrganization",
+      "quicksight:*",
       "s3:ListAllMyBuckets",
-      "athena:ListDataCatalogs",
-      "athena:GetDataCatalog",
       "sso:DescribeApplication",
       "sso:DescribeInstance",
       "sso:CreateApplication",
@@ -533,8 +542,7 @@ data "aws_iam_policy_document" "quicksight_administrator_additional" {
       "sso:CreateApplicationAssignment",
       "sso:DeleteApplicationAssignment",
       "sso:ListInstances",
-      "sso:DescribeRegisteredRegions",
-      "organizations:DescribeOrganization",
+      "sso:DescribeRegisteredRegions"
     ]
 
     resources = ["*"]
