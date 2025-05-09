@@ -511,7 +511,7 @@ data "aws_iam_policy_document" "quicksight_administrator_additional" {
       "ds:DescribeDirectories",
       "ds:DescribeTrusts",
       "ds:DeleteDirectory",
-      "ds:CreateIdentityPoolDirectory"
+      "ds:CreateIdentityPoolDirectory",
       "iam:AttachRolePolicy",
       "iam:DetachRolePolicy",
       "iam:ListAttachedRolePolicies",
