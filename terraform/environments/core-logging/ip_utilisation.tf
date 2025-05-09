@@ -1,4 +1,4 @@
-# Lambda function to check IP usage in subnets across core-vpc accounts
+# Lambda function to publish metrics for IP usage in subnets across core-vpc accounts and alert when utilisation is high
 resource "aws_iam_role" "ip_usage_lambda_exec" {
   name = "IPUsageLambdaRole"
 
@@ -182,4 +182,90 @@ resource "aws_iam_role_policy" "ip_usage_kms" {
   name   = "ip-usage-kms-decrypt"
   role   = aws_iam_role.ip_usage_lambda_exec.name
   policy = data.aws_iam_policy_document.ip_usage_kms.json
+}
+
+resource "aws_kms_key" "ip_usage_sns_encryption" {
+  description             = "KMS key for SNS topic encryption"
+  deletion_window_in_days = 7
+  enable_key_rotation     = true
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "Enable IAM User Permissions",
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        },
+        Action   = "kms:*",
+        Resource = "*"
+      },
+      {
+        Sid    = "Allow SNS to use the key",
+        Effect = "Allow",
+        Principal = {
+          Service = "sns.amazonaws.com"
+        },
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+
+  tags = {
+    Name = "sns-encryption-key"
+  }
+}
+resource "aws_kms_alias" "ip_usage_sns_topic" {
+  name_prefix   = "alias/ip-usage-sns-encryption"
+  target_key_id = aws_kms_key.ip_usage_sns_encryption.key_id
+}
+
+resource "aws_sns_topic" "ip_usage_alerts" {
+  name              = "subnet-utilisation-alerts"
+  kms_master_key_id = aws_kms_key.ip_usage_sns_encryption.arn
+}
+
+resource "aws_cloudwatch_metric_alarm" "ip_usage_high" {
+  alarm_name          = "SubnetUtilisationHigh"
+  alarm_description   = "Triggers when any subnet reaches 90% utilisation within a 1-day period"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 1
+  period              = 86400 # 1 day in seconds
+  threshold           = 70
+  statistic           = "Average"
+
+  metric_name = "SubnetUtilization"
+  namespace   = "Custom/SubnetInfo"
+
+  # Open filter for all subnets
+  dimensions = {}
+
+  alarm_actions = [
+    aws_sns_topic.ip_usage_alerts.arn
+  ]
+
+  ok_actions = [
+    aws_sns_topic.ip_usage_alerts.arn
+  ]
+
+  insufficient_data_actions = [
+    aws_sns_topic.ip_usage_alerts.arn
+  ]
+}
+
+module "ip-usage-chatbot" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot?ref=73280f80ce8a4557cec3a76ee56eb913452ca9aa" // v2.0.0
+
+  slack_channel_id = "C02PFCG8M1R" // #modernisation-platform-low-priority-alerts
+  sns_topic_arns   = ["arn:aws:sns:eu-west-2:${local.environment_management.account_ids[terraform.workspace]}:${aws_sns_topic.ip_usage_alerts.name}"]
+  tags             = local.tags
+  application_name = local.application_name
 }
