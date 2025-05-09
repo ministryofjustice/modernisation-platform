@@ -1,0 +1,34 @@
+{
+    "account-type": "member",
+    "isolated-network": "true",
+    "environments": [
+      {
+        "name": "development",
+        "access": [
+          {
+            "sso_group_name": "laa-portal-tactical",
+            "level": "sandbox"
+          }
+        ],
+        "nuke": "exclude"
+      },
+      {
+        "name": "production",
+        "access": [
+          {
+            "sso_group_name": "laa-portal-tactical",
+            "level": "developer"
+          }
+        ]
+      }
+    ],
+    "tags": {
+      "application": "laa-portal-tactical",
+      "business-unit": "LAA",
+      "infrastructure-support": "applicationoperations@justice.gov.uk",
+      "owner": "donovan.artz@digital.justice.gov.uk",
+      "critical-national-infrastructure": false
+    },
+    "github-oidc-team-repositories": [""],
+    "go-live-date": ""
+  }

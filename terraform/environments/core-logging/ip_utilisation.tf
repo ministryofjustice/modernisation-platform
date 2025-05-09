@@ -105,8 +105,26 @@ resource "aws_lambda_function" "ip_usage" {
     }
   }
 }
+resource "aws_cloudwatch_event_rule" "ip_usage_schedule" {
+  name                = "ip-usage-schedule"
+  description         = "Trigger IP Usage Lambda every 1 day"
+  schedule_expression = "cron(0 10 * * ? *)" # run daily at 10:00 UTC
+}
 
-# KMS key for Lambda encryption
+resource "aws_cloudwatch_event_target" "ip_usage_lambda_target" {
+  rule      = aws_cloudwatch_event_rule.ip_usage_schedule.name
+  target_id = "ip-usage-lambda"
+  arn       = aws_lambda_function.ip_usage.arn
+}
+
+resource "aws_lambda_permission" "allow_cloudwatch_to_invoke" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.ip_usage.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.ip_usage_schedule.arn
+}
+
 resource "aws_kms_key" "ip_usage" {
   description             = "KMS key for IP Usage Lambda encryption"
   deletion_window_in_days = 7
@@ -144,13 +162,11 @@ resource "aws_kms_key" "ip_usage" {
   }
 }
 
-# KMS Alias for the key
 resource "aws_kms_alias" "ip_usage" {
   name          = "alias/ip-usage-lambda"
   target_key_id = aws_kms_key.ip_usage.key_id
 }
 
-# Add KMS permissions to Lambda execution role
 data "aws_iam_policy_document" "ip_usage_kms" {
   statement {
     effect = "Allow"
