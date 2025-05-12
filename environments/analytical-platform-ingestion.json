@@ -18,6 +18,10 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "azure-aws-sso-analytical-platform-engineers",
+          "level": "platform-engineer-admin"
+        },
+        {
           "sso_group_name": "analytical-platform-engineers",
           "level": "sandbox"
         },
@@ -36,6 +40,10 @@
           "sso_group_name": "analytical-platform-engineers",
           "level": "platform-engineer-admin",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-analytical-platform-engineers",
+          "level": "platform-engineer-admin"
         },
         {
           "sso_group_name": "analytical-platform-engineers",

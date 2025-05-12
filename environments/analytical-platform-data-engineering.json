@@ -9,6 +9,10 @@
           "level": "administrator"
         },
         {
+          "sso_group_name": "azure-aws-sso-analytical-platform-engineers",
+          "level": "administrator"
+        },
+        {
           "sso_group_name": "analytical-platform-data-engineering-production-data-engineer",
           "level": "data-engineer"
         },
@@ -27,6 +31,10 @@
       "access": [
         {
           "sso_group_name": "analytical-platform-engineers",
+          "level": "administrator"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-analytical-platform-engineers",
           "level": "administrator"
         },
         {
