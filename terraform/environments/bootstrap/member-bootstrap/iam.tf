@@ -621,7 +621,8 @@ data "aws_iam_policy_document" "policy" {
       "ssm:ResumeSession",
       "ssm:SendCommand",
       "ssm:StartSession",
-      "ssm:TerminateSession"
+      "ssm:TerminateSession",
+      "vpc:DescribeSubnets"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
