@@ -357,7 +357,7 @@
         {
           "account-name": "youth-justice-app-framework-development",
           "access": "quicksight-admin-access"
-        },            
+        },
         {
           "account-name": "youth-justice-app-framework-test",
           "access": "developer"
@@ -403,7 +403,7 @@
         {
           "account-name": "youth-justice-app-framework-development",
           "access": "quicksight-admin-access"
-        },            
+        },
         {
           "account-name": "youth-justice-app-framework-test",
           "access": "developer"
@@ -449,7 +449,7 @@
         {
           "account-name": "youth-justice-app-framework-development",
           "access": "quicksight-admin-access"
-        },        
+        },
         {
           "account-name": "youth-justice-app-framework-test",
           "access": "developer"
