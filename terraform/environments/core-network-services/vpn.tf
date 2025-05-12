@@ -106,6 +106,18 @@ resource "aws_ec2_transit_gateway_route" "parole_board_routes" {
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
+resource "aws_ec2_transit_gateway_route" "yjb_routes_srx01" {
+  destination_cidr_block         = local.yjb_vpn_static_route_srx01
+  transit_gateway_attachment_id  = aws_vpn_connection.this["YJB-Juniper-vSRX01-VPN"].transit_gateway_attachment_id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
+}
+
+resource "aws_ec2_transit_gateway_route" "yjb_routes_srx02" {
+  destination_cidr_block         = local.yjb_vpn_static_route_srx02
+  transit_gateway_attachment_id  = aws_vpn_connection.this["YJB-Juniper-vSRX02-VPN"].transit_gateway_attachment_id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
+}
+
 resource "aws_cloudwatch_log_group" "vpn_attachments" {
   # checkov:skip=CKV_AWS_158: "logs will not be shared so standard encryption fine"
   for_each          = local.vpn_attachments
