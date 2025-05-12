@@ -107,13 +107,14 @@ resource "aws_ec2_transit_gateway_route" "parole_board_routes" {
 }
 
 resource "aws_ec2_transit_gateway_route" "yjb_routes_srx01" {
-  destination_cidr_block         = local.yjb_vpn_static_route_srx01
+  for_each                       = toset(local.yjb_vpn_static_route_srx01)
+  destination_cidr_block         = each.key
   transit_gateway_attachment_id  = aws_vpn_connection.this["YJB-Juniper-vSRX01-VPN"].transit_gateway_attachment_id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
-
 resource "aws_ec2_transit_gateway_route" "yjb_routes_srx02" {
-  destination_cidr_block         = local.yjb_vpn_static_route_srx02
+  for_each                       = toset(local.yjb_vpn_static_route_srx02)
+  destination_cidr_block         = each.key
   transit_gateway_attachment_id  = aws_vpn_connection.this["YJB-Juniper-vSRX02-VPN"].transit_gateway_attachment_id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
