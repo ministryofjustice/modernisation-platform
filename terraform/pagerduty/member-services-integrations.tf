@@ -1847,6 +1847,16 @@ resource "pagerduty_slack_connection" "chaps_slack" {
 # DSO Squad alarms
 
 locals {
+  # add users to this list once they've signed into PagerDuty via SSO for first time
+  dso_digital_justice_team_members = [
+    "antony.gowland",
+    "dominic.robinson",
+    "robert.sweetman",
+  ]
+  dso_justice_team_members = [
+    "dave.kent",
+  ]
+
   services = {
     corporate-staff-rostering-preproduction = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
     corporate-staff-rostering-production    = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
@@ -1896,6 +1906,26 @@ locals {
     "incident.status_update_published",
     "incident.reopened"
   ]
+}
+
+data "pagerduty_user" "dso_digital_justice" {
+  for_each = toset(local.dso_digital_justice_team_members)
+  email    = "${each.key}${digital_email_suffix}"
+}
+
+data "pagerduty_user" "dso_justice" {
+  for_each = toset(local.dso_justice_team_members)
+  email    = "${each.key}${justice_email_suffix}"
+}
+
+resource "pagerduty_team" "dso" {
+  name = "Digital Studio Operations"
+}
+
+resource "pagerduty_team_membership" "dso" {
+  for_each = merge(data.pagerduty_user.dso_digital_justice, data.pagerduty_user.dso_justice)
+  team_id  = pagerduty_team.dso.id
+  user_id  = each.value.id
 }
 
 resource "pagerduty_service" "services" {
