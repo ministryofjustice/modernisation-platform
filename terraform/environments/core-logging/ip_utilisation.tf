@@ -240,13 +240,20 @@ resource "aws_cloudwatch_metric_alarm" "ip_usage_high" {
   evaluation_periods  = 1
   period              = 86400 # 1 day in seconds
   threshold           = 90
-  statistic           = "Average"
+  statistic           = "Maximum"
 
-  metric_name = "SubnetUtilization"
+  metric_name = "IPUtilizationPercentage"
   namespace   = "Custom/SubnetInfo"
 
-  # Open filter for all subnets
-  dimensions = {}
+  # Adds all dimensions with wildcard values to match any subnet
+  dimensions = {
+    "SubnetName"       = "*"
+    "AccountId"        = "*"
+    "VpcId"            = "*"
+    "AvailabilityZone" = "*"
+    "Region"           = "*"
+    "SubnetId"         = "*"
+  }
 
   alarm_actions = [
     aws_sns_topic.ip_usage_alerts.arn
