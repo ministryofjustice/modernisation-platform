@@ -1851,7 +1851,8 @@ locals {
   dso_digital_justice_team_members = [
     "antony.gowland",
     "dominic.robinson",
-    "robert.sweetman",
+    #"robert.sweetman",
+    #"william.gibbon",
   ]
   dso_justice_team_members = [
     "dave.kent",
