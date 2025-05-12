@@ -1910,12 +1910,12 @@ locals {
 
 data "pagerduty_user" "dso_digital_justice" {
   for_each = toset(local.dso_digital_justice_team_members)
-  email    = "${each.key}${digital_email_suffix}"
+  email    = "${each.key}${local.digital_email_suffix}"
 }
 
 data "pagerduty_user" "dso_justice" {
   for_each = toset(local.dso_justice_team_members)
-  email    = "${each.key}${justice_email_suffix}"
+  email    = "${each.key}${local.justice_email_suffix}"
 }
 
 resource "pagerduty_team" "dso" {
