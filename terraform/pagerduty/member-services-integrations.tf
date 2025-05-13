@@ -1847,6 +1847,16 @@ resource "pagerduty_slack_connection" "chaps_slack" {
 # DSO Squad alarms
 
 locals {
+  # add users to this list once they've signed into PagerDuty via SSO for first time
+  # avoid putting full email as public repo
+  dso_team_members = {
+    #"antony.gowland" = local.digital_email_suffix
+    "dominic.robinson" = local.digital_email_suffix
+    "dave.kent"        = local.justice_email_suffix
+    #"robert.sweetman"
+    #"william.gibbon"
+  }
+
   services = {
     corporate-staff-rostering-preproduction = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
     corporate-staff-rostering-production    = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
@@ -1896,6 +1906,38 @@ locals {
     "incident.status_update_published",
     "incident.reopened"
   ]
+}
+
+data "pagerduty_user" "dso" {
+  for_each = local.dso_team_members
+  email    = "${each.key}${each.value}"
+}
+
+resource "pagerduty_team" "dso" {
+  name        = "Digital Studio Operations"
+  description = "DSO squad (HMPPS) responsible for infrastructure support of Nomis, Oasys, CSR, PlanetFM, NonCore. Managed in terraform"
+}
+
+resource "pagerduty_team_membership" "dso" {
+  for_each = data.pagerduty_user.dso
+  team_id  = pagerduty_team.dso.id
+  user_id  = each.value.id
+}
+
+resource "pagerduty_schedule" "dso" {
+  name        = "Digital Studio Operations Concierge (In Hours Rota)"
+  description = "#ask-digital-studio-operations Concierge in-hours rota. Managed in terraform"
+  time_zone   = "Europe/London"
+
+  layer {
+    name                         = "Primary Schedule"
+    start                        = "2025-05-12T07:00:00Z"
+    rotation_virtual_start       = "2025-05-12T07:00:00Z"
+    rotation_turn_length_seconds = 86400
+    users                        = [for user in data.pagerduty_user.dso : user.id]
+  }
+
+  teams = [pagerduty_team.dso.id]
 }
 
 resource "pagerduty_service" "services" {

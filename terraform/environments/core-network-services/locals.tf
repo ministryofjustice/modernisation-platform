@@ -60,9 +60,6 @@ locals {
 
   noms_vpn_attachment_ids = toset([for k in aws_vpn_connection.this : k.transit_gateway_attachment_id if(length(regexall("(?:NOMS)", k.tags.Name)) > 0)])
 
-  yjb_vpn_attachment_ids = toset([for k in aws_vpn_connection.this : k.transit_gateway_attachment_id if(length(regexall("(?:YJB)", k.tags.Name)) > 0)])
-
-
   azure_static_routes = [
     "10.0.0.0/11",
     "10.64.0.0/11",
@@ -132,6 +129,11 @@ locals {
   ]
 
   parole_board_vpn_static_routes = ["10.50.0.0/16"]
+
+  yjb_vpn_static_route_srx01 = ["10.20.224.0/22"]
+
+  yjb_vpn_static_route_srx02 = ["10.20.228.0/22"]
+
 
   core-vpcs = {
     for file in fileset("../../../environments-networks", "*.json") :

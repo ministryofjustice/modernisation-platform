@@ -48,6 +48,7 @@ locals {
   slack_workspace_id = "T02DYEB3A"
 
   digital_email_suffix = "@digital.justice.gov.uk"
+  justice_email_suffix = "@justice.gov.uk"
 
   existing_users = {
     karen_botsh    = data.pagerduty_user.karen_botsh,
