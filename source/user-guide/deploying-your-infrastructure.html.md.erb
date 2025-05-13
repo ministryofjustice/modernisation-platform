@@ -26,7 +26,7 @@ The first step is to create a pull request this will trigger the [GitHub actions
 
 Workflow files are found [here](https://github.com/ministryofjustice/modernisation-platform-environments/tree/main/.github/workflows) and are named after your application.
 
-Depending on what [environments](creating-environments.html) you have, some jobs in the workflow may be commented out if they are not needed.  They can be uncommented if more enviroments are added or safely removed if not needed.
+Depending on what [environments](creating-environments.html) you have, some jobs in the workflow may be commented out if they are not needed. They can be uncommented if more enviroments are added or safely removed if not needed.
 
 Any changes to your workflow file will need approval from the Modernisation Platform team.
 
@@ -36,20 +36,20 @@ Here is a high level diagram of what the workflow file does.
 
 ### Jobs on pull request
 
- - a [Terraform plan](https://developer.hashicorp.com/terraform/cli/commands/plan) on the `development` and `test` environments (if you have them).
- - a [Terraform apply](https://developer.hashicorp.com/terraform/cli/commands/apply) on the `development` and `test` environments (if you have them), which is held until a reviewer from your GitHub team approves the deployment.
+- a [Terraform plan](https://developer.hashicorp.com/terraform/cli/commands/plan) on the `development` and `test` environments (if you have them).
+- a [Terraform apply](https://developer.hashicorp.com/terraform/cli/commands/apply) on the `development` and `test` environments (if you have them), which is held until a reviewer from your GitHub team approves the deployment.
 
 ### Jobs on merging a pull request
 
- - a [Terraform plan](https://developer.hashicorp.com/terraform/cli/commands/plan) on the `preproduction` and `production` environments (if you have them).
- - a [Terraform apply](https://developer.hashicorp.com/terraform/cli/commands/apply) on the `preproduction` and `production` environments (if you have them), which is held until a reviewer from your GitHub team approves the deployment.
+- a [Terraform plan](https://developer.hashicorp.com/terraform/cli/commands/plan) on the `preproduction` and `production` environments (if you have them).
+- a [Terraform apply](https://developer.hashicorp.com/terraform/cli/commands/apply) on the `preproduction` and `production` environments (if you have them), which is held until a reviewer from your GitHub team approves the deployment.
 
 ### Jobs on a manual trigger
 
- - a [Terraform plan](https://developer.hashicorp.com/terraform/cli/commands/plan) on the `development` and `test` environments (if you have them), if your action is manually triggered with the `deploy` action.
- - a [Terraform apply](https://developer.hashicorp.com/terraform/cli/commands/apply) on the `development` and `test` environments (if you have them), if your action was manually triggered with the `deploy` action, which is held until a reviewer from your GitHub team approves the deployment.
- - a [Terraform plan destroy](https://developer.hashicorp.com/terraform/cli/commands/plan#planning-modes) on the `development` and `test` environments (if you have them), if your action is manually triggered with the `destroy` action.
- - a [Terraform apply destroy](https://developer.hashicorp.com/terraform/cli/commands/destroy) on the `development` and `test` environments (if you have them), if your action was manually triggered with the `destroy` action, which is held until a reviewer from your GitHub team approves the deployment.
+- a [Terraform plan](https://developer.hashicorp.com/terraform/cli/commands/plan) on the `development` and `test` environments (if you have them), if your action is manually triggered with the `deploy` action.
+- a [Terraform apply](https://developer.hashicorp.com/terraform/cli/commands/apply) on the `development` and `test` environments (if you have them), if your action was manually triggered with the `deploy` action, which is held until a reviewer from your GitHub team approves the deployment.
+- a [Terraform plan destroy](https://developer.hashicorp.com/terraform/cli/commands/plan#planning-modes) on the `development` and `test` environments (if you have them), if your action is manually triggered with the `destroy` action.
+- a [Terraform apply destroy](https://developer.hashicorp.com/terraform/cli/commands/destroy) on the `development` and `test` environments (if you have them), if your action was manually triggered with the `destroy` action, which is held until a reviewer from your GitHub team approves the deployment.
 
 ### Viewing Terraform plans
 
@@ -66,7 +66,7 @@ The Modernisation Platform uses [Terraform Workspaces](https://developer.hashico
 1. Find the relevant workflow run (the name is the name of your pull request or merge commit)
 1. Click on the `Review deployments` button
 1. Tick the box and `Approve and deploy`
-1. The `Deploy <environment> - <application>` job will then run and deploy your infrastructure.  Any issues or failures can been seen in this job.
+1. The `Deploy <environment> - <application>` job will then run and deploy your infrastructure. Any issues or failures can been seen in this job.
 
 > Warning: Once workflows have started please do not cancel them unless it's an emergency. GitHub actions cancels the workflow immediately, which can cause loss or corruption of the Terraform state leading to loss or duplication of infrastructure.
 
@@ -74,11 +74,11 @@ The Modernisation Platform uses [Terraform Workspaces](https://developer.hashico
 
 Some additional workflow checks will run when you create a pull request, this is to help ensure code on the Modernisation Platform meets the highest quality standards. Some of the checks are required which means you will not be able to merge the pull request until the issue is resolved.
 
-|Check|Description|Required
-|---|---|---|
-|[Code Formatter](https://github.com/ministryofjustice/github-actions/tree/main/code-formatter)|Runs a code formatter and commits any changes back to the branch|No
-|[Open Policy Agent (OPA) validation](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/policies/terraform/deny.rego)|Runs OPA tests which check the Terraform and prevents certain changes for security reasons. If you want to make a change which is not allowed by the validation, please contact the Modernisation Platform team|Yes
-|[Terraform Static Code Analysis](https://github.com/ministryofjustice/github-actions/tree/main/terraform-static-analysis)| Runs any changes through [TFSEC](https://github.com/tfsec/tfsec), [Checkov](https://github.com/bridgecrewio/checkov) and [tflint](https://github.com/terraform-linters/tflint). If any issues are flagged please try to fix them, if there is a valid reason not to fix them they can be ignored with inline ignore comments.|No - but we may make this mandatory at a later date
+| Check                                                                                                                                                 | Description                                                                                                                                                                                                                                                                                                                   | Required                                            |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| [Code Formatter](https://github.com/ministryofjustice/github-actions/tree/main/code-formatter)                                                        | Runs a code formatter and commits any changes back to the branch                                                                                                                                                                                                                                                              | No                                                  |
+| [Open Policy Agent (OPA) validation](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/policies/terraform/deny.rego) | Runs OPA tests which check the Terraform and prevents certain changes for security reasons. If you want to make a change which is not allowed by the validation, please contact the Modernisation Platform team                                                                                                               | Yes                                                 |
+| [Terraform Static Code Analysis](https://github.com/ministryofjustice/modernisation-platform-github-actions/tree/main/terraform-static-analysis)      | Runs any changes through [TFSEC](https://github.com/tfsec/tfsec), [Checkov](https://github.com/bridgecrewio/checkov) and [tflint](https://github.com/terraform-linters/tflint). If any issues are flagged please try to fix them, if there is a valid reason not to fix them they can be ignored with inline ignore comments. | No - but we may make this mandatory at a later date |
 
 ## More information
 

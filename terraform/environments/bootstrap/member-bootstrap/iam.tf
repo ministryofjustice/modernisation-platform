@@ -606,6 +606,7 @@ data "aws_iam_policy_document" "policy" {
       "s3:ListAllMyBuckets",
       "s3:*Object*",
       "s3:*Tag*",
+      "quicksight:*",
       "secretsmanager:DescribeSecret",
       "secretsmanager:GetResourcePolicy",
       "secretsmanager:GetSecretValue",
@@ -620,7 +621,8 @@ data "aws_iam_policy_document" "policy" {
       "ssm:ResumeSession",
       "ssm:SendCommand",
       "ssm:StartSession",
-      "ssm:TerminateSession"
+      "ssm:TerminateSession",
+      "vpc:DescribeSubnets"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }

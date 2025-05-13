@@ -1,4 +1,4 @@
-# Lambda function to check IP usage in subnets across core-vpc accounts
+# Lambda function to publish metrics for IP usage in subnets across core-vpc accounts and alert when utilisation is high
 resource "aws_iam_role" "ip_usage_lambda_exec" {
   name = "IPUsageLambdaRole"
 
@@ -105,8 +105,26 @@ resource "aws_lambda_function" "ip_usage" {
     }
   }
 }
+resource "aws_cloudwatch_event_rule" "ip_usage_schedule" {
+  name                = "ip-usage-schedule"
+  description         = "Trigger IP Usage Lambda every 1 day"
+  schedule_expression = "cron(0 10 * * ? *)" # run daily at 10:00 UTC
+}
 
-# KMS key for Lambda encryption
+resource "aws_cloudwatch_event_target" "ip_usage_lambda_target" {
+  rule      = aws_cloudwatch_event_rule.ip_usage_schedule.name
+  target_id = "ip-usage-lambda"
+  arn       = aws_lambda_function.ip_usage.arn
+}
+
+resource "aws_lambda_permission" "allow_cloudwatch_to_invoke" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.ip_usage.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.ip_usage_schedule.arn
+}
+
 resource "aws_kms_key" "ip_usage" {
   description             = "KMS key for IP Usage Lambda encryption"
   deletion_window_in_days = 7
@@ -144,13 +162,11 @@ resource "aws_kms_key" "ip_usage" {
   }
 }
 
-# KMS Alias for the key
 resource "aws_kms_alias" "ip_usage" {
   name          = "alias/ip-usage-lambda"
   target_key_id = aws_kms_key.ip_usage.key_id
 }
 
-# Add KMS permissions to Lambda execution role
 data "aws_iam_policy_document" "ip_usage_kms" {
   statement {
     effect = "Allow"
@@ -166,4 +182,88 @@ resource "aws_iam_role_policy" "ip_usage_kms" {
   name   = "ip-usage-kms-decrypt"
   role   = aws_iam_role.ip_usage_lambda_exec.name
   policy = data.aws_iam_policy_document.ip_usage_kms.json
+}
+
+resource "aws_kms_key" "ip_usage_sns_encryption" {
+  description             = "KMS key for SNS topic encryption"
+  deletion_window_in_days = 7
+  enable_key_rotation     = true
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "Enable IAM User Permissions",
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        },
+        Action   = "kms:*",
+        Resource = "*"
+      },
+      {
+        Sid    = "Allow SNS to use the key",
+        Effect = "Allow",
+        Principal = {
+          Service = "sns.amazonaws.com"
+        },
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+
+  tags = {
+    Name = "sns-encryption-key"
+  }
+}
+resource "aws_kms_alias" "ip_usage_sns_topic" {
+  name_prefix   = "alias/ip-usage-sns-encryption"
+  target_key_id = aws_kms_key.ip_usage_sns_encryption.key_id
+}
+
+resource "aws_sns_topic" "ip_usage_alerts" {
+  name              = "subnet-utilisation-alerts"
+  kms_master_key_id = aws_kms_key.ip_usage_sns_encryption.arn
+}
+
+resource "aws_cloudwatch_metric_alarm" "ip_usage_high" {
+  alarm_name          = "SubnetUtilisationHigh"
+  alarm_description   = "Triggers when any subnet reaches 90% utilisation within a 1-day period"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 1
+  period              = 86400 # 1 day in seconds
+  threshold           = 90
+  statistic           = "Maximum"
+
+  metric_name = "IPUtilizationPercentage"
+  namespace   = "Custom/SubnetInfo"
+
+  # Adds all dimensions with wildcard values to match any subnet
+  dimensions = {
+    "SubnetName"       = "*"
+    "AccountId"        = "*"
+    "VpcId"            = "*"
+    "AvailabilityZone" = "*"
+    "Region"           = "*"
+    "SubnetId"         = "*"
+  }
+
+  alarm_actions = [
+    aws_sns_topic.ip_usage_alerts.arn
+  ]
+
+  ok_actions = [
+    aws_sns_topic.ip_usage_alerts.arn
+  ]
+
+  insufficient_data_actions = [
+    aws_sns_topic.ip_usage_alerts.arn
+  ]
 }
