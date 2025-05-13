@@ -130,9 +130,9 @@ locals {
 
   parole_board_vpn_static_routes = ["10.50.0.0/16"]
 
-  yjb_vpn_static_route_srx01 = ["10.20.224.0/22"]
+  yjb_vpn_static_route_srx01 = ["10.20.228.0/22"]
 
-  yjb_vpn_static_route_srx02 = ["10.20.228.0/22"]
+  yjb_vpn_static_route_srx02 = ["10.20.224.0/22"]
 
 
   core-vpcs = {
