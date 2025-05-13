@@ -1940,6 +1940,19 @@ resource "pagerduty_schedule" "dso" {
   teams = [pagerduty_team.dso.id]
 }
 
+resource "pagerduty_escalation_policy" "dso" {
+  name  = "Digital Studio Operations Escalation Policy"
+  teams = [pagerduty_team.dso.id]
+
+  rule {
+    escalation_delay_in_minutes = 120  # since no on-call and primary notification is via slack integration
+    target {
+      type = "schedule_reference"
+      id   = pagerduty_schedule.dso.id
+    }
+  }
+}
+
 resource "pagerduty_service" "services" {
   for_each = local.services
 
@@ -1947,10 +1960,10 @@ resource "pagerduty_service" "services" {
   description             = "${each.key}-alarms"
   auto_resolve_timeout    = "null"
   acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  escalation_policy       = pagerduty_escalation_policy.dso.id
   alert_creation          = "create_alerts_and_incidents"
-
 }
+
 resource "pagerduty_service_integration" "integrations" {
   for_each = pagerduty_service.services
 
