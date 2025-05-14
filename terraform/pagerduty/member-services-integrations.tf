@@ -1945,7 +1945,7 @@ resource "pagerduty_escalation_policy" "dso" {
   teams = [pagerduty_team.dso.id]
 
   rule {
-    escalation_delay_in_minutes = 120  # since no on-call and primary notification is via slack integration
+    escalation_delay_in_minutes = 120 # since no on-call and primary notification is via slack integration
     target {
       type = "schedule_reference"
       id   = pagerduty_schedule.dso.id
