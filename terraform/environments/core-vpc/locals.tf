@@ -27,5 +27,13 @@ locals {
 
 # For pilot to implement cloudWatch anomaly detection for vpc flow Logs
 locals {
-  vpc_key = "laa-production"
+  # ...existing code...
+
+  # List all laa environments you want to target
+  laa_vpc_keys = [
+    "laa-production",
+    "laa-preproduction",
+    "laa-test",
+    "laa-development"
+  ]
 }
