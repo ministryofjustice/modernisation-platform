@@ -74,10 +74,10 @@ resource "aws_cloudwatch_log_metric_filter" "high_volume_traffic" {
   pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport,protocol,packets,bytes, ...]"
 
   metric_transformation {
-    name           = "HighVolumeTraffic"
-    namespace      = "VPCFlowMetrics"
-    value          = "1"
-    default_value  = "0"
+    name          = "HighVolumeTraffic"
+    namespace     = "VPCFlowMetrics"
+    value         = "1"
+    default_value = "0"
   }
 }
 
@@ -87,10 +87,10 @@ resource "aws_cloudwatch_log_metric_filter" "rejected_connections" {
   pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport,protocol,packets,bytes,start,end,action=REJECT,logstatus]"
 
   metric_transformation {
-    name           = "RejectedConnections"
-    namespace      = "VPCFlowMetrics"
-    value          = "1"
-    default_value  = "0"
+    name          = "RejectedConnections"
+    namespace     = "VPCFlowMetrics"
+    value         = "1"
+    default_value = "0"
   }
 }
 
