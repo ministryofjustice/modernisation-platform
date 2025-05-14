@@ -30,10 +30,22 @@ module "pagerduty_route53" {
 
 # Pilot to Implement CloudWatch Anomaly Detection for VPC Flow Logs
 
+locals {
+  laa_vpc_keys = [
+    "laa-production",
+    "laa-preproduction",
+    "laa-test",
+    "laa-development",
+    "laa-sandbox"
+  ]
+
+  laa_vpc_existing = { for k, v in module.vpc : k => v if contains(local.laa_vpc_keys, k) }
+}
+
 resource "aws_cloudwatch_log_metric_filter" "accepted_traffic" {
-  for_each       = toset(local.laa_vpc_keys)
+  for_each       = local.laa_vpc_existing
   name           = "AcceptedTrafficCount-${each.key}"
-  log_group_name = module.vpc[each.key].vpc_flow_log
+  log_group_name = each.value.vpc_flow_log
   pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport,protocol,packets,bytes,start,end,action=ACCEPT,logstatus]"
 
   metric_transformation {
@@ -45,9 +57,9 @@ resource "aws_cloudwatch_log_metric_filter" "accepted_traffic" {
 }
 
 resource "aws_cloudwatch_log_metric_filter" "denied_traffic" {
-  for_each       = toset(local.laa_vpc_keys)
+  for_each       = local.laa_vpc_existing
   name           = "DeniedTrafficCount-${each.key}"
-  log_group_name = module.vpc[each.key].vpc_flow_log
+  log_group_name = each.value.vpc_flow_log
   pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport,protocol,packets,bytes,start,end,action=REJECT,logstatus]"
 
   metric_transformation {
@@ -59,9 +71,9 @@ resource "aws_cloudwatch_log_metric_filter" "denied_traffic" {
 }
 
 resource "aws_cloudwatch_log_metric_filter" "bytes_transferred" {
-  for_each       = toset(local.laa_vpc_keys)
+  for_each       = local.laa_vpc_existing
   name           = "BytesTransferred-${each.key}"
-  log_group_name = module.vpc[each.key].vpc_flow_log
+  log_group_name = each.value.vpc_flow_log
   pattern        = ""
 
   metric_transformation {
@@ -73,9 +85,9 @@ resource "aws_cloudwatch_log_metric_filter" "bytes_transferred" {
 }
 
 resource "aws_cloudwatch_log_metric_filter" "high_volume_traffic" {
-  for_each       = toset(local.laa_vpc_keys)
+  for_each       = local.laa_vpc_existing
   name           = "VPCFlowLogs-HighVolumeTraffic-${each.key}"
-  log_group_name = module.vpc[each.key].vpc_flow_log
+  log_group_name = each.value.vpc_flow_log
   pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport,protocol,packets,bytes, ...]"
 
   metric_transformation {
@@ -87,9 +99,9 @@ resource "aws_cloudwatch_log_metric_filter" "high_volume_traffic" {
 }
 
 resource "aws_cloudwatch_log_metric_filter" "rejected_connections" {
-  for_each       = toset(local.laa_vpc_keys)
+  for_each       = local.laa_vpc_existing
   name           = "VPCFlowLogs-RejectedConnections-${each.key}"
-  log_group_name = module.vpc[each.key].vpc_flow_log
+  log_group_name = each.value.vpc_flow_log
   pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport,protocol,packets,bytes,start,end,action=REJECT,logstatus]"
 
   metric_transformation {
@@ -101,9 +113,9 @@ resource "aws_cloudwatch_log_metric_filter" "rejected_connections" {
 }
 
 resource "aws_cloudwatch_log_metric_filter" "ssh_connection_attempts" {
-  for_each       = toset(local.laa_vpc_keys)
+  for_each       = local.laa_vpc_existing
   name           = "VPCFlowLogs-SSHConnectionAttempts-${each.key}"
-  log_group_name = module.vpc[each.key].vpc_flow_log
+  log_group_name = each.value.vpc_flow_log
   pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport=22,protocol=6, ...]"
 
   metric_transformation {

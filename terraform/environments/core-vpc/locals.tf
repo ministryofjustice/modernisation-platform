@@ -24,14 +24,3 @@ locals {
     owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
   }
 }
-
-# For pilot to implement cloudWatch anomaly detection for vpc flow Logs
-locals {
-  laa_vpc_keys = [
-    "laa-production",
-    "laa-preproduction",
-    "laa-test",
-    "laa-development",
-    "laa-sandbox"
-  ]
-}
