@@ -172,7 +172,7 @@ jobs:
       - name: get new account(s)
         id: new_account
         run: |
-          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
+          files=$(git diff --name-only --diff-filter=M @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
           echo "files=$files" >> $GITHUB_OUTPUT
       - name: Run single sign on
         run: |
