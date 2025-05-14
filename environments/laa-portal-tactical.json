@@ -23,8 +23,13 @@
         {
           "sso_group_name": "laa-portal-tactical",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-portal-tactical",
+          "level": "sandbox"
         }
-      ]
+      ],
+      "nuke": "exclude"
     }
   ],
   "tags": {
