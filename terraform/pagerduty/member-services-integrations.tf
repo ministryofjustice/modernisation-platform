@@ -1856,7 +1856,24 @@ locals {
     "antony.gowland"   = local.digital_email_suffix
     "dominic.robinson" = local.digital_email_suffix
   }
-  dso_schedule_rotation_days = 3 # e.g. rotate each user after 3 days
+  # repeat users, e.g. for a 3 day stint of concierge
+  dso_schedule_user_order = [
+    "robertsweetman",
+    "robertsweetman",
+    "robertsweetman",
+    "dave.kent",
+    "dave.kent",
+    "dave.kent",
+    "william.gibbon",
+    "william.gibbon",
+    "william.gibbon",
+    "antony.gowland",
+    "antony.gowland",
+    "antony.gowland",
+    "dominic.robinson",
+    "dominic.robinson",
+    "dominic.robinson",
+  ]
 
   services = {
     corporate-staff-rostering-preproduction = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
@@ -1936,11 +1953,9 @@ resource "pagerduty_schedule" "dso" {
     rotation_virtual_start       = "2025-05-15T00:00:00Z"
     rotation_turn_length_seconds = 86400
 
-    users = flatten([
-      for user in data.pagerduty_user.dso : [
-        for days in range(local.dso_schedule_rotation_days) : user.id
-      ]
-    ])
+    users = [
+      for user in local.dso_schedule_user_order : data.pagerduty_user.dso[user].id
+    ]
 
     restriction {
       type              = "weekly_restriction"
