@@ -140,7 +140,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
         if: ${{ failure() }}
-  single-sign-on:
+  single-sign-on-plan:
     runs-on: ubuntu-latest
     if: github.event.ref != 'refs/heads/main' || github.event_name != 'workflow_dispatch'
     needs: [fetch-secrets]
