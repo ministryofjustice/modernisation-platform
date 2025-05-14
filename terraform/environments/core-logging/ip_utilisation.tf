@@ -20,9 +20,9 @@ resource "aws_iam_policy_attachment" "ip_usage_lambda_exec" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-resource "aws_iam_policy" "ip_usage_cloudwatch_metrics" {
-  name        = "LambdaCloudWatchMetricsPolicy"
-  description = "Allows publishing CloudWatch metrics"
+resource "aws_iam_policy" "ip_usage_lambda_combined" {
+  name        = "IPUsageLambdaCombinedPolicy"
+  description = "Combined policy for Lambda: CloudWatch, SNS, STS, and KMS"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -33,15 +33,44 @@ resource "aws_iam_policy" "ip_usage_cloudwatch_metrics" {
           "cloudwatch:PutMetricData"
         ]
         Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "sns:Publish"
+        ]
+        Resource = aws_sns_topic.ip_usage_alerts.arn
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "sts:AssumeRole"
+        ]
+        Resource = [
+          for acct in local.core_vpc_accounts :
+          "arn:aws:iam::${acct}:role/IPUsageMetricsReadRole"
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kms:Decrypt",
+          "kms:DescribeKey",
+          "kms:GenerateDataKey",
+          "kms:Encrypt"
+        ]
+        Resource = [
+          aws_kms_key.ip_usage.arn,
+          aws_kms_key.ip_usage_sns_encryption.arn
+        ]
       }
     ]
   })
 }
 
-resource "aws_iam_role_policy_attachment" "ip_usage_cloudwatch_metrics" {
+resource "aws_iam_role_policy_attachment" "ip_usage_lambda_combined" {
   role       = aws_iam_role.ip_usage_lambda_exec.name
-  policy_arn = aws_iam_policy.ip_usage_cloudwatch_metrics.arn
-
+  policy_arn = aws_iam_policy.ip_usage_lambda_combined.arn
 }
 
 locals {
@@ -49,28 +78,6 @@ locals {
     for key, value in local.environment_management.account_ids :
     value if can(regex("^core-vpc-", key))
   ]
-}
-
-resource "aws_iam_policy" "assume_target_roles" {
-  name        = "AssumeTargetRolesPolicy"
-  description = "Policy allowing Lambda to assume roles in core-vpc accounts"
-  policy      = data.aws_iam_policy_document.assume_target_roles.json
-}
-
-data "aws_iam_policy_document" "assume_target_roles" {
-  dynamic "statement" {
-    for_each = local.core_vpc_accounts
-    content {
-      effect    = "Allow"
-      actions   = ["sts:AssumeRole"]
-      resources = ["arn:aws:iam::${statement.value}:role/IPUsageMetricsReadRole"]
-    }
-  }
-}
-
-resource "aws_iam_role_policy_attachment" "assume_target_roles" {
-  role       = aws_iam_role.ip_usage_lambda_exec.name
-  policy_arn = aws_iam_policy.assume_target_roles.arn
 }
 
 data "archive_file" "ip_usage_lambda" {
@@ -102,6 +109,7 @@ resource "aws_lambda_function" "ip_usage" {
       TARGET_ACCOUNTS  = join(",", local.core_vpc_accounts)
       AWS_RESERVED_IPS = "5"
       METRIC_NAMESPACE = "Custom/SubnetInfo"
+      SNS_TOPIC_ARN    = aws_sns_topic.ip_usage_alerts.arn
     }
   }
 }
@@ -233,37 +241,51 @@ resource "aws_sns_topic" "ip_usage_alerts" {
   kms_master_key_id = aws_kms_key.ip_usage_sns_encryption.arn
 }
 
-resource "aws_cloudwatch_metric_alarm" "ip_usage_high" {
-  alarm_name          = "SubnetUtilisationHigh"
-  alarm_description   = "Triggers when any subnet reaches 90% utilisation within a 1-day period"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = 1
-  period              = 86400 # 1 day in seconds
-  threshold           = 90
-  statistic           = "Maximum"
+resource "aws_sns_topic_policy" "ip_usage_alerts_policy" {
+  arn = aws_sns_topic.ip_usage_alerts.arn
 
-  metric_name = "IPUtilizationPercentage"
-  namespace   = "Custom/SubnetInfo"
-
-  # Adds all dimensions with wildcard values to match any subnet
-  dimensions = {
-    "SubnetName"       = "*"
-    "AccountId"        = "*"
-    "VpcId"            = "*"
-    "AvailabilityZone" = "*"
-    "Region"           = "*"
-    "SubnetId"         = "*"
-  }
-
-  alarm_actions = [
-    aws_sns_topic.ip_usage_alerts.arn
-  ]
-
-  ok_actions = [
-    aws_sns_topic.ip_usage_alerts.arn
-  ]
-
-  insufficient_data_actions = [
-    aws_sns_topic.ip_usage_alerts.arn
-  ]
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      # Allow Lambda to publish messages
+      {
+        Sid    = "AllowLambdaToPublish",
+        Effect = "Allow",
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        },
+        Action   = "sns:Publish",
+        Resource = aws_sns_topic.ip_usage_alerts.arn,
+        Condition = {
+          ArnEquals = {
+            "AWS:SourceArn" = aws_lambda_function.ip_usage.arn
+          }
+        }
+      },
+      # Allow topic owner to manage SNS topic
+      {
+        Sid    = "AllowTopicOwnerToManage",
+        Effect = "Allow",
+        Principal = {
+          AWS = "*"
+        },
+        Action = [
+          "sns:Publish",
+          "sns:RemovePermission",
+          "sns:SetTopicAttributes",
+          "sns:DeleteTopic",
+          "sns:ListSubscriptionsByTopic",
+          "sns:GetTopicAttributes",
+          "sns:AddPermission",
+          "sns:Subscribe"
+        ],
+        Resource = aws_sns_topic.ip_usage_alerts.arn,
+        Condition = {
+          StringEquals = {
+            "AWS:SourceOwner" = local.environment_management.account_ids["core-logging-production"]
+          }
+        }
+      }
+    ]
+  })
 }
