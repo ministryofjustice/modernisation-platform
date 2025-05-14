@@ -1850,12 +1850,13 @@ locals {
   # add users to this list once they've signed into PagerDuty via SSO for first time
   # avoid putting full email as public repo
   dso_team_members = {
-    #"antony.gowland" = local.digital_email_suffix
-    "dominic.robinson" = local.digital_email_suffix
+    "robertsweetman"   = "pm.me"
     "dave.kent"        = local.justice_email_suffix
-    #"robert.sweetman"
-    #"william.gibbon"
+    "william.gibbon"   = local.digital_email_suffix
+    "antony.gowland"   = local.digital_email_suffix
+    "dominic.robinson" = local.digital_email_suffix
   }
+  dso_schedule_rotation_days = 3 # e.g. rotate each user after 3 days
 
   services = {
     corporate-staff-rostering-preproduction = { slack_channel_id = "C0617EZEVNZ" } # corporate_staff_rostering_alarms
@@ -1931,17 +1932,46 @@ resource "pagerduty_schedule" "dso" {
 
   layer {
     name                         = "Primary Schedule"
-    start                        = "2025-05-12T07:00:00Z"
-    rotation_virtual_start       = "2025-05-12T07:00:00Z"
+    start                        = "2025-05-15T00:00:00Z"
+    rotation_virtual_start       = "2025-05-15T00:00:00Z"
     rotation_turn_length_seconds = 86400
-    users                        = [for user in data.pagerduty_user.dso : user.id]
+
+    users = flatten([
+      for user in data.pagerduty_user.dso : [
+        for days in range(local.dso_schedule_rotation_days) : user.id
+      ]
+    ])
+
     restriction {
       type              = "weekly_restriction"
       start_day_of_week = 1
       start_time_of_day = "08:00:00"
-      duration_seconds  = 374400 # to Fri 16:00
+      duration_seconds  = 28800
     }
-
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 2
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 3
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 4
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 5
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 28800
+    }
   }
 
   teams = [pagerduty_team.dso.id]
