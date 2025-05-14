@@ -1935,13 +1935,13 @@ resource "pagerduty_schedule" "dso" {
     rotation_virtual_start       = "2025-05-12T07:00:00Z"
     rotation_turn_length_seconds = 86400
     users                        = [for user in data.pagerduty_user.dso : user.id]
-  }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 1
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 374400 # to Fri 16:00
+    }
 
-  restriction {
-    type              = "weekly_restriction"
-    start_day_of_week = 1
-    start_time_of_day = "08:00:00"
-    duration_seconds  = 374400 # to Fri 16:00
   }
 
   teams = [pagerduty_team.dso.id]
