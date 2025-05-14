@@ -1937,6 +1937,13 @@ resource "pagerduty_schedule" "dso" {
     users                        = [for user in data.pagerduty_user.dso : user.id]
   }
 
+  restriction {
+    type              = "weekly_restriction"
+    start_day_of_week = 1
+    start_time_of_day = "08:00:00"
+    duration_seconds  = 374400 # to Fri 16:00
+  }
+
   teams = [pagerduty_team.dso.id]
 }
 
