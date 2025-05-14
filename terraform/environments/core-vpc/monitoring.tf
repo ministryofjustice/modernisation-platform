@@ -42,6 +42,7 @@ locals {
   laa_vpc_existing = { for k, v in module.vpc : k => v if contains(local.laa_vpc_keys, k) }
 }
 
+# Filters for vpc flow logs
 resource "aws_cloudwatch_log_metric_filter" "accepted_traffic" {
   for_each       = local.laa_vpc_existing
   name           = "AcceptedTrafficCount-${each.key}"
@@ -123,4 +124,84 @@ resource "aws_cloudwatch_log_metric_filter" "ssh_connection_attempts" {
     namespace = "VPCFlowMetrics"
     value     = "1"
   }
+}
+
+# Cloudwatch metric alarm for above filters
+
+resource "aws_cloudwatch_metric_alarm" "accepted_traffic_alarm" {
+  for_each            = local.laa_vpc_existing
+  alarm_name          = "AcceptedTrafficAlarm-${each.key}"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = aws_cloudwatch_log_metric_filter.accepted_traffic[each.key].metric_transformation[0].name
+  namespace           = aws_cloudwatch_log_metric_filter.accepted_traffic[each.key].metric_transformation[0].namespace
+  period              = 300
+  statistic           = "Sum"
+  threshold           = 1
+  alarm_description   = "Alarm if there is any accepted traffic in the VPC ${each.key}"
+}
+
+resource "aws_cloudwatch_metric_alarm" "denied_traffic_alarm" {
+  for_each            = local.laa_vpc_existing
+  alarm_name          = "DeniedTrafficAlarm-${each.key}"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = aws_cloudwatch_log_metric_filter.denied_traffic[each.key].metric_transformation[0].name
+  namespace           = aws_cloudwatch_log_metric_filter.denied_traffic[each.key].metric_transformation[0].namespace
+  period              = 300
+  statistic           = "Sum"
+  threshold           = 1
+  alarm_description   = "Alarm if there is any denied traffic in the VPC ${each.key}"
+}
+
+resource "aws_cloudwatch_metric_alarm" "bytes_transferred_alarm" {
+  for_each            = local.laa_vpc_existing
+  alarm_name          = "BytesTransferredAlarm-${each.key}"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = aws_cloudwatch_log_metric_filter.bytes_transferred[each.key].metric_transformation[0].name
+  namespace           = aws_cloudwatch_log_metric_filter.bytes_transferred[each.key].metric_transformation[0].namespace
+  period              = 300
+  statistic           = "Sum"
+  threshold           = 1
+  alarm_description   = "Alarm if there is any bytes transferred in the VPC ${each.key}"
+}
+
+resource "aws_cloudwatch_metric_alarm" "high_volume_traffic_alarm" {
+  for_each            = local.laa_vpc_existing
+  alarm_name          = "HighVolumeTrafficAlarm-${each.key}"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = aws_cloudwatch_log_metric_filter.high_volume_traffic[each.key].metric_transformation[0].name
+  namespace           = aws_cloudwatch_log_metric_filter.high_volume_traffic[each.key].metric_transformation[0].namespace
+  period              = 300
+  statistic           = "Sum"
+  threshold           = 1
+  alarm_description   = "Alarm if there is any high volume traffic in the VPC ${each.key}"
+}
+
+resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
+  for_each            = local.laa_vpc_existing
+  alarm_name          = "RejectedConnectionsAlarm-${each.key}"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = aws_cloudwatch_log_metric_filter.rejected_connections[each.key].metric_transformation[0].name
+  namespace           = aws_cloudwatch_log_metric_filter.rejected_connections[each.key].metric_transformation[0].namespace
+  period              = 300
+  statistic           = "Sum"
+  threshold           = 1
+  alarm_description   = "Alarm if there are any rejected connections in the VPC ${each.key}"
+}
+
+resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
+  for_each            = local.laa_vpc_existing
+  alarm_name          = "SSHConnectionAttemptsAlarm-${each.key}"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 1
+  metric_name         = aws_cloudwatch_log_metric_filter.ssh_connection_attempts[each.key].metric_transformation[0].name
+  namespace           = aws_cloudwatch_log_metric_filter.ssh_connection_attempts[each.key].metric_transformation[0].namespace
+  period              = 300
+  statistic           = "Sum"
+  threshold           = 1
+  alarm_description   = "Alarm if there are any SSH connection attempts in the VPC ${each.key}"
 }
