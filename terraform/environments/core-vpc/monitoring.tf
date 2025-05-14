@@ -26,3 +26,82 @@ module "pagerduty_route53" {
   sns_topics                = [aws_sns_topic.route53_monitoring.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["ddos_cloudwatch"]
 }
+
+
+# Pilot to Implement CloudWatch Anomaly Detection for VPC Flow Logs
+resource "aws_cloudwatch_log_metric_filter" "accepted_traffic" {
+  name           = "AcceptedTrafficCount"
+  log_group_name = module.vpc[local.vpc_key].vpc_flow_log
+  pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport,protocol,packets,bytes,start,end,action=ACCEPT,logstatus]"
+
+  metric_transformation {
+    name      = "AcceptedTrafficCount"
+    namespace = "VPCFlowLogs"
+    value     = "1"
+    unit      = "Count"
+  }
+}
+
+resource "aws_cloudwatch_log_metric_filter" "denied_traffic" {
+  name           = "DeniedTrafficCount"
+  log_group_name = module.vpc[local.vpc_key].vpc_flow_log
+  pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport,protocol,packets,bytes,start,end,action=REJECT,logstatus]"
+
+  metric_transformation {
+    name      = "DeniedTrafficCount"
+    namespace = "VPCFlowLogs"
+    value     = "1"
+    unit      = "Count"
+  }
+}
+
+resource "aws_cloudwatch_log_metric_filter" "bytes_transferred" {
+  name           = "BytesTransferred"
+  log_group_name = module.vpc[local.vpc_key].vpc_flow_log
+  pattern        = ""
+
+  metric_transformation {
+    name      = "BytesTransferred"
+    namespace = "VPCFlowLogs"
+    value     = "1"
+    unit      = "Bytes"
+  }
+}
+
+resource "aws_cloudwatch_log_metric_filter" "high_volume_traffic" {
+  name           = "VPCFlowLogs-HighVolumeTraffic"
+  log_group_name = module.vpc[local.vpc_key].vpc_flow_log
+  pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport,protocol,packets,bytes, ...]"
+
+  metric_transformation {
+    name           = "HighVolumeTraffic"
+    namespace      = "VPCFlowMetrics"
+    value          = "1"
+    default_value  = "0"
+  }
+}
+
+resource "aws_cloudwatch_log_metric_filter" "rejected_connections" {
+  name           = "VPCFlowLogs-RejectedConnections"
+  log_group_name = module.vpc[local.vpc_key].vpc_flow_log
+  pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport,protocol,packets,bytes,start,end,action=REJECT,logstatus]"
+
+  metric_transformation {
+    name           = "RejectedConnections"
+    namespace      = "VPCFlowMetrics"
+    value          = "1"
+    default_value  = "0"
+  }
+}
+
+resource "aws_cloudwatch_log_metric_filter" "ssh_connection_attempts" {
+  name           = "VPCFlowLogs-SSHConnectionAttempts"
+  log_group_name = module.vpc[local.vpc_key].vpc_flow_log
+  pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport=22,protocol=6, ...]"
+
+  metric_transformation {
+    name      = "SSHConnectionAttempts"
+    namespace = "VPCFlowMetrics"
+    value     = "1"
+  }
+}
