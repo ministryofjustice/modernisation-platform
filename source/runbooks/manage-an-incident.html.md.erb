@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Incident Process
-last_reviewed_on: 2025-03-18
+last_reviewed_on: 2025-05-14
 review_in: 3 months
 ---
 
@@ -23,7 +23,19 @@ This document describes our incident handling process for network, operations an
 ## Overview: 
 For ease of use the key steps are documented within the overview, with further details in the sections below.
 ###1. Confirm that the event constitutes an incident
-> If this incident constitutes a security breach, you must also report it [here](https://goo.gl/forms/frsB1h8AGv3Zefwq2)
+> If this incident constitutes a security breach, you must also contact the Service Desk to raise an incident. Refer to the **Service Desk Contact Information** section below for details.
+
+### Service Desk Contact Information
+
+| Method                  | Details                                                                                     |
+|-------------------------|---------------------------------------------------------------------------------------------|
+| Phone (24/7)            | 0800 917 5148                                                                           |
+| Tech Portal Chat Bot    | [Technology Portal Homepage](https://mojprod.service-now.com/moj_sp) to contact a live agent       |
+
+**Important: If the incident involves sensitive information or involves something like a password reset, this can only be done over the phone.**
+In most cases, contacting the Service Desk is sufficient. They will record the details of the incident and notify the Protective Monitoring Team to investigate. If additional information is required, they will reach out to us.
+If the Service Desk recommends further action, such as emailing the JusticeDigitalSOC mailbox (justicedigitalsoc@justice.gov.uk) and/or the Security mailbox (security@justice.gov.uk)—they will inform us. In such cases, we must include the INC reference number and provide a clear explanation for contacting the security teams.
+For additional guidance, refer to the [security incident reporting documentation](https://intranet.justice.gov.uk/guidance/security/report-a-security-incident/).
 
 ###2. Declare the incident.
 Create a pager-duty incident (ensuring it is on the external status page) and a slack channel
@@ -37,7 +49,7 @@ Including communication - and who to tell
 Detailed steps follow below:
 ## 1. Confirm that the event constitutes an incident
 
-> If this incident constitutes a security breach, you must also report it [here](https://goo.gl/forms/frsB1h8AGv3Zefwq2)
+> If this incident constitutes a security breach, you must also contact the Service Desk to raise an incident. Refer to the **Service Desk Contact Information** section above for details.
 
 We define an incident as an event which:
 
@@ -46,7 +58,7 @@ We define an incident as an event which:
 * degrades user-facing services, or
 * increases risk to production services
 
-If this event does not constitute an incident, the appropriate response is probably to [raise an issue](https://github.com/ministryofjustice/modernisation-platform/issues/new/choose) in our GitHub repository, however if the issue is security related, it is [raised here](https://github.com/ministryofjustice/modernisation-platform-security/issues/new/choose)
+If this event does not constitute an incident, the appropriate response is probably to [raise an issue](https://github.com/ministryofjustice/modernisation-platform/issues/new/choose) in our GitHub repository, however if the issue is security related, it is [raised here](https://github.com/ministryofjustice/modernisation-platform-security/issues/new/choose).
 
 Once you are confident that you have an incident, declare it as such.
 
