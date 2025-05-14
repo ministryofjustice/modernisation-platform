@@ -1850,7 +1850,7 @@ locals {
   # add users to this list once they've signed into PagerDuty via SSO for first time
   # avoid putting full email as public repo
   dso_team_members = {
-    "robertsweetman"   = "pm.me"
+    "robertsweetman"   = "@pm.me"
     "dave.kent"        = local.justice_email_suffix
     "william.gibbon"   = local.digital_email_suffix
     "antony.gowland"   = local.digital_email_suffix
