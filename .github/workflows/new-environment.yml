@@ -96,6 +96,52 @@ jobs:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
           PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
+  single-sign-on-plan:
+    runs-on: ubuntu-latest
+    if: github.event.ref != 'refs/heads/main' || github.event_name != 'workflow_dispatch'
+    needs: [fetch-secrets, check-environments-deployment-plan]
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          fetch-depth: 0
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@3cd73da46642bf52bb4045d8abf05e1d96fc4a53 # v2.0.0
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Set Account Number
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@f24d7193d98baebaeacc7e2227925dd47cc267f5 # v4.2.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-plan"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+      - name: get new account(s)
+        id: new_account
+        run: |
+          files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
+          echo "files=$files" >> $GITHUB_OUTPUT
+      - name: Run single sign on
+        run: |
+          IFS=',' read -r -a accounts <<< "${{ steps.new_account.outputs.files }}"
+          if [[ ${#accounts[@]} -gt 0 ]]; then
+            for i in "${accounts[@]}"; do
+              echo "[+] Running single sign on baseline for account ${i}"
+              bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
+              bash scripts/setup-baseline.sh terraform/environments/bootstrap/single-sign-on "${i}" plan
+            done
+          else
+            echo "[+] There were no AWS member accounts to process"
+          fi
   create-environment:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
