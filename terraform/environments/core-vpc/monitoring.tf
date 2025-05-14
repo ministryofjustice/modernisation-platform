@@ -131,77 +131,161 @@ resource "aws_cloudwatch_log_metric_filter" "ssh_connection_attempts" {
 resource "aws_cloudwatch_metric_alarm" "accepted_traffic_alarm" {
   for_each            = local.laa_vpc_existing
   alarm_name          = "AcceptedTrafficAlarm-${each.key}"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 1
-  metric_name         = aws_cloudwatch_log_metric_filter.accepted_traffic[each.key].metric_transformation[0].name
-  namespace           = aws_cloudwatch_log_metric_filter.accepted_traffic[each.key].metric_transformation[0].namespace
-  period              = 300
-  statistic           = "Sum"
-  threshold           = 1
-  alarm_description   = "Alarm if there is any accepted traffic in the VPC ${each.key}"
+  comparison_operator = "GreaterThanUpperThreshold"
+  evaluation_periods  = 2
+  threshold_metric_id = "ad1"
+  alarm_description   = "Anomaly detection alarm for accepted traffic in the VPC ${each.key}"
+
+  metric_query {
+    id          = "m1"
+    metric {
+      metric_name = aws_cloudwatch_log_metric_filter.accepted_traffic[each.key].metric_transformation[0].name
+      namespace   = aws_cloudwatch_log_metric_filter.accepted_traffic[each.key].metric_transformation[0].namespace
+      period      = 300
+      stat        = "Sum"
+    }
+    return_data = false
+  }
+
+  metric_query {
+    id          = "ad1"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
+    label       = "AnomalyDetectionBand"
+    return_data = true
+  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "denied_traffic_alarm" {
   for_each            = local.laa_vpc_existing
   alarm_name          = "DeniedTrafficAlarm-${each.key}"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 1
-  metric_name         = aws_cloudwatch_log_metric_filter.denied_traffic[each.key].metric_transformation[0].name
-  namespace           = aws_cloudwatch_log_metric_filter.denied_traffic[each.key].metric_transformation[0].namespace
-  period              = 300
-  statistic           = "Sum"
-  threshold           = 1
-  alarm_description   = "Alarm if there is any denied traffic in the VPC ${each.key}"
+  comparison_operator = "GreaterThanUpperThreshold"
+  evaluation_periods  = 2
+  threshold_metric_id = "ad1"
+  alarm_description   = "Anomaly detection alarm for denied traffic in the VPC ${each.key}"
+
+  metric_query {
+    id          = "m1"
+    metric {
+      metric_name = aws_cloudwatch_log_metric_filter.denied_traffic[each.key].metric_transformation[0].name
+      namespace   = aws_cloudwatch_log_metric_filter.denied_traffic[each.key].metric_transformation[0].namespace
+      period      = 300
+      stat        = "Sum"
+    }
+    return_data = false
+  }
+
+  metric_query {
+    id          = "ad1"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
+    label       = "AnomalyDetectionBand"
+    return_data = true
+  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "bytes_transferred_alarm" {
   for_each            = local.laa_vpc_existing
   alarm_name          = "BytesTransferredAlarm-${each.key}"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 1
-  metric_name         = aws_cloudwatch_log_metric_filter.bytes_transferred[each.key].metric_transformation[0].name
-  namespace           = aws_cloudwatch_log_metric_filter.bytes_transferred[each.key].metric_transformation[0].namespace
-  period              = 300
-  statistic           = "Sum"
-  threshold           = 1
-  alarm_description   = "Alarm if there is any bytes transferred in the VPC ${each.key}"
+  comparison_operator = "GreaterThanUpperThreshold"
+  evaluation_periods  = 2
+  threshold_metric_id = "ad1"
+  alarm_description   = "Anomaly detection alarm for bytes transferred in the VPC ${each.key}"
+
+  metric_query {
+    id          = "m1"
+    metric {
+      metric_name = aws_cloudwatch_log_metric_filter.bytes_transferred[each.key].metric_transformation[0].name
+      namespace   = aws_cloudwatch_log_metric_filter.bytes_transferred[each.key].metric_transformation[0].namespace
+      period      = 300
+      stat        = "Sum"
+    }
+    return_data = false
+  }
+
+  metric_query {
+    id          = "ad1"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
+    label       = "AnomalyDetectionBand"
+    return_data = true
+  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "high_volume_traffic_alarm" {
   for_each            = local.laa_vpc_existing
   alarm_name          = "HighVolumeTrafficAlarm-${each.key}"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 1
-  metric_name         = aws_cloudwatch_log_metric_filter.high_volume_traffic[each.key].metric_transformation[0].name
-  namespace           = aws_cloudwatch_log_metric_filter.high_volume_traffic[each.key].metric_transformation[0].namespace
-  period              = 300
-  statistic           = "Sum"
-  threshold           = 1
-  alarm_description   = "Alarm if there is any high volume traffic in the VPC ${each.key}"
+  comparison_operator = "GreaterThanUpperThreshold"
+  evaluation_periods  = 2
+  threshold_metric_id = "ad1"
+  alarm_description   = "Anomaly detection alarm for high volume traffic in the VPC ${each.key}"
+
+  metric_query {
+    id          = "m1"
+    metric {
+      metric_name = aws_cloudwatch_log_metric_filter.high_volume_traffic[each.key].metric_transformation[0].name
+      namespace   = aws_cloudwatch_log_metric_filter.high_volume_traffic[each.key].metric_transformation[0].namespace
+      period      = 300
+      stat        = "Sum"
+    }
+    return_data = false
+  }
+
+  metric_query {
+    id          = "ad1"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
+    label       = "AnomalyDetectionBand"
+    return_data = true
+  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
   for_each            = local.laa_vpc_existing
   alarm_name          = "RejectedConnectionsAlarm-${each.key}"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 1
-  metric_name         = aws_cloudwatch_log_metric_filter.rejected_connections[each.key].metric_transformation[0].name
-  namespace           = aws_cloudwatch_log_metric_filter.rejected_connections[each.key].metric_transformation[0].namespace
-  period              = 300
-  statistic           = "Sum"
-  threshold           = 1
-  alarm_description   = "Alarm if there are any rejected connections in the VPC ${each.key}"
+  comparison_operator = "GreaterThanUpperThreshold"
+  evaluation_periods  = 2
+  threshold_metric_id = "ad1"
+  alarm_description   = "Anomaly detection alarm for rejected connections in the VPC ${each.key}"
+
+  metric_query {
+    id          = "m1"
+    metric {
+      metric_name = aws_cloudwatch_log_metric_filter.rejected_connections[each.key].metric_transformation[0].name
+      namespace   = aws_cloudwatch_log_metric_filter.rejected_connections[each.key].metric_transformation[0].namespace
+      period      = 300
+      stat        = "Sum"
+    }
+    return_data = false
+  }
+
+  metric_query {
+    id          = "ad1"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
+    label       = "AnomalyDetectionBand"
+    return_data = true
+  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
   for_each            = local.laa_vpc_existing
   alarm_name          = "SSHConnectionAttemptsAlarm-${each.key}"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 1
-  metric_name         = aws_cloudwatch_log_metric_filter.ssh_connection_attempts[each.key].metric_transformation[0].name
-  namespace           = aws_cloudwatch_log_metric_filter.ssh_connection_attempts[each.key].metric_transformation[0].namespace
-  period              = 300
-  statistic           = "Sum"
-  threshold           = 1
-  alarm_description   = "Alarm if there are any SSH connection attempts in the VPC ${each.key}"
+  comparison_operator = "GreaterThanUpperThreshold"
+  evaluation_periods  = 2
+  threshold_metric_id = "ad1"
+  alarm_description   = "Anomaly detection alarm for SSH connection attempts in the VPC ${each.key}"
+
+  metric_query {
+    id          = "m1"
+    metric {
+      metric_name = aws_cloudwatch_log_metric_filter.ssh_connection_attempts[each.key].metric_transformation[0].name
+      namespace   = aws_cloudwatch_log_metric_filter.ssh_connection_attempts[each.key].metric_transformation[0].namespace
+      period      = 300
+      stat        = "Sum"
+    }
+    return_data = false
+  }
+
+  metric_query {
+    id          = "ad1"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
+    label       = "AnomalyDetectionBand"
+    return_data = true
+  }
 }
