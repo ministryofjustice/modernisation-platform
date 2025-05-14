@@ -10,6 +10,7 @@ AWS_RESERVED_IPS = int(os.getenv('AWS_RESERVED_IPS', '5'))
 ASSUME_ROLE_NAME = os.getenv('ASSUME_ROLE_NAME', 'IPUsageMetricsReadRole')
 METRIC_NAMESPACE = os.getenv('METRIC_NAMESPACE', 'Custom/SubnetInfo')
 TARGET_ACCOUNTS  = [acct.strip() for acct in os.getenv('TARGET_ACCOUNTS', '').split(',') if acct.strip()]
+SNS_TOPIC_ARN    = os.getenv('SNS_TOPIC_ARN')
 
 # Setup root logger
 logger = logging.getLogger()
@@ -53,7 +54,7 @@ def get_tag_value(tags: list, key: str, default: str = 'N/A') -> str:
 
 def compute_subnet_metrics(subnet: dict) -> tuple[int, int, int, float]:
     """
-    Calculate total, available, used IPs and utilization percentage.
+    Calculate total, available, used IPs and utilisation percentage.
     """
     total = ipaddress.IPv4Network(subnet['CidrBlock']).num_addresses - AWS_RESERVED_IPS
     avail = subnet.get('AvailableIpAddressCount')
@@ -89,7 +90,7 @@ def publish_metrics(cw_client, dims: list, metrics: list[tuple]):
     cw_client.put_metric_data(Namespace=METRIC_NAMESPACE, MetricData=metric_data)
 
 
-def process_account(account_id: str, region: str, central_cloudwatch):
+def process_account(account_id: str, region: str, central_cloudwatch, over_threshold_subnets: list):
     """
     For a single account: assume role, fetch subnets, and compute metrics.
     """
@@ -108,9 +109,24 @@ def process_account(account_id: str, region: str, central_cloudwatch):
                 ('UsedIPs', used, 'Count'),
                 ('AvailableIPs', avail, 'Count'),
                 ('TotalIPs', total, 'Count'),
-                ('IPUtilizationPercentage', pct, 'Percent')
+                ('IPUtilisationPercentage', pct, 'Percent')
             ]
             publish_metrics(central_cloudwatch, dims, metrics)
+
+            if pct >= 90:
+                over_threshold_subnets.append({
+                    "SubnetId": s['SubnetId'],
+                    "SubnetName": get_tag_value(s.get('Tags'), 'Name'),
+                    "VpcId": s['VpcId'],
+                    "AvailabilityZone": s['AvailabilityZone'],
+                    "Region": region,
+                    "AccountId": account_id,
+                    "Utilisation": pct,
+                    "Used": used,
+                    "Total": total,
+                    "Available": avail,
+                    "CidrBlock": s['CidrBlock']
+                })
 
             logger.info(
                 f"{s['SubnetId']} ({s['AvailabilityZone']}, {s['VpcId']}) "
@@ -131,12 +147,46 @@ def lambda_handler(event, context):
 
     # Create CloudWatch client in the central account
     central_cloudwatch = boto3.client('cloudwatch', region_name=region)
+    sns = boto3.client('sns', region_name=region)
+    over_threshold_subnets = []
 
     for account in TARGET_ACCOUNTS:
         try:
-            process_account(account, region, central_cloudwatch)
+            process_account(account, region, central_cloudwatch, over_threshold_subnets)
         except Exception:
             logger.exception(f"Failed to process account {account}")
+
+    if over_threshold_subnets:
+        # Sort subnets by utilisation percentage in descending order
+        over_threshold_subnets.sort(key=lambda x: x['Utilisation'], reverse=True)
+
+        # Build the custom notification payload
+        notification = {
+            "version": "1.0",
+            "source": "custom",
+            "id": "subnet-utilisation-alert",
+            "content": {
+                "textType": "client-markdown",
+                "title": ":warning: Subnets Over 90% IP Utilisation!",
+                "description": "The following subnets have exceeded *90%* IP utilisation:"
+            }
+        }
+
+        # Add subnet details to the description
+        for subnet in over_threshold_subnets:
+            subnet_details = (
+                f"`{subnet['SubnetName']}` *{subnet['Utilisation']:.1f}%* used\n"
+            )
+            notification["content"]["description"] += f"\n\n{subnet_details}"
+
+        # Publish the custom notification to SNS
+        sns.publish(
+            TopicArn=SNS_TOPIC_ARN,
+            Message=json.dumps(notification)
+        )
+        logger.info("Published custom SNS alert for subnets over threshold.")
+    else:
+        logger.info("No subnets over 90% utilisation.")
 
     return {
         'statusCode': 200,
