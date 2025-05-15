@@ -226,6 +226,7 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
     ]
     resources = [
       "arn:aws:iam::*:role/ModernisationPlatformAccess",
+      "arn:aws:iam::${local.environment_management.aws_organizations_root_account_id}:role/ModernisationPlatformSSOAdministrator"
     ]
     condition {
       test     = "ForAnyValue:StringLike"
