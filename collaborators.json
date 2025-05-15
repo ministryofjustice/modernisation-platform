@@ -827,26 +827,6 @@
       ]
     },
     {
-      "username": "toby.petty",
-      "github-username": "Staberinde",
-      "accounts": [
-        {
-          "account-name": "analytical-platform-ingestion-development",
-          "access": "sandbox"
-        }
-      ]
-    },
-    {
-      "username": "russel.mclean",
-      "github-username": "rm-madetech",
-      "accounts": [
-        {
-          "account-name": "analytical-platform-ingestion-development",
-          "access": "sandbox"
-        }
-      ]
-    },
-    {
       "username": "ryan.smith",
       "github-username": "ryansmith",
       "accounts": [
