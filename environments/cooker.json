@@ -19,6 +19,10 @@
         {
           "sso_group_name": "tvm-purple-team",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "platform-engineer-admin"
         }
       ],
       "additional_reviewers": ["astrobinson"],
