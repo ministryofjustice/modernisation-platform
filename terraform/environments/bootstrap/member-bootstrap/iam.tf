@@ -270,7 +270,6 @@ data "aws_iam_policy_document" "member-access" {
   statement {
     effect = "Deny"
     actions = [
-      "ec2:CreateVpcPeeringConnection",
       "iam:AddUserToGroup",
       "iam:AttachGroupPolicy",
       "iam:CreateAccountAlias",
