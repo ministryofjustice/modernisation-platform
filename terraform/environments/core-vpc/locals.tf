@@ -24,3 +24,16 @@ locals {
     owner         = "Modernisation Platform: modernisation-platform@digital.justice.gov.uk"
   }
 }
+
+# For pilot to Implement CloudWatch Anomaly Detection for VPC Flow Logs
+
+locals {
+  laa_vpc_keys = [
+    "laa-production",
+    "laa-preproduction",
+    "laa-test",
+    "laa-development"
+  ]
+
+  laa_vpc_existing = { for k, v in module.vpc : k => v if contains(local.laa_vpc_keys, k) }
+}
