@@ -93,7 +93,7 @@ resource "aws_cloudwatch_metric_alarm" "accepted_traffic_alarm" {
       period      = 300
       stat        = "Sum"
     }
-    return_data = false
+    return_data = true
   }
 
   metric_query {
@@ -121,7 +121,7 @@ resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
       period      = 300
       stat        = "Sum"
     }
-    return_data = false
+    return_data = true
   }
 
   metric_query {
@@ -149,7 +149,7 @@ resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
       period      = 300
       stat        = "Sum"
     }
-    return_data = false
+    return_data = true
   }
 
   metric_query {
