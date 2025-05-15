@@ -89,7 +89,7 @@ resource "aws_cloudwatch_log_metric_filter" "high_volume_traffic" {
   for_each       = local.laa_vpc_existing
   name           = "VPCFlowLogs-HighVolumeTraffic-${each.key}"
   log_group_name = each.value.vpc_flow_log
-  pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport,protocol,packets,bytes, ...]"
+  pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport,protocol,packets,bytes,start,end,action,logstatus]"
 
   metric_transformation {
     name          = "HighVolumeTraffic"
@@ -117,7 +117,7 @@ resource "aws_cloudwatch_log_metric_filter" "ssh_connection_attempts" {
   for_each       = local.laa_vpc_existing
   name           = "VPCFlowLogs-SSHConnectionAttempts-${each.key}"
   log_group_name = each.value.vpc_flow_log
-  pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport=22,protocol=6, ...]"
+  pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport=22,protocol=6,packets,bytes,start,end,action,logstatus]"
 
   metric_transformation {
     name      = "SSHConnectionAttempts"
@@ -126,7 +126,7 @@ resource "aws_cloudwatch_log_metric_filter" "ssh_connection_attempts" {
   }
 }
 
-# Cloudwatch metric alarm for above filters
+# Cloudwatch metric alarms for above filters
 
 resource "aws_cloudwatch_metric_alarm" "accepted_traffic_alarm" {
   for_each            = local.laa_vpc_existing
@@ -137,10 +137,10 @@ resource "aws_cloudwatch_metric_alarm" "accepted_traffic_alarm" {
   alarm_description   = "Anomaly detection alarm for accepted traffic in the VPC ${each.key}"
 
   metric_query {
-    id          = "m1"
+    id = "m1"
     metric {
-      metric_name = aws_cloudwatch_log_metric_filter.accepted_traffic[each.key].metric_transformation[0].name
-      namespace   = aws_cloudwatch_log_metric_filter.accepted_traffic[each.key].metric_transformation[0].namespace
+      metric_name = "AcceptedTrafficCount"
+      namespace   = "VPCFlowLogs"
       period      = 300
       stat        = "Sum"
     }
@@ -164,10 +164,10 @@ resource "aws_cloudwatch_metric_alarm" "denied_traffic_alarm" {
   alarm_description   = "Anomaly detection alarm for denied traffic in the VPC ${each.key}"
 
   metric_query {
-    id          = "m1"
+    id = "m1"
     metric {
-      metric_name = aws_cloudwatch_log_metric_filter.denied_traffic[each.key].metric_transformation[0].name
-      namespace   = aws_cloudwatch_log_metric_filter.denied_traffic[each.key].metric_transformation[0].namespace
+      metric_name = "DeniedTrafficCount"
+      namespace   = "VPCFlowLogs"
       period      = 300
       stat        = "Sum"
     }
@@ -191,10 +191,10 @@ resource "aws_cloudwatch_metric_alarm" "bytes_transferred_alarm" {
   alarm_description   = "Anomaly detection alarm for bytes transferred in the VPC ${each.key}"
 
   metric_query {
-    id          = "m1"
+    id = "m1"
     metric {
-      metric_name = aws_cloudwatch_log_metric_filter.bytes_transferred[each.key].metric_transformation[0].name
-      namespace   = aws_cloudwatch_log_metric_filter.bytes_transferred[each.key].metric_transformation[0].namespace
+      metric_name = "BytesTransferred"
+      namespace   = "VPCFlowLogs"
       period      = 300
       stat        = "Sum"
     }
@@ -218,10 +218,10 @@ resource "aws_cloudwatch_metric_alarm" "high_volume_traffic_alarm" {
   alarm_description   = "Anomaly detection alarm for high volume traffic in the VPC ${each.key}"
 
   metric_query {
-    id          = "m1"
+    id = "m1"
     metric {
-      metric_name = aws_cloudwatch_log_metric_filter.high_volume_traffic[each.key].metric_transformation[0].name
-      namespace   = aws_cloudwatch_log_metric_filter.high_volume_traffic[each.key].metric_transformation[0].namespace
+      metric_name = "HighVolumeTraffic"
+      namespace   = "VPCFlowMetrics"
       period      = 300
       stat        = "Sum"
     }
@@ -245,10 +245,10 @@ resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
   alarm_description   = "Anomaly detection alarm for rejected connections in the VPC ${each.key}"
 
   metric_query {
-    id          = "m1"
+    id = "m1"
     metric {
-      metric_name = aws_cloudwatch_log_metric_filter.rejected_connections[each.key].metric_transformation[0].name
-      namespace   = aws_cloudwatch_log_metric_filter.rejected_connections[each.key].metric_transformation[0].namespace
+      metric_name = "RejectedConnections"
+      namespace   = "VPCFlowMetrics"
       period      = 300
       stat        = "Sum"
     }
@@ -272,10 +272,10 @@ resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
   alarm_description   = "Anomaly detection alarm for SSH connection attempts in the VPC ${each.key}"
 
   metric_query {
-    id          = "m1"
+    id = "m1"
     metric {
-      metric_name = aws_cloudwatch_log_metric_filter.ssh_connection_attempts[each.key].metric_transformation[0].name
-      namespace   = aws_cloudwatch_log_metric_filter.ssh_connection_attempts[each.key].metric_transformation[0].namespace
+      metric_name = "SSHConnectionAttempts"
+      namespace   = "VPCFlowMetrics"
       period      = 300
       stat        = "Sum"
     }
