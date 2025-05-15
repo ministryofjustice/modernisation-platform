@@ -109,6 +109,8 @@ data "aws_iam_policy_document" "member-access" {
       "ec2:DeleteVpcEndpoints",
       "ec2:CreateVpcEndpointServiceConfiguration",
       "ec2:DeleteVpcEndpointServiceConfigurations",
+      "ec2:CreateVpcPeeringConnection",
+      "ec2:DeleteVpcPeeringConnection",
       "ec2:DisableSerialConsoleAccess",
       "ec2:EnableSerialConsoleAccess",
       "ec2:GetSerialConsoleAccessStatus",
