@@ -6,6 +6,7 @@ data "aws_organizations_organization" "root_account" {}
 
 locals {
   application_name           = "core-vpc"
+  environment                = trimprefix(terraform.workspace, "${local.application_name}-")
   environment_management     = jsondecode(data.aws_secretsmanager_secret_version.environment_management.secret_string)
   pagerduty_integration_keys = jsondecode(data.aws_secretsmanager_secret_version.pagerduty_integration_keys.secret_string)
 
