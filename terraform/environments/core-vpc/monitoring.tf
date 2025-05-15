@@ -28,21 +28,11 @@ module "pagerduty_route53" {
 }
 
 
-# Pilot to Implement CloudWatch Anomaly Detection for VPC Flow Logs
+# Pilot To Implement CloudWatch Anomaly Detection For VPC Flow Logs
 
-locals {
-  laa_vpc_keys = [
-    "laa-production",
-    "laa-preproduction",
-    "laa-test",
-    "laa-development",
-    "laa-sandbox"
-  ]
-
-  laa_vpc_existing = { for k, v in module.vpc : k => v if contains(local.laa_vpc_keys, k) }
-}
 
 # Filters for vpc flow logs
+
 resource "aws_cloudwatch_log_metric_filter" "accepted_traffic" {
   for_each       = local.laa_vpc_existing
   name           = "AcceptedTrafficCount-${each.key}"
