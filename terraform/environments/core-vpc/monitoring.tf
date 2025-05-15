@@ -75,6 +75,7 @@ resource "aws_cloudwatch_log_metric_filter" "ssh_connection_attempts" {
 }
 
 # Cloudwatch metric alarms for above filters
+
 resource "aws_cloudwatch_metric_alarm" "accepted_traffic_alarm" {
   for_each            = local.laa_vpc_existing
   alarm_name          = "AcceptedTrafficAlarm-${each.key}"
