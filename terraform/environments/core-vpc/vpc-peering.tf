@@ -34,10 +34,16 @@ locals {
   }
 }
 
-# These routes should only exist for the lifetime of the peering
-resource "aws_route" "portal_tactical" {
+resource "aws_route" "portal_tactical_private" {
   for_each                  = lookup(local.peering_routes, terraform.workspace, toset([]))
   destination_cidr_block    = each.key
   route_table_id            = module.vpc["laa-${local.environment}"].private_route_tables.general-private
+  vpc_peering_connection_id = data.aws_vpc_peering_connections.laa_portal_tactical_requestor.ids[0]
+}
+
+resource "aws_route" "portal_tactical_data" {
+  for_each                  = lookup(local.peering_routes, terraform.workspace, toset([]))
+  destination_cidr_block    = each.key
+  route_table_id            = module.vpc["laa-${local.environment}"].private_route_tables.general-data
   vpc_peering_connection_id = data.aws_vpc_peering_connections.laa_portal_tactical_requestor.ids[0]
 }
