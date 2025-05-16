@@ -2333,3 +2333,95 @@ resource "pagerduty_slack_connection" "cis_non_prod" {
 }
 
 # # Slack channel: #mp-laa-alerts-cis-nonprod
+
+# Performance Hub --------------
+resource "pagerduty_service" "performance_hub_non_prod" {
+  name                    = "Performance Hub non-production alarms"
+  description             = "Performance Hub non-production (dev, preprod) alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "performance_hub_non_prod" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.performance_hub_non_prod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "performance_hub_non_prod" {
+  source_id = pagerduty_service.performance_hub_non_prod.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  # performance-hub-dev channel
+  channel_id = "C010UJ48GEM" 
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+
+resource "pagerduty_service" "performance_hub_prod" {
+  name                    = "Performance Hub production alarms"
+  description             = "Performance Hub production alarms"
+  auto_resolve_timeout    = 345600
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.member_policy.id
+  alert_creation          = "create_alerts_and_incidents"
+}
+
+resource "pagerduty_service_integration" "performance_hub_prod" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.performance_hub_prod.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "performance_hub_prod" {
+  source_id = pagerduty_service.performance_hub_prod.id
+  source_type = "service_reference"
+  workspace_id = local.slack_workspace_id
+  # performance-hub-dev channel
+  channel_id = "C010UJ48GEM" 
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
+# End Performance Hub ----------
