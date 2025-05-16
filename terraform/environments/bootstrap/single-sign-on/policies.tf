@@ -1164,10 +1164,6 @@ data "aws_iam_policy_document" "instance-management-document" {
       "secretsmanager:GetSecretValue",
       "secretsmanager:ListSecret*",
       "ssm:*",
-      "ssm-guiconnect:*",
-      "ssm:DescribeInstanceInformation",
-      "ssm:ListCommandInvocations",
-      "ssm:ListCommands",
       "sso:ListDirectoryAssociations",
       "support:*"
     ]
