@@ -34,7 +34,7 @@ locals {
   }
 }
 
-# These route should only exist for the lifetime of the peering
+# These routes should only exist for the lifetime of the peering
 resource "aws_route" "portal_tactical" {
   for_each                  = lookup(local.peering_routes, terraform.workspace, toset([]))
   destination_cidr_block    = each.key
