@@ -1096,7 +1096,7 @@ data "aws_iam_policy_document" "instance-management-document" {
 
   }
   statement {
-    sid    = "AllowInstanceManagement"
+    sid    = "databaseAllowNull"
     effect = "Allow"
     actions = [
       "application-autoscaling:ListTagsForResource",
@@ -1145,7 +1145,6 @@ data "aws_iam_policy_document" "instance-management-document" {
       "ecs:DescribeServices",
       "ecs:ListServices",
       "ecs:UpdateService",
-      "iam:PassRole",
       "identitystore:DescribeUser",
       "kms:Decrypt*",
       "kms:DescribeKey",
