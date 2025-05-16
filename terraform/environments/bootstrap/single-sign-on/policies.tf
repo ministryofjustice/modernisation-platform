@@ -1095,6 +1095,9 @@ data "aws_iam_policy_document" "instance-management-document" {
 
 
   }
+  statement {
+    sid    = "AllowInstanceManagement"
+    effect = "Allow"
     actions = [
       "application-autoscaling:ListTagsForResource",
       "athena:StartQueryExecution",
