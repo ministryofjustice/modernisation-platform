@@ -28,20 +28,19 @@ resource "github_repository" "default" {
   visibility                  = var.visibility
   vulnerability_alerts        = true
 
-  security_and_analysis {
-    dynamic "advanced_security" {
-      for_each = var.visibility == "public" ? [] : [1]
-      content {
-        status = "disabled"
-      }
-    }
-    secret_scanning {
-      status = var.visibility == "public" ? "enabled" : "disabled"
-    }
-    secret_scanning_push_protection {
-      status = var.visibility == "public" ? "enabled" : "disabled"
-    }
+security_and_analysis {
+  advanced_security {
+    status = "enabled"
   }
+
+  secret_scanning {
+    status = "enabled"
+  }
+
+  secret_scanning_push_protection {
+    status = "enabled"
+  }
+}
 
   template {
     owner      = "ministryofjustice"
