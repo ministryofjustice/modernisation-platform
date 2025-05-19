@@ -163,8 +163,8 @@ resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
 
 # SNS topic for VPC Flow Log alarms
 resource "aws_sns_topic" "vpc_flowlog_alarms" {
-  name = "vpc-flowlog-alarms"
   #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
+  name = "vpc-flowlog-alarms"
   tags = local.tags
 }
 
