@@ -7,6 +7,10 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "developer"
         }
       ]
     }
