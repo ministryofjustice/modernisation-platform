@@ -7,6 +7,10 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-maat-migrations",
+          "level": "sandbox"
         }
       ],
       "nuke": "exclude"
@@ -34,6 +38,10 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-maat-migrations",
           "level": "developer"
         }
       ]
