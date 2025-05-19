@@ -9,7 +9,7 @@ module "s3-bucket" {
   replication_enabled = false
   versioning_enabled  = true
   force_destroy       = false
-  ownership_controls  = "BucketOwnerPreferred"
+  ownership_controls  = "BucketOwnerEnforced"
   lifecycle_rule = [
     {
       id      = "main"
