@@ -31,6 +31,7 @@ module "pagerduty_route53" {
 # Pilot To Implement CloudWatch Anomaly Detection For VPC Flow Logs
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
+data "aws_caller_identity" "current" {}
 
 # Filters for vpc flow logs
 
