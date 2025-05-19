@@ -7,11 +7,11 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "developer"
+          "level": "sandbox"
         },
         {
           "sso_group_name": "laa-ccms-migration-team",
-          "level": "developer"
+          "level": "sandbox"
         }
       ]
     },
