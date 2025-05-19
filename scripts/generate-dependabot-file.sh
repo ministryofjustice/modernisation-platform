@@ -22,6 +22,13 @@ cat > "$dependabot_file" << EOL
 version: 2
 
 updates:
+  - package-ecosystem: "devcontainers"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: ":dependabot: devcontainers"
+      include: "scope"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
