@@ -31,6 +31,7 @@ module "pagerduty_route53" {
 # Pilot To Implement CloudWatch Anomaly Detection For VPC Flow Logs
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
+
 # Filters for vpc flow logs
 
 resource "aws_cloudwatch_log_metric_filter" "accepted_traffic" {
@@ -158,4 +159,19 @@ resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
     label       = "AnomalyDetectionBand"
     return_data = true
   }
+}
+
+# SNS topic for VPC Flow Log alarms
+resource "aws_sns_topic" "vpc_flowlog_alarms" {
+  name = "vpc-flowlog-alarms"
+  #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
+  tags = local.tags
+}
+
+# linking the sns topics to the pagerduty service
+module "pagerduty_vpc_flowlog_alerts" {
+  depends_on                = [aws_sns_topic.vpc_flowlog_alarms]
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
+  sns_topics                = [aws_sns_topic.vpc_flowlog_alarms.name]
+  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
 }
