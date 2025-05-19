@@ -7,6 +7,18 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-maat-migrations",
+          "level": "sandbox"
         }
       ],
       "nuke": "exclude"
@@ -17,6 +29,18 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-maat-migrations",
+          "level": "developer"
         }
       ]
     },
@@ -26,6 +50,18 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-maat-migrations",
+          "level": "developer"
         }
       ]
     },
@@ -34,6 +70,18 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-maat-migrations",
           "level": "developer"
         }
       ]
