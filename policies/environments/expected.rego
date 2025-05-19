@@ -49,6 +49,7 @@ expected :=
     "genesys-call-centre-data",
     "hmpps-domain-services",
     "hmpps-oem",
+    "laa-ccms",
     "laa-mail-relay",
     "laa-oem",
     "laa-portal-tactical",
