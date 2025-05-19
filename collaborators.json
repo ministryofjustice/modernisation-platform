@@ -133,6 +133,22 @@
         {
           "account-name": "delius-iaps-production",
           "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "instance-management"
         }
       ]
     },
@@ -146,6 +162,22 @@
         },
         {
           "account-name": "delius-iaps-production",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
           "access": "instance-management"
         }
       ]
@@ -161,6 +193,22 @@
         {
           "account-name": "delius-iaps-production",
           "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "instance-management"
         }
       ]
     },
@@ -174,6 +222,22 @@
         },
         {
           "account-name": "delius-iaps-production",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
           "access": "instance-management"
         }
       ]
@@ -202,6 +266,22 @@
         },
         {
           "account-name": "delius-iaps-production",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
           "access": "instance-management"
         }
       ]
