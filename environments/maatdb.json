@@ -22,7 +22,7 @@
           "level": "developer"
         },
         {
-          "sso_group_name": "laa-sre-admins",
+          "sso_group_name": "laa-crime-apps-team",
           "level": "developer"
         }
       ]
@@ -35,7 +35,7 @@
           "level": "developer"
         },
         {
-          "sso_group_name": "laa-sre-admins",
+          "sso_group_name": "laa-crime-apps-team",
           "level": "developer"
         }
       ]
@@ -48,7 +48,7 @@
           "level": "developer"
         },
         {
-          "sso_group_name": "laa-sre-admins",
+          "sso_group_name": "laa-crime-apps-team",
           "level": "developer"
         }
       ]
