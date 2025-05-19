@@ -56,7 +56,7 @@
     }
   ],
   "tags": {
-    "application": "LAA-CCMS",
+    "application": "LAA-CCMS-SOA",
     "business-unit": "LAA",
     "infrastructure-support": "ApplicationOperations@justice.gov.uk",
     "owner": "ApplicationOperations@justice.gov.uk",
