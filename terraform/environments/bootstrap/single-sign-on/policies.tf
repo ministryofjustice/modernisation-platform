@@ -1112,6 +1112,7 @@ data "aws_iam_policy_document" "instance-management-document" {
       "ds:ResetUserPassword",
       "ec2:AttachVolume",
       "ec2:AuthorizeSecurityGroupIngress",
+      "ec2:Connect",
       "ec2:CopyImage",
       "ec2:CopySnapshot",
       "ec2:CreateImage",
