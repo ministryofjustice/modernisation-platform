@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 # Alarms for core monitoring - cloudtrail, security hub, config
 module "core_monitoring" {
   source                     = "../../modules/core-monitoring"
@@ -30,8 +32,6 @@ module "pagerduty_route53" {
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # Pilot To Implement CloudWatch Anomaly Detection For VPC Flow Logs
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-
-data "aws_caller_identity" "current" {}
 
 # Filters for vpc flow logs
 
