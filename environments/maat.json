@@ -9,6 +9,10 @@
           "level": "sandbox"
         },
         {
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox"
+        },
+        {
           "sso_group_name": "laa-maat-migrations",
           "level": "sandbox"
         }
@@ -38,6 +42,10 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
           "level": "developer"
         },
         {
