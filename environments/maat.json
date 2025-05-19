@@ -25,6 +25,10 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
         }
       ]
     },
@@ -33,6 +37,10 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
           "level": "developer"
         }
       ]
