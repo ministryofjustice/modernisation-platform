@@ -1559,6 +1559,7 @@ data "aws_iam_policy_document" "s3_upload_policy_document" {
     effect = "Allow"
     actions = [
       "s3:GetObject",
+      "s3:GetBucketOwnershipControls",
       "s3:ListBucket",
       "s3:ListBucketVersions",
       "s3:PutObject"
