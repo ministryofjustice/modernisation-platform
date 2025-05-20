@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Platform logging integration with Cortex XSIAM
-last_reviewed_on: 2025-04-17
+last_reviewed_on: 2025-05-20
 review_in: 6 months
 ---
 
@@ -23,20 +23,25 @@ The Modernisation Platform shares data  with the Security Operations Cortex XSIA
 ## Categories of data shared with Security Operations
 
 The following data is collected for Cortex XSIAM consumption:
+
 - `core-logging` Aggregated Cloudtrail log data from all Modernisation Platform accounts.
 
 - `core-network-services` Network Firewall `alert` logs.
 
 - `core-vpc-production` Route53 Resolver Query Log data. 
+
 - `core-*` Route53 Resolver Query Log data `live_data` VPCs.
 
 - `core-network-services` VPC Flow Log data for the `external_inspection` VPC.
+
 - `core-vpc-production` VPC Flow Log data. 
+
 - `core-*` VPC Flow Log data for `live_data` VPCs.
 
 ## Log delivery methods
 
 The Cortex XSIAM application consumes data using S3 as a preferential source from the following:
+
 - VPC Flow Log data is pulled from the `core-logging-vpc-flow-logs` S3 bucket in the `core-logging` account.
 - Route 53 Resolver Query Log data is pulled from the `core-logging-r53-resolver-logs` S3 bucket in the `core-logging` account.
 - Cloudtrail log data is pulled from the `modernisation-platform-logs-cloudtrail` S3 bucket in the `core-logging` account.
