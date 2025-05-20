@@ -13,6 +13,7 @@
           "laa-mail-relay-production",
           "laa-oem-production",
           "maat-production",
+          "maatdb-production",
           "mlra-production",
           "mojfin-production",
           "oas-production",

@@ -13,6 +13,7 @@
           "laa-mail-relay-test",
           "laa-oem-test",
           "maat-test",
+          "maatdb-test",
           "mlra-test",
           "mojfin-test",
           "oas-test",
