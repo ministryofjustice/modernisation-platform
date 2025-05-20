@@ -10,6 +10,7 @@ locals {
     delius-jitbit = "jitbit.cr.probation.service.justice.gov.uk",
     equip         = "equip.service.justice.gov.uk",
     laa-apex      = "laa-apex.service.justice.gov.uk",
+    maat          = "means-assessment-administration.service.justice.gov.uk",
     mlra          = "maat-libra-administration-tool.service.justice.gov.uk",
     mojfin        = "laa-finance-data.service.justice.gov.uk",
     ncas          = "neutral-citation-allocation.service.justice.gov.uk",
