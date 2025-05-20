@@ -207,6 +207,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "ds-data:List*",
       "ds-data:Search*",
       "ec2:AttachVolume",
+      "ec2:DetachVolume",
       "ec2:St*",
       "ec2:RebootInstances",
       "ec2:Modify*",
