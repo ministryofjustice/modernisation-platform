@@ -277,6 +277,7 @@ expected :=
           "corporate-information-system-development",
           "edw-development",
           "laa-ccms-infra-azure-ad-sso",
+          "laa-ccms-soa-development",
           "laa-mail-relay-development",
           "laa-oem-development",
           "laa-stabilisation-cdc-poc-development",
@@ -300,6 +301,7 @@ expected :=
           "mlra-test",
           "ccms-ebs-test",
           "ccms-ebs-upgrade-test",
+          "laa-ccms-soa-test",
           "laa-mail-relay-test",
           "laa-oem-test",
           "maat-test",
@@ -320,6 +322,7 @@ expected :=
           "contract-work-administration-preproduction",
           "corporate-information-system-preproduction",
           "edw-preproduction",
+          "laa-ccms-soa-preproduction",
           "laa-mail-relay-preproduction",
           "laa-oem-preproduction",
           "maat-preproduction",
@@ -337,6 +340,7 @@ expected :=
         "accounts": [
           "apex-production",
           "bacway-production",
+          "ccms-ebs-production",
           "contract-work-administration-production",
           "corporate-information-system-production",
           "edw-production",
@@ -346,9 +350,14 @@ expected :=
           "maatdb-production",
           "oas-production",
           "portal-production",
+          "laa-ccms-soa-production",
           "laa-mail-relay-production",
           "laa-oem-production",
-          "mojfin-production"
+          "maat-production",
+          "mlra-production",
+          "mojfin-production",
+          "oas-production",
+          "portal-production"
         ]
       }
     },
