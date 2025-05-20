@@ -11,6 +11,10 @@
         {
           "sso_group_name": "laa-crime-apps-team",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-maat-migrations",
+          "level": "developer"
         }
       ]
     },
@@ -23,6 +27,10 @@
         },
         {
           "sso_group_name": "laa-crime-apps-team",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-maat-migrations",
           "level": "developer"
         }
       ]
@@ -37,6 +45,10 @@
         {
           "sso_group_name": "laa-crime-apps-team",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-maat-migrations",
+          "level": "developer"
         }
       ]
     },
@@ -49,6 +61,10 @@
         },
         {
           "sso_group_name": "laa-crime-apps-team",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-maat-migrations",
           "level": "developer"
         }
       ]
