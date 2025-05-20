@@ -303,6 +303,7 @@ expected :=
           "laa-mail-relay-test",
           "laa-oem-test",
           "maat-test",
+          "maatdb-test",
           "oas-test",
           "portal-test",
           "mojfin-test"
@@ -322,6 +323,7 @@ expected :=
           "laa-mail-relay-preproduction",
           "laa-oem-preproduction",
           "maat-preproduction",
+          "maatdb-preproduction",
           "mlra-preproduction",
           "mojfin-preproduction",
           "oas-preproduction",
@@ -341,6 +343,7 @@ expected :=
           "mlra-production",
           "ccms-ebs-production",
           "maat-production",
+          "maatdb-production",
           "oas-production",
           "portal-production",
           "laa-mail-relay-production",
