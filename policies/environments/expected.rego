@@ -50,6 +50,7 @@ expected :=
     "hmpps-domain-services",
     "hmpps-oem",
     "laa-ccms-soa",
+    "laa-cwa",
     "laa-mail-relay",
     "laa-oem",
     "laa-portal-tactical",
