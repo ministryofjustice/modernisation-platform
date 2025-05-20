@@ -53,7 +53,7 @@
     }
   ],
   "tags": {
-    "application": "laa-ccms-cwa",
+    "application": "laa-cwa",
     "business-unit": "LAA",
     "infrastructure-support": "laa_ops@digital.justice.gov.uk",
     "owner": "laa_ops@digital.justice.gov.uk",
