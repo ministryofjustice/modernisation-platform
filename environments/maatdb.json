@@ -1,6 +1,10 @@
 {
   "account-type": "member",
-  "codeowners": ["laa-aws-infrastructure", "laa-crime-apps-team", "laa-maat-migrations"],
+  "codeowners": [
+    "laa-aws-infrastructure",
+    "laa-crime-apps-team",
+    "laa-maat-migrations"
+  ],
   "environments": [
     {
       "name": "development",
@@ -81,4 +85,3 @@
   },
   "github-oidc-team-repositories": [""]
 }
- 

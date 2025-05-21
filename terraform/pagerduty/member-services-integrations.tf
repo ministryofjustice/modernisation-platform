@@ -2351,11 +2351,11 @@ resource "pagerduty_service_integration" "performance_hub_non_prod" {
 }
 
 resource "pagerduty_slack_connection" "performance_hub_non_prod" {
-  source_id = pagerduty_service.performance_hub_non_prod.id
-  source_type = "service_reference"
+  source_id    = pagerduty_service.performance_hub_non_prod.id
+  source_type  = "service_reference"
   workspace_id = local.slack_workspace_id
   # performance-hub-dev channel
-  channel_id = "C010UJ48GEM" 
+  channel_id        = "C010UJ48GEM"
   notification_type = "responder"
   config {
     events = [
@@ -2396,11 +2396,11 @@ resource "pagerduty_service_integration" "performance_hub_prod" {
 }
 
 resource "pagerduty_slack_connection" "performance_hub_prod" {
-  source_id = pagerduty_service.performance_hub_prod.id
-  source_type = "service_reference"
+  source_id    = pagerduty_service.performance_hub_prod.id
+  source_type  = "service_reference"
   workspace_id = local.slack_workspace_id
   # performance-hub-dev channel
-  channel_id = "C010UJ48GEM" 
+  channel_id        = "C010UJ48GEM"
   notification_type = "responder"
   config {
     events = [

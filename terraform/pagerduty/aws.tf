@@ -63,15 +63,15 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     laa_apex_prod_alarms                 = pagerduty_service_integration.apex_prod.integration_key
     electronic_monitoring_data_alarms    = pagerduty_service_integration.electronic_monitoring_data_cloudwatch.integration_key
     # delius_mis_non_prod                = pagerduty_event_orchestration_integration.delius_mis_non_prod_integration.parameters[0].routing_key
-    delius_mis_nonprod_alarms            = pagerduty_service_integration.delius_mis_non_prod.integration_key
-    delius_mis_prod_alarms               = pagerduty_service_integration.delius_mis_prod.integration_key
-    laa_edw_nonprod_alarms               = pagerduty_service_integration.edw_non_prod.integration_key
-    laa_edw_prod_alarms                  = pagerduty_service_integration.edw_prod.integration_key
-    cdpt-ifs-alarms                      = pagerduty_service_integration.cdpt_ifs_cloudwatch.integration_key
-    sprinkler_development                = pagerduty_event_orchestration_integration.sprinkler_development_integration.parameters[0].routing_key
-    laa_cis_nonprod_alarms               = pagerduty_service_integration.cis_non_prod.integration_key
-    performance_hub_nonprod_alarms       = pagerduty_service_integration.performance_hub_non_prod.integration_key
-    performance_hub_prod_alarms          = pagerduty_service_integration.performance_hub_prod.integration_key
+    delius_mis_nonprod_alarms      = pagerduty_service_integration.delius_mis_non_prod.integration_key
+    delius_mis_prod_alarms         = pagerduty_service_integration.delius_mis_prod.integration_key
+    laa_edw_nonprod_alarms         = pagerduty_service_integration.edw_non_prod.integration_key
+    laa_edw_prod_alarms            = pagerduty_service_integration.edw_prod.integration_key
+    cdpt-ifs-alarms                = pagerduty_service_integration.cdpt_ifs_cloudwatch.integration_key
+    sprinkler_development          = pagerduty_event_orchestration_integration.sprinkler_development_integration.parameters[0].routing_key
+    laa_cis_nonprod_alarms         = pagerduty_service_integration.cis_non_prod.integration_key
+    performance_hub_nonprod_alarms = pagerduty_service_integration.performance_hub_non_prod.integration_key
+    performance_hub_prod_alarms    = pagerduty_service_integration.performance_hub_prod.integration_key
     },
     {
       for key, integration in pagerduty_service_integration.integrations : key => integration.integration_key
