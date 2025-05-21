@@ -569,7 +569,7 @@
         {
           "account-name": "youth-justice-app-framework-production",
           "access": "quicksight-admin-access"
-        },        
+        },
         {
           "account-name": "youth-justice-networking-production",
           "access": "developer"
