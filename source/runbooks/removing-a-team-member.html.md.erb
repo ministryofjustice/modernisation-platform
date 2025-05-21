@@ -16,7 +16,7 @@ review_in: 6 month
 
 # <%= current_page.data.title %>
 
-Along with the standard [leavers form](https://mojclearancenolongerrequired.form.service.justice.gov.uk/?analytics=accepted), there are a few things to do when a team member leaves to remove their access:
+These are steps that we need to folllow to remove access for a team member:
 
 1. Remove them from the team page [source/team/team.html.md.erb](https://github.com/ministryofjustice/modernisation-platform/blob/main/source/team/team.html.md.erb)
 1. Remove them from our GitHub team [terraform/github/locals.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/github/locals.tf)
@@ -24,3 +24,6 @@ Along with the standard [leavers form](https://mojclearancenolongerrequired.form
 1. Run the modernisation-platform account Terraform for the above code change locally as a superuser (the CI user does not have permissions to delete users)
 1. Remove them from the Modernisation Platform Google Group and Slack teams.
 1. Remove them from pagerduty [terraform/pagerduty/locals.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/pagerduty/locals.tf)
+
+
+Important: Managers will need to complete a leavers form. More information can be found [here](https://intranet.justice.gov.uk/guidance/hr/end-change-of-employment/).
