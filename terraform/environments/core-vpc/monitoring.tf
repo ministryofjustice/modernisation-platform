@@ -57,7 +57,7 @@ resource "aws_cloudwatch_log_metric_filter" "rejected_connections" {
 
   metric_transformation {
     name          = "RejectedConnections"
-    namespace     = "VPCFlowMetrics"
+    namespace     = "VPCFlowLogs"
     value         = "1"
     default_value = "0"
   }
@@ -71,7 +71,7 @@ resource "aws_cloudwatch_log_metric_filter" "ssh_connection_attempts" {
 
   metric_transformation {
     name      = "SSHConnectionAttempts"
-    namespace = "VPCFlowMetrics"
+    namespace = "VPCFlowLogs"
     value     = "1"
   }
 }
@@ -119,7 +119,7 @@ resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
     id = "m1"
     metric {
       metric_name = "RejectedConnections"
-      namespace   = "VPCFlowMetrics"
+      namespace   = "VPCFlowLogs"
       period      = 300
       stat        = "Sum"
     }
@@ -147,7 +147,7 @@ resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
     id = "m1"
     metric {
       metric_name = "SSHConnectionAttempts"
-      namespace   = "VPCFlowMetrics"
+      namespace   = "VPCFlowLogs"
       period      = 300
       stat        = "Sum"
     }
