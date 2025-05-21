@@ -1575,6 +1575,7 @@ data "aws_iam_policy_document" "s3_upload_policy_document" {
     sid    = "AllowS3UploadKms"
     effect = "Allow"
     actions = [
+      "kms:Decrypt",
       "kms:Encrypt",
       "kms:GenerateDataKey*",
       "kms:ReEncrypt*",
