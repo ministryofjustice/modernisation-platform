@@ -24,6 +24,6 @@ These are the steps that we need to follow to remove access for a team member:
 1. Run the modernisation-platform account Terraform for the above code change locally as a superuser (the CI user does not have permissions to delete users)
 1. Remove them from the Modernisation Platform Google Group and Slack teams.
 1. Remove them from pagerduty [terraform/pagerduty/locals.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/pagerduty/locals.tf)
+1. Remove them from azure-aws-sso-modernisation-platform EntraID group [Azure Portal](https://portal.azure.com/).
 
-
-Important: Managers will need to complete a leavers form. More information can be found [here](https://intranet.justice.gov.uk/guidance/hr/end-change-of-employment/).
+**Important: Managers will need to complete a leavers form. More information can be found [here](https://intranet.justice.gov.uk/guidance/hr/end-change-of-employment/).**
