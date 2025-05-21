@@ -1341,12 +1341,10 @@ module "soa_admin_ecr_repo" {
   app_name = "soa-admin"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:root"
   ]
 
   pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-test"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-preproduction"]}:root",
@@ -1361,12 +1359,10 @@ module "soa_managed_ecr_repo" {
   app_name = "soa-managed"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:root"
   ]
 
   pull_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-test"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-preproduction"]}:root",
