@@ -1334,3 +1334,43 @@ module "observability_platform_grafana_sigv4_proxy_ecr_repo" {
 
   tags_common = local.tags
 }
+
+module "soa_admin_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "soa-admin"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["laa-ccms-soa-development"]
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["laa-ccms-soa-development"],
+    local.environment_management.account_ids["laa-ccms-soa-test"],
+    local.environment_management.account_ids["laa-ccms-soa-preproduction"],
+    local.environment_management.account_ids["laa-ccms-soa-production"]
+  ]
+  tags_common = local.tags
+}
+
+module "soa_managed_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "soa-managed"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["laa-ccms-soa-development"]
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["laa-ccms-soa-development"],
+    local.environment_management.account_ids["laa-ccms-soa-test"],
+    local.environment_management.account_ids["laa-ccms-soa-preproduction"],
+    local.environment_management.account_ids["laa-ccms-soa-production"]
+  ]
+  tags_common = local.tags
+}
