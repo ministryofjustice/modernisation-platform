@@ -1342,15 +1342,15 @@ module "soa_admin_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["laa-ccms-soa-development"]
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:root"
   ]
 
   pull_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["laa-ccms-soa-development"],
-    local.environment_management.account_ids["laa-ccms-soa-test"],
-    local.environment_management.account_ids["laa-ccms-soa-preproduction"],
-    local.environment_management.account_ids["laa-ccms-soa-production"]
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-test"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-preproduction"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-production"]}:root"
   ]
   tags_common = local.tags
 }
@@ -1362,15 +1362,15 @@ module "soa_managed_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["laa-ccms-soa-development"]
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:root"
   ]
 
   pull_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd",
-    local.environment_management.account_ids["laa-ccms-soa-development"],
-    local.environment_management.account_ids["laa-ccms-soa-test"],
-    local.environment_management.account_ids["laa-ccms-soa-preproduction"],
-    local.environment_management.account_ids["laa-ccms-soa-production"]
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-test"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-preproduction"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-production"]}:root"
   ]
   tags_common = local.tags
 }
