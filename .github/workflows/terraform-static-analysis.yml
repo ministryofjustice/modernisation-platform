@@ -33,7 +33,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Run Analysis
-        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@ee0701cae8ac3179d7989aca0bfabe99262a8083 # pinned checkov
+        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@ee0701cae8ac3179d7989aca0bfabe99262a8083 # v3.2.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
