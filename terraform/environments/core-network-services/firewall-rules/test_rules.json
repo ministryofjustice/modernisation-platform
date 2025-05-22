@@ -209,6 +209,20 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
+  "hmpps_test_to_delius_stage_oracledb": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "${delius-stage}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "delius_stage_to_hmpps_test_oracledb": {
+    "action": "PASS",
+    "source_ip": "${delius-stage}",
+    "destination_ip": "${hmpps-test}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },  
   "hmpps_test_to_delius_eng_dev_oracledb": {
     "action": "PASS",
     "source_ip": "${hmpps-test}",
