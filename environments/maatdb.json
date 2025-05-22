@@ -11,15 +11,18 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer"
+          "level": "developer",
+	  "github_action_reviewer" : "true"
         },
         {
           "sso_group_name": "laa-crime-apps-team",
-          "level": "developer"
+          "level": "developer",
+	  "github_action_reviewer" : "true"
         },
         {
           "sso_group_name": "laa-maat-migrations",
-          "level": "sandbox"
+          "level": "sandbox",
+	  "github_action_reviewer" : "true"
         }
       ],
       "nuke": "exclude"
@@ -29,15 +32,18 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer" : "true"
         },
         {
           "sso_group_name": "laa-crime-apps-team",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer" : "true"
         },
         {
           "sso_group_name": "laa-maat-migrations",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer" : "true"
         }
       ]
     },
@@ -46,15 +52,18 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer"
+          "level": "developer",
+	  "github_action_reviewer" : "true"
         },
         {
           "sso_group_name": "laa-crime-apps-team",
-          "level": "developer"
+          "level": "developer",
+	  "github_action_reviewer" : "true"
         },
         {
           "sso_group_name": "laa-maat-migrations",
-          "level": "developer"
+          "level": "developer",
+	  "github_action_reviewer" : "true"
         }
       ]
     },
@@ -63,15 +72,18 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer"
+          "level": "developer",
+	  "github_action_reviewer" : "true"
         },
         {
           "sso_group_name": "laa-crime-apps-team",
-          "level": "developer"
+          "level": "developer",
+	  "github_action_reviewer" : "true"
         },
         {
           "sso_group_name": "laa-maat-migrations",
-          "level": "developer"
+          "level": "developer",
+	  "github_action_reviewer" : "true"
         }
       ]
     }
