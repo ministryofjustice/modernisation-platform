@@ -231,3 +231,15 @@ resource "aws_secretsmanager_secret" "nonmp_account_ids" {
   kms_key_id  = data.aws_kms_alias.environment_management.target_key_id
   tags        = local.tags
 }
+
+# CircleCI Organisation ID
+resource "aws_secretsmanager_secret" "ip_block_list" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "ip_block_list"
+  description = "List of IP addresses to block from certain accounts"
+  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
+
+  replica {
+    region = local.replica_region
+  }
+}
