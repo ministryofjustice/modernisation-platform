@@ -16,26 +16,27 @@ locals {
   }
 
   other_cidr_ranges = {
-    analytical-platform-airflow-dev  = "10.200.0.0/16"
-    analytical-platform-airflow-prod = "10.201.0.0/16"
-    analytical-platform-ingest-dev   = "10.26.128.0/23"
-    analytical-platform-ingest-prod  = "10.27.128.0/23"
-    data-engineering-dev             = "172.24.0.0/16"
-    data-engineering-prod            = "172.25.0.0/16"
-    data-engineering-stage           = "172.26.0.0/16"
-    atos_arkc_ras                    = "10.175.0.0/16" # for DOM1 devices connected to Cisco RAS VPN
-    atos_arkf_ras                    = "10.176.0.0/16" # for DOM1 devices connected to Cisco RAS VPN
-    cloud-platform                   = "172.20.0.0/16"
-    dom1-domain-controllers          = "10.172.68.146/29"
-    global-protect                   = "10.184.0.0/14"
-    i2n                              = "10.110.0.0/16"
-    moj-core-azure-1                 = "10.50.25.0/27"
-    moj-core-azure-2                 = "10.50.26.0/24"
-    mojo-azure-landing-zone          = "10.192.0.0/16"
-    parole-board                     = "10.50.0.0/16"
-    psn                              = "51.0.0.0/8"
-    psn-ppud                         = "51.247.2.115/32"
-    vodafone_wan_nicts_aggregate     = "10.80.0.0/12" # for devices connected to Prison Networks
+    analytical-platform-airflow-dev     = "10.200.0.0/16"
+    analytical-platform-airflow-prod    = "10.201.0.0/16"
+    analytical-platform-ingest-dev      = "10.26.128.0/23"
+    analytical-platform-ingest-prod     = "10.27.128.0/23"
+    data-engineering-dev                = "172.24.0.0/16"
+    data-engineering-prod               = "172.25.0.0/16"
+    data-engineering-stage              = "172.26.0.0/16"
+    atos_arkc_ras                       = "10.175.0.0/16" # for DOM1 devices connected to Cisco RAS VPN
+    atos_arkf_ras                       = "10.176.0.0/16" # for DOM1 devices connected to Cisco RAS VPN
+    cloud-platform                      = "172.20.0.0/16"
+    dom1-domain-controllers             = "10.172.68.146/29"
+    global-protect                      = "10.184.0.0/14"
+    i2n                                 = "10.110.0.0/16"
+    moj-core-azure-1                    = "10.50.25.0/27"
+    moj-core-azure-2                    = "10.50.26.0/24"
+    mojo-azure-landing-zone             = "10.192.0.0/16"
+    parole-board                        = "10.50.0.0/16"
+    psn                                 = "51.0.0.0/8"
+    psn-ppud                            = "51.247.2.115/32"
+    vodafone_wan_nicts_aggregate        = "10.80.0.0/12" # for devices connected to Prison Networks
+    youth-justice-networking-production = "10.20.224.0/21"
 
     # hmpps azure cidr ranges
     noms-live-vnet                 = "10.40.0.0/18"

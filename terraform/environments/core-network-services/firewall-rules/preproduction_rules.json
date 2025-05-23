@@ -251,6 +251,20 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
+  "hmpps_preproduction_to_delius_preprod_oracledb": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${delius-pre-prod}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "delius_preprod_to_hmpps_preproduction_oracledb": {
+    "action": "PASS",
+    "source_ip": "${delius-pre-prod}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },  
   "hmpps_preproduction_to_delius_eng_prod_oracledb": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction}",
@@ -634,6 +648,20 @@
     "source_ip": "${laa-appstream-vpc_additional}",
     "destination_ip": "${laa-preproduction}",
     "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "youth_justice_networking_to_yjb_preproduction_tcp": {
+    "action": "PASS",
+    "source_ip": "${youth-justice-networking-production}",
+    "destination_ip": "${yjb-preproduction}",
+    "destination_port": "$YJB_TCP",
+    "protocol": "TCP"
+  },
+  "yjb_preproduction_to_youth_justice_networking_production_tcp": {
+    "action": "PASS",
+    "source_ip": "${yjb-preproduction}",
+    "destination_ip": "${youth-justice-networking-production}",
+    "destination_port": "$YJB_TCP",
     "protocol": "TCP"
   }
 }
