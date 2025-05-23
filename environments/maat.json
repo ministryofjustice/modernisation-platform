@@ -7,12 +7,12 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "sandbox",
-	  "github_action_reviewer" : "true"
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-crime-apps-team",
           "level": "sandbox",
-	  "github_action_reviewer" : "true"
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-sre-admins",
@@ -27,12 +27,12 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer",
-	  "github_action_reviewer" : "true"
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-crime-apps-team",
           "level": "developer",
-	  "github_action_reviewer" : "true"
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-sre-admins",
@@ -46,12 +46,12 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer",
-	  "github_action_reviewer" : "true"
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-crime-apps-team",
           "level": "developer",
-	  "github_action_reviewer" : "true"
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-sre-admins",
@@ -65,12 +65,12 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer",
-	  "github_action_reviewer" : "true"
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-crime-apps-team",
           "level": "developer",
-	  "github_action_reviewer" : "true"
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-sre-admins",
