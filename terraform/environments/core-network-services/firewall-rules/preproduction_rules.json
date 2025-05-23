@@ -635,5 +635,19 @@
     "destination_ip": "${laa-preproduction}",
     "destination_port": "ANY",
     "protocol": "TCP"
+  },
+  "youth_justice_networking_to_yjb_preproduction_tcp": {
+    "action": "PASS",
+    "source_ip": "${youth-justice-networking-production}",
+    "destination_ip": "${yjb-preproduction}",
+    "destination_port": "$YJB_TCP",
+    "protocol": "TCP"
+  },
+  "yjb_preproduction_to_youth_justice_networking_production_tcp": {
+    "action": "PASS",
+    "source_ip": "${yjb-preproduction}",
+    "destination_ip": "${youth-justice-networking-production}",
+    "destination_port": "$YJB_TCP",
+    "protocol": "TCP"
   }
 }
