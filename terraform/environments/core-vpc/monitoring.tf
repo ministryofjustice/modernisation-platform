@@ -197,6 +197,21 @@ resource "aws_kms_key" "vpc_flowlog_sns_encryption" {
           "kms:DescribeKey"
         ],
         Resource = "*"
+      },
+      {
+        Sid    = "Allow CloudWatch to use the key",
+        Effect = "Allow",
+        Principal = {
+          Service = "cloudwatch.amazonaws.com"
+        },
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ],
+        Resource = "*"
       }
     ]
   })
