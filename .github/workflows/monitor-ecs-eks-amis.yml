@@ -49,9 +49,12 @@ jobs:
 
       - name: Set Account Number
         run: |
+          echo "ENVIRONMENT_MANAGEMENT=$ENVIRONMENT_MANAGEMENT"
           ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+          env:
+          ENVIRONMENT_MANAGEMENT: ${{ needs.fetch-secrets.outputs.environment_management }}
 
           - name: Debug ACCOUNT_NUMBER and Role ARN
           run: |
