@@ -1,4 +1,5 @@
 name: "ECS/EKS AMIs Check"
+
 on:
   push:
     branches:
@@ -6,13 +7,6 @@ on:
     paths:
       - '.github/workflows/monitor-ecs-eks-amis.yml'
   workflow_dispatch:
-# on:
-#   push:
-#     branches:
-#       - main
-#     paths:
-#       - '.github/workflows/monitor-ecs-eks-amis.yml'
-#   workflow_dispatch:
 
 env:
   AWS_REGION: "eu-west-2"
@@ -51,13 +45,15 @@ jobs:
           ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+        env:
+          ENVIRONMENT_MANAGEMENT: ${{ needs.fetch-secrets.outputs.environment_management }}
 
-          - name: Debug ACCOUNT_NUMBER and Role ARN
-          run: |
+      - name: Debug ACCOUNT_NUMBER and Role ARN
+        run: |
           echo "ACCOUNT_NUMBER: $ACCOUNT_NUMBER"
           echo "Role to assume: arn:aws:iam::${ACCOUNT_NUMBER}:role/github-actions-apply"
           echo "ENVIRONMENT_MANAGEMENT: $ENVIRONMENT_MANAGEMENT"
-          env:
+        env:
           ACCOUNT_NUMBER: ${{ env.ACCOUNT_NUMBER }}
           ENVIRONMENT_MANAGEMENT: ${{ needs.fetch-secrets.outputs.environment_management }}
 
