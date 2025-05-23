@@ -1,5 +1,11 @@
 name: "ECS/EKS AMIs Check"
-
+on:
+  push:
+    branches:
+      - test-workflow-ecs-eks
+    paths:
+      - '.github/workflows/monitor-ecs-eks-amis.yml'
+  workflow_dispatch:
 # on:
 #   push:
 #     branches:
@@ -7,13 +13,6 @@ name: "ECS/EKS AMIs Check"
 #     paths:
 #       - '.github/workflows/monitor-ecs-eks-amis.yml'
 #   workflow_dispatch:
-  on:
-    push:
-      branches:
-        - test-workflow-ecs-eks
-      paths:
-        - '.github/workflows/monitor-ecs-eks-amis.yml'
-    workflow_dispatch:
 
 env:
   AWS_REGION: "eu-west-2"
