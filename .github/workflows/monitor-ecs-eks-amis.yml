@@ -1,4 +1,5 @@
 name: "ECS/EKS AMIs Check"
+
 on:
   push:
     branches:
@@ -6,14 +7,6 @@ on:
     paths:
       - '.github/workflows/monitor-ecs-eks-amis.yml'
   workflow_dispatch:
-# on:
-#   push:
-#     branches:
-#       - main
-#     paths:
-#       - '.github/workflows/monitor-ecs-eks-amis.yml'
-#   workflow_dispatch:
-
 
 env:
   AWS_REGION: "eu-west-2"
@@ -42,19 +35,22 @@ jobs:
         uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
 
       - name: Decrypt Secrets
-        id: decrypt_secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@ee0701cae8ac3179d7989aca0bfabe99262a8083 # v3.2.0
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@3cd73da46642bf52bb4045d8abf05e1d96fc4a53 # v3.1.0
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
-      
+
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
-        env:
-          ENVIRONMENT_MANAGEMENT: ${{ steps.decrypt_secrets.outputs.decrypted_environment_management }}
 
+      - name: Debug OIDC Token
+        run: |
+          echo "Testing OIDC token issuance..."
+          curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL?audience=sts.amazonaws.com" | \
+            jq '. | {iss, sub, aud, exp, iat}'
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
