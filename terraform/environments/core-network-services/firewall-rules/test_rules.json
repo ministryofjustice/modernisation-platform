@@ -160,7 +160,7 @@
     "destination_port": "ANY",
     "protocol": "IP"
   },
-   "laa_test_to_mp_laa_test_ccms": {
+  "laa_test_to_mp_laa_test_ccms": {
     "action": "PASS",
     "source_ip": "${laa-lz-uat}",
     "destination_ip": "${laa-test}",
