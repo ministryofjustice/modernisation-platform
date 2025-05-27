@@ -62,7 +62,7 @@ You can run a local plan in `modernisation-platform/terraform/github/` to verify
 
 Once happy with the changes, create a PR, get a review and merge your code. Because `archive_on_destroy` is set to `true` in the [`github_repository`](https://github.com/ministryofjustice/modernisation-platform/blob/be29e5e601e39749c8d3acc784e8dbdea2d2db1c/terraform/github/modules/repository/main.tf#L24) resource it will [archive](https://github.com/integrations/terraform-provider-github/blob/2881a2a4c19475ca8a9f0b4ea6570dda4fd12b71/github/resource_github_repository.go#L857) the repository, rather than delete it, even though it will be deleted from the terraform code.
 
-The merge pipeline will fail with a similar [error](https://github.com/ministryofjustice/modernisation-platform/actions/runs/8613918329/job/23606264385) to the one below:
+The merge pipeline will fail with a similar error to the one below:
 
 ```shell
 Error: DELETE https://api.github.com/organizations/2203574/team/7196780/repos/ministryofjustice/modernisation-platform-incident-response: 403 You must have administrative rights on a repository or team in order to remove the repository from that team []
