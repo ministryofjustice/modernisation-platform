@@ -9,7 +9,6 @@ module "core_monitoring" {
 # SNS topic for Route53 Hosted Zone DDoS monitoring
 # tfsec:ignore:aws-sns-enable-topic-encryption
 resource "aws_sns_topic" "route53_monitoring" {
-  #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
   provider = aws.aws-us-east-1
   name     = "route53_monitoring"
 
