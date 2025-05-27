@@ -18,6 +18,7 @@ expected :=
     "bichard7",
     "ccms-ebs",
     "ccms-ebs-upgrade",
+    "ccms-edrms",
     "cdpt-chaps",
     "cdpt-ifs",
     "cica-copilot",
