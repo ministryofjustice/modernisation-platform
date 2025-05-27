@@ -930,6 +930,7 @@ data "aws_iam_policy_document" "instance-access-document" {
       "rhelkb:GetRhelURL",
       "s3:PutObject",
       "ssm-guiconnect:*",
+      "sso:GetRoleCredentials",
     ]
     resources = ["*"]
   }
