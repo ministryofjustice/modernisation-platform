@@ -80,7 +80,7 @@ resource "aws_cloudwatch_log_metric_filter" "ssh_connection_attempts" {
 
 resource "aws_cloudwatch_metric_alarm" "accepted_traffic_alarm" {
   for_each            = local.laa_vpc_existing
-  alarm_name          = "AcceptedTrafficAlarm-${each.key}-VPC-${each.value.vpc_id}-Account-${data.aws_caller_identity.current.account_id}"
+  alarm_name          = "AcceptedTrafficAlarm-${each.key}"
   comparison_operator = "GreaterThanUpperThreshold"
   evaluation_periods  = 2
   threshold_metric_id = "ad1"
@@ -109,7 +109,7 @@ resource "aws_cloudwatch_metric_alarm" "accepted_traffic_alarm" {
 
 resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
   for_each            = local.laa_vpc_existing
-  alarm_name          = "RejectedConnectionsAlarm-${each.key}-VPC-${each.value.vpc_id}-Account-${data.aws_caller_identity.current.account_id}"
+  alarm_name          = "RejectedConnectionsAlarm-${each.key}"
   comparison_operator = "GreaterThanUpperThreshold"
   evaluation_periods  = 2
   threshold_metric_id = "ad1"
@@ -138,7 +138,7 @@ resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
 
 resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
   for_each            = local.laa_vpc_existing
-  alarm_name          = "SSHConnectionAttemptsAlarm-${each.key}-VPC-${each.value.vpc_id}-Account-${data.aws_caller_identity.current.account_id}"
+  alarm_name          = "SSHConnectionAttemptsAlarm-${each.key}"
   comparison_operator = "GreaterThanUpperThreshold"
   evaluation_periods  = 2
   threshold_metric_id = "ad1"
