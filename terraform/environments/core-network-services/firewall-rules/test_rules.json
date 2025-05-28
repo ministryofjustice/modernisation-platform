@@ -146,13 +146,6 @@
     "destination_port": "53",
     "protocol": "UDP"
   },
-  "laa_staging_to_mp_laa_test": {
-    "action": "PASS",
-    "source_ip": "${laa-lz-staging}",
-    "destination_ip": "${laa-test}",
-    "destination_port": "ANY",
-    "protocol": "IP"
-  },
   "laa_uat_to_mp_laa_test": {
     "action": "ALERT",
     "source_ip": "${laa-lz-uat}",
