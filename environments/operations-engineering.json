@@ -7,6 +7,22 @@
         {
           "sso_group_name": "operations-engineering",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "operations-engineering",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "operations-engineering",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "github-audit-log-viewer",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "github-audit-log-viewer",
+          "level": "data-engineer"
         }
       ],
       "nuke": "exclude"
@@ -19,6 +35,8 @@
     "owner": "operations-engineering@digital.justice.gov.uk",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [""],
+  "github-oidc-team-repositories": [
+    ""
+  ],
   "go-live-date": ""
 }
