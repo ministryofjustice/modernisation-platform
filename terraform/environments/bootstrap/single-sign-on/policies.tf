@@ -814,7 +814,8 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "support:*",
       "textract:*",
       "wafv2:*",
-      "wellarchitected:*"
+      "wellarchitected:*",
+      "workspaces-web:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
