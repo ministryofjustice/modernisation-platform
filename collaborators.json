@@ -1619,6 +1619,16 @@
       ]
     },
     {
+      "username": "ian.singleton",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "long-term-storage-production",
+          "access": "civica-role"
+        }
+      ]
+    },
+    {
       "username": "lokesh.manjegowd",
       "github-username": "no-value-supplied",
       "accounts": [
