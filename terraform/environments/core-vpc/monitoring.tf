@@ -80,7 +80,7 @@ resource "aws_cloudwatch_log_metric_filter" "ssh_connection_attempts" {
 
 resource "aws_cloudwatch_metric_alarm" "accepted_traffic_alarm" {
   for_each            = local.laa_vpc_existing
-  alarm_name          = "AcceptedTrafficAlarm-${each.key}"
+  alarm_name          = "AcceptedTrafficAlarm-${each.key}-VPC-${each.value.vpc_id}-Account-${data.aws_caller_identity.current.account_id}"
   comparison_operator = "GreaterThanUpperThreshold"
   evaluation_periods  = 2
   threshold_metric_id = "ad1"
@@ -102,14 +102,14 @@ resource "aws_cloudwatch_metric_alarm" "accepted_traffic_alarm" {
   metric_query {
     id          = "ad1"
     expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
-    label       = "AnomalyDetectionBand"
+    label       = "Sum AcceptedTrafficCount ${each.key} GreaterThanUpperThreshold 1.0"
     return_data = true
   }
 }
 
 resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
   for_each            = local.laa_vpc_existing
-  alarm_name          = "RejectedConnectionsAlarm-${each.key}"
+  alarm_name          = "RejectedConnectionsAlarm-${each.key}-VPC-${each.value.vpc_id}-Account-${data.aws_caller_identity.current.account_id}"
   comparison_operator = "GreaterThanUpperThreshold"
   evaluation_periods  = 2
   threshold_metric_id = "ad1"
@@ -131,14 +131,14 @@ resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
   metric_query {
     id          = "ad1"
     expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
-    label       = "AnomalyDetectionBand"
+    label       = "Sum AcceptedTrafficCount ${each.key} GreaterThanUpperThreshold 1.0"
     return_data = true
   }
 }
 
 resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
   for_each            = local.laa_vpc_existing
-  alarm_name          = "SSHConnectionAttemptsAlarm-${each.key}"
+  alarm_name          = "SSHConnectionAttemptsAlarm-${each.key}-VPC-${each.value.vpc_id}-Account-${data.aws_caller_identity.current.account_id}"
   comparison_operator = "GreaterThanUpperThreshold"
   evaluation_periods  = 2
   threshold_metric_id = "ad1"
@@ -160,7 +160,7 @@ resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
   metric_query {
     id          = "ad1"
     expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
-    label       = "AnomalyDetectionBand"
+    label       = "Sum AcceptedTrafficCount ${each.key} GreaterThanUpperThreshold 1.0"
     return_data = true
   }
 }
