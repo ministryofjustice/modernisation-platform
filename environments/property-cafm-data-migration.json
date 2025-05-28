@@ -6,7 +6,7 @@
       "name": "development",
       "access": [
         {
-          "sso_group_name": "dmet-property-cde",
+          "sso_group_name": "property-datahub",
           "level": "developer"
         }
       ]
@@ -15,7 +15,7 @@
       "name": "preproduction",
       "access": [
         {
-          "sso_group_name": "dmet-property-cde",
+          "sso_group_name": "property-datahub",
           "level": "developer"
         }
       ]
