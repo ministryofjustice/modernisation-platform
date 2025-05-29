@@ -116,7 +116,7 @@
     "customer_gateway_ip": "152.114.58.102",
     "remote_ipv4_network_cidr": "0.0.0.0/0",
     "static_routes_only": true,
-    "tunnel1_inside_cidr": "169.254.155.0/300",
+    "tunnel1_inside_cidr": "169.254.155.0/30",
     "tunnel2_inside_cidr": "169.254.214.8/30",
     "tunnel_dpd_timeout_action": "clear",
     "tunnel_dpd_timeout_seconds": "45",
