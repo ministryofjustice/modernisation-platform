@@ -456,7 +456,31 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "s3:PutBucketNotificationConfiguration",
       "s3:GetBucketOwnershipControls",
       "s3:PutObjectAcl",
-      "s3tables:*"
+      "s3tables:*",
+      "ram:AcceptResourceShareInvitation",
+      "ram:AssociateResourceShare",
+      "ram:AssociateResourceSharePermission",
+      "ram:CreateResourceShare",
+      "ram:DeleteResourceShare",
+      "ram:DisassociateResourceShare",
+      "ram:DisassociateResourceSharePermission",
+      "ram:EnableSharingWithAwsOrganization",
+      "ram:GetPermission",
+      "ram:GetResourcePolicies",
+      "ram:GetResourceShareAssociations",
+      "ram:GetResourceShareInvitations",
+      "ram:GetResourceShares",
+      "ram:ListPendingInvitationResources",
+      "ram:ListPermissionVersions",
+      "ram:ListPermissions",
+      "ram:ListPrincipals",
+      "ram:ListResourceSharePermissions",
+      "ram:ListResourceTypes",
+      "ram:ListResources",
+      "ram:RejectResourceShareInvitation",
+      "ram:TagResource",
+      "ram:UntagResource",
+      "ram:UpdateResourceShare"
     ]
     resources = ["*"]
   }
