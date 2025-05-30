@@ -1,0 +1,33 @@
+{
+  "account-type": "member",
+  "isolated-network": "true",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "property-datahub",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "property-datahub",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "property-cafm",
+    "business-unit": "HMPPS",
+    "infrastructure-support": "shanmugapriya.basker@justice.gov.uk",
+    "owner": "shanmugapriya.basker@justice.gov.uk",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}

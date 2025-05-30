@@ -90,13 +90,7 @@
     "destination_port": "$LAA_MAAT_TCP",
     "protocol": "TCP"
   },
-  "laa_test_to_mp_laa_development": {
-    "action": "PASS",
-    "source_ip": "${laa-lz-test}",
-    "destination_ip": "${laa-development}",
-    "destination_port": "ANY",
-    "protocol": "IP"
-  },
+
   "laa_shared_services_to_mp_laa_development": {
     "action": "PASS",
     "source_ip": "${laa-lz-shared-services-nonprod}",

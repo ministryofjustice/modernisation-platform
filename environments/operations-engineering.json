@@ -7,6 +7,22 @@
         {
           "sso_group_name": "operations-engineering",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "operations-engineering",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "operations-engineering",
+          "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "github-audit-log-viewer",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "github-audit-log-viewer",
+          "level": "data-engineer"
         }
       ],
       "nuke": "exclude"

@@ -146,13 +146,6 @@
     "destination_port": "53",
     "protocol": "UDP"
   },
-  "laa_staging_to_mp_laa_test": {
-    "action": "PASS",
-    "source_ip": "${laa-lz-staging}",
-    "destination_ip": "${laa-test}",
-    "destination_port": "ANY",
-    "protocol": "IP"
-  },
   "laa_uat_to_mp_laa_test": {
     "action": "ALERT",
     "source_ip": "${laa-lz-uat}",
@@ -382,6 +375,20 @@
     "source_ip": "${cloud-platform}",
     "destination_ip": "${hmpps-test}",
     "destination_port": "636",
+    "protocol": "TCP"
+  },
+  "youth_justice_networking_to_yjb_test_tcp": {
+    "action": "PASS",
+    "source_ip": "${youth-justice-networking-production}",
+    "destination_ip": "${yjb-test}",
+    "destination_port": "$YJB_TCP",
+    "protocol": "TCP"
+  },
+  "yjb_test_to_youth_justice_networking_production_tcp": {
+    "action": "PASS",
+    "source_ip": "${yjb-test}",
+    "destination_ip": "${youth-justice-networking-production}",
+    "destination_port": "$YJB_TCP",
     "protocol": "TCP"
   }
 }

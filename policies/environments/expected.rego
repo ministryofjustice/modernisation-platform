@@ -78,6 +78,7 @@ expected :=
     "portal",
     "ppud",
     "pra-register",
+    "property-cafm-data-migration",
     "refer-monitor",
     "sprinkler",
     "testing",

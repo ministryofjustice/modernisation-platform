@@ -1619,7 +1619,57 @@
       ]
     },
     {
+      "username": "ian.singleton",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "long-term-storage-production",
+          "access": "civica-role"
+        }
+      ]
+    },
+    {
+      "username": "mike.hutchinson",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "long-term-storage-production",
+          "access": "civica-role"
+        }
+      ]
+    },
+    {
       "username": "lokesh.manjegowd",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "long-term-storage-production",
+          "access": "node4-role"
+        }
+      ]
+    },
+    {
+      "username": "milton.chapman",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "long-term-storage-production",
+          "access": "node4-role"
+        }
+      ]
+    },
+    {
+      "username": "krishna.lankela",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "long-term-storage-production",
+          "access": "node4-role"
+        }
+      ]
+    },
+    {
+      "username": "matt.sherwin",
       "github-username": "no-value-supplied",
       "accounts": [
         {

@@ -102,7 +102,7 @@ resource "aws_cloudwatch_metric_alarm" "accepted_traffic_alarm" {
   metric_query {
     id          = "ad1"
     expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
-    label       = "AnomalyDetectionBand"
+    label       = "Sum AcceptedTrafficCount ${each.key} GreaterThanUpperThreshold 1.0"
     return_data = true
   }
 }
@@ -131,7 +131,7 @@ resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
   metric_query {
     id          = "ad1"
     expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
-    label       = "AnomalyDetectionBand"
+    label       = "Sum RejectedConnections ${each.key} GreaterThanUpperThreshold 1.0"
     return_data = true
   }
 }
@@ -160,7 +160,7 @@ resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
   metric_query {
     id          = "ad1"
     expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
-    label       = "AnomalyDetectionBand"
+    label       = "Sum SSHConnectionAttempts ${each.key} GreaterThanUpperThreshold 1.0"
     return_data = true
   }
 }
