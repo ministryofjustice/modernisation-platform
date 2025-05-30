@@ -258,6 +258,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "rds:RestoreDBInstanceToPointInTime",
       "rds:RebootDB*",
       "rhelkb:GetRhelURL",
+      "s3:ListBucket",
       "s3:PutObject",
       "s3:DeleteObject",
       "s3:DeleteObjectVersion",
