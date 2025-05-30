@@ -376,5 +376,19 @@
     "destination_ip": "${hmpps-test}",
     "destination_port": "636",
     "protocol": "TCP"
+  },
+  "youth_justice_networking_to_yjb_test_tcp": {
+    "action": "PASS",
+    "source_ip": "${youth-justice-networking-production}",
+    "destination_ip": "${yjb-test}",
+    "destination_port": "$YJB_TCP",
+    "protocol": "TCP"
+  },
+  "yjb_test_to_youth_justice_networking_production_tcp": {
+    "action": "PASS",
+    "source_ip": "${yjb-test}",
+    "destination_ip": "${youth-justice-networking-production}",
+    "destination_port": "$YJB_TCP",
+    "protocol": "TCP"
   }
 }

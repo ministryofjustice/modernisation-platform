@@ -684,5 +684,19 @@
     "destination_ip": "$CICA_AWS_PROD",
     "destination_port": "1521",
     "protocol": "TCP"
+  },
+  "youth_justice_networking_to_yjb_production_tcp": {
+    "action": "PASS",
+    "source_ip": "${youth-justice-networking-production}",
+    "destination_ip": "${yjb-production}",
+    "destination_port": "$YJB_TCP",
+    "protocol": "TCP"
+  },
+  "yjb_production_to_youth_justice_networking_production_tcp": {
+    "action": "PASS",
+    "source_ip": "${yjb-production}",
+    "destination_ip": "${youth-justice-networking-production}",
+    "destination_port": "$YJB_TCP",
+    "protocol": "TCP"
   }
 }
