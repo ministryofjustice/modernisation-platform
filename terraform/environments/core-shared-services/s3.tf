@@ -109,10 +109,6 @@ module "s3-software-bucket" {
         }
       ]
 
-      expiration = {
-        days = 730
-      }
-
       noncurrent_version_transition = [
         {
           days          = 90
