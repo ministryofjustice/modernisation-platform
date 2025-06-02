@@ -221,17 +221,3 @@ resource "aws_ec2_transit_gateway_route" "inspection_static_routes_ecp" {
   transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.ecp_tgw.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
-
-# # add external egress routes for non-live-data TGW route table to ECP attachment
-# resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_non_live_data_to_ecp" {
-#   destination_cidr_block         = "10.205.4.0/22"
-#   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
-#   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["non_live_data"].id
-# }
-
-# # add external egress routes for live-data TGW route table to MOJ ECP attachment
-# resource "aws_ec2_transit_gateway_route" "tgw_external_egress_routes_for_live_data_to_ecp" {
-#   destination_cidr_block         = "10.205.4.0/22"
-#   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
-#   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.route-tables["live_data"].id
-# }
