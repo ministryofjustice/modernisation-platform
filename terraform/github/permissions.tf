@@ -5,8 +5,9 @@ resource "github_repository_collaborators" "this" {
   repository = each.key
   dynamic "ignore_team" {
     for_each = toset([
-      "4380209", # organisation-security-auditor
-      "13130047" # organisation-security-auditor-external
+      "4380209",  # organisation-security-auditor
+      "13130047", # organisation-security-auditor-external
+      "13149335"  # organisation-security-auditor-architects
     ])
     content {
       team_id = ignore_team.value
