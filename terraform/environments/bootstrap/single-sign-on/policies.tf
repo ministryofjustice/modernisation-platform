@@ -774,6 +774,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "elasticloadbalancing:*",
       "events:*",
       "firehose:*",
+      "fis:*",
       "glacier:*",
       "glue:*",
       "guardduty:get*",
