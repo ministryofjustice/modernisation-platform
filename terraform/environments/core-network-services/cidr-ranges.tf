@@ -37,6 +37,7 @@ locals {
     psn-ppud                            = "51.247.2.115/32"
     vodafone_wan_nicts_aggregate        = "10.80.0.0/12" # for devices connected to Prison Networks
     youth-justice-networking-production = "10.20.224.0/21"
+    xsiam-prod-vpc                      = "10.180.96.0/22"
 
     # hmpps azure cidr ranges
     noms-live-vnet            = "10.40.0.0/18"
