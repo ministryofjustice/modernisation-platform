@@ -125,20 +125,6 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "aks_studio_hosting_dev_1_vnet_to_mp_hmpps_test_oracledb": {
-    "action": "PASS",
-    "source_ip": "${aks-studio-hosting-dev-1-vnet}",
-    "destination_ip": "${hmpps-test}",
-    "destination_port": "1521",
-    "protocol": "TCP"
-  },
-  "aks_studio_hosting_dev_1_vnet_to_mp_hmpps_test_https": {
-    "action": "PASS",
-    "source_ip": "${aks-studio-hosting-dev-1-vnet}",
-    "destination_ip": "${hmpps-test}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
   "mp_hmpps_test_to_noms_mgmt_vnet_dns": {
     "action": "PASS",
     "source_ip": "${hmpps-test}",
