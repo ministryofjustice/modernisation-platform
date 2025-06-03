@@ -1565,28 +1565,6 @@
       ]
     },
     {
-      "username": "darwin.ceriani",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "youth-justice-app-framework-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "youth-justice-app-framework-test",
-          "access": "developer"
-        },
-        {
-          "account-name": "youth-justice-app-framework-preproduction",
-          "access": "developer"
-        },
-        {
-          "account-name": "youth-justice-app-framework-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "john.beavis",
       "github-username": "no-value-supplied",
       "accounts": [
