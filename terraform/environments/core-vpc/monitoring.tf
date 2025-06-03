@@ -82,7 +82,7 @@ resource "aws_cloudwatch_metric_alarm" "accepted_traffic_alarm" {
   for_each            = local.laa_vpc_existing
   alarm_name          = "AcceptedTrafficAlarm-${each.key}"
   comparison_operator = "GreaterThanUpperThreshold"
-  evaluation_periods  = 2
+  evaluation_periods  = 3
   threshold_metric_id = "ad1"
   alarm_description   = "Anomaly detection alarm for accepted traffic in VPC '${each.key}'. A sudden spike or drop may indicate a network issue, service outage, or DDoS attempt."
   treat_missing_data  = "notBreaching"
@@ -111,7 +111,7 @@ resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
   for_each            = local.laa_vpc_existing
   alarm_name          = "RejectedConnectionsAlarm-${each.key}"
   comparison_operator = "GreaterThanUpperThreshold"
-  evaluation_periods  = 2
+  evaluation_periods  = 3
   threshold_metric_id = "ad1"
   alarm_description   = "Anomaly detection alarm for rejected connections in VPC '${each.key}'. May indicate unauthorized access attempts, port scanning, or misconfigured security groups."
   treat_missing_data  = "notBreaching"
@@ -140,7 +140,7 @@ resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
   for_each            = local.laa_vpc_existing
   alarm_name          = "SSHConnectionAttemptsAlarm-${each.key}"
   comparison_operator = "GreaterThanUpperThreshold"
-  evaluation_periods  = 2
+  evaluation_periods  = 3
   threshold_metric_id = "ad1"
   alarm_description   = "Anomaly detection alarm for SSH connection attempts (port 22) in VPC '${each.key}'. Indicates possible brute-force login attempts or unauthorized probing."
   treat_missing_data  = "notBreaching"
