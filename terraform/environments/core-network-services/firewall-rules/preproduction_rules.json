@@ -167,16 +167,16 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "analytical_platform_to_mp_hmpps_preproduction_oracledb": {
+  "xsiam_prod_to_mp_hmpps_preproduction_oracledb": {
     "action": "PASS",
-    "source_ip": "${analytical-platform-airflow-prod}",
+    "source_ip": "${xsiam-prod-vpc}",
     "destination_ip": "${hmpps-preproduction}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "xsiam_prod_to_mp_hmpps_preproduction_oracledb": {
+  "analytical_platform_to_mp_hmpps_preproduction_oracledb": {
     "action": "PASS",
-    "source_ip": "${xsiam-prod-vpc}",
+    "source_ip": "${analytical-platform-airflow-prod}",
     "destination_ip": "${hmpps-preproduction}",
     "destination_port": "1521",
     "protocol": "TCP"
