@@ -1372,19 +1372,19 @@
       "accounts": [
         {
           "account-name": "youth-justice-app-framework-development",
-          "access": "instance-management"
+          "access": "reporting-operations"
         },
         {
           "account-name": "youth-justice-app-framework-test",
-          "access": "instance-management"
+          "access": "reporting-operations"
         },
         {
           "account-name": "youth-justice-app-framework-preproduction",
-          "access": "instance-management"
+          "access": "reporting-operations"
         },
         {
           "account-name": "youth-justice-app-framework-production",
-          "access": "instance-management"
+          "access": "reporting-operations"
         }
       ]
     },
@@ -1692,28 +1692,6 @@
     },
     {
       "username": "alex.key",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "youth-justice-app-framework-development",
-          "access": "reporting-operations"
-        },
-        {
-          "account-name": "youth-justice-app-framework-test",
-          "access": "reporting-operations"
-        },
-        {
-          "account-name": "youth-justice-app-framework-preproduction",
-          "access": "reporting-operations"
-        },
-        {
-          "account-name": "youth-justice-app-framework-production",
-          "access": "reporting-operations"
-        }
-      ]
-    },
-    {
-      "username": "chris.strevens",
       "github-username": "no-value-supplied",
       "accounts": [
         {
