@@ -331,7 +331,6 @@ module "modernisation-platform-environments" {
     SLACK_WEBHOOK_URL                                    = data.aws_secretsmanager_secret_version.slack_webhook_url.secret_string
     TERRAFORM_GITHUB_TOKEN                               = data.aws_secretsmanager_secret_version.github_ci_user_token.secret_string
     PASSPHRASE                                           = local.decrypt_passphrase
-    MODERNISATION_PLATFORM_ACCOUNT_NUMBER                = local.modernisation_platform_account
     TESTING_AWS_ACCESS_KEY_ID                            = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     TESTING_AWS_SECRET_ACCESS_KEY                        = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
