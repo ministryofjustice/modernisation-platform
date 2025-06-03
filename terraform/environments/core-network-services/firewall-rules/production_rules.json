@@ -34,13 +34,6 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "xsiam_prod_to_mp_hmpps_production_oracledb": {
-    "action": "PASS",
-    "source_ip": "${xsiam-prod-vpc}",
-    "destination_ip": "${hmpps-production}",
-    "destination_port": "1521",
-    "protocol": "TCP"
-  },
   "cp_to_mp_hmpps_production_jdbc": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
@@ -123,6 +116,13 @@
     "source_ip": "${hmpps-production}",
     "destination_ip": "${noms-mgmt-live-dr-vnet}",
     "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "xsiam_prod_to_mp_hmpps_production_oracledb": {
+    "action": "PASS",
+    "source_ip": "${xsiam-prod-vpc}",
+    "destination_ip": "${hmpps-production}",
+    "destination_port": "1521",
     "protocol": "TCP"
   },
   "analytical_platform_to_mp_hmpps_production_oracledb": {
