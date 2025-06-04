@@ -8,6 +8,18 @@
           "sso_group_name": "xhibit-portal-dev",
           "level": "administrator"
         },
+	{
+          "sso_group_name": "panda-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "view-only"
+        },
         {
           "sso_group_name": "cjse-xhibit-portal-discovery",
           "level": "developer"
@@ -17,6 +29,18 @@
     {
       "name": "preproduction",
       "access": [
+	{
+          "sso_group_name": "panda-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "view-only"
+        },
         {
           "sso_group_name": "xhibit-portal-dev",
           "level": "developer"
@@ -26,6 +50,18 @@
     {
       "name": "production",
       "access": [
+	{
+          "sso_group_name": "panda-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "view-only"
+        },
         {
           "sso_group_name": "xhibit-portal-dev",
           "level": "developer"
