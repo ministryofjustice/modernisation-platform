@@ -170,7 +170,7 @@ resource "aws_iam_role" "read_logs" {
 #tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_role_policy" "read_dns" {
   # checkov:skip=CKV_AWS_355: "the policy is secured with the condition"
-  name = "ReadDNS"
+  name = "ReadDNSRecords"
   role = aws_iam_role.read_logs.id
 
   policy = jsonencode({
