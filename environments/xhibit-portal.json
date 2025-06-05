@@ -8,7 +8,7 @@
           "sso_group_name": "xhibit-portal-dev",
           "level": "administrator"
         },
-	{
+        {
           "sso_group_name": "panda-cyber-team",
           "level": "read-only"
         },
@@ -29,7 +29,7 @@
     {
       "name": "preproduction",
       "access": [
-	{
+        {
           "sso_group_name": "panda-cyber-team",
           "level": "read-only"
         },
@@ -50,7 +50,7 @@
     {
       "name": "production",
       "access": [
-	{
+        {
           "sso_group_name": "panda-cyber-team",
           "level": "read-only"
         },
