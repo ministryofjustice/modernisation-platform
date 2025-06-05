@@ -168,25 +168,47 @@ resource "aws_iam_role" "read_logs" {
 }
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
-resource "aws_iam_role_policy" "read_dns" {
+resource "aws_iam_role_policy" "read_dns_and_network" {
   # checkov:skip=CKV_AWS_355: "the policy is secured with the condition"
-  name = "ReadDNSRecords"
+  name = "ReadDNSAndNetworkResources"
   role = aws_iam_role.read_logs.id
 
   policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [
       {
-        "Effect" : "Allow",
-        "Action" : [
+        "Effect": "Allow",
+        "Action": [
           "route53:Get*",
           "route53:List*"
         ],
-        "Resource" : "*"
+        "Resource": "*"
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "ec2:DescribeVpcs",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeRouteTables",
+          "ec2:DescribeInternetGateways",
+          "ec2:DescribeNatGateways",
+          "ec2:DescribeVpnConnections",
+          "ec2:DescribeVpnGateways",
+          "ec2:DescribeCustomerGateways",
+          "ec2:DescribeTransitGateways",
+          "ec2:DescribeTransitGatewayAttachments",
+          "ec2:DescribeTransitGatewayRouteTables",
+          "ec2:DescribeNetworkAcls",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeAddresses",           # Elastic IPs
+          "ec2:DescribeNetworkInterfaces"
+        ],
+        "Resource": "*"
       }
     ]
   })
 }
+
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_role_policy" "read_firewall" {
