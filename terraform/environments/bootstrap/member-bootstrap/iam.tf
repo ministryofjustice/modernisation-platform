@@ -954,6 +954,8 @@ module "securityhub_insights_oidc_role" {
 }
 
 data "aws_iam_policy_document" "securityhub_insights_oidc_policy" {
+  # checkov:skip=CKV_AWS_111 "Required wildcard resource due to AWS Security Hub API limitations"
+  # checkov:skip=CKV_AWS_356 "Wildcard resource necessary because specific ARNs not supported for these actions"
   statement {
     sid    = "AllowSecurityHubInsightActions"
     effect = "Allow"
