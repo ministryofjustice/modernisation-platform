@@ -1,17 +1,17 @@
 
 data "aws_kms_key" "laa_general" {
-    key_id = "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:alias/general-laa"
+  key_id = "arn:aws:kms:eu-west-2:${local.environment_management.account_ids["core-shared-services-production"]}:alias/general-laa"
 }
 
-locals { 
+locals {
 
-    laa_general_kms_arn = data.aws_kms_key.laa_general.arn
+  laa_general_kms_arn = data.aws_kms_key.laa_general.arn
 
-    laa_account_ids = [
-      for member in local.environment.members : 
-      local.environment_management.account_ids[member.account_name]
-      if member.business_unit == "laa"
-    ]
+  laa_account_ids = [
+    for member in local.environment.members :
+    local.environment_management.account_ids[member.account_name]
+    if member.business_unit == "laa"
+  ]
 
 }
 
@@ -28,7 +28,7 @@ module "laa-shared-bucket" {
   versioning_enabled  = true
   force_destroy       = false
   ownership_controls  = "BucketOwnerEnforced"
-  custom_kms_key       = local.laa_general_kms_arn
+  custom_kms_key      = local.laa_general_kms_arn
 
   lifecycle_rule = [
     {
