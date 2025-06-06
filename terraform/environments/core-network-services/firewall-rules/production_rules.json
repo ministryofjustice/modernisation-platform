@@ -660,7 +660,7 @@
   "cp_to_mp_laa_production_soa": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
-    "destination_ip": "${laa-development}",
+    "destination_ip": "${laa-production}",
     "destination_port": "$LAA_CCMS_SOA",
     "protocol": "TCP"
   },
