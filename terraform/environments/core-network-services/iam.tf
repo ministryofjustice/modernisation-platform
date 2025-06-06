@@ -177,16 +177,16 @@ resource "aws_iam_role_policy" "read_dns" {
     Version = "2012-10-17",
     Statement = [
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "route53:Get*",
           "route53:List*"
         ],
-        "Resource": "*"
+        "Resource" : "*"
       },
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "ec2:DescribeVpcs",
           "ec2:DescribeSubnets",
           "ec2:DescribeRouteTables",
@@ -200,10 +200,10 @@ resource "aws_iam_role_policy" "read_dns" {
           "ec2:DescribeTransitGatewayRouteTables",
           "ec2:DescribeNetworkAcls",
           "ec2:DescribeSecurityGroups",
-          "ec2:DescribeAddresses",           # Elastic IPs
+          "ec2:DescribeAddresses", # Elastic IPs
           "ec2:DescribeNetworkInterfaces"
         ],
-        "Resource": "*"
+        "Resource" : "*"
       }
     ]
   })
