@@ -510,6 +510,13 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
+  "cp_to_mp_laa_preproduction_soa": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${laa-development}",
+    "destination_port": "$LAA_CCMS_SOA",
+    "protocol": "TCP"
+  },
   "dom1_dcs_to_planetfm_preproduction_53_DNS_TCP": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction-general-private-subnets}",
