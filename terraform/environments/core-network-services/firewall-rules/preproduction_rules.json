@@ -713,24 +713,24 @@
     "destination_port": "$YJB_TCP",
     "protocol": "TCP"
   },
-  "laa_preproduction_to_internet_ssh-a": {
+  "laa_preproduction_to_cmseft_xerox_ssh_ssh-a": {
     "action": "PASS",
     "source_ip": "${laa-mp-preproduction-public-subnets-a}",
-    "destination_ip": "0.0.0.0/0",
+    "destination_ip": "13.17.132.44",
     "destination_port": "22",
     "protocol": "TCP"
   },
-  "laa_preproduction_to_internet_ssh-b": {
+  "laa_preproduction_to_cmseft_xerox_ssh_ssh-b": {
     "action": "PASS",
     "source_ip": "${laa-mp-preproduction-public-subnets-b}",
-    "destination_ip": "0.0.0.0/0",
+    "destination_ip": "13.17.132.44",
     "destination_port": "22",
     "protocol": "TCP"
   },
-  "laa_preproduction_to_internet_ssh-c": {
+  "laa_preproduction_to_cmseft_xerox_ssh_ssh-c": {
     "action": "PASS",
     "source_ip": "${laa-mp-preproduction-public-subnets-c}",
-    "destination_ip": "0.0.0.0/0",
+    "destination_ip": "13.17.132.44",
     "destination_port": "22",
     "protocol": "TCP"
   }
