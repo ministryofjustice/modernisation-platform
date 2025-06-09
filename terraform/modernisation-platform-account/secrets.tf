@@ -200,6 +200,17 @@ resource "aws_secretsmanager_secret" "slack_webhooks" {
   }
 }
 
+resource "aws_secretsmanager_secret" "securityhub_slack_webhooks" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "securityhub_slack_webhooks"
+  description = "Stores Slack channel webhook URLs for sending Security Hub findings notifications"
+  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}
+
 resource "aws_secretsmanager_secret" "secrets-fetch-decrypt-passphrase" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "secrets-fetch-decrypt-passphrase"
