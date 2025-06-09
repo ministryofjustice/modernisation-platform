@@ -510,6 +510,13 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
+  "cp_to_mp_laa_preproduction_soa": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$LAA_CCMS_SOA",
+    "protocol": "TCP"
+  },
   "dom1_dcs_to_planetfm_preproduction_53_DNS_TCP": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction-general-private-subnets}",
@@ -669,6 +676,27 @@
     "source_ip": "${yjb-preproduction}",
     "destination_ip": "${youth-justice-networking-production}",
     "destination_port": "$YJB_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_internet_ssh-a": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-preproduction-public-subnets-a}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "22",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_internet_ssh-b": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-preproduction-public-subnets-b}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "22",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_internet_ssh-c": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-preproduction-public-subnets-c}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "22",
     "protocol": "TCP"
   }
 }

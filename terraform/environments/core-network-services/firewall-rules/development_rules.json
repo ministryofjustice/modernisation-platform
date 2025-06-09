@@ -160,6 +160,13 @@
     "destination_port": "1571",
     "protocol": "TCP"
   },
+  "cp_to_mp_laa_development_soa": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${laa-development}",
+    "destination_port": "$LAA_CCMS_SOA",
+    "protocol": "TCP"
+  },
   "cp_to_mp_hmpps_development_jdbc": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
