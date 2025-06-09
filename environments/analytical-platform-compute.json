@@ -30,6 +30,9 @@
     },
     {
       "name": "sagemaker-ai"
+    },
+    {
+      "name": "dashboard_service"
     }
   ],
   "codeowners": ["analytical-platform-engineers"],
