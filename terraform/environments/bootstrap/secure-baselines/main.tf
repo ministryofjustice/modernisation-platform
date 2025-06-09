@@ -78,7 +78,7 @@ module "baselines" {
   enable_securityhub_alerts = true
 
   # Pass in pagerduty integration key for security hub alerts
-  pagerduty_integration_key = local.is_core_account ? local.pagerduty_integration_keys["security_hub"] : local.pagerduty_integration_keys["security_hub_members"]
+  pagerduty_integration_key = local.pagerduty_integration_keys["security_hub_members"]
 
   # PagerDuty Key for High Priority Alarms
   high_priority_pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_high_priority_cloudwatch"]
