@@ -942,3 +942,28 @@ data "aws_iam_policy_document" "oidc_assume_role_dev_test" {
     ]
   }
 }
+
+# GitHub OIDC Role for Security Hub Insight Creation and Summary Access
+module "securityhub_insights_oidc_role" {
+  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=62b8a16c73d8e4422cd81923e46948e8f4b5cf48" # v3.2.0
+  github_repositories = ["ministryofjustice/modernisation-platform"]
+  role_name           = "github-actions-securityhub-insights"
+  policy_jsons        = [data.aws_iam_policy_document.securityhub_insights_oidc_policy.json]
+  subject_claim       = "ref:refs/heads/main"
+  tags                = { "Name" = format("%s-oidc-securityhub-insights", terraform.workspace) }
+}
+
+data "aws_iam_policy_document" "securityhub_insights_oidc_policy" {
+  # checkov:skip=CKV_AWS_111 "Required wildcard resource due to AWS Security Hub API limitations"
+  # checkov:skip=CKV_AWS_356 "Wildcard resource necessary because specific ARNs not supported for these actions"
+  statement {
+    sid    = "AllowSecurityHubInsightActions"
+    effect = "Allow"
+    actions = [
+      "securityhub:CreateInsight",
+      "securityhub:GetInsights",
+      "securityhub:GetInsightResults"
+    ]
+    resources = ["*"]
+  }
+}

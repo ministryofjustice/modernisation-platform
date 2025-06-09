@@ -97,6 +97,41 @@
     "destination_port": "$LAA_MAAT_TCP",
     "protocol": "TCP"
   },
+  "laa_preproduction_to_laa_preproduction_ccms_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-lz-staging}",
+    "destination_port": "$LAA_CCMS_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_laa_preproduction_oem_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-lz-staging}",
+    "destination_port": "$LAA_OEM_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_laa_preproduction_oas_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-lz-staging}",
+    "destination_port": "$LAA_OAS_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_laa_preproduction_edw_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-lz-staging}",
+    "destination_port": "$LAA_EDW_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_laa_preproduction_maat_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-lz-staging}",
+    "destination_port": "$LAA_MAAT_TCP",
+    "protocol": "TCP"
+  },
   "laa_mgmt_production_to_mp_laa_preproduction": {
     "action": "PASS",
     "source_ip": "${laa-lz-shared-services-prod}",
@@ -510,6 +545,13 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
+  "cp_to_mp_laa_preproduction_soa": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$LAA_CCMS_SOA",
+    "protocol": "TCP"
+  },
   "dom1_dcs_to_planetfm_preproduction_53_DNS_TCP": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction-general-private-subnets}",
@@ -669,6 +711,27 @@
     "source_ip": "${yjb-preproduction}",
     "destination_ip": "${youth-justice-networking-production}",
     "destination_port": "$YJB_TCP",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_internet_ssh-a": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-preproduction-public-subnets-a}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "22",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_internet_ssh-b": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-preproduction-public-subnets-b}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "22",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_to_internet_ssh-c": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-preproduction-public-subnets-c}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "22",
     "protocol": "TCP"
   }
 }

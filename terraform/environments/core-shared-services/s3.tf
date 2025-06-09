@@ -133,10 +133,12 @@ data "aws_iam_policy_document" "software_bucket_policy" {
   statement {
     effect = "Allow"
     actions = [
-      "s3:GetObject",
-      "s3:PutObject",
       "s3:DeleteObject",
-      "s3:ListBucket"
+      "s3:GetObject",
+      "s3:GetObjectACL",
+      "s3:ListBucket",
+      "s3:PutObject",
+      "s3:PutObjectACL"
     ]
 
     resources = [
