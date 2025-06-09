@@ -10,6 +10,7 @@
     "application": "core-sandbox",
     "business-unit": "Platforms",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "securityhub_slack_channel": "modernisation-platform",
     "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
     "critical-national-infrastructure": false
   },
