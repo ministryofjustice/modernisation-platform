@@ -1370,3 +1370,21 @@ module "soa_managed_ecr_repo" {
   ]
   tags_common = local.tags
 }
+
+module "edrms_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "ccms-edrms"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-development"]}:root"
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-test"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-preproduction"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-edrms-production"]}:root"
+  ]
+  tags_common = local.tags
+}

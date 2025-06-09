@@ -37,27 +37,21 @@ locals {
     psn-ppud                            = "51.247.2.115/32"
     vodafone_wan_nicts_aggregate        = "10.80.0.0/12" # for devices connected to Prison Networks
     youth-justice-networking-production = "10.20.224.0/21"
+    xsiam-prod-vpc                      = "10.180.96.0/22"
 
     # hmpps azure cidr ranges
-    noms-live-vnet                 = "10.40.0.0/18"
-    noms-live-dr-vnet              = "10.40.64.0/18"
-    noms-mgmt-live-vnet            = "10.40.128.0/20"
-    noms-mgmt-live-dr-vnet         = "10.40.144.0/20"
-    noms-transit-live-vnet         = "10.40.160.0/20"
-    noms-transit-live-dr-vnet      = "10.40.176.0/20"
-    noms-test-vnet                 = "10.101.0.0/16"
-    noms-mgmt-vnet                 = "10.102.0.0/16"
-    noms-test-dr-vnet              = "10.111.0.0/16"
-    noms-mgmt-dr-vnet              = "10.112.0.0/16"
-    aks-studio-hosting-live-1-vnet = "10.244.0.0/20"
-    aks-studio-hosting-dev-1-vnet  = "10.247.0.0/20"
-    aks-studio-hosting-ops-1-vnet  = "10.247.32.0/20"
-    nomisapi-t2-root-vnet          = "10.47.0.192/26"
-    nomisapi-t3-root-vnet          = "10.47.0.0/26"
-    nomisapi-preprod-root-vnet     = "10.47.0.64/26"
-    nomisapi-prod-root-vnet        = "10.47.0.128/26"
-    moj-smtp-relay1                = "10.180.104.100/32"
-    moj-smtp-relay2                = "10.180.105.100/32"
+    noms-live-vnet            = "10.40.0.0/18"
+    noms-live-dr-vnet         = "10.40.64.0/18"
+    noms-mgmt-live-vnet       = "10.40.128.0/20"
+    noms-mgmt-live-dr-vnet    = "10.40.144.0/20"
+    noms-transit-live-vnet    = "10.40.160.0/20"
+    noms-transit-live-dr-vnet = "10.40.176.0/20"
+    noms-test-vnet            = "10.101.0.0/16"
+    noms-mgmt-vnet            = "10.102.0.0/16"
+    noms-test-dr-vnet         = "10.111.0.0/16"
+    noms-mgmt-dr-vnet         = "10.112.0.0/16"
+    moj-smtp-relay1           = "10.180.104.100/32"
+    moj-smtp-relay2           = "10.180.105.100/32"
 
     # hmpps aws cidr ranges
     delius-eng-dev                    = "10.161.98.0/25"
@@ -82,6 +76,20 @@ locals {
     laa-lz-shared-services-prod    = "10.200.16.0/20"
     laa-appstream-vpc              = "10.200.32.0/19"
     laa-appstream-vpc_additional   = "10.200.68.0/22"
+
+    # laa modernisation-platform ranges
+    laa-mp-development-public-subnets-a = "10.26.59.0/25"
+    laa-mp-development-public-subnets-b = "10.26.59.128/25"
+    laa-mp-development-public-subnets-c = "10.26.60.0/25"
+
+    laa-mp-preproduction-public-subnets-a = "10.27.75.0/25"
+    laa-mp-preproduction-public-subnets-b = "10.27.75.128/25"
+    laa-mp-preproduction-public-subnets-c = "10.27.76.0/25"
+
+    laa-mp-production-public-subnets-a = "10.27.67.0/25"
+    laa-mp-production-public-subnets-b = "10.27.67.128/25"
+    laa-mp-production-public-subnets-c = "10.27.68.0/25"
+
 
     hmpps-preproduction-general-private-subnets = "10.27.0.0/22"
     hmpps-production-general-private-subnets    = "10.27.10.0/22"

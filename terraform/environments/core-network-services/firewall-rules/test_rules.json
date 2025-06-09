@@ -125,20 +125,6 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "aks_studio_hosting_dev_1_vnet_to_mp_hmpps_test_oracledb": {
-    "action": "PASS",
-    "source_ip": "${aks-studio-hosting-dev-1-vnet}",
-    "destination_ip": "${hmpps-test}",
-    "destination_port": "1521",
-    "protocol": "TCP"
-  },
-  "aks_studio_hosting_dev_1_vnet_to_mp_hmpps_test_https": {
-    "action": "PASS",
-    "source_ip": "${aks-studio-hosting-dev-1-vnet}",
-    "destination_ip": "${hmpps-test}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
   "mp_hmpps_test_to_noms_mgmt_vnet_dns": {
     "action": "PASS",
     "source_ip": "${hmpps-test}",
@@ -146,17 +132,17 @@
     "destination_port": "53",
     "protocol": "UDP"
   },
-  "laa_uat_to_mp_laa_test": {
-    "action": "ALERT",
-    "source_ip": "${laa-lz-uat}",
-    "destination_ip": "${laa-test}",
-    "destination_port": "ANY",
-    "protocol": "IP"
-  },
   "laa_test_to_mp_laa_test_ccms": {
     "action": "PASS",
     "source_ip": "${laa-lz-uat}",
     "destination_ip": "${laa-test}",
+    "destination_port": "$LAA_CCMS_TCP",
+    "protocol": "TCP"
+  },
+  "laa_test_to_mp_laa_test_ccms": {
+    "action": "PASS",
+    "source_ip": "${laa-test}",
+    "destination_ip": "${laa-lz-uat}",
     "destination_port": "$LAA_CCMS_TCP",
     "protocol": "TCP"
   },
@@ -347,6 +333,13 @@
     "source_ip": "${cloud-platform}",
     "destination_ip": "${laa-test}",
     "destination_port": "1522",
+    "protocol": "TCP"
+  },
+  "cp_to_mp_laa_test_soa": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${laa-test}",
+    "destination_port": "$LAA_CCMS_SOA",
     "protocol": "TCP"
   },
   "delius_test_to_hmpps_test_icmp": {
