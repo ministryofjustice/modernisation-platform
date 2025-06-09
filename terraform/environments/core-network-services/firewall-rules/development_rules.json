@@ -684,5 +684,26 @@
     "destination_ip": "${laa-development}",
     "destination_port": "1521",
     "protocol": "TCP"
+  },
+  "laa_development_to_internet_ssh-a": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-development-public-subnets-a}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "22",
+    "protocol": "TCP"
+  },
+  "laa_development_to_internet_ssh-b": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-development-public-subnets-b}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "22",
+    "protocol": "TCP"
+  },
+  "laa_development_to_internet_ssh-c": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-development-public-subnets-c}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "22",
+    "protocol": "TCP"
   }
 }
