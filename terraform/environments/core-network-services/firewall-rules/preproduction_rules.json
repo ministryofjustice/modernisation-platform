@@ -97,37 +97,37 @@
     "destination_port": "$LAA_MAAT_TCP",
     "protocol": "TCP"
   },
- "laa_preproduction_to_laa_preproduction_ccms_mp": {
+  "laa_preproduction_to_laa_preproduction_ccms_mp": {
     "action": "PASS",
     "source_ip": "${laa-preproduction}",
     "destination_ip": "${laa-lz-staging}",
     "destination_port": "$LAA_CCMS_TCP",
     "protocol": "TCP"
   },
-  "laa_development_to_laa_development_oem_mp": {
+  "laa_preproduction_to_laa_preproduction_oem_mp": {
     "action": "PASS",
-    "source_ip": "${laa-development}",
+    "source_ip": "${laa-preproduction}",
     "destination_ip": "${laa-lz-staging}",
     "destination_port": "$LAA_OEM_TCP",
     "protocol": "TCP"
   },
-  "laa_development_to_laa_development_oas_mp": {
+  "laa_preproduction_to_laa_preproduction_oas_mp": {
     "action": "PASS",
-    "source_ip": "${laa-development}",
+    "source_ip": "${laa-preproduction}",
     "destination_ip": "${laa-lz-staging}",
     "destination_port": "$LAA_OAS_TCP",
     "protocol": "TCP"
   },
-  "laa_development_to_laa_development_edw_mp": {
+  "laa_preproduction_to_laa_preproduction_edw_mp": {
     "action": "PASS",
-    "source_ip": "${laa-development}",
+    "source_ip": "${laa-preproduction}",
     "destination_ip": "${laa-lz-staging}",
     "destination_port": "$LAA_EDW_TCP",
     "protocol": "TCP"
   },
-  "laa_development_to_laa_development_maat_mp": {
+  "laa_preproduction_to_laa_preproduction_maat_mp": {
     "action": "PASS",
-    "source_ip": "${laa-development}",
+    "source_ip": "${laa-preproduction}",
     "destination_ip": "${laa-lz-staging}",
     "destination_port": "$LAA_MAAT_TCP",
     "protocol": "TCP"
@@ -144,13 +144,6 @@
     "source_ip": "${i2n}",
     "destination_ip": "${hmpps-preproduction}",
     "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "nomisapi_preprod_root_to_mp_hmpps_preproduction_oracledb": {
-    "action": "PASS",
-    "source_ip": "${nomisapi-preprod-root-vnet}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "1521",
     "protocol": "TCP"
   },
   "noms_live_to_mp_hmpps_preproduction": {
@@ -209,23 +202,9 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "aks_studio_hosting_live_1_to_mp_hmpps_preproduction_oracledb": {
+  "xsiam_prod_to_mp_hmpps_preproduction_oracledb": {
     "action": "PASS",
-    "source_ip": "${aks-studio-hosting-live-1-vnet}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "1521",
-    "protocol": "TCP"
-  },
-  "aks_studio_hosting_live_1_to_mp_hmpps_preproduction_https": {
-    "action": "PASS",
-    "source_ip": "${aks-studio-hosting-live-1-vnet}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
-  "nomisapi_prod_root_to_mp_hmpps_preproduction_oracledb": {
-    "action": "PASS",
-    "source_ip": "${nomisapi-prod-root-vnet}",
+    "source_ip": "${xsiam-prod-vpc}",
     "destination_ip": "${hmpps-preproduction}",
     "destination_port": "1521",
     "protocol": "TCP"
