@@ -203,6 +203,15 @@ locals {
       rule_number = 5400
       to_port     = 5721
     },
+    allow_0-0-0-0_ssh_tcp_out = {
+      cidr_block  = "0.0.0.0/0"
+      egress      = true
+      from_port   = 22
+      protocol    = "tcp"
+      rule_action = "allow"
+      rule_number = 5500
+      to_port     = 22
+    },
     deny_0-0-0-0_remote-desktop_tcp_in = {
       cidr_block  = "0.0.0.0/0"
       egress      = false
