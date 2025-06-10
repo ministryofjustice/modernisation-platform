@@ -11,7 +11,7 @@ create_or_get_insight() {
         --query "Insights[?Name=='$INSIGHT_NAME'].InsightArn" \
         --output text)
     if [ -z "$INSIGHT_ARN" ]; then
-        echo "Creating new Security Hub insight..."
+        #Creating new Security Hub insight...
         INSIGHT_ARN=$(aws securityhub create-insight --region "$REGION" \
             --name "$INSIGHT_NAME" \
             --filters '{"RecordState": [{"Value": "ACTIVE", "Comparison": "EQUALS"}]}' \
