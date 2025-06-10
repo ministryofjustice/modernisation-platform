@@ -945,6 +945,7 @@ data "aws_iam_policy_document" "oidc_assume_role_dev_test" {
 
 # GitHub OIDC Role for Security Hub Insight Creation and Summary Access
 module "securityhub_insights_oidc_role" {
+  count               = startswith(terraform.workspace, "core") && terraform.workspace != "core-shared-services-production" ? 0 : 1
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=62b8a16c73d8e4422cd81923e46948e8f4b5cf48" # v3.2.0
   github_repositories = ["ministryofjustice/modernisation-platform"]
   role_name           = "github-actions-securityhub-insights"
