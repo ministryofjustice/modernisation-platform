@@ -40,7 +40,7 @@ jobs:
           MATRIX_JSON=$(echo $ENVIRONMENT_MANAGEMENT | jq -c '[.account_ids | to_entries[] | {name: .key, id: .value}]')
           echo "matrix=$MATRIX_JSON" >> $GITHUB_OUTPUT
   process-security-findings:
-    name: Process Security Findings - ${{ matrix.account.name }}
+    name: ${{ matrix.account.name }}
     runs-on: ubuntu-latest
     needs: [fetch-secrets, generate-account-matrix]
     strategy:
