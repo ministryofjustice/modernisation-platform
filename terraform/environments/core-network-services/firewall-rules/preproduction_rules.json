@@ -715,21 +715,21 @@
   },
   "laa_preproduction_to_cmseft_xerox_ssh_ssh-a": {
     "action": "PASS",
-    "source_ip": "${laa-mp-preproduction-private-subnets-a}",
+    "source_ip": "${laa-mp-preproduction-general-private-subnets-a}",
     "destination_ip": "13.17.132.44",
     "destination_port": "22",
     "protocol": "TCP"
   },
   "laa_preproduction_to_cmseft_xerox_ssh_ssh-b": {
     "action": "PASS",
-    "source_ip": "${laa-mp-preproduction-private-subnets-b}",
+    "source_ip": "${laa-mp-preproduction-general-private-subnets-b}",
     "destination_ip": "13.17.132.44",
     "destination_port": "22",
     "protocol": "TCP"
   },
   "laa_preproduction_to_cmseft_xerox_ssh_ssh-c": {
     "action": "PASS",
-    "source_ip": "${laa-mp-preproduction-private-subnets-c}",
+    "source_ip": "${laa-mp-preproduction-general-private-subnets-c}",
     "destination_ip": "13.17.132.44",
     "destination_port": "22",
     "protocol": "TCP"
