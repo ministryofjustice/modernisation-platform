@@ -685,23 +685,23 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "laa_development_to_cmseft_xerox_ssh-a": {
+  "laa_development_subnet_a_ftp": {
     "action": "PASS",
-    "source_ip": "${laa-mp-development-public-subnets-a}",
+    "source_ip": "${laa-mp-development-general-private-subnets-a}",
     "destination_ip": "13.17.132.44",
     "destination_port": "22",
     "protocol": "TCP"
   },
-  "laa_development_to_cmseft_xerox_ssh-b": {
+  "laa_development_subnet_b_ftp": {
     "action": "PASS",
-    "source_ip": "${laa-mp-development-public-subnets-b}",
+    "source_ip": "${laa-mp-development-general-private-subnets-b}",
     "destination_ip": "13.17.132.44",
     "destination_port": "22",
     "protocol": "TCP"
   },
-  "laa_development_to_cmseft_xerox_ssh-c": {
+  "laa_development_subnet_c_ftp": {
     "action": "PASS",
-    "source_ip": "${laa-mp-development-public-subnets-c}",
+    "source_ip": "${laa-mp-development-general-private-subnets-c}",
     "destination_ip": "13.17.132.44",
     "destination_port": "22",
     "protocol": "TCP"

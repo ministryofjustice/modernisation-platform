@@ -78,17 +78,21 @@ locals {
     laa-appstream-vpc_additional   = "10.200.68.0/22"
 
     # laa modernisation-platform ranges
-    laa-mp-development-public-subnets-a = "10.26.59.0/25"
-    laa-mp-development-public-subnets-b = "10.26.59.128/25"
-    laa-mp-development-public-subnets-c = "10.26.60.0/25"
+    laa-mp-development-general-private-subnets-a = "10.26.56.0/24"
+    laa-mp-development-general-private-subnets-b = "10.26.57.0/24"
+    laa-mp-development-general-private-subnets-c = "10.26.58.0/24"
 
-    laa-mp-preproduction-public-subnets-a = "10.27.75.0/25"
-    laa-mp-preproduction-public-subnets-b = "10.27.75.128/25"
-    laa-mp-preproduction-public-subnets-c = "10.27.76.0/25"
+    laa-mp-test-general-private-subnets-a = "10.26.96.0/24"
+    laa-mp-test-general-private-subnets-b = "10.26.97.0/24"
+    laa-mp-test-general-private-subnets-c = "10.26.98.0/24"
 
-    laa-mp-production-public-subnets-a = "10.27.67.0/25"
-    laa-mp-production-public-subnets-b = "10.27.67.128/25"
-    laa-mp-production-public-subnets-c = "10.27.68.0/25"
+    laa-mp-preproduction-general-private-subnets-a = "10.27.72.0/24"
+    laa-mp-preproduction-general-private-subnets-b = "10.27.73.0/24"
+    laa-mp-preproduction-general-private-subnets-c = "10.27.74.0/24"
+
+    laa-mp-production-general-private-subnets-a = "10.27.64.0/24"
+    laa-mp-production-general-private-subnets-b = "10.27.65.0/24"
+    laa-mp-production-general-private-subnets-c = "10.27.66.0/24"
 
 
     hmpps-preproduction-general-private-subnets = "10.27.0.0/22"
