@@ -954,6 +954,16 @@ module "securityhub_insights_oidc_role" {
   tags                = { "Name" = format("%s-oidc-securityhub-insights", terraform.workspace) }
 }
 
+module "securityhub_insights_oidc_role_core" {
+  count                  = startswith(terraform.workspace, "core") && terraform.workspace != "core-shared-services-production" ? 1 : 0
+  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=82f546bd5f002674138a2ccdade7d7618c6758b3" # v3.0.0
+  github_repositories    = ["ministryofjustice/modernisation-platform:ref:refs/heads/main"]
+  role_name              = "github-actions-securityhub-insights"
+  additional_permissions = data.aws_iam_policy_document.securityhub_insights_oidc_policy.json
+  tags_common            = { "Name" = format("%s-oidc-securityhub-insights", terraform.workspace) }
+  tags_prefix            = ""
+}
+
 data "aws_iam_policy_document" "securityhub_insights_oidc_policy" {
   # checkov:skip=CKV_AWS_111 "Required wildcard resource due to AWS Security Hub API limitations"
   # checkov:skip=CKV_AWS_356 "Wildcard resource necessary because specific ARNs not supported for these actions"

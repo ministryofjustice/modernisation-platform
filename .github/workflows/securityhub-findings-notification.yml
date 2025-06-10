@@ -40,7 +40,7 @@ jobs:
           MATRIX_JSON=$(echo $ENVIRONMENT_MANAGEMENT | jq -c '[.account_ids | to_entries[] | {name: .key, id: .value}]')
           echo "matrix=$MATRIX_JSON" >> $GITHUB_OUTPUT
   process-security-findings:
-    name: Process Security Findings - ${{ matrix.account.name }}
+    name: ${{ matrix.account.name }}
     runs-on: ubuntu-latest
     needs: [fetch-secrets, generate-account-matrix]
     strategy:
@@ -88,12 +88,15 @@ jobs:
             echo "No webhook found for this channel. Skipping."
             exit 0
           fi
+          ACCOUNT_NUMBER=${{ matrix.account.id }}
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
           echo "webhook_url=$WEBHOOK" >> $GITHUB_OUTPUT
       - name: Configure AWS Credentials
         if: steps.fetch-webhook-url.outputs.webhook_url != ''
         uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
         with:
-          role-to-assume: "arn:aws:iam::${{ matrix.account.id }}:role/github-actions-securityhub-insights"
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-securityhub-insights"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
       - name: Analyze Security Hub Findings
@@ -109,7 +112,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ steps.fetch-webhook-url.outputs.webhook_url }}
           ACCOUNT_NAME: ${{ matrix.account.name }}
-          ACCOUNT_NUMBER: ${{ matrix.account.id }}
+          ACCOUNT_NUMBER: ${{ env.ACCOUNT_NUMBER }}
         run: |
           MESSAGE="*Security Hub Severity Summary - $ACCOUNT_NAME ($ACCOUNT_NUMBER)*\n\`\`\`\n${{ steps.analyze-findings.outputs.output }}\n\`\`\`"
           curl -X POST -H 'Content-type: application/json' --data "{\"text\": \"$MESSAGE\"}" "$SLACK_WEBHOOK_URL"
