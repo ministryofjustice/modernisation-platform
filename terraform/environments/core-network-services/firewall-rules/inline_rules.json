@@ -96,5 +96,12 @@
     "destination_ip": "0.0.0.0/0",
     "destination_port": "587",
     "protocol": "TCP"
+  },
+  "laa_development_inline_ftp": {
+    "action": "PASS",
+    "source_ip": "${LAA_DEVELOPMENT_PRIVATE_GENERAL}",
+    "destination_ip": "${LAA_FTP_ENDPOINTS}",
+    "destination_port": "${LAA_FTP_PORTS}",
+    "protocol": "TCP"
   }
 }

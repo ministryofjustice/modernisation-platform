@@ -685,25 +685,11 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "laa_development_to_cmseft_xerox_ssh-a": {
+  "laa_development_ftp": {
     "action": "PASS",
-    "source_ip": "${laa-mp-development-public-subnets-a}",
-    "destination_ip": "13.17.132.44",
-    "destination_port": "22",
-    "protocol": "TCP"
-  },
-  "laa_development_to_cmseft_xerox_ssh-b": {
-    "action": "PASS",
-    "source_ip": "${laa-mp-development-public-subnets-b}",
-    "destination_ip": "13.17.132.44",
-    "destination_port": "22",
-    "protocol": "TCP"
-  },
-  "laa_development_to_cmseft_xerox_ssh-c": {
-    "action": "PASS",
-    "source_ip": "${laa-mp-development-public-subnets-c}",
-    "destination_ip": "13.17.132.44",
-    "destination_port": "22",
+    "source_ip": "${LAA_DEVELOPMENT_PRIVATE_GENERAL}",
+    "destination_ip": "${LAA_FTP_ENDPOINTS}",
+    "destination_port": "${LAA_FTP_PORTS}",
     "protocol": "TCP"
   }
 }

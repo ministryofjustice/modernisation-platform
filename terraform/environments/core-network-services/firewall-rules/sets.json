@@ -89,6 +89,32 @@
       "9788",
       "9851"
     ],
+    "LAA_DEVELOPMENT_PRIVATE_GENERAL": [
+      "${laa-mp-development-general-private-subnets-a}",
+      "${laa-mp-development-general-private-subnets-b}",
+      "${laa-mp-development-general-private-subnets-c}"
+    ],
+    "LAA_TEST_PRIVATE_GENERAL": [
+      "${laa-mp-test-general-private-subnets-a}",
+      "${laa-mp-test-general-private-subnets-b}",
+      "${laa-mp-test-general-private-subnets-c}"
+    ],
+    "LAA_PREPRODUCTION_PRIVATE_GENERAL": [
+      "${laa-mp-preproduction-general-private-subnets-a}",
+      "${laa-mp-preproduction-general-private-subnets-b}",
+      "${laa-mp-preproduction-general-private-subnets-c}"
+    ],
+    "LAA_PRODUCTION_PRIVATE_GENERAL": [
+      "${laa-mp-production-general-private-subnets-a}",
+      "${laa-mp-production-general-private-subnets-b}",
+      "${laa-mp-production-general-private-subnets-c}"
+    ],
+    "LAA_FTP_ENDPOINTS": [
+      "13.17.132.44"
+    ],
+    "LAA_FTP_PORTS": [
+      "22"
+    ],
     "YJB_TCP": ["80", "443", "8080:8090", "9103"]
   }
 }
