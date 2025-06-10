@@ -97,11 +97,25 @@
     "destination_port": "587",
     "protocol": "TCP"
   },
-  "laa_development_inline_ftp": {
+  "laa_development_inline_ftp_a": {
     "action": "PASS",
-    "source_ip": "${LAA_DEVELOPMENT_PRIVATE_GENERAL}",
-    "destination_ip": "${LAA_FTP_ENDPOINTS}",
-    "destination_port": "${LAA_FTP_PORTS}",
+    "source_ip": "${laa-mp-development-general-private-subnets-a}",
+    "destination_ip": "13.17.132.44",
+    "destination_port": "22",
+    "protocol": "TCP"
+  },
+  "laa_development_inline_ftp_b": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-development-general-private-subnets-b}",
+    "destination_ip": "13.17.132.44",
+    "destination_port": "22",
+    "protocol": "TCP"
+  },
+  "laa_development_inline_ftp_c": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-development-general-private-subnets-c}",
+    "destination_ip": "13.17.132.44",
+    "destination_port": "22",
     "protocol": "TCP"
   }
 }
