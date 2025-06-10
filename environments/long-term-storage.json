@@ -7,7 +7,11 @@
         {
           "sso_group_name": "modernisation-platform-long-term-storage",
           "level": "developer"
-        }
+        },
+        {
+          "sso_group_name": "azure-aws-sso-tsd-solutionarchitects",
+          "level": "read-only"
+        },
       ]
     }
   ],
