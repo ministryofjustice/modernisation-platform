@@ -9,6 +9,10 @@
           "sso_group_name": "laa-sre-admins",
           "level": "sandbox"
         },
+          {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
         {
           "sso_group_name": "laa-ccms-migration-team",
           "level": "sandbox"
@@ -23,6 +27,10 @@
           "sso_group_name": "laa-sre-admins",
           "level": "developer"
         },
+          {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
         {
           "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
@@ -36,6 +44,10 @@
           "sso_group_name": "laa-sre-admins",
           "level": "developer"
         },
+          {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
         {
           "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
@@ -48,6 +60,10 @@
         {
           "sso_group_name": "laa-sre-admins",
           "level": "developer"
+        },
+         {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
         },
         {
           "sso_group_name": "laa-ccms-migration-team",
