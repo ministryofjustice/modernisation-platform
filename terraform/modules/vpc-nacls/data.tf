@@ -209,7 +209,7 @@ locals {
       from_port   = 22
       protocol    = "tcp"
       rule_action = "allow"
-      rule_number = 5500
+      rule_number = 5600
       to_port     = 22
     },
     deny_0-0-0-0_remote-desktop_tcp_in = {
