@@ -458,6 +458,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "s3:PutBucketNotificationConfiguration",
       "s3:GetBucketOwnershipControls",
       "s3:PutObjectAcl",
+      "s3:PutObjectTagging",
       "s3tables:*"
     ]
     resources = ["*"]
