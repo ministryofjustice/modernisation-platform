@@ -67,7 +67,7 @@
   },
   "YJB-Juniper-vSRX02-VPN": {
     "bgp_asn": "64523",
-    "customer_gateway_ip": "3.9.228.137",
+    "customer_gateway_ip": "13.43.212.52",
     "remote_ipv4_network_cidr": "0.0.0.0/0",
     "static_routes_only": true,
     "tunnel1_inside_cidr": "169.254.21.144/30",
