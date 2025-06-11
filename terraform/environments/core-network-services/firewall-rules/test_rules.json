@@ -411,5 +411,12 @@
     "destination_ip": "${youth-justice-networking-production}",
     "destination_port": "$YJB_TCP",
     "protocol": "TCP"
+  },
+  "laa_uat_to_mp_laa_test": {
+    "action": "ALERT",
+    "source_ip": "${laa-lz-uat}",
+    "destination_ip": "${laa-test}",
+    "destination_port": "ANY",
+    "protocol": "IP"
   }
 }
