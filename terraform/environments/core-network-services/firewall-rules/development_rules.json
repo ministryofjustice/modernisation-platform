@@ -706,7 +706,7 @@
     "destination_port": "22",
     "protocol": "TCP"
   },
-    "laa_development_to_mp_laa_development": {
+  "laa_development_to_mp_laa_development": {
     "action": "PASS",
     "source_ip": "${laa-lz-development}",
     "destination_ip": "${laa-development}",
