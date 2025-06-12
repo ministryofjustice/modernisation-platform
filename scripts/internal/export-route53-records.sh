@@ -54,7 +54,7 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIR
         zone_id=$(_jq '.Id' | cut -d'/' -f3)
         zone_name=$(_jq '.Name')
 
-        echo "Fetching records for zone: $zone_name"
+        echo "Fetching records for zone"
         records=$(aws route53 list-resource-record-sets \
             --hosted-zone-id "$zone_id" --output json)
 
