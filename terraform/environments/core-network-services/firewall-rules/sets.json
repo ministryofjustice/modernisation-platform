@@ -70,6 +70,7 @@
     "LAA_CCMS_SOA": ["80", "1571", "8001"],
     "LAA_EDW_TCP": ["2049"],
     "LAA_PORTAL_TCP": ["7001", "7201", "14200", "6800:6801", "5556", "6200"],
+    "LAA_PORTAL_WEBGATE_TCP": ["5575"],
     "LAA_MAAT_TCP": ["8090"],
     "LAA_OAS_TCP": ["9500", "9502", "9514", "3443"],
     "LAA_OEM_TCP": [
