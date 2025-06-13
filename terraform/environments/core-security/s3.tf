@@ -11,3 +11,11 @@ resource "aws_s3_bucket" "route53_data" {
   # checkov:skip=CKV2_AWS_61  No lifecycle needed for now
   bucket = "modernisation-platform-route53-data"
 }
+
+resource "aws_s3_bucket_public_access_block" "route53_data" {
+  bucket                  = aws_s3_bucket.route53_data.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
