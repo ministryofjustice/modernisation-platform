@@ -105,6 +105,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "ec2:DeleteSecurityGroup",
       "ec2:CreateTags",
       "ec2:DeleteTags",
+      "ecr:CreateRepository",
       "elasticfilesystem:Describe*",
       "elasticfilesystem:Create*",
       "elasticfilesystem:Delete*",
