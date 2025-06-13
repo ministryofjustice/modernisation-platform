@@ -7,7 +7,7 @@ ROOT_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 ROOT_AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
 
 # S3 config
-S3_BUCKET="modernisation-member-information"
+S3_BUCKET="modernisation-platform-route53-data"
 S3_KEY="route53-inventory/route53-records.json"
 
 # Temporary file for final JSON output
@@ -84,9 +84,24 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< $ENVIR
     echo "Completed $account_name"
 done
 
-# Upload final result to S3
-echo "Uploading to S3"
+# --- Upload to S3 from core-security account ---
+
+# Get core-security-production account ID
+CORE_SECURITY_ACCOUNT_ID=$(jq -r '.account_ids["core-security-production"]' <<< "$ENVIRONMENT_MANAGEMENT")
+
+echo "Assuming role into core-security-production account for S3 upload"
+getAssumeRoleCreds "$CORE_SECURITY_ACCOUNT_ID"
+
+# Upload the result to S3
+echo "Uploading to S3 in core-security-production account"
 aws s3 cp "$OUTPUT_FILE" "s3://${S3_BUCKET}/${S3_KEY}"
 echo "Upload successful."
 
+# Reset credentials to root
+export AWS_ACCESS_KEY_ID=$ROOT_AWS_ACCESS_KEY_ID
+export AWS_SECRET_ACCESS_KEY=$ROOT_AWS_SECRET_ACCESS_KEY
+export AWS_SESSION_TOKEN=$ROOT_AWS_SESSION_TOKEN
+
+# Clean up
 rm -f "$OUTPUT_FILE"
+rm -f credentials.json
