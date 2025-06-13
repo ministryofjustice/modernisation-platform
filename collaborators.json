@@ -469,6 +469,10 @@
         {
           "account-name": "youth-justice-networking-production",
           "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-networking-production",
+          "access": "migration"
         }
       ]
     },
@@ -515,6 +519,10 @@
         {
           "account-name": "youth-justice-networking-production",
           "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-networking-production",
+          "access": "migration"
         }
       ]
     },
