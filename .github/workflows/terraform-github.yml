@@ -8,6 +8,7 @@ on:
       - '.github/workflows/terraform-github.yml'
       - 'environments/**.json'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
+      - 'collaborators.json'
     branches:
       - main
   pull_request:
@@ -17,6 +18,7 @@ on:
       - '.github/workflows/terraform-github.yml'
       - 'environments/**.json'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
+      - 'collaborators.json'
     branches:
       - main
     types: [opened, edited, reopened, synchronize]

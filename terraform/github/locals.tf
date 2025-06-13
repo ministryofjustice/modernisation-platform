@@ -4,8 +4,12 @@ data "http" "environments_file" {
   url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/${local.testing_application_name}.json"
 }
 
+data "external" "git_branch" {
+  program = ["sh", "${path.module}/../../scripts/git-branch.sh"]
+}
+
 data "http" "collaborators_file" {
-  url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/collaborators.json"
+  url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/${data.external.git_branch.result.branch}/collaborators.json"
 }
 
 # Fetch all teams in the organization
