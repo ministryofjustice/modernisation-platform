@@ -181,3 +181,28 @@ data "aws_iam_policy_document" "testing_ci_iam_user_kms_key_policy" {
     }
   }
 }
+
+# Secrets manager policy
+data "aws_iam_policy_document" "testing_ci_iam_user_secrets_manager_policy" {
+  # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_109: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_108: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_356: "policy is directly related to the resource"
+  statement {
+    sid    = "AllowModernisationPlatformAccount"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:*"
+    ]
+    resources = [
+      "*"
+    ]
+    principals {
+      type = "AWS"
+      identifiers = [
+        data.aws_caller_identity.modernisation_platform.id
+      ]
+    }
+  }
+}
+
