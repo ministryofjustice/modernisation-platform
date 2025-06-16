@@ -72,6 +72,10 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "laa-mojfin-database-access",
+          "level": "instance-management"
+        },
+        {
           "sso_group_name": "azure-aws-sso-mojfin-ssm",
           "level": "ssm-session-access"
         }
