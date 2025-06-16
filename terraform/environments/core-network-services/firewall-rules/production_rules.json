@@ -237,13 +237,6 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "cp_to_mp_hmpps_production_icmp": {
-    "action": "PASS",
-    "source_ip": "${cloud-platform}",
-    "destination_ip": "${hmpps-production}",
-    "destination_port": "ANY",
-    "protocol": "ICMP"
-  },
   "hmpps_production_to_delius_eng_prod_oracledb": {
     "action": "PASS",
     "source_ip": "${hmpps-production}",
