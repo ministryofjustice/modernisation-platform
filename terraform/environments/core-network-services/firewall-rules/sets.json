@@ -7,9 +7,7 @@
     "AD_AZURE_RD_LICENSING": ["${ad-azure-rdlic}"],
     "AZURE_PROD": [
       "${noms-live-vnet}",
-      "${noms-mgmt-live-vnet}",
-      "${noms-live-dr-vnet}",
-      "${noms-mgmt-live-dr-vnet}"
+      "${noms-mgmt-live-vnet}"
     ],
     "AZURE_DEVTEST": ["${noms-test-vnet}", "${noms-mgmt-vnet}"],
     "DATA_ENGINEERING": [
