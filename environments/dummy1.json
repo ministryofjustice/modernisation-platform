@@ -1,0 +1,25 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "developer"
+        }
+      ],
+      "nuke": "exclude"
+    }
+  ],
+  "tags": {
+    "application": "Dummy1",
+    "business-unit": "Platforms",
+    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
+    "slack-channel": "modernisation-platform",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}
