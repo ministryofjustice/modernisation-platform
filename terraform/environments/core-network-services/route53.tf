@@ -18,6 +18,7 @@ locals {
     tipstaff      = "tipstaff.service.justice.gov.uk",
     tribunals     = "tribunals.gov.uk",
     wardship      = "wardship-agreements-register.service.justice.gov.uk"
+    legalservices = "legalservices.gov.uk"
   }
 
   private-application-zones = {
