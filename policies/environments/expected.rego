@@ -43,7 +43,7 @@ expected :=
     "delius-jitbit",
     "delius-mis",
     "digital-prison-reporting",
-    "dummy1"
+    "dummy1",
     "edw",
     "electronic-monitoring-data",
     "equip",
