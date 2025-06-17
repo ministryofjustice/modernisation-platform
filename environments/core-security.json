@@ -3,11 +3,12 @@
   "environments": [
     {
       "name": "production",
-      "access": []
-    },
-    {
-      "sso_group_name": "azure-aws-sso-the-agency",
-      "level": "read-only"
+      "access": [
+        {
+          "sso_group_name": "azure-aws-sso-the-agency",
+          "level": "read-only"
+        }
+      ]
     }
   ],
   "tags": {
