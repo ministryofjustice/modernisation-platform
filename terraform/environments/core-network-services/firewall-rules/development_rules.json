@@ -216,20 +216,6 @@
     "destination_port": "5432",
     "protocol": "TCP"
   },
-  "noms_test_dr_vnet_to_mp_hmpps_development": {
-    "action": "PASS",
-    "source_ip": "${noms-test-dr-vnet}",
-    "destination_ip": "${hmpps-development}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "mp_hmpps_development_to_noms_test_dr_vnet": {
-    "action": "PASS",
-    "source_ip": "${hmpps-development}",
-    "destination_ip": "${noms-test-dr-vnet}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
   "noms_test_vnet_to_mp_hmpps_development": {
     "action": "PASS",
     "source_ip": "${noms-test-vnet}",
@@ -255,20 +241,6 @@
     "action": "PASS",
     "source_ip": "${hmpps-development}",
     "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "noms_mgmt_dr_vnet_to_mp_hmpps_developmemnt": {
-    "action": "PASS",
-    "source_ip": "${noms-mgmt-dr-vnet}",
-    "destination_ip": "${hmpps-development}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "mp_to_hmpps_development_to_noms_mgmt_dr_vnet": {
-    "action": "PASS",
-    "source_ip": "${hmpps-development}",
-    "destination_ip": "${noms-mgmt-dr-vnet}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
