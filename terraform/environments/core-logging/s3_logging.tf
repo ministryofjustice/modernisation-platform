@@ -381,7 +381,7 @@ data "aws_iam_policy_document" "kms_logging_shield_advanced" {
     sid       = "AllowKeyAdmin"
     effect    = "Allow"
     actions   = ["kms:*"]
-    resources = ["*"]
+    resources = [aws_kms_key.s3_logging_shield_advanced.arn]
     principals {
       type        = "AWS"
       identifiers = [data.aws_caller_identity.current.account_id]
@@ -397,7 +397,7 @@ data "aws_iam_policy_document" "kms_logging_shield_advanced" {
       "kms:GenerateDataKey*",
       "kms:DescribeKey"
     ]
-    resources = ["*"]
+    resources = [aws_kms_key.s3_logging_shield_advanced.arn]
     principals {
       type        = "Service"
       identifiers = ["firehose.amazonaws.com"]
@@ -412,7 +412,7 @@ data "aws_iam_policy_document" "kms_logging_shield_advanced" {
       "kms:Decrypt",
       "kms:DescribeKey"
     ]
-    resources = ["*"]
+    resources = [aws_kms_key.s3_logging_shield_advanced.arn]
     principals {
       type        = "AWS"
       identifiers = [aws_iam_role.cortex_xsiam_role.arn]
@@ -427,7 +427,7 @@ data "aws_iam_policy_document" "kms_logging_shield_advanced" {
       "kms:Decrypt",
       "kms:DescribeKey"
     ]
-    resources = ["*"]
+    resources = [aws_kms_key.s3_logging_shield_advanced.arn]
     principals {
       type        = "Service"
       identifiers = ["sqs.amazonaws.com"]
@@ -445,7 +445,7 @@ data "aws_iam_policy_document" "kms_logging_shield_advanced" {
       "kms:GenerateDataKey*",
       "kms:DescribeKey"
     ]
-    resources = ["*"]
+    resources = [aws_kms_key.s3_logging_shield_advanced.arn]
     principals {
       type = "AWS"
       identifiers = [
@@ -477,7 +477,7 @@ data "aws_iam_policy_document" "kms_logging_shield_advanced_replication" {
     sid       = "AllowKeyAdmin"
     effect    = "Allow"
     actions   = ["kms:*"]
-    resources = ["*"]
+    resources = [aws_kms_key.s3_logging_shield_advanced_eu_west_1_replication.arn]
     principals {
       type        = "AWS"
       identifiers = [data.aws_caller_identity.current.account_id]
@@ -495,7 +495,7 @@ data "aws_iam_policy_document" "kms_logging_shield_advanced_replication" {
       "kms:GenerateDataKey*",
       "kms:DescribeKey"
     ]
-    resources = ["*"]
+    resources = [aws_kms_key.s3_logging_shield_advanced_eu_west_1_replication.arn]
     principals {
       type = "AWS"
       identifiers = [
