@@ -41,7 +41,7 @@ resource "aws_s3_bucket_notification" "logging_bucket_notification" {
   bucket = module.s3-bucket-cloudtrail.bucket.id
   queue {
     queue_arn = aws_sqs_queue.mp_cloudtrail_log_queue.arn
-    events    = ["s3:ObjectCreated:*"]
+    events    = ["s3:ObjectCreated:*"] # Events to trigger the notification
   }
 }
 
