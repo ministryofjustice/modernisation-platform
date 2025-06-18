@@ -40,13 +40,13 @@ locals {
     xsiam-prod-vpc                      = "10.180.96.0/22"
 
     # hmpps azure cidr ranges
-    noms-live-vnet            = "10.40.0.0/18"
-    noms-mgmt-live-vnet       = "10.40.128.0/20"
-    noms-transit-live-vnet    = "10.40.160.0/20"
-    noms-test-vnet            = "10.101.0.0/16"
-    noms-mgmt-vnet            = "10.102.0.0/16"
-    moj-smtp-relay1           = "10.180.104.100/32"
-    moj-smtp-relay2           = "10.180.105.100/32"
+    noms-live-vnet         = "10.40.0.0/18"
+    noms-mgmt-live-vnet    = "10.40.128.0/20"
+    noms-transit-live-vnet = "10.40.160.0/20"
+    noms-test-vnet         = "10.101.0.0/16"
+    noms-mgmt-vnet         = "10.102.0.0/16"
+    moj-smtp-relay1        = "10.180.104.100/32"
+    moj-smtp-relay2        = "10.180.105.100/32"
 
     # hmpps aws cidr ranges
     delius-eng-dev                    = "10.161.98.0/25"
