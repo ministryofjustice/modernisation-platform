@@ -357,3 +357,248 @@ module "s3-bucket-cloudtrail-logging" {
 
   tags = local.tags
 }
+
+
+data "aws_organizations_organization" "current" {}
+data "aws_region" "current" {}
+
+# Source KMS Key
+resource "aws_kms_key" "s3_logging_shield_advanced" {
+  description             = "KMS key for Shield Advanced logging bucket"
+  policy                  = data.aws_iam_policy_document.kms_logging_shield_advanced.json
+  enable_key_rotation     = true
+  deletion_window_in_days = 30
+  tags                    = local.tags
+}
+
+resource "aws_kms_alias" "s3_logging_shield_advanced" {
+  name          = "alias/s3-logging-shield-advanced"
+  target_key_id = aws_kms_key.s3_logging_shield_advanced.id
+}
+
+data "aws_iam_policy_document" "kms_logging_shield_advanced" {
+
+  # checkov:skip=CKV_AWS_109: "Policy is restricted to internal account and roles"
+  # checkov:skip=CKV_AWS_111: "Write access allowed only for approved services"
+  # checkov:skip=CKV_AWS_356: "Wildcard used in internal context and not public"
+
+  statement {
+    sid       = "AllowKeyAdmin"
+    effect    = "Allow"
+    actions   = ["kms:*"]
+    resources = ["*"]
+    principals {
+      type        = "AWS"
+      identifiers = [data.aws_caller_identity.current.account_id]
+    }
+  }
+
+  statement {
+    sid    = "AllowFirehoseEncrypt"
+    effect = "Allow"
+    actions = [
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
+    ]
+    resources = ["*"]
+    principals {
+      type        = "Service"
+      identifiers = ["firehose.amazonaws.com"]
+    }
+  }
+
+  statement {
+    sid    = "AllowCortexXsiamDecrypt"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey"
+    ]
+    resources = ["*"]
+    principals {
+      type        = "AWS"
+      identifiers = [aws_iam_role.cortex_xsiam_role.arn]
+    }
+  }
+
+  statement {
+    sid    = "AllowSQSDecrypt"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey"
+    ]
+    resources = ["*"]
+    principals {
+      type        = "Service"
+      identifiers = ["sqs.amazonaws.com"]
+    }
+  }
+
+  statement {
+    sid    = "AllowS3Replication"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
+    ]
+    resources = ["*"]
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSS3BucketReplication-shield-advanced/s3-replication"
+      ]
+    }
+  }
+}
+
+# Destination KMS Key
+resource "aws_kms_key" "s3_logging_shield_advanced_eu_west_1_replication" {
+  provider                = aws.modernisation-platform-eu-west-1
+  description             = "KMS key for Shield Advanced logging bucket replication (eu-west-1)"
+  policy                  = data.aws_iam_policy_document.kms_logging_shield_advanced_replication.json
+  enable_key_rotation     = true
+  deletion_window_in_days = 30
+  tags                    = local.tags
+}
+
+resource "aws_kms_alias" "s3_logging_shield_advanced_eu_west_1_replication" {
+  provider      = aws.modernisation-platform-eu-west-1
+  name          = "alias/s3-logging-shield-advanced-eu-west-1-replication"
+  target_key_id = aws_kms_key.s3_logging_shield_advanced_eu_west_1_replication.id
+}
+
+data "aws_iam_policy_document" "kms_logging_shield_advanced_replication" {
+
+  # checkov:skip=CKV_AWS_109: "Policy is restricted to internal account and roles"
+  # checkov:skip=CKV_AWS_111: "Write access allowed only for approved services"
+  # checkov:skip=CKV_AWS_356: "Wildcard used in internal context and not public"
+
+  statement {
+    sid       = "AllowKeyAdmin"
+    effect    = "Allow"
+    actions   = ["kms:*"]
+    resources = ["*"]
+    principals {
+      type        = "AWS"
+      identifiers = [data.aws_caller_identity.current.account_id]
+    }
+  }
+
+  statement {
+    sid    = "AllowS3Replication"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
+    ]
+    resources = ["*"]
+    principals {
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSS3BucketReplication-shield-advanced/s3-replication"
+      ]
+    }
+  }
+}
+
+
+# S3 bucket for Shield Advanced logging (WAF logs)
+module "s3-bucket-shield-advanced-logging" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
+  providers = {
+    aws.bucket-replication = aws.modernisation-platform-eu-west-1
+  }
+
+  bucket_name                = "modernisation-platform-logs-shield-advanced-logging"
+  replication_bucket         = "modernisation-platform-logs-shield-advanced-logging-replication"
+  suffix_name                = "-cloudtrail-logging"
+  custom_kms_key             = aws_kms_key.s3_logging_shield_advanced.arn
+  custom_replication_kms_key = aws_kms_key.s3_logging_shield_advanced_eu_west_1_replication.arn
+
+  replication_enabled = true
+  replication_region  = "eu-west-1"
+  versioning_enabled  = true
+
+  lifecycle_rule = [
+    {
+      id      = "main"
+      enabled = "Enabled"
+      prefix  = ""
+      tags    = {}
+      transition = [
+        {
+          days          = 90
+          storage_class = "STANDARD_IA"
+        },
+        {
+          days          = 365
+          storage_class = "GLACIER"
+        }
+      ]
+      expiration = {
+        days = 730
+      }
+      noncurrent_version_transition = [
+        {
+          days          = 90
+          storage_class = "STANDARD_IA"
+        },
+        {
+          days          = 365
+          storage_class = "GLACIER"
+        }
+      ]
+      noncurrent_version_expiration = {
+        days = 730
+      }
+    }
+  ]
+
+  tags = local.tags
+
+  bucket_policy = [data.aws_iam_policy_document.shield_advanced_bucket_policy.json]
+}
+
+data "aws_iam_policy_document" "shield_advanced_bucket_policy" {
+  # Allow only Kinesis Firehose from any MP Org account to put objects
+  statement {
+    sid       = "AllowOrgFirehosePut"
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
+    resources = ["${module.s3-bucket-shield-advanced-logging.bucket.arn}/*"]
+    principals {
+      type        = "Service"
+      identifiers = ["firehose.amazonaws.com"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.current.id]
+    }
+  }
+
+  # Deny unencrypted object uploads
+  statement {
+    sid       = "DenyUnencryptedObjectUploads"
+    effect    = "Deny"
+    actions   = ["s3:PutObject"]
+    resources = ["${module.s3-bucket-shield-advanced-logging.bucket.arn}/*"]
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "Null"
+      variable = "s3:x-amz-server-side-encryption"
+      values   = ["true"]
+    }
+  }
+}

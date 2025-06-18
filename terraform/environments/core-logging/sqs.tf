@@ -41,6 +41,52 @@ resource "aws_s3_bucket_notification" "logging_bucket_notification" {
   bucket = module.s3-bucket-cloudtrail.bucket.id
   queue {
     queue_arn = aws_sqs_queue.mp_cloudtrail_log_queue.arn
-    events    = ["s3:ObjectCreated:*"] # Events to trigger the notification
+    events    = ["s3:ObjectCreated:*"]
   }
 }
+
+
+# SQS Queue for Shield Advanced logging (WAF Logs) bucket updates for XSIAM
+resource "aws_sqs_queue" "mp_shield_advanced_log_queue" {
+  name                       = "mp_shield_advanced_log_queue"
+  sqs_managed_sse_enabled    = true
+  delay_seconds              = 0
+  max_message_size           = 262144
+  message_retention_seconds  = 345600
+  visibility_timeout_seconds = 30
+}
+
+data "aws_iam_policy_document" "shield_advanced_queue_policy_document" {
+  statement {
+    sid    = "AllowSendMessage"
+    effect = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["s3.amazonaws.com"]
+    }
+    actions = ["sqs:SendMessage"]
+    resources = [
+      aws_sqs_queue.mp_shield_advanced_log_queue.arn
+    ]
+    condition {
+      test     = "ArnEquals"
+      variable = "aws:SourceArn"
+      values   = [module.s3-bucket-shield-advanced-logging.bucket.arn]
+    }
+  }
+}
+
+resource "aws_sqs_queue_policy" "shield_advanced_queue_policy" {
+  queue_url = aws_sqs_queue.mp_shield_advanced_log_queue.id
+  policy    = data.aws_iam_policy_document.shield_advanced_queue_policy_document.json
+}
+
+resource "aws_s3_bucket_notification" "shield_advanced_logging_bucket_notification" {
+  bucket = module.s3-bucket-shield-advanced-logging.bucket.id
+  queue {
+    queue_arn = aws_sqs_queue.mp_shield_advanced_log_queue.arn
+    events    = ["s3:ObjectCreated:*"]
+  }
+}
+
+
