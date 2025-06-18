@@ -5,10 +5,7 @@
     "AD_HMPP_RD_LICENSING": ["${ad-hmpp-rdlic}"],
     "AD_AZURE_DCS": ["${ad-azure-dc-a}", "${ad-azure-dc-b}"],
     "AD_AZURE_RD_LICENSING": ["${ad-azure-rdlic}"],
-    "AZURE_PROD": [
-      "${noms-live-vnet}",
-      "${noms-mgmt-live-vnet}"
-    ],
+    "AZURE_PROD": ["${noms-live-vnet}", "${noms-mgmt-live-vnet}"],
     "AZURE_DEVTEST": ["${noms-test-vnet}", "${noms-mgmt-vnet}"],
     "DATA_ENGINEERING": [
       "${data-engineering-dev}",
@@ -83,6 +80,7 @@
       "7301",
       "7403",
       "7788",
+      "7777",
       "7799",
       "7803",
       "9788",
