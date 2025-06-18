@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 defaults:
   run:
@@ -36,8 +37,6 @@ jobs:
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
           terraform_github_token: ${{ needs.fetch-secrets.outputs.terraform_github_token }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
-      - name: Export terraform_github_token
-        run: echo "TERRAFORM_GITHUB_TOKEN=${{ needs.fetch-secrets.outputs.terraform_github_token }}" >> $GITHUB_ENV
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           path: core-repo
@@ -47,19 +46,18 @@ jobs:
           path: modernisation-platform-environments
           persist-credentials: false
         env:
-          TERRAFORM_GITHUB_TOKEN: ${{ env.TERRAFORM_GITHUB_TOKEN }}
+          TERRAFORM_GITHUB_TOKEN: ${{ needs.fetch-secrets.outputs.terraform_github_token }}
+
       - name: Provision member environment directories
         run: bash ./core-repo/scripts/provision-member-directories.sh
       - name: Commit changes to GitHub
         run: bash ./core-repo/scripts/git-setup.sh ./modernisation-platform-environments
-      - name: Export GITHUB_TOKEN for signed commit step
-        run: echo "GITHUB_TOKEN=${{ secrets.TERRAFORM_GITHUB_TOKEN }}" >> $GITHUB_ENV
       - name: Commit and Create PR with Signed Commit
         uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@c46848c0f17b1550dcf8ecffa0cdad8f0fc858ef # v3.2.3
         env:
-          GITHUB_TOKEN: ${{ secrets.TERRAFORM_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ needs.fetch-secrets.outputs.terraform_github_token }}
         with:
-          github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }} # use this token as writing to a different repo
+          github_token: ${{ needs.fetch-secrets.outputs.terraform_github_token }} # use this token as writing to a different repo
           remote_repository: "ministryofjustice/modernisation-platform-environments"
           remote_repository_path: "./modernisation-platform-environments"
           pr_title: "New files for terraform/environments"
@@ -71,5 +69,5 @@ jobs:
           payload: |
             {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
         env:
-          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
         if: ${{ failure() }}
