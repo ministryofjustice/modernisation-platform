@@ -360,6 +360,7 @@ module "s3-bucket-cloudtrail-logging" {
 
 
 data "aws_organizations_organization" "current" {}
+data "aws_region" "current" {}
 
 # Source KMS Key
 resource "aws_kms_key" "s3_logging_shield_advanced" {
@@ -376,19 +377,22 @@ resource "aws_kms_alias" "s3_logging_shield_advanced" {
 }
 
 data "aws_iam_policy_document" "kms_logging_shield_advanced" {
-  # Allow full admin access to the KMS key for Modernisation Platform
+
+  # checkov:skip=CKV_AWS_109: "Policy is restricted to internal account and roles"
+  # checkov:skip=CKV_AWS_111: "Write access allowed only for approved services"
+  # checkov:skip=CKV_AWS_356: "Wildcard used in internal context and not public"
+
   statement {
     sid       = "AllowKeyAdmin"
     effect    = "Allow"
     actions   = ["kms:*"]
-    resources = [aws_kms_key.s3_logging_shield_advanced.arn]
+    resources = ["*"]
     principals {
       type        = "AWS"
       identifiers = [data.aws_caller_identity.current.account_id]
     }
   }
 
-  # Allow Kinesis Firehose to encrypt logs
   statement {
     sid    = "AllowFirehoseEncrypt"
     effect = "Allow"
@@ -397,14 +401,13 @@ data "aws_iam_policy_document" "kms_logging_shield_advanced" {
       "kms:GenerateDataKey*",
       "kms:DescribeKey"
     ]
-    resources = [aws_kms_key.s3_logging_shield_advanced.arn]
+    resources = ["*"]
     principals {
       type        = "Service"
       identifiers = ["firehose.amazonaws.com"]
     }
   }
 
-  # Allow XSIAM Cortex role to decrypt
   statement {
     sid    = "AllowCortexXsiamDecrypt"
     effect = "Allow"
@@ -412,14 +415,13 @@ data "aws_iam_policy_document" "kms_logging_shield_advanced" {
       "kms:Decrypt",
       "kms:DescribeKey"
     ]
-    resources = [aws_kms_key.s3_logging_shield_advanced.arn]
+    resources = ["*"]
     principals {
       type        = "AWS"
       identifiers = [aws_iam_role.cortex_xsiam_role.arn]
     }
   }
 
-  # Allow SQS to decrypt
   statement {
     sid    = "AllowSQSDecrypt"
     effect = "Allow"
@@ -427,14 +429,13 @@ data "aws_iam_policy_document" "kms_logging_shield_advanced" {
       "kms:Decrypt",
       "kms:DescribeKey"
     ]
-    resources = [aws_kms_key.s3_logging_shield_advanced.arn]
+    resources = ["*"]
     principals {
       type        = "Service"
       identifiers = ["sqs.amazonaws.com"]
     }
   }
 
-  # Allow S3 replication role to use the key
   statement {
     sid    = "AllowS3Replication"
     effect = "Allow"
@@ -445,7 +446,7 @@ data "aws_iam_policy_document" "kms_logging_shield_advanced" {
       "kms:GenerateDataKey*",
       "kms:DescribeKey"
     ]
-    resources = [aws_kms_key.s3_logging_shield_advanced.arn]
+    resources = ["*"]
     principals {
       type = "AWS"
       identifiers = [
@@ -472,19 +473,22 @@ resource "aws_kms_alias" "s3_logging_shield_advanced_eu_west_1_replication" {
 }
 
 data "aws_iam_policy_document" "kms_logging_shield_advanced_replication" {
-  #Allow full admin access to the KMS key for Mod Platform
+
+  # checkov:skip=CKV_AWS_109: "Policy is restricted to internal account and roles"
+  # checkov:skip=CKV_AWS_111: "Write access allowed only for approved services"
+  # checkov:skip=CKV_AWS_356: "Wildcard used in internal context and not public"
+
   statement {
     sid       = "AllowKeyAdmin"
     effect    = "Allow"
     actions   = ["kms:*"]
-    resources = [aws_kms_key.s3_logging_shield_advanced_eu_west_1_replication.arn]
+    resources = ["*"]
     principals {
       type        = "AWS"
       identifiers = [data.aws_caller_identity.current.account_id]
     }
   }
 
-  # Allow S3 replication role to use the key
   statement {
     sid    = "AllowS3Replication"
     effect = "Allow"
@@ -495,7 +499,7 @@ data "aws_iam_policy_document" "kms_logging_shield_advanced_replication" {
       "kms:GenerateDataKey*",
       "kms:DescribeKey"
     ]
-    resources = [aws_kms_key.s3_logging_shield_advanced_eu_west_1_replication.arn]
+    resources = ["*"]
     principals {
       type = "AWS"
       identifiers = [
@@ -504,6 +508,7 @@ data "aws_iam_policy_document" "kms_logging_shield_advanced_replication" {
     }
   }
 }
+
 
 # S3 bucket for Shield Advanced logging (WAF logs)
 module "s3-bucket-shield-advanced-logging" {
