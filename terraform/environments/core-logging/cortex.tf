@@ -106,7 +106,7 @@ data "aws_iam_policy_document" "cortex_user_policy" {
     ]
     resources = flatten([
       aws_sqs_queue.mp_cloudtrail_log_queue.arn,
-      aws_sqs_queue.mp_shield_advanced_log_queue.arn,
+      aws_sqs_queue.mp_modernisation_platform_waf_logs_queue.arn,
       [for key in aws_sqs_queue.logging : key.arn]
     ])
   }
@@ -118,8 +118,8 @@ data "aws_iam_policy_document" "cortex_user_policy" {
       [
         module.s3-bucket-cloudtrail.bucket.arn,
         "${module.s3-bucket-cloudtrail.bucket.arn}/*",
-        module.s3-bucket-shield-advanced-logging.bucket.arn,
-        "${module.s3-bucket-shield-advanced-logging.bucket.arn}/*"
+        module.s3-bucket-modernisation-platform-waf-logs.bucket.arn,
+        "${module.s3-bucket-modernisation-platform-waf-logs.bucket.arn}/*"
       ],
       [for key in aws_s3_bucket.logging : "${key.arn}/*"]
     )

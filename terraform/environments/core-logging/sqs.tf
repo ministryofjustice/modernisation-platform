@@ -46,9 +46,9 @@ resource "aws_s3_bucket_notification" "logging_bucket_notification" {
 }
 
 
-# SQS Queue for Shield Advanced logging (WAF Logs) bucket updates for XSIAM
-resource "aws_sqs_queue" "mp_shield_advanced_log_queue" {
-  name                       = "mp_shield_advanced_log_queue"
+# SQS Queue for modernisation platform waf logs logging (WAF Logs) bucket updates for XSIAM
+resource "aws_sqs_queue" "mp_modernisation_platform_waf_logs_queue" {
+  name                       = "mp_modernisation_platform_waf_logs_queue"
   sqs_managed_sse_enabled    = true
   delay_seconds              = 0
   max_message_size           = 262144
@@ -56,7 +56,7 @@ resource "aws_sqs_queue" "mp_shield_advanced_log_queue" {
   visibility_timeout_seconds = 30
 }
 
-data "aws_iam_policy_document" "shield_advanced_queue_policy_document" {
+data "aws_iam_policy_document" "modernisation_platform_waf_logs_queue_policy_document" {
   statement {
     sid    = "AllowSendMessage"
     effect = "Allow"
@@ -66,25 +66,25 @@ data "aws_iam_policy_document" "shield_advanced_queue_policy_document" {
     }
     actions = ["sqs:SendMessage"]
     resources = [
-      aws_sqs_queue.mp_shield_advanced_log_queue.arn
+      aws_sqs_queue.mp_modernisation_platform_waf_logs_queue.arn
     ]
     condition {
       test     = "ArnEquals"
       variable = "aws:SourceArn"
-      values   = [module.s3-bucket-shield-advanced-logging.bucket.arn]
+      values   = [module.s3-bucket-modernisation-platform-waf-logs.bucket.arn]
     }
   }
 }
 
-resource "aws_sqs_queue_policy" "shield_advanced_queue_policy" {
-  queue_url = aws_sqs_queue.mp_shield_advanced_log_queue.id
-  policy    = data.aws_iam_policy_document.shield_advanced_queue_policy_document.json
+resource "aws_sqs_queue_policy" "modernisation_platform_waf_logs_queue_policy" {
+  queue_url = aws_sqs_queue.mp_modernisation_platform_waf_logs_queue.id
+  policy    = data.aws_iam_policy_document.modernisation_platform_waf_logs_queue_policy_document.json
 }
 
-resource "aws_s3_bucket_notification" "shield_advanced_logging_bucket_notification" {
-  bucket = module.s3-bucket-shield-advanced-logging.bucket.id
+resource "aws_s3_bucket_notification" "modernisation_platform_waf_logs_bucket_notification" {
+  bucket = module.s3-bucket-modernisation-platform-waf-logs.bucket.id
   queue {
-    queue_arn = aws_sqs_queue.mp_shield_advanced_log_queue.arn
+    queue_arn = aws_sqs_queue.mp_modernisation_platform_waf_logs_queue.arn
     events    = ["s3:ObjectCreated:*"]
   }
 }

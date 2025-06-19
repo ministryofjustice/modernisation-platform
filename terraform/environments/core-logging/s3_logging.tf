@@ -363,20 +363,20 @@ data "aws_organizations_organization" "current" {}
 data "aws_region" "current" {}
 
 # Source KMS Key
-resource "aws_kms_key" "s3_logging_shield_advanced" {
-  description             = "KMS key for Shield Advanced logging bucket"
-  policy                  = data.aws_iam_policy_document.kms_logging_shield_advanced.json
+resource "aws_kms_key" "s3_logging_modernisation_platform_waf_logs" {
+  description             = "KMS key for modernisation platform waf logs bucket"
+  policy                  = data.aws_iam_policy_document.kms_logging_modernisation_platform_waf_logs.json
   enable_key_rotation     = true
   deletion_window_in_days = 30
   tags                    = local.tags
 }
 
-resource "aws_kms_alias" "s3_logging_shield_advanced" {
-  name          = "alias/s3-logging-shield-advanced"
-  target_key_id = aws_kms_key.s3_logging_shield_advanced.id
+resource "aws_kms_alias" "s3_logging_modernisation_platform_waf_logs" {
+  name          = "alias/s3-logging-modernisation-platform-waf-logs"
+  target_key_id = aws_kms_key.s3_logging_modernisation_platform_waf_logs.id
 }
 
-data "aws_iam_policy_document" "kms_logging_shield_advanced" {
+data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs" {
 
   # checkov:skip=CKV_AWS_109: "Policy is restricted to internal account and roles"
   # checkov:skip=CKV_AWS_111: "Write access allowed only for approved services"
@@ -450,29 +450,29 @@ data "aws_iam_policy_document" "kms_logging_shield_advanced" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSS3BucketReplication-shield-advanced/s3-replication"
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSS3BucketReplication-modernisation-platform-waf-logs/s3-replication"
       ]
     }
   }
 }
 
 # Destination KMS Key
-resource "aws_kms_key" "s3_logging_shield_advanced_eu_west_1_replication" {
+resource "aws_kms_key" "s3_logging_modernisation_platform_waf_logs_eu_west_1_replication" {
   provider                = aws.modernisation-platform-eu-west-1
-  description             = "KMS key for Shield Advanced logging bucket replication (eu-west-1)"
-  policy                  = data.aws_iam_policy_document.kms_logging_shield_advanced_replication.json
+  description             = "KMS key for modernisation platform waf logs bucket replication (eu-west-1)"
+  policy                  = data.aws_iam_policy_document.kms_logging_modernisation_platform_waf_logs_replication.json
   enable_key_rotation     = true
   deletion_window_in_days = 30
   tags                    = local.tags
 }
 
-resource "aws_kms_alias" "s3_logging_shield_advanced_eu_west_1_replication" {
+resource "aws_kms_alias" "s3_logging_modernisation_platform_waf_logs_eu_west_1_replication" {
   provider      = aws.modernisation-platform-eu-west-1
-  name          = "alias/s3-logging-shield-advanced-eu-west-1-replication"
-  target_key_id = aws_kms_key.s3_logging_shield_advanced_eu_west_1_replication.id
+  name          = "alias/s3-logging-modernisation-platform-waf-logs-eu-west-1-replication"
+  target_key_id = aws_kms_key.s3_logging_modernisation_platform_waf_logs_eu_west_1_replication.id
 }
 
-data "aws_iam_policy_document" "kms_logging_shield_advanced_replication" {
+data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs_replication" {
 
   # checkov:skip=CKV_AWS_109: "Policy is restricted to internal account and roles"
   # checkov:skip=CKV_AWS_111: "Write access allowed only for approved services"
@@ -503,25 +503,25 @@ data "aws_iam_policy_document" "kms_logging_shield_advanced_replication" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSS3BucketReplication-shield-advanced/s3-replication"
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSS3BucketReplication-modernisation-platform-waf-logs/s3-replication"
       ]
     }
   }
 }
 
 
-# S3 bucket for Shield Advanced logging (WAF logs)
-module "s3-bucket-shield-advanced-logging" {
+# S3 bucket for centralised modernisation platform waf logs
+module "s3-bucket-modernisation-platform-waf-logs" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
 
-  bucket_name                = "modernisation-platform-logs-shield-advanced-logging"
-  replication_bucket         = "modernisation-platform-logs-shield-advanced-logging-replication"
-  suffix_name                = "-cloudtrail-logging"
-  custom_kms_key             = aws_kms_key.s3_logging_shield_advanced.arn
-  custom_replication_kms_key = aws_kms_key.s3_logging_shield_advanced_eu_west_1_replication.arn
+  bucket_name                = "modernisation-platform-waf-logs"
+  replication_bucket         = "modernisation-platform-waf-logs-replication"
+  suffix_name                = "-waf-logs"
+  custom_kms_key             = aws_kms_key.s3_logging_modernisation_platform_waf_logs.arn
+  custom_replication_kms_key = aws_kms_key.s3_logging_modernisation_platform_waf_logs_eu_west_1_replication.arn
 
   replication_enabled = true
   replication_region  = "eu-west-1"
@@ -564,16 +564,16 @@ module "s3-bucket-shield-advanced-logging" {
 
   tags = local.tags
 
-  bucket_policy = [data.aws_iam_policy_document.shield_advanced_bucket_policy.json]
+  bucket_policy = [data.aws_iam_policy_document.modernisation_platform_waf_logs_bucket_policy.json]
 }
 
-data "aws_iam_policy_document" "shield_advanced_bucket_policy" {
+data "aws_iam_policy_document" "modernisation_platform_waf_logs_bucket_policy" {
   # Allow only Kinesis Firehose from any MP Org account to put objects
   statement {
     sid       = "AllowOrgFirehosePut"
     effect    = "Allow"
     actions   = ["s3:PutObject"]
-    resources = ["${module.s3-bucket-shield-advanced-logging.bucket.arn}/*"]
+    resources = ["${module.s3-bucket-modernisation-platform-waf-logs.bucket.arn}/*"]
     principals {
       type        = "Service"
       identifiers = ["firehose.amazonaws.com"]
@@ -590,7 +590,7 @@ data "aws_iam_policy_document" "shield_advanced_bucket_policy" {
     sid       = "DenyUnencryptedObjectUploads"
     effect    = "Deny"
     actions   = ["s3:PutObject"]
-    resources = ["${module.s3-bucket-shield-advanced-logging.bucket.arn}/*"]
+    resources = ["${module.s3-bucket-modernisation-platform-waf-logs.bucket.arn}/*"]
     principals {
       type        = "*"
       identifiers = ["*"]
