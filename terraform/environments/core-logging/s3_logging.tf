@@ -450,7 +450,10 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSS3BucketReplication-modernisation-platform-waf-logs/s3-replication"
+        format(
+          "arn:aws:iam::%s:role/AWSS3BucketReplication-modernisation-platform-waf-logs/s3-replication",
+          data.aws_caller_identity.current.account_id
+        )
       ]
     }
   }
@@ -503,7 +506,10 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs_repl
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/AWSS3BucketReplication-modernisation-platform-waf-logs/s3-replication"
+        format(
+          "arn:aws:iam::%s:role/AWSS3BucketReplication-modernisation-platform-waf-logs/s3-replication",
+          data.aws_caller_identity.current.account_id
+        )
       ]
     }
   }
