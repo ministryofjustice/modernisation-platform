@@ -363,7 +363,7 @@ data "aws_organizations_organization" "current" {}
 data "aws_region" "current" {}
 
 # Source KMS Key
-resource "aws_kms_key" "s3_logging_modernisation_platform_waf_logs" {
+resource "aws_kms_key" "s3_modernisation_platform_waf_logs" {
   description             = "KMS key for modernisation platform waf logs bucket"
   policy                  = data.aws_iam_policy_document.kms_logging_modernisation_platform_waf_logs.json
   enable_key_rotation     = true
@@ -371,8 +371,8 @@ resource "aws_kms_key" "s3_logging_modernisation_platform_waf_logs" {
   tags                    = local.tags
 }
 
-resource "aws_kms_alias" "s3_logging_modernisation_platform_waf_logs" {
-  name          = "alias/s3-logging-modernisation-platform-waf-logs"
+resource "aws_kms_alias" "s3_modernisation_platform_waf_logs" {
+  name          = "alias/s3-modernisation-platform-waf-logs"
   target_key_id = aws_kms_key.s3_logging_modernisation_platform_waf_logs.id
 }
 
@@ -457,7 +457,7 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs" {
 }
 
 # Destination KMS Key
-resource "aws_kms_key" "s3_logging_modernisation_platform_waf_logs_eu_west_1_replication" {
+resource "aws_kms_key" "s3_modernisation_platform_waf_logs_eu_west_1_replication" {
   provider                = aws.modernisation-platform-eu-west-1
   description             = "KMS key for modernisation platform waf logs bucket replication (eu-west-1)"
   policy                  = data.aws_iam_policy_document.kms_logging_modernisation_platform_waf_logs_replication.json
@@ -468,7 +468,7 @@ resource "aws_kms_key" "s3_logging_modernisation_platform_waf_logs_eu_west_1_rep
 
 resource "aws_kms_alias" "s3_logging_modernisation_platform_waf_logs_eu_west_1_replication" {
   provider      = aws.modernisation-platform-eu-west-1
-  name          = "alias/s3-logging-modernisation-platform-waf-logs-eu-west-1-replication"
+  name          = "alias/s3-modernisation-platform-waf-logs-eu-west-1-replication"
   target_key_id = aws_kms_key.s3_logging_modernisation_platform_waf_logs_eu_west_1_replication.id
 }
 
