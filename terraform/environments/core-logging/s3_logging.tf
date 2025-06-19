@@ -447,7 +447,6 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs" {
       "kms:DescribeKey"
     ]
     resources = ["*"]
-
     principals {
       type = "AWS"
       identifiers = [
