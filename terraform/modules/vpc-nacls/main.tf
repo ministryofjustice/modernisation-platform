@@ -234,3 +234,14 @@ resource "aws_network_acl_rule" "public_subnet_dynamic_range_egress_rules" {
   rule_action    = "allow"
   rule_number    = (each.key * 100) + 6000
 }
+resource "aws_network_acl_rule" "laa_ssh_rules" {
+  for_each       = local.laa_ssh_acl_rules
+  cidr_block     = each.value.cidr_block
+  egress         = each.value.egress
+  from_port      = each.value.from_port
+  network_acl_id = aws_network_acl.general-private.id # or a dedicated LAA NACL if you have one
+  protocol       = each.value.protocol
+  rule_action    = each.value.rule_action
+  rule_number    = each.value.rule_number
+  to_port        = each.value.to_port
+}
