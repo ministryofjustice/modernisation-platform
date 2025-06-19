@@ -40,7 +40,7 @@ locals {
     "managersecuretransfer"     = { name = "manager.securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
     "oosecuretransfer"          = { name = "oo.securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
     "dev"                       = { name = "dev.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-674.awsdns-20.net", "ns-1463.awsdns-54.org", "ns-1537.awsdns-00.co.uk", "ns-495.awsdns-61.com"] }
-    "tst"                       = { name = "sts.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-1914.awsdns-47.co.uk", "ns-609.awsdns-12.net", "ns-195.awsdns-24.com", "ns-1187.awsdns-20.org"] }
+    "tst"                       = { name = "tst.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-1914.awsdns-47.co.uk", "ns-609.awsdns-12.net", "ns-195.awsdns-24.com", "ns-1187.awsdns-20.org"] }
     "uat"                       = { name = "uat.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-938.awsdns-53.net", "ns-1046.awsdns-02.org", "ns-334.awsdns-41.com", "ns-1731.awsdns-24.co.uk"] }
     "stg"                       = { name = "stg.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-1269.awsdns-30.org", "ns-1897.awsdns-45.co.uk", "ns-296.awsdns-37.com", "ns-917.awsdns-50.net"] }
   }
