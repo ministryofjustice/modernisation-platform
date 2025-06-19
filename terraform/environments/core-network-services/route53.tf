@@ -33,7 +33,6 @@ locals {
     "legalservices"             = { name = "legalservices.gov.uk", type = "A", ttl = 300, records = ["151.101.2.30"] }
     "wwwlegalservices"          = { name = "www.legalservices.gov.uk", type = "A", ttl = 300, records = ["151.101.2.30"] }
     "mxlegalservices"           = { name = "legalservices.gov.uk", type = "MX", ttl = 300, records = ["0 legalservices-gov-uk.mail.protection.outlook.com"] }
-    "portal"                    = { name = "portal.legalservices.gov.uk", type = "A", ttl = 300, records = ["d1yzmx9d5z0sdz.cloudfront.net."] }
     "securetransfer"            = { name = "securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
     "gwasecuretransfer"         = { name = "gwa.securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
     "hybridtoolssecuretransfer" = { name = "hybridtools.securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
@@ -180,4 +179,17 @@ resource "aws_route53_record" "legalservices" {
   type     = each.value.type
   ttl      = each.value.ttl
   records  = each.value.records
+}
+
+resource "aws_route53_record" "portal" {
+  # checkov:skip=CKV2_AWS_23: "Route53 A Record has Attached Resource"
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "portal.legalservices.gov.uk"
+  type    = "A"
+
+  alias {
+    name                   = "d1yzmx9d5z0sdz.cloudfront.net"
+    zone_id                = "Z2FDTNDATAQYW2"
+    evaluate_target_health = false
+  }
 }
