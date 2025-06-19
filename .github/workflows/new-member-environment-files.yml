@@ -52,7 +52,7 @@ jobs:
       - name: Commit changes to GitHub
         run: bash ./core-repo/scripts/git-setup.sh ./modernisation-platform-environments
       - name: Commit and Create PR with Signed Commit
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@167a76dd34285af44956795d7a376245f762bc0b # Testing Update
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@e0df4eede6fde06c2f9b1d4d568b92d8cc514463 # Testing Update
         env:
           GITHUB_TOKEN: ${{ needs.fetch-secrets.outputs.terraform_github_token }}
         with:
