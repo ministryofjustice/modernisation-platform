@@ -373,7 +373,7 @@ resource "aws_kms_key" "s3_modernisation_platform_waf_logs" {
 
 resource "aws_kms_alias" "s3_modernisation_platform_waf_logs" {
   name          = "alias/s3-modernisation-platform-waf-logs"
-  target_key_id = aws_kms_key.s3_logging_modernisation_platform_waf_logs.id
+  target_key_id = aws_kms_key.s3_modernisation_platform_waf_logs.id
 }
 
 data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs" {
@@ -469,7 +469,7 @@ resource "aws_kms_key" "s3_modernisation_platform_waf_logs_eu_west_1_replication
 resource "aws_kms_alias" "s3_logging_modernisation_platform_waf_logs_eu_west_1_replication" {
   provider      = aws.modernisation-platform-eu-west-1
   name          = "alias/s3-modernisation-platform-waf-logs-eu-west-1-replication"
-  target_key_id = aws_kms_key.s3_logging_modernisation_platform_waf_logs_eu_west_1_replication.id
+  target_key_id = aws_kms_key.s3_modernisation_platform_waf_logs_eu_west_1_replication.id
 }
 
 data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs_replication" {
@@ -520,8 +520,8 @@ module "s3-bucket-modernisation-platform-waf-logs" {
   bucket_name                = "modernisation-platform-waf-logs"
   replication_bucket         = "modernisation-platform-waf-logs-replication"
   suffix_name                = "-waf-logs"
-  custom_kms_key             = aws_kms_key.s3_logging_modernisation_platform_waf_logs.arn
-  custom_replication_kms_key = aws_kms_key.s3_logging_modernisation_platform_waf_logs_eu_west_1_replication.arn
+  custom_kms_key             = aws_kms_key.s3_modernisation_platform_waf_logs.arn
+  custom_replication_kms_key = aws_kms_key.s3_modernisation_platform_waf_logs_eu_west_1_replication.arn
 
   replication_enabled = true
   replication_region  = "eu-west-1"
