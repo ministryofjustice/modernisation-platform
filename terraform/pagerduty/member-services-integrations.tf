@@ -1947,6 +1947,18 @@ resource "pagerduty_schedule" "dso" {
   description = "#ask-digital-studio-operations Concierge in-hours rota. Managed in terraform"
   time_zone   = "Europe/London"
 
+  # Incidents will not be created if there is no one on call. Adding a fall back layer to ensure there is always a user on call.
+  layer {
+    name                         = "Fallback layer"
+    start                        = "2025-05-15T06:00:00Z"
+    rotation_virtual_start       = "2025-05-15T06:00:00Z"
+    rotation_turn_length_seconds = 604800
+
+    users = [
+      pagerduty_user.pager_duty_users["modernisation_platform"].id
+    ]
+  }
+
   layer {
     name                         = "Primary Schedule"
     start                        = "2025-05-15T00:00:00Z"
