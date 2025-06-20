@@ -653,6 +653,8 @@ resource "aws_iam_role_policy" "firehose_to_s3_policy" {
 
 # This stream receives WAF logs from member accounts and delivers them to the centralized S3 bucket
 resource "aws_kinesis_firehose_delivery_stream" "waf_logs_to_s3" {
+  # checkov:skip=CKV_AWS_240: "Encryption is enabled with a CMK via kms_key_arn"
+  # checkov:skip=CKV_AWS_241: "Encryption is enabled with a CMK via kms_key_arn"
   name        = "waf-logs-to-s3"
   destination = "extended_s3"
 
