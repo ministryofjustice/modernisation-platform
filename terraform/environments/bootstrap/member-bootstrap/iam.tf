@@ -163,6 +163,8 @@ data "aws_iam_policy_document" "member-access" {
       "lakeformation:*",
       "lambda:*",
       "logs:*",
+      "networkflowmonitor:*",
+      "networkmonitor:*",
       "organizations:Describe*",
       "organizations:List*",
       "oam:*",
