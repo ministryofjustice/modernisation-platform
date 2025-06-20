@@ -77,6 +77,10 @@ locals {
     laa-mp-development-general-private-subnets-b = "10.26.57.0/24"
     laa-mp-development-general-private-subnets-c = "10.26.58.0/24"
 
+    laa-mp-development-general-data-subnets-a = "10.26.60.128/25"
+    laa-mp-development-general-data-subnets-b = "10.26.61.0/25"
+    laa-mp-development-general-data-subnets-c = "10.26.61.128/25"
+
     laa-mp-test-general-private-subnets-a = "10.26.96.0/24"
     laa-mp-test-general-private-subnets-b = "10.26.97.0/24"
     laa-mp-test-general-private-subnets-c = "10.26.98.0/24"
