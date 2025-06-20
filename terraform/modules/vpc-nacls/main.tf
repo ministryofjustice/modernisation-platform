@@ -235,7 +235,7 @@ resource "aws_network_acl_rule" "public_subnet_dynamic_range_egress_rules" {
   rule_number    = (each.key * 100) + 6000
 }
 resource "aws_network_acl_rule" "laa_ssh_rules" {
-  for_each       = contains(local.laa_vpc_keys, terraform.workspace) ? local.laa_ssh_acl_rules : {}
+  for_each       = lookup(local.laa_ssh_acl_rules_by_workspace, terraform.workspace, {})
   cidr_block     = each.value.cidr_block
   egress         = each.value.egress
   from_port      = each.value.from_port
