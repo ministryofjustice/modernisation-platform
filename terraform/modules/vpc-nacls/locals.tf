@@ -37,3 +37,6 @@ locals {
     "laa-development"
   ]
 }
+output "debug_laa_ssh_enable" {
+  value = contains(local.laa_vpc_keys, terraform.workspace)
+}
