@@ -608,3 +608,60 @@ data "aws_iam_policy_document" "modernisation_platform_waf_logs_bucket_policy" {
     }
   }
 }
+
+# Kinesis Firehose stream for centralized WAF logging
+
+resource "aws_iam_role" "firehose_to_s3" {
+  name = "firehose_to_s3"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Principal = {
+        Service = "firehose.amazonaws.com"
+      }
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy" "firehose_to_s3_policy" {
+  role = aws_iam_role.firehose_to_s3.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:PutObject",
+          "s3:PutObjectAcl"
+        ]
+        Resource = "${module.s3-bucket-modernisation-platform-waf-logs.bucket.arn}/*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kms:Encrypt",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ]
+        Resource = aws_kms_key.s3_modernisation_platform_waf_logs.arn
+      }
+    ]
+  })
+}
+
+# This stream receives WAF logs from member accounts and delivers them to the centralized S3 bucket
+resource "aws_kinesis_firehose_delivery_stream" "waf_logs_to_s3" {
+  name        = "waf-logs-to-s3"
+  destination = "extended_s3"
+
+  extended_s3_configuration {
+    role_arn           = aws_iam_role.firehose_to_s3.arn
+    bucket_arn         = module.s3-bucket-modernisation-platform-waf-logs.bucket.arn
+    buffering_size     = 5
+    buffering_interval = 300
+    compression_format = "UNCOMPRESSED"
+    kms_key_arn        = aws_kms_key.s3_modernisation_platform_waf_logs.arn
+  }
+}
