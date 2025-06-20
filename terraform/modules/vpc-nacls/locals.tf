@@ -29,3 +29,11 @@ locals {
     }
   }
 }
+locals {
+  laa_vpc_keys = [
+    "laa-production",
+    "laa-preproduction",
+    "laa-test",
+    "laa-development"
+  ]
+}
