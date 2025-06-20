@@ -633,6 +633,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "mgh:*",
       "mgn:*",
       "migrationhub-strategy:*",
+      "networkflowmonitor:*",
       "oam:*",
       "organizations:DescribeOrganization",
       "quicksight:*",
