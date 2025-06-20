@@ -38,6 +38,7 @@ locals {
     "hybridtoolssecuretransfer" = { name = "hybridtools.securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
     "managersecuretransfer"     = { name = "manager.securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
     "oosecuretransfer"          = { name = "oo.securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
+    "gwphybrid"                 = { name = "gwphybrid.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
     "dev"                       = { name = "dev.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-674.awsdns-20.net", "ns-1463.awsdns-54.org", "ns-1537.awsdns-00.co.uk", "ns-495.awsdns-61.com"] }
     "tst"                       = { name = "tst.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-1914.awsdns-47.co.uk", "ns-609.awsdns-12.net", "ns-195.awsdns-24.com", "ns-1187.awsdns-20.org"] }
     "uat"                       = { name = "uat.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-938.awsdns-53.net", "ns-1046.awsdns-02.org", "ns-334.awsdns-41.com", "ns-1731.awsdns-24.co.uk"] }
