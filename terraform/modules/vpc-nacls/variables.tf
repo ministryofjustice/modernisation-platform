@@ -25,7 +25,3 @@ variable "vpc_name" {
   description = "Selected VPC for NACL creation"
   type        = string
 }
-variable "platform_name" {
-  description = "Name of the platform/environment (e.g., laa, opg, etc.)"
-  type        = string
-}
