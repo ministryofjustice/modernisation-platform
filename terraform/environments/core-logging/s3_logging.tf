@@ -451,7 +451,7 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs" {
       type = "AWS"
       identifiers = [
         format(
-          "arn:aws:iam::%s:role/AWSS3BucketReplication-modernisation-platform-waf-logs/s3-replication",
+          "arn:aws:sts::%s:assumed-role/AWSS3BucketReplication-waf-logs/s3-replication",
           data.aws_caller_identity.current.account_id
         )
       ]
@@ -507,7 +507,7 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs_repl
       type = "AWS"
       identifiers = [
         format(
-          "arn:aws:iam::%s:role/AWSS3BucketReplication-modernisation-platform-waf-logs/s3-replication",
+          "arn:aws:sts::%s:assumed-role/AWSS3BucketReplication-waf-logs/s3-replication",
           data.aws_caller_identity.current.account_id
         )
       ]
