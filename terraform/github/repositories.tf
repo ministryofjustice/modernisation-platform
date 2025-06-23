@@ -326,13 +326,8 @@ module "modernisation-platform-environments" {
   required_checks = ["run-opa-policy-tests"]
   secrets = {
     # Terraform GitHub token for the CI/CD user
-    MODERNISATION_PLATFORM_CI_USER_ENVIRONMENTS_REPO_PAT = data.aws_secretsmanager_secret_version.github_ci_user_environments_repo_pat_token.secret_string
-    MODERNISATION_PLATFORM_ACCOUNT_ID                    = local.modernisation_platform_account
-    SLACK_WEBHOOK_URL                                    = data.aws_secretsmanager_secret_version.slack_webhook_url.secret_string
-    TERRAFORM_GITHUB_TOKEN                               = data.aws_secretsmanager_secret_version.github_ci_user_token.secret_string
-    PASSPHRASE                                           = local.decrypt_passphrase
-    TESTING_AWS_ACCESS_KEY_ID                            = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    TESTING_AWS_SECRET_ACCESS_KEY                        = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
+    MODERNISATION_PLATFORM_ACCOUNT_ID = local.modernisation_platform_account
+    PASSPHRASE                        = local.decrypt_passphrase
   }
   restrict_dismissals    = true
   dismissal_restrictions = ["ministryofjustice/modernisation-platform"]
