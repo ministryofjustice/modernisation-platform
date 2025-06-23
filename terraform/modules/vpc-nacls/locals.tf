@@ -9,7 +9,7 @@ locals {
   # SSH NACL rules specific to LAA VPCs
   laa_ssh_acl_rules = {
     laa_development_subnet_a_ssh = {
-      cidr_block  = "13.17.132.44/32"
+      cidr_block  = "0.0.0.0/0"
       egress      = true
       from_port   = 22
       to_port     = 22
@@ -18,7 +18,7 @@ locals {
       rule_number = 6010
     }
     laa_development_subnet_b_ssh = {
-      cidr_block  = "13.17.132.44/32"
+      cidr_block  = "0.0.0.0/0"
       egress      = true
       from_port   = 22
       to_port     = 22
@@ -27,7 +27,7 @@ locals {
       rule_number = 6011
     }
     laa_development_subnet_c_ssh = {
-      cidr_block  = "13.17.132.44/32"
+      cidr_block  = "0.0.0.0/0"
       egress      = true
       from_port   = 22
       to_port     = 22
