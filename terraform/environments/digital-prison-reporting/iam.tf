@@ -82,6 +82,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "ecr:DescribeImages",
       "ecr:DescribeRepositories",
       "ecr:ListImages",
+      "ecr:ListTagsForResource",
       "ecr:GetAuthorizationToken",
       "ecr:GetDownloadUrlForLayer",
       "ecr:BatchGetImage",
