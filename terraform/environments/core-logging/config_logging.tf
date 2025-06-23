@@ -47,7 +47,7 @@ data "aws_iam_policy_document" "kms_config_logs" {
     }
     condition {
       test     = "StringEquals"
-      variable = "aws:PrincipalOrgID"
+      variable = "aws:SourceOrgID"
       values   = [data.aws_organizations_organization.moj_root_account.id]
     }
   }
@@ -173,16 +173,18 @@ data "aws_iam_policy_document" "config_bucket_policy" {
       type        = "Service"
       identifiers = ["config.amazonaws.com"]
     }
-    actions = [
-      "s3:PutObject",
-      "s3:GetBucketAcl"
-    ]
+    actions = ["s3:PutObject"]
     resources = [
-      "${module.s3_bucket_config_logs.bucket_arn}/*"
+      "${module.s3_bucket_config_logs.bucket.arn}/*"
     ]
     condition {
       test     = "StringEquals"
-      variable = "aws:PrincipalOrgID"
+      variable = "s3:x-amz-acl"
+      values   = ["bucket-owner-full-control"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceOrgID"
       values   = [data.aws_organizations_organization.moj_root_account.id]
     }
   }
@@ -195,7 +197,7 @@ data "aws_iam_policy_document" "config_bucket_policy" {
       identifiers = ["config.amazonaws.com"]
     }
     actions   = ["s3:GetBucketAcl"]
-    resources = [module.s3_bucket_config_logs.bucket_arn]
+    resources = [module.s3_bucket_config_logs.bucket.arn]
   }
 }
 
