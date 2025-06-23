@@ -145,7 +145,7 @@ locals {
 
 # Store environment management secret in Github secrets
 resource "github_actions_secret" "environment_management" {
-  for_each = toset(["modernisation-platform-environments", "modernisation-platform", "modernisation-platform-ami-builds", "modernisation-platform-configuration-management", "modernisation-platform-security"])
+  for_each = toset(["modernisation-platform", "modernisation-platform-ami-builds", "modernisation-platform-configuration-management", "modernisation-platform-security"])
   # checkov:skip=CKV_SECRET_6: "secret_name is not a secret"
   secret_name = "MODERNISATION_PLATFORM_ENVIRONMENTS"
   repository  = each.key
@@ -153,26 +153,4 @@ resource "github_actions_secret" "environment_management" {
     local.environment_management,
     { account_ids : module.environments.environment_account_ids }
   ))
-}
-
-resource "github_actions_secret" "autonuke_blocklist" {
-  # checkov:skip=CKV_SECRET_6: "secret_name is not a secret"
-  secret_name     = "MODERNISATION_PLATFORM_AUTONUKE_BLOCKLIST"
-  repository      = "modernisation-platform-environments"
-  plaintext_value = jsonencode(module.environments.environment_nuke_blocklist_accounts)
-}
-
-resource "github_actions_secret" "autonuke_rebuild" {
-  # checkov:skip=CKV_SECRET_6: "secret_name is not a secret"
-  secret_name     = "MODERNISATION_PLATFORM_AUTONUKE_REBUILD"
-  repository      = "modernisation-platform-environments"
-  plaintext_value = jsonencode(concat(module.environments.environment_rebuild_after_nuke_accounts, ["cooker-development"]))
-}
-
-resource "github_actions_secret" "autonuke" {
-  # checkov:skip=CKV_SECRET_6: "secret_name is not a secret"
-  secret_name = "MODERNISATION_PLATFORM_AUTONUKE"
-  repository  = "modernisation-platform-environments"
-  # testing-test, cooker-development, and example-development are internal test account which are not sandpits but require nuking.
-  plaintext_value = jsonencode(concat(module.environments.environment_nuke_accounts, ["testing-test"]))
 }
