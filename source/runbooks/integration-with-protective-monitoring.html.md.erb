@@ -26,6 +26,8 @@ The following data is collected for Cortex XSIAM consumption:
 
 - **CloudTrail** logs aggregated from all Modernisation Platform accounts in the `core-logging` account
 
+- **AWS Config** logs aggregated from all Modernisation Platform accounts are stored centrally in the `core-logging` account.
+
 -  **Network Firewall `"Alert"` Logs** based in `core-network-services`
 
 - **Route53 Resolver Query Logs** for `live_data` VPCs based in `core-*` accounts
@@ -45,6 +47,7 @@ The following data is collected for Cortex XSIAM consumption:
 - VPC Flow Log data is pulled from the `core-logging-vpc-flow-logs` S3 bucket in the `core-logging` account.
 - Route 53 Resolver Query Log data is pulled from the `core-logging-r53-resolver-logs` S3 bucket in the `core-logging` account.
 - Cloudtrail log data is pulled from the `modernisation-platform-logs-cloudtrail` S3 bucket in the `core-logging` account.
+- AWS Config log data is pulled from the `modernisation-platform-logs-config` S3 bucket in the `core-logging` account.
 
 ### Data Firehose
 - The Cortex XSIAM application receives Network Firewall `alert` logs by way of an Amazon Data Firehose configured in the `core-network-services` account.
