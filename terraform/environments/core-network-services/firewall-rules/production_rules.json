@@ -649,5 +649,26 @@
     "destination_ip": "${youth-justice-networking-production}",
     "destination_port": "$YJB_TCP",
     "protocol": "TCP"
+  },
+  "laa_production_data_a_ses": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-production-general-data-subnets-a}",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "laa_production_data_b_ses": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-production-general-data-subnets-b}",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "laa_production_data_c_ses": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-production-general-data-subnets-c}",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
+    "destination_port": "587",
+    "protocol": "TCP"
   }
 }
