@@ -457,6 +457,26 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs" {
       ]
     }
   }
+
+  statement {
+    sid    = "AllowCloudWatchLogsEncrypt"
+    effect = "Allow"
+    actions = [
+      "kms:Encrypt",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
+    ]
+    resources = ["*"]
+    principals {
+      type        = "Service"
+      identifiers = ["logs.${data.aws_region.current.name}.amazonaws.com"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.current.id]
+    }
+  }
 }
 
 # Destination KMS Key
@@ -614,21 +634,28 @@ data "aws_iam_policy_document" "modernisation_platform_waf_logs_bucket_policy" {
 resource "aws_iam_role" "firehose_to_s3" {
   name = "firehose_to_s3"
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Effect = "Allow"
-      Principal = {
-        Service = "firehose.amazonaws.com"
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = [
+            "firehose.amazonaws.com",
+            "logs.amazonaws.com"
+          ]
+        }
+        Action = "sts:AssumeRole"
       }
-      Action = "sts:AssumeRole"
-    }]
+    ]
   })
 }
+
+
 
 resource "aws_iam_role_policy" "firehose_to_s3_policy" {
   role = aws_iam_role.firehose_to_s3.id
   policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [
       {
         Effect = "Allow"
@@ -646,10 +673,27 @@ resource "aws_iam_role_policy" "firehose_to_s3_policy" {
           "kms:DescribeKey"
         ]
         Resource = aws_kms_key.s3_modernisation_platform_waf_logs.arn
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "firehose:PutRecord",
+          "firehose:PutRecordBatch"
+        ]
+        Resource = "arn:aws:firehose:eu-west-2:${data.aws_caller_identity.current.account_id}:deliverystream/waf-logs-to-s3"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:PutLogEvents"  # Optional, helps with test delivery
+        ]
+        Resource = "*"
       }
     ]
   })
 }
+
+
 
 # This stream receives WAF logs from member accounts and delivers them to the centralized S3 bucket
 resource "aws_kinesis_firehose_delivery_stream" "waf_logs_to_s3" {
@@ -676,8 +720,6 @@ resource "aws_cloudwatch_log_destination" "waf_logs" {
 }
 
 # Allows all member accounts to use this destination
-data "aws_organizations_organization" "current" {}
-
 resource "aws_cloudwatch_log_destination_policy" "waf_logs" {
   destination_name = aws_cloudwatch_log_destination.waf_logs.name
   access_policy    = jsonencode({
