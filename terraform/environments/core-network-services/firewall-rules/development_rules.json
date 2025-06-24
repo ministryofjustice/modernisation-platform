@@ -775,5 +775,5 @@
     "destination_ip": "0.0.0.0/0",
     "destination_port": "587",
     "protocol": "TCP"
-  },
+  }
 }
