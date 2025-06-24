@@ -1,6 +1,7 @@
 {
   "IP_SETS": {
     "IP_SET_EXAMPLE": ["1.1.1.1/32", "1.0.0.1/32"],
+    "AWS_SMTP_EU_WEST_2": ["3.11.252.235", "35.178.252.162", "35.177.173.199"],
     "AD_HMPP_DCS": ["${ad-hmpp-dc-a}", "${ad-hmpp-dc-b}"],
     "AD_HMPP_RD_LICENSING": ["${ad-hmpp-rdlic}"],
     "AD_AZURE_DCS": ["${ad-azure-dc-a}", "${ad-azure-dc-b}"],

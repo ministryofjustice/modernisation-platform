@@ -390,5 +390,26 @@
     "destination_ip": "${laa-test}",
     "destination_port": "ANY",
     "protocol": "IP"
+  },
+  "laa_test_data_a_ses": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-test-general-data-subnets-a}",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "laa_test_data_b_ses": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-test-general-data-subnets-b}",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "laa_test_data_c_ses": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-test-general-data-subnets-c}",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
+    "destination_port": "587",
+    "protocol": "TCP"
   }
 }
