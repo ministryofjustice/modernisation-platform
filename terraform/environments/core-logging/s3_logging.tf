@@ -667,3 +667,31 @@ resource "aws_kinesis_firehose_delivery_stream" "waf_logs_to_s3" {
     kms_key_arn        = aws_kms_key.s3_modernisation_platform_waf_logs.arn
   }
 }
+
+# CloudWatch Logs Destination for cross-account log delivery
+resource "aws_cloudwatch_log_destination" "waf_logs" {
+  name       = "waf-logs-destination"
+  role_arn   = aws_iam_role.firehose_to_s3.arn
+  target_arn = aws_kinesis_firehose_delivery_stream.waf_logs_to_s3.arn
+}
+
+# Allows all member accounts to use this destination
+data "aws_organizations_organization" "current" {}
+
+resource "aws_cloudwatch_log_destination_policy" "waf_logs" {
+  destination_name = aws_cloudwatch_log_destination.waf_logs.name
+  access_policy    = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect = "Allow",
+      Principal = "*",
+      Action = "logs:PutSubscriptionFilter",
+      Resource = aws_cloudwatch_log_destination.waf_logs.arn,
+      Condition = {
+        StringEquals = {
+          "aws:PrincipalOrgID" = data.aws_organizations_organization.current.id
+        }
+      }
+    }]
+  })
+}
