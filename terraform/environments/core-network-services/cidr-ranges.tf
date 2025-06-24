@@ -85,14 +85,25 @@ locals {
     laa-mp-test-general-private-subnets-b = "10.26.97.0/24"
     laa-mp-test-general-private-subnets-c = "10.26.98.0/24"
 
+    laa-mp-test-general-data-subnets-a = "10.26.100.128/25"
+    laa-mp-test-general-data-subnets-b = "10.26.101.0/25"
+    laa-mp-test-general-data-subnets-c = "10.26.101.128/25"
+
     laa-mp-preproduction-general-private-subnets-a = "10.27.72.0/24"
     laa-mp-preproduction-general-private-subnets-b = "10.27.73.0/24"
     laa-mp-preproduction-general-private-subnets-c = "10.27.74.0/24"
+
+    laa-mp-preproduction-general-data-subnets-a = "10.27.76.128/25"
+    laa-mp-preproduction-general-data-subnets-b = "10.27.77.0/25"
+    laa-mp-preproduction-general-data-subnets-c = "10.27.77.128/25"
 
     laa-mp-production-general-private-subnets-a = "10.27.64.0/24"
     laa-mp-production-general-private-subnets-b = "10.27.65.0/24"
     laa-mp-production-general-private-subnets-c = "10.27.66.0/24"
 
+    laa-mp-production-general-data-subnets-a = "10.27.68.128/25"
+    laa-mp-production-general-data-subnets-b = "10.27.69.0/25"
+    laa-mp-production-general-data-subnets-c = "10.27.69.128/25"
 
     hmpps-preproduction-general-private-subnets = "10.27.0.0/22"
     hmpps-production-general-private-subnets    = "10.27.10.0/22"
