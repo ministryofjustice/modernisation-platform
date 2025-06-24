@@ -19,6 +19,15 @@
           "level": "developer"
         }
       ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "property-datahub",
+          "level": "developer"
+        }
+      ]
     }
   ],
   "tags": {

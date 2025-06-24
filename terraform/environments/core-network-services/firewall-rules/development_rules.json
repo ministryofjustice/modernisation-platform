@@ -695,21 +695,21 @@
   "laa_development_data_a_ses": {
     "action": "PASS",
     "source_ip": "${laa-mp-development-general-data-subnets-a}",
-    "destination_ip": "0.0.0.0/0",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
     "destination_port": "587",
     "protocol": "TCP"
   },
   "laa_development_data_b_ses": {
     "action": "PASS",
     "source_ip": "${laa-mp-development-general-data-subnets-b}",
-    "destination_ip": "0.0.0.0/0",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
     "destination_port": "587",
     "protocol": "TCP"
   },
   "laa_development_data_c_ses": {
     "action": "PASS",
     "source_ip": "${laa-mp-development-general-data-subnets-c}",
-    "destination_ip": "0.0.0.0/0",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
     "destination_port": "587",
     "protocol": "TCP"
   }
