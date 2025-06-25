@@ -32,7 +32,7 @@ resource "aws_ram_resource_share" "resolver_query_share" {
 
 resource "aws_ram_resource_association" "resolver_query_share" {
   for_each           = local.resolver_query_log_configs
-  resource_arn       = each.value.arn
+  resource_arn       = each.value
   resource_share_arn = aws_ram_resource_share.resolver_query_share.id
 }
 
