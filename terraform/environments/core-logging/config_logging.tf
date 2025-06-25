@@ -199,5 +199,21 @@ data "aws_iam_policy_document" "config_bucket_policy" {
     actions   = ["s3:GetBucketAcl"]
     resources = [module.s3_bucket_config_logs.bucket.arn]
   }
+
+  statement {
+    sid    = "AllowAWSConfigListObject"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    actions = ["s3:ListBucket"]
+    resources = [module.s3_bucket_config_logs.bucket.arn]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.moj_root_account.id]
+    }
+  }
 }
 
