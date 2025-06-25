@@ -3,10 +3,16 @@ locals {
     s3         = aws_route53_resolver_query_log_config.s3.arn
     cloudwatch = aws_route53_resolver_query_log_config.cloudwatch.arn
   }
+  resolver_query_log_region = {
+    eu-west-2 = aws
+    eu-west-1 = modernisation-platform-eu-west-1
+  }
 }
 
 resource "aws_route53_resolver_query_log_config" "s3" {
-  name            = format("%s-rlq-s3", local.application_name)
+  for_each        = local.resolver_query_log_region
+  provider        = each.value
+  name            = format("%s-rlq-s3-%s", local.application_name, each.key)
   destination_arn = aws_s3_bucket.logging["r53-resolver-logs"].arn
   tags            = local.tags
 }
@@ -24,8 +30,8 @@ resource "aws_ram_resource_share" "resolver_query_share" {
 }
 
 resource "aws_ram_resource_association" "resolver_query_share" {
-  for_each           = local.resolver_query_log_configs
-  resource_arn       = each.value
+  for_each           = aws_route53_resolver_query_log_config.s3
+  resource_arn       = each.value.arn
   resource_share_arn = aws_ram_resource_share.resolver_query_share.id
 }
 
