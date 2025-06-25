@@ -3,16 +3,17 @@ locals {
     s3         = aws_route53_resolver_query_log_config.s3.arn
     cloudwatch = aws_route53_resolver_query_log_config.cloudwatch.arn
   }
-  resolver_query_log_region = {
-    eu-west-2 = aws
-    eu-west-1 = modernisation-platform-eu-west-1
-  }
 }
 
 resource "aws_route53_resolver_query_log_config" "s3" {
-  for_each        = local.resolver_query_log_region
-  provider        = each.value
-  name            = format("%s-rlq-s3-%s", local.application_name, each.key)
+  name            = format("%s-rlq-s3", local.application_name)
+  destination_arn = aws_s3_bucket.logging["r53-resolver-logs"].arn
+  tags            = local.tags
+}
+
+resource "aws_route53_resolver_query_log_config" "s3_eu_west_1" {
+  provider        = aws.modernisation-platform-eu-west-1
+  name            = format("%s-rlq-s3-%s", local.application_name, "eu-west-1")
   destination_arn = aws_s3_bucket.logging["r53-resolver-logs"].arn
   tags            = local.tags
 }
@@ -30,7 +31,7 @@ resource "aws_ram_resource_share" "resolver_query_share" {
 }
 
 resource "aws_ram_resource_association" "resolver_query_share" {
-  for_each           = aws_route53_resolver_query_log_config.s3
+  for_each           = local.resolver_query_log_configs
   resource_arn       = each.value.arn
   resource_share_arn = aws_ram_resource_share.resolver_query_share.id
 }
@@ -40,6 +41,24 @@ resource "aws_ram_principal_association" "resolver_query_share" {
   resource_share_arn = aws_ram_resource_share.resolver_query_share.arn
 }
 
+resource "aws_ram_resource_share" "resolver_query_share_eu_west_1" {
+  provider                  = aws.modernisation-platform-eu-west-1
+  allow_external_principals = false
+  name                      = format("%s-resolver-log-query-share", local.application_name)
+  tags                      = local.tags
+}
+
+resource "aws_ram_resource_association" "resolver_query_share_eu_west_1" {
+  provider           = aws.modernisation-platform-eu-west-1
+  resource_arn       = aws_route53_resolver_query_log_config.s3_eu_west_1.arn
+  resource_share_arn = aws_ram_resource_share.resolver_query_share.id
+}
+
+resource "aws_ram_principal_association" "resolver_query_share_eu_west_1" {
+  provider           = aws.modernisation-platform-eu-west-1
+  principal          = replace("${data.aws_organizations_organization.root_account.arn}/${local.environment_management.modernisation_platform_organisation_unit_id}", "organization/", "ou/")
+  resource_share_arn = aws_ram_resource_share.resolver_query_share.arn
+}
 resource "aws_cloudwatch_log_group" "r53_resolver_logs" {
   kms_key_id        = aws_kms_key.r53_resolver_logs.arn
   name_prefix       = "r53-resolver-logs"
