@@ -729,6 +729,8 @@ resource "aws_cloudwatch_log_destination" "waf_logs" {
   name       = "waf-logs-destination"
   role_arn   = aws_iam_role.firehose_to_s3.arn
   target_arn = aws_kinesis_firehose_delivery_stream.waf_logs_to_s3.arn
+
+  depends_on = [aws_kinesis_firehose_delivery_stream.waf_logs_to_s3]
 }
 
 # Allows all member accounts to use this destination
