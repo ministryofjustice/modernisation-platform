@@ -651,7 +651,6 @@ resource "aws_iam_role" "firehose_to_s3" {
 }
 
 
-
 resource "aws_iam_role_policy" "firehose_to_s3_policy" {
   role = aws_iam_role.firehose_to_s3.id
   policy = jsonencode({
