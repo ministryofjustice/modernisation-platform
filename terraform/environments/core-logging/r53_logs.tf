@@ -59,6 +59,7 @@ resource "aws_ram_principal_association" "resolver_query_share_eu_west_1" {
   principal          = replace("${data.aws_organizations_organization.root_account.arn}/${local.environment_management.modernisation_platform_organisation_unit_id}", "organization/", "ou/")
   resource_share_arn = aws_ram_resource_share.resolver_query_share.arn
 }
+
 resource "aws_cloudwatch_log_group" "r53_resolver_logs" {
   kms_key_id        = aws_kms_key.r53_resolver_logs.arn
   name_prefix       = "r53-resolver-logs"
