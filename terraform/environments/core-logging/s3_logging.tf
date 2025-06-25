@@ -633,22 +633,35 @@ data "aws_iam_policy_document" "modernisation_platform_waf_logs_bucket_policy" {
 
 resource "aws_iam_role" "firehose_to_s3" {
   name = "firehose_to_s3"
+
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
-        Effect = "Allow"
+        Sid    = "AllowFirehoseService",
+        Effect = "Allow",
         Principal = {
-          Service = [
-            "firehose.amazonaws.com",
-            "logs.amazonaws.com"
-          ]
-        }
+          Service = "firehose.amazonaws.com"
+        },
         Action = "sts:AssumeRole"
+      },
+      {
+        Sid    = "AllowCWLogsFromOrg",
+        Effect = "Allow",
+        Principal = {
+          Service = "logs.eu-west-2.amazonaws.com"
+        },
+        Action = "sts:AssumeRole",
+        Condition = {
+          StringEquals = {
+            "aws:PrincipalOrgID" = "o-b2fpbzyd95"
+          }
+        }
       }
     ]
   })
 }
+
 
 
 resource "aws_iam_role_policy" "firehose_to_s3_policy" {
