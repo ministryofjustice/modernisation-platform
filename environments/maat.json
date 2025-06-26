@@ -15,6 +15,10 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
+        },
+        {
           "sso_group_name": "laa-sre-admins",
           "level": "sandbox"
         }
@@ -33,6 +37,10 @@
           "sso_group_name": "laa-crime-apps-team",
           "level": "developer",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         },
         {
           "sso_group_name": "laa-sre-admins",
@@ -54,6 +62,10 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
+        },
+        {
           "sso_group_name": "laa-sre-admins",
           "level": "developer"
         }
@@ -71,6 +83,10 @@
           "sso_group_name": "laa-crime-apps-team",
           "level": "developer",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         },
         {
           "sso_group_name": "laa-sre-admins",
