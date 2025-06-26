@@ -35,10 +35,6 @@
         },
         {
           "sso_group_name": "modernisation-platform",
-          "level": "fleet-manager"
-        },
-        {
-          "sso_group_name": "modernisation-platform",
           "level": "quicksight-admin"
         },
         {
