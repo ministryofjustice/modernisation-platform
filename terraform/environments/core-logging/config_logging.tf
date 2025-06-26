@@ -207,7 +207,7 @@ data "aws_iam_policy_document" "config_bucket_policy" {
       type        = "AWS"
       identifiers = ["*"]
     }
-    actions = ["s3:ListBucket"]
+    actions   = ["s3:ListBucket"]
     resources = [module.s3_bucket_config_logs.bucket.arn]
     condition {
       test     = "StringEquals"
