@@ -8,7 +8,7 @@ EMAIL_SUBJECT = "Update: ((file_name)) File Changed"
 EMAIL_BODY = """\
 Hello Team,
 
-This is to inform you that changes have been detected in the JSON file: ((file_name)) within the environments folder of the Modernisation Platform repository. You can view the changes directly by following this [link](https://github.com/ministryofjustice/modernisation-platform/pull/((pr_number))).
+This is to inform you that changes have been detected in the JSON file: ((file_name)) within the environments folder of the Modernisation Platform repository. You can view the changes directly by following this [link](https://github.com/ministryofjustice/modernisation-platform/pull/((pr_number))/files).
 
 If you have any questions or need further assistance, please contact [#ask-modernisation-platform](https://moj.enterprise.slack.com/archives/C01A7QK5VM1) or reply to this email.
 
