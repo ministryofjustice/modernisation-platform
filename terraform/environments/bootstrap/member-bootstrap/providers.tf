@@ -4,6 +4,7 @@ provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
   }
+  default_tags { tags = local.tags }
 }
 
 # AWS provider (modernisation-secrets-read): Required for assuming a role into modernisation platform account to read secrets
@@ -22,16 +23,19 @@ provider "aws" {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
   }
   alias = "modernisation-platform-environments-us-east-1"
+  default_tags { tags = local.tags }
 }
 
 # AWS provider for the Modernisation Platform, to get things from there if required
 provider "aws" {
   alias  = "modernisation-platform"
   region = "eu-west-2"
+  default_tags { tags = local.tags }
 }
 
 # AWS provider for the Modernisation Platform for us-east-1, to do things like License Manager grants
 provider "aws" {
   alias  = "modernisation-platform-us-east-1"
   region = "us-east-1"
+  default_tags { tags = local.tags }
 }
