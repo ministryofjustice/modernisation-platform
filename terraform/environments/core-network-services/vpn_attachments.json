@@ -46,7 +46,7 @@
   },
   "YJB-Juniper-vSRX01-VPN": {
     "bgp_asn": "64523",
-    "customer_gateway_ip": "35.176.77.66",
+    "customer_gateway_ip": "18.132.218.242",
     "remote_ipv4_network_cidr": "0.0.0.0/0",
     "static_routes_only": true,
     "tunnel1_inside_cidr": "169.254.21.140/30",
@@ -67,7 +67,7 @@
   },
   "YJB-Juniper-vSRX02-VPN": {
     "bgp_asn": "64523",
-    "customer_gateway_ip": "3.9.228.137",
+    "customer_gateway_ip": "13.43.212.52",
     "remote_ipv4_network_cidr": "0.0.0.0/0",
     "static_routes_only": true,
     "tunnel1_inside_cidr": "169.254.21.144/30",
@@ -90,7 +90,6 @@
     "bgp_asn": "64678",
     "customer_gateway_ip": "152.114.58.102",
     "remote_ipv4_network_cidr": "0.0.0.0/0",
-    "static_routes_only": true,
     "tunnel1_inside_cidr": "169.254.155.0/30",
     "tunnel2_inside_cidr": "169.254.214.8/30",
     "tunnel_dpd_timeout_action": "clear",
@@ -111,7 +110,6 @@
     "bgp_asn": "64678",
     "customer_gateway_ip": "152.114.58.100",
     "remote_ipv4_network_cidr": "0.0.0.0/0",
-    "static_routes_only": true,
     "tunnel1_inside_cidr": "169.254.124.168/30",
     "tunnel2_inside_cidr": "169.254.31.40/30",
     "tunnel_dpd_timeout_action": "clear",
