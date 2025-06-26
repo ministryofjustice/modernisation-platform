@@ -49,8 +49,6 @@ resource "aws_cloudwatch_metric_alarm" "aws_backup_has_errors" {
   dimensions = {
     FunctionName = "aws-backup-failure"
   }
-  tags = local.tags
-
 }
 
 data "aws_cloudwatch_log_group" "cloudtrail" {
