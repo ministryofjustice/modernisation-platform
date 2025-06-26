@@ -51,13 +51,13 @@ resource "aws_ram_resource_share" "resolver_query_share_eu_west_1" {
 resource "aws_ram_resource_association" "resolver_query_share_eu_west_1" {
   provider           = aws.modernisation-platform-eu-west-1
   resource_arn       = aws_route53_resolver_query_log_config.s3_eu_west_1.arn
-  resource_share_arn = aws_ram_resource_share.resolver_query_share.id
+  resource_share_arn = aws_ram_resource_share.resolver_query_share_eu_west_1.id
 }
 
 resource "aws_ram_principal_association" "resolver_query_share_eu_west_1" {
   provider           = aws.modernisation-platform-eu-west-1
   principal          = replace("${data.aws_organizations_organization.root_account.arn}/${local.environment_management.modernisation_platform_organisation_unit_id}", "organization/", "ou/")
-  resource_share_arn = aws_ram_resource_share.resolver_query_share.arn
+  resource_share_arn = aws_ram_resource_share.resolver_query_share_eu_west_1.arn
 }
 
 resource "aws_cloudwatch_log_group" "r53_resolver_logs" {
