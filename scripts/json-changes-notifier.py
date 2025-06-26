@@ -8,7 +8,7 @@ EMAIL_SUBJECT = "Update: ((file_name)) File Changed"
 EMAIL_BODY = """\
 Hello Team,
 
-This is to inform you that changes have been detected in the JSON file: ((file_name)) within the environments folder of the Modernisation Platform repository. You can view the changes directly by following this [link](https://github.com/ministryofjustice/modernisation-platform/blob/main/environments/((file_name))).
+This is to inform you that changes have been detected in the JSON file: ((file_name)) within the environments folder of the Modernisation Platform repository. You can view the changes directly by following this [link](https://github.com/ministryofjustice/modernisation-platform/pull/((pr_number))).
 
 If you have any questions or need further assistance, please contact [#ask-modernisation-platform](https://moj.enterprise.slack.com/archives/C01A7QK5VM1) or reply to this email.
 
@@ -46,6 +46,7 @@ def main(file_names):
     """
     api_key = os.environ.get("GOV_UK_NOTIFY_API_KEY")
     template_id = os.environ.get("TEMPLATE_ID")
+    pr_number = os.environ.get("PR_NUMBER")
     # Create a NotificationsAPIClient instance
     client = NotificationsAPIClient(api_key=api_key)
     # Iterate over each JSON file name provided as arguments
@@ -57,7 +58,10 @@ def main(file_names):
 
         try:
             subject = EMAIL_SUBJECT.replace("((file_name))", json_file_name)
-            message = EMAIL_BODY.replace("((file_name))", json_file_name)
+            message = (
+                EMAIL_BODY.replace("((file_name))", json_file_name)
+                .replace("((pr_number))", pr_number)
+            )
 
             client.send_email_notification(
                 template_id=template_id,
