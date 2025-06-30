@@ -1,0 +1,23 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "delius-core-training",
+    "business-unit": "HMPPS",
+    "infrastructure-support": "team.migrations@digital.justice.gov.uk",
+    "owner": "team.migrations@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}
