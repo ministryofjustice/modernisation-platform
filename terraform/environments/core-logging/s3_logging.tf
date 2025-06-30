@@ -394,17 +394,26 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs" {
   }
 
   statement {
-    sid    = "AllowFirehoseEncrypt"
+    sid    = "AllowFirehoseAndLogsEncrypt"
     effect = "Allow"
     actions = [
       "kms:Encrypt",
+      "kms:Decrypt",
       "kms:GenerateDataKey*",
       "kms:DescribeKey"
     ]
     resources = ["*"]
     principals {
       type        = "Service"
-      identifiers = ["firehose.amazonaws.com"]
+      identifiers = [
+        "firehose.amazonaws.com",
+        "logs.${data.aws_region.current.name}.amazonaws.com"
+      ]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.current.id]
     }
   }
 
@@ -457,27 +466,9 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs" {
       ]
     }
   }
-
-  statement {
-    sid    = "AllowCloudWatchLogsEncrypt"
-    effect = "Allow"
-    actions = [
-      "kms:Encrypt",
-      "kms:GenerateDataKey*",
-      "kms:DescribeKey"
-    ]
-    resources = ["*"]
-    principals {
-      type        = "Service"
-      identifiers = ["logs.${data.aws_region.current.name}.amazonaws.com"]
-    }
-    condition {
-      test     = "StringEquals"
-      variable = "aws:PrincipalOrgID"
-      values   = [data.aws_organizations_organization.current.id]
-    }
-  }
 }
+
+
 
 # Destination KMS Key
 resource "aws_kms_key" "s3_modernisation_platform_waf_logs_eu_west_1_replication" {
@@ -667,6 +658,7 @@ resource "aws_iam_role_policy" "firehose_to_s3_policy" {
         Effect = "Allow"
         Action = [
           "kms:Encrypt",
+          "kms:Decrypt", 
           "kms:GenerateDataKey*",
           "kms:DescribeKey"
         ]
@@ -716,7 +708,10 @@ resource "aws_cloudwatch_log_destination" "waf_logs" {
   role_arn   = aws_iam_role.cwl_to_firehose.arn
   target_arn = aws_kinesis_firehose_delivery_stream.waf_logs_to_s3.arn
 
-  depends_on = [aws_kinesis_firehose_delivery_stream.waf_logs_to_s3]
+    depends_on = [
+    aws_kinesis_firehose_delivery_stream.waf_logs_to_s3,
+    aws_iam_role_policy.cwl_to_firehose_policy
+  ]
 }
 
 
@@ -739,6 +734,29 @@ resource "aws_cloudwatch_log_destination_policy" "waf_logs" {
   })
 }
 
+# resource "aws_iam_role" "cwl_to_firehose" {
+#   name = "CWLtoFirehoseRole"
+
+#   assume_role_policy = jsonencode({
+#     Version = "2012-10-17",
+#     Statement : [{
+#       Effect = "Allow",
+#       Principal : {
+#         Service = "logs.eu-west-2.amazonaws.com"
+#       },
+#       Action : "sts:AssumeRole",
+#       Condition : {
+#         StringLike : {
+#           "aws:SourceArn" : "arn:aws:logs:eu-west-2:*:*"
+#         },
+#         StringEquals : {
+#           "aws:PrincipalOrgID" : data.aws_organizations_organization.current.id
+#         }
+#       }
+#     }]
+#   })
+# }
+
 resource "aws_iam_role" "cwl_to_firehose" {
   name = "CWLtoFirehoseRole"
 
@@ -747,12 +765,14 @@ resource "aws_iam_role" "cwl_to_firehose" {
     Statement : [{
       Effect = "Allow",
       Principal : {
-        Service = "logs.eu-west-2.amazonaws.com"
+        Service = "logs.${data.aws_region.current.name}.amazonaws.com"
       },
       Action : "sts:AssumeRole",
       Condition : {
         StringLike : {
-          "aws:SourceArn" : "arn:aws:logs:eu-west-2:*:*"
+          "aws:SourceArn" : [
+            "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*"
+          ]
         },
         StringEquals : {
           "aws:PrincipalOrgID" : data.aws_organizations_organization.current.id
@@ -761,6 +781,8 @@ resource "aws_iam_role" "cwl_to_firehose" {
     }]
   })
 }
+
+
 
 resource "aws_iam_role_policy" "cwl_to_firehose_policy" {
   name = "Permissions-Policy-For-CWL"
