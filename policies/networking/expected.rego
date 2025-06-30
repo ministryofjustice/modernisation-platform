@@ -148,7 +148,6 @@ expected :=
           "delius-iaps-development",
           "delius-jitbit-development",
           "delius-mis-development",
-          "nomis-combined-reporting-development",
           "nomis-data-hub-development",
           "delius-core-development",
           "corporate-staff-rostering-development",
