@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Accessing AWS accounts
-last_reviewed_on: 2024-12-27
+last_reviewed_on: 2025-06-27
 review_in: 6 months
 ---
 
@@ -34,8 +34,8 @@ access key and secret key for programmatic access.
 _NB. Superuser access is maintained for emergencies. In most use cases SSO access is preferred._
 
 Using a web browser, a user with a superuser account can navigate to the [AWS console](https://console.aws.amazon.com/) and
-log into the Modernisation Platform with their *firstname.lastname-superadmin* account. From here the user can assume an
-IAM role to escalate their privileges by clicking the *username @ account-id* dropdown and selecting *Switch Role*.
+log into the Modernisation Platform with their _firstname.lastname-superadmin_ account. From here the user can assume an
+IAM role to escalate their privileges by clicking the _username @ account-id_ dropdown and selecting _Switch Role_.
 
 ## How we use AWS accounts
 
@@ -58,8 +58,9 @@ This code defines a cross-account access role that can be assumed by an administ
 baseline for application accounts.
 
 ## References
-* [https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html)
-* [https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf)
-* [https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins)
-* [https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf)
-* [https://github.com/99designs/aws-vault](https://github.com/99designs/aws-vault)
+
+- [https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html)
+- [https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf)
+- [https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins)
+- [https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/delegate-access/iam.tf)
+- [https://github.com/99designs/aws-vault](https://github.com/99designs/aws-vault)

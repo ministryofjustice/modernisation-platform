@@ -15,6 +15,10 @@
         {
           "sso_group_name": "laa-crime-apps-team",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         }
       ],
       "nuke": "exclude"
@@ -29,6 +33,10 @@
         {
           "sso_group_name": "laa-crime-apps-team",
           "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         }
       ]
     },
@@ -42,6 +50,10 @@
         {
           "sso_group_name": "laa-crime-apps-team",
           "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         }
       ]
     },
@@ -55,6 +67,10 @@
         {
           "sso_group_name": "laa-crime-apps-team",
           "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         }
       ]
     }
