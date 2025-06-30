@@ -207,25 +207,26 @@ expected :=
       "general": {
         "cidr": "10.27.8.0/21",
         "accounts": [
-          "performance-hub-production",
-          "ppud-production",
-          "electronic-monitoring-data-production",
-          "equip-production",
-          "oasys-production",
-          "nomis-production",
+          "corporate-staff-rostering-production",
           "delius-alfresco-production",
+          "delius-core-production",
+          "delius-core-training-production",
           "delius-iaps-production",
           "delius-jitbit-production",
           "delius-mis-production",
+          "digital-prison-reporting-production",
+          "electronic-monitoring-data-production",
+          "equip-production",
+          "hmpps-domain-services-production",
+          "hmpps-oem-production",
           "nomis-combined-reporting-production",
           "nomis-data-hub-production",
-          "corporate-staff-rostering-production",
+          "nomis-production",
+          "oasys-production",
+          "oasys-national-reporting-production",
+          "performance-hub-production",
           "planetfm-production",
-          "hmpps-oem-production",
-          "digital-prison-reporting-production",
-          "hmpps-domain-services-production",
-          "delius-core-production",
-          "oasys-national-reporting-production"
+          "ppud-production"
         ]
       }
     },
