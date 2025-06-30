@@ -404,7 +404,7 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs" {
     ]
     resources = ["*"]
     principals {
-      type        = "Service"
+      type = "Service"
       identifiers = [
         "firehose.amazonaws.com",
         "logs.${data.aws_region.current.name}.amazonaws.com"
@@ -468,8 +468,6 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs" {
   }
 }
 
-
-
 # Destination KMS Key
 resource "aws_kms_key" "s3_modernisation_platform_waf_logs_eu_west_1_replication" {
   provider                = aws.modernisation-platform-eu-west-1
@@ -525,7 +523,6 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs_repl
     }
   }
 }
-
 
 # S3 bucket for centralised modernisation platform waf logs
 module "s3-bucket-modernisation-platform-waf-logs" {
@@ -640,7 +637,6 @@ resource "aws_iam_role" "firehose_to_s3" {
   })
 }
 
-
 resource "aws_iam_role_policy" "firehose_to_s3_policy" {
   role = aws_iam_role.firehose_to_s3.id
   policy = jsonencode({
@@ -658,7 +654,7 @@ resource "aws_iam_role_policy" "firehose_to_s3_policy" {
         Effect = "Allow"
         Action = [
           "kms:Encrypt",
-          "kms:Decrypt", 
+          "kms:Decrypt",
           "kms:GenerateDataKey*",
           "kms:DescribeKey"
         ]
@@ -683,8 +679,6 @@ resource "aws_iam_role_policy" "firehose_to_s3_policy" {
   })
 }
 
-
-
 # This stream receives WAF logs from member accounts and delivers them to the centralized S3 bucket
 resource "aws_kinesis_firehose_delivery_stream" "waf_logs_to_s3" {
   # checkov:skip=CKV_AWS_240: "Encryption is enabled with a CMK via kms_key_arn"
@@ -708,12 +702,11 @@ resource "aws_cloudwatch_log_destination" "waf_logs" {
   role_arn   = aws_iam_role.cwl_to_firehose.arn
   target_arn = aws_kinesis_firehose_delivery_stream.waf_logs_to_s3.arn
 
-    depends_on = [
+  depends_on = [
     aws_kinesis_firehose_delivery_stream.waf_logs_to_s3,
     aws_iam_role_policy.cwl_to_firehose_policy
   ]
 }
-
 
 # Allows all member accounts to use this destination
 resource "aws_cloudwatch_log_destination_policy" "waf_logs" {
@@ -733,29 +726,6 @@ resource "aws_cloudwatch_log_destination_policy" "waf_logs" {
     }]
   })
 }
-
-# resource "aws_iam_role" "cwl_to_firehose" {
-#   name = "CWLtoFirehoseRole"
-
-#   assume_role_policy = jsonencode({
-#     Version = "2012-10-17",
-#     Statement : [{
-#       Effect = "Allow",
-#       Principal : {
-#         Service = "logs.eu-west-2.amazonaws.com"
-#       },
-#       Action : "sts:AssumeRole",
-#       Condition : {
-#         StringLike : {
-#           "aws:SourceArn" : "arn:aws:logs:eu-west-2:*:*"
-#         },
-#         StringEquals : {
-#           "aws:PrincipalOrgID" : data.aws_organizations_organization.current.id
-#         }
-#       }
-#     }]
-#   })
-# }
 
 resource "aws_iam_role" "cwl_to_firehose" {
   name = "CWLtoFirehoseRole"
@@ -781,8 +751,6 @@ resource "aws_iam_role" "cwl_to_firehose" {
     }]
   })
 }
-
-
 
 resource "aws_iam_role_policy" "cwl_to_firehose_policy" {
   name = "Permissions-Policy-For-CWL"
