@@ -128,7 +128,7 @@ resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
 
   metric_query {
     id          = "ad1"
-    expression  = "ANOMALY_DETECTION_BAND(m1, 5)"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 7)"
     label       = "Sum RejectedConnections ${each.key} GreaterThanUpperThreshold 1.0"
     return_data = true
   }
