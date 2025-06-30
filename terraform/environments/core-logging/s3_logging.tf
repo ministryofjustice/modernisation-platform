@@ -673,7 +673,8 @@ resource "aws_iam_role_policy" "firehose_to_s3_policy" {
         Action = [
           "logs:PutLogEvents"
         ]
-        Resource = "*"
+        # Resource = "*"
+          Resource = "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/kinesisfirehose/waf-logs-to-s3:*"
       }
     ]
   })
@@ -727,6 +728,31 @@ resource "aws_cloudwatch_log_destination_policy" "waf_logs" {
   })
 }
 
+# resource "aws_iam_role" "cwl_to_firehose" {
+#   name = "CWLtoFirehoseRole"
+
+#   assume_role_policy = jsonencode({
+#     Version = "2012-10-17",
+#     Statement : [{
+#       Effect = "Allow",
+#       Principal : {
+#         Service = "logs.${data.aws_region.current.name}.amazonaws.com"
+#       },
+#       Action : "sts:AssumeRole",
+#       Condition : {
+#         StringLike : {
+#           "aws:SourceArn" : [
+#             "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*"
+#           ]
+#         },
+#         StringEquals : {
+#           "aws:PrincipalOrgID" : data.aws_organizations_organization.current.id
+#         }
+#       }
+#     }]
+#   })
+# }
+
 resource "aws_iam_role" "cwl_to_firehose" {
   name = "CWLtoFirehoseRole"
 
@@ -735,19 +761,9 @@ resource "aws_iam_role" "cwl_to_firehose" {
     Statement : [{
       Effect = "Allow",
       Principal : {
-        Service = "logs.${data.aws_region.current.name}.amazonaws.com"
+        Service = "logs.amazonaws.com"
       },
-      Action : "sts:AssumeRole",
-      Condition : {
-        StringLike : {
-          "aws:SourceArn" : [
-            "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*"
-          ]
-        },
-        StringEquals : {
-          "aws:PrincipalOrgID" : data.aws_organizations_organization.current.id
-        }
-      }
+      Action : "sts:AssumeRole"
     }]
   })
 }
