@@ -39,6 +39,7 @@ expected :=
     "data-platform",
     "delius-alfresco",
     "delius-core",
+    "delius-core-training",
     "delius-iaps",
     "delius-jitbit",
     "delius-mis",
