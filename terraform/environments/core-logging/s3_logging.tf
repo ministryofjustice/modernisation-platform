@@ -639,6 +639,7 @@ resource "aws_iam_role" "firehose_to_s3" {
 
 resource "aws_iam_role_policy" "firehose_to_s3_policy" {
   role = aws_iam_role.firehose_to_s3.id
+
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -671,10 +672,11 @@ resource "aws_iam_role_policy" "firehose_to_s3_policy" {
       {
         Effect = "Allow"
         Action = [
-          "logs:PutLogEvents"
+          "logs:PutLogEvents",
+          "logs:CreateLogStream",
+          "logs:CreateLogGroup"
         ]
-        # Resource = "*"
-          Resource = "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/kinesisfirehose/waf-logs-to-s3:*"
+        Resource = "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/kinesisfirehose/waf-logs-to-s3:*"
       }
     ]
   })
@@ -694,8 +696,15 @@ resource "aws_kinesis_firehose_delivery_stream" "waf_logs_to_s3" {
     buffering_interval = 300
     compression_format = "GZIP"
     kms_key_arn        = aws_kms_key.s3_modernisation_platform_waf_logs.arn
+
+    cloudwatch_logging_options {
+      enabled         = true
+      log_group_name  = "/aws/kinesisfirehose/waf-logs-to-s3"
+      log_stream_name = "S3Delivery"
+    }
   }
 }
+
 
 # CloudWatch Logs Destination for cross-account log delivery
 resource "aws_cloudwatch_log_destination" "waf_logs" {
