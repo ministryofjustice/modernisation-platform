@@ -752,7 +752,6 @@ resource "aws_cloudwatch_log_destination_policy" "waf_logs" {
 #     }]
 #   })
 # }
-
 resource "aws_iam_role" "cwl_to_firehose" {
   name = "CWLtoFirehoseRole"
 
