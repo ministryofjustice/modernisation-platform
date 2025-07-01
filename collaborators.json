@@ -38,7 +38,7 @@
     },
     {
       "username": "pankaj.pant",
-      "github-username": "pankaj-pant-lumen",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "ppud-development",
@@ -124,7 +124,7 @@
     },
     {
       "username": "liam.fortune",
-      "github-username": "liamfortune01",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "delius-iaps-preproduction",
@@ -154,7 +154,7 @@
     },
     {
       "username": "gemma.mills",
-      "github-username": "GemmaMills01",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "delius-iaps-preproduction",
@@ -184,7 +184,7 @@
     },
     {
       "username": "michaela.blowers",
-      "github-username": "MichaelaB21",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "delius-iaps-preproduction",
@@ -288,7 +288,7 @@
     },
     {
       "username": "olumide.alabi",
-      "github-username": "olusyscon",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "nomis-development",
@@ -298,7 +298,7 @@
     },
     {
       "username": "paul.morris",
-      "github-username": "paulmsys",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "nomis-development",
@@ -308,7 +308,7 @@
     },
     {
       "username": "claus.andresen",
-      "github-username": "clausdk66",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "nomis-development",
@@ -318,7 +318,7 @@
     },
     {
       "username": "claire.fraser",
-      "github-username": "CFraserSyscon",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "nomis-development",
@@ -328,7 +328,7 @@
     },
     {
       "username": "adrian.lowe",
-      "github-username": "Alowesyscon",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "nomis-development",
@@ -338,7 +338,7 @@
     },
     {
       "username": "prashant.thakur",
-      "github-username": "pthakur97",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "nomis-development",
@@ -348,7 +348,7 @@
     },
     {
       "username": "sunil.ghadigaonkar",
-      "github-username": "sunilsyscon",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "nomis-development",
@@ -368,7 +368,7 @@
     },
     {
       "username": "chris.keep",
-      "github-username": "iamchriskeep",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "nomis-test",
@@ -378,7 +378,7 @@
     },
     {
       "username": "carl.last",
-      "github-username": "CarlDevCap",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "oasys-development",
@@ -388,7 +388,7 @@
     },
     {
       "username": "martin.hiorns",
-      "github-username": "martinhiorns-capita",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "oasys-development",
@@ -469,6 +469,10 @@
         {
           "account-name": "youth-justice-networking-production",
           "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-networking-production",
+          "access": "migration"
         }
       ]
     },
@@ -515,6 +519,10 @@
         {
           "account-name": "youth-justice-networking-production",
           "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-networking-production",
+          "access": "migration"
         }
       ]
     },
@@ -604,7 +612,7 @@
     },
     {
       "username": "vidhya.bhushan",
-      "github-username": "vidhyamoj",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "genesys-call-centre-data-development",
@@ -678,7 +686,7 @@
     },
     {
       "username": "peter.wilson",
-      "github-username": "peter-bcl",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "delius-core-development",
@@ -732,7 +740,7 @@
     },
     {
       "username": "sean.valmonte",
-      "github-username": "Seanvalmonte",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "delius-core-development",
@@ -786,7 +794,7 @@
     },
     {
       "username": "andrew.richardson",
-      "github-username": "AndrewRichardson76",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "delius-core-development",
@@ -822,7 +830,7 @@
     },
     {
       "username": "linda.clarke",
-      "github-username": "Linda182",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "delius-core-development",
@@ -920,7 +928,7 @@
     },
     {
       "username": "ryan.smith",
-      "github-username": "ryansmith",
+      "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "youth-justice-app-framework-preproduction",
@@ -1372,19 +1380,19 @@
       "accounts": [
         {
           "account-name": "youth-justice-app-framework-development",
-          "access": "instance-management"
+          "access": "reporting-operations"
         },
         {
           "account-name": "youth-justice-app-framework-test",
-          "access": "instance-management"
+          "access": "reporting-operations"
         },
         {
           "account-name": "youth-justice-app-framework-preproduction",
-          "access": "instance-management"
+          "access": "reporting-operations"
         },
         {
           "account-name": "youth-justice-app-framework-production",
-          "access": "instance-management"
+          "access": "reporting-operations"
         }
       ]
     },
@@ -1565,51 +1573,29 @@
       ]
     },
     {
-      "username": "darwin.ceriani",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "youth-justice-app-framework-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "youth-justice-app-framework-test",
-          "access": "developer"
-        },
-        {
-          "account-name": "youth-justice-app-framework-preproduction",
-          "access": "developer"
-        },
-        {
-          "account-name": "youth-justice-app-framework-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "john.beavis",
       "github-username": "no-value-supplied",
       "accounts": [
         {
           "account-name": "youth-justice-app-framework-development",
-          "access": "developer"
+          "access": "reporting-operations"
         },
         {
           "account-name": "youth-justice-app-framework-test",
-          "access": "developer"
+          "access": "reporting-operations"
         },
         {
           "account-name": "youth-justice-app-framework-preproduction",
-          "access": "developer"
+          "access": "reporting-operations"
         },
         {
           "account-name": "youth-justice-app-framework-production",
-          "access": "developer"
+          "access": "reporting-operations"
         }
       ]
     },
     {
-      "username": "neil.jones",
+      "username": "adrian.fonseka",
       "github-username": "no-value-supplied",
       "accounts": [
         {
@@ -1630,26 +1616,6 @@
     },
     {
       "username": "mike.hutchinson",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "long-term-storage-production",
-          "access": "civica-role"
-        }
-      ]
-    },
-    {
-      "username": "adrian.watson",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "long-term-storage-production",
-          "access": "civica-role"
-        }
-      ]
-    },
-    {
-      "username": "lis.croxen",
       "github-username": "no-value-supplied",
       "accounts": [
         {
@@ -1704,18 +1670,86 @@
       "accounts": [
         {
           "account-name": "youth-justice-app-framework-development",
-          "access": "developer"
+          "access": "reporting-operations"
         },
         {
           "account-name": "youth-justice-app-framework-test",
-          "access": "developer"
+          "access": "reporting-operations"
         },
         {
           "account-name": "youth-justice-app-framework-preproduction",
-          "access": "developer"
+          "access": "reporting-operations"
         },
         {
           "account-name": "youth-justice-app-framework-production",
+          "access": "reporting-operations"
+        }
+      ]
+    },
+    {
+      "username": "alex.key",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "reporting-operations"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "reporting-operations"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "reporting-operations"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "reporting-operations"
+        }
+      ]
+    },
+    {
+      "username": "oriana.delgado",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "reporting-operations"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "reporting-operations"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "reporting-operations"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "reporting-operations"
+        }
+      ]
+    },
+    {
+      "username": "sajjad.hai",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "read-only"
+        },
+        {
+          "account-name": "youth-justice-networking-production",
+          "access": "read-only"
+        }
+      ]
+    },
+    {
+      "username": "edward.caren",
+      "github-username": "EdwardTCaren",
+      "accounts": [
+        {
+          "account-name": "ppud-production",
           "access": "developer"
         }
       ]

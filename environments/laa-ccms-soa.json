@@ -24,6 +24,10 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
           "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
         }
@@ -35,6 +39,10 @@
         {
           "sso_group_name": "laa-sre-admins",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
         },
         {
           "sso_group_name": "laa-ccms-migration-team",
@@ -50,6 +58,10 @@
           "level": "developer"
         },
         {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
           "sso_group_name": "laa-ccms-migration-team",
           "level": "developer"
         }
@@ -63,6 +75,6 @@
     "owner": "ApplicationOperations@justice.gov.uk",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [],
+  "github-oidc-team-repositories": [""],
   "go-live-date": ""
 }

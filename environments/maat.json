@@ -15,6 +15,10 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
+        },
+        {
           "sso_group_name": "laa-sre-admins",
           "level": "sandbox"
         }
@@ -33,6 +37,10 @@
           "sso_group_name": "laa-crime-apps-team",
           "level": "developer",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         },
         {
           "sso_group_name": "laa-sre-admins",
@@ -54,6 +62,10 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
+        },
+        {
           "sso_group_name": "laa-sre-admins",
           "level": "developer"
         }
@@ -73,6 +85,10 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
+        },
+        {
           "sso_group_name": "laa-sre-admins",
           "level": "developer"
         }
@@ -83,7 +99,7 @@
     "application": "Means Assessment Administration Tool - MAAT",
     "business-unit": "LAA",
     "infrastructure-support": "laa_ops@digital.justice.gov.uk",
-    "owner": "laa-crime-apps@digital.justice.gov.uk",
+    "owner": "laacrimeapps@justice.gov.uk",
     "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [

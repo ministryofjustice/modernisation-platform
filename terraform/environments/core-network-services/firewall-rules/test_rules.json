@@ -62,20 +62,6 @@
     "destination_port": "80",
     "protocol": "TCP"
   },
-  "noms_test_dr_vnet_to_mp_hmpps_test": {
-    "action": "PASS",
-    "source_ip": "${noms-test-dr-vnet}",
-    "destination_ip": "${hmpps-test}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "mp_hmpps_test_to_noms_test_dr_vnet": {
-    "action": "PASS",
-    "source_ip": "${hmpps-test}",
-    "destination_ip": "${noms-test-dr-vnet}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
   "noms_test_vnet_to_mp_hmpps_test": {
     "action": "PASS",
     "source_ip": "${noms-test-vnet}",
@@ -111,34 +97,6 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "noms_mgmt_dr_vnet_to_mp_hmpps_test": {
-    "action": "PASS",
-    "source_ip": "${noms-mgmt-dr-vnet}",
-    "destination_ip": "${hmpps-test}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "mp_hmpps_test_to_noms_mgmt_dr_vnet": {
-    "action": "PASS",
-    "source_ip": "${hmpps-test}",
-    "destination_ip": "${noms-mgmt-dr-vnet}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "aks_studio_hosting_dev_1_vnet_to_mp_hmpps_test_oracledb": {
-    "action": "PASS",
-    "source_ip": "${aks-studio-hosting-dev-1-vnet}",
-    "destination_ip": "${hmpps-test}",
-    "destination_port": "1521",
-    "protocol": "TCP"
-  },
-  "aks_studio_hosting_dev_1_vnet_to_mp_hmpps_test_https": {
-    "action": "PASS",
-    "source_ip": "${aks-studio-hosting-dev-1-vnet}",
-    "destination_ip": "${hmpps-test}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
   "mp_hmpps_test_to_noms_mgmt_vnet_dns": {
     "action": "PASS",
     "source_ip": "${hmpps-test}",
@@ -146,17 +104,17 @@
     "destination_port": "53",
     "protocol": "UDP"
   },
-  "laa_uat_to_mp_laa_test": {
-    "action": "ALERT",
-    "source_ip": "${laa-lz-uat}",
-    "destination_ip": "${laa-test}",
-    "destination_port": "ANY",
-    "protocol": "IP"
-  },
   "laa_test_to_mp_laa_test_ccms": {
     "action": "PASS",
     "source_ip": "${laa-lz-uat}",
     "destination_ip": "${laa-test}",
+    "destination_port": "$LAA_CCMS_TCP",
+    "protocol": "TCP"
+  },
+  "laa_test_to_mp_laa_test_ccms": {
+    "action": "PASS",
+    "source_ip": "${laa-test}",
+    "destination_ip": "${laa-lz-uat}",
     "destination_port": "$LAA_CCMS_TCP",
     "protocol": "TCP"
   },
@@ -185,6 +143,34 @@
     "action": "PASS",
     "source_ip": "${laa-lz-uat}",
     "destination_ip": "${laa-test}",
+    "destination_port": "$LAA_MAAT_TCP",
+    "protocol": "TCP"
+  },
+  "laa_test_to_mp_laa_test_oem": {
+    "action": "PASS",
+    "source_ip": "${laa-test}",
+    "destination_ip": "${laa-lz-uat}",
+    "destination_port": "$LAA_OEM_TCP",
+    "protocol": "TCP"
+  },
+  "laa_test_to_mp_laa_test_oas": {
+    "action": "PASS",
+    "source_ip": "${laa-test}",
+    "destination_ip": "${laa-lz-uat}",
+    "destination_port": "$LAA_OAS_TCP",
+    "protocol": "TCP"
+  },
+  "laa_test_to_mp_laa_test_edw": {
+    "action": "PASS",
+    "source_ip": "${laa-test}",
+    "destination_ip": "${laa-lz-uat}",
+    "destination_port": "$LAA_EDW_TCP",
+    "protocol": "TCP"
+  },
+  "laa_test_to_mp_laa_test_maat": {
+    "action": "PASS",
+    "source_ip": "${laa-test}",
+    "destination_ip": "${laa-lz-uat}",
     "destination_port": "$LAA_MAAT_TCP",
     "protocol": "TCP"
   },
@@ -349,6 +335,13 @@
     "destination_port": "1522",
     "protocol": "TCP"
   },
+  "cp_to_mp_laa_test_soa": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${laa-test}",
+    "destination_port": "$LAA_CCMS_SOA",
+    "protocol": "TCP"
+  },
   "delius_test_to_hmpps_test_icmp": {
     "action": "PASS",
     "source_ip": "${delius-test}",
@@ -389,6 +382,34 @@
     "source_ip": "${yjb-test}",
     "destination_ip": "${youth-justice-networking-production}",
     "destination_port": "$YJB_TCP",
+    "protocol": "TCP"
+  },
+  "laa_uat_to_mp_laa_test": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-uat}",
+    "destination_ip": "${laa-test}",
+    "destination_port": "ANY",
+    "protocol": "IP"
+  },
+  "laa_test_data_a_ses": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-test-general-data-subnets-a}",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "laa_test_data_b_ses": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-test-general-data-subnets-b}",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "laa_test_data_c_ses": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-test-general-data-subnets-c}",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
+    "destination_port": "587",
     "protocol": "TCP"
   }
 }

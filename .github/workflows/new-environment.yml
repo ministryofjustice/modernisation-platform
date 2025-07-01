@@ -35,7 +35,7 @@ defaults:
 
 jobs:
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@0442287e70970e2e732fbfecf17fd362d2d21dee # v3.2.6
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -46,7 +46,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0442287e70970e2e732fbfecf17fd362d2d21dee # v3.2.6
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           modernisation_pat_multirepo: ${{ needs.fetch-secrets.outputs.modernisation_pat_multirepo }}
@@ -103,7 +103,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0442287e70970e2e732fbfecf17fd362d2d21dee # v3.2.6
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -147,7 +147,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0442287e70970e2e732fbfecf17fd362d2d21dee # v3.2.6
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -191,7 +191,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0442287e70970e2e732fbfecf17fd362d2d21dee # v3.2.6
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -246,7 +246,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0442287e70970e2e732fbfecf17fd362d2d21dee # v3.2.6
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -301,7 +301,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0442287e70970e2e732fbfecf17fd362d2d21dee # v3.2.6
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -356,7 +356,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0442287e70970e2e732fbfecf17fd362d2d21dee # v3.2.6
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -401,7 +401,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0442287e70970e2e732fbfecf17fd362d2d21dee # v3.2.6
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -456,7 +456,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0442287e70970e2e732fbfecf17fd362d2d21dee # v3.2.6
         with:
           slack_webhooks: ${{ needs.fetch-secrets.outputs.slack_webhooks }}
           gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
@@ -474,12 +474,20 @@ jobs:
       - name: Install the client
         if: steps.environment_json_changes.outputs.files != ''
         run: pip install notifications-python-client
+      - name: Get PR number
+        id: pr_number
+        if: steps.environment_json_changes.outputs.files != ''
+        run: |
+          PR_NUMBER=$(gh api repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls --jq '.[0].number')
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Send notification to Slack
         if: steps.environment_json_changes.outputs.files != ''
         run: |
           DECODED_FILES=$(echo ${{ steps.environment_json_changes.outputs.files }} | base64 --decode)
           for file in $DECODED_FILES; do
-          FILE_PATH="https://github.com/${GITHUB_REPOSITORY}/blob/main/environments/${file}"
+          PR_PATH="https://github.com/${GITHUB_REPOSITORY}/pull/${{ steps.pr_number.outputs.pr_number }}/files"
           slack_channel=$(jq -r '.tags["slack-channel"] // empty' "environments/$file")
           if [[ -z "$slack_channel" ]]; then
           echo "No Slack channel specified in the $file or the field does not exist. Skipping."
@@ -494,7 +502,7 @@ jobs:
           echo "Webhook URL found for channel $slack_channel"
           PAYLOAD=$(cat <<EOF
           {
-          "text": "The JSON file <${FILE_PATH}|${file}> has been changed."
+          "text": "The JSON file <${PR_PATH}|${file}> has been changed."
           }
           EOF
           )
@@ -533,7 +541,9 @@ jobs:
         if: steps.environment_json_changes.outputs.files != ''
         run: |
           DECODED_FILES=$(echo ${{ steps.environment_json_changes.outputs.files }} | base64 --decode)
-          python ./scripts/json-changes-notifier.py $DECODED_FILES      
+          python ./scripts/json-changes-notifier.py $DECODED_FILES   
+        env:
+          PR_NUMBER: ${{ steps.pr_number.outputs.pr_number }}   
   member-bootstrap:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
@@ -543,7 +553,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0442287e70970e2e732fbfecf17fd362d2d21dee # v3.2.6
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -589,3 +599,13 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
         if: ${{ failure() }}
+  
+  modernisation-platform-account-plan-and-apply:
+    uses: ./.github/workflows/reusable_terraform_plan_apply.yml
+    needs: create-environment
+    with:
+      working-directory: "terraform/modernisation-platform-account"
+      workflow_id: "modernisation-platform-account"
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}

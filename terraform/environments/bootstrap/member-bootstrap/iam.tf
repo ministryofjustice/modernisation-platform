@@ -163,6 +163,8 @@ data "aws_iam_policy_document" "member-access" {
       "lakeformation:*",
       "lambda:*",
       "logs:*",
+      "networkflowmonitor:*",
+      "networkmonitor:*",
       "organizations:Describe*",
       "organizations:List*",
       "oam:*",
@@ -940,5 +942,41 @@ data "aws_iam_policy_document" "oidc_assume_role_dev_test" {
     actions = [
       "s3:DeleteObject"
     ]
+  }
+}
+
+# GitHub OIDC Role for Security Hub Insight Creation and Summary Access
+module "securityhub_insights_oidc_role" {
+  count               = startswith(terraform.workspace, "core") && terraform.workspace != "core-shared-services-production" ? 0 : 1
+  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=62b8a16c73d8e4422cd81923e46948e8f4b5cf48" # v3.2.0
+  github_repositories = ["ministryofjustice/modernisation-platform"]
+  role_name           = "github-actions-securityhub-insights"
+  policy_jsons        = [data.aws_iam_policy_document.securityhub_insights_oidc_policy.json]
+  subject_claim       = "ref:refs/heads/main"
+  tags                = { "Name" = format("%s-oidc-securityhub-insights", terraform.workspace) }
+}
+
+module "securityhub_insights_oidc_role_core" {
+  count                  = startswith(terraform.workspace, "core") && terraform.workspace != "core-shared-services-production" ? 1 : 0
+  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=82f546bd5f002674138a2ccdade7d7618c6758b3" # v3.0.0
+  github_repositories    = ["ministryofjustice/modernisation-platform:ref:refs/heads/main"]
+  role_name              = "github-actions-securityhub-insights"
+  additional_permissions = data.aws_iam_policy_document.securityhub_insights_oidc_policy.json
+  tags_common            = { "Name" = format("%s-oidc-securityhub-insights", terraform.workspace) }
+  tags_prefix            = ""
+}
+
+data "aws_iam_policy_document" "securityhub_insights_oidc_policy" {
+  # checkov:skip=CKV_AWS_111 "Required wildcard resource due to AWS Security Hub API limitations"
+  # checkov:skip=CKV_AWS_356 "Wildcard resource necessary because specific ARNs not supported for these actions"
+  statement {
+    sid    = "AllowSecurityHubInsightActions"
+    effect = "Allow"
+    actions = [
+      "securityhub:CreateInsight",
+      "securityhub:GetInsights",
+      "securityhub:GetInsightResults"
+    ]
+    resources = ["*"]
   }
 }

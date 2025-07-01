@@ -240,8 +240,15 @@ data "aws_iam_policy_document" "developer_additional" {
       "elasticloadbalancing:AddListenerCertificates",
       "events:DisableRule",
       "events:EnableRule",
+      "fis:*",
+      "glue:GetConnection",
+      "glue:GetConnections",
+      "guardduty:*",
       "iam:CreateServiceLinkedRole",
       "identitystore:DescribeUser",
+      "kinesisanalytics:List*",
+      "kinesisanalytics:Describe*",
+      "kinesisanalytics:DiscoverInputSchema",
       "kms:Decrypt*",
       "kms:Encrypt",
       "kms:ReEncrypt*",
@@ -258,6 +265,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "rds:RestoreDBInstanceToPointInTime",
       "rds:RebootDB*",
       "rhelkb:GetRhelURL",
+      "s3:ListBucket",
       "s3:PutObject",
       "s3:DeleteObject",
       "s3:DeleteObjectVersion",
@@ -283,18 +291,13 @@ data "aws_iam_policy_document" "developer_additional" {
       "ssm-guiconnect:*",
       "sso:ListDirectoryAssociations",
       "support:*",
-      "wellarchitected:Get*",
-      "wellarchitected:List*",
-      "wellarchitected:ExportLens",
       "states:Describe*",
       "states:List*",
       "states:Stop*",
       "states:Start*",
-      "kinesisanalytics:List*",
-      "kinesisanalytics:Describe*",
-      "kinesisanalytics:DiscoverInputSchema",
-      "glue:GetConnection",
-      "glue:GetConnections"
+      "wellarchitected:Get*",
+      "wellarchitected:List*",
+      "wellarchitected:ExportLens"
     ]
     resources = ["*"]
   }
@@ -456,6 +459,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "s3:PutBucketNotificationConfiguration",
       "s3:GetBucketOwnershipControls",
       "s3:PutObjectAcl",
+      "s3:PutObjectTagging",
       "s3tables:*"
     ]
     resources = ["*"]
@@ -598,7 +602,6 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "dbqms:*",
       "discovery:*",
       "detective:*",
-      "graph:*",
       "dlm:*",
       "dms:*",
       "drs:*",
@@ -630,6 +633,8 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "mgh:*",
       "mgn:*",
       "migrationhub-strategy:*",
+      "networkflowmonitor:*",
+      "networkmonitor:*",
       "oam:*",
       "organizations:DescribeOrganization",
       "quicksight:*",
@@ -658,6 +663,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "support:*",
       "textract:*",
       "tiros:*",
+      "transfer:*",
       "wafv2:*",
       "wellarchitected:*"
     ]
@@ -773,9 +779,10 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "elasticloadbalancing:*",
       "events:*",
       "firehose:*",
+      "fis:*",
       "glacier:*",
       "glue:*",
-      "guardduty:get*",
+      "guardduty:*",
       "iam:*",
       "identitystore:DescribeUser",
       "kinesis:*",

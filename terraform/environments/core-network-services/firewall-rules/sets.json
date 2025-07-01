@@ -1,16 +1,12 @@
 {
   "IP_SETS": {
     "IP_SET_EXAMPLE": ["1.1.1.1/32", "1.0.0.1/32"],
+    "AWS_SMTP_EU_WEST_2": ["3.11.252.235", "35.178.252.162", "35.177.173.199"],
     "AD_HMPP_DCS": ["${ad-hmpp-dc-a}", "${ad-hmpp-dc-b}"],
     "AD_HMPP_RD_LICENSING": ["${ad-hmpp-rdlic}"],
     "AD_AZURE_DCS": ["${ad-azure-dc-a}", "${ad-azure-dc-b}"],
     "AD_AZURE_RD_LICENSING": ["${ad-azure-rdlic}"],
-    "AZURE_PROD": [
-      "${noms-live-vnet}",
-      "${noms-mgmt-live-vnet}",
-      "${noms-live-dr-vnet}",
-      "${noms-mgmt-live-dr-vnet}"
-    ],
+    "AZURE_PROD": ["${noms-live-vnet}", "${noms-mgmt-live-vnet}"],
     "AZURE_DEVTEST": ["${noms-test-vnet}", "${noms-mgmt-vnet}"],
     "DATA_ENGINEERING": [
       "${data-engineering-dev}",
@@ -63,11 +59,14 @@
       "5101",
       "5401",
       "5575",
+      "7059",
       "1636",
       "10401"
     ],
+    "LAA_CCMS_SOA": ["80", "443", "1571", "8001"],
     "LAA_EDW_TCP": ["2049"],
     "LAA_PORTAL_TCP": ["7001", "7201", "14200", "6800:6801", "5556", "6200"],
+    "LAA_PORTAL_WEBGATE_TCP": ["5575"],
     "LAA_MAAT_TCP": ["8090"],
     "LAA_OAS_TCP": ["9500", "9502", "9514", "3443"],
     "LAA_OEM_TCP": [
@@ -82,6 +81,7 @@
       "7301",
       "7403",
       "7788",
+      "7777",
       "7799",
       "7803",
       "9788",

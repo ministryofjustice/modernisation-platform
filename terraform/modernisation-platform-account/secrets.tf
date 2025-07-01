@@ -154,11 +154,21 @@ resource "aws_secretsmanager_secret" "gov_uk_notify_api_key" {
   }
 }
 
+# Look up environments remote state to get aws nuke lists
+data "terraform_remote_state" "environments" {
+  backend = "s3"
+  config = {
+    bucket = "modernisation-platform-terraform-state"
+    key    = "environments/terraform.tfstate"
+    region = "eu-west-2"
+  }
+}
+
 # Account IDs to be excluded from auto-nuke
 resource "aws_secretsmanager_secret" "nuke_account_blocklist" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "nuke_account_blocklist"
-  description = "Account IDs to be excluded from auto-nuke. AWS-Nuke (https://github.com/rebuy-de/aws-nuke) requires at least one Account ID to be present in this blocklist, while it is recommended to add every production account to this blocklist."
+  description = "Account IDs to be excluded from auto-nuke. This secret is used by GitHub actions job awsnuke.yml inside the environments repo."
   kms_key_id  = aws_kms_key.secrets_key_multi_region.id
   tags        = local.tags
   replica {
@@ -166,16 +176,48 @@ resource "aws_secretsmanager_secret" "nuke_account_blocklist" {
   }
 }
 
+resource "aws_secretsmanager_secret_version" "nuke_account_blocklist" {
+  secret_id = aws_secretsmanager_secret.nuke_account_blocklist.id
+  secret_string = jsonencode({
+    blocklist = data.terraform_remote_state.environments.outputs.environment_nuke_blocklist_accounts
+  })
+}
+
 # Account IDs to be auto-nuked on weekly basis
 resource "aws_secretsmanager_secret" "nuke_account_ids" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "nuke_account_ids"
-  description = "Account IDs to be auto-nuked on weekly basis. CAUTION: Any account ID you add here will be automatically nuked! This secret is used by GitHub actions job nuke.yml inside the environments repo, to find the Account IDs to be nuked."
+  description = "Account IDs to be auto-nuked on weekly basis. This secret is used by GitHub actions job awsnuke.yml inside the environments repo."
   kms_key_id  = aws_kms_key.secrets_key_multi_region.id
   tags        = local.tags
   replica {
     region = local.replica_region
   }
+}
+
+resource "aws_secretsmanager_secret_version" "nuke_account_ids" {
+  secret_id = aws_secretsmanager_secret.nuke_account_ids.id
+  secret_string = jsonencode({
+    nuke_accounts = data.terraform_remote_state.environments.outputs.environment_nuke_accounts
+  })
+}
+
+# Account IDs to be rebuilt after being nuked
+resource "aws_secretsmanager_secret" "nuke_rebuild_account_ids" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "nuke_rebuild_account_ids"
+  description = "Account IDs to be rebuilt after being nuked. This secret is used by GitHub actions job awsnuke.yml inside the environments repo."
+  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}
+resource "aws_secretsmanager_secret_version" "nuke_rebuild_account_ids" {
+  secret_id = aws_secretsmanager_secret.nuke_rebuild_account_ids.id
+  secret_string = jsonencode({
+    rebuild_accounts = data.terraform_remote_state.environments.outputs.environment_rebuild_after_nuke_accounts
+  })
 }
 
 resource "aws_secretsmanager_secret" "slack_webhook_url" {
@@ -193,6 +235,17 @@ resource "aws_secretsmanager_secret" "slack_webhooks" {
   # checkov:skip=CKV2_AWS_57:Auto rotation not possible
   name        = "slack_webhooks"
   description = "Used for sending notifications to specified Slack channels when environment JSON files are modified"
+  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}
+
+resource "aws_secretsmanager_secret" "securityhub_slack_webhooks" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "securityhub_slack_webhooks"
+  description = "Stores Slack channel webhook URLs for sending Security Hub findings notifications"
   kms_key_id  = aws_kms_key.secrets_key_multi_region.id
   tags        = local.tags
   replica {

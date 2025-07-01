@@ -8,6 +8,7 @@ on:
       - '.github/workflows/terraform-github.yml'
       - 'environments/**.json'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
+      - 'collaborators.json'
     branches:
       - main
   pull_request:
@@ -17,6 +18,7 @@ on:
       - '.github/workflows/terraform-github.yml'
       - 'environments/**.json'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
+      - 'collaborators.json'
     branches:
       - main
     types: [opened, edited, reopened, synchronize]
@@ -38,7 +40,7 @@ permissions:
 jobs:
 
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@0442287e70970e2e732fbfecf17fd362d2d21dee # v3.2.6
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}  
@@ -81,7 +83,7 @@ jobs:
         with:
           fetch-depth: 0 # or "2" To retrieve the preceding commit.
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0442287e70970e2e732fbfecf17fd362d2d21dee # v3.2.6
         with:
           terraform_github_token: ${{ needs.fetch-secrets.outputs.terraform_github_token}}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}

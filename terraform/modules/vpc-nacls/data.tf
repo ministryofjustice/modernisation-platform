@@ -203,6 +203,7 @@ locals {
       rule_number = 5400
       to_port     = 5721
     },
+
     deny_0-0-0-0_remote-desktop_tcp_in = {
       cidr_block  = "0.0.0.0/0"
       egress      = false
