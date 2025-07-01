@@ -42,7 +42,7 @@ locals {
         subnet_id                 = aws_subnet.live-data-additional["eu-west-2a"].id
         vpc_security_group_name   = "ad_hmpp_dc_sg"
         tags = {
-          server-type   = "DomainJoin" # set to "DomainController" after initial testing
+          server-type   = "DomainController"
           domain-name   = "azure.hmpp.root"
           description   = "domain controller for FixNGo azure.hmpp.root domain"
           os-type       = "Windows"
@@ -59,7 +59,7 @@ locals {
         subnet_id                 = aws_subnet.live-data-additional["eu-west-2b"].id
         vpc_security_group_name   = "ad_hmpp_dc_sg"
         tags = {
-          server-type   = "DomainJoin" # set to "DomainController" after initial testing
+          server-type   = "DomainController"
           domain-name   = "azure.hmpp.root"
           description   = "domain controller for FixNGo azure.hmpp.root domain"
           os-type       = "Windows"
@@ -440,8 +440,9 @@ locals {
             protocol    = "TCP"
             cidr_blocks = ["10.0.0.0/8"]
           }
-          netbios-tcp-139 = {
-            port        = 139
+          netbios-tcp-137-139 = {
+            from_port = 137
+            to_port   = 139
             protocol    = "TCP"
             cidr_blocks = ["10.0.0.0/8"]
           }
