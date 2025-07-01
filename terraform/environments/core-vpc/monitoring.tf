@@ -156,7 +156,7 @@ resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
 
   metric_query {
     id          = "ad1"
-    expression  = "ANOMALY_DETECTION_BAND(m1, 5)"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 6)"
     label       = "Sum SSHConnectionAttempts ${each.key} GreaterThanUpperThreshold 1.0"
     return_data = true
   }
