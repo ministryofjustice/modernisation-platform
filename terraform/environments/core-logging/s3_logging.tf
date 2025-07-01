@@ -355,22 +355,8 @@ module "s3-bucket-cloudtrail-logging" {
     }
   ]
 
-  depends_on = [
-    aws_s3_bucket_versioning.cloudtrail_replication
-  ]
-
   tags = local.tags
 }
-
-resource "aws_s3_bucket_versioning" "cloudtrail_replication" {
-  provider = aws.modernisation-platform-eu-west-1
-  bucket   = "modernisation-platform-logs-cloudtrail-logging-replication"
-
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
-
 
 data "aws_organizations_organization" "current" {}
 data "aws_region" "current" {}
