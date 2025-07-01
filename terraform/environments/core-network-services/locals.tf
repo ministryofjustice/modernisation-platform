@@ -134,6 +134,9 @@ locals {
 
   yjb_vpn_static_route_srx02 = ["10.20.224.0/22"]
 
+  ccms_vpn_nec_non_prod = ["10.120.0.147/32"]
+
+  ccms_vpn_nec_prod = ["10.110.0.57/32"]
 
   core-vpcs = {
     for file in fileset("../../../environments-networks", "*.json") :
