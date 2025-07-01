@@ -394,17 +394,26 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs" {
   }
 
   statement {
-    sid    = "AllowFirehoseEncrypt"
+    sid    = "AllowFirehoseAndLogsEncrypt"
     effect = "Allow"
     actions = [
       "kms:Encrypt",
+      "kms:Decrypt",
       "kms:GenerateDataKey*",
       "kms:DescribeKey"
     ]
     resources = ["*"]
     principals {
-      type        = "Service"
-      identifiers = ["firehose.amazonaws.com"]
+      type = "Service"
+      identifiers = [
+        "firehose.amazonaws.com",
+        "logs.${data.aws_region.current.name}.amazonaws.com"
+      ]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.current.id]
     }
   }
 
@@ -515,7 +524,6 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs_repl
   }
 }
 
-
 # S3 bucket for centralised modernisation platform waf logs
 module "s3-bucket-modernisation-platform-waf-logs" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
@@ -610,25 +618,29 @@ data "aws_iam_policy_document" "modernisation_platform_waf_logs_bucket_policy" {
 }
 
 # Kinesis Firehose stream for centralized WAF logging
-
 resource "aws_iam_role" "firehose_to_s3" {
   name = "firehose_to_s3"
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Effect = "Allow"
-      Principal = {
-        Service = "firehose.amazonaws.com"
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = [
+            "firehose.amazonaws.com",
+            "logs.amazonaws.com"
+          ]
+        }
+        Action = "sts:AssumeRole"
       }
-      Action = "sts:AssumeRole"
-    }]
+    ]
   })
 }
 
 resource "aws_iam_role_policy" "firehose_to_s3_policy" {
   role = aws_iam_role.firehose_to_s3.id
   policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [
       {
         Effect = "Allow"
@@ -642,10 +654,27 @@ resource "aws_iam_role_policy" "firehose_to_s3_policy" {
         Effect = "Allow"
         Action = [
           "kms:Encrypt",
+          "kms:Decrypt",
           "kms:GenerateDataKey*",
           "kms:DescribeKey"
         ]
         Resource = aws_kms_key.s3_modernisation_platform_waf_logs.arn
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "firehose:PutRecord",
+          "firehose:PutRecordBatch"
+        ]
+        Resource = "arn:aws:firehose:eu-west-2:${data.aws_caller_identity.current.account_id}:deliverystream/waf-logs-to-s3"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:PutLogEvents"
+        ]
+        # Resource = "*"
+          Resource = "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/kinesisfirehose/waf-logs-to-s3:*"
       }
     ]
   })
@@ -663,7 +692,68 @@ resource "aws_kinesis_firehose_delivery_stream" "waf_logs_to_s3" {
     bucket_arn         = module.s3-bucket-modernisation-platform-waf-logs.bucket.arn
     buffering_size     = 5
     buffering_interval = 300
-    compression_format = "UNCOMPRESSED"
+    compression_format = "GZIP"
     kms_key_arn        = aws_kms_key.s3_modernisation_platform_waf_logs.arn
   }
+}
+
+# CloudWatch Logs Destination for cross-account log delivery
+resource "aws_cloudwatch_log_destination" "waf_logs" {
+  name       = "waf-logs-destination"
+  role_arn   = aws_iam_role.cwl_to_firehose.arn
+  target_arn = aws_kinesis_firehose_delivery_stream.waf_logs_to_s3.arn
+
+  depends_on = [
+    aws_kinesis_firehose_delivery_stream.waf_logs_to_s3,
+    aws_iam_role_policy.cwl_to_firehose_policy
+  ]
+}
+
+# Allows all member accounts to use this destination
+resource "aws_cloudwatch_log_destination_policy" "waf_logs" {
+  destination_name = aws_cloudwatch_log_destination.waf_logs.name
+  access_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect    = "Allow",
+      Principal = "*",
+      Action    = "logs:PutSubscriptionFilter",
+      Resource  = aws_cloudwatch_log_destination.waf_logs.arn,
+      Condition = {
+        StringEquals = {
+          "aws:PrincipalOrgID" = data.aws_organizations_organization.current.id
+        }
+      }
+    }]
+  })
+}
+
+
+resource "aws_iam_role" "cwl_to_firehose" {
+  name = "CWLtoFirehoseRole"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement : [{
+      Effect = "Allow",
+      Principal : {
+        Service = "logs.amazonaws.com"
+      },
+      Action : "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy" "cwl_to_firehose_policy" {
+  name = "Permissions-Policy-For-CWL"
+  role = aws_iam_role.cwl_to_firehose.name
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement : [{
+      Effect   = "Allow",
+      Action   = ["firehose:*"],
+      Resource = [aws_kinesis_firehose_delivery_stream.waf_logs_to_s3.arn]
+    }]
+  })
 }
