@@ -674,7 +674,7 @@ resource "aws_iam_role_policy" "firehose_to_s3_policy" {
           "logs:PutLogEvents"
         ]
         # Resource = "*"
-          Resource = "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/kinesisfirehose/waf-logs-to-s3:*"
+        Resource = "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/kinesisfirehose/waf-logs-to-s3:*"
       }
     ]
   })

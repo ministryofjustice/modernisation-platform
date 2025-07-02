@@ -441,8 +441,8 @@ locals {
             cidr_blocks = ["10.0.0.0/8"]
           }
           netbios-tcp-137-139 = {
-            from_port = 137
-            to_port   = 139
+            from_port   = 137
+            to_port     = 139
             protocol    = "TCP"
             cidr_blocks = ["10.0.0.0/8"]
           }
