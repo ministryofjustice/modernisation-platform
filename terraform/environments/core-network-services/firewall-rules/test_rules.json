@@ -251,6 +251,13 @@
     "destination_port": "636",
     "protocol": "TCP"
   },
+  "hmpps_test_to_delius_test_oracle": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "${delius-test}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
   "mp_hmpps_test_to_noms_mgmt_vnet_ntp": {
     "action": "PASS",
     "source_ip": "${hmpps-test}",
