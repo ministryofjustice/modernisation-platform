@@ -126,12 +126,27 @@
     "protocol": "TCP"
   },
   "laa_shared_services_to_mp_laa_development": {
-    "action": "PASS",
+    "action": "ALERT",
     "source_ip": "${laa-lz-shared-services-nonprod}",
     "destination_ip": "${laa-development}",
     "destination_port": "ANY",
     "protocol": "IP"
   },
+   "laa_shared_services_ws_to_mp_laa_development": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-shared-services-nonprod}",
+    "destination_ip": "${laa-development}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+  "mp_laa_development_to_laa_shared_services_ws": {
+    "action": "PASS",
+    "source_ip": "${laa-development}",
+    "destination_ip": "${laa-lz-shared-services-nonprod}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+
   "analytical_platform_to_mp_laa_development_oracledb": {
     "action": "PASS",
     "source_ip": "${analytical-platform-airflow-dev}",
@@ -263,6 +278,34 @@
     "source_ip": "${laa-appstream-vpc_additional}",
     "destination_ip": "${laa-development}",
     "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "laa_appstream_ld_to_mp_laa_development": {
+    "action": "PASS",
+    "source_ip": "${laa-appstream-vpc}",
+    "destination_ip": "${laa-development}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+   "laa_appstream_additional_ld_to_mp_laa_development": {
+    "action": "PASS",
+    "source_ip": "${laa-appstream-vpc_additional}",
+    "destination_ip": "${laa-development}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+  "mp_laa_development_to_laa_appstream_ld": {
+    "action": "PASS",
+    "source_ip": "${laa-development}",
+    "destination_ip": "${laa-appstream-vpc}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+   "laa_development_to_mp_laa_appstream_additional_ld": {
+    "action": "PASS",
+    "source_ip": "${laa-development}",
+    "destination_ip": "${laa-appstream-vpc_additional}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
     "protocol": "TCP"
   },
   "cp_to_mp_platforms_development_icmp": {
