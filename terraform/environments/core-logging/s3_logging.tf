@@ -620,6 +620,23 @@ data "aws_iam_policy_document" "modernisation_platform_waf_logs_bucket_policy" {
       values   = ["true"]
     }
   }
+
+  # Allow AWS Config to list bucket objects from any MP Org account
+  statement {
+    sid       = "AllowAWSConfigListObject"
+    effect    = "Allow"
+    actions   = ["s3:ListBucket"]
+    resources = [module.s3-bucket-modernisation-platform-waf-logs.bucket.arn]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.current.id]
+    }
+  }
 }
 
 # Kinesis Firehose stream for centralized WAF logging

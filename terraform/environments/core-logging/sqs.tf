@@ -46,7 +46,7 @@ resource "aws_s3_bucket_notification" "logging_bucket_notification" {
 }
 
 
-# SQS Queue for modernisation platform waf logs logging (WAF Logs) bucket updates for XSIAM
+# SQS Queue for modernisation platform waf logs bucket for XSIAM
 resource "aws_sqs_queue" "mp_modernisation_platform_waf_logs_queue" {
   name                       = "mp_modernisation_platform_waf_logs_queue"
   sqs_managed_sse_enabled    = true
@@ -71,7 +71,7 @@ data "aws_iam_policy_document" "modernisation_platform_waf_logs_queue_policy_doc
     condition {
       test     = "ArnEquals"
       variable = "aws:SourceArn"
-      values   = ["arn:aws:s3:::modernisation-platform-waf-logs"]
+      values = [module.s3-bucket-modernisation-platform-waf-logs.bucket.arn]
     }
   }
 }
@@ -82,7 +82,7 @@ resource "aws_sqs_queue_policy" "modernisation_platform_waf_logs_queue_policy" {
 }
 
 resource "aws_s3_bucket_notification" "modernisation_platform_waf_logs_bucket_notification" {
-  bucket = "modernisation-platform-waf-logs"
+  bucket = module.s3-bucket-modernisation-platform-waf-logs.bucket.id
   queue {
     queue_arn = aws_sqs_queue.mp_modernisation_platform_waf_logs_queue.arn
     events    = ["s3:ObjectCreated:*"]
