@@ -623,7 +623,7 @@ data "aws_iam_policy_document" "modernisation_platform_waf_logs_bucket_policy" {
 
   # Allow AWS Config to list bucket objects from any MP Org account
   statement {
-    sid       = "AllowAWSConfigListObject"
+    sid       = "AllowOrgListBucket"
     effect    = "Allow"
     actions   = ["s3:ListBucket"]
     resources = [module.s3-bucket-modernisation-platform-waf-logs.bucket.arn]
