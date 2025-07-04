@@ -71,7 +71,7 @@ data "aws_iam_policy_document" "modernisation_platform_waf_logs_queue_policy_doc
     condition {
       test     = "ArnEquals"
       variable = "aws:SourceArn"
-      values = [module.s3-bucket-modernisation-platform-waf-logs.bucket.arn]
+      values   = [module.s3-bucket-modernisation-platform-waf-logs.bucket.arn]
     }
   }
 }
