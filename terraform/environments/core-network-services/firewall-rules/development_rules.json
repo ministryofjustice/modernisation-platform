@@ -132,7 +132,7 @@
     "destination_port": "ANY",
     "protocol": "IP"
   },
-   "laa_shared_services_ws_to_mp_laa_development": {
+  "laa_shared_services_ws_to_mp_laa_development": {
     "action": "PASS",
     "source_ip": "${laa-lz-shared-services-nonprod}",
     "destination_ip": "${laa-development}",
