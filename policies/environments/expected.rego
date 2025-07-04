@@ -85,6 +85,7 @@ expected :=
     "testing",
     "tipstaff",
     "tribunals",
+    "vcms",
     "wardship",
     "xhibit-portal",
     "youth-justice-app-framework",
