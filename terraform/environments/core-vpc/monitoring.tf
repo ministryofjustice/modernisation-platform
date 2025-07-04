@@ -115,6 +115,7 @@ resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
   threshold_metric_id = "ad1"
   alarm_description   = "Anomaly detection alarm for rejected connections in VPC '${each.key}'. May indicate unauthorized access attempts, port scanning, or misconfigured security groups."
   treat_missing_data  = "notBreaching"
+  alarm_actions       = [aws_sns_topic.vpc_flowlog_alarms.arn]
 
   metric_query {
     id = "m1"
