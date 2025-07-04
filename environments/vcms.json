@@ -1,0 +1,50 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "sandbox"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "Victim Case Management System",
+    "business-unit": "HMPPS",
+    "infrastructure-support": "probation-webops@digital.justice.gov.uk",
+    "owner": "probation-webops@digital.justice.gov.uk",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}
