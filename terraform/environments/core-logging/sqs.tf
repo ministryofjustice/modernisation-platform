@@ -3,7 +3,7 @@
 # SQS Queue to present the logging bucket updates
 resource "aws_sqs_queue" "mp_cloudtrail_log_queue" {
   name                       = "mp_cloudtrail_log_queue"
-  sqs_managed_sse_enabled    = true   # Using managed encryption
+  kms_master_key_id          = aws_kms_key.s3_modernisation_platform_waf_logs.arn
   delay_seconds              = 0      # The default is 0 but can be up to 15 minutes
   max_message_size           = 262144 # 256k which is the max size
   message_retention_seconds  = 345600 # This is 4 days. The max is 14 days
