@@ -263,7 +263,7 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
     }
   }
   statement {
-    sid       = "DenyUnencryptedData"
+    sid       = "AllowCloudTrailWriteWithOrgAndACL"
     effect    = "Allow"
     actions   = ["s3:PutObject"]
     resources = ["${module.s3-bucket-cloudtrail.bucket.arn}/*"]
@@ -275,6 +275,11 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
       test     = "StringEquals"
       variable = "s3:x-amz-acl"
       values   = ["bucket-owner-full-control"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceOrgID"
+      values   = [data.aws_organizations_organization.moj_root_account.id]
     }
   }
   statement {
@@ -615,6 +620,23 @@ data "aws_iam_policy_document" "modernisation_platform_waf_logs_bucket_policy" {
       values   = ["true"]
     }
   }
+
+  # Allow AWS Config to list bucket objects from any MP Org account
+  statement {
+    sid       = "AllowOrgListBucket"
+    effect    = "Allow"
+    actions   = ["s3:ListBucket"]
+    resources = [module.s3-bucket-modernisation-platform-waf-logs.bucket.arn]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.current.id]
+    }
+  }
 }
 
 # Kinesis Firehose stream for centralized WAF logging
@@ -757,3 +779,4 @@ resource "aws_iam_role_policy" "cwl_to_firehose_policy" {
     }]
   })
 }
+
