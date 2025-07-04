@@ -21,7 +21,8 @@
           "oasys-national-reporting-preproduction",
           "performance-hub-preproduction",
           "planetfm-preproduction",
-          "ppud-preproduction"
+          "ppud-preproduction",
+          "vcms-preproduction"
         ]
       }
     }

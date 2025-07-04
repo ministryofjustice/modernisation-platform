@@ -154,7 +154,8 @@ expected :=
           "planetfm-development",
           "hmpps-oem-development",
           "hmpps-domain-services-development",
-          "oasys-national-reporting-development"
+          "oasys-national-reporting-development",
+          "vcms-development"
         ]
       }
     },
@@ -174,7 +175,8 @@ expected :=
           "hmpps-oem-test",
           "hmpps-domain-services-test",
           "delius-core-test",
-          "oasys-national-reporting-test"
+          "oasys-national-reporting-test",
+          "vcms-test"
         ]
       }
     },
@@ -199,7 +201,8 @@ expected :=
           "oasys-national-reporting-preproduction",
           "performance-hub-preproduction",
           "planetfm-preproduction",
-          "ppud-preproduction"
+          "ppud-preproduction",
+          "vcms-preproduction"
         ]
       }
     },
@@ -226,7 +229,8 @@ expected :=
           "oasys-national-reporting-production",
           "performance-hub-production",
           "planetfm-production",
-          "ppud-production"
+          "ppud-production",
+          "vcms-production"
         ]
       }
     },
