@@ -49,7 +49,7 @@ resource "aws_s3_bucket_notification" "logging_bucket_notification" {
 # SQS Queue for modernisation platform waf logs bucket for XSIAM
 resource "aws_sqs_queue" "mp_modernisation_platform_waf_logs_queue" {
   name                       = "mp_modernisation_platform_waf_logs_queue"
-  sqs_managed_sse_enabled    = true
+  kms_master_key_id          = aws_kms_key.s3_modernisation_platform_waf_logs.arn
   delay_seconds              = 0
   max_message_size           = 262144
   message_retention_seconds  = 345600
@@ -71,7 +71,7 @@ data "aws_iam_policy_document" "modernisation_platform_waf_logs_queue_policy_doc
     condition {
       test     = "ArnEquals"
       variable = "aws:SourceArn"
-      values = [module.s3-bucket-modernisation-platform-waf-logs.bucket.arn]
+      values   = [module.s3-bucket-modernisation-platform-waf-logs.bucket.arn]
     }
   }
 }
