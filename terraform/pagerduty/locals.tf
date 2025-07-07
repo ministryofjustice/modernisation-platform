@@ -15,7 +15,7 @@ locals {
     },
     edward_proctor = {
       name  = "Edward Proctor"
-      email = "edward.proctor${local.digital_email_suffix}"
+      email = "edward.proctor${local.justice_email_suffix}"
       role  = "user"
     },
     ewa_stempel = {
