@@ -1388,3 +1388,30 @@ module "edrms_ecr_repo" {
   ]
   tags_common = local.tags
 }
+
+module "vcms_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "vcms"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["vcms-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["vcms-test"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["vcms-preproduction"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["vcms-production"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["vcms-development"],
+    local.environment_management.account_ids["vcms-test"],
+    local.environment_management.account_ids["vcms-preproduction"],
+    local.environment_management.account_ids["vcms-production"],
+    "arn:aws:iam::${local.environment_management.account_ids["vcms-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["vcms-test"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["vcms-preproduction"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["vcms-production"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
