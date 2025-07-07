@@ -1437,6 +1437,10 @@
         {
           "account-name": "youth-justice-app-framework-production",
           "access": "developer"
+        },
+        {
+          "account-name": "youth-justice-networking-production",
+          "access": "migration"
         }
       ]
     },
