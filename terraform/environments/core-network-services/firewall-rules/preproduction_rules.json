@@ -160,6 +160,22 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
+  "nec_nonprod_to_mp_laa_preproduction": {
+    "action": "PASS",
+    "source_ip": "${nec-nonprod}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$NEC_TCP",
+    "protocol": "TCP"
+  },
+
+  "mp_laa_preproduction_to_nec_nonprod": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${nec-nonprod}",
+    "destination_port": "$NEC_TCP",
+    "protocol": "TCP"
+  },
+
   "i2n_to_mp_hmpps_preproduction": {
     "action": "PASS",
     "source_ip": "${i2n}",
