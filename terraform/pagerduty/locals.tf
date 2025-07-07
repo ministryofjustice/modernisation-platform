@@ -5,12 +5,12 @@ locals {
   pager_duty_users = {
     david_elliott = {
       name  = "David Elliott"
-      email = "david.elliott${local.justice_email_suffix}"
+      email = "david.elliott${local.digital_email_suffix}"
       role  = "manager"
     },
     david_sibley = {
       name  = "David Sibley"
-      email = "david.sibley${local.justice_email_suffix}"
+      email = "david.sibley${local.digital_email_suffix}"
       role  = "user"
     },
     edward_proctor = {
@@ -20,27 +20,27 @@ locals {
     },
     ewa_stempel = {
       name  = "Ewa Stempel"
-      email = "ewa.stempel${local.justice_email_suffix}"
+      email = "ewa.stempel${local.digital_email_suffix}"
       role  = "user"
     },
     sukesh_reddygade = {
       name  = "Sukesh Reddy Gade"
-      email = "sukesh.reddygade${local.justice_email_suffix}"
+      email = "sukesh.reddygade${local.digital_email_suffix}"
       role  = "user"
     },
     mike_reid = {
       name  = "Mike Reid"
-      email = "mike.reid${local.justice_email_suffix}"
+      email = "mike.reid${local.digital_email_suffix}"
       role  = "user"
     },
     kudzai_mtoko = {
       name  = "Kudzai Mtoko"
-      email = "kudzai.mtoko${local.justice_email_suffix}"
+      email = "kudzai.mtoko${local.digital_email_suffix}"
       role  = "user"
     },
     modernisation_platform = {
       name  = "Modernisation Platform Team"
-      email = "modernisation-platform${local.justice_email_suffix}"
+      email = "modernisation-platform${local.digital_email_suffix}"
       role  = "user"
     },
   }
