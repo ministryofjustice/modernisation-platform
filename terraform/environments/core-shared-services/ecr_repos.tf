@@ -1341,7 +1341,8 @@ module "soa_admin_ecr_repo" {
   app_name = "soa-admin"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:root"
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
