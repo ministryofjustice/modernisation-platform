@@ -233,6 +233,12 @@ locals {
               "ec2:DescribeVolumes",
               "ec2:DescribeTags",
               "ec2:DescribeInstances",
+              "ec2:StartInstances",
+              "ec2:StopInstances",
+              "ssm:ListCommands",
+              "ssm:ListCommandInvocations",
+              "ssm:GetCommandInvocation",
+              "ssm:DescribeInstanceInformation
             ]
             resources = ["*"]
           },
@@ -883,8 +889,10 @@ locals {
 
     ssm_patching = {
       patch_schedules = {
-        second-thurs = "cron(0 21 ? * THU#2 *)"
-        forth-thurs  = "cron(0 21 ? * THU#4 *)"
+        "second-thurs" = "cron(0 21 ? * THU#2 *)"
+        "forth-thurs"  = "cron(0 21 ? * THU#4 *)"
+}
+  }
       }
       patch_classifications = {
         WINDOWS = ["SecurityUpdates", "CriticalUpdates"]
