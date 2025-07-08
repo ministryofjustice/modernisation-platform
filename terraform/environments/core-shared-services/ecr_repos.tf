@@ -1349,7 +1349,8 @@ module "soa_admin_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-test"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-preproduction"]}:root",
-    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-production"]}:root"
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-production"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd"
   ]
   tags_common = local.tags
 }
@@ -1368,7 +1369,8 @@ module "soa_managed_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-test"]}:root",
     "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-preproduction"]}:root",
-    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-production"]}:root"
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-production"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["laa-ccms-soa-development"]}:role/modernisation-platform-oidc-cicd"
   ]
   tags_common = local.tags
 }
