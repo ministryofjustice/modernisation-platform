@@ -2,6 +2,7 @@
 set +x
 
 APP_NAME=$1
+ENCRYPTED_SLACK_WEBHOOK_URL=$2
 SECRET_NAME="securityhub_slack_webhooks"
 REGION="eu-west-2"
 JSON_FILE="./environments/${APP_NAME}.json"
