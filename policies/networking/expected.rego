@@ -402,8 +402,9 @@ expected :=
         "accounts": [
           "analytical-platform-ingestion-development",
           "coat-development",
-          "example-development",
           "data-platform-development",
+          "example-development",
+          "justice-digital-document-hub-development",
           "observability-platform-development",
           "operations-engineering-development",
           "panda-cyber-appsec-lab-development"
