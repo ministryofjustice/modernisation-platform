@@ -193,7 +193,7 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
     sid       = "AllowCloudTrailPutObjectAndGetBucketACLWithinOrg"
     effect    = "Allow"
     actions   = ["s3:PutObject", "s3:GetBucketAcl"]
-    resources = ["${module.s3-bucket-cloudtrail.bucket.arn}/*"]
+    resources = ["${module.s3-bucket-cloudtrail.bucket.arn}/*", "${module.s3-bucket-cloudtrail.bucket.arn}"]
     principals {
       type        = "Service"
       identifiers = ["cloudtrail.amazonaws.com"]
