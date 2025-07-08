@@ -18,20 +18,21 @@ A core part of the Modernisation Platform is its network topology and configurat
 
 ### General consequences
 
-* route analyzer is obviously only focused on Transit Gateway route tables and traffic flows through Transit Gateway attachments.
+- route analyzer is obviously only focused on Transit Gateway route tables and traffic flows through Transit Gateway attachments.
 
 ### Advantages
 
-* offers an easy way of testing Transit Gateway route table configuration and communication between attached VPCs
-  
+- offers an easy way of testing Transit Gateway route table configuration and communication between attached VPCs
+
 ### Disadvantages
 
-* the tool is accessed through the AWS console UI only, there is no programmatic interface. This hinders greatly any repeatable automation
-* the tool doesn’t offer a convenient method for repeated testing, being designed for diagnostics/troubleshooting rather than regular testing
+- the tool is accessed through the AWS console UI only, there is no programmatic interface. This hinders greatly any repeatable automation
+- the tool doesn’t offer a convenient method for repeated testing, being designed for diagnostics/troubleshooting rather than regular testing
 
 ## Reason for rejection
 
 Given the disadvantages around the tool itself, it doesn't fit our requirements as a method to repeatably and automatically validate transit gateway route table configuration.
 
 ## Useful links
-[Google doc capturing networking testing requirements, principals and related spike stories](https://docs.google.com/document/d/1WTLqsA1XUtahLnif42A1vGyMg7-284z-c4MllZj4GT0/edit#)
+
+[Google doc capturing networking testing requirements, principals and related spike stories](https://justiceuk.sharepoint.com/:w:/r/sites/msteams_480621/Shared%20Documents/Modernisation%20Platform/Infrastructure%20and%20platform%20testing.docx?d=w323917070a4a4222b3000bcc8189d846&csf=1&web=1&e=K54uL7)
