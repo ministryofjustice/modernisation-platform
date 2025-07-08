@@ -37,12 +37,12 @@ module "pagerduty_route53" {
 
 resource "aws_cloudwatch_log_metric_filter" "accepted_traffic" {
   for_each       = local.laa_vpc_existing
-  name           = "AcceptedTrafficCount-${each.key}"
+  name           = "AcceptedTrafficCount-${each.key}-${local.environment_management.account_ids[local.environment]}"
   log_group_name = each.value.vpc_flow_log
   pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport,protocol,packets,bytes,start,end,action=ACCEPT,logstatus]"
 
   metric_transformation {
-    name      = "AcceptedTrafficCount"
+    name      = "AcceptedTrafficCount-${local.environment_management.account_ids[local.environment]}"
     namespace = "VPCFlowLogs"
     value     = "1"
     unit      = "Count"
@@ -51,12 +51,12 @@ resource "aws_cloudwatch_log_metric_filter" "accepted_traffic" {
 
 resource "aws_cloudwatch_log_metric_filter" "rejected_connections" {
   for_each       = local.laa_vpc_existing
-  name           = "VPCFlowLogs-RejectedConnections-${each.key}"
+  name           = "VPCFlowLogs-RejectedConnections-${each.key}-${local.environment_management.account_ids[local.environment]}"
   log_group_name = each.value.vpc_flow_log
   pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport,protocol,packets,bytes,start,end,action=REJECT,logstatus]"
 
   metric_transformation {
-    name          = "RejectedConnections"
+    name          = "RejectedConnections-${local.environment_management.account_ids[local.environment]}"
     namespace     = "VPCFlowLogs"
     value         = "1"
     default_value = "0"
@@ -65,33 +65,32 @@ resource "aws_cloudwatch_log_metric_filter" "rejected_connections" {
 
 resource "aws_cloudwatch_log_metric_filter" "ssh_connection_attempts" {
   for_each       = local.laa_vpc_existing
-  name           = "VPCFlowLogs-SSHConnectionAttempts-${each.key}"
+  name           = "VPCFlowLogs-SSHConnectionAttempts-${each.key}-${local.environment_management.account_ids[local.environment]}"
   log_group_name = each.value.vpc_flow_log
   pattern        = "[version,accountid,interfaceid,srcaddr,dstaddr,srcport,dstport=22,protocol=6,packets,bytes,start,end,action,logstatus]"
 
   metric_transformation {
-    name      = "SSHConnectionAttempts"
+    name      = "SSHConnectionAttempts-${local.environment_management.account_ids[local.environment]}"
     namespace = "VPCFlowLogs"
     value     = "1"
   }
 }
 
 # Cloudwatch metric alarms for above filters
-
 resource "aws_cloudwatch_metric_alarm" "accepted_traffic_alarm" {
   for_each            = local.laa_vpc_existing
-  alarm_name          = "AcceptedTrafficAlarm-${each.key}"
+  alarm_name          = "AcceptedTrafficAlarm-${each.key}-${local.environment_management.account_ids[local.environment]}"
   comparison_operator = "GreaterThanUpperThreshold"
   evaluation_periods  = 3
   threshold_metric_id = "ad1"
-  alarm_description   = "Anomaly detection alarm for accepted traffic in VPC '${each.key}'. A sudden spike or drop may indicate a network issue, service outage, or DDoS attempt."
+  alarm_description   = "Anomaly detection alarm for accepted traffic in VPC '${each.key}' (${local.environment_management.account_ids[local.environment]}). A sudden spike or drop may indicate a network issue, service outage, or DDoS attempt."
   treat_missing_data  = "notBreaching"
   alarm_actions       = [aws_sns_topic.vpc_flowlog_alarms.arn]
 
   metric_query {
     id = "m1"
     metric {
-      metric_name = "AcceptedTrafficCount"
+      metric_name = "AcceptedTrafficCount-${local.environment_management.account_ids[local.environment]}"
       namespace   = "VPCFlowLogs"
       period      = 300
       stat        = "Sum"
@@ -101,26 +100,26 @@ resource "aws_cloudwatch_metric_alarm" "accepted_traffic_alarm" {
 
   metric_query {
     id          = "ad1"
-    expression  = "ANOMALY_DETECTION_BAND(m1, 5)"
-    label       = "Sum AcceptedTrafficCount ${each.key} GreaterThanUpperThreshold 1.0"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 1)"
+    label       = "Sum AcceptedTrafficCount ${each.key} ${local.environment_management.account_ids[local.environment]} GreaterThanUpperThreshold 1.0"
     return_data = true
   }
 }
 
 resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
   for_each            = local.laa_vpc_existing
-  alarm_name          = "RejectedConnectionsAlarm-${each.key}"
+  alarm_name          = "RejectedConnectionsAlarm-${each.key}-${local.environment_management.account_ids[local.environment]}"
   comparison_operator = "GreaterThanUpperThreshold"
   evaluation_periods  = 3
   threshold_metric_id = "ad1"
-  alarm_description   = "Anomaly detection alarm for rejected connections in VPC '${each.key}'. May indicate unauthorized access attempts, port scanning, or misconfigured security groups."
+  alarm_description   = "Anomaly detection alarm for rejected connections in VPC '${each.key}' (${local.environment_management.account_ids[local.environment]}). May indicate unauthorized access attempts, port scanning, or misconfigured security groups."
   treat_missing_data  = "notBreaching"
   alarm_actions       = [aws_sns_topic.vpc_flowlog_alarms.arn]
 
   metric_query {
     id = "m1"
     metric {
-      metric_name = "RejectedConnections"
+      metric_name = "RejectedConnections-${local.environment_management.account_ids[local.environment]}"
       namespace   = "VPCFlowLogs"
       period      = 300
       stat        = "Sum"
@@ -130,26 +129,26 @@ resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
 
   metric_query {
     id          = "ad1"
-    expression  = "ANOMALY_DETECTION_BAND(m1, 9)"
-    label       = "Sum RejectedConnections ${each.key} GreaterThanUpperThreshold 1.0"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
+    label       = "Sum RejectedConnections ${each.key} ${local.environment_management.account_ids[local.environment]} GreaterThanUpperThreshold 1.0"
     return_data = true
   }
 }
 
 resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
   for_each            = local.laa_vpc_existing
-  alarm_name          = "SSHConnectionAttemptsAlarm-${each.key}"
+  alarm_name          = "SSHConnectionAttemptsAlarm-${each.key}-${local.environment_management.account_ids[local.environment]}"
   comparison_operator = "GreaterThanUpperThreshold"
   evaluation_periods  = 3
   threshold_metric_id = "ad1"
-  alarm_description   = "Anomaly detection alarm for SSH connection attempts (port 22) in VPC '${each.key}'. Indicates possible brute-force login attempts or unauthorized probing."
+  alarm_description   = "Anomaly detection alarm for SSH connection attempts (port 22) in VPC '${each.key}' (${local.environment_management.account_ids[local.environment]}). Indicates possible brute-force login attempts or unauthorized probing."
   treat_missing_data  = "notBreaching"
   alarm_actions       = [aws_sns_topic.vpc_flowlog_alarms.arn]
 
   metric_query {
     id = "m1"
     metric {
-      metric_name = "SSHConnectionAttempts"
+      metric_name = "SSHConnectionAttempts-${local.environment_management.account_ids[local.environment]}"
       namespace   = "VPCFlowLogs"
       period      = 300
       stat        = "Sum"
@@ -159,8 +158,8 @@ resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
 
   metric_query {
     id          = "ad1"
-    expression  = "ANOMALY_DETECTION_BAND(m1, 6)"
-    label       = "Sum SSHConnectionAttempts ${each.key} GreaterThanUpperThreshold 1.0"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
+    label       = "Sum SSHConnectionAttempts ${each.key} ${local.environment_management.account_ids[local.environment]} GreaterThanUpperThreshold 1.0"
     return_data = true
   }
 }
