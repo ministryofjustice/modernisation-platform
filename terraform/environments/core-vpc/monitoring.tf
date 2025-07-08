@@ -86,7 +86,7 @@ resource "aws_cloudwatch_metric_alarm" "accepted_traffic_alarm" {
   threshold_metric_id = "ad1"
   alarm_description   = "Anomaly detection alarm for accepted traffic in VPC '${each.key}'. A sudden spike or drop may indicate a network issue, service outage, or DDoS attempt."
   treat_missing_data  = "notBreaching"
-  alarm_actions       = [aws_sns_topic.vpc_flowlog_alarms.arn]
+  # alarm_actions       = [aws_sns_topic.vpc_flowlog_alarms.arn]
 
   metric_query {
     id = "m1"
@@ -115,7 +115,7 @@ resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
   threshold_metric_id = "ad1"
   alarm_description   = "Anomaly detection alarm for rejected connections in VPC '${each.key}'. May indicate unauthorized access attempts, port scanning, or misconfigured security groups."
   treat_missing_data  = "notBreaching"
-  alarm_actions       = [aws_sns_topic.vpc_flowlog_alarms.arn]
+  # alarm_actions       = [aws_sns_topic.vpc_flowlog_alarms.arn]
 
   metric_query {
     id = "m1"
@@ -144,7 +144,7 @@ resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
   threshold_metric_id = "ad1"
   alarm_description   = "Anomaly detection alarm for SSH connection attempts (port 22) in VPC '${each.key}'. Indicates possible brute-force login attempts or unauthorized probing."
   treat_missing_data  = "notBreaching"
-  alarm_actions       = [aws_sns_topic.vpc_flowlog_alarms.arn]
+  # alarm_actions       = [aws_sns_topic.vpc_flowlog_alarms.arn]
 
   metric_query {
     id = "m1"
