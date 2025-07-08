@@ -889,8 +889,8 @@ locals {
 
     ssm_patching = {
       patch_schedules = {
-        second-thurs = "cron(0 21 ? * THU#2 *)"
-        forth-thurs  = "cron(0 21 ? * THU#4 *)"
+        "second-thurs" = "cron(0 21 ? * THU#2 *)"
+        "forth-thurs"  = "cron(0 21 ? * THU#4 *)"
       }
       patch_classifications = {
         WINDOWS = ["SecurityUpdates", "CriticalUpdates"]
