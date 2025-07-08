@@ -51,6 +51,7 @@ expected :=
     "genesys-call-centre-data",
     "hmpps-domain-services",
     "hmpps-oem",
+    "justice-digital-document-hub",
     "laa-ccms-soa",
     "laa-cwa",
     "laa-mail-relay",
