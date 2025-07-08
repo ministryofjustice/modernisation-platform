@@ -2,7 +2,7 @@
 set +x
 
 APP_NAME=$1
-NEW_URL=$2
+SLACK_WEBHOOK_URL=$2
 SECRET_NAME="securityhub_slack_webhooks"
 REGION="eu-west-2"
 JSON_FILE="./environments/${APP_NAME}.json"
@@ -26,7 +26,7 @@ SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id "$SECRET_NAME" --r
 EXISTING_VALUE=$(echo "$SECRET_JSON" | jq -r --arg key "$SLACK_CHANNEL" '.[$key] // empty')
 
 # Update or add the key-value pair
-UPDATED_JSON=$(echo "$SECRET_JSON" | jq --arg k "$SLACK_CHANNEL" --arg v "$NEW_URL" '.[$k] = $v')
+UPDATED_JSON=$(echo "$SECRET_JSON" | jq --arg k "$SLACK_CHANNEL" --arg v "$SLACK_WEBHOOK_URL" '.[$k] = $v')
 
 # Put updated secret back
 aws secretsmanager update-secret --secret-id "$SECRET_NAME" --region "$REGION" --secret-string "$UPDATED_JSON" > /dev/null
