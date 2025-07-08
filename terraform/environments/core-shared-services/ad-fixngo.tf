@@ -233,6 +233,12 @@ locals {
               "ec2:DescribeVolumes",
               "ec2:DescribeTags",
               "ec2:DescribeInstances",
+              "ec2:StartInstances",
+              "ec2:StopInstances",
+              "ssm:ListCommands",
+              "ssm:ListCommandInvocations",
+              "ssm:GetCommandInvocation",
+              "ssm:DescribeInstanceInformation
             ]
             resources = ["*"]
           },
