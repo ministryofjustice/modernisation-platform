@@ -147,8 +147,8 @@
     "protocol": "TCP"
   },
   "laa_shared_services_ws_to_mp_laa_production": {
-    "action": "ALERT",
-    "source_ip": "${laa-lz-shared-services-nonprod}",
+    "action": "PASS",
+    "source_ip": "${laa-lz-shared-services-prod}",
     "destination_ip": "${laa-production}",
     "destination_port": "$LAA_APPSTREAM_TCP",
     "protocol": "TCP"
@@ -156,7 +156,7 @@
   "mp_laa_production_to_laa_shared_services_ws": {
     "action": "PASS",
     "source_ip": "${laa-production}",
-    "destination_ip": "${laa-lz-shared-services-nonprod}",
+    "destination_ip": "${laa-lz-shared-services-prod}",
     "destination_port": "$LAA_APPSTREAM_TCP",
     "protocol": "TCP"
   },
@@ -186,6 +186,8 @@
     "source_ip": "${laa-production}",
     "destination_ip": "${laa-appstream-vpc_additional}",
     "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
   "nec_prod_to_mp_laa_production": {
     "action": "PASS",
     "source_ip": "${nec-prod}",
