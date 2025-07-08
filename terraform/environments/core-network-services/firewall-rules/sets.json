@@ -19,6 +19,12 @@
       "${cica-aws-dev-data-a}",
       "${cica-aws-dev-data-b}"
     ],
+    "CICA_AWS_UAT": [
+      "${cica-aws-uat-a}",
+      "${cica-aws-uat-b}",
+      "${cica-aws-uat-data-a}",
+      "${cica-aws-uat-data-b}"
+    ],
     "CICA_AWS_PROD": [
       "${cica-aws-prod-a}",
       "${cica-aws-prod-b}",
