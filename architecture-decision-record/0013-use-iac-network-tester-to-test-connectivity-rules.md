@@ -36,4 +36,4 @@ Given the disadvantages around the tool itself, specifically the limitations aro
 
 ## Useful links
 
-[Google doc capturing networking testing requirements, principals and related spike stories](https://justiceuk.sharepoint.com/:w:/r/sites/msteams_480621/Shared%20Documents/Modernisation%20Platform/Infrastructure%20and%20platform%20testing.docx?d=w323917070a4a4222b3000bcc8189d846&csf=1&web=1&e=K54uL7)
+[Word doc capturing networking testing requirements, principals and related spike stories](https://justiceuk.sharepoint.com/:w:/r/sites/msteams_480621/Shared%20Documents/Modernisation%20Platform/Infrastructure%20and%20platform%20testing.docx?d=w323917070a4a4222b3000bcc8189d846&csf=1&web=1&e=K54uL7)
