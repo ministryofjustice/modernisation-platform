@@ -49,10 +49,24 @@
     "protocol": "TCP"
   },
   "laa_shared_services_to_mp_laa_preproduction": {
-    "action": "PASS",
+    "action": "ALERT",
     "source_ip": "${laa-lz-shared-services-nonprod}",
     "destination_ip": "${laa-preproduction}",
     "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "laa_shared_services_ws_to_mp_laa_preproduction": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-shared-services-nonprod}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+  "mp_laa_preproduction_to_laa_shared_services_ws": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-lz-shared-services-nonprod}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
     "protocol": "TCP"
   },
   "laa_staging_to_mp_laa_preproduction": {
@@ -146,6 +160,22 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
+  "nec_nonprod_to_mp_laa_preproduction": {
+    "action": "PASS",
+    "source_ip": "${nec-nonprod}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$NEC_TCP",
+    "protocol": "TCP"
+  },
+
+  "mp_laa_preproduction_to_nec_nonprod": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${nec-nonprod}",
+    "destination_port": "$NEC_TCP",
+    "protocol": "TCP"
+  },
+
   "i2n_to_mp_hmpps_preproduction": {
     "action": "PASS",
     "source_ip": "${i2n}",
@@ -665,17 +695,45 @@
     "protocol": "TCP"
   },
   "laa_appstream_to_mp_laa_preproduction": {
-    "action": "PASS",
+    "action": "ALERT",
     "source_ip": "${laa-appstream-vpc}",
     "destination_ip": "${laa-preproduction}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
   "laa_appstream_additional_to_mp_laa_preproduction": {
-    "action": "PASS",
+    "action": "ALERT",
     "source_ip": "${laa-appstream-vpc_additional}",
     "destination_ip": "${laa-preproduction}",
     "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "laa_appstream_ld_to_mp_laa_preproduction": {
+    "action": "PASS",
+    "source_ip": "${laa-appstream-vpc}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+   "laa_appstream_additional_ld_to_mp_laa_preproduction": {
+    "action": "PASS",
+    "source_ip": "${laa-appstream-vpc_additional}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+  "mp_laa_preproduction_to_laa_appstream_ld": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-appstream-vpc}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+   "laa_preproduction_to_mp_laa_appstream_additional_ld": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-appstream-vpc_additional}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
     "protocol": "TCP"
   },
   "youth_justice_networking_to_yjb_preproduction_tcp": {
