@@ -796,7 +796,7 @@
     "action": "PASS",
     "source_ip": "$LAA_PRIVATE_DATA_SUBNETS_PREPROD",
     "destination_ip": "$LAA_FTP_ENDPOINTS",
-    "destination_port": "22",
+    "destination_port": "$LAA_FTP_TCP",
     "protocol": "TCP"
   }
 }
