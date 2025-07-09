@@ -43,6 +43,9 @@ locals {
     "tst"                       = { name = "tst.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-1914.awsdns-47.co.uk", "ns-609.awsdns-12.net", "ns-195.awsdns-24.com", "ns-1187.awsdns-20.org"] }
     "uat"                       = { name = "uat.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-938.awsdns-53.net", "ns-1046.awsdns-02.org", "ns-334.awsdns-41.com", "ns-1731.awsdns-24.co.uk"] }
     "stg"                       = { name = "stg.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-1269.awsdns-30.org", "ns-1897.awsdns-45.co.uk", "ns-296.awsdns-37.com", "ns-917.awsdns-50.net"] }
+    "ses-1"                     = { name = "u2hsqlvidbbhlfkkiff3fpuwjm6gu5mq._domainkey.legalservices.gov.uk", type = "CNAME", ttl = 300, records = ["u2hsqlvidbbhlfkkiff3fpuwjm6gu5mq.dkim.amazonses.com"] }
+    "ses-2"                     = { name = "3jn7gxoog7vhao6dnt4vytejnkwrxaow._domainkey.legalservices.gov.uk", type = "CNAME", ttl = 300, records = ["3jn7gxoog7vhao6dnt4vytejnkwrxaow.dkim.amazonses.com"] }
+    "ses-3"                     = { name = "lr4yk5yyneh2seaoiujphvk23mow7vty._domainkey.legalservices.gov.uk", type = "CNAME", ttl = 300, records = ["lr4yk5yyneh2seaoiujphvk23mow7vty.dkim.amazonses.com"] }
   }
 }
 
