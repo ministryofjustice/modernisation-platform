@@ -727,5 +727,12 @@
     "destination_ip": "$AWS_SMTP_EU_WEST_2",
     "destination_port": "587",
     "protocol": "TCP"
+  },
+  "laa_production_ftp": {
+    "action": "PASS",
+    "source_ip": "$LAA_PRIVATE_DATA_SUBNETS_PROD",
+    "destination_ip": "$LAA_FTP_ENDPOINTS",
+    "destination_port": "22",
+    "protocol": "TCP"
   }
 }

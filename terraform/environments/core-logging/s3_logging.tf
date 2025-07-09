@@ -610,7 +610,7 @@ resource "aws_kinesis_firehose_delivery_stream" "waf_logs_to_s3" {
     bucket_arn         = module.s3-bucket-modernisation-platform-waf-logs.bucket.arn
     buffering_size     = 5
     buffering_interval = 300
-    compression_format = "GZIP"
+    compression_format = "UNCOMPRESSED"
     kms_key_arn        = aws_kms_key.s3_modernisation_platform_waf_logs.arn
   }
 }

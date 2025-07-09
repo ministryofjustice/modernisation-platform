@@ -201,7 +201,11 @@ resource "aws_iam_role_policy" "read_dns" {
           "ec2:DescribeNetworkAcls",
           "ec2:DescribeSecurityGroups",
           "ec2:DescribeAddresses", # Elastic IPs
-          "ec2:DescribeNetworkInterfaces"
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:GetTransitGatewayRouteTablePropagations",
+          "ec2:GetTransitGatewayRouteTableAssociations",
+          "ec2:GetTransitGatewayPrefixListReferences",
+          "ec2:SearchTransitGatewayRoutes"
         ],
         "Resource" : "*"
       }

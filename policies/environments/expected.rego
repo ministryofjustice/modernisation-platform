@@ -50,6 +50,7 @@ expected :=
     "example",
     "genesys-call-centre-data",
     "hmpps-domain-services",
+    "hmpps-esupervision",
     "hmpps-oem",
     "justice-digital-document-hub",
     "laa-ccms-soa",
