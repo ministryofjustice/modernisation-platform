@@ -99,6 +99,12 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_noms_route
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
+resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_nec_routes_to_firewall" {
+  for_each                       = local.nec_vpn_attachment_ids
+  transit_gateway_attachment_id  = each.key
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
+}
+
 resource "aws_ec2_transit_gateway_route" "parole_board_routes" {
   for_each                       = toset(local.parole_board_vpn_static_routes)
   destination_cidr_block         = each.key
