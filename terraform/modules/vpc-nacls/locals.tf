@@ -56,7 +56,7 @@ locals {
     rule_action = "allow"
     rule_number = 6050
   }
-  laa_general_private_subnet_a_ftp_custom = {
+  laa_general_private_subnet_b_ftp_custom = {
     cidr_block  = "0.0.0.0/0"
     egress      = true
     from_port   = 8022
@@ -65,7 +65,7 @@ locals {
     rule_action = "allow"
     rule_number = 6051
   }
-  laa_general_private_subnet_a_ftp_custom = {
+  laa_general_private_subnet_c_ftp_custom = {
     cidr_block  = "0.0.0.0/0"
     egress      = true
     from_port   = 8022
