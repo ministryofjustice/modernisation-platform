@@ -419,7 +419,7 @@
     "destination_port": "587",
     "protocol": "TCP"
   },
-    "cica_aws_uat_to_cica_tariff_test": {
+  "cica_aws_uat_to_cica_tariff_test": {
     "action": "PASS",
     "source_ip": "$CICA_AWS_UAT",
     "destination_ip": "${cica-test}",
