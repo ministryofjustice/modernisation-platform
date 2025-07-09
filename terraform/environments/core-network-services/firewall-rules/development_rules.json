@@ -707,24 +707,10 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "laa_development_subnet_a_ftp": {
+  "laa_development_ftp": {
     "action": "PASS",
-    "source_ip": "${laa-mp-development-general-private-subnets-a}",
-    "destination_ip": "13.17.132.44",
-    "destination_port": "22",
-    "protocol": "TCP"
-  },
-  "laa_development_subnet_b_ftp": {
-    "action": "PASS",
-    "source_ip": "${laa-mp-development-general-private-subnets-b}",
-    "destination_ip": "13.17.132.44",
-    "destination_port": "22",
-    "protocol": "TCP"
-  },
-  "laa_development_subnet_c_ftp": {
-    "action": "PASS",
-    "source_ip": "${laa-mp-development-general-private-subnets-c}",
-    "destination_ip": "13.17.132.44",
+    "source_ip": "$LAA_PRIVATE_DATA_SUBNETS_DEV",
+    "destination_ip": "$LAA_FTP_ENDPOINTS",
     "destination_port": "22",
     "protocol": "TCP"
   },

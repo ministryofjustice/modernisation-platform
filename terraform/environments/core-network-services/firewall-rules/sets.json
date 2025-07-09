@@ -30,7 +30,35 @@
       "${cica-aws-prod-b}",
       "${cica-aws-prod-c}",
       "${cica-aws-prod-d}"
+    ],
+    "LAA_PRIVATE_DATA_SUBNETS_DEV": [
+      "${laa-mp-development-general-private-subnets-a}",
+      "${laa-mp-development-general-private-subnets-b}",
+      "${laa-mp-development-general-private-subnets-a}"
+    ],
+    "LAA_PRIVATE_DATA_SUBNETS_TEST": [
+      "${laa-mp-test-general-private-subnets-a}",
+      "${laa-mp-test-general-private-subnets-b}",
+      "${laa-mp-test-general-private-subnets-a}"
+    ],
+    "LAA_PRIVATE_DATA_SUBNETS_PREPROD": [
+      "${laa-mp-preproduction-general-private-subnets-a}",
+      "${laa-mp-preproduction-general-private-subnets-b}",
+      "${laa-mp-preproduction-general-private-subnets-a}"
+    ],
+    "LAA_PRIVATE_DATA_SUBNETS_PROD": [
+      "${laa-mp-production-general-private-subnets-a}",
+      "${laa-mp-production-general-private-subnets-b}",
+      "${laa-mp-production-general-private-subnets-a}"
+    ],
+    "LAA_FTP_ENDPOINTS": [
+      "81.20.37.166/32",
+      "13.17.132.44/32",
+      "45.143.224.16/32",
+      "51.143.137.133/32",
+      "35.176.36.29/32"
     ]
+
   },
   "PORT_SETS": {
     "PORT_SET_EXAMPLE": ["80, 443"],
