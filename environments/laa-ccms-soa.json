@@ -75,6 +75,6 @@
     "owner": "ApplicationOperations@justice.gov.uk",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [""],
+  "github-oidc-team-repositories": ["ministryofjustice/laa-ccms-soa-docker"],
   "go-live-date": ""
 }

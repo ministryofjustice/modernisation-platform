@@ -140,10 +140,67 @@
     "protocol": "UDP"
   },
   "laa_shared_services_to_mp_laa_production": {
-    "action": "PASS",
+    "action": "ALERT",
     "source_ip": "${laa-lz-shared-services-prod}",
     "destination_ip": "${laa-production}",
     "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "laa_shared_services_ws_to_mp_laa_production": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-shared-services-prod}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+  "mp_laa_production_to_laa_shared_services_ws": {
+    "action": "PASS",
+    "source_ip": "${laa-production}",
+    "destination_ip": "${laa-lz-shared-services-prod}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+  "laa_appstream_ld_to_mp_laa_production": {
+    "action": "PASS",
+    "source_ip": "${laa-appstream-vpc}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+   "laa_appstream_additional_ld_to_mp_laa_production": {
+    "action": "PASS",
+    "source_ip": "${laa-appstream-vpc_additional}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+  "mp_laa_production_to_laa_appstream_ld": {
+    "action": "PASS",
+    "source_ip": "${laa-production}",
+    "destination_ip": "${laa-appstream-vpc}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+   "mp_laa_production_to_laa_appstream_additional_ld": {
+    "action": "PASS",
+    "source_ip": "${laa-production}",
+    "destination_ip": "${laa-appstream-vpc_additional}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+  "nec_prod_to_mp_laa_production": {
+    "action": "PASS",
+    "source_ip": "${nec-prod}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "$NEC_TCP",
+    "protocol": "TCP"
+  },
+  "mp_laa_production_to_nec_prod": {
+    "action": "PASS",
+    "source_ip": "${laa-production}",
+    "destination_ip": "${nec-prod}",
+    "destination_port": "$NEC_TCP",
+
     "protocol": "TCP"
   },
   "i2n_to_mp_hmpps_production": {
@@ -196,14 +253,14 @@
     "protocol": "TCP"
   },
   "laa_appstream_to_mp_laa_production": {
-    "action": "PASS",
+    "action": "ALERT",
     "source_ip": "${laa-appstream-vpc}",
     "destination_ip": "${laa-production}",
     "destination_port": "ANY",
     "protocol": "TCP"
   },
   "laa_appstream_additional_to_mp_laa_production": {
-    "action": "PASS",
+    "action": "ALERT",
     "source_ip": "${laa-appstream-vpc_additional}",
     "destination_ip": "${laa-production}",
     "destination_port": "ANY",
@@ -669,6 +726,13 @@
     "source_ip": "${laa-mp-production-general-data-subnets-c}",
     "destination_ip": "$AWS_SMTP_EU_WEST_2",
     "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "laa_production_ftp": {
+    "action": "PASS",
+    "source_ip": "$LAA_PRIVATE_DATA_SUBNETS_PROD",
+    "destination_ip": "$LAA_FTP_ENDPOINTS",
+    "destination_port": "22",
     "protocol": "TCP"
   }
 }

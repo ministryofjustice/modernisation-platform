@@ -72,6 +72,10 @@ locals {
     laa-appstream-vpc              = "10.200.32.0/19"
     laa-appstream-vpc_additional   = "10.200.68.0/22"
 
+    # NEC cidr ranges
+    nec-nonprod = "10.120.0.147/32"
+    nec-prod    = "10.110.0.57/32"
+
     # laa modernisation-platform ranges
     laa-mp-development-general-private-subnets-a = "10.26.56.0/24"
     laa-mp-development-general-private-subnets-b = "10.26.57.0/24"

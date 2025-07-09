@@ -1,21 +1,21 @@
 data "aws_organizations_organization" "moj_root_account" {}
 
-
-# If you need to rebuild aws_kms_key resource, you need to comment out line 9 below due to a circular dep on the first run.
-
-# KMS Source
+################################
+# CloudTrail Logging S3 Bucket #
+################################
 resource "aws_kms_key" "s3_logging_cloudtrail" {
   description             = "s3-logging-cloudtrail"
   policy                  = data.aws_iam_policy_document.kms_logging_cloudtrail.json
   enable_key_rotation     = true
   deletion_window_in_days = 30
 }
+
 resource "aws_kms_alias" "s3_logging_cloudtrail" {
   name          = "alias/s3-logging-cloudtrail"
   target_key_id = aws_kms_key.s3_logging_cloudtrail.id
 }
-data "aws_iam_policy_document" "kms_logging_cloudtrail" {
 
+data "aws_iam_policy_document" "kms_logging_cloudtrail" {
   # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
   # checkov:skip=CKV_AWS_356: "policy is directly related to the resource"
   # checkov:skip=CKV_AWS_109: "role is resticted by limited actions in member account"
@@ -36,6 +36,7 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail" {
       ]
     }
   }
+
   statement {
     sid    = "Enable decrypt access to accounts within the organisation"
     effect = "Allow"
@@ -56,6 +57,7 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail" {
       ]
     }
   }
+
   statement {
     sid    = "Allow use of the key including encryption"
     effect = "Allow"
@@ -69,17 +71,10 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail" {
     resources = ["*"]
     principals {
       type        = "Service"
-      identifiers = ["logging.s3.amazonaws.com"]
-    }
-    principals {
-      type        = "Service"
-      identifiers = ["cloudtrail.amazonaws.com"]
-    }
-    principals {
-      type        = "Service"
-      identifiers = ["logs.amazonaws.com"]
+      identifiers = ["logging.s3.amazonaws.com", "cloudtrail.amazonaws.com", "logs.amazonaws.com"]
     }
   }
+
   statement {
     sid    = "Allow use of the key by SQS"
     effect = "Allow"
@@ -111,7 +106,6 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail" {
   }
 }
 
-
 # KMS Destination
 resource "aws_kms_key" "s3_logging_cloudtrail_eu-west-1_replication" {
   provider = aws.modernisation-platform-eu-west-1
@@ -122,18 +116,18 @@ resource "aws_kms_key" "s3_logging_cloudtrail_eu-west-1_replication" {
   deletion_window_in_days = 30
   tags                    = { Name = "${local.application_name}-s3-logging-cloudtrail-kms" }
 }
+
 resource "aws_kms_alias" "s3_logging_cloudtrail_eu-west-1_replication" {
   provider = aws.modernisation-platform-eu-west-1
 
   name          = "alias/s3-logging-cloudtrail-eu-west-1-replication"
   target_key_id = aws_kms_key.s3_logging_cloudtrail_eu-west-1_replication.id
 }
-data "aws_iam_policy_document" "kms_logging_cloudtrail_replication" {
 
+data "aws_iam_policy_document" "kms_logging_cloudtrail_replication" {
   # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
   # checkov:skip=CKV_AWS_356: "policy is directly related to the resource"
   # checkov:skip=CKV_AWS_109: "role is resticted by limited actions in member account"
-
   statement {
     sid    = "Allow management access of the key to the logging account"
     effect = "Allow"
@@ -150,6 +144,7 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail_replication" {
       ]
     }
   }
+
   statement {
     sid    = "Allow key decryption to STS bucket replication roles"
     effect = "Allow"
@@ -169,7 +164,6 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail_replication" {
   }
 }
 
-
 module "s3-bucket-cloudtrail" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
   providers = {
@@ -181,131 +175,33 @@ module "s3-bucket-cloudtrail" {
   suffix_name                = "-cloudtrail"
   custom_kms_key             = aws_kms_key.s3_logging_cloudtrail.arn
   custom_replication_kms_key = aws_kms_key.s3_logging_cloudtrail_eu-west-1_replication.arn
-
-  replication_enabled = true
-  replication_region  = "eu-west-1"
-  versioning_enabled  = true
-
-  lifecycle_rule = [
-    {
-      id      = "main"
-      enabled = "Enabled"
-      prefix  = ""
-      tags    = {}
-      transition = [
-        {
-          days          = 90
-          storage_class = "STANDARD_IA"
-          }, {
-          days          = 365
-          storage_class = "GLACIER"
-        }
-      ]
-      expiration = {
-        days = 730
-      }
-      noncurrent_version_transition = [
-        {
-          days          = 90
-          storage_class = "STANDARD_IA"
-          }, {
-          days          = 365
-          storage_class = "GLACIER"
-        }
-      ]
-      noncurrent_version_expiration = {
-        days = 730
-      }
-    }
-  ]
-  log_bucket = module.s3-bucket-cloudtrail-logging.bucket.id
+  replication_enabled        = true
+  replication_region         = "eu-west-1"
+  ownership_controls         = "BucketOwnerEnforced"
+  log_bucket                 = module.s3-bucket-cloudtrail-logging.bucket.id
   log_buckets = tomap({
     "log_bucket_name" : module.s3-bucket-cloudtrail-logging.bucket.id,
     "log_bucket_arn" : module.s3-bucket-cloudtrail-logging.bucket.arn,
     "log_bucket_policy" : module.s3-bucket-cloudtrail-logging.bucket_policy.policy,
   })
   log_prefix = ""
-
-  tags = local.tags
+  tags       = local.tags
 }
 
-# Allow access to the bucket from the MoJ root account
-# Policy extrapolated from:
-# https://www.terraform.io/docs/backends/types/s3.html#s3-bucket-permissions
 data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
   statement {
-    sid       = "AllowListBucketACL"
+    sid       = "AllowCloudTrailPutObjectAndGetBucketACLWithinOrg"
     effect    = "Allow"
-    actions   = ["s3:GetBucketAcl"]
-    resources = [module.s3-bucket-cloudtrail.bucket.arn]
+    actions   = ["s3:PutObject", "s3:GetBucketAcl"]
+    resources = ["${module.s3-bucket-cloudtrail.bucket.arn}/*", module.s3-bucket-cloudtrail.bucket.arn]
     principals {
       type        = "Service"
       identifiers = ["cloudtrail.amazonaws.com"]
-    }
-  }
-  statement {
-    sid       = "AllowOnlyEncryptedObjects"
-    effect    = "Deny"
-    actions   = ["s3:PutObject"]
-    resources = ["${module.s3-bucket-cloudtrail.bucket.arn}/*"]
-    principals {
-      type        = "Service"
-      identifiers = ["cloudtrail.amazonaws.com"]
-    }
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-    condition {
-      test     = "Null"
-      variable = "s3:x-amz-server-side-encryption"
-      values   = ["true"]
-    }
-  }
-  statement {
-    sid       = "AllowCloudTrailWriteWithOrgAndACL"
-    effect    = "Allow"
-    actions   = ["s3:PutObject"]
-    resources = ["${module.s3-bucket-cloudtrail.bucket.arn}/*"]
-    principals {
-      type        = "Service"
-      identifiers = ["cloudtrail.amazonaws.com"]
-    }
-    condition {
-      test     = "StringEquals"
-      variable = "s3:x-amz-acl"
-      values   = ["bucket-owner-full-control"]
     }
     condition {
       test     = "StringEquals"
       variable = "aws:SourceOrgID"
       values   = [data.aws_organizations_organization.moj_root_account.id]
-    }
-  }
-  statement {
-    sid    = "allowReadListToLoggingAccount_1"
-    effect = "Allow"
-    actions = [
-      "s3:GetObject",
-      "s3:GetBucketTagging",
-      "s3:GetBucketLogging",
-      "s3:ListBucketVersions",
-      "s3:ListBucket",
-      "s3:GetBucketPolicy",
-      "s3:GetEncryptionConfiguration",
-      "s3:GetObjectTagging",
-      "s3:GetBucketVersioning",
-      "s3:GetBucketAcl",
-      "s3:GetBucketLocation",
-      "s3:GetObjectVersion"
-    ]
-    resources = [
-      module.s3-bucket-cloudtrail.bucket.arn,
-      format("%s/*", module.s3-bucket-cloudtrail.bucket.arn)
-    ]
-    principals {
-      type        = "AWS"
-      identifiers = [data.aws_caller_identity.current.account_id]
     }
   }
 }
@@ -363,7 +259,9 @@ module "s3-bucket-cloudtrail-logging" {
   tags = local.tags
 }
 
-
+##########################
+# WAF Logging S3 Bucket #
+##########################
 data "aws_organizations_organization" "current" {}
 data "aws_region" "current" {}
 
@@ -382,7 +280,6 @@ resource "aws_kms_alias" "s3_modernisation_platform_waf_logs" {
 }
 
 data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs" {
-
   # checkov:skip=CKV_AWS_109: "Policy is restricted to internal account and roles"
   # checkov:skip=CKV_AWS_111: "Write access allowed only for approved services"
   # checkov:skip=CKV_AWS_356: "Wildcard used in internal context and not public"
@@ -490,7 +387,6 @@ resource "aws_kms_alias" "s3_logging_modernisation_platform_waf_logs_eu_west_1_r
 }
 
 data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs_replication" {
-
   # checkov:skip=CKV_AWS_109: "Policy is restricted to internal account and roles"
   # checkov:skip=CKV_AWS_111: "Write access allowed only for approved services"
   # checkov:skip=CKV_AWS_356: "Wildcard used in internal context and not public"
@@ -714,7 +610,7 @@ resource "aws_kinesis_firehose_delivery_stream" "waf_logs_to_s3" {
     bucket_arn         = module.s3-bucket-modernisation-platform-waf-logs.bucket.arn
     buffering_size     = 5
     buffering_interval = 300
-    compression_format = "GZIP"
+    compression_format = "UNCOMPRESSED"
     kms_key_arn        = aws_kms_key.s3_modernisation_platform_waf_logs.arn
   }
 }

@@ -418,5 +418,54 @@
     "destination_ip": "$AWS_SMTP_EU_WEST_2",
     "destination_port": "587",
     "protocol": "TCP"
+  },
+    "cica_aws_uat_to_cica_tariff_test": {
+    "action": "PASS",
+    "source_ip": "$CICA_AWS_UAT",
+    "destination_ip": "${cica-test}",
+    "destination_port": "$TARIFF_TCP",
+    "protocol": "TCP"
+  },
+  "cica_tariff_test_to_cica_aws_uat": {
+    "action": "PASS",
+    "source_ip": "${cica-test}",
+    "destination_ip": "$CICA_AWS_UAT",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "cica_tariff_test_to_cica_aws_uat_icmp": {
+    "action": "PASS",
+    "source_ip": "${cica-test}",
+    "destination_ip": "$CICA_AWS_UAT",
+    "destination_port": "ANY",
+    "protocol": "ICMP"
+  },
+  "cica_devices_to_cica_tariff_test": {
+    "action": "PASS",
+    "source_ip": "${cica-end-user-devices}",
+    "destination_ip": "${cica-test}",
+    "destination_port": "$TARIFF_TCP",
+    "protocol": "TCP"
+  },
+  "cica_ras_to_cica_tariff_test": {
+    "action": "PASS",
+    "source_ip": "${cica-ras-nat}",
+    "destination_ip": "${cica-test}",
+    "destination_port": "$TARIFF_TCP",
+    "protocol": "TCP"
+  },
+  "cica_tariff_test_to_cica_devices": {
+    "action": "PASS",
+    "source_ip": "${cica-test}",
+    "destination_ip": "${cica-end-user-devices}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "cica_tariff_test_to_cica_ras_nat": {
+    "action": "PASS",
+    "source_ip": "${cica-test}",
+    "destination_ip": "${cica-ras-nat}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
   }
 }
