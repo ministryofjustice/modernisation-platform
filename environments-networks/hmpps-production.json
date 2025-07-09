@@ -15,6 +15,7 @@
           "electronic-monitoring-data-production",
           "equip-production",
           "hmpps-domain-services-production",
+          "hmpps-esupervision-production",
           "hmpps-oem-production",
           "nomis-combined-reporting-production",
           "nomis-data-hub-production",
