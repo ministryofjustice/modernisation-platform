@@ -76,7 +76,7 @@ locals {
   }
   }
 
-  apply_laa_custom_tcp_rules = contains(local.laa_custom_egress_tcp_acl_rules, var.vpc_name)
+  apply_laa_custom_tcp_rules = contains(local.laa_vpc_keys, var.vpc_name)
 
   laa_custom_tcp_rules_to_apply = local.apply_laa_custom_tcp_rules ? local.laa_custom_egress_tcp_acl_rules : {}
 
