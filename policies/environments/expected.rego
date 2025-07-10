@@ -14,6 +14,7 @@ expected :=
     "analytical-platform-landing",
     "analytical-platform-management",
     "analytical-platform-next-poc-hub",
+    "analytical-platform-next-poc-producer",
     "apex",
     "bacway",
     "bichard7",
