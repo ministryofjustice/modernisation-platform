@@ -757,24 +757,6 @@
       ]
     },
     {
-      "username": "dave.reid",
-      "github-username": "DavidJohnReid",
-      "accounts": [
-        {
-          "account-name": "delius-core-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "delius-core-test",
-          "access": "developer"
-        },
-        {
-          "account-name": "delius-core-preproduction",
-          "access": "developer"
-        }
-      ]
-    },
-    {
       "username": "yuri.fedkiv",
       "github-username": "yfedkiv",
       "accounts": [
