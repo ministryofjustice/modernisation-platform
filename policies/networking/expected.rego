@@ -404,6 +404,7 @@ expected :=
         "accounts": [
           "analytical-platform-ingestion-development",
           "analytical-platform-next-poc-hub-deveopment",
+          "analytical-platform-next-poc-producer-development",
           "coat-development",
           "data-platform-development",
           "example-development",
