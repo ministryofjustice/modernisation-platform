@@ -403,6 +403,7 @@ expected :=
         "cidr": "10.26.16.0/21",
         "accounts": [
           "analytical-platform-ingestion-development",
+          "analytical-platform-next-poc-hub-deveopment",
           "coat-development",
           "data-platform-development",
           "example-development",

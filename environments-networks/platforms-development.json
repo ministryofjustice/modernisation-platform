@@ -6,6 +6,7 @@
         "accounts": [
           "analytical-platform-compute-development",
           "analytical-platform-ingestion-development",
+          "analytical-platform-next-poc-hub-development",
           "coat-development",
           "data-platform-development",
           "example-development",
