@@ -1,33 +1,32 @@
 {
-    "account-type": "member",
-    "environments": [
-      {
-        "name": "development",
-        "access": [
-          {
-            "sso_group_name": "stg-pathfinders",
-            "level": "developer"
-          }
-        ]
-      },
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
         {
-            "name": "production",
-            "access": [
-            {
-                "sso_group_name": "stg-pathfinders",
-                "level": "developer"
-            }
-            ]
+          "sso_group_name": "stg-pathfinders",
+          "level": "developer"
         }
-    ],
-    "tags": {
-      "application": "Remote probation supervision",
-      "business-unit": "HMPPS",
-      "infrastructure-support": "techforcom@justice.gov.uk",
-      "owner": "techforcom@justice.gov.uk",
-      "critical-national-infrastructure": false
+      ]
     },
-    "github-oidc-team-repositories": [""], 
-    "go-live-date": ""
-  }
-  
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "stg-pathfinders",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "Remote probation supervision",
+    "business-unit": "HMPPS",
+    "infrastructure-support": "techforcom@justice.gov.uk",
+    "owner": "techforcom@justice.gov.uk",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}
