@@ -130,7 +130,7 @@ resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
 
   metric_query {
     id          = "ad1"
-    expression  = "ANOMALY_DETECTION_BAND(m1, 10)"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 11)"
     label       = "Sum RejectedConnections ${each.key} GreaterThanUpperThreshold 1.0"
     return_data = true
   }
@@ -164,78 +164,78 @@ resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
     return_data = true
   }
 }
-# # KMS key for SNS topic encryption
-# resource "aws_kms_key" "vpc_flowlog_sns_encryption" {
-#   description             = "KMS key for VPC Flow Log SNS topic encryption"
-#   deletion_window_in_days = 7
-#   enable_key_rotation     = true
+# KMS key for SNS topic encryption
+resource "aws_kms_key" "vpc_flowlog_sns_encryption" {
+  description             = "KMS key for VPC Flow Log SNS topic encryption"
+  deletion_window_in_days = 7
+  enable_key_rotation     = true
 
-#   policy = jsonencode({
-#     Version = "2012-10-17",
-#     Statement = [
-#       {
-#         Sid    = "Enable IAM User Permissions",
-#         Effect = "Allow",
-#         Principal = {
-#           AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
-#         },
-#         Action   = "kms:*",
-#         Resource = "*"
-#       },
-#       {
-#         Sid    = "Allow SNS to use the key",
-#         Effect = "Allow",
-#         Principal = {
-#           Service = "sns.amazonaws.com"
-#         },
-#         Action = [
-#           "kms:Encrypt",
-#           "kms:Decrypt",
-#           "kms:ReEncrypt*",
-#           "kms:GenerateDataKey*",
-#           "kms:DescribeKey"
-#         ],
-#         Resource = "*"
-#       },
-#       {
-#         Sid    = "Allow CloudWatch to use the key",
-#         Effect = "Allow",
-#         Principal = {
-#           Service = "cloudwatch.amazonaws.com"
-#         },
-#         Action = [
-#           "kms:Encrypt",
-#           "kms:Decrypt",
-#           "kms:ReEncrypt*",
-#           "kms:GenerateDataKey*",
-#           "kms:DescribeKey"
-#         ],
-#         Resource = "*"
-#       }
-#     ]
-#   })
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "Enable IAM User Permissions",
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        },
+        Action   = "kms:*",
+        Resource = "*"
+      },
+      {
+        Sid    = "Allow SNS to use the key",
+        Effect = "Allow",
+        Principal = {
+          Service = "sns.amazonaws.com"
+        },
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ],
+        Resource = "*"
+      },
+      {
+        Sid    = "Allow CloudWatch to use the key",
+        Effect = "Allow",
+        Principal = {
+          Service = "cloudwatch.amazonaws.com"
+        },
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
 
-#   tags = {
-#     Name = "vpc-flowlog-sns-encryption-key"
-#   }
-# }
+  tags = {
+    Name = "vpc-flowlog-sns-encryption-key"
+  }
+}
 
-# resource "aws_kms_alias" "vpc_flowlog_sns_topic" {
-#   name_prefix   = "alias/vpc-flowlog-sns-encryption"
-#   target_key_id = aws_kms_key.vpc_flowlog_sns_encryption.key_id
-# }
+resource "aws_kms_alias" "vpc_flowlog_sns_topic" {
+  name_prefix   = "alias/vpc-flowlog-sns-encryption"
+  target_key_id = aws_kms_key.vpc_flowlog_sns_encryption.key_id
+}
 
-# # SNS topic for VPC Flow Log alarms
-# resource "aws_sns_topic" "vpc_flowlog_alarms" {
-#   name              = "vpc-flowlog-alarms"
-#   kms_master_key_id = aws_kms_key.vpc_flowlog_sns_encryption.arn
-#   tags              = local.tags
-# }
+# SNS topic for VPC Flow Log alarms
+resource "aws_sns_topic" "vpc_flowlog_alarms" {
+  name              = "vpc-flowlog-alarms"
+  kms_master_key_id = aws_kms_key.vpc_flowlog_sns_encryption.arn
+  tags              = local.tags
+}
 
-# # linking the sns topics to the pagerduty service
-# module "pagerduty_vpc_flowlog_alerts" {
-#   depends_on                = [aws_sns_topic.vpc_flowlog_alarms]
-#   source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
-#   sns_topics                = [aws_sns_topic.vpc_flowlog_alarms.name]
-#   pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
-# }
+# linking the sns topics to the pagerduty service
+module "pagerduty_vpc_flowlog_alerts" {
+  depends_on                = [aws_sns_topic.vpc_flowlog_alarms]
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
+  sns_topics                = [aws_sns_topic.vpc_flowlog_alarms.name]
+  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
+}
