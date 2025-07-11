@@ -3,7 +3,7 @@ module "collaborator_readonly_role" {
   # checkov:skip=CKV_TF_1:
 
   count  = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
-  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-roles?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-roles?ref=0792d7f2753c265e3d610a58348fa1c551cbe4b8" # v5.59.0
 
   max_session_duration = 43200
   # Read-only role
@@ -26,7 +26,7 @@ module "collaborator_security_audit_role" {
   # checkov:skip=CKV_TF_1:
 
   count  = local.account_data.account-type == "member" || local.account_data.account-type == "core" ? 1 : 0
-  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=0792d7f2753c265e3d610a58348fa1c551cbe4b8" # v5.59.0
 
   max_session_duration = 43200
 
@@ -49,7 +49,7 @@ module "collaborator_developer_role" {
   # checkov:skip=CKV_TF_1:
 
   count  = local.account_data.account-type == "member" ? 1 : 0
-  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=0792d7f2753c265e3d610a58348fa1c551cbe4b8" # v5.59.0
 
   trusted_role_arns = [
     data.aws_ssm_parameter.modernisation_platform_account_id.value
@@ -76,7 +76,7 @@ module "collaborator_sandbox_role" {
   # checkov:skip=CKV_TF_1:
 
   count  = (local.account_data.account-type == "member" && (local.application_environment == "development" || terraform.workspace == "youth-justice-app-framework-preproduction")) ? 1 : 0
-  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=0792d7f2753c265e3d610a58348fa1c551cbe4b8" # v5.59.0
 
   trusted_role_arns = [
     data.aws_ssm_parameter.modernisation_platform_account_id.value
@@ -107,7 +107,7 @@ module "collaborator_migration_role" {
   # checkov:skip=CKV_TF_1:
 
   count  = local.account_data.account-type == "member" ? 1 : 0
-  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=0792d7f2753c265e3d610a58348fa1c551cbe4b8" # v5.59.0
 
   trusted_role_arns = [
     data.aws_ssm_parameter.modernisation_platform_account_id.value
@@ -140,7 +140,7 @@ module "collaborator_instance_access_role" {
   # checkov:skip=CKV_TF_1:
 
   count  = local.account_data.account-type == "member" ? 1 : 0
-  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=0792d7f2753c265e3d610a58348fa1c551cbe4b8" # v5.59.0
 
   trusted_role_arns = [
     data.aws_ssm_parameter.modernisation_platform_account_id.value
@@ -167,7 +167,7 @@ module "collaborator_database_mgmt_role" {
   # checkov:skip=CKV_TF_1:
 
   count  = local.account_data.account-type == "member" ? 1 : 0
-  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=0792d7f2753c265e3d610a58348fa1c551cbe4b8" # v5.59.0
 
   trusted_role_arns = [
     data.aws_ssm_parameter.modernisation_platform_account_id.value
@@ -194,7 +194,7 @@ module "collaborator_fleet_manager_role" {
   # checkov:skip=CKV_TF_1:
 
   count  = local.account_data.account-type == "member" ? 1 : 0
-  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=0792d7f2753c265e3d610a58348fa1c551cbe4b8" # v5.59.0
 
   trusted_role_arns = [
     data.aws_ssm_parameter.modernisation_platform_account_id.value
@@ -221,7 +221,7 @@ module "collaborator_s3_upload_role" {
   # checkov:skip=CKV_TF_1:
 
   count  = local.account_data.account-type == "member" ? 1 : 0
-  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=0792d7f2753c265e3d610a58348fa1c551cbe4b8" # v5.59.0
 
   trusted_role_arns = [
     data.aws_ssm_parameter.modernisation_platform_account_id.value
@@ -246,7 +246,7 @@ module "collaborator_platform_engineer_admin_role" {
   # checkov:skip=CKV_TF_1:
 
   count  = local.account_data.account-type == "member" ? 1 : 0
-  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=0792d7f2753c265e3d610a58348fa1c551cbe4b8" # v5.59.0
 
   trusted_role_arns = [
     data.aws_ssm_parameter.modernisation_platform_account_id.value
@@ -273,7 +273,7 @@ module "collaborator_reporting_operations_role" {
   # checkov:skip=CKV_TF_1:
 
   count  = local.account_data.account-type == "member" ? 1 : 0
-  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=0792d7f2753c265e3d610a58348fa1c551cbe4b8" # v5.59.0
 
   trusted_role_arns = [
     data.aws_ssm_parameter.modernisation_platform_account_id.value
@@ -300,7 +300,7 @@ module "collaborator_ssm_session_access_role" {
   # checkov:skip=CKV_TF_1:
 
   count  = local.account_data.account-type == "member" ? 1 : 0
-  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=0792d7f2753c265e3d610a58348fa1c551cbe4b8" # v5.59.0
 
   trusted_role_arns = [
     data.aws_ssm_parameter.modernisation_platform_account_id.value
@@ -326,7 +326,7 @@ module "collaborator_quicksight_admin_role" {
   # checkov:skip=CKV_TF_1:
 
   count  = local.account_data.account-type == "member" ? 1 : 0
-  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=0792d7f2753c265e3d610a58348fa1c551cbe4b8" # v5.59.0
 
   trusted_role_arns = [
     data.aws_ssm_parameter.modernisation_platform_account_id.value
