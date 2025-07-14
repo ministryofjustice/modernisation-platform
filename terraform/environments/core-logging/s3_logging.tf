@@ -218,6 +218,7 @@ module "s3-bucket-cloudtrail-logging" {
   suffix_name                = "-cloudtrail-logging"
   custom_kms_key             = aws_kms_key.s3_logging_cloudtrail.arn
   custom_replication_kms_key = aws_kms_key.s3_logging_cloudtrail_eu-west-1_replication.arn
+  ownership_controls         = "BucketOwnerEnforced"
 
   replication_enabled = true
   replication_region  = "eu-west-1"
