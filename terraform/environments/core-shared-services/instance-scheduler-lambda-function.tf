@@ -3,7 +3,7 @@ module "instance_scheduler" {
   #checkov:skip=CKV_AWS_117
   #checkov:skip=CKV_AWS_272 "Code signing not required"
   #checkov:skip=CKV_AWS_173 "These lambda envvars aren't sensitive and don't need a cmk. Default AWS KMS key is sufficient"
-  source                         = "github.com/ministryofjustice/modernisation-platform-terraform-lambda-function?ref=5a3c02a071519986a0ae415168fb4f9d3fb7970f" #v3.0.0
+  source                         = "github.com/ministryofjustice/modernisation-platform-terraform-lambda-function?ref=98f581dbeebb0049bdcd25a613192029043770cc" #v4.0.0
   application_name               = local.application_name
   tags                           = local.tags
   description                    = "Lambda to automatically start and stop instances on member accounts"
@@ -93,7 +93,7 @@ module "pagerduty_core_alerts" {
   depends_on = [
     aws_sns_topic.on_failure, aws_sns_topic.on_success
   ]
-  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=d88bd90d490268896670a898edfaba24bba2f8ab" # v3.0.0
   sns_topics                = [aws_sns_topic.on_failure.name, aws_sns_topic.on_success.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
 }
