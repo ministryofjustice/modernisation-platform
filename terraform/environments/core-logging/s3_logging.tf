@@ -309,7 +309,7 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs" {
       type = "Service"
       identifiers = [
         "firehose.amazonaws.com",
-        "logs.${data.aws_region.current.name}.amazonaws.com"
+        "logs.${data.aws_region.current.region}.amazonaws.com"
       ]
     }
     condition {
@@ -592,7 +592,7 @@ resource "aws_iam_role_policy" "firehose_to_s3_policy" {
           "logs:PutLogEvents"
         ]
         # Resource = "*"
-        Resource = "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/kinesisfirehose/waf-logs-to-s3:*"
+        Resource = "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/kinesisfirehose/waf-logs-to-s3:*"
       }
     ]
   })
