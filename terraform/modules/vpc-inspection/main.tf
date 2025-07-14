@@ -412,4 +412,3 @@ resource "aws_nat_gateway" "public" {
     { Name = format("%s-%s", var.tags_prefix, each.key) }
   )
 }
-
