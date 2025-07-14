@@ -20,8 +20,8 @@ on:
         required: false
         description: "The terraform version to use"
         default: "~1"
-      workflow_id:   # This is the unique ID of the calling workflow
-        description: 'Unique ID for the calling workflow'
+      workflow_id: # This is the unique ID of the calling workflow
+        description: "Unique ID for the calling workflow"
         required: false
         type: string
     secrets:
@@ -73,7 +73,7 @@ jobs:
           if [ ${GITHUB_REF} != 'refs/heads/main' ] && [ -d "${{ inputs.working-directory }}/test" ]; then
               echo "run_terratest=true" >> $GITHUB_OUTPUT
           fi
-    
+
       - name: Setup Go
         if: ${{ steps.vars.outputs.run_terratest == 'true' }}
         uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
@@ -112,6 +112,7 @@ jobs:
       - name: Run Terratest
         if: ${{ steps.vars.outputs.run_terratest == 'true' }}
         run: |
+          set -o pipefail
           pushd ${{ inputs.working-directory }}/test
           go mod tidy
           TEST=`go test | ${{ github.workspace }}/scripts/redact-output.sh | tee /dev/stderr | tail -n 1`
@@ -135,7 +136,7 @@ jobs:
           destroy_threshold: ${{ env.TF_DESTROY_THRESHOLD }}
           plan_summary: ${{ steps.show.outputs.summary }}
         run: |
-            bash scripts/get-terraform-destroy-count.sh
+          bash scripts/get-terraform-destroy-count.sh
 
       - name: Post Warning & Check for Approval
         id: post_warning_check_approval
