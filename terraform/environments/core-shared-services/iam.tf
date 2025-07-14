@@ -78,7 +78,13 @@ data "aws_iam_policy_document" "image_builder_assume_policy" {
 resource "aws_iam_role" "image_builder" {
   name                = "image-builder"
   assume_role_policy  = data.aws_iam_policy_document.image_builder_assume_policy.json
-  managed_policy_arns = [for k in data.aws_iam_policy.image_builder_managed_policies : k.arn]
+}
+
+resource "aws_iam_role_policy_attachment" "image_builder_managed" {
+  for_each = data.aws_iam_policy.image_builder_managed_policies
+
+  role       = aws_iam_role.image_builder.name
+  policy_arn = each.value.arn
 }
 
 resource "aws_iam_instance_profile" "image_builder" {
@@ -362,8 +368,8 @@ resource "aws_iam_policy" "lambda_invoke_policy" {
         ]
         Effect = "Allow"
         Resource = [
-          "arn:aws:lambda:${data.aws_region.current_region.name}:${local.environment_management.account_ids["core-shared-services-production"]}:function:*",
-          "arn:aws:kms:${data.aws_region.current_region.name}:${local.environment_management.account_ids["core-shared-services-production"]}:key/*"
+          "arn:aws:lambda:${data.aws_region.current_region.region}:${local.environment_management.account_ids["core-shared-services-production"]}:function:*",
+          "arn:aws:kms:${data.aws_region.current_region.region}:${local.environment_management.account_ids["core-shared-services-production"]}:key/*"
         ]
       }
     ]

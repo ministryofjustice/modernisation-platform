@@ -1020,7 +1020,7 @@ resource "aws_instance" "ad_fixngo" {
   key_name               = aws_key_pair.ad_fixngo[each.value.key_name].key_name
   private_ip             = each.value.private_ip
   subnet_id              = each.value.subnet_id
-  user_data              = base64encode(file("./files/ad-fixngo-ec2-user-data.yaml"))
+  user_data_base64       = base64encode(file("./files/ad-fixngo-ec2-user-data.yaml"))
   vpc_security_group_ids = [aws_security_group.ad_fixngo[each.value.vpc_security_group_name].id]
 
   # remove all ephemeral block devices
