@@ -165,7 +165,7 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail_replication" {
 }
 
 module "s3-bucket-cloudtrail" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
@@ -207,7 +207,7 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
 }
 
 module "s3-bucket-cloudtrail-logging" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
@@ -427,7 +427,7 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs_repl
 
 # S3 bucket for centralised modernisation platform waf logs
 module "s3-bucket-modernisation-platform-waf-logs" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
@@ -675,4 +675,3 @@ resource "aws_iam_role_policy" "cwl_to_firehose_policy" {
     }]
   })
 }
-
