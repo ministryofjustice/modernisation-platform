@@ -87,7 +87,7 @@ module "vpc" {
     aws.transit-gateway-host = aws.core-network-services
   }
   for_each             = local.vpcs[terraform.workspace]
-  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=0ffdf9819534c6cbf6eae68b1a3bb2b696f0a275" # v5.0.0
+  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=cfbe7ebab97f3aaac777c8376b845a2f732e502e" # v5.0.1
   additional_endpoints = each.value.options.additional_endpoints
   subnet_sets          = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
   transit_gateway_id   = data.aws_ec2_transit_gateway.transit-gateway.id
