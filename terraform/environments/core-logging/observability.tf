@@ -1,5 +1,5 @@
 module "observability_platform_tenant" {
-  source = "github.com/ministryofjustice/terraform-aws-observability-platform-tenant?ref=fbbe5c8282786bcc0a00c969fe598e14f12eea9b" # v1.2.0
+  source = "github.com/ministryofjustice/terraform-aws-observability-platform-tenant?ref=f69b36c79ba18976d8e500e7cf61cf407158eb61" # v2.0.0
 
   observability_platform_account_id = local.environment_management.account_ids["observability-platform-production"]
 
@@ -62,7 +62,7 @@ resource "aws_iam_role_policy_attachment" "grafana_athena_attachment" {
 
 # S3 bucket for CUR Reports
 module "s3_moj_cur_reports_modplatform" {
-  source              = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
+  source              = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
   bucket_prefix       = "moj-cur-reports-modplatform-"
   versioning_enabled  = true
   ownership_controls  = "BucketOwnerEnforced"

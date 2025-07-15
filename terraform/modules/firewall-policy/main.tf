@@ -124,4 +124,3 @@ resource "aws_networkfirewall_rule_group" "fqdn-stateful" {
     }
   }
 }
-

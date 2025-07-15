@@ -5,7 +5,6 @@
         "cidr": "10.27.72.0/21",
         "accounts": [
           "apex-preproduction",
-          "bacway-preproduction",
           "ccms-ebs-preproduction",
           "ccms-edrms-preproduction",
           "contract-work-administration-preproduction",
