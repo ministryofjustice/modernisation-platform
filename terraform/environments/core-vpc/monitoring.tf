@@ -24,7 +24,7 @@ module "pagerduty_route53" {
   depends_on = [
     aws_sns_topic.route53_monitoring
   ]
-  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=d88bd90d490268896670a898edfaba24bba2f8ab" # v3.0.0
   sns_topics                = [aws_sns_topic.route53_monitoring.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["ddos_cloudwatch"]
 }
@@ -235,7 +235,7 @@ resource "aws_sns_topic" "vpc_flowlog_alarms" {
 # linking the sns topics to the pagerduty service
 module "pagerduty_vpc_flowlog_alerts" {
   depends_on                = [aws_sns_topic.vpc_flowlog_alarms]
-  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=d88bd90d490268896670a898edfaba24bba2f8ab" # v3.0.0
   sns_topics                = [aws_sns_topic.vpc_flowlog_alarms.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
 }

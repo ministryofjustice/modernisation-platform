@@ -68,6 +68,10 @@
         {
           "sso_group_name": "modernisation-platform-security",
           "level": "view-only"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "security-audit"
         }
       ]
     }

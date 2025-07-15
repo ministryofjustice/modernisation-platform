@@ -200,7 +200,7 @@ data "aws_iam_policy_document" "r53_dns_firewall_kms_policy" {
 }
 module "pagerduty_r53_dns_firewall" {
   depends_on                = [aws_sns_topic.r53_dns_firewall]
-  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=d88bd90d490268896670a898edfaba24bba2f8ab" # v3.0.0
   sns_topics                = [aws_sns_topic.r53_dns_firewall.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
 }
