@@ -13,7 +13,7 @@
           "level": "data-engineer"
         }
       ],
-      "nuke": "exclude"
+      "nuke": "rebuild"
     }
   ],
   "tags": {
