@@ -56,21 +56,20 @@ module "r53_dns_firewall" {
 If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
 
 <!-- BEGIN_TF_DOCS -->
-
 ## Requirements
 
-| Name                                                                     | Version |
-| ------------------------------------------------------------------------ | ------- |
-| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | ~> 1.0  |
-| <a name="requirement_aws"></a> [aws](#requirement_aws)                   | ~> 6.0  |
-| <a name="requirement_external"></a> [external](#requirement_external)    | ~> 2.0  |
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.0 |
+| <a name="requirement_external"></a> [external](#requirement\_external) | ~> 2.0 |
 
 ## Providers
 
-| Name                                                            | Version |
-| --------------------------------------------------------------- | ------- |
-| <a name="provider_aws"></a> [aws](#provider_aws)                | ~> 6.0  |
-| <a name="provider_external"></a> [external](#provider_external) | ~> 2.0  |
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 6.0 |
+| <a name="provider_external"></a> [external](#provider\_external) | ~> 2.0 |
 
 ## Modules
 
@@ -78,34 +77,33 @@ No modules.
 
 ## Resources
 
-| Name                                                                                                                                                                                      | Type        |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| [aws_route53_resolver_firewall_domain_list.allow](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_domain_list)                      | resource    |
-| [aws_route53_resolver_firewall_domain_list.block](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_domain_list)                      | resource    |
-| [aws_route53_resolver_firewall_rule.allow](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_rule)                                    | resource    |
-| [aws_route53_resolver_firewall_rule.block](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_rule)                                    | resource    |
-| [aws_route53_resolver_firewall_rule.default_alert](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_rule)                            | resource    |
-| [aws_route53_resolver_firewall_rule_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_rule_group)                         | resource    |
-| [aws_route53_resolver_firewall_rule_group_association.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_rule_group_association) | resource    |
-| [external_external.aws_managed_domain_lists](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external)                                                | data source |
+| Name | Type |
+|------|------|
+| [aws_route53_resolver_firewall_domain_list.allow](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_domain_list) | resource |
+| [aws_route53_resolver_firewall_domain_list.block](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_domain_list) | resource |
+| [aws_route53_resolver_firewall_rule.allow](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_rule) | resource |
+| [aws_route53_resolver_firewall_rule.block](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_rule) | resource |
+| [aws_route53_resolver_firewall_rule.default_alert](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_rule) | resource |
+| [aws_route53_resolver_firewall_rule_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_rule_group) | resource |
+| [aws_route53_resolver_firewall_rule_group_association.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_resolver_firewall_rule_group_association) | resource |
+| [external_external.aws_managed_domain_lists](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) | data source |
 
 ## Inputs
 
-| Name                                                                                                         | Description                                                                                                       | Type           | Default      | Required |
-| ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | -------------- | ------------ | :------: |
-| <a name="input_allowed_domains"></a> [allowed_domains](#input_allowed_domains)                               | List of allowed domains                                                                                           | `list(string)` | `[]`         |    no    |
-| <a name="input_association_priority"></a> [association_priority](#input_association_priority)                | Priority of the firewall rule group association                                                                   | `number`       | `101`        |    no    |
-| <a name="input_block_response"></a> [block_response](#input_block_response)                                  | The way that you want DNS Firewall to block the request. Supported Valid values are NODATA, NXDOMAIN, or OVERRIDE | `string`       | `"NXDOMAIN"` |    no    |
-| <a name="input_blocked_domains"></a> [blocked_domains](#input_blocked_domains)                               | List of blocked domains                                                                                           | `list(string)` | `[]`         |    no    |
-| <a name="input_pagerduty_integration_key"></a> [pagerduty_integration_key](#input_pagerduty_integration_key) | The PagerDuty integration key                                                                                     | `string`       | n/a          |   yes    |
-| <a name="input_tags_common"></a> [tags_common](#input_tags_common)                                           | Ministry of Justice required tags                                                                                 | `map(any)`     | n/a          |   yes    |
-| <a name="input_tags_prefix"></a> [tags_prefix](#input_tags_prefix)                                           | Prefix for name tags, e.g. the name of the VPC for unique identification of resources                             | `string`       | n/a          |   yes    |
-| <a name="input_vpc_id"></a> [vpc_id](#input_vpc_id)                                                          | The ID of the VPC to associate with the DNS Firewall rule group                                                   | `string`       | n/a          |   yes    |
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_allowed_domains"></a> [allowed\_domains](#input\_allowed\_domains) | List of allowed domains | `list(string)` | `[]` | no |
+| <a name="input_association_priority"></a> [association\_priority](#input\_association\_priority) | Priority of the firewall rule group association | `number` | `101` | no |
+| <a name="input_block_response"></a> [block\_response](#input\_block\_response) | The way that you want DNS Firewall to block the request. Supported Valid values are NODATA, NXDOMAIN, or OVERRIDE | `string` | `"NXDOMAIN"` | no |
+| <a name="input_blocked_domains"></a> [blocked\_domains](#input\_blocked\_domains) | List of blocked domains | `list(string)` | `[]` | no |
+| <a name="input_pagerduty_integration_key"></a> [pagerduty\_integration\_key](#input\_pagerduty\_integration\_key) | The PagerDuty integration key | `string` | n/a | yes |
+| <a name="input_tags_common"></a> [tags\_common](#input\_tags\_common) | Ministry of Justice required tags | `map(any)` | n/a | yes |
+| <a name="input_tags_prefix"></a> [tags\_prefix](#input\_tags\_prefix) | Prefix for name tags, e.g. the name of the VPC for unique identification of resources | `string` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC to associate with the DNS Firewall rule group | `string` | n/a | yes |
 
 ## Outputs
 
-| Name                                                                                                  | Description                           |
-| ----------------------------------------------------------------------------------------------------- | ------------------------------------- |
-| <a name="output_firewall_rule_group_id"></a> [firewall_rule_group_id](#output_firewall_rule_group_id) | The ID of the DNS Firewall rule group |
-
+| Name | Description |
+|------|-------------|
+| <a name="output_firewall_rule_group_id"></a> [firewall\_rule\_group\_id](#output\_firewall\_rule\_group\_id) | The ID of the DNS Firewall rule group |
 <!-- END_TF_DOCS -->
