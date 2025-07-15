@@ -29,6 +29,9 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
     actions = [
       "athena:StartQueryExecution",
       "athena:GetQueryExecution",
+      "athena:CreateDataCatalog",
+      "athena:DeleteDataCatalog",
+      "athena:UpdateDataCatalog",
       "autoscaling:PutScheduledUpdateGroupAction",
       "autoscaling:SetDesiredCapacity",
       "backup:Start*",
