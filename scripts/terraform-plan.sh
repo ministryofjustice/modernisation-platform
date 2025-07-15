@@ -18,26 +18,44 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-plan_output=""
-plan_summary=""
+tf_dir="$1"
+options="${2:-}"
 
-if [ ! -z "$2" ]; then
-  options="$2"
-  plan_output=$(terraform -chdir="$1" plan -input=false -no-color "$options" | ./scripts/redact-output.sh)  # Capture full output
+# Run Terraform plan and capture output and exit code
+plan_file=$(mktemp)
+if [ -n "$options" ]; then
+  terraform -chdir="$tf_dir" plan -input=false -no-color $options | ./scripts/redact-output.sh > "$plan_file"
 else
-  plan_output=$(terraform -chdir="$1" plan -input=false -no-color | ./scripts/redact-output.sh) # Capture full output
+  terraform -chdir="$tf_dir" plan -input=false -no-color | ./scripts/redact-output.sh > "$plan_file" 
 fi
 
-
-plan_summary=$(echo "$plan_output" | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')  # Extract summary from full output
+exit_code=$?
+plan_output=$(cat "$plan_file")
+plan_summary=$(echo "$plan_output" | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')
 
 
 if tty -s; then
-    echo "$plan_output" | tee /dev/tty    # Output full redacted plan to terminal if available
+  echo "$plan_output" | tee /dev/tty    # Output full redacted plan to terminal if available
 else
-    echo "$plan_output"                   # Output full redacted plan to stdout (GitHub Actions logs)
+  echo "$plan_output"                   # Output full redacted plan to stdout (GitHub Actions logs)    
 fi
 
-echo "summary<<EOF" >> $GITHUB_OUTPUT
-echo "$plan_summary" >> $GITHUB_OUTPUT
-echo "EOF" >> $GITHUB_OUTPUT
+# Set summary for GitHub Actions
+echo "summary<<EOF" >> "$GITHUB_OUTPUT"
+echo "$plan_summary" >> "$GITHUB_OUTPUT"
+echo "EOF" >> "$GITHUB_OUTPUT"
+
+# Clean up
+rm -f "$plan_file"
+
+# Handle Terraform exit codes
+if [ $exit_code -eq 1 ]; then
+  echo "❌ Terraform plan failed."
+  exit 1
+elif [ $exit_code -eq 2 ]; then
+  echo "✅ Terraform plan succeeded with changes."
+  exit 0
+else
+  echo "✅ Terraform plan succeeded with no changes."
+  exit 0
+fi
