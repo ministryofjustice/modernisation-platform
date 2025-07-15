@@ -7,4 +7,3 @@ data "aws_s3_bucket" "mod_platform_artefact" {
 data "aws_ssm_parameter" "modernisation_platform_account_id" {
   name = "modernisation_platform_account_id"
 }
-
