@@ -1020,7 +1020,7 @@ resource "aws_instance" "ad_fixngo" {
   key_name               = aws_key_pair.ad_fixngo[each.value.key_name].key_name
   private_ip             = each.value.private_ip
   subnet_id              = each.value.subnet_id
-  user_data              = base64encode(file("./files/ad-fixngo-ec2-user-data.yaml"))
+  user_data_base64       = base64encode(file("./files/ad-fixngo-ec2-user-data.yaml"))
   vpc_security_group_ids = [aws_security_group.ad_fixngo[each.value.vpc_security_group_name].id]
 
   # remove all ephemeral block devices
@@ -1240,7 +1240,7 @@ resource "aws_ssm_parameter" "ad_fixngo" {
 
 #trivy:ignore:AVD-AWS-0345: Required for SSM patching module to access S3 buckets
 module "ad_fixngo_ssm_patching" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching.git?ref=3659b4c4d37d5d71bca0ae9f2760cf3541e8d291" # v4.0.1
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching.git?ref=1c10b851580368edd40bb1c9330d915f95dd8a2c" # v5.0.0
   providers = {
     aws.bucket-replication = aws
   }
