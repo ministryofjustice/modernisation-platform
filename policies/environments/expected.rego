@@ -16,7 +16,6 @@ expected :=
     "analytical-platform-next-poc-hub",
     "analytical-platform-next-poc-producer",
     "apex",
-    "bacway",
     "bichard7",
     "ccms-ebs",
     "ccms-ebs-upgrade",
