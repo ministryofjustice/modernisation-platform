@@ -126,7 +126,7 @@ jobs:
         if: github.event.ref != 'refs/heads/main'
         id: show
         run: |
-          bash scripts/terraform-plan.sh ${{ inputs.working-directory }}
+          bash scripts/terraform-plan.sh ${{ inputs.working-directory }} "-detailed-exitcode"
 
       - name: Get Destroy Count
         if: github.event_name == 'pull_request'
