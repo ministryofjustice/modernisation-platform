@@ -1101,9 +1101,6 @@ data "aws_iam_policy_document" "instance-management-document" {
         local.environment_management.account_ids["core-shared-services-production"]
       ]
     }
-
-
-
   }
   statement {
     sid    = "databaseAllowNull"

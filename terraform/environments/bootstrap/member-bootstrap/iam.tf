@@ -5,7 +5,7 @@ locals {
 
 module "member-access" {
   count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access[0].id
@@ -14,7 +14,7 @@ module "member-access" {
 
 module "member-access-sprinkler" {
   count                  = (terraform.workspace == "sprinkler-development") ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = [data.aws_iam_role.sprinkler_oidc[0].arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access[0].id
@@ -390,7 +390,7 @@ resource "aws_iam_role_policy_attachment" "testing_member_infrastructure_access_
 # MemberInfrastructureAccessUSEast
 module "member-access-us-east" {
   count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access-us-east[0].id
@@ -399,7 +399,7 @@ module "member-access-us-east" {
 
 module "member-access-us-east-sprinkler" {
   count                  = (terraform.workspace == "sprinkler-development") ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = [data.aws_iam_role.sprinkler_oidc[0].arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access-us-east[0].id
@@ -488,7 +488,7 @@ resource "aws_iam_policy" "member-access-us-east" {
 # Github OIDC role
 module "github_oidc_role" {
   count                = length(compact(jsondecode(data.http.environments_file.response_body).github-oidc-team-repositories)) > 0 ? 1 : 0
-  source               = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=62b8a16c73d8e4422cd81923e46948e8f4b5cf48" # v3.2.0
+  source               = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
   github_repositories  = jsondecode(data.http.environments_file.response_body).github-oidc-team-repositories
   max_session_duration = 21600
   role_name            = "modernisation-platform-oidc-cicd"
@@ -679,7 +679,7 @@ data "aws_iam_policy_document" "policy" {
 # MemberInfrastructureBedrockEuCentral
 module "member-access-eu-central" {
   count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access-eu-central[0].id
@@ -688,7 +688,7 @@ module "member-access-eu-central" {
 
 module "member-access-eu-central-sprinkler" {
   count                  = (terraform.workspace == "sprinkler-development") ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = [data.aws_iam_role.sprinkler_oidc[0].arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access-eu-central[0].id
@@ -792,7 +792,7 @@ resource "aws_ssm_parameter" "modernisation_platform_account_id" {
 # Github OIDC provider
 module "github-oidc" {
   count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=82f546bd5f002674138a2ccdade7d7618c6758b3" # v3.0.0
+  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=5dc9bc211d10c58de4247fa751c318a3985fc87b" # v4.0.0
   additional_permissions = data.aws_iam_policy_document.oidc_assume_role_member[0].json
   github_repositories    = ["ministryofjustice/modernisation-platform-environments:*"]
   tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
@@ -891,7 +891,7 @@ resource "aws_iam_account_alias" "alias" {
 
 module "github_actions_dev_test_role" {
   count               = can(regex("development$|test$", terraform.workspace)) ? 1 : 0
-  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=62b8a16c73d8e4422cd81923e46948e8f4b5cf48" # v3.2.0
+  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
   github_repositories = ["ministryofjustice/modernisation-platform"]
   role_name           = "github-actions-dev-test"
   policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
@@ -962,7 +962,7 @@ data "aws_iam_policy_document" "oidc_assume_role_dev_test" {
 # GitHub OIDC Role for Security Hub Insight Creation and Summary Access
 module "securityhub_insights_oidc_role" {
   count               = startswith(terraform.workspace, "core") && terraform.workspace != "core-shared-services-production" ? 0 : 1
-  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=62b8a16c73d8e4422cd81923e46948e8f4b5cf48" # v3.2.0
+  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
   github_repositories = ["ministryofjustice/modernisation-platform"]
   role_name           = "github-actions-securityhub-insights"
   policy_jsons        = [data.aws_iam_policy_document.securityhub_insights_oidc_policy.json]
@@ -972,7 +972,7 @@ module "securityhub_insights_oidc_role" {
 
 module "securityhub_insights_oidc_role_core" {
   count                  = startswith(terraform.workspace, "core") && terraform.workspace != "core-shared-services-production" ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=82f546bd5f002674138a2ccdade7d7618c6758b3" # v3.0.0
+  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=5dc9bc211d10c58de4247fa751c318a3985fc87b" # v4.0.0
   github_repositories    = ["ministryofjustice/modernisation-platform:ref:refs/heads/main"]
   role_name              = "github-actions-securityhub-insights"
   additional_permissions = data.aws_iam_policy_document.securityhub_insights_oidc_policy.json
