@@ -19,6 +19,10 @@
         {
           "sso_group_name": "azure-aws-sso-mojfin-ssm",
           "level": "ssm-session-access"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
         }
       ]
     },
@@ -40,6 +44,10 @@
         {
           "sso_group_name": "azure-aws-sso-mojfin-ssm",
           "level": "ssm-session-access"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
         }
       ]
     },
@@ -61,6 +69,10 @@
         {
           "sso_group_name": "azure-aws-sso-mojfin-ssm",
           "level": "ssm-session-access"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
         }
       ]
     },
@@ -82,6 +94,10 @@
         {
           "sso_group_name": "azure-aws-sso-mojfin-ssm",
           "level": "ssm-session-access"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
         }
       ]
     }
