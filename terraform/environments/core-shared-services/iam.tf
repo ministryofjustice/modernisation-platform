@@ -78,7 +78,13 @@ data "aws_iam_policy_document" "image_builder_assume_policy" {
 resource "aws_iam_role" "image_builder" {
   name                = "image-builder"
   assume_role_policy  = data.aws_iam_policy_document.image_builder_assume_policy.json
-  managed_policy_arns = [for k in data.aws_iam_policy.image_builder_managed_policies : k.arn]
+}
+
+resource "aws_iam_role_policy_attachment" "image_builder_managed" {
+  for_each = data.aws_iam_policy.image_builder_managed_policies
+
+  role       = aws_iam_role.image_builder.name
+  policy_arn = each.value.arn
 }
 
 resource "aws_iam_instance_profile" "image_builder" {
@@ -230,7 +236,7 @@ data "aws_iam_policy_document" "instance-scheduler-lambda-function-policy" {
 
 # OIDC Confiuration for core-shared-services
 module "github-oidc" {
-  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=82f546bd5f002674138a2ccdade7d7618c6758b3" # v3.0.0
+  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=5dc9bc211d10c58de4247fa751c318a3985fc87b" # v4.0.0
   additional_permissions = data.aws_iam_policy_document.oidc_assume_role_core.json
   github_repositories    = ["ministryofjustice/modernisation-platform-instance-scheduler:*"]
   tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
@@ -339,7 +345,7 @@ resource "aws_iam_policy" "ssm-cross-account-admin-policy" {
 
 
 module "ssm-cross-account-access-admin" {
-  source                      = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=6819b090bce6d3068d55c7c7b9b3fd18c9dca648" #v3.0.0
+  source                      = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id                  = local.environment_management.account_ids["core-shared-services-production"]
   policy_arn                  = aws_iam_policy.ssm-cross-account-admin-policy.arn
   role_name                   = "AWS-SSM-AutomationAdministrationRole"
@@ -362,8 +368,8 @@ resource "aws_iam_policy" "lambda_invoke_policy" {
         ]
         Effect = "Allow"
         Resource = [
-          "arn:aws:lambda:${data.aws_region.current_region.name}:${local.environment_management.account_ids["core-shared-services-production"]}:function:*",
-          "arn:aws:kms:${data.aws_region.current_region.name}:${local.environment_management.account_ids["core-shared-services-production"]}:key/*"
+          "arn:aws:lambda:${data.aws_region.current_region.region}:${local.environment_management.account_ids["core-shared-services-production"]}:function:*",
+          "arn:aws:kms:${data.aws_region.current_region.region}:${local.environment_management.account_ids["core-shared-services-production"]}:key/*"
         ]
       }
     ]

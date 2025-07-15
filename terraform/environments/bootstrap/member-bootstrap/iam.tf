@@ -271,6 +271,20 @@ data "aws_iam_policy_document" "member-access" {
       values   = ["guardduty.amazonaws.com"]
     }
   }
+  # Only grant Rekognition permissions for e-supervision application
+  statement {
+    effect    = "Allow"
+    actions   = ["rekognition:*"]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        local.environment_management.account_ids["hmpps-esupervision-development"],
+        local.environment_management.account_ids["hmpps-esupervision-production"]
+      ]
+    }
+  }
   statement {
     effect = "Deny"
     actions = [

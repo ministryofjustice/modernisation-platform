@@ -165,7 +165,7 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail_replication" {
 }
 
 module "s3-bucket-cloudtrail" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
@@ -207,56 +207,46 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
 }
 
 module "s3-bucket-cloudtrail-logging" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
 
-  acl                        = "log-delivery-write"
+  bucket_policy              = [data.aws_iam_policy_document.cloudtrail_logging_bucket_policy.json]
   bucket_name                = "modernisation-platform-logs-cloudtrail-logging"
   replication_bucket         = "modernisation-platform-logs-cloudtrail-logging-replication"
   suffix_name                = "-cloudtrail-logging"
   custom_kms_key             = aws_kms_key.s3_logging_cloudtrail.arn
   custom_replication_kms_key = aws_kms_key.s3_logging_cloudtrail_eu-west-1_replication.arn
+  ownership_controls         = "BucketOwnerEnforced"
 
   replication_enabled = true
   replication_region  = "eu-west-1"
-  versioning_enabled  = true
-
-  lifecycle_rule = [
-    {
-      id      = "main"
-      enabled = "Enabled"
-      prefix  = ""
-      tags    = {}
-      transition = [
-        {
-          days          = 90
-          storage_class = "STANDARD_IA"
-          }, {
-          days          = 365
-          storage_class = "GLACIER"
-        }
-      ]
-      expiration = {
-        days = 730
-      }
-      noncurrent_version_transition = [
-        {
-          days          = 90
-          storage_class = "STANDARD_IA"
-          }, {
-          days          = 365
-          storage_class = "GLACIER"
-        }
-      ]
-      noncurrent_version_expiration = {
-        days = 730
-      }
-    }
-  ]
 
   tags = local.tags
+}
+
+data "aws_iam_policy_document" "cloudtrail_logging_bucket_policy" {
+  statement {
+    sid       = "AllowS3ServerAccessLoggingPutObjectFromSourceBucketWithinAccount"
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
+    resources = ["${module.s3-bucket-cloudtrail-logging.bucket.arn}/*"]
+    principals {
+      type        = "Service"
+      identifiers = ["logging.s3.amazonaws.com"]
+    }
+    condition {
+      test     = "ArnEquals"
+      variable = "aws:SourceArn"
+      values   = [module.s3-bucket-cloudtrail.bucket.arn]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [data.aws_caller_identity.current.account_id]
+    }
+  }
 }
 
 ##########################
@@ -309,7 +299,7 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs" {
       type = "Service"
       identifiers = [
         "firehose.amazonaws.com",
-        "logs.${data.aws_region.current.name}.amazonaws.com"
+        "logs.${data.aws_region.current.region}.amazonaws.com"
       ]
     }
     condition {
@@ -427,7 +417,7 @@ data "aws_iam_policy_document" "kms_logging_modernisation_platform_waf_logs_repl
 
 # S3 bucket for centralised modernisation platform waf logs
 module "s3-bucket-modernisation-platform-waf-logs" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" # v8.2.1
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
@@ -592,7 +582,7 @@ resource "aws_iam_role_policy" "firehose_to_s3_policy" {
           "logs:PutLogEvents"
         ]
         # Resource = "*"
-        Resource = "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/kinesisfirehose/waf-logs-to-s3:*"
+        Resource = "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/kinesisfirehose/waf-logs-to-s3:*"
       }
     ]
   })
@@ -675,4 +665,3 @@ resource "aws_iam_role_policy" "cwl_to_firehose_policy" {
     }]
   })
 }
-
