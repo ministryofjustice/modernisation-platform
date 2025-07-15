@@ -239,7 +239,7 @@ data "aws_iam_policy_document" "cloudtrail_logging_bucket_policy" {
     condition {
       test     = "ArnEquals"
       variable = "aws:SourceArn"
-      values   = [module.s3-bucket-cloudtrail-logging.bucket.arn]
+      values   = [module.s3-bucket-cloudtrail.bucket.arn]
     }
     condition {
       test     = "StringEquals"
