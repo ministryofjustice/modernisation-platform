@@ -31,6 +31,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "athena:GetQueryExecution",
       "athena:CreateDataCatalog",
       "athena:DeleteDataCatalog",
+      "athena:GetDataCatalog",
       "athena:GetDatabase",
       "athena:GetTableMetadata",
       "athena:ListDatabases",
