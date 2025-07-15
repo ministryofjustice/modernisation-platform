@@ -8,7 +8,8 @@
           "sso_group_name": "modernisation-platform",
           "level": "developer"
         }
-      ]
+      ],
+      "nuke": "rebuild"
     }
   ],
   "tags": {
