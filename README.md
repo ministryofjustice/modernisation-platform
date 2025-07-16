@@ -58,6 +58,7 @@ These modules are used by the Modernisation Platform's core infrastructure
 | [modernisation-platform-terraform-iam-superadmins](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins)           | Module for creating defined IAM users as superadmins                                           |
 | [modernisation-platform-terraform-member-vpc](https://github.com/ministryofjustice/modernisation-platform-terraform-member-vpc)                     | Module for member VPC accounts                                                                 |
 | [modernisation-platform-github-oidc-provider](https://github.com/ministryofjustice/modernisation-platform-github-oidc-provider)                     | Module for creating OIDC providers to use in GitHub Actions                                    |
+| [modernisation-platform-terraform-aws-chatbot](https://github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot)                   | Module for using AWS Chatbot                                                                   |
 
 ### Tools
 
