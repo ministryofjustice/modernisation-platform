@@ -12,7 +12,8 @@
           "sso_group_name": "laa-apex-developer",
           "level": "developer"
         }
-      ]
+      ],
+      "nuke": "rebuild"
     },
     {
       "name": "test",
