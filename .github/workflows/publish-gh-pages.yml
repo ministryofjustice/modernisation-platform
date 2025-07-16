@@ -24,7 +24,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/ministryofjustice/tech-docs-github-pages-publisher@sha256:30d00879b5c82afa5d76264164db46189fa11d4358b37ca35b6a62e341d62bb7 # v5.1.0
+      image: ghcr.io/ministryofjustice/tech-docs-github-pages-publisher@sha256:c55eb7a18eb667a2e616e16cf0918b26c1932fc03e6ad8e9bfe6961fd746692e # v6.0.1
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
