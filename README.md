@@ -34,7 +34,7 @@ This repository currently holds the Modernisation Platform's:
 Modernisation Platform users can use these modules in their infrastructure. They are designed to comply with best practices and to work with the platform, to make creating infrastructure quicker, easier and more secure.
 
 | Name                                                                                                                                                  | Description                                                                                                                                                                        |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
 | [modernisation-platform-terraform-bastion-linux](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux)                 | Module for creating Linux bastion servers in member AWS accounts                                                                                                                   |
 | [modernisation-platform-terraform-ecs-cluster](https://github.com/ministryofjustice/modernisation-platform-terraform-ecs-cluster)                     | Module for creating ECS cluster                                                                                                                                                    |
 | [modernisation-platform-terraform-s3-bucket](https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket)                         | Module for creating S3 buckets with sensible defaults e.g. replication, encryption                                                                                                 |
@@ -45,6 +45,7 @@ Modernisation Platform users can use these modules in their infrastructure. They
 | [modernisation-platform-terraform-ec2-instance](https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-instance)                   | Module for creating an EC2 instance                                                                                                                                                |
 | [modernisation-platform-terraform-ec2-autoscaling-group](https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-autoscaling-group) | Module for creating an EC2 autoscaling group                                                                                                                                       |
 | [modernisation-platform-terraform-lambda-function](https://github.com/ministryofjustice/modernisation-platform-terraform-lambda-function)             | Module for creating a Lambda Function                                                                                                                                              |
+| [modernisation-platform-terraform-aws-chatbot](https://github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot)                     | Module for using AWS Chatbot                                                                                                                                                       |     |
 
 ### Terraform modules - used by the core platform
 
@@ -58,7 +59,6 @@ These modules are used by the Modernisation Platform's core infrastructure
 | [modernisation-platform-terraform-iam-superadmins](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins)           | Module for creating defined IAM users as superadmins                                           |
 | [modernisation-platform-terraform-member-vpc](https://github.com/ministryofjustice/modernisation-platform-terraform-member-vpc)                     | Module for member VPC accounts                                                                 |
 | [modernisation-platform-github-oidc-provider](https://github.com/ministryofjustice/modernisation-platform-github-oidc-provider)                     | Module for creating OIDC providers to use in GitHub Actions                                    |
-| [modernisation-platform-terraform-aws-chatbot](https://github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot)                   | Module for using AWS Chatbot                                                                   |
 
 ### Tools
 
