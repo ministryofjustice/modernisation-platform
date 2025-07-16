@@ -45,7 +45,6 @@ expected :=
     "delius-jitbit",
     "delius-mis",
     "digital-prison-reporting",
-    "edw",
     "electronic-monitoring-data",
     "equip",
     "example",
