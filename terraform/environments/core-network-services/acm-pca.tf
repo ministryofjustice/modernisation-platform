@@ -36,7 +36,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "acm-pca" {
   rule {
     id     = "default"
     status = "Enabled"
-    
+
     filter {
       prefix = ""
     }

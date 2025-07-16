@@ -76,8 +76,8 @@ data "aws_iam_policy_document" "image_builder_assume_policy" {
 }
 
 resource "aws_iam_role" "image_builder" {
-  name                = "image-builder"
-  assume_role_policy  = data.aws_iam_policy_document.image_builder_assume_policy.json
+  name               = "image-builder"
+  assume_role_policy = data.aws_iam_policy_document.image_builder_assume_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "image_builder_managed" {
