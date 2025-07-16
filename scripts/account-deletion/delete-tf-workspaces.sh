@@ -22,7 +22,6 @@ load_configurations_and_credentials() {
     # Call the MP_CREDENTIALS function to load credentials
     MP_CREDENTIALS
     
-    # Debugging: Echo the loaded configurations and AWS credentials to verify
     echo "Loaded application name: $APPLICATION_NAME"
     echo "Loaded workspaces: ${WORKSPACES[*]}"
     echo "Debugging - AWS_ACCESS_KEY_ID is set to: $AWS_ACCESS_KEY_ID"
@@ -33,26 +32,45 @@ load_configurations_and_credentials() {
 # Load configurations and AWS credentials
 load_configurations_and_credentials
 
-# Verify if the required AWS environment variables are set
+# Check AWS credentials
 if [ -z "$AWS_ACCESS_KEY_ID" ] || [ -z "$AWS_SECRET_ACCESS_KEY" ] || [ -z "$AWS_SESSION_TOKEN" ]; then
     echo "One or more AWS credentials were not provided in the $CONFIG_FILE. Please check your input and try again."
     exit 1
 fi
 
 # Define the list of directories
-directories=("$USER_MP_DIR/terraform/environments/bootstrap/delegate-access" "$USER_MP_DIR/terraform/environments/bootstrap/secure-baselines" "$USER_MP_DIR/terraform/environments/bootstrap/single-sign-on" "$USER_MP_DIR/terraform/environments/bootstrap/member-bootstrap")
+directories=(
+    "$USER_MP_DIR/terraform/environments/bootstrap/delegate-access"
+    "$USER_MP_DIR/terraform/environments/bootstrap/secure-baselines"
+    "$USER_MP_DIR/terraform/environments/bootstrap/single-sign-on"
+    "$USER_MP_DIR/terraform/environments/bootstrap/member-bootstrap"
+)
 
+# Loop through workspaces
 for workspace in "${WORKSPACES[@]}"; do
     if ask_for_confirmation; then 
         for dir in "${directories[@]}"; do
-            cd "$dir" || { echo "Failed to navigate to $dir"; exit 1; }
+            echo "Checking directory: $dir"
+            if [ ! -d "$dir" ]; then
+                echo "Directory $dir does not exist. Skipping..."
+                continue
+            fi
+
+            cd "$dir" || { echo "Failed to navigate to $dir"; continue; }
             terraform init > /dev/null 2>&1
-            terraform workspace select default
-            pwd
-            echo "Here I will run terraform workspace delete -force $APPLICATION_NAME-$workspace"
-            terraform workspace delete -force $APPLICATION_NAME-$workspace
+
+            # Ensure we're in a valid workspace
+            terraform workspace select default > /dev/null 2>&1
+
+            TARGET_WS="$APPLICATION_NAME-$workspace"
+            if terraform workspace list | grep -q "$TARGET_WS"; then
+                echo "Deleting workspace $TARGET_WS in $dir"
+                terraform workspace delete -force "$TARGET_WS"
+            else
+                echo "Workspace $TARGET_WS does not exist in $dir. Skipping..."
+            fi
         done
     else
-        exit 1
+        echo "Skipping deletion for workspace $APPLICATION_NAME-$workspace."
     fi
 done
