@@ -141,6 +141,7 @@
     "ministryofjustice/hmpps-delius-docker-images",
     "ministryofjustice/hmpps-pwm",
     "ministryofjustice/ndelius-um",
-    "ministryofjustice/delius-pdm-uplift-scripts"
+    "ministryofjustice/delius-pdm-uplift-scripts",
+    "ministryofjustice/dso-modernisation-platform-automation"
   ]
 }
