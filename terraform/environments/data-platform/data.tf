@@ -4,5 +4,5 @@ data "http" "environments_file" {
 }
 
 data "aws_iam_policy" "cicd_member_policy" {
-  name = "cicd-member-policy"
+  name = "data-platform-labs-github-role-policy"
 }
