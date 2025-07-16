@@ -45,6 +45,7 @@ Modernisation Platform users can use these modules in their infrastructure. They
 | [modernisation-platform-terraform-ec2-instance](https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-instance)                   | Module for creating an EC2 instance                                                                                                                                                |
 | [modernisation-platform-terraform-ec2-autoscaling-group](https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-autoscaling-group) | Module for creating an EC2 autoscaling group                                                                                                                                       |
 | [modernisation-platform-terraform-lambda-function](https://github.com/ministryofjustice/modernisation-platform-terraform-lambda-function)             | Module for creating a Lambda Function                                                                                                                                              |
+| [modernisation-platform-terraform-aws-chatbot](https://github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot)                     | Module for using AWS Chatbot                                                                                                                                                       |
 
 ### Terraform modules - used by the core platform
 
