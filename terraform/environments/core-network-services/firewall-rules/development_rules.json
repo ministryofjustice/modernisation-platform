@@ -90,7 +90,7 @@
     "destination_port": "$LAA_CCMS_TCP",
     "protocol": "TCP"
   },
-   "laa_development_to_laa_development_ccms_soa_mp": {
+  "laa_development_to_laa_development_ccms_soa_mp": {
     "action": "PASS",
     "source_ip": "${laa-development}",
     "destination_ip": "${laa-lz-development}",
