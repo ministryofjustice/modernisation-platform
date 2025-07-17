@@ -9,7 +9,6 @@
           "ccms-ebs-upgrade-test",
           "ccms-edrms-test",
           "contract-work-administration-test",
-          "corporate-information-system-test",
           "laa-ccms-soa-test",
           "laa-mail-relay-test",
           "laa-oem-test",
