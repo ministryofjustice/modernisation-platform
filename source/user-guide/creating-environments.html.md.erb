@@ -75,7 +75,7 @@ As these environments are identical, and controlled via code, we would recommend
 
 ### Tags
 
-These will be used to tag your AWS resources, for further guidance on tagging please see [here](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use)
+These will be used to tag your AWS resources, for further guidance on tagging please see [here](https://cloud-optimisation-and-accountability.justice.gov.uk/documentation/finops-and-greenops-at-moj/standards/tagging.html#tags-you-should-use)
 
 The is-production tag will be inferred if the environment is production.
 
@@ -83,7 +83,7 @@ The is-production tag will be inferred if the environment is production.
 | ------------- | ----------------------------------------- |
 | application   | Find a solicitor                          |
 | business-unit | LAA                                       |
-| owner         | find-a-solicitor@ministryofjustice.gov.uk |
+| owner         | <find-a-solicitor@ministryofjustice.gov.uk> |
 
 Valid business-unit values
 HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE
@@ -108,12 +108,12 @@ Here are some examples of the environments JSON file that the Modernisation Plat
 
 - `account-type` determines if this is a core modernisation platform account or a user member account.
 - `isolated-network` is an optional field which can be set to 'true' if you require an isolated environment with no internet or shared network connectivity.
-- `codeowners` is an ***optional*** list of GitHub slugs if you want specific teams to review code changes before they are released into environments. It is **NOT** generally used. Compare the [Blank example](#blank-example) with [Another example](#another-example) below, to see it is unused. 
+- `codeowners` is an ***optional*** list of GitHub slugs if you want specific teams to review code changes before they are released into environments. It is **NOT** generally used. Compare the [Blank example](#blank-example) with [Another example](#another-example) below, to see it is unused.
 - `environments` should be an array of objects for environments required. If the environment is `production`, retention periods, backup frequency, and similar will be different compared to non-production environments.
 - the `name` key and `access` object are required, see: [Another example](#another-example)
 - `github_action_reviewer` is an optional true/false for each team listed and determines if the team should be the approver for GitHub action runs.
 - the `nuke` key is optional and is only read if the `access.level` is `sandbox`.
-- `tags` should be an object of the mandatory tags defined in the MoJ [Tagging Guidance](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tagging-your-infrastructure). You can omit `is-production` as we infer this from the environment name. Note that the `infrastructure-support` tag must contain a valid email address.
+- `tags` should be an object of the mandatory tags defined in the MoJ [Tagging Guidance](https://cloud-optimisation-and-accountability.justice.gov.uk/documentation/finops-and-greenops-at-moj/standards/tagging.html#tagging-your-infrastructure). You can omit `is-production` as we infer this from the environment name. Note that the `infrastructure-support` tag must contain a valid email address.
 
 ### Blank example
 
