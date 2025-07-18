@@ -1,5 +1,5 @@
 module "environments" {
-  source                             = "github.com/ministryofjustice/modernisation-platform-terraform-environments?ref=f177dc869c27434b83818be06264a2fa68336739" # mybranch
+  source                             = "github.com/ministryofjustice/modernisation-platform-terraform-environments?ref=b78577cc957def05bbfc4edd215612fa219491cb" # v8.1.0
   environment_directory              = "../../environments"
   environment_parent_organisation_id = local.modernisation_platform_ou_id
   environment_prefix                 = "modernisation-platform"
