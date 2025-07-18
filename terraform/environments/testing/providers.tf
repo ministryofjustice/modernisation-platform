@@ -33,7 +33,7 @@ provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/ModernisationPlatformAccess"
   }
-  default_tags { tags = local.ignore_tags }
+  default_tags { tags = local.tags }
 }
 
 # AWS provider (modernisation-secrets-read): Required for assuming a role into modernisation platform account to read secrets
