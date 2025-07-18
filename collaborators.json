@@ -539,6 +539,14 @@
           "access": "quicksight-admin-access"
         },
         {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "data-scientist"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "data-scientist"
+        },
+        {
           "account-name": "youth-justice-app-framework-test",
           "access": "developer"
         },
@@ -1660,6 +1668,16 @@
     },
     {
       "username": "matt.sherwin",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "long-term-storage-production",
+          "access": "node4-role"
+        }
+      ]
+    },
+    {
+      "username": "brian.byrne",
       "github-username": "no-value-supplied",
       "accounts": [
         {

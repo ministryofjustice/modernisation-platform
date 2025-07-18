@@ -27,6 +27,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
   #checkov:skip=CKV_AWS_111
   statement {
     actions = [
+      "athena:ListTagsForResource",
       "athena:StartQueryExecution",
       "athena:GetQueryExecution",
       "athena:CreateDataCatalog",
