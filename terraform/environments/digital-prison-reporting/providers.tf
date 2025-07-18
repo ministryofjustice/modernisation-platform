@@ -74,4 +74,3 @@ resource "aws_iam_openid_connect_provider" "circleci_oidc_provider" {
     ignore_changes = [thumbprint_list]
   }
 }
-
