@@ -14,7 +14,7 @@ module "collaborators_group" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   #checkov:skip=CKV_TF_2:Module registry does not support tags
   source  = "terraform-aws-modules/iam/aws//modules/iam-group-with-policies"
-  version = "~> 5.0"
+  version = "~> 6.0"
   name    = "collaborators"
 
   group_users = [for user in module.collaborators : user.username]
