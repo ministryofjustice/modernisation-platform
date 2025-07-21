@@ -1,5 +1,5 @@
 module "github_actions_roles" {
-  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=4e620aa32d339dbe5fd75374e915dc9f48e30a6d" # v2.0.1
+  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
   github_repositories = local.oidc_repositories
   role_name           = "data-platform-labs-github-role"
   policy_arns         = local.oidc_default_policy_arns
