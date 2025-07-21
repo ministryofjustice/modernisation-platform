@@ -139,13 +139,6 @@
     "destination_port": "$LAA_PORTAL_WEBGATE_TCP",
     "protocol": "TCP"
   },
-  "laa_shared_services_to_mp_laa_development": {
-    "action": "ALERT",
-    "source_ip": "${laa-lz-shared-services-nonprod}",
-    "destination_ip": "${laa-development}",
-    "destination_port": "ANY",
-    "protocol": "IP"
-  },
   "laa_shared_services_ws_to_mp_laa_development": {
     "action": "PASS",
     "source_ip": "${laa-lz-shared-services-nonprod}",
@@ -279,20 +272,6 @@
     "destination_ip": "${noms-mgmt-vnet}",
     "destination_port": "53",
     "protocol": "UDP"
-  },
-  "laa_appstream_to_mp_laa_development": {
-    "action": "ALERT",
-    "source_ip": "${laa-appstream-vpc}",
-    "destination_ip": "${laa-development}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "laa_appstream_additional_to_mp_laa_development": {
-    "action": "ALERT",
-    "source_ip": "${laa-appstream-vpc_additional}",
-    "destination_ip": "${laa-development}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
   },
   "laa_appstream_ld_to_mp_laa_development": {
     "action": "PASS",
