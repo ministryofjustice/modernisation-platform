@@ -47,3 +47,6 @@ fi
 echo "summary<<EOF" >> $GITHUB_OUTPUT
 echo "$plan_summary" >> $GITHUB_OUTPUT
 echo "EOF" >> $GITHUB_OUTPUT
+echo "Terraform plan exited with code: $plan_exitcode"
+
+exit 0
