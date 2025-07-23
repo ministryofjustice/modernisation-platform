@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -o pipefail
-set -e
 
 # This script runs terraform plan with input set to false and no color outputs, suitable for running as part of a CI/CD pipeline.
 # You need to pass through a Terraform directory as an argument, e.g.
@@ -20,22 +19,29 @@ fi
 
 plan_output=""
 plan_summary=""
+plan_exitcode=0
 
 if [ ! -z "$2" ]; then
-  options="$2"
-  plan_output=$(terraform -chdir="$1" plan -input=false -no-color "$options" | ./scripts/redact-output.sh)  # Capture full output
+options="$2"
+  plan_output=$(terraform -chdir="$1" plan -input=false -no-color -detailed-exitcode "$options" | ./scripts/redact-output.sh) # Capture full output
+  plan_exitcode=${PIPESTATUS[0]}
 else
-  plan_output=$(terraform -chdir="$1" plan -input=false -no-color | ./scripts/redact-output.sh) # Capture full output
+  plan_output=$(terraform -chdir="$1" plan -input=false -no-color -detailed-exitcode | ./scripts/redact-output.sh) # Capture full output
+  plan_exitcode=${PIPESTATUS[0]}
 fi
 
+# Only fail on unexpected errors (exit code 1)
+if [[ "$plan_exitcode" -eq 1 ]]; then
+  echo "terraform plan failed with exit code 1"
+  exit 1
+fi
 
-plan_summary=$(echo "$plan_output" | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')  # Extract summary from full output
-
+plan_summary=$(echo "$plan_output" | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')
 
 if tty -s; then
-    echo "$plan_output" | tee /dev/tty    # Output full redacted plan to terminal if available
+    echo "$plan_output" | tee /dev/tty # Output full redacted plan to terminal if available
 else
-    echo "$plan_output"                   # Output full redacted plan to stdout (GitHub Actions logs)
+    echo "$plan_output" # Output full redacted plan to stdout (GitHub Actions logs)
 fi
 
 echo "summary<<EOF" >> $GITHUB_OUTPUT
