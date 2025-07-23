@@ -1753,6 +1753,10 @@
         {
           "account-name": "youth-justice-app-framework-production",
           "access": "reporting-operations"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "data-scientist"
         }
       ]
     },
