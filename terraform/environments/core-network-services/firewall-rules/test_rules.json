@@ -111,7 +111,7 @@
     "destination_port": "$LAA_CCMS_TCP",
     "protocol": "TCP"
   },
-  "laa_test_to_mp_laa_test_ccms": {
+  "laa_test_mp_to_laa_test_ccms": {
     "action": "PASS",
     "source_ip": "${laa-test}",
     "destination_ip": "${laa-lz-uat}",
@@ -125,28 +125,28 @@
     "destination_port": "$LAA_OEM_TCP",
     "protocol": "TCP"
   },
-  "laa_test_to_mp_laa_test_oas": {
+  "laa_test_mp_to_laa_test_oas": {
     "action": "PASS",
     "source_ip": "${laa-lz-uat}",
     "destination_ip": "${laa-test}",
     "destination_port": "$LAA_OAS_TCP",
     "protocol": "TCP"
   },
-  "laa_test_to_mp_laa_test_edw": {
+  "laa_test_mp_to_laa_test_edw": {
     "action": "PASS",
     "source_ip": "${laa-lz-uat}",
     "destination_ip": "${laa-test}",
     "destination_port": "$LAA_EDW_TCP",
     "protocol": "TCP"
   },
-  "laa_test_to_mp_laa_test_maat": {
+  "laa_test_mp_to_laa_test_maat": {
     "action": "PASS",
     "source_ip": "${laa-lz-uat}",
     "destination_ip": "${laa-test}",
     "destination_port": "$LAA_MAAT_TCP",
     "protocol": "TCP"
   },
-  "laa_test_to_mp_laa_test_oem": {
+  "laa_test_mp_to_laa_test_oem": {
     "action": "PASS",
     "source_ip": "${laa-test}",
     "destination_ip": "${laa-lz-uat}",
@@ -466,6 +466,20 @@
     "source_ip": "${cica-test}",
     "destination_ip": "${cica-ras-nat}",
     "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "laa_test_to_laa_test_ccms_soa_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-test}",
+    "destination_ip": "${laa-lz-uat}",
+    "destination_port": "$LAA_CCMS_SOA",
+    "protocol": "TCP"
+  },
+  "laa_test_ccms_soa_mp_to_laa_test": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-uat}",
+    "destination_ip": "${laa-test}",
+    "destination_port": "$LAA_CCMS_SOA",
     "protocol": "TCP"
   }
 }
