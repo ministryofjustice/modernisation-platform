@@ -55,7 +55,6 @@ expected :=
     "laa-ccms-soa",
     "laa-mail-relay",
     "laa-oem",
-    "laa-portal-tactical",
     "laa-stabilisation-cdc-poc",
     "long-term-storage",
     "maat",
