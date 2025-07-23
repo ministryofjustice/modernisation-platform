@@ -474,7 +474,9 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
         local.environment_management.account_ids["analytical-platform-compute-test"],
         local.environment_management.account_ids["analytical-platform-compute-production"],
         local.environment_management.account_ids["analytical-platform-ingestion-development"],
-        local.environment_management.account_ids["analytical-platform-ingestion-production"]
+        local.environment_management.account_ids["analytical-platform-ingestion-production"],
+        local.environment_management.account_ids["analytical-platform-next-poc-hub-development"],
+        local.environment_management.account_ids["analytical-platform-next-poc-producer-development"]
       ]
     }
   }
@@ -508,7 +510,9 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
         local.environment_management.account_ids["analytical-platform-compute-test"],
         local.environment_management.account_ids["analytical-platform-compute-production"],
         local.environment_management.account_ids["analytical-platform-ingestion-development"],
-        local.environment_management.account_ids["analytical-platform-ingestion-production"]
+        local.environment_management.account_ids["analytical-platform-ingestion-production"],
+        local.environment_management.account_ids["analytical-platform-next-poc-hub-development"],
+        local.environment_management.account_ids["analytical-platform-next-poc-producer-development"]
       ]
     }
   }

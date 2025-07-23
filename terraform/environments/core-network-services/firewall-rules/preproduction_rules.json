@@ -48,13 +48,6 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "laa_shared_services_to_mp_laa_preproduction": {
-    "action": "ALERT",
-    "source_ip": "${laa-lz-shared-services-nonprod}",
-    "destination_ip": "${laa-preproduction}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
   "laa_shared_services_ws_to_mp_laa_preproduction": {
     "action": "PASS",
     "source_ip": "${laa-lz-shared-services-nonprod}",
@@ -692,20 +685,6 @@
     "source_ip": "${noms-mgmt-live-vnet}",
     "destination_ip": "${hmpps-preproduction-general-private-subnets}",
     "destination_port": "6400:6500",
-    "protocol": "TCP"
-  },
-  "laa_appstream_to_mp_laa_preproduction": {
-    "action": "ALERT",
-    "source_ip": "${laa-appstream-vpc}",
-    "destination_ip": "${laa-preproduction}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "laa_appstream_additional_to_mp_laa_preproduction": {
-    "action": "ALERT",
-    "source_ip": "${laa-appstream-vpc_additional}",
-    "destination_ip": "${laa-preproduction}",
-    "destination_port": "ANY",
     "protocol": "TCP"
   },
   "laa_appstream_ld_to_mp_laa_preproduction": {
