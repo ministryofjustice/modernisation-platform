@@ -125,7 +125,7 @@
     "destination_port": "$LAA_OEM_TCP",
     "protocol": "TCP"
   },
-  "laa_test_mp_to__laa_test_oas": {
+  "laa_test_mp_to_laa_test_oas": {
     "action": "PASS",
     "source_ip": "${laa-lz-test}",
     "destination_ip": "${laa-test}",
