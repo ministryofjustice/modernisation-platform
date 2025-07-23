@@ -24,10 +24,10 @@ plan_exitcode=0
 if [ ! -z "$2" ]; then
 options="$2"
   plan_output=$(terraform -chdir="$1" plan -input=false -no-color -detailed-exitcode "$options" | ./scripts/redact-output.sh) # Capture full output
-  plan_exitcode=${PIPESTATUS[0]}
+  plan_exitcode=$?
 else
   plan_output=$(terraform -chdir="$1" plan -input=false -no-color -detailed-exitcode | ./scripts/redact-output.sh) # Capture full output
-  plan_exitcode=${PIPESTATUS[0]}
+  plan_exitcode=$?
 fi
 
 # Only fail on unexpected errors (exit code 1)
