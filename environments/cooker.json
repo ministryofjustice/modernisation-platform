@@ -23,7 +23,7 @@
       ],
       "additional_reviewers": ["astrobinson"],
       "instance_scheduler_skip": ["true"],
-      "nuke": "rebuild"
+      "nuke": "exclude"
     }
   ],
   "tags": {
