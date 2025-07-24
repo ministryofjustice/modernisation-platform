@@ -309,7 +309,7 @@ locals {
 
     fsx_windows_file_systems = {
       ad-azure-fsx = {
-        ad_dns_ips = flattern([
+        ad_dns_ips = flatten([
           module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_azure_domain_controllers,
           module.ad_fixngo_ip_addresses.azure_fixngo_ips.devtest.domain_controllers
         ])
@@ -325,7 +325,7 @@ locals {
         weekly_maintenance_start_time       = "2:04:00" # tue 4am
       }
       ad-hmpp-fsx = {
-        ad_dns_ips = flattern([
+        ad_dns_ips = flatten([
           module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_hmpp_domain_controllers,
           module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers
         ])
