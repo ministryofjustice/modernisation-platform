@@ -310,7 +310,8 @@ locals {
     fsx_windows_file_systems = {
       ad-azure-fsx = {
         ad_dns_ips = [
-          module.ad_fixngo_ip_addresses.active_directory_cidrs.azure.domain_controllers
+          module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_azure_domain_controllers,
+          module.ad_fixngo_ip_addresses.azure_fixngo_ips.devtest.domain_controllers
         ]
         ad_domain_name                      = "azure.noms.root"
         ad_file_system_administrators_group = null
@@ -325,7 +326,8 @@ locals {
       }
       ad-hmpp-fsx = {
         ad_dns_ips = [
-          module.ad_fixngo_ip_addresses.active_directory_cidrs.hmpp.domain_controllers
+          module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_hmpp_domain_controllers,
+          module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers
         ]
         ad_domain_name                      = "azure.hmpp.root"
         ad_file_system_administrators_group = "AWS FSx Admins"
@@ -359,14 +361,14 @@ locals {
     route53_resolver_rules = {
       ad-fixngo-azure-noms-root = {
         domain_name            = "azure.noms.root"
-        target_ips             = module.ad_fixngo_ip_addresses.active_directory_cidrs.azure.domain_controllers
+        target_ips             = module.ad_fixngo_ip_addresses.azure_fixngo_ips.devtest.domain_controllers
         resolver_endpoint_name = "ad-fixngo-non-live-data"
         rule_type              = "FORWARD"
         vpc_id                 = module.vpc["non_live_data"].vpc_id
       }
       ad-fixngo-azure-hmpp-root = {
         domain_name            = "azure.hmpp.root"
-        target_ips             = module.ad_fixngo_ip_addresses.active_directory_cidrs.hmpp.domain_controllers
+        target_ips             = module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers
         resolver_endpoint_name = "ad-fixngo-live-data"
         rule_type              = "FORWARD"
         vpc_id                 = module.vpc["live_data"].vpc_id
@@ -374,7 +376,7 @@ locals {
       # resolve infra.int hosts via HMPP DCs as they have forest trust
       ad-fixngo-infra-int = {
         domain_name            = "infra.int"
-        target_ips             = module.ad_fixngo_ip_addresses.active_directory_cidrs.hmpp.domain_controllers
+        target_ips             = module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers
         resolver_endpoint_name = "ad-fixngo-live-data"
         rule_type              = "FORWARD"
         vpc_id                 = module.vpc["live_data"].vpc_id
@@ -572,16 +574,18 @@ locals {
           netbios-tcp-139 = {
             port     = 139
             protocol = "TCP"
-            cidr_blocks = [
-              module.ad_fixngo_ip_addresses.active_directory_cidrs.hmpp.domain_controllers
-            ]
+            cidr_blocks = flatten([
+              module.ad_fixngo_ip_addresses.azure_fixngo_cidrs.prod_domain_controllers,
+              module.ad_fixngo_ip_addresses.mp_cidrs.ad_fixngo_hmpp_domain_controllers,
+            ])
           }
           netbios-tcp-445 = {
             port     = 445
             protocol = "TCP"
-            cidr_blocks = [
-              module.ad_fixngo_ip_addresses.active_directory_cidrs.hmpp.domain_controllers
-            ]
+            cidr_blocks = flatten([
+              module.ad_fixngo_ip_addresses.azure_fixngo_cidrs.prod_domain_controllers,
+              module.ad_fixngo_ip_addresses.mp_cidrs.ad_fixngo_hmpp_domain_controllers,
+            ])
           }
           rdp-tcp-3389 = {
             port     = 3389
@@ -807,16 +811,18 @@ locals {
           netbios-tcp-139 = {
             port     = 139
             protocol = "TCP"
-            cidr_blocks = [
-              module.ad_fixngo_ip_addresses.active_directory_cidrs.azure.domain_controllers
-            ]
+            cidr_blocks = flatten([
+              module.ad_fixngo_ip_addresses.azure_fixngo_cidrs.devtest_domain_controllers,
+              module.ad_fixngo_ip_addresses.mp_cidrs.ad_fixngo_azure_domain_controllers,
+            ])
           }
           netbios-tcp-445 = {
             port     = 445
             protocol = "TCP"
-            cidr_blocks = [
-              module.ad_fixngo_ip_addresses.active_directory_cidrs.azure.domain_controllers
-            ]
+            cidr_blocks = flatten([
+              module.ad_fixngo_ip_addresses.azure_fixngo_cidrs.devtest_domain_controllers,
+              module.ad_fixngo_ip_addresses.mp_cidrs.ad_fixngo_azure_domain_controllers,
+            ])
           }
           rdp-tcp-3389 = {
             port     = 3389
