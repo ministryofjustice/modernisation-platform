@@ -311,7 +311,6 @@ locals {
       ad-azure-fsx = {
         ad_dns_ips = flatten([
           module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_azure_domain_controllers,
-          module.ad_fixngo_ip_addresses.azure_fixngo_ips.devtest.domain_controllers
         ])
         ad_domain_name                      = "azure.noms.root"
         ad_file_system_administrators_group = null
@@ -327,7 +326,6 @@ locals {
       ad-hmpp-fsx = {
         ad_dns_ips = flatten([
           module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_hmpp_domain_controllers,
-          module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers
         ])
         ad_domain_name                      = "azure.hmpp.root"
         ad_file_system_administrators_group = "AWS FSx Admins"
