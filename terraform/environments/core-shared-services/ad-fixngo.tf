@@ -309,10 +309,10 @@ locals {
 
     fsx_windows_file_systems = {
       ad-azure-fsx = {
-        ad_dns_ips = [
+        ad_dns_ips = flattern([
           module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_azure_domain_controllers,
           module.ad_fixngo_ip_addresses.azure_fixngo_ips.devtest.domain_controllers
-        ]
+        ])
         ad_domain_name                      = "azure.noms.root"
         ad_file_system_administrators_group = null
         ad_username                         = "svc_join_domain"
@@ -325,10 +325,10 @@ locals {
         weekly_maintenance_start_time       = "2:04:00" # tue 4am
       }
       ad-hmpp-fsx = {
-        ad_dns_ips = [
+        ad_dns_ips = flattern([
           module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_hmpp_domain_controllers,
           module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers
-        ]
+        ])
         ad_domain_name                      = "azure.hmpp.root"
         ad_file_system_administrators_group = "AWS FSx Admins"
         ad_username                         = "svc_fsx_windows"
