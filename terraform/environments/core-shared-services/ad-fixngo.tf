@@ -9,7 +9,7 @@
 # and firewall rules from terraform/environments/core-network-services
 
 module "ad_fixngo_ip_addresses" {
-  source = "github.com/ministryofjustice/modernisation-platform-environments//terraform/modules/ip_addresses?ref=29c48e315aa5eeef5d604617169b2f6db953966e"
+  source = "github.com/ministryofjustice/modernisation-platform-environments//terraform/modules/ip_addresses?ref=27807807552fb132593000ea0084500ac5d39376"
 }
 
 locals {
