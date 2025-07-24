@@ -6,7 +6,7 @@ data "aws_kms_key" "cloudtrail_key" {
 
 #trivy:ignore:AVD-AWS-0136
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=50f85fbf13e9c6538b2b0e5542533d2f8393454c" # v8.1.1
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=052ff9a9ae42c12e54051af5074e55d16afcb49e" # v8.1.2
   providers = {
     # Default and replication regions
     aws                    = aws.workspace-eu-west-2
@@ -73,9 +73,6 @@ module "baselines" {
 
   # Regions to enable IMDSv2 in
   enabled_imdsv2_regions = local.enabled_baseline_regions
-
-  # Flag to indicate if alerting resources should be created in the region
-  enable_securityhub_alerts = true
 
   # Pass in pagerduty integration key for security hub alerts
   pagerduty_integration_key = local.pagerduty_integration_keys["security_hub_members"]
