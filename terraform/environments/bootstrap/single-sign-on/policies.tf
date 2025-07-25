@@ -1636,3 +1636,84 @@ data "aws_iam_policy_document" "ssm_session_access" {
     resources = ["*"]
   }
 }
+
+resource "aws_iam_policy" "data_scientist" {
+  provider = aws.workspace
+  name     = "data_scientist_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.data_scientist.json
+}
+
+data "aws_iam_policy_document" "data_scientist" {
+  statement {
+    sid    = "EventBridgeAndSchedulerPermissions"
+    effect = "Allow"
+    actions = [
+      "events:DeleteRule",
+      "events:DescribeApiDestination",
+      "events:DescribeArchive",
+      "events:DescribeConnection",
+      "events:DescribeEndpoint",
+      "events:DescribeEventBus",
+      "events:DescribeEventSource",
+      "events:DescribeReplay",
+      "events:DescribeRule",
+      "events:ListApiDestinations",
+      "events:ListArchives",
+      "events:ListConnections",
+      "events:ListEndpoints",
+      "events:ListEventBuses",
+      "events:ListEventSources",
+      "events:ListReplays",
+      "events:ListRuleNamesByTarget",
+      "events:ListRules",
+      "events:ListTargetsByRule",
+      "events:PutRule",
+      "events:PutTargets",
+      "events:RemoveTargets",
+      "events:TestEventPattern",
+      "pipes:DescribePipe",
+      "pipes:ListPipes",
+      "pipes:ListTagsForResource",
+      "scheduler:GetSchedule",
+      "scheduler:GetScheduleGroup",
+      "scheduler:ListScheduleGroups",
+      "scheduler:ListSchedules",
+      "scheduler:ListTagsForResource",
+      "schemas:DescribeCodeBinding",
+      "schemas:DescribeDiscoverer",
+      "schemas:DescribeRegistry",
+      "schemas:DescribeSchema",
+      "schemas:ExportSchema",
+      "schemas:GetCodeBindingSource",
+      "schemas:GetDiscoveredSchema",
+      "schemas:GetResourcePolicy",
+      "schemas:ListDiscoverers",
+      "schemas:ListRegistries",
+      "schemas:ListSchemaVersions",
+      "schemas:ListSchemas",
+      "schemas:ListTagsForResource",
+      "schemas:SearchSchemas",
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "RedshiftServerlessAdditionalPermissions"
+    effect = "Allow"
+    actions = [
+      "redshift-serverless:GetNamespace",
+      "redshift-serverless:GetWorkgroup"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "S3ListBucketsAccess"
+    effect = "Allow"
+    actions = [
+      "s3:ListAllMyBuckets"
+    ]
+    resources = ["*"]
+  }
+}
