@@ -20,6 +20,5 @@
     "owner": "laaops-gg@justice.gov.uk",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [""],
-  "go-live-date": ""
+  "github-oidc-team-repositories": [""]
 }
