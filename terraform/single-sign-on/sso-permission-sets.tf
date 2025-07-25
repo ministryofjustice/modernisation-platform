@@ -539,7 +539,7 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
 
 resource "aws_ssoadmin_permission_set" "modernisation_platform_data_scientist" {
   provider         = aws.sso-management
-  name             = "modernisation-platform-data-scientist"
+  name             = "mp-data-scientist"
   description      = "Modernisation Platform: data-scientist"
   instance_arn     = local.sso_admin_instance_arn
   session_duration = "PT8H"
