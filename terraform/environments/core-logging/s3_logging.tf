@@ -90,6 +90,30 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail" {
   }
 
   statement {
+    sid    = "Allow use of the key by the ModernisationPlatformAccess role in all MP accounts"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::*:role/ModernisationPlatformAccess"]
+    }
+    actions = [
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:Encrypt*",
+      "kms:Describe*",
+      "kms:Decrypt*"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values = [
+        data.aws_organizations_organization.moj_root_account.id
+      ]
+    }
+  }
+
+  statement {
     sid    = "Allow key decryption to STS bucket replication roles"
     effect = "Allow"
     actions = [
