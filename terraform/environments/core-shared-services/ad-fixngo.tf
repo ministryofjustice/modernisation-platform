@@ -369,10 +369,10 @@ locals {
       }
       ad-fixngo-azure-hmpp-root = {
         domain_name = "azure.hmpp.root"
-        target_ips = [
+        target_ips = flatten([
           module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_hmpp_domain_controllers,
-          module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers
-        ]
+          # module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers
+        ])
         resolver_endpoint_name = "ad-fixngo-live-data"
         rule_type              = "FORWARD"
         vpc_id                 = module.vpc["live_data"].vpc_id
@@ -381,8 +381,8 @@ locals {
       ad-fixngo-infra-int = {
         domain_name = "infra.int"
         target_ips = flatten([
+          module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers,
           module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_hmpp_domain_controllers,
-          module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers
         ])
         resolver_endpoint_name = "ad-fixngo-live-data"
         rule_type              = "FORWARD"
