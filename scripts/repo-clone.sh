@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Check if GITHUB_TOKEN is set
+
 # Ensure GITHUB_TOKEN is set
 if [[ -z "$GITHUB_TOKEN" ]]; then
   echo "GITHUB_TOKEN is not set. Please export it in your .zshrc."
