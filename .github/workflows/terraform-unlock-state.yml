@@ -87,11 +87,6 @@ jobs:
         working-directory: ${{ env.TF_PATH }}
         run: terraform init
 
-      - name: Select Workspace (if not default)
-        if: env.TF_WORKSPACE != 'default'
-        working-directory: ${{ env.TF_PATH }}
-        run: terraform workspace select ${{ env.TF_WORKSPACE }}
-
       - name: Force Unlock State
         working-directory: ${{ env.TF_PATH }}
         run: terraform force-unlock -force ${{ github.event.inputs.lock_id }}
