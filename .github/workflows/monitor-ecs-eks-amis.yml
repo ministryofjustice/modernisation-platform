@@ -21,7 +21,7 @@ defaults:
 jobs:
 
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@0442287e70970e2e732fbfecf17fd362d2d21dee # v3.2.6
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@2d1bb8ef39861ede2999271b530cb9dd87f18004 # v3.3.1
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
 
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0442287e70970e2e732fbfecf17fd362d2d21dee # v3.2.6
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@2d1bb8ef39861ede2999271b530cb9dd87f18004 # v3.3.1
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
