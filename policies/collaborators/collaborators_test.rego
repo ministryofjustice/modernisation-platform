@@ -30,5 +30,5 @@ test_empty_values if {
 }
 
 test_unexpected_access if {
-  deny["`example.json` uses an unexpected access: got `incorrect-access`, expected one of: read-only, developer, security-audit, sandbox, migration, instance-management, fleet-manager, platform-engineer-admin, ssm-session-access"] with input as { "filename": "example.json", "users": [{"accounts": [{"access": "incorrect-access"}]}] }
+  deny["`example.json` uses an unexpected access: got `incorrect-access`, expected one of: read-only, developer, security-audit, sandbox, migration, instance-management, fleet-manager, platform-engineer-admin, ssm-session-access, data-scientist"] with input as { "filename": "example.json", "users": [{"accounts": [{"access": "incorrect-access"}]}] }
 }
