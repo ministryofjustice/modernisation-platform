@@ -1785,7 +1785,7 @@
       ]
     },
     {
-    "username": "james.davis",
+      "username": "james.davis",
       "github-username": "no-value-supplied",
       "accounts": [
         {
@@ -1797,14 +1797,14 @@
           "access": "read-only"
         },
         {
-          "account-name": "youth-justice-app-framework-test" ,
+          "account-name": "youth-justice-app-framework-test",
           "access": "read-only"
         },
         {
           "account-name": "youth-justice-app-framework-development",
           "access": "read-only"
         },
-         {
+        {
           "account-name": "youth-justice-networking-production",
           "access": "read-only"
         }
