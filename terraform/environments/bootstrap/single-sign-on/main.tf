@@ -503,3 +503,26 @@ resource "aws_ssoadmin_account_assignment" "ssm_session_access" {
   target_id   = local.environment_management.account_ids[terraform.workspace]
   target_type = "AWS_ACCOUNT"
 }
+
+resource "aws_ssoadmin_account_assignment" "data_scientist" {
+
+  for_each = {
+
+    for sso_assignment in local.sso_data[local.env_name][*] :
+
+    "${sso_assignment.sso_group_name}-${sso_assignment.level}" => sso_assignment
+
+    if(sso_assignment.level == "data-scientist")
+  }
+
+  provider = aws.sso-management
+
+  instance_arn       = local.sso_instance_arn
+  permission_set_arn = data.terraform_remote_state.mp-sso-permissions-sets.outputs.data_scientist
+
+  principal_id   = data.aws_identitystore_group.member[each.value.sso_group_name].group_id
+  principal_type = "GROUP"
+
+  target_id   = local.environment_management.account_ids[terraform.workspace]
+  target_type = "AWS_ACCOUNT"
+}

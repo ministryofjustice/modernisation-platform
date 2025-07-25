@@ -9,7 +9,7 @@
 # and firewall rules from terraform/environments/core-network-services
 
 module "ad_fixngo_ip_addresses" {
-  source = "github.com/ministryofjustice/modernisation-platform-environments//terraform/modules/ip_addresses?ref=29c48e315aa5eeef5d604617169b2f6db953966e"
+  source = "github.com/ministryofjustice/modernisation-platform-environments//terraform/modules/ip_addresses?ref=27807807552fb132593000ea0084500ac5d39376"
 }
 
 locals {
@@ -309,10 +309,9 @@ locals {
 
     fsx_windows_file_systems = {
       ad-azure-fsx = {
-        ad_dns_ips = [
-          module.ad_fixngo_ip_addresses.mp_ip.ad-azure-dc-a,
-          module.ad_fixngo_ip_addresses.mp_ip.ad-azure-dc-b,
-        ]
+        ad_dns_ips = flatten([
+          module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_azure_domain_controllers,
+        ])
         ad_domain_name                      = "azure.noms.root"
         ad_file_system_administrators_group = null
         ad_username                         = "svc_join_domain"
@@ -325,10 +324,9 @@ locals {
         weekly_maintenance_start_time       = "2:04:00" # tue 4am
       }
       ad-hmpp-fsx = {
-        ad_dns_ips = [
-          module.ad_fixngo_ip_addresses.azure_fixngo_ip.PCMCW0011,
-          module.ad_fixngo_ip_addresses.azure_fixngo_ip.PCMCW0012,
-        ]
+        ad_dns_ips = flatten([
+          module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_hmpp_domain_controllers,
+        ])
         ad_domain_name                      = "azure.hmpp.root"
         ad_file_system_administrators_group = "AWS FSx Admins"
         ad_username                         = "svc_fsx_windows"
@@ -360,23 +358,32 @@ locals {
 
     route53_resolver_rules = {
       ad-fixngo-azure-noms-root = {
-        domain_name            = "azure.noms.root"
-        target_ips             = module.ad_fixngo_ip_addresses.azure_fixngo_ips.devtest.domain_controllers
+        domain_name = "azure.noms.root"
+        target_ips = flatten([
+          module.ad_fixngo_ip_addresses.azure_fixngo_ips.devtest.domain_controllers,          
+          module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_azure_domain_controllers,
+        ])
         resolver_endpoint_name = "ad-fixngo-non-live-data"
         rule_type              = "FORWARD"
         vpc_id                 = module.vpc["non_live_data"].vpc_id
       }
       ad-fixngo-azure-hmpp-root = {
-        domain_name            = "azure.hmpp.root"
-        target_ips             = module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers
+        domain_name = "azure.hmpp.root"
+        target_ips = flatten([
+          module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers,
+          module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_hmpp_domain_controllers,
+        ])
         resolver_endpoint_name = "ad-fixngo-live-data"
         rule_type              = "FORWARD"
         vpc_id                 = module.vpc["live_data"].vpc_id
       }
       # resolve infra.int hosts via HMPP DCs as they have forest trust
       ad-fixngo-infra-int = {
-        domain_name            = "infra.int"
-        target_ips             = module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers
+        domain_name = "infra.int"
+        target_ips = flatten([
+          module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers,
+          module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_hmpp_domain_controllers,
+        ])
         resolver_endpoint_name = "ad-fixngo-live-data"
         rule_type              = "FORWARD"
         vpc_id                 = module.vpc["live_data"].vpc_id
