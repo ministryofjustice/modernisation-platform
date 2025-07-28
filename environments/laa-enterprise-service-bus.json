@@ -1,0 +1,25 @@
+{
+  "account-type": "member",
+  "codeowners": [""],
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        }
+      ],
+      "nuke": "exclude"
+    }
+  ],
+  "tags": {
+    "application": "laa-enterprise-service-bus",
+    "business-unit": "LAA",
+    "infrastructure-support": "laaops-gg@justice.gov.uk",
+    "owner": "laaops-gg@justice.gov.uk",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}

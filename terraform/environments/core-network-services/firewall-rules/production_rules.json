@@ -139,13 +139,6 @@
     "destination_port": "53",
     "protocol": "UDP"
   },
-  "laa_shared_services_to_mp_laa_production": {
-    "action": "ALERT",
-    "source_ip": "${laa-lz-shared-services-prod}",
-    "destination_ip": "${laa-production}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
   "laa_shared_services_ws_to_mp_laa_production": {
     "action": "PASS",
     "source_ip": "${laa-lz-shared-services-prod}",
@@ -250,20 +243,6 @@
     "source_ip": "${parole-board}",
     "destination_ip": "${hmpps-production}",
     "destination_port": "443",
-    "protocol": "TCP"
-  },
-  "laa_appstream_to_mp_laa_production": {
-    "action": "ALERT",
-    "source_ip": "${laa-appstream-vpc}",
-    "destination_ip": "${laa-production}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "laa_appstream_additional_to_mp_laa_production": {
-    "action": "ALERT",
-    "source_ip": "${laa-appstream-vpc_additional}",
-    "destination_ip": "${laa-production}",
-    "destination_port": "ANY",
     "protocol": "TCP"
   },
   "hmpps_production_to_delius_eng_prod_oracledb": {

@@ -74,3 +74,7 @@ output "ssoadmin_instances" {
 output "view-only" {
   value = data.aws_ssoadmin_permission_set.view-only.arn
 }
+
+output "data_scientist" {
+  value = aws_ssoadmin_permission_set.modernisation_platform_data_scientist.arn
+}

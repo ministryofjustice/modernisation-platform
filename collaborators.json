@@ -1753,6 +1753,10 @@
         {
           "account-name": "youth-justice-app-framework-production",
           "access": "reporting-operations"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "data-scientist"
         }
       ]
     },
@@ -1777,6 +1781,32 @@
         {
           "account-name": "ppud-production",
           "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "james.davis",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "read-only"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "read-only"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "read-only"
+        },
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "read-only"
+        },
+        {
+          "account-name": "youth-justice-networking-production",
+          "access": "read-only"
         }
       ]
     }

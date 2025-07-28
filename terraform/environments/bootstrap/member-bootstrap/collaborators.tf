@@ -347,3 +347,30 @@ module "collaborator_quicksight_admin_role" {
 data "aws_iam_policy" "quicksight_administrator" {
   name = "quicksight_administrator_policy"
 }
+
+# Data Scientist role
+
+module "collaborator_data_scientist_role" {
+  # checkov:skip=CKV_TF_1:
+
+  count  = local.account_data.account-type == "member" ? 1 : 0
+  source = "github.com/terraform-aws-modules/terraform-aws-iam//modules/iam-assumable-role?ref=de95e21a3bc51cd3a44b3b95a4c2f61000649ebb" # v5.39.1
+
+  trusted_role_arns = [
+    data.aws_ssm_parameter.modernisation_platform_account_id.value
+  ]
+
+  create_role       = true
+  role_name         = "data-scientist"
+  role_requires_mfa = true
+
+  custom_role_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonRedshiftQueryEditorV2FullAccess",
+    data.aws_iam_policy.data_scientist.arn,
+  ]
+  number_of_custom_role_policy_arns = 2
+}
+
+data "aws_iam_policy" "data_scientist" {
+  name = "data_scientist_policy"
+}
