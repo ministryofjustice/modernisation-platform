@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Quick Start Mac Guide
-last_reviewed_on: 2025-04-15
+last_reviewed_on: 2025-07-28
 review_in: 6 months
 ---
 
@@ -90,9 +90,12 @@ Zsh Syntax Highlighting enhances the terminal by providing syntax highlighting f
 
 ```bash
 brew install zsh-syntax-highlighting
+brew install zsh-autosuggestions
 ```
 
-To enable plugin, edit the ~/.zshrc file
+Once installed, you need to enable the plugins in by restarting iTerm2
+
+To enable the docker plugin, edit the ~/.zshrc file
 
 ```bash
 vi ~/.zshrc
@@ -105,8 +108,6 @@ append zsh-autosuggestions & zsh-syntax-highlighting to plugins() like this:
 plugins=(
   git
   docker
-  zsh-autosuggestions
-  zsh-syntax-highlighting
 )
 ```
 
