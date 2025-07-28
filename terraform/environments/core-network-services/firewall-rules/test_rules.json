@@ -48,13 +48,6 @@
     "destination_port": "5432",
     "protocol": "TCP"
   },
-  "laa_test_to_mp_laa_test": {
-    "action": "ALERT",
-    "source_ip": "${laa-lz-test}",
-    "destination_ip": "${laa-test}",
-    "destination_port": "ANY",
-    "protocol": "IP"
-  },
   "laa_test_to_mp_laa_test_http": {
     "action": "PASS",
     "source_ip": "${laa-lz-test}",
@@ -462,7 +455,7 @@
     "protocol": "TCP"
   },
   "laa_uat_to_mp_laa_test": {
-    "action": "PASS",
+    "action": "ALERT",
     "source_ip": "${laa-lz-uat}",
     "destination_ip": "${laa-test}",
     "destination_port": "ANY",
@@ -536,6 +529,20 @@
     "source_ip": "${cica-test}",
     "destination_ip": "${cica-ras-nat}",
     "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "laa_uat_to_laa_test_ccms_soa_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-test}",
+    "destination_ip": "${laa-lz-uat}",
+    "destination_port": "$LAA_CCMS_SOA",
+    "protocol": "TCP"
+  },
+  "laa_test_ccms_soa_mp_to_laa_uat": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-uat}",
+    "destination_ip": "${laa-test}",
+    "destination_port": "$LAA_CCMS_SOA",
     "protocol": "TCP"
   },
   "laa_test_to_laa_test_ccms_soa_mp": {
