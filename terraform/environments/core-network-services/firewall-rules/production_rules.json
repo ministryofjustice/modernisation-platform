@@ -97,6 +97,55 @@
     "destination_port": "$LAA_MAAT_TCP",
     "protocol": "TCP"
   },
+  "laa_production_mp_to_laa_production_ccms": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-production}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "$LAA_CCMS_TCP",
+    "protocol": "TCP"
+  },
+  "laa_production_mp_to_laa_production_oem": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-production}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "$LAA_OEM_TCP",
+    "protocol": "TCP"
+  },
+  "laa_production_mp_to_laa_production_oas": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-production}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "$LAA_OAS_TCP",
+    "protocol": "TCP"
+  },
+  "laa_production_mp_to_laa_production_edw": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-production}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "$LAA_EDW_TCP",
+    "protocol": "TCP"
+  },
+  "laa_production_mp_to_laa_production_maat": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-production}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "$LAA_MAAT_TCP",
+    "protocol": "TCP"
+  },
+  "laa_production_to_laa_production_ccms_soa_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-production}",
+    "destination_ip": "${laa-lz-production}",
+    "destination_port": "$LAA_CCMS_SOA",
+    "protocol": "TCP"
+  },
+  "laa_production_ccms_soa_mp_to_laa_production": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-production}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "$LAA_CCMS_SOA",
+    "protocol": "TCP"
+  },
   "noms_live_to_mp_hmpps_production": {
     "action": "PASS",
     "source_ip": "${noms-live-vnet}",
