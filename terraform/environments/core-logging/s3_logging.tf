@@ -107,7 +107,7 @@ data "aws_iam_policy_document" "kms_logging_cloudtrail" {
     condition {
       test     = "StringEquals"
       variable = "aws:PrincipalOrgID"
-      values = [data.aws_organizations_organization.moj_root_account.id]
+      values   = [data.aws_organizations_organization.moj_root_account.id]
     }
     condition {
       test     = "StringLike"

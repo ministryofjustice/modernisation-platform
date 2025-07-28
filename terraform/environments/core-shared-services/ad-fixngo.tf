@@ -360,7 +360,7 @@ locals {
       ad-fixngo-azure-noms-root = {
         domain_name = "azure.noms.root"
         target_ips = flatten([
-          module.ad_fixngo_ip_addresses.azure_fixngo_ips.devtest.domain_controllers,          
+          module.ad_fixngo_ip_addresses.azure_fixngo_ips.devtest.domain_controllers,
           module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_azure_domain_controllers,
         ])
         resolver_endpoint_name = "ad-fixngo-non-live-data"
