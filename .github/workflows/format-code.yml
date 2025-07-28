@@ -1,6 +1,8 @@
 name: 'Format Code: ensure code formatting guidelines are met'
 
 on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
   workflow_dispatch:
   schedule:
     - cron: '45 4 * * 1-5'
