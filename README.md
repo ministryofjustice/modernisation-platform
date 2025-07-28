@@ -55,10 +55,12 @@ These modules are used by the Modernisation Platform's core infrastructure
 | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | [modernisation-platform-terraform-baselines](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines)                       | Module for enabling and configuring common baseline services such as SecurityHub               |
 | [modernisation-platform-terraform-cross-account-access](https://github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access) | Module for creating an IAM role that can be assumed from another account                       |
+| [modernisation-platform-terraform-dns-certificates](https://github.com/ministryofjustice/modernisation-platform-terraform-dns-certificates)         | Module for created DNS certificates                                                            |
 | [modernisation-platform-terraform-environments](https://github.com/ministryofjustice/modernisation-platform-terraform-environments)                 | Module for creating organizational units and accounts within AWS Organizations from JSON files |
 | [modernisation-platform-terraform-iam-superadmins](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins)           | Module for creating defined IAM users as superadmins                                           |
 | [modernisation-platform-terraform-member-vpc](https://github.com/ministryofjustice/modernisation-platform-terraform-member-vpc)                     | Module for member VPC accounts                                                                 |
 | [modernisation-platform-github-oidc-provider](https://github.com/ministryofjustice/modernisation-platform-github-oidc-provider)                     | Module for creating OIDC providers to use in GitHub Actions                                    |
+| [modernisation-platform-github-oidc-role](https://github.com/ministryofjustice/modernisation-platform-github-oidc-role)                             | Module for creating OIDC roles to use in GitHub Actions                                        |
 
 ### Tools
 
