@@ -1,25 +1,25 @@
 name: 'Format Code: ensure code formatting guidelines are met'
 
 on:
-  workflow_dispatch: null
+  workflow_dispatch:
   schedule:
     - cron: '45 4 * * 1-5'
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: read-all
 
 concurrency:
   group: '${{ github.ref }}-${{ github.workflow }}'
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: MegaLinter
+  format-code:
+    permissions:
+      contents: write
+      security-events: write  # needed for SARIF upload
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 #v4.1.1
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           token: '${{ secrets.GITHUB_TOKEN }}'
           fetch-depth: 0
@@ -27,18 +27,12 @@ jobs:
       - name: Prepare Git options
         run: bash ./scripts/git-setup.sh
 
-      - name: Run linter
-        id: ml
-        # You can override MegaLinter flavor used to have faster performances
-        # More info at https://megalinter.io/flavors/
-        uses: oxsecurity/megalinter/flavors/terraform@e08c2b05e3dbc40af4c23f41172ef1e068a7d651 #v8.8.0
-        env:
-          # All available variables are described in documentation
-          # https://megalinter.io/configuration/#shared-variables
-          # ADD YOUR CUSTOM ENV VARIABLES HERE OR DEFINE THEM IN A FILE .mega-linter.yml AT THE ROOT OF YOUR REPOSITORY
-          APPLY_FIXES: all # When active, APPLY_FIXES must also be defined as environment variable (in github/workflows/mega-linter.yml or other CI tool)
-          APPLY_FIXES_EVENT: all # Decide which event triggers application of fixes in a commit or a PR (pull_request, push, all)
-          APPLY_FIXES_MODE: pull_request # If APPLY_FIXES is used, defines if the fixes are directly committed (commit) or posted in a PR (pull_request)
+      - name: Run Format Code Action
+        uses: ministryofjustice/modernisation-platform-github-actions/format-code@c25ccb3c17e1ac869ceafc5430a4caf7e39be2ee # v3.4.0
+        with:
+          APPLY_FIXES: all 
+          APPLY_FIXES_EVENT: all
+          APPLY_FIXES_MODE: pull_request
           DISABLE_ERRORS: true
           EMAIL_REPORTER: false
           ENABLE_LINTERS: JSON_PRETTIER,YAML_PRETTIER,TERRAFORM_TERRAFORM_FMT,MARKDOWN_MARKDOWNLINT
@@ -48,7 +42,7 @@ jobs:
           MARKDOWN_MARKDOWNLINT_FILTER_REGEX_EXCLUDE: (terraform/modules/.*/.*.md)
           REPORT_OUTPUT_FOLDER: none
           
-      - name: Commit and Create PR with Signed Commit if Changes are Found
+      - name: Run Signed Commit Action
         uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@c25ccb3c17e1ac869ceafc5430a4caf7e39be2ee # v3.4.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
