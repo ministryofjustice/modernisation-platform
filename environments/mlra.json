@@ -11,8 +11,17 @@
         {
           "sso_group_name": "laa-crime-apps-team",
           "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
@@ -24,6 +33,10 @@
         {
           "sso_group_name": "laa-crime-apps-team",
           "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         }
       ]
     },
@@ -37,6 +50,10 @@
         {
           "sso_group_name": "laa-crime-apps-team",
           "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         }
       ]
     },
@@ -50,6 +67,10 @@
         {
           "sso_group_name": "laa-crime-apps-team",
           "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "laa-crime-apps-team",
+          "level": "instance-management"
         }
       ]
     }
@@ -58,7 +79,7 @@
     "application": "mlra",
     "business-unit": "LAA",
     "infrastructure-support": "aws-webops-laa@digital.justice.gov.uk",
-    "owner": "laa-crime-apps@digital.justice.gov.uk",
+    "owner": "laacrimeapps@justice.gov.uk",
     "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": ["ministryofjustice/laa-mlra-application"],

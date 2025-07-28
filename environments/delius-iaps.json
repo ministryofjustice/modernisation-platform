@@ -33,6 +33,10 @@
         {
           "sso_group_name": "hmpps-dba",
           "level": "instance-management"
+        },
+        {
+          "sso_group_name": "hmpps-accredited-programmes-manage-and-deliver-devs",
+          "level": "instance-management"
         }
       ]
     },

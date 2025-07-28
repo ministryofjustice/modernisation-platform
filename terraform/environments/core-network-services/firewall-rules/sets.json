@@ -1,16 +1,12 @@
 {
   "IP_SETS": {
     "IP_SET_EXAMPLE": ["1.1.1.1/32", "1.0.0.1/32"],
+    "AWS_SMTP_EU_WEST_2": ["3.11.252.235", "35.178.252.162", "35.177.173.199"],
     "AD_HMPP_DCS": ["${ad-hmpp-dc-a}", "${ad-hmpp-dc-b}"],
     "AD_HMPP_RD_LICENSING": ["${ad-hmpp-rdlic}"],
     "AD_AZURE_DCS": ["${ad-azure-dc-a}", "${ad-azure-dc-b}"],
     "AD_AZURE_RD_LICENSING": ["${ad-azure-rdlic}"],
-    "AZURE_PROD": [
-      "${noms-live-vnet}",
-      "${noms-mgmt-live-vnet}",
-      "${noms-live-dr-vnet}",
-      "${noms-mgmt-live-dr-vnet}"
-    ],
+    "AZURE_PROD": ["${noms-live-vnet}", "${noms-mgmt-live-vnet}"],
     "AZURE_DEVTEST": ["${noms-test-vnet}", "${noms-mgmt-vnet}"],
     "DATA_ENGINEERING": [
       "${data-engineering-dev}",
@@ -23,11 +19,44 @@
       "${cica-aws-dev-data-a}",
       "${cica-aws-dev-data-b}"
     ],
+    "CICA_AWS_UAT": [
+      "${cica-aws-uat-a}",
+      "${cica-aws-uat-b}",
+      "${cica-aws-uat-data-a}",
+      "${cica-aws-uat-data-b}"
+    ],
     "CICA_AWS_PROD": [
       "${cica-aws-prod-a}",
       "${cica-aws-prod-b}",
       "${cica-aws-prod-c}",
       "${cica-aws-prod-d}"
+    ],
+    "LAA_PRIVATE_DATA_SUBNETS_DEV": [
+      "${laa-mp-development-general-private-subnets-a}",
+      "${laa-mp-development-general-private-subnets-b}",
+      "${laa-mp-development-general-private-subnets-a}"
+    ],
+    "LAA_PRIVATE_DATA_SUBNETS_TEST": [
+      "${laa-mp-test-general-private-subnets-a}",
+      "${laa-mp-test-general-private-subnets-b}",
+      "${laa-mp-test-general-private-subnets-a}"
+    ],
+    "LAA_PRIVATE_DATA_SUBNETS_PREPROD": [
+      "${laa-mp-preproduction-general-private-subnets-a}",
+      "${laa-mp-preproduction-general-private-subnets-b}",
+      "${laa-mp-preproduction-general-private-subnets-a}"
+    ],
+    "LAA_PRIVATE_DATA_SUBNETS_PROD": [
+      "${laa-mp-production-general-private-subnets-a}",
+      "${laa-mp-production-general-private-subnets-b}",
+      "${laa-mp-production-general-private-subnets-a}"
+    ],
+    "LAA_FTP_ENDPOINTS": [
+      "81.20.37.165/32",
+      "13.17.132.44/32",
+      "45.143.224.16/32",
+      "51.143.137.133/32",
+      "35.176.36.29/32"
     ]
   },
   "PORT_SETS": {
@@ -36,7 +65,7 @@
       "53",
       "88",
       "135",
-      "139",
+      "137:139",
       "389",
       "445",
       "464",
@@ -56,6 +85,7 @@
       "20:21",
       "3000:3010",
       "25",
+      "2525",
       "1389",
       "1521:1522",
       "8000:8005",
@@ -63,11 +93,14 @@
       "5101",
       "5401",
       "5575",
+      "7059",
       "1636",
       "10401"
     ],
+    "LAA_CCMS_SOA": ["80", "443", "1571", "8001"],
     "LAA_EDW_TCP": ["2049"],
     "LAA_PORTAL_TCP": ["7001", "7201", "14200", "6800:6801", "5556", "6200"],
+    "LAA_PORTAL_WEBGATE_TCP": ["5575"],
     "LAA_MAAT_TCP": ["8090"],
     "LAA_OAS_TCP": ["9500", "9502", "9514", "3443"],
     "LAA_OEM_TCP": [
@@ -82,11 +115,29 @@
       "7301",
       "7403",
       "7788",
+      "7777",
       "7799",
       "7803",
       "9788",
       "9851"
     ],
-    "YJB_TCP": ["80", "443", "8080:8090", "9103"]
+    "NEC_TCP": ["80", "443"],
+    "YJB_TCP": ["80", "443", "8080:8090", "9103"],
+
+    "LAA_APPSTREAM_TCP": [
+      "80",
+      "443",
+      "1521",
+      "1522",
+      "1571",
+      "22",
+      "7803",
+      "7001",
+      "9502",
+      "9500",
+      "8000",
+      "5101"
+    ],
+    "LAA_FTP_TCP": ["22", "8022"]
   }
 }

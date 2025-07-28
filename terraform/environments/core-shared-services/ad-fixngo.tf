@@ -9,7 +9,7 @@
 # and firewall rules from terraform/environments/core-network-services
 
 module "ad_fixngo_ip_addresses" {
-  source = "github.com/ministryofjustice/modernisation-platform-environments//terraform/modules/ip_addresses?ref=29c48e315aa5eeef5d604617169b2f6db953966e"
+  source = "github.com/ministryofjustice/modernisation-platform-environments//terraform/modules/ip_addresses?ref=27807807552fb132593000ea0084500ac5d39376"
 }
 
 locals {
@@ -42,7 +42,7 @@ locals {
         subnet_id                 = aws_subnet.live-data-additional["eu-west-2a"].id
         vpc_security_group_name   = "ad_hmpp_dc_sg"
         tags = {
-          server-type   = "DomainJoin" # set to "DomainController" after initial testing
+          server-type   = "DomainController"
           domain-name   = "azure.hmpp.root"
           description   = "domain controller for FixNGo azure.hmpp.root domain"
           os-type       = "Windows"
@@ -59,7 +59,7 @@ locals {
         subnet_id                 = aws_subnet.live-data-additional["eu-west-2b"].id
         vpc_security_group_name   = "ad_hmpp_dc_sg"
         tags = {
-          server-type   = "DomainJoin" # set to "DomainController" after initial testing
+          server-type   = "DomainController"
           domain-name   = "azure.hmpp.root"
           description   = "domain controller for FixNGo azure.hmpp.root domain"
           os-type       = "Windows"
@@ -216,6 +216,7 @@ locals {
               "kms:Decrypt",
               "kms:ReEncrypt*",
               "kms:GenerateDataKey*",
+              "kms:GenerateDataKeyWithoutPlainText", 
               "kms:DescribeKey",
               "kms:CreateGrant",
               "kms:ListGrants",
@@ -233,9 +234,56 @@ locals {
               "ec2:DescribeVolumes",
               "ec2:DescribeTags",
               "ec2:DescribeInstances",
+              "ec2:StartInstances", 
+              "ec2:StopInstances"
             ]
             resources = ["*"]
           },
+          {
+            sid: "EC2"
+            effect = "Allow" 
+            actions = ["ec2:GetPasswordData"] 
+            resources = ["*"]
+          }, 
+          {
+            sid = "SSMStartSession"
+            effect = "Allow"
+            actions = ["ssm:StartSession"] 
+            resources = [ 
+              "arn:aws:ssm:*:*:document/AWS-StartPortForwardingSession", 
+              "arn:aws:ec2:*:*:instance/*" ] 
+          }, 
+          { 
+            sid = "GuiConnect" 
+            effect = "Allow"
+            actions = [ 
+              "ssm-guiconnect:StartConnection", 
+              "ssm-guiconnect:GetConnection", 
+              "ssm-guiconnect:CancelConnection" 
+              ]
+            resources = ["*"] 
+          }, 
+          {
+            sid = "SSMPermissions"
+            effect = "Allow"
+            actions = [ 
+              "ssm:ListCommands", 
+              "ssm:ListCommandInvocations", 
+              "ssm:GetCommandInvocation", 
+              "ssm:DescribeInstanceInformation", 
+              "ssm:SendCommand" 
+              ] 
+            resources = ["*"] 
+          }, 
+          { 
+            sid = "ComputeOptimizer"
+            effect = "Allow"
+            actions = [ 
+              "compute-optimizer:GetEnrollmentStatus", 
+              "compute-optimizer:GetEC2InstanceRecommendations" 
+            ]
+            resources = ["*"] 
+          }
         ]
       }
       ad-fixngo-nonlive-secrets-policy = {
@@ -309,10 +357,9 @@ locals {
 
     fsx_windows_file_systems = {
       ad-azure-fsx = {
-        ad_dns_ips = [
-          module.ad_fixngo_ip_addresses.mp_ip.ad-azure-dc-a,
-          module.ad_fixngo_ip_addresses.mp_ip.ad-azure-dc-b,
-        ]
+        ad_dns_ips = flatten([
+          module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_azure_domain_controllers,
+        ])
         ad_domain_name                      = "azure.noms.root"
         ad_file_system_administrators_group = null
         ad_username                         = "svc_join_domain"
@@ -325,10 +372,9 @@ locals {
         weekly_maintenance_start_time       = "2:04:00" # tue 4am
       }
       ad-hmpp-fsx = {
-        ad_dns_ips = [
-          module.ad_fixngo_ip_addresses.azure_fixngo_ip.PCMCW0011,
-          module.ad_fixngo_ip_addresses.azure_fixngo_ip.PCMCW0012,
-        ]
+        ad_dns_ips = flatten([
+          module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_hmpp_domain_controllers,
+        ])
         ad_domain_name                      = "azure.hmpp.root"
         ad_file_system_administrators_group = "AWS FSx Admins"
         ad_username                         = "svc_fsx_windows"
@@ -360,23 +406,32 @@ locals {
 
     route53_resolver_rules = {
       ad-fixngo-azure-noms-root = {
-        domain_name            = "azure.noms.root"
-        target_ips             = module.ad_fixngo_ip_addresses.azure_fixngo_ips.devtest.domain_controllers
+        domain_name = "azure.noms.root"
+        target_ips = flatten([
+          module.ad_fixngo_ip_addresses.azure_fixngo_ips.devtest.domain_controllers,
+          module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_azure_domain_controllers,
+        ])
         resolver_endpoint_name = "ad-fixngo-non-live-data"
         rule_type              = "FORWARD"
         vpc_id                 = module.vpc["non_live_data"].vpc_id
       }
       ad-fixngo-azure-hmpp-root = {
-        domain_name            = "azure.hmpp.root"
-        target_ips             = module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers
+        domain_name = "azure.hmpp.root"
+        target_ips = flatten([
+          module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers,
+          module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_hmpp_domain_controllers,
+        ])
         resolver_endpoint_name = "ad-fixngo-live-data"
         rule_type              = "FORWARD"
         vpc_id                 = module.vpc["live_data"].vpc_id
       }
       # resolve infra.int hosts via HMPP DCs as they have forest trust
       ad-fixngo-infra-int = {
-        domain_name            = "infra.int"
-        target_ips             = module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers
+        domain_name = "infra.int"
+        target_ips = flatten([
+          module.ad_fixngo_ip_addresses.azure_fixngo_ips.prod.domain_controllers,
+          module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_hmpp_domain_controllers,
+        ])
         resolver_endpoint_name = "ad-fixngo-live-data"
         rule_type              = "FORWARD"
         vpc_id                 = module.vpc["live_data"].vpc_id
@@ -440,8 +495,9 @@ locals {
             protocol    = "TCP"
             cidr_blocks = ["10.0.0.0/8"]
           }
-          netbios-tcp-139 = {
-            port        = 139
+          netbios-tcp-137-139 = {
+            from_port   = 137
+            to_port     = 139
             protocol    = "TCP"
             cidr_blocks = ["10.0.0.0/8"]
           }
@@ -1019,7 +1075,7 @@ resource "aws_instance" "ad_fixngo" {
   key_name               = aws_key_pair.ad_fixngo[each.value.key_name].key_name
   private_ip             = each.value.private_ip
   subnet_id              = each.value.subnet_id
-  user_data              = base64encode(file("./files/ad-fixngo-ec2-user-data.yaml"))
+  user_data_base64       = base64encode(file("./files/ad-fixngo-ec2-user-data.yaml"))
   vpc_security_group_ids = [aws_security_group.ad_fixngo[each.value.vpc_security_group_name].id]
 
   # remove all ephemeral block devices
@@ -1239,7 +1295,7 @@ resource "aws_ssm_parameter" "ad_fixngo" {
 
 #trivy:ignore:AVD-AWS-0345: Required for SSM patching module to access S3 buckets
 module "ad_fixngo_ssm_patching" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching.git?ref=aeb25bbec66ae3575d9435841792c333f46fe614" # v4.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching.git?ref=1c10b851580368edd40bb1c9330d915f95dd8a2c" # v5.0.0
   providers = {
     aws.bucket-replication = aws
   }

@@ -11,14 +11,14 @@ If you're looking to raise an issue with this module, please create a new issue 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.47.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws.share-acm"></a> [aws.share-acm](#provider\_aws.share-acm) | >= 3.47.0 |
-| <a name="provider_aws.share-host"></a> [aws.share-host](#provider\_aws.share-host) | >= 3.47.0 |
+| <a name="provider_aws.share-acm"></a> [aws.share-acm](#provider\_aws.share-acm) | ~> 6.0 |
+| <a name="provider_aws.share-host"></a> [aws.share-host](#provider\_aws.share-host) | ~> 6.0 |
 
 ## Modules
 

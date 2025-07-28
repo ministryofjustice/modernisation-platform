@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Quick Start Mac Guide
-last_reviewed_on: 2025-04-15
+last_reviewed_on: 2025-07-28
 review_in: 6 months
 ---
 
@@ -90,24 +90,22 @@ Zsh Syntax Highlighting enhances the terminal by providing syntax highlighting f
 
 ```bash
 brew install zsh-syntax-highlighting
+brew install zsh-autosuggestions
 ```
 
-To enable plugin, edit the ~/.zshrc file
+To enable the plugin, edit the ~/.zshrc file
 
 ```bash
 vi ~/.zshrc
 ```
 
 press " i " to enter INSERT mode and
-append zsh-autosuggestions & zsh-syntax-highlighting to plugins() like this:
+append zsh-autosuggestions & zsh-syntax-highlighting to end of the file like this:
 
 ```bash
-plugins=(
-  git
-  docker
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-)
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 ```
 
 Then run the following command to apply the changes:

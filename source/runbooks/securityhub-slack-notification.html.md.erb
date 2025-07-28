@@ -1,0 +1,74 @@
+---
+owner_slack: "#modernisation-platform"
+title: Security Hub Slack Notifications
+last_reviewed_on: 2025-07-09
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+## Introduction
+
+Each AWS account under the Modernisation Platform (MP) Organizational Unit (OU) has Security Hub enabled, and all findings are centralised into the **eu-west-2** region.  
+
+To receive the Security Hub severity summary in Slack, you need to:
+
+- Add the Slack channel name as a tag in the `<application>.json` file in modernisation-platform repository
+- Store the Slack webhook URL as a secret via the workflow
+
+## Steps
+
+### Add Security Hub Slack Channel Tag to `<application>.json`
+
+In the `<application>.json` file, add or update the `securityhub-slack-channel` tag under `tags`
+
+You can find your `<application>.json` file in the 
+[**modernisation-platform** repository](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments) 
+under the `environments/` folder.
+
+#### Example
+
+```json
+"tags": {
+  "application": "modernisation-platform",
+  "business-unit": "Platforms",
+  "securityhub-slack-channel": "modernisation-platform",
+  "critical-national-infrastructure": false
+}
+```
+
+### Trigger the Slack Webhook Workflow
+
+After committing the updated JSON file, merge the PR. Then, manually trigger the GitHub Actions workflow to add or update the Slack webhook URL.
+
+[Run the Update Securityhub Slack Secret Workflow](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/update-securityhub-slack-secret.yml)
+
+Click on **"Run workflow"** and provide the following inputs:
+
+- `Application name`: the name of your application (e.g., `modernisation-platform`)
+- `Slack webhook URL`: the full Slack webhook URL (e.g., `<slack webhook url>`)
+
+Once the workflow completes successfully, you will see the confirmation message:
+
+```text
+Slack channel <slack channel name> webhook added/updated in secret
+```
+
+### Daily Notification Job
+
+A scheduled GitHub Actions job runs **daily** to send a summary of **Security Hub severity findings** to the Slack channel you specified in the tag.
+
+The summary includes counts of findings by severity (e.g., Critical, High, Medium, Low) of the particular account 
+
+You can see an [example of the summary results here](https://moj.enterprise.slack.com/archives/C07SNBJBVC6).
+
+**If you do not receive a daily message**, please raise an issue in [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1).

@@ -18,24 +18,26 @@ review_in: 3 months
 
 This document describes our incident handling process for network, operations and security issues.
 
-> This document assumes the user has a PagerDuty account and is part of the Modernisation Platform team.  To use the in Slack features the user must authorise the PagerDuty app in Slack.
+> This document assumes the user has a PagerDuty account and is part of the Modernisation Platform team. To use the in Slack features the user must authorise the PagerDuty app in Slack.
 
-## Overview: 
+## Overview:
+
 For ease of use the key steps are documented within the overview, with further details in the sections below.
 
-- **Confirm that the event constitutes an incident:**  
-> If this incident constitutes a security breach, you must also contact the Service Desk to raise an incident. 
+- **Confirm that the event constitutes an incident:**
+
+  > If this incident constitutes a security breach, you must also contact the Service Desk to raise an incident.
 
 - **Declare the incident:**  
-Create a pager-duty incident (ensuring it is on the external status page) and a slack channel.
+  Create a pager-duty incident (ensuring it is on the external status page) and a slack channel.
 - **Assign roles:**  
-Incident Lead and Scribe are mandatory roles.
+  Incident Lead and Scribe are mandatory roles.
 - **Managing the incident:**  
-Including communication - and who to tell.
+  Including communication - and who to tell.
 - **Fix the problem**  
-Work towards resolving the incident.
+  Work towards resolving the incident.
 - **Post-incident procedure**  
-Complete follow-up actions, including documentation and review.
+  Complete follow-up actions, including documentation and review.
 
 Detailed steps follow below:
 
@@ -45,11 +47,13 @@ Detailed steps follow below:
 
 ### Service Desk Contact Information
 
-| Method                  | Details                                                                                     |
-|-------------------------|---------------------------------------------------------------------------------------------|
-| Phone (24/7)            | 0800 917 5148                                                                           |
-| Tech Portal Chat Bot    | [Technology Portal Homepage](https://mojprod.service-now.com/moj_sp) to contact a live agent       |
+| Method               | Details                                                                                      |
+| -------------------- | -------------------------------------------------------------------------------------------- |
+| Phone (24/7)         | 0800 917 5148                                                                                |
+| Tech Portal Chat Bot | [Technology Portal Homepage](https://mojprod.service-now.com/moj_sp) to contact a live agent |
+
 <!-- -->
+
 **Important: If the incident involves sensitive information or requires a password reset, this can only be done over the phone.**
 
 In most cases, contacting the Service Desk is sufficient. They will record the details of the incident and notify the Protective Monitoring Team to investigate. If additional information is required, they will reach out to us.
@@ -60,10 +64,10 @@ For additional guidance, refer to the [security incident reporting on the intran
 
 We define an incident as an event which:
 
-* is unplanned, and
-* impacts end users or our direct users (developers and engineers), or
-* degrades user-facing services, or
-* increases risk to production services
+- is unplanned, and
+- impacts end users or our direct users (developers and engineers), or
+- degrades user-facing services, or
+- increases risk to production services
 
 If this event does not constitute an incident, the appropriate response is probably to [raise an issue](https://github.com/ministryofjustice/modernisation-platform/issues/new/choose) in our GitHub repository, however if the issue is security related, it is [raised here](https://github.com/ministryofjustice/modernisation-platform-security/issues/new/choose).
 
@@ -84,22 +88,21 @@ Declaring the incident will launch a form for you to complete, see an example of
 
 **Impacted Service** - choose from the following depending on the type of incident:
 
- - Networking - Modernisation Platform
- - Operations - Modernisation Platform
- - Security - Modernisation Platform
+- Networking - Modernisation Platform
+- Operations - Modernisation Platform
+- Security - Modernisation Platform
 
 #### Which Priority to assign?
 
 We only use P1, P2 or P3
 
-| **Priority** | Description |
-|---|---|
-|P1|The whole platform is down or unavailable, all user applications are unavailable|
-|P2|Part of the platform is down or unavailable, some user applications are impacted or unavailable|
-|P3|Part of the platform is down or unavailable, user applications are still available|
+| **Priority** | Description                                                                                     |
+| ------------ | ----------------------------------------------------------------------------------------------- |
+| P1           | The whole platform is down or unavailable, all user applications are unavailable                |
+| P2           | Part of the platform is down or unavailable, some user applications are impacted or unavailable |
+| P3           | Part of the platform is down or unavailable, user applications are still available              |
 
-
-Tick the **Create a dedicated Public Slack channel for this incident** box.  You should use this channel to manage the incident.
+Tick the **Create a dedicated Public Slack channel for this incident** box. You should use this channel to manage the incident.
 
 Click **Create** button once you are happy with the form. This will create a new incident in PagerDuty and it will update PagerDuty Status Page. The PagerDuty Status Page slack integration will then automatically post the status in the [ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) and [modernisation-platform-update](https://mojdt.slack.com/archives/C02L5MCJ12N) channels.
 
@@ -115,21 +118,21 @@ The two roles which **must** be filled for every incident are the **Incident Lea
 
 > In rare cases, the same person might fill both roles, but this is discouraged because it generally leads to poor record keeping.
 
-To fill these roles, ask for volunteers from the team, either verbally or via [#modernisation-platform]((https://mojdt.slack.com/archives/C013RM6MFFW)). In the unlikely event that you don't get any volunteers, appoint someone.
+To fill these roles, ask for volunteers from the team, either verbally or via [#modernisation-platform](<(https://mojdt.slack.com/archives/C013RM6MFFW)>). In the unlikely event that you don't get any volunteers, appoint someone.
 
 ### 3.1 Incident Lead
 
 **Responsibilities**:
 
-* coordinate our response to the incident
-* decide on any additional roles required (e.g. a communications lead may be required)
-* ensure that all required roles are filled
-* if no communications lead required, the Incident Lead will be responsible for communicating
-* ensure that all tasks which need to be handled are being done
-* make the final decision whenever we need to choose a course of action
-* set the schedule for any regular team check-ins, if those are deemed necessary
-* declare the incident closed, when appropriate
-* ensure that the post-incident process is followed
+- coordinate our response to the incident
+- decide on any additional roles required (e.g. a communications lead may be required)
+- ensure that all required roles are filled
+- if no communications lead required, the Incident Lead will be responsible for communicating
+- ensure that all tasks which need to be handled are being done
+- make the final decision whenever we need to choose a course of action
+- set the schedule for any regular team check-ins, if those are deemed necessary
+- declare the incident closed, when appropriate
+- ensure that the post-incident process is followed
 
 > The incident lead needs to ensure that things **are being done**, not try to do everything themselves
 
@@ -141,24 +144,25 @@ To fill these roles, ask for volunteers from the team, either verbally or via [#
 
 The scribe is responsible for keeping a log of the incident, including:
 
-* important events
-* discussion topics
-* decisions
-* actions
-* results of actions/investigations
+- important events
+- discussion topics
+- decisions
+- actions
+- results of actions/investigations
 
 > This log is not intended to be a verbatim transcript of discussions. Rather, things like "xxx suggested the disk might be full. yyy to investigate and report back"
 
 ## 4. Managing the incident
 
 ### 4.1 Communicating
+
 As well as communicating to our user base, the following people should be informed for a P1 or P2:
 
-* Head of Platforms and Architecture
+- Head of Platforms and Architecture
 
-* Head of Hosting
+- Head of Hosting
 
-* Product Manager/Delivery Manager
+- Product Manager/Delivery Manager
 
 ### 4.2 Recording notes
 
@@ -176,7 +180,7 @@ or via PagerDuty Incident page by clicking **+ Add Note** button (see below)
 
 ### 4.3 Updating the External Status on PagerDuty
 
-When an incident is raised, an update will become pending on the Modernisation Platform external status page (the internal status will be automatically updated). 
+When an incident is raised, an update will become pending on the Modernisation Platform external status page (the internal status will be automatically updated).
 
 An email will be sent to the Modernisation Platform team informing them of the pending update.
 
@@ -187,26 +191,27 @@ Fill in the details for the update and publish it, this will also post an update
 It is important to use the External Status page as this feeds in to other services in PagerDuty dependant on the Modernisation Platform.
 
 ### 4.4 Transferring roles
+
 It may be necessary to transfer roles from one team member to another, e.g. during long-running incidents. In this case, it is the responsibility of whoever is in a role to ensure that someone else takes it over.
 
 Whoever assumes a role should announce it in the incident slack channel (or thread if the channel was not created), so that the team is aware.
 
 ## 5. Fix the problem
 
-Please bear in mind that not every incident requires the whole team to be involved (even if they all *want* to join in).
+Please bear in mind that not every incident requires the whole team to be involved (even if they all _want_ to join in).
 
 Log a support ticket if necessary
 
 If the incident cannot be resolved within the team or if the issue lies with a 3rd party log a support ticket with the 3rd party.
 For AWS support, log a call in the AWS account affected.
 
-3rd Party | How to log a support ticket | Escalation process
----|---|---
-AWS| [Creating a support case](https://docs.aws.amazon.com/awssupport/latest/user/case-management.html)| On the case, or post in [#ext-aws] (https://moj.enterprise.slack.com/archives/C015UBQ78MR)
+| 3rd Party | How to log a support ticket                                                                        | Escalation process                                                                         |
+| --------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| AWS       | [Creating a support case](https://docs.aws.amazon.com/awssupport/latest/user/case-management.html) | On the case, or post in [#ext-aws] (https://moj.enterprise.slack.com/archives/C015UBQ78MR) |
 
 ## 6. End the incident
 
-The incident is resolved once the user is no longer facing issues.  This may be a temporary fix, in which case an issue should be created to put a permanent fix in place.
+The incident is resolved once the user is no longer facing issues. This may be a temporary fix, in which case an issue should be created to put a permanent fix in place.
 
 Resolve the incident via Slack or PagerDuty with a note on the resolution.
 
@@ -218,10 +223,9 @@ This marks the official end of the incident.
 
 After the incident is resolved:
 
-* A new incident report should be created and stored in the [Modernisation Platform > Incidents](https://drive.google.com/drive/folders/1zlL8Uoh4jequ9_np_NcthCO6dMsqBqhe) drive directory. See [an example](https://docs.google.com/document/d/1eVlz__U84usgGqrSZdV8fC9aTVeg8-rvKtLbIGk2WNY) of such report.
-The notes generated during the incident management in PagerDuty can be used for the incident timeline records.
-* A blameless post mortem meeting should be scheduled to identify any processes that need to be improved
-* A [runbook] for how to fix this issue **should** be published
+- A new incident report should be created and stored in the [Modernisation Platform > Incidents](https://justiceuk.sharepoint.com/:f:/r/sites/msteams_480621/Shared%20Documents/Modernisation%20Platform/Incidents?csf=1&web=1&e=NWZF4q) drive directory. See [an example](https://justiceuk.sharepoint.com/:w:/r/sites/msteams_480621/Shared%20Documents/Modernisation%20Platform/Incidents/mp-incident-2024-10-30-19_17.docx?d=wec1460cd6d8c488599770220b4872abd&csf=1&web=1&e=VpVsC4) of such report.
+  The notes generated during the incident management in PagerDuty can be used for the incident timeline records.
+- A blameless post mortem meeting should be scheduled to identify any processes that need to be improved
+- A [runbook] for how to fix this issue **should** be published
 
 [runbook]: https://github.com/ministryofjustice/modernisation-platform/tree/main/source/runbooks
-[raise a ticket]: http://goo.gl/msfGiS

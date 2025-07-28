@@ -1,0 +1,24 @@
+{
+  "account-type": "member",
+  "codeowners": ["analytical-platform-engineers"],
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "analytical-platform-engineers",
+          "level": "platform-engineer-admin"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "analytical-platform-next-poc-producer",
+    "business-unit": "Platforms",
+    "infrastructure-support": "analytical-platform@justice.gov.uk",
+    "owner": "Analytical Platform: analytical-platform@justice.gov.uk",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}

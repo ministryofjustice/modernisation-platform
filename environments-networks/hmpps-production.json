@@ -7,6 +7,7 @@
           "corporate-staff-rostering-production",
           "delius-alfresco-production",
           "delius-core-production",
+          "delius-core-training-production",
           "delius-iaps-production",
           "delius-jitbit-production",
           "delius-mis-production",
@@ -14,6 +15,7 @@
           "electronic-monitoring-data-production",
           "equip-production",
           "hmpps-domain-services-production",
+          "hmpps-esupervision-production",
           "hmpps-oem-production",
           "nomis-combined-reporting-production",
           "nomis-data-hub-production",
@@ -22,7 +24,8 @@
           "oasys-production",
           "performance-hub-production",
           "planetfm-production",
-          "ppud-production"
+          "ppud-production",
+          "vcms-production"
         ]
       }
     }

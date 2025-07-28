@@ -48,13 +48,6 @@
     "destination_port": "5432",
     "protocol": "TCP"
   },
-  "laa_development_to_mp_laa_development": {
-    "action": "ALERT",
-    "source_ip": "${laa-lz-development}",
-    "destination_ip": "${laa-development}",
-    "destination_port": "ANY",
-    "protocol": "IP"
-  },
   "laa_development_to_mp_laa_development_ccms": {
     "action": "PASS",
     "source_ip": "${laa-lz-development}",
@@ -90,14 +83,77 @@
     "destination_port": "$LAA_MAAT_TCP",
     "protocol": "TCP"
   },
-
-  "laa_shared_services_to_mp_laa_development": {
+  "laa_development_to_laa_development_ccms_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-development}",
+    "destination_ip": "${laa-lz-development}",
+    "destination_port": "$LAA_CCMS_TCP",
+    "protocol": "TCP"
+  },
+  "laa_development_to_laa_development_ccms_soa_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-development}",
+    "destination_ip": "${laa-lz-development}",
+    "destination_port": "$LAA_CCMS_SOA",
+    "protocol": "TCP"
+  },
+  "laa_development_ccms_soa_mp_to_laa_development": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-development}",
+    "destination_ip": "${laa-development}",
+    "destination_port": "$LAA_CCMS_SOA",
+    "protocol": "TCP"
+  },
+  "laa_development_to_laa_development_oem_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-development}",
+    "destination_ip": "${laa-lz-development}",
+    "destination_port": "$LAA_OEM_TCP",
+    "protocol": "TCP"
+  },
+  "laa_development_to_laa_development_oas_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-development}",
+    "destination_ip": "${laa-lz-development}",
+    "destination_port": "$LAA_OAS_TCP",
+    "protocol": "TCP"
+  },
+  "laa_development_to_laa_development_edw_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-development}",
+    "destination_ip": "${laa-lz-development}",
+    "destination_port": "$LAA_EDW_TCP",
+    "protocol": "TCP"
+  },
+  "laa_development_to_laa_development_maat_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-development}",
+    "destination_ip": "${laa-lz-development}",
+    "destination_port": "$LAA_MAAT_TCP",
+    "protocol": "TCP"
+  },
+  "laa_development_webgate_mp_to_laa_development_lz": {
+    "action": "PASS",
+    "source_ip": "${laa-development}",
+    "destination_ip": "${laa-lz-development}",
+    "destination_port": "$LAA_PORTAL_WEBGATE_TCP",
+    "protocol": "TCP"
+  },
+  "laa_shared_services_ws_to_mp_laa_development": {
     "action": "PASS",
     "source_ip": "${laa-lz-shared-services-nonprod}",
     "destination_ip": "${laa-development}",
-    "destination_port": "ANY",
-    "protocol": "IP"
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
   },
+  "mp_laa_development_to_laa_shared_services_ws": {
+    "action": "PASS",
+    "source_ip": "${laa-development}",
+    "destination_ip": "${laa-lz-shared-services-nonprod}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+
   "analytical_platform_to_mp_laa_development_oracledb": {
     "action": "PASS",
     "source_ip": "${analytical-platform-airflow-dev}",
@@ -131,6 +187,13 @@
     "source_ip": "${cloud-platform}",
     "destination_ip": "${laa-development}",
     "destination_port": "1571",
+    "protocol": "TCP"
+  },
+  "cp_to_mp_laa_development_soa": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${laa-development}",
+    "destination_port": "$LAA_CCMS_SOA",
     "protocol": "TCP"
   },
   "cp_to_mp_hmpps_development_jdbc": {
@@ -175,20 +238,6 @@
     "destination_port": "5432",
     "protocol": "TCP"
   },
-  "noms_test_dr_vnet_to_mp_hmpps_development": {
-    "action": "PASS",
-    "source_ip": "${noms-test-dr-vnet}",
-    "destination_ip": "${hmpps-development}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "mp_hmpps_development_to_noms_test_dr_vnet": {
-    "action": "PASS",
-    "source_ip": "${hmpps-development}",
-    "destination_ip": "${noms-test-dr-vnet}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
   "noms_test_vnet_to_mp_hmpps_development": {
     "action": "PASS",
     "source_ip": "${noms-test-vnet}",
@@ -217,34 +266,6 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
-  "noms_mgmt_dr_vnet_to_mp_hmpps_developmemnt": {
-    "action": "PASS",
-    "source_ip": "${noms-mgmt-dr-vnet}",
-    "destination_ip": "${hmpps-development}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "mp_to_hmpps_development_to_noms_mgmt_dr_vnet": {
-    "action": "PASS",
-    "source_ip": "${hmpps-development}",
-    "destination_ip": "${noms-mgmt-dr-vnet}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
-  "aks_studio_hosting_dev_1_vnet_to_mp_hmpps_development_oracledb": {
-    "action": "PASS",
-    "source_ip": "${aks-studio-hosting-dev-1-vnet}",
-    "destination_ip": "${hmpps-development}",
-    "destination_port": "1521",
-    "protocol": "TCP"
-  },
-  "aks_studio_hosting_dev_1_vnet_to_mp_hmpps_development_https": {
-    "action": "PASS",
-    "source_ip": "${aks-studio-hosting-dev-1-vnet}",
-    "destination_ip": "${hmpps-development}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
   "mp_hmpps_development_to_noms_mgmt_vnet_dns": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
@@ -252,18 +273,32 @@
     "destination_port": "53",
     "protocol": "UDP"
   },
-  "laa_appstream_to_mp_laa_development": {
+  "laa_appstream_ld_to_mp_laa_development": {
     "action": "PASS",
     "source_ip": "${laa-appstream-vpc}",
     "destination_ip": "${laa-development}",
-    "destination_port": "ANY",
+    "destination_port": "$LAA_APPSTREAM_TCP",
     "protocol": "TCP"
   },
-  "laa_appstream_additional_to_mp_laa_development": {
+  "laa_appstream_additional_ld_to_mp_laa_development": {
     "action": "PASS",
     "source_ip": "${laa-appstream-vpc_additional}",
     "destination_ip": "${laa-development}",
-    "destination_port": "ANY",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+  "mp_laa_development_to_laa_appstream_ld": {
+    "action": "PASS",
+    "source_ip": "${laa-development}",
+    "destination_ip": "${laa-appstream-vpc}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
+    "protocol": "TCP"
+  },
+  "laa_development_to_mp_laa_appstream_additional_ld": {
+    "action": "PASS",
+    "source_ip": "${laa-development}",
+    "destination_ip": "${laa-appstream-vpc_additional}",
+    "destination_port": "$LAA_APPSTREAM_TCP",
     "protocol": "TCP"
   },
   "cp_to_mp_platforms_development_icmp": {
@@ -663,6 +698,34 @@
     "source_ip": "${mojo-azure-landing-zone}",
     "destination_ip": "${laa-development}",
     "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "laa_development_ftp": {
+    "action": "PASS",
+    "source_ip": "$LAA_PRIVATE_DATA_SUBNETS_DEV",
+    "destination_ip": "$LAA_FTP_ENDPOINTS",
+    "destination_port": "$LAA_FTP_TCP",
+    "protocol": "TCP"
+  },
+  "laa_development_data_a_ses": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-development-general-data-subnets-a}",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "laa_development_data_b_ses": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-development-general-data-subnets-b}",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+  "laa_development_data_c_ses": {
+    "action": "PASS",
+    "source_ip": "${laa-mp-development-general-data-subnets-c}",
+    "destination_ip": "$AWS_SMTP_EU_WEST_2",
+    "destination_port": "587",
     "protocol": "TCP"
   }
 }

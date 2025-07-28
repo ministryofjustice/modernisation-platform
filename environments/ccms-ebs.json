@@ -1,10 +1,5 @@
 {
   "account-type": "member",
-  "components": [
-    {
-      "name": "crowdstrike"
-    }
-  ],
   "environments": [
     {
       "name": "development",
@@ -12,6 +7,10 @@
         {
           "sso_group_name": "laa-ccms-migration-team",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-ccms-instance-access",
+          "level": "instance-management"
         },
         {
           "sso_group_name": "modernisation-platform-security",
@@ -68,6 +67,10 @@
         {
           "sso_group_name": "modernisation-platform-security",
           "level": "view-only"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "security-audit"
         }
       ]
     }

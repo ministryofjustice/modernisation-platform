@@ -3,13 +3,19 @@
   "environments": [
     {
       "name": "production",
-      "access": []
+      "access": [
+        {
+          "sso_group_name": "azure-aws-sso-the-agency",
+          "level": "read-only"
+        }
+      ]
     }
   ],
   "tags": {
     "application": "modernisation-platform",
     "business-unit": "Platforms",
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "securityhub-slack-channel": "modernisation-platform",
     "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
     "critical-national-infrastructure": false
   },

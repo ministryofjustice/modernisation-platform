@@ -2,28 +2,34 @@
   "account-type": "member",
   "components": [
     {
-      "name": "quicksight"
-    },
-    {
-      "name": "lakeformation"
-    },
-    {
-      "name": "central-digital-bedrock"
-    },
-    {
-      "name": "powerbi"
+      "name": "actions-runner"
     },
     {
       "name": "airflow"
     },
     {
+      "name": "central-digital-bedrock"
+    },
+    {
+      "name": "cluster"
+    },
+    {
+      "name": "lakeformation"
+    },
+    {
       "name": "mlflow"
+    },
+    {
+      "name": "network"
+    },
+    {
+      "name": "quicksight"
     },
     {
       "name": "sagemaker-ai"
     },
     {
-      "name": "actions-runner"
+      "name": "dashboard-service"
     }
   ],
   "codeowners": ["analytical-platform-engineers"],

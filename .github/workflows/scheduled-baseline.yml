@@ -31,7 +31,7 @@ concurrency:
 
 jobs:
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@c25ccb3c17e1ac869ceafc5430a4caf7e39be2ee # v3.4.0
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@c25ccb3c17e1ac869ceafc5430a4caf7e39be2ee # v3.4.0
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -77,7 +77,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@c25ccb3c17e1ac869ceafc5430a4caf7e39be2ee # v3.4.0
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -107,7 +107,7 @@ jobs:
             echo "STATE_PUSH_SUCCESSFUL=true" >> $GITHUB_ENV
           fi
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@b0fa283ad8fea605de13dc3f449259339835fc52 # v2.1.0
+        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
         with:
           webhook-type: incoming-webhook
           payload: |
@@ -129,7 +129,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@c25ccb3c17e1ac869ceafc5430a4caf7e39be2ee # v3.4.0
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -159,7 +159,7 @@ jobs:
             echo "STATE_PUSH_SUCCESSFUL=true" >> $GITHUB_ENV
           fi
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@b0fa283ad8fea605de13dc3f449259339835fc52 # v2.1.0
+        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
         with:
           webhook-type: incoming-webhook
           payload: |
@@ -181,7 +181,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@c25ccb3c17e1ac869ceafc5430a4caf7e39be2ee # v3.4.0
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -211,7 +211,7 @@ jobs:
             echo "STATE_PUSH_SUCCESSFUL=true" >> $GITHUB_ENV
           fi
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@b0fa283ad8fea605de13dc3f449259339835fc52 # v2.1.0
+        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
         with:
           webhook-type: incoming-webhook
           payload: |
@@ -233,7 +233,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@c25ccb3c17e1ac869ceafc5430a4caf7e39be2ee # v3.4.0
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -263,7 +263,7 @@ jobs:
             echo "STATE_PUSH_SUCCESSFUL=true" >> $GITHUB_ENV
           fi
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@b0fa283ad8fea605de13dc3f449259339835fc52 # v2.1.0
+        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
         with:
           webhook-type: incoming-webhook
           payload: |
@@ -281,7 +281,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@c25ccb3c17e1ac869ceafc5430a4caf7e39be2ee # v3.4.0
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -311,7 +311,7 @@ jobs:
           grep "ModernisationPlatformSSOAdministrator" <<< $(aws sts get-caller-identity) || { echo 'Failed to assume role' ; exit 1; }
           bash scripts/update-sso-permission-sets.sh
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@b0fa283ad8fea605de13dc3f449259339835fc52 # v2.1.0
+        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
         with:
           webhook-type: incoming-webhook
           payload: |

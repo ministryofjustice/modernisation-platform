@@ -22,6 +22,11 @@
         },
         {
           "sso_group_name": "hmpps-dba",
+          "level": "sandbox",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hmpps-dba",
           "level": "reporting-operations",
           "github_action_reviewer": "true"
         },
@@ -136,6 +141,7 @@
     "ministryofjustice/hmpps-delius-docker-images",
     "ministryofjustice/hmpps-pwm",
     "ministryofjustice/ndelius-um",
-    "ministryofjustice/delius-pdm-uplift-scripts"
+    "ministryofjustice/delius-pdm-uplift-scripts",
+    "ministryofjustice/dso-modernisation-platform-automation"
   ]
 }

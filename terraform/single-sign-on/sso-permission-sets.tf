@@ -534,3 +534,31 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platfo
     path = "/"
   }
 }
+
+# Modernisation Platform Data Scientist role
+
+resource "aws_ssoadmin_permission_set" "modernisation_platform_data_scientist" {
+  provider         = aws.sso-management
+  name             = "mp-data-scientist"
+  description      = "Modernisation Platform: data-scientist"
+  instance_arn     = local.sso_admin_instance_arn
+  session_duration = "PT8H"
+  tags             = {}
+}
+
+resource "aws_ssoadmin_managed_policy_attachment" "modernisation_platform_data_scientist_redshift_access" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  managed_policy_arn = "arn:aws:iam::aws:policy/AmazonRedshiftQueryEditorV2FullAccess"
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_data_scientist.arn
+}
+
+resource "aws_ssoadmin_customer_managed_policy_attachment" "modernisation_platform_data_scientist" {
+  provider           = aws.sso-management
+  instance_arn       = local.sso_admin_instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.modernisation_platform_data_scientist.arn
+  customer_managed_policy_reference {
+    name = "data_scientist_policy"
+    path = "/"
+  }
+}

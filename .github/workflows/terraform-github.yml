@@ -8,6 +8,7 @@ on:
       - '.github/workflows/terraform-github.yml'
       - 'environments/**.json'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
+      - 'collaborators.json'
     branches:
       - main
   pull_request:
@@ -17,6 +18,7 @@ on:
       - '.github/workflows/terraform-github.yml'
       - 'environments/**.json'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
+      - 'collaborators.json'
     branches:
       - main
     types: [opened, edited, reopened, synchronize]
@@ -38,7 +40,7 @@ permissions:
 jobs:
 
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@c25ccb3c17e1ac869ceafc5430a4caf7e39be2ee # v3.4.0
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}  
@@ -81,7 +83,7 @@ jobs:
         with:
           fetch-depth: 0 # or "2" To retrieve the preceding commit.
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@a5a101eb61b1c9eaa6ffe65247e29caf03e392dc # v3.2.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@c25ccb3c17e1ac869ceafc5430a4caf7e39be2ee # v3.4.0
         with:
           terraform_github_token: ${{ needs.fetch-secrets.outputs.terraform_github_token}}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
@@ -98,7 +100,7 @@ jobs:
           TERRAFORM_GITHUB_TOKEN: ${{ env.TERRAFORM_GITHUB_TOKEN }}
       - name: Slack failure notification
         if: ${{ failure() }}
-        uses: slackapi/slack-github-action@b0fa283ad8fea605de13dc3f449259339835fc52 # v2.1.0
+        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
         with:
           webhook-type: incoming-webhook
           payload: |

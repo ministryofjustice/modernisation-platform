@@ -18,6 +18,7 @@ locals {
     tipstaff      = "tipstaff.service.justice.gov.uk",
     tribunals     = "tribunals.gov.uk",
     wardship      = "wardship-agreements-register.service.justice.gov.uk"
+    legalservices = "legalservices.gov.uk"
   }
 
   private-application-zones = {
@@ -26,6 +27,25 @@ locals {
     yjaf-preproduction = "preproduction.yjaf",
     yjaf-production    = "production.yjaf"
 
+  }
+
+  legalservices_records = {
+    "legalservices"             = { name = "legalservices.gov.uk", type = "A", ttl = 300, records = ["151.101.2.30"] }
+    "wwwlegalservices"          = { name = "www.legalservices.gov.uk", type = "A", ttl = 300, records = ["151.101.2.30"] }
+    "mxlegalservices"           = { name = "legalservices.gov.uk", type = "MX", ttl = 300, records = ["0 legalservices-gov-uk.mail.protection.outlook.com"] }
+    "securetransfer"            = { name = "securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
+    "gwasecuretransfer"         = { name = "gwa.securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
+    "hybridtoolssecuretransfer" = { name = "hybridtools.securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
+    "managersecuretransfer"     = { name = "manager.securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
+    "oosecuretransfer"          = { name = "oo.securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
+    "gwphybrid"                 = { name = "gwphybrid.securetransfer.legalservices.gov.uk", type = "A", ttl = 300, records = ["34.240.69.223"] }
+    "dev"                       = { name = "dev.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-674.awsdns-20.net", "ns-1463.awsdns-54.org", "ns-1537.awsdns-00.co.uk", "ns-495.awsdns-61.com"] }
+    "tst"                       = { name = "tst.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-1914.awsdns-47.co.uk", "ns-609.awsdns-12.net", "ns-195.awsdns-24.com", "ns-1187.awsdns-20.org"] }
+    "uat"                       = { name = "uat.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-938.awsdns-53.net", "ns-1046.awsdns-02.org", "ns-334.awsdns-41.com", "ns-1731.awsdns-24.co.uk"] }
+    "stg"                       = { name = "stg.legalservices.gov.uk", type = "NS", ttl = 300, records = ["ns-1269.awsdns-30.org", "ns-1897.awsdns-45.co.uk", "ns-296.awsdns-37.com", "ns-917.awsdns-50.net"] }
+    "ses-1"                     = { name = "u2hsqlvidbbhlfkkiff3fpuwjm6gu5mq._domainkey.legalservices.gov.uk", type = "CNAME", ttl = 300, records = ["u2hsqlvidbbhlfkkiff3fpuwjm6gu5mq.dkim.amazonses.com"] }
+    "ses-2"                     = { name = "3jn7gxoog7vhao6dnt4vytejnkwrxaow._domainkey.legalservices.gov.uk", type = "CNAME", ttl = 300, records = ["3jn7gxoog7vhao6dnt4vytejnkwrxaow.dkim.amazonses.com"] }
+    "ses-3"                     = { name = "lr4yk5yyneh2seaoiujphvk23mow7vty._domainkey.legalservices.gov.uk", type = "CNAME", ttl = 300, records = ["lr4yk5yyneh2seaoiujphvk23mow7vty.dkim.amazonses.com"] }
   }
 }
 
@@ -152,4 +172,28 @@ resource "aws_route53_record" "pagerduty_tls-certificate" {
   type    = "CNAME"
   ttl     = "300"
   records = ["_2b9d3139a782805455e260f16df743e1.xpybkgmvdt.acm-validations.aws."]
+}
+
+# Legalservices records
+resource "aws_route53_record" "legalservices" {
+  #checkov:skip=CKV2_AWS_23:"Route53 A Record has Attached Resource"
+  for_each = local.legalservices_records
+  zone_id  = aws_route53_zone.application_zones["legalservices"].zone_id
+  name     = each.value.name
+  type     = each.value.type
+  ttl      = each.value.ttl
+  records  = each.value.records
+}
+
+resource "aws_route53_record" "portal" {
+  # checkov:skip=CKV2_AWS_23: "Route53 A Record has Attached Resource"
+  zone_id = aws_route53_zone.application_zones["legalservices"].zone_id
+  name    = "portal.legalservices.gov.uk"
+  type    = "A"
+
+  alias {
+    name                   = "d1yzmx9d5z0sdz.cloudfront.net"
+    zone_id                = "Z2FDTNDATAQYW2"
+    evaluate_target_health = false
+  }
 }

@@ -174,7 +174,7 @@ resource "aws_iam_role_policy" "read_dns" {
   role = aws_iam_role.read_logs.id
 
   policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [
       {
         "Effect" : "Allow",
@@ -183,10 +183,36 @@ resource "aws_iam_role_policy" "read_dns" {
           "route53:List*"
         ],
         "Resource" : "*"
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "ec2:DescribeVpcs",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeRouteTables",
+          "ec2:DescribeInternetGateways",
+          "ec2:DescribeNatGateways",
+          "ec2:DescribeVpnConnections",
+          "ec2:DescribeVpnGateways",
+          "ec2:DescribeCustomerGateways",
+          "ec2:DescribeTransitGateways",
+          "ec2:DescribeTransitGatewayAttachments",
+          "ec2:DescribeTransitGatewayRouteTables",
+          "ec2:DescribeNetworkAcls",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeAddresses", # Elastic IPs
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:GetTransitGatewayRouteTablePropagations",
+          "ec2:GetTransitGatewayRouteTableAssociations",
+          "ec2:GetTransitGatewayPrefixListReferences",
+          "ec2:SearchTransitGatewayRoutes"
+        ],
+        "Resource" : "*"
       }
     ]
   })
 }
+
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 resource "aws_iam_role_policy" "read_firewall" {
@@ -202,15 +228,22 @@ resource "aws_iam_role_policy" "read_firewall" {
         "Action" : [
           "logs:DescribeLogGroups",
           "logs:DescribeLogStreams",
+          "logs:DescribeQueries",
+          "logs:FilterLogEvents",
           "logs:GetLogEvents",
-          "logs:FilterLogEvents"
+          "logs:GetLogGroupFields",
+          "logs:GetLogRecord",
+          "logs:GetQueryResults",
+          "logs:StartQuery",
+          "logs:StopQuery"
         ],
         "Resource" : [
           "arn:aws:logs:*:*:log-group::log-stream:",
           "arn:aws:logs:*:*:log-group:fw-*:log-stream:*",
           "arn:aws:logs:*:*:log-group:*-vpc-flow-logs-*:log-stream:*",
           "arn:aws:logs:*:*:log-group:external-inspection-flow-logs:log-stream:*",
-          "arn:aws:logs:*:*:log-group:tgw-*:log-stream:*"
+          "arn:aws:logs:*:*:log-group:tgw-*:log-stream:*",
+          "arn:aws:logs:*:*:log-group:NEC*:log-stream:*"
         ],
       },
       {

@@ -133,7 +133,7 @@ resource "aws_sns_topic" "cortex_sqs_sns_topic" {
 
 module "mp-sqs-sns-chatbot" {
   for_each         = { for topic in local.cortex_topic_names : topic.name => topic }
-  source           = "github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot?ref=73280f80ce8a4557cec3a76ee56eb913452ca9aa" // v2.0.0
+  source           = "github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot?ref=0ec33c7bfde5649af3c23d0834ea85c849edf3ac" # v3.0.0
   slack_channel_id = each.value.channel_id
   sns_topic_arns = each.key == "modplatform" ? [
     aws_sns_topic.cortex_sqs_sns_topic[each.key].arn,

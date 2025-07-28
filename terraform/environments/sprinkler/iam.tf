@@ -1,7 +1,7 @@
 # OIDC resources
 
 module "github-oidc" {
-  source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=84a83751b5289f363a728eb181470b59fc5e2899" # v3.0.1
+  source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=5dc9bc211d10c58de4247fa751c318a3985fc87b" # v4.0.0
   additional_permissions      = data.aws_iam_policy_document.oidc_deny_specific_actions.json
   additional_managed_policies = ["arn:aws:iam::aws:policy/AdministratorAccess"]
   github_repositories         = ["ministryofjustice/modernisation-platform:*", "ministryofjustice/modernisation-platform-environments:*"]
@@ -53,7 +53,7 @@ data "aws_iam_policy_document" "oidc_deny_specific_actions" {
 }
 
 module "github_actions_test_role" {
-  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=62b8a16c73d8e4422cd81923e46948e8f4b5cf48" # v3.2.0
+  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
   github_repositories = ["ministryofjustice/modernisation-platform"]
   role_name           = "github-actions-test"
   tags                = { "Name" = "GitHub Actions Test" }

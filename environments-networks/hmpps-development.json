@@ -14,8 +14,8 @@
           "electronic-monitoring-data-development",
           "equip-development",
           "hmpps-domain-services-development",
+          "hmpps-esupervision-development",
           "hmpps-oem-development",
-          "nomis-combined-reporting-development",
           "nomis-data-hub-development",
           "nomis-development",
           "oasys-development",
@@ -23,7 +23,8 @@
           "performance-hub-development",
           "planetfm-development",
           "ppud-development",
-          "refer-monitor-development"
+          "refer-monitor-development",
+          "vcms-development"
         ]
       }
     }

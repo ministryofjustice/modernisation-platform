@@ -5,15 +5,15 @@ locals {
   }
 
   vpc_interface_endpoint_service_names = [
-    "com.amazonaws.${data.aws_region.current_region.name}.ec2messages",
-    "com.amazonaws.${data.aws_region.current_region.name}.imagebuilder",
-    "com.amazonaws.${data.aws_region.current_region.name}.logs",
-    "com.amazonaws.${data.aws_region.current_region.name}.ssm",
-    "com.amazonaws.${data.aws_region.current_region.name}.ssmmessages"
+    "com.amazonaws.${data.aws_region.current_region.region}.ec2messages",
+    "com.amazonaws.${data.aws_region.current_region.region}.imagebuilder",
+    "com.amazonaws.${data.aws_region.current_region.region}.logs",
+    "com.amazonaws.${data.aws_region.current_region.region}.ssm",
+    "com.amazonaws.${data.aws_region.current_region.region}.ssmmessages"
   ]
 
   vpc_gateway_endpoint_service_names = [
-    "com.amazonaws.${data.aws_region.current_region.name}.s3"
+    "com.amazonaws.${data.aws_region.current_region.region}.s3"
   ]
 }
 

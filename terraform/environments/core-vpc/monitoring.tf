@@ -24,7 +24,7 @@ module "pagerduty_route53" {
   depends_on = [
     aws_sns_topic.route53_monitoring
   ]
-  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=d88bd90d490268896670a898edfaba24bba2f8ab" # v3.0.0
   sns_topics                = [aws_sns_topic.route53_monitoring.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["ddos_cloudwatch"]
 }
@@ -82,11 +82,11 @@ resource "aws_cloudwatch_metric_alarm" "accepted_traffic_alarm" {
   for_each            = local.laa_vpc_existing
   alarm_name          = "AcceptedTrafficAlarm-${each.key}"
   comparison_operator = "GreaterThanUpperThreshold"
-  evaluation_periods  = 2
+  evaluation_periods  = 3
   threshold_metric_id = "ad1"
   alarm_description   = "Anomaly detection alarm for accepted traffic in VPC '${each.key}'. A sudden spike or drop may indicate a network issue, service outage, or DDoS attempt."
   treat_missing_data  = "notBreaching"
-  alarm_actions       = [aws_sns_topic.vpc_flowlog_alarms.arn]
+  # alarm_actions       = [aws_sns_topic.vpc_flowlog_alarms.arn]
 
   metric_query {
     id = "m1"
@@ -101,7 +101,7 @@ resource "aws_cloudwatch_metric_alarm" "accepted_traffic_alarm" {
 
   metric_query {
     id          = "ad1"
-    expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 5)"
     label       = "Sum AcceptedTrafficCount ${each.key} GreaterThanUpperThreshold 1.0"
     return_data = true
   }
@@ -111,11 +111,11 @@ resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
   for_each            = local.laa_vpc_existing
   alarm_name          = "RejectedConnectionsAlarm-${each.key}"
   comparison_operator = "GreaterThanUpperThreshold"
-  evaluation_periods  = 2
+  evaluation_periods  = 3
   threshold_metric_id = "ad1"
   alarm_description   = "Anomaly detection alarm for rejected connections in VPC '${each.key}'. May indicate unauthorized access attempts, port scanning, or misconfigured security groups."
   treat_missing_data  = "notBreaching"
-  alarm_actions       = [aws_sns_topic.vpc_flowlog_alarms.arn]
+  # alarm_actions       = [aws_sns_topic.vpc_flowlog_alarms.arn]
 
   metric_query {
     id = "m1"
@@ -130,7 +130,7 @@ resource "aws_cloudwatch_metric_alarm" "rejected_connections_alarm" {
 
   metric_query {
     id          = "ad1"
-    expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 12)"
     label       = "Sum RejectedConnections ${each.key} GreaterThanUpperThreshold 1.0"
     return_data = true
   }
@@ -140,11 +140,11 @@ resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
   for_each            = local.laa_vpc_existing
   alarm_name          = "SSHConnectionAttemptsAlarm-${each.key}"
   comparison_operator = "GreaterThanUpperThreshold"
-  evaluation_periods  = 2
+  evaluation_periods  = 3
   threshold_metric_id = "ad1"
   alarm_description   = "Anomaly detection alarm for SSH connection attempts (port 22) in VPC '${each.key}'. Indicates possible brute-force login attempts or unauthorized probing."
   treat_missing_data  = "notBreaching"
-  alarm_actions       = [aws_sns_topic.vpc_flowlog_alarms.arn]
+  # alarm_actions       = [aws_sns_topic.vpc_flowlog_alarms.arn]
 
   metric_query {
     id = "m1"
@@ -159,12 +159,11 @@ resource "aws_cloudwatch_metric_alarm" "ssh_connection_attempts_alarm" {
 
   metric_query {
     id          = "ad1"
-    expression  = "ANOMALY_DETECTION_BAND(m1, 2)"
+    expression  = "ANOMALY_DETECTION_BAND(m1, 6)"
     label       = "Sum SSHConnectionAttempts ${each.key} GreaterThanUpperThreshold 1.0"
     return_data = true
   }
 }
-
 # KMS key for SNS topic encryption
 resource "aws_kms_key" "vpc_flowlog_sns_encryption" {
   description             = "KMS key for VPC Flow Log SNS topic encryption"
@@ -236,7 +235,7 @@ resource "aws_sns_topic" "vpc_flowlog_alarms" {
 # linking the sns topics to the pagerduty service
 module "pagerduty_vpc_flowlog_alerts" {
   depends_on                = [aws_sns_topic.vpc_flowlog_alarms]
-  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=0179859e6fafc567843cd55c0b05d325d5012dc4" # v2.0.0
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=d88bd90d490268896670a898edfaba24bba2f8ab" # v3.0.0
   sns_topics                = [aws_sns_topic.vpc_flowlog_alarms.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
 }

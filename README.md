@@ -45,6 +45,7 @@ Modernisation Platform users can use these modules in their infrastructure. They
 | [modernisation-platform-terraform-ec2-instance](https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-instance)                   | Module for creating an EC2 instance                                                                                                                                                |
 | [modernisation-platform-terraform-ec2-autoscaling-group](https://github.com/ministryofjustice/modernisation-platform-terraform-ec2-autoscaling-group) | Module for creating an EC2 autoscaling group                                                                                                                                       |
 | [modernisation-platform-terraform-lambda-function](https://github.com/ministryofjustice/modernisation-platform-terraform-lambda-function)             | Module for creating a Lambda Function                                                                                                                                              |
+| [modernisation-platform-terraform-aws-chatbot](https://github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot)                     | Module for using AWS Chatbot                                                                                                                                                       |
 
 ### Terraform modules - used by the core platform
 
@@ -54,10 +55,12 @@ These modules are used by the Modernisation Platform's core infrastructure
 | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | [modernisation-platform-terraform-baselines](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines)                       | Module for enabling and configuring common baseline services such as SecurityHub               |
 | [modernisation-platform-terraform-cross-account-access](https://github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access) | Module for creating an IAM role that can be assumed from another account                       |
+| [modernisation-platform-terraform-dns-certificates](https://github.com/ministryofjustice/modernisation-platform-terraform-dns-certificates)         | Module for created DNS certificates                                                            |
 | [modernisation-platform-terraform-environments](https://github.com/ministryofjustice/modernisation-platform-terraform-environments)                 | Module for creating organizational units and accounts within AWS Organizations from JSON files |
 | [modernisation-platform-terraform-iam-superadmins](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins)           | Module for creating defined IAM users as superadmins                                           |
 | [modernisation-platform-terraform-member-vpc](https://github.com/ministryofjustice/modernisation-platform-terraform-member-vpc)                     | Module for member VPC accounts                                                                 |
 | [modernisation-platform-github-oidc-provider](https://github.com/ministryofjustice/modernisation-platform-github-oidc-provider)                     | Module for creating OIDC providers to use in GitHub Actions                                    |
+| [modernisation-platform-github-oidc-role](https://github.com/ministryofjustice/modernisation-platform-github-oidc-role)                             | Module for creating OIDC roles to use in GitHub Actions                                        |
 
 ### Tools
 
@@ -65,6 +68,7 @@ These modules are used by the Modernisation Platform's core infrastructure
 | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [modernisation-platform-instance-scheduler](https://github.com/ministryofjustice/modernisation-platform-instance-scheduler) | A Go lambda function for stopping and starting instance, rds resources and autoscaling groups. The lambda is used by the core platform and can be reused outside of the platform with minimal changes |
 | [modernisation-platform-cp-network-test](https://github.com/ministryofjustice/modernisation-platform-cp-network-test)       | Container bundled with utilities for network testing                                                                                                                                                  |
+| [modernisation-platform-github-actions](https://github.com/ministryofjustice/modernisation-platform-github-actions)         | A collection of GitHub Actions and Reusable Workflows for Modernisation Platform projects                                                                                                             |
 
 [Standards Link]: https://github-community.service.justice.gov.uk/repository-standards/modernisation-platform "Repo standards badge."
 [Standards Icon]: https://github-community.service.justice.gov.uk/repository-standards/api/modernisation-platform/badge

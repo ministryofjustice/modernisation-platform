@@ -99,6 +99,12 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_noms_route
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
 
+resource "aws_ec2_transit_gateway_route_table_propagation" "propagate_nec_routes_to_firewall" {
+  for_each                       = local.nec_vpn_attachment_ids
+  transit_gateway_attachment_id  = each.key
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
+}
+
 resource "aws_ec2_transit_gateway_route" "parole_board_routes" {
   for_each                       = toset(local.parole_board_vpn_static_routes)
   destination_cidr_block         = each.key
@@ -277,11 +283,10 @@ data "aws_iam_policy_document" "sns-kms" {
 }
 
 module "core-networks-chatbot" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot?ref=73280f80ce8a4557cec3a76ee56eb913452ca9aa" // v2.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot?ref=0ec33c7bfde5649af3c23d0834ea85c849edf3ac" # v3.0.0
 
   slack_channel_id = "CDLAJTGRG" // #dba_alerts_prod
   sns_topic_arns   = ["arn:aws:sns:eu-west-2:${local.environment_management.account_ids[terraform.workspace]}:${aws_sns_topic.noms_vpn_sns_topic.name}"]
   tags             = local.tags
   application_name = local.application_name
 }
-

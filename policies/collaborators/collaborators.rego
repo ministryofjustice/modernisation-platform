@@ -11,7 +11,8 @@ allowed_access := [
   "instance-management",
   "fleet-manager",
   "platform-engineer-admin",
-  "ssm-session-access"
+  "ssm-session-access",
+  "data-scientist"
 ]
 
 deny contains msg if {

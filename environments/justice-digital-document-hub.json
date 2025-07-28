@@ -1,0 +1,23 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "justice-digital-document-hub",
+          "level": "sandbox"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "justice-digital-document-hub",
+    "business-unit": "Platforms",
+    "infrastructure-support": "justice-digital-documentation-hub@justice.gov.uk",
+    "owner": "Lewis.Wilson@justice.gov.uk",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}

@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating resources in the Modernisation Platform
-last_reviewed_on: 2024-12-23
+last_reviewed_on: 2025-06-24
 review_in: 6 months
 ---
 
@@ -30,7 +30,7 @@ These resources are preconfigured with a backend, providers etc, all that you ne
  - Create a new Terraform files or resources in your application folder under `terraform/environments/`
  - We recommend following standard Terraform best practices, such as creating a `main.tf`, or logically named Terraform files, such as `database.tf` or `s3.tf`
  - Environment specific variables can be passed in through an [application_variables.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform-environments/application_variables.json), defined as a [local](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform-environments/locals.tf#L41) and [referenced accordingly](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform-environments/locals.tf#L40)
- - Data lookups are provided for common things you may need from the platform such as subnets or DNS zones [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform-environments/data.tf)
+ - Data lookups are provided for common things you may need from the platform such as subnets or DNS zones [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform-environments/platform_data.tf)
 
 ## GitHub Permissions
  - For any files created in your application folder, your GitHub team will have permissions to create and merge pull requests.

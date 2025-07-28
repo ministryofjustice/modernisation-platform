@@ -240,8 +240,15 @@ data "aws_iam_policy_document" "developer_additional" {
       "elasticloadbalancing:AddListenerCertificates",
       "events:DisableRule",
       "events:EnableRule",
+      "fis:*",
+      "glue:GetConnection",
+      "glue:GetConnections",
+      "guardduty:*",
       "iam:CreateServiceLinkedRole",
       "identitystore:DescribeUser",
+      "kinesisanalytics:List*",
+      "kinesisanalytics:Describe*",
+      "kinesisanalytics:DiscoverInputSchema",
       "kms:Decrypt*",
       "kms:Encrypt",
       "kms:ReEncrypt*",
@@ -284,18 +291,13 @@ data "aws_iam_policy_document" "developer_additional" {
       "ssm-guiconnect:*",
       "sso:ListDirectoryAssociations",
       "support:*",
-      "wellarchitected:Get*",
-      "wellarchitected:List*",
-      "wellarchitected:ExportLens",
       "states:Describe*",
       "states:List*",
       "states:Stop*",
       "states:Start*",
-      "kinesisanalytics:List*",
-      "kinesisanalytics:Describe*",
-      "kinesisanalytics:DiscoverInputSchema",
-      "glue:GetConnection",
-      "glue:GetConnections"
+      "wellarchitected:Get*",
+      "wellarchitected:List*",
+      "wellarchitected:ExportLens"
     ]
     resources = ["*"]
   }
@@ -425,6 +427,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "glue:DeleteDatabase",
       "glue:DeletePartition",
       "glue:DeleteTable",
+      "glue:Describe*",
       "glue:*JobRun",
       "glue:RunStatement",
       "glue:UpdateDatabase",
@@ -457,6 +460,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "s3:PutBucketNotificationConfiguration",
       "s3:GetBucketOwnershipControls",
       "s3:PutObjectAcl",
+      "s3:PutObjectTagging",
       "s3tables:*"
     ]
     resources = ["*"]
@@ -599,7 +603,6 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "dbqms:*",
       "discovery:*",
       "detective:*",
-      "graph:*",
       "dlm:*",
       "dms:*",
       "drs:*",
@@ -631,6 +634,8 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "mgh:*",
       "mgn:*",
       "migrationhub-strategy:*",
+      "networkflowmonitor:*",
+      "networkmonitor:*",
       "oam:*",
       "organizations:DescribeOrganization",
       "quicksight:*",
@@ -659,6 +664,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "support:*",
       "textract:*",
       "tiros:*",
+      "transfer:*",
       "wafv2:*",
       "wellarchitected:*"
     ]
@@ -774,9 +780,10 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "elasticloadbalancing:*",
       "events:*",
       "firehose:*",
+      "fis:*",
       "glacier:*",
       "glue:*",
-      "guardduty:get*",
+      "guardduty:*",
       "iam:*",
       "identitystore:DescribeUser",
       "kinesis:*",
@@ -1094,9 +1101,6 @@ data "aws_iam_policy_document" "instance-management-document" {
         local.environment_management.account_ids["core-shared-services-production"]
       ]
     }
-
-
-
   }
   statement {
     sid    = "databaseAllowNull"
@@ -1628,6 +1632,89 @@ data "aws_iam_policy_document" "ssm_session_access" {
       "ssm:GetConnectionStatus",
       "ssm:DescribeInstanceProperties",
       "ec2:DescribeInstances"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "data_scientist" {
+  provider = aws.workspace
+  name     = "data_scientist_policy"
+  path     = "/"
+  policy   = data.aws_iam_policy_document.data_scientist.json
+}
+
+data "aws_iam_policy_document" "data_scientist" {
+  #checkov:skip=CKV_AWS_111
+  #checkov:skip=CKV_AWS_356 
+  statement {
+    sid    = "EventBridgeAndSchedulerPermissions"
+    effect = "Allow"
+    actions = [
+      "events:DeleteRule",
+      "events:DescribeApiDestination",
+      "events:DescribeArchive",
+      "events:DescribeConnection",
+      "events:DescribeEndpoint",
+      "events:DescribeEventBus",
+      "events:DescribeEventSource",
+      "events:DescribeReplay",
+      "events:DescribeRule",
+      "events:ListApiDestinations",
+      "events:ListArchives",
+      "events:ListConnections",
+      "events:ListEndpoints",
+      "events:ListEventBuses",
+      "events:ListEventSources",
+      "events:ListReplays",
+      "events:ListRuleNamesByTarget",
+      "events:ListRules",
+      "events:ListTargetsByRule",
+      "events:PutRule",
+      "events:PutTargets",
+      "events:RemoveTargets",
+      "events:TestEventPattern",
+      "pipes:DescribePipe",
+      "pipes:ListPipes",
+      "pipes:ListTagsForResource",
+      "scheduler:GetSchedule",
+      "scheduler:GetScheduleGroup",
+      "scheduler:ListScheduleGroups",
+      "scheduler:ListSchedules",
+      "scheduler:ListTagsForResource",
+      "schemas:DescribeCodeBinding",
+      "schemas:DescribeDiscoverer",
+      "schemas:DescribeRegistry",
+      "schemas:DescribeSchema",
+      "schemas:ExportSchema",
+      "schemas:GetCodeBindingSource",
+      "schemas:GetDiscoveredSchema",
+      "schemas:GetResourcePolicy",
+      "schemas:ListDiscoverers",
+      "schemas:ListRegistries",
+      "schemas:ListSchemaVersions",
+      "schemas:ListSchemas",
+      "schemas:ListTagsForResource",
+      "schemas:SearchSchemas",
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "RedshiftServerlessAdditionalPermissions"
+    effect = "Allow"
+    actions = [
+      "redshift-serverless:GetNamespace",
+      "redshift-serverless:GetWorkgroup"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "S3ListBucketsAccess"
+    effect = "Allow"
+    actions = [
+      "s3:ListAllMyBuckets"
     ]
     resources = ["*"]
   }

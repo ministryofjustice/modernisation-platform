@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: How to review MP Environments pull requests
-last_reviewed_on: 2025-05-06
+last_reviewed_on: 2025-06-05
 review_in: 6 months
 ---
 
@@ -28,7 +28,7 @@ In certain cases the MP team need to review infrastructure changes being made to
 
 1. Any changes made to files specified in the [`.github/CODEOWNERS`](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/CODEOWNERS) file which only show `@ministryofjustice/modernisation-platform` as an owner e.g. `**/platform_*.tf` files
 
-1. Any changes which are highlighted by the [`terraform-plan-evaluator.sh`](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/scripts/terraform-plan-evaluator.sh) shell script. This script is built in to the [`reusable_terraform_plan_apply.yml`](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/workflows/reusable_terraform_plan_apply.yml) workflow and if any of the resources listed e.g. `aws_eks_cluster` are found in the Terraform plan stage the build will be marked as **failed**, preventing deployments.
+1. Any changes which are highlighted by the [`terraform-plan-evaluator.sh`](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/scripts/terraform-plan-evaluator.sh) shell script. This script is built in to the [`reusable_terraform_components_plan_apply.yml`](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/workflows/reusable_terraform_components_plan_apply.yml) workflow and if any of the resources listed e.g. `aws_eks_cluster` are found in the Terraform plan stage the build will be marked as **failed**, preventing deployments.
 
 ## Process for approving PRs
 

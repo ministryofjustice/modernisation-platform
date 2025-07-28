@@ -1,0 +1,92 @@
+name: Terraform Unlock State
+
+on:
+  workflow_dispatch:
+    inputs:
+      component:
+        description: 'Choose a component'
+        required: true
+        type: choice
+        options:
+            - github
+            - pagerduty
+            - single-sign-on
+            - modernisation-platform-account
+            - environments
+            - bootstrap/delegate-access
+            - bootstrap/member-bootstrap
+            - bootstrap/single-sign-on
+            - bootstrap/secure-baselines
+      application_name:
+        description: 'Application name (e.g., sprinkler). Required for bootstrap components or environments with app/env.'
+        required: false
+      environment:
+        description: 'Environment name (e.g., development). Required for bootstrap components or environments with app/env.'
+        required: false
+      lock_id:
+        description: 'Terraform lock ID (from plan/apply error)'
+        required: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  unlock:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+
+      - name: Determine Terraform path and workspace
+        id: setup
+        run: |
+          COMPONENT="${{ github.event.inputs.component }}"
+          APP_NAME="${{ github.event.inputs.application_name }}"
+          ENV="${{ github.event.inputs.environment }}"
+
+          if [[ "$COMPONENT" == "github" || "$COMPONENT" == "pagerduty" || "$COMPONENT" == "single-sign-on" || "$COMPONENT" == "modernisation-platform-account" ]]; then
+            echo "TF_PATH=terraform/$COMPONENT" >> $GITHUB_ENV
+            echo "TF_WORKSPACE=default" >> $GITHUB_ENV
+
+          elif [[ "$COMPONENT" == "environments" ]]; then
+            if [[ -n "$APP_NAME" && -n "$ENV" ]]; then
+              echo "TF_PATH=terraform/environments/$APP_NAME" >> $GITHUB_ENV
+              echo "TF_WORKSPACE=${APP_NAME}-${ENV}" >> $GITHUB_ENV
+            else
+              echo "TF_PATH=terraform/environments" >> $GITHUB_ENV
+              echo "TF_WORKSPACE=default" >> $GITHUB_ENV
+            fi
+
+          elif [[ "$COMPONENT" == bootstrap/* ]]; then
+            if [[ -z "$APP_NAME" || -z "$ENV" ]]; then
+              echo "You must provide 'application_name' and 'environment' for bootstrap"
+              exit 1
+            fi
+            echo "TF_PATH=terraform/environments/$COMPONENT" >> $GITHUB_ENV
+            echo "TF_WORKSPACE=${APP_NAME}-${ENV}" >> $GITHUB_ENV
+
+          else
+            echo "Unknown component: $COMPONENT"
+            exit 1
+          fi
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        with:
+          terraform_version: "~1"
+        
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df # v4.2.1
+        with:
+          role-to-assume: "arn:aws:iam::${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}:role/github-actions-apply"
+          role-session-name: githubactionsrolesession
+          aws-region: "eu-west-2"
+
+      - name: Terraform Init
+        working-directory: ${{ env.TF_PATH }}
+        run: terraform init
+
+      - name: Force Unlock State
+        working-directory: ${{ env.TF_PATH }}
+        run: terraform force-unlock -force ${{ github.event.inputs.lock_id }}

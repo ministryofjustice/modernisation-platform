@@ -187,3 +187,37 @@ resource "aws_ec2_transit_gateway_route_table_association" "external_inspection_
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_vpc_attachment.external_inspection_in.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
+
+# ECP Peering
+data "aws_ec2_transit_gateway_peering_attachment" "ecp_tgw" {
+  filter {
+    name   = "tag:Name"
+    values = ["ECP-TGW-attachment-accepter"]
+  }
+}
+
+resource "aws_ec2_transit_gateway_peering_attachment_accepter" "ecp_tgw_production" {
+  transit_gateway_attachment_id = data.aws_ec2_transit_gateway_peering_attachment.ecp_tgw.id
+  tags = {
+    Name = "ECP-TGW-attachment-accepter"
+    Side = "Acceptor"
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+# ECP routing
+
+# associate tgw external-inspection-in routing table with ECP-TGW peering attachment
+resource "aws_ec2_transit_gateway_route_table_association" "external_inspection_in_ecp" {
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.ecp_tgw.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_in.id
+}
+
+resource "aws_ec2_transit_gateway_route" "inspection_static_routes_ecp" {
+  destination_cidr_block         = "10.205.0.0/20"
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.ecp_tgw.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
+}

@@ -129,7 +129,6 @@ resource "time_static" "key_rotate_period" {
 
 resource "aws_secretsmanager_secret" "testing_ci_iam_user_keys" {
   # checkov:skip=CKV2_AWS_57:Auto rotation done via Terraform
-  provider    = aws.testing-test
   name        = "testing_ci_iam_user_keys"
   policy      = data.aws_iam_policy_document.testing_ci_iam_user_secrets_manager_policy.json
   kms_key_id  = aws_kms_key.testing_ci_iam_user_kms_key.id
@@ -138,7 +137,6 @@ resource "aws_secretsmanager_secret" "testing_ci_iam_user_keys" {
 }
 
 resource "aws_secretsmanager_secret_version" "testing_ci_iam_user_keys" {
-  provider  = aws.testing-test
   secret_id = aws_secretsmanager_secret.testing_ci_iam_user_keys.id
   secret_string = jsonencode({
     AWS_ACCESS_KEY_ID     = aws_iam_access_key.testing_ci.id
@@ -148,7 +146,6 @@ resource "aws_secretsmanager_secret_version" "testing_ci_iam_user_keys" {
 
 # KMS Source
 resource "aws_kms_key" "testing_ci_iam_user_kms_key" {
-  provider                = aws.testing-test
   description             = "testing-ci-user-access-key"
   policy                  = data.aws_iam_policy_document.testing_ci_iam_user_kms_key_policy.json
   enable_key_rotation     = true
@@ -157,7 +154,6 @@ resource "aws_kms_key" "testing_ci_iam_user_kms_key" {
 }
 
 resource "aws_kms_alias" "testing_ci_iam_user_kms_key" {
-  provider      = aws.testing-test
   name          = "alias/testing-ci-user-access-key"
   target_key_id = aws_kms_key.testing_ci_iam_user_kms_key.id
 }
@@ -169,26 +165,10 @@ data "aws_iam_policy_document" "testing_ci_iam_user_kms_key_policy" {
   # checkov:skip=CKV_AWS_356: "policy is directly related to the resource"
 
   statement {
-    sid    = "AllowTestingAccount"
-    effect = "Allow"
-    actions = [
-      "kms:*"
-    ]
-    resources = [
-      "*"
-    ]
-    principals {
-      type = "AWS"
-      identifiers = [
-        data.aws_caller_identity.testing_test.account_id
-      ]
-    }
-  }
-  statement {
     sid    = "AllowModernisationPlatformAccount"
     effect = "Allow"
     actions = [
-      "kms:Decrypt*"
+      "kms:*"
     ]
     resources = [
       "*"
@@ -202,33 +182,17 @@ data "aws_iam_policy_document" "testing_ci_iam_user_kms_key_policy" {
   }
 }
 
-# Secrets manager policy to share the secret to the modernisation platform account
+# Secrets manager policy
 data "aws_iam_policy_document" "testing_ci_iam_user_secrets_manager_policy" {
   # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
   # checkov:skip=CKV_AWS_109: "policy is directly related to the resource"
   # checkov:skip=CKV_AWS_108: "policy is directly related to the resource"
   # checkov:skip=CKV_AWS_356: "policy is directly related to the resource"
   statement {
-    sid    = "AllowTestingAccount"
-    effect = "Allow"
-    actions = [
-      "secretsmanager:*"
-    ]
-    resources = [
-      "*"
-    ]
-    principals {
-      type = "AWS"
-      identifiers = [
-        data.aws_caller_identity.testing_test.account_id
-      ]
-    }
-  }
-  statement {
     sid    = "AllowModernisationPlatformAccount"
     effect = "Allow"
     actions = [
-      "secretsmanager:GetSecretValue"
+      "secretsmanager:*"
     ]
     resources = [
       "*"

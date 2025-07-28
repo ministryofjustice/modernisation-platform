@@ -2,7 +2,7 @@
 owner_slack: "#modernisation-platform"
 title: Operational Processes
 weight: 1
-last_reviewed_on: 2025-05-23
+last_reviewed_on: 2025-07-24
 review_in: 2 weeks
 ---
 
@@ -25,7 +25,7 @@ On ordinary working days from 9AM to 4PM, at least one engineer will:
 
 - Monitor and respond to queries in [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1)
 - Monitor [#modernisation-platform-high-priority-alarms](https://mojdt.slack.com/archives/C03CY6451QT) for incidents
-- Check [#modernisation-platform-notifications](https://mojdt.slack.com/archives/C02L5MCJ12N) for build notifications and Dependabot PRs
+- Check [#modernisation-platform-notifications](https://moj.enterprise.slack.com/archives/C01A44RL0TC) for build notifications and Dependabot PRs
 - Triage new user support requests on the board
 
 The whole support team will:
@@ -82,17 +82,18 @@ Upon approval, confirmation will be communicated, including the assigned support
 
 - Confirm the success of the change in the designated Slack channel and monitor for any issues.
 
-
 ## On-Call Support and Processes
 
 Our on-call support is crucial for addressing critical issues outside of regular hours.
 
 ### On-Call Hours
+
 - Weekdays: 7AM–9AM and 4PM–10PM
 - Weekends and Bank Holidays: 7AM-10PM
 - On-Call support is not available outside of these hours
 
 ### On-Call Rota
+
 - Provided through [Pagerduty](https://moj-digital-tools.pagerduty.com/)
 - Managed through [code](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/pagerduty)
 - Consists of a primary engineer and a secondary engineer
@@ -100,20 +101,25 @@ Our on-call support is crucial for addressing critical issues outside of regular
 - The secondary engineer provides support to the primary as required
 
 ### Responsibilities
+
 On-call engineers will:
+
 - Respond to high-priority incidents during on-call hours
 - Work to resolve these incidents
 
 If unable to resolve an issue, they will:
+
 - Inform the affected team
 - Develop a plan for resolution during normal working hours
 
 ### Critical Incidents Procedure
+
 For critical incidents outside of regular hours:
+
 - Email [contact-on-call-email-address-email.lj5otm6u@moj-digital-tools.pagerduty.com](mailto:contact-on-call-email-address-email.lj5otm6u@moj-digital-tools.pagerduty.com)
 - Include:
-   - Known facts about the incident
-   - Slack channel for further communication
+  - Known facts about the incident
+  - Slack channel for further communication
 - The on-call person will respond via the specified Slack channel as soon as possible
 
 **Note:** This process is ONLY for critical incidents and not for routine out-of-hours application or development support.
@@ -144,6 +150,7 @@ Examples include:
 In these situations:
 
 When posting announcements:
+
 - Use @here and @channel sparingly
 - Consider using visual cues to highlight announcements
 - Commit to and maintain regular update schedules
@@ -151,6 +158,7 @@ When posting announcements:
 Posts in this channel should also be forwarded to [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1).
 
 ### Our on call process
+
 Team members who are on call manage an on call rota in [PagerDuty](https://www.pagerduty.com/). The on call rota consists of a primary engineer and a secondary engineer. The primary engineer is the first point of contact. The Modernisation Platform is complex so we have a secondary engineer on call. Their role is to provide support to the primary if this is required.
 Team members that are new to the rota should ensure that they have a secondary who has enough knowledge and experience of the process to support them.
 
@@ -178,4 +186,4 @@ We maintain documentation in all of our GitHub repositories.
 
 The [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform) is the starting point for our documentation.
 
-The [Modernisation Platform User Guide](https://user-guide.modernisation-platform.service.justice.gov.uk)is our front door for users, containing concepts, guides, runbooks, and other helpful information.
+The [Modernisation Platform User Guide](https://user-guide.modernisation-platform.service.justice.gov.uk) is our front door for users, containing concepts, guides, runbooks, and other helpful information.
