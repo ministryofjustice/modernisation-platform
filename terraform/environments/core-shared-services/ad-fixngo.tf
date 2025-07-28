@@ -216,6 +216,7 @@ locals {
               "kms:Decrypt",
               "kms:ReEncrypt*",
               "kms:GenerateDataKey*",
+              "kms:GenerateDataKeyWithoutPlainText", 
               "kms:DescribeKey",
               "kms:CreateGrant",
               "kms:ListGrants",
@@ -233,9 +234,56 @@ locals {
               "ec2:DescribeVolumes",
               "ec2:DescribeTags",
               "ec2:DescribeInstances",
+              "ec2:StartInstances", 
+              "ec2:StopInstances"
             ]
             resources = ["*"]
           },
+          {
+            sid: "EC2"
+            effect = "Allow" 
+            actions = ["ec2:GetPasswordData"] 
+            resources = ["*"]
+          }, 
+          {
+            sid = "SSMStartSession"
+            effect = "Allow"
+            actions = ["ssm:StartSession"] 
+            resources = [ 
+              "arn:aws:ssm:*:*:document/AWS-StartPortForwardingSession", 
+              "arn:aws:ec2:*:*:instance/*" ] 
+          }, 
+          { 
+            sid = "GuiConnect" 
+            effect = "Allow"
+            actions = [ 
+              "ssm-guiconnect:StartConnection", 
+              "ssm-guiconnect:GetConnection", 
+              "ssm-guiconnect:CancelConnection" 
+              ]
+            resources = ["*"] 
+          }, 
+          {
+            sid = "SSMPermissions"
+            effect = "Allow"
+            actions = [ 
+              "ssm:ListCommands", 
+              "ssm:ListCommandInvocations", 
+              "ssm:GetCommandInvocation", 
+              "ssm:DescribeInstanceInformation", 
+              "ssm:SendCommand" 
+              ] 
+            resources = ["*"] 
+          }, 
+          { 
+            sid = "ComputeOptimizer"
+            effect = "Allow"
+            actions = [ 
+              "compute-optimizer:GetEnrollmentStatus", 
+              "compute-optimizer:GetEC2InstanceRecommendations" 
+            ]
+            resources = ["*"] 
+          }
         ]
       }
       ad-fixngo-nonlive-secrets-policy = {
