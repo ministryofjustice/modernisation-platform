@@ -283,6 +283,16 @@ locals {
             resources = ["*"]
           },
           {
+            sid    = "EC2InstanceManagement",
+            effect = "Allow",
+            actions = [
+              "ec2:StartInstances",
+              "ec2:StopInstances",
+              "ec2:RebootInstances"
+            ],
+            resources = ["*"]
+          },
+          {
             sid    = "SSMStartSession",
             effect = "Allow",
             actions = [
