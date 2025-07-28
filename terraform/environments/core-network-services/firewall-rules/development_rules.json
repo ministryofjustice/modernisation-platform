@@ -727,5 +727,19 @@
     "destination_ip": "$AWS_SMTP_EU_WEST_2",
     "destination_port": "587",
     "protocol": "TCP"
+  },
+  "data-eng-dev_to_hmpps-dev_oracledb-1521": {
+    "action": "PASS",
+    "source_ip": "${data-engineering-dev}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "data-eng-dev_to_hmpps-dev_oracledb-1522": {
+    "action": "PASS",
+    "source_ip": "${data-engineering-dev}",
+    "destination_ip": "${hmpps-development}",
+    "destination_port": "1522",
+    "protocol": "TCP"
   }
 }
