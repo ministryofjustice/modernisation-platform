@@ -17,6 +17,9 @@ jobs:
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
+    permissions:
+      id-token: write
+      contents: read
   format-code:
     needs: fetch-secrets
     permissions:
