@@ -52,7 +52,7 @@ jobs:
       - name: Commit changes to GitHub
         run: bash ./core-repo/scripts/git-setup.sh ./modernisation-platform-environments
       - name: Commit and Create PR with Signed Commit
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@bug/sc-remote-branch-commit # test branch
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@ac5b118d8d519a521d3a526b564f49fa294dce2c # v3.4.1
         with:
           github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }} # use this token as writing to a different repo
           remote_repository: "ministryofjustice/modernisation-platform-environments"
