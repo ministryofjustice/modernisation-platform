@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Resource restrictions based on ABAC
-last_reviewed_on: 2025-01-20
+last_reviewed_on: 2025-07-29
 review_in: 6 months
 ---
 
@@ -29,8 +29,8 @@ it will allow users to create ec2 instances for there team that only that team c
 
 ## Where is the code
 
-The code for this is located in the Modernisation platform repository [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/single-sign-on/policies.tf)
-If you look at the code you will see that we are using  a double negative condition to do the restriction and also restricting based on aws:AccountPrincipal that leave room to expand this out to other accounts if we need to, as you can see from the example below this is the code we used to impelment Using Attribute Based Access Control on the Modernisation Platform
+The code for this is located in the Modernisation platform repository [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/single-sign-on/policies.tf).
+If you look at the code you will see that we are using  a double negative condition to do the restriction and also restricting based on aws:AccountPrincipal that leave room to expand this out to other accounts if we need to. As you can see from the example below this is the code we used to implement Using Attribute Based Access Control on the Modernisation Platform.
 
 ```
 statement {
@@ -68,10 +68,10 @@ statement {
 ```
 
 
-## How do i use this feature
+## How do I use this feature
 
-To take advantage of this feature a PR will need to be raised on the modernisation platform repository to grant your team access to the instance manage role on the core shared services account by amending the following file
-[core-shared-services-environment](https://github.com/ministryofjustice/modernisation-platform/blob/main/environments/core-shared-services.json) and add in your sso_group_name see example below. As this is only affecting the core-shared-services account exsisting uses of the instancemanagment role will not be affected by the ABAC resource restrictions
+To take advantage of this feature, a PR will need to be raised on the modernisation platform repository to grant your team access to the instance management role on the core shared services account by amending the following file
+[core-shared-services-environment](https://github.com/ministryofjustice/modernisation-platform/blob/main/environments/core-shared-services.json) and add in your sso_group_name see example below. As this is only affecting the core-shared-services account existing uses of the instance management role will not be affected by the ABAC resource restrictions.
 
 ```
 {
