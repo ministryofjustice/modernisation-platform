@@ -8,6 +8,10 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
+        },
+         {
+          "sso_group_name": "v1-hub20-developers",
+          "level": "developer"
         }
       ],
       "nuke": "exclude"
