@@ -216,7 +216,6 @@ locals {
               "kms:Decrypt",
               "kms:ReEncrypt*",
               "kms:GenerateDataKey*",
-              "kms:GenerateDataKeyWithoutPlainText", 
               "kms:DescribeKey",
               "kms:CreateGrant",
               "kms:ListGrants",
@@ -233,56 +232,9 @@ locals {
             actions = [
               "ec2:DescribeVolumes",
               "ec2:DescribeTags",
-              "ec2:DescribeInstances",
-              "ec2:StartInstances", 
-              "ec2:StopInstances"
+              "ec2:DescribeInstances"
             ]
             resources = ["*"]
-          },
-          {
-            sid: "EC2"
-            effect = "Allow" 
-            actions = ["ec2:GetPasswordData"] 
-            resources = ["*"]
-          }, 
-          {
-            sid = "SSMStartSession"
-            effect = "Allow"
-            actions = ["ssm:StartSession"] 
-            resources = [ 
-              "arn:aws:ssm:*:*:document/AWS-StartPortForwardingSession", 
-              "arn:aws:ec2:*:*:instance/*" ] 
-          }, 
-          { 
-            sid = "GuiConnect" 
-            effect = "Allow"
-            actions = [ 
-              "ssm-guiconnect:StartConnection", 
-              "ssm-guiconnect:GetConnection", 
-              "ssm-guiconnect:CancelConnection" 
-              ]
-            resources = ["*"] 
-          }, 
-          {
-            sid = "SSMPermissions"
-            effect = "Allow"
-            actions = [ 
-              "ssm:ListCommands", 
-              "ssm:ListCommandInvocations", 
-              "ssm:GetCommandInvocation", 
-              "ssm:DescribeInstanceInformation", 
-              "ssm:SendCommand" 
-              ] 
-            resources = ["*"] 
-          }, 
-          { 
-            sid = "ComputeOptimizer"
-            effect = "Allow"
-            actions = [ 
-              "compute-optimizer:GetEnrollmentStatus", 
-              "compute-optimizer:GetEC2InstanceRecommendations" 
-            ]
-            resources = ["*"] 
           }
         ]
       }
@@ -319,41 +271,82 @@ locals {
         ]
       }
       ad-fixngo-fleetmanager-access-policy = {
-        description = "Policy to allow FleetManager access via console"
-        path        = "/"
+        description = "Policy to allow FleetManager access via console",
+        path        = "/",
         statements = [
           {
-            sid    = "EC2",
-            effect = "Allow",
+            sid     = "EC2",
+            effect  = "Allow",
             actions = [
               "ec2:GetPasswordData",
+              "ec2:StartInstances", 
+              "ec2:StopInstances"
             ],
             resources = ["*"]
           },
           {
-            sid    = "SSMStartSession",
-            effect = "Allow",
+            sid     = "SSMStartSession",
+            effect  = "Allow",
             actions = [
-              "ssm:StartSession"
+              "ssm:StartSession",
+              "ssm:DescribeInstanceInformation",
+              "ssm:GetConnectionStatus",
+              "ssm:DescribeSessions",
+              "ssm:TerminateSession"
             ],
             resources = [
               "arn:aws:ec2:*:*:instance/*",
-              "arn:aws:ssm:*:*:document/AWS-StartPortForwardingSession"
+              "arn:aws:ssm:*:*:document/AWS-StartPortForwardingSession",
+              "arn:aws:ssm:*:*:document/SSM-SessionManagerRunShell"
             ]
           },
           {
-            sid    = "GuiConnect",
-            effect = "Allow",
+            sid     = "SSMPermissions",
+            effect  = "Allow",
+            actions = [ 
+              "ssm:ListCommands", 
+              "ssm:ListCommandInvocations", 
+              "ssm:GetCommandInvocation", 
+              "ssm:DescribeInstanceInformation", 
+              "ssm:SendCommand"
+            ],
+            resources = ["*"]
+          },
+          {
+            sid     = "GuiConnect",
+            effect  = "Allow",
             actions = [
               "ssm-guiconnect:CancelConnection",
               "ssm-guiconnect:GetConnection",
               "ssm-guiconnect:StartConnection"
             ],
             resources = ["*"]
+          },
+          { 
+            sid     = "ComputeOptimizer",
+            effect  = "Allow",
+            actions = [ 
+              "compute-optimizer:GetEnrollmentStatus", 
+              "compute-optimizer:GetEC2InstanceRecommendations" 
+            ],
+            resources = ["*"]
+          },
+          { 
+            sid     = "KMSPermissions",
+            effect  = "Allow",
+            actions = [ 
+              "kms:CreateGrant", 
+              "kms:Decrypt", 
+              "kms:GenerateDataKeyWithoutPlainText", 
+              "kms:DescribeKey", 
+              "kms:ReEncrypt*"
+            ],
+            resources = ["*"]
           }
         ]
       }
-    }
+
+  }
 
     fsx_windows_file_systems = {
       ad-azure-fsx = {
