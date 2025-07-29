@@ -11,6 +11,10 @@
         {
           "sso_group_name": "azure-aws-sso-tsd-solutionarchitects",
           "level": "read-only"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-OSPT",
+          "level": "read-only"
         }
       ]
     }
