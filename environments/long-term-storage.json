@@ -26,5 +26,6 @@
     "owner": "hosting-leads@digital.justice.gov.uk",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [""]
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
 }
