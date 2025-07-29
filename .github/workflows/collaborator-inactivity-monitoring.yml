@@ -2,7 +2,7 @@ name: Check Inactive Collaborators
 
 on:
   schedule:
-    - cron: '30 9 */100,1-7 * 1'
+    - cron: '30 9 * * 1'
   workflow_dispatch:
 
 env:
@@ -38,7 +38,16 @@ jobs:
 
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          echo "ENVIRONMENT_MANAGEMENT: $ENVIRONMENT_MANAGEMENT"
+          if [ -z "$ENVIRONMENT_MANAGEMENT" ]; then
+            echo "ENVIRONMENT_MANAGEMENT is empty or not set"
+            exit 1
+          fi
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          if [ $? -ne 0 ] || [ -z "$ACCOUNT_NUMBER" ]; then
+            echo "Failed to extract modernisation_platform_account_id from ENVIRONMENT_MANAGEMENT"
+            exit 1
+          fi
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
 
@@ -78,7 +87,16 @@ jobs:
     
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          echo "ENVIRONMENT_MANAGEMENT: $ENVIRONMENT_MANAGEMENT"
+          if [ -z "$ENVIRONMENT_MANAGEMENT" ]; then
+            echo "ENVIRONMENT_MANAGEMENT is empty or not set"
+            exit 1
+          fi
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          if [ $? -ne 0 ] || [ -z "$ACCOUNT_NUMBER" ]; then
+            echo "Failed to extract modernisation_platform_account_id from ENVIRONMENT_MANAGEMENT"
+            exit 1
+          fi
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
 
@@ -151,7 +169,16 @@ jobs:
 
       - name: Set Account Number
         run: |
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          echo "ENVIRONMENT_MANAGEMENT: $ENVIRONMENT_MANAGEMENT"
+          if [ -z "$ENVIRONMENT_MANAGEMENT" ]; then
+            echo "ENVIRONMENT_MANAGEMENT is empty or not set"
+            exit 1
+          fi
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          if [ $? -ne 0 ] || [ -z "$ACCOUNT_NUMBER" ]; then
+            echo "Failed to extract modernisation_platform_account_id from ENVIRONMENT_MANAGEMENT"
+            exit 1
+          fi
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
 
