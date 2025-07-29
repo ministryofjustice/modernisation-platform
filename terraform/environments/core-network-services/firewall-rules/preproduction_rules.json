@@ -777,5 +777,19 @@
     "destination_ip": "$LAA_FTP_ENDPOINTS",
     "destination_port": "$LAA_FTP_TCP",
     "protocol": "TCP"
+  },
+  "laa_preproduction_to_laa_preproduction_ccms_soa_mp": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${laa-lz-staging}",
+    "destination_port": "$LAA_CCMS_SOA",
+    "protocol": "TCP"
+  },
+  "laa_preproduction_ccms_soa_mp_to_laa_preproduction": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-staging}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "$LAA_CCMS_SOA",
+    "protocol": "TCP"
   }
 }
