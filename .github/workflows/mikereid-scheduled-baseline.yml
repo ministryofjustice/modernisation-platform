@@ -82,48 +82,64 @@ jobs:
       block_ids: ${{ steps.split.outputs.block_ids }}
       all_accounts_by_block: ${{ steps.split.outputs.all_accounts_by_block }}
     steps:
-      - name: Split the account list into blocks
+      - name: Split the account list into blocks as defined by BLOCK_COUNT
         id: split
         run: |
           BLOCK_COUNT=4
+
+          # Sort the incoming account list
           sorted=$(echo "$account_list" | jq -c 'sort')
+          echo "::group::Sorted Accounts"
+          echo "$sorted" | jq .
+          echo "::endgroup::"
+
           total=$(echo "$sorted" | jq 'length')
           base=$(( total / BLOCK_COUNT ))
-          start=0
+          remainder=$(( total % BLOCK_COUNT ))
 
+          echo "Total accounts: $total"
+          echo "Block count: $BLOCK_COUNT"
+          echo "Base accounts per block: $base"
+          echo "Remainder to distribute: $remainder"
+
+          start=0
           block_ids="["
-          mappings=()
+          all_accounts_by_block="["
 
           for i in $(seq 1 $BLOCK_COUNT); do
             key="block_$i"
             block_ids+="\"$key\","
 
-            if [ "$i" -eq "$BLOCK_COUNT" ]; then
-              end=$total
-            else
-              end=$(( start + base ))
+            # Distribute remainder across the first N blocks
+            extra=0
+            if [ "$i" -le "$remainder" ]; then
+              extra=1
             fi
 
+            end=$(( start + base + extra ))
+
+            # Extract accounts for this block
             block=$(echo "$sorted" | jq ".[$start:$end]")
+
+            # Log to console
+            echo "::group::$key"
+            echo "$block" | jq .
+            echo "::endgroup::"
+
+            # Append each account with its block
             for acct in $(echo "$block" | jq -r '.[]'); do
-              mappings+=("{\"account\":\"$acct\",\"block\":\"$key\"}")
+              all_accounts_by_block+="{\"account\":\"$acct\",\"block\":\"$key\"},"
             done
 
             start=$end
           done
 
+          # Remove trailing commas and close JSON arrays
           block_ids="${block_ids%,}]"
-          all_accounts_by_block=$(printf "%s\n" "${mappings[@]}" | jq -s '.')
+          all_accounts_by_block="${all_accounts_by_block%,}]"
 
-          # Print for debug
-          echo "::group::Account block assignments"
-          echo "$all_accounts_by_block" | jq .
-          echo "::endgroup::"
-
-          # Compact the JSON to one line to prevent GitHub output parse failure
-          escaped=$(echo "$all_accounts_by_block" | jq -c '.')
           echo "block_ids=$block_ids" >> $GITHUB_OUTPUT
-          echo "all_accounts_by_block=$escaped" >> $GITHUB_OUTPUT
+          echo "all_accounts_by_block=$all_accounts_by_block" >> $GITHUB_OUTPUT
 
 
   run-account-tasks:
