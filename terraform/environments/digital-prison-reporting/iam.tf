@@ -11,7 +11,32 @@ resource "aws_iam_role" "circleci_iam_role" {
       },
       Condition = {
         StringLike = {
-          "${aws_iam_openid_connect_provider.circleci_oidc_provider.url}:sub" = "org/${local.secret_json.organisation_id}/*"
+          "${aws_iam_openid_connect_provider.circleci_oidc_provider.url}:sub" = [
+            "org/${local.secret_json.organisation_id}/project/a8261e54-d33e-457d-987d-a7e72b8fa71d/user/*",
+            "org/${local.secret_json.organisation_id}/project/fc34a59d-eef0-41b5-95aa-49b79c9df464/user/*",
+            "org/${local.secret_json.organisation_id}/project/b7521033-fef1-4704-b6bf-a5de64dfd172/user/*",
+            "org/${local.secret_json.organisation_id}/project/e005cebb-d1a6-48b7-899f-f4e98f69b5f9/user/*",
+            "org/${local.secret_json.organisation_id}/project/8efea430-97f8-460d-8176-32cdf8cb1496/user/*",
+            "org/${local.secret_json.organisation_id}/project/9e49c173-8b12-4a45-b6f5-c070326f70e3/user/*",
+            "org/${local.secret_json.organisation_id}/project/12265069-d7d2-4793-9208-6c2776768e79/user/*",
+            "org/${local.secret_json.organisation_id}/project/4558740e-b873-4afe-ab89-c0bfac5eb1dd/user/*",
+            "org/${local.secret_json.organisation_id}/project/eae023cd-eee1-4ed6-b56c-8e13e669c11e/user/*",
+            "org/${local.secret_json.organisation_id}/project/e0dc8cbb-56a5-4d6b-a2e5-07eedc3fafbf/user/*",
+            "org/${local.secret_json.organisation_id}/project/76e04379-39d8-4324-ad9a-3a3a6fe57714/user/*",
+            "org/${local.secret_json.organisation_id}/project/0395c2c2-47ba-4f35-a1d5-14d44e44ab2f/user/*",
+            "org/${local.secret_json.organisation_id}/project/9ac0841a-b64e-4bcf-85de-5db560c160c5/user/*",
+            "org/${local.secret_json.organisation_id}/project/5bdf3d6a-7e24-430d-9421-b2d622562e67/user/*",
+            "org/${local.secret_json.organisation_id}/project/659d5a35-b178-409b-ad93-fa6c06b3cc17/user/*",
+            "org/${local.secret_json.organisation_id}/project/e470ab22-fab7-4a5e-a517-626e5caa6083/user/*",
+            "org/${local.secret_json.organisation_id}/project/5fed69c2-94a7-4928-89e0-90c61a701112/user/*",
+            "org/${local.secret_json.organisation_id}/project/be550f96-5baa-4106-9bd2-df7cadd8e2c1/user/*",
+            "org/${local.secret_json.organisation_id}/project/5bd0fe14-af38-4aa1-bbd7-8b72ba80abbf/user/*",
+            "org/${local.secret_json.organisation_id}/project/eb20746e-4f04-40bc-b874-68fde01bda11/user/*",
+            "org/${local.secret_json.organisation_id}/project/d0d6f90e-9f96-4477-a192-8986a852bb26/user/*",
+            "org/${local.secret_json.organisation_id}/project/266309bc-91c3-4cf8-9656-9774e7aca0fd/user/*",
+            "org/${local.secret_json.organisation_id}/project/92ef16a0-e54e-4edd-9e54-b21e0e3ea2c3/user/*",
+            "org/${local.secret_json.organisation_id}/project/b67f0d73-43d8-4213-9a40-dc096ee986d6/user/*"
+          ]
         }
       }
     }]
