@@ -2,7 +2,7 @@ name: Check Inactive Collaborators
 
 on:
   schedule:
-    - cron: '30 9 1-7 * 1'
+    - cron: '30 9 */100,1-7 * 1'
   workflow_dispatch:
 
 env:
@@ -24,8 +24,8 @@ jobs:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
   
   disable-login-for-inactive-collaborators:
-    needs: fetch-secrets
     runs-on: ubuntu-latest
+    needs: fetch-secrets
     steps:
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -38,16 +38,7 @@ jobs:
 
       - name: Set Account Number
         run: |
-          echo "ENVIRONMENT_MANAGEMENT: $ENVIRONMENT_MANAGEMENT"
-          if [ -z "$ENVIRONMENT_MANAGEMENT" ]; then
-            echo "ENVIRONMENT_MANAGEMENT is empty or not set"
-            exit 1
-          fi
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
-          if [ $? -ne 0 ] || [ -z "$ACCOUNT_NUMBER" ]; then
-            echo "Failed to extract modernisation_platform_account_id from ENVIRONMENT_MANAGEMENT"
-            exit 1
-          fi
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
 
@@ -67,8 +58,8 @@ jobs:
         run: bash ./scripts/iam-monitoring/collaborators-inactivity-monitoring/disable_user_credentials.sh
 
   notify-inactive-collaborators:
-    needs: disable-login-for-inactive-collaborators
     runs-on: ubuntu-latest
+    needs: disable-login-for-inactive-collaborators
     steps:
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -87,16 +78,7 @@ jobs:
     
       - name: Set Account Number
         run: |
-          echo "ENVIRONMENT_MANAGEMENT: $ENVIRONMENT_MANAGEMENT"
-          if [ -z "$ENVIRONMENT_MANAGEMENT" ]; then
-            echo "ENVIRONMENT_MANAGEMENT is empty or not set"
-            exit 1
-          fi
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
-          if [ $? -ne 0 ] || [ -z "$ACCOUNT_NUMBER" ]; then
-            echo "Failed to extract modernisation_platform_account_id from ENVIRONMENT_MANAGEMENT"
-            exit 1
-          fi
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
 
@@ -154,8 +136,8 @@ jobs:
           fi
 
   schedule-user-deletion:
-    needs: fetch-secrets
     runs-on: ubuntu-latest
+    needs: fetch-secrets
     steps:
       - name: Checkout Repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -169,16 +151,7 @@ jobs:
 
       - name: Set Account Number
         run: |
-          echo "ENVIRONMENT_MANAGEMENT: $ENVIRONMENT_MANAGEMENT"
-          if [ -z "$ENVIRONMENT_MANAGEMENT" ]; then
-            echo "ENVIRONMENT_MANAGEMENT is empty or not set"
-            exit 1
-          fi
-          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
-          if [ $? -ne 0 ] || [ -z "$ACCOUNT_NUMBER" ]; then
-            echo "Failed to extract modernisation_platform_account_id from ENVIRONMENT_MANAGEMENT"
-            exit 1
-          fi
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
 
