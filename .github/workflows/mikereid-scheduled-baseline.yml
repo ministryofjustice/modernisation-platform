@@ -121,6 +121,9 @@ jobs:
             # Extract accounts for this block
             block=$(echo "$sorted" | jq ".[$start:$end]")
 
+            count=$(echo "$block" | jq 'length')
+            echo "Block $key has $count accounts"
+
             # Log to console
             echo "::group::$key"
             echo "$block" | jq .
