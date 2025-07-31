@@ -79,110 +79,63 @@ jobs:
     env:
       account_list: ${{ needs.setup-prerequisites.outputs.account_list }}
     outputs:
-      block_ids: ${{ steps.split.outputs.block_ids }}
-      all_accounts_by_block: ${{ steps.split.outputs.all_accounts_by_block }}
+      block_1: ${{ steps.split.outputs.block_1 }}
+      block_2: ${{ steps.split.outputs.block_2 }}
+      block_3: ${{ steps.split.outputs.block_3 }}
+      block_4: ${{ steps.split.outputs.block_4 }}
     steps:
-      - name: Split the account list into blocks as defined by BLOCK_COUNT
-        id: split
+      - id: split
         run: |
           BLOCK_COUNT=4
 
-          # Sort the incoming account list
           sorted=$(echo "$account_list" | jq -c 'sort')
-          echo "::group::Sorted Accounts"
-          echo "$sorted" | jq .
-          echo "::endgroup::"
-
           total=$(echo "$sorted" | jq 'length')
           base=$(( total / BLOCK_COUNT ))
           remainder=$(( total % BLOCK_COUNT ))
-
-          echo "Total accounts: $total"
-          echo "Block count: $BLOCK_COUNT"
-          echo "Base accounts per block: $base"
-          echo "Remainder to distribute: $remainder"
-
           start=0
-          block_ids="["
-          all_accounts_by_block="["
 
           for i in $(seq 1 $BLOCK_COUNT); do
             key="block_$i"
-            block_ids+="\"$key\","
 
-            # Distribute remainder across the first N blocks
+            # Distribute remainder
             extra=0
             if [ "$i" -le "$remainder" ]; then
               extra=1
             fi
 
             end=$(( start + base + extra ))
-
-            # Extract accounts for this block
             block=$(echo "$sorted" | jq ".[$start:$end]")
+            compact=$(echo "$block" | jq -c '.')
 
-            count=$(echo "$block" | jq 'length')
-            echo "Block $key has $count accounts"
-
-            # Log to console
             echo "::group::$key"
             echo "$block" | jq .
             echo "::endgroup::"
 
-            # Append each account with its block
-            for acct in $(echo "$block" | jq -r '.[]'); do
-              all_accounts_by_block+="{\"account\":\"$acct\",\"block\":\"$key\"},"
-            done
+            echo "$key=$compact" >> "$GITHUB_OUTPUT"
 
             start=$end
           done
 
-          # Remove trailing commas and close JSON arrays
-          block_ids="${block_ids%,}]"
-          all_accounts_by_block="${all_accounts_by_block%,}]"
-
-          echo "block_ids=$block_ids" >> $GITHUB_OUTPUT
-          echo "all_accounts_by_block=$all_accounts_by_block" >> $GITHUB_OUTPUT
-
-
-  run-account-tasks:
-    needs: define-jobs
-    runs-on: ubuntu-latest
-    outputs:
-      block_1: ${{ steps.filter.outputs.block_1 }}
-      block_2: ${{ steps.filter.outputs.block_2 }}
-      block_3: ${{ steps.filter.outputs.block_3 }}
-      block_4: ${{ steps.filter.outputs.block_4 }}
-    steps:
-      - id: filter
-        run: |
-          raw='${{ needs.define-jobs.outputs.all_accounts_by_block }}'
-          for i in $(seq 1 4); do
-            blk="block_$i"
-            filtered=$(echo "$raw" | jq -c --arg blk "$blk" '[.[] | select(.block == $blk) | .account]')
-            echo "$blk=$filtered" >> "$GITHUB_OUTPUT"
-          done
-
   run-account-workflow-block-1:
-    needs: run-account-tasks
+    needs: define-jobs
     uses: ministryofjustice/modernisation-platform/.github/workflows/mikereid-test-reusable.yml@10910
     with:
-      accounts: ${{ needs.run-account-tasks.outputs.block_1 }}
+      accounts: ${{ needs.define-jobs.outputs.block_1 }}
 
   run-account-workflow-block-2:
-    needs: run-account-tasks
+    needs: define-jobs
     uses: ministryofjustice/modernisation-platform/.github/workflows/mikereid-test-reusable.yml@10910
     with:
-      accounts: ${{ needs.run-account-tasks.outputs.block_2 }}
+      accounts: ${{ needs.define-jobs.outputs.block_2 }}
 
   run-account-workflow-block-3:
-    needs: run-account-tasks
+    needs: define-jobs
     uses: ministryofjustice/modernisation-platform/.github/workflows/mikereid-test-reusable.yml@10910
     with:
-      accounts: ${{ needs.run-account-tasks.outputs.block_3 }}
+      accounts: ${{ needs.define-jobs.outputs.block_3 }}
 
   run-account-workflow-block-4:
-    needs: run-account-tasks
+    needs: define-jobs
     uses: ministryofjustice/modernisation-platform/.github/workflows/mikereid-test-reusable.yml@10910
     with:
-      accounts: ${{ needs.run-account-tasks.outputs.block_4 }}
+      accounts: ${{ needs.define-jobs.outputs.block_4 }}
