@@ -258,7 +258,7 @@ setup_environment_reviewers() {
   fi
 
   # Create/update environment
-  #create_environment "${environment_name}" "${reviewers_json}"
+  create_environment "${environment_name}" "${reviewers_json}"
   echo "=== Finished processing ${environment_name} ==="
   echo
 }
