@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Disaster Recovery Process
-last_reviewed_on: 2025-01-27
+last_reviewed_on: 2025-07-31
 review_in: 6 months
 ---
 
@@ -26,16 +26,16 @@ It covers permanent loss of all infrastructure, temporary loss of all infrastruc
 ## Diagnose
 
 
-To find out the severity of the situation, check the AWS status page [here](https://health.aws.amazon.com/health/status ).
+To find out the severity of the situation, check the AWS status page [here](https://health.aws.amazon.com/health/status).
 
 
 Regardless of which type of disaster recovery situation there is, you should contact AWS **immediately**, understanding if this is an outage for 1 hour or 1 month will dictate the next steps to take.
 
 
-- If the issue is across all accounts, login to the Modernisation Platform account, and raise the highest level severity ticket, whilst also engaging with our AWS representative in the `#ext-aws` channel.
+- If the issue is across all accounts, login to the Modernisation Platform account, and raise the highest level severity ticket, whilst also engaging with our AWS representative in the `#ext-aws` slack channel.
 
 
-- If this issue is in one account, login to that account, and raise the highest level severity ticket if production, and also engaging with our AWS representative in the `#ext-aws` channel.
+- If this issue is in one account, login to that account, and raise the highest level severity ticket if production, and also engaging with our AWS representative in the `#ext-aws` slack channel.
 
 
 - If this occurs during working hours, create a huddle / meet and follow the escalation process outlined below. 
@@ -47,11 +47,11 @@ Regardless of which type of disaster recovery situation there is, you should con
 ## Internal Escalation
 
 
-Once AWS have been contacted, and a ticket has been raised, please esclate to the following people.
+Once AWS have been contacted, and a ticket has been raised, please escalate to the following people.
 
 - Modernisation Platform Product Manager - Simon Pledger
 - Hosting Service Owner - Sean Privett
-- Deputy Director / Head of Platforms and Architecture - Martyn Inglis
+- Deputy Director / Head of Platforms and Architecture - Jen Oliver
 - Digital Director - Kamal Bal
 
 
@@ -88,7 +88,7 @@ Following [this]( https://user-guide.modernisation-platform.service.justice.gov.
 Once a ticket has been raised with AWS, and we have engaged with them and have total confirmation that the infrastructure will be returning within X number of minutes or hours, we will need to pass this information on for an informed decision to be made above.
 
 
-Only when we have this, can we update users on what is next.
+Only when we have this, can we update users on what comes next.
 
 
 ### Priority list
@@ -119,7 +119,7 @@ If there is limited availability, power off all member infrastructure in the tes
 
 Things to remember
 
-- Don't forget the statefile, this could cause issues when rebuilding and generating plans.
+- Don't forget the state file, this could cause issues when rebuilding and generating plans.
 - Backups, our infrastructure is cross region where possible, as stated in the table, however, we will need to help teams with restoring theirs if possible.
 
 ### Will it be returning
@@ -139,7 +139,7 @@ Assuming this is a production account with no time given to return, please follo
 
 Rebuilding an account entirely through workflows would be the next step, and in an ideal scenario this would work first time, however when errors occur, debugging Terraform plans and applies locally saves a lot of time.
 
-Scenarios are never as cut and dry as ‘all infrastructure has vanished from one account’, so working and debugging the issues that occur will be quicker locally.
+Scenarios are never as cut and dried as ‘all infrastructure has vanished from one account’, so working and debugging the issues that occur will be quicker locally.
 
 **Member Accounts** - Located [here](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/new-environment.yml), running the new environment workflow should begin the steps of an account creation for member accounts.
 
@@ -161,7 +161,7 @@ Scenarios are never as cut and dry as ‘all infrastructure has vanished from on
 ### Things to remember
 
 
-- Statefile for the lost account will exist, this might need to be removed.
+- State file for the lost account will exist, this might need to be removed.
 - Any backups on the account or volumes will be lost.
 
 
@@ -187,7 +187,7 @@ Firstly, inform the following channels of the situation and put forward a contac
 `#modernisation-platform-alerts`
 
 
-Supply the ETAs, lead incident numbers, links to where updates will be posted etc. We will mention our commitment to regularly we will update the incident, however until we know what is expected this is an unknown.
+Supply the ETAs, lead incident numbers, links to where updates will be posted etc. We will mention our commitment to regularly update the incident, however until we know what is expected this is an unknown.
 
 
 ### Cross Region Infrastructure in the Platform
@@ -205,7 +205,6 @@ Supply the ETAs, lead incident numbers, links to where updates will be posted et
 | Transit Gateway | Not cross region. | | |
 | NACLS | Not cross region. | | |
 | Subnets | Not cross region. | | |
-| Dynamo DB | modernisation-platform-terraform-state-lock table| No, but can be replicated | TBC |
 | ACM Private Certificate Authority | Private certificate authorities (CAs) are Regional resources. To use private CAs in more than one Region, you must create your CAs in those Regions. You cannot copy private CAs between Regions | No  | TBC |
 
 
@@ -224,7 +223,7 @@ Use the version number stated so these changes are easily recognisable. The vers
 | Main Repo | https://github.com/ministryofjustice/modernisation-platform | Houses all of the Terraform that builds the platform, many modules will be referenced in here and will need the variables changed. | Variable |
 | Environments Repo | https://github.com/ministryofjustice/modernisation-platform-environments | Customers responsibility (although we might need to help) | - |
 | Bastion Linux | https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux | Used by teams to create a bastion EC2 instance, module tests have a hard coded region but the module itself has a variable when called, no change required to the module. | Region variable |
-| ConfigurationManagement | https://github.com/ministryofjustice/modernisation-platform-configuration-management | This repository contains configuration management of the ec2 infrastructure hosted on the ModernisationPlatform. Requires hardcoded eu-west-2 to be changed. | User managed repo |
+| Configuration Management | https://github.com/ministryofjustice/modernisation-platform-configuration-management | This repository contains configuration management of the ec2 infrastructure hosted on the ModernisationPlatform. Requires hardcoded eu-west-2 to be changed. | User managed repo |
 | Instance Scheduler | https://github.com/ministryofjustice/modernisation-platform-instance-scheduler | A Go lambda function for stopping and starting instances, RDS resources and autoscaling groups. | Not required for DR |
 | S3 Bucket | https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket | A Terraform module to standardise S3 buckets with sensible defaults. | No, region variable when called. | Region variable |
 | AWS VM Import | https://github.com/ministryofjustice/modernisation-platform-terraform-aws-vm-import | | Region variable |
