@@ -1300,13 +1300,25 @@ module "yjaf_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-production"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-development"]}:role/circleci_iam_role",
     "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-test"]}:role/circleci_iam_role",
+    "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-preproduction"]}:role/circleci_iam_role",
+    "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-production"]}:role/circleci_iam_role"
+
   ]
 
   pull_principals = [
     local.environment_management.account_ids["youth-justice-app-framework-development"],
     local.environment_management.account_ids["youth-justice-app-framework-test"],
     local.environment_management.account_ids["youth-justice-app-framework-preproduction"],
-    local.environment_management.account_ids["youth-justice-app-framework-production"]
+    local.environment_management.account_ids["youth-justice-app-framework-production"],
+    "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-development"]}:role/yjaf-cluster-ecs-task-execution-role",
+    "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-test"]}:role/yjaf-cluster-ecs-task-execution-role",
+    "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-preproduction"]}:role/yjaf-cluster-ecs-task-execution-role",
+    "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-production"]}:role/yjaf-cluster-ecs-task-execution-role",
+    "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-development"]}:role/circleci_iam_role",
+    "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-test"]}:role/circleci_iam_role",
+    "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-preproduction"]}:role/circleci_iam_role",
+    "arn:aws:iam::${local.environment_management.account_ids["youth-justice-app-framework-production"]}:role/circleci_iam_role"
   ]
 
   # Tags
