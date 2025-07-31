@@ -6,6 +6,7 @@ github_org="ministryofjustice"
 repository="${github_org}/modernisation-platform-environments"
 secret=$TERRAFORM_GITHUB_TOKEN
 
+# Get all existing GitHub environments
 get_existing_environments() {
   page=1
   github_environments=""
@@ -16,46 +17,31 @@ get_existing_environments() {
       -H "Authorization: token ${secret}" \
       "https://api.github.com/repos/${repository}/environments?per_page=100&page=${page}")
 
-    # Separate headers and body using awk
     headers=$(echo "$response" | awk 'BEGIN {RS="\r\n\r\n"} NR==1 {print}')
     body=$(echo "$response" | awk 'BEGIN {RS="\r\n\r\n"} NR==2 {print}')
 
-    # Debug output to see the headers and body
-    # echo "Headers for page ${page}:"
-    # echo "${headers}"
-    # echo "Body for page ${page}:"
-    # echo "${body}"
-
     current_page_environments=$(echo "$body" | jq -r '.environments[].name')
-    if [ $? -ne 0 ]; then
-      echo "jq error: Failed to parse JSON"
-      exit 1
-    fi
-
     github_environments="${github_environments} ${current_page_environments}"
 
-    # Check if there's a "next" link in the headers
     next_link=$(echo "$headers" | grep -i '^link:' | sed -n 's/.*<\(.*\)>; rel="next".*/\1/p')
-
-    if [ -z "$next_link" ]; then
-      break  # No more pages to fetch
-    else
-      page=$((page + 1))
-    fi
+    [ -z "$next_link" ] && break
+    page=$((page + 1))
   done
 
   echo "Existing GitHub environments: $github_environments"
 }
 
+# Get GitHub team ID
 get_github_team_id() {
   team_slug=${1}
   response=$(curl -s \
     -H "Accept: application/vnd.github.v3+json" \
     -H "Authorization: token ${secret}" \
-    https://api.github.com/orgs/${github_org}/teams/${team_slug})
+    "https://api.github.com/orgs/${github_org}/teams/${team_slug}")
   echo "${response}" | jq -r '.id'
 }
 
+# Get GitHub user ID
 get_github_user_id() {
   username=$1
   response=$(curl -s \
@@ -81,183 +67,248 @@ check_if_change_to_application_json() {
   echo "Change to application json: $change_to_application_json"
 }
 
+# Create environment with reviewers
 create_environment() {
-  environment_name=$1
-  reviewers_json=$2  # Accept the reviewers_json parameter
+  local environment_name=$1
+  local reviewers_json=$2
   
-  echo "Creating environment ${environment_name}..."
-  # echo "Teams for payload: ${github_teams}"
-  if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]
-  then
-    # Include both github_teams and additional_reviewers in the payload
+  echo "Creating/updating environment: ${environment_name}"
+  
+  if [ "${env}" == "preproduction" ] || [ "${env}" == "production" ]; then
     payload="{\"deployment_branch_policy\":{\"protected_branches\":true,\"custom_branch_policies\":false},\"reviewers\": [${reviewers_json}]}"
   else
-    # Include both github_teams and additional_reviewers in the payload
     payload="{\"reviewers\": [${reviewers_json}]}"
   fi
 
   if [ "${DRY_RUN}" == "true" ]; then
-    echo "DRY Run Payload: $payload"
-    echo "Repository: ${repository}"
-    echo "DRY Run Only no payload submission to GitHub API"
-
+    echo "DRY RUN - Would send payload:"
+    echo "$payload" | jq
+    echo "DRY RUN - No changes made"
   else
-    echo "Payload: $payload"
-    echo "Repository: ${repository}"
     response=$(echo "${payload}" | curl -L -s -i \
       -X PUT \
       -H "Accept: application/vnd.github+json" \
       -H "Authorization: Bearer ${secret}" \
       -H "X-GitHub-Api-Version: 2022-11-28" \
-      https://api.github.com/repos/${repository}/environments/${environment_name}\
-      -d @- > /dev/null 2>&1)
-
-  echo "API Response: $response"  # Print the API response
+      "https://api.github.com/repos/${repository}/environments/${environment_name}" \
+      -d @-)
+    
+    if echo "$response" | grep -q "HTTP/.* 200"; then
+      echo "Successfully updated environment ${environment_name}"
+    else
+      echo "Error updating environment ${environment_name}"
+      echo "API Response:"
+      echo "$response"
+    fi
   fi
 }
 
+# Create reviewers JSON for teams
 create_team_reviewers_json() {
   local team_ids=("${@}")
   local reviewers_json=""
 
   for id in "${team_ids[@]}"
   do
-    raw_jq=$(jq -cn --arg team_id "$id" '{ "type": "Team", "id": ($team_id|tonumber) }')
-    reviewers_json="${reviewers_json}${raw_jq},"
+    if [ -n "$id" ] && [ "$id" != "null" ]; then
+      raw_jq=$(jq -cn --arg team_id "$id" '{ "type": "Team", "id": ($team_id|tonumber) }')
+      reviewers_json="${reviewers_json}${raw_jq},"
+    fi
   done
 
-  reviewers_json=$(echo "${reviewers_json}" | sed 's/,$//')
-  echo "${reviewers_json}"
+  echo "${reviewers_json}" | sed 's/,$//'
 }
 
+# Create reviewers JSON for users
 create_user_reviewers_json() {
   local user_ids=("${@}")
   local reviewers_json=""
 
   for id in "${user_ids[@]}"
   do
-    raw_jq=$(jq -cn --arg user_id "$id" '{ "type": "User", "id": ($user_id|tonumber) }')
-    reviewers_json="${reviewers_json}${raw_jq},"
+    if [ -n "$id" ] && [ "$id" != "null" ]; then
+      raw_jq=$(jq -cn --arg user_id "$id" '{ "type": "User", "id": ($user_id|tonumber) }')
+      reviewers_json="${reviewers_json}${raw_jq},"
+    fi
   done
 
-  reviewers_json=$(echo "${reviewers_json}" | sed 's/,$//')
-  echo "${reviewers_json}"
+  echo "${reviewers_json}" | sed 's/,$//'
 }
 
-create_reviewers_json() {
-  local reviewers_json=""
-
-  reviewers_json="${team_reviewers_json},${user_reviewers_json}"
-
-  # Remove trailing comma
-  reviewers_json=$(echo "${reviewers_json}" | sed 's/,$//')
-
-  echo "${reviewers_json}"
+log_step() {
+  echo -e "\n\033[1;33m==> $1\033[0m"
 }
 
-main() {
-  # Load existing GitHub environments
-  get_existing_environments
-  # Loop through each application.json file
-  for json_file in ./environments/*.json
-  do
-    echo
-    echo "***************************************"
-    echo "Processing file: ${json_file}"  
-    application=`basename "${json_file}" .json`
+log_block() {
+  echo -e "\n\033[1;32m***********************************************\033[0m"
+  echo -e "\033[1;32m$1\033[0m"
+  echo -e "\033[1;32m***********************************************\033[0m"
+}
 
-    # Loop through each environment
-    for env in `cat "${json_file}" | jq -r --arg FILENAME "${application}" '.environments[].name'`
-    do
-      echo
-      environment="${application}-${env}"
-      echo "Processing environment: ${environment}"
-      # Check it's a member environment
-      account_type=$(jq -r '."account-type"' ${json_file})
-      if [ "${account_type}" = "member" ]
-      then
-        # Check for teams that have the github_action_reviewer flag set to true
-        teams=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .access[] | select(.github_action_reviewer=="true") | .sso_group_name' $json_file)
-        # if teams is empty (none of the teams have the github_action_reviewer flag), get all teams
-        if [ -z "$teams" ]; then
-          teams=$(jq -r --arg e "${env}" '.environments[] | select( .name == $e ) | .access[].sso_group_name' $json_file)
-        fi
 
-        echo "Teams for $environment: $teams"
+# Prepares reviewer configuration (teams and users) for a GitHub environment
+setup_environment_reviewers() {
+  local environment_name=$1
+  local json_file=$2
+  local env=$3
+  local application=$4
+  local component_name=${5:-""}
 
-        # Filter out Azure teams (those starting with "azure-aws-sso")
-        filtered_teams=""
-        for team in $teams; do
-          if [[ ! $team == azure-aws-sso* ]]; then
-            filtered_teams+="$team "
-          else
-            echo "Skipping Azure team: $team"
-          fi
-        done
+  # Initialize teams variable
+  teams=""
 
-        # Trim trailing whitespace
-        filtered_teams=$(echo $filtered_teams | xargs)
-
-        if [ -z "$filtered_teams" ]; then
-          echo "No non-Azure teams available for $environment, skipping..."
-          continue
-        fi
-
-        # Check if environment exists and if it has a team associated with it
-        environment_exists="false"
-        check_if_environment_exists "${environment}"
-        change_to_application_json="false"
-        check_if_change_to_application_json "${environment}"
+  # For component environments, first check if component has github_action_reviewer=true
+  if [ -n "$component_name" ]; then
+    echo "Checking component for github_action_reviewer=true..."
+    component_reviewer_team=$(jq -r --arg c "${component_name}" '.components[] | select(.name == $c) | select(.github_action_reviewer=="true") | .sso_group_name' "$json_file")
         
-        if ([ "${environment_exists}" == "true" ] || [ "${filtered_teams}" == "" ]) && [ "${change_to_application_json}" == "false" ]
-        then
-          echo "${environment} already exists and there are no changes, or no valid GitHub team has been assigned, skipping..."
+    if [ -n "$component_reviewer_team" ] && [ "$component_reviewer_team" != "null" ]; then
+      echo "Found component with github_action_reviewer=true: ${component_reviewer_team}"
+      teams="$component_reviewer_team"
+    fi
+  fi
+
+  # If no component reviewer team found, proceed with normal logic
+  if [ -z "$teams" ]; then
+    echo "No component reviewer team found, checking environment teams..."
+    
+    # Check if any environment access has github_action_reviewer=true
+    reviewer_teams=$(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .access[] | select(.github_action_reviewer=="true") | .sso_group_name' "$json_file")
+
+    if [ -n "$reviewer_teams" ]; then
+      echo "Found teams with github_action_reviewer=true"
+      teams="$reviewer_teams"
+    else
+      echo "No teams with github_action_reviewer=true found"
+      
+      # Add component team if exists (without github_action_reviewer requirement)
+      if [ -n "$component_name" ]; then
+        component_team=$(jq -r --arg c "${component_name}" '.components[] | select(.name == $c) | .sso_group_name' "$json_file")
+        if [ -n "$component_team" ] && [ "$component_team" != "null" ]; then
+          echo "Using component team: ${component_team}"
+          teams="$component_team"
         else
-          echo "Creating environment ${environment}"
-          # Get GitHub team ids
-          team_ids=()
-          for team in ${filtered_teams}
-          do
-            team=$(echo "${team}" | xargs)  # Remove leading/trailing whitespace
-            team_id=$(get_github_team_id "${team}")
-            team_ids+=("${team_id}")
+          echo "No component team defined"
+        fi
+      fi
+      
+      # Add all environment teams
+      env_teams=$(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .access[].sso_group_name' "$json_file")
+      if [ -n "$env_teams" ]; then
+        teams="$teams $env_teams"
+      fi
+    fi
+  fi
+
+  # Remove duplicates and clean up spaces
+  teams=$(echo "$teams" | tr ' ' '\n' | sort -u | tr '\n' ' ' | xargs)
+
+  # Filter out Azure teams
+  filtered_teams=""
+  for team in $teams; do
+    if [[ ! $team == azure-aws-sso* ]]; then
+      filtered_teams+="$team "
+    fi
+  done
+
+  filtered_teams=$(echo $filtered_teams | xargs)
+  echo "Teams after Azure filtering: ${filtered_teams}"
+
+  if [ -z "$filtered_teams" ]; then
+    echo "No non-Azure teams available, skipping environment creation"
+    return
+  fi
+
+  # Rest of the function remains the same...
+  # Get GitHub team ids
+  team_ids=()
+  for team in ${filtered_teams}; do
+    team=$(echo "${team}" | xargs)
+    team_id=$(get_github_team_id "${team}")
+    if [ -n "$team_id" ] && [ "$team_id" != "null" ]; then
+      team_ids+=("$team_id")
+    else
+      echo "Warning: Team not found - ${team}"
+    fi
+  done
+
+  # Get additional reviewers
+  additional_reviewers=($(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers // [] | .[]' "${json_file}"))
+  user_ids=()
+  for reviewer in "${additional_reviewers[@]}"; do
+    user_id=$(get_github_user_id "${reviewer}")
+    if [ -n "$user_id" ] && [ "$user_id" != "null" ]; then
+      user_ids+=("$user_id")
+    else
+      echo "Warning: User not found - ${reviewer}"
+    fi
+  done
+
+  # Create reviewers JSON
+  team_reviewers_json=$(create_team_reviewers_json "${team_ids[@]}")
+  user_reviewers_json=$(create_user_reviewers_json "${user_ids[@]}")
+  
+  reviewers_json=""
+  if [ -n "$team_reviewers_json" ] && [ -n "$user_reviewers_json" ]; then
+    reviewers_json="${team_reviewers_json},${user_reviewers_json}"
+  elif [ -n "$team_reviewers_json" ]; then
+    reviewers_json="${team_reviewers_json}"
+  elif [ -n "$user_reviewers_json" ]; then
+    reviewers_json="${user_reviewers_json}"
+  fi
+
+  # Create/update environment
+  create_environment "${environment_name}" "${reviewers_json}"
+  echo "=== Finished processing ${environment_name} ==="
+  echo
+}
+
+# Creates the environment if it doesn't exist or if the config has changed
+create_environment_if_required() {
+  local environment_name=$1
+  local json_file=$2
+  local env=$3
+  local application=$4
+  local component_name=${5:-""}
+
+  log_step "Processing environment: ${environment_name}"
+  check_if_environment_exists "${environment_name}"
+  check_if_change_to_application_json "${application}"
+
+  if [ "${environment_exists}" == "true" ] && [ "${change_to_application_json}" == "false" ]; then
+    echo "${environment_name} already exists and there are no changes skipping..."
+  else
+    setup_environment_reviewers "${environment_name}" "${json_file}" "${env}" "${application}" "${component_name}"
+  fi
+}
+
+# Main function
+main() {
+  get_existing_environments
+
+  for json_file in ./environments/*.json; do
+    log_block "Processing file: ${json_file}"
+    application=$(basename "${json_file}" .json)
+    # Check if components exist
+    components_exist=$(jq -e '.components' "${json_file}" >/dev/null 2>&1; echo $?)
+    
+    for env in $(jq -r --arg FILENAME "${application}" '.environments[].name' "${json_file}"); do
+      account_type=$(jq -r '."account-type"' "${json_file}")
+      if [ "${account_type}" = "member" ]; then
+        # Process base environment
+        base_environment="${application}-${env}"
+        create_environment_if_required "${base_environment}" "${json_file}" "${env}" "${application}"
+
+        # Process component environments if they exist
+        if [ "$components_exist" -eq 0 ]; then
+          jq -r '.components[].name' "${json_file}" | while read -r component_name; do
+            component_environment="${application}-${env}-${component_name}"
+            echo
+            create_environment_if_required "${component_environment}" "${json_file}" "${env}" "${application}" "${component_name}"
           done
-
-          # Extract the optional additional reviewers from the JSON as strings
-          additional_reviewers=($(jq -r --arg e "${env}" '.environments[] | select(.name == $e) | .additional_reviewers // []' "${json_file}" | tr -d \"))
-
-          # Check if additional_reviewers is not empty before processing
-          if [ ${#additional_reviewers[@]} -gt 0 ]; then
-            echo "Additional Reviewers: ${additional_reviewers[*]}"
-
-            # Fetch GitHub user IDs for additional reviewers
-            user_ids=()
-            for reviewer in "${additional_reviewers[@]}"
-            do
-              # Remove leading and trailing spaces and commas
-              reviewer=$(echo "${reviewer}" | sed 's/^[[:space:],]*//;s/[[:space:],]*$//')
-
-              if [ -n "${reviewer}" ] && [ "${reviewer}" != "[]" ]; then
-                user_id=$(get_github_user_id "${reviewer}")
-                if [ -n "${user_id}" ] && [ "${user_id}" != "null" ]; then
-                  user_ids+=("${user_id}")
-                else
-                  echo "User not found or error occurred for reviewer: ${reviewer}. Skipping..."
-                fi
-              fi
-            done
-          fi
-
-          # Create reviewers json
-          reviewers_json=""
-          # Create reviewers json for teams and users
-          team_reviewers_json=$(create_team_reviewers_json "${team_ids[@]}")
-          user_reviewers_json=$(create_user_reviewers_json "${user_ids[@]}")
-          reviewers_json=$(create_reviewers_json "${team_reviewers_json}" "${user_reviewers_json}")
-          create_environment ${environment} "${reviewers_json}"
         fi
       else
-        echo "${environment} is a core environment, skipping..."
+        echo "${application}-${env} is a core environment, skipping..."
       fi
     done
   done
