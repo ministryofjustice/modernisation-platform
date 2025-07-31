@@ -146,21 +146,23 @@ jobs:
 
 
   run-account-tasks:
-    runs-on: ubuntu-latest
     needs: define-jobs
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         block_id: ${{ fromJson(needs.define-jobs.outputs.block_ids) }}
-
+    outputs:
+      accounts: ${{ steps.filter.outputs.accounts }}
     steps:
       - name: Filter accounts for ${{ matrix.block_id }}
         id: filter
         run: |
           raw='${{ needs.define-jobs.outputs.all_accounts_by_block }}'
-          accounts=$(echo "$raw" | jq -Mc --arg blk "${{ matrix.block_id }}" '[.[] | select(.block == $blk) | .account]')
+          accounts=$(echo "$raw" | jq -c --arg blk "${{ matrix.block_id }}" '[.[] | select(.block == $blk) | .account]')
           echo "accounts=$accounts" >> $GITHUB_OUTPUT
 
-      - name: Call reusable workflow for ${{ matrix.block_id }}
-        uses: ministryofjustice/modernisation-platform/.github/workflows/mikereid-test-reusable.yml@10910
-        with:
-          accounts: ${{ steps.filter.outputs.accounts }}
+  run-account-workflow:
+    needs: run-account-tasks
+    uses: ministryofjustice/modernisation-platform/.github/workflows/mikereid-test-reusable.yml@10910
+    with:
+      accounts: ${{ needs.run-account-tasks.outputs.accounts }}
