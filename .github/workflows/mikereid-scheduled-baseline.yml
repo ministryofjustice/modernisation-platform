@@ -148,21 +148,41 @@ jobs:
   run-account-tasks:
     needs: define-jobs
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        block_id: ${{ fromJson(needs.define-jobs.outputs.block_ids) }}
     outputs:
-      accounts: ${{ steps.filter.outputs.accounts }}
+      block_1: ${{ steps.filter.outputs.block_1 }}
+      block_2: ${{ steps.filter.outputs.block_2 }}
+      block_3: ${{ steps.filter.outputs.block_3 }}
+      block_4: ${{ steps.filter.outputs.block_4 }}
     steps:
-      - name: Filter accounts for ${{ matrix.block_id }}
-        id: filter
+      - id: filter
         run: |
           raw='${{ needs.define-jobs.outputs.all_accounts_by_block }}'
-          accounts=$(echo "$raw" | jq -c --arg blk "${{ matrix.block_id }}" '[.[] | select(.block == $blk) | .account]')
-          echo "accounts=$accounts" >> $GITHUB_OUTPUT
+          for i in $(seq 1 4); do
+            blk="block_$i"
+            filtered=$(echo "$raw" | jq -c --arg blk "$blk" '[.[] | select(.block == $blk) | .account]')
+            echo "$blk=$filtered" >> "$GITHUB_OUTPUT"
+          done
 
-  run-account-workflow:
+  run-account-workflow-block-1:
     needs: run-account-tasks
     uses: ministryofjustice/modernisation-platform/.github/workflows/mikereid-test-reusable.yml@10910
     with:
-      accounts: ${{ needs.run-account-tasks.outputs.accounts }}
+      accounts: ${{ needs.run-account-tasks.outputs.block_1 }}
+
+  run-account-workflow-block-2:
+    needs: run-account-tasks
+    uses: ministryofjustice/modernisation-platform/.github/workflows/mikereid-test-reusable.yml@10910
+    with:
+      accounts: ${{ needs.run-account-tasks.outputs.block_2 }}
+
+  run-account-workflow-block-3:
+    needs: run-account-tasks
+    uses: ministryofjustice/modernisation-platform/.github/workflows/mikereid-test-reusable.yml@10910
+    with:
+      accounts: ${{ needs.run-account-tasks.outputs.block_3 }}
+
+  run-account-workflow-block-4:
+    needs: run-account-tasks
+    uses: ministryofjustice/modernisation-platform/.github/workflows/mikereid-test-reusable.yml@10910
+    with:
+      accounts: ${{ needs.run-account-tasks.outputs.block_4 }}
