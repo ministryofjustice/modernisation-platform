@@ -156,10 +156,10 @@ jobs:
         id: filter
         run: |
           raw='${{ needs.define-jobs.outputs.all_accounts_by_block }}'
-          accounts=$(echo "$raw" | jq -c --arg blk "${{ matrix.block_id }}" '[.[] | select(.block == $blk) | .account]')
+          accounts=$(echo "$raw" | jq -Mc --arg blk "${{ matrix.block_id }}" '[.[] | select(.block == $blk) | .account]')
           echo "accounts=$accounts" >> $GITHUB_OUTPUT
 
-      - name: Print filtered account list
-        run: |
-          echo "Accounts in block '${{ matrix.block_id }}':"
-          echo '${{ steps.filter.outputs.accounts }}' | jq .
+      - name: Call reusable workflow for ${{ matrix.block_id }}
+        uses: ./.github/workflows/mikereid-test-reusable.yml
+        with:
+          accounts: ${{ steps.filter.outputs.accounts }}

@@ -1,0 +1,19 @@
+name: mikereid test reusable
+
+on:
+  workflow_call:
+    inputs:
+      accounts:
+        required: true
+        type: string
+
+jobs:
+  print-accounts:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        account: ${{ fromJson(inputs.accounts) }}
+    steps:
+      - name: Print account name
+        run: |
+          echo "Account: ${{ matrix.account }}"
