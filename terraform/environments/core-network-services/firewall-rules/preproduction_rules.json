@@ -62,13 +62,6 @@
     "destination_port": "$LAA_APPSTREAM_TCP",
     "protocol": "TCP"
   },
-  "laa_staging_to_mp_laa_preproduction": {
-    "action": "ALERT",
-    "source_ip": "${laa-lz-staging}",
-    "destination_ip": "${laa-preproduction}",
-    "destination_port": "ANY",
-    "protocol": "TCP"
-  },
   "laa_preproduction_to_mp_laa_preproduction_ccms": {
     "action": "PASS",
     "source_ip": "${laa-lz-staging}",
