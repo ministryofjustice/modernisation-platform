@@ -151,13 +151,8 @@ jobs:
     strategy:
       matrix:
         block_id: ${{ fromJson(needs.define-jobs.outputs.block_ids) }}
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          ref: 10910
-
-
       - name: Filter accounts for ${{ matrix.block_id }}
         id: filter
         run: |
@@ -166,6 +161,6 @@ jobs:
           echo "accounts=$accounts" >> $GITHUB_OUTPUT
 
       - name: Call reusable workflow for ${{ matrix.block_id }}
-        uses: ./.github/workflows/mikereid-test-reusable.yml
+        uses: ministryofjustice/modernisation-platform/.github/workflows/mikereid-test-reusable.yml@10910
         with:
           accounts: ${{ steps.filter.outputs.accounts }}
