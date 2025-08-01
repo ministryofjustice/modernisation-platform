@@ -10,7 +10,6 @@ locals {
     "arn:aws:iam::${local.root_account.master_account_id}:user/DavidElliott",
     "arn:aws:iam::${local.root_account.master_account_id}:user/EwaStempel",
     "arn:aws:iam::${local.root_account.master_account_id}:role/ModernisationPlatformGithubActionsRole", # Role with the same permissions as ModernisationPlatformOrganisationManagement for Github OIDC
-    "arn:aws:iam::${local.root_account.master_account_id}:role/ModernisationPlatformGithubActionsRole",
     "arn:aws:iam::${local.root_account.master_account_id}:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*"
   ])
 
