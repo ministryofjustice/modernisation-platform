@@ -30,17 +30,11 @@ variable "circleci_projects" {
   ]
 }
 
-# Build the list of allowed sub claims for CircleCI OIDC
-locals {
-  allowed_circleci_projects = [
-    for project_id in var.circleci_projects :
-    "org/${local.secret_json.organisation_id}/project/${project_id}/user/*"
-  ]
-}
-# Shared IAM role for all CircleCI projects listed in variable `circleci_projects`.
-# The trust policy is scoped to only allow these projects to assume this role via OIDC.
-resource "aws_iam_role" "circleci_iam_role" {
-  name                 = "circleci_iam_role"
+# One IAM role per CircleCI project
+resource "aws_iam_role" "circleci_roles" {
+  for_each = toset(var.circleci_projects)
+
+  name                 = "circleci_${each.value}_role"
   max_session_duration = 7200
 
   assume_role_policy = jsonencode({
@@ -53,7 +47,7 @@ resource "aws_iam_role" "circleci_iam_role" {
       },
       Condition = {
         StringLike = {
-          "${aws_iam_openid_connect_provider.circleci_oidc_provider.url}:sub" : local.allowed_circleci_projects
+          "${aws_iam_openid_connect_provider.circleci_oidc_provider.url}:sub" : "org/${local.secret_json.organisation_id}/project/${each.value}/user/*"
         }
       }
     }]
@@ -330,8 +324,10 @@ resource "aws_iam_policy" "circleci_iam_policy" {
   policy      = data.aws_iam_policy_document.circleci_iam_policy.json
 }
 
+# Attach policy to each role
 resource "aws_iam_policy_attachment" "circleci_policy_attachment" {
+  for_each   = aws_iam_role.circleci_roles
   policy_arn = aws_iam_policy.circleci_iam_policy.arn
-  roles      = [aws_iam_role.circleci_iam_role.name]
-  name       = "circleci_policy_attachment"
+  roles      = [each.value.name]
+  name       = "circleci_policy_attachment_${each.key}"
 }
