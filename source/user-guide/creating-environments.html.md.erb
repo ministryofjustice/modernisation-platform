@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating environments in the Modernisation Platform
-last_reviewed_on: 2025-01-27
+last_reviewed_on: 2025-07-31
 review_in: 6 months
 ---
 
@@ -86,7 +86,7 @@ The is-production tag will be inferred if the environment is production.
 | owner         | <find-a-solicitor@ministryofjustice.gov.uk> |
 
 Valid business-unit values
-HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE
+HQ,HMPPS,OPG,LAA,HMCTS,CICA,Platforms,CJSE,YJB
 
 For the "owner" tag, we will contact you periodically using this address to confirm whether it and any other contact details remain current. If they have changed, please do let us know as soon as possible.
 
@@ -150,7 +150,7 @@ Here are some examples of the environments JSON file that the Modernisation Plat
 
 ### Another example
 
-An JSON definition for a nonsensical application called [`glados`](https://en.wikipedia.org/wiki/GLaDOS), that needs two environments: `development` with `sandbox` permissions and `production`, and want to give the GitHub team `glados-team` access to each environment. If a develoment account with sandbox permissions has no `nuke` key defined, it will automatically be [wiped on a weekly basis](../concepts/environments/auto-nuke.html). The `nuke` value of `rebuild` indicates that the development account will be automatically rebuilt from code after it is nuked.
+An JSON definition for a nonsensical application called [`glados`](https://en.wikipedia.org/wiki/GLaDOS), that needs two environments: `development` with `sandbox` permissions and `production`, and want to give the GitHub team `glados-team` access to each environment. If a development account with sandbox permissions has no `nuke` key defined, it will automatically be [wiped on a weekly basis](../concepts/environments/auto-nuke.html). The `nuke` value of `rebuild` indicates that the development account will be automatically rebuilt from code after it is nuked.
 
 `filename`: `glados.json`
 
