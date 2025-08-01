@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Adding a New SSO User Role
-last_reviewed_on: 2025-01-30
+last_reviewed_on: 2025-08-01
 review_in: 6 months
 ---
 
@@ -30,6 +30,7 @@ You will need the following:
 - An "aws_ssoadmin_customer_managed_policy_attachment" that will correspond to an IAM policy
 - An "aws_iam_policy" and "aws_iam_policy_document" to create the IAM policy for the new role
 - Adjustments to the relevant `policies/environment/*.rego` files to check for the presence of the new role
+
 
 ### Setting up the role
 
