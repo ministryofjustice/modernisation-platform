@@ -12,6 +12,7 @@ resource "aws_iam_role" "circleci_iam_role" {
       Condition = {
         StringLike = {
           "${aws_iam_openid_connect_provider.circleci_oidc_provider.url}:sub" = [
+            "org/${local.secret_json.organisation_id}/project/de1a24bf-86ce-46b6-be7c-9e3ff18c426d/user/*",
             "org/${local.secret_json.organisation_id}/project/a8261e54-d33e-457d-987d-a7e72b8fa71d/user/*",
             "org/${local.secret_json.organisation_id}/project/fc34a59d-eef0-41b5-95aa-49b79c9df464/user/*",
             "org/${local.secret_json.organisation_id}/project/b7521033-fef1-4704-b6bf-a5de64dfd172/user/*",
