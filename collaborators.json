@@ -1392,19 +1392,19 @@
       "accounts": [
         {
           "account-name": "youth-justice-app-framework-development",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         },
         {
           "account-name": "youth-justice-app-framework-test",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         },
         {
           "account-name": "youth-justice-app-framework-preproduction",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         },
         {
           "account-name": "youth-justice-app-framework-production",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         }
       ]
     },
@@ -1594,19 +1594,19 @@
       "accounts": [
         {
           "account-name": "youth-justice-app-framework-development",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         },
         {
           "account-name": "youth-justice-app-framework-test",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         },
         {
           "account-name": "youth-justice-app-framework-preproduction",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         },
         {
           "account-name": "youth-justice-app-framework-production",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         }
       ]
     },
@@ -1696,19 +1696,19 @@
       "accounts": [
         {
           "account-name": "youth-justice-app-framework-development",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         },
         {
           "account-name": "youth-justice-app-framework-test",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         },
         {
           "account-name": "youth-justice-app-framework-preproduction",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         },
         {
           "account-name": "youth-justice-app-framework-production",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         }
       ]
     },
@@ -1718,19 +1718,19 @@
       "accounts": [
         {
           "account-name": "youth-justice-app-framework-development",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         },
         {
           "account-name": "youth-justice-app-framework-test",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         },
         {
           "account-name": "youth-justice-app-framework-preproduction",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         },
         {
           "account-name": "youth-justice-app-framework-production",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         }
       ]
     },
@@ -1740,19 +1740,15 @@
       "accounts": [
         {
           "account-name": "youth-justice-app-framework-development",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         },
         {
           "account-name": "youth-justice-app-framework-test",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         },
         {
           "account-name": "youth-justice-app-framework-preproduction",
-          "access": "reporting-operations"
-        },
-        {
-          "account-name": "youth-justice-app-framework-production",
-          "access": "reporting-operations"
+          "access": "data-scientist"
         },
         {
           "account-name": "youth-justice-app-framework-production",

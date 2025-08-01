@@ -797,5 +797,12 @@
     "destination_ip": "$LAA_FTP_ENDPOINTS",
     "destination_port": "$LAA_FTP_TCP",
     "protocol": "TCP"
+  },
+  "laa_production_to_laa_ecp_2484": {
+    "action": "PASS",
+    "source_ip": "${laa-production}",
+    "destination_ip": "${laa-ecp}",
+    "destination_port": "2484",
+    "protocol": "TCP"
   }
 }
