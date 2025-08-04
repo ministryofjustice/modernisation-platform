@@ -5,7 +5,7 @@
       "name": "development",
       "access": [
         {
-          "sso_group_name": "cica-extract-tool-admins",
+          "sso_group_name": "cica-mp-tariff",
           "level": "sandbox"
         }
       ],
