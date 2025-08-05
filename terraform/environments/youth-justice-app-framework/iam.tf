@@ -57,25 +57,6 @@ resource "aws_iam_role" "circleci_roles" {
     }]
   })
 }
-resource "aws_iam_role" "circleci_iam_role" {
-  name                 = "circleci_iam_role"
-  max_session_duration = 7200
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [{
-      Action = "sts:AssumeRoleWithWebIdentity",
-      Effect = "Allow",
-      Principal = {
-        Federated = aws_iam_openid_connect_provider.circleci_oidc_provider.arn
-      },
-      Condition = {
-        StringLike = {
-          "${aws_iam_openid_connect_provider.circleci_oidc_provider.url}:sub" = "org/${local.secret_json.organisation_id}/*"
-        }
-      }
-    }]
-  })
-}
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "circleci_iam_policy" {
