@@ -260,12 +260,14 @@ resource "aws_network_acl_rule" "laa_custom_tcp_rules" {
 
 resource "aws_network_acl_rule" "laa_public_ssh_ingress_rule" {
   for_each       = local.laa_public_ssh_rules_to_apply
-  cidr_block     = local.laa_public_ssh_ingress.cidr_block
-  egress         = local.laa_public_ssh_ingress.value.egress
-  from_port      = local.laa_public_ssh_ingress.value.from_port
+
+  cidr_block     = each.value.cidr_block
+  egress         = each.value.egress
+  from_port      = each.value.from_port
+  to_port        = each.value.to_port
+  protocol       = each.value.protocol
+  rule_action    = each.value.rule_action
+  rule_number    = each.value.rule_number
+
   network_acl_id = aws_network_acl.general-public.id
-  protocol       = local.laa_public_ssh_ingress.protocol
-  rule_action    = local.laa_public_ssh_ingress.rule_action
-  rule_number    = local.laa_public_ssh_ingress.rule_number
-  to_port        = local.laa_public_ssh_ingress.to_port
 }

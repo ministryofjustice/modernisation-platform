@@ -93,8 +93,6 @@ locals {
 
   laa_public_ssh_ingress_rules = contains(local.laa_vpc_keys, var.vpc_name)
 
-  laa_public_ssh_rules_to_apply = laa_public_ssh_ingress_rules? local.laa_public_ssh_ingress : {}
-
-
+  laa_public_ssh_rules_to_apply = local.laa_public_ssh_ingress_rules ? {"ssh" = local.laa_public_ssh_ingress} : {}
 
 }
