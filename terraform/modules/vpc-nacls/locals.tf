@@ -84,7 +84,7 @@ locals {
 # LAA TCP 22 Public Subnets Ingress
 
   laa_ssh_ingress_public_acl_rules = {
-    laa_public_ssh_subnet_a = {
+    laa_public_ssh_subnets = {
       cidr_block  = "0.0.0.0/0"
       egress      = false
       from_port   = 22
@@ -92,24 +92,6 @@ locals {
       protocol    = "tcp"
       rule_action = "allow"
       rule_number = 6053
-    }
-    laa_public_ssh_subnet_b = {
-      cidr_block  = "0.0.0.0/0"
-      egress      = false
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      rule_action = "allow"
-      rule_number = 6054
-    }
-    laa_public_ssh_subnet_c = {
-      cidr_block  = "0.0.0.0/0"
-      egress      = false
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      rule_action = "allow"
-      rule_number = 6055
     }
   }
 
