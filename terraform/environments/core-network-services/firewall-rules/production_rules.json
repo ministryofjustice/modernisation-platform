@@ -801,7 +801,7 @@
   "laa_production_to_laa_ecp_2484": {
     "action": "PASS",
     "source_ip": "${laa-production}",
-    "destination_ip": "${laa-ecp}",
+    "destination_ip": "${laa-ecp-safedb}",
     "destination_port": "2484",
     "protocol": "TCP"
   }

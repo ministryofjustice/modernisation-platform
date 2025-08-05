@@ -1,11 +1,12 @@
 # Everyone, with access to the above repositories
 module "core-team" {
-  source      = "./modules/team"
-  name        = "modernisation-platform"
-  description = "Modernisation Platform team"
-  maintainers = local.maintainers
-  members     = local.everyone
-  ci          = local.ci_users
+  source         = "./modules/team"
+  name           = "modernisation-platform"
+  description    = "Modernisation Platform team"
+  maintainers    = local.maintainers
+  members        = local.everyone
+  ci             = local.ci_users
+  parent_team_id = local.platforms_team_id
 }
 
 # People who need full AWS access
