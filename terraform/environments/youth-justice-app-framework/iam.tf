@@ -1,3 +1,62 @@
+
+variable "circleci_projects" {
+  type = list(string)
+  default = [
+    "2ec645e4-dda8-4806-8839-608f24261295",
+    "5c1b7565-51ff-4f1e-acc8-e5cf6874a1c0",
+    "412b4855-37ba-47a5-b69f-1d8e93cc4c63",
+    "7249d72a-a774-4bfe-8a47-9bfb7dc54a6d",
+    "0f94f8cc-0cca-43e1-9b31-3de751f7914f",
+    "7c0101b9-018f-4219-8b75-66bbe5e86a80",
+    "e9c9cc47-9f78-45f8-9519-cfe732a0b46b",
+    "57d53400-2df6-44ee-9b3f-1ff00155e58f",
+    "0f13ef8e-a18f-4619-80a4-7200881c1b82",
+    "45728aba-63b6-4bc8-91ac-34605a77d22a",
+    "b0630fda-0646-42b0-925a-3973c4398233",
+    "5826a458-a78b-429b-a7b6-f98c586787d4",
+    "44dff936-90eb-4759-b707-715f9953d03a",
+    "45730998-b83f-4ae6-960e-0ac09392803f",
+    "baccbdaa-d1cc-460f-9ca0-e9759a80add1",
+    "4088d37a-0289-4cff-8e25-a9f68d96347d",
+    "7f1eed4d-1d04-4e66-809f-9416769c5d2a",
+    "de94258a-96eb-476e-8cab-da3ffccaaab0",
+    "1f0f29d4-2b9e-4c09-87e7-cea1b29ea217",
+    "dd0ee856-6959-4506-9898-64749937ce07",
+    "47800c6c-fc22-4bea-9675-a807adf08f59",
+    "090ed3e8-9ed2-4243-b94f-b4664f92942f",
+    "84575709-f13c-424c-ad1d-077bf6ae334c",
+    "c7daa36b-781e-4815-971d-676371d459b9",
+    "dc72231b-cbb7-47be-b205-b1f6f9d7b05b",
+    "0a95c0e2-5ee6-4ca2-8339-7896eaefd32e",
+    "3da35e5b-dce8-44cc-88e6-966898b4c209",
+    "10ee070f-5c82-413f-b339-34a9d55b26ec",
+    "1f4b4a7d-8c64-467e-bfbb-0d3ac3074ead",
+    "0ac52327-b850-4c32-9777-f6e535dee4d9",
+  ]
+}
+# One IAM role per CircleCI project
+resource "aws_iam_role" "circleci_roles" {
+  for_each = toset(var.circleci_projects)
+
+  name                 = "circleci_${each.value}_role"
+  max_session_duration = 7200
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Action = "sts:AssumeRoleWithWebIdentity",
+      Effect = "Allow",
+      Principal = {
+        Federated = aws_iam_openid_connect_provider.circleci_oidc_provider.arn
+      },
+      Condition = {
+        StringLike = {
+          "${aws_iam_openid_connect_provider.circleci_oidc_provider.url}:sub" : "org/${local.secret_json.organisation_id}/project/${each.value}/user/*"
+        }
+      }
+    }]
+  })
+}
 resource "aws_iam_role" "circleci_iam_role" {
   name                 = "circleci_iam_role"
   max_session_duration = 7200
@@ -248,9 +307,10 @@ resource "aws_iam_policy" "circleci_iam_policy" {
   policy      = data.aws_iam_policy_document.circleci_iam_policy.json
 }
 
-
+# Attach policy to each role
 resource "aws_iam_policy_attachment" "circleci_policy_attachment" {
+  for_each   = aws_iam_role.circleci_roles
   policy_arn = aws_iam_policy.circleci_iam_policy.arn
-  roles      = [aws_iam_role.circleci_iam_role.name]
-  name       = "circleci_policy_attachment"
+  roles      = [each.value.name]
+  name       = "circleci_policy_attachment_${each.key}"
 }
