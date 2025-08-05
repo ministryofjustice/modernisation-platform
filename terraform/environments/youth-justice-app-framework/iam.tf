@@ -287,17 +287,14 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
     resources = ["*"]
   }
 }
-
 resource "aws_iam_policy" "circleci_iam_policy" {
   name        = "circleci_iam_policy"
   description = "Policy for CircleCI"
   policy      = data.aws_iam_policy_document.circleci_iam_policy.json
 }
 
-# Attach policy to each role
 resource "aws_iam_policy_attachment" "circleci_policy_attachment" {
-  for_each   = aws_iam_role.circleci_roles
   policy_arn = aws_iam_policy.circleci_iam_policy.arn
-  roles      = [each.value.name]
-  name       = "circleci_policy_attachment_${each.key}"
+  roles      = [aws_iam_role.circleci_iam_role.name]
+  name       = "circleci_policy_attachment"
 }
