@@ -76,6 +76,17 @@ locals {
     }
   }
 
+  laa_public_ssh_ingress = {
+    cidr_block  = "0.0.0.0/0"
+    egress      = false
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    rule_action = "allow"
+    rule_number = 6053
+  }
+  
+
   apply_laa_custom_tcp_rules = contains(local.laa_vpc_keys, var.vpc_name)
 
   laa_custom_tcp_rules_to_apply = local.apply_laa_custom_tcp_rules ? local.laa_custom_egress_tcp_acl_rules : {}
