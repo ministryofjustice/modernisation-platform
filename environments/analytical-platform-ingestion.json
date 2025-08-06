@@ -28,6 +28,10 @@
         {
           "sso_group_name": "data-platform-audit-and-security",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "analytical-platform-ingestion-readonly",
+          "level": "read-only"
         }
       ],
       "instance_scheduler_skip": ["true"],
@@ -52,6 +56,10 @@
         {
           "sso_group_name": "data-platform-audit-and-security",
           "level": "security-audit"
+        },
+        {
+          "sso_group_name": "analytical-platform-ingestion-readonly",
+          "level": "read-only"
         }
       ]
     }
