@@ -86,7 +86,7 @@ To remove this role for member accounts through code:
 
 #### CircleCI Role
 
-Digital Prison Reporting make use of CircleCI for their pipeline. We manage a `circleci_iam_role` on their behalf which is defined in code [here](https://github.com/ministryofjustice/modernisation-platform/blob/376d57912a779f13b91f4ccbc27d1e06c12f7560/terraform/environments/digital-prison-reporting/iam.tf#L1)
+Digital Prison Reporting and Youth Justice App Framework make use of CircleCI for their pipeline. We manage a `circleci_iam_role` on their behalf which is defined in code in the following files: [dpr/iam.tf](https://github.com/ministryofjustice/modernisation-platform/blob/376d57912a779f13b91f4ccbc27d1e06c12f7560/terraform/environments/digital-prison-reporting/iam.tf#L1) and [yjaf/iam.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/youth-justice-app-framework/iam.tf#L1).
 
 Removing access would be as simple as raising a PR to either remove this code entirely or edit the permissions of the associated policy so that it has limited or no access.
 
