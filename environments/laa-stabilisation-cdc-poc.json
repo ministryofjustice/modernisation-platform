@@ -7,6 +7,10 @@
         {
           "sso_group_name": "laa-stabilisation-cdc",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "v1-hub20-developers",
+          "level": "sandbox"
         }
       ],
       "nuke": "exclude"

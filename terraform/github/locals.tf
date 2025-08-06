@@ -165,4 +165,6 @@ locals {
   testing_tags = merge(
     jsondecode(data.http.environments_file.response_body).tags,
   { "source-code" = "https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/github" })
+
+  platforms_team_id = "9733829"
 }

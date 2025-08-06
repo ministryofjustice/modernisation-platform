@@ -94,7 +94,7 @@ data "pagerduty_user" "mark_roberts" {
 }
 
 data "pagerduty_user" "aaron_robinson" {
-  email = "aaron.robinson${local.digital_email_suffix}"
+  email = "aaron.robinson1${local.justice_email_suffix}"
 }
 
 data "pagerduty_user" "richard_green" {
