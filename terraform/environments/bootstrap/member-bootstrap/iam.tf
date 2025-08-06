@@ -561,6 +561,7 @@ data "aws_iam_policy_document" "policy" {
       "ecr:UploadLayerPart",
       "ecr:CompleteLayerUpload",
       "ecr:UploadLayerPart",
+      "ec2:DeleteVolume",
       "ec2:DescribeInstances",
       "ec2:CreateNetworkInterface",
       "ec2:CreateNetworkInterfacePermission",
