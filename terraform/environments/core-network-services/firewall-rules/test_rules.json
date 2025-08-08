@@ -314,13 +314,6 @@
     "destination_port": "636",
     "protocol": "TCP"
   },
-  "hmpps_test_to_delius_test_oracle": {
-    "action": "PASS",
-    "source_ip": "${hmpps-test}",
-    "destination_ip": "${delius-test}",
-    "destination_port": "1521",
-    "protocol": "TCP"
-  },
   "mp_hmpps_test_to_noms_mgmt_vnet_ntp": {
     "action": "PASS",
     "source_ip": "${hmpps-test}",
@@ -550,6 +543,34 @@
     "source_ip": "${laa-lz-uat}",
     "destination_ip": "${laa-test}",
     "destination_port": "$LAA_CCMS_SOA",
+    "protocol": "TCP"
+  },
+  "delius_test_to_hmpps_test_oracledb_1521": {
+    "action": "PASS",
+    "source_ip": "${delius-test}",
+    "destination_ip": "${hmpps-test}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "delius_test_to_hmpps_test_oracledb_1522": {
+    "action": "PASS",
+    "source_ip": "${delius-test}",
+    "destination_ip": "${hmpps-test}",
+    "destination_port": "1522",
+    "protocol": "TCP"
+  },
+  "hmpps_test_to_delius_test_oracledb_1521": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "${delius-test}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "hmpps_test_to_delius_test_oracledb_1522": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "${delius-test}",
+    "destination_port": "1522",
     "protocol": "TCP"
   }
 }
