@@ -221,3 +221,9 @@ resource "aws_ec2_transit_gateway_route" "inspection_static_routes_ecp_safedb" {
   transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.ecp_tgw.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
 }
+
+resource "aws_ec2_transit_gateway_route" "inspection_static_routes_ecp_conntest" {
+  destination_cidr_block         = "10.205.15.0/24"
+  transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.ecp_tgw.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
+}
