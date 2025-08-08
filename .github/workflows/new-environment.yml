@@ -485,8 +485,8 @@ jobs:
       - name: Send notification to Slack
         if: steps.environment_json_changes.outputs.files != ''
         run: |
-          DECODED_FILES=$(echo ${{ steps.environment_json_changes.outputs.files }} | base64 --decode)
-          for file in $DECODED_FILES; do
+          DECODED_FILES=$(echo "${{ steps.environment_json_changes.outputs.files }}" | base64 --decode)
+          echo "$DECODED_FILES" | while IFS= read -r file; do
           PR_PATH="https://github.com/${GITHUB_REPOSITORY}/pull/${{ steps.pr_number.outputs.pr_number }}/files"
           slack_channel=$(jq -r '.tags["slack-channel"] // empty' "environments/$file")
           if [[ -z "$slack_channel" ]]; then
