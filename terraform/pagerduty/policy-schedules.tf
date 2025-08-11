@@ -89,6 +89,8 @@ resource "pagerduty_schedule" "primary" {
   }
 
   teams = [pagerduty_team.modernisation_platform.id]
+
+  depends_on = [pagerduty_team_membership.modernisation_platform_membership]
 }
 
 resource "pagerduty_schedule" "secondary" {
@@ -120,4 +122,6 @@ resource "pagerduty_schedule" "secondary" {
   }
 
   teams = [pagerduty_team.modernisation_platform.id]
+
+  depends_on = [pagerduty_team_membership.modernisation_platform_membership]
 }

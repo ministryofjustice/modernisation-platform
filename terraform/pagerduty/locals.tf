@@ -20,8 +20,8 @@ locals {
     },
     ewa_stempel = {
       name  = "Ewa Stempel"
-      email = "ewa.stempel${local.digital_email_suffix}"
-      role  = "user"
+      email = "ewa.stempel${local.justice_email_suffix}"
+      role  = "manager"
     },
     sukesh_reddygade = {
       name  = "Sukesh Reddy Gade"
@@ -100,6 +100,7 @@ data "pagerduty_user" "aaron_robinson" {
 data "pagerduty_user" "richard_green" {
   email = "richard.green${local.digital_email_suffix}"
 }
+
 data "pagerduty_user" "khatra_farah" {
   email = "khatra.farah${local.digital_email_suffix}"
 }
