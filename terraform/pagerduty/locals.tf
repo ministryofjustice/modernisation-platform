@@ -18,11 +18,6 @@ locals {
       email = "edward.proctor${local.justice_email_suffix}"
       role  = "user"
     },
-    ewa_stempel = {
-      name  = "Ewa Stempel"
-      email = "ewa.stempel${local.justice_email_suffix}"
-      role  = "manager"
-    },
     sukesh_reddygade = {
       name  = "Sukesh Reddy Gade"
       email = "sukesh.reddygade${local.digital_email_suffix}"
@@ -64,7 +59,7 @@ locals {
   david_elliott    = pagerduty_user.pager_duty_users["david_elliott"].id
   david_sibley     = pagerduty_user.pager_duty_users["david_sibley"].id
   edward_proctor   = pagerduty_user.pager_duty_users["edward_proctor"].id
-  ewa_stempel      = pagerduty_user.pager_duty_users["ewa_stempel"].id
+  ewa_stempel      = data.pagerduty_user.ewa_stempel.id
   mark_roberts     = data.pagerduty_user.mark_roberts.id
   aaron_robinson   = data.pagerduty_user.aaron_robinson.id
   sukesh_reddygade = pagerduty_user.pager_duty_users["sukesh_reddygade"].id
@@ -103,4 +98,8 @@ data "pagerduty_user" "richard_green" {
 
 data "pagerduty_user" "khatra_farah" {
   email = "khatra.farah${local.digital_email_suffix}"
+}
+
+data "pagerduty_user" "ewa_stempel" {
+  email = "ewa.stempel{local.justice_email_suffix}"
 }
