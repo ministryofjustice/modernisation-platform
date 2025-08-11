@@ -101,5 +101,5 @@ data "pagerduty_user" "khatra_farah" {
 }
 
 data "pagerduty_user" "ewa_stempel" {
-  email = "ewa.stempel{local.justice_email_suffix}"
+  email = "ewa.stempel${local.justice_email_suffix}"
 }
