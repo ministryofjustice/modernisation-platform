@@ -188,6 +188,20 @@
     "destination_port": "$CSR_EUC_TCP",
     "protocol": "TCP"
   },
+  "mojo_to_mp_hmpps_production_planetfm_tcp": {
+    "action": "PASS",
+    "source_ip": "${mojo-end-user-devices}",
+    "destination_ip": "${hmpps-production}",
+    "destination_port": "$PLANETFM_EUC_TCP",
+    "protocol": "TCP"
+  },
+  "mojo_to_mp_hmpps_production_planetfm_udp": {
+    "action": "PASS",
+    "source_ip": "${mojo-end-user-devices}",
+    "destination_ip": "${hmpps-production}",
+    "destination_port": "$PLANETFM_EUC_UDP",
+    "protocol": "UDP"
+  },
   "xsiam_prod_to_mp_hmpps_production_oracledb": {
     "action": "PASS",
     "source_ip": "${xsiam-prod-vpc}",
