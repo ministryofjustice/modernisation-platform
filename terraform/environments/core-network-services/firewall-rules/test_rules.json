@@ -97,6 +97,20 @@
     "destination_port": "53",
     "protocol": "UDP"
   },
+  "mp_hmpps_test_to_mp_ad_azure_dcs_TCP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "$AD_AZURE_DCS_ALL",
+    "destination_port": "$DOMAIN_CONTROLLER_TCP",
+    "protocol": "TCP"
+  },
+  "mp_hmpps_test_to_mp_ad_azure_dcs_UDP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "$AD_AZURE_DCS_ALL",
+    "destination_port": "$DOMAIN_CONTROLLER_UDP",
+    "protocol": "UDP"
+  },
   "laa_test_to_mp_laa_test_ccms": {
     "action": "PASS",
     "source_ip": "${laa-lz-test}",
