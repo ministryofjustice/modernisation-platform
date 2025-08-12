@@ -7,11 +7,11 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
-          "level": "developer"
+          "level": "sandbox"
         },
          {
           "sso_group_name": "v1-hub20-developers",
-          "level": "developer"
+          "level": "sandbox"
         }
       ],
       "nuke": "exclude"
