@@ -138,9 +138,12 @@ locals {
 
     mojo-end-user-devices = "10.0.0.0/8"
     dom1-dcs              = "10.0.0.0/8"
+    ad-hmpp-dc-azure-1    = "10.40.128.196/32"
+    ad-hmpp-dc-azure-2    = "10.40.0.133/32"
     ad-hmpp-dc-a          = "10.27.136.5/32" # see https://github.com/ministryofjustice/modernisation-platform/issues/5970
     ad-hmpp-dc-b          = "10.27.137.5/32" # and https://dsdmoj.atlassian.net/wiki/x/3oCKGAE
     ad-hmpp-rdlic         = "10.27.138.6/32" # ditto
+    ad-azure-dc-azure-1   = "10.102.0.196/32"
     ad-azure-dc-a         = "10.20.104.5/32" # ditto
     ad-azure-dc-b         = "10.20.106.5/32" # ditto
     ad-azure-rdlic        = "10.20.108.6/32" # ditto
