@@ -3,8 +3,10 @@
     "IP_SET_EXAMPLE": ["1.1.1.1/32", "1.0.0.1/32"],
     "AWS_SMTP_EU_WEST_2": ["3.11.252.235", "35.178.252.162", "35.177.173.199"],
     "AD_HMPP_DCS": ["${ad-hmpp-dc-a}", "${ad-hmpp-dc-b}"],
+    "AD_HMPP_DCS_ALL": ["${ad-hmpp-dc-a}", "${ad-hmpp-dc-b}", "${ad-hmpp-dc-azure-1}", "${ad-hmpp-dc-azure-2}"],
     "AD_HMPP_RD_LICENSING": ["${ad-hmpp-rdlic}"],
     "AD_AZURE_DCS": ["${ad-azure-dc-a}", "${ad-azure-dc-b}"],
+    "AD_AZURE_DCS_ALL": ["${ad-azure-dc-a}", "${ad-azure-dc-b}", "${ad-azure-dc-azure-1}"],
     "AD_AZURE_RD_LICENSING": ["${ad-azure-rdlic}"],
     "AZURE_PROD": ["${noms-live-vnet}", "${noms-mgmt-live-vnet}"],
     "AZURE_DEVTEST": ["${noms-test-vnet}", "${noms-mgmt-vnet}"],
@@ -74,7 +76,7 @@
       "9389",
       "49152:65535"
     ],
-    "DOMAIN_CONTROLLER_UDP": ["53", "88", "123", "389", "464"],
+    "DOMAIN_CONTROLLER_UDP": ["53", "88", "123", "137:139", "389", "464"],
     "RD_LICENSING_TCP": ["135", "139", "445", "49152:65535"],
     "TARIFF_TCP": ["1521", "7001", "7002", "8001", "8002"],
     "LAA_CCMS_TCP": [

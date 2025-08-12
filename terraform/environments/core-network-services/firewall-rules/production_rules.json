@@ -167,6 +167,20 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
+  "mp_hmpps_production_to_dom1_dcs_TCP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-production}",
+    "destination_ip": "${dom1-dcs}",
+    "destination_port": "$DOMAIN_CONTROLLER_TCP",
+    "protocol": "TCP"
+  },
+  "mp_hmpps_production_to_dom1_dcs_UDP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-production}",
+    "destination_ip": "${dom1-dcs}",
+    "destination_port": "$DOMAIN_CONTROLLER_UDP",
+    "protocol": "UDP"
+  },
   "xsiam_prod_to_mp_hmpps_production_oracledb": {
     "action": "PASS",
     "source_ip": "${xsiam-prod-vpc}",
