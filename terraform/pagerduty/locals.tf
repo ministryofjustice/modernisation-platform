@@ -51,7 +51,7 @@ locals {
     mark_roberts   = data.pagerduty_user.mark_roberts,
     aaron_robinson = data.pagerduty_user.aaron_robinson,
     richard_green  = data.pagerduty_user.richard_green,
-    ewa_stempel = data.pagerduty_user.ewa_stempel
+    ewa_stempel    = data.pagerduty_user.ewa_stempel
   }
 
   modernisation_platform_users = merge(local.existing_users, tomap(pagerduty_user.pager_duty_users))
