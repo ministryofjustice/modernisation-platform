@@ -18,6 +18,11 @@ locals {
       email = "edward.proctor${local.justice_email_suffix}"
       role  = "user"
     },
+    ewa_stempel = {
+      name  = "Ewa Stempel"
+      email = "ewa.stempel${local.digital_email_suffix}"
+      role  = "user"
+    },
     sukesh_reddygade = {
       name  = "Sukesh Reddy Gade"
       email = "sukesh.reddygade${local.digital_email_suffix}"
