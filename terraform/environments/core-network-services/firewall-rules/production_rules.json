@@ -181,6 +181,13 @@
     "destination_port": "$DOMAIN_CONTROLLER_UDP",
     "protocol": "UDP"
   },
+  "mojo_to_mp_hmpps_production_csr_tcp": {
+    "action": "PASS",
+    "source_ip": "${mojo-end-user-devices}",
+    "destination_ip": "${hmpps-production}",
+    "destination_port": "$CSR_EUC_TCP",
+    "protocol": "TCP"
+  },
   "xsiam_prod_to_mp_hmpps_production_oracledb": {
     "action": "PASS",
     "source_ip": "${xsiam-prod-vpc}",
