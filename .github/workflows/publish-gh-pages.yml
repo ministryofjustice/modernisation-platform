@@ -27,7 +27,7 @@ jobs:
       image: ghcr.io/ministryofjustice/tech-docs-github-pages-publisher@sha256:c55eb7a18eb667a2e616e16cf0918b26c1932fc03e6ad8e9bfe6961fd746692e # v6.0.1
     steps:
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Compile Markdown to HTML and create artifact
         run: |
           /usr/local/bin/package
