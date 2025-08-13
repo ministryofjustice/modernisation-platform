@@ -7,7 +7,6 @@
     "AD_HMPP_RD_LICENSING": ["${ad-hmpp-rdlic}"],
     "AD_AZURE_DCS": ["${ad-azure-dc-a}", "${ad-azure-dc-b}"],
     "AD_AZURE_DCS_ALL": ["${ad-azure-dc-a}", "${ad-azure-dc-b}", "${ad-azure-dc-azure-1}"],
-    "AD_AZURE_COMPUTERS": ["${hmpps-development}", "${hmpps-test}", "${noms-test-vnet}", "${noms-mgmt-vnet}"],
     "AD_AZURE_RD_LICENSING": ["${ad-azure-rdlic}"],
     "AZURE_PROD": ["${noms-live-vnet}", "${noms-mgmt-live-vnet}"],
     "AZURE_DEVTEST": ["${noms-test-vnet}", "${noms-mgmt-vnet}"],
