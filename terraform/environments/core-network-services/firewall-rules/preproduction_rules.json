@@ -393,55 +393,6 @@
     "destination_port": "5439",
     "protocol": "TCP"
   },
-  "noms_mgmt_live_to_planetfm_preproduction_sql_1434_udp": {
-    "action": "PASS",
-    "source_ip": "${noms-mgmt-live-vnet}",
-    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
-    "destination_port": "1434",
-    "protocol": "UDP"
-  },
-  "mojo_to_planetfm_preproduction_netbios_137_udp": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
-    "destination_port": "137",
-    "protocol": "UDP"
-  },
-  "mojo_to_planetfm_preproduction_smb_445_tcp": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
-    "destination_port": "445",
-    "protocol": "TCP"
-  },
-  "mojo_to_planetfm_preproduction_sql_1433_tcp": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
-    "destination_port": "1433",
-    "protocol": "TCP"
-  },
-  "mojo_to_planetfm_preproduction_sql_1434_udp": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
-    "destination_port": "1434",
-    "protocol": "UDP"
-  },
-  "mojo_to_planetfm_preproduction_cfam_scheduling_7071_tcp": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
-    "destination_port": "7071",
-    "protocol": "TCP"
-  },
-  "mojo_to_planetfm_preproduction_cafm_licensing_7073_tcp": {
-    "action": "PASS",
-    "source_ip": "${mojo-end-user-devices}",
-    "destination_ip": "${hmpps-preproduction-general-private-subnets}",
-    "destination_port": "7073",
-    "protocol": "TCP"
-  },
   "cp_to_mp_laa_preproduction": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
