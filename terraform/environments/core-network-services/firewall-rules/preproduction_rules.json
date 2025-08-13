@@ -20,30 +20,9 @@
     "destination_port": "80",
     "protocol": "TCP"
   },
-  "gp_to_hmpps_preproduction_https": {
-    "action": "PASS",
-    "source_ip": "${global-protect}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
   "psn_to_mp_hmpps_preproduction_https": {
     "action": "PASS",
     "source_ip": "${psn}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
-  "moj-core-azure-1_to_mp_hmpps_preproduction_https": {
-    "action": "PASS",
-    "source_ip": "${moj-core-azure-1}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
-  "moj-core-azure-2_to_mp_hmpps_preproduction_https": {
-    "action": "PASS",
-    "source_ip": "${moj-core-azure-2}",
     "destination_ip": "${hmpps-preproduction}",
     "destination_port": "443",
     "protocol": "TCP"
@@ -253,27 +232,6 @@
     "destination_port": "5432",
     "protocol": "TCP"
   },
-  "atos_arkc_ras_to_mp_hmpps_preproduction_https": {
-    "action": "PASS",
-    "source_ip": "${atos_arkc_ras}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
-  "atos_arkf_ras_to_mp_hmpps_preproduction_https": {
-    "action": "PASS",
-    "source_ip": "${atos_arkf_ras}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
-  "vodafone_wan_nicts_aggregate_to_mp_hmpps_preproduction_https": {
-    "action": "PASS",
-    "source_ip": "${vodafone_wan_nicts_aggregate}",
-    "destination_ip": "${hmpps-preproduction}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
   "hmpps_preproduction_to_pgres_tcp": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction}",
@@ -379,7 +337,14 @@
     "destination_port": "636",
     "protocol": "TCP"
   },
-  "rfc_10-0-0-0-8_to_ppud_preproduction_https": {
+  "rfc_10-0-0-0-8_to_mp_hmpp_preproduction_http": {
+    "action": "PASS",
+    "source_ip": "10.0.0.0/8",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "80",
+    "protocol": "TCP"
+  },
+  "rfc_10-0-0-0-8_to_mp_hmpps_preproduction_https": {
     "action": "PASS",
     "source_ip": "10.0.0.0/8",
     "destination_ip": "${hmpps-preproduction}",
