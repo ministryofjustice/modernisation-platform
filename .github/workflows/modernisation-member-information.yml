@@ -25,10 +25,10 @@ jobs:
     needs: fetch-secrets
     steps:
       - name: Checkout modernisation-platform Repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Checkout modernisation-platform-environments repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           repository: 'ministryofjustice/modernisation-platform-environments'
           token: ${{ secrets.GITHUB_TOKEN }}
