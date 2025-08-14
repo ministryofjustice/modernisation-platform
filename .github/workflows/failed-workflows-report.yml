@@ -34,7 +34,7 @@ jobs:
     steps:
 
         - name: Checkout Repository
-          uses: actions/checkout@v4
+          uses: actions/checkout@v5
 
         - name: Decrypt Secrets
           uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@ac5b118d8d519a521d3a526b564f49fa294dce2c # v3.4.1
