@@ -13,17 +13,17 @@ module "iam" {
 module "collaborators_group" {
   #checkov:skip=CKV_TF_1:Module registry does not support commit hashes for versions
   #checkov:skip=CKV_TF_2:Module registry does not support tags
-  source  = "terraform-aws-modules/iam/aws//modules/iam-group-with-policies"
-  version = "~> 5.0"
+  source  = "terraform-aws-modules/iam/aws//modules/iam-group"
+  version = "~> 6.0"
   name    = "collaborators"
 
-  group_users = [for user in module.collaborators : user.username]
+  users = [for user in module.collaborators : user.username]
 
-  custom_group_policy_arns = [
-    data.aws_iam_policy.ForceMFA.arn,
-    aws_iam_policy.collaborator_local_plan.arn,
-    aws_iam_policy.modernisation_account_limited_read.arn
-  ]
+  policies = {
+    ForceMFA                        = data.aws_iam_policy.ForceMFA.arn,
+    collaborator-local-plan         = aws_iam_policy.collaborator_local_plan.arn,
+    ModernisationAccountLimitedRead = aws_iam_policy.modernisation_account_limited_read.arn
+  }
 }
 
 data "aws_iam_policy" "ForceMFA" {
