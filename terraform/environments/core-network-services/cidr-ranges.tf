@@ -26,7 +26,7 @@ locals {
     atos_arkc_ras                       = "10.175.0.0/16" # for DOM1 devices connected to Cisco RAS VPN
     atos_arkf_ras                       = "10.176.0.0/16" # for DOM1 devices connected to Cisco RAS VPN
     cloud-platform                      = "172.20.0.0/16"
-    dom1-domain-controllers             = "10.172.68.146/29"
+    dom1-domain-controllers             = "10.172.68.144/29"
     global-protect                      = "10.184.0.0/14"
     i2n                                 = "10.110.0.0/16"
     moj-core-azure-1                    = "10.50.25.0/27"
@@ -72,6 +72,7 @@ locals {
     laa-appstream-vpc              = "10.200.32.0/19"
     laa-appstream-vpc_additional   = "10.200.68.0/22"
     laa-ecp-safedb                 = "10.205.7.0/24"
+    laa-ecp-conntest               = "10.205.15.0/24"
 
     # NEC cidr ranges
     nec-nonprod = "10.120.0.147/32"
@@ -111,7 +112,7 @@ locals {
     laa-mp-production-general-data-subnets-c = "10.27.69.128/25"
 
     hmpps-preproduction-general-private-subnets = "10.27.0.0/22"
-    hmpps-production-general-private-subnets    = "10.27.10.0/22"
+    hmpps-production-general-private-subnets    = "10.27.8.0/22"
 
     # cica cidr ranges
     cica-aws-ss-a         = "10.10.10.0/24"
@@ -137,9 +138,12 @@ locals {
 
     mojo-end-user-devices = "10.0.0.0/8"
     dom1-dcs              = "10.0.0.0/8"
+    ad-hmpp-dc-azure-1    = "10.40.128.196/32"
+    ad-hmpp-dc-azure-2    = "10.40.0.133/32"
     ad-hmpp-dc-a          = "10.27.136.5/32" # see https://github.com/ministryofjustice/modernisation-platform/issues/5970
     ad-hmpp-dc-b          = "10.27.137.5/32" # and https://dsdmoj.atlassian.net/wiki/x/3oCKGAE
     ad-hmpp-rdlic         = "10.27.138.6/32" # ditto
+    ad-azure-dc-azure-1   = "10.102.0.196/32"
     ad-azure-dc-a         = "10.20.104.5/32" # ditto
     ad-azure-dc-b         = "10.20.106.5/32" # ditto
     ad-azure-rdlic        = "10.20.108.6/32" # ditto

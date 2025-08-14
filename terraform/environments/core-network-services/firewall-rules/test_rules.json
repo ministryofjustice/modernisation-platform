@@ -59,14 +59,14 @@
     "action": "PASS",
     "source_ip": "${noms-test-vnet}",
     "destination_ip": "${hmpps-test}",
-    "destination_port": "ANY",
+    "destination_port": "$AZURE_FIXNGO_MP_TCP",
     "protocol": "TCP"
   },
   "mp_hmpps_test_to_noms_test_vnet": {
     "action": "PASS",
     "source_ip": "${hmpps-test}",
     "destination_ip": "${noms-test-vnet}",
-    "destination_port": "ANY",
+    "destination_port": "$AZURE_FIXNGO_MP_TCP",
     "protocol": "TCP"
   },
   "analytical_platform_airflow_dev_to_mp_dev_test_oracledb": {
@@ -80,22 +80,36 @@
     "action": "PASS",
     "source_ip": "${noms-mgmt-vnet}",
     "destination_ip": "${hmpps-test}",
-    "destination_port": "ANY",
+    "destination_port": "$AZURE_FIXNGO_MP_TCP",
     "protocol": "TCP"
   },
   "mp_hmpps_test_to_noms_mgmt_vnet": {
     "action": "PASS",
     "source_ip": "${hmpps-test}",
     "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "ANY",
+    "destination_port": "$AZURE_FIXNGO_MP_TCP",
     "protocol": "TCP"
   },
-  "mp_hmpps_test_to_noms_mgmt_vnet_dns": {
+  "mp_hmpps_test_to_mp_ad_azure_dcs_TCP": {
     "action": "PASS",
     "source_ip": "${hmpps-test}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "53",
+    "destination_ip": "$AD_AZURE_DCS_ALL",
+    "destination_port": "$DOMAIN_CONTROLLER_TCP",
+    "protocol": "TCP"
+  },
+  "mp_hmpps_test_to_mp_ad_azure_dcs_UDP": {
+    "action": "PASS",
+    "source_ip": "${hmpps-test}",
+    "destination_ip": "$AD_AZURE_DCS_ALL",
+    "destination_port": "$DOMAIN_CONTROLLER_UDP",
     "protocol": "UDP"
+  },
+  "mp_ad_azure_dcs_to_mp_hmpps_test_rpc": {
+    "action": "PASS",
+    "source_ip": "$AD_AZURE_DCS_ALL",
+    "destination_ip": "${hmpps-test}",
+    "destination_port": "$RPC_TCP",
+    "protocol": "TCP"
   },
   "laa_test_to_mp_laa_test_ccms": {
     "action": "PASS",
@@ -313,76 +327,6 @@
     "destination_ip": "${hmpps-test}",
     "destination_port": "636",
     "protocol": "TCP"
-  },
-  "mp_hmpps_test_to_noms_mgmt_vnet_ntp": {
-    "action": "PASS",
-    "source_ip": "${hmpps-test}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "123",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_test_to_noms_mgmt_vnet_ldap": {
-    "action": "PASS",
-    "source_ip": "${hmpps-test}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "389",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_test_to_noms_mgmg_vnet_ldap_ssl": {
-    "action": "PASS",
-    "source_ip": "${hmpps-test}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "636",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_test_to_noms_mgmt_vnet_kerberos": {
-    "action": "PASS",
-    "source_ip": "${hmpps-test}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "88",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_test_to_noms_mgmt_vnet_kerberos_password_change": {
-    "action": "PASS",
-    "source_ip": "${hmpps-test}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "464",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_test_to_noms_mgmt_vnet_smb": {
-    "action": "PASS",
-    "source_ip": "${hmpps-test}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "445",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_test_to_noms_mgmt_vnet_global_catalog_3268": {
-    "action": "PASS",
-    "source_ip": "${hmpps-test}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "3268",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_test_to_noms_mgmt_vnet_global_catalog_3269": {
-    "action": "PASS",
-    "source_ip": "${hmpps-test}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "3269",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_test_to_noms_mgmt_vnet_netbios_137": {
-    "action": "PASS",
-    "source_ip": "${hmpps-test}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "137",
-    "protocol": "UDP"
-  },
-  "mp_hmpps_test_to_noms_mgmt_vnet_netbios_138": {
-    "action": "PASS",
-    "source_ip": "${hmpps-test}",
-    "destination_ip": "${noms-mgmt-vnet}",
-    "destination_port": "138",
-    "protocol": "UDP"
   },
   "cp_to_mp_laa_test_1521": {
     "action": "PASS",

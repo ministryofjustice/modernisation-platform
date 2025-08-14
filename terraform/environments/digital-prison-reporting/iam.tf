@@ -26,7 +26,8 @@ variable "circleci_projects" {
     "d0d6f90e-9f96-4477-a192-8986a852bb26",
     "266309bc-91c3-4cf8-9656-9774e7aca0fd",
     "92ef16a0-e54e-4edd-9e54-b21e0e3ea2c3",
-    "b67f0d73-43d8-4213-9a40-dc096ee986d6"
+    "b67f0d73-43d8-4213-9a40-dc096ee986d6",
+    "190904ca-0fed-4fda-82ff-4e2a001b6882"
   ]
 }
 

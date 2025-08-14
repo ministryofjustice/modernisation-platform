@@ -22,11 +22,11 @@ locals {
   }
 
   private-application-zones = {
-    yjaf-development   = "development.yjaf"
-    yjaf-test          = "test.yjaf",
-    yjaf-preproduction = "preproduction.yjaf",
-    yjaf-production    = "production.yjaf"
-
+    aws-prd-legalservices-gov-uk = "aws.prd.legalservices.gov.uk"
+    yjaf-development             = "development.yjaf"
+    yjaf-test                    = "test.yjaf",
+    yjaf-preproduction           = "preproduction.yjaf",
+    yjaf-production              = "production.yjaf"
   }
 
   legalservices_records = {
@@ -194,6 +194,20 @@ resource "aws_route53_record" "portal" {
   alias {
     name                   = "d1yzmx9d5z0sdz.cloudfront.net"
     zone_id                = "Z2FDTNDATAQYW2"
+    evaluate_target_health = false
+  }
+}
+
+# aws.prd.legalservices.gov.uk record
+resource "aws_route53_record" "cwa-prod-db" {
+  # checkov:skip=CKV2_AWS_23: "Route53 A Record has Attached Resource"
+  zone_id = aws_route53_zone.private_application_zones["aws-prd-legalservices-gov-uk"].zone_id
+  name    = "cwa-prod-db"
+  type    = "A"
+
+  alias {
+    name                   = "cwa-production-database-nlb-12d44851fda0f196.elb.eu-west-2.amazonaws.com"
+    zone_id                = "ZD4D7Y8KGAS4G"
     evaluate_target_health = false
   }
 }
