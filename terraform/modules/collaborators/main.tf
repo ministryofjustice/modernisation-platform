@@ -15,7 +15,7 @@ module "iam_user" {
   # checkov:skip=CKV_TF_1:
   # checkov:skip=CKV_TF_2:
   source                        = "terraform-aws-modules/iam/aws//modules/iam-user"
-  version                       = "~> 5.0"
+  version                       = "~> 6.0"
   name                          = var.username
   force_destroy                 = true
   create_iam_user_login_profile = false
