@@ -35,6 +35,5 @@
     "infrastructure-support": "analytical_platform@digital.justice.gov.uk",
     "owner": "Analytical Platform: analytical_platform@digital.justice.gov.uk"
   },
-  "github-oidc-team-repositories": [""],
-  "go-live-date": ""
+  "github-oidc-team-repositories": [""]
 }
