@@ -565,27 +565,12 @@ data "aws_iam_policy_document" "allow-state-access-for-root-account-sso-admins" 
   }
 
   statement {
-    sid       = "AllowGetObjectForRootAccountSSOAdmins"
+    sid       = "AllowGetAndPutObjectForRootAccountSSOAdmins"
     effect    = "Allow"
-    actions   = ["s3:GetObject"]
-    resources = ["${module.state-bucket.bucket.arn}/*"]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-
-    condition {
-      test     = "ArnEquals"
-      variable = "aws:PrincipalArn"
-      values   = ["arn:aws:iam::${data.aws_organizations_organization.root_account.master_account_id}:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*"]
-    }
-  }
-
-  statement {
-    sid       = "AllowPutObjectForRootAccountSSOAdmins"
-    effect    = "Allow"
-    actions   = ["s3:PutObject"]
+    actions   = [
+      "s3:GetObject",
+      "s3:PutObject",
+    ]
     resources = ["${module.state-bucket.bucket.arn}/*"]
 
     principals {
