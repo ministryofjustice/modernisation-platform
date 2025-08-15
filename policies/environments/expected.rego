@@ -24,6 +24,7 @@ expected :=
     "cdpt-ifs",
     "cica-copilot",
     "cica-data-extraction",
+    "cica-development-sandbox",
     "cica-tariff",
     "coat",
     "contract-work-administration",
