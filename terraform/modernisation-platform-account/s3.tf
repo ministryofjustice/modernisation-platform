@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "kms_state_bucket" {
       type = "AWS"
       identifiers = concat(
         ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"],
-        local.root_users_with_state_access
+        local.root_role_with_state_access
       )
     }
   }
@@ -164,37 +164,22 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
 
     principals {
       type        = "AWS"
-      identifiers = local.root_users_with_state_access
+      identifiers = local.root_role_with_state_access
     }
   }
 
   statement {
-    sid       = "AllowGetObjectsFromRootAccount"
+    sid       = "AllowGetandPutObjectFromRootAccount"
     effect    = "Allow"
-    actions   = ["s3:GetObject"]
+    actions   = [
+      "s3:GetObject",
+      "s3:PutObject"
+    ]
     resources = ["${module.state-bucket.bucket.arn}/*"]
 
     principals {
       type        = "AWS"
-      identifiers = local.root_users_with_state_access
-    }
-  }
-
-  statement {
-    sid       = "AllowPutObjectsFromRootAccounts"
-    effect    = "Allow"
-    actions   = ["s3:PutObject"]
-    resources = ["${module.state-bucket.bucket.arn}/*"]
-
-    principals {
-      type        = "AWS"
-      identifiers = local.root_users_with_state_access
-    }
-
-    condition {
-      test     = "StringEquals"
-      variable = "s3:x-amz-acl"
-      values   = ["bucket-owner-full-control"]
+      identifiers = local.root_role_with_state_access
     }
   }
 
@@ -206,7 +191,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
 
     principals {
       type        = "AWS"
-      identifiers = local.root_users_with_state_access
+      identifiers = local.root_role_with_state_access
     }
   }
 
