@@ -32,6 +32,7 @@ variable "circleci_projects" {
     "10ee070f-5c82-413f-b339-34a9d55b26ec",
     "1f4b4a7d-8c64-467e-bfbb-0d3ac3074ead",
     "0ac52327-b850-4c32-9777-f6e535dee4d9",
+    "7c0101b9-0184-4219-8b75-66bbe5e86a80",
   ]
 }
 # Build the list of allowed sub claims for CircleCI OIDC
