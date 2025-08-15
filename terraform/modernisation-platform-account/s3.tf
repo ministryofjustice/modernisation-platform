@@ -108,7 +108,7 @@ module "state-bucket" {
   providers = {
     aws.bucket-replication = aws.modernisation-platform-eu-west-1
   }
-  bucket_policy              = [data.aws_iam_policy_document.allow-state-access-from-root-account.json]
+  bucket_policy              = [data.aws_iam_policy_document.allow-state-access-from-root-account.json, data.aws_iam_policy_document.allow-state-access-for-root-account-sso-admins.json]
   bucket_name                = "modernisation-platform-terraform-state"
   replication_bucket         = "modernisation-platform-terraform-state-replication"
   suffix_name                = "-terraform-state"
@@ -542,6 +542,66 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     }
   }
 
+}
+
+# Allow access to the bucket for SSO admins from the MoJ root account
+data "aws_iam_policy_document" "allow-state-access-for-root-account-sso-admins" {
+  statement {
+    sid       = "AllowListBucketForRootAccountSSOAdmins"
+    effect    = "Allow"
+    actions   = ["s3:ListBucket"]
+    resources = [module.state-bucket.bucket.arn]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ArnEquals"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::${data.aws_organizations_organization.root_account.master_account_id}:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*"]
+    }
+  }
+
+  statement {
+    sid       = "AllowGetAndPutObjectForRootAccountSSOAdmins"
+    effect    = "Allow"
+    actions   = [
+      "s3:GetObject",
+      "s3:PutObject",
+    ]
+    resources = ["${module.state-bucket.bucket.arn}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ArnEquals"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::${data.aws_organizations_organization.root_account.master_account_id}:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*"]
+    }
+  }
+
+  statement {
+    sid       = "AllowDeleteLockForRootAccountSSOAdmins"
+    effect    = "Allow"
+    actions   = ["s3:DeleteObject"]
+    resources = ["${module.state-bucket.bucket.arn}/*.tflock"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ArnEquals"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::${data.aws_organizations_organization.root_account.master_account_id}:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AdministratorAccess_*"]
+    }
+  }
 }
 
 module "cost-management-bucket" {
