@@ -464,8 +464,11 @@ jobs:
       - name: Get modified JSON files
         id: environment_json_changes
         run: |
-          files=$(git diff --name-only --diff-filter=M @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | base64 )
-          echo "files=$files" >> $GITHUB_OUTPUT
+          files=$(git diff --name-only --diff-filter=M @^ -- 'environments/*.json' \
+          | uniq \
+          | sed 's#environments/##' \
+          | base64 -w0)
+          printf "files=%s\n" "$files" >> "$GITHUB_OUTPUT"     
       - name: Install Python
         if: steps.environment_json_changes.outputs.files != ''
         uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5.1.1
