@@ -158,8 +158,8 @@ expected :=
           "ppud-development",
           "refer-monitor-development",
           "vcms-development"
-      }
         ]
+      }
     },
     "hmpps-test": {
       "general": {
