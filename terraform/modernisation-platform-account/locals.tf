@@ -5,12 +5,7 @@ locals {
   pagerduty_integration_keys       = jsondecode(data.aws_secretsmanager_secret_version.pagerduty_integration_keys.secret_string)
   reduced_preprod_backup_retention = false
 
-  root_users_with_state_access = sort([ # also includes the organisation GHA Role
-    "arn:aws:iam::${local.root_account.master_account_id}:user/ModernisationPlatformOrganisationManagement",
-    "arn:aws:iam::${local.root_account.master_account_id}:user/DavidElliott",
-    "arn:aws:iam::${local.root_account.master_account_id}:user/EwaStempel",
-    "arn:aws:iam::${local.root_account.master_account_id}:role/ModernisationPlatformGithubActionsRole" # Role with the same permissions as ModernisationPlatformOrganisationManagement for Github OIDC
-  ])
+  root_role_with_state_access = ["arn:aws:iam::${local.root_account.master_account_id}:role/ModernisationPlatformGithubActionsRole"] # Role for Github OIDC
 
   collaborators = jsondecode(file("../../collaborators.json"))
 
