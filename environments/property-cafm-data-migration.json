@@ -32,8 +32,8 @@
   ],
   "tags": {
     "application": "property-cafm",
-    "business-unit": "HMPPS",
-    "infrastructure-support": "shanmugapriya.basker@justice.gov.uk",
+    "business-unit": "Property",
+    "infrastructure-support": "DataEngineering-gg@justice.gov.uk",
     "owner": "shanmugapriya.basker@justice.gov.uk",
     "critical-national-infrastructure": false
   },
