@@ -6,13 +6,6 @@
     "destination_port": "ANY",
     "protocol": "IP"
   },
-  "azure_noms_to_mp_hmpps_production_oracledb": {
-    "action": "PASS",
-    "source_ip": "${noms-live-vnet}",
-    "destination_ip": "${hmpps-production}",
-    "destination_port": "1521",
-    "protocol": "TCP"
-  },
   "cp_to_mp_hmpps_production_oracledb": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
