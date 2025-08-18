@@ -27,6 +27,7 @@ expected :=
         "accounts": [
           "cica-copilot-development",
           "cica-data-extraction-development",
+          "cica-sandbox-development",
           "cica-tariff-development"
         ]
       }
