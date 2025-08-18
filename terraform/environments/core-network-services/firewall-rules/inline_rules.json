@@ -27,20 +27,6 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "equip_development_to_internet_monitoring": {
-    "action": "PASS",
-    "source_ip": "${hmpps-development}",
-    "destination_ip": "0.0.0.0/0",
-    "destination_port": "5721",
-    "protocol": "TCP"
-  },
-  "equip_prod_to_internet_monitoring": {
-    "action": "PASS",
-    "source_ip": "${hmpps-production}",
-    "destination_ip": "0.0.0.0/0",
-    "destination_port": "5721",
-    "protocol": "TCP"
-  },
   "hmpps-development_to_internet_smtps": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
