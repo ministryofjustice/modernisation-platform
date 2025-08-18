@@ -243,20 +243,6 @@
       ]
     },
     {
-      "username": "laimute.taylor",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "delius-iaps-preproduction",
-          "access": "instance-management"
-        },
-        {
-          "account-name": "delius-iaps-production",
-          "access": "instance-management"
-        }
-      ]
-    },
-    {
       "username": "nathan.brown",
       "github-username": "no-value-supplied",
       "accounts": [
@@ -367,16 +353,6 @@
       ]
     },
     {
-      "username": "chris.keep",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "nomis-test",
-          "access": "instance-management"
-        }
-      ]
-    },
-    {
       "username": "carl.last",
       "github-username": "no-value-supplied",
       "accounts": [
@@ -403,26 +379,6 @@
         {
           "account-name": "oasys-development",
           "access": "s3-upload"
-        }
-      ]
-    },
-    {
-      "username": "antonios.mougkras",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "moj-network-operations-centre-production",
-          "access": "read-only"
-        }
-      ]
-    },
-    {
-      "username": "ryan.roberts",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "moj-network-operations-centre-production",
-          "access": "read-only"
         }
       ]
     },
@@ -619,20 +575,6 @@
         {
           "account-name": "youth-justice-networking-production",
           "access": "migration"
-        }
-      ]
-    },
-    {
-      "username": "vidhya.bhushan",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "genesys-call-centre-data-development",
-          "access": "sandbox"
-        },
-        {
-          "account-name": "genesys-call-centre-data-production",
-          "access": "developer"
         }
       ]
     },

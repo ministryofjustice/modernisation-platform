@@ -5,7 +5,7 @@ resource "time_sleep" "wait_30_seconds" {
   create_duration = "30s"
 
   triggers = {
-    user = module.iam_user.iam_user_name
+    user = module.iam_user.name
   }
 }
 
@@ -14,17 +14,17 @@ resource "time_sleep" "wait_30_seconds" {
 module "iam_user" {
   # checkov:skip=CKV_TF_1:
   # checkov:skip=CKV_TF_2:
-  source                        = "terraform-aws-modules/iam/aws//modules/iam-user"
-  version                       = "~> 5.0"
-  name                          = var.username
-  force_destroy                 = true
-  create_iam_user_login_profile = false
-  create_iam_access_key         = false
+  source               = "terraform-aws-modules/iam/aws//modules/iam-user"
+  version              = "~> 6.0"
+  name                 = var.username
+  force_destroy        = true
+  create_login_profile = false
+  create_access_key    = false
 }
 
 resource "aws_iam_user_policy" "user_policy" {
   name   = "assume-roles-${var.username}"
-  user   = module.iam_user.iam_user_name
+  user   = module.iam_user.name
   policy = data.aws_iam_policy_document.assume_role.json
 }
 
