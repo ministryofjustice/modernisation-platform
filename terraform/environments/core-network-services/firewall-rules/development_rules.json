@@ -392,13 +392,6 @@
     "destination_port": "80",
     "protocol": "TCP"
   },
-  "hmpps_development_to_delius-mis-dev_https": {
-    "action": "PASS",
-    "source_ip": "${hmpps-development}",
-    "destination_ip": "${delius-mis-dev}",
-    "destination_port": "443",
-    "protocol": "TCP"
-  },
   "hmpps_development_to_delius-mis-dev_oracledb_1521": {
     "action": "PASS",
     "source_ip": "${hmpps-development}",
