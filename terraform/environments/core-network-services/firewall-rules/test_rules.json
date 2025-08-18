@@ -20,13 +20,6 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "az_noms_test_to_mp_hmpps_test_oracledb": {
-    "action": "PASS",
-    "source_ip": "${noms-test-vnet}",
-    "destination_ip": "${hmpps-test}",
-    "destination_port": "1521",
-    "protocol": "TCP"
-  },
   "cp_to_mp_hmpps_test_oracledb": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
