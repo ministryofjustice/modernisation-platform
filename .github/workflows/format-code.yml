@@ -56,8 +56,8 @@ jobs:
           REPORT_OUTPUT_FOLDER: none
           
       - name: Run Signed Commit Action
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@feature/signed-commit-branch # testing new branch
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@ac5b118d8d519a521d3a526b564f49fa294dce2c # v3.4.1
         with:
-          github_token: ${{ needs.fetch-secrets.outputs.terraform_github_token }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "GitHub Actions Code Formatter workflow"
           pr_body: "This pull request includes updates from the GitHub Actions Code Formatter workflow. Please review the changes and merge if everything looks good."
