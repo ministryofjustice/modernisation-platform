@@ -129,28 +129,28 @@
     "action": "PASS",
     "source_ip": "${noms-live-vnet}",
     "destination_ip": "${hmpps-production}",
-    "destination_port": "ANY",
+    "destination_port": "$AZURE_FIXNGO_MP_TCP",
     "protocol": "TCP"
   },
   "mp_hmpps_production_to_noms_live": {
     "action": "PASS",
     "source_ip": "${hmpps-production}",
     "destination_ip": "${noms-live-vnet}",
-    "destination_port": "ANY",
+    "destination_port": "$AZURE_FIXNGO_MP_TCP",
     "protocol": "TCP"
   },
   "noms_mgmt_live_to_mp_hmpps_production": {
     "action": "PASS",
     "source_ip": "${noms-mgmt-live-vnet}",
     "destination_ip": "${hmpps-production}",
-    "destination_port": "ANY",
+    "destination_port": "$AZURE_FIXNGO_MP_TCP",
     "protocol": "TCP"
   },
   "mp_hmpps_production_to_noms_mgmt_live": {
     "action": "PASS",
     "source_ip": "${hmpps-production}",
     "destination_ip": "${noms-mgmt-live-vnet}",
-    "destination_port": "ANY",
+    "destination_port": "$AZURE_FIXNGO_MP_TCP",
     "protocol": "TCP"
   },
   "mp_hmpps_production_to_dom1_dcs_TCP": {
