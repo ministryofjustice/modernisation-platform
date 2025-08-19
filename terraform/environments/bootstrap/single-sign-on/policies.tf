@@ -544,8 +544,6 @@ data "aws_iam_policy_document" "quicksight_administrator_additional" {
       "sso:PutApplicationAuthenticationMethod",
       "sso:PutApplicationGrant",
       "sso:DeleteApplication",
-      "sso:DescribeGroup",
-      "sso:SearchGroups",
       "sso:GetProfile",
       "sso:CreateApplicationAssignment",
       "sso:DeleteApplicationAssignment",
