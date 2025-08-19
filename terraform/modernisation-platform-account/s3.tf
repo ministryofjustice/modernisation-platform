@@ -169,9 +169,9 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
   }
 
   statement {
-    sid       = "AllowGetandPutObjectFromRootAccount"
-    effect    = "Allow"
-    actions   = [
+    sid    = "AllowGetandPutObjectFromRootAccount"
+    effect = "Allow"
+    actions = [
       "s3:GetObject",
       "s3:PutObject"
     ]
@@ -550,9 +550,9 @@ data "aws_iam_policy_document" "allow-state-access-for-root-account-sso-admins" 
   }
 
   statement {
-    sid       = "AllowGetAndPutObjectForRootAccountSSOAdmins"
-    effect    = "Allow"
-    actions   = [
+    sid    = "AllowGetAndPutObjectForRootAccountSSOAdmins"
+    effect = "Allow"
+    actions = [
       "s3:GetObject",
       "s3:PutObject",
     ]

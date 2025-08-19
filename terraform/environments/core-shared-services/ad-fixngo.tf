@@ -275,18 +275,18 @@ locals {
         path        = "/",
         statements = [
           {
-            sid     = "EC2",
-            effect  = "Allow",
+            sid    = "EC2",
+            effect = "Allow",
             actions = [
               "ec2:GetPasswordData",
-              "ec2:StartInstances", 
+              "ec2:StartInstances",
               "ec2:StopInstances"
             ],
             resources = ["*"]
           },
           {
-            sid     = "SSMStartSession",
-            effect  = "Allow",
+            sid    = "SSMStartSession",
+            effect = "Allow",
             actions = [
               "ssm:StartSession",
               "ssm:DescribeInstanceInformation",
@@ -301,20 +301,20 @@ locals {
             ]
           },
           {
-            sid     = "SSMPermissions",
-            effect  = "Allow",
-            actions = [ 
-              "ssm:ListCommands", 
-              "ssm:ListCommandInvocations", 
-              "ssm:GetCommandInvocation", 
-              "ssm:DescribeInstanceInformation", 
+            sid    = "SSMPermissions",
+            effect = "Allow",
+            actions = [
+              "ssm:ListCommands",
+              "ssm:ListCommandInvocations",
+              "ssm:GetCommandInvocation",
+              "ssm:DescribeInstanceInformation",
               "ssm:SendCommand"
             ],
             resources = ["*"]
           },
           {
-            sid     = "GuiConnect",
-            effect  = "Allow",
+            sid    = "GuiConnect",
+            effect = "Allow",
             actions = [
               "ssm-guiconnect:CancelConnection",
               "ssm-guiconnect:GetConnection",
@@ -322,23 +322,23 @@ locals {
             ],
             resources = ["*"]
           },
-          { 
-            sid     = "ComputeOptimizer",
-            effect  = "Allow",
-            actions = [ 
-              "compute-optimizer:GetEnrollmentStatus", 
-              "compute-optimizer:GetEC2InstanceRecommendations" 
+          {
+            sid    = "ComputeOptimizer",
+            effect = "Allow",
+            actions = [
+              "compute-optimizer:GetEnrollmentStatus",
+              "compute-optimizer:GetEC2InstanceRecommendations"
             ],
             resources = ["*"]
           },
-          { 
-            sid     = "KMSPermissions",
-            effect  = "Allow",
-            actions = [ 
-              "kms:CreateGrant", 
-              "kms:Decrypt", 
-              "kms:GenerateDataKeyWithoutPlainText", 
-              "kms:DescribeKey", 
+          {
+            sid    = "KMSPermissions",
+            effect = "Allow",
+            actions = [
+              "kms:CreateGrant",
+              "kms:Decrypt",
+              "kms:GenerateDataKeyWithoutPlainText",
+              "kms:DescribeKey",
               "kms:ReEncrypt*"
             ],
             resources = ["*"]
@@ -346,7 +346,7 @@ locals {
         ]
       }
 
-  }
+    }
 
     fsx_windows_file_systems = {
       ad-azure-fsx = {
