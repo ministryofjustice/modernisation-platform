@@ -1,27 +1,10 @@
 {
   "account-type": "member",
-  "codeowners": ["hosting-migrations", "studio-webops"],
+  "codeowners": [
+    "hosting-migrations",
+    "studio-webops"
+  ],
   "environments": [
-    {
-      "name": "development",
-      "access": [
-        {
-          "sso_group_name": "hosting-migrations",
-          "level": "sandbox",
-          "github_action_reviewer": "true"
-        },
-        {
-          "sso_group_name": "studio-webops",
-          "level": "sandbox",
-          "github_action_reviewer": "true"
-        },
-        {
-          "sso_group_name": "azure-aws-sso-digital-studio-operations",
-          "level": "developer"
-        }
-      ],
-      "nuke": "exclude"
-    },
     {
       "name": "test",
       "access": [

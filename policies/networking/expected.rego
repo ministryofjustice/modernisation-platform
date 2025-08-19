@@ -152,7 +152,6 @@ expected :=
           "nomis-data-hub-development",
           "nomis-development",
           "oasys-development",
-          "oasys-national-reporting-development",
           "performance-hub-development",
           "planetfm-development",
           "ppud-development",
