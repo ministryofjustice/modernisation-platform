@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Backup and Recovery
-last_reviewed_on: 2025-02-17
+last_reviewed_on: 2025-08-19
 review_in: 6 months
 ---
 
@@ -32,7 +32,7 @@ This [reference](https://docs.aws.amazon.com/aws-backup/latest/devguide/restorin
 
 4. Each resource type will require its own specific parameters to be set. For example, an EBS volume or snapshot will require the volume ID the volume type, the availability zone to be added. It is suggested that these are provided by the product team or, failing that, obtained from the terraform source. As such it will be difficult to undertake a mass recovery of different resource types from multiple recovery points without scripting.
 
-5. The recovery proceess will require a role to be provided. It is suggested that the DEFAULT role is used as this will have all of the necessary permissions required. Using the AWSBackup role will not work.
+5. The recovery process will require a role to be provided. It is suggested that the DEFAULT role is used as this will have all of the necessary permissions required. Using the AWSBackup role will not work.
 
 6. Recovery Points will generally have one resource associated with them. There are exceptions, such as resources backed up to multiple regions.
 
@@ -42,7 +42,7 @@ This [reference](https://docs.aws.amazon.com/aws-backup/latest/devguide/restorin
 ## Backup & Restore Of Member StateFile
 
 ### Overview
-This runbook provides detailed instructions for backing up a replicated Terraform statefile from the `eu-west-1` region and restoring it to a new folder in the `eu-west-2` region. The statefile is stored in an S3 bucket with DynamoDB for state locking.
+This runbook provides detailed instructions for backing up a replicated Terraform statefile from the `eu-west-1` region and restoring it to a new folder in the `eu-west-2` region.
 
 ---
 
@@ -148,6 +148,7 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 - Connect to the restored EC2 instance using SSH or AWS Systems Manager (SSM).
 - Navigate to the location of the test file.
 - Verify that the test file exists and contains the expected content.
+
 ---
 
 ## References
