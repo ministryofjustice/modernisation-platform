@@ -116,6 +116,7 @@ module "state-bucket" {
   replication_region         = "eu-west-1"
   custom_kms_key             = aws_kms_key.s3_state_bucket_multi_region.arn
   custom_replication_kms_key = aws_kms_replica_key.s3_state_bucket_multi_region_replica.arn
+  ownership_controls         = "BucketOwnerEnforced"
   tags                       = local.tags
 
   lifecycle_rule = [
