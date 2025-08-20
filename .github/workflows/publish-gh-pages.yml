@@ -9,13 +9,11 @@ on:
       - "source/**"
       - "config/**"
 
-# GITHUB_TOKEN permissions to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: true
@@ -41,12 +39,13 @@ jobs:
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@7f78ec79dd45ec7db8966ecb619c85712d4e68d7 # v3.4.2
         with:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
-          slack_webhook_url: "SLACK_WEBHOOK_URL"
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
 
       - name: Compile Markdown to HTML and create artifact
         run: /usr/local/bin/package
+
       - name: Upload artifact to be published
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 #v4.6.2
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: github-pages
           path: artifact.tar
@@ -75,7 +74,7 @@ jobs:
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@7f78ec79dd45ec7db8966ecb619c85712d4e68d7 # v3.4.2
         with:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
-          slack_webhook_url: "SLACK_WEBHOOK_URL"
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
 
       - name: Setup Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
