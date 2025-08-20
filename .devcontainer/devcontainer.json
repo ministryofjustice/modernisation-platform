@@ -3,7 +3,7 @@
   "image": "ghcr.io/ministryofjustice/devcontainer-base:latest",
   "features": {
     "ghcr.io/ministryofjustice/devcontainer-feature/aws:1": {},
-    "ghcr.io/ministryofjustice/devcontainer-feature/kubernetes:1": {},
+    "ghcr.io/ministryofjustice/devcontainer-feature/kubernetes:": {},
     "ghcr.io/ministryofjustice/devcontainer-feature/static-analysis:1": {},
     "ghcr.io/ministryofjustice/devcontainer-feature/terraform:1": {}
   }
