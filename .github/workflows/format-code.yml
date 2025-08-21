@@ -24,6 +24,7 @@ jobs:
     needs: fetch-secrets
     permissions:
       contents: write
+      pull-requests: write
       security-events: write  # needed for SARIF upload
     runs-on: ubuntu-latest
     steps:
