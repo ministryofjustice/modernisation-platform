@@ -509,5 +509,12 @@
     "destination_ip": "${delius-test}",
     "destination_port": "1522",
     "protocol": "TCP"
+  },
+  "delius_test_to_hmpps_test_https": {
+    "action": "PASS",
+    "source_ip": "${delius-test}",
+    "destination_ip": "${hmpps-test}",
+    "destination_port": "443",
+    "protocol": "TCP"
   }
 }
