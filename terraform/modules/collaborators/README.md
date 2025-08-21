@@ -29,7 +29,7 @@ If you're looking to raise an issue with this module, please create a new issue 
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_iam_user"></a> [iam\_user](#module\_iam\_user) | terraform-aws-modules/iam/aws//modules/iam-user | ~> 5.0 |
+| <a name="module_iam_user"></a> [iam\_user](#module\_iam\_user) | terraform-aws-modules/iam/aws//modules/iam-user | ~> 6.0 |
 
 ## Resources
 
