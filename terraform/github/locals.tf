@@ -69,6 +69,8 @@ locals {
 
   # Security engineers performing reviews on the platform or member accounts
   security = [
+    "TawneeOwl",
+    "adamwhyle"
   ]
 
   # Members of the long term storage account team to acccess that account
