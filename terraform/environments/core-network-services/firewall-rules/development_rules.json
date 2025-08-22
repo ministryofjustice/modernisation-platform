@@ -684,5 +684,19 @@
     "destination_ip": "${hmpps-development}",
     "destination_port": "1522",
     "protocol": "TCP"
+  },
+  "cloud-platform_to_delius-mis-dev_oracledb-1521" :{
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "cloud-platform_to_delius-mis-dev_oracledb-1522" :{
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${delius-mis-dev}",
+    "destination_port": "1522",
+    "protocol": "TCP"
   }
 }
