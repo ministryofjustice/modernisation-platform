@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: How to setup secure commit
-last_reviewed_on: 2025-02-21
+last_reviewed_on: 2025-08-22
 review_in: 6 months
 ---
 
@@ -32,13 +32,11 @@ Note: Before generating a new GPG key, make sure you've verified your email addr
 
 If you are on version 2.1.17 or greater, paste the text below to generate a GPG key pair.
 
-
 ```
 gpg --full-generate-key
 ```
 
 If you are not on version 2.1.17 or greater, the gpg --full-generate-key command doesn't work. Paste the text below and skip to step 6.
-
 
 ```
 gpg --default-new-key-algo rsa4096 --gen-key
@@ -60,7 +58,6 @@ Note: When asked to enter your email address, ensure that you enter the verified
 
 - Use the gpg --list-secret-keys --keyid-format=long command to list the long form of the GPG keys for which you have both a public and private key. A private key is required for signing commits or tags.
 
-
 ```
 gpg --list-secret-keys --keyid-format=long
 ```
@@ -68,7 +65,6 @@ gpg --list-secret-keys --keyid-format=long
 Note: Some GPG installations on Linux may require you to use gpg2 --list-keys --keyid-format LONG to view a list of your existing keys instead. In this case you will also need to configure Git to use gpg2 by running git config --global gpg.program gpg2.
 
 - From the list of GPG keys, copy the long form of the GPG key ID you'd like to use. In this example, the GPG key ID is 3AA5C34371567BD2:
-
 
 ```
 $ gpg --list-secret-keys --keyid-format=long
@@ -81,7 +77,6 @@ ssb   4096R/4BB6D45482678BE3 2016-03-10
 
 - Paste the text below, substituting in the GPG key ID you'd like to use. In this example, the GPG key ID is 3AA5C34371567BD2:
 
-
 ```
 gpg --armor --export 3AA5C34371567BD2
 # Prints the GPG key ID, in ASCII armor format
@@ -91,14 +86,13 @@ gpg --armor --export 3AA5C34371567BD2
 
 One you have the key you will need to add it to your github account to do this follow the bellow instructions
 
-- In the upper-right corner of any page on GitHub, click your profile photo, then click  Settings.
-- In the "Access" section of the sidebar, click  SSH and GPG keys.
+- In the upper-right corner of any page on GitHub, click your profile photo, then click Settings.
+- In the "Access" section of the sidebar, click SSH and GPG keys.
 - Next to the "GPG keys" header, click New GPG key.
 - In the "Title" field, type a name for your GPG key.
 - In the "Key" field, paste the GPG key you copied when you generated your GPG key.
 - Click Add GPG key.
 - If prompted, authenticate to your GitHub account to confirm the action.
-
 
 ### Telling git about the key
 
@@ -111,7 +105,8 @@ If you have previously configured Git to use a different key format when signing
 ```
 git config --global --unset gpg.format
 ```
-Use the 
+
+Use the
 
 ```
 gpg --list-secret-keys --keyid-format=long command to list the long form of the GPG keys for which you have both a public and private key. A private key is required for signing commits or tags.
@@ -134,11 +129,13 @@ To set your primary GPG signing key in Git, paste the text below, substituting i
 
 git config --global user.signingkey 3AA5C34371567BD2
 ```
+
 Alternatively, you may want to use a subkey. In this example, the GPG subkey ID is 4BB6D45482678BE3:
 
 ```
 git config --global user.signingkey 4BB6D45482678BE3
 ```
+
 If you use multiple keys and subkeys, then you should append an exclamation mark ! to the key to tell git that this is your preferred key. Sometimes you may need to escape the exclamation mark with a back slash: \!.
 
 Optionally, to configure Git to sign all commits by default, enter the following command:
@@ -146,6 +143,7 @@ Optionally, to configure Git to sign all commits by default, enter the following
 ```
 git config --global commit.gpgsign true
 ```
+
 For more information, see "Signing commits."
 
 If you aren't using the GPG suite, run the following command in the zsh shell to add the GPG key to your .zshrc file, if it exists, or your .zprofile file:
@@ -161,6 +159,7 @@ Alternatively, if you use the bash shell, run this command:
 $ if [ -r ~/.bash_profile ]; then echo -e '\nexport GPG_TTY=$(tty)' >> ~/.bash_profile; \
   else echo -e '\nexport GPG_TTY=$(tty)' >> ~/.profile; fi
 ```
+
 Optionally, to prompt you to enter a PIN or passphrase when required, install pinentry-mac. For example, using Homebrew:
 
 ```
