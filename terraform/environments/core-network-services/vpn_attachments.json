@@ -4,6 +4,7 @@
     "customer_gateway_ip": "20.254.177.179",
     "dx_gateway_id": "",
     "dx_gateway_owner_account_id": "",
+    "github_environment": "nomis-production",
     "remote_ipv4_network_cidr": "0.0.0.0/0",
     "tunnel1_inside_cidr": "169.254.21.128/30",
     "tunnel2_inside_cidr": "169.254.22.128/30",
@@ -18,6 +19,7 @@
     "customer_gateway_ip": "20.254.177.202",
     "dx_gateway_id": "",
     "dx_gateway_owner_account_id": "",
+    "github_environment": "nomis-production",
     "remote_ipv4_network_cidr": "0.0.0.0/0",
     "tunnel1_inside_cidr": "169.254.21.132/30",
     "tunnel2_inside_cidr": "169.254.22.132/30",
@@ -47,6 +49,7 @@
   "YJB-Juniper-vSRX01-VPN": {
     "bgp_asn": "64523",
     "customer_gateway_ip": "35.176.77.66",
+    "github_environment": "youth-justice-networking-production",
     "remote_ipv4_network_cidr": "0.0.0.0/0",
     "static_routes_only": true,
     "tunnel1_inside_cidr": "169.254.21.140/30",
@@ -68,6 +71,7 @@
   "YJB-Juniper-vSRX02-VPN": {
     "bgp_asn": "64523",
     "customer_gateway_ip": "3.9.228.137",
+    "github_environment": "youth-justice-networking-production",
     "remote_ipv4_network_cidr": "0.0.0.0/0",
     "static_routes_only": true,
     "tunnel1_inside_cidr": "169.254.21.144/30",
