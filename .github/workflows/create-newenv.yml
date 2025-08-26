@@ -1,0 +1,136 @@
+name: Environment Request
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  handle-request:
+    if: contains(github.event.issue.labels.*.name, 'New Account')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Save issue body to file
+        run: |
+          echo "${{ github.event.issue.body }}" > issue_body.txt
+
+      - name: Debug print issue_body.txt
+        run: |
+          echo "----- issue_body.txt -----"
+          cat issue_body.txt
+          echo "-------------------------"
+
+      - name: Extract fields from issue
+        run: |
+          EXISTING_ACCOUNT=$(awk -v key="### Is this an existing AWS account?" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          APP_NAME=$(awk -v key="### Application Name" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          BUSINESS_UNIT=$(awk -v key="### business-unit" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          INFRA_SUPPORT=$(awk -v key="### infrastructure-support" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          OWNER=$(awk -v key="### owner" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          SSO_GROUP=$(awk -v key="### SSO Group Name" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+      
+          echo "EXISTING_ACCOUNT=$EXISTING_ACCOUNT" >> $GITHUB_ENV
+          echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
+          echo "BUSINESS_UNIT=$BUSINESS_UNIT" >> $GITHUB_ENV
+          echo "INFRA_SUPPORT=$INFRA_SUPPORT" >> $GITHUB_ENV
+          echo "OWNER=$OWNER" >> $GITHUB_ENV
+          echo "SSO_GROUP=$SSO_GROUP" >> $GITHUB_ENV
+
+      - name: Extract environment selections
+        run: |
+          ENVIRONMENTS=""
+          # Development
+          DEV_SELECTED=$(awk '/- \[x\] Development/ {print "true"}' issue_body.txt)
+          DEV_ACCESS=$(awk -v key="### Environment access level Development" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          if [ "$DEV_SELECTED" = "true" ]; then
+            ENVIRONMENTS="${ENVIRONMENTS}{\"name\": \"development\", \"access_level\": \"$DEV_ACCESS\"},"
+          fi
+          # Test
+          TEST_SELECTED=$(awk '/- \[x\] test/ {print "true"}' issue_body.txt)
+          TEST_ACCESS=$(awk -v key="### Environment access level Test" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          if [ "$TEST_SELECTED" = "true" ]; then
+            ENVIRONMENTS="${ENVIRONMENTS}{\"name\": \"test\", \"access_level\": \"$TEST_ACCESS\"},"
+          fi
+          # Preproduction
+          PREPROD_SELECTED=$(awk '/- \[x\] Preproduction/ {print "true"}' issue_body.txt)
+          PREPROD_ACCESS=$(awk -v key="### Environment access level Preproduction" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          if [ "$PREPROD_SELECTED" = "true" ]; then
+            ENVIRONMENTS="${ENVIRONMENTS}{\"name\": \"preproduction\", \"access_level\": \"$PREPROD_ACCESS\"},"
+          fi
+          # Production
+          PROD_SELECTED=$(awk '/- \[x\] Production/ {print "true"}' issue_body.txt)
+          PROD_ACCESS=$(awk -v key="### Environment access level Production" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          if [ "$PROD_SELECTED" = "true" ]; then
+            ENVIRONMENTS="${ENVIRONMENTS}{\"name\": \"production\", \"access_level\": \"$PROD_ACCESS\"},"
+          fi
+          # Remove trailing comma and wrap in brackets
+          ENV_SELECTIONS_JSON="[$(echo $ENVIRONMENTS | sed 's/,$//')]"
+          echo "ENV_SELECTIONS_JSON=$ENV_SELECTIONS_JSON" >> $GITHUB_ENV
+
+      - name: Debug extracted variables
+        run: |
+          echo "EXISTING_ACCOUNT=$EXISTING_ACCOUNT"
+          echo "APP_NAME=$APP_NAME"
+          echo "APPLICATION=$APPLICATION"
+          echo "BUSINESS_UNIT=$BUSINESS_UNIT"
+          echo "INFRA_SUPPORT=$INFRA_SUPPORT"
+          echo "OWNER=$OWNER"
+          echo "SSO_GROUP=$SSO_GROUP"
+
+      - name: Create and checkout branch for environment request
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b env-request/${{ github.run_id }}
+
+      - name: Run create-account.py for new accounts
+        if: env.EXISTING_ACCOUNT == 'No'
+        run: |
+          ls -l scripts
+          python scripts/create-account.py \
+            "$APP_NAME" \
+            "$BUSINESS_UNIT" \
+            "$INFRA_SUPPORT" \
+            "$OWNER" \
+            "slack-channel-placeholder" \
+            "false" \
+            "$SSO_GROUP" \
+            "" \
+            "$ENV_SELECTIONS_JSON"
+
+      - name: Run amend-accounts.py for existing accounts
+        if: env.EXISTING_ACCOUNT == 'Yes'
+        run: |
+          python scripts/amend-accounts.py \
+            "$APP_NAME" \
+            # Add other arguments as needed for your amend script
+
+      - name: Show created JSON
+        run: cat environments/"$APP_NAME".json
+
+      - name: Install GitHub CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install gh
+
+      - name: Commit changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ls -l environments/
+          git rm -f issue_body.txt
+          git add -f environments/*
+          git add -f policies/environments/expected.rego
+          git commit -m "Automated environment request for $APP_NAME"
+          git push --set-upstream origin env-request/${{ github.run_id }}
+          gh pr create --base main --head env-request/${{ github.run_id }} \
+            --title "Automated environment request for $APP_NAME" \
+            --body "This PR was created automatically from an environment request issue."
