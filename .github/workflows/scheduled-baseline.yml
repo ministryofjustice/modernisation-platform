@@ -40,8 +40,15 @@ jobs:
     needs: fetch-secrets
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
+      run-delegate-access: ${{ steps.changes.outputs.run-delegate-access }}
+      run-member-bootstrap: ${{ steps.changes.outputs.run-member-bootstrap }}
+      run-secure-baselines: ${{ steps.changes.outputs.run-secure-baselines }}
+      run-single-sign-on: ${{ steps.changes.outputs.run-single-sign-on }}
+      run-workflow-jobs: ${{ steps.changes.outputs.run-workflow-jobs }}
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with: 
+          fetch-depth: 0
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@7f78ec79dd45ec7db8966ecb619c85712d4e68d7 # v3.4.2
         with:
@@ -66,6 +73,22 @@ jobs:
       - id: set-matrix
         name: Set Up Matrix
         run: echo "matrix=$(terraform -chdir=terraform/environments/bootstrap/delegate-access workspace list | sed -e "s/*//" -e "s/^[[:space:]]*//" -e "/default/d" -e "/^$/d" | sort -u | jq -ncR '[inputs]')" >> $GITHUB_OUTPUT
+      - name: Check for relevant changes
+        id: changes
+        run: |
+          CHANGES=$(git diff --name-only HEAD~1 HEAD)
+          declare -A DIRS=(
+            [run-delegate-access]="terraform/environments/bootstrap/delegate-access/"
+            [run-member-bootstrap]="terraform/environments/bootstrap/member-bootstrap/"
+            [run-secure-baselines]="terraform/environments/bootstrap/secure-baselines/"
+            [run-single-sign-on]="terraform/environments/bootstrap/single-sign-on/"
+            [run-workflow-jobs]=".github/workflows/schedule.yml"
+          )
+          for key in "${!DIRS[@]}"; do
+            if grep -q "${DIRS[$key]}" <<< "$CHANGES"; then
+              echo "$key=true" >> $GITHUB_OUTPUT
+            fi
+          done
      
   delegate-access:
     strategy:
@@ -74,6 +97,11 @@ jobs:
         workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
     runs-on: ubuntu-latest
     needs: [fetch-secrets,setup-prerequisites]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      needs.setup-prerequisites.outputs.run-delegate-access == 'true' ||
+      needs.setup-prerequisites.outputs.run-workflow-jobs == 'true'
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Decrypt Secrets
@@ -126,6 +154,10 @@ jobs:
         workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
     runs-on: ubuntu-latest
     needs: [fetch-secrets,setup-prerequisites, delegate-access]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-secure-baselines == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.delegate-access.result == 'success' || needs.delegate-access.result == 'skipped')))
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Decrypt Secrets
@@ -178,6 +210,10 @@ jobs:
         workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
     runs-on: ubuntu-latest
     needs: [fetch-secrets,setup-prerequisites, delegate-access]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-single-sign-on == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.delegate-access.result == 'success' || needs.delegate-access.result == 'skipped')))
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Decrypt Secrets
@@ -230,6 +266,10 @@ jobs:
         workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
     runs-on: ubuntu-latest
     needs: [fetch-secrets,setup-prerequisites, single-sign-on]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-member-bootstrap == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.single-sign-on.result == 'success' || needs.single-sign-on.result == 'skipped')))
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Decrypt Secrets
@@ -278,6 +318,11 @@ jobs:
   update-permission-sets:
     runs-on: ubuntu-latest
     needs: [fetch-secrets,delegate-access,single-sign-on]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') ||
+      (always() && (needs.single-sign-on.result == 'success' || needs.delegate-access.result == 'success'))
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Decrypt Secrets
