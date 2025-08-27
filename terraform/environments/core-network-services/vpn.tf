@@ -65,6 +65,7 @@ resource "aws_vpn_connection" "this" {
   tags = merge(
     local.tags,
     { "Name" = replace(each.key, "_", "-") },
+    try({ "github-environment" = each.value.github_environment }, {})
   )
 
   lifecycle {

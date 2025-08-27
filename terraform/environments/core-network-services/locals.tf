@@ -58,6 +58,27 @@ locals {
 
   vpn_attachments = fileexists("./vpn_attachments.json") ? jsondecode(file("./vpn_attachments.json")) : tomap({})
 
+  vpn_lifecycle_control_ids = [
+    for name, cfg in local.vpn_attachments :
+    name
+    if(
+      (try(cfg.tunnel1_enable_tunnel_lifecycle_control, "false") == "true") ||
+      (try(cfg.tunnel2_enable_tunnel_lifecycle_control, "false") == "true")
+    )
+  ]
+
+  vpn_lifecycle_control_arns = [
+    for k, v in aws_vpn_connection.this :
+    v.arn
+    if contains(local.vpn_lifecycle_control_ids, k)
+  ]
+
+  github_repository_environments_from_vpns = distinct([
+    for vpn_id, vpn in local.vpn_attachments :
+    "ministryofjustice/modernisation-platform-environments:environment:${vpn.github_environment}"
+    if contains(keys(vpn), "github_environment") && vpn.github_environment != ""
+  ])
+
   noms_vpn_attachment_ids = toset([for k in aws_vpn_connection.this : k.transit_gateway_attachment_id if(length(regexall("(?:NOMS)", k.tags.Name)) > 0)])
 
   nec_vpn_attachment_ids = toset([for k in aws_vpn_connection.this : k.transit_gateway_attachment_id if(length(regexall("(?:NEC)", k.tags.Name)) > 0)])
