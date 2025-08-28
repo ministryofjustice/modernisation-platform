@@ -30,6 +30,9 @@
     },
     {
       "name": "dashboard-service"
+    },
+    {
+      "name" "next"
     }
   ],
   "codeowners": ["analytical-platform-engineers"],
