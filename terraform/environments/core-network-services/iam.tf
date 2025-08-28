@@ -260,7 +260,7 @@ resource "aws_iam_role_policy" "read_firewall" {
 
 # GitHub OIDC Role assumed by GitHub Actions workflows to perform VPN maintenance tasks
 module "vpn-maintenance-oidc" {
-  source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=1cec27eb4ae2c8d23d652826888927fe4b795953" # test fix on branch
+  source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=6dd6f177091fb1664998aa37a1d0d5cf5894c10a" # v4.2.0
   role_name                   = "github-actions-vpn-maintenance"
   create_github_oidc_provider = false
   github_repositories         = local.github_repository_environments_from_vpns
