@@ -32,7 +32,7 @@
       "name": "dashboard-service"
     },
     {
-      "name" "next"
+      "name": "next"
     }
   ],
   "codeowners": ["analytical-platform-engineers"],
