@@ -188,6 +188,13 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
+  "cp_to_mp_laa_development_1522": {
+    "action": "PASS",
+    "source_ip": "${cloud-platform}",
+    "destination_ip": "${laa-development}",
+    "destination_port": "1522",
+    "protocol": "TCP"
+  },
   "cp_to_mp_laa_development_cwa_test": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
