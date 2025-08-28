@@ -321,7 +321,7 @@ jobs:
     if: |
       github.event_name == 'schedule' ||
       github.event_name == 'workflow_dispatch' ||
-      needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') ||
+      needs.setup-prerequisites.outputs.run-workflow-jobs == 'true' ||
       (always() && (needs.single-sign-on.result == 'success' || needs.delegate-access.result == 'success'))
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
