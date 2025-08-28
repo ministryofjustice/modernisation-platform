@@ -82,7 +82,7 @@ jobs:
             [run-member-bootstrap]="terraform/environments/bootstrap/member-bootstrap/"
             [run-secure-baselines]="terraform/environments/bootstrap/secure-baselines/"
             [run-single-sign-on]="terraform/environments/bootstrap/single-sign-on/"
-            [run-workflow-jobs]=".github/workflows/schedule.yml"
+            [run-workflow-jobs]=".github/workflows/scheduled-baseline.yml"
           )
           for key in "${!DIRS[@]}"; do
             if grep -q "${DIRS[$key]}" <<< "$CHANGES"; then
