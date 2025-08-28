@@ -3,7 +3,8 @@
   "codeowners": [
     "laa-aws-infrastructure",
     "laa-crime-apps-team",
-    "laa-maat-migrations"
+    "laa-maat-migrations",
+    "laa-dbas"
   ],
   "environments": [
     {
@@ -16,6 +17,11 @@
         },
         {
           "sso_group_name": "laa-crime-apps-team",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dbas",
           "level": "developer",
           "github_action_reviewer": "true"
         },
@@ -41,6 +47,11 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "laa-dbas",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
           "sso_group_name": "laa-maat-migrations",
           "level": "developer",
           "github_action_reviewer": "true"
@@ -61,6 +72,11 @@
           "github_action_reviewer": "true"
         },
         {
+          "sso_group_name": "laa-dbas",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
           "sso_group_name": "laa-maat-migrations",
           "level": "developer",
           "github_action_reviewer": "true"
@@ -77,6 +93,11 @@
         },
         {
           "sso_group_name": "laa-crime-apps-team",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dbas",
           "level": "developer",
           "github_action_reviewer": "true"
         },
