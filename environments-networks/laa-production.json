@@ -9,6 +9,7 @@
           "ccms-edrms-production",
           "contract-work-administration-production",
           "laa-ccms-soa-production",
+          "laa-enterprise-service-bus-production",
           "laa-mail-relay-production",
           "laa-oem-production",
           "maat-production",
