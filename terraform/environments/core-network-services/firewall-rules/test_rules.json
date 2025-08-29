@@ -248,7 +248,7 @@
     "action": "PASS",
     "source_ip": "${laa-test}",
     "destination_ip": "${laa-lz-uat}",
-    "destination_port": "1521",
+    "destination_port": "1571",
     "protocol": "TCP"
   },
   "laa_shared_services_nonprod_to_mp_laa_test": {
