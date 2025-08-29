@@ -31,8 +31,7 @@
           "sso_group_name": "v1-hub20-developers",
           "level": "developer"
         }
-      ],
-      "nuke": "exclude"
+      ]
     },
     {
       "name": "production",
