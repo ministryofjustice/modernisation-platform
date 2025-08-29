@@ -259,7 +259,28 @@ resource "aws_iam_role_policy" "read_firewall" {
 }
 
 # GitHub OIDC Role assumed by GitHub Actions workflows to perform VPN maintenance tasks
-module "vpn-maintenance-oidc" {
+
+module "vpn_environment_check_oidc" {
+  source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=6dd6f177091fb1664998aa37a1d0d5cf5894c10a" # v4.2.0
+  role_name                   = "github-actions-vpn-environment-check"
+  create_github_oidc_provider = false
+  github_repositories         = ["ministryofjustice/modernisation-platform-environments:*"]
+  additional_permissions      = data.aws_iam_policy_document.vpn_environment_check_permissions.json
+  tags_common                 = { "Name" = format("%s-oidc", terraform.workspace) }
+  tags_prefix                 = ""
+}
+
+data "aws_iam_policy_document" "vpn_environment_check_permissions" {
+  version = "2012-10-17"
+  statement {
+    effect = "Allow"
+    actions = [
+      "ec2:DescribeVpnConnections"
+    ]
+    resources = local.vpn_lifecycle_control_arns
+  }
+}
+module "vpn_maintenance_oidc" {
   source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=6dd6f177091fb1664998aa37a1d0d5cf5894c10a" # v4.2.0
   role_name                   = "github-actions-vpn-maintenance"
   create_github_oidc_provider = false

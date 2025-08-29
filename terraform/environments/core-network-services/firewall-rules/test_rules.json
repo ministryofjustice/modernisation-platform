@@ -244,6 +244,13 @@
     "destination_port": "$LAA_MAAT_TCP",
     "protocol": "TCP"
   },
+  "mp_laa_test_to_laa_uat_hub20": {
+    "action": "PASS",
+    "source_ip": "${laa-test}",
+    "destination_ip": "${laa-lz-uat}",
+    "destination_port": "1571",
+    "protocol": "TCP"
+  },
   "laa_shared_services_nonprod_to_mp_laa_test": {
     "action": "PASS",
     "source_ip": "${laa-lz-shared-services-nonprod}",

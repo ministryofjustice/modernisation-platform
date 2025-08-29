@@ -10,6 +10,7 @@
           "ccms-edrms-test",
           "contract-work-administration-test",
           "laa-ccms-soa-test",
+          "laa-enterprise-service-bus-test",
           "laa-mail-relay-test",
           "laa-oem-test",
           "maat-test",
