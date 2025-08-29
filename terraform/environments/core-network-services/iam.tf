@@ -262,7 +262,7 @@ resource "aws_iam_role_policy" "read_firewall" {
 
 module "vpn_environment_check_oidc" {
   source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=6dd6f177091fb1664998aa37a1d0d5cf5894c10a" # v4.2.0
-  role_name                   = "github-actions-vpn-maintenance"
+  role_name                   = "github-actions-vpn-environment-check"
   create_github_oidc_provider = false
   github_repositories         = ["ministryofjustice/modernisation-platform-environments:*"]
   additional_permissions      = data.aws_iam_policy_document.vpn_environment_check_permissions.json
