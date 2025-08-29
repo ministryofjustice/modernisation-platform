@@ -55,6 +55,11 @@
           "sso_group_name": "laa-maat-migrations",
           "level": "developer",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dbas",
+          "level": "developer",
+          "github_action_reviewer": "true"
         }
       ]
     },
@@ -80,6 +85,11 @@
           "sso_group_name": "laa-maat-migrations",
           "level": "developer",
           "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dbas",
+          "level": "developer",
+          "github_action_reviewer": "true"
         }
       ]
     },
@@ -103,6 +113,11 @@
         },
         {
           "sso_group_name": "laa-maat-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "laa-dbas",
           "level": "developer",
           "github_action_reviewer": "true"
         }
