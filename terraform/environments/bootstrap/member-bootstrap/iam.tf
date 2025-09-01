@@ -888,7 +888,6 @@ resource "aws_iam_account_alias" "alias" {
 }
 
 # Github OIDC provider for development and test environments
-
 module "github_actions_dev_test_role" {
   count               = can(regex("development$|test$", terraform.workspace)) ? 1 : 0
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
