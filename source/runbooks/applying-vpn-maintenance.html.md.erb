@@ -40,7 +40,7 @@ There is also an option to link the VPN to a GitHub environment e.g.
 ```
 Only the teams/users linked to this GH environment will be able to approve any VPN Maintenance jobs. 
 
-Note that this will not be applying any actual changes to the environment specified (as the VPNs live in the MP-owned `core-network-srvices` account), it is just being used as a manner of control to ensure only the right teams/users are applying the VPN maintenance.
+Note that this will not be applying any actual changes to the environment specified (as the VPNs live in the MP-owned `core-network-services` account), it is just being used as a manner of control to ensure only the right teams/users are applying the VPN maintenance.
 
 ## Applying Maintenance
 
@@ -55,4 +55,4 @@ A [VPN Maintenance](https://github.com/ministryofjustice/modernisation-platform-
 
 The job will then run and recycle each VPN tunnel **one at a time** applying the pending maintenance and will show progress in the logs. Further notifications will be sent during the process via the AWS health event service to notify that the tunnel has been temporarily unavailable.
 
-If for any reason the job fails a notification will automatically be sent to the Modernisation Platform team in Slack. You may also wish to contact us via the [#ask-modernisation-platform](https://app.slack.com/client/E01066BNN9G/C01A7QK5VM1) slack channel to ask for assistance.
+If for any reason the job fails, a notification will automatically be sent to the Modernisation Platform team in Slack. You may also wish to contact us via the [#ask-modernisation-platform](https://app.slack.com/client/E01066BNN9G/C01A7QK5VM1) slack channel to ask for assistance.
