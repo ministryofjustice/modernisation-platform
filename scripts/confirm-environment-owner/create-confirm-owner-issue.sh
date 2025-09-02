@@ -31,7 +31,7 @@ jq -c '.[]' "output.json" | while IFS= read -r row; do
         echo "Creating GitHub Issue to confirm the owner $owner for environment $file"
         issue_url=$(gh issue create \
             -t "$GITHUB_ISSUE_TITLE" \
-            -l "security" \
+            -l "security, kanban" \
             -b "Can you please review the contact details provided in the owner tag in [environments/$file.json](https://github.com/$REPO/blob/main/environments/$file.json) and confirm they are correct. At present the email address we have is $owner. If it needs to be changed you can either:
 
 - Check whether or not any other email addresses are listed in the .json file and include those.
