@@ -1,0 +1,58 @@
+---
+owner_slack: "#modernisation-platform"
+title: Applying VPN Maintenance
+last_reviewed_on: 2025-09-01
+review_in: 6 months
+---
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NXTCMQ7ZX6');
+</script>
+
+# <%= current_page.data.title %>
+
+## Introduction
+
+This runbook describes the process for replacing VPN tunnels which are pending maintenance. 
+
+## Background
+
+We host a number of site-to-site VPNs in the `core-network-services` account for use cases where an external connection is required to another cloud vendor or on-premise network. One of the settings that can be applied to these VPNs is [tunnel endpoint lifecycle control](https://docs.aws.amazon.com/vpn/latest/s2svpn/tunnel-endpoint-lifecycle.html)
+
+VPNs with this setting enabled **will not** have their endpoint maintenance applied automatically. Instead, AWS will send a health alert when there is maintenance available for the tunnels and will provide a window of time for the customer to apply this on their own schedule.
+
+## Configuration
+
+VPN configurations are specified in the `core-network-services` [codebase](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/vpn_attachments.json) and any VPNs with tunnel lifecycle control enabled will have the following options set...
+```
+"tunnel1_enable_tunnel_lifecycle_control": "true",
+"tunnel2_enable_tunnel_lifecycle_control": "true"
+```
+
+There is also an option to link the VPN to a GitHub environment e.g.
+```
+"github_environment": "nomis-production"
+```
+Only the teams/users linked to this GH environment will be able to approve any VPN Maintenance jobs. 
+
+Note that this will not be applying any actual changes to the environment specified (as the VPNs live in the MP-owned `core-network-services` account), it is just being used as a manner of control to ensure only the right teams/users are applying the VPN maintenance.
+
+## Applying Maintenance
+
+A [VPN Maintenance](https://github.com/ministryofjustice/modernisation-platform-environments/actions/workflows/vpn-maintenance.yml) GitHub Action Workflow has been provided to allow teams to apply their own VPN maintenance.
+
+1. You should receive a health notification from AWS to tell you that your VPN has an update available which will include the affected VPN connection id
+1. Navigate to the [VPN Maintenance](https://github.com/ministryofjustice/modernisation-platform-environments/actions/workflows/vpn-maintenance.yml) workflow, select `Run Workflow` and input the VPN connection ID e.g. `vpn-078468b75c562c66n`
+1. The job will first check the VPN that has been entered and the associated GH environment that it is linked to.
+1. The subsequent step will require an approval from the relevant team linked to the GitHub environment
+1. Select `Review Deployments` and select the checkbox for the environment
+1. Finally select `Approve and deploy`
+
+The job will then run and recycle each VPN tunnel **one at a time** applying the pending maintenance and will show progress in the logs. Further notifications will be sent during the process via the AWS health event service to notify that the tunnel has been temporarily unavailable.
+
+If for any reason the job fails, a notification will automatically be sent to the Modernisation Platform team in Slack. You may also wish to contact us via the [#ask-modernisation-platform](https://app.slack.com/client/E01066BNN9G/C01A7QK5VM1) slack channel to ask for assistance.
