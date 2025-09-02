@@ -23,8 +23,9 @@
   "tags": {
     "application": "observability-platform",
     "business-unit": "Platforms",
-    "infrastructure-support": "hosting-leads@digital.justice.gov.uk",
-    "owner": "hosting-leads@digital.justice.gov.uk",
+    "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
+    "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
+    "slack-channel": "modernisation-platform",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [
