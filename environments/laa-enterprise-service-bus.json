@@ -33,7 +33,7 @@
         },
         {
           "sso_group_name": "hub20-validation",
-          "level": "sandbox"
+          "level": "developer"
         }
       ]
     },
