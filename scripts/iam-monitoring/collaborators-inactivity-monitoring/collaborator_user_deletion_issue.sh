@@ -10,7 +10,7 @@ if [ -f final_users.list ]; then
             echo "Creating GitHub Issue to delete collaborator user $username"
             gh issue create \
                 --title "Inactive IAM Collaborator Deletion Required - Username: $username" \
-                --label security \
+                --label "security, kanban" \
                 --project "Modernisation Platform" \
                 --body "The Collaborator-Inactivity-Monitoring workflow has detected that the username $username is inactive for more than 180 days.
                 Consult [this documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/adding-collaborators.html#removing-collaborators) which describes the process for deleting the collaborator user."
