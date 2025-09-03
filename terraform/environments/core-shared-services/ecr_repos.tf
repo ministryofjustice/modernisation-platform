@@ -943,8 +943,7 @@ module "delius_core_openldap_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-preproduction"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-production"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-training-production"]}:role/modernisation-platform-oidc-cicd"
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-production"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
@@ -973,8 +972,7 @@ module "delius_core_password_reset_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-development"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-test"]}:role/modernisation-platform-oidc-cicd",
     "arn:aws:iam::${local.environment_management.account_ids["delius-core-preproduction"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-production"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["delius-core-training-production"]}:role/modernisation-platform-oidc-cicd"
+    "arn:aws:iam::${local.environment_management.account_ids["delius-core-production"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
