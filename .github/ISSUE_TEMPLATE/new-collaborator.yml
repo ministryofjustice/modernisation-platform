@@ -1,114 +1,114 @@
 name: New Collaborator
 description: Add a Modernisation Platform collaborator.
 title: "New collaborator: "
-labels: ["collaborator"]
+labels: [ "collaborator", "kanban" ]
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Please complete this template to facilitate adding a new external collaborator.
-  - type: markdown
-    attributes:
-      value: "## Requestor details"
-  - type: input
-    id: requestor-name
-    attributes:
-      label: Requestor name
-      description: The full name of the person making this request.
-      placeholder: e.g., Bilbo Baggins
-    validations:
-      required: true
-  - type: input
-    id: requestor-slack
-    attributes:
-      label: Requestor Slack handle
-      description: The Slack handle of the person making this request.
-      placeholder: e.g., @bilbo-baggins
-    validations:
-      required: true
-  - type: markdown
-    attributes:
-      value: "## Collaborator details"
-  - type: input
-    id: collaborator-name
-    attributes:
-      label: Collaborator name
-      description: The full name of the new external collaborator.
-      placeholder: e.g., Frodo Baggins
-    validations:
-      required: true
-  - type: dropdown
-    id: collaborator-email
-    attributes:
-      label: Collaborator email address
-      description: Can you provide a valid email address for the new external collaborator?
-      options:
-        - "Yes"
-        - "No"
-    validations:
-      required: true
-  - type: input
-    id: collaborator-github
-    attributes:
-      label: Collaborator GitHub username
-      description: The GitHub username of the new external collaborator.
-      placeholder: e.g., Ffffrodo
-    validations:
-      required: true
-  - type: input
-    id: collaborator-application
-    attributes:
-      label: Collaborator requested application
-      description: The name of the Modernisation Platform application that new external collaborator requires access to.
-      placeholder: e.g., `rivendell`
-    validations:
-      required: true
-  - type: textarea
-    id: collaborator-account-access
-    attributes:
-      label: Collaborator required accounts and access levels
-      description: Which application accounts and access levels does the new external collaborator require?
-      placeholder: |
-        ```
-        {
-          "account-name": "rivendell-development",
-          "access": "ring-bearer"
-        },
-        ```
-      value: |        
-        ```
-        {
-          "account-name": "$account-$environment",
-          "access": "read-only"
-        },
-        ```
-      render: json
-    validations:
-      required: true
-  - type: markdown
-    attributes:
-      value: "## Additional information"
-  - type: markdown
-    attributes:
-      value: |
-        Does this collaborator need `push` permissions for the following repositories?
-        - [ ] "modernisation-platform-environments"
-        - [ ] "modernisation-platform-ami-builds"
-  - type: dropdown
-    id: additional-approve-deployments
-    attributes:
-      label: Additional deployment approval access
-      description: Does this collaborator need the ability to approve deployments through GitHub Actions?
-      options:
-        - "Yes"
-        - "No"
-    validations:
-      required: false
-  - type: textarea
-    id: additional-information
-    attributes:
-      label: Additional information
-      description: Add any supporting information which relates to your request here.
-      render: markdown
-    validations:
-      required: false
+- type: markdown
+  attributes:
+    value: |
+      Please complete this template to facilitate adding a new external collaborator.
+- type: markdown
+  attributes:
+    value: "## Requestor details"
+- type: input
+  id: requestor-name
+  attributes:
+    label: Requestor name
+    description: The full name of the person making this request.
+    placeholder: e.g., Bilbo Baggins
+  validations:
+    required: true
+- type: input
+  id: requestor-slack
+  attributes:
+    label: Requestor Slack handle
+    description: The Slack handle of the person making this request.
+    placeholder: e.g., @bilbo-baggins
+  validations:
+    required: true
+- type: markdown
+  attributes:
+    value: "## Collaborator details"
+- type: input
+  id: collaborator-name
+  attributes:
+    label: Collaborator name
+    description: The full name of the new external collaborator.
+    placeholder: e.g., Frodo Baggins
+  validations:
+    required: true
+- type: dropdown
+  id: collaborator-email
+  attributes:
+    label: Collaborator email address
+    description: Can you provide a valid email address for the new external collaborator?
+    options:
+    - "Yes"
+    - "No"
+  validations:
+    required: true
+- type: input
+  id: collaborator-github
+  attributes:
+    label: Collaborator GitHub username
+    description: The GitHub username of the new external collaborator.
+    placeholder: e.g., Ffffrodo
+  validations:
+    required: true
+- type: input
+  id: collaborator-application
+  attributes:
+    label: Collaborator requested application
+    description: The name of the Modernisation Platform application that new external collaborator requires access to.
+    placeholder: e.g., `rivendell`
+  validations:
+    required: true
+- type: textarea
+  id: collaborator-account-access
+  attributes:
+    label: Collaborator required accounts and access levels
+    description: Which application accounts and access levels does the new external collaborator require?
+    placeholder: |
+      ```
+      {
+        "account-name": "rivendell-development",
+        "access": "ring-bearer"
+      },
+      ```
+    value: |
+      ```
+      {
+        "account-name": "$account-$environment",
+        "access": "read-only"
+      },
+      ```
+    render: json
+  validations:
+    required: true
+- type: markdown
+  attributes:
+    value: "## Additional information"
+- type: markdown
+  attributes:
+    value: |
+      Does this collaborator need `push` permissions for the following repositories?
+      - [ ] "modernisation-platform-environments"
+      - [ ] "modernisation-platform-ami-builds"
+- type: dropdown
+  id: additional-approve-deployments
+  attributes:
+    label: Additional deployment approval access
+    description: Does this collaborator need the ability to approve deployments through GitHub Actions?
+    options:
+    - "Yes"
+    - "No"
+  validations:
+    required: false
+- type: textarea
+  id: additional-information
+  attributes:
+    label: Additional information
+    description: Add any supporting information which relates to your request here.
+    render: markdown
+  validations:
+    required: false
