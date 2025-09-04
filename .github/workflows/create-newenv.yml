@@ -9,7 +9,7 @@ jobs:
     if: contains(github.event.issue.labels.*.name, 'New Account')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
 
@@ -21,12 +21,7 @@ jobs:
       - name: Save issue body to file
         run: |
           echo "${{ github.event.issue.body }}" > issue_body.txt
-
-      - name: Debug print issue_body.txt
-        run: |
-          echo "----- issue_body.txt -----"
-          cat issue_body.txt
-          echo "-------------------------"
+          echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
 
       - name: Extract fields from issue
         run: |
@@ -47,43 +42,54 @@ jobs:
       - name: Extract environment selections
         run: |
           ENVIRONMENTS=""
+
           # Development
           DEV_SELECTED=$(awk '/- \[x\] Development/ {print "true"}' issue_body.txt)
-          DEV_ACCESS=$(awk -v key="### Environment access level Development" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          DEV_ACCESS=$(awk -v key="### Environment access level Development" '
+            $0==key {found=1; next}
+            found && /^### / {exit}
+            found && NF && $0!="_No response_" {print $0}
+          ' issue_body.txt | paste -sd, -)
           if [ "$DEV_SELECTED" = "true" ]; then
             ENVIRONMENTS="${ENVIRONMENTS}{\"name\": \"development\", \"access_level\": \"$DEV_ACCESS\"},"
           fi
+
           # Test
           TEST_SELECTED=$(awk '/- \[x\] test/ {print "true"}' issue_body.txt)
-          TEST_ACCESS=$(awk -v key="### Environment access level Test" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          TEST_ACCESS=$(awk -v key="### Environment access level Test" '
+            $0==key {found=1; next}
+            found && /^### / {exit}
+            found && NF && $0!="_No response_" {print $0}
+          ' issue_body.txt | paste -sd, -)
           if [ "$TEST_SELECTED" = "true" ]; then
             ENVIRONMENTS="${ENVIRONMENTS}{\"name\": \"test\", \"access_level\": \"$TEST_ACCESS\"},"
           fi
+
           # Preproduction
           PREPROD_SELECTED=$(awk '/- \[x\] Preproduction/ {print "true"}' issue_body.txt)
-          PREPROD_ACCESS=$(awk -v key="### Environment access level Preproduction" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          PREPROD_ACCESS=$(awk -v key="### Environment access level Preproduction" '
+            $0==key {found=1; next}
+            found && /^### / {exit}
+            found && NF && $0!="_No response_" {print $0}
+          ' issue_body.txt | paste -sd, -)
           if [ "$PREPROD_SELECTED" = "true" ]; then
             ENVIRONMENTS="${ENVIRONMENTS}{\"name\": \"preproduction\", \"access_level\": \"$PREPROD_ACCESS\"},"
           fi
+
           # Production
           PROD_SELECTED=$(awk '/- \[x\] Production/ {print "true"}' issue_body.txt)
-          PROD_ACCESS=$(awk -v key="### Environment access level Production" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          PROD_ACCESS=$(awk -v key="### Environment access level Production" '
+            $0==key {found=1; next}
+            found && /^### / {exit}
+            found && NF && $0!="_No response_" {print $0}
+          ' issue_body.txt | paste -sd, -)
           if [ "$PROD_SELECTED" = "true" ]; then
             ENVIRONMENTS="${ENVIRONMENTS}{\"name\": \"production\", \"access_level\": \"$PROD_ACCESS\"},"
           fi
+
           # Remove trailing comma and wrap in brackets
           ENV_SELECTIONS_JSON="[$(echo $ENVIRONMENTS | sed 's/,$//')]"
           echo "ENV_SELECTIONS_JSON=$ENV_SELECTIONS_JSON" >> $GITHUB_ENV
-
-      - name: Debug extracted variables
-        run: |
-          echo "EXISTING_ACCOUNT=$EXISTING_ACCOUNT"
-          echo "APP_NAME=$APP_NAME"
-          echo "APPLICATION=$APPLICATION"
-          echo "BUSINESS_UNIT=$BUSINESS_UNIT"
-          echo "INFRA_SUPPORT=$INFRA_SUPPORT"
-          echo "OWNER=$OWNER"
-          echo "SSO_GROUP=$SSO_GROUP"
 
       - name: Create and checkout branch for environment request
         run: |
@@ -111,6 +117,8 @@ jobs:
         run: |
           python scripts/amend-accounts.py \
             "$APP_NAME" \
+            "$SSO_GROUP" \
+            "$ENV_SELECTIONS_JSON"
             # Add other arguments as needed for your amend script
 
       - name: Show created JSON
@@ -121,16 +129,41 @@ jobs:
           sudo apt-get update
           sudo apt-get install gh
 
-      - name: Commit changes
+      - name: Commit changes for new accounts
+        if: env.EXISTING_ACCOUNT == 'No'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ls -l environments/
-          git rm -f issue_body.txt
           git add -f environments/*
           git add -f policies/environments/expected.rego
           git commit -m "Automated environment request for $APP_NAME"
           git push --set-upstream origin env-request/${{ github.run_id }}
           gh pr create --base main --head env-request/${{ github.run_id }} \
             --title "Automated environment request for $APP_NAME" \
-            --body "This PR was created automatically from an environment request issue."
+            --body "This PR was created automatically from an environment request issue.
+            Linked to #${ISSUE_NUMBER}
+            "
+
+      - name: Commit changes for existing accounts
+        if: env.EXISTING_ACCOUNT == 'Yes'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ls -l environments/
+          git add -f environments/*
+          git commit -m "Automated environment request for $APP_NAME"
+          git push --set-upstream origin env-request/${{ github.run_id }}
+          gh pr create --base main --head env-request/${{ github.run_id }} \
+            --title "Automated environment request for $APP_NAME" \
+            --body "This PR was created automatically from an environment request issue.
+           Linked to #${ISSUE_NUMBER} 
+            "
+
+      - name: Comment on issue with PR link
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_URL=$(gh pr view env-request/${{ github.run_id }} --json url -q .url)
+          REPO="${{ github.repository }}"
+          gh issue comment $ISSUE_NUMBER --repo "$REPO" --body "A pull request has been created for your environment request: $PR_URL"

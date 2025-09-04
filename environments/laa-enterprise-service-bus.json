@@ -15,7 +15,15 @@
         },
         {
           "sso_group_name": "hub20-validation",
-          "level": "sandbox"
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "hub20-validation",
+          "level": "view-only"
+        },
+        {
+          "sso_group_name": "hub20-validation",
+          "level": "read-only"
         }
       ],
       "nuke": "exclude"
@@ -29,10 +37,6 @@
         },
         {
           "sso_group_name": "v1-hub20-developers",
-          "level": "developer"
-        },
-        {
-          "sso_group_name": "hub20-validation",
           "level": "developer"
         }
       ]
