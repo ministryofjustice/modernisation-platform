@@ -1,4 +1,4 @@
-module github.com/ministryofjustice/ministryofjustice/modernisation-platform
+module test
 
 go 1.24.1
 
