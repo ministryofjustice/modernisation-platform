@@ -1,23 +1,52 @@
 {
   "account-type": "member",
+  "codeowners": ["hmpps-migration", "hosting-migrations"],
   "environments": [
     {
       "name": "production",
       "access": [
         {
+          "sso_group_name": "hmpps-migration",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
           "sso_group_name": "hosting-migrations",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
+        {
+          "sso_group_name": "hmpps-dba",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "unilink",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "probation-integration",
+          "level": "developer",
+          "github_action_reviewer": "false"
         }
       ]
     }
   ],
   "tags": {
-    "application": "delius-core-training",
+    "application": "delius",
     "business-unit": "HMPPS",
     "infrastructure-support": "team.migrations@digital.justice.gov.uk",
     "owner": "team.migrations@digital.justice.gov.uk",
-    "critical-national-infrastructure": false
+    "critical-national-infrastructure": true
   },
-  "github-oidc-team-repositories": [""],
-  "go-live-date": ""
+  "github-oidc-team-repositories": [
+    "ministryofjustice/hmpps-delius-operational-automation",
+    "ministryofjustice/hmpps-ldap-automation-cli",
+    "ministryofjustice/hmpps-openldap-container",
+    "ministryofjustice/hmpps-delius-docker-images",
+    "ministryofjustice/hmpps-pwm",
+    "ministryofjustice/ndelius-um",
+    "ministryofjustice/delius-pdm-uplift-scripts",
+    "ministryofjustice/dso-modernisation-platform-automation",
+    "ministryofjustice/hmpps-probation-integration-services"
+  ]
 }
