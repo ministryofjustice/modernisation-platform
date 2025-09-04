@@ -115,7 +115,6 @@
     "application": "hmpps-domain-services",
     "business-unit": "HMPPS",
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
-    "securityhub-slack-channel": "dso_alerts_pipeline",
     "owner": "sean.privett@digital.justice.gov.uk",
     "critical-national-infrastructure": false
   },
