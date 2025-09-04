@@ -52,14 +52,18 @@ def application_exists(app_name):
 def create_env_json(app_name, business_unit, infra_support, owner, slack_channel, cni, sso_group, go_live_date, env_selections):
     environments = []
     for env in env_selections:
+        # Split access levels by comma and strip whitespace
+        access_levels = [level.strip() for level in env["access_level"].split(",") if level.strip()]
+        access = [
+            {
+                "sso_group_name": sso_group,
+                "level": level
+            }
+            for level in access_levels if level
+        ]
         environments.append({
             "name": env["name"],
-            "access": [
-                {
-                    "sso_group_name": sso_group,
-                    "level": env["access_level"]
-                }
-            ]
+            "access": access
         })
     data = {
         "account-type": "member",
