@@ -5,15 +5,6 @@ last_reviewed_on: 2025-08-01
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Overview
@@ -26,8 +17,7 @@ Example PR for this work [here](https://github.com/ministryofjustice/modernisati
 
 The only information that is required is the name of the business unit. From there we can create a VPC relating to the current environment, e.g. **hq-test.**
 
-Other information to build **extended DNS zones** and **NACLS** as well as any **additional endpoints** or **additional CIDR ranges** can be *useful*, but are not required at this stage. These things can be added after creation easily.
-
+Other information to build **extended DNS zones** and **NACLS** as well as any **additional endpoints** or **additional CIDR ranges** can be _useful_, but are not required at this stage. These things can be added after creation easily.
 
 ## Files to Change.
 
@@ -45,6 +35,7 @@ Here's an example of what to add.
   }
 },
 ```
+
 ## Files to Add
 
 Aside from the two files that need to be edited, a new file will be need to be added. This is done in the same pull request, and you will need a separate file for each VPC.
@@ -69,8 +60,9 @@ Here’s an example of what one looks like
   },
 }
 ```
+
 The file name is the business unit - environment. For example **laa-test.json**.
 
 ## Subnet sets
 
-All VPCs must have a `general` subnet set.  Additional subnet sets can be added if needed.  For more information on subnet sets see [subnet allocation](../concepts/networking/subnet-allocation.html)
+All VPCs must have a `general` subnet set. Additional subnet sets can be added if needed. For more information on subnet sets see [subnet allocation](../concepts/networking/subnet-allocation.html)

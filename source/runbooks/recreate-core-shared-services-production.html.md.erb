@@ -5,40 +5,33 @@ last_reviewed_on: 2025-03-21
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Overview
 
 The core-shared-services-production AWS account hosts resources used by other Modernisation Platform accounts.
 
-| Resource | Description |
-|----------------- |------------------------------------------------
-| S3 | Stores code artefacts output by modernisation-platform and other member resources
-| KMS | Manages per-business-unit KMS keys
-| ECR | Hosts docker container images
-| Microsoft Active Directory Controllers | Customer infrastructure managed by DSO team
-| VPC | Provides networking resources
-| Instance Scheduler Lambda | Manage start/stop schedules for non-critical instances
+| Resource                               | Description                                                                       |
+| -------------------------------------- | --------------------------------------------------------------------------------- |
+| S3                                     | Stores code artefacts output by modernisation-platform and other member resources |
+| KMS                                    | Manages per-business-unit KMS keys                                                |
+| ECR                                    | Hosts docker container images                                                     |
+| Microsoft Active Directory Controllers | Customer infrastructure managed by DSO team                                       |
+| VPC                                    | Provides networking resources                                                     |
+| Instance Scheduler Lambda              | Manage start/stop schedules for non-critical instances                            |
 
 ## Steps
-## 1. Account Creation 
+
+## 1. Account Creation
 
 To initiate the account recreation process, go to the GitHub Actions page for the Modernisation Platform repository and trigger the new environment [workflow] (https://github.com/ministryofjustice/modernisation-platform/actions/workflows/new-environment.yml).
-This workflow should detect that the account no longer exists and propose to recreate the account. As part of this process, it will also execute the baseline runs for the account. 
+This workflow should detect that the account no longer exists and propose to recreate the account. As part of this process, it will also execute the baseline runs for the account.
 
 ## 2. Deploy Core Shared Services Resources
 
 This can be achieved by triggering core-shared-services deployment workflow run, which can be [found here](https://github.com/ministryofjustice/modernisation-platform/actions/runs/10073457872/workflow).
-Alternatively, this can be done as manual deployment: 
+Alternatively, this can be done as manual deployment:
+
 - Navigate to the `modernisation-platfom repo` and change to the `core-shared-services directory`
 - Run `terraform plan` in the production workspace
 - Using admin credentials, execute `terraform apply`
@@ -49,10 +42,11 @@ Alternatively, this can be done as manual deployment:
 - Check and verify that resources have been correctly provisioned (KMS keys, VPC, etc.)
 
 ## 4. Notify customers
+
 - Inform our members that the account has been recreated
 - Liaise with owning teams to validate any rebuilds
 
 ## References
 
-* [Accessing the AWS Console](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/accessing-the-aws-console.html)
-* [Disaster Recovery Process](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/dr-process.html)
+- [Accessing the AWS Console](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/accessing-the-aws-console.html)
+- [Disaster Recovery Process](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/dr-process.html)

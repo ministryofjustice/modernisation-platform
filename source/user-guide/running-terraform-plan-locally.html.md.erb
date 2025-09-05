@@ -5,15 +5,6 @@ last_reviewed_on: 2025-06-16
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 Whilst it is possible to see the results of a Terraform plan when you [create a pull request](./deploying-your-infrastructure.html#jobs-on-pull-request), it is also possible to run a Terraform plan locally.
@@ -23,7 +14,7 @@ Some engineers prefer this as it provides a quicker feedback loop to identify an
 
 Get your AWS SSO credentials as detailed [here](./getting-aws-credentials.html), choose option 1 and paste the credentials into the terminal window you are working from.
 
->Please note that the credentials will expire after a period of 1 hour.
+> Please note that the credentials will expire after a period of 1 hour.
 
 ## Install Terraform
 
@@ -37,5 +28,5 @@ Follow the instructions [here](https://learn.hashicorp.com/tutorials/terraform/i
 4. Select the required workspace - `terraform workspace select my-application-development`
 5. Run a Terraform plan - `terraform plan`
 
->Running a plan locally has read only permissions, you will not be able to run an apply, destroy or import.
->The example syntax for assuming a backend role is appropriate for Terraform `1.6.0` onwards.
+> Running a plan locally has read only permissions, you will not be able to run an apply, destroy or import.
+> The example syntax for assuming a backend role is appropriate for Terraform `1.6.0` onwards.

@@ -5,18 +5,9 @@ last_reviewed_on: 2025-07-29
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
-## Problem 
+## Problem
 
 The instance-management role is used to provide teams with a limited-access entrypoint into AWS accounts. For example, an application may want to provide support staff with a way to manage instances without having wider permissions. This works well in single-application situations such as our standard offering to customers (one account per application environment).
 
@@ -30,7 +21,7 @@ it will allow users to create ec2 instances for there team that only that team c
 ## Where is the code
 
 The code for this is located in the Modernisation platform repository [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/single-sign-on/policies.tf).
-If you look at the code you will see that we are using  a double negative condition to do the restriction and also restricting based on aws:AccountPrincipal that leave room to expand this out to other accounts if we need to. As you can see from the example below this is the code we used to implement Using Attribute Based Access Control on the Modernisation Platform.
+If you look at the code you will see that we are using a double negative condition to do the restriction and also restricting based on aws:AccountPrincipal that leave room to expand this out to other accounts if we need to. As you can see from the example below this is the code we used to implement Using Attribute Based Access Control on the Modernisation Platform.
 
 ```
 statement {
@@ -43,7 +34,7 @@ statement {
     condition {
       test = "ForAnyValue:StringNotLike"
       variable = "aws:PrincipalTag/github_team"
-      
+
       values = [
          "*:$${aws:ResourceTag/Owner}:*",
           "$${aws:ResourceTag/Owner}:*",
@@ -52,7 +43,7 @@ statement {
       }
     condition {
       test = "Null"
-      variable = "aws:ResourceTag/Owner" 
+      variable = "aws:ResourceTag/Owner"
       values = [
         "False"
       ]
@@ -66,7 +57,6 @@ statement {
       ]
     }
 ```
-
 
 ## How do I use this feature
 
@@ -99,6 +89,7 @@ To take advantage of this feature, a PR will need to be raised on the modernisat
 ```
 
 ## References
+
 Below are links to AWS documentation that talk about ABAC implementation.
 
 - [Configure AWS IAM Identity Center ABAC](https://aws.amazon.com/blogs/security/configure-aws-sso-abac-for-ec2-instances-and-systems-manager-session-manager)

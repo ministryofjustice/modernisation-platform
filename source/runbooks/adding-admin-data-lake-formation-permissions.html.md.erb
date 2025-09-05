@@ -4,26 +4,20 @@ title: Adding Admin Data Lake Formation Permissions
 last_reviewed_on: 2025-05-30
 review_in: 6 months
 ---
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
 
 # <%= current_page.data.title %>
 
 [AWS Lake Formation](https://docs.aws.amazon.com/lake-formation/latest/dg/what-is-lake-formation.html) is designed to centralise governance, enhance security, and facilitate global sharing of data for analytics and machine learning purposes.
 
 ---
+
 ### Configuration Overview
+
 To effectively utilise AWS Lake Formation within the Modernisation Platform and avoid permission errors and "nuke" failures, it is essential that you add the following roles in your list of Lake Formation Administrators:
 
-*	CI user role for AWS Nuke purposes.
+- CI user role for AWS Nuke purposes.
 
-*	Sandbox role for your account.
+- Sandbox role for your account.
 
 Below is an example code snippet to guide you in setting up these roles:
 
@@ -43,6 +37,6 @@ resource "aws_lakeformation_data_lake_settings" "your_lake_settings_name" {
     "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-reserved/sso.amazonaws.com/${data.aws_region.current.name}/${one(data.aws_iam_roles.modernisation_platform_sandbox_role.names)}",
      data.aws_iam_role.github_actions_role.arn
   ]
-} 
+}
 
 ```

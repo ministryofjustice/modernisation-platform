@@ -5,15 +5,6 @@ last_reviewed_on: 2025-08-14
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Modernisation Platform Terraform Style Guide
@@ -38,9 +29,11 @@ with.
 ### Examples
 
 ✅ lower cased, underscored, comprehensible
+
 > `resource "an_example" "this_looks_good" {}`
 
 ❌ mixed case, no separation or inconsistent separation, no clear purpose
+
 > `resource "another_example" "SemaphoreCricketBrick-a-brack" {}`
 
 ## Hard-coding values
@@ -55,6 +48,7 @@ flexible and idempotent, and hard-coding things can work against this.
 ### Examples
 
 ✅ loads values in through an external file
+
 > ```hcl
 > locals {
 >   example_values    = jsondecode(./my-values.json)
@@ -67,6 +61,7 @@ flexible and idempotent, and hard-coding things can work against this.
 > ```
 
 ❌holds values in-line, displays sensitive value
+
 > ```hcl
 > resource "another_example" "hard_coded_values" {
 >   name              = "pickle-counter"
@@ -89,29 +84,31 @@ let us do more challenging or complicated things.
 ### Examples
 
 ✅ clear, explains what the secondary map does, avoids overcomplexity
+
 > ```hcl
 > locals {
->   my-files   = { 
->     for f in fileset(path.module, "my-files/*.json") : 
->     trimsuffix(basename(f), ".json") => jsondecode(file("${path.module}/${f}")) 
+>   my-files   = {
+>     for f in fileset(path.module, "my-files/*.json") :
+>     trimsuffix(basename(f), ".json") => jsondecode(file("${path.module}/${f}"))
 >   }
 >   # constructs a map based on json file names that contains names and favourite hotdog style
->   my-hotdogs = { 
->     for key, value in local.my-files : 
+>   my-hotdogs = {
+>     for key, value in local.my-files :
 >       key => {
 >         name   = value["name"]
 >         hotdog = value["favourite-hotdog"]
 >      }
->    } 
+>    }
 > }
 > ```
 
 ❌ horribly complex and unhelpful, lots of type conversions, cryptic names
+
 > ```hcl
 > locals {
->  _x = { for i in flatten([for f in local.files : regexall("^(.+?).json$", f)]) : 
->    replace(element(i, 0), "/[^a-zA-Z0-9]/", "_") => 
->    try(jsondecode(file(coalesce("${path.module}/${i[0]}", "null.json"))), {}) 
+>  _x = { for i in flatten([for f in local.files : regexall("^(.+?).json$", f)]) :
+>    replace(element(i, 0), "/[^a-zA-Z0-9]/", "_") =>
+>    try(jsondecode(file(coalesce("${path.module}/${i[0]}", "null.json"))), {})
 >  }
 > }
 > ```

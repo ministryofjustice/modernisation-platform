@@ -5,15 +5,6 @@ last_reviewed_on: 2025-08-14
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Team Availability and Support
@@ -25,8 +16,8 @@ review_in: 6 months
 ## On-Call Support
 
 - Only during listed hours
-    - 7AM-9AM and 4PM-10PM weekdays
-    - 7AM-10PM weekends and bank holidays
+  - 7AM-9AM and 4PM-10PM weekdays
+  - 7AM-10PM weekends and bank holidays
 - Must be working as [DevOps engineer](https://ddat-capability-framework.service.gov.uk/role/development-operations-devops-engineer#devops-engineer) or above
 - Must have passed their probationary period
 - Members require sufficient experience
@@ -40,11 +31,11 @@ review_in: 6 months
 - Ensure tasks meet Definition of Ready (DoR) before sprint planning
 - Backlog issues are adequately refined by the team
 - Issues in sprint can be: `To Do`, `In Progress`, `Blocked`, `For Review`, `Done`
-    - `To Do`: issues here should be adequately refined. If not, they should be removed from the sprint and placed onto the backlog. Tickets marked as prioritised should be done first, assuming you are confident that you have the technical knowledge to do so.
-    - `In Progress`: issues here have an assigned team member. Updates are added as milestones are reached. Links to PRs and other useful information should be included.
-    - `Blocked`: issues here have external dependencies preventing their progress. Issues we expect to be blocked for the duration of a sprint should be placed onto the backlog.
-    - `For Review`: once the technical work is completed a summary is written and the issue is moved here. It will be compared to the definition of done by the reviewer then moved to `done`.
-    - `Done`: issues here have been implemented, tested, and reviewed.
+  - `To Do`: issues here should be adequately refined. If not, they should be removed from the sprint and placed onto the backlog. Tickets marked as prioritised should be done first, assuming you are confident that you have the technical knowledge to do so.
+  - `In Progress`: issues here have an assigned team member. Updates are added as milestones are reached. Links to PRs and other useful information should be included.
+  - `Blocked`: issues here have external dependencies preventing their progress. Issues we expect to be blocked for the duration of a sprint should be placed onto the backlog.
+  - `For Review`: once the technical work is completed a summary is written and the issue is moved here. It will be compared to the definition of done by the reviewer then moved to `done`.
+  - `Done`: issues here have been implemented, tested, and reviewed.
 - When an issues is `Done` it should be closed
 
 ## Git and GitHub Practices
@@ -58,9 +49,9 @@ review_in: 6 months
 - Review PRs thoroughly, approving only those you understand
 - Use GitHub PR for discussion of content, rather than Slack
 - Follow [Semver](https://semver.org/) for versioning
-    - Provide a high-level `What's New` in the version release notes
-    - Make use of GitHub's automatically generated release notes feature
-    - Optionally trim the release notes down to commits affecting consumers
+  - Provide a high-level `What's New` in the version release notes
+  - Make use of GitHub's automatically generated release notes feature
+  - Optionally trim the release notes down to commits affecting consumers
 
 ## Contributing to Modernisation Platform Modules
 
@@ -83,11 +74,11 @@ Some changes to our platform are safe to roll out at any point once they are rev
 The following table is to class the changes and to describe the process of communicating such changes.
 
 | Change Classification                                   | Change Characteristics                                                                                                                                                                                                                                                          | Rollout Process                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-|---------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | No communication needed                                 | These are changes that do not require an outage and can be safely deployed with no impact on users                                                                                                                                                                              | No action needed                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | Needs communicating, but no action and no notice needed | These are changes that add new features or enhance new features, but do not change the existing fundamental behaviour of the platform                                                                                                                                           | Use the ask and update channels to communicate it and keep the announcement neutral. The information should include **what** is changing (e.g. which service or feature) and its **impact**                                                                                                                                                                                                                                                                                                                                                                                             |
 | Needs communicating in advance                          | These are changes that are not backwards compatible and/or require an outage (some or all platform's feature will not be accessible at the time of the changes deployment). In other words, these are changes of which deployment causes a temporary loss of service or access. | Agree within the team on the **notice period** prior to the update rollout. Post on the status page about the planned maintenance. This will automatically post in the ask and update channels. The information should include **what** is changing, its **impact** and **how long** it will take to roll it out. Post a reminder in our channels closer to the scheduled outage.                                                                                                                                                                                                       |
-| Requires user action                                    | These are changes that are not backwards compatible and require user's input to be completed (e.g. changes to platform files in the modernisation-platform-environments repository require deploying to users environments).                                                    | Agree within the team on the **deprecation period**. Once the changes are rolled out, communicate it in the ask and update channels. The information should include **what** is changing, its **impact** and **how long** is the deprecation period. During the deprecation period post reminders in the ask and update channels if not all users have actioned. When the deprecation period expires, reach out to users via email using the infrastructure-support contact information from the environment files. Making sure that all users have updated is part of the issue's DoD. | 
+| Requires user action                                    | These are changes that are not backwards compatible and require user's input to be completed (e.g. changes to platform files in the modernisation-platform-environments repository require deploying to users environments).                                                    | Agree within the team on the **deprecation period**. Once the changes are rolled out, communicate it in the ask and update channels. The information should include **what** is changing, its **impact** and **how long** is the deprecation period. During the deprecation period post reminders in the ask and update channels if not all users have actioned. When the deprecation period expires, reach out to users via email using the infrastructure-support contact information from the environment files. Making sure that all users have updated is part of the issue's DoD. |
 
 ## Spikes
 
@@ -99,19 +90,19 @@ The following table is to class the changes and to describe the process of commu
 
 ## Firebreaks
 
-A **Firebreak Sprint** is a dedicated sprint held once every quarter, designed to give the team a chance to step back from regular work and focus on tasks that inspire creativity, foster growth, and strengthen our platform and services. It’s a time to innovate, learn, and address areas that don’t fit into the usual sprint cadence.  
+A **Firebreak Sprint** is a dedicated sprint held once every quarter, designed to give the team a chance to step back from regular work and focus on tasks that inspire creativity, foster growth, and strengthen our platform and services. It’s a time to innovate, learn, and address areas that don’t fit into the usual sprint cadence.
 
 ### Why do we run Firebreak Sprints?
 
-- **Promote Learning and Growth**: Firebreaks provide the freedom to learn new skills, explore emerging technologies, and invest in personal and professional development.  
-- **Encourage Innovation**: A chance to experiment with tools, processes, or ideas that spark creativity and bring long-term value.  
-- **Enhance Platforms and Services**: Focus on meaningful improvements, like automating tasks or optimizing services, to improve efficiency and reliability.  
-- **Support Team Well-being**: A break from the regular sprint cycle helps refresh the team, prevent burnout, and create a positive and collaborative environment.  
+- **Promote Learning and Growth**: Firebreaks provide the freedom to learn new skills, explore emerging technologies, and invest in personal and professional development.
+- **Encourage Innovation**: A chance to experiment with tools, processes, or ideas that spark creativity and bring long-term value.
+- **Enhance Platforms and Services**: Focus on meaningful improvements, like automating tasks or optimizing services, to improve efficiency and reliability.
+- **Support Team Well-being**: A break from the regular sprint cycle helps refresh the team, prevent burnout, and create a positive and collaborative environment.
 
 ### How do we run Firebreak Sprints?
 
-- **Plan the Schedule**: Firebreak Sprints occur every 6 sprints (5 regular sprints followed by 1 Firebreak Sprint), aligning with a quarterly rhythm.  
-- **Continue Key Ceremonies**: Regular ceremonies, such as sprint planning, will take place to prepare for the following sprint. Team members can choose to work on this planned work during the Firebreak if preferred.  
-- **Encourage Individual Focus**: Team members can choose tasks that matter most to them—whether learning, platform improvements, service optimization, or automation.  
-- **Explore with Purpose**: Experimentation and innovation are highly encouraged. However, major changes to the platform or services may be delayed if they are considered too risky or experimental for immediate rollout.  
-- **Leverage the Ideas Backlog**: We maintain an optional **Firebreak** label on our board to highlight ideas suitable for Firebreak Sprints. These can include tasks focused on innovation, learning, or platform improvements. You can explore the current stock of labelled issues [here](https://github.com/orgs/ministryofjustice/projects/17/views/41).  
+- **Plan the Schedule**: Firebreak Sprints occur every 6 sprints (5 regular sprints followed by 1 Firebreak Sprint), aligning with a quarterly rhythm.
+- **Continue Key Ceremonies**: Regular ceremonies, such as sprint planning, will take place to prepare for the following sprint. Team members can choose to work on this planned work during the Firebreak if preferred.
+- **Encourage Individual Focus**: Team members can choose tasks that matter most to them—whether learning, platform improvements, service optimization, or automation.
+- **Explore with Purpose**: Experimentation and innovation are highly encouraged. However, major changes to the platform or services may be delayed if they are considered too risky or experimental for immediate rollout.
+- **Leverage the Ideas Backlog**: We maintain an optional **Firebreak** label on our board to highlight ideas suitable for Firebreak Sprints. These can include tasks focused on innovation, learning, or platform improvements. You can explore the current stock of labelled issues [here](https://github.com/orgs/ministryofjustice/projects/17/views/41).

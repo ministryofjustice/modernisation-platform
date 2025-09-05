@@ -5,15 +5,6 @@ last_reviewed_on: 2025-06-05
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 # Centrally Track Oracle Database licenses in AWS Organisations
@@ -27,58 +18,67 @@ AWS license Manager and AWS Systems Manager can be used together to centrally tr
 The oracle license discovery can be found in the organisation security account. It is broken down into the following elements:
 
 ### AWS license Manager
+
 AWS license Manager makes it easier to manage your software licenses from vendors such as Microsoft, SAP, Oracle, and IBM across AWS and on-premises environments. It helps you manage, track, and control software licenses to ensure compliance and reduce costs.
 
-To find out the state of the license manager go to the "AWS license Manager" and under the section  "self managed licenses" in the AWS console.
-   - look for a self managed license called "OracleDbEElicenseConfiguration"
-   - this will show you the EC2 license usage for oracle databases.
+To find out the state of the license manager go to the "AWS license Manager" and under the section "self managed licenses" in the AWS console.
 
-![List of EC2 instances](images/license_manager_setup.png) 
+- look for a self managed license called "OracleDbEElicenseConfiguration"
+- this will show you the EC2 license usage for oracle databases.
+
+![List of EC2 instances](images/license_manager_setup.png)
 
 ### AWS Systems Manager
+
 AWS Systems Manager helps you automate operational tasks across your AWS resources. You can create automation workflows, manage patch compliance, and configure operating systems.
 
 To look at the automation document or the automation executions go to the "Systems Manager" section in the AWS console.
-   - The automation documents are stored in the "documents" section under the self owned tab.
 
-   ![automation documents location ](images/documents_section.png)
+- The automation documents are stored in the "documents" section under the self owned tab.
 
-   - To view the automation, click on the automation section on the left hand side and click on the execution id next to the runbook name of "OracleDbLTS-Orchestrate" from here you will be able to see the successful and failed executions and dig down further.
+![automation documents location ](images/documents_section.png)
 
-   ![automation location ](images/automation_section.png)
+- To view the automation, click on the automation section on the left hand side and click on the execution id next to the runbook name of "OracleDbLTS-Orchestrate" from here you will be able to see the successful and failed executions and dig down further.
 
-   - To find the state associated with automation, go to the "State Manager" section under Systems Manager this will show you the last run state of the automation and when the frequency of the automation. You can also apply the association from here to force a run of the automation.
-   
-   ![state manager location ](images/state_manager_section.png)
+![automation location ](images/automation_section.png)
 
- <%= warning_text('The current run of the automation is set to run once every week, this can be changed by creating a PR in the [AWS root account repo](https://github.com/ministryofjustice/aws-root-account/blob/main/organisation-security/terraform/license-manager.tf). This will need to be reviewed by the #ask-root-account team.
+- To find the state associated with automation, go to the "State Manager" section under Systems Manager this will show you the last run state of the automation and when the frequency of the automation. You can also apply the association from here to force a run of the automation.
+
+![state manager location ](images/state_manager_section.png)
+
+<%= warning_text('The current run of the automation is set to run once every week, this can be changed by creating a PR in the [AWS root account repo](https://github.com/ministryofjustice/aws-root-account/blob/main/organisation-security/terraform/license-manager.tf). This will need to be reviewed by the #ask-root-account team.
 Currently the automation is restricted to three organization accounts, this can be changed by creating a PR in the [AWS root account repo](https://github.com/ministryofjustice/aws-root-account/blob/main/organisation-security/terraform/locals.tf). Amending the locals file to include the organization OU that you want to include in the automation.
 ') %>
+
 ### Athena
 
 Athena is an interactive query service that makes it easy to analyse data in Amazon S3 using standard SQL. Athena is serverless, so there is no infrastructure to manage, and you pay only for the queries that you run.
-   - Since the is data is synchronised from the discovery process to an s3 bucket we can use Athena to query the data using sql.
-   - Use the following SQL script to bring back the data into a table that can be exported:
-   
-   ```
 
-   SELECT * FROM "ssm_resource_sync"."custom_oraclefeatureusagedetails"
-   LEFT JOIN "ssm_resource_sync"."aws_instancedetailedinformation"
-   ON "ssm_resource_sync"."custom_oraclefeatureusagedetails"."resourceid" = "ssm_resource_sync"."aws_instancedetailedinformation"."resourceid"
-   LEFT JOIN "ssm_resource_sync"."custom_oracledatabaseproduct"
-   ON "ssm_resource_sync"."custom_oraclefeatureusagedetails"."resourceid" = "ssm_resource_sync"."custom_oracledatabaseproduct"."resourceid"
-   LEFT JOIN "ssm_resource_sync"."aws_tag"
-   ON "ssm_resource_sync"."custom_oraclefeatureusagedetails"."resourceid" = "ssm_resource_sync"."aws_tag"."resourceid"
-   WHERE "ssm_resource_sync"."aws_tag"."key" LIKE 'business-unit'
+- Since the is data is synchronised from the discovery process to an s3 bucket we can use Athena to query the data using sql.
+- Use the following SQL script to bring back the data into a table that can be exported:
 
-   ```
+```
+
+SELECT * FROM "ssm_resource_sync"."custom_oraclefeatureusagedetails"
+LEFT JOIN "ssm_resource_sync"."aws_instancedetailedinformation"
+ON "ssm_resource_sync"."custom_oraclefeatureusagedetails"."resourceid" = "ssm_resource_sync"."aws_instancedetailedinformation"."resourceid"
+LEFT JOIN "ssm_resource_sync"."custom_oracledatabaseproduct"
+ON "ssm_resource_sync"."custom_oraclefeatureusagedetails"."resourceid" = "ssm_resource_sync"."custom_oracledatabaseproduct"."resourceid"
+LEFT JOIN "ssm_resource_sync"."aws_tag"
+ON "ssm_resource_sync"."custom_oraclefeatureusagedetails"."resourceid" = "ssm_resource_sync"."aws_tag"."resourceid"
+WHERE "ssm_resource_sync"."aws_tag"."key" LIKE 'business-unit'
+
+```
+
 The results will look like the following:
 ![Athena results](images/athena_results.png)
 
 ## Benefits
+
 - **Compliance:** Ensure adherence to Oracle licensing terms.
 - **Cost Optimisation:** Avoid over-provisioning and under-utilisation of licenses.
 - **Centralised Control:** Simplify license management across multiple AWS accounts.
 
 ## Conclusion
+
 By leveraging AWS license Manager and AWS Systems Manager, the Modernisation Platform can effectively manage and track Oracle database licenses on EC2 and RDS instances, ensuring compliance and optimising costs. As well as providing a way to share the license usage data with the Oracle team so that they can make informed decisions about licensing requirements.
