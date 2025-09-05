@@ -74,8 +74,8 @@ locals {
     laa-ecp-safedb                 = "10.205.14.0/24"
 
     # NEC cidr ranges
-    nec-nonprod = "10.120.0.147/32"
-    nec-prod    = "10.110.0.57/32"
+    nec-nonprod = "10.120.0.0/24"
+    nec-prod    = "10.110.0.0/24"
 
     # laa modernisation-platform ranges
     laa-mp-development-general-private-subnets-a = "10.26.56.0/24"
