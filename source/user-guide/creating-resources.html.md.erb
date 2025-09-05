@@ -5,15 +5,6 @@ last_reviewed_on: 2025-06-24
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Overview
@@ -26,18 +17,21 @@ These resources are preconfigured with a backend, providers etc, all that you ne
 
 ## Creating new resources
 
- - Clone the [Modernisation Platform environments](https://github.com/ministryofjustice/modernisation-platform-environments) repository: `git clone git@github.com:ministryofjustice/modernisation-platform-environments.git`
- - Create a new Terraform files or resources in your application folder under `terraform/environments/`
- - We recommend following standard Terraform best practices, such as creating a `main.tf`, or logically named Terraform files, such as `database.tf` or `s3.tf`
- - Environment specific variables can be passed in through an [application_variables.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform-environments/application_variables.json), defined as a [local](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform-environments/locals.tf#L41) and [referenced accordingly](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform-environments/locals.tf#L40)
- - Data lookups are provided for common things you may need from the platform such as subnets or DNS zones [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform-environments/platform_data.tf)
+- Clone the [Modernisation Platform environments](https://github.com/ministryofjustice/modernisation-platform-environments) repository: `git clone git@github.com:ministryofjustice/modernisation-platform-environments.git`
+- Create a new Terraform files or resources in your application folder under `terraform/environments/`
+- We recommend following standard Terraform best practices, such as creating a `main.tf`, or logically named Terraform files, such as `database.tf` or `s3.tf`
+- Environment specific variables can be passed in through an [application_variables.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform-environments/application_variables.json), defined as a [local](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform-environments/locals.tf#L41) and [referenced accordingly](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform-environments/locals.tf#L40)
+- Data lookups are provided for common things you may need from the platform such as subnets or DNS zones [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform-environments/platform_data.tf)
 
 ## GitHub Permissions
- - For any files created in your application folder, your GitHub team will have permissions to create and merge pull requests.
- - Your GitHub team will be assigned as a [codeowner](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-code-owners) for your application folder, so someone in your team will be required to review any pull requests before they can be merged.
+
+- For any files created in your application folder, your GitHub team will have permissions to create and merge pull requests.
+- Your GitHub team will be assigned as a [codeowner](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-code-owners) for your application folder, so someone in your team will be required to review any pull requests before they can be merged.
 
 ## Restrictions
+
 - The following files you will not be able to amend without an approving review from the Modernisation Platform team.
+
   - `providers.tf`
   - `backend.tf`
   - `subnet_share.tf`
@@ -47,6 +41,7 @@ These resources are preconfigured with a backend, providers etc, all that you ne
 - The ability to create some resources will be restricted and will require assistance from the Modernisation Platform team.
 
 ## Next Steps
+
 Once you have defined your infrastructure as code you can [deploy your infrastructure](deploying-your-infrastructure.html) to the Modernisation Platform.
 
 ## Non Standard infrastructure
@@ -55,4 +50,4 @@ In order to maintain security some actions are not allowed in the environments r
 
 However there are times when an application may reasonably want to create these resources, for example create a user for use with SES.
 
-If you need to create any infrastructure which is not allowed in the environments repository, it can be created here - [Modernisation Platform environments folders](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments), in the relevant application folder.  The Modernisation Platform team will need to approve any PRs adding code to this repository.
+If you need to create any infrastructure which is not allowed in the environments repository, it can be created here - [Modernisation Platform environments folders](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments), in the relevant application folder. The Modernisation Platform team will need to approve any PRs adding code to this repository.

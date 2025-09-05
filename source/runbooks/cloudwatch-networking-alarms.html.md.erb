@@ -1,42 +1,33 @@
 ---
 owner_slack: "#modernisation-platform"
-title: CloudWatch networking alarms 
+title: CloudWatch networking alarms
 last_reviewed_on: 2025-05-23
 review_in: 6 months
 ---
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
 
 # <%= current_page.data.title %>
 
 ## A summary of current alarms
 
-* nacl-changes
-* network-gateway-changes
-* NoVPCAttachmentTraffic
-* route-table-changes
-* vpc-changes
+- nacl-changes
+- network-gateway-changes
+- NoVPCAttachmentTraffic
+- route-table-changes
+- vpc-changes
 
 ### nacl-changes
 
-This alarm triggers when an API call is made to create, delete, or update a network access control list (NACL). Our 
-NACLs are fairly static, but can be amended when customers feed in values for east/west traffic, or private access to 
+This alarm triggers when an API call is made to create, delete, or update a network access control list (NACL). Our
+NACLs are fairly static, but can be amended when customers feed in values for east/west traffic, or private access to
 other locations such as PSN endpoints.
 
-Should this alarm trigger you should confirm the NACL in question and find the cause of the alarm. You should check our 
+Should this alarm trigger you should confirm the NACL in question and find the cause of the alarm. You should check our
 [Github Actions](https://github.com/ministryofjustice/modernisation-platform/actions?query=workflow%3Acore-vpc-*) to see
-if any recent actions correspond to the triggered alarms. You can also investigate the CloudTrail logging for the 
+if any recent actions correspond to the triggered alarms. You can also investigate the CloudTrail logging for the
 relevant account.
 
 As we make all durable changes through code, this should show you the cause of the `nacl-changes` alert. It ought to be
-legitimate in all cases, but can sometimes be related to alarms such as `NoVPCAttachmentTraffic` where a NACL blocks 
+legitimate in all cases, but can sometimes be related to alarms such as `NoVPCAttachmentTraffic` where a NACL blocks
 traffic from exiting a VPC.
 
 It is unlikely to cause traffic to be blocked from entering a VPC as the transit gateway endpoint subnets have fixed
@@ -49,13 +40,13 @@ Outputs to **#modernisation-platform-low-priority-alarms**.
 This alarm triggers when an API call is made to create, delete, or attach an Internet Gateway or Customer Gateway. As
 with how static our VPC configuration is, it is unlikely that this alarm will trigger unintentionally.
 
-Should this alarm trigger you should confirm the gateway in question and find the cause of the alarm. You should check 
+Should this alarm trigger you should confirm the gateway in question and find the cause of the alarm. You should check
 our [Github Actions](https://github.com/ministryofjustice/modernisation-platform/actions?query=workflow%3Acore-vpc-*) to
-see if any recent actions correspond to the triggered alarms. You can also investigate the CloudTrail logging for the 
+see if any recent actions correspond to the triggered alarms. You can also investigate the CloudTrail logging for the
 relevant account.
 
 As we make all durable changes through code, this should show you the cause of the `network-gateway-changes` alert. As
-with the `nacl-changes` it ought to be legitimate in all cases. It is likely to affect customer traffic coming into a 
+with the `nacl-changes` it ought to be legitimate in all cases. It is likely to affect customer traffic coming into a
 service from the internet in the case of an Internet Gateway. In the case of a Customer Gateway this will be seen
 alongside a VPN tunnel moving to a `down` state.
 
@@ -80,12 +71,12 @@ It is possible that a change to route tables, network access control lists, or t
 legitimate triggering of this alarm. In short, anything that is involved in traffic leaving the VPC via the Transit
 Gateway is in scope for investigation.
 
-An example of an illegitimate alert would be a dip in traffic over the alarm period that resolves itself without any 
-action from either the Modernisation Platform team, or a customer team - taking a service down for maintenance, for 
+An example of an illegitimate alert would be a dip in traffic over the alarm period that resolves itself without any
+action from either the Modernisation Platform team, or a customer team - taking a service down for maintenance, for
 example, and causing a legitimate cessation of traffic could cause this.
 
 An example of a legitimate alert would be a dip in traffic over the alarm period that does not resolve itself, and can
-be traced back to an unanticipated consequence of an action; restricting traffic through an access control list, for 
+be traced back to an unanticipated consequence of an action; restricting traffic through an access control list, for
 example.
 
 Outputs to **#modernisation-platform-high-priority-alarms**.
@@ -93,15 +84,15 @@ Outputs to **#modernisation-platform-high-priority-alarms**.
 ### route-table-changes
 
 This alarm triggers when an API call is made to carry out a route-table related action; creating, replacing, or deleting
-a route table or a route will match the filter for this alarm. It is likely that this alarm will be seen in 
+a route table or a route will match the filter for this alarm. It is likely that this alarm will be seen in
 conjunction with a valid pull request.
 
-Should this alarm trigger you should confirm the gateway in question and find the cause of the alarm. You should check 
+Should this alarm trigger you should confirm the gateway in question and find the cause of the alarm. You should check
 our [Github Actions](https://github.com/ministryofjustice/modernisation-platform/actions?query=workflow%3Acore-vpc-*) to
-see if any recent actions correspond to the triggered alarms. You can also investigate the CloudTrail logging for the 
+see if any recent actions correspond to the triggered alarms. You can also investigate the CloudTrail logging for the
 relevant account.
 
-Changes to route tables will affect the flow of traffic. As routes are selected on a most-specific-route basis, it is 
+Changes to route tables will affect the flow of traffic. As routes are selected on a most-specific-route basis, it is
 possible that the impact of a route change will have limited effects.
 
 Outputs to **#modernisation-platform-low-priority-alarms**.
@@ -111,8 +102,8 @@ Outputs to **#modernisation-platform-low-priority-alarms**.
 This alarm triggers when an API call is made to create, delete, or update a VPC. As we have existing VPCs created on a
 per-business-unit and per-environment basis, we do not expect to see this alarm trigger.
 
-Should this alarm trigger you should confirm the VPC in question and find the cause of the alarm. You should check our 
-[Github Actions](https://github.com/ministryofjustice/modernisation-platform/actions) to see if any recent actions 
+Should this alarm trigger you should confirm the VPC in question and find the cause of the alarm. You should check our
+[Github Actions](https://github.com/ministryofjustice/modernisation-platform/actions) to see if any recent actions
 correspond to the triggered alarms.
 
 As we make all durable changes through code, this should show you the cause of the `network-gateway-changes` alert.
@@ -122,5 +113,3 @@ Outputs to **#modernisation-platform-low-priority-alarms**.
 ### Viewing metric filters
 
 The metrics that inform some of these alarms are based on CloudTrail filters. You can find them [here](https://eu-west-2.console.aws.amazon.com/cloudwatch/home?region=eu-west-2#logsV2:log-groups/log-group/cloudtrail$23metric-filters).
-
-

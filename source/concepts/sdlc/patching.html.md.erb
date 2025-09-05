@@ -5,15 +5,6 @@ last_reviewed_on: 2025-06-20
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 The Modernisation Platform hosts much of the MoJs legacy infrastructure, like any software, this needs patching and updates to ensure the software stays secure.
@@ -29,19 +20,18 @@ If we discover a high risk vulnerability and are unable to contact the applicati
 
 ## Patching and updating we currently do as a platform
 
-| Patch / Update | Method | Scope
-|---|---|---|
-| Github Actions | Dependabot | Platform and user code |
-| Terraform module dependancies | Dependabot | Platform and user code |
-| Golang Code | Dependabot | Platform code |
-| Terraform | Auto upgrades for minor releases, issues raised for major releases. | Platform and user code |
-| Terraform Providers | Ad-hoc as new versions released | Platform code |
-| Documentation | Daniel the manual spaniel Slack bot | Platform documentation |
-| SCA Tools | Always pull from latest | Platform and user code |
-| Platform Bastions | Whenever Terraform is run | User code |
-| EC2 Instances | Patching Module | Platform instances |
-| RDS Instances | Auto minor version upgrade option  | Platform and user instances |
-
+| Patch / Update                | Method                                                              | Scope                       |
+| ----------------------------- | ------------------------------------------------------------------- | --------------------------- |
+| Github Actions                | Dependabot                                                          | Platform and user code      |
+| Terraform module dependancies | Dependabot                                                          | Platform and user code      |
+| Golang Code                   | Dependabot                                                          | Platform code               |
+| Terraform                     | Auto upgrades for minor releases, issues raised for major releases. | Platform and user code      |
+| Terraform Providers           | Ad-hoc as new versions released                                     | Platform code               |
+| Documentation                 | Daniel the manual spaniel Slack bot                                 | Platform documentation      |
+| SCA Tools                     | Always pull from latest                                             | Platform and user code      |
+| Platform Bastions             | Whenever Terraform is run                                           | User code                   |
+| EC2 Instances                 | Patching Module                                                     | Platform instances          |
+| RDS Instances                 | Auto minor version upgrade option                                   | Platform and user instances |
 
 ## More information
 

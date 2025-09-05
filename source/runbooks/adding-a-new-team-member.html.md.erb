@@ -5,15 +5,6 @@ last_reviewed_on: 2025-05-20
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 There are a few things to do when a new team member joins:
@@ -21,7 +12,7 @@ There are a few things to do when a new team member joins:
 1. Add them to the team page
 2. Add them to our GitHub team
 
-    If they need access to our AWS landing zone:
+   If they need access to our AWS landing zone:
 
 3. (Optional) Add them as a superadmin to our AWS landing zone
 
@@ -34,7 +25,7 @@ To add them to our team page, update the file at [source/team/team.html.md.erb](
 
 Submit a pull request and when it's merged, they will appear on [our team page](../team/team.html).
 
->You can view a [sample PR](https://github.com/ministryofjustice/modernisation-platform/pull/376) in case you get stuck.
+> You can view a [sample PR](https://github.com/ministryofjustice/modernisation-platform/pull/376) in case you get stuck.
 
 ## Adding them to our GitHub team
 
@@ -46,14 +37,14 @@ To add them to our GitHub team, update the file at [terraform/github/locals.tf](
 
 If they are a GitHub organisation owner, add them to the `maintainers` list too. This is because GitHub will return their role as a `maintainer`, because GitHub organisation owners always have those permissions.
 
->You can view a [sample PR](https://github.com/ministryofjustice/modernisation-platform/pull/382) in case you get stuck.
+> You can view a [sample PR](https://github.com/ministryofjustice/modernisation-platform/pull/382) in case you get stuck.
 
 ## Adding them as a superadmin in our AWS landing zone
 
 To add them as a superadmin in our AWS landing zone, add their `firstname.lastname` in the [modernisation-platform-terraform-iam-superadmins](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins) `main.tf` file.
 You can optionally add a Keybase username to obtain the initial password as a PGP encrypted output.
 
->You can view a [sample PR](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins/pull/21) in case you get stuck.
+> You can view a [sample PR](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins/pull/21) in case you get stuck.
 
 Once your PR has been merged, create a new GitHub release for the IAM superadmins module [sample release](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins/releases).
 

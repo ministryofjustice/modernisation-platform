@@ -5,42 +5,34 @@ last_reviewed_on: 2025-03-18
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Overview
 
 The core-logging AWS account is responsible for managing all core logging resources.
 
-| Resource | Description |
-|----------------- |------------------------------------------------
-| S3 | Stores logs such as cloudtrail and core logging VPC flow logs
-| KMS | Manages encryption keys used to securely encrypt the contents of S3 buckets
-| PagerDuty | Hosts resources used by PagerDuty
-| VPC | Provides networking resources
-| Athena| Service to analyze log data stored in S3
+| Resource  | Description                                                                 |
+| --------- | --------------------------------------------------------------------------- |
+| S3        | Stores logs such as cloudtrail and core logging VPC flow logs               |
+| KMS       | Manages encryption keys used to securely encrypt the contents of S3 buckets |
+| PagerDuty | Hosts resources used by PagerDuty                                           |
+| VPC       | Provides networking resources                                               |
+| Athena    | Service to analyze log data stored in S3                                    |
 
 ## Steps
-## 1. Account Creation 
+
+## 1. Account Creation
 
 Please note that aliases do not have a retention period. If an alias still exists under the same organizational unit, you cannot reuse the same alias. To prevent the alias from being recreated, you need to add the environment name to the [skip alias local](https://github.com/ministryofjustice/modernisation-platform/blob/e9d5e14a25e5b0f4e544b26f0332e285e6c506a1/terraform/environments/bootstrap/member-bootstrap/locals.tf#L57).
 
 To initiate the account recreation process, go to the GitHub Actions page for the Modernisation Platform repository and trigger the new environment [workflow] (https://github.com/ministryofjustice/modernisation-platform/actions/workflows/new-environment.yml).
-This workflow should detect that the account no longer exists and propose to recreate the account. As part of this process, it will also execute the baseline runs for the account. 
+This workflow should detect that the account no longer exists and propose to recreate the account. As part of this process, it will also execute the baseline runs for the account.
 
 ## 2. Deploy Core Logging Production Resources
 
 To recreate the resources run the [core-logging-deployment](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/core-logging-deployment.yml) action in GitHub.
 
-If a GitHub Actions deployment is not available the resources can be redeployed locally:  
+If a GitHub Actions deployment is not available the resources can be redeployed locally:
 
 - Navigate to the `modernisation-platform` repo and change to the `terraform/environments/core-logging` directory
 - Using MP admin credentials, execute `terraform apply` from the `core-logging-production` workspace
@@ -54,14 +46,13 @@ If a GitHub Actions deployment is not available the resources can be redeployed 
   - Check Athena is available to query CloudTrail logs
   - Check SNS topics are associated with PagerDuty for core alerts
 
-
 ## 4. Notify Mod Platform Team
+
 - Inform Modernisation Platform team of rebuild process
 - Inform customers that account has been recreated
 - Verify with the SOC that they are still able to ingest logs into their tooling
 
-
 ## References
 
-* [Accessing the AWS Console](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/accessing-the-aws-console.html)
-* [Disaster Recovery Process](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/dr-process.html)
+- [Accessing the AWS Console](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/accessing-the-aws-console.html)
+- [Disaster Recovery Process](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/dr-process.html)

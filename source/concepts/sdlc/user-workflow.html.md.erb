@@ -5,15 +5,6 @@ last_reviewed_on: 2025-07-23
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Introduction
@@ -24,10 +15,10 @@ We use [trunk base development](https://www.atlassian.com/continuous-delivery/co
 
 There are as standard up to four different environments that can be used per application:
 
- - development
- - test
- - preproduction
- - production
+- development
+- test
+- preproduction
+- production
 
 In order to avoid having duplicate Terraform code for each environment, we use [Terraform Workspaces](https://developer.hashicorp.com/terraform/language/state/workspaces).
 This allows us to store the Terraform [state](https://developer.hashicorp.com/terraform/language/state) for each of those environments separately and deploy to the relevant environment by switching the workspace.
@@ -48,7 +39,7 @@ Environment workflow:
 ![Environment Workflow](../../images/environment-workflow.png)
 
 We use [GitHub Environments](https://docs.github.com/en/actions/reference/environments) to create a manual approval gate before each deployment.
-This gives you chance to review the Terraform plan before approving the deployment.  The GitHub environments are automatically created by the [git-create-environments-script.sh](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/git-create-environments.sh) using your GitHub team as the reviewer, as part of the initial account creation process.
+This gives you chance to review the Terraform plan before approving the deployment. The GitHub environments are automatically created by the [git-create-environments-script.sh](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/git-create-environments.sh) using your GitHub team as the reviewer, as part of the initial account creation process.
 
 After approving, the infrastructure is deployed with the [`terraform apply`](https://developer.hashicorp.com/terraform/cli/commands/apply) command.
 
@@ -83,7 +74,7 @@ These are applied at a higher Organisational Unit (OU) level and are inherited b
 
 ## Deploying Applications
 
-Legacy applications often use "Click Ops" to make application deployments (manual configuration through the AWS console).  Whilst this is still possible on the Modernisation Platform, we encourage and can help people to build application deployment pipelines.
+Legacy applications often use "Click Ops" to make application deployments (manual configuration through the AWS console). Whilst this is still possible on the Modernisation Platform, we encourage and can help people to build application deployment pipelines.
 
 To allow automated access to your AWS account we provide an "OIDC CI/CD (Continuous integration / continuous delivery)" role - `modernisation-platform-oidc-cicd`.
 

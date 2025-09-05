@@ -5,22 +5,13 @@ last_reviewed_on: 2025-03-14
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 We use the following SCPs for the Modernisation Platform to restrict certain actions at an account level.
 
-SCP | Location                                                                                                                                                                                                                             | Description
----|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---|
-Modernisation Platform Member | [`aws-root-account/management-account/terraform/organizations-policy-service-control.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control.tf#L288) | SCP for accounts with the account type of "member"
+| SCP                           | Location                                                                                                                                                                                                                             | Description                                        |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------- |
+| Modernisation Platform Member | [`aws-root-account/management-account/terraform/organizations-policy-service-control.tf`](https://github.com/ministryofjustice/aws-root-account/blob/main/management-account/terraform/organizations-policy-service-control.tf#L288) | SCP for accounts with the account type of "member" |
 
 The SCPs are modified in the `management-account` Terraform of the [aws-root-account](https://github.com/ministryofjustice/aws-root-account).
 

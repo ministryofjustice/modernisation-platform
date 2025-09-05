@@ -5,35 +5,27 @@ last_reviewed_on: 2025-04-15
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Overview
 
 The core-vpc AWS accounts are responsible for creating the core VPC resources in the VPC accounts.
 
-| Resource | Description |
-|----------------- |------------------------------------------------
-| VPCs| Provides networking resources 
-| VPC endpoints| Enables secure access to services without internet 
-| RAM shares | Shares AWS resources across accounts securely   
-| Transit Gateway connectivity| Provides scalable and flexible networking connections
+| Resource                     | Description                                           |
+| ---------------------------- | ----------------------------------------------------- |
+| VPCs                         | Provides networking resources                         |
+| VPC endpoints                | Enables secure access to services without internet    |
+| RAM shares                   | Shares AWS resources across accounts securely         |
+| Transit Gateway connectivity | Provides scalable and flexible networking connections |
 
 ## Steps
-## 1. Account Creation 
+
+## 1. Account Creation
 
 Please note that aliases do not have a retention period. If an alias still exists under the same organizational unit, you cannot reuse the same alias. To prevent the alias from being recreated, you need to add the environment name to the [skip alias local](https://github.com/ministryofjustice/modernisation-platform/blob/e9d5e14a25e5b0f4e544b26f0332e285e6c506a1/terraform/environments/bootstrap/member-bootstrap/locals.tf#L57).
 
 To initiate the account recreation process, go to the GitHub Actions page for the Modernisation Platform repository and trigger the new environment [workflow] (https://github.com/ministryofjustice/modernisation-platform/actions/workflows/new-environment.yml).
-This workflow should detect that the account no longer exists and propose to recreate the account. As part of this process, it will also execute the baseline runs for the account. 
+This workflow should detect that the account no longer exists and propose to recreate the account. As part of this process, it will also execute the baseline runs for the account.
 
 ## 2. Deploy The Core VPC Resources
 
@@ -44,8 +36,7 @@ To recreate the resources run the actions below in Github
 - [core-vpc-preproduction-deployment](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/core-vpc-preproduction-deployment.yml)
 - [core-vpc-production-deployment](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/core-vpc-production-deployment.yml)
 
-
-If a GitHub Actions deployment is not available the resources can be redeployed locally:  
+If a GitHub Actions deployment is not available the resources can be redeployed locally:
 
 - Navigate to the `modernisation-platform` repo and change to the `terraform/environments/core-vpc` directory
 - Using MP admin credentials, execute `terraform apply` from the `core-vpc-$environment` workspace
@@ -60,13 +51,12 @@ If a GitHub Actions deployment is not available the resources can be redeployed 
   - Are RAM shares properly established to share resources across accounts?
   - Is Transit Gateway connectivity correctly set up and functioning for all connected VPCs?
 
-
 ## 4. Notify Mod Platform Team
+
 - Inform Modernisation Platform team of rebuild process
 - Inform customers that account has been recreated
 
-
 ## References
 
-* [Accessing the AWS Console](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/accessing-the-aws-console.html)
-* [Disaster Recovery Process](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/dr-process.html)
+- [Accessing the AWS Console](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/accessing-the-aws-console.html)
+- [Disaster Recovery Process](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/dr-process.html)

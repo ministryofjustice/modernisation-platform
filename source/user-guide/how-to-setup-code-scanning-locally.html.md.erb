@@ -5,15 +5,6 @@ last_reviewed_on: 2025-03-14
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Introduction
@@ -33,6 +24,7 @@ or
 
 pip3 install checkov
 ```
+
 To install using brew run the bellow commands
 
 ```
@@ -47,7 +39,7 @@ To run checkov from the command line you will have to setup some variables first
 checkov --quiet -d "$terraform_working_dir" --skip-check "${INPUT_CHECKOV_EXCLUDE}" --download-external-modules "${INPUT_CHECKOV_EXTERNAL_MODULES}"
 ```
 
-If you look at the repository that you want to run the command for you will find in most cases that  the variable ${INPUT_CHECKOV_EXCLUDE} will be set to the following input CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39, But feel free to add any other that you want to exclude to this input
+If you look at the repository that you want to run the command for you will find in most cases that the variable ${INPUT_CHECKOV_EXCLUDE} will be set to the following input CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39, But feel free to add any other that you want to exclude to this input
 
 The $terraform_working_dir is basically the folder that you want to scan within the repository the last variable ${INPUT_CHECKOV_EXTERNAL_MODULES} can be set tp false as this is what it is normally setup within the github actions run.
 

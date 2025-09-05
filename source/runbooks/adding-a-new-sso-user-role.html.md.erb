@@ -5,15 +5,6 @@ last_reviewed_on: 2025-08-01
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Creating a New Role
@@ -26,11 +17,10 @@ You will need the following:
 
 - An "aws_ssoadmin_permission_set"
 - An "aws_ssoadmin_account_assignment"
-- Any number of "aws_ssoadmin_managed_policy_attachment" 
+- Any number of "aws_ssoadmin_managed_policy_attachment"
 - An "aws_ssoadmin_customer_managed_policy_attachment" that will correspond to an IAM policy
 - An "aws_iam_policy" and "aws_iam_policy_document" to create the IAM policy for the new role
 - Adjustments to the relevant `policies/environment/*.rego` files to check for the presence of the new role
-
 
 ### Setting up the role
 
@@ -50,7 +40,7 @@ Modernisation Platform IAM policies associated with SSO roles are defined in cod
 You will need to raise a pull request that creates the following terraform resources:
 
 - `aws_iam_policy` to create the IAM policy.
-    - The name should correspond to the name used in your `aws_ssoadmin_customer_managed_policy_attachment`
+  - The name should correspond to the name used in your `aws_ssoadmin_customer_managed_policy_attachment`
 - `aws_iam_policy_document` to provide IAM policy statements for the new role
 
 ### Amending the OPA policy

@@ -5,15 +5,6 @@ last_reviewed_on: 2025-08-19
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Recovery - General Concepts
@@ -38,10 +29,10 @@ This [reference](https://docs.aws.amazon.com/aws-backup/latest/devguide/restorin
 
 7. CLI documentation for recovery can be found [here](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/backup/start-restore-job.html). Each resource type will have its own metadata requirements.
 
-
 ## Backup & Restore Of Member StateFile
 
 ### Overview
+
 This runbook provides detailed instructions for backing up a replicated Terraform statefile from the `eu-west-1` region and restoring it to a new folder in the `eu-west-2` region.
 
 ---
@@ -49,9 +40,11 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 ### Step 1: Create a New Folder for Testing in S3
 
 1. **Log into AWS Management Console**:
+
    - Access the Modernisation Platform Account and navigate to the S3 service.
 
 2. **Navigate to the S3 Bucket**:
+
    - Go to the `modernisation-platform-terraform-state` bucket located in the `eu-west-2` region.
 
 3. **Create a New Folder for Testing**:
@@ -62,14 +55,17 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 ### Step 2: Copy the Backup State File for Testing
 
 1. **Locate and Copy the Backup State File**:
+
    - In the S3 bucket located in the `eu-west-1` region, find the backup state file.
 
 2. **Set the Destination**:
+
    - Use the "Copy" function for the state file.
    - Under "Destination type," select "General purpose bucket."
    - Use the "Browse S3" feature to navigate to the destination bucket and folder created in the previous step.
 
 3. **Specify Destination Path**:
+
    - Ensure the destination path is correctly set, such as `s3://modernisation-platform-terraform-state/environments/accounts/cooker/cooker-development/test-restore/`.
 
    **Note**: This method is applicable for objects encrypted with SSE-S3 (Amazon S3 managed keys). It is not suitable for objects encrypted with AWS KMS keys (SSE-KMS) or customer-provided encryption keys (SSE-C) due to additional restrictions.
@@ -94,26 +90,30 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 ### Step 5: Initialise and Test the Configuration
 
 1. **Reinitialise the Terraform Backend**:
+
    - Run `terraform init -reconfigure` to reinitialize the backend with the new test configuration. This step ensures that Terraform recognises the state file at the new location.
 
 2. **Verify the Setup**:
-   - Execute `terraform plan` to confirm that the state file is correctly recognised and that no changes will be applied unintentionally. 
+   - Execute `terraform plan` to confirm that the state file is correctly recognised and that no changes will be applied unintentionally.
 
 ---
 
 ## EC2 Backup and Restore
 
 ### 1. Set Up and Launch an EC2 Instance
+
 - Create an EC2 instance with a "Test" file.
 
 ### 2. Set Up AWS Backup
 
 - You can set up AWS Backup manually through the AWS Management Console or automate the process using Terraform. The setup involves creating a Backup Vault, an IAM role with necessary policies, and defining a backup plan.
 
-### Create Backup Vault 
+### Create Backup Vault
 
 #### IAM Role and Policy Setup (create a new one or use default)
+
 1. **Create IAM Role for AWS Backup:**
+
    - Create a new role with AWS Backup service as the trusted entity.
    - Attach the `AWSBackupServiceRolePolicyForBackup` managed policy.
 
@@ -122,10 +122,12 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
    - Attach this policy to the IAM role created for AWS Backup.
 
 ### 3. Backup Plan Setup
- **Create a Backup Plan:**
-   - In the AWS Backup Console, go to "Backup plans" and click "Create backup plan."
-   - Choose a predefined plan or create a custom one.
-   - Set backup frequency (e.g., daily) and retention period (e.g., 7 days).
+
+**Create a Backup Plan:**
+
+- In the AWS Backup Console, go to "Backup plans" and click "Create backup plan."
+- Choose a predefined plan or create a custom one.
+- Set backup frequency (e.g., daily) and retention period (e.g., 7 days).
 
 ### 4. Create On-Demand Backup
 
@@ -142,7 +144,6 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 - Follow the prompts to complete the restoration.
 - Check for your restored backup job under Restore jobs in the the AWS Backup console.
 
-
 ### 6. Verify the restored instance
 
 - Connect to the restored EC2 instance using SSH or AWS Systems Manager (SSM).
@@ -153,10 +154,8 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 
 ## References
 
-* [AWS Backup Documentation](https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html)
+- [AWS Backup Documentation](https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html)
 
-* [AWS Restore CLI Reference](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/backup/start-restore-job.html)
+- [AWS Restore CLI Reference](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/backup/start-restore-job.html)
 
-* [EC2 Backup And Restore](https://aws.amazon.com/getting-started/hands-on/amazon-ec2-backup-and-restore-using-aws-backup/)
-
-
+- [EC2 Backup And Restore](https://aws.amazon.com/getting-started/hands-on/amazon-ec2-backup-and-restore-using-aws-backup/)

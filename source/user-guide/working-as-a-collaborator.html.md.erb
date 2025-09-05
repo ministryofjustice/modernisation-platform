@@ -5,33 +5,24 @@ last_reviewed_on: 2025-04-14
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 A member of the `ministryofjustice` GitHub Organisation can request the set up of a new external collaborator [here](https://github.com/ministryofjustice/modernisation-platform/issues/new/choose).
 
 Once you have been [set up as a collaborator](../runbooks/adding-collaborators.html) you can -
 
-* [Create infrastructure in the modernisation-platform-environments repository](creating-resources.html#creating-resources-in-the-modernisation-platform)
-* [Deploy infrastructure via GitHub Actions workflows](deploying-your-infrastructure.html)
-* [View your accounts via the AWS console](#logging-in-to-the-aws-console)
-* [Use AWS credentials](#getting-access-credentials)
-* [Run Terraform plans locally](#running-a-terraform-plan-locally-as-a-collaborator)
-* [Access EC2s and databases](#accessing-ec2s-as-a-collaborator)
+- [Create infrastructure in the modernisation-platform-environments repository](creating-resources.html#creating-resources-in-the-modernisation-platform)
+- [Deploy infrastructure via GitHub Actions workflows](deploying-your-infrastructure.html)
+- [View your accounts via the AWS console](#logging-in-to-the-aws-console)
+- [Use AWS credentials](#getting-access-credentials)
+- [Run Terraform plans locally](#running-a-terraform-plan-locally-as-a-collaborator)
+- [Access EC2s and databases](#accessing-ec2s-as-a-collaborator)
 
 ## Logging in to the AWS Console
 
 1. Click on the AWS Console url - [https://eu-west-2.console.aws.amazon.com/](https://eu-west-2.console.aws.amazon.com/)
 
-1. You will see the sign on screen, choose IAM user and enter the Modernisation Platform landing zone account alias - "moj-modernisation-platform".   
+1. You will see the sign on screen, choose IAM user and enter the Modernisation Platform landing zone account alias - "moj-modernisation-platform".
 
 1. Enter your user details using the temporary password provided to you. If you have not received these details, check that the account has been [set up first](../runbooks/adding-collaborators.html#access-to-the-relevant-aws-accounts))
 
@@ -39,22 +30,21 @@ Once you have been [set up as a collaborator](../runbooks/adding-collaborators.h
 
 1. The next step is to create your MFA token as shown in the AWS documentation [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html).
 
-1. With the MFA created you can fully log in and [switch role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html) to the relevant account.     
+1. With the MFA created you can fully log in and [switch role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html) to the relevant account.
 
 1. You will need to know the account number or alias of the AWS account you want to switch to and the role you have been assigned, these will be told to you on initial user set up, the valid roles are:
 
-|Role|Description|Typical User|
-|---|---|---|
-|read-only|Read only console access|Used by read only users such as security testers|
-|security-audit|AWS security-audit policy|Used by security testers|
-|developer|Read only console plus other permissions such as the ability to set secrets,restart EC2s, raise support tickets.|Used by engineers working on the application infrastructure|
-|sandbox|Admin role to perform most AWS actions via the console| Used by engineers to make development easier in some situations, only allowed in the development account
-|migration|Role with developer and AWS migration services permissions| Used by engineers to migrate applications, will be removed before application goes into production
-|instance-access|Role for login access to EC2 instances and secret access controlled by instance-access-policy resource tag| Used by application support teams.
-|instance-management|Role for use by instance management with permissions for EC2 and RDS instances and all secrets| Used by database or EC2 administrators  to migrate services and perform tasks.| instance-management-policy resource tag on secrets can give permissions to put secrets
-|security-audit|Role with AWS managed SecurityAudit policy | Used by members of security and audit teams.
-|S3-upload| Role for managing S3 buckets. Access buckets in the same AWS account via the S3 console or cross-account buckets using: https://eu-west-2.console.aws.amazon.com/s3/buckets/my-test-bucket?region=eu-west-2&bucketType=general&tab=objects. Replace my-test-bucket with the actual name of the bucket you wish to access.| Used by collaborators requiring cross-account S3 bucket access.
-
+| Role                | Description                                                                                                                                                                                                                                                                                                               | Typical User                                                                                             |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| read-only           | Read only console access                                                                                                                                                                                                                                                                                                  | Used by read only users such as security testers                                                         |
+| security-audit      | AWS security-audit policy                                                                                                                                                                                                                                                                                                 | Used by security testers                                                                                 |
+| developer           | Read only console plus other permissions such as the ability to set secrets,restart EC2s, raise support tickets.                                                                                                                                                                                                          | Used by engineers working on the application infrastructure                                              |
+| sandbox             | Admin role to perform most AWS actions via the console                                                                                                                                                                                                                                                                    | Used by engineers to make development easier in some situations, only allowed in the development account |
+| migration           | Role with developer and AWS migration services permissions                                                                                                                                                                                                                                                                | Used by engineers to migrate applications, will be removed before application goes into production       |
+| instance-access     | Role for login access to EC2 instances and secret access controlled by instance-access-policy resource tag                                                                                                                                                                                                                | Used by application support teams.                                                                       |
+| instance-management | Role for use by instance management with permissions for EC2 and RDS instances and all secrets                                                                                                                                                                                                                            | Used by database or EC2 administrators to migrate services and perform tasks.                            | instance-management-policy resource tag on secrets can give permissions to put secrets |
+| security-audit      | Role with AWS managed SecurityAudit policy                                                                                                                                                                                                                                                                                | Used by members of security and audit teams.                                                             |
+| S3-upload           | Role for managing S3 buckets. Access buckets in the same AWS account via the S3 console or cross-account buckets using: https://eu-west-2.console.aws.amazon.com/s3/buckets/my-test-bucket?region=eu-west-2&bucketType=general&tab=objects. Replace my-test-bucket with the actual name of the bucket you wish to access. | Used by collaborators requiring cross-account S3 bucket access.                                          |
 
 You can see the accounts and roles assigned to you [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/collaborators.json).
 
@@ -62,8 +52,8 @@ You can see the accounts and roles assigned to you [here](https://github.com/min
 
 AWS provides credentials which can give you programmatic access to your AWS account. This enables you to run AWS CLI commands or Terraform plans locally.
 
-* [Getting AWS Credentials](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys)
-* [Creating AWS profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html#cli-configure-profiles-create)
+- [Getting AWS Credentials](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys)
+- [Creating AWS profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html#cli-configure-profiles-create)
 
 ## Running a Terraform plan locally as a collaborator
 
@@ -93,8 +83,7 @@ Follow the instructions [here](https://learn.hashicorp.com/tutorials/terraform/i
 1. Select the required workspace - `terraform workspace select my-application-development`
 1. Run a Terraform plan - `terraform plan`
 
->Running a plan locally has read only permissions, you will not be able to run an apply, destroy or import.
-
+> Running a plan locally has read only permissions, you will not be able to run an apply, destroy or import.
 
 ## Accessing EC2s as a Collaborator
 
@@ -120,16 +109,16 @@ Most modern AMIs will already have the SSM Agent installed. You can connect to t
 The `developer` and `instance-management` role allow full SSM access to all resources.
 The `instance-access` role allows restricted access based on the `instance-access-policy` resource tag:
 
-|Resource|instance-access-policy tag value|Description|
-|---|---|---|
-|EC2|undefined|Full SSM access allowed|
-|EC2|none|No access via SSM allowed|
-|EC2|limited|SSH and Port Forwarding over SSM allowed|
-|EC2|full|Full SSM access allowed|
-|SecretsManager Secret|undefined|No access to secret|
-|SecretsManager Secret|none|No access to secret|
-|SecretsManager Secret|limited|Read-only access to secret|
-|SecretsManager Secret|full|Read-Write access to secret|
+| Resource              | instance-access-policy tag value | Description                              |
+| --------------------- | -------------------------------- | ---------------------------------------- |
+| EC2                   | undefined                        | Full SSM access allowed                  |
+| EC2                   | none                             | No access via SSM allowed                |
+| EC2                   | limited                          | SSH and Port Forwarding over SSM allowed |
+| EC2                   | full                             | Full SSM access allowed                  |
+| SecretsManager Secret | undefined                        | No access to secret                      |
+| SecretsManager Secret | none                             | No access to secret                      |
+| SecretsManager Secret | limited                          | Read-only access to secret               |
+| SecretsManager Secret | full                             | Read-Write access to secret              |
 
 The `instance-management` role allows restricted access to secrets based on the `instance-management-policy` resource tag:
 |SecretsManager Secret|undefined|Read-only access to secret|
@@ -167,6 +156,7 @@ Launch [Fleet Manager RDP Connect](https://eu-west-2.console.aws.amazon.com/syst
 and add the relevant node.
 
 Log-in using either:
+
 - Single Sign-On (for local admin user)
 - Key Pair (providing Administrator key pair is configured)
 - User credentials (if EC2 is joined to a domain for example, or another local user configured)

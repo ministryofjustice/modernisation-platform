@@ -5,15 +5,6 @@ last_reviewed_on: 2025-03-17
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Overview
@@ -23,12 +14,12 @@ This enables us to connect to EC2s securely, via AWS SSO, without the need to op
 
 ## Required configuration to connect via Session Manager
 
-1) Ensure AWS CLI v2 and Session Manager plugin are installed locally. For example, if you're using macOS, you can install the following brew packages:
+1. Ensure AWS CLI v2 and Session Manager plugin are installed locally. For example, if you're using macOS, you can install the following brew packages:
 
 - awscli - Official Amazon AWS command-line interface
 - session-manager-plugin - Session Manager Plugin for the AWS CLI
 
-2) Add the following to your `~/.aws/config` configuration file. Give the profile name a relevant name for example `[profile glados-test-developer]` and add the corresponding AWS account number:
+2. Add the following to your `~/.aws/config` configuration file. Give the profile name a relevant name for example `[profile glados-test-developer]` and add the corresponding AWS account number:
 
 ```
 [profile glados-test-developer]
@@ -40,20 +31,20 @@ region = eu-west-2
 output = json
 ```
 
->Note: If the development account has sandbox access, then use the `modernisation-platform-sandbox` for `sso_role_name` above.
+> Note: If the development account has sandbox access, then use the `modernisation-platform-sandbox` for `sso_role_name` above.
 
-3) Log in to SSO using the following command:
+3. Log in to SSO using the following command:
 
- ```
- aws sso login --profile glados-test-developer
+```
+aws sso login --profile glados-test-developer
 
- ```
+```
 
 ## Connecting to AMI images with the SSM Agent installed
 
-Most modern AMIs will already have the SSM Agent installed.  You can connect to these instances directly with Session Manager.
+Most modern AMIs will already have the SSM Agent installed. You can connect to these instances directly with Session Manager.
 
-4) Start a basic Session Manager session
+4. Start a basic Session Manager session
 
 ```
 aws ssm start-session --target i-12345bc --profile glados-test-developer
@@ -61,12 +52,12 @@ aws ssm start-session --target i-12345bc --profile glados-test-developer
 
 ## Using a bastion for older AMI images
 
-Older operating systems may not support installation of the SSM Agent, in this case a bastion can be used to forward connections on to the EC2.  Bastions can also be used for port forwarding to connect to databases or private configuration consoles.
+Older operating systems may not support installation of the SSM Agent, in this case a bastion can be used to forward connections on to the EC2. Bastions can also be used for port forwarding to connect to databases or private configuration consoles.
 
 Member accounts can use the [Modernisation Platform bastion module](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) to build a bastion configured with user and user SSH keys.
 Once the bastion has been built in the environemnt, these steps outline the additional AWS and SSH configurations required for users to connect to the bastion and on to their desired EC2 within their environment.
 
-5) Add the example in this step to your `~/.ssh/config` file. Give the host a relevant name, for example `glados-test-bastion`. Replace the `User` and the `IdentityFile` path - it is the local path to the corresponding private key of the public key added to the `bastion_linux.json` file set up as part of the [Modernisation Platform bastion module](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) build. Replace the `target` with the bastion instance ID in the corresponding AWS account and include the AWS profile created in the previous step:
+5. Add the example in this step to your `~/.ssh/config` file. Give the host a relevant name, for example `glados-test-bastion`. Replace the `User` and the `IdentityFile` path - it is the local path to the corresponding private key of the public key added to the `bastion_linux.json` file set up as part of the [Modernisation Platform bastion module](https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux) build. Replace the `target` with the bastion instance ID in the corresponding AWS account and include the AWS profile created in the previous step:
 
 ```
 Host glados-test-bastion
@@ -78,17 +69,17 @@ Host glados-test-bastion
      ProxyCommand sh -c "aws ssm start-session --target $(aws ec2 describe-instances --no-cli-pager --filter "Name=tag:Name,Values=bastion_linux" --filter "Name=instance-state-code,Values=16" --query 'Reservations[0].Instances[0].InstanceId' --profile glados-test-developer | tr -d '"') --document-name AWS-StartSSHSession --parameters 'portNumber=%p' --profile glados-test-developer --region eu-west-2"
 ```
 
->Note: The bastion server is re-created on daily basis which causes the host identification to change. When the user connects to the bastion using SSH, the SSH client warns about the host identification change. In the above, the configuration `StrictHostKeyChecking no`, `UserKnownHostsFile /dev/null` and `LogLevel QUIET` is added to prevent the `WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!` by the SSH client. If we didn't add the above, the user would have to manually remove the old host key from `~/.ssh/known_hosts` on daily basis, which could be annoying.
+> Note: The bastion server is re-created on daily basis which causes the host identification to change. When the user connects to the bastion using SSH, the SSH client warns about the host identification change. In the above, the configuration `StrictHostKeyChecking no`, `UserKnownHostsFile /dev/null` and `LogLevel QUIET` is added to prevent the `WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!` by the SSH client. If we didn't add the above, the user would have to manually remove the old host key from `~/.ssh/known_hosts` on daily basis, which could be annoying.
 
->Note: If you're unable to connect, remove `LogLevel QUIET` from the above to see additional logs. If the `aws ssm` command reports the error `An error occurred (ForbiddenException) when calling the GetRoleCredentials operation: No access`, make sure the `sso_role_name` in the AWS SSO profile is correct (see the note for the AWS SSO `profile glados-test-developer` above).
+> Note: If you're unable to connect, remove `LogLevel QUIET` from the above to see additional logs. If the `aws ssm` command reports the error `An error occurred (ForbiddenException) when calling the GetRoleCredentials operation: No access`, make sure the `sso_role_name` in the AWS SSO profile is correct (see the note for the AWS SSO `profile glados-test-developer` above).
 
-6) SSH to the bastion using the following command:
+6. SSH to the bastion using the following command:
 
 ```
 ssh glados-test-bastion
 ```
 
->Note: If you get the error `Permission denied (publickey,gssapi-keyex,gssapi-with-mic)`, check the `bastion_linux.json` file inside the `modernisation-platform-environments` repository includes your public SSH key. On the other hand, if you re-generate your public SSH key, then you will also need to update it in the `bastion_linux.json`. Moreover, in order to SSH using your newly generated key you will need to restart your ssh-agent.
+> Note: If you get the error `Permission denied (publickey,gssapi-keyex,gssapi-with-mic)`, check the `bastion_linux.json` file inside the `modernisation-platform-environments` repository includes your public SSH key. On the other hand, if you re-generate your public SSH key, then you will also need to update it in the `bastion_linux.json`. Moreover, in order to SSH using your newly generated key you will need to restart your ssh-agent.
 
 ## Using the Bastion as a jump server to access Linux EC2s
 

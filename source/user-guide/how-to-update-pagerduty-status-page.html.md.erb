@@ -5,15 +5,6 @@ last_reviewed_on: 2025-05-09
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Introduction
@@ -29,9 +20,10 @@ You can create or update incident and maintenance statuses in two ways:
    For more details, see the [incident process documentation](../runbooks/manage-an-incident.html#2-declare-the-incident).
 
 2. **Via the PagerDuty Web Interface**:  
-   There are two steps to using PagerDuty directly:  
+   There are two steps to using PagerDuty directly:
 
    **Step 1 – Create the incident:**
+
    - Log in to the [PagerDuty site](https://moj-digital-tools.pagerduty.com/).
    - Navigate to **Incidents** > **New Incident**.
    - Complete the following fields:
@@ -43,6 +35,7 @@ You can create or update incident and maintenance statuses in two ways:
    - Click **Create Incident**.
 
    **Step 2 – Update the external status page:**
+
    - Hover over the _“Status”_ menu and select _“External Status Page”_.
    - Click on _“Ministry of Justice Modernisation Platform”_.
    - You’ll see the newly created incident listed in the **Pending Approvals** section.

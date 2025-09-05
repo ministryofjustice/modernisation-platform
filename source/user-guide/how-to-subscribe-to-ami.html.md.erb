@@ -5,17 +5,7 @@ last_reviewed_on: 2025-04-17
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
-
 
 This guide walks you through the process of requesting a license for an Amazon Machine Image (AMI) when your AWS account is part of an AWS Organization.
 
@@ -23,10 +13,9 @@ This guide walks you through the process of requesting a license for an Amazon M
 
 ### 📖 Introduction: What is AMI Licensing?
 
-Amazon Machine Images (AMIs) often include licensed software — such as operating systems, monitoring tools, or security agents — that require explicit permission to use. When such AMIs are distributed via AWS Marketplace or shared directly, access to them may be restricted by software licensing agreements. 
+Amazon Machine Images (AMIs) often include licensed software — such as operating systems, monitoring tools, or security agents — that require explicit permission to use. When such AMIs are distributed via AWS Marketplace or shared directly, access to them may be restricted by software licensing agreements.
 
 To use these AMIs in your account or across your AWS Organization, you may need to request a license — either to your individual account or to your entire AWS Organization. This process ensures compliance with software usage terms and allows for easier deployment at scale.
-
 
 ### 📋 Prerequisites
 
@@ -37,8 +26,6 @@ Before proceeding, ensure the following:
 - You know the **AMI ID** and the **source of the AMI** (e.g. AWS Marketplace listing or account ID of the AMI owner).
 - The AMI is shared via the **AWS Marketplace** or **direct AMI sharing**.
 
-
-
 ### 🪪 Step 1: Identify the AMI and Its Source
 
 Find the AMI you want to use and determine whether it requires a license. You can usually tell this by:
@@ -46,34 +33,29 @@ Find the AMI you want to use and determine whether it requires a license. You ca
 - Checking the AWS Marketplace listing
 - Attempting to launch the AMI and being prompted to subscribe
 
-
-
 ### 🧾 Step 2: Navigate to the AWS Marketplace (If Applicable)
 
 If the AMI is published on AWS Marketplace:
 
 1. Go to the [AMI Catalog in the EC2 Console](https://console.aws.amazon.com/ec2/home?#AMICatalog) to browse available Marketplace AMIs
 2. Search for the product/AMI name.
-![Screenshot of AMI Catalog in EC2](/images/ami-cat.png)
+   ![Screenshot of AMI Catalog in EC2](/images/ami-cat.png)
 3. Click on the product listing.
-![Screenshot of AMI prodlist](/images/ami-prodselect.png)
+   ![Screenshot of AMI prodlist](/images/ami-prodselect.png)
 4. Click the **Continue to Subscribe** button.
-
-
-
 
 ### ✉️ Step 3: Request Help for License Approval
 
 If the AMI requires a license and you do **not** have access after clicking **Subscribe**, you’ll need support from the modernisation team to get it approved on the root account.
 
 1. Gather the following information:
-    - AMI ID
-    - Source (e.g., Marketplace product name or shared account ID)
-    - Purpose of use (briefly explain why you need the AMI)
-    - Your AWS Account ID or Organizational Unit
+
+   - AMI ID
+   - Source (e.g., Marketplace product name or shared account ID)
+   - Purpose of use (briefly explain why you need the AMI)
+   - Your AWS Account ID or Organizational Unit
 
 2. Post a request in the `#ask-modernisation` Slack channel with the above details.
-
 
 **Example message:**
 
@@ -92,7 +74,6 @@ Please let me know if anything else is needed. Thanks!
 The modernisation team will help coordinate license approvals with the appropriate vendors or internal teams.
 ```
 
-
 ### 🏢 Step 4: Grant the AMI License at the Organization Level (Support Only)
 
 > **Note:** This step must be performed by someone with **root account access to the `moj-master` account**.
@@ -103,7 +84,7 @@ Once a request has been raised in `#ask-modernisation`, the support team or lice
 2. Go to **Granted licenses**.
 3. Locate the license associated with the AMI.
 4. Approve or extend the license to the **entire AWS Organization** or the specific requesting account as appropriate.
-![Screenshot of Grant screen in licnece manager](/images/grantscreen.png)
+   ![Screenshot of Grant screen in licnece manager](/images/grantscreen.png)
 
 ### ✅ Step 5: Confirm License Availability
 

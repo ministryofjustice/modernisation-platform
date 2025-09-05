@@ -5,15 +5,6 @@ last_reviewed_on: 2025-07-31
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Overview
@@ -26,7 +17,7 @@ When we receive your request we will create a new JSON file and submit a pull re
 
 To request a new environment, simply [create an issue](https://github.com/ministryofjustice/modernisation-platform/issues/new/choose) using the `New Modernisation Platform Environment` template.
 
-This issue will go into the Modernisation Platform backlog and be prioritised along with other issues.  Normally new environment requests are taken into the next sprint (we work in 2 week sprints) and once picked up are completed within a day. You can see which sprint your issue has been assigned to on the issue, and follow progress once it is in a sprint [here](https://github.com/orgs/ministryofjustice/projects/17)
+This issue will go into the Modernisation Platform backlog and be prioritised along with other issues. Normally new environment requests are taken into the next sprint (we work in 2 week sprints) and once picked up are completed within a day. You can see which sprint your issue has been assigned to on the issue, and follow progress once it is in a sprint [here](https://github.com/orgs/ministryofjustice/projects/17)
 
 This will ask you for the following information:
 
@@ -79,10 +70,10 @@ These will be used to tag your AWS resources, for further guidance on tagging pl
 
 The is-production tag will be inferred if the environment is production.
 
-| tag           | value                                     |
-| ------------- | ----------------------------------------- |
-| application   | Find a solicitor                          |
-| business-unit | LAA                                       |
+| tag           | value                                       |
+| ------------- | ------------------------------------------- |
+| application   | Find a solicitor                            |
+| business-unit | LAA                                         |
 | owner         | <find-a-solicitor@ministryofjustice.gov.uk> |
 
 Valid business-unit values
@@ -108,7 +99,7 @@ Here are some examples of the environments JSON file that the Modernisation Plat
 
 - `account-type` determines if this is a core modernisation platform account or a user member account.
 - `isolated-network` is an optional field which can be set to 'true' if you require an isolated environment with no internet or shared network connectivity.
-- `codeowners` is an ***optional*** list of GitHub slugs if you want specific teams to review code changes before they are released into environments. It is **NOT** generally used. Compare the [Blank example](#blank-example) with [Another example](#another-example) below, to see it is unused.
+- `codeowners` is an **_optional_** list of GitHub slugs if you want specific teams to review code changes before they are released into environments. It is **NOT** generally used. Compare the [Blank example](#blank-example) with [Another example](#another-example) below, to see it is unused.
 - `environments` should be an array of objects for environments required. If the environment is `production`, retention periods, backup frequency, and similar will be different compared to non-production environments.
 - the `name` key and `access` object are required, see: [Another example](#another-example)
 - `github_action_reviewer` is an optional true/false for each team listed and determines if the team should be the approver for GitHub action runs.
@@ -166,7 +157,7 @@ An JSON definition for a nonsensical application called [`glados`](https://en.wi
           "level": "sandbox"
         }
       ],
-      "additional_reviewers": ["GitHubUsername1", "GitHubUsername2"], 
+      "additional_reviewers": ["GitHubUsername1", "GitHubUsername2"],
       "nuke": "rebuild"
     },
     {

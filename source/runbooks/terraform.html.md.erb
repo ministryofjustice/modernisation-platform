@@ -5,15 +5,6 @@ last_reviewed_on: 2025-05-23
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## What we manage in Terraform
@@ -71,7 +62,7 @@ $ terraform plan
 $ terraform apply
 ```
 
->If you encounter `Access Denied` error, try running `rm -rf .terraform` and rerun `terraform init`
+> If you encounter `Access Denied` error, try running `rm -rf .terraform` and rerun `terraform init`
 
 ### Permissions required for each directory in `terraform/` in [`modernisation-platform`](https://github.com/ministryofjustice/modernisation-platform) repo
 
@@ -85,7 +76,7 @@ Terraform doesn't look recursively for `.tf` files, so we utilise subdirectories
   - `pagerduty/` can be run using an Modernisation Platform Account AdministratorAccess SSO role, and requires a `pagerduty_token` to be passed in as a Terraform variable with permissions to the MoJ PagerDuty account
   - `modernisation-platform-account/` can be run using an Modernisation Platform Account AdministratorAccess SSO role
 
->Unlike in `modernisation-platform-environments` repo, you can use Modernisation Platform Account AdministratorAccess SSO role to run terraform, rather than using the AdministratorAccess SSO role of the target account.
+> Unlike in `modernisation-platform-environments` repo, you can use Modernisation Platform Account AdministratorAccess SSO role to run terraform, rather than using the AdministratorAccess SSO role of the target account.
 
 ### Permissions required for each directory in [`modernisation-platform-ami-builds`](https://github.com/ministryofjustice/modernisation-platform-ami-builds) repo
 

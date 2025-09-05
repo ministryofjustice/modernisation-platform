@@ -5,15 +5,6 @@ last_reviewed_on: 2025-07-16
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ### What we're trying to fix
@@ -33,12 +24,12 @@ Instead of creating a VPC in each account, we have organised the VPCs into centr
 
 So we have the following environment accounts:
 
-* production
-* preproduction
-* test
-* development
+- production
+- preproduction
+- test
+- development
 
-Within these environment accounts there is one VPC per business unit.  For example within the production account there is one VPC for LAA, and one for HMPPS.
+Within these environment accounts there is one VPC per business unit. For example within the production account there is one VPC for LAA, and one for HMPPS.
 
 These VPCs are then shared via [Resource Access Manager (RAM)](https://docs.aws.amazon.com/ram/latest/userguide/what-is.html) to the application accounts.
 
@@ -56,9 +47,9 @@ For most business areas, the general subset set will be enough, but we can alway
 
 The subnet sets contain three types of subnet:
 
- * Public (for public resources such as load balancers)
- * Private (for private resources such as application servers)
- * Data (for data resources such as databases)
+- Public (for public resources such as load balancers)
+- Private (for private resources such as application servers)
+- Data (for data resources such as databases)
 
 Each of the different subnet types are spread across all three London region [availability zones](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones) (`eu-west-2a`, `eu-west-2b`, and `eu-west-2c`), making a total of nine subnets.
 
@@ -68,10 +59,10 @@ For more information on the subnet ranges, see the [subnet allocation](subnet-al
 
 Protected subnets are created per account and used for [VPC endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html). We provide the following VPC endpoints as standard, and can add additional ones as required:
 
-* SSM Messages
-* S3
-* EC2
-* EC2 Messages
+- SSM Messages
+- S3
+- EC2
+- EC2 Messages
 
 ##### Transit Gateway
 
@@ -95,10 +86,10 @@ There are other VPCs in the Modernisation Platform core infrastructure accounts,
 
 Some examples that you will connect to:
 
-* network-services (where the transit gateway lives)
-* shared-services
-* logging
-* security
+- network-services (where the transit gateway lives)
+- shared-services
+- logging
+- security
 
 #### Transit Gateway
 

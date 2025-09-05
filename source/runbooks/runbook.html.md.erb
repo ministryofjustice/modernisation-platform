@@ -5,15 +5,6 @@ last_reviewed_on: 2025-06-16
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Description
@@ -34,7 +25,7 @@ Out of hours support 7am-10pm including Weekends and Bank Holidays (Critical inc
 ## Incident contact details
 
 Standard support hours - Please post in the Slack channel [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1)  
-Out of hours support - Please email  [contact-on-call-modernisation-platform@digital.justice.gov.uk](mailto:contact-on-call-modernisation-platform@digital.justice.gov.uk) or raise a call on [PagerDuty](https://moj-digital-tools.pagerduty.com/incidents).
+Out of hours support - Please email [contact-on-call-modernisation-platform@digital.justice.gov.uk](mailto:contact-on-call-modernisation-platform@digital.justice.gov.uk) or raise a call on [PagerDuty](https://moj-digital-tools.pagerduty.com/incidents).
 
 ## Service team contact
 
@@ -42,7 +33,7 @@ Please post in the Slack channel [#ask-modernisation-platform](https://mojdt.sla
 
 ## Hosting environment
 
-The Modernisation Platform is hosted on AWS, under the Ministry of Justice AWS organisation.  Support requests should be raised in the account that they affect, see [here](https://docs.aws.amazon.com/awssupport/latest/user/case-management.html) how to raise a support request.
+The Modernisation Platform is hosted on AWS, under the Ministry of Justice AWS organisation. Support requests should be raised in the account that they affect, see [here](https://docs.aws.amazon.com/awssupport/latest/user/case-management.html) how to raise a support request.
 
 ## Other URLs
 
@@ -58,11 +49,11 @@ If the Modernisation Platform is down, applications hosted on the platform may n
 
 Issues with the following core platform services will impact users in the following ways:
 
-Issue | Impact | Link to relevant runbook
----|---|---
-core-vpc networking or RAM share failure | Networking for the accounts under the affected business unit will fail. | TBC
-Transit Gateway failure | Applications will not be able to communicate with the core accounts, the NAT Gateway, other business units or the wider MoJ | TBC
-GitHub or GitHub Actions failure | Users will not be able to push code or deploy to environments | TBC
+| Issue                                    | Impact                                                                                                                      | Link to relevant runbook |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| core-vpc networking or RAM share failure | Networking for the accounts under the affected business unit will fail.                                                     | TBC                      |
+| Transit Gateway failure                  | Applications will not be able to communicate with the core accounts, the NAT Gateway, other business units or the wider MoJ | TBC                      |
+| GitHub or GitHub Actions failure         | Users will not be able to push code or deploy to environments                                                               | TBC                      |
 
 ## Out of hours response
 
@@ -74,7 +65,7 @@ Applications hosted on the platform and their details can be found [here](https:
 
 ## Restrictions on access
 
-Access to the AWS accounts is managed via [AWS SSO](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/bootstrap/single-sign-on) for users who are part of the Ministry of Justice GitHub organisation.  External collaborators are detailed [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/collaborators.json).
+Access to the AWS accounts is managed via [AWS SSO](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/bootstrap/single-sign-on) for users who are part of the Ministry of Justice GitHub organisation. External collaborators are detailed [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/collaborators.json).
 If SSO fails, platform engineers can access via the [superadmin](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modernisation-platform-account/iam.tf#L1) users.
 
 ## How to resolve specific issues

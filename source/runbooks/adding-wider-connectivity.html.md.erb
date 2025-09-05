@@ -5,15 +5,6 @@ last_reviewed_on: 2025-06-16
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Introduction
@@ -22,7 +13,7 @@ The Modernisation Platform connects the different core platform VPCs and core ne
 
 In order to expand connectivity beyond the Modernisation Platform, we have [peered](https://docs.aws.amazon.com/vpc/latest/tgw/tgw-peering.html) the Modernisation Platform Transit Gateway (MP TGW) to the central [MoJ PTTP Transit Gateway](https://github.com/ministryofjustice/deployment-tgw) (Prison Technology Transformation Project) (PTTP TGW).
 
-Whilst we could directly connect things to our Modernisation Transit Gateway, this would end up with lots of cross networking between platforms and additional complexity.  It makes sense to use the PTTP TWG as a central hub for connectivity across the MoJ.
+Whilst we could directly connect things to our Modernisation Transit Gateway, this would end up with lots of cross networking between platforms and additional complexity. It makes sense to use the PTTP TWG as a central hub for connectivity across the MoJ.
 
 ## Required Routing
 
@@ -44,7 +35,7 @@ The TGW attachement may be a VPC, VPN, Direct Connect or another Transit Gateway
 
 ### From PTTP TGW back to the MP TGW
 
-A route to the MP TGW must be added in the relevant route table for the PTTP TGW attachement.  This should be added under `peering_static_routes` [here](https://github.com/ministryofjustice/deployment-tgw/blob/master/env/production/eu-west-2.yml).
+A route to the MP TGW must be added in the relevant route table for the PTTP TGW attachement. This should be added under `peering_static_routes` [here](https://github.com/ministryofjustice/deployment-tgw/blob/master/env/production/eu-west-2.yml).
 
 - `rtb_name` is the name of the relevant route table. This is the route table associated with the attachment.
 - `destination` should be the CIDR range of the Modernisation live or non live CIDR ranges.

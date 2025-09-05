@@ -5,15 +5,6 @@ last_reviewed_on: 2025-07-16
 review_in: 12 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## What we're trying to fix
@@ -99,7 +90,7 @@ In the Modernisation Platform, we want to empower teams and grant them the auton
 - people tend to go for the easiest option, which creates technical debt further down the line
 - infrastructure quickly becomes hard to track
 - it can become tangled and messy
-- doesn't support the central alignment we're trying to achieve 
+- doesn't support the central alignment we're trying to achieve
 
 However, raw autonomy does give some positives:
 
@@ -176,7 +167,7 @@ The benefits of this are:
 
 ### Overview
 
-We decided to use [separate AWS accounts per application](#option-d-accounts-separated-by-application-and-sdlc-stage)  as a middle-ground between [separating everything](#option-e-separate-everything) and using [one account with strong attribute-based access controls](#option-b-one-account-strong-attribute-based-access-controls).
+We decided to use [separate AWS accounts per application](#option-d-accounts-separated-by-application-and-sdlc-stage) as a middle-ground between [separating everything](#option-e-separate-everything) and using [one account with strong attribute-based access controls](#option-b-one-account-strong-attribute-based-access-controls).
 
 Whilst there is a trade-off to more complexity, we feel it's outweighed by the benefits of doing this.
 
@@ -190,6 +181,7 @@ Some of the biggest benefits are:
 ### Logically separate applications
 
 The Modernisation Platform hosts a number of applications, each built in different ways. One of our goals is to facilitate modernisation of these applications through the onboarding process. That could mean:
+
 - moving away from on-premise hosted databases into managed services such as AWS [Relational Database Service (RDS)](https://aws.amazon.com/rds/)
 - moving away from bastion hosts to [agent-based instance management](https://aws.amazon.com/about-aws/whats-new/2018/09/introducing-aws-systems-manager-session-manager/)
 

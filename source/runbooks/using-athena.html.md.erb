@@ -5,15 +5,6 @@ last_reviewed_on: 2025-03-14
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Introduction
@@ -38,7 +29,7 @@ Under the data options you will not need to change the data source or database. 
 
 A sample of the data and columns in the table can be found using the following query
 
-**SELECT * FROM "mod_cloudtrail_logs"."cloudtrail_logs" limit 10;**
+**SELECT \* FROM "mod_cloudtrail_logs"."cloudtrail_logs" limit 10;**
 
 This will list the first 10 rows found. It provides an idea of what is recorded, the accounts used etc.
 
@@ -52,11 +43,11 @@ There is a lot of data in the table so it’s best to avoid ending with the abov
 
 An example might be, if you want to see all the data from core-vps-production
 
-**SELECT * FROM "mod_cloudtrail_logs"."cloudtrail_logs"
+**SELECT \* FROM "mod_cloudtrail_logs"."cloudtrail_logs"
 where account = '278663825216'
 order by eventtime desc;**
 
- Which produces a lot of results. Due to the width of the results I have not pasted details in here. Suffice to say, wherever possible do NOT select all columns.
+Which produces a lot of results. Due to the width of the results I have not pasted details in here. Suffice to say, wherever possible do NOT select all columns.
 
 Or another example is
 

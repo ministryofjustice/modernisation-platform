@@ -5,15 +5,6 @@ last_reviewed_on: 2025-05-12
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Overview
@@ -23,11 +14,11 @@ The workflow automatically searches then creates and populates tables using the 
 
 ## Configuration to run documentation workflow
 
-1) Ensure you have a copy of [documentation.yml](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/documentation.yml) in your `.github/workflows/` directory.
+1. Ensure you have a copy of [documentation.yml](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/documentation.yml) in your `.github/workflows/` directory.
 
-2) Create a top-level file called README.md in your repository.
+2. Create a top-level file called README.md in your repository.
 
-3) Add the following two lines to your README.md file:
+3. Add the following two lines to your README.md file:
 
 ```
 <!--- BEGIN_TF_DOCS --->
@@ -35,5 +26,5 @@ The workflow automatically searches then creates and populates tables using the 
 <!--- END_TF_DOCS --->
 ```
 
-4) The GitHub workflow will create the automated documentation in between these two tags and commit them when a pull request is created.
+4. The GitHub workflow will create the automated documentation in between these two tags and commit them when a pull request is created.
    You may include any custom markdown instructions outside of the tags.

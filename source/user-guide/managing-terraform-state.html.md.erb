@@ -5,15 +5,6 @@ last_reviewed_on: 2025-08-29
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Introduction
@@ -26,11 +17,11 @@ In certain scenarios it may be necessary to perform one-off actions on your terr
 
 For these scenarios we have supplied a [Terraform State Management](https://github.com/ministryofjustice/modernisation-platform-environments/actions/workflows/terraform-state-management.yml) GitHub Action for managing your state files.
 
-## Using the GitHub Action 
+## Using the GitHub Action
 
 1. Navigate to the [Terraform State Management](https://github.com/ministryofjustice/modernisation-platform-environments/actions/workflows/terraform-state-management.yml) GitHub Action
 1. Select `Run workflow`
-1. You will be presented with a series of options for the various operations available 
+1. You will be presented with a series of options for the various operations available
 
 ![Run Workflow Options](../../images/manage-tf-state-gh-action.png)
 
@@ -56,11 +47,14 @@ For these scenarios we have supplied a [Terraform State Management](https://gith
 1. Select the `import` operation
 1. Enter your application name e.g. `apex`
 1. Select the relevant environment workspace e.g. `development`
-1. Enter `resource addresses` as required (these must be comma separated when handling multiple resources) 
- - e.g. to import an s3 bucket/ec2 instance `aws_s3_bucket.test_import_bucket,aws_instance.test_import_instance`
+1. Enter `resource addresses` as required (these must be comma separated when handling multiple resources)
+
+- e.g. to import an s3 bucket/ec2 instance `aws_s3_bucket.test_import_bucket,aws_instance.test_import_instance`
 
 1. Enter the `resource IDs` as required (again comma separated and must match the `resource addresses` order)
- - e.g. `test-s3-bucket-name,i-0c9c2b36e598cefea`
+
+- e.g. `test-s3-bucket-name,i-0c9c2b36e598cefea`
+
 1. Enter the name of the `feature branch` with your associated config for the imported resources
 1. Select `Run Workflow`, and follow the same steps as above to review/deploy the changes
 1. Once this has completed you can continue to raise a PR/merge your config changes as usual
@@ -70,8 +64,10 @@ For these scenarios we have supplied a [Terraform State Management](https://gith
 1. Select the `remove` operation
 1. Enter your application name e.g. `apex`
 1. Select the relevant environment workspace e.g. `development`
-1. Enter `resource addresses` as required (these must be comma separated when handling multiple resources) 
- - e.g. to remove an s3 bucket/ec2 instance `aws_s3_bucket.test_import_bucket,aws_instance.test_import_instance`
+1. Enter `resource addresses` as required (these must be comma separated when handling multiple resources)
+
+- e.g. to remove an s3 bucket/ec2 instance `aws_s3_bucket.test_import_bucket,aws_instance.test_import_instance`
+
 1. Select `Run Workflow`, and follow the same steps as above to review/deploy the changes
 
 ## Troubleshooting

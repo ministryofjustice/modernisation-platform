@@ -5,15 +5,6 @@ last_reviewed_on: 2025-08-14
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Deploying a Web Application Firewall in the Modernisation Platform
@@ -21,6 +12,7 @@ review_in: 6 months
 You can use the [modernisation-platform-terraform-waf](https://github.com/ministryofjustice/modernisation-platform-terraform-waf) module to create an [AWS WAF (Web Application Firewall)](https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html) configuration in your account.
 
 The module supports:
+
 - Custom rules such as IP blocking from an SSM parameter.
 - AWS-managed rule groups, with the ability to run in block or count mode.
 - Optional DDoS protection aligned with the Firewall Manager configuration.
@@ -66,11 +58,13 @@ additional_managed_rules = [
   }
 ]
 ```
+
 ---
 
 ## Known issues and limitations
 
 ### 1. Rule priority management
+
 Currently, the module does not support configuring the **priority** of WAF rules.  
 This limitation has been raised as an issue and will be addressed in a future release.
 
@@ -83,6 +77,7 @@ None at present — rules will be ordered automatically by the module.
 ---
 
 ### 2. FM-managed rule conflicts for MOJ teams
+
 For MOJ teams, a Firewall Manager (FM)–managed rule created in the  
 [`aws-root-account`](https://github.com/ministryofjustice/aws-root-account/blob/main/organisation-security/terraform/firewall-manager.tf) repository  
 (and sometimes via the environments repository) cannot be removed by this module.
@@ -98,6 +93,7 @@ Run the apply, then manually associate the resources to the WAF afterwards.
 ## Prerequisites
 
 To use this module you must:
+
 - Have Terraform ≥ 1.0 and AWS provider ~> 5.90 configured.
 - Ensure your target AWS resources (e.g., ALBs, CloudFront distributions) are available for WAF association.
 - For IP blocking, have an SSM SecureString parameter containing the JSON-encoded IP list. The module creates this, however you will need to populate it.
@@ -106,10 +102,10 @@ To use this module you must:
 
 ## Related links
 
-- [AWS WAF Documentation](https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html)  
-- [AWS Firewall Manager Documentation](https://docs.aws.amazon.com/waf/latest/developerguide/fms-chapter.html)  
-- [AWS Shield and DDoS Protection](https://docs.aws.amazon.com/waf/latest/developerguide/ddos-overview.html)  
-- [Module source code on GitHub](https://github.com/ministryofjustice/modernisation-platform-terraform-waf)  
+- [AWS WAF Documentation](https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html)
+- [AWS Firewall Manager Documentation](https://docs.aws.amazon.com/waf/latest/developerguide/fms-chapter.html)
+- [AWS Shield and DDoS Protection](https://docs.aws.amazon.com/waf/latest/developerguide/ddos-overview.html)
+- [Module source code on GitHub](https://github.com/ministryofjustice/modernisation-platform-terraform-waf)
 
 ---
 
@@ -117,4 +113,3 @@ To use this module you must:
 
 To raise an issue with this module, please create a ticket in the  
 [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform-terraform-waf/issues).
-

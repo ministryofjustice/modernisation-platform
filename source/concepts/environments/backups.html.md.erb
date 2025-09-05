@@ -5,15 +5,6 @@ last_reviewed_on: 2025-05-20
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 We use [AWS Backup](https://aws.amazon.com/backup/) to automatically back up production resources across all the Modernisation Platform environments.
@@ -22,7 +13,7 @@ AWS Backup supports most common AWS resources, such as EC2 instances, EBS and EF
 
 For a full list of supported resources please see here - https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html
 
-Please note that some resources may need extra configuration and new services may require an additional opt in.  Please refer to the AWS documentation and if you have any questions please ask the [Modernisation Platform team](../../getting-help).
+Please note that some resources may need extra configuration and new services may require an additional opt in. Please refer to the AWS documentation and if you have any questions please ask the [Modernisation Platform team](../../getting-help).
 
 ## Production Backups
 
@@ -59,9 +50,9 @@ If the above built in backup plans are not suitable, you can create your own bac
 
 ## On-Demand backups
 
-We had added, to the developer role, the ability to take on-demand backups of resources for those occasions where a one-off backup required.  This can be done via the AWS Backup console or via the AWS CLI. As with other backups, these can be costly if long rention periods are used.
+We had added, to the developer role, the ability to take on-demand backups of resources for those occasions where a one-off backup required. This can be done via the AWS Backup console or via the AWS CLI. As with other backups, these can be costly if long rention periods are used.
 
-Note that when using this feature, the backup IAM role AWSBackup must be selected. 
+Note that when using this feature, the backup IAM role AWSBackup must be selected.
 
 ## How to find your backups
 
