@@ -67,7 +67,7 @@ def main(collaborators_file, iam_users_file):
         collaborators_file: Path to the collaborators.json file.
         iam_users_file: Path to the iam_users.list file.
     """
-    api_key = os.environ["API_KEY"]
+    api_key = os.environ["GOV_UK_NOTIFY_API_KEY"]
     template_id = os.environ["TEMPLATE_ID"]
     client = NotificationsAPIClient(api_key=api_key)
 
