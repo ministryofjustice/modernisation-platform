@@ -528,6 +528,72 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     }
   }
 
+  statement {
+    sid    = "AllowDataPlatformEngineersAccess"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject"
+    ]
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/data-platform-*/*"]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_platform-engineer-admin_*"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        # Data Platform's member account IDs
+        local.environment_management.account_ids["data-platform-development"],
+        local.environment_management.account_ids["data-platform-preproduction"],
+        local.environment_management.account_ids["data-platform-production"],
+        local.environment_management.account_ids["data-platform-test"],
+      ]
+    }
+  }
+
+  statement {
+    sid       = "AllowDataPlatformEngineersDeleteLock"
+    effect    = "Allow"
+    actions   = ["s3:DeleteObject"]
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/data-platform-*/*.tflock"]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_platform-engineer-admin_*"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        # Data Platform's member account IDs
+        local.environment_management.account_ids["data-platform-development"],
+        local.environment_management.account_ids["data-platform-preproduction"],
+        local.environment_management.account_ids["data-platform-production"],
+        local.environment_management.account_ids["data-platform-test"],
+      ]
+    }
+  }
 }
 
 # Allow access to the bucket for SSO admins from the MoJ root account
