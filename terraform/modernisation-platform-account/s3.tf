@@ -535,7 +535,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       "s3:GetObject",
       "s3:PutObject"
     ]
-    resources = ["${module.state-bucket.bucket.arn}/environments/members/data-platform-*/*"]
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/data-platform*/*"]
     principals {
       type        = "AWS"
       identifiers = ["*"]
@@ -567,7 +567,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     sid       = "AllowDataPlatformEngineersDeleteLock"
     effect    = "Allow"
     actions   = ["s3:DeleteObject"]
-    resources = ["${module.state-bucket.bucket.arn}/environments/members/data-platform-*/*.tflock"]
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/data-platform*/*.tflock"]
     principals {
       type        = "AWS"
       identifiers = ["*"]
