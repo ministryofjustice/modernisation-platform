@@ -22,12 +22,12 @@ The core-network-services AWS account hosts resources used by other Modernisatio
 
 ## 1. Account Creation
 
-To initiate the account recreation process, go to the GitHub Actions page for the Modernisation Platform repository and trigger the new environment [workflow] (https://github.com/ministryofjustice/modernisation-platform/actions/runs/11239513388/workflow).
+To initiate the account recreation process, go to the GitHub Actions page for the Modernisation Platform repository and trigger the new environment [workflow] (https://github.com/ministryofjustice/modernisation-platform/actions/workflows/new-environment.yml).
 This workflow should detect that the account no longer exists and propose to recreate the account. As part of this process, it will also execute the baseline runs for the account.
 
 ## 2. Deploy Core Network Services Resources
 
-This can be achieved by triggering core-network-services deployment workflow run, which can be [found here](https://github.com/ministryofjustice/modernisation-platform/actions/runs/10073457872/workflow).
+This can be achieved by triggering core-network-services deployment workflow run, which can be [found here](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/core-network-services-deployment.yml).
 Alternatively, this can be done as manual deployment:
 
 - Navigate to the `modernisation-platform repo` and change to the `core-network-services` directory
