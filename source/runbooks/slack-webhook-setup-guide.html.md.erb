@@ -5,15 +5,6 @@ last_reviewed_on: 2025-08-29
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 This guide will walk you through the steps to update your environments.json file, set up a Slack webhook, and securely share the webhook URL with the Modernisation Platform team.
@@ -55,16 +46,14 @@ Replace "your-slack-channel-name" with the actual name of your Slack channel.
 If you do not already have a Slack webhook for the channel where you want to receive alerts, follow these steps:
 
 1. **Create an App in Slack**:
-    - Go to the Slack API page: [Slack API](https://api.slack.com/apps).
-    - Click on **"Create New App"** and select **"From Scratch"**.
-    
+   - Go to the Slack API page: [Slack API](https://api.slack.com/apps).
+   - Click on **"Create New App"** and select **"From Scratch"**.
 2. **Set Up Incoming Webhooks**:
-    - Choose **"Incoming Webhooks"** from the features list.
-    
+   - Choose **"Incoming Webhooks"** from the features list.
 3. **Create a Webhook for Your Channel**:
-    - Scroll down to **"Webhook URLs for Your Workspace"** and click **"Add New Webhook to Workspace"**.
-    - Select the Slack channel where you want to receive notifications and click **"Allow"**.
-    - Copy the generated webhook URL.
+   - Scroll down to **"Webhook URLs for Your Workspace"** and click **"Add New Webhook to Workspace"**.
+   - Select the Slack channel where you want to receive notifications and click **"Allow"**.
+   - Copy the generated webhook URL.
 
 ## Store the Slack Webhook as a Secret
 

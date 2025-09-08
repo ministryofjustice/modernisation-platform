@@ -5,15 +5,6 @@ last_reviewed_on: 2025-07-17
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Feature description
@@ -28,9 +19,9 @@ Every Sunday:
 An outline of the 'nuke' algorithm is as follows:
 
 - For every account in a dynamically generated list of all sandbox accounts:
-   - Assume the [`MemberInfrastructureAccess` role](https://github.com/ministryofjustice/modernisation-platform/blob/ab3eb5a6a8e6253afc9db794362034ba4ae1cd94/terraform/environments/bootstrap/member-bootstrap/iam.tf#L266) under the account ID
-   - Nuke the resources under the account ID
-   - (Optionally) Perform terraform apply in order to recreate all resources from terraform
+  - Assume the [`MemberInfrastructureAccess` role](https://github.com/ministryofjustice/modernisation-platform/blob/ab3eb5a6a8e6253afc9db794362034ba4ae1cd94/terraform/environments/bootstrap/member-bootstrap/iam.tf#L266) under the account ID
+  - Nuke the resources under the account ID
+  - (Optionally) Perform terraform apply in order to recreate all resources from terraform
 
 ## Configuration
 

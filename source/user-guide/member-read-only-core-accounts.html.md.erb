@@ -5,15 +5,6 @@ last_reviewed_on: 2025-06-16
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Overview
@@ -22,9 +13,9 @@ To view core account resources (that is resources created in a core account and 
 
 ## Switching Roles
 
-1) Log in (to your member account) the AWS Console using SSO. Click the drop down menu at the top right and choose `Switch Role`.
+1. Log in (to your member account) the AWS Console using SSO. Click the drop down menu at the top right and choose `Switch Role`.
 
-2) To view VPCs and lower level DNS resources (eg `hmpps-development.modernisation-platform.service.justice.gov.uk`) use the `member-delegation-read-only` role and use the account aliases for each Core VPC account:
+2. To view VPCs and lower level DNS resources (eg `hmpps-development.modernisation-platform.service.justice.gov.uk`) use the `member-delegation-read-only` role and use the account aliases for each Core VPC account:
 
 `core-vpc-development`
 `core-vpc-test`
@@ -33,13 +24,13 @@ To view core account resources (that is resources created in a core account and 
 
 ![Switch roles to view VPC resources](../images/vpc-role-switch.png)
 
-3) To view higher level DNS resources (eg. `modernisation-platform.service.justice.gov.uk`), or to view Network Firewall resources (eg. CloudWatch logs or Network Firewall policies) use the `read-log-records` role and use the account alias for the Core Network account:
+3. To view higher level DNS resources (eg. `modernisation-platform.service.justice.gov.uk`), or to view Network Firewall resources (eg. CloudWatch logs or Network Firewall policies) use the `read-log-records` role and use the account alias for the Core Network account:
 
 `core-network-services-production`
 
 ![Switch roles to view DNS resources](../images/read-log-records.png)
 
-4) To view Shared Services resources i.e AMIs created and shared, use the `member-shared-services` role and use the account alias for the Shared Services account:
+4. To view Shared Services resources i.e AMIs created and shared, use the `member-shared-services` role and use the account alias for the Shared Services account:
 
 `core-shared-services-production`
 

@@ -5,15 +5,6 @@ last_reviewed_on: 2025-07-23
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Overview
@@ -30,25 +21,24 @@ We maintain a template of the `environments-networks/*.json` files [here](https:
 
 The `cidr` key defines values used in the creation of networking resources:
 
-* `transit_gateway` has been deprecated as of [this pull request](https://github.com/ministryofjustice/modernisation-platform/pull/1345).
-* `protected` has likewise been deprecated as of [this pull request](https://github.com/ministryofjustice/modernisation-platform/pull/1345).
-* `subnet_sets` key contains its own nested keys to define additional networking values.
-  * Nested keys such as `general` provide further values that are consumed by the ["vpc"](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-vpc/vpc.tf#L85) module in `terraform/environments/core-vpc`.
-    * `cidr` defines the network address to be used to create a VPC. This network address is further subdivided to create subnets in the VPC
-    * `accounts` defines member account names associated with the relevant business unit.
+- `transit_gateway` has been deprecated as of [this pull request](https://github.com/ministryofjustice/modernisation-platform/pull/1345).
+- `protected` has likewise been deprecated as of [this pull request](https://github.com/ministryofjustice/modernisation-platform/pull/1345).
+- `subnet_sets` key contains its own nested keys to define additional networking values.
+  - Nested keys such as `general` provide further values that are consumed by the ["vpc"](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-vpc/vpc.tf#L85) module in `terraform/environments/core-vpc`.
+    - `cidr` defines the network address to be used to create a VPC. This network address is further subdivided to create subnets in the VPC
+    - `accounts` defines member account names associated with the relevant business unit.
 
 ## The `options` key
 
 The `options` key defines values used in the creation of supplementary configuration items:
 
-* `bastion_linux` is a boolean which determines if a business-unit bastion instance should be created
-* `additional_cidrs` is used by the [vpc-nacls](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/vpc-nacls) module to allow access from external CIDRs such as PSN address ranges.
-* `additional_endpoints` is used by the [vpc](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-vpc/vpc.tf#L85) module in `terraform/environments/core-vpc` to supply VPC endpoint names.
-* `additional_private_zones` is used by the [dns-zone-extend-private](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/dns-zone-extend-private) module to create additional private DNS zones.
+- `bastion_linux` is a boolean which determines if a business-unit bastion instance should be created
+- `additional_cidrs` is used by the [vpc-nacls](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/vpc-nacls) module to allow access from external CIDRs such as PSN address ranges.
+- `additional_endpoints` is used by the [vpc](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-vpc/vpc.tf#L85) module in `terraform/environments/core-vpc` to supply VPC endpoint names.
+- `additional_private_zones` is used by the [dns-zone-extend-private](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/dns-zone-extend-private) module to create additional private DNS zones.
 
 > In practice, `additional_private_zones` are created directly by customers, leveraging the `core-vpc` provider rather than defining them here.
 
-* `additional_vpcs` is used by the [vpc-nacls](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/vpc-nacls) module to allow access from internal CIDRs such as other Modernisation Platform address ranges.
+- `additional_vpcs` is used by the [vpc-nacls](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/vpc-nacls) module to allow access from internal CIDRs such as other Modernisation Platform address ranges.
 
 > In practice, the use of `additional_vpcs` is something we want to avoid as we want to restrict the possibility of east/west traffic movement inside the Modernisation Platform.
-

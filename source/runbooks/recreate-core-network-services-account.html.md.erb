@@ -5,39 +5,31 @@ last_reviewed_on: 2025-04-15
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Overview
 
 The core-network-services AWS account hosts resources used by other Modernisation Platform accounts. Its networking resources tie the platform together, and allow it to communicate.
 
-| Resource | Description |
-|----------------- |------------------------------------------------
-| Egress VPCs (with Network Firewalls & NAT gateways) | The Egress VPC is primarily used for egress traffic to the Internet and is composed of public/private subnets in up to three availability zones (AZs).
-| Inspection VPC (with Network Firewall) | Inspection VPCs are used to route and inspect network traffic for security, compliance, or performance purposes.
-| Transit Gateway (RAM shares, peering to MOJ TGW) | Used to connect multiple VPCs and AWS accounts.
-| Route53 zones and delegations | DNS zones managed by AWS.
-
+| Resource                                            | Description                                                                                                                                            |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Egress VPCs (with Network Firewalls & NAT gateways) | The Egress VPC is primarily used for egress traffic to the Internet and is composed of public/private subnets in up to three availability zones (AZs). |
+| Inspection VPC (with Network Firewall)              | Inspection VPCs are used to route and inspect network traffic for security, compliance, or performance purposes.                                       |
+| Transit Gateway (RAM shares, peering to MOJ TGW)    | Used to connect multiple VPCs and AWS accounts.                                                                                                        |
+| Route53 zones and delegations                       | DNS zones managed by AWS.                                                                                                                              |
 
 ## Steps
-## 1. Account Creation 
 
-To initiate the account recreation process, go to the GitHub Actions page for the Modernisation Platform repository and trigger the new environment [workflow] (https://github.com/ministryofjustice/modernisation-platform/actions/runs/11239513388/workflow).
-This workflow should detect that the account no longer exists and propose to recreate the account. As part of this process, it will also execute the baseline runs for the account. 
+## 1. Account Creation
+
+To initiate the account recreation process, go to the GitHub Actions page for the Modernisation Platform repository and trigger the new environment [workflow] (https://github.com/ministryofjustice/modernisation-platform/actions/workflows/new-environment.yml).
+This workflow should detect that the account no longer exists and propose to recreate the account. As part of this process, it will also execute the baseline runs for the account.
 
 ## 2. Deploy Core Network Services Resources
 
-This can be achieved by triggering core-network-services deployment workflow run, which can be [found here](https://github.com/ministryofjustice/modernisation-platform/actions/runs/10073457872/workflow).
-Alternatively, this can be done as manual deployment: 
+This can be achieved by triggering core-network-services deployment workflow run, which can be [found here](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/core-network-services-deployment.yml).
+Alternatively, this can be done as manual deployment:
+
 - Navigate to the `modernisation-platform repo` and change to the `core-network-services` directory
 - Run `terraform plan` in the production workspace
 - Using admin credentials, execute `terraform apply`
@@ -50,21 +42,20 @@ As the core network services account holds the networking for the platform toget
 
 The Egress VPC is primarily used for egress traffic to the Internet and is composed of public/private subnets in up to three availability zones (AZs).
 
-  1. Go to VPC -> Endpoints, you should expect `live_data`, `non_live_data` and `external_inspection`.
-  2. NAT gateways, there should be multiple listed including `live_data-public-eu-west` and `non_live_data-public` all regions.
+1. Go to VPC -> Endpoints, you should expect `live_data`, `non_live_data` and `external_inspection`.
+2. NAT gateways, there should be multiple listed including `live_data-public-eu-west` and `non_live_data-public` all regions.
 
 ### Inspection VPC (with Network Firewall)
 
-  1. Connect to `core-network-services`.
-  2. Click on VPC -> Firewalls.
-  3. Check 3 firewalls exist. 
+1. Connect to `core-network-services`.
+2. Click on VPC -> Firewalls.
+3. Check 3 firewalls exist.
 
 ### Transit Gateway (RAM shares, peering to MOJ TGW)
 
 1. Connect to `core-network-services`.
 2. Got to VPC->Transit gateway->Transit gateway attachments.
-3. Check that all exists, you will see names like `platforms-preproduction-attachment`. 
-
+3. Check that all exists, you will see names like `platforms-preproduction-attachment`.
 
 ### Route53 zones and delegations
 
@@ -78,18 +69,17 @@ You will require OPS Engineering to help create these, the steps can be followed
 
 The baselines job may need to be run multiple times and errors troubleshooted. To manually run baselines, click [here.](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/scheduled-baseline.yml)
 
-Run core vpc * workflows will need to be run, they are located located [here.](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/core-vpc-development-deployment.yml)
+Run core vpc \* workflows will need to be run, they are located located [here.](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/core-vpc-development-deployment.yml)
 
 This account has never been rebuilt, although these steps should outline what is required, some parts may have been overlooked.
 
 ## 5. Notify customers
+
 - Inform our members that the account has been recreated
 - Liaise with owning teams to validate any rebuilds
 
 ## References
 
-* [Accessing the AWS Console](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/accessing-the-aws-console.html)
-* [Disaster Recovery Process](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/dr-process.html)
-* [Networking Diagram](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/networking/networking-diagram.html)
-
-
+- [Accessing the AWS Console](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/accessing-the-aws-console.html)
+- [Disaster Recovery Process](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/dr-process.html)
+- [Networking Diagram](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/networking/networking-diagram.html)

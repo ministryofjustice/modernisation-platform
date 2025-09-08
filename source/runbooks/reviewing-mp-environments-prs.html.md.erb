@@ -5,20 +5,11 @@ last_reviewed_on: 2025-06-05
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Introduction
 
-The [Modernisation Platform Environments](https://github.com/ministryofjustice/modernisation-platform-environments) repository contains user application infrastructure as code and deployment workflows. This allows users of the Modernisation Platform to manage their own infrastructure and deployments into their various environments. 
+The [Modernisation Platform Environments](https://github.com/ministryofjustice/modernisation-platform-environments) repository contains user application infrastructure as code and deployment workflows. This allows users of the Modernisation Platform to manage their own infrastructure and deployments into their various environments.
 
 ## Notes on reviewing
 
@@ -32,11 +23,11 @@ In certain cases the MP team need to review infrastructure changes being made to
 
 ## Process for approving PRs
 
-To approve these PRs at least 1 member of the `@ministryofjustice/modernisation-platform` Github team will need to add an approving review. 
+To approve these PRs at least 1 member of the `@ministryofjustice/modernisation-platform` Github team will need to add an approving review.
 
-**Additionally**, in the case of changes which are highlighted by the [`terraform-plan-evaluator.sh`](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/scripts/terraform-plan-evaluator.sh) shell script,  a comment will be left on the PR as follows: 
+**Additionally**, in the case of changes which are highlighted by the [`terraform-plan-evaluator.sh`](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/scripts/terraform-plan-evaluator.sh) shell script, a comment will be left on the PR as follows:
 
->_Terraform plan evaluation detected changes to resources that require approval from @ministryofjustice/modernsation-platform - please contact #ask-modernisation-platform for assistance_
+> _Terraform plan evaluation detected changes to resources that require approval from @ministryofjustice/modernsation-platform - please contact #ask-modernisation-platform for assistance_
 
 This will also add a "Requested Changes" review from the `modernisation-platform-ci` user. A member of the `@ministryofjustice/modernisation-platform` Github team will need to dismiss this review in order for the deployment to be merged/applied successfully.
 

@@ -5,15 +5,6 @@ last_reviewed_on: 2025-04-14
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 The purpose of this section of the guide is to clarify what the Modernisation Platform offers in terms of disaster recovery, the processes to initiate different types of recovery, and roles and responsibilities of the Modernisation Platform and Service Teams.
@@ -22,33 +13,33 @@ The purpose of this section of the guide is to clarify what the Modernisation Pl
 
 Modernisation Platform is provided to Service Teams as a managed service. To ensure business continuity, Modernisation Platform has a disaster recovery plan that facilitates quick recovery. Recovery plans have been tested and documented in the [runbooks](../index.html#runbooks) for the following scenarios:
 
-* Complete loss of the platform
-* Loss of an AWS account
-* Loss of networking
+- Complete loss of the platform
+- Loss of an AWS account
+- Loss of networking
 
 Other failures which will not affect the availability of an application, but will impact a team's ability to deploy:
 
-* Loss of Terraform state
-* Loss of access
-* Loss of Github Actions
-* Loss of Github
+- Loss of Terraform state
+- Loss of access
+- Loss of Github Actions
+- Loss of Github
 
 In the case of all of the above the Modernisation Platform Team is responsible for recovery or raising incidents
 
-*However, in the event of the loss of the platform or AWS account we may require Service Teams to redeploy their services. This includes redeploying applications, restoring from backups, and any further manual steps required.*
+_However, in the event of the loss of the platform or AWS account we may require Service Teams to redeploy their services. This includes redeploying applications, restoring from backups, and any further manual steps required._
 
 The Modernisation Platform Team is continually reviewing and identifying risks to our users and the platform. As each threat is identified we are testing and creating recovery plans.
 
 ## What isn't covered by the Modernisation Platform?
 
-* Loss or fault of infrastructure created in the member account that is not provided by the Modernisation Platform (anything other than the account baselines and SSO)
-* Restoration of member infrastructure backups.
-* Non production backups, or backups outside of the Modernisation Platform [backup coverage](../concepts/environments/backups.html).
-* Redeployment of applications - The Modernisation Platform doesn't manage member application deployment pipelines. If there is a need to deploy a service as part of any restoration you will be asked to do so by the Modernisation Platform Team.
-* Only retain AWS RDS Snapshots for as long as they are required. Please clean-up any snapshots regularly.
-* 3rd party managed services (e.g. Github, CircleCI, Sentry.io) - These 3rd party managed services will offer some form of back-up and recovery as part of their managed service, however these processes are out of the scope of recovery by the Modernisation Platform. If you need more information please contact [#ask-operations-engineering](https://mojdt.slack.com/archives/C01BUKJSZD4).
-* Ensure your `owner` tag is kept up to date so that the Modernisation Platform Team knows how best to contact your team.
-* Ensure your team is added to the [#modernisation-platform-update](https://mojdt.slack.com/archives/C02L5MCJ12N) slack channel so that you can ensure you receive important messages from the Modernisation Platform Team.
+- Loss or fault of infrastructure created in the member account that is not provided by the Modernisation Platform (anything other than the account baselines and SSO)
+- Restoration of member infrastructure backups.
+- Non production backups, or backups outside of the Modernisation Platform [backup coverage](../concepts/environments/backups.html).
+- Redeployment of applications - The Modernisation Platform doesn't manage member application deployment pipelines. If there is a need to deploy a service as part of any restoration you will be asked to do so by the Modernisation Platform Team.
+- Only retain AWS RDS Snapshots for as long as they are required. Please clean-up any snapshots regularly.
+- 3rd party managed services (e.g. Github, CircleCI, Sentry.io) - These 3rd party managed services will offer some form of back-up and recovery as part of their managed service, however these processes are out of the scope of recovery by the Modernisation Platform. If you need more information please contact [#ask-operations-engineering](https://mojdt.slack.com/archives/C01BUKJSZD4).
+- Ensure your `owner` tag is kept up to date so that the Modernisation Platform Team knows how best to contact your team.
+- Ensure your team is added to the [#modernisation-platform-update](https://mojdt.slack.com/archives/C02L5MCJ12N) slack channel so that you can ensure you receive important messages from the Modernisation Platform Team.
 
 ## Backups and restores
 

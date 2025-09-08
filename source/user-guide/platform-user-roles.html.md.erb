@@ -5,15 +5,6 @@ last_reviewed_on: 2025-07-31
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 The Modernisation Platform offers a selection of user roles to suit different use cases.
@@ -26,7 +17,6 @@ These are [defined in code](https://github.com/ministryofjustice/modernisation-p
 
 - Log into the console
 - See resources and basic metadata. You cannot see the content of resources such as logs or S3 buckets.
-
 
 ### read-only
 
@@ -139,7 +129,7 @@ Created for users who need to manage S3 buckets
 - If the S3 bucket is located in a different AWS account, you will not see it directly in your console. Instead, use the following URL format to access the bucket:
 
   https://eu-west-2.console.aws.amazon.com/s3/buckets/my-test-bucket?region=eu-west-2&bucketType=general&tab=objects
-  
+
   Replace `my-test-bucket` with the actual name of the bucket you wish to access.
 
 ## platform-engineer-admin
@@ -197,4 +187,3 @@ For example, this snippet shows the addition of the `example-role` to `another-e
 
 New roles can be requested through [raising an issue](https://github.com/ministryofjustice/modernisation-platform/issues/new/choose) on GitHub, although we recommend you discuss your use case with us on Slack
 via the [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) channel.
-

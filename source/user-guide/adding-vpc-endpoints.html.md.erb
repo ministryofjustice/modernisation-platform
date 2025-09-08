@@ -5,15 +5,6 @@ last_reviewed_on: 2025-07-23
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Overview
@@ -33,7 +24,7 @@ Modernisation Platform `core-vpc-*` accounts contain per-business-unit VPCs whic
 "com.amazonaws.eu-west-2.ssmmessages",
 ```
 
-No action is required to make use of these. 
+No action is required to make use of these.
 
 ## Adding supplementary AWS VPC Endpoints
 
@@ -41,7 +32,7 @@ Additional VPC endpoints should be defined in the relevant `$business_unit-$envi
 You can raise a pull request similar to [this example](https://github.com/ministryofjustice/modernisation-platform/pull/7408) for any additions you require.
 
 ```
-{  
+{
   ...
   "options": {
     ...

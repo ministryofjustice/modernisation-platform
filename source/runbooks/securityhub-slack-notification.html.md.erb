@@ -5,20 +5,11 @@ last_reviewed_on: 2025-07-09
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ## Introduction
 
-Each AWS account under the Modernisation Platform (MP) Organizational Unit (OU) has Security Hub enabled, and all findings are centralised into the **eu-west-2** region.  
+Each AWS account under the Modernisation Platform (MP) Organizational Unit (OU) has Security Hub enabled, and all findings are centralised into the **eu-west-2** region.
 
 To receive the Security Hub severity summary in Slack, you need to:
 
@@ -31,8 +22,8 @@ To receive the Security Hub severity summary in Slack, you need to:
 
 In the `<application>.json` file, add or update the `securityhub-slack-channel` tag under `tags`
 
-You can find your `<application>.json` file in the 
-[**modernisation-platform** repository](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments) 
+You can find your `<application>.json` file in the
+[**modernisation-platform** repository](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments)
 under the `environments/` folder.
 
 #### Example
@@ -67,7 +58,7 @@ Slack channel <slack channel name> webhook added/updated in secret
 
 A scheduled GitHub Actions job runs **daily** to send a summary of **Security Hub severity findings** to the Slack channel you specified in the tag.
 
-The summary includes counts of findings by severity (e.g., Critical, High, Medium, Low) of the particular account 
+The summary includes counts of findings by severity (e.g., Critical, High, Medium, Low) of the particular account
 
 You can see an [example of the summary results here](https://moj.enterprise.slack.com/archives/C07SNBJBVC6).
 

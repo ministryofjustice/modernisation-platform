@@ -5,15 +5,6 @@ last_reviewed_on: 2025-06-24
 review_in: 6 months
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXTCMQ7ZX6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXTCMQ7ZX6');
-</script>
-
 # <%= current_page.data.title %>
 
 ### Introduction
@@ -41,7 +32,6 @@ Configure your alarms to notify your SNS topic created in step 1.
 1. Add the `pagerduty_service_integration` integration key [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/pagerduty/aws.tf#L14)
 
 1. Raise a PR for approval by the Modernisation Platform terraform.
-
 
 ### 4. Link your SNS topic to your PagerDuty services
 
