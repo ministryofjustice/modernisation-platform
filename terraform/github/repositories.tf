@@ -519,3 +519,15 @@ module "modernisation-platform-terraform-aws-data-firehose" {
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
+
+module "modernisation-platform-network-test" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-cp-network-test"
+  type        = "core"
+  description = "Repo to test hosting example app in Cloud Platform to test connectivity between Cloud Platform and Modernisation Platform"
+  topics = [
+    "cp",
+    "mp",
+    "testing"
+  ]
+}
