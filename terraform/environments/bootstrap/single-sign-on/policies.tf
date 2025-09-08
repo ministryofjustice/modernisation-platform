@@ -639,6 +639,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "oam:*",
       "organizations:DescribeOrganization",
       "quicksight:*",
+      "ram:*",
       "rds-data:*",
       "rds-db:*",
       "rds:*",
