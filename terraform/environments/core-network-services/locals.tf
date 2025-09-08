@@ -36,6 +36,7 @@ locals {
     "core-network-services-live_data-attachment",
   ]
 
+  sandbox_rules         = fileexists("./firewall-rules/sandbox_rules.json") ? { for k in sort(keys(jsondecode(templatefile("./firewall-rules/sandbox_rules.json", local.all_cidr_ranges)))) : k => jsondecode(templatefile("./firewall-rules/sandbox_rules.json", local.all_cidr_ranges))[k] } : {}
   development_rules     = fileexists("./firewall-rules/development_rules.json") ? { for k in sort(keys(jsondecode(templatefile("./firewall-rules/development_rules.json", local.all_cidr_ranges)))) : k => jsondecode(templatefile("./firewall-rules/development_rules.json", local.all_cidr_ranges))[k] } : {}
   test_rules            = fileexists("./firewall-rules/test_rules.json") ? { for k in sort(keys(jsondecode(templatefile("./firewall-rules/test_rules.json", local.all_cidr_ranges)))) : k => jsondecode(templatefile("./firewall-rules/test_rules.json", local.all_cidr_ranges))[k] } : {}
   preproduction_rules   = fileexists("./firewall-rules/preproduction_rules.json") ? { for k in sort(keys(jsondecode(templatefile("./firewall-rules/preproduction_rules.json", local.all_cidr_ranges)))) : k => jsondecode(templatefile("./firewall-rules/preproduction_rules.json", local.all_cidr_ranges))[k] } : {}
@@ -47,6 +48,7 @@ locals {
 
 
   firewall_rules = merge(
+    local.sandbox_rules,
     local.development_rules,
     local.test_rules,
     local.preproduction_rules,
