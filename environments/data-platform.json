@@ -1,57 +1,48 @@
 {
   "account-type": "member",
-  "codeowners": ["data-platform-apps-and-tools", "data-platform-labs"],
+  "codeowners": ["data-platform-engineering"],
   "environments": [
     {
       "name": "development",
       "access": [
         {
-          "sso_group_name": "data-platform-development-sandbox",
-          "level": "sandbox"
-        },
-        {
-          "sso_group_name": "data-platform-audit-and-security",
-          "level": "security-audit"
+          "sso_group_name": "data-platform-engineering",
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
         }
       ],
+      "instance_scheduler_skip": ["true"],
       "nuke": "exclude"
     },
     {
       "name": "test",
       "access": [
         {
-          "sso_group_name": "data-platform-test-developer",
-          "level": "developer"
-        },
-        {
-          "sso_group_name": "data-platform-audit-and-security",
-          "level": "security-audit"
+          "sso_group_name": "data-platform-engineering",
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
         }
-      ]
+      ],
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "preproduction",
       "access": [
         {
-          "sso_group_name": "data-platform-preproduction-developer",
-          "level": "developer"
-        },
-        {
-          "sso_group_name": "data-platform-audit-and-security",
-          "level": "security-audit"
+          "sso_group_name": "data-platform-engineering",
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
         }
-      ]
+      ],
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "production",
       "access": [
         {
-          "sso_group_name": "data-platform-production-developer",
-          "level": "developer"
-        },
-        {
-          "sso_group_name": "data-platform-audit-and-security",
-          "level": "security-audit"
+          "sso_group_name": "data-platform-engineering",
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
         }
       ]
     }
