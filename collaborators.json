@@ -707,6 +707,10 @@
         {
           "account-name": "delius-core-preproduction",
           "access": "developer"
+        },
+        {
+          "account-name": "delius-mis-development",
+          "access": "developer"
         }
       ]
     },
