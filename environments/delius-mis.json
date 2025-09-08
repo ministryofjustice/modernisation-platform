@@ -1,6 +1,9 @@
 {
   "account-type": "member",
-  "codeowners": ["hmpps-migration", "hosting-migrations"],
+  "codeowners": [
+    "hmpps-migration",
+    "hosting-migrations"
+  ],
   "environments": [
     {
       "name": "development",
@@ -23,6 +26,10 @@
         {
           "sso_group_name": "hmpps-delius-mis",
           "level": "fleet-manager"
+        },
+        {
+          "sso_group_name": "national-applications-reporting-team",
+          "level": "developer"
         }
       ],
       "nuke": "exclude"
@@ -47,6 +54,10 @@
         {
           "sso_group_name": "hmpps-delius-mis",
           "level": "fleet-manager"
+        },
+        {
+          "sso_group_name": "national-applications-reporting-team",
+          "level": "developer"
         }
       ]
     },
@@ -70,6 +81,10 @@
         {
           "sso_group_name": "hmpps-delius-mis",
           "level": "fleet-manager"
+        },
+        {
+          "sso_group_name": "national-applications-reporting-team",
+          "level": "developer"
         }
       ]
     }
