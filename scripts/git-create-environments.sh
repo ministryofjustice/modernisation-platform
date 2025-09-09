@@ -65,7 +65,7 @@ check_if_change_to_application_json() {
     | uniq)
 
   echo "Changed json files=$changed_envs"
-  application_name=$(echo $1 | sed 's/-[^-]*$//')
+  application_name=$1
   echo "Application name: $application_name"
 
   if [[ $changed_envs =~ (^|[[:space:]])$application_name($|[[:space:]]) ]]; then
