@@ -280,7 +280,6 @@ expected :=
           "ccms-ebs-upgrade-development",
           "ccms-edrms-development",
           "contract-work-administration-development",
-          "laa-ccms-infra-azure-ad-sso",
           "laa-ccms-soa-development",
           "laa-enterprise-service-bus-development",
           "laa-mail-relay-development",
