@@ -221,7 +221,7 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
     sid       = "AllowCloudTrailPutObjectWithinOrg"
     effect    = "Allow"
     actions   = ["s3:PutObject"]
-    resources = ["${module.s3-bucket-cloudtrail.bucket.arn}/*"]
+    resources = ["${module.s3-bucket-cloudtrail.bucket.arn}/*", module.s3-bucket-cloudtrail.bucket.arn]
     principals {
       type        = "Service"
       identifiers = ["cloudtrail.amazonaws.com"]
