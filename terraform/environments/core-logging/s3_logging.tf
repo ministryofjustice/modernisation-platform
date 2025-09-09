@@ -216,11 +216,12 @@ module "s3-bucket-cloudtrail" {
 }
 
 data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
+  # ✅ Restrict delivery of cloudtrail logs to within the org only
   statement {
-    sid       = "AllowCloudTrailPutObjectAndGetBucketACLWithinOrg"
+    sid       = "AllowCloudTrailPutObjectWithinOrg"
     effect    = "Allow"
-    actions   = ["s3:PutObject", "s3:GetBucketAcl"]
-    resources = ["${module.s3-bucket-cloudtrail.bucket.arn}/*", module.s3-bucket-cloudtrail.bucket.arn]
+    actions   = ["s3:PutObject"]
+    resources = ["${module.s3-bucket-cloudtrail.bucket.arn}/*"]
     principals {
       type        = "Service"
       identifiers = ["cloudtrail.amazonaws.com"]
@@ -229,6 +230,17 @@ data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
       test     = "StringEquals"
       variable = "aws:SourceOrgID"
       values   = [data.aws_organizations_organization.moj_root_account.id]
+    }
+  }
+  # ✅ Allow GetBucketAcl without condition (for CloudTrail health checks/setup)
+  statement {
+    sid       = "AllowCloudTrailGetBucketAcl"
+    effect    = "Allow"
+    actions   = ["s3:GetBucketAcl"]
+    resources = [module.s3-bucket-cloudtrail.bucket.arn]
+    principals {
+      type        = "Service"
+      identifiers = ["cloudtrail.amazonaws.com"]
     }
   }
 }
