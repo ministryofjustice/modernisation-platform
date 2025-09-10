@@ -172,6 +172,11 @@ body:
       https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use
 
       The is-production tag will be inferred from the environment and is not needed here
+- type: markdown
+  attributes:
+    value: |
+      ## AWS Resource Tags
+      Please provide the following tags. These will be used to tag your AWS resources and help with identification, cost allocation, and support. For more details, see [MoJ Tagging Guidance](https://ministryofjustice.github.io/technical-guidance/documentation/standards/documenting-infrastructure-owners.html#tags-you-should-use).
 - type: input
   id: tag1
   attributes:
@@ -208,14 +213,14 @@ body:
     value: |
       ## Networking options
       If your application requires supplementary AWS VPC Endpoints please see our guidance [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/adding-vpc-endpoints.)
-- type: checkboxes
+- type: dropdown
   id: subnet-sets
   attributes:
-    label: Subnet sets
-    description: Please choose one of the below, most applications will use the general subnet set for their business unit. This means that they will benefit from out of the box connectivity to other applications, most applications will use the general subnet.  If an application has highly sensitive data it may need to go into a subnet with limited connectivity.
+    label: Do you require isolated networking?
+    description: Do you require isolated networking? Please choose one of the below, most applications will use the general subnet set for their business unit. This means that they will benefit from out of the box connectivity to other applications, most applications will use the general subnet.  If an application has highly sensitive data it may need to go into a subnet with limited connectivity.
     options:
-    - label: General
-    - label: Isolated
+      - 'No'
+      - 'Yes'
   validations:
     required: true
 - type: dropdown

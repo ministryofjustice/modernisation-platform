@@ -27,6 +27,7 @@ jobs:
         run: |
           EXISTING_ACCOUNT=$(awk -v key="### Is this an existing AWS account?" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
           APP_NAME=$(awk -v key="### Application Name" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          APP_TAGS=$(awk -v key="### Application" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
           BUSINESS_UNIT=$(awk -v key="### business-unit" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
           INFRA_SUPPORT=$(awk -v key="### infrastructure-support" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
           OWNER=$(awk -v key="### owner" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
@@ -103,6 +104,7 @@ jobs:
           ls -l scripts
           python scripts/create-account.py \
             "$APP_NAME" \
+            "$APP_TAGS" \
             "$BUSINESS_UNIT" \
             "$INFRA_SUPPORT" \
             "$OWNER" \
@@ -167,3 +169,11 @@ jobs:
           PR_URL=$(gh pr view env-request/${{ github.run_id }} --json url -q .url)
           REPO="${{ github.repository }}"
           gh issue comment $ISSUE_NUMBER --repo "$REPO" --body "A pull request has been created for your environment request: $PR_URL"
+      
+      - name: Save network setup info
+        run: |
+          echo "{\"pr_number\": ${{ github.event.pull_request.number }}, \"app_name\": \"$APP_NAME\", \"business_unit\": \"$BUSINESS_UNIT\", \"environments\": $(echo $ENV_SELECTIONS_JSON | jq -c 'map(.name)')}" > network-setup-info.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: network-setup-info
+          path: network-setup-info.json
