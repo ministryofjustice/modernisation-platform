@@ -49,10 +49,9 @@ def application_exists(app_name):
                     continue
     return False
 
-def create_env_json(app_name, business_unit, infra_support, owner, slack_channel, cni, sso_group, go_live_date, env_selections):
+def create_env_json(app_name, app_tag, business_unit, infra_support, owner, slack_channel, cni, sso_group, go_live_date, env_selections):
     environments = []
     for env in env_selections:
-        # Split access levels by comma and strip whitespace
         access_levels = [level.strip() for level in env["access_level"].split(",") if level.strip()]
         access = [
             {
@@ -69,7 +68,7 @@ def create_env_json(app_name, business_unit, infra_support, owner, slack_channel
         "account-type": "member",
         "environments": environments,
         "tags": {
-            "application": app_name,
+            "application": app_tag,
             "business-unit": business_unit,
             "infrastructure-support": infra_support,
             "owner": owner,
@@ -86,7 +85,7 @@ if __name__ == "__main__":
     if len(sys.argv) < 10:
         print("Usage: python create-account.py <app_name> <business_unit> <infra_support> <owner> <slack_channel> <cni> <sso_group> <go_live_date> <env_selections_json>")
         sys.exit(1)
-    app_name, business_unit, infra_support, owner, slack_channel, cni, sso_group, go_live_date, env_selections_json = sys.argv[1:10]
+    app_name, app_tag, business_unit, infra_support, owner, slack_channel, cni, sso_group, go_live_date, env_selections_json = sys.argv[1:10]
     cni = cni.lower() == "true"
     env_selections = json.loads(env_selections_json)
     if application_exists(app_name):
@@ -95,6 +94,7 @@ if __name__ == "__main__":
     else:
         create_env_json(
             app_name=app_name,
+            app_tag=app_tag,
             business_unit=business_unit,
             infra_support=infra_support,
             owner=owner,

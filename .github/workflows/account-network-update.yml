@@ -1,0 +1,61 @@
+name: Account Network Update
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  network-setup:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Download network setup artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: network-setup-info
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Check PR number matches artifact
+        id: prcheck
+        run: |
+          ARTIFACT_PR=$(jq -r '.pr_number' network-setup-info.json)
+          if [ "$ARTIFACT_PR" != "${{ github.event.pull_request.number }}" ]; then
+            echo "This workflow is not for this PR. Exiting."
+            exit 1
+          fi
+
+      - name: Run network-setup.py
+        if: env.EXISTING_ACCOUNT == 'No'
+        run: |
+          python scripts/network-setup.py \
+            $(jq -r '.app_name' network-setup-info.json) \
+            $(jq -r '.business_unit' network-setup-info.json) \
+            $(jq -r '.environments[]' network-setup-info.json)
+
+      - name: Commit and push network changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b network-update/${{ github.run_id }}
+          git add environments-networks/ policies/networking/expected.rego
+          git commit -m "Automated network update for ${{ github.event.pull_request.title }}"
+          git push --set-upstream origin network-update/${{ github.run_id }}
+          gh pr create --base main --head network-update/${{ github.run_id }} \
+            --title "Automated network update for ${{ github.event.pull_request.title }}" \
+            --body "This PR was created automatically after the environment request PR was merged."
