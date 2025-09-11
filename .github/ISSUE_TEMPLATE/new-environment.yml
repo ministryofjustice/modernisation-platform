@@ -1,11 +1,21 @@
 name: New Modernisation Platform Environment
 description: Request a new Modernisation Platform Environment
-labels: [ "onboarding", "member request", "kanban" ]
+labels: [ "onboarding", "member request", "kanban", "New Account" ]
 body:
 - type: markdown
   attributes:
     value: |
       Please complete the following details and submit the new issue.
+- type: dropdown
+  id: existing-account
+  attributes:
+    label: Is this an existing AWS account?
+    description: Select 'Yes' if this request is for an account that already exists in AWS, otherwise select 'No' to request a new account.
+    options:
+      - 'No'
+      - 'Yes'
+  validations:
+    required: true
 - type: textarea
   id: environment-details
   attributes:
@@ -65,6 +75,10 @@ body:
     - label: Production
   validations:
     required: true
+- type: markdown
+  attributes:
+    value: |
+      For a detailed explanation of platform user roles and what each access level means, please see [Platform User Roles documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/platform-user-roles.html#platform-user-roles).
 - type: dropdown
   id: environment-access-dev
   attributes:
@@ -75,6 +89,16 @@ body:
     - view-only
     - developer
     - sandbox
+    - migration
+    - instance-management
+    - instance-access
+    - security-audit
+    - reporting-operations
+    - data-engineering
+    - fleet-manager
+    - s3-upload
+    - ssm-session-access
+    - data-scientist
   validations:
     required: false
 - type: dropdown
@@ -86,7 +110,16 @@ body:
     options:
     - view-only
     - developer
-    - sandbox
+    - migration
+    - instance-management
+    - instance-access
+    - security-audit
+    - reporting-operations
+    - data-engineering
+    - fleet-manager
+    - s3-upload
+    - ssm-session-access
+    - data-scientist
   validations:
     required: false
 - type: dropdown
@@ -98,7 +131,16 @@ body:
     options:
     - view-only
     - developer
-    - sandbox
+    - migration
+    - instance-management
+    - instance-access
+    - security-audit
+    - reporting-operations
+    - data-engineering
+    - fleet-manager
+    - s3-upload
+    - ssm-session-access
+    - data-scientist
   validations:
     required: false
 - type: dropdown
@@ -110,7 +152,16 @@ body:
     options:
     - view-only
     - developer
-    - sandbox
+    - migration
+    - instance-management
+    - instance-access
+    - security-audit
+    - reporting-operations
+    - data-engineering
+    - fleet-manager
+    - s3-upload
+    - ssm-session-access
+    - data-scientist
   validations:
     required: false
 - type: markdown
