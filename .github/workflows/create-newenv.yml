@@ -9,7 +9,7 @@ jobs:
     if: contains(github.event.issue.labels.*.name, 'New Account')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
 
@@ -177,3 +177,4 @@ jobs:
         with:
           name: network-setup-info
           path: network-setup-info.json
+

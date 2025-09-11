@@ -216,47 +216,33 @@ module "s3-bucket-cloudtrail" {
 }
 
 data "aws_iam_policy_document" "cloudtrail_bucket_policy" {
+  # ✅ Restrict delivery of cloudtrail logs to within the org only
   statement {
-    sid     = "AWSCloudTrailAclAndLocationCheck"
-    effect  = "Allow"
-    actions = ["s3:GetBucketAcl", "s3:GetBucketLocation"]
-    resources = [
-      module.s3-bucket-cloudtrail.bucket.arn
-    ]
+    sid       = "AllowCloudTrailPutObjectWithinOrg"
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
+    resources = ["${module.s3-bucket-cloudtrail.bucket.arn}/*", module.s3-bucket-cloudtrail.bucket.arn]
     principals {
       type        = "Service"
       identifiers = ["cloudtrail.amazonaws.com"]
     }
     condition {
       test     = "StringEquals"
-      variable = "aws:PrincipalOrgID"
+      variable = "aws:SourceOrgID"
       values   = [data.aws_organizations_organization.moj_root_account.id]
     }
   }
-
+  # ✅ Allow GetBucketAcl without condition (for CloudTrail health checks/setup)
   statement {
-    sid     = "AWSCloudTrailWrite"
-    effect  = "Allow"
-    actions = ["s3:PutObject"]
-    resources = [
-      "${module.s3-bucket-cloudtrail.bucket.arn}/*"
-    ]
+    sid       = "AllowCloudTrailGetBucketAcl"
+    effect    = "Allow"
+    actions   = ["s3:GetBucketAcl"]
+    resources = [module.s3-bucket-cloudtrail.bucket.arn]
     principals {
       type        = "Service"
       identifiers = ["cloudtrail.amazonaws.com"]
     }
-    condition {
-      test     = "StringEquals"
-      variable = "s3:x-amz-acl"
-      values   = ["bucket-owner-full-control"]
-    }
-    condition {
-      test     = "StringEquals"
-      variable = "aws:PrincipalOrgID"
-      values   = [data.aws_organizations_organization.moj_root_account.id]
-    }
   }
-
 }
 
 module "s3-bucket-cloudtrail-logging" {

@@ -707,6 +707,10 @@
         {
           "account-name": "delius-core-preproduction",
           "access": "developer"
+        },
+        {
+          "account-name": "delius-mis-development",
+          "access": "developer"
         }
       ]
     },
@@ -1270,7 +1274,7 @@
     },
     {
       "username": "vasil.dimitrov",
-      "github-username": "no-value-supplied",
+      "github-username": "VasilDimitrov22",
       "accounts": [
         {
           "account-name": "youth-justice-app-framework-development",
