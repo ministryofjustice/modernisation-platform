@@ -208,16 +208,14 @@ body:
     value: |
       ## Networking options
       If your application requires supplementary AWS VPC Endpoints please see our guidance [here](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/adding-vpc-endpoints.)
-- type: checkboxes
+- type: dropdown
   id: subnet-sets
   attributes:
-    label: Subnet sets
-    description: Please choose one of the below, most applications will use the general subnet set for their business unit. This means that they will benefit from out of the box connectivity to other applications, most applications will use the general subnet.  If an application has highly sensitive data it may need to go into a subnet with limited connectivity.
+    label: Do you require isolated networking?
+    description: Do you require isolated networking? Please choose one of the below, most applications will use the general subnet set for their business unit. This means that they will benefit from out of the box connectivity to other applications, most applications will use the general subnet.  If an application has highly sensitive data it may need to go into a subnet with limited connectivity.
     options:
-    - label: General
-    - label: Isolated
-  validations:
-    required: true
+      - 'No'
+      - 'Yes'
 - type: dropdown
   id: app-connect
   attributes:
