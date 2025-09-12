@@ -5,6 +5,7 @@ import rego.v1
 expected :=
 {
   "accounts": [
+    
     "analytical-platform",
     "analytical-platform-common",
     "analytical-platform-compute",
@@ -48,6 +49,7 @@ expected :=
     "electronic-monitoring-data",
     "equip",
     "example",
+    "fred",
     "genesys-call-centre-data",
     "hmpps-domain-services",
     "hmpps-esupervision",
@@ -62,8 +64,8 @@ expected :=
     "maat",
     "maatdb",
     "mlra",
-    "mojfin",
     "moj-network-operations-centre",
+    "mojfin",
     "ncas",
     "nomis",
     "nomis-combined-reporting",
@@ -91,5 +93,6 @@ expected :=
     "xhibit-portal",
     "youth-justice-app-framework",
     "youth-justice-networking"
+
     ]
 }
