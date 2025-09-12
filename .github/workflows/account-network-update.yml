@@ -39,7 +39,7 @@ jobs:
           fi
 
       - name: Run network-setup.py
-        if: env.EXISTING_ACCOUNT == 'No'
+        if: env.ISOLATED_ACCOUNT== 'No'
         run: |
           python scripts/network-setup.py \
             $(jq -r '.app_name' network-setup-info.json) \
@@ -47,6 +47,7 @@ jobs:
             $(jq -r '.environments[]' network-setup-info.json)
 
       - name: Commit and push network changes
+        if: env.ISOLATED_ACCOUNT== 'No'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
