@@ -85,7 +85,7 @@ if __name__ == "__main__":
     if len(sys.argv) < 10:
         print("Usage: python create-account.py <app_name> <business_unit> <infra_support> <owner> <slack_channel> <cni> <sso_group> <go_live_date> <env_selections_json>")
         sys.exit(1)
-    app_name, app_tag, business_unit, infra_support, owner, slack_channel, cni, sso_group, go_live_date, env_selections_json = sys.argv[1:10]
+    app_name, app_tag, business_unit, infra_support, owner, slack_channel, cni, sso_group, go_live_date, env_selections_json = sys.argv[1:11]
     cni = cni.lower() == "true"
     env_selections = json.loads(env_selections_json)
     if application_exists(app_name):
