@@ -4,7 +4,7 @@
     "laa-aws-infrastructure",
     "laa-crime-apps-team",
     "laa-maat-migrations",
-    "laa-dbas"
+    "laa-dba"
   ],
   "environments": [
     {
@@ -21,7 +21,7 @@
           "github_action_reviewer": "true"
         },
         {
-          "sso_group_name": "laa-dbas",
+          "sso_group_name": "laa-dba",
           "level": "developer",
           "github_action_reviewer": "true"
         },
@@ -47,7 +47,7 @@
           "github_action_reviewer": "true"
         },
         {
-          "sso_group_name": "laa-dbas",
+          "sso_group_name": "laa-dba",
           "level": "developer",
           "github_action_reviewer": "true"
         },
@@ -72,7 +72,7 @@
           "github_action_reviewer": "true"
         },
         {
-          "sso_group_name": "laa-dbas",
+          "sso_group_name": "laa-dba",
           "level": "developer",
           "github_action_reviewer": "true"
         },
@@ -97,7 +97,7 @@
           "github_action_reviewer": "true"
         },
         {
-          "sso_group_name": "laa-dbas",
+          "sso_group_name": "laa-dba",
           "level": "developer",
           "github_action_reviewer": "true"
         },
