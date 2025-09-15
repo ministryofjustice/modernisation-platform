@@ -216,8 +216,6 @@ body:
     options:
       - 'No'
       - 'Yes'
-    validations:
-      required: true
 - type: dropdown
   id: app-connect
   attributes:
