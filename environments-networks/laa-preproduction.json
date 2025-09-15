@@ -7,6 +7,7 @@
           "apex-preproduction",
           "ccms-ebs-preproduction",
           "ccms-edrms-preproduction",
+          "ccms-oia-preproduction",
           "contract-work-administration-preproduction",
           "laa-ccms-soa-preproduction",
           "laa-mail-relay-preproduction",
