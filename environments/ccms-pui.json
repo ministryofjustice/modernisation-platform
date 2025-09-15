@@ -8,7 +8,8 @@
           "sso_group_name": "laa-sre-admins",
           "level": "sandbox"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
@@ -39,11 +40,11 @@
     }
   ],
   "tags": {
-    "application": "",
+    "application": "ccms-pui",
     "business-unit": "LAA",
     "infrastructure-support": "ApplicationOperations@justice.gov.uk",
     "owner": "ApplicationOperations@justice.gov.uk",
-    "slack-channel": "slack-channel-placeholder",
+    "slack-channel": "",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [],
