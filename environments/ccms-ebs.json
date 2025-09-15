@@ -10,7 +10,7 @@
         },
         {
           "sso_group_name": "laa-ccms-instance-access",
-          "level": "instance-management"
+          "level": "sandbox"
         },
         {
           "sso_group_name": "modernisation-platform-security",
