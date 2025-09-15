@@ -266,7 +266,7 @@ body:
     description: Any other information you feel is relevant, please remember this is a public repository
     value:
   validations:
-    required:
+    required: false
 - type: textarea
   id: dod
   attributes:
