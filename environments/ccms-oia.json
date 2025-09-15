@@ -39,7 +39,7 @@
     }
   ],
   "tags": {
-    "application": "",
+    "application": "ccms-oia",
     "business-unit": "LAA",
     "infrastructure-support": "ApplicationOperations@justice.gov.uk",
     "owner": "ApplicationOperations@justice.gov.uk",
