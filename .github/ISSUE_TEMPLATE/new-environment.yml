@@ -164,6 +164,12 @@ body:
     - data-scientist
   validations:
     required: false
+- type: input
+  id: slack-channel-placeholder
+  attributes:
+    label: Slack Channel
+    description: Please provide the name of the Slack channel you will use for operational communication about this application, e.g. #my-app-support. This is important so that we can ensure you receive relevant notifications from AWS.
+    value:
 - type: markdown
   attributes:
     value: |
