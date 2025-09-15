@@ -20,6 +20,7 @@ expected :=
     "ccms-ebs",
     "ccms-ebs-upgrade",
     "ccms-edrms",
+    "ccms-oia",
     "ccms-pui",
     "cdpt-chaps",
     "cdpt-ifs",
