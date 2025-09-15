@@ -209,8 +209,6 @@ body:
     label: Slack Channel
     description: Please provide the name of the Slack channel you will use for operational communication about this application, e.g. #my-app-support. This is important so that we can ensure you receive relevant notifications from AWS.
     value:
-  validations:
-    required: false
 - type: markdown
   attributes:
     value: |
