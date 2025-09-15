@@ -12,7 +12,7 @@ def add_account_to_network(app_name, business_unit, env):
     network_file = f"environments-networks/{business_unit.lower()}-{env}.json"
     if not os.path.exists(network_file):
         print(f"Network file {network_file} does not exist.")
-        sys.exit(1)
+        return
 
     # Load the JSON data from the network file
     with open(network_file, "r") as f:
@@ -78,17 +78,16 @@ def add_account_to_rego(app_name, business_unit, env, rego_path):
 if __name__ == "__main__":
     # Check for minimum required arguments
     if len(sys.argv) < 4:
-        print("Usage: python network-setup.py <app_name> <business_unit> <environment>")
+        print("Usage: python network-setup.py <app_name> <business_unit> <environment> [<environment> ...]")
         sys.exit(1)
     app_name = sys.argv[1]
     business_unit = sys.argv[2]
-    env = sys.argv[3]
-
-    # Add the account to the network JSON file
-    add_account_to_network(app_name, business_unit, env)
+    envs = sys.argv[3:]
 
     # Build the path to the expected.rego policy file
     rego_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "policies", "networking", "expected.rego"))
 
-    # Add the account to the rego policy file
-    add_account_to_rego(app_name, business_unit, env, rego_path)
+    # Add the account to the network JSON file and rego policy file for each environment
+    for env in envs:
+        add_account_to_network(app_name, business_unit, env)
+        add_account_to_rego(app_name, business_unit, env, rego_path)
