@@ -44,6 +44,12 @@ Many of the changes below involve updating VPC NACLs. The code that defines the 
 
 > All networking changes via Terraform (e.g. GitHub workflows) should be stopped while this work is ongoing. Doing so could affect the mitigations being made via the steps below.
 
+> The following workflows should be disabled:
+
+> - [core-vpc-production-deployment](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/core-vpc-production-deployment.yml) (and dev/test/preprod where needed)
+> - [core-network-services-deployment](https://github.com/ministryofjustice/modernisation-platform/actions/workflows/core-network-services-deployment.yml)
+
+
 > Some of the changes listed in this document will impact all applications connected to a particular NACL/TGW attachment. If you were to amend, for example `hmpps-production-private-nacl`, then all applications hosted in the `hmpps-production` VPC will be impacted.
 
 > In most cases, running the relevant Terraform codebase for the environment will revert the manual changes made to mitigate the incident. There are some exceptions to this which are flagged below.
@@ -52,36 +58,13 @@ Many of the changes below involve updating VPC NACLs. The code that defines the 
 
 This is the best option to deploy where the incident is contained to a single application which you want to quarantine. The mitigation blocks access at security group level for the infrastructure hosting the application e.g. load balancers/instances etc. by removing all the rules as the default behaviour for a SG with no rules is to `deny` all traffic.
 
-The size, architecture and complexity of the application will dictate the most appropriate method. 
-
 You will need to login to the application account with the `AdministratorAccess` SSO role.
 
-### Method 1: Delete all rules in existing security groups
-_Best for dealing with small applications with few instances, security groups and rules_
-
-1. Go to **VPC** -> **Security** -> **Security groups**
-2. Select the appropriate security group
-3. Select both Edit inbound rules and Edit outbound rules
-4. Delete each rule listed. For some security groups there may be a long list of items to delete
-5. You will need to Save rules to apply your change
-
-### Method 2: Attach a new empty security group to network interfaces
-_Best for dealing with larger applications with multiple instances, security groups and rules_
-
->**Note**
-
-> This approach works well for ec2 instances but for services like Application Load Balancers, Lambda and RDS you **cannot** edit the ENI security groups like this. Instead you must access each service individually to change the associated security group.
-
-1. Go to **VPC** -> **Security** -> **Security groups** -> **Create security group**
-2. Enter a Security group name and description e.g. `SG to block all traffic`
-3. Select **Delete** to remove the default outbound rule to `0.0.0.0/0`
-4. Select **Create security group**
-5. Go to **Ec2** -> **Network & Security** -> **Network Interfaces**
-6. Select the relevant network interface you wish to edit
-7. Select **Actions** -> **Change security groups**
-8. Select **Remove** to remove all the existing SGs associated 
-9. Then type in the name of your new "block all" SG and select **Add security Group** -> **Save**
-10. Repeat steps above for each Network interface you need to edit
+1. Go to **VPC** -> **Security groups**
+2. Select a security group
+3. Select **Actions** -> **Edit inbound rules** and **Delete** for each rule listed and finally **Save rules**
+4. Select **Actions** -> **Edit outbound rules** and **Delete** for each rule listed and finally **Save rules**
+5. Apply the above steps for every security group
 
 ## Stopping inbound internet access for an application on MP
 
@@ -103,25 +86,15 @@ Due to the way Network Firewall applies rules in AWS (see [here](https://docs.aw
 
 This work is carried out from the `core-vpc-<environment>` account e.g. `core-vpc-production` with the `AdministratorAccess` SSO role.
 
-The process needs to be done for the `data`, `public`, `private` and `protected` NACLs. Examples for production are shown here:
+The process needs to be done for the `data`, `public` and `private` NACLs. Examples for production are shown here:
 
 - `hmpps-production-data-nacl`
 - `hmpps-production-public-nacl`
 - `hmpps-production-private-nacl`
-- `hmpps-production-protected-nacl`
-
-For the `data`, `public` and `private` NACLs:
 
 1. Go to **VPC** -> **Security** -> **Network ACLs**
 2. Click on the checkbox for the ACL you want to change then select **outbound rules**
 3. Add a new `deny` for **0.0.0.0/0**, rule number 4999, which will prevent access to the items listed after this point. All internet rules are 5000 and above based on our current code
-4. Save changes
-
-For the `protected` NACLs:
-
-1. Go to **VPC**-> **Security** -> **Network ACLs**
-2. Click on the checkbox for the ACL you want to change then select **outbound rules**
-3. Add rule number 1 with a `deny` on **0.0.0.0/0**
 4. Save changes
 
 >**Notes on reverting via Terraform**
@@ -143,7 +116,7 @@ The process needs to be done for the `data`, `public` and `private` NACLs. Examp
 
 1. Go to **VPC** -> **Security** -> **Network ACLs**
 2. Click on the checkbox for the one you want to change then select **inbound rules**
-3. Amend all the rules that are >= 4000 and < 5000 so they are in a `deny` state
+3. Amend all the rules that are >= 4000 and < 5000 so they are in a `deny` state (i.e. all private address ranges, `10.0.0.0/8`, `172.16.0.0/12` and `192.168.0.0/16`)
 4. Save the changes
 
 **NOTE** the rules between 4000 and 5000 is based on the [code](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modules/vpc-nacls/data.tf) being correctly set up to put the rules in this range. Amend the instructions if this changes.
@@ -163,7 +136,7 @@ The process needs to be done for the `data`, `public` and `private` NACLs. Examp
 
 1. Go to **VPC** -> **Security** -> **Network ACLs**
 2. Click on the checkbox for the one you want to change then select **outbound rules**
-3. Amend all the rules that are >= 4000 and < 5000 so they are in a `deny` state
+3. Amend all the rules that are >= 4000 and < 5000 so they are in a `deny` state (i.e. all private address ranges, `10.0.0.0/8`, `172.16.0.0/12` and `192.168.0.0/16`)
 4. Save the changes
 
 **NOTE** the rules between 4000 and 5000 is based on the [code](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/modules/vpc-nacls/data.tf) being correctly set up to put the rules in this range. Amend the instructions if this changes.
