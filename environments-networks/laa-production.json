@@ -8,6 +8,7 @@
           "ccms-ebs-production",
           "ccms-edrms-production",
           "ccms-oia-production",
+          "ccms-pui-internal-production",
           "ccms-pui-production",
           "contract-work-administration-production",
           "laa-ccms-soa-production",
