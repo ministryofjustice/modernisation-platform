@@ -26,7 +26,7 @@ jobs:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
-  monitor-ecs-eks-amis:
+  monitor-expired-recovery-points:
     runs-on: ubuntu-latest
     needs: fetch-secrets
 
