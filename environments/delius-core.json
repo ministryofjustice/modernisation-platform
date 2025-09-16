@@ -97,6 +97,11 @@
           "sso_group_name": "version-1-sit-team",
           "level": "developer",
           "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "hmpps-community-payback",
+          "level": "developer",
+          "github_action_reviewer": "false"
         }
       ]
     },
