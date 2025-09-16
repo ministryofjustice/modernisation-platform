@@ -5,12 +5,8 @@
       "name": "development",
       "access": [
         {
-          "sso_group_name": "hosting-migrations",
+          "sso_group_name": "laa-sre-admins",
           "level": "sandbox"
-        },
-        {
-          "sso_group_name": "hmpps-vcms-write-team",
-          "level": "developer"
         }
       ],
       "nuke": "exclude"
@@ -19,7 +15,7 @@
       "name": "test",
       "access": [
         {
-          "sso_group_name": "hosting-migrations",
+          "sso_group_name": "laa-sre-admins",
           "level": "developer"
         }
       ]
@@ -28,7 +24,7 @@
       "name": "preproduction",
       "access": [
         {
-          "sso_group_name": "hosting-migrations",
+          "sso_group_name": "laa-sre-admins",
           "level": "developer"
         }
       ]
@@ -37,19 +33,20 @@
       "name": "production",
       "access": [
         {
-          "sso_group_name": "hosting-migrations",
+          "sso_group_name": "laa-sre-admins",
           "level": "developer"
         }
       ]
     }
   ],
   "tags": {
-    "application": "Victim Case Management System",
-    "business-unit": "HMPPS",
-    "infrastructure-support": "probation-webops@digital.justice.gov.uk",
-    "owner": "probation-webops@digital.justice.gov.uk",
+    "application": "ccms-pui",
+    "business-unit": "LAA",
+    "infrastructure-support": "ApplicationOperations@justice.gov.uk",
+    "owner": "ApplicationOperations@justice.gov.uk",
+    "slack-channel": "",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": ["ministryofjustice/hmpps-vcms"],
+  "github-oidc-team-repositories": [],
   "go-live-date": ""
 }
