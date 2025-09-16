@@ -36,7 +36,7 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< "$ENVI
             --output text); do
                 total=$((total+1))
         done
-        echo "$account_name has $total expired recovery points in AWS Backup vault $vault""
+        echo "$account_name has $total expired recovery points in AWS Backup vault $vault"
     done
 
     # Reset credentials after each account
