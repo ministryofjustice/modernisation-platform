@@ -3,7 +3,7 @@ name: "Monitor Expired AWS Backup Recovery Points"
 on:
   push:
     branches:
-      - main
+      - feature/11307-monitor-expired-backup-recovery-points
     paths:
       - '.github/workflows/monitor-aws-backup-vault.yml'
   workflow_dispatch:
