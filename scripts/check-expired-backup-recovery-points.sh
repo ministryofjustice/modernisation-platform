@@ -8,11 +8,14 @@ ROOT_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 ROOT_AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
 
 ROLE_NAME="ModernisationPlatformAccess"
+EXPIRED_RECOVERY_POINTS_FILE="expired-recovery-points.csv"
+
+# Initialize the file with headers
+echo "Account Name,Expired Recovery Points Count" > $EXPIRED_RECOVERY_POINTS_FILE
 
 # Assume Role Function
 getAssumeRoleCfg() {
     account_id=$1
-    echo "Assuming role for account: $account_id"
     aws sts assume-role --role-arn "arn:aws:iam::${account_id}:role/${ROLE_NAME}" --role-session-name "check-expired-recovery-points" --output json > credentials.json
     export AWS_ACCESS_KEY_ID=$(jq -r '.Credentials.AccessKeyId' credentials.json)
     export AWS_SECRET_ACCESS_KEY=$(jq -r '.Credentials.SecretAccessKey' credentials.json)
@@ -36,7 +39,7 @@ for account_id in $(jq -r '.account_ids | to_entries[] | "\(.value)"' <<< "$ENVI
             --output text); do
                 total=$((total+1))
         done
-        echo "$account_name has $total expired recovery points in AWS Backup vault $vault"
+        echo "$account_name,$total" >> $EXPIRED_RECOVERY_POINTS_FILE
     done
 
     # Reset credentials after each account

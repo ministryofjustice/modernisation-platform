@@ -55,3 +55,10 @@ jobs:
 
       - name: Run AWS Backup Vault Monitoring Script
         run: bash ./scripts/check-expired-backup-recovery-points.sh
+
+      - name: Upload AMI CSV file
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 #v4.6.2
+        with:
+            name: expired-backup-recovery-points
+            path: expired-recovery-points.csv
+            retention-days: 1
