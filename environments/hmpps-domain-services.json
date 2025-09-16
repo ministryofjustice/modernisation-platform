@@ -147,7 +147,7 @@
     "application": "hmpps-domain-services",
     "business-unit": "HMPPS",
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
-    "owner": "sean.privett@digital.justice.gov.uk",
+    "owner": "digital-studio-operations-team@digital.justice.gov.uk",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [
