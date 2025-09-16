@@ -6,6 +6,12 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+  issues: read
+  pull-requests: write
+
+
 jobs:
   network-setup:
     if: github.event.pull_request.merged == true
