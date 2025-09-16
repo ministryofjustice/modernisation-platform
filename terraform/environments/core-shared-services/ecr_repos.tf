@@ -1443,9 +1443,7 @@ module "oia_ecr_repo" {
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:root",
-    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:role/modernisation-platform-oidc-cicd",
-    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-internal-development"]}:root",
-    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-internal-development"]}:role/modernisation-platform-oidc-cicd"
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:role/modernisation-platform-oidc-cicd"
   ]
 
   pull_principals = [
