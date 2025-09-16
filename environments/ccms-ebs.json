@@ -4,7 +4,6 @@
     {
       "name": "workspaces-secure-browser",
       "sso_group_name": "aws-root-account-admin-team"
-
     }
   ],
   "environments": [
