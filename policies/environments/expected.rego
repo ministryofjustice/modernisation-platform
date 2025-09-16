@@ -5,7 +5,6 @@ import rego.v1
 expected :=
 {
   "accounts": [
-    
     "analytical-platform",
     "analytical-platform-common",
     "analytical-platform-compute",
@@ -95,6 +94,5 @@ expected :=
     "xhibit-portal",
     "youth-justice-app-framework",
     "youth-justice-networking"
-
     ]
 }
