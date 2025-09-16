@@ -9,6 +9,7 @@
           "ccms-ebs-upgrade-test",
           "ccms-edrms-test",
           "ccms-oia-test",
+          "ccms-pui-test",
           "contract-work-administration-test",
           "laa-ccms-soa-test",
           "laa-enterprise-service-bus-test",
