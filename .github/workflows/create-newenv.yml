@@ -126,11 +126,9 @@ jobs:
             "$ENV_SELECTIONS_JSON"
             # Add other arguments as needed for your amend script
 
-      - name: Show created JSON
-        run: cat environments/"$APP_NAME".json
-             rm issue_body.txt
-
-      
+      - name: remove issue template files
+        run: rm -f issue_body.txt           
+  
       - name: Create a signed commit for new accounts
         if: env.EXISTING_ACCOUNT == 'No'
         uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@7f78ec79dd45ec7db8966ecb619c85712d4e68d7 # v3.4.2
