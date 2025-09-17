@@ -32,7 +32,6 @@ jobs:
           INFRA_SUPPORT=$(awk -v key="### infrastructure-support" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
           OWNER=$(awk -v key="### owner" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
           SSO_GROUP=$(awk -v key="### SSO Group Name" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
-          slack-channel-placeholder=$(awk -v key="### Slack Channel" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
           ISOLATED_ACCOUNT=$(awk -v key="### Do you require isolated networking?" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
       
           echo "EXISTING_ACCOUNT=$EXISTING_ACCOUNT" >> $GITHUB_ENV
@@ -40,7 +39,6 @@ jobs:
           echo "APP_TAG=$APP_TAG" >> $GITHUB_ENV
           echo "BUSINESS_UNIT=$BUSINESS_UNIT" >> $GITHUB_ENV
           echo "INFRA_SUPPORT=$INFRA_SUPPORT" >> $GITHUB_ENV
-          echo "slack-channel-placeholder=$slack-channel-placeholder" >> $GITHUB_ENV
           echo "OWNER=$OWNER" >> $GITHUB_ENV
           echo "SSO_GROUP=$SSO_GROUP" >> $GITHUB_ENV
           echo "ISOLATED_ACCOUNT=$ISOLATED_ACCOUNT" >> $GITHUB_ENV
@@ -113,7 +111,7 @@ jobs:
             "$BUSINESS_UNIT" \
             "$INFRA_SUPPORT" \
             "$OWNER" \
-            "slack-channel-placeholder" \
+            "SLACK_CHANNEL_PLACEHOLDER" \
             "false" \
             "$SSO_GROUP" \
             "" \
@@ -128,26 +126,17 @@ jobs:
             "$ENV_SELECTIONS_JSON"
             # Add other arguments as needed for your amend script
 
-      - name: Show created JSON
-        run: cat environments/"$APP_NAME".json
-
-      - name: Install GitHub CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install gh
-
+      - name: remove issue template files
+        run: rm -f issue_body.txt           
+  
       - name: Create a signed commit for new accounts
         if: env.EXISTING_ACCOUNT == 'No'
         uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@7f78ec79dd45ec7db8966ecb619c85712d4e68d7 # v3.4.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated environment request for $APP_NAME"
-          pr_body: "This PR was created automatically to update generated files.
-            Linked to #${{ github.event.issue.number }}"
-          commit_message: "Automated environment request for $APP_NAME"
-          files_to_commit: |
-            environments/*
-            policies/environments/expected.rego
+          pr_body: "This PR was created automatically to update generated files. Linked to #${{ github.event.issue.number }}"
+
 
       - name: Commit changes for existing accounts
         if: env.EXISTING_ACCOUNT == 'Yes'
@@ -155,11 +144,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated environment amendment request for $APP_NAME"
-          pr_body: "This PR was created automatically to update generated files.
-            Linked to #${{ github.event.issue.number }}"
-          commit_message: "Automated environment request for $APP_NAME"
-          files_to_commit: |
-            environments/*
+          pr_body: "This PR was created automatically to update generated files. Linked to #${{ github.event.issue.number }}"
+
 
       - name: Comment on issue with PR link
         env:
