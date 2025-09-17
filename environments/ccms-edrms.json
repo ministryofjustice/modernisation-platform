@@ -79,6 +79,8 @@
     "owner": "ApplicationOperations@justice.gov.uk",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": ["ministryofjustice/laa-ccms-edrms-web-service"],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/laa-ccms-edrms-web-service"
+  ],
   "go-live-date": ""
 }
