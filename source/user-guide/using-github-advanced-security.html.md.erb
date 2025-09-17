@@ -1,0 +1,45 @@
+---
+owner_slack: "#modernisation-platform"
+title: Using Github Advanced Security & Code Scanning in Modernisation Platform Environments
+last_reviewed_on: 2025-09-15
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Introduction
+
+GitHub Advanced Security’s **Code Scanning** feature enables users to identify and remediate potential vulnerabilities in their infrastructure source code.  
+
+We have enabled general access to this feature in the [modernisation-platform-environments](https://github.com/ministryofjustice/modernisation-platform-environments) repository for all GitHub users within the `ministryofjustice` organisation via the `all-org-users` team.  
+
+We strongly encourage teams to regularly review and address any security alerts raised against their source code in this repository.  
+
+## Searching for Vulnerabilities with Code Scanning
+
+- Access the Code Scanning dashboard [here](https://docs.github.com/en/code-security/code-scanning).  
+- By default, results are filtered with `is:open branch:main`, showing only open alerts for the `main` branch.  
+- To filter by a specific environment, use the `path` option. For example:  
+  `path:terraform/environments/sprinkler` will display alerts for the *sprinkler* environment.  
+- To filter by severity, use the `severity` option. For example:  
+  `severity:critical`.  
+
+Full documentation on Code Scanning is available [here](https://docs.github.com/en/code-security/code-scanning).  
+
+## Reviewing Security Alerts
+
+Each alert can be dismissed with one of the following reasons:  
+
+- **False Positive** – The alert is not valid.  
+- **Used in Tests** – The alert applies only to test code, not production.  
+- **Won’t Fix** – The alert is acknowledged but will not be addressed.  
+
+When dismissing, you can also use the “dismissal reason” text box to provide additional context.  
+
+## Organisation Security Overview
+
+At the organisation level, the [Security Overview](https://github.com/orgs/ministryofjustice/security/overview) provides a consolidated view of all reported security vulnerabilities across repositories. Using search filters, you can refine the view to show time-based data for specific repositories or teams.  
+
+For example, this [filter](https://github.com/orgs/ministryofjustice/security/overview?query=archived%3Afalse+tool%3Agithub+repo%3Amodernisation-platform-environments+team%3Amodernisation-platform) displays vulnerability alerts in the `modernisation-platform-environments` repository for code owned by the `modernisation-platform` team.  
+
+More details on using this feature can be found in the [GitHub documentation](https://docs.github.com/en/code-security/security-overview/about-security-overview).  
