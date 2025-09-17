@@ -40,17 +40,13 @@
     }
   ],
   "tags": {
-    "application": "ccms-oia",
+    "application": "ccms-pui",
     "business-unit": "LAA",
     "infrastructure-support": "ApplicationOperations@justice.gov.uk",
     "owner": "ApplicationOperations@justice.gov.uk",
     "slack-channel": "",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [
-    "ministryofjustice/oracle-policy-automation-docker",
-    "ministryofjustice/laa-ccms-connector",
-    "ministryofjustice/laa-ccms-service-adapter"
-  ],
+  "github-oidc-team-repositories": ["ministryofjustice/laa-ccms-provider-ui"],
   "go-live-date": ""
 }

@@ -137,8 +137,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated environment request for $APP_NAME"
-          pr_body: "This PR was created automatically to update generated files.
-            Linked to #${{ github.event.issue.number }}"
+          pr_body: "This PR was created automatically to update generated files. Linked to #${{ github.event.issue.number }}"
+
 
       - name: Commit changes for existing accounts
         if: env.EXISTING_ACCOUNT == 'Yes'
@@ -146,8 +146,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated environment amendment request for $APP_NAME"
-          pr_body: "This PR was created automatically to update generated files.
-            Linked to #${{ github.event.issue.number }}"
+          pr_body: "This PR was created automatically to update generated files. Linked to #${{ github.event.issue.number }}"
+
 
       - name: Comment on issue with PR link
         env:

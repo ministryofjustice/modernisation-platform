@@ -9,6 +9,8 @@
           "ccms-ebs-upgrade-development",
           "ccms-edrms-development",
           "ccms-oia-development",
+          "ccms-pui-development",
+          "ccms-pui-internal-development",
           "contract-work-administration-development",
           "laa-ccms-soa-development",
           "laa-enterprise-service-bus-development",

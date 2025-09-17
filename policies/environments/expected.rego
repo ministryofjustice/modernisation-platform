@@ -21,6 +21,8 @@ expected :=
     "ccms-ebs-upgrade",
     "ccms-edrms",
     "ccms-oia",
+    "ccms-pui",
+    "ccms-pui-internal",
     "cdpt-chaps",
     "cdpt-ifs",
     "cica-copilot",
