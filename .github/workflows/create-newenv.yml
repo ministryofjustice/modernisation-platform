@@ -4,6 +4,11 @@ on:
   issues:
     types: [opened]
 
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
 jobs:
   handle-request:
     if: contains(github.event.issue.labels.*.name, 'New Account')
