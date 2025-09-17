@@ -111,7 +111,7 @@ jobs:
             "$BUSINESS_UNIT" \
             "$INFRA_SUPPORT" \
             "$OWNER" \
-            "slack-channel-placeholder" \
+            "SLACK_CHANNEL_PLACEHOLDER" \
             "false" \
             "$SSO_GROUP" \
             "" \
@@ -128,12 +128,9 @@ jobs:
 
       - name: Show created JSON
         run: cat environments/"$APP_NAME".json
+             rm issue_body.txt
 
-      - name: Install GitHub CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install gh
-
+      
       - name: Create a signed commit for new accounts
         if: env.EXISTING_ACCOUNT == 'No'
         uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@7f78ec79dd45ec7db8966ecb619c85712d4e68d7 # v3.4.2
@@ -141,10 +138,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated environment request for $APP_NAME"
           pr_body: "This PR was created automatically to update generated files. Linked to #${{ github.event.issue.number }}"
-          commit_message: "Automated environment request for $APP_NAME"
-          files_to_commit: |
-            environments/*
-            policies/environments/expected.rego
+
 
       - name: Commit changes for existing accounts
         if: env.EXISTING_ACCOUNT == 'Yes'
@@ -153,9 +147,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated environment amendment request for $APP_NAME"
           pr_body: "This PR was created automatically to update generated files. Linked to #${{ github.event.issue.number }}"
-          commit_message: "Automated environment request for $APP_NAME"
-          files_to_commit: |
-            environments/*
+
 
       - name: Comment on issue with PR link
         env:
