@@ -8,7 +8,7 @@ permissions: read-all
 
 jobs:
   handle-request:
-  permissions:
+    permissions:
       contents: write
       pull-requests: write
       security-events: write 
