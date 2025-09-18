@@ -482,5 +482,12 @@
     "destination_ip": "${laa-ecp-safedb}",
     "destination_port": "2484",
     "protocol": "TCP"
+  },
+  "laa_production_to_cloud_platform_https": {
+    "action": "PASS",
+    "source_ip": "${laa-production}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "443",
+    "protocol": "TCP"
   }
 }
