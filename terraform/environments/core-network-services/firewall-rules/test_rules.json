@@ -530,5 +530,12 @@
     "destination_ip": "${platforms-test}",
     "destination_port": "443",
     "protocol": "TCP"
+  },
+  "laa_test_to_cloud_platform_https": {
+    "action": "PASS",
+    "source_ip": "${laa-test}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "443",
+    "protocol": "TCP"
   }
 }
