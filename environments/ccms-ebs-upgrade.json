@@ -17,6 +17,10 @@
         {
           "sso_group_name": "laa-ccms-migration-team",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox"
         }
       ],
       "nuke": "exclude"
@@ -26,6 +30,11 @@
       "access": [
         {
           "sso_group_name": "laa-ccms-migration-team",
+          "level": "developer",
+          "nuke": "exclude"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
           "level": "developer",
           "nuke": "exclude"
         },
