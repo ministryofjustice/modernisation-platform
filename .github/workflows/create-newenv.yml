@@ -4,8 +4,14 @@ on:
   issues:
     types: [opened]
 
+permissions: read-all
+
 jobs:
   handle-request:
+    permissions:
+      contents: write
+      pull-requests: write
+      security-events: write 
     if: contains(github.event.issue.labels.*.name, 'New Account')
     runs-on: ubuntu-latest
     steps:
@@ -127,7 +133,12 @@ jobs:
             # Add other arguments as needed for your amend script
 
       - name: remove issue template files
-        run: rm -f issue_body.txt           
+        run: rm -f issue_body.txt
+
+      - name: Install GitHub CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install gh
   
       - name: Create a signed commit for new accounts
         if: env.EXISTING_ACCOUNT == 'No'
