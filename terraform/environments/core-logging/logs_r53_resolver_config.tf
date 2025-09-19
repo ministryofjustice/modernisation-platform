@@ -20,6 +20,31 @@ data "aws_route53_resolver_query_log_config" "core_logging" {
     values = [each.value]
   }
 }
+resource "aws_route53_resolver_query_log_config" "s3" {
+  name            = format("%s-rlq-s3", local.application_name)
+  destination_arn = aws_s3_bucket.logging["r53-resolver-logs"].arn
+  tags            = local.tags
+}
+
+resource "aws_route53_resolver_query_log_config" "s3_eu_west_1" {
+  provider        = aws.modernisation-platform-eu-west-1
+  name            = format("%s-rlq-s3-%s", local.application_name, "eu-west-1")
+  destination_arn = aws_s3_bucket.logging["r53-resolver-logs"].arn
+  tags            = local.tags
+}
+
+resource "aws_route53_resolver_query_log_config" "cloudwatch" {
+  name            = format("%s-rlq-cloudwatch", local.application_name)
+  destination_arn = aws_cloudwatch_log_group.r53_resolver_logs.arn
+  tags            = local.tags
+}
+
+resource "aws_cloudwatch_log_group" "r53_resolver_logs" {
+  kms_key_id        = aws_kms_key.r53_resolver_logs.arn
+  name_prefix       = "r53-resolver-logs"
+  retention_in_days = 365
+  tags              = local.tags
+}
 
 resource "aws_route53_resolver_query_log_config_association" "core_logging" {
   for_each                     = local.is-production ? local.vpc_rlq_associations : {}
