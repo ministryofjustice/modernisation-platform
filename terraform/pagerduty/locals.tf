@@ -11,7 +11,7 @@ locals {
     david_sibley = {
       name  = "David Sibley"
       email = "david.sibley${local.digital_email_suffix}"
-      role  = "user"
+      role  = "manager"
     },
     edward_proctor = {
       name  = "Edward Proctor"
