@@ -25,8 +25,8 @@
   "tags": {
     "application": "genesys-call-centre-data",
     "business-unit": "Platforms",
-    "infrastructure-support": "dataengineering@digital.justice.gov.uk",
-    "owner": "dataengineering@digital.justice.gov.uk",
+    "infrastructure-support": "DataandAnalyticsEngineering@justice.gov.uk",
+    "owner": "DataandAnalyticsEngineering@justice.gov.uk",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""],
