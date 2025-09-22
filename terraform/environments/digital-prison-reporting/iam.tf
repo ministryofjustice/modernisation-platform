@@ -28,7 +28,8 @@ variable "circleci_projects" {
     "92ef16a0-e54e-4edd-9e54-b21e0e3ea2c3",
     "b67f0d73-43d8-4213-9a40-dc096ee986d6",
     "190904ca-0fed-4fda-82ff-4e2a001b6882",
-    "453e00f9-f8f6-444b-bc12-c0a158caa4cb"
+    "453e00f9-f8f6-444b-bc12-c0a158caa4cb",
+    "53ee4338-4063-4d6c-8bb5-6ea9e6d9d1cb"
   ]
 }
 
@@ -179,6 +180,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "glue:StopWorkflowRun",
       "glue:UpdateJob",
       "glue:TagResource",
+      "glue:UntagResource",
       "glue:GetSecurityConfiguration",
       "glue:GetTags",
       "glue:UpdateTrigger",
@@ -290,6 +292,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "logs:DeleteLogGroup",
       "logs:TagLogGroup",
       "logs:TagResource",
+      "logs:UntagResource",
       "glue:CreateSecurityConfiguration",
       "glue:DeleteSecurityConfiguration",
       "glue:CreateUserDefinedFunction",
@@ -309,8 +312,10 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "glue:DeleteTrigger",
       "glue:GetConnection",
       "iam:TagRole",
+      "iam:UntagRole",
       "iam:UpdateAssumeRolePolicy",
       "iam:TagPolicy",
+      "iam:UntagPolicy",
       "scheduler:CreateSchedule",
       "scheduler:DeleteSchedule",
       "scheduler:UpdateSchedule",

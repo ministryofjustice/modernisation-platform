@@ -6,6 +6,12 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+  issues: read
+  pull-requests: write
+
+
 jobs:
   network-setup:
     if: github.event.pull_request.merged == true
@@ -20,16 +26,28 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           name: network-setup-info
+        continue-on-error: true  # Continue even if the artifact is not found
+
+      - name: Check if artifact exists
+        id: check_artifact
+        run: |
+          if [ ! -f network-setup-info.json ]; then
+            echo "Artifact not found. Skipping the workflow."
+            echo "SKIP=true" >> $GITHUB_ENV
+          fi
 
       - name: Set up Python
+        if: env.SKIP != 'true'
         uses: actions/setup-python@v6
         with:
           python-version: '3.x'
 
       - name: Install jq
+        if: env.SKIP != 'true'
         run: sudo apt-get install jq
 
       - name: Check PR number matches artifact
+        if: env.SKIP != 'true'
         id: prcheck
         run: |
           ARTIFACT_PR=$(jq -r '.pr_number' network-setup-info.json)
@@ -39,7 +57,7 @@ jobs:
           fi
 
       - name: Run network-setup.py
-        if: env.ISOLATED_ACCOUNT== 'No'
+        if: env.SKIP != 'true' && env.ISOLATED_ACCOUNT == 'No'
         run: |
           python scripts/network-setup.py \
             $(jq -r '.app_name' network-setup-info.json) \
@@ -47,16 +65,13 @@ jobs:
             $(jq -r '.environments[]' network-setup-info.json)
 
       - name: Commit and push network changes
-        if: env.ISOLATED_ACCOUNT== 'No'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b network-update/${{ github.run_id }}
-          git add environments-networks/ policies/networking/expected.rego
-          git commit -m "Automated network update for ${{ github.event.pull_request.title }}"
-          git push --set-upstream origin network-update/${{ github.run_id }}
-          gh pr create --base main --head network-update/${{ github.run_id }} \
-            --title "Automated network update for ${{ github.event.pull_request.title }}" \
-            --body "This PR was created automatically after the environment request PR was merged."
+        if: env.SKIP != 'true' && env.ISOLATED_ACCOUNT == 'No'
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@7f78ec79dd45ec7db8966ecb619c85712d4e68d7 # v3.4.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_title: "Automated Signed Commit"
+          pr_body: "This PR was created automatically to update generated files."
+          commit_message: "Automated environment request for $APP_NAME"
+          files_to_commit: |
+            environments-networks/*
+            policies/networks/*

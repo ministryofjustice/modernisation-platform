@@ -1411,6 +1411,49 @@ module "edrms_ecr_repo" {
   tags_common = local.tags
 }
 
+module "pui_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "ccms-pui"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-internal-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-internal-development"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-test"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-preproduction"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-production"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-internal-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-internal-test"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-internal-preproduction"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-pui-internal-production"]}:role/modernisation-platform-oidc-cicd"
+  ]
+  tags_common = local.tags
+}
+
+module "oia_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "ccms-oia"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-test"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-preproduction"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-production"]}:role/modernisation-platform-oidc-cicd"
+  ]
+  tags_common = local.tags
+}
 module "vcms_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 

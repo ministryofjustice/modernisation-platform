@@ -4,8 +4,14 @@ on:
   issues:
     types: [opened]
 
+permissions: read-all
+
 jobs:
   handle-request:
+    permissions:
+      contents: write
+      pull-requests: write
+      security-events: write 
     if: contains(github.event.issue.labels.*.name, 'New Account')
     runs-on: ubuntu-latest
     steps:
@@ -27,7 +33,7 @@ jobs:
         run: |
           EXISTING_ACCOUNT=$(awk -v key="### Is this an existing AWS account?" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
           APP_NAME=$(awk -v key="### Application Name" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
-          APP_TAG=$(awk -v key="### Application" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          APP_TAG=$(awk -v key="### application" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
           BUSINESS_UNIT=$(awk -v key="### business-unit" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
           INFRA_SUPPORT=$(awk -v key="### infrastructure-support" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
           OWNER=$(awk -v key="### owner" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
@@ -111,7 +117,7 @@ jobs:
             "$BUSINESS_UNIT" \
             "$INFRA_SUPPORT" \
             "$OWNER" \
-            "slack-channel-placeholder" \
+            "SLACK_CHANNEL_PLACEHOLDER" \
             "false" \
             "$SSO_GROUP" \
             "" \
@@ -126,44 +132,31 @@ jobs:
             "$ENV_SELECTIONS_JSON"
             # Add other arguments as needed for your amend script
 
-      - name: Show created JSON
-        run: cat environments/"$APP_NAME".json
+      - name: remove issue template files
+        run: rm -f issue_body.txt
 
       - name: Install GitHub CLI
         run: |
           sudo apt-get update
           sudo apt-get install gh
-
-      - name: Commit changes for new accounts
+  
+      - name: Create a signed commit for new accounts
         if: env.EXISTING_ACCOUNT == 'No'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          ls -l environments/
-          git add -f environments/*
-          git add -f policies/environments/expected.rego
-          git commit -m "Automated environment request for $APP_NAME"
-          git push --set-upstream origin env-request/${{ github.run_id }}
-          gh pr create --base main --head env-request/${{ github.run_id }} \
-            --title "Automated environment request for $APP_NAME" \
-            --body "This PR was created automatically from an environment request issue.
-            Linked to #${ISSUE_NUMBER}
-            "
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@7f78ec79dd45ec7db8966ecb619c85712d4e68d7 # v3.4.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_title: "Automated environment request for $APP_NAME"
+          pr_body: "This PR was created automatically to update generated files. Linked to #${{ github.event.issue.number }}"
+
 
       - name: Commit changes for existing accounts
         if: env.EXISTING_ACCOUNT == 'Yes'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          ls -l environments/
-          git add -f environments/*
-          git commit -m "Automated environment request for $APP_NAME"
-          git push --set-upstream origin env-request/${{ github.run_id }}
-          gh pr create --base main --head env-request/${{ github.run_id }} \
-            --title "Automated environment request for $APP_NAME" \
-            --body "This PR was created automatically from an environment request issue.
-           Linked to #${ISSUE_NUMBER} 
-            "
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@7f78ec79dd45ec7db8966ecb619c85712d4e68d7 # v3.4.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_title: "Automated environment amendment request for $APP_NAME"
+          pr_body: "This PR was created automatically to update generated files. Linked to #${{ github.event.issue.number }}"
+
 
       - name: Comment on issue with PR link
         env:

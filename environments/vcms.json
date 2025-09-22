@@ -7,8 +7,13 @@
         {
           "sso_group_name": "hosting-migrations",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "hmpps-vcms-write-team",
+          "level": "developer"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",

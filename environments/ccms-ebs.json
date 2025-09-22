@@ -1,5 +1,11 @@
 {
   "account-type": "member",
+  "components": [
+    {
+      "name": "workspaces-secure-browser",
+      "sso_group_name": "aws-root-account-admin-team"
+    }
+  ],
   "environments": [
     {
       "name": "development",
@@ -10,7 +16,7 @@
         },
         {
           "sso_group_name": "laa-ccms-instance-access",
-          "level": "instance-management"
+          "level": "sandbox"
         },
         {
           "sso_group_name": "modernisation-platform-security",

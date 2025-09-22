@@ -223,7 +223,9 @@ data "aws_iam_policy_document" "member-access" {
       "transfer:*",
       "kinesisanalytics:*Application*",
       "kinesisanalytics:*Resource",
-      "sagemaker:*"
+      "sagemaker:*",
+      "workspaces:*",
+      "workspaces-web:*",
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }

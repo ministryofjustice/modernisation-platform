@@ -1,0 +1,72 @@
+---
+owner_slack: "#modernisation-platform"
+title: Using Github Advanced Security & Secret Scanning in Modernisation Platform Environments
+last_reviewed_on: 2025-09-15
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Introduction
+
+GitHub Advanced Security’s **Secret Scanning** features enables users to identify and remediate potential vulnerabilities in their infrastructure source code by automatically detecting accidental exposure of secrets such as credentials, API keys, or tokens.
+
+We have enabled general access to this feature in the [modernisation-platform-environments](https://github.com/ministryofjustice/modernisation-platform-environments) repository for all GitHub users within the `ministryofjustice` organisation via the `all-org-users` team.  
+
+We strongly encourage teams to regularly review and address any security alerts raised against their source code in this repository.  
+
+## Identifying Vulnerabilities using Secret Scanning
+
+- Access the Security dashboard for the Environments repository - https://github.com/ministryofjustice/modernisation-platform-environments/security
+- There are two options for Secret Scanning:
+
+    - Default: These are partner-validated patterns built into GitHub cover well-known providers such as AWS, Azure, Google Cloud, Slack, Stripe, Twilio, etc. As these alerts are maintained by Github they cannot be modified.
+    - Generic: These are heuristic patterns that detect common secret formats even if they don’t belong to a specific provider. Examples include:
+
+        - Long random alphanumeric strings.
+        - Base64-encoded tokens.
+        - Private keys (e.g., -----BEGIN PRIVATE KEY-----).
+
+## Reviewing Secret Scanning Alerts
+
+Each secret scanning alert contains the following information:
+
+  - Type (e.g. AWS key, GitHub token).
+  - Location (branch, commit, or file where the secret was detected) and the Github account associated with the author.
+  - Severity (High by default, as all secrets are sensitive).
+  - First detected and last updated timestamps.
+  - Status (Open, Closed as fixed, Closed as false positive, or Revoked).
+
+When reviewing secret scanning alerts it is suggested that the following is assessed:
+
+  - Is the secret current and in use?
+  - Does the secret relate to production infrastructure or applications? 
+  - Are the processes for rotating or retiring the secret from us understood?
+  - In the event that an alert for a production secret is found, what processes are to be followed such as incident reporting.
+
+We do suggest contacting the Modernisation Platform team should you have any questions regarding an alert.
+
+Further information on the use of Secret Scanning can be found [here](https://docs.github.com/en/enterprise-cloud@latest/code-security/secret-scanning/introduction/about-secret-scanning)
+
+
+## Searching for Vulnerabilities using Code Scanning
+
+In addition to Secret Scanning, Github also generates alerts for issues and vulnerabilities through the use of static application security testing (SAST) tools. These include trivy, checkov, tflint etc.
+
+- Access the Code Scanning dashboard [here](https://github.com/ministryofjustice/modernisation-platform-environments/security/code-scanning).  
+- By default, results are filtered with `is:open branch:main`, showing only open alerts for the `main` branch.  
+- To filter by a specific environment, use the `path` option. For example:  
+  `path:terraform/environments/sprinkler` will display alerts for the *sprinkler* environment.  
+- To filter by severity, use the `severity` option. For example:  
+  `severity:critical`.  
+
+Full documentation on Code Scanning is available [here](https://docs.github.com/en/code-security/code-scanning).  
+
+
+## Organisation Security Overview
+
+At the organisation level, the [Security Overview](https://github.com/orgs/ministryofjustice/security/overview) provides a consolidated view of all reported security vulnerabilities across repositories. Using search filters, you can refine the view to show time-based data for specific repositories or teams.  
+
+For example, this [filter](https://github.com/orgs/ministryofjustice/security/overview?query=archived%3Afalse+tool%3Agithub+repo%3Amodernisation-platform-environments+team%3Amodernisation-platform) displays vulnerability alerts in the `modernisation-platform-environments` repository for code owned by the `modernisation-platform` team.  
+
+More details on using this feature can be found in the [GitHub documentation](https://docs.github.com/en/code-security/security-overview/about-security-overview).  

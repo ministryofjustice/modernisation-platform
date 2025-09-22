@@ -8,6 +8,9 @@
           "ccms-ebs-test",
           "ccms-ebs-upgrade-test",
           "ccms-edrms-test",
+          "ccms-oia-test",
+          "ccms-pui-internal-test",
+          "ccms-pui-test",
           "contract-work-administration-test",
           "laa-ccms-soa-test",
           "laa-enterprise-service-bus-test",
@@ -29,7 +32,9 @@
     "additional_endpoints": [
       "com.amazonaws.eu-west-2.xray",
       "com.amazonaws.eu-west-2.secretsmanager",
-      "com.amazonaws.eu-west-2.email-smtp"
+      "com.amazonaws.eu-west-2.email-smtp",
+      "com.amazonaws.eu-west-2.sns",
+      "com.amazonaws.eu-west-2.sqs"
     ],
     "additional_private_zones": [],
     "additional_vpcs": [],

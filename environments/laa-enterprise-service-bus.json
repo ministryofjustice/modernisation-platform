@@ -58,6 +58,7 @@
   "tags": {
     "application": "laa-enterprise-service-bus",
     "business-unit": "LAA",
+    "securityhub-slack-channel": "laa-alerts-hub2-prod",
     "infrastructure-support": "laaops-gg@justice.gov.uk",
     "owner": "laaops-gg@justice.gov.uk",
     "critical-national-infrastructure": false
