@@ -1,6 +1,14 @@
 {
   "account-type": "member",
   "codeowners": ["data-platform-engineering"],
+  "components": [
+    {
+      "name": "dns"
+    },
+    {
+      "name": "iac"
+    }
+  ],
   "environments": [
     {
       "name": "development",

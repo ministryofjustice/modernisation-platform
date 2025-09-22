@@ -371,7 +371,7 @@ locals {
         ad_domain_name                      = "azure.hmpp.root"
         ad_file_system_administrators_group = "AWS FSx Admins"
         ad_username                         = "svc_fsx_windows"
-        aliases                             = ["fs.azure.hmpp.root", "fsprisonretail.azure.hmpp.root", "fsbranstonstaff.azure.hmpp.root"]
+        aliases                             = ["fs.azure.hmpp.root", "fsprisonretail.azure.hmpp.root", "fsbranstonstaff.azure.hmpp.root", "fslinux.azure.hmpp.root"]
         deployment_type                     = "MULTI_AZ_1"
         security_group_name                 = "ad_hmpp_fsx_sg"
         storage_capacity                    = 100
