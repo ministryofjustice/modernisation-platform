@@ -180,6 +180,7 @@ data "aws_iam_policy_document" "circleci_iam_policy" {
       "glue:StopWorkflowRun",
       "glue:UpdateJob",
       "glue:TagResource",
+      "glue:UntagResource",
       "glue:GetSecurityConfiguration",
       "glue:GetTags",
       "glue:UpdateTrigger",
