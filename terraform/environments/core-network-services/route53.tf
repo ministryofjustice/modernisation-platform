@@ -14,6 +14,7 @@ locals {
     mlra          = "maat-libra-administration-tool.service.justice.gov.uk",
     mojfin        = "laa-finance-data.service.justice.gov.uk",
     ncas          = "neutral-citation-allocation.service.justice.gov.uk",
+    ppud          = "ppud.justice.gov.uk",
     pra-register  = "parental-responsibility-agreement.service.justice.gov.uk",
     tipstaff      = "tipstaff.service.justice.gov.uk",
     tribunals     = "tribunals.gov.uk",
