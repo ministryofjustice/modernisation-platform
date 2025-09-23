@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@7f78ec79dd45ec7db8966ecb619c85712d4e68d7
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@e3ccf33927794ce5350b9211e288ad84e69365a8
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -34,7 +34,7 @@ jobs:
           fetch-depth: 0
 
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@7f78ec79dd45ec7db8966ecb619c85712d4e68d7
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@e3ccf33927794ce5350b9211e288ad84e69365a8
         with:
           terraform_github_token: ${{ needs.fetch-secrets.outputs.terraform_github_token }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -43,7 +43,7 @@ jobs:
         run: bash ./scripts/git-setup.sh
 
       - name: Run Format Code Action
-        uses: ministryofjustice/modernisation-platform-github-actions/format-code@7f78ec79dd45ec7db8966ecb619c85712d4e68d7 # v3.4.2
+        uses: ministryofjustice/modernisation-platform-github-actions/format-code@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
         with:
           APPLY_FIXES: all 
           APPLY_FIXES_EVENT: all
@@ -57,7 +57,7 @@ jobs:
           REPORT_OUTPUT_FOLDER: none
           
       - name: Run Signed Commit Action
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@7f78ec79dd45ec7db8966ecb619c85712d4e68d7 # v3.4.2
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "GitHub Actions Code Formatter workflow"
