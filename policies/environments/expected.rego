@@ -5,7 +5,7 @@ import rego.v1
 expected :=
 {
   "accounts": [
-    "analytical-platform",
+        "analytical-platform",
     "analytical-platform-common",
     "analytical-platform-compute",
     "analytical-platform-data",
@@ -51,6 +51,7 @@ expected :=
     "electronic-monitoring-data",
     "equip",
     "example",
+    "fred",
     "genesys-call-centre-data",
     "hmpps-domain-services",
     "hmpps-esupervision",
