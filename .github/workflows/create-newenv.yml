@@ -105,7 +105,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b env-request/${{ github.run_id }}
 
       - name: Run create-account.py for new accounts
         if: env.EXISTING_ACCOUNT == 'No'
@@ -142,7 +141,7 @@ jobs:
   
       - name: Create a signed commit for new accounts
         if: env.EXISTING_ACCOUNT == 'No'
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@7f78ec79dd45ec7db8966ecb619c85712d4e68d7 # v3.4.2
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated environment request for $APP_NAME"
@@ -151,7 +150,7 @@ jobs:
 
       - name: Commit changes for existing accounts
         if: env.EXISTING_ACCOUNT == 'Yes'
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@7f78ec79dd45ec7db8966ecb619c85712d4e68d7 # v3.4.2
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated environment amendment request for $APP_NAME"
