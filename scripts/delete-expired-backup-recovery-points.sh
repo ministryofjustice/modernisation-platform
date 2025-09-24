@@ -8,10 +8,6 @@ ROOT_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 ROOT_AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
 
 ROLE_NAME="ModernisationPlatformAccess"
-EXPIRED_RECOVERY_POINTS_FILE="expired-recovery-points.csv"
-
-# Initialize the file with headers
-# echo "Account Name,Expired Recovery Points Count" > $EXPIRED_RECOVERY_POINTS_FILE
 
 # Assume Role Function
 getAssumeRoleCfg() {
@@ -23,9 +19,7 @@ getAssumeRoleCfg() {
 }
 
 # Main logic
-test_account_name="long-term-storage-production"
-
-# Get the account ID from ENVIRONMENT_MANAGEMENT using the account name
+test_account_name="hmpps-esupervision-production"
 test_account_id=$(jq -r ".account_ids[\"$test_account_name\"]" <<< "$ENVIRONMENT_MANAGEMENT")
 
 getAssumeRoleCfg "$test_account_id"
