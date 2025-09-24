@@ -50,7 +50,7 @@ for region in $regions; do
         --backup-vault-name "$vault" \
         --query 'RecoveryPoints[?Status==`EXPIRED`].RecoveryPointArn' \
         --output text); do
-            aws backup delete-recovery-point --backup-vault-name "$vault" --resource-arn "$arn"
+            aws backup delete-recovery-point --backup-vault-name "$vault" --recovery-point-arn "$arn"
     done
 done
 
