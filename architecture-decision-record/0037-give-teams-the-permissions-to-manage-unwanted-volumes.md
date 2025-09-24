@@ -23,14 +23,14 @@ These options were reviewed at the Ways of Engineering meeting, and a decision w
 
 ## Decision
 
-Users will be given the ability to manage (list and delete) their own unwanted EBS volumes.
+Option 1A was chosen - Users will be given the ability to manage (list and delete) their own unwanted EBS volumes in both production and non-production accounts.
 
 To implement this:
 
-- A new SSO role and IAM policy will be created.
+- A new SSO role and IAM policy will be created. We will not be adding these permissions to existing roles and policies.
 
 - The policy will grant only the minimum permissions required to list and delete volumes, ensuring it cannot be used as a general-purpose role.
 
-- As with other SSO roles, access will be managed through association with a GitHub team defined in the environment.json file.
+- As with other SSO roles, access will be managed through association with a GitHub team defined in the environment.json file. It will be for teams to manage the use of this role themselves.
 
-- An issue will be raised for the creation and testing of this new role & policy.
+- A github issue will be raised for the creation and testing of this new role & policy.
