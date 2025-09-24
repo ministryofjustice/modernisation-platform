@@ -32,27 +32,27 @@ getAssumeRoleCfg "$test_account_id"
 
 for region in $regions; do
     AWS_REGION=$region
-
-    #### Check for Backup Recovery Points with Expired Status ####
-    total=0
     vault=everything
 
-    # for arn in $(aws backup list-recovery-points-by-backup-vault \
-    #     --backup-vault-name "$vault" \
-    #     --query 'RecoveryPoints[?Status==`EXPIRED`].RecoveryPointArn' \
-    #     --output text); do
-    #         total=$((total+1))
-    # done
-    # echo "$test_account_name,$total" >> $EXPIRED_RECOVERY_POINTS_FILE
-
-    #### Delete Expired Backup Recovery Points ####
-    for arn in $(aws backup list-recovery-points-by-backup-vault \
+    # Get list of expired recovery points
+    expired_arns=$(aws backup list-recovery-points-by-backup-vault \
         --backup-vault-name "$vault" \
         --query 'RecoveryPoints[?Status==`EXPIRED`].RecoveryPointArn' \
-        --output text); do
+        --output text)
+
+    # Count number of expired recovery points
+    if [ -z "$expired_arns" ]; then
+        echo "[$test_account_name] No expired recovery points found for deletion in region $region."
+    else
+        count=$(echo "$expired_arns" | wc -w)
+        echo "[$test_account_name] Found $count expired recovery points in region $region. Attempting deletion..."
+        deleted=0
+        for arn in $expired_arns; do
             aws backup delete-recovery-point --backup-vault-name "$vault" --recovery-point-arn "$arn"
-    done
-done
+            deleted=$((deleted+1))
+        done
+        echo "[$test_account_name] Successfully deleted $deleted expired recovery points in region $region."
+    fi
 
 # Reset credentials after the test account
 export AWS_ACCESS_KEY_ID=$ROOT_AWS_ACCESS_KEY_ID
