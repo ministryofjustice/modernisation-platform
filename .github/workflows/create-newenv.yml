@@ -39,6 +39,9 @@ jobs:
           OWNER=$(awk -v key="### owner" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
           SSO_GROUP=$(awk -v key="### SSO Group Name" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
           ISOLATED_ACCOUNT=$(awk -v key="### Do you require isolated networking?" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          SLACK=$(awk -v key="### Slack Channel" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          GITHUB_OWNERS=$(awk -v key="### GitHub code owner team slug" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+          GITHUB_REVIEWERS=$(awk -v key="### GitHub actions reviewer team slug" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
       
           echo "EXISTING_ACCOUNT=$EXISTING_ACCOUNT" >> $GITHUB_ENV
           echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
@@ -48,6 +51,9 @@ jobs:
           echo "OWNER=$OWNER" >> $GITHUB_ENV
           echo "SSO_GROUP=$SSO_GROUP" >> $GITHUB_ENV
           echo "ISOLATED_ACCOUNT=$ISOLATED_ACCOUNT" >> $GITHUB_ENV
+          echo "SLACK=$SLACK" >> $GITHUB_ENV
+          echo "GITHUB_OWNERS=$GITHUB_OWNERS" >> $GITHUB_ENV
+          echo "GITHUB_REVIEWERS=$GITHUB_REVIEWERS" >> $GITHUB_ENV
 
       - name: Extract environment selections
         run: |
@@ -113,10 +119,12 @@ jobs:
           python scripts/create-account.py \
             "$APP_NAME" \
             "$APP_TAG" \
+            "$GITHUB_OWNERS" \
+            "$GITHUB_REVIEWERS" \  
             "$BUSINESS_UNIT" \
             "$INFRA_SUPPORT" \
             "$OWNER" \
-            "SLACK_CHANNEL_PLACEHOLDER" \
+            "$SLACK" \
             "false" \
             "$SSO_GROUP" \
             "" \
