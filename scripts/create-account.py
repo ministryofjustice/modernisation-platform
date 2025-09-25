@@ -25,7 +25,7 @@ def add_app_to_rego(app_name, rego_path):
     accounts_sorted = sorted(accounts, key=lambda x: x.lower())
 
     # Rebuild accounts block
-    new_accounts_block = "    " + ",\n    ".join(f'"{a}"' for a in accounts_sorted)
+    new_accounts_block = ",\n    ".join(f'"{a}"' for a in accounts_sorted)
     new_content = content[:match.start(2)] + new_accounts_block + content[match.end(2):]
 
 
