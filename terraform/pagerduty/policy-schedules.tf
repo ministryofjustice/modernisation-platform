@@ -77,8 +77,6 @@ resource "pagerduty_schedule" "primary" {
     rotation_virtual_start       = "2022-07-25T06:00:00Z"
     rotation_turn_length_seconds = 604800
     users = [
-      local.david_sibley,
-      local.david_elliott,
       local.richard_green,
       local.edward_proctor,
       local.ewa_stempel,
@@ -110,10 +108,8 @@ resource "pagerduty_schedule" "secondary" {
     rotation_virtual_start       = "2022-07-25T06:00:00Z"
     rotation_turn_length_seconds = 604800
     users = [
-      local.david_elliott,
-      local.richard_green,
-      local.david_sibley,
       local.ewa_stempel,
+      local.richard_green,
       local.edward_proctor,
       local.sukesh_reddygade,
       local.mark_roberts,
