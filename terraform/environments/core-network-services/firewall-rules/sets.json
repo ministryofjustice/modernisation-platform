@@ -42,6 +42,11 @@
       "${cica-aws-prod-c}",
       "${cica-aws-prod-d}"
     ],
+    "LAA_ECP_DATABASES": [
+      "${laa-ecp-db-lb}",
+      "${laa-ecp-safedb-1}",
+      "${laa-ecp-safedb-3}"
+    ],
     "LAA_PRIVATE_DATA_SUBNETS_DEV": [
       "${laa-mp-development-general-private-subnets-a}",
       "${laa-mp-development-general-private-subnets-b}",
