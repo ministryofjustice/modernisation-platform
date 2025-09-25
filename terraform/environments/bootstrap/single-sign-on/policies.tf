@@ -212,6 +212,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "ec2:Modify*",
       "ec2:CopyImage",
       "ec2:CreateImage",
+      "ec2:CreateImageUsageReport",
       "ec2:CreateVolume",
       "ec2:CopySnapshot",
       "ec2:CreateSnapshot*",
