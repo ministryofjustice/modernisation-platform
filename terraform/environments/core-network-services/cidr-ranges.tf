@@ -71,7 +71,9 @@ locals {
     laa-lz-shared-services-prod    = "10.200.16.0/20"
     laa-appstream-vpc              = "10.200.32.0/19"
     laa-appstream-vpc_additional   = "10.200.68.0/22"
-    laa-ecp-safedb                 = "10.205.14.0/24"
+    laa-ecp-db-lb                  = "10.205.10.0/24"
+    laa-ecp-safedb-1               = "10.205.14.0/24"
+    laa-ecp-safedb-3               = "10.205.11.0/24"
 
     # NEC cidr ranges
     nec-nonprod = "10.120.0.0/24"

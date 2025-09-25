@@ -199,7 +199,7 @@ resource "aws_route53_record" "portal" {
   }
 }
 
-# aws.prd.legalservices.gov.uk record
+# aws.prd.legalservices.gov.uk records
 resource "aws_route53_record" "cwa-prod-db" {
   # checkov:skip=CKV2_AWS_23: "Route53 A Record has Attached Resource"
   zone_id = aws_route53_zone.private_application_zones["aws-prd-legalservices-gov-uk"].zone_id
@@ -208,6 +208,32 @@ resource "aws_route53_record" "cwa-prod-db" {
 
   alias {
     name                   = "cwa-production-database-nlb-12d44851fda0f196.elb.eu-west-2.amazonaws.com"
+    zone_id                = "ZD4D7Y8KGAS4G"
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cwa-prod-db1" {
+  # checkov:skip=CKV2_AWS_23: "Route53 A Record has Attached Resource"
+  zone_id = aws_route53_zone.private_application_zones["aws-prd-legalservices-gov-uk"].zone_id
+  name    = "cwa-prod-db1"
+  type    = "A"
+
+  alias {
+    name                   = "cwa-production-database-nlb-12d44851fda0f196.elb.eu-west-2.amazonaws.com"
+    zone_id                = "ZD4D7Y8KGAS4G"
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cwa-prod-db3" {
+  # checkov:skip=CKV2_AWS_23: "Route53 A Record has Attached Resource"
+  zone_id = aws_route53_zone.private_application_zones["aws-prd-legalservices-gov-uk"].zone_id
+  name    = "cwa-prod-db3"
+  type    = "A"
+
+  alias {
+    name                   = "cwa-production-db-nlb-green-68322e6a90023a4a.elb.eu-west-2.amazonaws.com"
     zone_id                = "ZD4D7Y8KGAS4G"
     evaluate_target_health = false
   }
