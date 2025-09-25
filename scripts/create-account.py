@@ -25,7 +25,7 @@ def add_app_to_rego(app_name, rego_path):
     accounts_sorted = sorted(accounts, key=lambda x: x.lower())
 
     # Rebuild accounts block
-    new_accounts_block = "    " + ",\n    ".join(f'"{a}"' for a in accounts_sorted)
+    new_accounts_block = ",\n    ".join(f'"{a}"' for a in accounts_sorted)
     new_content = content[:match.start(2)] + new_accounts_block + content[match.end(2):]
 
 
@@ -61,10 +61,17 @@ def create_env_json(app_name, app_tag, github_owners, github_reviewers, business
             }
             for level in access_levels if level
         ]
-        environments.append({
+        env_block = {
             "name": env["name"],
             "access": access
-        })
+        }
+
+        # Check if any access level is 'sandbox'
+        if any(level.lower() == "sandbox" for level in access_levels):
+            env_block["nuke"] = ""
+
+        environments.append(env_block)
+
     data = {
         "account-type": "member",
         "codeowners": f"{github_owners}, {github_reviewers}",
