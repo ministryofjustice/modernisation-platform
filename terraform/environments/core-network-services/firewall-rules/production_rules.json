@@ -301,6 +301,13 @@
     "destination_port": "389",
     "protocol": "TCP"
   },
+  "delius_training_to_hmpps_production_ldaps": {
+    "action": "PASS",
+    "source_ip": "${delius-training}",
+    "destination_ip": "${hmpps-production}",
+    "destination_port": "636",
+    "protocol": "TCP"
+  },
   "delius_prod_to_hmpps_production_ldap": {
     "action": "PASS",
     "source_ip": "${delius-prod}",
