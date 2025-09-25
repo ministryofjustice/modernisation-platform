@@ -51,6 +51,7 @@ expected :=
     "electronic-monitoring-data",
     "equip",
     "example",
+    "fred",
     "genesys-call-centre-data",
     "hmpps-domain-services",
     "hmpps-esupervision",
