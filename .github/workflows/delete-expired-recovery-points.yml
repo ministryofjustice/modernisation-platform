@@ -1,13 +1,8 @@
 name: "Delete Expired AWS Backup Recovery Points"
 
 on:
-  push:
-    branches:
-      - feature/11307-monitor-expired-backup-recovery-points
-    paths:
-      - '.github/workflows/delete-expired-recovery-points.yml'
-      - 'scripts/delete-expired-recovery-points.sh'
-  workflow_dispatch:
+  schedule:
+    - cron: '0 5 * * 1' # trigger every Monday at 05:00am
 
 env:
   AWS_REGION: "eu-west-2"
@@ -39,6 +34,7 @@ jobs:
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@7f78ec79dd45ec7db8966ecb619c85712d4e68d7 # v3.4.2
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }} 
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
       - name: Set Account Number
@@ -56,3 +52,13 @@ jobs:
 
       - name: Run AWS Backup Vault Monitoring Script
         run: bash ./scripts/delete-expired-backup-recovery-points.sh
+
+      - name: Slack failure notification
+        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
+        with:
+          webhook-type: incoming-webhook
+          payload: |
+            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+        env:
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}

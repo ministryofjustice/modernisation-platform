@@ -39,7 +39,7 @@ while read -r account_name account_id; do
             echo "[$account_name] Found $count expired recovery points in region $region. Attempting deletion..."
             deleted=0
             for arn in $expired_arns; do
-                # aws backup delete-recovery-point --backup-vault-name "$vault" --region "$region" --recovery-point-arn "$arn"
+                aws backup delete-recovery-point --backup-vault-name "$vault" --region "$region" --recovery-point-arn "$arn"
                 deleted=$((deleted+1))
             done
             echo "[$account_name] Successfully deleted $deleted expired recovery points in region $region."
