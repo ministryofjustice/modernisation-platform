@@ -1,0 +1,26 @@
+{
+  "account-type": "member",
+  "codeowners": "modernisation-platform, modernisation-platform",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": ""
+    }
+  ],
+  "tags": {
+    "application": "modernisation-platform",
+    "business-unit": "modernisation-platform",
+    "infrastructure-support": "Platforms",
+    "owner": "modernisation-platform",
+    "slack-channel": "modernisation-platform",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
