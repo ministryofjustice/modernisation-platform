@@ -116,19 +116,7 @@ jobs:
         if: env.EXISTING_ACCOUNT == 'No'
         run: |
           ls -l scripts
-          python scripts/create-account.py \
-            "$APP_NAME" \
-            "$APP_TAG" \
-            "$GITHUB_OWNERS" \
-            "$GITHUB_REVIEWERS" \  
-            "$BUSINESS_UNIT" \
-            "$INFRA_SUPPORT" \
-            "$OWNER" \
-            "$SLACK" \
-            "false" \
-            "$SSO_GROUP" \
-            "" \
-            "$ENV_SELECTIONS_JSON"
+          python scripts/create-account.py "$APP_NAME" "$APP_TAG" "$GITHUB_OWNERS" "$GITHUB_REVIEWERS" "$BUSINESS_UNIT" "$INFRA_SUPPORT" "$OWNER" "$SLACK" "false" "$SSO_GROUP" "" "$ENV_SELECTIONS_JSON"
 
       - name: Run amend-accounts.py for existing accounts
         if: env.EXISTING_ACCOUNT == 'Yes'
