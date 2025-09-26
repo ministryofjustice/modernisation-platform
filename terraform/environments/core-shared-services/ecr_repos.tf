@@ -1457,6 +1457,47 @@ module "oia_ecr_repo" {
   ]
   tags_common = local.tags
 }
+
+module "connector_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "ccms-connector"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-test"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-preproduction"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-production"]}:root"
+  ]
+  tags_common = local.tags
+}
+
+module "assess_services_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "ccms-service-adaptor"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-development"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-test"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-preproduction"]}:root",
+    "arn:aws:iam::${local.environment_management.account_ids["ccms-oia-production"]}:root"
+  ]
+  tags_common = local.tags
+}
+
 module "vcms_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
