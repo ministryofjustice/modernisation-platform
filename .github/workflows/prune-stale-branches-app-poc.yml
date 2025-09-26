@@ -17,7 +17,7 @@ permissions:
 jobs:
 
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@d7a841b2f40abdff644ed6f14026c1d3fc4b423e # working-version
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@63da34b864617f7bdf019962a01861f718f42a3d # working-version
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -38,7 +38,7 @@ jobs:
 
     steps:
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@d7a841b2f40abdff644ed6f14026c1d3fc4b423e # working-version
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@63da34b864617f7bdf019962a01861f718f42a3d # working-version
         with:
           terraform_github_token: ${{ needs.fetch-secrets.outputs.terraform_github_token }}
           mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
