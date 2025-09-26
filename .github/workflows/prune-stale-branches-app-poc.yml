@@ -62,6 +62,8 @@ jobs:
         with:
           app-id: "2013696"                
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
+          owner: "ministryofjustice"
+          repositories: "modernisation-platform"
 
       - name: Authenticate GitHub CLI as the App
         env:
