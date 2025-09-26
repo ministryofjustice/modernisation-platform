@@ -67,6 +67,7 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
         run: |
+          echo "First 6 chars: ${MP_GITHUB_APP_PRIVATE_KEY:0:6}"
           # gh automatically uses GH_TOKEN if set — no `gh auth login` needed
           gh auth status
 
