@@ -2,6 +2,9 @@ name: Cleanup of Stale Branches App POC
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - issue-11298-poc
   #schedule:
   #- cron: '0 0 * * 0'
 
