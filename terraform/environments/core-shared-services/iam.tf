@@ -135,6 +135,7 @@ resource "aws_iam_role_policy" "member_shared_services" {
       {
         "Effect" : "Allow",
         "Action" : [
+          "ec2:CreateImageUsageReport",
           "imagebuilder:StartImagePipelineExecution",
           "support:Describe*"
         ],
