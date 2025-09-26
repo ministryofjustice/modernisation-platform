@@ -15,25 +15,6 @@ permissions:
 
 jobs:
 
-  check-rate-limit:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Query GitHub API rate limit
-        id: ratelimit
-        run: |
-          echo "Fetching current API rate limit..."
-          RESPONSE=$(curl -s \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/rate_limit)
-
-          echo "$RESPONSE" | jq '.resources.core'
-
-          RESET_EPOCH=$(echo "$RESPONSE" | jq '.resources.core.reset')
-          RESET_UTC=$(date -u -d @"$RESET_EPOCH" '+%Y-%m-%d %H:%M:%S UTC')
-
-          echo "Rate limit resets at: $RESET_UTC"
-
   fetch-secrets:
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@05d820677b1ca711f6dd658362c424723d605cbd # working-version
     secrets:
@@ -74,6 +55,25 @@ jobs:
       - name: Authenticate GitHub CLI
         run: |
           echo "${{ env.TERRAFORM_GITHUB_TOKEN }}" | gh auth login --with-token
+
+
+      - name: Query GitHub API rate limit with PAT
+        id: ratelimit
+        env:
+          GH_PAT: ${{ env.TERRAFORM_GITHUB_TOKEN }}
+        run: |
+          echo "Fetching API rate limit for PAT user..."
+          RESPONSE=$(curl -s \
+            -H "Authorization: token $GH_PAT" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/rate_limit)
+
+          echo "$RESPONSE" | jq '.resources.core'
+
+          RESET_EPOCH=$(echo "$RESPONSE" | jq '.resources.core.reset')
+          RESET_UTC=$(date -u -d @"$RESET_EPOCH" '+%Y-%m-%d %H:%M:%S UTC')
+
+          echo "Rate limit resets at: $RESET_UTC"
 
       # - name: Cleanup Stale Branches 
       #   run: |
