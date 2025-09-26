@@ -17,7 +17,6 @@
           "nomis-test",
           "oasys-national-reporting-test",
           "oasys-test",
-          "planetfm-test",
           "vcms-test"
         ]
       }
