@@ -1,14 +1,12 @@
 {
   "account-type": "member",
-  "codeowners": ["hw469", "hw469"],
   "environments": [
     {
       "name": "development",
       "access": [
         {
           "sso_group_name": "modernisation-platform",
-          "level": "developer",
-          "github_action_reviewer": "true"
+          "level": "developer"
         }
       ]
     }
