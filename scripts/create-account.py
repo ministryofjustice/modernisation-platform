@@ -25,7 +25,7 @@ def add_app_to_rego(app_name, rego_path):
     accounts_sorted = sorted(accounts, key=lambda x: x.lower())
 
     # Rebuild accounts block
-    new_accounts_block = "    " + ",\n    ".join(f'"{a}"' for a in accounts_sorted)
+    new_accounts_block = ",\n    ".join(f'"{a}"' for a in accounts_sorted)
     new_content = content[:match.start(2)] + new_accounts_block + content[match.end(2):]
 
 
@@ -50,7 +50,7 @@ def application_exists(app_name):
                     continue
     return False
 
-def create_env_json(app_name, app_tag, business_unit, infra_support, owner, slack_channel, cni, sso_group, go_live_date, env_selections):
+def create_env_json(app_name, app_tag, github_owners, github_reviewers, business_unit, infra_support, owner, slack_channel, cni, sso_group, go_live_date, env_selections):
     environments = []
     for env in env_selections:
         access_levels = [level.strip() for level in env["access_level"].split(",") if level.strip()]
@@ -61,12 +61,20 @@ def create_env_json(app_name, app_tag, business_unit, infra_support, owner, slac
             }
             for level in access_levels if level
         ]
-        environments.append({
+        env_block = {
             "name": env["name"],
             "access": access
-        })
+        }
+
+        # Check if any access level is 'sandbox'
+        if any(level.lower() == "sandbox" for level in access_levels):
+            env_block["nuke"] = ""
+
+        environments.append(env_block)
+
     data = {
         "account-type": "member",
+        "codeowners": f"{github_owners}, {github_reviewers}",
         "environments": environments,
         "tags": {
             "application": app_tag,
@@ -83,10 +91,10 @@ def create_env_json(app_name, app_tag, business_unit, infra_support, owner, slac
         json.dump(data, f, indent=2)
 
 if __name__ == "__main__":
-    if len(sys.argv) < 10:
-        print("Usage: python create-account.py <app_name> <business_unit> <infra_support> <owner> <slack_channel> <cni> <sso_group> <go_live_date> <env_selections_json>")
+    if len(sys.argv) < 13:
+        print("Usage: python create-account.py <app_name> <app_tag> <github_owners> <github_reviewers> <business_unit> <infra_support> <owner> <slack_channel> <cni> <sso_group> <go_live_date> <env_selections_json>")
         sys.exit(1)
-    app_name, app_tag, business_unit, infra_support, owner, slack_channel, cni, sso_group, go_live_date, env_selections_json = sys.argv[1:11]
+    app_name, app_tag, github_owners, github_reviewers, business_unit, infra_support, owner, slack_channel, cni, sso_group, go_live_date, env_selections_json = sys.argv[1:13]
     cni = cni.lower() == "true"
     env_selections = json.loads(env_selections_json)
     if application_exists(app_name):
@@ -96,6 +104,8 @@ if __name__ == "__main__":
         create_env_json(
             app_name=app_name,
             app_tag=app_tag,
+            github_owners=github_owners,
+            github_reviewers=github_reviewers,
             business_unit=business_unit,
             infra_support=infra_support,
             owner=owner,
