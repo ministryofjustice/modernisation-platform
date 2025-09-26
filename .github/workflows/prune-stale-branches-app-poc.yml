@@ -57,8 +57,10 @@ jobs:
       #     echo "${{ env.TERRAFORM_GITHUB_TOKEN }}" | gh auth login --with-token
 
       - name: Confirm Key Set
+        env:
+          MY_VAR: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
         run: |
-          echo "First 6 chars: ${MP_GITHUB_APP_PRIVATE_KEY:0:6}"
+          echo "First 6 chars: ${MY_VAR:0:6}"
 
       - name: Create GitHub App token
         id: app
