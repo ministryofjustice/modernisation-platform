@@ -55,56 +55,56 @@ jobs:
         run: |
           echo "${{ env.TERRAFORM_GITHUB_TOKEN }}" | gh auth login --with-token
 
-      - name: Cleanup Stale Branches 
-        run: |
-          set -euo pipefail
+      # - name: Cleanup Stale Branches 
+      #   run: |
+      #     set -euo pipefail
 
-          threshold_ts=$(date -d "$INACTIVE_DAYS days ago" +%s)
-          repos=$(gh repo list "$ORG" --limit 1000 --json name,isArchived \
-                   --jq ".[] | select(.name | startswith(\"$PREFIX\")) | select(.isArchived == false) | .name")
+      #     threshold_ts=$(date -d "$INACTIVE_DAYS days ago" +%s)
+      #     repos=$(gh repo list "$ORG" --limit 1000 --json name,isArchived \
+      #              --jq ".[] | select(.name | startswith(\"$PREFIX\")) | select(.isArchived == false) | .name")
 
-          for repo in $repos; do
-            echo -e "\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-            echo "🔍 Processing repository: $ORG/$repo"
-            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      #     for repo in $repos; do
+      #       echo -e "\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      #       echo "🔍 Processing repository: $ORG/$repo"
+      #       echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-            summary="| Branch | Status | Reason |\n|--------|--------|--------|"
-            branches=$(gh api --paginate "repos/$ORG/$repo/branches" --jq '.[].name' || echo "")
+      #       summary="| Branch | Status | Reason |\n|--------|--------|--------|"
+      #       branches=$(gh api --paginate "repos/$ORG/$repo/branches" --jq '.[].name' || echo "")
 
-            for branch in $branches; do
-              if [[ "$SKIP_BRANCHES" == *"$branch"* ]]; then
-                summary+="\n| \`$branch\` | ⏭️ Skipped | Protected branch |"
-                continue
-              fi
+      #       for branch in $branches; do
+      #         if [[ "$SKIP_BRANCHES" == *"$branch"* ]]; then
+      #           summary+="\n| \`$branch\` | ⏭️ Skipped | Protected branch |"
+      #           continue
+      #         fi
 
-              # Get latest commit date
-              last_commit_date=$(gh api "repos/$ORG/$repo/commits?sha=$branch" --jq '.[0].commit.committer.date' 2>/dev/null || echo "")
-              last_commit_ts=$(date -d "$last_commit_date" +%s 2>/dev/null || echo 0)
+      #         # Get latest commit date
+      #         last_commit_date=$(gh api "repos/$ORG/$repo/commits?sha=$branch" --jq '.[0].commit.committer.date' 2>/dev/null || echo "")
+      #         last_commit_ts=$(date -d "$last_commit_date" +%s 2>/dev/null || echo 0)
 
-              if [[ "$last_commit_ts" -eq 0 ]]; then
-                summary+="\n| \`$branch\` | ⚠️ Unknown | Failed to get latest commit |"
-                continue
-              fi
+      #         if [[ "$last_commit_ts" -eq 0 ]]; then
+      #           summary+="\n| \`$branch\` | ⚠️ Unknown | Failed to get latest commit |"
+      #           continue
+      #         fi
 
-              if [[ "$last_commit_ts" -ge "$threshold_ts" ]]; then
-                summary+="\n| \`$branch\` | ✅ Active | Recent commit |"
-                continue
-              fi
+      #         if [[ "$last_commit_ts" -ge "$threshold_ts" ]]; then
+      #           summary+="\n| \`$branch\` | ✅ Active | Recent commit |"
+      #           continue
+      #         fi
 
-              echo "🗑️ Stale branch: $branch (inactive > $INACTIVE_DAYS days)"
-              if [[ "$DRY_RUN" == "true" ]]; then
-                echo "💡 Dry Run: Not deleting $branch"
-                summary+="\n| \`$branch\` | 📝 Dry Run | No commits in $INACTIVE_DAYS+ days |"
-              else
-                if gh api -X DELETE "repos/$ORG/$repo/git/refs/heads/$branch"; then
-                  summary+="\n| \`$branch\` | 🔥 Deleted | No commits in $INACTIVE_DAYS+ days |"
-                else
-                  summary+="\n| \`$branch\` | ⚠️ Failed | GitHub deletion failed |"
-                fi
-              fi
-            done
+      #         echo "🗑️ Stale branch: $branch (inactive > $INACTIVE_DAYS days)"
+      #         if [[ "$DRY_RUN" == "true" ]]; then
+      #           echo "💡 Dry Run: Not deleting $branch"
+      #           summary+="\n| \`$branch\` | 📝 Dry Run | No commits in $INACTIVE_DAYS+ days |"
+      #         else
+      #           if gh api -X DELETE "repos/$ORG/$repo/git/refs/heads/$branch"; then
+      #             summary+="\n| \`$branch\` | 🔥 Deleted | No commits in $INACTIVE_DAYS+ days |"
+      #           else
+      #             summary+="\n| \`$branch\` | ⚠️ Failed | GitHub deletion failed |"
+      #           fi
+      #         fi
+      #       done
 
-            echo -e "$summary"
-            echo "✅ Finished $ORG/$repo"
-            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          done
+      #       echo -e "$summary"
+      #       echo "✅ Finished $ORG/$repo"
+      #       echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      #     done
