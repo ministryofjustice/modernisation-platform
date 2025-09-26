@@ -52,19 +52,32 @@ jobs:
             fi
           done
 
-      - name: Authenticate GitHub CLI
+      # - name: Authenticate GitHub CLI
+      #   run: |
+      #     echo "${{ env.TERRAFORM_GITHUB_TOKEN }}" | gh auth login --with-token
+
+      - name: Create GitHub App token
+        id: app
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: "2013696"                
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
+
+      - name: Authenticate GitHub CLI as the App
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
         run: |
-          echo "${{ env.TERRAFORM_GITHUB_TOKEN }}" | gh auth login --with-token
+          # gh automatically uses GH_TOKEN if set — no `gh auth login` needed
+          gh auth status
 
-
-      - name: Query GitHub API rate limit with PAT
+      - name: Query GitHub API rate limit (App installation)
         id: ratelimit
         env:
-          GH_PAT: ${{ env.TERRAFORM_GITHUB_TOKEN }}
+          APP_TOKEN: ${{ steps.app.outputs.token }}
         run: |
-          echo "Fetching API rate limit for PAT user..."
+          echo "Fetching API rate limit for App installation..."
           RESPONSE=$(curl -s \
-            -H "Authorization: token $GH_PAT" \
+            -H "Authorization: Bearer $APP_TOKEN" \
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/rate_limit)
 
@@ -72,8 +85,11 @@ jobs:
 
           RESET_EPOCH=$(echo "$RESPONSE" | jq '.resources.core.reset')
           RESET_UTC=$(date -u -d @"$RESET_EPOCH" '+%Y-%m-%d %H:%M:%S UTC')
-
           echo "Rate limit resets at: $RESET_UTC"
+
+
+
+
 
       # - name: Cleanup Stale Branches 
       #   run: |
