@@ -1617,6 +1617,16 @@
           "access": "developer"
         }
       ]
+    },
+    {
+      "username": "Linus.Norton",
+      "github-username": "linusnorton",
+      "accounts": [
+        {
+          "account-name": "hmcts-claude-provider-development",
+          "access": "developer"
+        }
+      ]
     }
   ]
 }
