@@ -1,0 +1,24 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "modernisation-platform",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "hmcts-claude-provider",
+    "business-unit": "HMCTS",
+    "infrastructure-support": "SoftwareExcellence@justice.gov.uk",
+    "owner": "SoftwareExcellence@justice.gov.uk",
+    "slack-channel": "rse-dev-tools",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [""],
+  "go-live-date": ""
+}
