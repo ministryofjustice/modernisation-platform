@@ -420,6 +420,13 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
+  "mp_laa_production_to_cp": {
+    "action": "PASS",
+    "source_ip": "${laa-production}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
   "cp_to_mp_laa_production_1522": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
