@@ -284,3 +284,19 @@ resource "aws_secretsmanager_secret" "nonmp_account_ids" {
   kms_key_id  = data.aws_kms_alias.environment_management.target_key_id
   tags        = local.tags
 }
+
+# Modernisation Platform Github App Private Key
+resource "aws_secretsmanager_secret" "modernisation_platform_github_app_private_key" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation not possible
+  name        = "modernisation_platform_github_app_private_key"
+  description = "The private key associated with the modernisation platform github app."
+  kms_key_id  = aws_kms_key.secrets_key_multi_region.id
+  tags        = local.tags
+  replica {
+    region = local.replica_region
+  }
+}
+resource "aws_secretsmanager_secret_version" "modernisation_platform_github_app_private_key" {
+  secret_id = aws_secretsmanager_secret.modernisation_platform_github_app_private_key.id
+  secret_string = "Replace after build"
+}
