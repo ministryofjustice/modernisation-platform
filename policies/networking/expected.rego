@@ -88,14 +88,15 @@ expected :=
       "general": {
         "cidr": "10.26.40.0/21",
         "accounts": [
-          "xhibit-portal-development",
-          "tipstaff-development",
-          "tribunals-development",
-          "dacp-development",
-          "pra-registe-development",
-          "ncas-development",
-          "wardship-development"
-        ]
+              "dacp-development",
+              "hmcts-claude-provider-development",
+              "ncas-development",
+              "pra-registe-development",
+              "tipstaff-development",
+              "tribunals-development",
+              "wardship-development",
+              "xhibit-portal-development"
+            ]
       }
     },
     "hmcts-test": {
