@@ -18,7 +18,7 @@ permissions:
 jobs:
 
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@7f78ec79dd45ec7db8966ecb619c85712d4e68d7 # v3.4.2
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}  
@@ -33,7 +33,7 @@ jobs:
 
       # Step 1.1: Decrypt Secrets
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@7f78ec79dd45ec7db8966ecb619c85712d4e68d7 # v3.4.2
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}

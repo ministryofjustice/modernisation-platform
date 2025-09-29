@@ -372,6 +372,13 @@
     "destination_port": "$LAA_CCMS_SOA",
     "protocol": "TCP"
   },
+  "mp_laa_preproduction_to_cp": {
+    "action": "PASS",
+    "source_ip": "${laa-preproduction}",
+    "destination_ip": "${cloud-platform}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
   "data_engineering_to_hmpps_preproduction_oracledb": {
     "action": "PASS",
     "source_ip": "${data-engineering-stage}",

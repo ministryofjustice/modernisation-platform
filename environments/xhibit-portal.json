@@ -72,8 +72,8 @@
   "tags": {
     "application": "xhibit-portal",
     "business-unit": "HMCTS",
-    "infrastructure-support": "xpsupport@digital.justice.gov.uk",
-    "owner": "dom.tomkins@digital.justice.gov.uk",
+    "infrastructure-support": "xhibitportalsupportteam-gg@justice.gov.uk",
+    "owner": "dom.tomkins@justice.gov.uk",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""],
