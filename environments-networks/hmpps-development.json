@@ -20,7 +20,6 @@
           "nomis-development",
           "oasys-development",
           "performance-hub-development",
-          "planetfm-development",
           "ppud-development",
           "refer-monitor-development",
           "vcms-development"
@@ -38,6 +37,7 @@
       "com.amazonaws.eu-west-2.execute-api",
       "com.amazonaws.eu-west-2.glue",
       "com.amazonaws.eu-west-2.kinesis-streams",
+      "com.amazonaws.eu-west-2.lambda",
       "com.amazonaws.eu-west-2.secretsmanager",
       "com.amazonaws.eu-west-2.transfer.server",
       "com.amazonaws.eu-west-2.appstream.streaming"

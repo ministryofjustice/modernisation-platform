@@ -52,6 +52,7 @@ expected :=
     "equip",
     "example",
     "genesys-call-centre-data",
+    "hmcts-claude-provider",
     "hmpps-domain-services",
     "hmpps-esupervision",
     "hmpps-oem",

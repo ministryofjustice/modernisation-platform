@@ -4,13 +4,14 @@
       "general": {
         "cidr": "10.26.40.0/21",
         "accounts": [
-          "xhibit-portal-development",
+          "dacp-development",
+          "hmcts-claude-provider-development",
+          "ncas-development",
+          "pra-register-development",
           "tipstaff-development",
           "tribunals-development",
-          "dacp-development",
-          "pra-register-development",
-          "ncas-development",
-          "wardship-development"
+          "wardship-development",
+          "xhibit-portal-development"
         ]
       }
     }
