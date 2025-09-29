@@ -17,7 +17,7 @@ permissions:
 jobs:
 
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@63da34b864617f7bdf019962a01861f718f42a3d # working-version
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@37d73a66ae264ef1f7494f159cfc7d017fbd5330 # working-version
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -38,7 +38,7 @@ jobs:
 
     steps:
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@63da34b864617f7bdf019962a01861f718f42a3d # working-version
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@37d73a66ae264ef1f7494f159cfc7d017fbd5330 # working-version
         with:
           terraform_github_token: ${{ needs.fetch-secrets.outputs.terraform_github_token }}
           mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
@@ -76,7 +76,6 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
         run: |
-          echo "First 6 chars: ${MP_GITHUB_APP_PRIVATE_KEY:0:6}"
           # gh automatically uses GH_TOKEN if set — no `gh auth login` needed
           gh auth status
 
