@@ -14,6 +14,9 @@ permissions:
   pull-requests: write
   id-token: write
 
+env:
+  RATE_LIMIT_THRESHOLD: 14000
+
 jobs:
 
   fetch-secrets:
@@ -86,3 +89,11 @@ jobs:
           RESET_UTC=$(date -u -d @"$RESET_EPOCH" '+%Y-%m-%d %H:%M:%S UTC')
           echo "Rate limit resets at: $RESET_UTC"
 
+
+          USED=$(echo "$RESPONSE" | jq '.resources.core.used')
+          if [ "$USED" -gt "$RATE_LIMIT_THRESHOLD" ]; then
+            echo "❌ Rate limit usage above threshold ($USED > $RATE_LIMIT_THRESHOLD). Exiting."
+            exit 1
+          else
+            echo "✅ Rate limit usage within threshold ($USED ≤ $RATE_LIMIT_THRESHOLD)."
+          fi
