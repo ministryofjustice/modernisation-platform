@@ -1,0 +1,88 @@
+name: Github App Use POC
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - issue-11298-poc
+  #schedule:
+  #- cron: '0 0 * * 0'
+  #
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@5125dbfbfed0cfa58847146c3094a9536343d00e # working-version
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  cleanup:
+    name: Cleanup Stale Branches in Modernisation Platform Repos
+    runs-on: ubuntu-latest
+    needs: fetch-secrets
+
+
+    env:
+      DEBUG: false
+      DRY_RUN: false
+      ORG: ministryofjustice
+      PREFIX: modernisation-platform
+      SKIP_BRANCHES: main
+      INACTIVE_DAYS: 90
+
+    steps:
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5125dbfbfed0cfa58847146c3094a9536343d00e # working-version
+        with:
+          terraform_github_token: ${{ needs.fetch-secrets.outputs.terraform_github_token }}
+          mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Ensure CLI Tools Are Installed
+        run: |
+          for tool in gh jq; do
+            if ! command -v "$tool" &> /dev/null; then
+              echo "❌ Required tool '$tool' is not installed."
+              exit 1
+            fi
+          done
+
+      - name: Create GitHub App token
+        id: app
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: "2013696"                
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
+          owner: "ministryofjustice"
+          repositories: "modernisation-platform"
+
+      - name: Authenticate GitHub CLI as the App
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          # gh automatically uses GH_TOKEN if set — no `gh auth login` needed
+          gh auth status
+
+      - name: Query GitHub API rate limit (App installation)
+        id: ratelimit
+        env:
+          APP_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          echo "Fetching API rate limit for App installation..."
+          RESPONSE=$(curl -s \
+            -H "Authorization: Bearer $APP_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/rate_limit)
+
+          echo "$RESPONSE" | jq '.resources.core'
+
+          RESET_EPOCH=$(echo "$RESPONSE" | jq '.resources.core.reset')
+          RESET_UTC=$(date -u -d @"$RESET_EPOCH" '+%Y-%m-%d %H:%M:%S UTC')
+          echo "Rate limit resets at: $RESET_UTC"
+
