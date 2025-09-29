@@ -154,7 +154,6 @@ expected :=
           "nomis-development",
           "oasys-development",
           "performance-hub-development",
-          "planetfm-development",
           "ppud-development",
           "refer-monitor-development",
           "vcms-development"
@@ -173,7 +172,6 @@ expected :=
           "nomis-combined-reporting-test",
           "nomis-data-hub-test",
           "corporate-staff-rostering-test",
-          "planetfm-test",
           "hmpps-oem-test",
           "hmpps-domain-services-test",
           "delius-core-test",
