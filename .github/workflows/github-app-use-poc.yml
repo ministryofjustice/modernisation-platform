@@ -26,7 +26,7 @@ jobs:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   run-app:
-    name: Calls the Modernisation Platform App and checks the api used amount
+    name: Calls Github App & Check API usage
     runs-on: ubuntu-latest
     needs: fetch-secrets
 
