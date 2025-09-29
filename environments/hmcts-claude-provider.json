@@ -8,6 +8,9 @@
           "sso_group_name": "modernisation-platform",
           "level": "developer"
         }
+      ],
+      "additional_reviewers": [
+        "linusnorton"
       ]
     }
   ],
