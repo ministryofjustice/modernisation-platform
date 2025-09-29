@@ -297,6 +297,6 @@ resource "aws_secretsmanager_secret" "modernisation_platform_github_app_private_
   }
 }
 resource "aws_secretsmanager_secret_version" "modernisation_platform_github_app_private_key" {
-  secret_id = aws_secretsmanager_secret.modernisation_platform_github_app_private_key.id
+  secret_id     = aws_secretsmanager_secret.modernisation_platform_github_app_private_key.id
   secret_string = "Replace after build"
 }
