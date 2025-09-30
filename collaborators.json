@@ -1627,6 +1627,34 @@
           "access": "developer"
         }
       ]
+    },
+    {
+      "username": "adam.gadsby",
+      "github-username": "AdamG-Roc",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
+    },
+    {
+      "username": "jonny.davey",
+      "github-username": "jonny190",
+      "accounts": [
+        {
+          "account-name": "equip-development",
+          "access": "developer"
+        },
+        {
+          "account-name": "equip-production",
+          "access": "developer"
+        }
+      ]
     }
   ]
 }
