@@ -9,9 +9,7 @@
           "level": "developer"
         }
       ],
-      "additional_reviewers": [
-        "linusnorton"
-      ]
+      "additional_reviewers": ["linusnorton"]
     }
   ],
   "tags": {
