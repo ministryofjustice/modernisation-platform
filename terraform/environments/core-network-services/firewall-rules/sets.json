@@ -42,6 +42,10 @@
       "${cica-aws-prod-c}",
       "${cica-aws-prod-d}"
     ],
+    "CICA_AWS_SS": [
+      "${cica-aws-ss-a}",
+      "${cica-aws-ss-b}"
+    ],
     "LAA_ECP_DATABASES": [
       "${laa-ecp-db-lb}",
       "${laa-ecp-safedb-1}",
@@ -135,7 +139,7 @@
       "28080",
       "49152:65535"
     ],
-    "TARIFF_TCP": ["1521", "7001", "7002", "8001", "8002"],
+    "TARIFF_TCP": ["22","1521", "7001", "7002", "8001", "8002","8400", "8401", "8403"],
     "LAA_CCMS_TCP": [
       "80",
       "443",
