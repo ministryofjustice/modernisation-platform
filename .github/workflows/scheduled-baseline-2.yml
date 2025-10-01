@@ -73,7 +73,7 @@ jobs:
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
       - id: set-matrix
         name: Set Up Matrix
-        run: echo "matrix=$("sprinkler-development" | jq -ncR '[inputs]')" >> $GITHUB_OUTPUT
+        run: echo "matrix=[sprinkler-development]" >> $GITHUB_OUTPUT
       - name: Check for relevant changes
         id: changes
         run: |
@@ -86,9 +86,9 @@ jobs:
             [run-workflow-jobs]=".github/workflows/scheduled-baseline.yml"
           )
           for key in "${!DIRS[@]}"; do
-            if grep -q "${DIRS[$key]}" <<< "$CHANGES"; then
+            # if grep -q "${DIRS[$key]}" <<< "$CHANGES"; then
               echo "$key=true" >> $GITHUB_OUTPUT
-            fi
+            # fi
           done
     
   test-job:
