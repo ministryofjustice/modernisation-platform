@@ -1,0 +1,86 @@
+name: Scheduled Baselines - Single-Sign-On
+
+on:
+  workflow_call:
+
+    inputs:
+
+        AWS_REGION:
+            required: true
+            type: string
+            default: ""
+            description: "The aws region"           
+
+        environment_management:
+            required: true
+            type: string
+            default: ""
+            description: "The Account List"
+
+        slack_webhook_url:
+            required: true
+            type: string
+            default: ""
+            description: "Slack Webhook URL"
+
+        TF_WORKSPACE:
+            required: true
+            type: string
+            default: ""
+            description: "The workspace"
+
+    secrets:
+
+      PASSPHRASE:
+        required: true
+            
+jobs:
+
+    single-sign-on:
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+            - name: Decrypt Secrets
+              uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
+              with:
+                environment_management: ${{ inputs.environment_management }}
+                slack_webhook_url: ${{ inputs.slack_webhook_url }}
+                PASSPHRASE: ${{ secrets.PASSPHRASE }}
+            - name: Set Account Number
+              run: |
+                ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+                echo "::add-mask::$ACCOUNT_NUMBER"
+                echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@a03048d87541d1d9fcf2ecf528a4a65ba9bd7838 # v5.0.0
+              with:
+                role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
+                role-session-name: githubactionsrolesession
+                aws-region: ${{ inputs.AWS_REGION }}
+            - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+              with:
+                terraform_version: "~1"
+                terraform_wrapper: false
+            - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/single-sign-on
+            - run: bash scripts/terraform-apply.sh terraform/environments/bootstrap/single-sign-on
+            - name: Persist terraform state to backend
+              if: ${{ failure() && hashFiles('terraform/environments/bootstrap/single-sign-on/errored.tfstate') != '' }}
+              run: |
+                bash scripts/terraform-state-push.sh terraform/environments/bootstrap/single-sign-on
+                if [ $? -eq 0 ]; then
+                    echo "STATE_PUSH_SUCCESSFUL=true" >> $GITHUB_ENV
+                fi
+            - name: Slack failure notification
+              uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
+              with:
+                webhook-type: incoming-webhook
+                payload: |
+                    {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+              env:
+                 SLACK_WEBHOOK_URL: ${{ inputs.slack_webhook_url }}
+              if: ${{ failure() }}
+        env:
+          TF_WORKSPACE: ${{ inputs.TF_WORKSPACE }}
+          STATE_PUSH_SUCCESSFUL: false
