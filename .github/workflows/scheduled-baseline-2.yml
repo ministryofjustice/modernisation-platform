@@ -91,15 +91,13 @@ jobs:
             # fi
           done
     
-  test-job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Test Job
-        run: echo "This is a test job."
-  
-
-  run-delegate-access:
+  delegate-access:
     needs: [fetch-secrets, setup-prerequisites]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      needs.setup-prerequisites.outputs.run-delegate-access == 'true' ||
+      needs.setup-prerequisites.outputs.run-workflow-jobs == 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -112,3 +110,110 @@ jobs:
       TF_WORKSPACE: "${{ matrix.workspaces }}"
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  secure-baselines:
+    needs: [fetch-secrets,setup-prerequisites, delegate-access]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-secure-baselines == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.delegate-access.result == 'success' || needs.delegate-access.result == 'skipped')))
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
+    uses: ministryofjustice/modernisation-platform/.github/workflows/reusable-secure-baselines.yml@11637-reusable-branch
+    with:
+      AWS_REGION: "eu-west-2"
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  single-sign-on:
+    needs: [fetch-secrets,setup-prerequisites, delegate-access]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-single-sign-on == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.delegate-access.result == 'success' || needs.delegate-access.result == 'skipped')))
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
+    uses: ministryofjustice/modernisation-platform/.github/workflows/reusable-single-sign-on.yml@11637-reusable-branch
+    with:
+      AWS_REGION: "eu-west-2"
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  member-bootstrap:
+    needs: [fetch-secrets,setup-prerequisites, single-sign-on]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-member-bootstrap == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.single-sign-on.result == 'success' || needs.single-sign-on.result == 'skipped')))
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
+    uses: ministryofjustice/modernisation-platform/.github/workflows/reusable-member-bootstrap.yml@11637-reusable-branch
+    with:
+      AWS_REGION: "eu-west-2"
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+  
+  update-permission-sets:
+    runs-on: ubuntu-latest
+    needs: [fetch-secrets,delegate-access,single-sign-on]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      needs.setup-prerequisites.outputs.run-workflow-jobs == 'true' ||
+      (always() && (needs.single-sign-on.result == 'success' || needs.delegate-access.result == 'success'))
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Set Account Number
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+      - name: Set Root Account Number
+        run: |
+          ROOT_ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
+          echo ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER >> $GITHUB_ENV
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@a03048d87541d1d9fcf2ecf528a4a65ba9bd7838 # v5.0.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Update permission sets
+        run: |
+          aws sts assume-role --role-arn "arn:aws:iam::${ROOT_ACCOUNT_NUMBER}:role/ModernisationPlatformSSOAdministrator" --role-session-name ssoadminrolesession > creds
+          $(echo "export AWS_ACCESS_KEY_ID=$(echo $(cat creds) | sed -n 's/.*"AccessKeyId": "\([^"]*\)".*/\1/p')")
+          $(echo "export AWS_SECRET_ACCESS_KEY=$(echo $(cat creds) | sed -n 's/.*"SecretAccessKey": "\([^"]*\)".*/\1/p')")
+          $(echo "export AWS_SESSION_TOKEN=$(echo $(cat creds) | sed -n 's/.*"SessionToken": "\([^"]*\)".*/\1/p')")
+          grep "ModernisationPlatformSSOAdministrator" <<< $(aws sts get-caller-identity) || { echo 'Failed to assume role' ; exit 1; }
+          bash scripts/update-sso-permission-sets.sh
+      - name: Slack failure notification
+        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
+        with:
+          webhook-type: incoming-webhook
+          payload: |
+            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+        env:
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
