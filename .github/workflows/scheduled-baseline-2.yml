@@ -3,8 +3,8 @@ name: "Terraform: scheduled baseline 2"
 on:
 #   schedule:
 #     - cron: "30 22 * * 0"
-  push:
-    branches:
+  #push:
+  #  branches:
     #  - main
     #  - 11637-new-calling-workflow
     #paths:
