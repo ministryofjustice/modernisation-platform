@@ -520,11 +520,11 @@ module "modernisation-platform-terraform-aws-data-firehose" {
   }
 }
 
-module "modernisation-platform-terraform-waf" {
+module "modernisation-platform-terraform-aws-waf" {
   source      = "./modules/repository"
-  name        = "modernisation-platform-terraform-waf"
+  name        = "modernisation-platform-terraform-aws-waf"
   type        = "module"
-  description = "Module offers various WAF rules as a module and custom ones such as IP Address blocking from an ssm parameter, as well as AWS managed ones."
+  description = "Module offers various WAF rules in AWS as a module and custom ones such as IP Address blocking from an ssm parameter, as well as AWS managed ones."
   topics = [
     "aws",
     "cloudwatch",
