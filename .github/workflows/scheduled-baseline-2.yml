@@ -3,10 +3,10 @@ name: "Terraform: scheduled baseline 2"
 on:
 #   schedule:
 #     - cron: "30 22 * * 0"
-  #push:
-  #  branches:
+  push:
+   branches:
     #  - main
-    #  - 11637-new-calling-workflow
+     - 11637-new-calling-workflow
     #paths:
     #   - '.github/workflows/scheduled-baseline.yml'
     #   - 'terraform/environments/bootstrap/**'
@@ -31,78 +31,84 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-
-    fetch-secrets:
-        uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
-        secrets:
-            MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
-            PASSPHRASE: ${{ secrets.PASSPHRASE }}
-
-    setup-prerequisites:
-        runs-on: ubuntu-latest
-        needs: fetch-secrets
-        outputs:
-            matrix: ${{ steps.set-matrix.outputs.matrix }}
-            run-delegate-access: ${{ steps.changes.outputs.run-delegate-access }}
-            run-member-bootstrap: ${{ steps.changes.outputs.run-member-bootstrap }}
-            run-secure-baselines: ${{ steps.changes.outputs.run-secure-baselines }}
-            run-single-sign-on: ${{ steps.changes.outputs.run-single-sign-on }}
-            run-workflow-jobs: ${{ steps.changes.outputs.run-workflow-jobs }}
-        steps:
-            - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-              with: 
-                fetch-depth: 0
-            - name: Decrypt Secrets
-              uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
-              with:
-                environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
-                PASSPHRASE: ${{ secrets.PASSPHRASE }}
-            - name: Set Account Number
-              run: |
-                ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
-                echo "::add-mask::$ACCOUNT_NUMBER"
-                echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
-            - name: Configure AWS Credentials
-              uses: aws-actions/configure-aws-credentials@a03048d87541d1d9fcf2ecf528a4a65ba9bd7838 # v5.0.0
-              with:
-                role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
-                role-session-name: githubactionsrolesession
-                aws-region: ${{ env.AWS_REGION }}
-            - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
-              with:
-                terraform_version: "~1"
-                terraform_wrapper: false
-            - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
-            - name: Set Up Matrix
-              id: set-matrix
-              run: echo "matrix=$("sprinkler-development" | jq -ncR '[inputs]')" >> $GITHUB_OUTPUT
-            - name: Check for relevant changes
-              id: changes
-              run: |
-                CHANGES=$(git diff --name-only HEAD~1 HEAD)
-                declare -A DIRS=(
-                    [run-delegate-access]="terraform/environments/bootstrap/delegate-access/"
-                    [run-member-bootstrap]="terraform/environments/bootstrap/member-bootstrap/"
-                    [run-secure-baselines]="terraform/environments/bootstrap/secure-baselines/"
-                    [run-single-sign-on]="terraform/environments/bootstrap/single-sign-on/"
-                    [run-workflow-jobs]=".github/workflows/scheduled-baseline.yml"
-                )
-                for key in "${!DIRS[@]}"; do
-                    if grep -q "${DIRS[$key]}" <<< "$CHANGES"; then
-                    echo "$key=true" >> $GITHUB_OUTPUT
-                    fi
-                done
-
-    run-delegate-access:
-        strategy:
-            fail-fast: false
-            matrix:
-                workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
-        needs: [fetch-secrets, setup-prerequisites]
-        uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/scheduled-baselines/delegate-access.yml@11637-delegate-access  # current value
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+  setup-prerequisites:
+    runs-on: ubuntu-latest
+    needs: fetch-secrets
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      run-delegate-access: ${{ steps.changes.outputs.run-delegate-access }}
+      run-member-bootstrap: ${{ steps.changes.outputs.run-member-bootstrap }}
+      run-secure-baselines: ${{ steps.changes.outputs.run-secure-baselines }}
+      run-single-sign-on: ${{ steps.changes.outputs.run-single-sign-on }}
+      run-workflow-jobs: ${{ steps.changes.outputs.run-workflow-jobs }}
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with: 
+          fetch-depth: 0
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
         with:
-            AWS_REGION: "eu-west-2"
-            environment_management: ${{ needs.fetch-fetch-secrets.outputs.environment_management }}
-            slack_webhook_url: ${{ needs.fetch-fetch-secrets.outputs.slack_webhook_url }}
-            PASSPHRASE: ${{ needs.fetch-fetch-secrets.outputs.PASSPHRASE }}
-            TF_WORKSPACE: ${{ matrix.workspaces }}
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Set Account Number
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@a03048d87541d1d9fcf2ecf528a4a65ba9bd7838 # v5.0.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
+      - id: set-matrix
+        name: Set Up Matrix
+        run: echo "matrix=$("sprinkler-development" | jq -ncR '[inputs]')" >> $GITHUB_OUTPUT
+      - name: Check for relevant changes
+        id: changes
+        run: |
+          CHANGES=$(git diff --name-only HEAD~1 HEAD)
+          declare -A DIRS=(
+            [run-delegate-access]="terraform/environments/bootstrap/delegate-access/"
+            [run-member-bootstrap]="terraform/environments/bootstrap/member-bootstrap/"
+            [run-secure-baselines]="terraform/environments/bootstrap/secure-baselines/"
+            [run-single-sign-on]="terraform/environments/bootstrap/single-sign-on/"
+            [run-workflow-jobs]=".github/workflows/scheduled-baseline.yml"
+          )
+          for key in "${!DIRS[@]}"; do
+            if grep -q "${DIRS[$key]}" <<< "$CHANGES"; then
+              echo "$key=true" >> $GITHUB_OUTPUT
+            fi
+          done
+    
+  test-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test Job
+        run: echo "This is a test job."
+  
+
+  run-delegate-access:
+    needs: [fetch-secrets, setup-prerequisites]
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.setup-prerequisites.outputs.matrix) }}
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/scheduled-baselines/delegate-access.yml@11637-delegate-access
+    with:
+      AWS_REGION: "eu-west-2"
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      PASSPHRASE: ${{ needs.fetch-secrets.outputs.PASSPHRASE }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+
