@@ -109,6 +109,6 @@ jobs:
       AWS_REGION: "eu-west-2"
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
-      PASSPHRASE: ${{ needs.fetch-secrets.outputs.PASSPHRASE }}
       TF_WORKSPACE: "${{ matrix.workspaces }}"
-
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
