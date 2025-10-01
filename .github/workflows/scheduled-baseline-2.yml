@@ -73,7 +73,7 @@ jobs:
       - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
       - id: set-matrix
         name: Set Up Matrix
-        run: echo "matrix=[sprinkler-development]" >> $GITHUB_OUTPUT
+        run: echo 'matrix=["sprinkler-development"]' >> $GITHUB_OUTPUT
       - name: Check for relevant changes
         id: changes
         run: |
