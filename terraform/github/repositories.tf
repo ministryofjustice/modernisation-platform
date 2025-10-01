@@ -519,3 +519,22 @@ module "modernisation-platform-terraform-aws-data-firehose" {
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
+
+module "modernisation-platform-terraform-waf" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-waf"
+  type        = "module"
+  description = "Module offers various WAF rules as a module and custom ones such as IP Address blocking from an ssm parameter, as well as AWS managed ones."
+  topics = [
+    "aws",
+    "cloudwatch",
+    "module",
+    "terraform"
+  ]
+  secrets = {
+    PASSPHRASE                            = local.decrypt_passphrase
+    MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
+    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
+  }
+}
