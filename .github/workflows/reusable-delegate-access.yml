@@ -1,4 +1,4 @@
-name: Scheduled Baselines Delegate Access
+name: Scheduled Baselines - Delegate Access
 
 on:
   workflow_call:
