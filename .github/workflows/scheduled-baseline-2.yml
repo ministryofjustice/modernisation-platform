@@ -46,7 +46,7 @@ jobs:
       run-secure-baselines: ${{ steps.changes.outputs.run-secure-baselines }}
       run-single-sign-on: ${{ steps.changes.outputs.run-single-sign-on }}
       run-workflow-jobs: ${{ steps.changes.outputs.run-workflow-jobs }}
-      aws-region: ${{ steps.setup-aws-region.outputs.AWS_REGION }}
+      aws-region: ${{ steps.setup-aws-region.outputs.aws-region }}
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with: 
