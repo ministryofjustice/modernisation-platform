@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -euo pipefail
 
 export AWS_PAGER=""
 regions="eu-west-1 eu-west-2 eu-west-3 eu-central-1 us-east-1"
