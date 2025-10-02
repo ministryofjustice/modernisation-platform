@@ -57,6 +57,7 @@ jobs:
 
     main:
       runs-on: ubuntu-latest
+      name: "Job - ${{ inputs.job_name }}"
       steps:
         - name: Log Job Name
           run: | 
