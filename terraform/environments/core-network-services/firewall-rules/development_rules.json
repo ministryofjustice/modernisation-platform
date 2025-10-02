@@ -636,6 +636,20 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
+  "cica_aws_ss_to_cica_tariff_dev": {
+    "action": "PASS",
+    "source_ip": "$CICA_AWS_SS",
+    "destination_ip": "${cica-development}",
+    "destination_port": "$TARIFF_TCP",
+    "protocol": "TCP"
+  },
+  "cica_tariff_dev_to_cica_aws_ss": {
+    "action": "PASS",
+    "source_ip": "${cica-development}",
+    "destination_ip": "$CICA_AWS_SS",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
   "ap-ingest-dev_to_cica_tariff_uat": {
     "action": "PASS",
     "source_ip": "${analytical-platform-ingest-dev}",

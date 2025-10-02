@@ -503,5 +503,68 @@
     "destination_ip": "${cloud-platform}",
     "destination_port": "443",
     "protocol": "TCP"
+  },
+   "cica_aws_prod_to_cica_tariff_prod": {
+    "action": "PASS",
+    "source_ip": "$CICA_AWS_PROD",
+    "destination_ip": "${cica-production}",
+    "destination_port": "$TARIFF_TCP",
+    "protocol": "TCP"
+  },
+  "cica_tariff_prod_to_cica_aws_prod": {
+    "action": "PASS",
+    "source_ip": "${cica-production}",
+    "destination_ip": "$CICA_AWS_PROD",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "cica_tariff_prod_to_cica_aws_prod_icmp": {
+    "action": "PASS",
+    "source_ip": "${cica-production}",
+    "destination_ip": "$CICA_AWS_PROD",
+    "destination_port": "ANY",
+    "protocol": "ICMP"
+  },
+  "cica_devices_to_cica_tariff_prod": {
+    "action": "PASS",
+    "source_ip": "${cica-end-user-devices}",
+    "destination_ip": "${cica-production}",
+    "destination_port": "$TARIFF_TCP",
+    "protocol": "TCP"
+  },
+  "cica_ras_to_cica_tariff_prod": {
+    "action": "PASS",
+    "source_ip": "${cica-ras-nat}",
+    "destination_ip": "${cica-production}",
+    "destination_port": "$TARIFF_TCP",
+    "protocol": "TCP"
+  },
+  "cica_tariff_prod_to_cica_devices": {
+    "action": "PASS",
+    "source_ip": "${cica-production}",
+    "destination_ip": "${cica-end-user-devices}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "cica_tariff_production_to_cica_ras_nat": {
+    "action": "PASS",
+    "source_ip": "${cica-production}",
+    "destination_ip": "${cica-ras-nat}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "cica_aws_ss_to_cica_tariff_production": {
+    "action": "PASS",
+    "source_ip": "$CICA_AWS_SS",
+    "destination_ip": "${cica-production}",
+    "destination_port": "$TARIFF_TCP",
+    "protocol": "TCP"
+  },
+  "cica_tariff_test_to_cica_aws_ss": {
+    "action": "PASS",
+    "source_ip": "${cica-production}",
+    "destination_ip": "$CICA_AWS_SS",
+    "destination_port": "ANY",
+    "protocol": "TCP"
   }
 }

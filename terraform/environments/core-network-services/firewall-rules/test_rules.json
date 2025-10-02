@@ -461,6 +461,20 @@
     "destination_port": "ANY",
     "protocol": "TCP"
   },
+  "cica_aws_ss_to_cica_tariff_test": {
+    "action": "PASS",
+    "source_ip": "$CICA_AWS_SS",
+    "destination_ip": "${cica-test}",
+    "destination_port": "$TARIFF_TCP",
+    "protocol": "TCP"
+  },
+  "cica_tariff_test_to_cica_aws_ss": {
+    "action": "PASS",
+    "source_ip": "${cica-test}",
+    "destination_ip": "$CICA_AWS_SS",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
   "laa_uat_to_laa_test_ccms_soa_mp": {
     "action": "PASS",
     "source_ip": "${laa-test}",
