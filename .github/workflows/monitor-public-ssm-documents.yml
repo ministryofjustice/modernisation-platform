@@ -62,4 +62,4 @@ jobs:
         with:
           name: public-ssm-documents
           path: public-ssm-documents-*.csv
-          retention-days: 3
+          retention-days: 2
