@@ -8,7 +8,6 @@ ROOT_AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN:-}
 
 ROLE_NAME="ModernisationPlatformAccess" # Change if needed
 
-# Your ENVIRONMENT_MANAGEMENT must be set in the environment as JSON.
 : "${ENVIRONMENT_MANAGEMENT:?Set ENVIRONMENT_MANAGEMENT (JSON with account_ids)}"
 
 getAssumeRoleCfg() {
@@ -21,20 +20,23 @@ getAssumeRoleCfg() {
 
 accounts=$(jq -r '.account_ids | to_entries[] | "\(.key) \(.value)"' <<< "$ENVIRONMENT_MANAGEMENT")
 
+OUTFILE="public-ssm-documents-consolidated.csv"
+echo 'AccountId,AccountName,Region,Name,Owner,DocumentType,ARN,Visibility' > "$OUTFILE"
+
 while read -r account_name account_id; do
     getAssumeRoleCfg "$account_id"
+    found_docs=0
 
     for region in $regions; do
-        echo "Scanning $account_name ($account_id) in $region..."
-
-        OUTPUT_FILE="public-ssm-documents-${account_id}-${region}.csv"
-        echo 'AccountId,AccountName,Region,Name,Owner,DocumentType,ARN,Visibility' > "$OUTPUT_FILE"
-
         DOC_TYPES="Automation,Command,Policy,Session,ChangeCalendar,ProblemAnalysis,ApplicationConfiguration,ApplicationConfigurationSchema"
-
         DOCS_JSON=$(aws ssm list-documents --region "$region" \
           --filters "Key=Owner,Values=Self" "Key=DocumentType,Values=${DOC_TYPES}" \
           --query 'DocumentIdentifiers' --output json 2>/dev/null || echo '[]')
+
+        doc_count=$(echo "$DOCS_JSON" | jq 'length')
+        if (( doc_count > 0 )); then
+            found_docs=1
+        fi
 
         echo "$DOCS_JSON" | jq -c '.[]' | while read -r doc; do
             NAME=$(echo "$doc" | jq -r '.Name')
@@ -58,10 +60,8 @@ while read -r account_name account_id; do
 
             printf '"%s","%s","%s","%s","%s","%s","%s","%s"\n' \
               "$account_id" "$account_name" "$region" "$NAME" "$OWNER" "$TYPE" "$ARN" "$VISIBILITY" \
-              >> "$OUTPUT_FILE"
+              >> "$OUTFILE"
         done
-
-        echo "Results for $account_name ($account_id) in $region written to $OUTPUT_FILE"
     done
 
     # Reset credentials after each account
@@ -70,3 +70,5 @@ while read -r account_name account_id; do
     export AWS_SESSION_TOKEN=$ROOT_AWS_SESSION_TOKEN
     rm -f credentials.json
 done <<< "$accounts"
+
+echo "Results written to $OUTFILE"
