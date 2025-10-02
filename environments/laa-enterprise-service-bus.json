@@ -51,6 +51,10 @@
         {
           "sso_group_name": "v1-hub20-developers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "hub20-validation",
+          "level": "security-audit"
         }
       ]
     },
