@@ -87,9 +87,9 @@ jobs:
             [run-workflow-jobs]=".github/workflows/scheduled-baseline.yml"
           )
           for key in "${!DIRS[@]}"; do
-            if grep -q "${DIRS[$key]}" <<< "$CHANGES"; then
+            #if grep -q "${DIRS[$key]}" <<< "$CHANGES"; then
               echo "$key=true" >> $GITHUB_OUTPUT
-            fi
+            #fi
           done
 
   define-jobs:
@@ -139,12 +139,15 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
-    uses: ministryofjustice/modernisation-platform/.github/workflows/reusable-delegate-access.yml@11637-reusable-branch
+    uses: ministryofjustice/modernisation-platform/.github/workflows/reusable-scheduled-baselines.yml@11637-reusable-branch
     with:
       AWS_REGION: "eu-west-2"
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
       TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/delegate-access"
+      aws_role: "ModernisationPlatformGithubActionsRole"
+      aws_account_id_name: "aws_organizations_root_account_id"
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
   
