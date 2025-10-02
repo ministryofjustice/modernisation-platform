@@ -335,6 +335,7 @@ expected :=
               "laa-ccms-soa-preproduction",
               "laa-mail-relay-preproduction",
               "laa-oem-preproduction",
+              "laa-enterprise-service-bus-preproduction",
               "maat-preproduction",
               "maatdb-preproduction",
               "mlra-preproduction",
