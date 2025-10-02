@@ -41,12 +41,6 @@ jobs:
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }} 
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
-      - name: Export ENVIRONMENT_MANAGEMENT for script
-        run: |
-          echo "ENVIRONMENT_MANAGEMENT<<EOF" >> $GITHUB_ENV
-          echo "${{ needs.fetch-secrets.outputs.environment_management }}" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
@@ -60,8 +54,6 @@ jobs:
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Run Public SSM Documents Monitoring Script
-        run: bash ./scripts/check-public-ssm-documents.sh
 
       - name: Upload SSM Documents CSV files
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
