@@ -86,9 +86,9 @@ jobs:
             [run-workflow-jobs]=".github/workflows/scheduled-baseline.yml"
           )
           for key in "${!DIRS[@]}"; do
-            # if grep -q "${DIRS[$key]}" <<< "$CHANGES"; then
+            if grep -q "${DIRS[$key]}" <<< "$CHANGES"; then
               echo "$key=true" >> $GITHUB_OUTPUT
-            # fi
+            fi
           done
 
   define-jobs:
