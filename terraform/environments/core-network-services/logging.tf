@@ -42,6 +42,7 @@ resource "aws_cloudwatch_log_group" "public_dns_query_logging" {
   retention_in_days = 365
   kms_key_id        = aws_kms_key.public_dns_query_logging.arn
   tags              = local.tags
+  depends_on        = [aws_kms_key.public_dns_query_logging]
 }
 
 resource "aws_cloudwatch_log_resource_policy" "public_dns_query_logging" {
