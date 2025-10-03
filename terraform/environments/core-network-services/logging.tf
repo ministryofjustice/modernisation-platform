@@ -33,3 +33,42 @@ module "stream_firewall_logs" {
   destination_http_endpoint  = data.aws_ssm_parameter.cortex_xsiam_endpoint.value
   tags                       = local.tags
 }
+
+
+# Public DNS Query Logging
+resource "aws_cloudwatch_log_group" "public_dns_query_logging" {
+  provider          = aws.aws-us-east-1
+  name              = "/aws/route53/resolver/core-public-dns-query-logging"
+  retention_in_days = 365
+  tags              = local.tags
+}
+
+resource "aws_cloudwatch_log_resource_policy" "public_dns_query_logging" {
+  provider    = aws.aws-us-east-1
+  policy_name = "core-public-dns-query-logging"
+  policy_document = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowRoute53ToPutLogs"
+        Effect = "Allow"
+        Principal = {
+          Service = "route53.amazonaws.com"
+        }
+        Action = ["logs:CreateLogStream", "logs:DescribeLogStreams", "logs:PutLogEvents"]
+        Resource = [
+          aws_cloudwatch_log_group.public_dns_query_logging.arn,
+          "${aws_cloudwatch_log_group.public_dns_query_logging.arn}:*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_route53_query_log" "public_dns_query_logging" {
+  provider                 = aws.aws-us-east-1
+  for_each                 = aws_route53_zone.application_zones
+  zone_id                  = each.value.zone_id
+  cloudwatch_log_group_arn = aws_cloudwatch_log_group.public_dns_query_logging.arn
+  depends_on               = [aws_cloudwatch_log_resource_policy.public_dns_query_logging]
+}
