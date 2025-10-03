@@ -76,6 +76,7 @@ resource "aws_route53_query_log" "public_dns_query_logging" {
 }
 
 resource "aws_kms_key" "public_dns_query_logging" {
+  provider                = aws.aws-us-east-1
   description             = "KMS key for encrypting public DNS query logging CloudWatch log group"
   enable_key_rotation     = true
   deletion_window_in_days = 30
@@ -83,6 +84,7 @@ resource "aws_kms_key" "public_dns_query_logging" {
 }
 
 resource "aws_kms_alias" "public_dns_query_logging" {
+  provider      = aws.aws-us-east-1
   name          = "alias/public-dns-query-logging"
   target_key_id = aws_kms_key.public_dns_query_logging.id
 }
