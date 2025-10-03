@@ -40,6 +40,7 @@ resource "aws_cloudwatch_log_group" "public_dns_query_logging" {
   provider          = aws.aws-us-east-1
   name              = "/aws/route53/resolver/core-public-dns-query-logging"
   retention_in_days = 365
+  kms_key_id        = aws_kms_key.public_dns_query_logging.arn
   tags              = local.tags
 }
 
@@ -71,4 +72,55 @@ resource "aws_route53_query_log" "public_dns_query_logging" {
   zone_id                  = each.value.zone_id
   cloudwatch_log_group_arn = aws_cloudwatch_log_group.public_dns_query_logging.arn
   depends_on               = [aws_cloudwatch_log_resource_policy.public_dns_query_logging]
+}
+
+resource "aws_kms_key" "public_dns_query_logging" {
+  description             = "KMS key for encrypting public DNS query logging CloudWatch log group"
+  enable_key_rotation     = true
+  deletion_window_in_days = 30
+  tags                    = local.tags
+}
+
+resource "aws_kms_alias" "public_dns_query_logging" {
+  name          = "alias/public-dns-query-logging"
+  target_key_id = aws_kms_key.public_dns_query_logging.id
+}
+
+resource "aws_kms_key_policy" "public_dns_query_logging" {
+  provider = aws.aws-us-east-1
+  key_id   = aws_kms_key.public_dns_query_logging.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "Allow administration of the key"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Action   = "kms:*"
+        Resource = "*"
+      },
+      {
+        Sid    = "Allow CloudWatch Logs to use the key"
+        Effect = "Allow"
+        Principal = {
+          Service = "logs.us-east-1.amazonaws.com"
+        }
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ]
+        Resource = "*"
+        Condition = {
+          StringEquals = {
+            "kms:EncryptionContext:aws:logs:arn" = "arn:aws:logs:us-east-1:${local.environment_management.account_ids["core-network-services-production"]}:log-group:${aws_cloudwatch_log_group.public_dns_query_logging.name}"
+          }
+        }
+      }
+    ]
+  })
 }
