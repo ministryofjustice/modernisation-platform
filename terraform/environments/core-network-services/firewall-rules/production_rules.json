@@ -504,7 +504,7 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-   "cica_aws_prod_to_cica_tariff_prod": {
+  "cica_aws_prod_to_cica_tariff_prod": {
     "action": "PASS",
     "source_ip": "$CICA_AWS_PROD",
     "destination_ip": "${cica-production}",
