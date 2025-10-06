@@ -20,6 +20,7 @@ locals {
     tribunals     = "tribunals.gov.uk",
     wardship      = "wardship-agreements-register.service.justice.gov.uk"
     legalservices = "legalservices.gov.uk"
+    laa           = "laa.service.justice.gov.uk"
   }
 
   private-application-zones = {

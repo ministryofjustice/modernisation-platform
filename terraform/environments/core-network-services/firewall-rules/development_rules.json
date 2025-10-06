@@ -160,6 +160,13 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
+  "gp_to_laa_development_mp_https": {
+    "action": "PASS",
+    "source_ip": "${global-protect}",
+    "destination_ip": "${laa-development}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "mp_laa_development_to_cp_https": {
     "action": "PASS",
     "source_ip": "${laa-development}",

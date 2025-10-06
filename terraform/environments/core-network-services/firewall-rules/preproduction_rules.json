@@ -379,6 +379,13 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
+  "gp_to_laa_preproduction_mp_https": {
+    "action": "PASS",
+    "source_ip": "${global-protect}",
+    "destination_ip": "${laa-preproduction}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "data_engineering_to_hmpps_preproduction_oracledb": {
     "action": "PASS",
     "source_ip": "${data-engineering-stage}",
