@@ -1655,6 +1655,16 @@
           "access": "developer"
         }
       ]
+    },
+    {
+      "username": "liam.rundle",
+      "github-username": "lrundle01",
+      "accounts": [
+        {
+          "account-name": "core-network-services",
+          "access": "read-only"
+        }
+      ]
     }
   ]
 }
