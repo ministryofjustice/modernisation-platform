@@ -427,6 +427,13 @@
     "destination_port": "1521",
     "protocol": "TCP"
   },
+  "gp_to_laa_production_mp_https": {
+    "action": "PASS",
+    "source_ip": "${global-protect}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "cp_to_mp_laa_production_1522": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
