@@ -1858,9 +1858,6 @@ locals {
   }
   # repeat users, e.g. for a 3 day stint of concierge
   dso_schedule_user_order = [
-    "robertsweetman",
-    "robertsweetman",
-    "robertsweetman",
     "dave.kent",
     "dave.kent",
     "dave.kent",
@@ -1961,8 +1958,8 @@ resource "pagerduty_schedule" "dso" {
 
   layer {
     name                         = "Primary Schedule"
-    start                        = "2025-05-15T00:00:00Z"
-    rotation_virtual_start       = "2025-05-15T00:00:00Z"
+    start                        = "2025-10-10T00:00:00Z"
+    rotation_virtual_start       = "2025-10-10T00:00:00Z"
     rotation_turn_length_seconds = 86400
 
     users = [
