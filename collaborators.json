@@ -1661,7 +1661,7 @@
       "github-username": "lrundle01",
       "accounts": [
         {
-          "account-name": "core-network-services",
+          "account-name": "core-network-services-production",
           "access": "read-only"
         }
       ]
