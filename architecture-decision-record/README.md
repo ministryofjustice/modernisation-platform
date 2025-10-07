@@ -40,7 +40,7 @@ This is our architecture decision log, made during the design and build of the M
 1. ❌ [Use of AWS Cloud Map](0034-use-cloud-map.md)
 1. ✅ [Use of Terraform Workspaces](0035-terraform-workspaces.md)
 1. ✅ [Use of Component Isolation](0036-managing-environment-collaboration-with-component-isolation.md)
-1. ✅ [Permissions to manage Unwanted EBS Volumes](0037-give-teams-the-permission-to-manage-unwanted-volumes.md)
+1. ✅ [Permissions to manage Unwanted EBS Volumes](0037-give-teams-the-permissions-to-manage-unwanted-volumes.md)
 
 ## Statuses
 
