@@ -45,3 +45,13 @@ provider "aws" {
   }
   default_tags { tags = local.tags }
 }
+
+# AWS provider for us-east-1 (required for Route 53 Public DNS logging)
+provider "aws" {
+  alias  = "aws-us-east-1"
+  region = "us-east-1"
+  assume_role {
+    role_arn = "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/ModernisationPlatformAccess"
+  }
+  default_tags { tags = local.tags }
+}

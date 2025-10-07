@@ -125,3 +125,47 @@ resource "aws_kms_key_policy" "public_dns_query_logging" {
     ]
   })
 }
+
+resource "aws_iam_role" "cwl_to_core_logging" {
+  name = "${local.application_name}-cwl-to-core-logging"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "logs.us-east-1.amazonaws.com"
+        },
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "cwl_to_core_logging_policy" {
+  name = "${local.application_name}-cwl-to-core-logging-policy"
+  role = aws_iam_role.cwl_to_core_logging.name
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect   = "Allow",
+      Action   = ["logs:PutSubscriptionFilter"],
+      Resource = "arn:aws:logs:us-east-1:${local.environment_management.account_ids["core-logging-production"]}:destination/r53-public-dns-logs-destination" // Update to us-east-1
+    }]
+  })
+}
+
+resource "aws_cloudwatch_log_subscription_filter" "forward_to_core_logging" {
+  name            = "${local.application_name}-waf-to-core-logging"
+  log_group_name  = aws_cloudwatch_log_group.public_dns_query_logging.name
+  filter_pattern  = "{$.action = * }"
+  destination_arn = "arn:aws:logs:us-east-1:${local.environment_management.account_ids["core-logging-production"]}:destination:r53-public-dns-logs-destination" // Update to us-east-1
+  role_arn        = aws_iam_role.cwl_to_core_logging.arn
+
+  depends_on = [
+    aws_cloudwatch_log_group.public_dns_query_logging,
+    aws_iam_role_policy.cwl_to_core_logging_policy
+  ]
+}

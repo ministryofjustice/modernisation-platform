@@ -1,6 +1,7 @@
 # Kinesis Firehose stream for centralized r53 public DNS query logging
 resource "aws_iam_role" "firehose_to_s3_r53_public_dns" {
-  name = "firehose_to_s3_r53_public_dns"
+  provider = aws.aws-us-east-1
+  name     = "firehose_to_s3_r53_public_dns"
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -19,7 +20,8 @@ resource "aws_iam_role" "firehose_to_s3_r53_public_dns" {
 }
 
 resource "aws_iam_role_policy" "firehose_to_s3_r53_public_dns_policy" {
-  role = aws_iam_role.firehose_to_s3_r53_public_dns.id
+  provider = aws.aws-us-east-1
+  role     = aws_iam_role.firehose_to_s3_r53_public_dns.id
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -47,14 +49,14 @@ resource "aws_iam_role_policy" "firehose_to_s3_r53_public_dns_policy" {
           "firehose:PutRecord",
           "firehose:PutRecordBatch"
         ]
-        Resource = "arn:aws:firehose:eu-west-2:${data.aws_caller_identity.current.account_id}:deliverystream/r53-public-dns-logs-to-s3"
+        Resource = "arn:aws:firehose:us-east-1:${data.aws_caller_identity.current.account_id}:deliverystream/r53-public-dns-logs-to-s3"
       },
       {
         Effect = "Allow"
         Action = [
           "logs:PutLogEvents"
         ]
-        Resource = "arn:aws:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/kinesisfirehose/r53-public-dns-logs-to-s3:*"
+        Resource = "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:log-group:/aws/kinesisfirehose/r53-public-dns-logs-to-s3:*"
       }
     ]
   })
@@ -63,6 +65,7 @@ resource "aws_iam_role_policy" "firehose_to_s3_r53_public_dns_policy" {
 resource "aws_kinesis_firehose_delivery_stream" "r53_public_dns_logs_to_s3" {
   # checkov:skip=CKV_AWS_240: "Encryption is enabled with a CMK via kms_key_arn"
   # checkov:skip=CKV_AWS_241: "Encryption is enabled with a CMK via kms_key_arn"
+  provider    = aws.aws-us-east-1
   name        = "r53-public-dns-logs-to-s3"
   destination = "extended_s3"
 
