@@ -1,0 +1,580 @@
+name: "Terraform: scheduled baseline - Extended Matrix"
+
+on:
+  schedule:
+     - cron: "30 22 * * 0"
+  push:
+    branches:
+      - main
+    paths:
+       - '.github/workflows/scheduled-baseline.yml'
+       - 'terraform/environments/bootstrap/**'
+       - '!**.md'
+       - 'scripts/update-sso-permission-sets.sh'
+  workflow_dispatch:
+
+env:
+  TF_IN_AUTOMATION: true
+  AWS_REGION: "eu-west-2"
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+defaults:
+  run:
+    shell: bash
+
+concurrency: 
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+
+# fetch-secrets
+
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+# setup-prerequisites
+
+  setup-prerequisites:
+    runs-on: ubuntu-latest
+    needs: fetch-secrets
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      run-delegate-access: ${{ steps.changes.outputs.run-delegate-access }}
+      run-member-bootstrap: ${{ steps.changes.outputs.run-member-bootstrap }}
+      run-secure-baselines: ${{ steps.changes.outputs.run-secure-baselines }}
+      run-single-sign-on: ${{ steps.changes.outputs.run-single-sign-on }}
+      run-workflow-jobs: ${{ steps.changes.outputs.run-workflow-jobs }}
+      aws-region: ${{ steps.setup-aws-region.outputs.aws-region }}
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with: 
+          fetch-depth: 0
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Set Account Number
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@a03048d87541d1d9fcf2ecf528a4a65ba9bd7838 # v5.0.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+      - run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
+      - id: set-matrix
+        name: Set Up Matrix
+        run: echo "matrix=$(terraform -chdir=terraform/environments/bootstrap/delegate-access workspace list | sed -e "s/*//" -e "s/^[[:space:]]*//" -e "/default/d" -e "/^$/d" | sort -u | jq -ncR '[inputs]')" >> $GITHUB_OUTPUT
+      - id: setup-aws-region
+        name: Setup AWS Region # required to pass the aws-region as an input to the reusable workflow from the global env var
+        run: |
+          echo "aws-region=$AWS_REGION" >> "$GITHUB_OUTPUT"
+      - name: Check for relevant changes
+        id: changes
+        run: |
+          CHANGES=$(git diff --name-only HEAD~1 HEAD)
+          declare -A DIRS=(
+            [run-delegate-access]="terraform/environments/bootstrap/delegate-access/"
+            [run-member-bootstrap]="terraform/environments/bootstrap/member-bootstrap/"
+            [run-secure-baselines]="terraform/environments/bootstrap/secure-baselines/"
+            [run-single-sign-on]="terraform/environments/bootstrap/single-sign-on/"
+            [run-workflow-jobs]=".github/workflows/scheduled-baseline.yml"
+          )
+          for key in "${!DIRS[@]}"; do
+            if grep -q "${DIRS[$key]}" <<< "$CHANGES"; then
+              echo "$key=true" >> $GITHUB_OUTPUT
+            fi
+          done
+
+  define-jobs:
+    runs-on: ubuntu-latest
+    needs: setup-prerequisites
+    env:
+      account_list: ${{ needs.setup-prerequisites.outputs.matrix }}
+    outputs:
+      block_1: ${{ steps.split.outputs.block_1 }}
+      block_2: ${{ steps.split.outputs.block_2 }}
+      block_3: ${{ steps.split.outputs.block_3 }}
+      block_4: ${{ steps.split.outputs.block_4 }}
+    steps:
+      - id: split
+        run: |
+          BLOCK_COUNT=4
+          sorted=$(echo "$account_list" | jq -c 'sort')
+          total=$(echo "$sorted" | jq 'length')
+          base=$(( total / BLOCK_COUNT ))
+          remainder=$(( total % BLOCK_COUNT ))
+          start=0
+          for i in $(seq 1 $BLOCK_COUNT); do
+            key="block_$i"
+            # Distribute remainder
+            extra=0
+            if [ "$i" -le "$remainder" ]; then
+              extra=1
+            fi
+            end=$(( start + base + extra ))
+            block=$(echo "$sorted" | jq ".[$start:$end]")
+            compact=$(echo "$block" | jq -c '.')
+            echo "::group::$key"
+            echo "$block" | jq .
+            echo "::endgroup::"
+            echo "$key=$compact" >> "$GITHUB_OUTPUT"
+            start=$end
+          done
+
+
+# delegate-access
+
+  delegate-access-1:
+    needs: [fetch-secrets, setup-prerequisites, define-jobs]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      needs.setup-prerequisites.outputs.run-delegate-access == 'true' ||
+      needs.setup-prerequisites.outputs.run-workflow-jobs == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "delegate-access-1"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/delegate-access"
+      aws_role: "ModernisationPlatformGithubActionsRole"
+      aws_account_id_name: "aws_organizations_root_account_id"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+  
+  delegate-access-2:
+    needs: [fetch-secrets, setup-prerequisites, define-jobs]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      needs.setup-prerequisites.outputs.run-delegate-access == 'true' ||
+      needs.setup-prerequisites.outputs.run-workflow-jobs == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_2) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "delegate-access-2"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/delegate-access"
+      aws_role: "ModernisationPlatformGithubActionsRole"
+      aws_account_id_name: "aws_organizations_root_account_id"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  delegate-access-3:
+    needs: [fetch-secrets, setup-prerequisites, define-jobs]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      needs.setup-prerequisites.outputs.run-delegate-access == 'true' ||
+      needs.setup-prerequisites.outputs.run-workflow-jobs == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_3) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "delegate-access-3"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/delegate-access"
+      aws_role: "ModernisationPlatformGithubActionsRole"
+      aws_account_id_name: "aws_organizations_root_account_id"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  delegate-access-4:
+    needs: [fetch-secrets, setup-prerequisites, define-jobs]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      needs.setup-prerequisites.outputs.run-delegate-access == 'true' ||
+      needs.setup-prerequisites.outputs.run-workflow-jobs == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_4) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "delegate-access-4"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/delegate-access"
+      aws_role: "ModernisationPlatformGithubActionsRole"
+      aws_account_id_name: "aws_organizations_root_account_id"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+# secure-baselines
+
+  secure-baselines-1:
+    needs: [fetch-secrets,setup-prerequisites, define-jobs, delegate-access-1]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-secure-baselines == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.delegate-access-1.result == 'success' || needs.delegate-access-1.result == 'skipped')))
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "secure-baselines-1"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/secure-baselines"
+      aws_role: "github-actions-apply"
+      aws_account_id_name: "modernisation_platform_account_id"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  secure-baselines-2:
+    needs: [fetch-secrets,setup-prerequisites, define-jobs, delegate-access-2]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-secure-baselines == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.delegate-access-2.result == 'success' || needs.delegate-access-2.result == 'skipped')))
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_2) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "secure-baselines-2"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/secure-baselines"
+      aws_role: "github-actions-apply"
+      aws_account_id_name: "modernisation_platform_account_id"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  secure-baselines-3:
+    needs: [fetch-secrets,setup-prerequisites, define-jobs, delegate-access-3]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-secure-baselines == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.delegate-access-3.result == 'success' || needs.delegate-access-3.result == 'skipped')))
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_3) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "secure-baselines-3"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/secure-baselines"
+      aws_role: "github-actions-apply"
+      aws_account_id_name: "modernisation_platform_account_id"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  secure-baselines-4:
+    needs: [fetch-secrets,setup-prerequisites, define-jobs, delegate-access-4]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-secure-baselines == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.delegate-access-4.result == 'success' || needs.delegate-access-4.result == 'skipped')))
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_4) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "secure-baselines-4"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/secure-baselines"
+      aws_role: "github-actions-apply"
+      aws_account_id_name: "modernisation_platform_account_id"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+
+# single-sign-on
+
+  single-sign-on-1:
+    needs: [fetch-secrets,setup-prerequisites, define-jobs, delegate-access-1]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-single-sign-on == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.delegate-access-1.result == 'success' || needs.delegate-access-1.result == 'skipped')))
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "single-sign-on-1"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/single-sign-on"
+      aws_role: "github-actions-apply"
+      aws_account_id_name: "modernisation_platform_account_id"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  single-sign-on-2:
+    needs: [fetch-secrets,setup-prerequisites, define-jobs, delegate-access-2]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-single-sign-on == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.delegate-access-2.result == 'success' || needs.delegate-access-2.result == 'skipped')))
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_2) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "single-sign-on-2"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/single-sign-on"
+      aws_role: "github-actions-apply"
+      aws_account_id_name: "modernisation_platform_account_id"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  single-sign-on-3:
+    needs: [fetch-secrets,setup-prerequisites, define-jobs, delegate-access-3]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-single-sign-on == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.delegate-access-3.result == 'success' || needs.delegate-access-3.result == 'skipped')))
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_3) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "single-sign-on-3"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/single-sign-on"
+      aws_role: "github-actions-apply"
+      aws_account_id_name: "modernisation_platform_account_id"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  single-sign-on-4:
+    needs: [fetch-secrets,setup-prerequisites, define-jobs, delegate-access-4]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-single-sign-on == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.delegate-access-4.result == 'success' || needs.delegate-access-4.result == 'skipped')))
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_4) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "single-sign-on-4"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/single-sign-on"
+      aws_role: "github-actions-apply"
+      aws_account_id_name: "modernisation_platform_account_id"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+
+# member-bootstrap
+
+  member-bootstrap-1:
+    needs: [fetch-secrets,setup-prerequisites, define-jobs, single-sign-on-1]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-member-bootstrap == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.single-sign-on-1.result == 'success' || needs.single-sign-on-1.result == 'skipped')))
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "member-bootstrap-1"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/member-bootstrap"
+      aws_role: "github-actions-apply"
+      aws_account_id_name: "modernisation_platform_account_id"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  member-bootstrap-2:
+    needs: [fetch-secrets,setup-prerequisites, define-jobs, single-sign-on-2]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-member-bootstrap == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.single-sign-on-2.result == 'success' || needs.single-sign-on-2.result == 'skipped')))
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_2) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "member-bootstrap-2"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/member-bootstrap"
+      aws_role: "github-actions-apply"
+      aws_account_id_name: "modernisation_platform_account_id"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  member-bootstrap-3:
+    needs: [fetch-secrets,setup-prerequisites, define-jobs, single-sign-on-3]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-member-bootstrap == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.single-sign-on-3.result == 'success' || needs.single-sign-on-3.result == 'skipped')))
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_3) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "member-bootstrap-3"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/member-bootstrap"
+      aws_role: "github-actions-apply"
+      aws_account_id_name: "modernisation_platform_account_id"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  member-bootstrap-4:
+    needs: [fetch-secrets,setup-prerequisites, define-jobs, single-sign-on-4]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((needs.setup-prerequisites.outputs.run-member-bootstrap == 'true' || needs.setup-prerequisites.outputs.run-workflow-jobs == 'true') && (always() && (needs.single-sign-on-4.result == 'success' || needs.single-sign-on-4.result == 'skipped')))
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_4) }}
+    uses: ./.github/workflows/reusable-scheduled-baselines.yml
+    with:
+      JOB_NAME: "member-bootstrap-4"
+      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      TF_WORKSPACE: "${{ matrix.workspaces }}"
+      working_directory: "terraform/environments/bootstrap/member-bootstrap"
+      aws_role: "github-actions-apply"
+      aws_account_id_name: "modernisation_platform_account_id"
+    secrets:
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+  
+
+# update-permission-sets
+
+  update-permission-sets:
+    runs-on: ubuntu-latest
+    needs: [fetch-secrets, setup-prerequisites, delegate-access-1, delegate-access-2, delegate-access-3, delegate-access-4, single-sign-on-1, single-sign-on-2, single-sign-on-3, single-sign-on-4]
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      needs.setup-prerequisites.outputs.run-workflow-jobs == 'true' ||
+      needs.single-sign-on-1.result == 'success' ||
+      needs.single-sign-on-2.result == 'success' ||
+      needs.single-sign-on-3.result == 'success' ||
+      needs.single-sign-on-4.result == 'success' ||
+      needs.delegate-access-1.result == 'success' ||
+      needs.delegate-access-2.result == 'success' ||
+      needs.delegate-access-3.result == 'success' ||
+      needs.delegate-access-4.result == 'success'
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Set Account Number
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.modernisation_platform_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+      - name: Set Root Account Number
+        run: |
+          ROOT_ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
+          echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
+          echo ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER >> $GITHUB_ENV
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@a03048d87541d1d9fcf2ecf528a4a65ba9bd7838 # v5.0.0
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Update permission sets
+        run: |
+          aws sts assume-role --role-arn "arn:aws:iam::${ROOT_ACCOUNT_NUMBER}:role/ModernisationPlatformSSOAdministrator" --role-session-name ssoadminrolesession > creds
+          $(echo "export AWS_ACCESS_KEY_ID=$(echo $(cat creds) | sed -n 's/.*"AccessKeyId": "\([^"]*\)".*/\1/p')")
+          $(echo "export AWS_SECRET_ACCESS_KEY=$(echo $(cat creds) | sed -n 's/.*"SecretAccessKey": "\([^"]*\)".*/\1/p')")
+          $(echo "export AWS_SESSION_TOKEN=$(echo $(cat creds) | sed -n 's/.*"SessionToken": "\([^"]*\)".*/\1/p')")
+          grep "ModernisationPlatformSSOAdministrator" <<< $(aws sts get-caller-identity) || { echo 'Failed to assume role' ; exit 1; }
+          bash scripts/update-sso-permission-sets.sh
+      - name: Slack failure notification
+        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
+        with:
+          webhook-type: incoming-webhook
+          payload: |
+            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+        env:
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
