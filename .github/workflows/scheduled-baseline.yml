@@ -1,16 +1,16 @@
 name: "Terraform: scheduled baseline"
 
 on:
-  schedule:
-    - cron: "30 22 * * 0"
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/scheduled-baseline.yml'
-      - 'terraform/environments/bootstrap/**'
-      - '!**.md'
-      - 'scripts/update-sso-permission-sets.sh'
+  # schedule:
+  #   - cron: "30 22 * * 0"
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - '.github/workflows/scheduled-baseline.yml'
+  #     - 'terraform/environments/bootstrap/**'
+  #     - '!**.md'
+  #     - 'scripts/update-sso-permission-sets.sh'
   workflow_dispatch:
 
 env:
