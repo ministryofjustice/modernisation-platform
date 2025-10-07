@@ -21,8 +21,8 @@ resource "aws_cloudwatch_log_destination_policy" "r53_public_dns_logs" {
       Action    = "logs:PutSubscriptionFilter",
       Resource  = aws_cloudwatch_log_destination.r53_public_dns_logs.arn,
       Condition = {
-        StringEquals = {
-          "aws:PrincipalAccount" = local.environment_management.account_ids["core-network-services-production"]
+        StringLike = {
+          "aws:PrincipalOrgPaths" = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
         }
       }
     }]
