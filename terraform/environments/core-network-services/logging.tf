@@ -127,7 +127,8 @@ resource "aws_kms_key_policy" "public_dns_query_logging" {
 }
 
 resource "aws_iam_role" "cwl_to_core_logging" {
-  name = "${local.application_name}-cwl-to-core-logging"
+  provider = aws.aws-us-east-1
+  name     = "${local.application_name}-cwl-to-core-logging"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -144,8 +145,9 @@ resource "aws_iam_role" "cwl_to_core_logging" {
 }
 
 resource "aws_iam_role_policy" "cwl_to_core_logging_policy" {
-  name = "${local.application_name}-cwl-to-core-logging-policy"
-  role = aws_iam_role.cwl_to_core_logging.name
+  provider = aws.aws-us-east-1
+  name     = "${local.application_name}-cwl-to-core-logging-policy"
+  role     = aws_iam_role.cwl_to_core_logging.name
 
   policy = jsonencode({
     Version = "2012-10-17",
@@ -158,6 +160,7 @@ resource "aws_iam_role_policy" "cwl_to_core_logging_policy" {
 }
 
 resource "aws_cloudwatch_log_subscription_filter" "forward_to_core_logging" {
+  provider        = aws.aws-us-east-1
   name            = "${local.application_name}-waf-to-core-logging"
   log_group_name  = aws_cloudwatch_log_group.public_dns_query_logging.name
   filter_pattern  = "{$.action = * }"
