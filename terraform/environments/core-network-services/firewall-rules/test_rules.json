@@ -565,5 +565,12 @@
     "destination_ip": "${cloud-platform}",
     "destination_port": "1521",
     "protocol": "TCP"
+  },
+  "laa_test_to_laa_ecp_2484": {
+    "action": "PASS",
+    "source_ip": "${laa-test}",
+    "destination_ip": "$LAA_ECP_DATABASES",
+    "destination_port": "2484",
+    "protocol": "TCP"
   }
 }
