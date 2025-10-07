@@ -33,6 +33,7 @@ data "aws_iam_policy_document" "cortex_user_policy" {
       aws_sqs_queue.mp_cloudtrail_log_queue.arn,
       aws_sqs_queue.mp_modernisation_platform_waf_logs_queue.arn,
       aws_sqs_queue.mp_config_logs_queue.arn,
+      aws_sqs_queue.r53_public_dns_logs_queue.arn,
       [for key in aws_sqs_queue.logging : key.arn]
     ])
   }
@@ -47,7 +48,9 @@ data "aws_iam_policy_document" "cortex_user_policy" {
         module.s3-bucket-modernisation-platform-waf-logs.bucket.arn,
         "${module.s3-bucket-modernisation-platform-waf-logs.bucket.arn}/*",
         module.s3_bucket_config_logs.bucket.arn,
-        "${module.s3_bucket_config_logs.bucket.arn}/*"
+        "${module.s3_bucket_config_logs.bucket.arn}/*",
+        module.s3_bucket_r53_public_dns_logs.bucket.arn,
+        "${module.s3_bucket_r53_public_dns_logs.bucket.arn}/*"
       ],
       [for key in aws_s3_bucket.logging : "${key.arn}/*"]
     )
