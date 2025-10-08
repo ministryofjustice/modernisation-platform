@@ -454,7 +454,6 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "lakeformation:CreateLakeFormationOptIn",
       "lakeformation:DeleteLakeFormationOptIn",
       "lakeformation:ListLFTagExpressions",
-      "lakeformation:AddLFTagsToResource",
       "lakeformation:RemoveLFTagsFromResource",
       "lakeformation:GetResourceLFTags",
       "lakeformation:GetLFTag",
