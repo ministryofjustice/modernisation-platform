@@ -154,17 +154,17 @@ resource "aws_iam_role_policy" "cwl_to_core_logging_policy" {
     Statement = [{
       Effect   = "Allow",
       Action   = ["logs:PutSubscriptionFilter"],
-      Resource = "arn:aws:logs:us-east-1:${local.environment_management.account_ids["core-logging-production"]}:destination/r53-public-dns-logs-destination" // Update to us-east-1
+      Resource = "arn:aws:logs:us-east-1:${local.environment_management.account_ids["core-logging-production"]}:destination:r53-public-dns-logs-destination"
     }]
   })
 }
 
 resource "aws_cloudwatch_log_subscription_filter" "forward_to_core_logging" {
   provider        = aws.aws-us-east-1
-  name            = "${local.application_name}-waf-to-core-logging"
+  name            = "${local.application_name}-cwl-to-core-logging"
   log_group_name  = aws_cloudwatch_log_group.public_dns_query_logging.name
-  filter_pattern  = "{$.action = * }"
-  destination_arn = "arn:aws:logs:us-east-1:${local.environment_management.account_ids["core-logging-production"]}:destination:r53-public-dns-logs-destination" // Update to us-east-1
+  filter_pattern  = ""
+  destination_arn = "arn:aws:logs:us-east-1:${local.environment_management.account_ids["core-logging-production"]}:destination:r53-public-dns-logs-destination"
   role_arn        = aws_iam_role.cwl_to_core_logging.arn
 
   depends_on = [
