@@ -363,16 +363,6 @@
       ]
     },
     {
-      "username": "martin.hiorns",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "oasys-development",
-          "access": "s3-upload"
-        }
-      ]
-    },
-    {
       "username": "morgan.boniface",
       "github-username": "morgan-boniface",
       "accounts": [
@@ -634,60 +624,6 @@
         },
         {
           "account-name": "youth-justice-networking-production",
-          "access": "developer"
-        }
-      ]
-    },
-    {
-      "username": "michal.laskowski",
-      "github-username": "mlaskowski4",
-      "accounts": [
-        {
-          "account-name": "delius-core-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "delius-core-test",
-          "access": "developer"
-        },
-        {
-          "account-name": "delius-core-preproduction",
-          "access": "developer"
-        }
-      ]
-    },
-    {
-      "username": "madan.thapa",
-      "github-username": "madan-thapa",
-      "accounts": [
-        {
-          "account-name": "delius-core-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "delius-core-test",
-          "access": "developer"
-        },
-        {
-          "account-name": "delius-core-preproduction",
-          "access": "developer"
-        }
-      ]
-    },
-    {
-      "username": "sean.valmonte",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "delius-core-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "delius-core-test",
-          "access": "developer"
-        },
-        {
-          "account-name": "delius-core-preproduction",
           "access": "developer"
         }
       ]
