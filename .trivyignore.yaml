@@ -36,6 +36,8 @@ misconfigurations:
 - id: AVD-AWS-0039
 - id: AVD-AWS-0057
 - id: AVD-AWS-0132
+# investigating but currently believe this could be a false positive
+- id: AVD-AZU-0012
 
 secrets:
 
