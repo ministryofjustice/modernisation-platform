@@ -23,8 +23,8 @@ resource "aws_cloudwatch_log_destination_policy" "r53_public_dns_logs" {
       Action    = "logs:PutSubscriptionFilter",
       Resource  = aws_cloudwatch_log_destination.r53_public_dns_logs.arn,
       Condition = {
-        StringLike = {
-          "aws:PrincipalOrgPaths" = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+        StringEquals = {
+          "aws:PrincipalOrgID" = data.aws_organizations_organization.current.id
         }
       }
     }]
