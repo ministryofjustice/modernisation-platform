@@ -460,7 +460,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "lakeformation:GetLFTag",
       "lakeformation:ListLFTags",
       "lakeformation:SearchDatabasesByLFTags",
-      "lakeformation:SearchTablesByLFTags"
+      "lakeformation:SearchTablesByLFTags",
       "lakeformation:GetDataAccess",
       "lambda:PutRuntimeManagementConfig",
       "states:Describe*",
