@@ -456,6 +456,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "lakeformation:ListLFTagExpressions",
       "lakeformation:GetDataAccess",
       "lambda:PutRuntimeManagementConfig",
+      "sqs:*",
       "states:Describe*",
       "states:List*",
       "states:Stop*",
