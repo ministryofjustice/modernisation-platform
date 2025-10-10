@@ -1288,7 +1288,7 @@ resource "aws_ssm_parameter" "ad_fixngo" {
 
 #trivy:ignore:AVD-AWS-0345: Required for SSM patching module to access S3 buckets
 module "ad_fixngo_ssm_patching" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching.git?ref=1c10b851580368edd40bb1c9330d915f95dd8a2c" # v5.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-ssm-patching.git?ref=1c10b851580368edd40bb1c9330d915f95dd8a2c" # v5.1.0
   providers = {
     aws.bucket-replication = aws
   }
@@ -1301,6 +1301,7 @@ module "ad_fixngo_ssm_patching" {
   }
   patch_schedules       = local.ad_fixngo.ssm_patching.patch_schedules
   patch_classifications = local.ad_fixngo.ssm_patching.patch_classifications
+  simple_patching       = true
   tags = merge(local.tags, {
     name   = "ad-fixngo-ssm-patching"
     module = "ssm-patching-module"
