@@ -208,7 +208,7 @@ resource "aws_route53_record" "cwa-prod-db" {
   type    = "A"
 
   alias {
-    name                   = "cwa-production-database-nlb-12d44851fda0f196.elb.eu-west-2.amazonaws.com"
+    name                   = "cwa-production-db-nlb-blue-green-6a4d60ef7d3e7b0b.elb.eu-west-2.amazonaws.com"
     zone_id                = "ZD4D7Y8KGAS4G"
     evaluate_target_health = false
   }
@@ -238,4 +238,4 @@ resource "aws_route53_record" "cwa-prod-db3" {
     zone_id                = "ZD4D7Y8KGAS4G"
     evaluate_target_health = false
   }
-}
+} 

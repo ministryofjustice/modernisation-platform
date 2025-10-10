@@ -29,7 +29,8 @@
       "com.amazonaws.eu-west-2.execute-api",
       "com.amazonaws.eu-west-2.kinesis-streams",
       "com.amazonaws.eu-west-2.lambda",
-      "com.amazonaws.eu-west-2.secretsmanager"
+      "com.amazonaws.eu-west-2.secretsmanager",
+      "com.amazonaws.eu-west-2.sqs"
     ],
     "additional_private_zones": [],
     "additional_vpcs": [],

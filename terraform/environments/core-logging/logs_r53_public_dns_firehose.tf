@@ -76,7 +76,7 @@ resource "aws_kinesis_firehose_delivery_stream" "r53_public_dns_logs_to_s3" {
     error_output_prefix = "r53-public-dns-logs-error/"
     buffering_interval  = 300
     buffering_size      = 5
-    compression_format  = "GZIP"
+    compression_format  = "UNCOMPRESSED"
     kms_key_arn         = aws_kms_key.r53_public_dns_logs.arn
   }
 
