@@ -244,6 +244,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "events:DisableRule",
       "events:EnableRule",
       "fis:*",
+      "glue:DeleteTable",
       "glue:GetConnection",
       "glue:GetConnections",
       "guardduty:*",
