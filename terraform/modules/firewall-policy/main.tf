@@ -26,8 +26,8 @@ resource "aws_networkfirewall_firewall_policy" "main" {
         resource_arn = format("arn:aws:network-firewall:%s:aws-managed:stateful-rulegroup/%s", data.aws_region.current.name, stateful_rule_group_reference.key)
       }
     }
-    stateless_fragment_default_actions = ["aws:forward_to_sfe"]
     stateless_default_actions          = ["aws:forward_to_sfe"]
+    stateless_fragment_default_actions = ["aws:drop"]
   }
   lifecycle {
     create_before_destroy = false
