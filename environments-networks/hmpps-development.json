@@ -4,7 +4,6 @@
       "general": {
         "cidr": "10.26.24.0/21",
         "accounts": [
-          "corporate-staff-rostering-development",
           "delius-alfresco-development",
           "delius-core-development",
           "delius-iaps-development",

@@ -4,7 +4,6 @@
       "general": {
         "cidr": "10.26.8.0/21",
         "accounts": [
-          "corporate-staff-rostering-test",
           "delius-alfresco-test",
           "delius-core-test",
           "delius-jitbit-test",

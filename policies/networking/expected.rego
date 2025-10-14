@@ -138,7 +138,6 @@ expected :=
       "general": {
         "cidr": "10.26.24.0/21",
         "accounts": [
-          "corporate-staff-rostering-development",
           "delius-alfresco-development",
           "delius-core-development",
           "delius-iaps-development",
@@ -171,7 +170,6 @@ expected :=
           "delius-jitbit-test",
           "nomis-combined-reporting-test",
           "nomis-data-hub-test",
-          "corporate-staff-rostering-test",
           "hmpps-oem-test",
           "hmpps-domain-services-test",
           "delius-core-test",
