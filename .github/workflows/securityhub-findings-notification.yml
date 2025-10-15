@@ -105,7 +105,7 @@ jobs:
     with:
       account_name: ${{ matrix.account.name }}
       aws_region: ${{ vars.AWS_REGION }}
-      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.securityhub_slack_webhooks }}
     secrets:
       account_id: ${{ matrix.account.id }}
       passphrase: ${{ secrets.PASSPHRASE }}
@@ -121,7 +121,7 @@ jobs:
     with:
       account_name: ${{ matrix.account.name }}
       aws_region: ${{ vars.AWS_REGION }}
-      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.securityhub_slack_webhooks }}
     secrets:
       account_id: ${{ matrix.account.id }}
       passphrase: ${{ secrets.PASSPHRASE }}
@@ -137,7 +137,7 @@ jobs:
     with:
       account_name: ${{ matrix.account.name }}
       aws_region: ${{ vars.AWS_REGION }}
-      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.securityhub_slack_webhooks }}
     secrets:
       account_id: ${{ matrix.account.id }}
       passphrase: ${{ secrets.PASSPHRASE }}
@@ -153,7 +153,7 @@ jobs:
     with:
       account_name: ${{ matrix.account.name }}
       aws_region: ${{ vars.AWS_REGION }}
-      slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+      slack_webhook_url: ${{ needs.fetch-secrets.outputs.securityhub_slack_webhooks }}
     secrets:
       account_id: ${{ matrix.account.id }}
       passphrase: ${{ secrets.PASSPHRASE }}
