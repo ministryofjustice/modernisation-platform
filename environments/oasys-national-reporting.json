@@ -17,7 +17,7 @@
         },
         {
           "sso_group_name": "national-applications-reporting-team",
-          "level": "instance-management"
+          "level": "developer"
         },
         {
           "sso_group_name": "azure-aws-sso-digital-studio-operations",
@@ -40,7 +40,7 @@
         },
         {
           "sso_group_name": "national-applications-reporting-team",
-          "level": "instance-management"
+          "level": "developer"
         },
         {
           "sso_group_name": "azure-aws-sso-digital-studio-operations",
@@ -63,7 +63,7 @@
         },
         {
           "sso_group_name": "national-applications-reporting-team",
-          "level": "instance-management"
+          "level": "developer"
         },
         {
           "sso_group_name": "azure-aws-sso-digital-studio-operations",
