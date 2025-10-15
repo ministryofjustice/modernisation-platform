@@ -1,0 +1,133 @@
+name: Reusable Scheduled Baselines Workflow
+
+on:
+  workflow_call:
+
+    inputs:
+
+        account_name:
+          required: true
+          type: string
+          description: "The account name that is used as the job name"
+
+        aws_region:
+            required: true
+            type: string
+            description: "The aws region" 
+            
+        slack_webhook_url:
+            type: string
+            required: true
+            description: "Slack Webhook URL"
+
+        environment_management:
+            type: string
+            required: true
+            description: "List of Account Names and IDs"
+
+    secrets:
+
+        passphrase:
+            required: true
+            
+jobs:
+
+    main:
+
+      runs-on: ubuntu-latest
+      name: "Job - ${{ inputs.account_name }}"
+      steps:
+
+        - name: Log Job Name
+          run: | 
+            echo "Job Name: " ${{ inputs.account_name }}
+
+        - name: Set aws_region to env
+          run: |
+             echo "AWS_REGION=${{ inputs.aws_region }}" >> "$GITHUB_ENV"
+
+        - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+        - name: Decrypt Secrets
+          uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@39db49635a1a20aee7dcffce535321cd01760135 # v3.4.5
+          with:
+            environment_management: ${{ inputs.environment_management }}
+            securityhub_slack_webhooks: ${{ inputs.slack_webhook_url }}
+            PASSPHRASE: ${{ secrets.passphrase }}
+
+        - name: Determine Environment Config File
+          id: derive-json-filename
+          run: |
+            FILENAME=$(echo "${{ inputs.account_name }}" | sed 's/-[^-]*$//').json
+            echo "JSON filename: $FILENAME"
+            echo "json_filename=$FILENAME" >> $GITHUB_OUTPUT
+
+        - name: Check Slack Channel Configuration
+          id: verify-slack-config
+          run: |
+            FILE_PATH="environments/${{ steps.derive-json-filename.outputs.json_filename }}"
+            if [ -f "$FILE_PATH" ]; then
+                if jq -e '.tags | has("securityhub-slack-channel")' "$FILE_PATH" > /dev/null; then
+                echo "Slack channel configured in environment tags"
+                CHANNEL=$(jq -r '.tags["securityhub-slack-channel"]' "$FILE_PATH")
+                echo "channel_exists=true" >> $GITHUB_OUTPUT
+                echo "channel_name=$CHANNEL" >> $GITHUB_OUTPUT
+                else
+                echo "No Slack channel configured in environment tags"
+                echo "channel_exists=false" >> $GITHUB_OUTPUT
+                fi
+            else
+                echo "Environment config file $FILE_PATH not found"
+                echo "channel_exists=false" >> $GITHUB_OUTPUT
+            fi
+
+        - name: Retrieve Slack Webhook URL
+          id: fetch-webhook-url
+          if: steps.verify-slack-config.outputs.channel_exists == 'true'
+          run: |
+            echo "Using channel name: ${{ steps.verify-slack-config.outputs.channel_name }}"
+            WEBHOOK=$(echo $SECURITYHUB_SLACK_WEBHOOKS_JSON | jq -r '.["${{ steps.verify-slack-config.outputs.channel_name }}"]')
+            if [ "$WEBHOOK" = "null" ] || [ -z "$WEBHOOK" ]; then
+                echo "No webhook found for this channel. Skipping."
+                exit 0
+            fi
+            echo "webhook_url=$WEBHOOK" >> $GITHUB_OUTPUT
+
+        - name: Get Account ID
+          if: steps.fetch-webhook-url.outputs.webhook_url != ''
+          run: |
+            # Note that this uses a slightly different method to getting the account ID than usual
+            ACCOUNT_NUMBER=$(jq -r -e --arg n "${{ inputs.account_name }}" '.account_ids[$n] // empty' <<< "$ENVIRONMENT_MANAGEMENT")
+            if [ -z "$ACCOUNT_NUMBER" ]; then
+              echo "Account '${{ inputs.account_name }}' not found in ENVIRONMENT_MANAGEMENT.account_ids" >&2
+              exit 1
+            fi
+            echo "::add-mask::$ACCOUNT_NUMBER"
+            echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
+
+        - name: Configure AWS Credentials
+          if: steps.fetch-webhook-url.outputs.webhook_url != ''
+          uses: aws-actions/configure-aws-credentials@00943011d9042930efac3dcd3a170e4273319bc8 # v5.1.0
+          with:
+            role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-securityhub-insights"
+            role-session-name: githubactionsrolesession
+            aws-region: ${{ env.AWS_REGION }}
+            
+        - name: Analyze Security Hub Findings
+          id: analyze-findings
+          if: steps.fetch-webhook-url.outputs.webhook_url != ''
+          run: |
+            OUTPUT=$(bash ./scripts/extract-securityhub-severity-summary.sh)
+            echo "output<<EOF" >> $GITHUB_OUTPUT
+            echo "$OUTPUT" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+
+        - name: Send severity summary to Slack
+          if: steps.fetch-webhook-url.outputs.webhook_url != ''
+          env:
+            SLACK_WEBHOOK_URL: ${{ steps.fetch-webhook-url.outputs.webhook_url }}
+            ACCOUNT_NAME: ${{ inputs.account_name }}
+            ACCOUNT_NUMBER: ${{ env.ACCOUNT_NUMBER }}
+          run: |
+            MESSAGE="*Security Hub Severity Summary - $ACCOUNT_NAME ($ACCOUNT_NUMBER)*\n\`\`\`\n${{ steps.analyze-findings.outputs.output }}\n\`\`\`"
+            curl -X POST -H 'Content-type: application/json' --data "{\"text\": \"$MESSAGE\"}" "$SLACK_WEBHOOK_URL"
