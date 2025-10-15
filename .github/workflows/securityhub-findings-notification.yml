@@ -10,7 +10,7 @@ on:
   # workflow_dispatch:
 
 env:
-  AWS_REGION: "eu-west-2"
+  AWS_REGION: eu-west-2
 
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -100,10 +100,11 @@ jobs:
     strategy:
       matrix:
         account: ${{ fromJson(needs.generate-account-matrix-blocks.outputs.matrix-group-1) }}
-    uses: ./.github/workflows/reusable-securityhub-findings.yml@issue11694
+
+    uses: ./.github/workflows/reusable-securityhub-findings.yml
     with:
       account_name: ${{ matrix.account.name }}
-      AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
+      aws_region: ${{ vars.AWS_REGION }}
       slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
     secrets:
       account_id: ${{ matrix.account.id }}
