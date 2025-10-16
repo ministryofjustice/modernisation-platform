@@ -40,7 +40,7 @@ jobs:
     steps:
       - name: setup-aws-region
         run: |
-          echo "aws-region=$AWS_REGION" >> "$GITHUB_OUTPUT"
+          echo "aws-region=${{ env.AWS_REGION }}" >> "$GITHUB_OUTPUT"
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@39db49635a1a20aee7dcffce535321cd01760135 # v3.4.5
         with:
@@ -51,56 +51,35 @@ jobs:
         run: |
           set +x
           set -euo pipefail
-          MATRIX_JSON=$(jq -c '[.account_ids | to_entries[] | {name: .key, id: .value}]' <<< "$ENVIRONMENT_MANAGEMENT")
-
-          # Mask every account ID so if it ever hits logs it becomes ***
-          jq -r '.[].id' <<< "$MATRIX_JSON" | while IFS= read -r id; do
-            [ -n "$id" ] && echo "::add-mask::$id"
-          done
-          
+          MATRIX_JSON=$(jq -c '[.account_ids | to_entries[] | {name: .key}]' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "matrix=$MATRIX_JSON" >> "$GITHUB_OUTPUT"
+
       - name: Generate Account Matrix Blocks
         id: generate-account-matrix-blocks
         env:
-          MATRIX_JSON: ${{ steps.generate-account-list.outputs.matrix }}
+          account_list: ${{ steps.generate-account-list.outputs.matrix }}
         run: |
           set +x
           set -euo pipefail
-          BLOCK_COUNT=4
-
-          sorted=$(jq -c 'sort_by(.name)' <<< "$MATRIX_JSON")
-          total=$(jq 'length' <<< "$sorted")
+          sorted=$(echo "$account_list" | jq -c 'sort')
+          total=$(echo "$sorted" | jq 'length')
           base=$(( total / BLOCK_COUNT ))
           remainder=$(( total % BLOCK_COUNT ))
           start=0
-
           for i in $(seq 1 $BLOCK_COUNT); do
             key="block_$i"
+            # Distribute remainder
             extra=0
             if [ "$i" -le "$remainder" ]; then
               extra=1
             fi
             end=$(( start + base + extra ))
-
-            block=$(jq ".[$start:$end]" <<< "$sorted")
-            compact=$(jq -c '.' <<< "$block")
-
-            # Skip empty blocks (avoid noisy logs)
-            if [ "$(jq 'length' <<< "$block")" -eq 0 ]; then
-              start=$end
-              continue
-            fi
-
-            # Redacted version for logs (hide IDs)
-            redacted=$(jq '[.[] | {name: .name, id: "***"}]' <<< "$block")
-
+            block=$(echo "$sorted" | jq ".[$start:$end]")
+            compact=$(echo "$block" | jq -c '.')
             echo "::group::$key"
-            echo "$redacted" | jq .
+            echo "$block" | jq .
             echo "::endgroup::"
-
-            # Write UNREDACTED JSON to job outputs (not printed to logs)
             echo "$key=$compact" >> "$GITHUB_OUTPUT"
-
             start=$end
           done
 
@@ -115,9 +94,9 @@ jobs:
     with:
       account_name: ${{ matrix.account.name }}
       aws_region: ${{ needs.generate-account-matrix-blocks.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       slack_webhook_url: ${{ needs.fetch-secrets.outputs.securityhub_slack_webhooks }}
     secrets:
-      account_id: ${{ matrix.account.id }}
       passphrase: ${{ secrets.PASSPHRASE }}
 
   process-security-findings-2:
@@ -130,9 +109,9 @@ jobs:
     with:
       account_name: ${{ matrix.account.name }}
       aws_region: ${{ needs.generate-account-matrix-blocks.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       slack_webhook_url: ${{ needs.fetch-secrets.outputs.securityhub_slack_webhooks }}
     secrets:
-      account_id: ${{ matrix.account.id }}
       passphrase: ${{ secrets.PASSPHRASE }}
 
   process-security-findings-3:
@@ -145,9 +124,9 @@ jobs:
     with:
       account_name: ${{ matrix.account.name }}
       aws_region: ${{ needs.generate-account-matrix-blocks.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       slack_webhook_url: ${{ needs.fetch-secrets.outputs.securityhub_slack_webhooks }}
     secrets:
-      account_id: ${{ matrix.account.id }}
       passphrase: ${{ secrets.PASSPHRASE }}
 
   process-security-findings-4:
@@ -160,9 +139,9 @@ jobs:
     with:
       account_name: ${{ matrix.account.name }}
       aws_region: ${{ needs.generate-account-matrix-blocks.outputs.aws-region }}
+      environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       slack_webhook_url: ${{ needs.fetch-secrets.outputs.securityhub_slack_webhooks }}
     secrets:
-      account_id: ${{ matrix.account.id }}
       passphrase: ${{ secrets.PASSPHRASE }}
 
 
