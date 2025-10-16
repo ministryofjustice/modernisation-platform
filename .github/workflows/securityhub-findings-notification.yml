@@ -9,9 +9,6 @@ on:
   #   - cron: '30 8 * * 1-5'
   # workflow_dispatch:
 
-env:
-  AWS_REGION: eu-west-2
-
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
@@ -36,11 +33,7 @@ jobs:
       matrix-group-2: ${{ steps.generate-account-matrix-blocks.outputs.block_2 }}
       matrix-group-3: ${{ steps.generate-account-matrix-blocks.outputs.block_3 }}
       matrix-group-4: ${{ steps.generate-account-matrix-blocks.outputs.block_4 }}
-      aws-region:     ${{ steps.setup-aws-region.outputs.aws-region }}
     steps:
-      - name: setup-aws-region
-        run: |
-          echo "aws-region=${{ env.AWS_REGION }}" >> "$GITHUB_OUTPUT"
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@39db49635a1a20aee7dcffce535321cd01760135 # v3.4.5
         with:
@@ -94,7 +87,7 @@ jobs:
     uses: ./.github/workflows/reusable-securityhub-findings.yml
     with:
       account_name: ${{ matrix.account.name }}
-      aws_region: ${{ needs.generate-account-matrix-blocks.outputs.aws-region }}
+      aws_region: "eu-west-2"
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       slack_webhook_url: ${{ needs.fetch-secrets.outputs.securityhub_slack_webhooks }}
     secrets:
@@ -109,7 +102,7 @@ jobs:
     uses: ./.github/workflows/reusable-securityhub-findings.yml
     with:
       account_name: ${{ matrix.account.name }}
-      aws_region: ${{ needs.generate-account-matrix-blocks.outputs.aws-region }}
+      aws_region: "eu-west-2"
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       slack_webhook_url: ${{ needs.fetch-secrets.outputs.securityhub_slack_webhooks }}
     secrets:
@@ -124,7 +117,7 @@ jobs:
     uses: ./.github/workflows/reusable-securityhub-findings.yml
     with:
       account_name: ${{ matrix.account.name }}
-      aws_region: ${{ needs.generate-account-matrix-blocks.outputs.aws-region }}
+      aws_region: "eu-west-2"
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       slack_webhook_url: ${{ needs.fetch-secrets.outputs.securityhub_slack_webhooks }}
     secrets:
@@ -139,7 +132,7 @@ jobs:
     uses: ./.github/workflows/reusable-securityhub-findings.yml
     with:
       account_name: ${{ matrix.account.name }}
-      aws_region: ${{ needs.generate-account-matrix-blocks.outputs.aws-region }}
+      aws_region: "eu-west-2"
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       slack_webhook_url: ${{ needs.fetch-secrets.outputs.securityhub_slack_webhooks }}
     secrets:
