@@ -719,5 +719,19 @@
     "destination_ip": "${hmpps-development}",
     "destination_port": "1522",
     "protocol": "TCP"
+  },
+    "laa_shared_services_ws_to_mp_ssogen": {
+    "action": "PASS",
+    "source_ip": "${laa-lz-shared-services-nonprod}",
+    "destination_ip": "${laa-development}",
+    "destination_port": "$LAA_CCMS_SSOGEN",
+    "protocol": "TCP"
+  },
+  "mp_ssogen_to_laa_shared_services_ws": {
+    "action": "PASS",
+    "source_ip": "${laa-development}",
+    "destination_ip": "${laa-lz-shared-services-nonprod}",
+    "destination_port": "$LAA_CCMS_SSOGEN",
+    "protocol": "TCP"
   }
 }
