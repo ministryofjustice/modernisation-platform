@@ -49,6 +49,7 @@ jobs:
       - name: Generate Account List from Secret
         id: generate-account-list
         run: |
+          set +x
           set -euo pipefail
           MATRIX_JSON=$(jq -c '[.account_ids | to_entries[] | {name: .key, id: .value}]' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "matrix=$MATRIX_JSON" >> "$GITHUB_OUTPUT"
@@ -57,6 +58,7 @@ jobs:
         env:
           MATRIX_JSON: ${{ steps.generate-account-list.outputs.matrix }}
         run: |
+          set +x
           set -euo pipefail
           BLOCK_COUNT=4
 
@@ -103,7 +105,6 @@ jobs:
     strategy:
       matrix:
         account: ${{ fromJson(needs.generate-account-matrix-blocks.outputs.matrix-group-1) }}
-
     uses: ./.github/workflows/reusable-securityhub-findings.yml
     with:
       account_name: ${{ matrix.account.name }}
@@ -119,7 +120,6 @@ jobs:
     strategy:
       matrix:
         account: ${{ fromJson(needs.generate-account-matrix-blocks.outputs.matrix-group-2) }}
-
     uses: ./.github/workflows/reusable-securityhub-findings.yml
     with:
       account_name: ${{ matrix.account.name }}
