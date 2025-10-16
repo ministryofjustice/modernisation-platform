@@ -139,13 +139,13 @@ locals {
 
     cloudwatch_log_groups = {
       cwagent-windows-system = {
-        retention_in_days = local.ad_fixngo.cloudwatch_log_groups_retention_default
+        retention_in_days = 400
       }
       cwagent-windows-application = {
-        retention_in_days = local.ad_fixngo.cloudwatch_log_groups_retention_default
+        retention_in_days = 400
       }
       cwagent-windows-security = {
-        retention_in_days = local.ad_fixngo.cloudwatch_log_groups_retention_default
+        retention_in_days = 400
       }
     }
 
@@ -1323,9 +1323,11 @@ module "ad_fixngo_ssm_patching" {
 
 resource "aws_cloudwatch_log_group" "ad_fixngo" {
   for_each          = local.ad_fixngo.cloudwatch_log_groups
+
   name              = each.key
-  retention_in_days = 400
+  retention_in_days = each.value.retention_in_days
   kms_key_id        = module.kms["hmpps"].key_arns["general"]
+
   tags = merge(local.ad_fixngo.tags, {
     name = each.key
   })
