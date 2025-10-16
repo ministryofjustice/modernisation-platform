@@ -96,7 +96,11 @@ jobs:
         - name: Get Account ID
           if: steps.fetch-webhook-url.outputs.webhook_url != ''
           run: |
-            ACCOUNT_NUMBER=$(jq -r -e '.${{ inputs.account_name }}' <<< "$ENVIRONMENT_MANAGEMENT")
+            ACCOUNT_NUMBER=$(jq -r -e --arg n "${{ inputs.account_name }}" '.account_ids[$n] // empty' <<< "$ENVIRONMENT_MANAGEMENT")
+            if [ -z "$ACCOUNT_NUMBER" ]; then
+              echo "Account '${{ inputs.account_name }}' not found in ENVIRONMENT_MANAGEMENT.account_ids" >&2
+              exit 1
+            fi
             echo "::add-mask::$ACCOUNT_NUMBER"
             echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
 

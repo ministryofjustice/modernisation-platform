@@ -39,10 +39,10 @@ jobs:
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
       - name: Generate Account List from Secret
         id: generate-account-list
         run: |
-          set +x
           set -euo pipefail
           MATRIX_JSON=$(jq -c '[.account_ids | to_entries[] | {name: .key}]' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "matrix=$MATRIX_JSON" >> "$GITHUB_OUTPUT"
@@ -52,7 +52,6 @@ jobs:
         env:
           account_list: ${{ steps.generate-account-list.outputs.matrix }}
         run: |
-          set +x
           set -euo pipefail
           BLOCK_COUNT=4
           sorted=$(echo "$account_list" | jq -c 'sort')
