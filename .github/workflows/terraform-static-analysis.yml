@@ -16,7 +16,7 @@ permissions:
 jobs:
 
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@39db49635a1a20aee7dcffce535321cd01760135 # v3.4.5
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}  
@@ -33,7 +33,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Run Analysis
-        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
+        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@39db49635a1a20aee7dcffce535321cd01760135 # v3.4.5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -61,7 +61,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Run Analysis
-        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
+        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@39db49635a1a20aee7dcffce535321cd01760135 # v3.4.5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -87,12 +87,12 @@ jobs:
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@39db49635a1a20aee7dcffce535321cd01760135 # v3.4.5
         with:
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Run Analysis
-        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@e3ccf33927794ce5350b9211e288ad84e69365a8 # v3.4.4
+        uses: ministryofjustice/modernisation-platform-github-actions/terraform-static-analysis@39db49635a1a20aee7dcffce535321cd01760135 # v3.4.5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
