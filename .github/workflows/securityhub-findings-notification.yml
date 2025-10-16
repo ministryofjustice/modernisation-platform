@@ -36,7 +36,7 @@ jobs:
       matrix-group-2: ${{ steps.generate-account-matrix-blocks.outputs.block_2 }}
       matrix-group-3: ${{ steps.generate-account-matrix-blocks.outputs.block_3 }}
       matrix-group-4: ${{ steps.generate-account-matrix-blocks.outputs.block_4 }}
-      aws-region: ${{ steps.setup-aws-region.outputs.aws-region }}
+      aws-region:     ${{ steps.setup-aws-region.outputs.aws-region }}
     steps:
       - name: setup-aws-region
         run: |
