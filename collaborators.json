@@ -1591,6 +1591,20 @@
           "access": "developer"
         }
       ]
+    },
+    {
+      "username": "amal.saeed",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "data-scientist"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "data-scientist"
+        }
+      ]
     }
   ]
 }
