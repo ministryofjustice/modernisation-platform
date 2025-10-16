@@ -38,21 +38,30 @@ jobs:
       runs-on: ubuntu-latest
       name: "Job - ${{ inputs.account_name }}"
       steps:
+
         - name: Log Job Name
           run: | 
             echo "Job Name: " ${{ inputs.account_name }}
+
+        - name: Set aws_region to env
+          run: |
+             echo "AWS_REGION=${{ inputs.aws_region }}" >> "$GITHUB_ENV"
+
         - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
         - name: Decrypt Secrets
           uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@39db49635a1a20aee7dcffce535321cd01760135 # v3.4.5
           with:
             securityhub_slack_webhooks: ${{ inputs.slack_webhook_url }}
             PASSPHRASE: ${{ secrets.passphrase }}
+
         - name: Determine Environment Config File
           id: derive-json-filename
           run: |
             FILENAME=$(echo "${{ inputs.account_name }}" | sed 's/-[^-]*$//').json
             echo "JSON filename: $FILENAME"
             echo "json_filename=$FILENAME" >> $GITHUB_OUTPUT
+
         - name: Check Slack Channel Configuration
           id: verify-slack-config
           run: |
@@ -71,6 +80,7 @@ jobs:
                 echo "Environment config file $FILE_PATH not found"
                 echo "channel_exists=false" >> $GITHUB_OUTPUT
             fi
+
         - name: Retrieve Slack Webhook URL
           id: fetch-webhook-url
           if: steps.verify-slack-config.outputs.channel_exists == 'true'
@@ -89,7 +99,7 @@ jobs:
           with:
             role-to-assume: "arn:aws:iam::${{ secrets.account_id }}:role/github-actions-securityhub-insights"
             role-session-name: githubactionsrolesession
-            aws-region: ${{ inputs.aws_region }}
+            aws-region: ${{ env.AWS_REGION }}
             
         - name: Analyze Security Hub Findings
           id: analyze-findings
