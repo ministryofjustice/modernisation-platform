@@ -76,7 +76,7 @@ jobs:
           if: steps.verify-slack-config.outputs.channel_exists == 'true'
           run: |
             echo "Using channel name: ${{ steps.verify-slack-config.outputs.channel_name }}"
-            WEBHOOK=$(echo $SECURITYHUB_SLACK_WEBHOOKS | jq -r '.["${{ steps.verify-slack-config.outputs.channel_name }}"]')
+            WEBHOOK=$(echo $SECURITYHUB_SLACK_WEBHOOKS_JSON | jq -r '.["${{ steps.verify-slack-config.outputs.channel_name }}"]')
             if [ "$WEBHOOK" = "null" ] || [ -z "$WEBHOOK" ]; then
                 echo "No webhook found for this channel. Skipping."
                 exit 0
