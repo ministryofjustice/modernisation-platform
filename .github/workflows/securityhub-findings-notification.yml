@@ -52,6 +52,12 @@ jobs:
           set +x
           set -euo pipefail
           MATRIX_JSON=$(jq -c '[.account_ids | to_entries[] | {name: .key, id: .value}]' <<< "$ENVIRONMENT_MANAGEMENT")
+
+          # Mask every account ID so if it ever hits logs it becomes ***
+          jq -r '.[].id' <<< "$MATRIX_JSON" | while IFS= read -r id; do
+            [ -n "$id" ] && echo "::add-mask::$id"
+          done
+          
           echo "matrix=$MATRIX_JSON" >> "$GITHUB_OUTPUT"
       - name: Generate Account Matrix Blocks
         id: generate-account-matrix-blocks
