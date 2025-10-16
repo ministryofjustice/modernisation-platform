@@ -137,6 +137,19 @@ locals {
       }
     }
 
+    cloudwatch_log_groups_retention_default = 400
+    cloudwatch_log_groups = {
+      cwagent-windows-system = {
+        retention_in_days = local.ad_fixngo.cloudwatch_log_groups_retention_default
+      }
+      cwagent-windows-application = {
+        retention_in_days = local.ad_fixngo.cloudwatch_log_groups_retention_default
+      }
+      cwagent-windows-security = {
+        retention_in_days = local.ad_fixngo.cloudwatch_log_groups_retention_default
+      }
+    }
+
     ec2_iam_roles = {
       # NOTE: roles will be granted access to relevant domain secrets in hmpps-domain-services accounts
       ad-fixngo-ec2-nonlive-role = {
@@ -1306,5 +1319,14 @@ module "ad_fixngo_ssm_patching" {
   tags = merge(local.tags, {
     name   = "ad-fixngo-ssm-patching"
     module = "ssm-patching-module"
+  })
+}
+
+resource "aws_cloudwatch_log_group" "ad_fixngo" {
+  for_each          = local.ad_fixngo.cloudwatch_log_groups
+  name              = each.key
+  retention_in_days = each.value.retention_in_days
+  tags = merge(local.ad_fixngo.tags, {
+    name = each.key
   })
 }
