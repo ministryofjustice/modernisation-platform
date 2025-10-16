@@ -61,6 +61,7 @@ jobs:
         run: |
           set +x
           set -euo pipefail
+          BLOCK_COUNT=4
           sorted=$(echo "$account_list" | jq -c 'sort')
           total=$(echo "$sorted" | jq 'length')
           base=$(( total / BLOCK_COUNT ))
