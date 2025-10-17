@@ -1322,7 +1322,7 @@ module "ad_fixngo_ssm_patching" {
 }
 
 resource "aws_cloudwatch_log_group" "ad_fixngo" {
-  for_each          = local.ad_fixngo.cloudwatch_log_groups
+  for_each = local.ad_fixngo.cloudwatch_log_groups
 
   name              = each.key
   retention_in_days = each.value.retention_in_days
