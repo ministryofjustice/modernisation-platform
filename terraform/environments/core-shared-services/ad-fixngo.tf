@@ -137,6 +137,18 @@ locals {
       }
     }
 
+    cloudwatch_log_groups = {
+      cwagent-windows-system = {
+        retention_in_days = 400
+      }
+      cwagent-windows-application = {
+        retention_in_days = 400
+      }
+      cwagent-windows-security = {
+        retention_in_days = 400
+      }
+    }
+
     ec2_iam_roles = {
       # NOTE: roles will be granted access to relevant domain secrets in hmpps-domain-services accounts
       ad-fixngo-ec2-nonlive-role = {
@@ -232,9 +244,23 @@ locals {
             actions = [
               "ec2:DescribeVolumes",
               "ec2:DescribeTags",
-              "ec2:DescribeInstances"
+              "ec2:DescribeInstances",
+              "cloudwatch:PutMetricData",
+              "logs:DescribeLogGroups"
             ]
             resources = ["*"]
+          },
+          {
+            sid    = "CloudWatchAgentLogGroupAccess"
+            effect = "Allow"
+            actions = [
+              "logs:PutLogEvents",
+              "logs:CreateLogStream",
+              "logs:DescribeLogStreams"
+            ]
+            resources = [
+              "arn:aws:logs:*:*:log-group:cwagent-windows-*:*"
+            ]
           }
         ]
       }
@@ -1306,5 +1332,17 @@ module "ad_fixngo_ssm_patching" {
   tags = merge(local.tags, {
     name   = "ad-fixngo-ssm-patching"
     module = "ssm-patching-module"
+  })
+}
+
+resource "aws_cloudwatch_log_group" "ad_fixngo" {
+  for_each = local.ad_fixngo.cloudwatch_log_groups
+
+  name              = each.key
+  retention_in_days = each.value.retention_in_days
+  kms_key_id        = module.kms["hmpps"].key_arns["general"]
+
+  tags = merge(local.ad_fixngo.tags, {
+    name = each.key
   })
 }

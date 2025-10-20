@@ -54,6 +54,20 @@ data "aws_iam_policy_document" "kms_r53_public_dns_logs" {
   }
 
   statement {
+    sid    = "AllowCortexXsiamDecrypt"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey"
+    ]
+    resources = ["*"]
+    principals {
+      type        = "AWS"
+      identifiers = [aws_iam_role.cortex_xsiam_role.arn]
+    }
+  }
+
+  statement {
     sid    = "AllowSQSDecrypt"
     effect = "Allow"
     actions = [
