@@ -244,9 +244,23 @@ locals {
             actions = [
               "ec2:DescribeVolumes",
               "ec2:DescribeTags",
-              "ec2:DescribeInstances"
+              "ec2:DescribeInstances",
+              "cloudwatch:PutMetricData",
+              "logs:DescribeLogGroups"
             ]
             resources = ["*"]
+          },
+          {
+            sid    = "CloudWatchAgentLogGroupAccess"
+            effect = "Allow"
+            actions = [
+              "logs:PutLogEvents",
+              "logs:CreateLogStream",
+              "logs:DescribeLogStreams"
+            ]
+            resources = [
+              "arn:aws:logs:*:*:log-group:cwagent-windows-*:*"
+            ]
           }
         ]
       }
