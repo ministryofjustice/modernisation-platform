@@ -480,6 +480,20 @@ data "aws_iam_policy_document" "member-access-us-east" {
     effect    = "Deny"
     resources = ["arn:aws:iam::*:role/MemberInfrastructureAccessUSEast"]
   }
+
+  statement {
+    actions = ["iam:PassRole"]
+    effect  = "Allow"
+    resources = [
+      "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/MemberInfrastructureAccessUSEast"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "iam:PassedToService"
+      values   = ["lambda.amazonaws.com"]
+    }
+  }
+
 }
 
 resource "aws_iam_policy" "member-access-us-east" {
