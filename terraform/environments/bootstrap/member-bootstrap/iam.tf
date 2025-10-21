@@ -422,6 +422,7 @@ data "aws_iam_policy_document" "member-access-us-east" {
     effect = "Allow"
     actions = [
       "acm:*",
+      "iam:ListRoles",
       "lambda:*",
       "logs:*",
       "waf:*",
