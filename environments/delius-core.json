@@ -141,7 +141,8 @@
           "level": "developer",
           "github_action_reviewer": "false"
         }
-      ]
+      ],
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "production",
