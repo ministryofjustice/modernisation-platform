@@ -1615,7 +1615,7 @@
           "access": "read-only"
         },
         {
-          "account-name": "electronic-monitoring-data-productionn",
+          "account-name": "electronic-monitoring-data-production",
           "access": "read-only"
         }
       ]
