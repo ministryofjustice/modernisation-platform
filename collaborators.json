@@ -1605,6 +1605,20 @@
           "access": "data-scientist"
         }
       ]
+    },
+   {
+      "username": "chris.bell",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "electronic-monitoring-data-preproduction",
+          "access": "read-only"
+        },
+        {
+          "account-name": "electronic-monitoring-data-productionn",
+          "access": "read-only"
+        }
+      ]
     }
   ]
 }
