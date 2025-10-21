@@ -239,3 +239,16 @@ resource "aws_route53_record" "cwa-prod-db3" {
     evaluate_target_health = false
   }
 } 
+
+resource "aws_route53_record" "cwa-prod-db2" {
+  # checkov:skip=CKV2_AWS_23: "Route53 A Record has Attached Resource"
+  zone_id = aws_route53_zone.private_application_zones["aws-prd-legalservices-gov-uk"].zone_id
+  name    = "cwa-prod-db2"
+  type    = "A"
+
+  alias {
+    name                   = "cwa-production-db-nlb-safe2-54d001c6914e7379.elb.eu-west-2.amazonaws.com"
+    zone_id                = "ZD4D7Y8KGAS4G"
+    evaluate_target_health = false
+  }
+} 
