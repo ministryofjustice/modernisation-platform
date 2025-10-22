@@ -238,7 +238,7 @@ resource "aws_route53_record" "cwa-prod-db3" {
     zone_id                = "ZD4D7Y8KGAS4G"
     evaluate_target_health = false
   }
-} 
+}
 
 resource "aws_route53_record" "cwa-prod-db2" {
   # checkov:skip=CKV2_AWS_23: "Route53 A Record has Attached Resource"
@@ -251,4 +251,4 @@ resource "aws_route53_record" "cwa-prod-db2" {
     zone_id                = "ZD4D7Y8KGAS4G"
     evaluate_target_health = false
   }
-} 
+}
