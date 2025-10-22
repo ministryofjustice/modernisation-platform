@@ -93,6 +93,7 @@ jobs:
         run: |
           # gh automatically uses GH_TOKEN if set — no `gh auth login` needed
           gh auth status
+          ls -l scripts/check-github-api-usage.sh
           bash ./scripts/check-github-api-usage.sh
 
   # github-plan-and-apply:
