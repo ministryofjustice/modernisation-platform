@@ -2,38 +2,38 @@ name: "Terraform: GitHub resources"
 
 on:
   push:
-    paths:
-      - 'terraform/github/**'
-      - '!**.md'
-      - '.github/workflows/terraform-github.yml'
-      - 'environments/**.json'
-      - '.github/workflows/reusable_terraform_plan_apply.yml'
-      - 'collaborators.json'
+    # paths:
+    #   - 'terraform/github/**'
+    #   - '!**.md'
+    #   - '.github/workflows/terraform-github.yml'
+    #   - 'environments/**.json'
+    #   - '.github/workflows/reusable_terraform_plan_apply.yml'
+    #   - 'collaborators.json'
     branches:
-      - main
-  pull_request:
-    paths:
-      - 'terraform/github/**'
-      - '!**.md'
-      - '.github/workflows/terraform-github.yml'
-      - 'environments/**.json'
-      - '.github/workflows/reusable_terraform_plan_apply.yml'
-      - 'collaborators.json'
-    branches:
-      - main
-    types: [opened, edited, reopened, synchronize]
-  schedule:
-    # * is a special character in YAML so you have to quote this string
-    # trigger every Saturday at 12:00am
-    - cron: '0 12 * * 6'
-  workflow_dispatch:
+      - issue/11648
+  # pull_request:
+  #   paths:
+  #     - 'terraform/github/**'
+  #     - '!**.md'
+  #     - '.github/workflows/terraform-github.yml'
+  #     - 'environments/**.json'
+  #     - '.github/workflows/reusable_terraform_plan_apply.yml'
+  #     - 'collaborators.json'
+  #   branches:
+  #     - main
+  #   types: [opened, edited, reopened, synchronize]
+  # schedule:
+  #   # * is a special character in YAML so you have to quote this string
+  #   # trigger every Saturday at 12:00am
+  #   - cron: '0 12 * * 6'
+  # workflow_dispatch:
 
 defaults:
   run:
     shell: bash
 
 env:
-  RATE_LIMIT_THRESHOLD: 14000
+  RATE_LIMIT_THRESHOLD: 100
   APP_ID: 2013696
 
 permissions:
@@ -107,7 +107,7 @@ jobs:
 
   create-github-environments:
     runs-on: ubuntu-latest
-    needs: [ github-plan-and-apply, fetch-secrets ]
+    needs: [ fetch-secrets ] #github-plan-and-apply, 
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
