@@ -11,7 +11,7 @@
         },
         {
           "sso_group_name": "hosting-migrations",
-          "level": "developer",
+          "level": "sandbox",
           "github_action_reviewer": "true"
         },
         {
