@@ -483,8 +483,8 @@ data "aws_iam_policy_document" "member-access-us-east" {
   }
 
   statement {
-    actions = ["iam:PassRole"]
-    effect  = "Allow"
+    actions   = ["iam:PassRole"]
+    effect    = "Allow"
     resources = ["*"]
     condition {
       test     = "StringEquals"
