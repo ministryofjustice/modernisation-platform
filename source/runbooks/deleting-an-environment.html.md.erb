@@ -1,19 +1,19 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Deleting an environment (AWS account)
-last_reviewed_on: 2025-04-22
+last_reviewed_on: 2025-10-22
 review_in: 6 month
 ---
 
 # <%= current_page.data.title %>
+This runbook describes the process required to delete an environment/s.
 
 > Note: This process cannot be undone. All resources in an AWS account will be deleted.
 
-> You will need to **complete the actions** below in as **short a time frame as possible**. Certain workflows such as [Terraform: New environment](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml) will re-create accounts/workspaces which you are trying to delete if it runs mid-way through your progress. Ideally warn the MP team **not to merge any PRs** whilst you carry out these actions.
+> You will need to **complete the actions** below in as **short a time frame as possible** as certain workflows need to be disabled and will delay the team from merging/deploying other PRs.
 
-This runbook describes the process required to delete an environment/s.
 
-## Search for, and remove any references to the existing account in the Modernisation-Platform repo that was added by users.
+## Search for, and remove any references to the existing account in GitHub
 
 There may be references to the to-be-deleted account that were added by users & so should be removed before the account-deletion process begins. For example any custom policies using the account name in a local, such as
 
@@ -21,11 +21,18 @@ There may be references to the to-be-deleted account that were added by users & 
 local.environment_management.account_ids["example-account-name-to-be-deleted"]
 ```
 
-## Disable the "Terraform: Member environments" workflow.
+## Disable workflows
 
-This is necessary as otherwise this running during this process could result in the account being re-created and some steps having to be re-run.
+Disable the following workflows:
 
-See https://docs.github.com/en/actions/managing-workflow-runs-and-deployments/managing-workflow-runs/disabling-and-enabling-a-workflow for the steps to do this.
+- [Terraform: New environment](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/workflows/new-environment.yml)
+- [Terraform: Member environments]()
+
+This is required as if these workflows are run during the deletion process it could result in the account being re-created and some steps having to be re-run.
+
+See [disabling-and-enabling-a-workflow](https://docs.github.com/en/actions/managing-workflow-runs-and-deployments/managing-workflow-runs/disabling-and-enabling-a-workflow) for the steps to do this.
+
+> Notify the MP team that you are doing this as it will delay merging/deploying certain PRs
 
 ## Running account deletion scripts locally
 
@@ -93,6 +100,6 @@ Check for any automated PRs that have been raised in the MP Environments repo to
 
 Navigate to [https://github.com/ministryofjustice/modernisation-platform-environments/settings/environments](https://github.com/ministryofjustice/modernisation-platform-environments/settings/environments) and delete the relevant GitHub environments.
 
-## Re-enable the "Terraform: Member environments" workflow.
+## Re-enable the disabled workflows.
 
-Refer to the github doc listed earlier.
+Refer to the github doc listed earlier and let the MP team know that the workflows are now active.
