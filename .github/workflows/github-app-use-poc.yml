@@ -1,7 +1,7 @@
 name: Github App Use POC
 
 on:
-  workflow_dispatch:
+  # workflow_dispatch:
   push:
     branches:
       - issue-11298-poc
@@ -15,7 +15,7 @@ permissions:
   id-token: write
 
 env:
-  RATE_LIMIT_THRESHOLD: 14000
+  RATE_THRESHOLD: 14000
 
 jobs:
 
@@ -66,25 +66,30 @@ jobs:
       - name: Query GitHub API rate limit
         id: ratelimit
         env:
-          APP_TOKEN: ${{ steps.app.outputs.token }}
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          RATE_THRESHOLS: ${{ env.RATE_THRESHOLD }}
         run: |
           echo "Fetching API rate limit for App installation..."
           RESPONSE=$(curl -s \
-            -H "Authorization: Bearer $APP_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/rate_limit)
-
+          -H "Authorization: Bearer $GH_TOKEN" \
+          -H "Accept: application/vnd.github+json" \
+          https://api.github.com/rate_limit)
           echo "$RESPONSE" | jq '.resources.core'
 
           RESET_EPOCH=$(echo "$RESPONSE" | jq '.resources.core.reset')
           RESET_UTC=$(date -u -d @"$RESET_EPOCH" '+%Y-%m-%d %H:%M:%S UTC')
           echo "Rate limit resets at: $RESET_UTC"
 
-
           USED=$(echo "$RESPONSE" | jq '.resources.core.used')
-          if [ "$USED" -gt "$RATE_LIMIT_THRESHOLD" ]; then
-            echo "❌ Rate limit usage above threshold ($USED > $RATE_LIMIT_THRESHOLD). Exiting."
-            exit 1
+          REMAINING=$(echo "$RESPONSE" | jq '.resources.core.remaining')
+
+          echo "Rate used: $USED"
+          echo "Rate remaining: $REMAINING"
+          echo "Rate threshold": $RATE_THRESHOLD
+
+          if [ "$REMAINING" -lt "$RATE_THRESHOLD" ]; then
+          echo "❌ Rate usage above threshold ($REMAINING > $RATE_THRESHOLD). Exiting."
+          exit 1
           else
-            echo "✅ Rate limit usage within threshold ($USED ≤ $RATE_LIMIT_THRESHOLD)."
+          echo "✅ Rate usage within threshold ($REMAINING ≤ $RATE_THRESHOLD)."
           fi
