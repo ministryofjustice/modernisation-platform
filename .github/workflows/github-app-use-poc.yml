@@ -1,5 +1,7 @@
 name: Github App Use POC
 
+#
+
 on:
   # workflow_dispatch:
   push:
@@ -66,12 +68,12 @@ jobs:
       - name: Query GitHub API rate limit
         id: ratelimit
         env:
-          GH_TOKEN: ${{ steps.app.outputs.token }}
+          APP_TOKEN: ${{ steps.app.outputs.token }}
           RATE_THRESHOLS: ${{ env.RATE_THRESHOLD }}
         run: |
           echo "Fetching API rate limit for App installation..."
           RESPONSE=$(curl -s \
-          -H "Authorization: Bearer $GH_TOKEN" \
+          -H "Authorization: Bearer $APP_TOKEN" \
           -H "Accept: application/vnd.github+json" \
           https://api.github.com/rate_limit)
           echo "$RESPONSE" | jq '.resources.core'
