@@ -11,7 +11,8 @@
         },
         {
           "sso_group_name": "hosting-migrations",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hmpps-delius-jitbit-devs",
@@ -28,7 +29,8 @@
         },
         {
           "sso_group_name": "hosting-migrations",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hmpps-delius-jitbit-devs",
@@ -45,7 +47,8 @@
         },
         {
           "sso_group_name": "hosting-migrations",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hmpps-delius-jitbit-devs",
@@ -62,7 +65,8 @@
         },
         {
           "sso_group_name": "hosting-migrations",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hmpps-delius-jitbit-devs",
