@@ -17,7 +17,7 @@ permissions:
   id-token: write
 
 env:
-  RATE_THRESHOLD: 14000
+  RATE_THRESHOLD: 100
 
 jobs:
 
