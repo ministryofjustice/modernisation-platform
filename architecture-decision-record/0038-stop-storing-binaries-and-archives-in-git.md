@@ -32,7 +32,7 @@ A number of options have been explored as part of issue [#8393](https://github.c
 
 - Can be overridden using the git force flag
 
-#### 2. Add a number of common binary and archive file extensions to the `CODEOWNERS` file of the `modernisation-platform-environments`repo requiring approval from the Modernisation Platform Team
+#### 2. Add a number of common binary and archive file extensions to the `CODEOWNERS` file of the `modernisation-platform-environments` repo requiring approval from the Modernisation Platform Team
 
 ##### Pros 
     
