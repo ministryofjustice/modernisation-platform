@@ -217,7 +217,7 @@ resource "aws_ec2_transit_gateway_route_table_association" "external_inspection_
 }
 
 resource "aws_ec2_transit_gateway_route" "inspection_static_routes_ecp_safedb" {
-  for_each                       = toset(["10.205.10.0/24", "10.205.11.0/24", "10.205.14.0/24", ])
+  for_each                       = toset(["10.205.10.0/24", "10.205.11.0/24", "10.205.14.0/24", "10.205.15.0/24"])
   destination_cidr_block         = each.key
   transit_gateway_attachment_id  = data.aws_ec2_transit_gateway_peering_attachment.ecp_tgw.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_inspection_out.id
