@@ -46,6 +46,7 @@
     "LAA_ECP_DATABASES": [
       "${laa-ecp-db-lb}",
       "${laa-ecp-safedb-1}",
+      "${laa-ecp-safedb-2}",
       "${laa-ecp-safedb-3}"
     ],
     "LAA_PRIVATE_DATA_SUBNETS_DEV": [
