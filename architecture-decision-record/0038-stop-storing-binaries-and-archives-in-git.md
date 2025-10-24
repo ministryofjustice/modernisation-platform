@@ -24,8 +24,8 @@ A number of options have been explored as part of issue [#8393](https://github.c
 
 #### 1. Add a number of common binary and archive file extensions to the `.gitignore` file
 
-##### Pros 
-    
+##### Pros
+
 - Stops inadvertent committing of binary/archive files
 
 ##### Cons
@@ -34,8 +34,8 @@ A number of options have been explored as part of issue [#8393](https://github.c
 
 #### 2. Add a number of common binary and archive file extensions to the `CODEOWNERS` file of the `modernisation-platform-environments` repo requiring approval from the Modernisation Platform Team
 
-##### Pros 
-    
+##### Pros
+
 - Stops binary/archive files being committed to the repo without prior approval from the MP team
 
 ##### Cons
@@ -45,8 +45,8 @@ A number of options have been explored as part of issue [#8393](https://github.c
 
 #### 3. Add a status check that fails when binary/archive files are detected and comments on PR to warn the author
 
-##### Pros 
-    
+##### Pros
+
 - Status check failure will raise awareness of the issue with the author and reviewer and suggest alternative approaches
 
 ##### Cons
@@ -56,7 +56,7 @@ A number of options have been explored as part of issue [#8393](https://github.c
 
 ## Decision
 
-- Communicate with members giving advance notice of our intention to stop binary/archive files being stored in MP Git repos 
+- Communicate with members giving advance notice of our intention to stop binary/archive files being stored in MP Git repos
 - Suggest members use s3 as the primary mechanism to store these file types (e.g. create s3 bucket and manually upload artifacts, reference s3 locations in code)
 - Implement **all three** options listed above to help control these files being added to Git
 - Work with members to re-home existing `.zip` files from the repository and update code as required
