@@ -1,6 +1,6 @@
 {
   "account-type": "member",
-  "codeowners": "laa-sre-admins, laa-sre-admins",
+  "codeowners": ["laa-sre-admins"],
   "environments": [
     {
       "name": "development",
@@ -10,7 +10,7 @@
           "level": "sandbox"
         }
       ],
-      "nuke": ""
+      "nuke": "exclude"
     },
     {
       "name": "test",
