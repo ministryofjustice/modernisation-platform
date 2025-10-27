@@ -15,6 +15,7 @@
           "laa-enterprise-service-bus-production",
           "laa-mail-relay-production",
           "laa-oem-production",
+          "laa-pui-secure-browser-production",
           "maat-production",
           "maatdb-production",
           "mlra-production",
