@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
 
       - name: Download network setup artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: network-setup-info
         continue-on-error: true  # Continue even if the artifact is not found
