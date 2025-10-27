@@ -61,6 +61,7 @@ expected :=
     "laa-enterprise-service-bus",
     "laa-mail-relay",
     "laa-oem",
+    "laa-pui-secure-browser",
     "laa-stabilisation-cdc-poc",
     "long-term-storage",
     "maat",
