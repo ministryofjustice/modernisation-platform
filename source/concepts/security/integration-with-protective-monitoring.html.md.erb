@@ -1,0 +1,62 @@
+---
+owner_slack: "#modernisation-platform"
+title: Platform logging integration with protective monitoring (Cortex XSIAM)
+last_reviewed_on: 2025-10-27
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Introduction
+
+Modernisation Platform aim to ensure application teams align with Ministry of Justice (MoJ) Security Guidance to improve the MoJs security posture and enable Application Teams to focus on developing their applications in a secure environment.
+
+This document outlines how the Modernisation Platform and the Applications running on it, align with [Principle 7 of the MoJs Security and Log Collection Principle: Log transmission to the MoJ Cyber Security Logging Platform](https://security-guidance.service.justice.gov.uk/security-log-collection/#7-log-transmission-to-the-moj-cyber-security-logging-platform) (Cortex XSIAM).
+
+The scope of this document primarily refers to Platform responsibilities such as: Networking, Infrastructure Access, AWS Account Change Management etc. Application Teams are ultimately responsible for Application level monitoring as defined by Modernisation Platforms [Shared Responsibility Model](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/our-offer-to-you.html#shared-responsibility-diagram).
+
+### Audience
+
+If you are responsible for resources that are hosted via the Modernisation Platform, this document can save you time and effort when trying to comply with MoJ Security Guidance and ensure any efforts invested are not duplicating Modernisation Platform offerings.
+
+If you are responsible for MoJ Security Operations / Monitoring, this document can help in assessing the Modernisations Platforms (and the Applications running on it) compliance with MoJs Security Guidance.
+
+## Architecture and integration
+
+### Overview Diagram
+
+Below is the High-Level Architectural diagram of the Modernisations Platforms integration with Cortex XSIAM.
+
+On the left-most lane - we have the data sources such as AWS CloudTrail, Route53 etc. surrounded by information of what accounts they live in and how the resource is provisioned.
+
+In the centre lane - there is the Modernisation Platforms `core-logging` AWS Account which is responsible for retaining, securing and sharing Platform Security Logs.
+
+Finally on the right-most lane - the is the entry point for MoJs Cyber Security Logging Platform (Cortex XSIAM).
+
+![Modernisation Platform to Cortex XSIAM Integration Overview Diagram](../images/mp-to-xsiam-integration.png)
+
+### AWS Account Auditing and Governance (CloudTrail and Config)
+
+AWS CloudTrail is a service that captures actions taken by users, roles and native AWS services.
+
+AWS Config is a service that provides a detailed view of how AWS Resources are configured.
+
+Modernisation Platform ensures all CloudTrail and Config events, across all Modernisation Platform managed accounts, are stored in the `central-logging` account.
+
+This is enforced by the Modernisation Platforms [Secure Baselines Module](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines?tab=readme-ov-file#modernisation-platform-terraform-baselines-module).
+
+Cortex XSIAM uses the [cortex_xsiam IAM Role](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/iam_cortex.tf) to poll for new logs files via AWS SQS (Simple Queue Service).
+
+### Application Networking (VPCs, Private DNS and Public DNS)
+
+#### Network Firewall
+
+### Web Application Firewalls
+
+### AWS Account Security
+
+## FAQs and Examples
+
+## Related Documents / Further Reading
+
+[MoJ Security Guidance - Security Log Collection](https://security-guidance.service.justice.gov.uk/security-log-collection/#security-log-collection)
