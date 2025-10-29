@@ -65,7 +65,7 @@ resource "null_resource" "push_protection_bypass" {
     command = <<EOT
       echo "Applying push protection bypass settings for ${var.name}..."
 
-      response=$(curl -s -w "\\n%{http_code}" \
+      response=$(curl -s -w "\\n%%{http_code}" \
         -H "Authorization: token ${var.github_token}" \
         -H "Accept: application/vnd.github+json" \
         -X PATCH \
