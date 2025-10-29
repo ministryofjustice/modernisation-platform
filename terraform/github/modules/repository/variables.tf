@@ -14,17 +14,6 @@ variable "dismissal_restrictions" {
   default     = []
 }
 
-variable "enable_push_protection_bypass" {
-  type    = bool
-  default = true
-}
-
-variable "github_token" {
-  description = "Privileged GitHub token"
-  type        = string
-  sensitive   = true
-}
-
 variable "homepage_url" {
   type        = string
   description = "Repository homepage URL"

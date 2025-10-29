@@ -58,47 +58,6 @@ resource "github_repository" "default" {
   }
 }
 
-resource "null_resource" "push_protection_bypass" {
-  count = var.enable_push_protection_bypass ? 1 : 0
-
-  provisioner "local-exec" {
-    command = <<EOT
-      echo "Applying push protection bypass settings for ${var.name}..."
-
-      response=$(curl -s -w "\\n%%{http_code}" \
-        -H "Authorization: token ${var.github_token}" \
-        -H "Accept: application/vnd.github+json" \
-        -X PATCH \
-        https://api.github.com/repos/ministryofjustice/${var.name}/security-and-analysis \
-        -d '{
-          "security_and_analysis": {
-            "secret_scanning": {"status": "enabled"},
-            "secret_scanning_push_protection": {
-              "status": "enabled",
-              "bypass_actors": [
-                {
-                  "type": "RepositoryRole",
-                  "role_name": "Admin"
-                }
-              ]
-            }
-          }
-        }')
-
-      echo "GitHub API response:"
-      echo "$response"
-    EOT
-    interpreter = ["/bin/bash", "-c"]
-  }
-
-  triggers = {
-    repo_name  = var.name
-    always_run = timestamp()
-  }
-
-  depends_on = [github_repository.default]
-}
-
 resource "github_branch_protection" "default" {
   #checkov:skip=CKV_GIT_6:"Following discussions with other teams we will not be enforcing signed commits currently"
   repository_id  = github_repository.default.id
