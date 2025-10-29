@@ -189,6 +189,7 @@ module "terraform-module-ecs-cluster" {
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
   github_token = var.github_token
+}
 
 module "modernisation-platform-ami-builds" {
   source      = "./modules/repository"
