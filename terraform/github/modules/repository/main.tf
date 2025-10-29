@@ -60,11 +60,15 @@ resource "github_repository" "default" {
 
 resource "null_resource" "push_protection_bypass" {
   count = var.enable_push_protection_bypass ? 1 : 0
+
   provisioner "local-exec" {
     command = <<EOT
-      curl -s -X PATCH \
+      echo "Applying push protection bypass settings for ${var.name}..."
+
+      response=$(curl -s -w "\\n%%{http_code}" \
         -H "Authorization: token ${var.github_token}" \
         -H "Accept: application/vnd.github+json" \
+        -X PATCH \
         https://api.github.com/repos/ministryofjustice/${var.name}/security-and-analysis \
         -d '{
           "security_and_analysis": {
@@ -79,13 +83,17 @@ resource "null_resource" "push_protection_bypass" {
               ]
             }
           }
-        }'
+        }')
+
+      echo "GitHub API response:"
+      echo "$response"
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
 
   triggers = {
-    repo_name = var.name
+    repo_name  = var.name
+    always_run = timestamp()
   }
 
   depends_on = [github_repository.default]
