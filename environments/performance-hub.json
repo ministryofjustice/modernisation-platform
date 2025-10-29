@@ -7,6 +7,10 @@
         {
           "sso_group_name": "performance-hub-developers",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-performancehub",
+          "level": "sandbox"
         }
       ],
       "nuke": "exclude"
@@ -17,6 +21,10 @@
         {
           "sso_group_name": "performance-hub-developers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-performancehub",
+          "level": "developer"
         }
       ]
     },
@@ -25,6 +33,10 @@
       "access": [
         {
           "sso_group_name": "performance-hub-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-performancehub",
           "level": "developer"
         }
       ]
