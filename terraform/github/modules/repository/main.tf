@@ -92,7 +92,8 @@ resource "null_resource" "push_protection_bypass" {
   }
 
   triggers = {
-    repo_name = var.name
+    repo_name  = var.name
+    always_run = timestamp()
   }
 
   depends_on = [github_repository.default]
