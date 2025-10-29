@@ -9,11 +9,11 @@ review_in: 6 months
 
 ## Introduction
 
-Modernisation Platform aim to ensure application teams align with Ministry of Justice (MoJ) Security Guidance to improve the MoJs security posture and enable Application Teams to focus on developing their applications in a secure environment.
+Modernisation Platform aim to ensure Platform Users align with Ministry of Justice (MoJ) Security Guidance to improve the MoJs security posture and enable Platform Users to focus on developing their applications in a secure environment.
 
 This document outlines how the Modernisation Platform and the Applications running on it, align with [Principle 7 of the MoJs Security and Log Collection Principle: Log transmission to the MoJ Cyber Security Logging Platform](https://security-guidance.service.justice.gov.uk/security-log-collection/#7-log-transmission-to-the-moj-cyber-security-logging-platform) (Cortex XSIAM).
 
-The scope of this document primarily refers to Platform responsibilities such as: Networking, Infrastructure Access, AWS Account Change Management etc. Application Teams are ultimately responsible for Application level monitoring as defined by Modernisation Platforms [Shared Responsibility Model](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/our-offer-to-you.html#shared-responsibility-diagram).
+The scope of this document primarily refers to Platform responsibilities such as: Networking, Infrastructure Access, AWS Account Change Management etc. Platform Users are ultimately responsible for Application level monitoring as defined by Modernisation Platforms [Shared Responsibility Model](https://user-guide.modernisation-platform.service.justice.gov.uk/user-guide/our-offer-to-you.html#shared-responsibility-diagram).
 
 ### Audience
 
@@ -47,11 +47,33 @@ This is enforced by the Modernisation Platforms [Secure Baselines Module](https:
 
 Cortex XSIAM uses the [cortex_xsiam IAM Role](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/iam_cortex.tf) to poll for new logs files via AWS SQS (Simple Queue Service).
 
-### Application Networking (VPCs, Private DNS and Public DNS)
+### Application Networking (VPCs, Internal/Public DNS and Network Firewall)
+
+Modernisation Platform provide Platform Users with essential networking services for applications, such as VPCs, Private DNS and Public DNS. You can read more about this in our [Networking Approach Documentation](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/networking/networking-approach.html#networking-approach).
+
+VPC Flow Logs is a feature that enables you to capture information about the IP traffic going to and from network interfaces.
+
+Resolver Query Logging captures DNS queries made by workloads inside a VPC (Internal DNS), including lookups against private hosted zones and public internet domains.
+
+Public DNS Query Logging captures DNS resolution activity made against Modernisation Platform publicly hosted zones.
+
+VPC Flow Logs, Resolver Query Logging (Internal DNS) and Public DNS Query Logging in Production Accounts are configured to store logs in the `core-logging` account.
+
+Cortex XSIAM uses the [cortex_xsiam IAM Role](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/iam_cortex.tf) to poll for new logs files via AWS SQS (Simple Queue Service).
 
 #### Network Firewall
 
 ### Web Application Firewalls
+
+AWS WAF is a Web Application Firewall can monitor web traffic and control access to applications.
+
+Platform Users can optionally use the Modernisation Platforms [shield_advanced](https://github.com/ministryofjustice/modernisation-platform-environments/tree/main/terraform/modules/shield_advanced) module or the more comprehensive [modernisation-platform-terraform-aws-waf](https://github.com/ministryofjustice/modernisation-platform-terraform-aws-waf) module.
+
+These Modernisation Platform modules ensure all WAF Alerts are stored in the `core-logging` account.
+
+Cortex XSIAM uses the [cortex_xsiam IAM Role](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-logging/iam_cortex.tf) to poll for new logs files via AWS SQS (Simple Queue Service).
+
+Custom WAFs created by Platform Users are not supported by Modernisation Platform.
 
 ### AWS Account Security
 
