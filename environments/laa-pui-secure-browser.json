@@ -1,0 +1,75 @@
+{
+  "account-type": "member",
+  "components": [
+    {
+      "name": "workspaces-secure-browser",
+      "sso_group_name": "ecp-admin"
+    }
+  ],
+  "codeowners": ["laa-sre-admins"],
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox"
+        },
+        {
+          "sso_group_name": "ecp-admin",
+          "level": "platform-engineer-admin"
+        }
+      ],
+      "nuke": "exclude"
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "ecp-admin",
+          "level": "platform-engineer-admin"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "ecp-admin",
+          "level": "platform-engineer-admin"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "ecp-admin",
+          "level": "platform-engineer-admin"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "laa-pui-secure-browser",
+    "business-unit": "LAA",
+    "infrastructure-support": "ApplicationOperations@justice.gov.uk",
+    "owner": "ApplicationOperations@justice.gov.uk",
+    "slack-channel": "",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
