@@ -5,5 +5,9 @@ terraform {
       version = "~> 6.0"
       source  = "integrations/github"
     }
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 3.0"
+    }
   }
 }
