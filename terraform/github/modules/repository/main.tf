@@ -65,7 +65,7 @@ resource "null_resource" "push_protection_bypass" {
       curl -s -X PATCH \
         -H "Authorization: token ${var.github_token}" \
         -H "Accept: application/vnd.github+json" \
-        https://api.github.com/repos/${var.github_org}/${var.name}/security-and-analysis \
+        https://api.github.com/repos/ministryofjustice/${var.name}/security-and-analysis \
         -d '{
           "security_and_analysis": {
             "secret_scanning": {"status": "enabled"},

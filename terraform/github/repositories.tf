@@ -14,6 +14,7 @@ module "core" {
     # Slack app webhook url
     SLACK_WEBHOOK_URL = data.aws_secretsmanager_secret_version.slack_webhook_url.secret_string
   }
+  github_token = var.github_token
 }
 
 module "terraform-module-baselines" {
@@ -32,6 +33,7 @@ module "terraform-module-baselines" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "terraform-module-cross-account-access" {
@@ -49,6 +51,7 @@ module "terraform-module-cross-account-access" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "terraform-module-environments" {
@@ -68,6 +71,7 @@ module "terraform-module-environments" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "terraform-module-iam-superadmins" {
@@ -85,6 +89,7 @@ module "terraform-module-iam-superadmins" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "terraform-module-s3-bucket" {
@@ -103,6 +108,7 @@ module "terraform-module-s3-bucket" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 
@@ -122,6 +128,7 @@ module "terraform-module-bastion-linux" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "terraform-module-github-oidc-provider" {
@@ -141,6 +148,7 @@ module "terraform-module-github-oidc-provider" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "terraform-module-github-oidc-role" {
@@ -160,6 +168,7 @@ module "terraform-module-github-oidc-role" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "terraform-module-ecs-cluster" {
@@ -179,7 +188,7 @@ module "terraform-module-ecs-cluster" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
-}
+  github_token = var.github_token
 
 module "modernisation-platform-ami-builds" {
   source      = "./modules/repository"
@@ -198,6 +207,7 @@ module "modernisation-platform-ami-builds" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "terraform-module-aws-vm-import" {
@@ -217,6 +227,7 @@ module "terraform-module-aws-vm-import" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "modernisation-platform-instance-scheduler" {
@@ -237,6 +248,7 @@ module "modernisation-platform-instance-scheduler" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "terraform-module-ssm-patching" {
@@ -256,6 +268,7 @@ module "terraform-module-ssm-patching" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "terraform-module-ec2-autoscaling-group" {
@@ -275,6 +288,7 @@ module "terraform-module-ec2-autoscaling-group" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "terraform-module-ec2-instance" {
@@ -294,6 +308,7 @@ module "terraform-module-ec2-instance" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "terraform-module-lambda-function" {
@@ -312,6 +327,7 @@ module "terraform-module-lambda-function" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "modernisation-platform-environments" {
@@ -331,6 +347,7 @@ module "modernisation-platform-environments" {
   }
   restrict_dismissals    = true
   dismissal_restrictions = ["ministryofjustice/modernisation-platform"]
+  github_token = var.github_token
 }
 
 module "modernisation-platform-github-actions" {
@@ -339,6 +356,7 @@ module "modernisation-platform-github-actions" {
   type        = "core"
   description = "A collection of reusable GitHub Actions for the Modernisation Platform, designed to streamline and enhance workflows across our projects. This repository is defined and managed in Terraform."
   topics      = ["modernisation-platform"]
+  github_token = var.github_token
 }
 
 module "terraform-module-aws-loadbalancer" {
@@ -358,6 +376,7 @@ module "terraform-module-aws-loadbalancer" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "modernisation-platform-terraform-member-vpc" {
@@ -376,6 +395,7 @@ module "modernisation-platform-terraform-member-vpc" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "modernisation-platform-cp-network-test" {
@@ -388,6 +408,7 @@ module "modernisation-platform-cp-network-test" {
     "testing",
     "networking"
   ]
+  github_token = var.github_token
 }
 
 module "modernisation-platform-terraform-module-template" {
@@ -406,6 +427,7 @@ module "modernisation-platform-terraform-module-template" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "modernisation-platform-terraform-pagerduty-integration" {
@@ -426,6 +448,7 @@ module "modernisation-platform-terraform-pagerduty-integration" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "modernisation-platform-configuration-management" {
@@ -445,6 +468,7 @@ module "modernisation-platform-configuration-management" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "modernisation-platform-terraform-dns-certificates" {
@@ -464,6 +488,7 @@ module "modernisation-platform-terraform-dns-certificates" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "modernisation-platform-security" {
@@ -480,6 +505,7 @@ module "modernisation-platform-security" {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
   }
+  github_token = var.github_token
 }
 
 module "modernisation-platform-terraform-aws-chatbot" {
@@ -498,6 +524,7 @@ module "modernisation-platform-terraform-aws-chatbot" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "modernisation-platform-terraform-aws-data-firehose" {
@@ -518,6 +545,7 @@ module "modernisation-platform-terraform-aws-data-firehose" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
 
 module "modernisation-platform-terraform-aws-waf" {
@@ -537,4 +565,5 @@ module "modernisation-platform-terraform-aws-waf" {
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
+  github_token = var.github_token
 }
