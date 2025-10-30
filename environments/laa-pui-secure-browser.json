@@ -2,6 +2,10 @@
   "account-type": "member",
   "components": [
     {
+      "name": "networking",
+      "sso_group_name": "ecp-admin"
+    },
+    {
       "name": "workspaces-secure-browser",
       "sso_group_name": "ecp-admin"
     }
