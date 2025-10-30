@@ -29,7 +29,7 @@ jobs:
         with:
           path: ~/.tflint.d/plugins
           key: '${{ matrix.os }}-tflint-${{ hashFiles(''.tflint.hcl'') }}'
-      - uses: terraform-linters/setup-tflint@acd1575d3c037258ce5b2dd01379dc49ce24c6b7 # v6.2.0
+      - uses: terraform-linters/setup-tflint@4cb9feea73331a35b422df102992a03a44a3bb33 # v6.2.1
         name: Setup TFLint
         with:
           tflint_version: latest
@@ -82,7 +82,7 @@ jobs:
           fetch-depth: 0
       - name: Run Checkov action
         id: checkov
-        uses: bridgecrewio/checkov-action@197d53917e0ff43d63111c0808e40b1aaf28ec1c # v12.3068.0
+        uses: bridgecrewio/checkov-action@d146511ffb733a9a456c9ffc05cd462122037354 # v12.3069.0
         with:
           directory: ./
           framework: terraform
