@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Platform logging integration with protective monitoring (Cortex XSIAM)
-last_reviewed_on: 2025-10-27
+last_reviewed_on: 2025-10-30
 review_in: 6 months
 ---
 
@@ -63,6 +63,14 @@ Cortex XSIAM uses the [cortex_xsiam IAM Role](https://github.com/ministryofjusti
 
 #### Network Firewall
 
+The AWS Network Firewall provides stateful traffic inspection and threat detection across Modernisation Platform networks. It helps protect workloads by monitoring and filtering traffic moving between internal networks, the wider Ministry of Justice network, and the internet.
+
+All network traffic is inspected by a Network Firewall except for traffic entering or leaving Business Unit Internet Gateways (public-facing subnets) and any protected subnets without routing.
+
+Network Firewalls are configured to log only traffic that is denied, to avoid duplication with VPC Flow Logs that already capture accepted connections.
+
+Unlike other logging sources, Network Firewall logs are sent directly to XSIAM via an Amazon Kinesis Data Firehose integration, rather than first being stored in the core-logging account. This Firehose stream uses an API key for secure authentication and provides near real-time visibility of denied network traffic.
+
 ### Web Application Firewalls
 
 AWS WAF is a Web Application Firewall can monitor web traffic and control access to applications.
@@ -77,7 +85,26 @@ Custom WAFs created by Platform Users are not supported by Modernisation Platfor
 
 ### AWS Account Security
 
+XSIAMs integration with AWS Security Services such as GaurdDuty, Inspector and SecurityHub etc. is predominantly managed by the AWS Organisations delegated administrator account `organisation-security`.
+
+Modernisation Platform supports this integration by ensuring these services are configured appropriately for all account on the platform via our [Secure Baselines Module](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines?tab=readme-ov-file#modernisation-platform-terraform-baselines-module).
+
 ## FAQs and Examples
+
+### What logs are not collected by the Modernisation Platform?
+
+The Platform does not automatically capture application-specific logs such as application access logs, API requests, or custom metrics. Platform Users remain responsible for configuring these in their own accounts (e.g. CloudWatch Logs, OpenSearch, or an external SIEM).
+
+### What problem does this integration solve for me?
+
+The Modernisation Platform automatically handles the secure collection and transmission of infrastructure and security logs to the MoJ’s central monitoring platform (Cortex XSIAM).
+This means your team doesn’t need to build or maintain its own log forwarding pipelines for platform-level data, reducing duplication and compliance risk.
+
+You will also be compliant with several MoJ Security Principles regarding [Security Log Collection](https://security-guidance.service.justice.gov.uk/security-log-collection/#security-log-collection).
+
+### Who monitors and investigates security alerts?
+
+The MoJ Cyber Security Operations Centre (SOC) monitors XSIAM for suspicious activity. If alerts relate to your application, the SOC may contact your team for input.
 
 ## Related Documents / Further Reading
 
