@@ -41,7 +41,7 @@ AWS CloudTrail is a service that captures actions taken by users, roles and nati
 
 AWS Config is a service that provides a detailed view of how AWS Resources are configured.
 
-Modernisation Platform ensures all CloudTrail and Config events, across all Modernisation Platform managed accounts, are stored in the `central-logging` account.
+Modernisation Platform ensures all CloudTrail and Config events, across all Modernisation Platform managed accounts, are stored in the `core-logging` account.
 
 This is enforced by the Modernisation Platforms [Secure Baselines Module](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines?tab=readme-ov-file#modernisation-platform-terraform-baselines-module).
 
@@ -85,7 +85,7 @@ Custom WAFs created by Platform Users are not supported by Modernisation Platfor
 
 ### AWS Account Security
 
-XSIAMs integration with AWS Security Services such as GaurdDuty, Inspector and SecurityHub etc. is predominantly managed by the AWS Organisations delegated administrator account `organisation-security`.
+XSIAMs integration with AWS Security Services such as GuardDuty, Inspector and SecurityHub etc. is predominantly managed by the AWS Organisations delegated administrator account `organisation-security`.
 
 Modernisation Platform supports this integration by ensuring these services are configured appropriately for all account on the platform via our [Secure Baselines Module](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines?tab=readme-ov-file#modernisation-platform-terraform-baselines-module).
 
