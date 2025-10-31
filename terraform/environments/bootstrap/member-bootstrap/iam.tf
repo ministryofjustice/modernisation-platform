@@ -597,6 +597,7 @@ data "aws_iam_policy_document" "policy" {
       "elasticfilesystem:restore",
       "elasticloadbalancing:SetRulePriorities",
       "elasticloadbalancing:ModifyRule",
+      "elasticloadbalancing:ModifyListener",
       "glue:GetJobRuns",
       "glue:StartJobRun",
       "glue:GetJobs",
