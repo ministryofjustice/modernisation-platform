@@ -153,4 +153,7 @@ resource "github_actions_secret" "environment_management" {
     local.environment_management,
     { account_ids : module.environments.environment_account_ids }
   ))
+  lifecycle {
+    ignore_changes = all
+  }
 }
