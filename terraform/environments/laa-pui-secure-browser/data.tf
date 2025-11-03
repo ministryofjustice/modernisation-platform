@@ -3,8 +3,6 @@ data "http" "environments_file" {
   url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/${local.application_name}.json"
 }
 
-data "aws_caller_identity" "current" {}
-
 data "aws_ec2_transit_gateway" "transit-gateway" {
   provider = aws.core-network-services
   filter {
