@@ -34,5 +34,5 @@ locals {
   application_data = fileexists("./application_variables.json") ? jsondecode(file("./application_variables.json")) : {}
 
   # Dedicated VPC name for Transit Gateway attachment
-  dedicated_vpc_name = "laa-pui-secure-browser-vpc"
+  dedicated_vpc_name = "laa-${local.environment}-secure-browser"
 }
