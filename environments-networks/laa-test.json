@@ -16,6 +16,7 @@
           "laa-enterprise-service-bus-test",
           "laa-mail-relay-test",
           "laa-oem-test",
+          "laa-pui-secure-browser-test",
           "maat-test",
           "maatdb-test",
           "mlra-test",

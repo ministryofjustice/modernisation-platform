@@ -19,6 +19,10 @@
           "level": "sandbox"
         },
         {
+          "sso_group_name": "laa-ccms-developers",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "laa-ccms-instance-access",
           "level": "sandbox"
         },

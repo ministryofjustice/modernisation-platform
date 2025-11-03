@@ -64,7 +64,7 @@ jobs:
             echo "Job Name: " ${{ inputs.JOB_NAME }}
         - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         - name: Decrypt Secrets
-          uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@39db49635a1a20aee7dcffce535321cd01760135 # v3.4.5
+          uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@4eceb2a416a197e91dc557c2ef0b5dd9afe29e0c # v3.4.6
           with:
             environment_management: ${{ inputs.environment_management }}
             slack_webhook_url: ${{ inputs.slack_webhook_url }}

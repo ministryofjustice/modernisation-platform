@@ -18,7 +18,8 @@
           "sso_group_name": "hmpps-delius-jitbit-devs",
           "level": "instance-management"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
