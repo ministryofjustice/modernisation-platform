@@ -37,6 +37,6 @@ data "aws_subnets" "dedicated_private" {
   }
 
   tags = {
-    Name = "*private*"
+    Name = "*transit-gateway*"
   }
 }
