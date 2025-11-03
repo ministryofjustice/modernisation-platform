@@ -1598,6 +1598,20 @@
         }
       ]
     },
+   {
+      "username": "harriet.schofield",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "electronic-monitoring-data-preproduction",
+          "access": "read-only"
+        },
+        {
+          "account-name": "electronic-monitoring-data-production",
+          "access": "read-only"
+        }
+      ]
+    },
     {
       "username": "paul.winter",
       "github-username": "no-value-supplied",
