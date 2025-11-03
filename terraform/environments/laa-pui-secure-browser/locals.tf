@@ -32,4 +32,7 @@ locals {
   # example usage:
   # example_data = local.application_data.accounts[local.environment].example_var
   application_data = fileexists("./application_variables.json") ? jsondecode(file("./application_variables.json")) : {}
+
+  # Dedicated VPC name for Transit Gateway attachment
+  dedicated_vpc_name = "laa-${local.environment}-secure-browser"
 }
