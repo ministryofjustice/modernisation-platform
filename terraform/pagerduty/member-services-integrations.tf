@@ -1855,21 +1855,25 @@ locals {
     "william.gibbon"   = local.digital_email_suffix
     "antony.gowland"   = local.digital_email_suffix
     "dominic.robinson" = local.digital_email_suffix
+    "george.hill2"     = local.justice_email_suffix
   }
   # repeat users, e.g. for a 3 day stint of concierge
   dso_schedule_user_order = [
+    "antony.gowland",
+    "antony.gowland",
+    "antony.gowland",
+    "george.hill2",
+    "george.hill2",
+    "george.hill2",
+    "dominic.robinson",
+    "dominic.robinson",
+    "dominic.robinson",
     "dave.kent",
     "dave.kent",
     "dave.kent",
     "william.gibbon",
     "william.gibbon",
     "william.gibbon",
-    "antony.gowland",
-    "antony.gowland",
-    "antony.gowland",
-    "dominic.robinson",
-    "dominic.robinson",
-    "dominic.robinson",
   ]
 
   services = {
