@@ -1850,7 +1850,6 @@ locals {
   # add users to this list once they've signed into PagerDuty via SSO for first time
   # avoid putting full email as public repo
   dso_team_members = {
-    "robertsweetman"   = "@pm.me"
     "dave.kent"        = local.justice_email_suffix
     "william.gibbon"   = local.digital_email_suffix
     "antony.gowland"   = local.digital_email_suffix
@@ -1962,8 +1961,8 @@ resource "pagerduty_schedule" "dso" {
 
   layer {
     name                         = "Primary Schedule"
-    start                        = "2025-10-10T00:00:00Z"
-    rotation_virtual_start       = "2025-10-10T00:00:00Z"
+    start                        = "2025-11-04T00:00:00Z"
+    rotation_virtual_start       = "2025-11-04T00:00:00Z"
     rotation_turn_length_seconds = 86400
 
     users = [
