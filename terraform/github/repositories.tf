@@ -541,9 +541,9 @@ module "modernisation-platform-terraform-aws-waf" {
 
 module "modernisation-platform-github" {
   source      = "./modules/repository"
-  name        = "modernisation-platform-security"
+  name        = "modernisation-platform-github"
   type        = "core"
-  description = "Repository for internal only security issues and content"
+  description = "Repository for internal github content"
   topics = [
     "github",
     "security",
