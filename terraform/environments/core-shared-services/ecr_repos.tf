@@ -116,7 +116,7 @@ module "instance_scheduler_ecr_repo" {
   app_name = "instance-scheduler"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/hub-actions"
+    "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/github-actions"
   ]
 
   pull_principals = [
