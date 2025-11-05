@@ -116,7 +116,7 @@ module "instance_scheduler_ecr_repo" {
   app_name = "instance-scheduler"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/github-actions"
+    "arn:aws:iam::${local.environment_management.account_ids["core-shared-services-production"]}:role/hub-actions"
   ]
 
   pull_principals = [
@@ -1548,7 +1548,7 @@ module "electronic_monitoring_ears_sars_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/ears-sars-app-execution-role",
     "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/ears-sars-app-execution-role",
     "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:role/ears-sars-app-execution-role"
-    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/ears-sars-app-execution-role",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/ears-sars-app-execution-role"
   ]
 
   # Tags
