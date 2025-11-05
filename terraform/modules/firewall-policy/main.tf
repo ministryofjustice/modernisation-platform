@@ -12,19 +12,19 @@ resource "aws_networkfirewall_firewall_policy" "main" {
   }
   firewall_policy {
     stateful_engine_options {
-      rule_order = "DEFAULT_ACTION_ORDER"
+      rule_order = "STRICT_ORDER"
+    }
+    stateful_rule_group_reference {
+      resource_arn = aws_networkfirewall_rule_group.fqdn-stateful.arn
+    }
+    stateful_rule_group_reference {
+      resource_arn = aws_networkfirewall_rule_group.stateful.arn
     }
     dynamic "stateful_rule_group_reference" {
       for_each = length(var.fw_managed_rule_groups) > 0 ? toset(var.fw_managed_rule_groups) : []
       content {
         resource_arn = format("arn:aws:network-firewall:%s:aws-managed:stateful-rulegroup/%s", data.aws_region.current.name, stateful_rule_group_reference.key)
       }
-    }
-    stateful_rule_group_reference {
-      resource_arn = aws_networkfirewall_rule_group.stateful.arn
-    }
-    stateful_rule_group_reference {
-      resource_arn = aws_networkfirewall_rule_group.fqdn-stateful.arn
     }
     stateless_fragment_default_actions = ["aws:forward_to_sfe"]
     stateless_default_actions          = ["aws:forward_to_sfe"]
