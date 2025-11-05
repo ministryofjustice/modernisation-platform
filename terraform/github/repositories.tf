@@ -538,3 +538,21 @@ module "modernisation-platform-terraform-aws-waf" {
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
+
+module "modernisation-platform-github" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-github"
+  type        = "core"
+  description = "Repository for internal github content"
+  topics = [
+    "github",
+    "security",
+    "modernisation-platform",
+    "terraform"
+  ]
+  visibility = "internal"
+  secrets = {
+    PASSPHRASE                            = local.decrypt_passphrase
+    MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
+  }
+}
