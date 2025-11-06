@@ -10,10 +10,6 @@ module "core" {
     "aws",
     "documentation"
   ]
-  secrets = {
-    # Slack app webhook url
-    SLACK_WEBHOOK_URL = data.aws_secretsmanager_secret_version.slack_webhook_url.secret_string
-  }
 }
 
 module "terraform-module-baselines" {
