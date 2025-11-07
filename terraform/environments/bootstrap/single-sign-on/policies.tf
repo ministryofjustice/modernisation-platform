@@ -206,6 +206,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "ds-data:Describe*",
       "ds-data:List*",
       "ds-data:Search*",
+      "compute-optimizer:*",
       "ec2:AttachVolume",
       "ec2:St*",
       "ec2:RebootInstances",
