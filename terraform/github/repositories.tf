@@ -585,4 +585,5 @@ module "modernisation-platform-github" {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
   }
+  github_token = var.github_token
 }
