@@ -12,7 +12,7 @@
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
     "securityhub-slack-channel": "modernisation-platform",
     "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
-    "critical-national-infrastructure": false
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [""]
 }
