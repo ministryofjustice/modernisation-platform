@@ -3,7 +3,8 @@
 set -o pipefail
 
 # This script checks the remaining API usage remaining for the authenticated GITHUB APP.
-# If the remaining amount is less than the threshold (defined in RATE_LIMIT_THRESHOLD) then the script forces an exit.
+# It uses the global env var: RATE_THRESHOLD in the calling workflow as the limit threshold.
+# If the remaining API usage is less than the threshold then the script forces an exit.
 # Requires $GH_TOKEN taken as output from the GH App session creation.
 
 # Declare the two main vars of the check as integers:
