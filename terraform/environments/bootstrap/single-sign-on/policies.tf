@@ -836,6 +836,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "states:*",
       "support:*",
       "textract:*",
+      "transfer:*",
       "wafv2:*",
       "wellarchitected:*",
       "workspaces-web:*"
