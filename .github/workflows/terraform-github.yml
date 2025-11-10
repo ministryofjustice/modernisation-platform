@@ -9,6 +9,8 @@ on:
       - 'environments/**.json'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
       - 'collaborators.json'
+    branches:
+      - main
   pull_request:
     paths:
       - 'terraform/github/**'
