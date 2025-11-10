@@ -24,14 +24,15 @@ echo "Rate limit resets at: $RESET_UTC"
 USED=$(echo "$RESPONSE" | jq '.resources.core.used')
 REMAINING=$(echo "$RESPONSE" | jq '.resources.core.remaining')
 
-echo "Rate used: $USED"
-echo "Rate remaining: $REMAINING"
-
 # Set to ensure these vars are integers.
 REMAINING_INT=${REMAINING:-0}
 RATE_THRESHOLD_INT=${RATE_THRESHOLD:-0}
 
-if [ "$REMAINING" -lt "$RATE_THRESHOLD" ]; then
+echo "Rate used: $USED"
+echo "Rate remaining: $REMAINING_INT"
+echo "Rate threshold: $RATE_THRESHOLD_INT"
+
+if [ "$REMAINING_INT" -lt "$RATE_THRESHOLD_INT" ]; then
 echo "❌ Rate usage at threshold ($RATE_THRESHOLD_INT => $REMAINING_INT). Exiting."
 exit 1
 else

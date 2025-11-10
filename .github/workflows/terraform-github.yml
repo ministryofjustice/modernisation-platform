@@ -31,7 +31,7 @@ defaults:
     shell: bash
 
 env:
-  RATE_LIMIT_THRESHOLD: 100
+  RATE_THRESHOLD: 100
   APP_ID: 2013696
 
 permissions:
