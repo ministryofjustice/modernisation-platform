@@ -73,6 +73,7 @@ locals {
     laa-appstream-vpc_additional   = "10.200.68.0/22"
     laa-ecp-db-lb                  = "10.205.10.0/24"
     laa-ecp-safedb-1               = "10.205.14.0/24"
+    laa-ecp-safedb-2               = "10.205.15.0/24"
     laa-ecp-safedb-3               = "10.205.11.0/24"
 
     # NEC cidr ranges

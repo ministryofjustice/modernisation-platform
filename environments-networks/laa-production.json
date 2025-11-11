@@ -15,6 +15,7 @@
           "laa-enterprise-service-bus-production",
           "laa-mail-relay-production",
           "laa-oem-production",
+          "laa-pui-secure-browser-production",
           "maat-production",
           "maatdb-production",
           "mlra-production",
@@ -31,7 +32,9 @@
     "additional_endpoints": [
       "com.amazonaws.eu-west-2.xray",
       "com.amazonaws.eu-west-2.secretsmanager",
-      "com.amazonaws.eu-west-2.email-smtp"
+      "com.amazonaws.eu-west-2.email-smtp",
+      "com.amazonaws.eu-west-2.sns",
+      "com.amazonaws.eu-west-2.sqs"
     ],
     "additional_private_zones": ["aws.prd.legalservices.gov.uk"],
     "additional_vpcs": [],

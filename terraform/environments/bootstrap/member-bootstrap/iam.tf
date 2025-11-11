@@ -483,8 +483,8 @@ data "aws_iam_policy_document" "member-access-us-east" {
   }
 
   statement {
-    actions = ["iam:PassRole"]
-    effect  = "Allow"
+    actions   = ["iam:PassRole"]
+    effect    = "Allow"
     resources = ["*"]
     condition {
       test     = "StringEquals"
@@ -597,6 +597,7 @@ data "aws_iam_policy_document" "policy" {
       "elasticfilesystem:restore",
       "elasticloadbalancing:SetRulePriorities",
       "elasticloadbalancing:ModifyRule",
+      "elasticloadbalancing:ModifyListener",
       "glue:GetJobRuns",
       "glue:StartJobRun",
       "glue:GetJobs",

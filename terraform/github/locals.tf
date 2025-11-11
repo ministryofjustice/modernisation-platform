@@ -121,6 +121,7 @@ locals {
     "modernisation-platform-configuration-management",
     "modernisation-platform-cp-network-test",
     "modernisation-platform-environments",
+    "modernisation-platform-github",
     "modernisation-platform-github-actions",
     "modernisation-platform-github-oidc-provider",
     "modernisation-platform-github-oidc-role",

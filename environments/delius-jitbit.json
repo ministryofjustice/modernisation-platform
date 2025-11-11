@@ -11,13 +11,15 @@
         },
         {
           "sso_group_name": "hosting-migrations",
-          "level": "developer"
+          "level": "sandbox",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hmpps-delius-jitbit-devs",
           "level": "instance-management"
         }
-      ]
+      ],
+      "nuke": "exclude"
     },
     {
       "name": "test",
@@ -28,7 +30,8 @@
         },
         {
           "sso_group_name": "hosting-migrations",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hmpps-delius-jitbit-devs",
@@ -45,7 +48,8 @@
         },
         {
           "sso_group_name": "hosting-migrations",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hmpps-delius-jitbit-devs",
@@ -62,7 +66,8 @@
         },
         {
           "sso_group_name": "hosting-migrations",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hmpps-delius-jitbit-devs",
