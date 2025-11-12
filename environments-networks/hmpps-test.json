@@ -28,6 +28,7 @@
       "com.amazonaws.eu-west-2.execute-api",
       "com.amazonaws.eu-west-2.kinesis-streams",
       "com.amazonaws.eu-west-2.lambda",
+      "com.amazonaws.eu-west-2.lakeformation",
       "com.amazonaws.eu-west-2.secretsmanager",
       "com.amazonaws.eu-west-2.sqs"
     ],
