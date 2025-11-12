@@ -124,7 +124,7 @@ jobs:
           repositories: "modernisation-platform-environments"
       - name: Authenticate GitHub CLI as the App
         env:
-          GH_TOKEN: ${{ steps.app.outputs.token }}
+          GH_TOKEN: ${{ steps.app-envts.outputs.token }}
         run: |
           gh auth status
       - name: Create GitHub member environments plan
