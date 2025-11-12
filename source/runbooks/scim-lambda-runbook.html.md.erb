@@ -1,6 +1,6 @@
 owner_slack: "#modernisation-platform"
 title:  SCIM Lambda Jobs for GitHub & Entra ID
-last_reviewed_on: 2025-11-11
+last_reviewed_on: 2025-11-12
 review_in: 6 months
 ---
 
@@ -72,8 +72,10 @@ module "entraid_scim" {
 
 ### 2.2 Rotation
 
-- When an Entra ID secret requires renewal, an email notification is sent from IDAM (IDAM@justice.gov.uk) to the relevant application owners. The GitHub SCIM token is controlled by the MP Bot Account. If the token is expiring, we have a secrets-reminder-rotations workflow that identifies this and a ticket should be raised in our backlog.
-For full rotation procedures, including manual steps and validating successful rotation, refer to the [Rotating Secrets Runbook](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/rotating-secrets.html).  After rotating a secret and updating it's value in Secrets Manager, run the management-account-apply.yml workflow. Running the workflow ensures Terraform pulls the updated secret value and ensures the Auth0 Tenant and all infrastructure using the secret are updated.
+- When an Entra ID secret requires renewal, an email notification is sent from IDAM (IDAM@justice.gov.uk) to the relevant application owners. The GitHub SCIM token is controlled by the MP Bot Account.
+For full rotation procedures, including manual steps and validating successful rotation, refer to the [Rotating Secrets Runbook](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/rotating-secrets.html).  
+
+---
 
 ## 3. Operational Best Practices
 
