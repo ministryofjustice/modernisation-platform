@@ -1,0 +1,96 @@
+---
+owner_slack: "#modernisation-platform"
+title: AMI and EBS cleanup
+last_reviewed_on: 2025-11-12
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## Overview
+
+This runbook explains how to use the **AMI and EBS cleanup pipeline** to identify and remove unused Amazon Machine Images (AMIs) and unattached EBS volumes in Modernisation Platform environments.  
+
+The goal is to reduce costs and keep environments clean by automatically deleting resources that are no longer needed.
+
+The cleanup runs in two phases:
+
+1. **Preview (dry run)** — lists candidates for deletion and produces a [summary](https://github.com/ministryofjustice/modernisation-platform-environments/actions/runs/19268860979#summary-55091517918) and  CSV reports.
+2. **Live (deletion)** — deregisters unused AMIs, deletes associated snapshots, and removes unattached EBS volumes.
+
+---
+
+## When to use this runbook
+
+Run this workflow when:
+
+- You want to audit old or unused AMIs and volumes.  
+- You want to safely delete aged resources to reduce storage costs.  
+
+---
+
+## Prerequisites
+
+- The target environment/s must already exist under GitHub [Environments](https://github.com/ministryofjustice/modernisation-platform-environments/settings/environments) in the Modernisation Platform Environments repository, with appropriate approvers configured to authorize the cleanup workflow before it runs.
+
+---
+
+## How to trigger the cleanup
+
+1. Go to the [**Modernisation Platform Enviroments**](https://github.com/ministryofjustice/modernisation-platform-environments) repository in GitHub.  
+
+2. Select the [**Actions**](https://github.com/ministryofjustice/modernisation-platform-environments/actions) tab.  
+3. Choose [**Cloud Clean Up AMI and EBS**](https://github.com/ministryofjustice/modernisation-platform-environments/actions/workflows/ami_cleanup.yml) in the left-hand list.  
+4. Click **Run workflow** (top right).  
+5. Provide input values, see example below:
+
+   | Input | Description | Example |
+   |--------|--------------|----------|
+   | **application** | Application short name | `cooker` |
+   | **environments** | environment | `development,test,preproduction` |
+   | **cleanup_type** | Choose what to clean: `ami`, `ebs`, or `both` (default) | `both` |
+
+6. Click **Run workflow** to start the job.
+
+---
+
+### Phase 1 – Preview (dry run)
+- Scans for AMIs and EBS volumes owned by the account.
+- Applies age filters:
+  - Default: AMIs ≥ 3 months old, EBS ≥ 1 month old.  
+- Excludes:
+  - AMIs referenced in Terraform (`ami = "..."` or `ami_name = "..."`).
+  - AMIs in use by running instances.
+  - AMIs or snapshots tagged `AwsBackup`, `Retain=true`, or `Backup=true`.
+- Generates reports and a [cleanup summary](https://github.com/ministryofjustice/modernisation-platform-environments/actions/runs/19268860979#summary-55091517918) in Github actions showing ami, snapshots and ebs candidates to be deleted.
+
+### Phase 2 – Live (deletion)
+- Runs after the dry run and requires approval from the team before execution.
+- Uses the same filters to confirm candidates.
+- Deregisters unused AMIs and deletes their associated snapshots.  
+- Performs a **snapshot fallback pass** to remove any orphaned AMI snapshots.
+- Deletes **unattached** EBS volumes older than the threshold.
+- Produces updated CSV reports and summary showing what was deleted or skipped.
+
+---
+
+## Safety and rollback
+
+- AMI deregistration does **not** affect running EC2 instances.  
+- Snapshots are deleted only if the corresponding AMI was deleted.  
+- EBS volumes that are **attached** are never deleted.  
+- AMIs or snapshots with `AwsBackup`, `Retain=true`, or `Backup=true` tags are always preserved.  
+- All candidate commands are written to artifact files before execution for traceability.
+
+---
+
+## References
+
+- [Cleanup workflow file](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/workflows/ami_cleanup.yml)
+- [AMI cleanup script](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/scripts/ami_cleanup.sh)
+- [EBS cleanup script](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/scripts/ebs_cleanup.sh)
+---
+
+## Support
+
+For questions or issues, please contact the **Modernisation Platform team** using the [#ask-modernisation-platform](https://app.slack.com/client/E01066BNN9G/C01A7QK5VM1) slack channel.
