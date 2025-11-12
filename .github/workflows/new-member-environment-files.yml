@@ -3,10 +3,10 @@ name: New member environment files
 on:
   push:
     paths:
-      # - 'environments/**.json'
-      # - 'environments-networks/**.json'
+      - 'environments/**.json'
+      - 'environments-networks/**.json'
     branches:
-      - issue/11648-2
+      - main
   workflow_dispatch:
 
 permissions:
@@ -77,12 +77,12 @@ jobs:
           remote_repository_path: "./modernisation-platform-environments"
           pr_title: "New files for terraform/environments"
           pr_body: "> This PR was automatically created via a GitHub action workflow 🤖"
-      # - name: Slack failure notification
-      #   uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
-      #   with:
-      #     webhook-type: incoming-webhook
-      #     payload: |
-      #       {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
-      #   if: ${{ failure() }}
+      - name: Slack failure notification
+        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
+        with:
+          webhook-type: incoming-webhook
+          payload: |
+            {"blocks":[{"type": "section","text": {"type": "mrkdwn","text": ":no_entry: Failed GitHub Action:"}},{"type": "section","fields":[{"type": "mrkdwn","text": "*Workflow:*\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }}>"},{"type": "mrkdwn","text": "*Job:*\n${{ github.job }}"},{"type": "mrkdwn","text": "*Repo:*\n${{ github.repository }}"}]}]}
+        env:
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
+        if: ${{ failure() }}
