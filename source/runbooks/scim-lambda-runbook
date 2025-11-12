@@ -28,9 +28,11 @@ If you’re looking for user-facing SSO guidance, check out the [Modernisation P
 | aws-sso-scim-github    | moj-terraform-scim-github      | SCIM provisioning for GitHub      | Every 6 hours (cron)   | aws_saml                                 |
 | entra-id-scim-lambda   | moj-terraform-scim-entra-id    | SCIM provisioning for Entra ID    | Every 2 hours (rate)   | entra_id_aws_connectivity_details        |
 
-- For **entra-id-scim-lambda**, the Azure secret must first be updated in the Azure Portal under the App Registration **justicedigital-panda-awsidentitycenter-scim**. The updated secret is then stored in AWS Secrets Manager as `entra_id_aws_connectivity_details`.
+  **EntraID App Registrations:** Two EntraID App Registrations are in use:
+  - **justicedigital-panda-awsidentitycenter-scim:** which stores client secret `aws-entraid-identity-center-scim` used for the EntraID SCIM Lambda job.
+  - **justicedigital-panda-awsidentitycenter:** which stores client secret `aws-sso-entraid-integration` (used by Auth0 to authenticate to Entra ID)  Auth0 tenant enables Single Sign-On for AWS by federating user identities from Entra ID through Auth0 and ultimately into AWS Identity Center. The secret `azure_entraid_oidc` in AWS Secrets Manager stores credentials for the Ministry of Justice–owned OAuth app used for AWS SSO.
 
-**Defined in:**
+**SCIM jobs are defined in:**
 - [moj-terraform-scim-github/main.tf](https://github.com/ministryofjustice/moj-terraform-scim-github/blob/main/main.tf)
 - [moj-terraform-scim-entra-id/main.tf](https://github.com/ministryofjustice/moj-terraform-scim-entra-id/blob/main/main.tf)
 
@@ -46,9 +48,9 @@ If you’re looking for user-facing SSO guidance, check out the [Modernisation P
 
 ---
 
-## 2. Secrets Management & Secure Consumption
+## 2. Secrets Management 
 
-### 2.1 Consumption Flow
+### 2.1 How Secrets Are Consumed
 
 - Sensitive credentials (GitHub tokens, Azure client secrets, etc.) required for SCIM integrations are stored in AWS Secrets Manager.
 - These secrets are referenced in `sso-scim.tf` as sensitive local variables, and injected into the respective Terraform modules (`moj-terraform-scim-github`, `moj-terraform-scim-entra-id`).
@@ -70,9 +72,8 @@ module "entraid_scim" {
 
 ### 2.2 Rotation
 
-- When an Entra ID secret requires renewal, an email notification is sent from IDAM (IDAM@justice.gov.uk) to the relevant application owners.  
-For full rotation procedures, including manual steps and validating successful rotation, refer to the [Rotating Secrets Runbook](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/rotating-secrets.html).  After rotating a secret and updating it's value in Secrets Manager, run the management-account-apply.yml workflow. Running the workflow ensures Terraform pulls the updated secret value and updates AWS infrastructure accordingly.
-Not sure on how we're notified when github scim secret/token needs updating???
+- When an Entra ID secret requires renewal, an email notification is sent from IDAM (IDAM@justice.gov.uk) to the relevant application owners. The GitHub SCIM token is controlled by the MP Bot Account. If the token is expiring or revoked, we have a secrets-reminder-rotations workflow that identifies this and a ticket should be raised in our backlog.
+For full rotation procedures, including manual steps and validating successful rotation, refer to the [Rotating Secrets Runbook](https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/rotating-secrets.html).  After rotating a secret and updating it's value in Secrets Manager, run the management-account-apply.yml workflow. Running the workflow ensures Terraform pulls the updated secret value and ensures the Auth0 Tenant and all infrastructure using the secret are updated.
 
 ## 3. Operational Best Practices
 
