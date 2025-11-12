@@ -6,7 +6,7 @@ on:
       - 'environments/**.json'
       - 'environments-networks/**.json'
     branches:
-      - main
+      - issue/11648-2 # changed from main for testing
   workflow_dispatch:
 
 permissions:
