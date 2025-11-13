@@ -208,7 +208,7 @@ TOTAL_EGRESS_REMOVED=0
 FAILED_SG=0
 
 # Process each security group
-echo "$SECURITY_GROUPS" | jq -c '.SecurityGroups[]' | while read -r sg; do
+while read -r sg; do
     GROUP_ID=$(echo "$sg" | jq -r '.GroupId')
     GROUP_NAME=$(echo "$sg" | jq -r '.GroupName')
     INGRESS_RULES=$(echo "$sg" | jq '.IpPermissions')
@@ -252,7 +252,7 @@ echo "$SECURITY_GROUPS" | jq -c '.SecurityGroups[]' | while read -r sg; do
     
     TOTAL_PROCESSED=$((TOTAL_PROCESSED + 1))
     log ""
-done
+done < <(echo "$SECURITY_GROUPS" | jq -c '.SecurityGroups[]')
 
 # Final summary
 log "${GREEN}=== Quarantine Summary ===${NC}"
