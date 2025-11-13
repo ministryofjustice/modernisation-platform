@@ -1,0 +1,34 @@
+{
+  "account-type": "member",
+  "codeowners": ", ",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "laa-cyber-security-team",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "laa-cyber-security-team",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "laa-cst-security-dashboard",
+    "business-unit": "LAA",
+    "infrastructure-support": "kyle.obrien@justice.gov.uk",
+    "owner": "kyle.obrien@justice.gov.uk",
+    "slack-channel": "ask-laad-cyber-security-team",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
