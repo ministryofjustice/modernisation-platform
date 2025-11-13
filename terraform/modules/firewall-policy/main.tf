@@ -15,9 +15,11 @@ resource "aws_networkfirewall_firewall_policy" "main" {
       rule_order = "STRICT_ORDER"
     }
     stateful_rule_group_reference {
+      priority     = 1
       resource_arn = aws_networkfirewall_rule_group.fqdn-stateful.arn
     }
     stateful_rule_group_reference {
+      priority     = 2
       resource_arn = aws_networkfirewall_rule_group.stateful.arn
     }
     dynamic "stateful_rule_group_reference" {
