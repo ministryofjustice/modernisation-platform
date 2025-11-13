@@ -1,4 +1,5 @@
 #!/bin/bash
+# Script to remove all security group rules from all security groups in an AWS environment
 set -e
 
 # Color codes for output
@@ -103,6 +104,19 @@ echo "$SECURITY_GROUPS" | jq -r '.SecurityGroups[] |
     @tsv' | while IFS=$'\t' read -r gid gname vpc ingress egress; do
     printf "%-22s %-60s %-23s %8s %8s\n" "$gid" "$gname" "$vpc" "$ingress" "$egress"
 done
+log ""
+
+# Check if there are any rules to remove
+TOTAL_RULES=$(echo "$SECURITY_GROUPS" | jq '[.SecurityGroups[] | (.IpPermissions | length) + (.IpPermissionsEgress | length)] | add // 0')
+if [ "$TOTAL_RULES" -eq 0 ]; then
+    log "${GREEN}✓ No security group rules found to remove.${NC}"
+    log "${GREEN}All security groups are already empty (quarantined state).${NC}"
+    log ""
+    log "Completed at: $(date)"
+    exit 0
+fi
+
+log "${YELLOW}Total rules to remove: ${TOTAL_RULES}${NC}"
 log ""
 
 # Save full backup
