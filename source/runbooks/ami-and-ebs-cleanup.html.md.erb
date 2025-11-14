@@ -68,8 +68,8 @@ Run this workflow when:
 - Runs after the dry run and requires approval from the team before execution.
 - Uses the same filters to confirm candidates.
 - Deregisters unused AMIs and deletes their associated snapshots.  
-- Performs a **snapshot fallback pass** to remove any orphaned AMI snapshots.
-- Deletes **unattached** EBS volumes older than the threshold.
+- Performs a snapshot fallback pass to remove any orphaned AMI snapshots.
+- Deletes unattached EBS volumes older than the threshold.
 - Produces updated CSV reports and summary showing what was deleted or skipped.
 
 ---
