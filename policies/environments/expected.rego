@@ -58,6 +58,7 @@ expected :=
     "hmpps-oem",
     "justice-digital-document-hub",
     "laa-ccms-soa",
+    "laa-cst-security-dashboard",
     "laa-enterprise-service-bus",
     "laa-mail-relay",
     "laa-oem",

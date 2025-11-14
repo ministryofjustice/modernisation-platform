@@ -17,6 +17,10 @@ defaults:
   run:
     shell: bash
 
+env:
+  RATE_THRESHOLD: 100
+  APP_ID: 2013696
+
 jobs:
 
   fetch-secrets:
@@ -35,18 +39,32 @@ jobs:
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@4eceb2a416a197e91dc557c2ef0b5dd9afe29e0c # v3.4.6
         with:
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
-          terraform_github_token: ${{ needs.fetch-secrets.outputs.terraform_github_token }}
+          mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           path: core-repo
+      - name: Create GitHub App token
+        id: app
+        uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # v2.1.4
+        with:
+          app-id: ${{ env.APP_ID }}
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
+          owner: ministryofjustice
+          repositories: modernisation-platform-environments
+      - name: Authenticate GitHub CLI as the App and Check the Rate Usage
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          # gh automatically uses GH_TOKEN if set — no `gh auth login` needed
+          gh auth status
+          bash ./core-repo/scripts/check-github-api-usage.sh
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           repository: ministryofjustice/modernisation-platform-environments
           path: modernisation-platform-environments
           persist-credentials: false
-        env:
-          TERRAFORM_GITHUB_TOKEN: ${{ env.TERRAFORM_GITHUB_TOKEN }}
+          token: ${{ steps.app.outputs.token }}
       - name: Provision member environment directories
         run: bash ./core-repo/scripts/provision-member-directories.sh
       - name: Commit changes to GitHub
@@ -54,7 +72,7 @@ jobs:
       - name: Commit and Create PR with Signed Commit
         uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@4eceb2a416a197e91dc557c2ef0b5dd9afe29e0c # v3.4.6
         with:
-          github_token: ${{ secrets.TERRAFORM_GITHUB_TOKEN }} # use this token as writing to a different repo
+          github_token: ${{ steps.app.outputs.token }} # use this token as writing to a different repo
           remote_repository: "ministryofjustice/modernisation-platform-environments"
           remote_repository_path: "./modernisation-platform-environments"
           pr_title: "New files for terraform/environments"
