@@ -15,7 +15,7 @@ The goal is to reduce costs and keep environments clean by automatically deletin
 
 The cleanup runs in two phases:
 
-1. **Preview (dry run)** — lists candidates for deletion and produces a [summary](https://github.com/ministryofjustice/modernisation-platform-environments/actions/runs/19268860979#summary-55091517918) and  CSV reports.
+1. **Preview (dry run)** — lists candidates for deletion and produces a summary and  CSV reports.
 2. **Live (deletion)** — deregisters unused AMIs, deletes associated snapshots, and removes unattached EBS volumes.
 
 ---
@@ -37,7 +37,7 @@ Run this workflow when:
 
 ## How to trigger the cleanup
 
-1. Go to the [**Modernisation Platform Enviroments**](https://github.com/ministryofjustice/modernisation-platform-environments) repository in GitHub.  
+1. Go to the [**Modernisation Platform Environments**](https://github.com/ministryofjustice/modernisation-platform-environments) repository in GitHub.  
 
 2. Select the [**Actions**](https://github.com/ministryofjustice/modernisation-platform-environments/actions) tab.  
 3. Choose [**Cloud Clean Up AMI and EBS**](https://github.com/ministryofjustice/modernisation-platform-environments/actions/workflows/ami_cleanup.yml) in the left-hand list.  
@@ -62,7 +62,7 @@ Run this workflow when:
   - AMIs referenced in Terraform (`ami = "..."` or `ami_name = "..."`).
   - AMIs in use by running instances.
   - AMIs or snapshots tagged `AwsBackup`, `Retain=true`, or `Backup=true`.
-- Generates reports and a [cleanup summary](https://github.com/ministryofjustice/modernisation-platform-environments/actions/runs/19268860979#summary-55091517918) in Github actions showing ami, snapshots and ebs candidates to be deleted.
+- Generates reports and a cleanup summary in Github actions showing ami, snapshots and ebs candidates to be deleted.
 
 ### Phase 2 – Live (deletion)
 - Runs after the dry run and requires approval from the team before execution.
