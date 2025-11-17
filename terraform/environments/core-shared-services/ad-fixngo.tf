@@ -387,7 +387,7 @@ locals {
         security_group_name                 = "ad_azure_fsx_sg"
         storage_capacity                    = 100
         subnet_ids                          = [module.vpc["non_live_data"].non_tgw_subnet_ids_map.private[0]]
-        throughput_capacity                 = 32
+        throughput_capacity                 = 128
         weekly_maintenance_start_time       = "2:04:00" # tue 4am
       }
       ad-hmpp-fsx = {
