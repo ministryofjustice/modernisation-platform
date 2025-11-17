@@ -1,5 +1,13 @@
 #!/bin/bash
+
 # Script to remove all security group rules from all security groups in an AWS environment
+# Usage: Export AWS credentials and run the script
+# Example:
+#   export AWS_ACCESS_KEY_ID="your_access_key_id"
+#   export AWS_SECRET_ACCESS_KEY="your_secret_access_key"
+#   export AWS_SESSION_TOKEN="your_session_token"
+#   ./scripts/internal/quarantine-security-groups.sh
+
 set -e
 
 # Color codes for output
