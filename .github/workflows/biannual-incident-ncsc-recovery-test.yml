@@ -24,7 +24,7 @@ jobs:
             const issue = await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: "🔔 Biannual Backup and Restore Check-In",
+              title: "Biannual Backup and Restore Check-In",
               body: `
             ### Tasks:
             - [ ] Check the backup for statefiles in core accounts
