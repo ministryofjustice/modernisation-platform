@@ -1,0 +1,69 @@
+name: Biannual Network Access Revocation Drill
+
+on:
+  schedule:
+    # Runs at 00:00 UTC on Jan 1 and July 1
+    - cron: '0 0 1 1,7 *'
+  workflow_dispatch:  # Allows manual trigger
+
+permissions:
+  issues: write
+
+jobs:
+  create-and-track-issue:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create Biannual Network Revocation Drill Issue
+        id: create_issue
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: "Biannual Network Access Revocation Drill",
+              body: `
+            ### Objective
+            Prove we can deliberately and safely **revoke/close down** parts of the platform network per runbook, and restore cleanly.
+
+            ### Runbook / Reference
+            - Revoke network access runbook: https://user-guide.modernisation-platform.service.justice.gov.uk/runbooks/revoke-network-access.html#revoke-network-access-if-required
+
+            ### Tasks
+            - [ ] Select a **pre-agreed, low-risk** target scope for the simulation (e.g., a non-prod segment).
+            - [ ] Execute the **revoke network access** steps per runbook.
+            - [ ] Verify intended **blast radius** only (no unintended collateral).
+            - [ ] Observe/validate monitoring & alerting during the revocation window.
+            - [ ] Capture **rollback**/restore steps and confirm full restoration.
+            - [ ] Document timings, artefacts, screenshots, and any deviations.
+            - [ ] Raise follow-ups for gaps (automation, observability, approvals, docs).
+            - [ ] Update the runbook and architecture notes where needed.
+
+            ---
+            ### Notes
+            - This ticket is auto-raised every 6 months to exercise our controlled network lockdown capability.
+            - Coordinate with stakeholders before execution; use change control as required.
+              `,
+              labels: ['supportability']
+            });
+            core.setOutput("issue_node_id", issue.data.node_id);
+
+      - name: Add Issue to Project
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const projectId = "PVT_kwDOACGfts4AAftW";  // Modernisation Platform Project ID
+            const contentId = "${{ steps.create_issue.outputs.issue_node_id }}";
+            await github.graphql(`
+              mutation($projectId: ID!, $contentId: ID!) {
+                addProjectV2ItemById(input: {
+                  projectId: $projectId,
+                  contentId: $contentId
+                }) {
+                  item { id }
+                }
+              }
+            `, { projectId, contentId });
