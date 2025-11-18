@@ -41,7 +41,7 @@ jobs:
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
           mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
         with:
           path: core-repo
       - name: Create GitHub App token
@@ -59,7 +59,7 @@ jobs:
           # gh automatically uses GH_TOKEN if set — no `gh auth login` needed
           gh auth status
           bash ./core-repo/scripts/check-github-api-usage.sh
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
         with:
           repository: ministryofjustice/modernisation-platform-environments
           path: modernisation-platform-environments
