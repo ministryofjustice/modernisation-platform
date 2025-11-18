@@ -12,14 +12,14 @@ resource "aws_networkfirewall_firewall_policy" "main" {
   }
   firewall_policy {
     stateful_engine_options {
-      rule_order = "DEFAULT_ACTION_ORDER"
+      rule_order = "STRICT_ORDER"
     }
     stateful_rule_group_reference {
-      #priority     = 1
+      priority     = 1
       resource_arn = aws_networkfirewall_rule_group.fqdn-stateful.arn
     }
     stateful_rule_group_reference {
-      # priority     = 2
+      priority     = 2
       resource_arn = aws_networkfirewall_rule_group.stateful.arn
     }
     dynamic "stateful_rule_group_reference" {
@@ -32,7 +32,7 @@ resource "aws_networkfirewall_firewall_policy" "main" {
     stateless_fragment_default_actions = ["aws:drop"]
   }
   lifecycle {
-    create_before_destroy = false
+    create_before_destroy = true
   }
   tags = var.tags
 }
