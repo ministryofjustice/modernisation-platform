@@ -10,10 +10,6 @@ module "core" {
     "aws",
     "documentation"
   ]
-  secrets = {
-    # Slack app webhook url
-    SLACK_WEBHOOK_URL = data.aws_secretsmanager_secret_version.slack_webhook_url.secret_string
-  }
 }
 
 module "terraform-module-baselines" {
@@ -536,5 +532,23 @@ module "modernisation-platform-terraform-aws-waf" {
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
     AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
+  }
+}
+
+module "modernisation-platform-github" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-github"
+  type        = "core"
+  description = "Repository for internal github content"
+  topics = [
+    "github",
+    "security",
+    "modernisation-platform",
+    "terraform"
+  ]
+  visibility = "internal"
+  secrets = {
+    PASSPHRASE                            = local.decrypt_passphrase
+    MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
   }
 }

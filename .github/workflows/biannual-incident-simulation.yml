@@ -1,0 +1,65 @@
+name: Biannual Incident Management Simulation
+
+on:
+  schedule:
+    # Runs at 00:00 UTC on Jan 1 and July 1
+    - cron: '0 0 1 1,7 *'
+  workflow_dispatch:  # Allows manual trigger
+
+permissions:
+  issues: write
+
+jobs:
+  create-and-track-issue:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create Biannual Incident Simulation Issue
+        id: create_issue
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: "Biannual Incident Management Simulation",
+              body: `
+            ### Objective
+            Validate our Incident Management process end-to-end by raising a dummy incident (security-focused **or** standard) and exercising comms, tooling, and post-incident routines.
+
+            ### Tasks
+            - [ ] Raise a **dummy incident** in the agreed system (mark clearly as a simulation).
+            - [ ] Follow the **Incident Management process**: triage, severity assessment, comms, ownership, timelines.
+            - [ ] Exercise **on-call escalation** and stakeholder notifications (as appropriate for a simulation).
+            - [ ] Capture timeline & actions in the incident record.
+            - [ ] Conduct a **post-incident review**: what worked, what didn't, documentation updates.
+            - [ ] File follow-up tickets for any gaps discovered (runbooks, alerts, dashboards, access, etc).
+            - [ ] Update docs/process where needed.
+
+            ---
+            ### Notes
+            - This ticket is auto-raised every 6 months to ensure our incident muscle-memory remains fresh.
+            - Consider alternating: one cycle **security-leaning**, next cycle **standard** incident.
+              `,
+              labels: ['supportability']
+            });
+            core.setOutput("issue_node_id", issue.data.node_id);
+
+      - name: Add Issue to Project
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const projectId = "PVT_kwDOACGfts4AAftW";  // Modernisation Platform Project ID
+            const contentId = "${{ steps.create_issue.outputs.issue_node_id }}";
+            await github.graphql(`
+              mutation($projectId: ID!, $contentId: ID!) {
+                addProjectV2ItemById(input: {
+                  projectId: $projectId,
+                  contentId: $contentId
+                }) {
+                  item { id }
+                }
+              }
+            `, { projectId, contentId });
