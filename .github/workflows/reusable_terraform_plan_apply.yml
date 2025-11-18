@@ -24,6 +24,11 @@ on:
         description: 'Unique ID for the calling workflow'
         required: false
         type: string
+      set_github_app_token:
+        description: "Whether to set the GitHub App token"
+        required: false
+        type: boolean
+        default: false
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER:
         required: true
@@ -60,6 +65,7 @@ jobs:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
       - name: Create GitHub App token
+        if: ${{ inputs.set_github_app_token == true }}
         id: app
         uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # v2.1.4
         with:
@@ -68,6 +74,7 @@ jobs:
           owner: "ministryofjustice"
           
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
+        if: ${{ inputs.set_github_app_token == true }}
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
         run: |
@@ -75,9 +82,13 @@ jobs:
           gh auth status
           bash ./scripts/check-github-api-usage.sh
 
-      - name: set env variables
+      - name: Set TF_VAR_github_token
+        if: ${{ inputs.set_github_app_token == true }}
         run: |
           echo "TF_VAR_github_token=${{ steps.app.outputs.token }}" >> $GITHUB_ENV
+
+      - name: set env variables
+        run: |
           echo "TF_VAR_pagerduty_token=$PAGERDUTY_TOKEN" >> $GITHUB_ENV
           echo "TF_VAR_pagerduty_user_token=$PAGERDUTY_USERAPI_TOKEN" >> $GITHUB_ENV
 
