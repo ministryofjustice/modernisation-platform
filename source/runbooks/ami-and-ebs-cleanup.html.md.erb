@@ -17,24 +17,17 @@ The cleanup runs in two phases:
 
 1. **Preview (dry run)** — lists candidates for deletion and produces a summary and  CSV reports.
 2. **Live (deletion)** — deregisters unused AMIs, deletes associated snapshots, and removes unattached EBS volumes.
-
 ---
-
 ## When to use this runbook
 
 Run this workflow when:
 
 - You want to audit old or unused AMIs and volumes.  
 - You want to safely delete aged resources to reduce storage costs.  
-
 ---
-
 ## Prerequisites
-
 - The target environment/s must already exist under GitHub [Environments](https://github.com/ministryofjustice/modernisation-platform-environments/settings/environments) in the Modernisation Platform Environments repository, with appropriate approvers configured to authorize the cleanup workflow before it runs.
-
 ---
-
 ## How to trigger the cleanup
 
 1. Go to the [**Modernisation Platform Environments**](https://github.com/ministryofjustice/modernisation-platform-environments) repository in GitHub.  
@@ -51,9 +44,7 @@ Run this workflow when:
    | **cleanup_type** | Choose what to clean: `ami`, `ebs`, or `both` (default) | `both` |
 
 6. Click **Run workflow** to start the job.
-
 ---
-
 ### Phase 1 – Preview (dry run)
 - Scans for AMIs and EBS volumes owned by the account.
 - Applies age filters:
@@ -71,9 +62,7 @@ Run this workflow when:
 - Performs a snapshot fallback pass to remove any orphaned AMI snapshots.
 - Deletes unattached EBS volumes older than the threshold.
 - Produces updated CSV reports and summary showing what was deleted or skipped.
-
 ---
-
 ## Safety and rollback
 
 - AMI deregistration does **not** affect running EC2 instances.  
@@ -81,9 +70,7 @@ Run this workflow when:
 - EBS volumes that are **attached** are never deleted.  
 - AMIs or snapshots with `AwsBackup`, `Retain=true`, or `Backup=true` tags are always preserved.  
 - All candidate commands are written to artifact files before execution for traceability.
-
 ---
-
 ## References
 
 - [Cleanup workflow file](https://github.com/ministryofjustice/modernisation-platform-environments/blob/main/.github/workflows/ami_cleanup.yml)
