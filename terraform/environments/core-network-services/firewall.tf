@@ -179,7 +179,7 @@ module "firewall_policy" {
   source                 = "../../modules/firewall-policy"
   fw_rulegroup_capacity  = "10000"
   fw_kms_arn             = data.aws_kms_key.general_shared.arn
-  fw_policy_name         = format("%s-fw-policy-new", local.application_name)
+  fw_policy_name         = format("%s-fw-policy", local.application_name)
   fw_rulegroup_name      = format("%s-fw-rulegroup", local.application_name)
   fw_fqdn_rulegroup_name = format("%s-fw-fqdn-rulegroup", local.application_name)
   fw_allowed_domains     = local.fqdn_firewall_rules.fw_allowed_domains
