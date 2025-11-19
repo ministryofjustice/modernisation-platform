@@ -97,6 +97,7 @@ jobs:
     with:
       working-directory: "terraform/github"
       workflow_id: "github"
+      set_github_app_token: true
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
