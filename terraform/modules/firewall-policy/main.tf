@@ -1,7 +1,7 @@
 data "aws_region" "current" {}
 
 resource "random_id" "policy_id" {
-  byte_length = 2
+  byte_length = 3
 }
 
 resource "aws_networkfirewall_firewall_policy" "main" {
@@ -48,7 +48,7 @@ resource "aws_networkfirewall_rule_group" "stateful" {
 
   rule_group {
     stateful_rule_options {
-      rule_order = "DEFAULT_ACTION_ORDER"
+      rule_order = "STRICT_ORDER"
     }
     rules_source {
       dynamic "stateful_rule" {
@@ -109,6 +109,9 @@ resource "aws_networkfirewall_rule_group" "fqdn-stateful" {
   name = replace(format("%s-%s", var.fw_fqdn_rulegroup_name, random_id.policy_id.id), "/-|_/", "")
   type = "STATEFUL"
   rule_group {
+    stateful_rule_options {
+      rule_order = "STRICT_ORDER"
+    }
     rule_variables {
       ip_sets {
         key = "HOME_NET"
