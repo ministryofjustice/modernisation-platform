@@ -468,6 +468,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "sqs:GetQueueAttributes",
       "sqs:ListDeadLetterSourceQueues",
       "sqs:SendMessage",
+      "sqs:PurgeQueue",
       "states:Describe*",
       "states:List*",
       "states:Stop*",
@@ -681,7 +682,8 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "tiros:*",
       "transfer:*",
       "wafv2:*",
-      "wellarchitected:*"
+      "wellarchitected:*",
+      "workspaces-web:*"
     ]
     resources = ["*"]
   }

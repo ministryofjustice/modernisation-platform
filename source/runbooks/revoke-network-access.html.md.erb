@@ -58,36 +58,18 @@ Many of the changes below involve updating VPC NACLs. The code that defines the 
 
 This is the best option to deploy where the incident is contained to a single application which you want to quarantine. The mitigation blocks access at security group level for the infrastructure hosting the application e.g. load balancers/instances etc. by removing all the rules as the default behaviour for a SG with no rules is to `deny` all traffic.
 
-The size, architecture and complexity of the application will dictate the most appropriate method. 
-
-You will need to login to the application account with the `AdministratorAccess` SSO role.
-
-### Method 1: Delete all rules in existing security groups
-_Best for dealing with small applications with few instances, security groups and rules_
-
-1. Go to **VPC** -> **Security groups**
-2. Select a security group
-3. Select **Actions** -> **Edit inbound rules** and **Delete** for each rule listed and finally **Save rules**
-4. Select **Actions** -> **Edit outbound rules** and **Delete** for each rule listed and finally **Save rules**
-5. Apply the above steps for every security group
-
-### Method 2: Attach a new empty security group to network interfaces
-_Best for dealing with larger applications with multiple instances, security groups and rules_
-
->**Note**
-
-> This approach works well for ec2 instances but for services like Application Load Balancers, Lambda and RDS you **cannot** edit the ENI security groups like this. Instead you must access each service individually to change the associated security group.
-
-1. Go to **VPC** -> **Security groups** -> **Create security group**
-2. Enter a Security group name and description e.g. `SG to block all traffic`
-3. Select **Delete** to remove the default outbound rule to `0.0.0.0/0`
-4. Select **Create security group**
-5. Go to **Ec2** -> **Network & Security** -> **Network Interfaces**
-6. Select the relevant network interface you wish to edit
-7. Select **Actions** -> **Change security groups**
-8. Select **Remove** to remove all the existing SGs associated 
-9. Then type in the name of your new "block all" SG and select **Add security Group** -> **Save**
-10. Repeat steps above for each Network interface you need to edit
+1. Visit the [AWS SSO page](https://moj.awsapps.com/start#/) and select the target environment
+2. Select the `Access keys` link for the `AdministratorAccess` role
+3. Copy the `Option 1: Set AWS environment variables` details into your terminal
+    e.g.
+    
+    ```
+    export AWS_ACCESS_KEY_ID="your_access_key_id"
+    export AWS_SECRET_ACCESS_KEY="your_secret_access_key"
+    export AWS_SESSION_TOKEN="your_session_token"
+    ```
+4. Run the `quarantine-security-groups.sh` [script](https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/internal/quarantine-security-groups.sh) and follow the prompts to remove all security group rules
+5. The script creates text backups of all security group rules before any changes, and logs the entire process to a timestamped log file for auditing and potential recovery
 
 ## Stopping inbound internet access for an application on MP
 

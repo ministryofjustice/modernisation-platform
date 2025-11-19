@@ -4,9 +4,9 @@ terraform {
       version = "~> 6.0"
       source  = "hashicorp/aws"
     }
-    github = {
-      version = "=6.8.0"
-      source  = "integrations/github"
+    http = {
+      version = "~> 3.0"
+      source  = "hashicorp/http"
     }
   }
   required_version = "~> 1.0"

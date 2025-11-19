@@ -10,7 +10,7 @@ terraform {
       source  = "hashicorp/external"
     }
     github = {
-      version = "~> 6.0"
+      version = "=6.8.0"
       source  = "integrations/github"
     }
     time = {
