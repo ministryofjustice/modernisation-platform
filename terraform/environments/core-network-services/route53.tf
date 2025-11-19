@@ -129,6 +129,21 @@ resource "aws_route53_record" "bichard7" {
   ]
 }
 
+# Submit a bulk claim LAA NS delegation to CP
+resource "aws_route53_record" "submit_a_bulk_claim_laa" {
+  allow_overwrite = true
+  name            = "submit-a-bulk-claim.laa.service.justice.gov.uk"
+  ttl             = 30
+  type            = "NS"
+  zone_id         = aws_route53_zone.application_zones["laa"].zone_id
+  records = [
+    "ns-1297.awsdns-34.org.",
+    "ns-167.awsdns-20.com.",
+    "ns-1932.awsdns-49.co.uk.",
+    "ns-513.awsdns-00.net."
+  ]
+}
+
 # Github pages user guidance CNAME record
 
 resource "aws_route53_record" "github_pages" {
