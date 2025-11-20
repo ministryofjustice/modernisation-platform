@@ -127,21 +127,32 @@ resource "time_static" "key_rotate_period" {
   rfc3339 = time_rotating.key_rotate_period.rfc3339
 }
 
-resource "aws_secretsmanager_secret" "testing_ci_iam_user_keys" {
+resource "aws_secretsmanager_secret" "testing_ci_iam_user_access_key_id" {
   # checkov:skip=CKV2_AWS_57:Auto rotation done via Terraform
-  name        = "testing_ci_iam_user_keys"
+  name        = "testing_ci_iam_user_access_key_id"
   policy      = data.aws_iam_policy_document.testing_ci_iam_user_secrets_manager_policy.json
   kms_key_id  = aws_kms_key.testing_ci_iam_user_kms_key.id
   description = "Access keys for the testing CI user, this secret is used by GitHub to set the correct repository secrets."
   tags        = local.testing_tags
 }
 
-resource "aws_secretsmanager_secret_version" "testing_ci_iam_user_keys" {
-  secret_id = aws_secretsmanager_secret.testing_ci_iam_user_keys.id
-  secret_string = jsonencode({
-    AWS_ACCESS_KEY_ID     = aws_iam_access_key.testing_ci.id
-    AWS_SECRET_ACCESS_KEY = aws_iam_access_key.testing_ci.secret
-  })
+resource "aws_secretsmanager_secret" "testing_ci_iam_user_secret_access_key" {
+  # checkov:skip=CKV2_AWS_57:Auto rotation done via Terraform
+  name        = "testing_ci_iam_user_secret_access_key"
+  policy      = data.aws_iam_policy_document.testing_ci_iam_user_secrets_manager_policy.json
+  kms_key_id  = aws_kms_key.testing_ci_iam_user_kms_key.id
+  description = "Secret Access Key for the testing CI user, this secret is used by GitHub to set the correct repository secrets."
+  tags        = local.testing_tags
+}
+
+resource "aws_secretsmanager_secret_version" "testing_ci_iam_user_access_key_id" {
+  secret_id     = aws_secretsmanager_secret.testing_ci_iam_user_access_key_id.id
+  secret_string = aws_iam_access_key.testing_ci.id
+}
+
+resource "aws_secretsmanager_secret_version" "testing_ci_iam_user_secret_access_key" {
+  secret_id     = aws_secretsmanager_secret.testing_ci_iam_user_secret_access_key.id
+  secret_string = aws_iam_access_key.testing_ci.secret
 }
 
 # KMS Source
