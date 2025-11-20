@@ -51,7 +51,7 @@
           "github_action_reviewer": "false"
         },
         {
-          "sso_group_name": "hmpps-community-payback",
+          "sso_group_name": "hmpps-community-payback-devs",
           "level": "developer",
           "github_action_reviewer": "false"
         }
@@ -99,7 +99,7 @@
           "github_action_reviewer": "false"
         },
         {
-          "sso_group_name": "hmpps-community-payback",
+          "sso_group_name": "hmpps-community-payback-devs",
           "level": "developer",
           "github_action_reviewer": "false"
         }
@@ -141,7 +141,8 @@
           "level": "developer",
           "github_action_reviewer": "false"
         }
-      ]
+      ],
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "production",

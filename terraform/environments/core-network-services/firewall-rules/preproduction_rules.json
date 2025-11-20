@@ -274,18 +274,60 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
-  "hmpps_preproduction_to_delius_preprod_oracledb": {
+  "hmpps_preproduction_to_delius_preprod_oracledb_1521": {
     "action": "PASS",
     "source_ip": "${hmpps-preproduction}",
     "destination_ip": "${delius-pre-prod}",
     "destination_port": "1521",
     "protocol": "TCP"
   },
-  "delius_preprod_to_hmpps_preproduction_oracledb": {
+  "hmpps_preproduction_to_delius_preprod_oracledb_1522": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${delius-pre-prod}",
+    "destination_port": "1522",
+    "protocol": "TCP"
+  },
+  "delius_preprod_to_hmpps_preproduction_oracledb_1521": {
     "action": "PASS",
     "source_ip": "${delius-pre-prod}",
     "destination_ip": "${hmpps-preproduction}",
     "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "delius_preprod_to_hmpps_preproduction_oracledb_1522": {
+    "action": "PASS",
+    "source_ip": "${delius-pre-prod}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "1522",
+    "protocol": "TCP"
+  },
+  "hmpps_preproduction_to_delius_stage_oracledb_1521": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${delius-stage}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "hmpps_preproduction_to_delius_stage_oracledb_1522": {
+    "action": "PASS",
+    "source_ip": "${hmpps-preproduction}",
+    "destination_ip": "${delius-stage}",
+    "destination_port": "1522",
+    "protocol": "TCP"
+  },
+  "delius_stage_to_hmpps_preproduction_oracledb_1521": {
+    "action": "PASS",
+    "source_ip": "${delius-stage}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "delius_stage_to_hmpps_preproduction_oracledb_1522": {
+    "action": "PASS",
+    "source_ip": "${delius-stage}",
+    "destination_ip": "${hmpps-preproduction}",
+    "destination_port": "1522",
     "protocol": "TCP"
   },
   "hmpps_preproduction_to_delius_eng_prod_oracledb": {

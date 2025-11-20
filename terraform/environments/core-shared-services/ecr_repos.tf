@@ -1524,3 +1524,33 @@ module "vcms_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
+module "electronic_monitoring_ears_sars_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "electronic-monitoring-ear-sars"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["electronic-monitoring-data-development"],
+    local.environment_management.account_ids["electronic-monitoring-data-test"],
+    local.environment_management.account_ids["electronic-monitoring-data-preproduction"],
+    local.environment_management.account_ids["electronic-monitoring-data-production"],
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/ears-sars-app-execution-role",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/ears-sars-app-execution-role",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:role/ears-sars-app-execution-role",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/ears-sars-app-execution-role"
+  ]
+
+  # Tags
+  tags_common = local.tags
+}

@@ -244,9 +244,23 @@ locals {
             actions = [
               "ec2:DescribeVolumes",
               "ec2:DescribeTags",
-              "ec2:DescribeInstances"
+              "ec2:DescribeInstances",
+              "cloudwatch:PutMetricData",
+              "logs:DescribeLogGroups"
             ]
             resources = ["*"]
+          },
+          {
+            sid    = "CloudWatchAgentLogGroupAccess"
+            effect = "Allow"
+            actions = [
+              "logs:PutLogEvents",
+              "logs:CreateLogStream",
+              "logs:DescribeLogStreams"
+            ]
+            resources = [
+              "arn:aws:logs:*:*:log-group:cwagent-windows-*:*"
+            ]
           }
         ]
       }
@@ -373,7 +387,7 @@ locals {
         security_group_name                 = "ad_azure_fsx_sg"
         storage_capacity                    = 100
         subnet_ids                          = [module.vpc["non_live_data"].non_tgw_subnet_ids_map.private[0]]
-        throughput_capacity                 = 32
+        throughput_capacity                 = 128
         weekly_maintenance_start_time       = "2:04:00" # tue 4am
       }
       ad-hmpp-fsx = {
@@ -1322,7 +1336,7 @@ module "ad_fixngo_ssm_patching" {
 }
 
 resource "aws_cloudwatch_log_group" "ad_fixngo" {
-  for_each          = local.ad_fixngo.cloudwatch_log_groups
+  for_each = local.ad_fixngo.cloudwatch_log_groups
 
   name              = each.key
   retention_in_days = each.value.retention_in_days

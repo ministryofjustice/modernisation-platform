@@ -420,7 +420,10 @@ data "aws_iam_policy_document" "member-access-us-east" {
     #checkov:skip=CKV2_AWS_40
     #checkov:skip=CKV_AWS_356: Needs to access multiple resources
     effect = "Allow"
-    actions = ["acm:*",
+    actions = [
+      "acm:*",
+      "iam:ListRoles",
+      "lambda:*",
       "logs:*",
       "waf:*",
       "wafv2:*",
@@ -478,6 +481,18 @@ data "aws_iam_policy_document" "member-access-us-east" {
     effect    = "Deny"
     resources = ["arn:aws:iam::*:role/MemberInfrastructureAccessUSEast"]
   }
+
+  statement {
+    actions   = ["iam:PassRole"]
+    effect    = "Allow"
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "iam:PassedToService"
+      values   = ["lambda.amazonaws.com"]
+    }
+  }
+
 }
 
 resource "aws_iam_policy" "member-access-us-east" {
@@ -582,6 +597,7 @@ data "aws_iam_policy_document" "policy" {
       "elasticfilesystem:restore",
       "elasticloadbalancing:SetRulePriorities",
       "elasticloadbalancing:ModifyRule",
+      "elasticloadbalancing:ModifyListener",
       "glue:GetJobRuns",
       "glue:StartJobRun",
       "glue:GetJobs",

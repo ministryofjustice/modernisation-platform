@@ -80,7 +80,7 @@
   },
   "github-oidc-team-repositories": [
     "ministryofjustice/electronic-monitoring-data-lambda-functions",
-    "ministryofjustice/create-a-data-task"
+    "ministryofjustice/electronic-monitoring-ear-sars"
   ],
   "go-live-date": ""
 }

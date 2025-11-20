@@ -7,6 +7,10 @@
         {
           "sso_group_name": "laa-sre-admins",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "laa-ccms-developers",
+          "level": "developer"
         }
       ],
       "nuke": "exclude"
@@ -17,6 +21,14 @@
         {
           "sso_group_name": "laa-sre-admins",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-ccms-developers",
+          "level": "developer"
         }
       ]
     },
@@ -26,6 +38,14 @@
         {
           "sso_group_name": "laa-sre-admins",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-ccms-developers",
+          "level": "developer"
         }
       ]
     },
@@ -34,6 +54,14 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-ccms-developers",
           "level": "developer"
         }
       ]

@@ -129,6 +129,21 @@ resource "aws_route53_record" "bichard7" {
   ]
 }
 
+# Submit a bulk claim LAA NS delegation to CP
+resource "aws_route53_record" "submit_a_bulk_claim_laa" {
+  allow_overwrite = true
+  name            = "submit-a-bulk-claim.laa.service.justice.gov.uk"
+  ttl             = 30
+  type            = "NS"
+  zone_id         = aws_route53_zone.application_zones["laa"].zone_id
+  records = [
+    "ns-1297.awsdns-34.org.",
+    "ns-167.awsdns-20.com.",
+    "ns-1932.awsdns-49.co.uk.",
+    "ns-513.awsdns-00.net."
+  ]
+}
+
 # Github pages user guidance CNAME record
 
 resource "aws_route53_record" "github_pages" {
@@ -238,4 +253,17 @@ resource "aws_route53_record" "cwa-prod-db3" {
     zone_id                = "ZD4D7Y8KGAS4G"
     evaluate_target_health = false
   }
-} 
+}
+
+resource "aws_route53_record" "cwa-prod-db2" {
+  # checkov:skip=CKV2_AWS_23: "Route53 A Record has Attached Resource"
+  zone_id = aws_route53_zone.private_application_zones["aws-prd-legalservices-gov-uk"].zone_id
+  name    = "cwa-prod-db2"
+  type    = "A"
+
+  alias {
+    name                   = "cwa-production-db-nlb-safe2-54d001c6914e7379.elb.eu-west-2.amazonaws.com"
+    zone_id                = "ZD4D7Y8KGAS4G"
+    evaluate_target_health = false
+  }
+}

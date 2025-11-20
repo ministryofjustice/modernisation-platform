@@ -46,6 +46,7 @@
     "LAA_ECP_DATABASES": [
       "${laa-ecp-db-lb}",
       "${laa-ecp-safedb-1}",
+      "${laa-ecp-safedb-2}",
       "${laa-ecp-safedb-3}"
     ],
     "LAA_PRIVATE_DATA_SUBNETS_DEV": [
@@ -191,7 +192,7 @@
       "9851"
     ],
     "NEC_TCP": ["80", "443"],
-    "YJB_TCP": ["80", "443", "8080:8090", "9103"],
+    "YJB_TCP": ["80", "443", "8080:8090", "9103", "9114"],
 
     "LAA_APPSTREAM_TCP": [
       "80",

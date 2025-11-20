@@ -46,6 +46,10 @@
         {
           "sso_group_name": "modernisation-platform-engineers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-yjb-statistics-and-analytics",
+          "level": "data-scientist"
         }
       ],
       "additional_reviewers": [
@@ -63,6 +67,10 @@
         {
           "sso_group_name": "modernisation-platform-engineers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-yjb-statistics-and-analytics",
+          "level": "data-scientist"
         }
       ],
       "additional_reviewers": [
