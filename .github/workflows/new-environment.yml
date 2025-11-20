@@ -24,6 +24,8 @@ env:
   AWS_REGION: "eu-west-2"
   TEMPLATE_ID: "1f0f5ccc-0f67-4ee2-942f-6e48804828ea"
   EXPECTED_TEMPLATE_VERSION: "1" # Update with your expected template version
+  RATE_THRESHOLD: 100
+  APP_ID: 2013696
 
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -34,11 +36,13 @@ defaults:
     shell: bash
 
 jobs:
+
   fetch-secrets:
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@4eceb2a416a197e91dc557c2ef0b5dd9afe29e0c # v3.4.6
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
   check-environments-deployment-plan:
     runs-on: ubuntu-latest
     if: github.ref != 'refs/heads/main' && github.event_name != 'workflow_dispatch'
@@ -49,11 +53,25 @@ jobs:
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@4eceb2a416a197e91dc557c2ef0b5dd9afe29e0c # v3.4.6
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
-          modernisation_pat_multirepo: ${{ needs.fetch-secrets.outputs.modernisation_pat_multirepo }}
+          mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Create GitHub App token
+        id: app
+        uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # v2.1.4
+        with:
+          app-id: ${{ env.APP_ID }}               
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
+          owner: "ministryofjustice"
+      - name: Authenticate GitHub CLI as the App and Check the Rate Usage
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          # gh automatically uses GH_TOKEN if set — no `gh auth login` needed
+          gh auth status
+          bash ./scripts/check-github-api-usage.sh
       - name: Set env vars
         run: |
-          echo "TF_VAR_github_token=${{ env.MODERNISATION_PAT_MULTIREPO }}" >> $GITHUB_ENV
+          echo "TF_VAR_github_token=${{ steps.app.outputs.token }}" >> $GITHUB_ENV
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
@@ -96,6 +114,7 @@ jobs:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
           PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
+
   create-environment:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
@@ -107,11 +126,25 @@ jobs:
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
-          modernisation_pat_multirepo: ${{ needs.fetch-secrets.outputs.modernisation_pat_multirepo }}
+          mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Create GitHub App token
+        id: app
+        uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # v2.1.4
+        with:
+          app-id: ${{ env.APP_ID }}               
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
+          owner: "ministryofjustice"
+      - name: Authenticate GitHub CLI as the App and Check the Rate Usage
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          # gh automatically uses GH_TOKEN if set — no `gh auth login` needed
+          gh auth status
+          bash ./scripts/check-github-api-usage.sh
       - name: Set env vars
         run: |
-          echo "TF_VAR_github_token=${{ env.MODERNISATION_PAT_MULTIREPO }}" >> $GITHUB_ENV
+          echo "TF_VAR_github_token=${{ steps.app.outputs.token }}" >> $GITHUB_ENV
       - name: Set Account Number
         run: |
           ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< $ENVIRONMENT_MANAGEMENT)
@@ -140,6 +173,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
         if: ${{ failure() }}
+
   provision-workspaces:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
