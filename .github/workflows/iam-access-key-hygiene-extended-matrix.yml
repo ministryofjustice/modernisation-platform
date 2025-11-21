@@ -192,9 +192,11 @@ jobs:
 
       - name: Run IAM access key & user hygiene (DRY RUN)
         env:
+          # GOV_UK_NOTIFY_API_KEY, TEMPLATE_ID etc aren't required in dry-run, but adding them in doesn't hurt and makes switching to live easier.
           DRY_RUN: "true"
           TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
           EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+          GOV_UK_NOTIFY_API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
         run: |
           bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
 
@@ -260,6 +262,7 @@ jobs:
       - name: Run IAM access key & user hygiene (DRY RUN)
         env:
           DRY_RUN: "true"
+          GOV_UK_NOTIFY_API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
           TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
           EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
         run: |
@@ -327,6 +330,7 @@ jobs:
       - name: Run IAM access key & user hygiene (DRY RUN)
         env:
           DRY_RUN: "true"
+          GOV_UK_NOTIFY_API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
           TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
           EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
         run: |
@@ -394,6 +398,7 @@ jobs:
       - name: Run IAM access key & user hygiene (DRY RUN)
         env:
           DRY_RUN: "true"
+          GOV_UK_NOTIFY_API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
           TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
           EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
         run: |
