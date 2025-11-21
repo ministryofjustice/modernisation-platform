@@ -73,6 +73,13 @@ jobs:
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
           owner: "ministryofjustice"
           
+      - name: Download collaborators.json from modernisation-platform-github
+        if: ${{ inputs.working-directory == 'terraform/modernisation-platform-account' && inputs.set_github_app_token == true }}
+        run: |
+          curl -H "Authorization: token ${{ steps.app.outputs.token }}" \
+            -o terraform/modernisation-platform-account/collaborators.json \
+            https://raw.githubusercontent.com/ministryofjustice/modernisation-platform-github/main/collaborators.json
+
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         if: ${{ inputs.set_github_app_token == true }}
         env:

@@ -6,7 +6,6 @@ on:
       - 'terraform/modernisation-platform-account/**'
       - '!**.md'
       - '.github/workflows/modernisation-platform-account.yml'
-      - 'collaborators.json'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
     branches:
       - main
@@ -15,7 +14,6 @@ on:
       - 'terraform/modernisation-platform-account/**'
       - '!**.md'
       - '.github/workflows/modernisation-platform-account.yml'
-      - 'collaborators.json'
       - '.github/workflows/reusable_terraform_plan_apply.yml'
     branches:
       - main
