@@ -10,6 +10,8 @@ env:
   AWS_REGION: "eu-west-2"
   TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
   EXPECTED_TEMPLATE_VERSION: "1"
+  # Optional – Could be needed when we ditch the dry run
+  # NOTIFY_RECIPIENT_EMAIL: "modernisation-platform-team@justice.gov.uk"
 
 permissions:
   id-token: write   # for OIDC
@@ -192,13 +194,14 @@ jobs:
 
       - name: Run IAM access key & user hygiene (DRY RUN)
         env:
-          # GOV_UK_NOTIFY_API_KEY, TEMPLATE_ID etc aren't required in dry-run, but adding them in doesn't hurt and makes switching to live easier.
           DRY_RUN: "true"
           TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
           EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
-          GOV_UK_NOTIFY_API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
+          GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
         run: |
           bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
+
+
 
   iam-hygiene-2:
     needs: [fetch-secrets, setup-prerequisites, define-jobs]
@@ -262,11 +265,12 @@ jobs:
       - name: Run IAM access key & user hygiene (DRY RUN)
         env:
           DRY_RUN: "true"
-          GOV_UK_NOTIFY_API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
           TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
           EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+          GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
         run: |
           bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
+
 
   iam-hygiene-3:
     needs: [fetch-secrets, setup-prerequisites, define-jobs]
@@ -327,12 +331,13 @@ jobs:
           role-session-name: githubactionsrolesession
           aws-region: ${{ needs.setup-prerequisites.outputs.aws-region }}
 
+
       - name: Run IAM access key & user hygiene (DRY RUN)
         env:
           DRY_RUN: "true"
-          GOV_UK_NOTIFY_API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
           TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
           EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+          GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
         run: |
           bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
 
@@ -395,11 +400,12 @@ jobs:
           role-session-name: githubactionsrolesession
           aws-region: ${{ needs.setup-prerequisites.outputs.aws-region }}
 
+
       - name: Run IAM access key & user hygiene (DRY RUN)
         env:
           DRY_RUN: "true"
-          GOV_UK_NOTIFY_API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
           TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
           EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+          GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
         run: |
           bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
