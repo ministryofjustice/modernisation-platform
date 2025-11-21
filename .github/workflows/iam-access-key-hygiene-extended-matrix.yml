@@ -8,16 +8,14 @@ on:
 
 env:
   AWS_REGION: "eu-west-2"
-  # These are not used in DRY RUN (Notify is skipped), but left here
-  # so it's easy to flip to live later.
   TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
   EXPECTED_TEMPLATE_VERSION: "1"
-  # Optional – Could be needed when we ditch the dry run
-  # NOTIFY_RECIPIENT_EMAIL: "modernisation-platform-team@example.gov.uk"
+  # Optional could be required when not using a dry run
+  # NOTIFY_RECIPIENT_EMAIL: "modernisation-platform-team@justice.gov.uk"
 
 permissions:
-  id-token: write   
-  contents: read 
+  id-token: write   # for OIDC
+  contents: read    # for checkout
 
 defaults:
   run:
@@ -93,7 +91,7 @@ jobs:
           echo "aws-region=$AWS_REGION" >> "$GITHUB_OUTPUT"
 
   # -------------------------------------------------------------------------
-  # Split matrix into 4 blocks to fan out jobs
+  # Split matrix into blocks
   # -------------------------------------------------------------------------
   define-jobs:
     runs-on: ubuntu-latest
@@ -149,8 +147,6 @@ jobs:
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@4eceb2a416a197e91dc557c2ef0b5dd9afe29e0c # v3.4.6
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
-          # gov_uk_notify_api_key is not needed for DRY RUN (email skipped),
-          # but keep wired for future live runs:
           gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
@@ -178,10 +174,12 @@ jobs:
 
       - name: Select workspace and get member account ID
         id: account
-        env:
-          TF_WORKSPACE: ${{ matrix.workspaces }}
         run: |
-          terraform -chdir=terraform/environments/bootstrap/member-bootstrap workspace select "$TF_WORKSPACE"
+          # Terraform refuses to select a workspace if TF_WORKSPACE is set
+          unset TF_WORKSPACE
+
+          terraform -chdir=terraform/environments/bootstrap/member-bootstrap workspace select "${{ matrix.workspaces }}"
+
           ACCOUNT_NUMBER=$(terraform -chdir=terraform/environments/bootstrap/member-bootstrap output -raw modernisation_platform_account_id)
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
@@ -196,12 +194,9 @@ jobs:
 
       - name: Run IAM access key & user hygiene (DRY RUN)
         env:
-          DRY_RUN: "true"
-          # GOV_UK_NOTIFY_API_KEY, TEMPLATE_ID etc aren't required in dry-run,
-          # but wiring them in doesn't hurt and makes switching to live trivial.
-          GOV_UK_NOTIFY_API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
           TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
           EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+          GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
         run: |
           bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
 
@@ -247,10 +242,11 @@ jobs:
 
       - name: Select workspace and get member account ID
         id: account
-        env:
-          TF_WORKSPACE: ${{ matrix.workspaces }}
         run: |
-          terraform -chdir=terraform/environments/bootstrap/member-bootstrap workspace select "$TF_WORKSPACE"
+          unset TF_WORKSPACE
+
+          terraform -chdir=terraform/environments/bootstrap/member-bootstrap workspace select "${{ matrix.workspaces }}"
+
           ACCOUNT_NUMBER=$(terraform -chdir=terraform/environments/bootstrap/member-bootstrap output -raw modernisation_platform_account_id)
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
@@ -265,10 +261,9 @@ jobs:
 
       - name: Run IAM access key & user hygiene (DRY RUN)
         env:
-          DRY_RUN: "true"
-          GOV_UK_NOTIFY_API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
           TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
           EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+          GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
         run: |
           bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
 
@@ -314,10 +309,11 @@ jobs:
 
       - name: Select workspace and get member account ID
         id: account
-        env:
-          TF_WORKSPACE: ${{ matrix.workspaces }}
         run: |
-          terraform -chdir=terraform/environments/bootstrap/member-bootstrap workspace select "$TF_WORKSPACE"
+          unset TF_WORKSPACE
+
+          terraform -chdir=terraform/environments/bootstrap/member-bootstrap workspace select "${{ matrix.workspaces }}"
+
           ACCOUNT_NUMBER=$(terraform -chdir=terraform/environments/bootstrap/member-bootstrap output -raw modernisation_platform_account_id)
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
@@ -332,10 +328,9 @@ jobs:
 
       - name: Run IAM access key & user hygiene (DRY RUN)
         env:
-          DRY_RUN: "true"
-          GOV_UK_NOTIFY_API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
           TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
           EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+          GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
         run: |
           bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
 
@@ -381,10 +376,11 @@ jobs:
 
       - name: Select workspace and get member account ID
         id: account
-        env:
-          TF_WORKSPACE: ${{ matrix.workspaces }}
         run: |
-          terraform -chdir=terraform/environments/bootstrap/member-bootstrap workspace select "$TF_WORKSPACE"
+          unset TF_WORKSPACE
+
+          terraform -chdir=terraform/environments/bootstrap/member-bootstrap workspace select "${{ matrix.workspaces }}"
+
           ACCOUNT_NUMBER=$(terraform -chdir=terraform/environments/bootstrap/member-bootstrap output -raw modernisation_platform_account_id)
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
@@ -399,9 +395,8 @@ jobs:
 
       - name: Run IAM access key & user hygiene (DRY RUN)
         env:
-          DRY_RUN: "true"
-          GOV_UK_NOTIFY_API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
           TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
           EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+          GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
         run: |
           bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
