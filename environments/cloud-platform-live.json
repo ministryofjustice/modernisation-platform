@@ -1,0 +1,52 @@
+{
+  "account-type": "member",
+  "codeowners": "webops, webops",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "webops",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "webops",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "webops",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "webops",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "cloud-platform-non-live",
+    "business-unit": "platforms",
+    "infrastructure-support": "cloudplatform@justice.gov.uk",
+    "owner": "cloudplatform@justice.gov.uk",
+    "slack-channel": "#ask-cloud-platform",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
