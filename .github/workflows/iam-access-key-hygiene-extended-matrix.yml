@@ -10,7 +10,7 @@ env:
   AWS_REGION: "eu-west-2"
   TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
   EXPECTED_TEMPLATE_VERSION: "1"
-  # Optional – could be used when we ditch dry run:
+  # Optional could be required when not using a dry run
   # NOTIFY_RECIPIENT_EMAIL: "modernisation-platform-team@justice.gov.uk"
 
 permissions:
