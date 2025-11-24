@@ -41,6 +41,7 @@ expected :=
     "corporate-staff-rostering",
     "dacp",
     "data-platform",
+    "data-platform-governance",
     "delius-alfresco",
     "delius-core",
     "delius-core-training",

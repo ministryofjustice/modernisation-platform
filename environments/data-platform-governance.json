@@ -1,0 +1,32 @@
+{
+  "account-type": "member",
+  "codeowners": "data-platform-engineering, data-platform-engineering",
+  "environments": [
+    {
+      "name": "development",
+      "access": []
+    },
+    {
+      "name": "test",
+      "access": []
+    },
+    {
+      "name": "preproduction",
+      "access": []
+    },
+    {
+      "name": "production",
+      "access": []
+    }
+  ],
+  "tags": {
+    "application": "data-platform-governance",
+    "business-unit": "Platforms",
+    "infrastructure-support": "dataplatform@digital.justice.gov.uk",
+    "owner": "dataplatform@digital.justice.gov.uk",
+    "slack-channel": "#data-platform-engineering",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
