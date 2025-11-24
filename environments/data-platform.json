@@ -10,6 +10,12 @@
     },
     {
       "name": "llm-gateway"
+    },
+    {
+      "name": "network"
+    },
+    {
+      "name": "cluster"
     }
   ],
   "environments": [
