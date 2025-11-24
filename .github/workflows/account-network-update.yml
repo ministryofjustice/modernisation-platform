@@ -66,7 +66,7 @@ jobs:
 
       - name: Commit and push network changes
         if: env.SKIP != 'true' && env.ISOLATED_ACCOUNT == 'No'
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@4eceb2a416a197e91dc557c2ef0b5dd9afe29e0c # v3.4.6
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@7b8dd97eb5b596a88206805943771ea7ffcde235 # v3.4.8
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated Signed Commit"
