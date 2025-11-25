@@ -41,7 +41,7 @@
     }
   ],
   "tags": {
-    "application": "cloud-platform-non-live",
+    "application": "cloud-platform-live",
     "business-unit": "platforms",
     "infrastructure-support": "cloudplatform@justice.gov.uk",
     "owner": "cloudplatform@justice.gov.uk",
