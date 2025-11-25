@@ -62,7 +62,7 @@ jobs:
           echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
 
       - name: Configure AWS Credentials (root / org account)
-        uses: aws-actions/configure-aws-credentials@00943011d9042930efac3dcd3a170e4273319bc8 # v5.1.0
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
         with:
           role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
@@ -157,7 +157,7 @@ jobs:
           echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
 
       - name: Configure AWS Credentials (root / org account)
-        uses: aws-actions/configure-aws-credentials@00943011d9042930efac3dcd3a170e4273319bc8 # v5.1.0
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
         with:
           role-to-assume: "arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
@@ -186,7 +186,7 @@ jobs:
           echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
 
       - name: Configure AWS Credentials (member account)
-        uses: aws-actions/configure-aws-credentials@00943011d9042930efac3dcd3a170e4273319bc8 # v5.1.0
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
         with:
           role-to-assume: "arn:aws:iam::${{ steps.account.outputs.account-number }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
@@ -225,7 +225,7 @@ jobs:
           echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
 
       - name: Configure AWS Credentials (root / org account)
-        uses: aws-actions/configure-aws-credentials@00943011d9042930efac3dcd3a170e4273319bc8 # v5.1.0
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
         with:
           role-to-assume: "arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
@@ -253,7 +253,7 @@ jobs:
           echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
 
       - name: Configure AWS Credentials (member account)
-        uses: aws-actions/configure-aws-credentials@00943011d9042930efac3dcd3a170e4273319bc8 # v5.1.0
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
         with:
           role-to-assume: "arn:aws:iam::${{ steps.account.outputs.account-number }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
@@ -292,7 +292,7 @@ jobs:
           echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
 
       - name: Configure AWS Credentials (root / org account)
-        uses: aws-actions/configure-aws-credentials@00943011d9042930efac3dcd3a170e4273319bc8 # v5.1.0
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
         with:
           role-to-assume: "arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
@@ -320,7 +320,7 @@ jobs:
           echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
 
       - name: Configure AWS Credentials (member account)
-        uses: aws-actions/configure-aws-credentials@00943011d9042930efac3dcd3a170e4273319bc8 # v5.1.0
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
         with:
           role-to-assume: "arn:aws:iam::${{ steps.account.outputs.account-number }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
@@ -359,7 +359,7 @@ jobs:
           echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
 
       - name: Configure AWS Credentials (root / org account)
-        uses: aws-actions/configure-aws-credentials@00943011d9042930efac3dcd3a170e4273319bc8 # v5.1.0
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
         with:
           role-to-assume: "arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
           role-session-name: githubactionsrolesession
@@ -387,7 +387,7 @@ jobs:
           echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
 
       - name: Configure AWS Credentials (member account)
-        uses: aws-actions/configure-aws-credentials@00943011d9042930efac3dcd3a170e4273319bc8 # v5.1.0
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
         with:
           role-to-assume: "arn:aws:iam::${{ steps.account.outputs.account-number }}:role/github-actions-apply"
           role-session-name: githubactionsrolesession
