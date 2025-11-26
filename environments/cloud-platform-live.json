@@ -1,5 +1,13 @@
 {
   "account-type": "member",
+  "components": [
+    {
+      "name": "cluster"
+    },
+    {
+      "name": "network"
+    }
+  ],
   "isolated-network": "true",
   "codeowners": "cloud-platform-engineers",
   "environments": [
