@@ -45,7 +45,7 @@
     "business-unit": "platforms",
     "infrastructure-support": "cloudplatform@justice.gov.uk",
     "owner": "cloudplatform@justice.gov.uk",
-    "slack-channel": "#cloud-platform",
+    "slack-channel": "cloud-platform",
     "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [],
