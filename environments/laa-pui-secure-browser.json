@@ -10,7 +10,7 @@
       "sso_group_name": "ecp-admin"
     }
   ],
-  "codeowners": ["laa-sre-admins"],
+  "codeowners": ["laa-sre-admins", "ecp-admin"],
   "environments": [
     {
       "name": "development",
