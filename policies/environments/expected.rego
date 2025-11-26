@@ -30,6 +30,7 @@ expected :=
     "cica-sandbox",
     "cica-tariff",
     "cloud-platform-live",
+    "cloud-platform-non-live",
     "coat",
     "contract-work-administration",
     "cooker",

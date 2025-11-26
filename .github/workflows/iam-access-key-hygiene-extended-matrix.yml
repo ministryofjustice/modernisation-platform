@@ -1,0 +1,402 @@
+name: "IAM Access Key & User Hygiene (DRY RUN) - Extended Matrix"
+
+on:
+  # First Monday of every month at 09:30
+  schedule:
+    - cron: "30 9 1-7 * 1"
+  workflow_dispatch: {}
+
+env:
+  AWS_REGION: "eu-west-2"
+  TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
+  EXPECTED_TEMPLATE_VERSION: "1"
+  # Optional could be required when not using a dry run
+  # NOTIFY_RECIPIENT_EMAIL: "modernisation-platform-team@justice.gov.uk"
+
+permissions:
+  id-token: write   # for OIDC
+  contents: read    # for checkout
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  # -------------------------------------------------------------------------
+  # Fetch secrets
+  # -------------------------------------------------------------------------
+  fetch-secrets:
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@7b8dd97eb5b596a88206805943771ea7ffcde235 # v3.4.8
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  # -------------------------------------------------------------------------
+  # Build workspace matrix from delegate-access
+  # -------------------------------------------------------------------------
+  setup-prerequisites:
+    runs-on: ubuntu-latest
+    needs: fetch-secrets
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      aws-region: ${{ steps.setup-aws-region.outputs.aws-region }}
+    steps:
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          fetch-depth: 0
+
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@7b8dd97eb5b596a88206805943771ea7ffcde235 # v3.4.8
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Set Root Account Number
+        run: |
+          ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+
+      - name: Configure AWS Credentials (root / org account)
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+
+      - name: Terraform init (delegate-access)
+        run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
+
+      - id: set-matrix
+        name: Build workspace matrix
+        run: |
+          echo "matrix=$(terraform -chdir=terraform/environments/bootstrap/delegate-access workspace list \
+            | sed -e 's/*//' -e 's/^[[:space:]]*//' -e '/default/d' -e '/^$/d' \
+            | sort -u \
+            | jq -ncR '[inputs]')" >> "$GITHUB_OUTPUT"
+
+      - id: setup-aws-region
+        name: Setup AWS Region output
+        run: |
+          echo "aws-region=$AWS_REGION" >> "$GITHUB_OUTPUT"
+
+  # -------------------------------------------------------------------------
+  # Split matrix into blocks
+  # -------------------------------------------------------------------------
+  define-jobs:
+    runs-on: ubuntu-latest
+    needs: setup-prerequisites
+    env:
+      account_list: ${{ needs.setup-prerequisites.outputs.matrix }}
+    outputs:
+      block_1: ${{ steps.split.outputs.block_1 }}
+      block_2: ${{ steps.split.outputs.block_2 }}
+      block_3: ${{ steps.split.outputs.block_3 }}
+      block_4: ${{ steps.split.outputs.block_4 }}
+    steps:
+      - id: split
+        run: |
+          BLOCK_COUNT=4
+          sorted=$(echo "$account_list" | jq -c 'sort')
+          total=$(echo "$sorted" | jq 'length')
+          base=$(( total / BLOCK_COUNT ))
+          remainder=$(( total % BLOCK_COUNT ))
+          start=0
+          for i in $(seq 1 $BLOCK_COUNT); do
+            key="block_$i"
+            extra=0
+            if [ "$i" -le "$remainder" ]; then
+              extra=1
+            fi
+            end=$(( start + base + extra ))
+            block=$(echo "$sorted" | jq ".[$start:$end]")
+            compact=$(echo "$block" | jq -c '.')
+            echo "::group::$key"
+            echo "$block" | jq .
+            echo "::endgroup::"
+            echo "$key=$compact" >> "$GITHUB_OUTPUT"
+            start=$end
+          done
+
+  # -------------------------------------------------------------------------
+  # Per-account IAM hygiene (DRY RUN) – blocks 1–4
+  # -------------------------------------------------------------------------
+
+  iam-hygiene-1:
+    needs: [fetch-secrets, setup-prerequisites, define-jobs]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
+
+    steps:
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@7b8dd97eb5b596a88206805943771ea7ffcde235 # v3.4.8
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Set Root Account Number
+        run: |
+          ROOT_ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
+          echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+
+      - name: Configure AWS Credentials (root / org account)
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ needs.setup-prerequisites.outputs.aws-region }}
+
+      - name: Setup Terraform (member-bootstrap)
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+
+      - name: Terraform init (member-bootstrap)
+        run: bash scripts/terraform-init.sh terraform/environments/bootstrap/member-bootstrap
+
+      - name: Select workspace and get member account ID
+        id: account
+        run: |
+          # Terraform refuses to select a workspace if TF_WORKSPACE is set
+          unset TF_WORKSPACE
+
+          terraform -chdir=terraform/environments/bootstrap/member-bootstrap workspace select "${{ matrix.workspaces }}"
+
+          ACCOUNT_NUMBER=$(terraform -chdir=terraform/environments/bootstrap/member-bootstrap output -raw modernisation_platform_account_id)
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+          echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
+
+      - name: Configure AWS Credentials (member account)
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        with:
+          role-to-assume: "arn:aws:iam::${{ steps.account.outputs.account-number }}:role/github-actions-apply"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ needs.setup-prerequisites.outputs.aws-region }}
+
+      - name: Run IAM access key & user hygiene (DRY RUN)
+        env:
+          TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
+          EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+          GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+        run: |
+          bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
+
+  iam-hygiene-2:
+    needs: [fetch-secrets, setup-prerequisites, define-jobs]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_2) }}
+
+    steps:
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@7b8dd97eb5b596a88206805943771ea7ffcde235 # v3.4.8
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Set Root Account Number
+        run: |
+          ROOT_ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
+          echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+
+      - name: Configure AWS Credentials (root / org account)
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ needs.setup-prerequisites.outputs.aws-region }}
+
+      - name: Setup Terraform (member-bootstrap)
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+
+      - name: Terraform init (member-bootstrap)
+        run: bash scripts/terraform-init.sh terraform/environments/bootstrap/member-bootstrap
+
+      - name: Select workspace and get member account ID
+        id: account
+        run: |
+          unset TF_WORKSPACE
+
+          terraform -chdir=terraform/environments/bootstrap/member-bootstrap workspace select "${{ matrix.workspaces }}"
+
+          ACCOUNT_NUMBER=$(terraform -chdir=terraform/environments/bootstrap/member-bootstrap output -raw modernisation_platform_account_id)
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+          echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
+
+      - name: Configure AWS Credentials (member account)
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        with:
+          role-to-assume: "arn:aws:iam::${{ steps.account.outputs.account-number }}:role/github-actions-apply"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ needs.setup-prerequisites.outputs.aws-region }}
+
+      - name: Run IAM access key & user hygiene (DRY RUN)
+        env:
+          TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
+          EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+          GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+        run: |
+          bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
+
+  iam-hygiene-3:
+    needs: [fetch-secrets, setup-prerequisites, define-jobs]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_3) }}
+
+    steps:
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@7b8dd97eb5b596a88206805943771ea7ffcde235 # v3.4.8
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Set Root Account Number
+        run: |
+          ROOT_ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
+          echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+
+      - name: Configure AWS Credentials (root / org account)
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ needs.setup-prerequisites.outputs.aws-region }}
+
+      - name: Setup Terraform (member-bootstrap)
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+
+      - name: Terraform init (member-bootstrap)
+        run: bash scripts/terraform-init.sh terraform/environments/bootstrap/member-bootstrap
+
+      - name: Select workspace and get member account ID
+        id: account
+        run: |
+          unset TF_WORKSPACE
+
+          terraform -chdir=terraform/environments/bootstrap/member-bootstrap workspace select "${{ matrix.workspaces }}"
+
+          ACCOUNT_NUMBER=$(terraform -chdir=terraform/environments/bootstrap/member-bootstrap output -raw modernisation_platform_account_id)
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+          echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
+
+      - name: Configure AWS Credentials (member account)
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        with:
+          role-to-assume: "arn:aws:iam::${{ steps.account.outputs.account-number }}:role/github-actions-apply"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ needs.setup-prerequisites.outputs.aws-region }}
+
+      - name: Run IAM access key & user hygiene (DRY RUN)
+        env:
+          TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
+          EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+          GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+        run: |
+          bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
+
+  iam-hygiene-4:
+    needs: [fetch-secrets, setup-prerequisites, define-jobs]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_4) }}
+
+    steps:
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@7b8dd97eb5b596a88206805943771ea7ffcde235 # v3.4.8
+        with:
+          environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
+          gov_uk_notify_api_key: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Set Root Account Number
+        run: |
+          ROOT_ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
+          echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+
+      - name: Configure AWS Credentials (root / org account)
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ needs.setup-prerequisites.outputs.aws-region }}
+
+      - name: Setup Terraform (member-bootstrap)
+        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
+        with:
+          terraform_version: "~1"
+          terraform_wrapper: false
+
+      - name: Terraform init (member-bootstrap)
+        run: bash scripts/terraform-init.sh terraform/environments/bootstrap/member-bootstrap
+
+      - name: Select workspace and get member account ID
+        id: account
+        run: |
+          unset TF_WORKSPACE
+
+          terraform -chdir=terraform/environments/bootstrap/member-bootstrap workspace select "${{ matrix.workspaces }}"
+
+          ACCOUNT_NUMBER=$(terraform -chdir=terraform/environments/bootstrap/member-bootstrap output -raw modernisation_platform_account_id)
+          echo "::add-mask::$ACCOUNT_NUMBER"
+          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+          echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
+
+      - name: Configure AWS Credentials (member account)
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        with:
+          role-to-assume: "arn:aws:iam::${{ steps.account.outputs.account-number }}:role/github-actions-apply"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ needs.setup-prerequisites.outputs.aws-region }}
+
+      - name: Run IAM access key & user hygiene (DRY RUN)
+        env:
+          TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
+          EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+          GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+        run: |
+          bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run

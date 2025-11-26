@@ -321,7 +321,8 @@ module "github_actions_read_secrets_role" {
     "ministryofjustice/modernisation-platform-terraform-loadbalancer",
     "ministryofjustice/modernisation-platform-terraform-aws-data-firehose",
     "ministryofjustice/modernisation-platform-terraform-cross-account-access",
-    "ministryofjustice/modernisation-platform-security"
+    "ministryofjustice/modernisation-platform-security",
+    "ministryofjustice/modernisation-platform-terraform-aws-waf"
   ]
   role_name    = "github-actions-read-secrets"
   policy_jsons = [data.aws_iam_policy_document.oidc_assume_read_secrets_role_member.json]

@@ -25,8 +25,6 @@ module "terraform-module-baselines" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -42,8 +40,6 @@ module "terraform-module-cross-account-access" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -78,8 +74,6 @@ module "terraform-module-iam-superadmins" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -96,8 +90,6 @@ module "terraform-module-s3-bucket" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -115,8 +107,6 @@ module "terraform-module-bastion-linux" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -134,8 +124,6 @@ module "terraform-module-github-oidc-provider" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -153,8 +141,6 @@ module "terraform-module-github-oidc-role" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -172,8 +158,6 @@ module "terraform-module-ecs-cluster" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -191,8 +175,6 @@ module "modernisation-platform-ami-builds" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -210,8 +192,6 @@ module "terraform-module-aws-vm-import" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -230,8 +210,6 @@ module "modernisation-platform-instance-scheduler" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -249,8 +227,6 @@ module "terraform-module-ssm-patching" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -268,8 +244,6 @@ module "terraform-module-ec2-autoscaling-group" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -287,8 +261,6 @@ module "terraform-module-ec2-instance" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -305,8 +277,6 @@ module "terraform-module-lambda-function" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -351,8 +321,6 @@ module "terraform-module-aws-loadbalancer" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -369,8 +337,6 @@ module "modernisation-platform-terraform-member-vpc" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -399,8 +365,6 @@ module "modernisation-platform-terraform-module-template" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -419,8 +383,6 @@ module "modernisation-platform-terraform-pagerduty-integration" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -438,8 +400,6 @@ module "modernisation-platform-configuration-management" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -457,8 +417,6 @@ module "modernisation-platform-terraform-dns-certificates" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -491,8 +449,6 @@ module "modernisation-platform-terraform-aws-chatbot" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -511,8 +467,6 @@ module "modernisation-platform-terraform-aws-data-firehose" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
@@ -530,8 +484,6 @@ module "modernisation-platform-terraform-aws-waf" {
   secrets = {
     PASSPHRASE                            = local.decrypt_passphrase
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
-    AWS_ACCESS_KEY_ID                     = local.testing_ci_iam_user_keys.AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY                 = local.testing_ci_iam_user_keys.AWS_SECRET_ACCESS_KEY
   }
 }
 
