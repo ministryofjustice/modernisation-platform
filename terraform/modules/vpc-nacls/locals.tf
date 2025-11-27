@@ -90,7 +90,7 @@ locals {
   ]
 
 cica_general_private_ap_access_rules = {
-  cica_development_subnet_db = {
+  cica_general_private_db = {
     cidr_block  = "10.27.128.28/32"
     egress      = false
     from_port   = 1521
