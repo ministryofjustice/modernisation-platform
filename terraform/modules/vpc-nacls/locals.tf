@@ -85,8 +85,8 @@ locals {
 # Custom Rules for access to selected CICA subnets from AP
 
   cica_vpc_keys = [
-    "cica_development",
-    "cica_production"
+    "cica-development",
+    "cica-production"
   ]
 
 cica_general_private_ap_access_rules = {
