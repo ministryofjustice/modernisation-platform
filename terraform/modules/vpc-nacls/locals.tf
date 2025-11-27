@@ -90,7 +90,7 @@ locals {
   ]
 
 cica_general_private_ap_access_rules = {
-  cica_general_private_subnet_a_ap_db = {
+  cica_general_private_subnets_ap_db = {
     cidr_block  = "10.27.128.28/32"
     egress      = false
     from_port   = 1521
@@ -99,24 +99,6 @@ cica_general_private_ap_access_rules = {
     rule_action = "allow"
     rule_number = 2015
   }
-  # cica_general_private_subnet_b_ap_db = {
-  #   cidr_block  = "10.27.128.28/32"
-  #   egress      = false
-  #   from_port   = 1521
-  #   to_port     = 1521
-  #   protocol    = "tcp"
-  #   rule_action = "allow"
-  #   rule_number = 2016
-  # }
-  # cica_general_private_subnet_c_ap_db = {
-  #   cidr_block  = "10.27.128.28/32"
-  #   egress      = false
-  #   from_port   = 1521
-  #   to_port     = 1521
-  #   protocol    = "tcp"
-  #   rule_action = "allow"
-  #   rule_number = 2017
-  # }
 }
 
 apply_cica_ap_rules = contains(local.cica_vpc_keys, var.vpc_name)
