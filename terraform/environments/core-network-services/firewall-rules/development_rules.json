@@ -720,10 +720,10 @@
     "destination_port": "1522",
     "protocol": "TCP"
   },
-  "ap_ingest_dev_to_cica_mp_tariff_uat": {
+  "ap_ingest_dev_to_cica_mp_tariff_dev": {
     "action": "PASS",
     "source_ip": "${analytical-platform-ingest-dev}",
-    "destination_ip": "${cica-test}",
+    "destination_ip": "${cica-development}",
     "destination_port": "1521",
     "protocol": "TCP"
   }
