@@ -104,9 +104,30 @@
     "destination_port": "22",
     "protocol": "TCP"
   },
-  "cica_test_to_internet_smtps": {
+  "cica_dev_to_internet_smtps": {
+    "action": "PASS",
+    "source_ip": "${cica-development}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+    "cica_test_to_internet_smtps": {
     "action": "PASS",
     "source_ip": "${cica-test}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+    "cica_preproduction_to_internet_smtps": {
+    "action": "PASS",
+    "source_ip": "${cica-preproduction}",
+    "destination_ip": "0.0.0.0/0",
+    "destination_port": "587",
+    "protocol": "TCP"
+  },
+    "cica_production_to_internet_smtps": {
+    "action": "PASS",
+    "source_ip": "${cica-production}",
     "destination_ip": "0.0.0.0/0",
     "destination_port": "587",
     "protocol": "TCP"
