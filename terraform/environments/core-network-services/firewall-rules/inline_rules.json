@@ -104,7 +104,7 @@
     "destination_port": "22",
     "protocol": "TCP"
   },
-    "cica_test_to_internet_smtps": {
+  "cica_test_to_internet_smtps": {
     "action": "PASS",
     "source_ip": "${cica-test}",
     "destination_ip": "0.0.0.0/0",
