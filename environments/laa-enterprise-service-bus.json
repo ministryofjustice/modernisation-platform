@@ -29,6 +29,10 @@
         {
           "sso_group_name": "hub20-validation",
           "level": "read-only"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox"
         }
       ],
       "nuke": "exclude"
@@ -43,6 +47,10 @@
         {
           "sso_group_name": "v1-hub20-developers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
         }
       ]
     },
@@ -56,6 +64,10 @@
         {
           "sso_group_name": "v1-hub20-developers",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
         }
       ]
     },
@@ -68,6 +80,10 @@
         },
         {
           "sso_group_name": "v1-hub20-developers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-sre-admins",
           "level": "developer"
         }
       ]
