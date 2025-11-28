@@ -9,6 +9,7 @@
           "analytical-platform-ingestion-production",
           "coat-production",
           "data-platform-production",
+          "data-platform-governance-production",
           "long-term-storage-production",
           "observability-platform-production"
         ]
