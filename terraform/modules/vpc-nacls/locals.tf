@@ -102,10 +102,11 @@ locals {
       rule_action = "allow"
       rule_number = 2015
     }
+    # Note - egress ports are ephemeral and so need to wider in scope than just 1521.
     cica_general_private_subnets_ap_db_egress = {
       egress      = true
-      from_port   = 1521
-      to_port     = 1521
+      from_port   = 1024
+      to_port     = 65535
       protocol    = "tcp"
       rule_action = "allow"
       rule_number = 2015
