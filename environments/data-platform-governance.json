@@ -1,22 +1,50 @@
 {
   "account-type": "member",
-  "codeowners": "data-platform-engineering, data-platform-engineering",
+  "codeowners": "data-platform-engineering",
   "environments": [
     {
       "name": "development",
-      "access": []
+      "access": [
+        {
+          "sso_group_name": "data-platform-engineering",
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
+        }
+      ],
+      "instance_scheduler_skip": ["true"],
+      "nuke": "exclude"
     },
     {
       "name": "test",
-      "access": []
+      "access": [
+        {
+          "sso_group_name": "data-platform-engineering",
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
+        }
+      ],
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "preproduction",
-      "access": []
+      "access": [
+        {
+          "sso_group_name": "data-platform-engineering",
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
+        }
+      ],
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "production",
-      "access": []
+      "access": [
+        {
+          "sso_group_name": "data-platform-engineering",
+          "level": "platform-engineer-admin",
+          "github_action_reviewer": "true"
+        }
+      ]
     }
   ],
   "tags": {
@@ -24,7 +52,7 @@
     "business-unit": "Platforms",
     "infrastructure-support": "dataplatform@digital.justice.gov.uk",
     "owner": "dataplatform@digital.justice.gov.uk",
-    "slack-channel": "#data-platform-engineering",
+    "slack-channel": "data-platform-engineering",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [],
