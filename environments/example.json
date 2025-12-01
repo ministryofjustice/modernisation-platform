@@ -11,6 +11,14 @@
         {
           "sso_group_name": "green-ops",
           "level": "data-engineer"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "security-audit"
         }
       ]
     }
