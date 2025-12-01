@@ -16,7 +16,9 @@
           "sso_group_name": "panda-cyber-team",
           "level": "security-audit"
         }
-      ],
+      ]
+    },
+    {
       "name": "development",
       "access": [
         {
