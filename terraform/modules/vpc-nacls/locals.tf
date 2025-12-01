@@ -82,14 +82,14 @@ locals {
 
 
 
-# Custom Rules for access to selected CICA subnets from AP
+  # Custom Rules for access to selected CICA subnets from AP
 
   cica_vpc_keys = {
     cica-development = {
       cidr_block = "10.26.128.19/32"
     }
     cica-production = {
-      cidr_block = "10.27.128.28/32" 
+      cidr_block = "10.27.128.28/32"
     }
   }
 
