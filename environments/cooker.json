@@ -19,6 +19,14 @@
         {
           "sso_group_name": "tvm-purple-team",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "security-audit"
         }
       ],
       "additional_reviewers": ["astrobinson"],

@@ -3,23 +3,68 @@
   "environments": [
     {
       "name": "production",
-      "access": []
+      "access": [
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "security-audit"
+        }
+      ]
     },
     {
       "name": "preproduction",
-      "access": []
+      "access": [
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "security-audit"
+        }
+      ]
     },
     {
       "name": "test",
-      "access": []
+      "access": [
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "security-audit"
+        }
+      ]
     },
     {
       "name": "development",
-      "access": []
+      "access": [
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "security-audit"
+        }
+      ]
     },
     {
       "name": "sandbox",
-      "access": []
+      "access": [
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "security-audit"
+        }
+      ]
     }
   ],
   "tags": {
