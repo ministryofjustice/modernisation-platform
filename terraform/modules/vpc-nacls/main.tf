@@ -263,7 +263,7 @@ resource "aws_network_acl_rule" "cica_custom_ap_db_rules" {
   cidr_block     = each.value.cidr_block
   egress         = each.value.egress
   from_port      = each.value.from_port
-  network_acl_id = aws_network_acl.general-private.id
+  network_acl_id = strcontains(var.vpc_name, "production") ? aws_network_acl.general-data.id : aws_network_acl.general-private.id
   protocol       = each.value.protocol
   rule_action    = each.value.rule_action
   rule_number    = each.value.rule_number
