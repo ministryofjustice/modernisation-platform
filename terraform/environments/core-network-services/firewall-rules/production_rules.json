@@ -567,7 +567,7 @@
     "destination_port": "$TARIFF_TCP",
     "protocol": "TCP"
   },
-  "cica_tariff_test_to_cica_aws_ss": {
+  "cica_tariff_production_to_cica_aws_ss": {
     "action": "PASS",
     "source_ip": "${cica-production}",
     "destination_ip": "$CICA_AWS_SS",
