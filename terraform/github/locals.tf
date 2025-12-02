@@ -147,6 +147,7 @@ locals {
     "modernisation-platform-terraform-pagerduty-integration",
     "modernisation-platform-terraform-s3-bucket",
     "modernisation-platform-terraform-ssm-patching",
+    "modernisation-platform-terraform-aws-waf",
   ]
 
   repositories_with_full_team_access = [
