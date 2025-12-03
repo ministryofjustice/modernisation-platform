@@ -48,7 +48,7 @@ jobs:
     if: github.ref != 'refs/heads/main' && github.event_name != 'workflow_dispatch'
     needs: fetch-secrets
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@7b8dd97eb5b596a88206805943771ea7ffcde235 # v3.4.8
         with:
@@ -120,7 +120,7 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: fetch-secrets
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@7b8dd97eb5b596a88206805943771ea7ffcde235 # v3.4.8
         with:
@@ -179,7 +179,7 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, create-environment]
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@7b8dd97eb5b596a88206805943771ea7ffcde235 # v3.4.8
         with:
@@ -221,7 +221,7 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, provision-workspaces]
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
@@ -276,7 +276,7 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, delegate-access]
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
@@ -331,7 +331,7 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets,delegate-access]
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
@@ -386,7 +386,7 @@ jobs:
     if: github.event.ref != 'refs/heads/main' || github.event_name != 'workflow_dispatch'
     needs: fetch-secrets
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
@@ -431,7 +431,7 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, provision-workspaces, delegate-access]
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
@@ -486,7 +486,7 @@ jobs:
     if: github.event.ref == 'refs/heads/main'
     needs: [fetch-secrets, single-sign-on]
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
@@ -586,7 +586,7 @@ jobs:
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [fetch-secrets, single-sign-on]
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
       - name: Decrypt Secrets
