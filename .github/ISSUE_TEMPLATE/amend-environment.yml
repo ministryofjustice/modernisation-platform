@@ -11,14 +11,6 @@ body:
       placeholder: equip
     validations:
       required: true
-  - type: input
-    id: target_file
-    attributes:
-      label: Target JSON file (relative path)
-      description: Optional; will default to environments/{account_name}.json
-      placeholder: environments/equip.json
-    validations:
-      required: false
 
   - type: dropdown
     id: environments_change_type
