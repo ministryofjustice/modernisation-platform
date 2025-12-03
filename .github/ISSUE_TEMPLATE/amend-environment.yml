@@ -24,7 +24,7 @@ body:
     id: environments_change_type
     attributes:
       label: Environments section change type
-      options: [none, addition, update, removal]
+      options: [skip, addition, update, removal]
     validations:
       required: true
   - type: input
@@ -53,7 +53,7 @@ body:
     id: tags_change_type
     attributes:
       label: Tags section change type
-      options: [none, addition, update, removal]
+      options: [skip, addition, update, removal]
     validations:
       required: true
   - type: textarea
@@ -77,7 +77,7 @@ body:
     id: other_change_type
     attributes:
       label: Other top-level fields change type
-      options: [none, addition, update, removal]
+      options: [skip, addition, update, removal]
     validations:
       required: true
   - type: textarea
