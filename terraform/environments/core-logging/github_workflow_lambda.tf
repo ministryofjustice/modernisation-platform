@@ -96,16 +96,16 @@ resource "aws_lambda_function" "github_workflow_data_poller" {
   #checkov:skip=CKV_AWS_50: No x-ray tracing needed.
   #checkov:skip=CKV_AWS_116: Dead Letter Queue not needed.
   #checkov:skip=CKV_AWS_117: Lambda not deployed in a VPC.
-  count                   = local.github_workflow_poller.enabled ? 1 : 0
-  filename                = data.archive_file.github_workflow_poller_lambda[0].output_path
-  function_name           = "github-workflow-data-poller"
-  role                    = aws_iam_role.github_workflow_poller_lambda[0].arn
-  handler                 = "github_workflow_data_poller.lambda_handler"
-  source_code_hash        = data.archive_file.github_workflow_poller_lambda[0].output_base64sha256
-  runtime                 = "python3.12"
-  timeout                 = 300
-  description             = "Polls GitHub Actions workflow data and writes to CloudWatch Logs"
-  reserved_concurrent_executions  = 10
+  count                          = local.github_workflow_poller.enabled ? 1 : 0
+  filename                       = data.archive_file.github_workflow_poller_lambda[0].output_path
+  function_name                  = "github-workflow-data-poller"
+  role                           = aws_iam_role.github_workflow_poller_lambda[0].arn
+  handler                        = "github_workflow_data_poller.lambda_handler"
+  source_code_hash               = data.archive_file.github_workflow_poller_lambda[0].output_base64sha256
+  runtime                        = "python3.12"
+  timeout                        = 300
+  description                    = "Polls GitHub Actions workflow data and writes to CloudWatch Logs"
+  reserved_concurrent_executions = 10
 
   environment {
     variables = {
@@ -113,7 +113,7 @@ resource "aws_lambda_function" "github_workflow_data_poller" {
       GITHUB_REPO            = local.github_workflow_poller.github_repo
       LOOKBACK_HOURS         = local.github_workflow_poller.lookback_hours
       WORKFLOW_RUN_LOG_GROUP = aws_cloudwatch_log_group.github_workflow_data[0].name
-      GITHUB_TOKEN           = ""  # Optional: Add if you need authenticated API access
+      GITHUB_TOKEN           = "" # Optional: Add if you need authenticated API access
     }
   }
 
