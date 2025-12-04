@@ -4,14 +4,20 @@ title: "env-json: {{target_file}}"
 labels:
   - env-change
 body:
+  - type: markdown
+    attributes:
+      value: "### Account"
   - type: input
     id: account_name
     attributes:
       label: Account name (matches JSON filename in environments/)
-      placeholder: equip
+      placeholder: account-name
     validations:
       required: true
 
+  - type: markdown
+    attributes:
+      value: "### Environments Section"
   - type: dropdown
     id: environments_change_type
     attributes:
@@ -41,6 +47,9 @@ body:
     validations:
       required: false
 
+  - type: markdown
+    attributes:
+      value: "### Tags Section"
   - type: dropdown
     id: tags_change_type
     attributes:
@@ -65,6 +74,9 @@ body:
     validations:
       required: false
 
+  - type: markdown
+    attributes:
+      value: "### Other Top-level Fields"
   - type: dropdown
     id: other_change_type
     attributes:
@@ -89,6 +101,9 @@ body:
     validations:
       required: false
 
+  - type: markdown
+    attributes:
+      value: "### Rationale"
   - type: textarea
     id: rationale
     attributes:
