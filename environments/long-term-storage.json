@@ -15,6 +15,14 @@
         {
           "sso_group_name": "azure-aws-sso-OSPT",
           "level": "read-only"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "security-audit"
         }
       ]
     }
