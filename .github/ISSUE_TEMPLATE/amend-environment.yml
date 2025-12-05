@@ -1,0 +1,112 @@
+name: Environment JSON structured change
+description: Amend environments JSON (per section change types)
+title: "env-json: {{target_file}}"
+labels:
+  - env-change
+body:
+  - type: markdown
+    attributes:
+      value: "### Account"
+  - type: input
+    id: account_name
+    attributes:
+      label: Account name (matches JSON filename in environments/)
+      placeholder: account-name
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "### Environments Section"
+  - type: dropdown
+    id: environments_change_type
+    attributes:
+      label: Environments section change type
+      options: [skip, addition, update, removal]
+    validations:
+      required: true
+  - type: input
+    id: environment_name
+    attributes:
+      label: Environment name (for add/update/remove)
+      placeholder: development
+    validations:
+      required: false
+  - type: textarea
+    id: environment_payload
+    attributes:
+      label: Environment payload (object; omit name if already provided)
+      render: json
+      placeholder: |
+        {
+          "access": [
+            { "sso_group_name": "modernisation-platform-engineers", "level": "developer" }
+          ],
+          "additional_reviewers": ["alice"]
+        }
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: "### Tags Section"
+  - type: dropdown
+    id: tags_change_type
+    attributes:
+      label: Tags section change type
+      options: [skip, addition, update, removal]
+    validations:
+      required: true
+  - type: textarea
+    id: tags_payload
+    attributes:
+      label: Tags payload (for add/update)
+      render: json
+      placeholder: |
+        { "infrastructure-support": "new.email@justice.gov.uk" }
+    validations:
+      required: false
+  - type: input
+    id: tags_remove_keys
+    attributes:
+      label: Tags keys to remove (comma-separated)
+      placeholder: obsolete-tag-1,obsolete-tag-2
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: "### Other Top-level Fields"
+  - type: dropdown
+    id: other_change_type
+    attributes:
+      label: Other top-level fields change type
+      options: [skip, addition, update, removal]
+    validations:
+      required: true
+  - type: textarea
+    id: other_payload
+    attributes:
+      label: Other payload (for add/update, excludes environments/tags)
+      render: json
+      placeholder: |
+        { "github-oidc-team-repositories": ["repo-a","repo-b"] }
+    validations:
+      required: false
+  - type: input
+    id: other_remove_keys
+    attributes:
+      label: Other keys to remove (comma-separated)
+      placeholder: github-oidc-team-repositories,go-live-date
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: "### Rationale"
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+    validations:
+      required: true
