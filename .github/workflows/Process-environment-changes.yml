@@ -1,0 +1,89 @@
+name: Process structured environment JSON change
+on:
+  issues:
+    types: [opened, edited]
+permissions:
+  contents: write
+  pull-requests: write
+  issues: read
+
+jobs:
+  apply:
+    if: contains(github.event.issue.labels.*.name, 'env-change')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract issue form data
+        id: form
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.issue.body || "";
+            const fields = {};
+            for (const line of body.split(/\r?\n/)) {
+              const m = line.match(/^([A-Za-z0-9_ -]+):\s*(.*)$/);
+              if (m) fields[m[1].trim().toLowerCase().replace(/\s+/g,'_')] = m[2].trim();
+            }
+            const get = k => fields[k] || "";
+            const account = get('account_name');
+            let target = get('target_file');
+            if (!target) {
+              const safe = (account || '').trim().toLowerCase().replace(/[^a-z0-9-_]/g, '');
+              target = `environments/${safe}.json`;
+            }
+            core.setOutput('account_name', account);
+            core.setOutput('target_file', target);
+            core.setOutput('environments_change_type', get('environments_change_type'));
+            core.setOutput('environment_name', get('environment_name'));
+            core.setOutput('environment_payload', get('environment_payload'));
+            core.setOutput('tags_change_type', get('tags_change_type'));
+            core.setOutput('tags_payload', get('tags_payload'));
+            core.setOutput('tags_remove_keys', get('tags_remove_keys'));
+            core.setOutput('other_change_type', get('other_change_type'));
+            core.setOutput('other_payload', get('other_payload'));
+            core.setOutput('other_remove_keys', get('other_remove_keys'));
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Apply structured changes
+        run: |
+          python3 scripts/process_env_changes.py \
+            --account-name "${{ steps.form.outputs.account_name }}" \
+            --target-file "${{ steps.form.outputs.target_file }}" \
+            --environments-change-type "${{ steps.form.outputs.environments_change_type }}" \
+            --environment-name "${{ steps.form.outputs.environment_name }}" \
+            --environment-payload "${{ steps.form.outputs.environment_payload }}" \
+            --tags-change-type "${{ steps.form.outputs.tags_change_type }}" \
+            --tags-payload "${{ steps.form.outputs.tags_payload }}" \
+            --tags-remove-keys "${{ steps.form.outputs.tags_remove_keys }}" \
+            --other-change-type "${{ steps.form.outputs.other_change_type }}" \
+            --other-payload "${{ steps.form.outputs.other_payload }}" \
+            --other-remove-keys "${{ steps.form.outputs.other_remove_keys }}"
+
+      - name: Commit changes
+        run: |
+          branch="env-json/${{ github.event.issue.number }}"
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git checkout -b "$branch"
+          git add "${{ steps.form.outputs.target_file }}"
+          git commit -m "Structured env JSON change from issue #${{ github.event.issue.number }}"
+          git push -u origin "$branch"
+
+      - name: Open PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          title: "Structured env JSON change (issue #${{ github.event.issue.number }})"
+          body: |
+            Automated structured change from issue #${{ github.event.issue.number }}.
+            File: ${{ steps.form.outputs.target_file }}
+            Environments change type: ${{ steps.form.outputs.environments_change_type }} (name='${{ steps.form.outputs.environment_name }}')
+            Tags change type: ${{ steps.form.outputs.tags_change_type }}
+            Other change type: ${{ steps.form.outputs.other_change_type }}
+          branch: "env-json/${{ github.event.issue.number }}"
+          labels: env-change
