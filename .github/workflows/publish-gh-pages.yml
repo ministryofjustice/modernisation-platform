@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@7b8dd97eb5b596a88206805943771ea7ffcde235 # v3.4.8
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@cd7a05486925d038ae59f559c83ce4eeca94d243 # v3.5.0
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -35,7 +35,7 @@ jobs:
     steps:
       - name: Decrypt Slack webhook secret
         id: decrypt
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@7b8dd97eb5b596a88206805943771ea7ffcde235 # v3.4.8
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@cd7a05486925d038ae59f559c83ce4eeca94d243 # v3.5.0
         with:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
