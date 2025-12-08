@@ -47,6 +47,12 @@ body:
         - addition
     validations:
       required: true
+  - type: markdown
+    attributes:
+      value: |
+        - `skip`: leave the environment access unchanged.
+        - `amend`: provide current values below (Current SSO group name and Current access level) and new target values (SSO group name and Access level).
+        - `addition`: provide new target values (SSO group name and Access level) to add another access entry.
 
   - type: markdown
     attributes:
@@ -76,7 +82,7 @@ body:
       label: SSO group name
       placeholder: modernisation-platform-engineers
     validations:
-      required: true
+      required: false
 
   - type: input
     id: level
@@ -84,7 +90,7 @@ body:
       label: Access level
       placeholder: developer
     validations:
-      required: true
+      required: false
   
 
   - type: markdown
@@ -100,6 +106,12 @@ body:
         - addition
     validations:
       required: true
+  - type: markdown
+    attributes:
+      value: |
+        - `skip`: do not change reviewers.
+        - `amend`: specify the current reviewers list and the new reviewers list.
+        - `addition`: provide the new reviewers to append.
 
   - type: markdown
     attributes:
@@ -137,6 +149,12 @@ body:
         - addition
     validations:
       required: true
+  - type: markdown
+    attributes:
+      value: |
+        - `skip`: leave tags unchanged.
+        - `amend`: provide current tag key/value and the new tag key/value.
+        - `addition`: provide tag key/value to add or update.
 
   - type: markdown
     attributes:
@@ -166,7 +184,7 @@ body:
       label: Tag key
       placeholder: infrastructure-support
     validations:
-      required: true
+      required: false
 
   - type: input
     id: tag_value
@@ -174,7 +192,7 @@ body:
       label: Tag value
       placeholder: team@example.com
     validations:
-      required: true
+      required: false
 
   - type: markdown
     attributes:
@@ -190,6 +208,12 @@ body:
         - addition
     validations:
       required: true
+  - type: markdown
+    attributes:
+      value: |
+        - `skip`: no changes to other fields.
+        - `amend`: provide current values and the new values for these fields.
+        - `addition`: provide new values to set.
 
   - type: markdown
     attributes:
