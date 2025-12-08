@@ -29,15 +29,32 @@ jobs:
             const get = k => fields[k] || "";
             const account = get('account_name');
             core.setOutput('account_name', account);
-            core.setOutput('environments_change_type', get('environments_change_type'));
+            // Environment section
+            core.setOutput('environment_change_action', get('environment_change_action'));
             core.setOutput('environment_name', get('environment_name'));
-            core.setOutput('environment_payload', get('environment_payload'));
-            core.setOutput('tags_change_type', get('tags_change_type'));
-            core.setOutput('tags_payload', get('tags_payload'));
-            core.setOutput('tags_remove_keys', get('tags_remove_keys'));
-            core.setOutput('other_change_type', get('other_change_type'));
-            core.setOutput('other_payload', get('other_payload'));
-            core.setOutput('other_remove_keys', get('other_remove_keys'));
+            core.setOutput('current_sso_group_name', get('current_sso_group_name'));
+            core.setOutput('current_level', get('current_level'));
+            core.setOutput('sso_group_name', get('sso_group_name'));
+            core.setOutput('level', get('level'));
+
+            // Reviewers section
+            core.setOutput('reviewers_change_action', get('reviewers_change_action'));
+            core.setOutput('current_additional_reviewers', get('current_additional_reviewers'));
+            core.setOutput('additional_reviewers', get('additional_reviewers'));
+
+            // Tags section
+            core.setOutput('tags_change_action', get('tags_change_action'));
+            core.setOutput('current_tag_key', get('current_tag_key'));
+            core.setOutput('current_tag_value', get('current_tag_value'));
+            core.setOutput('tag_key', get('tag_key'));
+            core.setOutput('tag_value', get('tag_value'));
+
+            // Other section
+            core.setOutput('other_change_action', get('other_change_action'));
+            core.setOutput('current_github_oidc_team_repositories', get('current_github_oidc_team_repositories'));
+            core.setOutput('current_go_live_date', get('current_go_live_date'));
+            core.setOutput('github_oidc_team_repositories', get('github_oidc_team_repositories'));
+            core.setOutput('go_live_date', get('go_live_date'));
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -59,15 +76,25 @@ jobs:
         run: |
           python3 scripts/process_env_changes.py \
             --account-name "${{ steps.form.outputs.account_name }}" \
-            --environments-change-type "${{ steps.form.outputs.environments_change_type }}" \
+            --environment-change-action "${{ steps.form.outputs.environment_change_action }}" \
             --environment-name "${{ steps.form.outputs.environment_name }}" \
-            --environment-payload "${{ steps.form.outputs.environment_payload }}" \
-            --tags-change-type "${{ steps.form.outputs.tags_change_type }}" \
-            --tags-payload "${{ steps.form.outputs.tags_payload }}" \
-            --tags-remove-keys "${{ steps.form.outputs.tags_remove_keys }}" \
-            --other-change-type "${{ steps.form.outputs.other_change_type }}" \
-            --other-payload "${{ steps.form.outputs.other_payload }}" \
-            --other-remove-keys "${{ steps.form.outputs.other_remove_keys }}"
+            --current-sso-group-name "${{ steps.form.outputs.current_sso_group_name }}" \
+            --current-level "${{ steps.form.outputs.current_level }}" \
+            --sso-group-name "${{ steps.form.outputs.sso_group_name }}" \
+            --level "${{ steps.form.outputs.level }}" \
+            --reviewers-change-action "${{ steps.form.outputs.reviewers_change_action }}" \
+            --current-additional-reviewers "${{ steps.form.outputs.current_additional_reviewers }}" \
+            --additional-reviewers "${{ steps.form.outputs.additional_reviewers }}" \
+            --tags-change-action "${{ steps.form.outputs.tags_change_action }}" \
+            --current-tag-key "${{ steps.form.outputs.current_tag_key }}" \
+            --current-tag-value "${{ steps.form.outputs.current_tag_value }}" \
+            --tag-key "${{ steps.form.outputs.tag_key }}" \
+            --tag-value "${{ steps.form.outputs.tag_value }}" \
+            --other-change-action "${{ steps.form.outputs.other_change_action }}" \
+            --current-github-oidc-team-repositories "${{ steps.form.outputs.current_github_oidc_team_repositories }}" \
+            --current-go-live-date "${{ steps.form.outputs.current_go_live_date }}" \
+            --github-oidc-team-repositories "${{ steps.form.outputs.github_oidc_team_repositories }}" \
+            --go-live-date "${{ steps.form.outputs.go_live_date }}"
 
       - name: Commit changes
         run: |
@@ -87,8 +114,9 @@ jobs:
           body: |
             Automated structured change from issue #${{ github.event.issue.number }}.
             File: environments/${{ steps.form.outputs.account_name }}.json
-            Environments change type: ${{ steps.form.outputs.environments_change_type }} (name='${{ steps.form.outputs.environment_name }}')
-            Tags change type: ${{ steps.form.outputs.tags_change_type }}
-            Other change type: ${{ steps.form.outputs.other_change_type }}
+            Environment action: ${{ steps.form.outputs.environment_change_action }} (env='${{ steps.form.outputs.environment_name }}')
+            Reviewers action: ${{ steps.form.outputs.reviewers_change_action }}
+            Tags action: ${{ steps.form.outputs.tags_change_action }}
+            Other action: ${{ steps.form.outputs.other_change_action }}
           branch: "env-json/${{ github.event.issue.number }}"
           labels: env-change
