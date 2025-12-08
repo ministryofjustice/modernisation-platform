@@ -1,9 +1,6 @@
-name: Environment JSON structured change
-description: Amend an environment access entry for an application
-title: "env-json: {{account_name}} – {{environment_name}}"
-labels:
-  - env-change
-assignees: []
+name: Amend Modernisation Platform Account
+description: Request an amendment to a Modernisation Platform account
+labels: ["member request", "kanban", "account-amendment"]
 
 body:
   - type: input
