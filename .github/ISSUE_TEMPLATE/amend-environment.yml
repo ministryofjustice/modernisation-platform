@@ -3,6 +3,12 @@ description: Request an amendment to a Modernisation Platform account
 labels: ["member request", "kanban", "account-amendment"]
 
 body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Purpose
+        This form lets you request an amendment to a Modernisation Platform account’s environment access.
+        Please fill out the details below to continue.
   - type: input
     id: account_name
     attributes:
@@ -53,3 +59,22 @@ body:
       placeholder: developer
     validations:
       required: true
+
+  - type: dropdown
+    id: add_additional_reviewers
+    attributes:
+      label: Add additional reviewers?
+      options:
+        - Yes
+        - No
+    validations:
+      required: true
+
+  - type: input
+    id: additional_reviewers
+    attributes:
+      label: Additional reviewers (comma-separated)
+      placeholder: alice@example.com, bob@example.com
+      description: "Provide one or more reviewer identifiers (e.g., emails or usernames)."
+    validations:
+      required: false
