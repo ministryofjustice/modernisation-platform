@@ -9,6 +9,9 @@ body:
         ### Purpose
         This form lets you request an amendment to a Modernisation Platform account’s environment access.
         Please fill out the details below to continue.
+  - type: markdown
+    attributes:
+      value: "### Account details"
   - type: input
     id: account_name
     attributes:
@@ -83,10 +86,10 @@ body:
     validations:
       required: true
   
+
   - type: markdown
     attributes:
-      value: "#### For amendments, specify the current reviewers"
-
+      value: "### Additional reviewers"
   - type: dropdown
     id: reviewers_change_action
     attributes:
@@ -97,7 +100,11 @@ body:
         - addition
     validations:
       required: true
- 
+
+  - type: markdown
+    attributes:
+      value: "#### For amendments, specify the current reviewers"
+
   - type: input
     id: current_additional_reviewers
     attributes:
