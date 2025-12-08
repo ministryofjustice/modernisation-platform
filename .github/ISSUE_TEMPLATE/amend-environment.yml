@@ -39,6 +39,7 @@ body:
     attributes:
       label: Change action
       options:
+        - skip
         - amend
         - addition
     validations:
@@ -83,12 +84,13 @@ body:
       required: true
 
   - type: dropdown
-    id: add_additional_reviewers
+    id: reviewers_change_action
     attributes:
-      label: Add additional reviewers?
+      label: Change action (additional reviewers)
       options:
-        - "Yes"
-        - "No"
+        - skip
+        - amend
+        - addition
     validations:
       required: true
 
@@ -123,6 +125,7 @@ body:
     attributes:
       label: Change action (tags)
       options:
+        - skip
         - amend
         - addition
     validations:
