@@ -1,6 +1,6 @@
 name: Amend Modernisation Platform Account
 description: Request an amendment to a Modernisation Platform account
-labels: ["member request", "kanban", "account-amendment"]
+labels: ["member request", "kanban", "account_amendment"]
 
 body:
   - type: markdown

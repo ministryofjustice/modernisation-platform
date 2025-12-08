@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   apply:
-    if: contains(github.event.issue.labels.*.name, 'account-amendment')
+    if: contains(github.event.issue.labels.*.name, 'account_amendment')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -119,4 +119,4 @@ jobs:
             Tags action: ${{ steps.form.outputs.tags_change_action }}
             Other action: ${{ steps.form.outputs.other_change_action }}
           branch: "env-json/${{ github.event.issue.number }}"
-          labels: account-amendment
+          labels: account_amendment
