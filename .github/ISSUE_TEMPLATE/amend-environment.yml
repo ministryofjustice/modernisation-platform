@@ -1,4 +1,62 @@
 name: Environment JSON structured change
+description: Amend an environment access entry for an application
+title: "env-json: {{account_name}} – {{environment_name}}"
+labels:
+  - env-change
+assignees: []
+
+body:
+  - type: input
+    id: account_name
+    attributes:
+      label: App name (matches JSON filename in environments/)
+      placeholder: account-name
+      description: "This should match environments/{account-name}.json"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment_name
+    attributes:
+      label: Target environment
+      options:
+        - development
+        - test
+        - preproduction
+        - production
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "### Environment amendment"
+
+  - type: dropdown
+    id: environment_change_action
+    attributes:
+      label: Change action
+      options:
+        - amend
+        - addition
+    validations:
+      required: true
+
+  - type: input
+    id: sso_group_name
+    attributes:
+      label: SSO group name
+      placeholder: modernisation-platform-engineers
+    validations:
+      required: true
+
+  - type: input
+    id: level
+    attributes:
+      label: Access level
+      placeholder: developer
+    validations:
+      required: true
+name: Environment JSON structured change
 description: Amend environments JSON (per section change types)
 title: "env-json: {{target_file}}"
 labels:
