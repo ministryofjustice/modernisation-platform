@@ -175,3 +175,58 @@ body:
       placeholder: team@example.com
     validations:
       required: true
+
+  - type: markdown
+    attributes:
+      value: "### Other amendments"
+
+  - type: dropdown
+    id: other_change_action
+    attributes:
+      label: Change action (other)
+      options:
+        - skip
+        - amend
+        - addition
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "#### For amendments, specify current values"
+
+  - type: input
+    id: current_github_oidc_team_repositories
+    attributes:
+      label: Current GitHub OIDC team repositories (for amend)
+      placeholder: repo-a, repo-b
+      description: "Comma-separated list used to locate existing value."
+    validations:
+      required: false
+
+  - type: input
+    id: current_go_live_date
+    attributes:
+      label: Current go-live date (for amend)
+      placeholder: 31-12-2025
+      description: "Used to locate existing value (DD-MM-YYYY)."
+    validations:
+      required: false
+
+  - type: input
+    id: github_oidc_team_repositories
+    attributes:
+      label: GitHub OIDC team repositories (comma-separated)
+      placeholder: repo-a, repo-b
+      description: "Provide repositories to set into \"github-oidc-team-repositories\"."
+    validations:
+      required: false
+
+  - type: input
+    id: go_live_date
+    attributes:
+      label: Go-live date (DD-MM-YYYY)
+      placeholder: 31-12-2025
+      description: "Provide the date to set into \"go-live-date\" (DD-MM-YYYY)."
+    validations:
+      required: false
