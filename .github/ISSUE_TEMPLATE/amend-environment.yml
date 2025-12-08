@@ -82,6 +82,10 @@ body:
       placeholder: developer
     validations:
       required: true
+  
+  - type: markdown
+    attributes:
+      value: "#### For amendments, specify the current reviewers"
 
   - type: dropdown
     id: reviewers_change_action
@@ -93,11 +97,7 @@ body:
         - addition
     validations:
       required: true
-
-  - type: markdown
-    attributes:
-      value: "#### For amendments, specify the current reviewers"
-
+ 
   - type: input
     id: current_additional_reviewers
     attributes:
