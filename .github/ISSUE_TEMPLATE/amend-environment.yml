@@ -65,8 +65,8 @@ body:
     attributes:
       label: Add additional reviewers?
       options:
-        - Yes
-        - No
+        - "Yes"
+        - "No"
     validations:
       required: true
 
