@@ -29,6 +29,7 @@ expected :=
     "cica-data-extraction",
     "cica-sandbox",
     "cica-tariff",
+    "cis",
     "cloud-platform-live",
     "cloud-platform-non-live",
     "coat",

@@ -1,0 +1,25 @@
+{
+  "account-type": "member",
+  "codeowners": ", ",
+  "environments": [
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "[NEW GROUP REQUIRED] - v1-cis-mod",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "cis",
+    "business-unit": "LAA",
+    "infrastructure-support": "liam.rundle@justice.gov.uk",
+    "owner": "LAA",
+    "slack-channel": "",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
