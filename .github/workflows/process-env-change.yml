@@ -22,9 +22,38 @@ jobs:
           script: |
             const body = context.payload.issue.body || "";
             const fields = {};
+            // Map human labels from Issue Form to canonical keys
+            const labelMap = new Map([
+              ["App name (matches JSON filename in environments/)", "account_name"],
+              ["Target environment", "environment_name"],
+              ["Change action", "environment_change_action"],
+              ["Current SSO group name (for amend)", "current_sso_group_name"],
+              ["Current access level (for amend)", "current_level"],
+              ["SSO group name", "sso_group_name"],
+              ["Access level", "level"],
+              ["Change action (additional reviewers)", "reviewers_change_action"],
+              ["Current additional reviewers (for amend)", "current_additional_reviewers"],
+              ["Additional reviewers (comma-separated)", "additional_reviewers"],
+              ["Change action (tags)", "tags_change_action"],
+              ["Current tag key (for amend)", "current_tag_key"],
+              ["Current tag value (for amend)", "current_tag_value"],
+              ["Tag key", "tag_key"],
+              ["Tag value", "tag_value"],
+              ["Change action (other)", "other_change_action"],
+              ["Current GitHub OIDC team repositories (for amend)", "current_github_oidc_team_repositories"],
+              ["Current go-live date (for amend)", "current_go_live_date"],
+              ["GitHub OIDC team repositories (comma-separated)", "github_oidc_team_repositories"],
+              ["Go-live date (DD-MM-YYYY)", "go_live_date"],
+            ]);
+
             for (const line of body.split(/\r?\n/)) {
-              const m = line.match(/^([A-Za-z0-9_ \-]+):\s*(.*)$/);
-              if (m) fields[m[1].trim().toLowerCase().replace(/\s+/g,'_')] = m[2].trim();
+              const m = line.match(/^([^:]+):\s*(.*)$/);
+              if (m) {
+                const humanLabel = m[1].trim();
+                const value = m[2].trim();
+                const key = labelMap.get(humanLabel);
+                if (key) fields[key] = value;
+              }
             }
             const get = k => fields[k] || "";
             const account = get('account_name');
