@@ -1,19 +1,18 @@
 {
   "account-type": "member",
-  "codeowners": ", ",
   "environments": [
     {
       "name": "preproduction",
       "access": [
         {
-          "sso_group_name": "[NEW GROUP REQUIRED] - v1-cis-mod",
+          "sso_group_name": "v1-cis-mod",
           "level": "developer"
         }
       ]
     }
   ],
   "tags": {
-    "application": "cis",
+    "application": "CIS",
     "business-unit": "LAA",
     "infrastructure-support": "liam.rundle@justice.gov.uk",
     "owner": "LAA",
