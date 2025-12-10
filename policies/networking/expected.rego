@@ -334,6 +334,7 @@ expected :=
               "ccms-pui-preproduction",
               "contract-work-administration-preproduction",
               "laa-ccms-soa-preproduction",
+              "laa-cis-preproduction",
               "laa-mail-relay-preproduction",
               "laa-oem-preproduction",
               "laa-pui-secure-browser-preproduction",
