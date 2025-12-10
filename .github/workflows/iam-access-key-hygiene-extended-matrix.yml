@@ -11,7 +11,7 @@ env:
   TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
   EXPECTED_TEMPLATE_VERSION: "1"
   # Optional could be required when not using a dry run
-  # NOTIFY_RECIPIENT_EMAIL: "modernisation-platform-team@justice.gov.uk"
+  NOTIFY_RECIPIENT_EMAIL: "modernisation-platform-team@justice.gov.uk"
 
 permissions:
   id-token: write   # for OIDC
@@ -155,35 +155,6 @@ jobs:
           ROOT_ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
           echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
-
-      - name: Configure AWS Credentials (root / org account)
-        uses: aws-actions/configure-aws-credentials@00943011d9042930efac3dcd3a170e4273319bc8 # v5.1.0
-        with:
-          role-to-assume: "arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
-          role-session-name: githubactionsrolesession
-          aws-region: ${{ needs.setup-prerequisites.outputs.aws-region }}
-
-      - name: Setup Terraform (member-bootstrap)
-        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
-        with:
-          terraform_version: "~1"
-          terraform_wrapper: false
-
-      - name: Terraform init (member-bootstrap)
-        run: bash scripts/terraform-init.sh terraform/environments/bootstrap/member-bootstrap
-
-      - name: Select workspace and get member account ID
-        id: account
-        run: |
-          # Terraform refuses to select a workspace if TF_WORKSPACE is set
-          unset TF_WORKSPACE
-
-          terraform -chdir=terraform/environments/bootstrap/member-bootstrap workspace select "${{ matrix.workspaces }}"
-
-          ACCOUNT_NUMBER=$(terraform -chdir=terraform/environments/bootstrap/member-bootstrap output -raw modernisation_platform_account_id)
-          echo "::add-mask::$ACCOUNT_NUMBER"
-          echo "ACCOUNT_NUMBER=$ACCOUNT_NUMBER" >> "$GITHUB_ENV"
-          echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
 
       - name: Configure AWS Credentials (member account)
         uses: aws-actions/configure-aws-credentials@00943011d9042930efac3dcd3a170e4273319bc8 # v5.1.0
