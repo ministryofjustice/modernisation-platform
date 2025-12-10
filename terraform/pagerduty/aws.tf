@@ -74,7 +74,7 @@ resource "aws_secretsmanager_secret_version" "pagerduty_integration_keys" {
     laa_cis_nonprod_alarms               = pagerduty_service_integration.cis_non_prod.integration_key
     performance_hub_nonprod_alarms       = pagerduty_service_integration.performance_hub_non_prod.integration_key
     performance_hub_prod_alarms          = pagerduty_service_integration.performance_hub_prod.integration_key
-    security_hub_alerts_critical_priority = pagerduty_service.integration.security_hub_alerts_critical_priority.integration_key
+    security_hub_alerts_critical_priority = pagerduty_service_integration.security_hub_alerts_critical_priority.integration_key
     },
     {
       for key, integration in pagerduty_service_integration.integrations : key => integration.integration_key
