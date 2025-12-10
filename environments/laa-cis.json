@@ -16,7 +16,7 @@
     "application": "LAA-CIS",
     "business-unit": "LAA",
     "infrastructure-support": "liam.rundle@justice.gov.uk",
-    "owner": "LAA",
+    "owner": "liam.rundle@justice.gov.uk",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [""],
