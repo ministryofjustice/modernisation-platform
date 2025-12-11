@@ -172,4 +172,42 @@ locals {
     replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))
   }
 
+  # VPN Health Alerts - Notification Configuration
+  # Filter VPN attachments that have notification settings
+  vpns_with_notifications = {
+    for name, cfg in local.vpn_attachments :
+    name => cfg
+    if(
+      try(cfg.notification_slack_channel_id, "") != "" ||
+      try(cfg.notification_email, "") != ""
+    )
+  }
+
+  # Group VPNs by notification method for efficient resource creation
+  vpns_by_slack_channel = {
+    for channel_id in distinct([
+      for name, cfg in local.vpns_with_notifications :
+      cfg.notification_slack_channel_id
+      if try(cfg.notification_slack_channel_id, "") != ""
+    ]) :
+    channel_id => [
+      for name, cfg in local.vpns_with_notifications :
+      name
+      if try(cfg.notification_slack_channel_id, "") == channel_id
+    ]
+  }
+
+  vpns_by_email = {
+    for email in distinct([
+      for name, cfg in local.vpns_with_notifications :
+      cfg.notification_email
+      if try(cfg.notification_email, "") != ""
+    ]) :
+    email => [
+      for name, cfg in local.vpns_with_notifications :
+      name
+      if try(cfg.notification_email, "") == email
+    ]
+  }
+
 }
