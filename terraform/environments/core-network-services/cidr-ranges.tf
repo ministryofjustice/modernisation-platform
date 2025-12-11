@@ -135,6 +135,7 @@ locals {
     cica-aws-prod-b       = "10.13.110.0/24"
     cica-aws-prod-c       = "10.13.20.0/24"
     cica-aws-prod-d       = "10.13.120.0/24"
+    cica-onprem-lan       = "10.7.11.0/24"
 
 
 
