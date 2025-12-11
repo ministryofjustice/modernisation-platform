@@ -181,16 +181,17 @@ resource "aws_sns_topic" "vpn_health_alerts_email" {
 resource "aws_sns_topic_policy" "vpn_health_alerts_slack" {
   for_each = aws_sns_topic.vpn_health_alerts_slack
   arn      = each.value.arn
-  policy   = data.aws_iam_policy_document.vpn_health_sns_topic_policy.json
+  policy   = data.aws_iam_policy_document.vpn_health_sns_topic_policy["slack-${each.key}"].json
 }
 
 resource "aws_sns_topic_policy" "vpn_health_alerts_email" {
   for_each = aws_sns_topic.vpn_health_alerts_email
   arn      = each.value.arn
-  policy   = data.aws_iam_policy_document.vpn_health_sns_topic_policy.json
+  policy   = data.aws_iam_policy_document.vpn_health_sns_topic_policy["email-${each.key}"].json
 }
 
 data "aws_iam_policy_document" "vpn_health_sns_topic_policy" {
+  for_each  = local.all_vpn_health_sns_topics
   policy_id = "vpn health sns topic policy"
 
   statement {
@@ -206,7 +207,9 @@ data "aws_iam_policy_document" "vpn_health_sns_topic_policy" {
       "sns:AddPermission",
       "sns:Subscribe"
     ]
-    resources = ["*"]
+    resources = [
+      startswith(each.key, "slack-") ? aws_sns_topic.vpn_health_alerts_slack[each.value].arn : aws_sns_topic.vpn_health_alerts_email[each.value].arn
+    ]
 
     condition {
       test     = "StringEquals"
@@ -227,7 +230,9 @@ data "aws_iam_policy_document" "vpn_health_sns_topic_policy" {
     actions = [
       "sns:Publish",
     ]
-    resources = ["*"]
+    resources = [
+      startswith(each.key, "slack-") ? aws_sns_topic.vpn_health_alerts_slack[each.value].arn : aws_sns_topic.vpn_health_alerts_email[each.value].arn
+    ]
 
     principals {
       type        = "Service"

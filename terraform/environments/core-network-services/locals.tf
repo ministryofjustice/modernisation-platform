@@ -210,4 +210,10 @@ locals {
     ]
   }
 
+  # Combine all SNS topics for unified policy handling
+  all_vpn_health_sns_topics = merge(
+    { for k, v in local.vpns_by_slack_channel : "slack-${k}" => k },
+    { for k, v in local.vpns_by_email : "email-${k}" => k }
+  )
+
 }
