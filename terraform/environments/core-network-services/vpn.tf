@@ -148,31 +148,35 @@ resource "aws_dx_gateway_association_proposal" "this" {
 # This creates SNS topics and EventBridge rules for VPNs with notification settings configured
 # See locals.tf for vpns_with_notifications, vpns_by_slack_channel, and vpns_by_email
 
-# SNS Topics for VPN health alerts (one per unique slack channel or email)
+# SNS Topics for VPN health alerts (one per VPN with notifications configured)
 resource "aws_sns_topic" "vpn_health_alerts_slack" {
-  for_each          = local.vpns_by_slack_channel
-  name              = "vpn-health-alerts-slack-${replace(each.key, "/[^a-zA-Z0-9-]/", "-")}"
+  for_each          = local.vpn_slack_notifications
+  name              = "vpn-health-alerts-${replace(each.key, "_", "-")}"
   kms_master_key_id = aws_kms_key.sns_kms_key.id
 
   tags = merge(
     local.tags,
     {
+      "Name"              = "vpn-health-alerts-${replace(each.key, "_", "-")}"
       "notification-type" = "slack"
-      "slack-channel-id"  = each.key
+      "slack-channel-id"  = each.value
+      "vpn-name"          = each.key
     }
   )
 }
 
 resource "aws_sns_topic" "vpn_health_alerts_email" {
-  for_each          = local.vpns_by_email
-  name              = "vpn-health-alerts-email-${replace(each.key, "/[^a-zA-Z0-9-]/", "-")}"
+  for_each          = local.vpn_email_notifications
+  name              = "vpn-health-alerts-${replace(each.key, "_", "-")}"
   kms_master_key_id = aws_kms_key.sns_kms_key.id
 
   tags = merge(
     local.tags,
     {
+      "Name"               = "vpn-health-alerts-${replace(each.key, "_", "-")}"
       "notification-type"  = "email"
-      "notification-email" = each.key
+      "notification-email" = each.value
+      "vpn-name"           = each.key
     }
   )
 }
@@ -191,7 +195,7 @@ resource "aws_sns_topic_policy" "vpn_health_alerts_email" {
 }
 
 data "aws_iam_policy_document" "vpn_health_sns_topic_policy" {
-  for_each  = local.all_vpn_health_sns_topics
+  for_each  = local.all_vpn_health_notifications
   policy_id = "vpn health sns topic policy"
 
   statement {
@@ -208,7 +212,7 @@ data "aws_iam_policy_document" "vpn_health_sns_topic_policy" {
       "sns:Subscribe"
     ]
     resources = [
-      startswith(each.key, "slack-") ? aws_sns_topic.vpn_health_alerts_slack[each.value].arn : aws_sns_topic.vpn_health_alerts_email[each.value].arn
+      startswith(each.key, "slack-") ? aws_sns_topic.vpn_health_alerts_slack[replace(each.key, "slack-", "")].arn : aws_sns_topic.vpn_health_alerts_email[replace(each.key, "email-", "")].arn
     ]
 
     condition {
@@ -231,7 +235,7 @@ data "aws_iam_policy_document" "vpn_health_sns_topic_policy" {
       "sns:Publish",
     ]
     resources = [
-      startswith(each.key, "slack-") ? aws_sns_topic.vpn_health_alerts_slack[each.value].arn : aws_sns_topic.vpn_health_alerts_email[each.value].arn
+      startswith(each.key, "slack-") ? aws_sns_topic.vpn_health_alerts_slack[replace(each.key, "slack-", "")].arn : aws_sns_topic.vpn_health_alerts_email[replace(each.key, "email-", "")].arn
     ]
 
     principals {
@@ -243,24 +247,23 @@ data "aws_iam_policy_document" "vpn_health_sns_topic_policy" {
 
 # Email Subscriptions
 resource "aws_sns_topic_subscription" "vpn_health_email" {
-  for_each  = local.vpns_by_email
+  for_each  = local.vpn_email_notifications
   topic_arn = aws_sns_topic.vpn_health_alerts_email[each.key].arn
   protocol  = "email"
-  endpoint  = each.key
+  endpoint  = each.value
 }
 
-# EventBridge Rules for VPN Health Events (grouped by notification method)
+# EventBridge Rules for VPN Health Events (one rule per VPN)
 resource "aws_cloudwatch_event_rule" "vpn_health_slack" {
-  for_each    = local.vpns_by_slack_channel
-  name        = "vpn-health-alerts-slack-${substr(md5(each.key), 0, 8)}"
-  description = "Monitor VPN health events for VPNs notifying Slack channel ${each.key}"
+  for_each    = local.vpn_slack_notifications
+  name        = "vpn-health-alerts-${replace(each.key, "_", "-")}"
+  description = "Monitor VPN health events for ${each.key} notifying Slack channel ${each.value}"
 
   event_pattern = jsonencode({
     "source" : ["aws.health"],
     "detail-type" : ["AWS Health Event"],
     "resources" = [
-      for vpn_name in each.value :
-      aws_vpn_connection.this[vpn_name].id
+      aws_vpn_connection.this[each.key].id
     ]
   })
 
@@ -268,23 +271,22 @@ resource "aws_cloudwatch_event_rule" "vpn_health_slack" {
     local.tags,
     {
       "notification-type" = "slack"
-      "slack-channel-id"  = each.key
-      "vpns"              = join(",", each.value)
+      "slack-channel-id"  = each.value
+      "vpn-name"          = each.key
     }
   )
 }
 
 resource "aws_cloudwatch_event_rule" "vpn_health_email" {
-  for_each    = local.vpns_by_email
-  name        = "vpn-health-alerts-email-${substr(md5(each.key), 0, 8)}"
-  description = "Monitor VPN health events for VPNs notifying email ${each.key}"
+  for_each    = local.vpn_email_notifications
+  name        = "vpn-health-alerts-${replace(each.key, "_", "-")}"
+  description = "Monitor VPN health events for ${each.key} notifying email ${each.value}"
 
   event_pattern = jsonencode({
     "source" : ["aws.health"],
     "detail-type" : ["AWS Health Event"],
     "resources" = [
-      for vpn_name in each.value :
-      aws_vpn_connection.this[vpn_name].id
+      aws_vpn_connection.this[each.key].id
     ]
   })
 
@@ -292,22 +294,22 @@ resource "aws_cloudwatch_event_rule" "vpn_health_email" {
     local.tags,
     {
       "notification-type"  = "email"
-      "notification-email" = each.key
-      "vpns"               = join(",", each.value)
+      "notification-email" = each.value
+      "vpn-name"           = each.key
     }
   )
 }
 
 # EventBridge Targets
 resource "aws_cloudwatch_event_target" "vpn_health_slack" {
-  for_each  = local.vpns_by_slack_channel
+  for_each  = local.vpn_slack_notifications
   rule      = aws_cloudwatch_event_rule.vpn_health_slack[each.key].name
   target_id = "SendToSNS"
   arn       = aws_sns_topic.vpn_health_alerts_slack[each.key].arn
 }
 
 resource "aws_cloudwatch_event_target" "vpn_health_email" {
-  for_each  = local.vpns_by_email
+  for_each  = local.vpn_email_notifications
   rule      = aws_cloudwatch_event_rule.vpn_health_email[each.key].name
   target_id = "SendToSNS"
   arn       = aws_sns_topic.vpn_health_alerts_email[each.key].arn
@@ -372,14 +374,15 @@ data "aws_iam_policy_document" "sns-kms" {
   }
 }
 
-# AWS Chatbot for Slack notifications
+# AWS Chatbot for Slack notifications (one per unique Slack channel)
 module "vpn_health_chatbot" {
   source   = "github.com/ministryofjustice/modernisation-platform-terraform-aws-chatbot?ref=0ec33c7bfde5649af3c23d0834ea85c849edf3ac" # v3.0.0
   for_each = local.vpns_by_slack_channel
 
   slack_channel_id = each.key
   sns_topic_arns = [
-    "arn:aws:sns:eu-west-2:${local.environment_management.account_ids[terraform.workspace]}:${aws_sns_topic.vpn_health_alerts_slack[each.key].name}"
+    for vpn_name in each.value :
+    "arn:aws:sns:eu-west-2:${local.environment_management.account_ids[terraform.workspace]}:${aws_sns_topic.vpn_health_alerts_slack[vpn_name].name}"
   ]
   tags             = local.tags
   application_name = "${local.application_name}-vpn-health-${substr(md5(each.key), 0, 8)}"

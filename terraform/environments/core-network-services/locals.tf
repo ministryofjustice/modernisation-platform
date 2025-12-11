@@ -183,7 +183,21 @@ locals {
     )
   }
 
-  # Group VPNs by notification method for efficient resource creation
+  # Create maps using VPN names as keys for Slack notifications
+  vpn_slack_notifications = {
+    for name, cfg in local.vpns_with_notifications :
+    name => cfg.notification_slack_channel_id
+    if try(cfg.notification_slack_channel_id, "") != ""
+  }
+
+  # Create maps using VPN names as keys for Email notifications
+  vpn_email_notifications = {
+    for name, cfg in local.vpns_with_notifications :
+    name => cfg.notification_email
+    if try(cfg.notification_email, "") != ""
+  }
+
+  # Group VPNs by notification destination (for EventBridge rules that can handle multiple VPNs)
   vpns_by_slack_channel = {
     for channel_id in distinct([
       for name, cfg in local.vpns_with_notifications :
@@ -210,10 +224,27 @@ locals {
     ]
   }
 
-  # Combine all SNS topics for unified policy handling
-  all_vpn_health_sns_topics = merge(
-    { for k, v in local.vpns_by_slack_channel : "slack-${k}" => k },
-    { for k, v in local.vpns_by_email : "email-${k}" => k }
+  # Create EventBridge rule keys using first VPN name for each destination (one rule per destination)
+  vpn_eventbridge_slack_rules = {
+    for channel_id, vpn_list in local.vpns_by_slack_channel :
+    vpn_list[0] => {
+      channel_id = channel_id
+      vpn_list   = vpn_list
+    }
+  }
+
+  vpn_eventbridge_email_rules = {
+    for email, vpn_list in local.vpns_by_email :
+    vpn_list[0] => {
+      email    = email
+      vpn_list = vpn_list
+    }
+  }
+
+  # Combine all VPN notification configs for unified policy handling
+  all_vpn_health_notifications = merge(
+    { for k, v in local.vpn_slack_notifications : "slack-${k}" => v },
+    { for k, v in local.vpn_email_notifications : "email-${k}" => v }
   )
 
 }

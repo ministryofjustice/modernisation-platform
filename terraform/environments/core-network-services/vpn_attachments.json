@@ -68,7 +68,8 @@
     "tunnel_phase2_encryption_algorithms": "AES256",
     "tunnel_phase2_integrity_algorithms": "SHA2-256",
     "tunnel1_ike_versions": ["ikev2"],
-    "tunnel2_ike_versions": ["ikev2"]
+    "tunnel2_ike_versions": ["ikev2"],
+    "notification_email": "yajfsupport@necsws.com"
   },
   "YJB-Juniper-vSRX02-VPN": {
     "bgp_asn": "64523",
@@ -90,7 +91,8 @@
     "tunnel_phase2_encryption_algorithms": "AES256",
     "tunnel_phase2_integrity_algorithms": "SHA2-256",
     "tunnel1_ike_versions": ["ikev2"],
-    "tunnel2_ike_versions": ["ikev2"]
+    "tunnel2_ike_versions": ["ikev2"],
+    "notification_email": "yajfsupport@necsws.com"
   },
   "NEC-NonProd-VPN": {
     "bgp_asn": "64678",
