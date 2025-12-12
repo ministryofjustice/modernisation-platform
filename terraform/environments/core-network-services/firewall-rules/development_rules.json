@@ -719,5 +719,26 @@
     "destination_ip": "${hmpps-development}",
     "destination_port": "1522",
     "protocol": "TCP"
+  },
+  "ap_ingest_dev_to_cica_mp_tariff_dev": {
+    "action": "PASS",
+    "source_ip": "${analytical-platform-ingest-dev}",
+    "destination_ip": "${cica-development}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "cica_onprem_lan_to_cica_tariff_dev": {
+    "action": "PASS",
+    "source_ip": "${cica-onprem-lan}",
+    "destination_ip": "${cica-development}",
+    "destination_port": "$TARIFF_TCP",
+    "protocol": "TCP"
+  },
+  "cica_tariff_dev_to_cica_onprem_lan": {
+    "action": "PASS",
+    "source_ip": "${cica-development}",
+    "destination_ip": "${cica-onprem-lan}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
   }
 }

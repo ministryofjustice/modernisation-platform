@@ -281,6 +281,7 @@ expected :=
               "ccms-pui-internal-development",
               "contract-work-administration-development",
               "laa-ccms-soa-development",
+              "laa-cst-security-dashboard-development",
               "laa-enterprise-service-bus-development",
               "laa-mail-relay-development",
               "laa-oem-development",
@@ -333,6 +334,7 @@ expected :=
               "ccms-pui-preproduction",
               "contract-work-administration-preproduction",
               "laa-ccms-soa-preproduction",
+              "laa-cis-preproduction",
               "laa-mail-relay-preproduction",
               "laa-oem-preproduction",
               "laa-pui-secure-browser-preproduction",
@@ -358,6 +360,7 @@ expected :=
               "ccms-pui-production",
               "contract-work-administration-production",
               "laa-ccms-soa-production",
+              "laa-cst-security-dashboard-production",
               "laa-enterprise-service-bus-production",
               "laa-mail-relay-production",
               "laa-oem-production",
@@ -408,6 +411,7 @@ expected :=
           "analytical-platform-next-poc-producer-development",
           "coat-development",
           "data-platform-development",
+          "data-platform-governance-development",
           "example-development",
           "justice-digital-document-hub-development",
           "observability-platform-development",
@@ -421,6 +425,7 @@ expected :=
         "cidr": "10.26.0.0/21",
         "accounts": [
           "data-platform-test",
+          "data-platform-governance-test",
           "testing-test"
         ]
       }
@@ -429,7 +434,8 @@ expected :=
       "general": {
         "cidr": "10.27.104.0/21",
         "accounts": [
-          "data-platform-preproduction"
+          "data-platform-preproduction",
+          "data-platform-governance-preproduction"
         ]
       }
     },
@@ -441,6 +447,7 @@ expected :=
           "analytical-platform-ingestion-production",
           "coat-production",
           "data-platform-production",
+          "data-platform-governance-production",
           "long-term-storage-production",
           "observability-platform-production"
         ]

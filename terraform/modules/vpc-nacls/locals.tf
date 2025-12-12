@@ -80,4 +80,48 @@ locals {
 
   laa_custom_tcp_rules_to_apply = local.apply_laa_custom_tcp_rules ? local.laa_custom_egress_tcp_acl_rules : {}
 
+
+
+  # Custom Rules for access to selected CICA subnets from AP
+
+  cica_vpc_keys = {
+    cica-development = {
+      cidr_block = "10.26.128.19/32"
+    }
+    cica-production = {
+      cidr_block = "10.27.128.28/32"
+    }
+  }
+
+  cica_general_private_ap_access_rules_base = {
+    cica_general_private_subnets_ap_db_ingress = {
+      egress      = false
+      from_port   = 1521
+      to_port     = 1521
+      protocol    = "tcp"
+      rule_action = "allow"
+      rule_number = 2015
+    }
+    # Note - egress ports are ephemeral and so need to wider in scope than just 1521.
+    cica_general_private_subnets_ap_db_egress = {
+      egress      = true
+      from_port   = 1024
+      to_port     = 65535
+      protocol    = "tcp"
+      rule_action = "allow"
+      rule_number = 2015
+    }
+  }
+
+  apply_cica_ap_rules = contains(keys(local.cica_vpc_keys), var.vpc_name)
+
+  cica_db_rules_to_apply = local.apply_cica_ap_rules ? {
+    for rule_key, rule in local.cica_general_private_ap_access_rules_base :
+    rule_key => merge(
+      rule,
+      { cidr_block = local.cica_vpc_keys[var.vpc_name].cidr_block }
+    )
+  } : {}
+
+
 }

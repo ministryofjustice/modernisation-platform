@@ -259,7 +259,7 @@ data "aws_iam_policy_document" "oidc_assume_plan_role_member" {
 #trivy:ignore:AVD-AWS-0345: Required for GitHub Actions to access Terraform state in S3
 module "github_actions_apply_role" {
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
-  github_repositories = ["ministryofjustice/modernisation-platform", "ministryofjustice/modernisation-platform-ami-builds", "ministryofjustice/modernisation-platform-security"]
+  github_repositories = ["ministryofjustice/modernisation-platform", "ministryofjustice/modernisation-platform-github", "ministryofjustice/modernisation-platform-ami-builds", "ministryofjustice/modernisation-platform-security"]
   role_name           = "github-actions-apply"
   policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
   policy_jsons        = [data.aws_iam_policy_document.oidc-deny-specific-actions.json]
@@ -310,6 +310,7 @@ module "github_actions_read_secrets_role" {
     "ministryofjustice/modernisation-platform-terraform-member-vpc",
     "ministryofjustice/modernisation-platform-terraform-module-template",
     "ministryofjustice/modernisation-platform-github-oidc-role",
+    "ministryofjustice/modernisation-platform-github",
     "ministryofjustice/modernisation-platform-terraform-environments",
     "ministryofjustice/modernisation-platform-terraform-ecs-cluster",
     "ministryofjustice/modernisation-platform-github-oidc-provider",
@@ -321,7 +322,8 @@ module "github_actions_read_secrets_role" {
     "ministryofjustice/modernisation-platform-terraform-loadbalancer",
     "ministryofjustice/modernisation-platform-terraform-aws-data-firehose",
     "ministryofjustice/modernisation-platform-terraform-cross-account-access",
-    "ministryofjustice/modernisation-platform-security"
+    "ministryofjustice/modernisation-platform-security",
+    "ministryofjustice/modernisation-platform-terraform-aws-waf"
   ]
   role_name    = "github-actions-read-secrets"
   policy_jsons = [data.aws_iam_policy_document.oidc_assume_read_secrets_role_member.json]

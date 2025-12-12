@@ -3,7 +3,16 @@
   "environments": [
     {
       "name": "production",
-      "access": []
+      "access": [
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "security-audit"
+        }
+      ]
     }
   ],
   "tags": {
@@ -12,7 +21,7 @@
     "infrastructure-support": "modernisation-platform@digital.justice.gov.uk",
     "securityhub-slack-channel": "modernisation-platform",
     "owner": "Modernisation Platform: modernisation-platform@digital.justice.gov.uk",
-    "critical-national-infrastructure": false
+    "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [""]
 }

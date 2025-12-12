@@ -1527,7 +1527,7 @@ module "vcms_ecr_repo" {
 module "electronic_monitoring_ears_sars_ecr_repo" {
   source = "../../modules/app-ecr-repo"
 
-  app_name = "electronic_monitoring_ears_sars"
+  app_name = "electronic-monitoring-ear-sars"
 
   push_principals = [
     "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/modernisation-platform-oidc-cicd",

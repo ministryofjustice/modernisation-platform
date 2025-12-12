@@ -1,0 +1,177 @@
+name: Process structured environment JSON change
+on:
+  issues:
+    types: [opened, edited]
+permissions:
+  contents: write
+  pull-requests: write
+  issues: read
+
+jobs:
+  apply:
+    if: contains(github.event.issue.labels.*.name, 'account_amendment')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Extract issue form data
+        id: form
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const body = context.payload.issue.body || "";
+            const fields = {};
+            // Map human labels from Issue Form to canonical keys
+            const labelMap = new Map([
+              ["App name (matches JSON filename in environments/)", "account_name"],
+              ["Target environment", "environment_name"],
+              ["Change action", "environment_change_action"],
+              ["Current SSO group name (for amend)", "current_sso_group_name"],
+              ["Current access level (for amend)", "current_level"],
+              ["SSO group name", "sso_group_name"],
+              ["Access level", "level"],
+              ["Change action (additional reviewers)", "reviewers_change_action"],
+              ["Current additional reviewers (for amend)", "current_additional_reviewers"],
+              ["Additional reviewers (comma-separated)", "additional_reviewers"],
+              ["Change action (tags)", "tags_change_action"],
+              ["Current tag key (for amend)", "current_tag_key"],
+              ["Current tag value (for amend)", "current_tag_value"],
+              ["Tag key", "tag_key"],
+              ["Tag value", "tag_value"],
+              ["Change action (other)", "other_change_action"],
+              ["Current GitHub OIDC team repositories (for amend)", "current_github_oidc_team_repositories"],
+              ["Current go-live date (for amend)", "current_go_live_date"],
+              ["GitHub OIDC team repositories (comma-separated)", "github_oidc_team_repositories"],
+              ["Go-live date (DD-MM-YYYY)", "go_live_date"],
+            ]);
+
+            for (const line of body.split(/\r?\n/)) {
+              const m = line.match(/^([^:]+):\s*(.*)$/);
+              if (m) {
+                const humanLabel = m[1].trim();
+                const value = m[2].trim();
+                const key = labelMap.get(humanLabel);
+                if (key) fields[key] = value;
+                // Also capture raw keys in case GitHub uses IDs
+                const rawKey = humanLabel.trim().toLowerCase().replace(/\s+/g,'_');
+                fields[rawKey] = value;
+              }
+            }
+            const get = k => fields[k] || "";
+            let account = get('account_name');
+            if (!account) {
+              const title = context.payload.issue.title || "";
+              const m = title.match(/amend\s+([a-z0-9_-]+)/i);
+              if (m) account = m[1];
+            }
+            // Fallback: try to infer account from repo environments directory
+            if (!account) {
+              const { owner, repo } = context.repo;
+              try {
+                const res = await github.rest.repos.getContent({ owner, repo, path: 'environments' });
+                const entries = Array.isArray(res.data) ? res.data : [];
+                const names = new Set(entries.filter(e => e.type === 'file' && e.name.endsWith('.json')).map(e => e.name.replace(/\.json$/, '')));
+                // scan title and body for tokens that match file names
+                const scanText = `${title}\n${body}`.toLowerCase();
+                for (const name of names) {
+                  if (scanText.includes(name.toLowerCase())) { account = name; break; }
+                }
+              } catch (err) {
+                // ignore API errors; leave account empty
+              }
+            }
+            core.setOutput('account_name', account);
+            core.info(`Parsed fields: ${JSON.stringify(fields, null, 2)}`);
+            core.info(`Resolved account_name: ${account}`);
+            // Environment section
+            core.setOutput('environment_change_action', get('environment_change_action'));
+            core.setOutput('environment_name', get('environment_name'));
+            core.setOutput('current_sso_group_name', get('current_sso_group_name'));
+            core.setOutput('current_level', get('current_level'));
+            core.setOutput('sso_group_name', get('sso_group_name'));
+            core.setOutput('level', get('level'));
+
+            // Reviewers section
+            core.setOutput('reviewers_change_action', get('reviewers_change_action'));
+            core.setOutput('current_additional_reviewers', get('current_additional_reviewers'));
+            core.setOutput('additional_reviewers', get('additional_reviewers'));
+
+            // Tags section
+            core.setOutput('tags_change_action', get('tags_change_action'));
+            core.setOutput('current_tag_key', get('current_tag_key'));
+            core.setOutput('current_tag_value', get('current_tag_value'));
+            core.setOutput('tag_key', get('tag_key'));
+            core.setOutput('tag_value', get('tag_value'));
+
+            // Other section
+            core.setOutput('other_change_action', get('other_change_action'));
+            core.setOutput('current_github_oidc_team_repositories', get('current_github_oidc_team_repositories'));
+            core.setOutput('current_go_live_date', get('current_go_live_date'));
+            core.setOutput('github_oidc_team_repositories', get('github_oidc_team_repositories'));
+            core.setOutput('go_live_date', get('go_live_date'));
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Verify target JSON exists
+        shell: bash
+        run: |
+          safe_account="$(echo "${{ steps.form.outputs.account_name }}" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9_-]//g')"
+          target="environments/${safe_account}.json"
+          echo "Checking for ${target}"
+          if [ ! -f "$target" ]; then
+            echo "ERROR: Target JSON not found: $target" >&2
+            exit 1
+          fi
+
+      - name: Apply structured changes
+        run: |
+          python3 scripts/process_env_changes.py \
+            --account-name "${{ steps.form.outputs.account_name }}" \
+            --environment-change-action "${{ steps.form.outputs.environment_change_action }}" \
+            --environment-name "${{ steps.form.outputs.environment_name }}" \
+            --current-sso-group-name "${{ steps.form.outputs.current_sso_group_name }}" \
+            --current-level "${{ steps.form.outputs.current_level }}" \
+            --sso-group-name "${{ steps.form.outputs.sso_group_name }}" \
+            --level "${{ steps.form.outputs.level }}" \
+            --reviewers-change-action "${{ steps.form.outputs.reviewers_change_action }}" \
+            --current-additional-reviewers "${{ steps.form.outputs.current_additional_reviewers }}" \
+            --additional-reviewers "${{ steps.form.outputs.additional_reviewers }}" \
+            --tags-change-action "${{ steps.form.outputs.tags_change_action }}" \
+            --current-tag-key "${{ steps.form.outputs.current_tag_key }}" \
+            --current-tag-value "${{ steps.form.outputs.current_tag_value }}" \
+            --tag-key "${{ steps.form.outputs.tag_key }}" \
+            --tag-value "${{ steps.form.outputs.tag_value }}" \
+            --other-change-action "${{ steps.form.outputs.other_change_action }}" \
+            --current-github-oidc-team-repositories "${{ steps.form.outputs.current_github_oidc_team_repositories }}" \
+            --current-go-live-date "${{ steps.form.outputs.current_go_live_date }}" \
+            --github-oidc-team-repositories "${{ steps.form.outputs.github_oidc_team_repositories }}" \
+            --go-live-date "${{ steps.form.outputs.go_live_date }}"
+
+      - name: Commit changes
+        run: |
+          branch="env-json/${{ github.event.issue.number }}"
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git checkout -b "$branch"
+          safe_account="$(echo "${{ steps.form.outputs.account_name }}" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9_-]//g')"
+          git add "environments/${safe_account}.json"
+          git commit -m "Structured env JSON change from issue #${{ github.event.issue.number }}"
+          git push -u origin "$branch"
+
+      - name: Open PR
+        uses: peter-evans/create-pull-request@v8
+        with:
+          title: "Structured env JSON change (issue #${{ github.event.issue.number }})"
+          body: |
+            Automated structured change from issue #${{ github.event.issue.number }}.
+            File: environments/${{ steps.form.outputs.account_name }}.json
+            Environment action: ${{ steps.form.outputs.environment_change_action }} (env='${{ steps.form.outputs.environment_name }}')
+            Reviewers action: ${{ steps.form.outputs.reviewers_change_action }}
+            Tags action: ${{ steps.form.outputs.tags_change_action }}
+            Other action: ${{ steps.form.outputs.other_change_action }}
+          branch: "env-json/${{ github.event.issue.number }}"
+          labels: account_amendment

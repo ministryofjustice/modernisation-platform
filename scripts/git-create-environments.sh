@@ -4,7 +4,6 @@ set -e
 
 github_org="ministryofjustice"
 repository="${github_org}/modernisation-platform-environments"
-secret=$TERRAFORM_GITHUB_TOKEN
 
 # Get all existing GitHub environments
 get_existing_environments() {
@@ -14,7 +13,7 @@ get_existing_environments() {
   while :; do
     response=$(curl -si \
       -H "Accept: application/vnd.github.v3+json" \
-      -H "Authorization: token ${secret}" \
+      -H "Authorization: Bearer $GH_TOKEN" \
       "https://api.github.com/repos/${repository}/environments?per_page=100&page=${page}")
 
     headers=$(echo "$response" | awk 'BEGIN {RS="\r\n\r\n"} NR==1 {print}')
@@ -36,7 +35,7 @@ get_github_team_id() {
   team_slug=${1}
   response=$(curl -s \
     -H "Accept: application/vnd.github.v3+json" \
-    -H "Authorization: token ${secret}" \
+    -H "Authorization: Bearer $GH_TOKEN" \
     "https://api.github.com/orgs/${github_org}/teams/${team_slug}")
   echo "${response}" | jq -r '.id'
 }
@@ -46,7 +45,7 @@ get_github_user_id() {
   username=$1
   response=$(curl -s \
     -H "Accept: application/vnd.github.v3+json" \
-    -H "Authorization: token ${secret}" \
+    -H "Authorization: Bearer $GH_TOKEN" \
     "https://api.github.com/users/${username}")
   echo "${response}" | jq -r '.id'
 }
@@ -87,8 +86,8 @@ create_environment() {
   else
     response=$(echo "${payload}" | curl -L -s -i \
       -X PUT \
-      -H "Accept: application/vnd.github+json" \
-      -H "Authorization: Bearer ${secret}" \
+      -H "Accept: application/vnd.github.v3+json" \
+      -H "Authorization: Bearer $GH_TOKEN" \
       -H "X-GitHub-Api-Version: 2022-11-28" \
       "https://api.github.com/repos/${repository}/environments/${environment_name}" \
       -d @-)

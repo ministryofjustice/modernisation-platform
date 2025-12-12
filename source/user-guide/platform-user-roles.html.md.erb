@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Platform User Roles
-last_reviewed_on: 2025-07-31
+last_reviewed_on: 2025-11-18
 review_in: 6 months
 ---
 
@@ -132,14 +132,14 @@ Created for users who need to manage S3 buckets
 
   Replace `my-test-bucket` with the actual name of the bucket you wish to access.
 
-## platform-engineer-admin
+### platform-engineer-admin
 
-This is a role designed for application processing, the first platform to be hosted on the modernisation platform. Going forward this can be assigned and permissions edited to suit other platforms if moving across to he hosted by MP.
+This role is intended for platform teams whose services are hosted on the Modernisation Platform. It is currently used by teams such as Application Processing and the Emergency Containment Platform. In the future other platforms such as Cloud Platform may also make use of this role. As additional platforms migrate to or are hosted on the Modernisation Platform, this role can be assigned to them, with permissions adjusted as needed to suit their specific requirements.
 
-- Almost administrator access
+- Almost administrator level access where required
 - Includes common policy
 
-## ssm-session-access
+### ssm-session-access
 
 The ssm-session-access role provides secure, restricted access to EC2 instances exclusively through AWS Systems Manager (SSM) Session Manager.
 
@@ -147,7 +147,7 @@ The ssm-session-access role provides secure, restricted access to EC2 instances 
 - Terminate/resume own sessions
 - View active session status
 
-## data-scientist
+### data-scientist
 
 This role was primarily created for data scientists in YJB to use Amazon Redshift and run certain reports. It's a more scoped version of the `reporting-operations` role.
 

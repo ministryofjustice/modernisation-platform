@@ -38,6 +38,7 @@ exclude = [
     '^https://github\.com/ministryofjustice/modernisation-platform-security',
     '^https://github\.com/ministryofjustice/deployment-tgw',
     '^https://moj-digital-tools.pagerduty.com',
+    '^https://github\.com/ministryofjustice/moj-ip-addresses/'
 ]
 
 # Exclude all private IPs from checking.

@@ -434,6 +434,13 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
+  "dom1_to_laa_production_mp_https": {
+    "action": "PASS",
+    "source_ip": "${dom1-domain-controllers}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "cp_to_mp_laa_production_1522": {
     "action": "PASS",
     "source_ip": "${cloud-platform}",
@@ -567,10 +574,31 @@
     "destination_port": "$TARIFF_TCP",
     "protocol": "TCP"
   },
-  "cica_tariff_test_to_cica_aws_ss": {
+  "cica_tariff_production_to_cica_aws_ss": {
     "action": "PASS",
     "source_ip": "${cica-production}",
     "destination_ip": "$CICA_AWS_SS",
+    "destination_port": "ANY",
+    "protocol": "TCP"
+  },
+  "ap_ingest_prod_to_cica_mp_tariff_prod": {
+    "action": "PASS",
+    "source_ip": "${analytical-platform-ingest-prod}",
+    "destination_ip": "${cica-production}",
+    "destination_port": "1521",
+    "protocol": "TCP"
+  },
+  "cica_onprem_lan_to_cica_tariff_prod": {
+    "action": "PASS",
+    "source_ip": "${cica-onprem-lan}",
+    "destination_ip": "${cica-production}",
+    "destination_port": "$TARIFF_TCP",
+    "protocol": "TCP"
+  },
+  "cica_tariff_production_to_cica_onprem_lan": {
+    "action": "PASS",
+    "source_ip": "${cica-production}",
+    "destination_ip": "${cica-onprem-lan}",
     "destination_port": "ANY",
     "protocol": "TCP"
   }

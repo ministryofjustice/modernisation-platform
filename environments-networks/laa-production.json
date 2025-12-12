@@ -12,6 +12,7 @@
           "ccms-pui-production",
           "contract-work-administration-production",
           "laa-ccms-soa-production",
+          "laa-cst-security-dashboard-production",
           "laa-enterprise-service-bus-production",
           "laa-mail-relay-production",
           "laa-oem-production",
