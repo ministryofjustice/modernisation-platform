@@ -11,6 +11,10 @@
         {
           "sso_group_name": "oas-migration",
           "level": "instance-management"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer"
         }
       ]
     },
@@ -19,6 +23,10 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-dba",
           "level": "developer"
         }
       ]
@@ -29,6 +37,10 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-dba",
+          "level": "developer"
         }
       ]
     },
@@ -37,6 +49,10 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-dba",
           "level": "developer"
         }
       ]
