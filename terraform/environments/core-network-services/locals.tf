@@ -172,4 +172,79 @@ locals {
     replace(file, ".json", "") => jsondecode(file("../../../environments-networks/${file}"))
   }
 
+  # VPN Health Alerts - Notification Configuration
+  # Filter VPN attachments that have notification settings
+  vpns_with_notifications = {
+    for name, cfg in local.vpn_attachments :
+    name => cfg
+    if(
+      try(cfg.notification_slack_channel_id, "") != "" ||
+      try(cfg.notification_email, "") != ""
+    )
+  }
+
+  # Create maps using VPN names as keys for Slack notifications
+  vpn_slack_notifications = {
+    for name, cfg in local.vpns_with_notifications :
+    name => cfg.notification_slack_channel_id
+    if try(cfg.notification_slack_channel_id, "") != ""
+  }
+
+  # Create maps using VPN names as keys for Email notifications
+  vpn_email_notifications = {
+    for name, cfg in local.vpns_with_notifications :
+    name => cfg.notification_email
+    if try(cfg.notification_email, "") != ""
+  }
+
+  # Group VPNs by notification destination (for EventBridge rules that can handle multiple VPNs)
+  vpns_by_slack_channel = {
+    for channel_id in distinct([
+      for name, cfg in local.vpns_with_notifications :
+      cfg.notification_slack_channel_id
+      if try(cfg.notification_slack_channel_id, "") != ""
+    ]) :
+    channel_id => [
+      for name, cfg in local.vpns_with_notifications :
+      name
+      if try(cfg.notification_slack_channel_id, "") == channel_id
+    ]
+  }
+
+  vpns_by_email = {
+    for email in distinct([
+      for name, cfg in local.vpns_with_notifications :
+      cfg.notification_email
+      if try(cfg.notification_email, "") != ""
+    ]) :
+    email => [
+      for name, cfg in local.vpns_with_notifications :
+      name
+      if try(cfg.notification_email, "") == email
+    ]
+  }
+
+  # Create EventBridge rule keys using first VPN name for each destination (one rule per destination)
+  vpn_eventbridge_slack_rules = {
+    for channel_id, vpn_list in local.vpns_by_slack_channel :
+    vpn_list[0] => {
+      channel_id = channel_id
+      vpn_list   = vpn_list
+    }
+  }
+
+  vpn_eventbridge_email_rules = {
+    for email, vpn_list in local.vpns_by_email :
+    vpn_list[0] => {
+      email    = email
+      vpn_list = vpn_list
+    }
+  }
+
+  # Combine all VPN notification configs for unified policy handling
+  all_vpn_health_notifications = merge(
+    { for k, v in local.vpn_slack_notifications : "slack-${k}" => v },
+    { for k, v in local.vpn_email_notifications : "email-${k}" => v }
+  )
+
 }
