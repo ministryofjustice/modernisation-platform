@@ -1,13 +1,41 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Security Hub Slack Notifications
-last_reviewed_on: 2025-07-09
+last_reviewed_on: 2025-12-12
 review_in: 6 months
 ---
 
 # <%= current_page.data.title %>
 
-## Introduction
+This page covers the various Security Hub alerts that are forwarded to slack. There are two sections:
+
+- Those slack alerts reported by Security Hub for Core accounts.
+
+- Slack alerts forwarded to selected member accounts.
+
+
+## Core Account Alerts
+
+### Deployment via Terraform
+
+These alerts are deployed in SECURE BASELINES via the [modernisation-platform-terraform-baselines](https://github.com/ministryofjustice/modernisation-platform-terraform-baselines/blob/main/modules/securityhub/main.tf) module and are generated via an EventBridge rule that scans for those events with pre-defined levels of criticality. 
+
+Initially this has been set include "CRITICAL" alerts only but in future will be extended to "HIGH" and possibly others. These levels are set as a local in the [modernisation-platform repo](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/bootstrap/secure-baselines/locals.tf). Currently the core-shared-services account is excluded from scope but will be added in the future.
+
+### Viewing and Resolving Security Hub Alerts
+
+The slack alerts are routed via pagerduty to the channel [modernisation-platform-sec-hub-high-alerts](https://mojdt.slack.com/archives/C0A3B5K1FR6) and occur only when the Workflow status is set to 'NEW'. Existing alerts will not be flagged unless their status changes.
+
+Once an alert is received in slack, the cause must be reviewed using the [AWS Console](https://eu-west-2.console.aws.amazon.com/securityhub/home) and the underlying issue assessed & resolved. If resolved the appropriate Workflow Status can be applied. 
+
+Further information on the workflow for Security Hub alerts can be found in the [AWS Documentation](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-findings.html)
+
+Note that due to the behavior of PagerDuty, slack alerts will be shown as resolved after 4 hours of receipt, even though the underlying Security Hub alert has not been reviewed. 
+
+
+## Member Account Alerts
+
+### Introduction
 
 Each AWS account under the Modernisation Platform (MP) Organizational Unit (OU) has Security Hub enabled, and all findings are centralised into the **eu-west-2** region.
 
@@ -16,9 +44,9 @@ To receive the Security Hub severity summary in Slack, you need to:
 - Add the Slack channel name as a tag in the `<application>.json` file in modernisation-platform repository
 - Store the Slack webhook URL as a secret via the workflow
 
-## Steps
+### Steps
 
-### Add Security Hub Slack Channel Tag to `<application>.json`
+#### Add Security Hub Slack Channel Tag to `<application>.json`
 
 In the `<application>.json` file, add or update the `securityhub-slack-channel` tag under `tags`
 
@@ -26,7 +54,7 @@ You can find your `<application>.json` file in the
 [**modernisation-platform** repository](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments)
 under the `environments/` folder.
 
-#### Example
+##### Example
 
 ```json
 "tags": {
@@ -37,7 +65,7 @@ under the `environments/` folder.
 }
 ```
 
-### Trigger the Slack Webhook Workflow
+#### Trigger the Slack Webhook Workflow
 
 After committing the updated JSON file, merge the PR. Then, manually trigger the GitHub Actions workflow to add or update the Slack webhook URL.
 
@@ -54,7 +82,7 @@ Once the workflow completes successfully, you will see the confirmation message:
 Slack channel <slack channel name> webhook added/updated in secret
 ```
 
-### Daily Notification Job
+#### Daily Notification Job
 
 A scheduled GitHub Actions job runs **daily** to send a summary of **Security Hub severity findings** to the Slack channel you specified in the tag.
 
