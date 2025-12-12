@@ -16,7 +16,7 @@ env:
 
 jobs:
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@491ad26d90d9b5d9692a6de4300a17bd3da5e81b # v3.5.1
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@0c879ebf9183dd7e47d3fe9c961afa3271843b8b # v3.6.0
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -42,7 +42,7 @@ jobs:
           fetch-depth: 1
 
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@491ad26d90d9b5d9692a6de4300a17bd3da5e81b # v3.5.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0c879ebf9183dd7e47d3fe9c961afa3271843b8b # v3.6.0
         with:
           mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}

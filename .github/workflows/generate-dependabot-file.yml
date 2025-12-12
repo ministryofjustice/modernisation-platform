@@ -22,7 +22,7 @@ defaults:
 jobs:
 
   fetch-secrets:
-    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@491ad26d90d9b5d9692a6de4300a17bd3da5e81b # v3.5.1
+    uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@0c879ebf9183dd7e47d3fe9c961afa3271843b8b # v3.6.0
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -40,7 +40,7 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@491ad26d90d9b5d9692a6de4300a17bd3da5e81b # v3.5.1
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0c879ebf9183dd7e47d3fe9c961afa3271843b8b # v3.6.0
         with:
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -52,7 +52,7 @@ jobs:
         run: bash ./scripts/git-setup.sh
 
       - name: Commit and Create PR with Signed Commit
-        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@491ad26d90d9b5d9692a6de4300a17bd3da5e81b # v3.5.1
+        uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@0c879ebf9183dd7e47d3fe9c961afa3271843b8b # v3.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Automated Update: Dependabot File"
