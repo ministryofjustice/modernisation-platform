@@ -2,6 +2,16 @@
   "account-type": "member",
   "environments": [
     {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "v1-cis-mod",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": "exclude"
+    },
+    {
       "name": "preproduction",
       "access": [
         {
