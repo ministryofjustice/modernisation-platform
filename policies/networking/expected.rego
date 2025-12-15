@@ -281,6 +281,7 @@ expected :=
               "ccms-pui-internal-development",
               "contract-work-administration-development",
               "laa-ccms-soa-development",
+              "laa-cis-development",
               "laa-cst-security-dashboard-development",
               "laa-enterprise-service-bus-development",
               "laa-mail-relay-development",
