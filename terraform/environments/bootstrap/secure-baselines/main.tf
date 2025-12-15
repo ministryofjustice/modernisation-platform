@@ -81,9 +81,9 @@ module "baselines" {
   high_priority_pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_high_priority_cloudwatch"]
 
   # Individual Slack Alerts for CRITICAL and other severity SecurityHub alerts if the account is in scope and the criticality is set.
-  enable_securityhub_slack_alerts                     = local.securityhub_slack_alerts_accounts
-  securityhub_slack_alerts_scope                      = local.securityhub_slack_alerts_scope
-  securityhub_slack_alerts_pagerduty_integration_key   = local.pagerduty_integration_keys["security_hub_alerts_critical_priority"]
+  enable_securityhub_slack_alerts                    = local.securityhub_slack_alerts_accounts
+  securityhub_slack_alerts_scope                     = local.securityhub_slack_alerts_scope
+  securityhub_slack_alerts_pagerduty_integration_key = local.pagerduty_integration_keys["security_hub_alerts_critical_priority"]
 
 }
 
