@@ -31,9 +31,9 @@ locals {
     "long-term-storage-production",
     "^core-.*"
   ]
-  is_core_account                   = length(regexall(join("|", local.mp_owned_workspaces), terraform.workspace)) > 0
+  is_core_account = length(regexall(join("|", local.mp_owned_workspaces), terraform.workspace)) > 0
 
   # Locals that are passed to the Baselines module for slack alerts for SecurityHub issues.
   securityhub_slack_alerts_accounts = local.is_core_account && !strcontains(terraform.workspace, "core-shared-services") # All core accounts excluding terraform workspaces containing core-shared-services.
-  securityhub_slack_alerts_scope    = ["CRITICAL"] # The type of alert to generate alerts for. 
+  securityhub_slack_alerts_scope    = ["CRITICAL"]                                                                       # The type of alert to generate alerts for. 
 }
