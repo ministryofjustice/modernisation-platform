@@ -69,7 +69,7 @@
     "tunnel_phase2_integrity_algorithms": "SHA2-256",
     "tunnel1_ike_versions": ["ikev2"],
     "tunnel2_ike_versions": ["ikev2"],
-    "notification_email": "yjafsupport@necsws.com"
+    "notification_email": "yjafoperationsaws@necsws.com"
   },
   "YJB-Juniper-vSRX02-VPN": {
     "bgp_asn": "64523",
@@ -92,7 +92,7 @@
     "tunnel_phase2_integrity_algorithms": "SHA2-256",
     "tunnel1_ike_versions": ["ikev2"],
     "tunnel2_ike_versions": ["ikev2"],
-    "notification_email": "yjafsupport@necsws.com"
+    "notification_email": "yjafoperationsaws@necsws.com"
   },
   "NEC-NonProd-VPN": {
     "bgp_asn": "64678",
