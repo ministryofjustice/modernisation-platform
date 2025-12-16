@@ -339,7 +339,6 @@ expected :=
               "laa-mail-relay-preproduction",
               "laa-oem-preproduction",
               "laa-pui-secure-browser-preproduction",
-              "laa-enterprise-service-bus-preproduction",
               "maat-preproduction",
               "maatdb-preproduction",
               "mlra-preproduction",
