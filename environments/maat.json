@@ -98,7 +98,7 @@
   "tags": {
     "application": "Means Assessment Administration Tool - MAAT",
     "business-unit": "LAA",
-    "infrastructure-support": "laa_ops@digital.justice.gov.uk",
+    "infrastructure-support": "laa-crime-assess-apps-core@justice.gov.uk",
     "owner": "laacrimeapps@justice.gov.uk",
     "critical-national-infrastructure": true
   },
