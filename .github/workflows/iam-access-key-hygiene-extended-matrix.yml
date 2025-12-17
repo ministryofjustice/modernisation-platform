@@ -160,32 +160,28 @@ jobs:
 
       - name: Terraform init (member-bootstrap)
         run: bash scripts/terraform-init.sh terraform/environments/bootstrap/member-bootstrap
-
-      - name: Select workspace and resolve member account ID (no terraform output)
+      
+      - name: Select workspace and resolve member account ID (Organizations)
         id: account
         run: |
           set -euo pipefail
-
+      
           unset TF_WORKSPACE
           terraform -chdir=terraform/environments/bootstrap/member-bootstrap workspace select "${{ matrix.workspaces }}"
-
-          ACCOUNT_NUMBER="$(jq -er --arg ws "${{ matrix.workspaces }}" '
-            (
-              .accounts[]? | select(.name==$ws) | (.id // .account_id // .aws_account_id)
-            ) // (
-              .aws_accounts[]? | select(.name==$ws) | (.id // .account_id // .aws_account_id)
-            ) // (
-              .account_map[$ws]
-            )
-          ' <<< "$ENVIRONMENT_MANAGEMENT")"
-
-          if [[ -z "$ACCOUNT_NUMBER" || "$ACCOUNT_NUMBER" == "null" ]]; then
-            echo "Could not resolve account id for workspace '${{ matrix.workspaces }}' from ENVIRONMENT_MANAGEMENT" >&2
+      
+          # Lookup AWS account id from AWS Organizations by account Name
+          ACCOUNT_NUMBER="$(aws organizations list-accounts \
+            --query "Accounts[?Name=='${{ matrix.workspaces }}'].Id | [0]" \
+            --output text)"
+      
+          if [[ -z "$ACCOUNT_NUMBER" || "$ACCOUNT_NUMBER" == "None" ]]; then
+            echo "Could not find AWS account in Organizations with Name='${{ matrix.workspaces }}'" >&2
             exit 1
           fi
-
+      
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
+
 
       - name: Configure AWS Credentials (member account)
         uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
