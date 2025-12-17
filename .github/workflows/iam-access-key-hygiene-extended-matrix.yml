@@ -10,7 +10,7 @@ env:
   AWS_REGION: "eu-west-2"
   TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
   EXPECTED_TEMPLATE_VERSION: "1"
-  # Optional could be required when not using a dry run
+  # Optional (required when not using a dry run)
   # NOTIFY_RECIPIENT_EMAIL: "modernisation-platform-team@justice.gov.uk"
 
 permissions:
@@ -35,13 +35,15 @@ jobs:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
+  # -------------------------------------------------------------------------
+  # Build workspace matrix from delegate-access (keeps the "65-ish accounts" scope)
+  # -------------------------------------------------------------------------
   setup-prerequisites:
     runs-on: ubuntu-latest
     needs: fetch-secrets
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       aws-region: ${{ steps.setup-aws-region.outputs.aws-region }}
-      accounts_map: ${{ steps.build-accounts-map.outputs.accounts_map }} # <-- underscore key
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
@@ -84,22 +86,6 @@ jobs:
             | sed -e 's/*//' -e 's/^[[:space:]]*//' -e '/default/d' -e '/^$/d' \
             | sort -u \
             | jq -ncR '[inputs]')" >> "$GITHUB_OUTPUT"
-
-      - id: build-accounts-map
-        name: Build Organizations accounts map (Name -> Id) ONCE
-        run: |
-          set -euo pipefail
-          accounts_map="$(
-            aws organizations list-accounts --output json \
-              | jq -c '[.Accounts[] | select(.Status=="ACTIVE") | {key: .Name, value: .Id}] | from_entries'
-          )"
-          echo "Accounts map built with $(echo "$accounts_map" | jq 'length') entries"
-
-          {
-            echo "accounts_map<<EOF"
-            echo "$accounts_map"
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
 
       - id: setup-aws-region
         name: Setup AWS Region output
@@ -150,7 +136,12 @@ jobs:
 
   # -------------------------------------------------------------------------
   # Per-account IAM hygiene (DRY RUN) – blocks 1–4
+  # Key change:
+  #   - We DO NOT pass a huge accounts map via outputs (it gets dropped/emptied).
+  #   - Instead, each job calls `aws organizations list-accounts` ONCE and looks up
+  #     IDs locally for its matrix items.
   # -------------------------------------------------------------------------
+
   iam-hygiene-1:
     needs: [fetch-secrets, setup-prerequisites, define-jobs]
     runs-on: ubuntu-latest
@@ -158,8 +149,6 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
-    env:
-      ACCOUNTS_MAP: ${{ needs.setup-prerequisites.outputs.accounts_map }} # <-- underscore reference
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
@@ -173,7 +162,7 @@ jobs:
       - name: Set Root Account Number
         run: |
           set -euo pipefail
-          ROOT_ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          ROOT_ACCOUNT_NUMBER="$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")"
           echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
           echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
 
@@ -184,14 +173,19 @@ jobs:
           role-session-name: githubactionsrolesession
           aws-region: ${{ needs.setup-prerequisites.outputs.aws-region }}
 
-      - name: Resolve member account ID (from prebuilt Organizations map)
+      - name: Build Organizations accounts map (Name -> Id)
+        run: |
+          set -euo pipefail
+          accounts_map="$(
+            aws organizations list-accounts --output json \
+              | jq -c '[.Accounts[] | select(.Status=="ACTIVE") | {key: .Name, value: .Id}] | from_entries'
+          )"
+          echo "ACCOUNTS_MAP=$accounts_map" >> "$GITHUB_ENV"
+
+      - name: Resolve member account ID (from Organizations map)
         id: account
         run: |
           set -euo pipefail
-          if [[ -z "${ACCOUNTS_MAP:-}" ]]; then
-            echo "ACCOUNTS_MAP is empty; setup-prerequisites did not pass accounts_map output." >&2
-            exit 1
-          fi
           ACCOUNT_NUMBER="$(jq -er --arg name "${{ matrix.workspaces }}" '.[$name]' <<< "$ACCOUNTS_MAP")"
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
@@ -218,8 +212,6 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_2) }}
-    env:
-      ACCOUNTS_MAP: ${{ needs.setup-prerequisites.outputs.accounts_map }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
@@ -233,7 +225,7 @@ jobs:
       - name: Set Root Account Number
         run: |
           set -euo pipefail
-          ROOT_ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          ROOT_ACCOUNT_NUMBER="$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")"
           echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
           echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
 
@@ -244,14 +236,19 @@ jobs:
           role-session-name: githubactionsrolesession
           aws-region: ${{ needs.setup-prerequisites.outputs.aws-region }}
 
-      - name: Resolve member account ID (from prebuilt Organizations map)
+      - name: Build Organizations accounts map (Name -> Id)
+        run: |
+          set -euo pipefail
+          accounts_map="$(
+            aws organizations list-accounts --output json \
+              | jq -c '[.Accounts[] | select(.Status=="ACTIVE") | {key: .Name, value: .Id}] | from_entries'
+          )"
+          echo "ACCOUNTS_MAP=$accounts_map" >> "$GITHUB_ENV"
+
+      - name: Resolve member account ID (from Organizations map)
         id: account
         run: |
           set -euo pipefail
-          if [[ -z "${ACCOUNTS_MAP:-}" ]]; then
-            echo "ACCOUNTS_MAP is empty; setup-prerequisites did not pass accounts_map output." >&2
-            exit 1
-          fi
           ACCOUNT_NUMBER="$(jq -er --arg name "${{ matrix.workspaces }}" '.[$name]' <<< "$ACCOUNTS_MAP")"
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
@@ -278,8 +275,6 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_3) }}
-    env:
-      ACCOUNTS_MAP: ${{ needs.setup-prerequisites.outputs.accounts_map }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
@@ -293,7 +288,7 @@ jobs:
       - name: Set Root Account Number
         run: |
           set -euo pipefail
-          ROOT_ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          ROOT_ACCOUNT_NUMBER="$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")"
           echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
           echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
 
@@ -304,14 +299,19 @@ jobs:
           role-session-name: githubactionsrolesession
           aws-region: ${{ needs.setup-prerequisites.outputs.aws-region }}
 
-      - name: Resolve member account ID (from prebuilt Organizations map)
+      - name: Build Organizations accounts map (Name -> Id)
+        run: |
+          set -euo pipefail
+          accounts_map="$(
+            aws organizations list-accounts --output json \
+              | jq -c '[.Accounts[] | select(.Status=="ACTIVE") | {key: .Name, value: .Id}] | from_entries'
+          )"
+          echo "ACCOUNTS_MAP=$accounts_map" >> "$GITHUB_ENV"
+
+      - name: Resolve member account ID (from Organizations map)
         id: account
         run: |
           set -euo pipefail
-          if [[ -z "${ACCOUNTS_MAP:-}" ]]; then
-            echo "ACCOUNTS_MAP is empty; setup-prerequisites did not pass accounts_map output." >&2
-            exit 1
-          fi
           ACCOUNT_NUMBER="$(jq -er --arg name "${{ matrix.workspaces }}" '.[$name]' <<< "$ACCOUNTS_MAP")"
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
@@ -338,8 +338,6 @@ jobs:
       fail-fast: false
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_4) }}
-    env:
-      ACCOUNTS_MAP: ${{ needs.setup-prerequisites.outputs.accounts_map }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
@@ -353,7 +351,7 @@ jobs:
       - name: Set Root Account Number
         run: |
           set -euo pipefail
-          ROOT_ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
+          ROOT_ACCOUNT_NUMBER="$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")"
           echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
           echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
 
@@ -364,14 +362,19 @@ jobs:
           role-session-name: githubactionsrolesession
           aws-region: ${{ needs.setup-prerequisites.outputs.aws-region }}
 
-      - name: Resolve member account ID (from prebuilt Organizations map)
+      - name: Build Organizations accounts map (Name -> Id)
+        run: |
+          set -euo pipefail
+          accounts_map="$(
+            aws organizations list-accounts --output json \
+              | jq -c '[.Accounts[] | select(.Status=="ACTIVE") | {key: .Name, value: .Id}] | from_entries'
+          )"
+          echo "ACCOUNTS_MAP=$accounts_map" >> "$GITHUB_ENV"
+
+      - name: Resolve member account ID (from Organizations map)
         id: account
         run: |
           set -euo pipefail
-          if [[ -z "${ACCOUNTS_MAP:-}" ]]; then
-            echo "ACCOUNTS_MAP is empty; setup-prerequisites did not pass accounts_map output." >&2
-            exit 1
-          fi
           ACCOUNT_NUMBER="$(jq -er --arg name "${{ matrix.workspaces }}" '.[$name]' <<< "$ACCOUNTS_MAP")"
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
