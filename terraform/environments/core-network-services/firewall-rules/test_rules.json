@@ -572,5 +572,19 @@
     "destination_ip": "$LAA_ECP_DATABASES",
     "destination_port": "2484",
     "protocol": "TCP"
+  },
+  "cica_onprem_lan_to_cica_tariff_test": {
+    "action": "PASS",
+    "source_ip": "${cica-onprem-lan}",
+    "destination_ip": "${cica-test}",
+    "destination_port": "$TARIFF_TCP",
+    "protocol": "TCP"
+  },
+  "cica_tariff_test_to_cica_onprem_lan": {
+    "action": "PASS",
+    "source_ip": "${cica-test}",
+    "destination_ip": "${cica-onprem-lan}",
+    "destination_port": "ANY",
+    "protocol": "TCP"
   }
 }

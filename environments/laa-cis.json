@@ -1,0 +1,33 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "v1-cis-mod",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": "exclude"
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "v1-cis-mod",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "LAA-CIS",
+    "business-unit": "LAA",
+    "infrastructure-support": "liam.rundle@justice.gov.uk",
+    "owner": "liam.rundle@justice.gov.uk",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": ["ministryofjustice/cis-modernisation"],
+  "go-live-date": ""
+}

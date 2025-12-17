@@ -70,7 +70,8 @@ locals {
   # Security engineers performing reviews on the platform or member accounts
   security = [
     "TawneeOwl",
-    "adamwhyle"
+    "adamwhyle",
+    "AlexBlyzniuk"
   ]
 
   # Members of the long term storage account team to acccess that account
@@ -146,6 +147,7 @@ locals {
     "modernisation-platform-terraform-pagerduty-integration",
     "modernisation-platform-terraform-s3-bucket",
     "modernisation-platform-terraform-ssm-patching",
+    "modernisation-platform-terraform-aws-waf",
   ]
 
   repositories_with_full_team_access = [

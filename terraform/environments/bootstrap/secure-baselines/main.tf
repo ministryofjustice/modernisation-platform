@@ -6,7 +6,7 @@ data "aws_kms_key" "cloudtrail_key" {
 
 #trivy:ignore:AVD-AWS-0136
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=4b7ea74934801bce5cbf16d75af9132f4d49d4ab" # v8.2.1
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=40f09a75429e5f9096a08d3216b3eabca3bdd346" # v8.2.2
   providers = {
     # Default and replication regions
     aws                    = aws.workspace-eu-west-2
@@ -79,6 +79,12 @@ module "baselines" {
 
   # PagerDuty Key for High Priority Alarms
   high_priority_pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_high_priority_cloudwatch"]
+
+  # Individual Slack Alerts for CRITICAL and other severity SecurityHub alerts if the account is in scope and the criticality is set.
+  enable_securityhub_slack_alerts                    = local.securityhub_slack_alerts_accounts
+  securityhub_slack_alerts_scope                     = local.securityhub_slack_alerts_scope
+  securityhub_slack_alerts_pagerduty_integration_key = local.pagerduty_integration_keys["security_hub_alerts_critical_priority"]
+
 }
 
 # Keys for pagerduty

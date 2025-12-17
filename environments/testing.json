@@ -7,6 +7,14 @@
         {
           "sso_group_name": "modernisation-platform",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "panda-cyber-team",
+          "level": "security-audit"
         }
       ]
     }

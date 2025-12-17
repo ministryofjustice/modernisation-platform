@@ -301,7 +301,8 @@ data "aws_iam_policy_document" "developer_additional" {
       "states:Start*",
       "wellarchitected:Get*",
       "wellarchitected:List*",
-      "wellarchitected:ExportLens"
+      "wellarchitected:ExportLens",
+      "workspaces-web:ListSessions"
     ]
     resources = ["*"]
   }

@@ -1,0 +1,256 @@
+name: Amend Modernisation Platform Account
+description: Request an amendment to a Modernisation Platform account
+labels: ["member request", "kanban", "account_amendment"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Purpose
+        This form lets you request an amendment to a Modernisation Platform account’s environment access.
+        Please fill out the details below to continue.
+  - type: markdown
+    attributes:
+      value: "### Account details"
+  - type: input
+    id: account_name
+    attributes:
+      label: App name (matches JSON filename in environments/)
+      placeholder: account-name
+      description: "This should match environments/{account-name}.json"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment_name
+    attributes:
+      label: Target environment
+      options:
+        - development
+        - test
+        - preproduction
+        - production
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "### Environment amendment"
+
+  - type: dropdown
+    id: environment_change_action
+    attributes:
+      label: Change action
+      options:
+        - skip
+        - amend
+        - addition
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        - `skip`: leave the environment access unchanged.
+        - `amend`: provide current values below (Current SSO group name and Current access level) and new target values (SSO group name and Access level).
+        - `addition`: provide new target values (SSO group name and Access level) to add another access entry.
+
+  - type: markdown
+    attributes:
+      value: "#### For amendments, specify the current entry to change"
+
+  - type: input
+    id: current_sso_group_name
+    attributes:
+      label: Current SSO group name (for amend)
+      placeholder: modernisation-platform-engineers
+      description: "Used to locate the existing access entry to amend."
+    validations:
+      required: false
+
+  - type: input
+    id: current_level
+    attributes:
+      label: Current access level (for amend)
+      placeholder: developer
+      description: "Used to locate the existing access entry to amend."
+    validations:
+      required: false
+
+  - type: input
+    id: sso_group_name
+    attributes:
+      label: SSO group name
+      placeholder: modernisation-platform-engineers
+    validations:
+      required: false
+
+  - type: input
+    id: level
+    attributes:
+      label: Access level
+      placeholder: developer
+    validations:
+      required: false
+  
+
+  - type: markdown
+    attributes:
+      value: "### Additional reviewers"
+  - type: dropdown
+    id: reviewers_change_action
+    attributes:
+      label: Change action (additional reviewers)
+      options:
+        - skip
+        - amend
+        - addition
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        - `skip`: do not change reviewers.
+        - `amend`: specify the current reviewers list and the new reviewers list.
+        - `addition`: provide the new reviewers to append.
+
+  - type: markdown
+    attributes:
+      value: "#### For amendments, specify the current reviewers"
+
+  - type: input
+    id: current_additional_reviewers
+    attributes:
+      label: Current additional reviewers (for amend)
+      placeholder: alice@example.com, bob@example.com
+      description: "Used to locate existing reviewers to amend or replace."
+    validations:
+      required: false
+
+  - type: input
+    id: additional_reviewers
+    attributes:
+      label: Additional reviewers (comma-separated)
+      placeholder: alice@example.com, bob@example.com
+      description: "Provide one or more reviewer identifiers (e.g., emails or usernames)."
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: "### Tags amendment"
+
+  - type: dropdown
+    id: tags_change_action
+    attributes:
+      label: Change action (tags)
+      options:
+        - skip
+        - amend
+        - addition
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        - `skip`: leave tags unchanged.
+        - `amend`: provide current tag key/value and the new tag key/value.
+        - `addition`: provide tag key/value to add or update.
+
+  - type: markdown
+    attributes:
+      value: "#### For amendments, specify the current tag key/value"
+
+  - type: input
+    id: current_tag_key
+    attributes:
+      label: Current tag key (for amend)
+      placeholder: infrastructure-support
+      description: "Used to locate the existing tag to amend."
+    validations:
+      required: false
+
+  - type: input
+    id: current_tag_value
+    attributes:
+      label: Current tag value (for amend)
+      placeholder: team@example.com
+      description: "Used to locate the existing tag to amend."
+    validations:
+      required: false
+
+  - type: input
+    id: tag_key
+    attributes:
+      label: Tag key
+      placeholder: infrastructure-support
+    validations:
+      required: false
+
+  - type: input
+    id: tag_value
+    attributes:
+      label: Tag value
+      placeholder: team@example.com
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: "### Other amendments"
+
+  - type: dropdown
+    id: other_change_action
+    attributes:
+      label: Change action (other)
+      options:
+        - skip
+        - amend
+        - addition
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        - `skip`: no changes to other fields.
+        - `amend`: provide current values and the new values for these fields.
+        - `addition`: provide new values to set.
+
+  - type: markdown
+    attributes:
+      value: "#### For amendments, specify current values"
+
+  - type: input
+    id: current_github_oidc_team_repositories
+    attributes:
+      label: Current GitHub OIDC team repositories (for amend)
+      placeholder: repo-a, repo-b
+      description: "Comma-separated list used to locate existing value."
+    validations:
+      required: false
+
+  - type: input
+    id: current_go_live_date
+    attributes:
+      label: Current go-live date (for amend)
+      placeholder: 31-12-2025
+      description: "Used to locate existing value (DD-MM-YYYY)."
+    validations:
+      required: false
+
+  - type: input
+    id: github_oidc_team_repositories
+    attributes:
+      label: GitHub OIDC team repositories (comma-separated)
+      placeholder: repo-a, repo-b
+      description: "Provide repositories to set into \"github-oidc-team-repositories\"."
+    validations:
+      required: false
+
+  - type: input
+    id: go_live_date
+    attributes:
+      label: Go-live date (DD-MM-YYYY)
+      placeholder: 31-12-2025
+      description: "Provide the date to set into \"go-live-date\" (DD-MM-YYYY)."
+    validations:
+      required: false

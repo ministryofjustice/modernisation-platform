@@ -71,6 +71,54 @@ resource "pagerduty_slack_connection" "core_alerts_high_priority" {
   }
 }
 
+### Details of Critical Priority Security Hub Alerts where on-call is not required
+resource "pagerduty_service" "security_hub_alerts_critical_priority" {
+  name                    = "Security Hub Critical Priority Alerts - Modernisation Platform"
+  description             = "Security Hub Critical Priority Alerts"
+  auto_resolve_timeout    = 14400
+  acknowledgement_timeout = "null"
+  escalation_policy       = pagerduty_escalation_policy.high_priority.id
+  alert_creation          = "create_alerts_and_incidents"
+  incident_urgency_rule {
+    type    = "constant"
+    urgency = "high"
+  }
+}
+
+resource "pagerduty_service_integration" "security_hub_alerts_critical_priority" {
+  name    = data.pagerduty_vendor.cloudwatch.name
+  service = pagerduty_service.security_hub_alerts_critical_priority.id
+  vendor  = data.pagerduty_vendor.cloudwatch.id
+}
+
+resource "pagerduty_slack_connection" "security_hub_alerts_critical_priority" {
+  source_id         = pagerduty_service.security_hub_alerts_critical_priority.id
+  source_type       = "service_reference"
+  workspace_id      = local.slack_workspace_id
+  channel_id        = "C0A3B5K1FR6" # Slack channel: ##modernisation-platform-sec-hub-high-alerts
+  notification_type = "responder"
+  config {
+    events = [
+      "incident.triggered",
+      "incident.acknowledged",
+      "incident.escalated",
+      "incident.resolved",
+      "incident.reassigned",
+      "incident.annotated",
+      "incident.unacknowledged",
+      "incident.delegated",
+      "incident.priority_updated",
+      "incident.responder.added",
+      "incident.responder.replied",
+      "incident.action_invocation.created",
+      "incident.action_invocation.terminated",
+      "incident.action_invocation.updated",
+      "incident.status_update_published",
+      "incident.reopened"
+    ]
+    priorities = ["*"]
+  }
+}
 
 resource "pagerduty_service" "security_hub" {
   name                    = "Security Hub Alerts - Modernisation Platform"
