@@ -584,7 +584,7 @@ jobs:
   member-bootstrap:
     runs-on: ubuntu-latest
     if: github.event.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
-    needs: [fetch-secrets, single-sign-on]
+    needs: [fetch-secrets, secure-baselines, single-sign-on]
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
@@ -615,7 +615,7 @@ jobs:
         run: |
           files=$(git diff --name-only --diff-filter=AM @^ -- 'environments/*.json' | uniq | sed 's#environments/##' | sed 's/\.json$//' | tr '\n' ',' | awk '{$1=$1};1')
           echo "files=$files" >> $GITHUB_OUTPUT
-      - name: Run secure baselines
+      - name: Run Member Bootstrap
         run: |
           IFS=',' read -r -a accounts <<< "${{ steps.new_account.outputs.files }}"
           if [[ ${#accounts[@]} -gt 0 ]]; then
