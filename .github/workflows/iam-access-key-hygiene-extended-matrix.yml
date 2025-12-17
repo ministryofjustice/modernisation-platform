@@ -41,7 +41,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       aws-region: ${{ steps.setup-aws-region.outputs.aws-region }}
-      accounts-map: ${{ steps.build-accounts-map.outputs.accounts_map }}
+      accounts_map: ${{ steps.build-accounts-map.outputs.accounts_map }} # <-- underscore key
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
@@ -95,7 +95,6 @@ jobs:
           )"
           echo "Accounts map built with $(echo "$accounts_map" | jq 'length') entries"
 
-          # Multiline output to preserve JSON safely
           {
             echo "accounts_map<<EOF"
             echo "$accounts_map"
@@ -151,9 +150,6 @@ jobs:
 
   # -------------------------------------------------------------------------
   # Per-account IAM hygiene (DRY RUN) – blocks 1–4
-  # Uses:
-  #  - delegate-access workspace list for scope (Option 1)
-  #  - Organizations map (built once) to get account id without Terraform outputs
   # -------------------------------------------------------------------------
   iam-hygiene-1:
     needs: [fetch-secrets, setup-prerequisites, define-jobs]
@@ -163,7 +159,7 @@ jobs:
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_1) }}
     env:
-      ACCOUNTS_MAP: ${{ needs.setup-prerequisites.outputs.accounts-map }}
+      ACCOUNTS_MAP: ${{ needs.setup-prerequisites.outputs.accounts_map }} # <-- underscore reference
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
@@ -192,6 +188,10 @@ jobs:
         id: account
         run: |
           set -euo pipefail
+          if [[ -z "${ACCOUNTS_MAP:-}" ]]; then
+            echo "ACCOUNTS_MAP is empty; setup-prerequisites did not pass accounts_map output." >&2
+            exit 1
+          fi
           ACCOUNT_NUMBER="$(jq -er --arg name "${{ matrix.workspaces }}" '.[$name]' <<< "$ACCOUNTS_MAP")"
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
@@ -219,7 +219,7 @@ jobs:
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_2) }}
     env:
-      ACCOUNTS_MAP: ${{ needs.setup-prerequisites.outputs.accounts-map }}
+      ACCOUNTS_MAP: ${{ needs.setup-prerequisites.outputs.accounts_map }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
@@ -248,6 +248,10 @@ jobs:
         id: account
         run: |
           set -euo pipefail
+          if [[ -z "${ACCOUNTS_MAP:-}" ]]; then
+            echo "ACCOUNTS_MAP is empty; setup-prerequisites did not pass accounts_map output." >&2
+            exit 1
+          fi
           ACCOUNT_NUMBER="$(jq -er --arg name "${{ matrix.workspaces }}" '.[$name]' <<< "$ACCOUNTS_MAP")"
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
@@ -275,7 +279,7 @@ jobs:
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_3) }}
     env:
-      ACCOUNTS_MAP: ${{ needs.setup-prerequisites.outputs.accounts-map }}
+      ACCOUNTS_MAP: ${{ needs.setup-prerequisites.outputs.accounts_map }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
@@ -304,6 +308,10 @@ jobs:
         id: account
         run: |
           set -euo pipefail
+          if [[ -z "${ACCOUNTS_MAP:-}" ]]; then
+            echo "ACCOUNTS_MAP is empty; setup-prerequisites did not pass accounts_map output." >&2
+            exit 1
+          fi
           ACCOUNT_NUMBER="$(jq -er --arg name "${{ matrix.workspaces }}" '.[$name]' <<< "$ACCOUNTS_MAP")"
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
@@ -331,7 +339,7 @@ jobs:
       matrix:
         workspaces: ${{ fromJSON(needs.define-jobs.outputs.block_4) }}
     env:
-      ACCOUNTS_MAP: ${{ needs.setup-prerequisites.outputs.accounts-map }}
+      ACCOUNTS_MAP: ${{ needs.setup-prerequisites.outputs.accounts_map }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
@@ -360,6 +368,10 @@ jobs:
         id: account
         run: |
           set -euo pipefail
+          if [[ -z "${ACCOUNTS_MAP:-}" ]]; then
+            echo "ACCOUNTS_MAP is empty; setup-prerequisites did not pass accounts_map output." >&2
+            exit 1
+          fi
           ACCOUNT_NUMBER="$(jq -er --arg name "${{ matrix.workspaces }}" '.[$name]' <<< "$ACCOUNTS_MAP")"
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo "account-number=$ACCOUNT_NUMBER" >> "$GITHUB_OUTPUT"
