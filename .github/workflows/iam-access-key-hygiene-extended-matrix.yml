@@ -97,12 +97,15 @@ jobs:
     steps:
       - id: split
         run: |
+          set -euo pipefail
+  
           BLOCK_COUNT=4
           sorted=$(echo "$account_list" | jq -c 'sort')
           total=$(echo "$sorted" | jq 'length')
           base=$(( total / BLOCK_COUNT ))
           remainder=$(( total % BLOCK_COUNT ))
           start=0
+  
           for i in $(seq 1 $BLOCK_COUNT); do
             key="block_$i"
             extra=0
@@ -117,6 +120,7 @@ jobs:
             echo "::endgroup::"
             echo "$key=$compact" >> "$GITHUB_OUTPUT"
             start=$end
+          done
 
   iam-hygiene-1:
     needs: [fetch-secrets, setup-prerequisites, define-jobs]
