@@ -5,9 +5,7 @@
       "name": "lambda-files"
     }
   ],
-  "codeowners": [
-    ""
-  ],
+  "codeowners": [""],
   "environments": [
     {
       "name": "development",
@@ -82,8 +80,6 @@
     "owner": "laaops-gg@justice.gov.uk",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [
-    ""
-  ],
+  "github-oidc-team-repositories": [""],
   "go-live-date": ""
 }
