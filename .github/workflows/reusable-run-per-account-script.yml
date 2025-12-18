@@ -19,6 +19,11 @@ on:
         required: true
         type: string
 
+      ACCOUNTS_MAP:
+        required: true
+        type: string
+        description: "JSON map of account Name -> Id (built once in setup-prerequisites)"
+
       ASSUME_ROLE_NAME:
         required: true
         type: string
@@ -50,12 +55,8 @@ jobs:
       EXPECTED_TEMPLATE_VERSION: "1"
 
     steps:
-      - name: Log context
-        run: |
-          echo "JOB_NAME=${{ inputs.JOB_NAME }}"
-          echo "TF_WORKSPACE=${{ inputs.TF_WORKSPACE }}"
-
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+      - name: Checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
 
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0c879ebf9183dd7e47d3fe9c961afa3271843b8b
@@ -65,9 +66,10 @@ jobs:
 
       - name: Set Root Account Number
         run: |
+          set -euo pipefail
           ROOT_ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
-          echo ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER >> $GITHUB_ENV
+          echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
 
       - name: Configure AWS Credentials (org/root)
         uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708
@@ -76,19 +78,20 @@ jobs:
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Resolve member account ID (workspace name → account name)
+      - name: Resolve member account ID (from prebuilt accounts map)
         id: account
+        env:
+          ACCOUNTS_MAP: '${{ inputs.ACCOUNTS_MAP }}'
         run: |
-          ACCOUNT_ID="$(
-            aws organizations list-accounts --output json \
-              | jq -er --arg name "${{ inputs.TF_WORKSPACE }}" \
-                '.Accounts[]
-                 | select(.Status=="ACTIVE")
-                 | select(.Name==$name)
-                 | .Id'
-          )"
+          set -euo pipefail
+          if [[ -z "${ACCOUNTS_MAP:-}" ]]; then
+            echo "ACCOUNTS_MAP is empty" >&2
+            exit 1
+          fi
+
+          ACCOUNT_ID="$(jq -er --arg name "${{ inputs.TF_WORKSPACE }}" '.[$name]' <<< "$ACCOUNTS_MAP")"
           echo "::add-mask::$ACCOUNT_ID"
-          echo account-id=$ACCOUNT_ID >> $GITHUB_OUTPUT
+          echo "account-id=$ACCOUNT_ID" >> "$GITHUB_OUTPUT"
 
       - name: Configure AWS Credentials (member account)
         uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708
@@ -99,5 +102,6 @@ jobs:
 
       - name: Run script in member account
         run: |
+          set -euo pipefail
           aws sts get-caller-identity
           ${{ inputs.SCRIPT_COMMAND }}
