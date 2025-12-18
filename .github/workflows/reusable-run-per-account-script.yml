@@ -19,18 +19,15 @@ on:
         required: true
         type: string
 
-      ACCOUNTS_MAP:
-        required: true
-        type: string
-        description: "JSON map of account Name -> Id (built once in setup-prerequisites)"
-
       ASSUME_ROLE_NAME:
         required: true
         type: string
+        description: "Role name to assume in member accounts (e.g. github-actions-apply)"
 
       SCRIPT_COMMAND:
         required: true
         type: string
+        description: "Shell command(s) to run after assuming into the member account"
 
     secrets:
       PASSPHRASE:
@@ -58,38 +55,43 @@ jobs:
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
 
+      # Pull the accounts map produced once in setup-prerequisites
+      - name: Download accounts map artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: accounts-map
+
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0c879ebf9183dd7e47d3fe9c961afa3271843b8b
         with:
           environment_management: ${{ inputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
-      - name: Set Root Account Number
+      - name: Set Root Account Number (org/root)
         run: |
           set -euo pipefail
           ROOT_ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
           echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
           echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
 
-      - name: Configure AWS Credentials (org/root)
+      - name: Configure AWS Credentials (org/root account)
         uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708
         with:
           role-to-assume: arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Resolve member account ID (from prebuilt accounts map)
+      - name: Resolve member account ID (from accounts_map.json)
         id: account
-        env:
-          ACCOUNTS_MAP: '${{ inputs.ACCOUNTS_MAP }}'
         run: |
           set -euo pipefail
-          if [[ -z "${ACCOUNTS_MAP:-}" ]]; then
-            echo "ACCOUNTS_MAP is empty" >&2
+          if [[ ! -s accounts_map.json ]]; then
+            echo "accounts_map.json missing or empty" >&2
+            ls -la
             exit 1
           fi
 
-          ACCOUNT_ID="$(jq -er --arg name "${{ inputs.TF_WORKSPACE }}" '.[$name]' <<< "$ACCOUNTS_MAP")"
+          ACCOUNT_ID="$(jq -er --arg name "${{ inputs.TF_WORKSPACE }}" '.[$name]' accounts_map.json)"
           echo "::add-mask::$ACCOUNT_ID"
           echo "account-id=$ACCOUNT_ID" >> "$GITHUB_OUTPUT"
 
