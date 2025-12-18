@@ -1,0 +1,124 @@
+name: Reusable - Run Script Per Account
+
+on:
+  workflow_call:
+    inputs:
+      JOB_NAME:
+        required: true
+        type: string
+
+      AWS_REGION:
+        required: true
+        type: string
+
+      environment_management:
+        required: true
+        type: string
+
+      TF_WORKSPACE:
+        required: true
+        type: string
+
+      ASSUME_ROLE_NAME:
+        required: true
+        type: string
+        description: "Role name to assume in member accounts (e.g. github-actions-apply)"
+
+      DRY_RUN:
+        required: true
+        type: boolean
+
+      SCRIPT_COMMAND:
+        required: true
+        type: string
+        description: "Shell command(s) to run after assuming into the member account"
+
+      TEMPLATE_ID:
+        required: false
+        type: string
+
+      EXPECTED_TEMPLATE_VERSION:
+        required: false
+        type: string
+
+    secrets:
+      PASSPHRASE:
+        required: true
+
+permissions:
+  id-token: write
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    name: "Job - ${{ inputs.JOB_NAME }} (${{ inputs.TF_WORKSPACE }})"
+
+    env:
+      AWS_REGION: ${{ inputs.AWS_REGION }}
+      TEMPLATE_ID: ${{ inputs.TEMPLATE_ID }}
+      EXPECTED_TEMPLATE_VERSION: ${{ inputs.EXPECTED_TEMPLATE_VERSION }}
+
+    steps:
+      - name: Log job context
+        run: |
+          echo "JOB_NAME=${{ inputs.JOB_NAME }}"
+          echo "TF_WORKSPACE=${{ inputs.TF_WORKSPACE }}"
+          echo "DRY_RUN=${{ inputs.DRY_RUN }}"
+
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0c879ebf9183dd7e47d3fe9c961afa3271843b8b # v3.6.0
+        with:
+          environment_management: ${{ inputs.environment_management }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Set Root Account Number (org/root)
+        run: |
+          set -euo pipefail
+          ROOT_ACCOUNT_NUMBER="$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")"
+          echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
+          echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+
+      - name: Configure AWS Credentials (org/root account)
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        with:
+          role-to-assume: "arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Resolve member account ID from AWS Organizations (workspace name -> account Id)
+        id: account
+        run: |
+          set -euo pipefail
+          ACCOUNT_ID="$(
+            aws organizations list-accounts --output json \
+              | jq -er --arg name "${{ inputs.TF_WORKSPACE }}" \
+                '.Accounts[]
+                 | select(.Status=="ACTIVE")
+                 | select(.Name==$name)
+                 | .Id' \
+              | head -n 1
+          )"
+          echo "::add-mask::$ACCOUNT_ID"
+          echo "account-id=$ACCOUNT_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Configure AWS Credentials (member account)
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
+        with:
+          role-to-assume: "arn:aws:iam::${{ steps.account.outputs.account-id }}:role/${{ inputs.ASSUME_ROLE_NAME }}"
+          role-session-name: githubactionsrolesession
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Run per-account script
+        run: |
+          set -euo pipefail
+          echo "Caller identity (member account):"
+          aws sts get-caller-identity
+          echo "Running script command..."
+          ${{ inputs.SCRIPT_COMMAND }}
