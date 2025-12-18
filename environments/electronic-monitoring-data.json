@@ -74,8 +74,8 @@
   "tags": {
     "application": "electronic-monitoring-data",
     "business-unit": "HMPPS",
-    "infrastructure-support": "dataengineering-gg@justice.gov.uk",
-    "owner": "Data engineering: dataengineering-gg@justice.gov.uk",
+    "infrastructure-support": "EMDataEngineering@justice.gov.uk",
+    "owner": "EM Data Engineering: EMDataEngineering@justice.gov.uk",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [
