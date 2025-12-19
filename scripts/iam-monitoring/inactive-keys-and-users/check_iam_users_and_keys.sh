@@ -9,25 +9,28 @@ set -euo pipefail
 #   - >= *_DISABLE_DAYS  and < *_DELETE_DAYS  -> disable
 #   - >= *_DELETE_DAYS                         -> delete
 #
-# Thresholds (days) – these match your workflow defaults:
-#   KEY_NOTIFY_DAYS   (default 30)
+# Thresholds (days) – override via env as needed:
+#   KEY_NOTIFY_DAYS   (default 0  – for testing; set 30 in prod)
 #   KEY_DISABLE_DAYS  (default 60)
 #   KEY_DELETE_DAYS   (default 90)
-#   USER_NOTIFY_DAYS  (default 30)
+#   USER_NOTIFY_DAYS  (default 0  – for testing; set 30 in prod)
 #   USER_DISABLE_DAYS (default 60)
 #   USER_DELETE_DAYS  (default 90)
+#
+# GOV.UK Notify (per-user emails, non-dry-run only):
+#   GOV_UK_NOTIFY_API_KEY   – Notify API key
+#   TEMPLATE_ID             – template ID, must support ((username))
+#   EXPECTED_TEMPLATE_VERSION (optional safety check)
+#
+#   The recipient email address is taken from the IAM user tag:
+#     Key:   infrastructure-support
+#     Value: email address (e.g. team@justice.gov.uk)
 #
 # DRY RUN:
 #   - If first arg is "--dry-run" or "dry-run", OR env DRY_RUN=true:
 #       * No mutating AWS calls are made (disable/delete)
-#       * No GOV.UK Notify email is sent
+#       * No GOV.UK Notify emails are sent
 #       * Classification + output files are still produced
-#
-# GOV.UK Notify (optional, used only when not DRY RUN):
-#   GOV_UK_NOTIFY_API_KEY
-#   TEMPLATE_ID
-#   EXPECTED_TEMPLATE_VERSION
-#   NOTIFY_RECIPIENT_EMAIL
 # ------------------------------------------------------------------------------
 
 # --- dry-run handling ---------------------------------------------------------
@@ -44,16 +47,19 @@ else
 fi
 
 # --- thresholds ---------------------------------------------------------------
-: "${KEY_NOTIFY_DAYS:=30}"
+: "${KEY_NOTIFY_DAYS:=0}"
 : "${KEY_DISABLE_DAYS:=60}"
 : "${KEY_DELETE_DAYS:=90}"
-: "${USER_NOTIFY_DAYS:=30}"
+: "${USER_NOTIFY_DAYS:=0}"
 : "${USER_DISABLE_DAYS:=60}"
 : "${USER_DELETE_DAYS:=90}"
 
 IAM_USER_PATH_PREFIX="${IAM_USER_PATH_PREFIX:-}"
-IAM_USER_TAG_KEY="${IAM_USER_TAG_KEY:-}"
-IAM_USER_TAG_VALUE="${IAM_USER_TAG_VALUE:-}"
+IAM_USER_TAG_KEY="${IAM_USER_TAG_KEY:-}"      # optional filter
+IAM_USER_TAG_VALUE="${IAM_USER_TAG_VALUE:-}"  # optional filter value
+
+# Tag used to find per-user email
+IAM_NOTIFY_EMAIL_TAG_KEY="${IAM_NOTIFY_EMAIL_TAG_KEY:-infrastructure-support}"
 
 echo "Using key thresholds (days):"
 echo "  notify : ${KEY_NOTIFY_DAYS}"
@@ -64,9 +70,10 @@ echo "  notify : ${USER_NOTIFY_DAYS}"
 echo "  disable: ${USER_DISABLE_DAYS}"
 echo "  delete : ${USER_DELETE_DAYS}"
 echo "Optional filters:"
-echo "  IAM_USER_PATH_PREFIX = ${IAM_USER_PATH_PREFIX:-<none>}"
-echo "  IAM_USER_TAG_KEY     = ${IAM_USER_TAG_KEY:-<none>}"
-echo "  IAM_USER_TAG_VALUE   = ${IAM_USER_TAG_VALUE:-<none>}"
+echo "  IAM_USER_PATH_PREFIX    = ${IAM_USER_PATH_PREFIX:-<none>}"
+echo "  IAM_USER_TAG_KEY        = ${IAM_USER_TAG_KEY:-<none>}"
+echo "  IAM_USER_TAG_VALUE      = ${IAM_USER_TAG_VALUE:-<none>}"
+echo "Notify email tag key      = ${IAM_NOTIFY_EMAIL_TAG_KEY}"
 
 # Clean old outputs
 rm -f iam_hygiene.json \
@@ -93,7 +100,7 @@ ACCOUNT_ID="$(aws sts get-caller-identity --query 'Account' --output text 2>/dev
 export ACCOUNT_ID
 echo "Scanning IAM users in account: ${ACCOUNT_ID}"
 
-# Cross-platform days-since helper using python3 - (works on macOS & Linux)
+# Cross-platform days-since helper using python3 (works on macOS & Linux)
 days_since() {
   local iso="$1"
   if [[ -z "$iso" || "$iso" == "null" ]]; then
@@ -147,9 +154,7 @@ append_json() {
 MARKER=""
 MORE="true"
 
-# ------------------------------------------------------------------------------
-# 1. DISCOVERY + CLASSIFICATION
-# ------------------------------------------------------------------------------
+# DISCOVERY + CLASSIFICATION --------------------------------------------
 
 while [[ "$MORE" == "true" ]]; do
   if [[ -n "$MARKER" ]]; then
@@ -179,20 +184,31 @@ while [[ "$MORE" == "true" ]]; do
 
     echo "Processing user: ${USER_NAME}"
 
-    # Optional path filter
-    if [[ -n "$IAM_USER_PATH_PREFIX" && "$USER_PATH" != "$IAM_USER_PATH_PREFIX"* ]]; then
-      continue
-    fi
+    # Fetch tags for this user (for filtering AND for notify email)
+    USER_TAGS_JSON="$(aws iam list-user-tags --user-name "$USER_NAME" --output json 2>/dev/null || echo '{"Tags":[]}')"
 
-    # Optional tag filter
+    # Optional filter by tag
     if [[ -n "$IAM_USER_TAG_KEY" ]]; then
-      TAGS_JSON="$(aws iam list-user-tags --user-name "$USER_NAME" --output json || echo '{"Tags":[]}')"
-      MATCHING_TAG="$(echo "$TAGS_JSON" | jq -r --arg k "$IAM_USER_TAG_KEY" --arg v "$IAM_USER_TAG_VALUE" '
+      MATCHING_TAG="$(echo "$USER_TAGS_JSON" | jq -r --arg k "$IAM_USER_TAG_KEY" --arg v "$IAM_USER_TAG_VALUE" '
         .Tags[]? | select(.Key == $k and (.Value == $v or $v == "")) | .Key
       ' || true)"
       if [[ -z "$MATCHING_TAG" ]]; then
         continue
       fi
+    fi
+
+    # Optional path filter
+    if [[ -n "$IAM_USER_PATH_PREFIX" && "$USER_PATH" != "$IAM_USER_PATH_PREFIX"* ]]; then
+      continue
+    fi
+
+    # Extract per-user notify email from tag, if present
+    USER_NOTIFY_EMAIL="$(echo "$USER_TAGS_JSON" | jq -r --arg k "$IAM_NOTIFY_EMAIL_TAG_KEY" '
+      .Tags[]? | select(.Key == $k) | .Value
+    ' | head -n1 || true)"
+
+    if [[ -z "$USER_NOTIFY_EMAIL" || "$USER_NOTIFY_EMAIL" == "null" ]]; then
+      USER_NOTIFY_EMAIL=""
     fi
 
     KEYS_RESP="$(aws iam list-access-keys --user-name "$USER_NAME" --output json)"
@@ -289,6 +305,7 @@ while [[ "$MORE" == "true" ]]; do
         --arg disable "$SHOULD_DISABLE" \
         --arg delete "$SHOULD_DELETE" \
         --arg reasons "$(printf '%s' "${REASONS[*]-}" | tr ' ' ',')" \
+        --arg notify_email "${USER_NOTIFY_EMAIL:-}" \
         '{
           type: "key",
           account_id: $account_id,
@@ -305,6 +322,7 @@ while [[ "$MORE" == "true" ]]; do
           key_last_used_service: (if $key_last_used_service == "" then null else $key_last_used_service end),
           key_last_used_region: (if $key_last_used_region == "" then null else $key_last_used_region end),
           inactivity_days: $inactivity_days,
+          notify_email: (if $notify_email == "" then null else $notify_email end),
           flags: {
             notify: ($notify == "true"),
             disable: ($disable == "true"),
@@ -368,6 +386,7 @@ while [[ "$MORE" == "true" ]]; do
       --arg disable "$USER_SHOULD_DISABLE" \
       --arg delete "$USER_SHOULD_DELETE" \
       --arg reasons "$(printf '%s' "${USER_REASONS[*]-}" | tr ' ' ',')" \
+      --arg notify_email "${USER_NOTIFY_EMAIL:-}" \
       '{
         type: "user_summary",
         account_id: $account_id,
@@ -377,6 +396,7 @@ while [[ "$MORE" == "true" ]]; do
         user_age_days: $user_age_days,
         user_last_activity_date: (if $last_activity_date == "" then null else $last_activity_date end),
         user_last_activity_days: $last_activity_days,
+        notify_email: (if $notify_email == "" then null else $notify_email end),
         flags: {
           notify: ($notify == "true"),
           disable: ($disable == "true"),
@@ -405,9 +425,7 @@ else
   echo "[]" > iam_hygiene.json
 fi
 
-# ------------------------------------------------------------------------------
-# 2. ENFORCEMENT: disable/delete keys and users (skipped in DRY RUN)
-# ------------------------------------------------------------------------------
+# Disable/delete keys and users (skipped in DRY RUN)
 
 echo "Applying lifecycle actions for account: ${ACCOUNT_ID}"
 
@@ -489,9 +507,7 @@ else
   fi
 fi
 
-# ------------------------------------------------------------------------------
-# 3. Summary + GOV.UK Notify (skipped in DRY RUN)
-# ------------------------------------------------------------------------------
+# Summary + per-user GOV.UK Notify emails (skipped in DRY RUN)
 
 echo "--------------------------------------------"
 echo "IAM hygiene actions complete for account: ${ACCOUNT_ID}"
@@ -504,12 +520,12 @@ echo "IAM hygiene actions complete for account: ${ACCOUNT_ID}"
 echo "--------------------------------------------"
 
 if [[ "$DRY_RUN" == "true" ]]; then
-  echo ">>> DRY RUN: skipping GOV.UK Notify email"
+  echo ">>> DRY RUN: skipping GOV.UK Notify emails"
   exit 0
 fi
 
-if [[ -n "${GOV_UK_NOTIFY_API_KEY:-}" && -n "${TEMPLATE_ID:-}" && -n "${NOTIFY_RECIPIENT_EMAIL:-}" ]]; then
-  echo "Sending GOV.UK Notify summary email to ${NOTIFY_RECIPIENT_EMAIL}"
+if [[ -n "${GOV_UK_NOTIFY_API_KEY:-}" && -n "${TEMPLATE_ID:-}" ]]; then
+  echo "Preparing per-user GOV.UK Notify emails using template ${TEMPLATE_ID}"
 
   python3 << 'EOF'
 import json
@@ -519,35 +535,32 @@ import sys
 try:
     from notifications_python_client.notifications import NotificationsAPIClient
 except ImportError:
-    print("notifications-python-client not installed; skipping Notify email", file=sys.stderr)
+    print("notifications-python-client not installed; skipping Notify emails", file=sys.stderr)
     sys.exit(0)
 
 api_key = os.getenv("GOV_UK_NOTIFY_API_KEY")
 template_id = os.getenv("TEMPLATE_ID")
 expected_version = os.getenv("EXPECTED_TEMPLATE_VERSION", "").strip()
-recipient = os.getenv("NOTIFY_RECIPIENT_EMAIL")
 account_id = os.getenv("ACCOUNT_ID", "unknown")
 
-if not api_key or not template_id or not recipient:
+if not api_key or not template_id:
     print("Notify not fully configured; skipping", file=sys.stderr)
     sys.exit(0)
 
 client = NotificationsAPIClient(api_key)
 
-# Validate template version if provided
+# Validate template version if provided (warn-only)
 if expected_version:
     try:
         t = client.get_template(template_id)
         actual = str(t.get("version"))
         if actual != expected_version:
             print(
-                f"ERROR: Template version mismatch (expected {expected_version}, actual {actual}); skipping email",
+                f"WARNING: Template version mismatch (expected {expected_version}, actual {actual}); continuing anyway",
                 file=sys.stderr,
             )
-            sys.exit(0)
     except Exception as e:
-        print(f"ERROR: Failed to fetch template details: {e}", file=sys.stderr)
-        sys.exit(0)
+        print(f"WARNING: Failed to fetch template details: {e}; continuing anyway", file=sys.stderr)
 
 try:
     with open("iam_hygiene.json") as f:
@@ -556,46 +569,51 @@ except Exception as e:
     print(f"ERROR: Failed to read iam_hygiene.json: {e}", file=sys.stderr)
     data = []
 
-def count(filter_fn):
-    return sum(1 for o in data if filter_fn(o))
-
-keys_notify = count(lambda o: o.get("type")=="key" and o.get("flags",{}).get("notify"))
-keys_disable = count(lambda o: o.get("type")=="key" and o.get("flags",{}).get("disable"))
-keys_delete = count(lambda o: o.get("type")=="key" and o.get("flags",{}).get("delete"))
-users_notify = count(lambda o: o.get("type")=="user_summary" and o.get("flags",{}).get("notify"))
-users_disable = count(lambda o: o.get("type")=="user_summary" and o.get("flags",{}).get("disable"))
-users_delete = count(lambda o: o.get("type")=="user_summary" and o.get("flags",{}).get("delete"))
-
-lines = [
-    f"Account ID: {account_id}",
-    "",
-    "IAM hygiene summary (this run):",
-    f"  Keys to notify about : {keys_notify}",
-    f"  Keys disabled        : {keys_disable}",
-    f"  Keys deleted         : {keys_delete}",
-    f"  Users to notify      : {users_notify}",
-    f"  Users disabled       : {users_disable}",
-    f"  Users deleted        : {users_delete}",
+# Notify-stage users with an email from the tag
+notify_users = [
+    o for o in data
+    if o.get("type") == "user_summary"
+    and o.get("flags", {}).get("notify")
+    and o.get("notify_email")
 ]
 
-summary = "\n".join(lines)
+if not notify_users:
+    print("No users to notify; skipping GOV.UK Notify emails", file=sys.stderr)
+    sys.exit(0)
 
-try:
-    client.send_email_notification(
-        email_address=recipient,
-        template_id=template_id,
-        personalisation={
-            "account_id": account_id,
-            "summary": summary,
-        },
-    )
-    print(f"Sent GOV.UK Notify summary to {recipient}")
-except Exception as e:
-    print(f"ERROR: Failed to send Notify email: {e}", file=sys.stderr)
-    # don't fail the whole job on email failure
+print(f"Found {len(notify_users)} user(s) to notify")
+
+errors = 0
+for u in notify_users:
+    email = u.get("notify_email")
+    username = u.get("user_name")
+    last_days = u.get("user_last_activity_days")
+    if not email:
+        print(f"Skipping user {username}: no notify_email set", file=sys.stderr)
+        continue
+    try:
+        client.send_email_notification(
+            email_address=email,
+            template_id=template_id,
+            personalisation={
+                # your template uses ((username)); extra fields are safe
+                "username": username,
+                "account_id": account_id,
+                "inactive_days": last_days,
+            },
+        )
+        print(f"Sent Notify email to {email} for user {username}")
+    except Exception as e:
+        errors += 1
+        print(f"ERROR: Failed to send Notify email to {email} for user {username}: {e}", file=sys.stderr)
+
+if errors:
+    print(f"Completed Notify run with {errors} error(s)", file=sys.stderr)
+else:
+    print("All Notify emails sent successfully")
 
 EOF
 
 else
-  echo "GOV.UK Notify not configured (or NOTIFY_RECIPIENT_EMAIL missing); skipping email"
+  echo "GOV.UK Notify not configured (GOV_UK_NOTIFY_API_KEY or TEMPLATE_ID missing); skipping emails"
 fi
