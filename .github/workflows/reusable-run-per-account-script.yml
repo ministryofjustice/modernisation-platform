@@ -22,7 +22,7 @@ on:
       ASSUME_ROLE_NAME:
         required: true
         type: string
-        description: "Role name to assume in member accounts (e.g. ModernisationPlatformAccess)"
+        description: "Role name to assume in member accounts (must exist in every account)"
 
       SCRIPT_COMMAND:
         required: true
@@ -46,11 +46,6 @@ jobs:
     runs-on: ubuntu-latest
     name: "Job - ${{ inputs.JOB_NAME }} (${{ inputs.TF_WORKSPACE }})"
 
-    env:
-      AWS_REGION: ${{ inputs.AWS_REGION }}
-      TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
-      EXPECTED_TEMPLATE_VERSION: "1"
-
     steps:
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
@@ -66,13 +61,19 @@ jobs:
           environment_management: ${{ inputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
-      # 1) Assume the central OIDC-enabled role (the one your member accounts trust)
-      - name: Configure AWS Credentials (central GitHub OIDC role)
+      - name: Set Root Account Number (org/root)
+        run: |
+          set -euo pipefail
+          ROOT_ACCOUNT_NUMBER="$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")"
+          echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
+          echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+
+      - name: Configure AWS Credentials (org/root account)
         uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708
         with:
-          role-to-assume: arn:aws:iam:::role/github-actions
+          role-to-assume: arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole
           role-session-name: githubactionsrolesession
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ inputs.AWS_REGION }}
 
       - name: Resolve member account ID (from accounts_map.json)
         id: account
@@ -88,13 +89,13 @@ jobs:
           echo "::add-mask::$ACCOUNT_ID"
           echo "account-id=$ACCOUNT_ID" >> "$GITHUB_OUTPUT"
 
-      # 2) Chain into the member account role (trusted by the central github-actions role)
-      - name: Configure AWS Credentials (member account)
+      - name: Configure AWS Credentials (member account role)
         uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708
         with:
           role-to-assume: arn:aws:iam::${{ steps.account.outputs.account-id }}:role/${{ inputs.ASSUME_ROLE_NAME }}
           role-session-name: githubactionsrolesession
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ inputs.AWS_REGION }}
+          # This step is role-chaining off the org/root credentials above
           role-chaining: true
 
       - name: Run script in member account
