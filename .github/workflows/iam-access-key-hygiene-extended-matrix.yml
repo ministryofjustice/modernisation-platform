@@ -34,9 +34,11 @@ jobs:
   # -------------------------------------------------------------------------
   # Setup prerequisites:
   # - decrypt secrets
-  # - assume org/root
   # - build accounts_map.json ONCE and upload as artifact
   # - build TF workspace matrix
+  #
+  # NOTE: We still need AWS creds here to call organizations:list-accounts,
+  # so we assume the CENTRAL GitHub OIDC role.
   # -------------------------------------------------------------------------
   setup-prerequisites:
     runs-on: ubuntu-latest
@@ -55,17 +57,11 @@ jobs:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
-      - name: Set Root Account Number (org/root)
-        run: |
-          set -euo pipefail
-          ROOT_ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
-          echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
-          echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
-
-      - name: Configure AWS Credentials (org/root)
+      # Assume the central OIDC-enabled role
+      - name: Configure AWS Credentials (central GitHub OIDC role)
         uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708
         with:
-          role-to-assume: arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole
+          role-to-assume: arn:aws:iam::348456244381:role/github-actions
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
 
@@ -160,7 +156,8 @@ jobs:
       AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       TF_WORKSPACE: ${{ matrix.workspaces }}
-      ASSUME_ROLE_NAME: github-actions-apply
+      # <-- IMPORTANT: use the role that already trusts the central github-actions role
+      ASSUME_ROLE_NAME: ModernisationPlatformAccess
       SCRIPT_COMMAND: |
         bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
     secrets:
@@ -179,7 +176,7 @@ jobs:
       AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       TF_WORKSPACE: ${{ matrix.workspaces }}
-      ASSUME_ROLE_NAME: github-actions-apply
+      ASSUME_ROLE_NAME: ModernisationPlatformAccess
       SCRIPT_COMMAND: |
         bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
     secrets:
@@ -198,7 +195,7 @@ jobs:
       AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       TF_WORKSPACE: ${{ matrix.workspaces }}
-      ASSUME_ROLE_NAME: github-actions-apply
+      ASSUME_ROLE_NAME: ModernisationPlatformAccess
       SCRIPT_COMMAND: |
         bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
     secrets:
@@ -217,7 +214,7 @@ jobs:
       AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       TF_WORKSPACE: ${{ matrix.workspaces }}
-      ASSUME_ROLE_NAME: github-actions-apply
+      ASSUME_ROLE_NAME: ModernisationPlatformAccess
       SCRIPT_COMMAND: |
         bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
     secrets:
