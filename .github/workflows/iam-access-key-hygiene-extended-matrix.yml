@@ -22,24 +22,12 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # -------------------------------------------------------------------------
-  # Fetch secrets
-  # -------------------------------------------------------------------------
   fetch-secrets:
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@0c879ebf9183dd7e47d3fe9c961afa3271843b8b
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
-  # -------------------------------------------------------------------------
-  # Setup prerequisites:
-  # - decrypt secrets
-  # - build accounts_map.json ONCE and upload as artifact
-  # - build TF workspace matrix
-  #
-  # NOTE: We still need AWS creds here to call organizations:list-accounts,
-  # so we assume the CENTRAL GitHub OIDC role.
-  # -------------------------------------------------------------------------
   setup-prerequisites:
     runs-on: ubuntu-latest
     needs: fetch-secrets
@@ -57,20 +45,48 @@ jobs:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
-      # Assume the central OIDC-enabled role
-      - name: Configure AWS Credentials (central GitHub OIDC role)
+      - name: Set Root Account Number (org/root)
+        run: |
+          set -euo pipefail
+          ROOT_ACCOUNT_NUMBER="$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")"
+          echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
+          echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
+
+      - name: Configure AWS Credentials (org/root)
         uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708
         with:
-          role-to-assume: arn:aws:iam::348456244381:role/github-actions
+          role-to-assume: arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Build Organizations accounts map (Name -> Id) ONCE
+      - name: Build Organizations accounts map (Name -> Id) ONCE (with backoff)
         run: |
           set -euo pipefail
-          aws organizations list-accounts --output json \
-            | jq -c '[.Accounts[] | select(.Status=="ACTIVE") | { key: .Name, value: .Id }] | from_entries' \
-            > accounts_map.json
+
+          attempt=1
+          max_attempts=8
+          delay=2
+
+          while true; do
+            echo "list-accounts attempt $attempt/$max_attempts..."
+            if aws organizations list-accounts --output json > /tmp/accounts.json; then
+              break
+            fi
+
+            if (( attempt >= max_attempts )); then
+              echo "Failed to list accounts after $max_attempts attempts" >&2
+              exit 1
+            fi
+
+            echo "Throttled or transient error. Sleeping ${delay}s..."
+            sleep "$delay"
+            attempt=$((attempt+1))
+            delay=$((delay*2))
+          done
+
+          jq -c '[.Accounts[] | select(.Status=="ACTIVE") | { key: .Name, value: .Id }] | from_entries' \
+            /tmp/accounts.json > accounts_map.json
+
           echo "Accounts map entries: $(jq 'length' accounts_map.json)"
 
       - name: Upload accounts map artifact
@@ -103,9 +119,6 @@ jobs:
           set -euo pipefail
           echo "aws-region=$AWS_REGION" >> "$GITHUB_OUTPUT"
 
-  # -------------------------------------------------------------------------
-  # Split matrix into 4 blocks
-  # -------------------------------------------------------------------------
   define-jobs:
     runs-on: ubuntu-latest
     needs: setup-prerequisites
@@ -140,9 +153,6 @@ jobs:
             start=$end
           done
 
-  # -------------------------------------------------------------------------
-  # Per-account IAM hygiene – blocks 1–4
-  # -------------------------------------------------------------------------
   iam-hygiene-1:
     needs: [fetch-secrets, setup-prerequisites, define-jobs]
     strategy:
@@ -156,7 +166,6 @@ jobs:
       AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       TF_WORKSPACE: ${{ matrix.workspaces }}
-      # <-- IMPORTANT: use the role that already trusts the central github-actions role
       ASSUME_ROLE_NAME: ModernisationPlatformAccess
       SCRIPT_COMMAND: |
         bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
