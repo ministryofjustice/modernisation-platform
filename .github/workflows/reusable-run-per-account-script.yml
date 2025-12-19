@@ -101,6 +101,7 @@ jobs:
           role-to-assume: arn:aws:iam::${{ steps.account.outputs.account-id }}:role/${{ inputs.ASSUME_ROLE_NAME }}
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
+          role-chaining: true
 
       - name: Run script in member account
         run: |
