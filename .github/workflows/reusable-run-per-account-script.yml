@@ -22,7 +22,7 @@ on:
       ASSUME_ROLE_NAME:
         required: true
         type: string
-        description: "Role name to assume in member accounts (e.g. github-actions-apply)"
+        description: "Role name to assume in member accounts (e.g. ModernisationPlatformAccess)"
 
       SCRIPT_COMMAND:
         required: true
@@ -55,7 +55,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
 
-      # Pull the accounts map produced once in setup-prerequisites
       - name: Download accounts map artifact
         uses: actions/download-artifact@v4
         with:
@@ -67,17 +66,11 @@ jobs:
           environment_management: ${{ inputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
-      - name: Set Root Account Number (org/root)
-        run: |
-          set -euo pipefail
-          ROOT_ACCOUNT_NUMBER=$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")
-          echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
-          echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
-
-      - name: Configure AWS Credentials (org/root account)
+      # 1) Assume the central OIDC-enabled role (the one your member accounts trust)
+      - name: Configure AWS Credentials (central GitHub OIDC role)
         uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708
         with:
-          role-to-assume: arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole
+          role-to-assume: arn:aws:iam::348456244381:role/github-actions
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
 
@@ -95,6 +88,7 @@ jobs:
           echo "::add-mask::$ACCOUNT_ID"
           echo "account-id=$ACCOUNT_ID" >> "$GITHUB_OUTPUT"
 
+      # 2) Chain into the member account role (trusted by the central github-actions role)
       - name: Configure AWS Credentials (member account)
         uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708
         with:
