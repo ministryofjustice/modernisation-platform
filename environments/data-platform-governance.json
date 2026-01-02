@@ -1,6 +1,11 @@
 {
   "account-type": "member",
   "codeowners": "data-platform-engineering",
+  "components": [
+    {
+      "name": "lakeformation"
+    }
+  ],
   "environments": [
     {
       "name": "development",

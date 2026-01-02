@@ -5,6 +5,12 @@
       "name": "cluster"
     },
     {
+      "name": "cluster-core"
+    },
+    {
+      "name": "cluster-components"
+    },
+    {
       "name": "network"
     }
   ],
