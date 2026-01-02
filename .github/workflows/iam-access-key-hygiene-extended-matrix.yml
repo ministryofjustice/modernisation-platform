@@ -101,16 +101,30 @@ jobs:
           set -euo pipefail
           echo "aws-region=$AWS_REGION" >> "$GITHUB_OUTPUT"
 
-  # Single-account test matrix (temporary)
+  # Matrix = ALL ACTIVE org accounts (from accounts_map.json)
   target:
     runs-on: ubuntu-latest
     needs: setup-prerequisites
     outputs:
       matrix: ${{ steps.set.outputs.matrix }}
     steps:
+      - name: Download accounts map artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: accounts-map
+
       - id: set
         run: |
-          echo 'matrix=["sprinkler-development"]' >> "$GITHUB_OUTPUT"
+          set -euo pipefail
+          if [[ ! -s accounts_map.json ]]; then
+            echo "accounts_map.json missing or empty" >&2
+            ls -la
+            exit 1
+          fi
+
+          MATRIX="$(jq -c 'keys' accounts_map.json)"
+          echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+          echo "Matrix size: $(jq 'length' <<< "$MATRIX")"
 
   iam-hygiene-test:
     needs: [fetch-secrets, setup-prerequisites, target]
