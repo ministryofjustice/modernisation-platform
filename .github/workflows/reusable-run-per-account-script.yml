@@ -86,6 +86,7 @@ jobs:
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0c879ebf9183dd7e47d3fe9c961afa3271843b8b
         with:
           environment_management: ${{ inputs.environment_management }}
+          gov_uk_notify_api_key: ${{ inputs.GOV_UK_NOTIFY_API_KEY }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
       - name: Resolve member account ID (from accounts_map.json)
@@ -117,12 +118,12 @@ jobs:
 
       - name: Run script in member account
         env:
-          # GOV.UK Notify config for the script:
-          GOV_UK_NOTIFY_API_KEY: ${{ inputs.GOV_UK_NOTIFY_API_KEY }}
+          # Use decrypted env var (set by decrypt-secrets)
+          GOV_UK_NOTIFY_API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
+
           TEMPLATE_ID: ${{ inputs.TEMPLATE_ID }}
           EXPECTED_TEMPLATE_VERSION: ${{ inputs.EXPECTED_TEMPLATE_VERSION }}
 
-          # Threshold overrides (keep script unchanged):
           KEY_NOTIFY_DAYS: ${{ inputs.KEY_NOTIFY_DAYS }}
           USER_NOTIFY_DAYS: ${{ inputs.USER_NOTIFY_DAYS }}
         run: |
