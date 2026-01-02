@@ -29,6 +29,12 @@ on:
         type: string
         description: "Shell command(s) to run after assuming into the member account"
 
+      # New: allow caller to pass GOV.UK Notify API key (from aws-secrets-management output)
+      GOV_UK_NOTIFY_API_KEY:
+        required: false
+        type: string
+        description: "GOV.UK Notify API key (optional; if not set, emails are skipped)"
+
     secrets:
       PASSPHRASE:
         required: true
@@ -85,7 +91,19 @@ jobs:
           aws-region: ${{ inputs.AWS_REGION }}
           role-skip-session-tagging: true
 
+      - name: Install GOV.UK Notify client
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install notifications-python-client
+
       - name: Run script in member account
+        env:
+          # Provide Notify config to the script (script reads these)
+          GOV_UK_NOTIFY_API_KEY: ${{ inputs.GOV_UK_NOTIFY_API_KEY }}
+
+          # These come from the caller workflow top-level env:
+          TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
+          EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
         run: |
           set -euo pipefail
           aws sts get-caller-identity
