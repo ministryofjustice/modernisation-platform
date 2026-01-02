@@ -136,6 +136,6 @@ jobs:
       USER_NOTIFY_DAYS: "30"
 
       SCRIPT_COMMAND: |
-        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
+        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
