@@ -49,10 +49,10 @@ fi
 # --- thresholds ---------------------------------------------------------------
 : "${KEY_NOTIFY_DAYS:=0}"
 : "${KEY_DISABLE_DAYS:=0}"
-: "${KEY_DELETE_DAYS:=1}"
+: "${KEY_DELETE_DAYS:=0}"
 : "${USER_NOTIFY_DAYS:=1}"
 : "${USER_DISABLE_DAYS:=2}"
-: "${USER_DELETE_DAYS:=90}"
+: "${USER_DELETE_DAYS:=2}"
 
 IAM_USER_PATH_PREFIX="${IAM_USER_PATH_PREFIX:-}"
 IAM_USER_TAG_KEY="${IAM_USER_TAG_KEY:-}"      # optional filter
