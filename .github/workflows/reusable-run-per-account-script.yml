@@ -33,7 +33,7 @@ on:
       GOV_UK_NOTIFY_API_KEY:
         required: false
         type: string
-        description: "GOV.UK Notify API key (optional)"
+        description: "GOV.UK Notify API key (optional; typically encrypted/wrapped until decrypted)"
 
       TEMPLATE_ID:
         required: false
@@ -86,8 +86,18 @@ jobs:
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0c879ebf9183dd7e47d3fe9c961afa3271843b8b
         with:
           environment_management: ${{ inputs.environment_management }}
+          # Important: decrypt the Notify key (caller passes wrapped/encrypted value)
           gov_uk_notify_api_key: ${{ inputs.GOV_UK_NOTIFY_API_KEY }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+      - name: Confirm Notify key present (masked)
+        run: |
+          set -euo pipefail
+          if [[ -z "${GOV_UK_NOTIFY_API_KEY:-}" ]]; then
+            echo "GOV_UK_NOTIFY_API_KEY is not set after decrypt-secrets" >&2
+            exit 1
+          fi
+          echo "GOV_UK_NOTIFY_API_KEY is set (masked)"
 
       - name: Resolve member account ID (from accounts_map.json)
         id: account
@@ -118,9 +128,7 @@ jobs:
 
       - name: Run script in member account
         env:
-          # Use decrypted env var (set by decrypt-secrets)
-          GOV_UK_NOTIFY_API_KEY: ${{ env.GOV_UK_NOTIFY_API_KEY }}
-
+          # Do NOT set GOV_UK_NOTIFY_API_KEY here; rely on decrypt-secrets exported env var.
           TEMPLATE_ID: ${{ inputs.TEMPLATE_ID }}
           EXPECTED_TEMPLATE_VERSION: ${{ inputs.EXPECTED_TEMPLATE_VERSION }}
 
