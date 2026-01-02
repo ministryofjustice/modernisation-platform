@@ -10,10 +10,10 @@ set -euo pipefail
 #   - >= *_DELETE_DAYS                         -> delete
 #
 # Thresholds (days) – override via env as needed:
-#   KEY_NOTIFY_DAYS   (default 0  – for testing; set 30 in prod)
+#   KEY_NOTIFY_DAYS   (default 30)
 #   KEY_DISABLE_DAYS  (default 60)
 #   KEY_DELETE_DAYS   (default 90)
-#   USER_NOTIFY_DAYS  (default 0  – for testing; set 30 in prod)
+#   USER_NOTIFY_DAYS  (default 30)
 #   USER_DISABLE_DAYS (default 60)
 #   USER_DELETE_DAYS  (default 90)
 #
@@ -47,12 +47,12 @@ else
 fi
 
 # --- thresholds ---------------------------------------------------------------
-: "${KEY_NOTIFY_DAYS:=0}"
-: "${KEY_DISABLE_DAYS:=0}"
-: "${KEY_DELETE_DAYS:=0}"
-: "${USER_NOTIFY_DAYS:=1}"
-: "${USER_DISABLE_DAYS:=2}"
-: "${USER_DELETE_DAYS:=2}"
+: "${KEY_NOTIFY_DAYS:=30}"
+: "${KEY_DISABLE_DAYS:=60}"
+: "${KEY_DELETE_DAYS:=90}"
+: "${USER_NOTIFY_DAYS:=30}"
+: "${USER_DISABLE_DAYS:=60}"
+: "${USER_DELETE_DAYS:=90}"
 
 IAM_USER_PATH_PREFIX="${IAM_USER_PATH_PREFIX:-}"
 IAM_USER_TAG_KEY="${IAM_USER_TAG_KEY:-}"      # optional filter
