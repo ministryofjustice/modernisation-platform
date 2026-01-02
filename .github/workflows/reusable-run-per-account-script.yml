@@ -49,12 +49,22 @@ on:
       KEY_NOTIFY_DAYS:
         required: false
         type: string
-        description: "Override KEY_NOTIFY_DAYS"
+      KEY_DISABLE_DAYS:
+        required: false
+        type: string
+      KEY_DELETE_DAYS:
+        required: false
+        type: string
 
       USER_NOTIFY_DAYS:
         required: false
         type: string
-        description: "Override USER_NOTIFY_DAYS"
+      USER_DISABLE_DAYS:
+        required: false
+        type: string
+      USER_DELETE_DAYS:
+        required: false
+        type: string
 
     secrets:
       PASSPHRASE:
@@ -86,11 +96,11 @@ jobs:
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0c879ebf9183dd7e47d3fe9c961afa3271843b8b
         with:
           environment_management: ${{ inputs.environment_management }}
-          # Important: decrypt the Notify key (caller passes wrapped/encrypted value)
           gov_uk_notify_api_key: ${{ inputs.GOV_UK_NOTIFY_API_KEY }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
-      - name: Confirm Notify key present (masked)
+      - name: Confirm Notify key present (only if sending emails)
+        if: ${{ inputs.TEMPLATE_ID != '' }}
         run: |
           set -euo pipefail
           if [[ -z "${GOV_UK_NOTIFY_API_KEY:-}" ]]; then
@@ -128,12 +138,16 @@ jobs:
 
       - name: Run script in member account
         env:
-          # Do NOT set GOV_UK_NOTIFY_API_KEY here; rely on decrypt-secrets exported env var.
           TEMPLATE_ID: ${{ inputs.TEMPLATE_ID }}
           EXPECTED_TEMPLATE_VERSION: ${{ inputs.EXPECTED_TEMPLATE_VERSION }}
 
           KEY_NOTIFY_DAYS: ${{ inputs.KEY_NOTIFY_DAYS }}
+          KEY_DISABLE_DAYS: ${{ inputs.KEY_DISABLE_DAYS }}
+          KEY_DELETE_DAYS: ${{ inputs.KEY_DELETE_DAYS }}
+
           USER_NOTIFY_DAYS: ${{ inputs.USER_NOTIFY_DAYS }}
+          USER_DISABLE_DAYS: ${{ inputs.USER_DISABLE_DAYS }}
+          USER_DELETE_DAYS: ${{ inputs.USER_DELETE_DAYS }}
         run: |
           set -euo pipefail
           aws sts get-caller-identity
