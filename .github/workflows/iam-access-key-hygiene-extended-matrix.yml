@@ -8,8 +8,6 @@ on:
 
 env:
   AWS_REGION: "eu-west-2"
-  TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
-  EXPECTED_TEMPLATE_VERSION: "2"
 
 permissions:
   id-token: write
@@ -128,8 +126,15 @@ jobs:
       TF_WORKSPACE: ${{ matrix.workspaces }}
       ASSUME_ROLE_NAME: github-actions
 
-      # Pass Notify API key from secrets-management output into reusable workflow
+      # ---- GOV.UK Notify configuration passed explicitly into reusable workflow ----
       GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+      TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
+      EXPECTED_TEMPLATE_VERSION: "2"
+
+      # ---- Threshold overrides (keep script unchanged, but run as 30/60/90) ----
+      KEY_NOTIFY_DAYS: "30"
+      USER_NOTIFY_DAYS: "30"
+      # (disable/delete remain 60/90 via script defaults)
 
       SCRIPT_COMMAND: |
         bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
