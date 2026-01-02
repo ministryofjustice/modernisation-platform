@@ -8,8 +8,7 @@ on:
 
 env:
   AWS_REGION: "eu-west-2"
-  # Hardcode these so the script can send GOV.UK Notify emails
-  TEMPLATE_ID: "PASTE-YOUR-TEMPLATE-ID-HERE"
+  TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
   EXPECTED_TEMPLATE_VERSION: "2"
 
 permissions:
