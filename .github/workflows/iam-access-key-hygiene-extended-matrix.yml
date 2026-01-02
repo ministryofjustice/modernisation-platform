@@ -126,6 +126,6 @@ jobs:
       TF_WORKSPACE: ${{ matrix.workspaces }}
       ASSUME_ROLE_NAME: github-actions
       SCRIPT_COMMAND: |
-        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
+        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh 
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
