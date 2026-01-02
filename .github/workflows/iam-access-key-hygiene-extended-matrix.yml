@@ -8,6 +8,9 @@ on:
 
 env:
   AWS_REGION: "eu-west-2"
+  # Hardcode these so the script can send GOV.UK Notify emails
+  TEMPLATE_ID: "PASTE-YOUR-TEMPLATE-ID-HERE"
+  EXPECTED_TEMPLATE_VERSION: "2"
 
 permissions:
   id-token: write
@@ -125,7 +128,11 @@ jobs:
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       TF_WORKSPACE: ${{ matrix.workspaces }}
       ASSUME_ROLE_NAME: github-actions
+
+      # Pass Notify API key from secrets-management output into reusable workflow
+      GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
+
       SCRIPT_COMMAND: |
-        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh 
+        bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh
     secrets:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
