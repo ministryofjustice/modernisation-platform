@@ -22,7 +22,7 @@ on:
       ASSUME_ROLE_NAME:
         required: true
         type: string
-        description: "Role name to assume in member accounts (must exist in every account)"
+        description: "OIDC role name to assume in member accounts (must exist in every account)"
 
       SCRIPT_COMMAND:
         required: true
@@ -38,12 +38,10 @@ on:
       TEMPLATE_ID:
         required: false
         type: string
-        description: "GOV.UK Notify template ID (optional)"
 
       EXPECTED_TEMPLATE_VERSION:
         required: false
         type: string
-        description: "Expected Notify template version (optional)"
 
       # ---- Threshold overrides (optional) ----
       KEY_NOTIFY_DAYS:
@@ -99,30 +97,6 @@ jobs:
           gov_uk_notify_api_key: ${{ inputs.GOV_UK_NOTIFY_API_KEY }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
-      - name: Set Root Account Number (org/root)
-        run: |
-          set -euo pipefail
-          ROOT_ACCOUNT_NUMBER="$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")"
-          echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
-          echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
-
-      - name: Configure AWS Credentials (org/root account)
-        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708
-        with:
-          role-to-assume: arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole
-          role-session-name: githubactionsrolesession
-          aws-region: ${{ inputs.AWS_REGION }}
-
-      - name: Confirm Notify key present (only if sending emails)
-        if: ${{ inputs.TEMPLATE_ID != '' }}
-        run: |
-          set -euo pipefail
-          if [[ -z "${GOV_UK_NOTIFY_API_KEY:-}" ]]; then
-            echo "GOV_UK_NOTIFY_API_KEY is not set after decrypt-secrets" >&2
-            exit 1
-          fi
-          echo "GOV_UK_NOTIFY_API_KEY is set (masked)"
-
       - name: Resolve member account ID (from accounts_map.json)
         id: account
         run: |
@@ -137,13 +111,12 @@ jobs:
           echo "::add-mask::$ACCOUNT_ID"
           echo "account-id=$ACCOUNT_ID" >> "$GITHUB_OUTPUT"
 
-      - name: Configure AWS Credentials (member account role via chaining)
+      - name: Configure AWS Credentials (member account OIDC role)
         uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708
         with:
           role-to-assume: arn:aws:iam::${{ steps.account.outputs.account-id }}:role/${{ inputs.ASSUME_ROLE_NAME }}
           role-session-name: githubactionsrolesession
           aws-region: ${{ inputs.AWS_REGION }}
-          role-chaining: true
           role-skip-session-tagging: true
 
       - name: Install GOV.UK Notify client
