@@ -166,7 +166,7 @@ jobs:
       AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       TF_WORKSPACE: ${{ matrix.workspaces }}
-      ASSUME_ROLE_NAME: ModernisationPlatformAccess
+      ASSUME_ROLE_NAME: github-actions
 
       GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
       TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
@@ -197,7 +197,7 @@ jobs:
       AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       TF_WORKSPACE: ${{ matrix.workspaces }}
-      ASSUME_ROLE_NAME: ModernisationPlatformAccess
+      ASSUME_ROLE_NAME: github-actions
 
       GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
       TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
@@ -228,7 +228,7 @@ jobs:
       AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       TF_WORKSPACE: ${{ matrix.workspaces }}
-      ASSUME_ROLE_NAME: ModernisationPlatformAccess
+      ASSUME_ROLE_NAME: github-actions
 
       GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
       TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
@@ -259,7 +259,7 @@ jobs:
       AWS_REGION: ${{ needs.setup-prerequisites.outputs.aws-region }}
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       TF_WORKSPACE: ${{ matrix.workspaces }}
-      ASSUME_ROLE_NAME: ModernisationPlatformAccess
+      ASSUME_ROLE_NAME: github-actions
 
       GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
       TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
