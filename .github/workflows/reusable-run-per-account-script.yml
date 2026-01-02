@@ -29,11 +29,32 @@ on:
         type: string
         description: "Shell command(s) to run after assuming into the member account"
 
-      # New: allow caller to pass GOV.UK Notify API key (from aws-secrets-management output)
+      # ---- GOV.UK Notify passed in from caller ----
       GOV_UK_NOTIFY_API_KEY:
         required: false
         type: string
-        description: "GOV.UK Notify API key (optional; if not set, emails are skipped)"
+        description: "GOV.UK Notify API key (optional)"
+
+      TEMPLATE_ID:
+        required: false
+        type: string
+        description: "GOV.UK Notify template ID (optional)"
+
+      EXPECTED_TEMPLATE_VERSION:
+        required: false
+        type: string
+        description: "Expected Notify template version (optional)"
+
+      # ---- Threshold overrides (optional) ----
+      KEY_NOTIFY_DAYS:
+        required: false
+        type: string
+        description: "Override KEY_NOTIFY_DAYS"
+
+      USER_NOTIFY_DAYS:
+        required: false
+        type: string
+        description: "Override USER_NOTIFY_DAYS"
 
     secrets:
       PASSPHRASE:
@@ -61,8 +82,6 @@ jobs:
         with:
           name: accounts-map
 
-      # Kept for consistency (and in case your script relies on ENVIRONMENT_MANAGEMENT),
-      # but not strictly required for assuming github-actions via OIDC.
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@0c879ebf9183dd7e47d3fe9c961afa3271843b8b
         with:
@@ -98,12 +117,14 @@ jobs:
 
       - name: Run script in member account
         env:
-          # Provide Notify config to the script (script reads these)
+          # GOV.UK Notify config for the script:
           GOV_UK_NOTIFY_API_KEY: ${{ inputs.GOV_UK_NOTIFY_API_KEY }}
+          TEMPLATE_ID: ${{ inputs.TEMPLATE_ID }}
+          EXPECTED_TEMPLATE_VERSION: ${{ inputs.EXPECTED_TEMPLATE_VERSION }}
 
-          # These come from the caller workflow top-level env:
-          TEMPLATE_ID: ${{ env.TEMPLATE_ID }}
-          EXPECTED_TEMPLATE_VERSION: ${{ env.EXPECTED_TEMPLATE_VERSION }}
+          # Threshold overrides (keep script unchanged):
+          KEY_NOTIFY_DAYS: ${{ inputs.KEY_NOTIFY_DAYS }}
+          USER_NOTIFY_DAYS: ${{ inputs.USER_NOTIFY_DAYS }}
         run: |
           set -euo pipefail
           aws sts get-caller-identity
