@@ -1,7 +1,6 @@
-name: "IAM Access Key & User Hygiene (DRY RUN) - Extended Matrix"
+name: "IAM Access Key & User Hygiene - Extended Matrix"
 
 on:
-  # First Monday of every month at 09:30
   schedule:
     - cron: "30 9 1-7 * 1"
   workflow_dispatch:
@@ -62,31 +61,25 @@ jobs:
       - name: Build Organizations accounts map (Name -> Id) ONCE (with backoff)
         run: |
           set -euo pipefail
-
           attempt=1
           max_attempts=8
           delay=2
-
           while true; do
             echo "list-accounts attempt $attempt/$max_attempts..."
             if aws organizations list-accounts --output json > /tmp/accounts.json; then
               break
             fi
-
             if (( attempt >= max_attempts )); then
               echo "Failed to list accounts after $max_attempts attempts" >&2
               exit 1
             fi
-
             echo "Throttled or transient error. Sleeping ${delay}s..."
             sleep "$delay"
             attempt=$((attempt+1))
             delay=$((delay*2))
           done
-
           jq -c '[.Accounts[] | select(.Status=="ACTIVE") | { key: .Name, value: .Id }] | from_entries' \
             /tmp/accounts.json > accounts_map.json
-
           echo "Accounts map entries: $(jq 'length' accounts_map.json)"
 
       - name: Upload accounts map artifact
@@ -146,9 +139,6 @@ jobs:
             end=$(( start + base + extra ))
             block=$(echo "$sorted" | jq ".[$start:$end]")
             compact=$(echo "$block" | jq -c '.')
-            echo "::group::$key"
-            echo "$block" | jq .
-            echo "::endgroup::"
             echo "$key=$compact" >> "$GITHUB_OUTPUT"
             start=$end
           done
@@ -173,11 +163,7 @@ jobs:
       EXPECTED_TEMPLATE_VERSION: "2"
 
       KEY_NOTIFY_DAYS: "30"
-      KEY_DISABLE_DAYS: "60"
-      KEY_DELETE_DAYS: "90"
       USER_NOTIFY_DAYS: "30"
-      USER_DISABLE_DAYS: "60"
-      USER_DELETE_DAYS: "90"
 
       SCRIPT_COMMAND: |
         bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
@@ -204,11 +190,7 @@ jobs:
       EXPECTED_TEMPLATE_VERSION: "2"
 
       KEY_NOTIFY_DAYS: "30"
-      KEY_DISABLE_DAYS: "60"
-      KEY_DELETE_DAYS: "90"
       USER_NOTIFY_DAYS: "30"
-      USER_DISABLE_DAYS: "60"
-      USER_DELETE_DAYS: "90"
 
       SCRIPT_COMMAND: |
         bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
@@ -235,11 +217,7 @@ jobs:
       EXPECTED_TEMPLATE_VERSION: "2"
 
       KEY_NOTIFY_DAYS: "30"
-      KEY_DISABLE_DAYS: "60"
-      KEY_DELETE_DAYS: "90"
       USER_NOTIFY_DAYS: "30"
-      USER_DISABLE_DAYS: "60"
-      USER_DELETE_DAYS: "90"
 
       SCRIPT_COMMAND: |
         bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
@@ -266,11 +244,7 @@ jobs:
       EXPECTED_TEMPLATE_VERSION: "2"
 
       KEY_NOTIFY_DAYS: "30"
-      KEY_DISABLE_DAYS: "60"
-      KEY_DELETE_DAYS: "90"
       USER_NOTIFY_DAYS: "30"
-      USER_DISABLE_DAYS: "60"
-      USER_DELETE_DAYS: "90"
 
       SCRIPT_COMMAND: |
         bash ./scripts/iam-monitoring/inactive-keys-and-users/check_iam_users_and_keys.sh --dry-run
