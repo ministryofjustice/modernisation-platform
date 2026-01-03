@@ -79,27 +79,9 @@ jobs:
             delay=$((delay*2))
           done
 
-          jq -c '
-            [.Accounts[]
-             | select(.Status == "ACTIVE")
-             | select(
-                 (.Name | startswith("core-") | not)
-                 and
-                 (.Name | startswith("modernisation-") | not)
-               )
-             | { key: .Name, value: .Id }
-            ]
-            | from_entries
-          ' /tmp/accounts.json > accounts_map.json
-
-          # fail if excluded prefixes appear
-          if jq -e 'keys[] | startswith("core-") or startswith("modernisation-")' accounts_map.json >/dev/null; then
-            echo "ERROR: core-* or modernisation-* account leaked into accounts_map.json" >&2
-            exit 1
-          fi
-
+          jq -c '[.Accounts[] | select(.Status=="ACTIVE") | { key: .Name, value: .Id }] | from_entries' \
+            /tmp/accounts.json > accounts_map.json
           echo "Accounts map entries: $(jq 'length' accounts_map.json)"
-
 
       - name: Upload accounts map artifact
         uses: actions/upload-artifact@v4
