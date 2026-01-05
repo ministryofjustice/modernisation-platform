@@ -1020,7 +1020,7 @@ module "iam_hygiene_oidc_role" {
   ) ? 1 : 0
 
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=5dc9bc211d10c58de4247fa751c318a3985fc87b" # v4.0.0
-  github_repositories = ["ministryofjustice/modernisation-platform-environments:*"]
+  github_repositories = ["ministryofjustice/modernisation-platform:*"]
   role_name              = "github-actions-iam-hygiene"
   additional_permissions = data.aws_iam_policy_document.iam_hygiene_policy.json
   tags_common = { "Name" = format("%s-oidc-iam-hygiene", terraform.workspace) }
