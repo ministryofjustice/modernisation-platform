@@ -1020,7 +1020,7 @@ module "iam_hygiene_oidc_role" {
   ) ? 1 : 0
 
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
-  github_repositories = ["ministryofjustice/modernisation-platform-environments:*"]
+  github_repositories = ["ministryofjustice/modernisation-platform"]
 
   role_name = "github-actions-iam-hygiene"
   policy_jsons = [
