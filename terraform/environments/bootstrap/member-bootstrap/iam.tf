@@ -1011,3 +1011,69 @@ data "aws_iam_policy_document" "securityhub_insights_oidc_policy" {
     resources = ["*"]
   }
 }
+
+module "iam_hygiene_oidc_role" {
+  count = (
+    local.account_data.account-type == "member"
+    && !startswith(terraform.workspace, "core-")
+    && !startswith(terraform.workspace, "modernisation-")
+  ) ? 1 : 0
+
+  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=5dc9bc211d10c58de4247fa751c318a3985fc87b" # v4.0.0
+  github_repositories = ["ministryofjustice/modernisation-platform-environments:*"]
+  role_name              = "github-actions-iam-hygiene"
+  additional_permissions = data.aws_iam_policy_document.iam_hygiene_policy.json
+  tags_common = { "Name" = format("%s-oidc-iam-hygiene", terraform.workspace) }
+  tags_prefix = ""
+}
+
+data "aws_iam_policy_document" "iam_hygiene_policy" {
+  statement {
+    sid     = "AllowReadForDiscovery"
+    effect  = "Allow"
+    actions = [
+      "iam:ListUsers",
+      "iam:ListUserTags",
+      "iam:ListAccessKeys",
+      "iam:GetAccessKeyLastUsed",
+
+      # Used in delete-user cleanup:
+      "iam:ListAttachedUserPolicies",
+      "iam:ListUserPolicies",
+      "iam:ListGroupsForUser"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid     = "AllowKeyLifecycle"
+    effect  = "Allow"
+    actions = [
+      "iam:UpdateAccessKey",
+      "iam:DeleteAccessKey"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid     = "AllowDisableConsoleLogin"
+    effect  = "Allow"
+    actions = [
+      "iam:DeleteLoginProfile"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid     = "AllowUserDeletionCleanup"
+    effect  = "Allow"
+    actions = [
+      "iam:DetachUserPolicy",
+      "iam:DeleteUserPolicy",
+      "iam:RemoveUserFromGroup",
+      "iam:DeleteUser"
+    ]
+    resources = ["*"]
+  }
+}
+
