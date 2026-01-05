@@ -812,7 +812,7 @@ module "github-oidc" {
   count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
   source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=5dc9bc211d10c58de4247fa751c318a3985fc87b" # v4.0.0
   additional_permissions = data.aws_iam_policy_document.oidc_assume_role_member[0].json
-  github_repositories    = ["ministryofjustice/modernisation-platform-environments:*"]
+  github_repositories    = ["ministryofjustice/modernisation-platform-environments:*", "ministryofjustice/modernisation-platform:*"]
   tags_common            = { "Name" = format("%s-oidc", terraform.workspace) }
   tags_prefix            = ""
 }
