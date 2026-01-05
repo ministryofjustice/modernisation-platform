@@ -1019,25 +1019,28 @@ module "iam_hygiene_oidc_role" {
     && !startswith(terraform.workspace, "modernisation-")
   ) ? 1 : 0
 
-  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=5dc9bc211d10c58de4247fa751c318a3985fc87b" # v4.0.0
-  github_repositories = ["ministryofjustice/modernisation-platform:*"]
-  role_name              = "github-actions-iam-hygiene"
-  additional_permissions = data.aws_iam_policy_document.iam_hygiene_policy.json
-  tags_common = { "Name" = format("%s-oidc-iam-hygiene", terraform.workspace) }
-  tags_prefix = ""
+  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
+  github_repositories = ["ministryofjustice/modernisation-platform-environments:*"]
+
+  role_name = "github-actions-iam-hygiene"
+  policy_jsons = [
+    data.aws_iam_policy_document.iam_hygiene_policy.json
+  ]
+
+  tags = {
+    Name = format("%s-oidc-iam-hygiene", terraform.workspace)
+  }
 }
 
 data "aws_iam_policy_document" "iam_hygiene_policy" {
   statement {
-    sid     = "AllowReadForDiscovery"
-    effect  = "Allow"
+    sid    = "AllowReadForDiscovery"
+    effect = "Allow"
     actions = [
       "iam:ListUsers",
       "iam:ListUserTags",
       "iam:ListAccessKeys",
       "iam:GetAccessKeyLastUsed",
-
-      # Used in delete-user cleanup:
       "iam:ListAttachedUserPolicies",
       "iam:ListUserPolicies",
       "iam:ListGroupsForUser"
@@ -1046,8 +1049,8 @@ data "aws_iam_policy_document" "iam_hygiene_policy" {
   }
 
   statement {
-    sid     = "AllowKeyLifecycle"
-    effect  = "Allow"
+    sid    = "AllowKeyLifecycle"
+    effect = "Allow"
     actions = [
       "iam:UpdateAccessKey",
       "iam:DeleteAccessKey"
@@ -1056,8 +1059,8 @@ data "aws_iam_policy_document" "iam_hygiene_policy" {
   }
 
   statement {
-    sid     = "AllowDisableConsoleLogin"
-    effect  = "Allow"
+    sid    = "AllowDisableConsoleLogin"
+    effect = "Allow"
     actions = [
       "iam:DeleteLoginProfile"
     ]
@@ -1065,8 +1068,8 @@ data "aws_iam_policy_document" "iam_hygiene_policy" {
   }
 
   statement {
-    sid     = "AllowUserDeletionCleanup"
-    effect  = "Allow"
+    sid    = "AllowUserDeletionCleanup"
+    effect = "Allow"
     actions = [
       "iam:DetachUserPolicy",
       "iam:DeleteUserPolicy",
@@ -1076,4 +1079,3 @@ data "aws_iam_policy_document" "iam_hygiene_policy" {
     resources = ["*"]
   }
 }
-
