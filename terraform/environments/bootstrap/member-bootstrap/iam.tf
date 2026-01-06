@@ -1014,11 +1014,10 @@ data "aws_iam_policy_document" "securityhub_insights_oidc_policy" {
 
 module "iam_hygiene_oidc_role" {
   count = (
-    local.account_data.account-type == "member"
-    && !startswith(terraform.workspace, "core-")
-    && !startswith(terraform.workspace, "modernisation-")
+  local.account_data.account-type == "member-unrestricted"
+  || local.account_data.account-type == "member"
   ) ? 1 : 0
-
+ 
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
   github_repositories = ["ministryofjustice/modernisation-platform"]
 
