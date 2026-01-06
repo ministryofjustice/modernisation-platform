@@ -44,53 +44,6 @@ jobs:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
-      - name: Set Root Account Number (org/root)
-        run: |
-          set -euo pipefail
-          ROOT_ACCOUNT_NUMBER="$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")"
-          echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
-          echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
-
-      - name: Configure AWS Credentials (org/root)
-        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708
-        with:
-          role-to-assume: arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole
-          role-session-name: githubactionsrolesession
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Build Organizations accounts map (Name -> Id) ONCE (with backoff)
-        run: |
-          set -euo pipefail
-          attempt=1
-          max_attempts=8
-          delay=2
-          while true; do
-            echo "list-accounts attempt $attempt/$max_attempts..."
-            if aws organizations list-accounts --output json > /tmp/accounts.json; then
-              break
-            fi
-            if (( attempt >= max_attempts )); then
-              echo "Failed to list accounts after $max_attempts attempts" >&2
-              exit 1
-            fi
-            echo "Throttled or transient error. Sleeping ${delay}s..."
-            sleep "$delay"
-            attempt=$((attempt+1))
-            delay=$((delay*2))
-          done
-
-          jq -c '[.Accounts[] | select(.Status=="ACTIVE") | { key: .Name, value: .Id }] | from_entries' \
-            /tmp/accounts.json > accounts_map.json
-
-          echo "Accounts map entries: $(jq 'length' accounts_map.json)"
-
-      - name: Upload accounts map artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: accounts-map
-          path: accounts_map.json
-          retention-days: 1
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd
         with:
