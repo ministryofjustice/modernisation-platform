@@ -43,38 +43,33 @@ jobs:
         with:
           environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
-          
-      - name: Set Root Account Number (org/root)
-        run: |
-          set -euo pipefail
-          ROOT_ACCOUNT_NUMBER="$(jq -r -e '.aws_organizations_root_account_id' <<< "$ENVIRONMENT_MANAGEMENT")"
-          echo "::add-mask::$ROOT_ACCOUNT_NUMBER"
-          echo "ROOT_ACCOUNT_NUMBER=$ROOT_ACCOUNT_NUMBER" >> "$GITHUB_ENV"
-
-      - name: Configure AWS Credentials (org/root)
-        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708
-        with:
-          role-to-assume: arn:aws:iam::${{ env.ROOT_ACCOUNT_NUMBER }}:role/ModernisationPlatformGithubActionsRole
-          role-session-name: githubactionsrolesession
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd
-        with:
-          terraform_version: "~1"
-          terraform_wrapper: false
-
-      - name: Terraform init (delegate-access)
-        run: bash scripts/terraform-init.sh terraform/environments/bootstrap/delegate-access
 
       - id: set-matrix
-        name: Build workspace matrix (delegate-access)
+        name: Build account matrix (from ENVIRONMENT_MANAGEMENT.account_ids)
         run: |
           set -euo pipefail
-          echo "matrix=$(terraform -chdir=terraform/environments/bootstrap/delegate-access workspace list \
-            | sed -e 's/*//' -e 's/^[[:space:]]*//' -e '/default/d' -e '/^$/d' \
-            | grep -Ev '^(core-|modernisation-|bichard7-|analytical-platform-|moj-network-operations-centre)|^testing-test$' \
-            | sort -u | jq -ncR '[inputs]')" >> "$GITHUB_OUTPUT"
+
+          if [[ -z "${ENVIRONMENT_MANAGEMENT:-}" ]]; then
+            echo "ENVIRONMENT_MANAGEMENT not set after decrypt-secrets" >&2
+            exit 1
+          fi
+
+          # Build list of account names from the environment_management secret
+          # Apply hard exclusions by prefix/name.
+          matrix="$(jq -r '
+            .account_ids
+            | keys[]
+            | select(
+                (startswith("core-") | not) and
+                (startswith("modernisation-") | not) and
+                (startswith("bichard7-") | not) and
+                (startswith("analytical-platform-") | not) and
+                (startswith("moj-network-operations-centre") | not) and
+                (. != "testing-test")
+              )
+          ' <<< "$ENVIRONMENT_MANAGEMENT" | sort -u | jq -ncR '[inputs]')"
+
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
       - id: setup-aws-region
         name: Setup AWS Region output
