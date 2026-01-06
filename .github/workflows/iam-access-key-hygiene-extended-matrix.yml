@@ -33,6 +33,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       aws-region: ${{ steps.setup-aws-region.outputs.aws-region }}
+      accounts-map-b64: ${{ steps.accounts-map.outputs.accounts-map-b64 }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
         with:
@@ -79,16 +80,16 @@ jobs:
             delay=$((delay*2))
           done
 
+          # NOTE: This map includes all ACTIVE accounts; exclusions are applied to the terraform workspace matrix below.
           jq -c '[.Accounts[] | select(.Status=="ACTIVE") | { key: .Name, value: .Id }] | from_entries' \
             /tmp/accounts.json > accounts_map.json
           echo "Accounts map entries: $(jq 'length' accounts_map.json)"
 
-      - name: Upload accounts map artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: accounts-map
-          path: accounts_map.json
-          retention-days: 1
+      - id: accounts-map
+        name: Export accounts map as job output (base64)
+        run: |
+          set -euo pipefail
+          echo "accounts-map-b64=$(base64 -w0 accounts_map.json)" >> "$GITHUB_OUTPUT"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd
@@ -159,6 +160,7 @@ jobs:
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       TF_WORKSPACE: ${{ matrix.workspaces }}
       ASSUME_ROLE_NAME: github-actions-iam-hygiene
+      ACCOUNTS_MAP_B64: ${{ needs.setup-prerequisites.outputs.accounts-map-b64 }}
 
       GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
       TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
@@ -186,6 +188,7 @@ jobs:
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       TF_WORKSPACE: ${{ matrix.workspaces }}
       ASSUME_ROLE_NAME: github-actions-iam-hygiene
+      ACCOUNTS_MAP_B64: ${{ needs.setup-prerequisites.outputs.accounts-map-b64 }}
 
       GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
       TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
@@ -213,6 +216,7 @@ jobs:
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       TF_WORKSPACE: ${{ matrix.workspaces }}
       ASSUME_ROLE_NAME: github-actions-iam-hygiene
+      ACCOUNTS_MAP_B64: ${{ needs.setup-prerequisites.outputs.accounts-map-b64 }}
 
       GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
       TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
@@ -240,6 +244,7 @@ jobs:
       environment_management: ${{ needs.fetch-secrets.outputs.environment_management }}
       TF_WORKSPACE: ${{ matrix.workspaces }}
       ASSUME_ROLE_NAME: github-actions-iam-hygiene
+      ACCOUNTS_MAP_B64: ${{ needs.setup-prerequisites.outputs.accounts-map-b64 }}
 
       GOV_UK_NOTIFY_API_KEY: ${{ needs.fetch-secrets.outputs.gov_uk_notify_api_key }}
       TEMPLATE_ID: "842554a5-a3bf-4905-ae4a-7c61a123267b"
