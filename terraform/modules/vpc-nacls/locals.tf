@@ -86,10 +86,10 @@ locals {
 
   cica_vpc_keys = {
     cica-development = {
-      cidr_block = "10.26.128.19/32"
+      cidr_block = "10.26.128.0/23"
     }
     cica-production = {
-      cidr_block = "10.27.128.28/32"
+      cidr_block = "10.27.128.0/23"
     }
   }
 
