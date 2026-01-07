@@ -33,6 +33,12 @@ set -euo pipefail
 #       * Classification + output files are still produced
 # ------------------------------------------------------------------------------
 
+REDACTOR="../../../scripts/redact-output.sh"
+chmod +x "$REDACTOR"
+
+# Redirect ALL stdout+stderr through the redactor
+exec > >("$REDACTOR") 2>&1
+
 # --- dry-run handling ---------------------------------------------------------
 DRY_RUN="${DRY_RUN:-false}"
 if [[ "${1:-}" == "--dry-run" || "${1:-}" == "dry-run" ]]; then
