@@ -554,6 +554,16 @@ except ImportError:
     print("notifications-python-client not installed; skipping Notify emails", file=sys.stderr)
     sys.exit(0)
 
+def mask_email(email: str) -> str:
+    if not email or "@" not in email:
+        return "<REDACTED_EMAIL>"
+    local, domain = email.split("@", 1)
+    if len(local) <= 2:
+        masked_local = local[0:1] + "…"
+    else:
+        masked_local = local[:2] + "…" + local[-1:]
+    return f"{masked_local}@{domain}"
+
 api_key = os.getenv("GOV_UK_NOTIFY_API_KEY")
 template_id = os.getenv("TEMPLATE_ID")
 expected_version = os.getenv("EXPECTED_TEMPLATE_VERSION", "").strip()
@@ -604,29 +614,36 @@ for u in notify_users:
     email = u.get("notify_email")
     username = u.get("user_name")
     last_days = u.get("user_last_activity_days")
+
     if not email:
         print(f"Skipping user {username}: no notify_email set", file=sys.stderr)
         continue
+
+    masked = mask_email(email)
+
     try:
         client.send_email_notification(
-            email_address=email,
+            email_address=email,  
             template_id=template_id,
             personalisation={
-                # your template uses ((username)); extra fields are safe
                 "username": username,
                 "account_id": account_id,
                 "inactive_days": last_days,
             },
         )
-        print(f"Sent Notify email to {email} for user {username}")
+        print(f"Sent Notify email to {masked} for user {username}")
     except Exception as e:
         errors += 1
-        print(f"ERROR: Failed to send Notify email to {email} for user {username}: {e}", file=sys.stderr)
+        print(
+            f"ERROR: Failed to send Notify email to {masked} for user {username}: {e}",
+            file=sys.stderr,
+        )
 
 if errors:
     print(f"Completed Notify run with {errors} error(s)", file=sys.stderr)
 else:
     print("All Notify emails sent successfully")
+
 
 EOF
 
