@@ -11,4 +11,5 @@ sed -u -E \
     -e "s/::[0-9]{12}:/::REDACTED:/g" \
     -e "s/:[0-9]{12}:/:REDACTED:/g" \
     -e "s/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/<REDACTED_EMAIL>/g" \
-    -e "s/AKIA[0-9A-Z]{16}/AKIA<REDACTED>/g" 
+    -e "s/AKIA[0-9A-Z]{16}/AKIA<REDACTED>/g" \
+    -e "s/(user[[:space:]]+)[^[:space:]]+/\1<REDACTED_USER>/gi"
