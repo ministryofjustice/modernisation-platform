@@ -36,10 +36,11 @@ set -euo pipefail
 REDACTOR="./scripts/redact-output.sh"
 chmod +x "$REDACTOR"
 
-# Redirect ALL stdout+stderr through the redactor
+# Redirect ALL stdout+stderr through the redactor (e.g. emails, creds, etc.)
 exec > >("$REDACTOR") 2>&1
 
-# --- mask username ------------------------------------------------------------
+# --- mask username (logs only; does NOT change the real username used in API calls) ----
+# Example: "james.johns" -> "j*********s"
 mask_user() {
   local u="${1:-}"
 
@@ -55,17 +56,6 @@ mask_user() {
   stars="$(printf '%*s' $((${#u}-2)) '' | tr ' ' '*')"
 
   echo "${first}${stars}${last}"
-}
-
-# --- mask access key id (human-friendly) --------------------------------------
-mask_key() {
-  local k="${1:-}"
-  if [[ -z "$k" || "${#k}" -le 8 ]]; then
-    echo "<key>"
-    return
-  fi
-  # First 4 + ellipsis + last 4
-  echo "${k:0:4}…${k: -4}"
 }
 
 # --- dry-run handling ---------------------------------------------------------
@@ -461,33 +451,32 @@ else
 fi
 
 # Disable/delete keys and users (skipped in DRY RUN)
-
 echo "Applying lifecycle actions for account: ${ACCOUNT_ID}"
 
 if [[ "$DRY_RUN" == "true" ]]; then
   echo ">>> DRY RUN: no IAM changes will be made"
 else
-  # Disable keys
+  # Disable keys (mask username in logs only; do not mask key id)
   if jq -e '.[] | select(.type=="key" and .flags.disable==true)' iam_hygiene.json >/dev/null 2>&1; then
     jq -r '.[] | select(.type=="key" and .flags.disable==true) | "\(.user_name) \(.access_key_id)"' iam_hygiene.json | \
     while read -r u k; do
-      echo "Disabling access key $(mask_key "$k") for user $(mask_user "$u")"
+      echo "Disabling access key ${k} for user $(mask_user "$u")"
       aws iam update-access-key --user-name "$u" --access-key-id "$k" --status Inactive || \
-        echo "WARNING: Failed to disable access key $(mask_key "$k") for user $(mask_user "$u")" >&2
+        echo "WARNING: Failed to disable access key ${k} for user $(mask_user "$u")" >&2
     done
   fi
 
-  # Delete keys
+  # Delete keys (mask username in logs only; do not mask key id)
   if jq -e '.[] | select(.type=="key" and .flags.delete==true)' iam_hygiene.json >/dev/null 2>&1; then
     jq -r '.[] | select(.type=="key" and .flags.delete==true) | "\(.user_name) \(.access_key_id)"' iam_hygiene.json | \
     while read -r u k; do
-      echo "Deleting access key $(mask_key "$k") for user $(mask_user "$u")"
+      echo "Deleting access key ${k} for user $(mask_user "$u")"
       aws iam delete-access-key --user-name "$u" --access-key-id "$k" || \
-        echo "WARNING: Failed to delete access key $(mask_key "$k") for user $(mask_user "$u")" >&2
+        echo "WARNING: Failed to delete access key ${k} for user $(mask_user "$u")" >&2
     done
   fi
 
-  # Disable users (console password)
+  # Disable users (console password) (mask username in logs only)
   if jq -e '.[] | select(.type=="user_summary" and .flags.disable==true)' iam_hygiene.json >/dev/null 2>&1; then
     jq -r '.[] | select(.type=="user_summary" and .flags.disable==true) | .user_name' iam_hygiene.json | \
     while read -r u; do
@@ -497,16 +486,16 @@ else
     done
   fi
 
-  # Delete users
+  # Delete users (mask username in logs only)
   if jq -e '.[] | select(.type=="user_summary" and .flags.delete==true)' iam_hygiene.json >/dev/null 2>&1; then
     jq -r '.[] | select(.type=="user_summary" and .flags.delete==true) | .user_name' iam_hygiene.json | \
     while read -r u; do
       echo "Deleting IAM user $(mask_user "$u")"
 
-      # Delete remaining access keys (if any)
+      # Delete remaining access keys (if any) (keep key id visible)
       for key_id in $(aws iam list-access-keys --user-name "$u" --query 'AccessKeyMetadata[].AccessKeyId' --output text 2>/dev/null || echo ""); do
         [[ -z "$key_id" ]] && continue
-        echo "  - deleting remaining key $(mask_key "$key_id")"
+        echo "  - deleting remaining key ${key_id}"
         aws iam delete-access-key --user-name "$u" --access-key-id "$key_id" || true
       done
 
@@ -543,7 +532,6 @@ else
 fi
 
 # Summary + per-user GOV.UK Notify emails (skipped in DRY RUN)
-
 echo "--------------------------------------------"
 echo "IAM hygiene actions complete for account: ${ACCOUNT_ID}"
 [[ -f keys_notify.list   ]] && echo "  Keys to notify about : $(wc -l < keys_notify.list)"   || echo "  Keys to notify about : 0"
@@ -652,7 +640,6 @@ if errors:
     print(f"Completed Notify run with {errors} error(s)", file=sys.stderr)
 else:
     print("All Notify emails sent successfully")
-
 EOF
 
 else
