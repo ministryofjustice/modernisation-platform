@@ -39,6 +39,26 @@ chmod +x "$REDACTOR"
 # Redirect ALL stdout+stderr through the redactor
 exec > >("$REDACTOR") 2>&1
 
+# --- mask username ------------------------------------------------------------
+
+mask_user() {
+  local u="${1:-}"
+
+  # If empty or very short, fully redact
+  if [[ -z "$u" || "${#u}" -le 2 ]]; then
+    echo "<user>"
+    return
+  fi
+
+  local first="${u:0:1}"
+  local last="${u: -1}"
+  local stars
+  stars="$(printf '%*s' $((${#u}-2)) '' | tr ' ' '*')"
+
+  echo "${first}${stars}${last}"
+}
+
+
 # --- dry-run handling ---------------------------------------------------------
 DRY_RUN="${DRY_RUN:-false}"
 if [[ "${1:-}" == "--dry-run" || "${1:-}" == "dry-run" ]]; then
