@@ -436,9 +436,14 @@ else
   if jq -e '.[] | select(.type=="key" and .flags.disable==true)' iam_hygiene.json >/dev/null 2>&1; then
     jq -r '.[] | select(.type=="key" and .flags.disable==true) | "\(.user_name) \(.access_key_id)"' iam_hygiene.json | \
     while read -r u k; do
-      echo "Disabling access key ${k} for user ${u}"
+      masked="<REDACTED>"
+      if [[ -n "${k:-}" && "${#k}" -ge 8 ]]; then
+        masked="${k:0:4}…${k: -4}"
+      fi
+
+      echo "Disabling access key ${masked} for user ${u}"
       aws iam update-access-key --user-name "$u" --access-key-id "$k" --status Inactive || \
-        echo "WARNING: Failed to disable access key ${k} for user ${u}" >&2
+        echo "WARNING: Failed to disable access key ${masked} for user ${u}" >&2
     done
   fi
 
@@ -446,9 +451,14 @@ else
   if jq -e '.[] | select(.type=="key" and .flags.delete==true)' iam_hygiene.json >/dev/null 2>&1; then
     jq -r '.[] | select(.type=="key" and .flags.delete==true) | "\(.user_name) \(.access_key_id)"' iam_hygiene.json | \
     while read -r u k; do
-      echo "Deleting access key ${k} for user ${u}"
+      masked="<REDACTED>"
+      if [[ -n "${k:-}" && "${#k}" -ge 8 ]]; then
+        masked="${k:0:4}…${k: -4}"
+      fi
+
+      echo "Deleting access key ${masked} for user ${u}"
       aws iam delete-access-key --user-name "$u" --access-key-id "$k" || \
-        echo "WARNING: Failed to delete access key ${k} for user ${u}" >&2
+        echo "WARNING: Failed to delete access key ${masked} for user ${u}" >&2
     done
   fi
 
@@ -471,7 +481,13 @@ else
       # Delete remaining access keys (if any)
       for key_id in $(aws iam list-access-keys --user-name "$u" --query 'AccessKeyMetadata[].AccessKeyId' --output text 2>/dev/null || echo ""); do
         [[ -z "$key_id" ]] && continue
-        echo "  - deleting remaining key ${key_id}"
+
+        masked_key_id="<REDACTED>"
+        if [[ -n "${key_id:-}" && "${#key_id}" -ge 8 ]]; then
+          masked_key_id="${key_id:0:4}…${key_id: -4}"
+        fi
+
+        echo "  - deleting remaining key ${masked_key_id}"
         aws iam delete-access-key --user-name "$u" --access-key-id "$key_id" || true
       done
 
