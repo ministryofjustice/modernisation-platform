@@ -33,7 +33,7 @@ set -euo pipefail
 #       * Classification + output files are still produced
 # ------------------------------------------------------------------------------
 
-REDACTOR="../../../scripts/redact-output.sh"
+REDACTOR="./scripts/redact-output.sh"
 chmod +x "$REDACTOR"
 
 # Redirect ALL stdout+stderr through the redactor
