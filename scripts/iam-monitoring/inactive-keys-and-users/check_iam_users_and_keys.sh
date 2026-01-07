@@ -40,7 +40,6 @@ chmod +x "$REDACTOR"
 exec > >("$REDACTOR") 2>&1
 
 # --- mask username ------------------------------------------------------------
-
 mask_user() {
   local u="${1:-}"
 
@@ -58,6 +57,16 @@ mask_user() {
   echo "${first}${stars}${last}"
 }
 
+# --- mask access key id (human-friendly) --------------------------------------
+mask_key() {
+  local k="${1:-}"
+  if [[ -z "$k" || "${#k}" -le 8 ]]; then
+    echo "<key>"
+    return
+  fi
+  # First 4 + ellipsis + last 4
+  echo "${k:0:4}…${k: -4}"
+}
 
 # --- dry-run handling ---------------------------------------------------------
 DRY_RUN="${DRY_RUN:-false}"
@@ -208,7 +217,7 @@ while [[ "$MORE" == "true" ]]; do
     USER_AGE_DAYS="$(days_since "$USER_CREATE_DATE")"
     USER_PASSWORD_LAST_USED="$(echo "$user" | jq -r '.PasswordLastUsed // empty')"
 
-    echo "Processing user: ${USER_NAME}"
+    echo "Processing user: $(mask_user "$USER_NAME")"
 
     # Fetch tags for this user (for filtering AND for notify email)
     USER_TAGS_JSON="$(aws iam list-user-tags --user-name "$USER_NAME" --output json 2>/dev/null || echo '{"Tags":[]}')"
@@ -462,9 +471,9 @@ else
   if jq -e '.[] | select(.type=="key" and .flags.disable==true)' iam_hygiene.json >/dev/null 2>&1; then
     jq -r '.[] | select(.type=="key" and .flags.disable==true) | "\(.user_name) \(.access_key_id)"' iam_hygiene.json | \
     while read -r u k; do
-      echo "Disabling access key ${k} for user ${u}"
+      echo "Disabling access key $(mask_key "$k") for user $(mask_user "$u")"
       aws iam update-access-key --user-name "$u" --access-key-id "$k" --status Inactive || \
-        echo "WARNING: Failed to disable access key ${k} for user ${u}" >&2
+        echo "WARNING: Failed to disable access key $(mask_key "$k") for user $(mask_user "$u")" >&2
     done
   fi
 
@@ -472,9 +481,9 @@ else
   if jq -e '.[] | select(.type=="key" and .flags.delete==true)' iam_hygiene.json >/dev/null 2>&1; then
     jq -r '.[] | select(.type=="key" and .flags.delete==true) | "\(.user_name) \(.access_key_id)"' iam_hygiene.json | \
     while read -r u k; do
-      echo "Deleting access key ${k} for user ${u}"
+      echo "Deleting access key $(mask_key "$k") for user $(mask_user "$u")"
       aws iam delete-access-key --user-name "$u" --access-key-id "$k" || \
-        echo "WARNING: Failed to delete access key ${k} for user ${u}" >&2
+        echo "WARNING: Failed to delete access key $(mask_key "$k") for user $(mask_user "$u")" >&2
     done
   fi
 
@@ -482,9 +491,9 @@ else
   if jq -e '.[] | select(.type=="user_summary" and .flags.disable==true)' iam_hygiene.json >/dev/null 2>&1; then
     jq -r '.[] | select(.type=="user_summary" and .flags.disable==true) | .user_name' iam_hygiene.json | \
     while read -r u; do
-      echo "Disabling console login for user ${u}"
+      echo "Disabling console login for user $(mask_user "$u")"
       aws iam delete-login-profile --user-name "$u" 2>/dev/null || \
-        echo "NOTE: No login profile to delete for user ${u}" >&2
+        echo "NOTE: No login profile to delete for user $(mask_user "$u")" >&2
     done
   fi
 
@@ -492,12 +501,12 @@ else
   if jq -e '.[] | select(.type=="user_summary" and .flags.delete==true)' iam_hygiene.json >/dev/null 2>&1; then
     jq -r '.[] | select(.type=="user_summary" and .flags.delete==true) | .user_name' iam_hygiene.json | \
     while read -r u; do
-      echo "Deleting IAM user ${u}"
+      echo "Deleting IAM user $(mask_user "$u")"
 
       # Delete remaining access keys (if any)
       for key_id in $(aws iam list-access-keys --user-name "$u" --query 'AccessKeyMetadata[].AccessKeyId' --output text 2>/dev/null || echo ""); do
         [[ -z "$key_id" ]] && continue
-        echo "  - deleting remaining key ${key_id}"
+        echo "  - deleting remaining key $(mask_key "$key_id")"
         aws iam delete-access-key --user-name "$u" --access-key-id "$key_id" || true
       done
 
@@ -527,7 +536,7 @@ else
 
       # Finally delete user
       if ! aws iam delete-user --user-name "$u"; then
-        echo "WARNING: Failed to delete user ${u} – manual cleanup may be required" >&2
+        echo "WARNING: Failed to delete user $(mask_user "$u") – manual cleanup may be required" >&2
       fi
     done
   fi
@@ -563,6 +572,12 @@ try:
 except ImportError:
     print("notifications-python-client not installed; skipping Notify emails", file=sys.stderr)
     sys.exit(0)
+
+def mask_user(u: str) -> str:
+    u = (u or "").strip()
+    if len(u) <= 2:
+        return "<user>"
+    return u[0] + ("*" * (len(u) - 2)) + u[-1]
 
 api_key = os.getenv("GOV_UK_NOTIFY_API_KEY")
 template_id = os.getenv("TEMPLATE_ID")
@@ -615,7 +630,7 @@ for u in notify_users:
     username = u.get("user_name")
     last_days = u.get("user_last_activity_days")
     if not email:
-        print(f"Skipping user {username}: no notify_email set", file=sys.stderr)
+        print(f"Skipping user {mask_user(username)}: no notify_email set", file=sys.stderr)
         continue
     try:
         client.send_email_notification(
@@ -628,10 +643,10 @@ for u in notify_users:
                 "inactive_days": last_days,
             },
         )
-        print(f"Sent Notify email to {email} for user {username}")
+        print(f"Sent Notify email to {email} for user {mask_user(username)}")
     except Exception as e:
         errors += 1
-        print(f"ERROR: Failed to send Notify email to {email} for user {username}: {e}", file=sys.stderr)
+        print(f"ERROR: Failed to send Notify email to {email} for user {mask_user(username)}: {e}", file=sys.stderr)
 
 if errors:
     print(f"Completed Notify run with {errors} error(s)", file=sys.stderr)
