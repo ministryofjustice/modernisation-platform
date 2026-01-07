@@ -1032,6 +1032,9 @@ module "iam_hygiene_oidc_role" {
 }
 
 data "aws_iam_policy_document" "iam_hygiene_policy" {
+  # checkov:skip=CKV_AWS_109: IAM hygiene policy in non-admin member accounts; tagging not available; risk accepted
+  # checkov:skip=CKV_AWS_356: Wildcard resources required for dynamic IAM user cleanup; limited account scope
+  # checkov:skip=CKV_AWS_107: Credential actions required for hygiene automation; no privileged users in these accounts
   statement {
     sid    = "AllowReadForDiscovery"
     effect = "Allow"
