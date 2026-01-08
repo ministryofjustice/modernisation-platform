@@ -1034,9 +1034,9 @@ module "iam_hygiene_oidc_role" {
 data "aws_iam_policy_document" "iam_hygiene_policy" {
   # checkov:skip=CKV_AWS_356: iam:ListUsers is not resource-scopable; wildcard required
   statement {
-    sid     = "AllowListUsersForDiscovery"
-    effect  = "Allow"
-    actions = ["iam:ListUsers"]
+    sid       = "AllowListUsersForDiscovery"
+    effect    = "Allow"
+    actions   = ["iam:ListUsers"]
     resources = ["*"]
   }
 
@@ -1065,9 +1065,9 @@ data "aws_iam_policy_document" "iam_hygiene_policy" {
   }
 
   statement {
-    sid     = "AllowDisableConsoleLogin"
-    effect  = "Allow"
-    actions = ["iam:DeleteLoginProfile"]
+    sid       = "AllowDisableConsoleLogin"
+    effect    = "Allow"
+    actions   = ["iam:DeleteLoginProfile"]
     resources = ["arn:aws:iam::*:user/*"]
   }
 
