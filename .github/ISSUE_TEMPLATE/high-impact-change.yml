@@ -1,0 +1,248 @@
+
+name: "High-Impact Change"
+description: "For changes with elevated risk, customer impact, or cross-service blast radius."
+title: "[HIC] <Concise change title>"
+labels:
+  - change
+  - high-impact
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## High-Impact Change Request
+        Use this template for changes with elevated risk. Complete all *required* fields.
+        - Be explicit and measurable in plans and validation steps.
+        - Link all relevant runbooks, dashboards, and alerts.
+
+  - type: input
+    id: requester
+    attributes:
+      label: Requester
+      description: Who is raising this change?
+      placeholder: "Name (and Slack / GH handle / email / phone number)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: env
+    attributes:
+      label: Environment(s)
+      description: Select all impacted environments.
+      multiple: true
+      options:
+        - Development
+        - Test
+        - Pre-Production
+        - Production
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: reasoning
+    attributes:
+      label: Reasoning for deployment / change
+      description: Business/technical justification. Link the epic/incident/issue/root cause where applicable.
+      placeholder: "Why are we making this change now? What outcome do we expect?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: change_summary
+    attributes:
+      label: Change summary (what is changing?)
+      description: Clear, user-focused description of the change and scope.
+      placeholder: "E.g., update ALB listener rules, upgrade ECS service task definition, modify Terraform module for TGW/VPC peering…"
+    validations:
+      required: true
+
+  - type: textarea
+    id: services_impacted
+    attributes:
+      label: Services impacted by change
+      description: List services, components, data stores, queues, external dependencies.
+      placeholder: |
+        - Networking (VPC, Transit Gateway)
+        - auth-service (ECS/Fargate)
+        - payments-db (Amazon RDS)
+        - Outbound: Stripe API
+    validations:
+      required: true
+
+  - type: input
+    id: change_window_start
+    attributes:
+      label: Planned start (UTC)
+      description: Change window start time (UTC).
+      placeholder: "2026-01-08 22:00 UTC"
+    validations:
+      required: true
+
+  - type: input
+    id: change_window_end
+    attributes:
+      label: Planned end (UTC)
+      description: Change window end time (UTC).
+      placeholder: "2026-01-08 23:00 UTC"
+    validations:
+      required: true
+
+  - type: input
+    id: duration_estimate
+    attributes:
+      label: Time to deploy (duration estimate)
+      description: Estimated duration of the change (not the window).
+      placeholder: "25 minutes"
+    validations:
+      required: true
+
+  - type: input
+    id: outage_time
+    attributes:
+      label: Expected outage / degradation
+      description: If any, specify total expected customer impact duration.
+      placeholder: "0 (no expected outage) or e.g., 2–5 minutes"
+
+  - type: checkboxes
+    id: change_characteristics
+    attributes:
+      label: Change characteristics
+      options:
+        - label: Customer communication required
+        - label: Infrastructure/IaC (Terraform)
+        - label: Secrets/Config change
+        - label: Third-party dependency involved
+        - label: Security or compliance impacting
+
+  - type: textarea
+    id: deployment_plan
+    attributes:
+      label: Deployment & testing plan (step-by-step)
+      description: Provide atomic, ordered steps; include pre-checks and post-checks.
+      placeholder: |
+        Pre-checks:
+        1) Confirm PagerDuty on-call coverage
+        2) Validate AWS Change Calendar for freeze windows
+        3) Check current ECS task health via `aws ecs describe-services`
+        4) Review Terraform plan output: `terraform plan -out=plan.tfplan`
+
+        Deploy:
+        5) Apply Terraform changes: `terraform apply plan.tfplan`
+           - Includes ALB listener updates, ECS task definition changes, SG modifications
+        6) Trigger GitHub Actions workflow for smoke tests (link run)
+        7) Canary rollout:
+           - Set ECS desired count to 1 in one AZ, monitor CW metrics (CPU, mem, 5xx) for 10 mins
+        8) Gradual scale-up:
+           - 25% → 50% → 100% traffic with 10-min soak per step
+
+        Post-checks:
+        9) Validate ALB target health: `aws elbv2 describe-target-health`
+        10) Check CloudWatch dashboards for latency and error rates
+        11) Confirm RDS connections stable via Performance Insights
+
+        Testing:
+        - GitHub Actions smoke test job: <workflow run link>
+        - Synthetic checks: Route 53 Health Checks
+    validations:
+      required: true
+
+  - type: dropdown
+    id: recovery_method
+    attributes:
+      label: Chosen recovery method
+      options:
+        - Rollback
+        - Roll forward (hotfix/patch)
+        - Blue/Green switchback
+        - Feature flag disable
+        - Data restore (point-in-time)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: recovery_plan
+    attributes:
+      label: Recovery plan & time to rollback
+      description: Exact steps and how long rollback takes.
+      placeholder: |
+        - Revert the original PR in GitHub:
+          1) Open the merged PR
+          2) Click **Revert** to create a rollback PR
+          3) Merge the revert PR to `main` to trigger GitHub Actions and re-apply previous Terraform state
+        - Validate rollback:
+          - Confirm Actions run succeeded
+          - Verify Terraform state and AWS resources (ECS tasks, ALB rules) match pre-change
+        - Estimated rollback time: 10–15 minutes (incl. pipeline)
+    validations:
+      required: true
+
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation of deployment success (objective)
+      description: Define objective metrics and user-observable checks.
+      placeholder: |
+        - Terraform apply succeeded without errors
+        - CloudWatch dashboard: <link>
+        - ALB 5xx error rate < 0.5%
+        - ECS task health = ACTIVE for all tasks
+        - Route 53 health checks green for 10 minutes
+        - GitHub Actions smoke tests passed
+    validations:
+      required: true
+
+  - type: input
+    id: pagerduty_board
+    attributes:
+      label: Link to PagerDuty status/board
+      description: Link to the incident dashboard or maintenance event.
+      placeholder: "https://pagerduty.com/incidents/..."
+
+  - type: textarea
+    id: comms_plan
+    attributes:
+      label: Communications plan
+      description: Stakeholder/customer comms before, during, after; channels; message templates.
+      placeholder: |
+        - Pre: #status, StatusPage (T-24h), email to enterprise customers
+        - During: #oncall-ops, #incident-bridge
+        - Post: change summary in #eng-announcements
+
+  - type: textarea
+    id: contacts
+    attributes:
+      label: Key contact points (on-call, SMEs, approvers)
+      placeholder: |
+        - Primary on-call: @name (PagerDuty schedule)
+        - SME(s): @name
+        - Approver: @name
+
+  - type: checkboxes
+    id: readiness_checklist
+    attributes:
+      label: Readiness checklist (tick all that apply)
+      options:
+        - label: All steps rehearsed in lower environments
+        - label: Backout tested or simulated
+        - label: Monitoring/Dashboards updated
+        - label: Security review complete (if applicable)
+        - label: Stakeholders notified
+
+  - type: checkboxes
+    id: approvals
+    attributes:
+      label: Approvals
+      description: Gather explicit approvals before execution.
+      options:
+        - label: Engineering lead approved
+        - label: Product/Owner approved
+        - label: On-call approved
+        - label: Security/Compliance approved (if applicable)
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        _Tip: Attach screenshots of CloudWatch dashboards, Terraform plan outputs, and ECS service health as comments to this issue._
