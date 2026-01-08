@@ -1014,10 +1014,10 @@ data "aws_iam_policy_document" "securityhub_insights_oidc_policy" {
 
 module "iam_hygiene_oidc_role" {
   count = (
-  local.account_data.account-type == "member-unrestricted"
-  || local.account_data.account-type == "member"
+    local.account_data.account-type == "member-unrestricted"
+    || local.account_data.account-type == "member"
   ) ? 1 : 0
- 
+
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
   github_repositories = ["ministryofjustice/modernisation-platform"]
 
@@ -1032,11 +1032,18 @@ module "iam_hygiene_oidc_role" {
 }
 
 data "aws_iam_policy_document" "iam_hygiene_policy" {
+  # checkov:skip=CKV_AWS_356: iam:ListUsers is not resource-scopable; wildcard required
+  statement {
+    sid       = "AllowListUsersForDiscovery"
+    effect    = "Allow"
+    actions   = ["iam:ListUsers"]
+    resources = ["*"]
+  }
+
   statement {
     sid    = "AllowReadForDiscovery"
     effect = "Allow"
     actions = [
-      "iam:ListUsers",
       "iam:ListUserTags",
       "iam:ListAccessKeys",
       "iam:GetAccessKeyLastUsed",
@@ -1044,7 +1051,7 @@ data "aws_iam_policy_document" "iam_hygiene_policy" {
       "iam:ListUserPolicies",
       "iam:ListGroupsForUser"
     ]
-    resources = ["*"]
+    resources = ["arn:aws:iam::*:user/*"]
   }
 
   statement {
@@ -1054,18 +1061,18 @@ data "aws_iam_policy_document" "iam_hygiene_policy" {
       "iam:UpdateAccessKey",
       "iam:DeleteAccessKey"
     ]
-    resources = ["*"]
+    resources = ["arn:aws:iam::*:user/*"]
   }
 
   statement {
-    sid    = "AllowDisableConsoleLogin"
-    effect = "Allow"
-    actions = [
-      "iam:DeleteLoginProfile"
-    ]
-    resources = ["*"]
+    sid       = "AllowDisableConsoleLogin"
+    effect    = "Allow"
+    actions   = ["iam:DeleteLoginProfile"]
+    resources = ["arn:aws:iam::*:user/*"]
   }
 
+  # checkov:skip=CKV_AWS_109: IAM hygiene cleanup in non-admin member accounts; no tagging available; risk accepted
+  # checkov:skip=CKV_AWS_356: Wildcard required for dynamic IAM user/group cleanup; limited member-account scope
   statement {
     sid    = "AllowUserDeletionCleanup"
     effect = "Allow"
@@ -1078,3 +1085,4 @@ data "aws_iam_policy_document" "iam_hygiene_policy" {
     resources = ["*"]
   }
 }
+

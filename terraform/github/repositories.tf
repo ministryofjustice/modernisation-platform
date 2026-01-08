@@ -504,3 +504,21 @@ module "modernisation-platform-github" {
     MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
   }
 }
+
+module "modernisation-platform-terraform-certificate-dns-validations" {
+  source      = "./modules/repository"
+  name        = "modernisation-platform-terraform-certificate-dns-validations"
+  type        = "module"
+  description = "Module supports the creation of DNS validations for an existing ACM certificate using platform hosted zones."
+  topics = [
+    "aws",
+    "dns",
+    "validation",
+    "module",
+    "terraform"
+  ]
+  secrets = {
+    PASSPHRASE                            = local.decrypt_passphrase
+    MODERNISATION_PLATFORM_ACCOUNT_NUMBER = local.modernisation_platform_account
+  }
+}

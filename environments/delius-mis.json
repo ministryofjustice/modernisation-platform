@@ -56,7 +56,8 @@
           "sso_group_name": "national-applications-reporting-team",
           "level": "developer"
         }
-      ]
+      ],
+      "instance_scheduler_skip": ["true"]
     },
     {
       "name": "production",
