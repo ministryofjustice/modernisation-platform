@@ -135,10 +135,13 @@ if [ -n "$TO_ADD" ]; then
             echo -e "   ${GREEN}✓${NC} Subscribed: ${email}"
             ((ADDED++))
         else
-            echo -e "   ${RED}✗${NC} Failed to subscribe: ${email} (HTTP ${http_code})"
+            echo -e "   ${YELLOW}⚠${NC} Failed to subscribe: ${email} (HTTP ${http_code})"
             echo -e "       API Response: ${response_body}" >&2
-            ((ERRORS++))
+            # Don't fail on individual email errors - log and continue
         fi
+        
+        # Rate limiting: sleep briefly between API calls to avoid hitting rate limits
+        sleep 0.5
     done <<< "$TO_ADD"
 fi
 
