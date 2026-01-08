@@ -27,7 +27,7 @@ locals {
 
   # Combine emails from JSON files with additional hardcoded emails
   all_subscriber_emails = distinct(concat(
-    # local.infrastructure_support_emails, # Uncomment after testing
+    local.infrastructure_support_emails,
     local.additional_subscriber_emails
   ))
 
