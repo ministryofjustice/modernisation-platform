@@ -36,8 +36,27 @@ set -euo pipefail
 REDACTOR="./scripts/redact-output.sh"
 chmod +x "$REDACTOR"
 
-# Redirect ALL stdout+stderr through the redactor
+# Redirect ALL stdout+stderr through the redactor (e.g. emails, creds, etc.)
 exec > >("$REDACTOR") 2>&1
+
+# --- mask username (logs only; does NOT change the real username used in API calls) ----
+# Example: "james.johns" -> "j*********s"
+mask_user() {
+  local u="${1:-}"
+
+  # If empty or very short, fully redact
+  if [[ -z "$u" || "${#u}" -le 2 ]]; then
+    echo "<user>"
+    return
+  fi
+
+  local first="${u:0:1}"
+  local last="${u: -1}"
+  local stars
+  stars="$(printf '%*s' $((${#u}-2)) '' | tr ' ' '*')"
+
+  echo "${first}${stars}${last}"
+}
 
 # --- dry-run handling ---------------------------------------------------------
 DRY_RUN="${DRY_RUN:-false}"
@@ -104,7 +123,7 @@ fi
 
 ACCOUNT_ID="$(aws sts get-caller-identity --query 'Account' --output text 2>/dev/null || echo 'unknown')"
 export ACCOUNT_ID
-echo "Scanning IAM users in account: ${ACCOUNT_ID}"
+echo "Scanning IAM users in account"
 
 # Cross-platform days-since helper using python3 (works on macOS & Linux)
 days_since() {
@@ -188,7 +207,7 @@ while [[ "$MORE" == "true" ]]; do
     USER_AGE_DAYS="$(days_since "$USER_CREATE_DATE")"
     USER_PASSWORD_LAST_USED="$(echo "$user" | jq -r '.PasswordLastUsed // empty')"
 
-    echo "Processing user: ${USER_NAME}"
+    echo "Processing user: $(mask_user "$USER_NAME")"
 
     # Fetch tags for this user (for filtering AND for notify email)
     USER_TAGS_JSON="$(aws iam list-user-tags --user-name "$USER_NAME" --output json 2>/dev/null || echo '{"Tags":[]}')"
@@ -432,49 +451,48 @@ else
 fi
 
 # Disable/delete keys and users (skipped in DRY RUN)
-
-echo "Applying lifecycle actions for account: ${ACCOUNT_ID}"
+echo "Applying lifecycle actions for account"
 
 if [[ "$DRY_RUN" == "true" ]]; then
   echo ">>> DRY RUN: no IAM changes will be made"
 else
-  # Disable keys
+  # Disable keys (mask username in logs only; do not mask key id)
   if jq -e '.[] | select(.type=="key" and .flags.disable==true)' iam_hygiene.json >/dev/null 2>&1; then
     jq -r '.[] | select(.type=="key" and .flags.disable==true) | "\(.user_name) \(.access_key_id)"' iam_hygiene.json | \
     while read -r u k; do
-      echo "Disabling access key ${k} for user ${u}"
+      echo "Disabling access key ${k} for user $(mask_user "$u")"
       aws iam update-access-key --user-name "$u" --access-key-id "$k" --status Inactive || \
-        echo "WARNING: Failed to disable access key ${k} for user ${u}" >&2
+        echo "WARNING: Failed to disable access key ${k} for user $(mask_user "$u")" >&2
     done
   fi
 
-  # Delete keys
+  # Delete keys (mask username in logs only; do not mask key id)
   if jq -e '.[] | select(.type=="key" and .flags.delete==true)' iam_hygiene.json >/dev/null 2>&1; then
     jq -r '.[] | select(.type=="key" and .flags.delete==true) | "\(.user_name) \(.access_key_id)"' iam_hygiene.json | \
     while read -r u k; do
-      echo "Deleting access key ${k} for user ${u}"
+      echo "Deleting access key ${k} for user $(mask_user "$u")"
       aws iam delete-access-key --user-name "$u" --access-key-id "$k" || \
-        echo "WARNING: Failed to delete access key ${k} for user ${u}" >&2
+        echo "WARNING: Failed to delete access key ${k} for user $(mask_user "$u")" >&2
     done
   fi
 
-  # Disable users (console password)
+  # Disable users (console password) (mask username in logs only)
   if jq -e '.[] | select(.type=="user_summary" and .flags.disable==true)' iam_hygiene.json >/dev/null 2>&1; then
     jq -r '.[] | select(.type=="user_summary" and .flags.disable==true) | .user_name' iam_hygiene.json | \
     while read -r u; do
-      echo "Disabling console login for user ${u}"
+      echo "Disabling console login for user $(mask_user "$u")"
       aws iam delete-login-profile --user-name "$u" 2>/dev/null || \
-        echo "NOTE: No login profile to delete for user ${u}" >&2
+        echo "NOTE: No login profile to delete for user $(mask_user "$u")" >&2
     done
   fi
 
-  # Delete users
+  # Delete users (mask username in logs only)
   if jq -e '.[] | select(.type=="user_summary" and .flags.delete==true)' iam_hygiene.json >/dev/null 2>&1; then
     jq -r '.[] | select(.type=="user_summary" and .flags.delete==true) | .user_name' iam_hygiene.json | \
     while read -r u; do
-      echo "Deleting IAM user ${u}"
+      echo "Deleting IAM user $(mask_user "$u")"
 
-      # Delete remaining access keys (if any)
+      # Delete remaining access keys (if any) (keep key id visible)
       for key_id in $(aws iam list-access-keys --user-name "$u" --query 'AccessKeyMetadata[].AccessKeyId' --output text 2>/dev/null || echo ""); do
         [[ -z "$key_id" ]] && continue
         echo "  - deleting remaining key ${key_id}"
@@ -507,16 +525,15 @@ else
 
       # Finally delete user
       if ! aws iam delete-user --user-name "$u"; then
-        echo "WARNING: Failed to delete user ${u} – manual cleanup may be required" >&2
+        echo "WARNING: Failed to delete user $(mask_user "$u") – manual cleanup may be required" >&2
       fi
     done
   fi
 fi
 
 # Summary + per-user GOV.UK Notify emails (skipped in DRY RUN)
-
 echo "--------------------------------------------"
-echo "IAM hygiene actions complete for account: ${ACCOUNT_ID}"
+echo "IAM hygiene actions complete for account"
 [[ -f keys_notify.list   ]] && echo "  Keys to notify about : $(wc -l < keys_notify.list)"   || echo "  Keys to notify about : 0"
 [[ -f keys_disable.list  ]] && echo "  Keys disabled        : $(wc -l < keys_disable.list)"  || echo "  Keys disabled        : 0"
 [[ -f keys_delete.list   ]] && echo "  Keys deleted         : $(wc -l < keys_delete.list)"   || echo "  Keys deleted         : 0"
@@ -543,6 +560,12 @@ try:
 except ImportError:
     print("notifications-python-client not installed; skipping Notify emails", file=sys.stderr)
     sys.exit(0)
+
+def mask_user(u: str) -> str:
+    u = (u or "").strip()
+    if len(u) <= 2:
+        return "<user>"
+    return u[0] + ("*" * (len(u) - 2)) + u[-1]
 
 api_key = os.getenv("GOV_UK_NOTIFY_API_KEY")
 template_id = os.getenv("TEMPLATE_ID")
@@ -595,7 +618,7 @@ for u in notify_users:
     username = u.get("user_name")
     last_days = u.get("user_last_activity_days")
     if not email:
-        print(f"Skipping user {username}: no notify_email set", file=sys.stderr)
+        print(f"Skipping user {mask_user(username)}: no notify_email set", file=sys.stderr)
         continue
     try:
         client.send_email_notification(
@@ -608,16 +631,15 @@ for u in notify_users:
                 "inactive_days": last_days,
             },
         )
-        print(f"Sent Notify email to {email} for user {username}")
+        print(f"Sent Notify email to {email} for user {mask_user(username)}")
     except Exception as e:
         errors += 1
-        print(f"ERROR: Failed to send Notify email to {email} for user {username}: {e}", file=sys.stderr)
+        print(f"ERROR: Failed to send Notify email to {email} for user {mask_user(username)}: {e}", file=sys.stderr)
 
 if errors:
     print(f"Completed Notify run with {errors} error(s)", file=sys.stderr)
 else:
     print("All Notify emails sent successfully")
-
 EOF
 
 else
