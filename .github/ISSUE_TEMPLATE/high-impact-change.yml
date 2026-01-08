@@ -51,7 +51,7 @@ body:
   - type: textarea
     id: change_summary
     attributes:
-      label: Change summary (what is changing)
+      label: Change summary (what is changing?)
       description: Clear, user-focused description of the change and scope.
       placeholder: "E.g., update ALB listener rules, upgrade ECS service task definition, modify Terraform module for TGW/VPC peering…"
     validations:
@@ -238,7 +238,7 @@ body:
       options:
         - label: Engineering lead approved
         - label: Product/Owner approved
-        - label: SRE/On-call approved
+        - label: On-call approved
         - label: Security/Compliance approved (if applicable)
 
   - type: markdown
