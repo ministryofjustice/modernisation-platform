@@ -131,8 +131,10 @@ locals {
     "modernisation-platform-terraform-aws-chatbot",
     "modernisation-platform-terraform-aws-data-firehose",
     "modernisation-platform-terraform-aws-vm-import",
+    "modernisation-platform-terraform-aws-waf",
     "modernisation-platform-terraform-baselines",
     "modernisation-platform-terraform-bastion-linux",
+    "modernisation-platform-terraform-certificate-dns-validations",
     "modernisation-platform-terraform-cross-account-access",
     "modernisation-platform-terraform-dns-certificates",
     "modernisation-platform-terraform-ec2-instance",
@@ -147,7 +149,6 @@ locals {
     "modernisation-platform-terraform-pagerduty-integration",
     "modernisation-platform-terraform-s3-bucket",
     "modernisation-platform-terraform-ssm-patching",
-    "modernisation-platform-terraform-aws-waf",
   ]
 
   repositories_with_full_team_access = [
