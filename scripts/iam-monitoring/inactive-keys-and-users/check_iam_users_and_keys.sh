@@ -123,7 +123,7 @@ fi
 
 ACCOUNT_ID="$(aws sts get-caller-identity --query 'Account' --output text 2>/dev/null || echo 'unknown')"
 export ACCOUNT_ID
-echo "Scanning IAM users in account: ${ACCOUNT_ID}"
+echo "Scanning IAM users in account"
 
 # Cross-platform days-since helper using python3 (works on macOS & Linux)
 days_since() {
@@ -451,7 +451,7 @@ else
 fi
 
 # Disable/delete keys and users (skipped in DRY RUN)
-echo "Applying lifecycle actions for account: ${ACCOUNT_ID}"
+echo "Applying lifecycle actions for account"
 
 if [[ "$DRY_RUN" == "true" ]]; then
   echo ">>> DRY RUN: no IAM changes will be made"
@@ -533,7 +533,7 @@ fi
 
 # Summary + per-user GOV.UK Notify emails (skipped in DRY RUN)
 echo "--------------------------------------------"
-echo "IAM hygiene actions complete for account: ${ACCOUNT_ID}"
+echo "IAM hygiene actions complete for account"
 [[ -f keys_notify.list   ]] && echo "  Keys to notify about : $(wc -l < keys_notify.list)"   || echo "  Keys to notify about : 0"
 [[ -f keys_disable.list  ]] && echo "  Keys disabled        : $(wc -l < keys_disable.list)"  || echo "  Keys disabled        : 0"
 [[ -f keys_delete.list   ]] && echo "  Keys deleted         : $(wc -l < keys_delete.list)"   || echo "  Keys deleted         : 0"
