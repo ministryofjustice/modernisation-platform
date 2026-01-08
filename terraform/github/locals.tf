@@ -148,6 +148,7 @@ locals {
     "modernisation-platform-terraform-s3-bucket",
     "modernisation-platform-terraform-ssm-patching",
     "modernisation-platform-terraform-aws-waf",
+    "modernisation-platform-terraform-certificate-dns-validations"
   ]
 
   repositories_with_full_team_access = [
