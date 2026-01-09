@@ -1261,6 +1261,160 @@
           "access": "instance-management"
         }
       ]
+    },
+    {
+      "username": "alex.francis",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "marianna.pallos",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "felicity.lea",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "wesley.bainbridge",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "lauren.granner",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "lydia.hughes",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "instance-management"
+        }
+      ]
+    },
+    {
+      "username": "callie.dyer",
+      "github-username": "no-value-supplied",
+      "accounts": [
+        {
+          "account-name": "youth-justice-app-framework-development",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-test",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-preproduction",
+          "access": "instance-management"
+        },
+        {
+          "account-name": "youth-justice-app-framework-production",
+          "access": "instance-management"
+        }
+      ]
     }
   ]
 }
