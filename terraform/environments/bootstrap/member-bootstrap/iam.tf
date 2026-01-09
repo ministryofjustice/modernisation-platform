@@ -1,6 +1,98 @@
 locals {
   account_name = try(regex("^bichard*.|^remote-supervisio*.", terraform.workspace), replace(terraform.workspace, regex("-[^-]*$", terraform.workspace), ""))
   account_data = jsondecode(file("../../../../environments/${local.account_name}.json"))
+
+  wiz_base_account_name = replace(terraform.workspace, regex("-[^-]*$", terraform.workspace), "")
+
+  wiz_resource_count_allowlist = toset([
+    "apex",
+    "ccms-ebs-upgrade",
+    "ccms-ebs",
+    "ccms-edrms",
+    "ccms-oia",
+    "ccms-pui-internal",
+    "ccms-pui",
+    "contract-work-administration",
+    "laa-ccms-soa",
+    "laa-cst-security-dashboard",
+    "laa-enterprise-service-bus",
+    "laa-mail-relay",
+    "laa-oem",
+    "laa-pui-secure-browser",
+    "laa-stabilisation-cdc-poc",
+    "maat",
+    "maatdb",
+    "mlra",
+    "mojfin",
+    "oas",
+    "portal",
+    "cooker",
+    "sprinkler",
+  ])
+
+  wiz_role_enabled = contains(local.wiz_resource_count_allowlist, local.wiz_base_account_name)
+}
+
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "wiz_resource_count" {
+  count = local.wiz_role_enabled ? 1 : 0
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "sts:GetCallerIdentity",
+
+      "ec2:DescribeRegions",
+      "ec2:DescribeInstances",
+
+      "lightsail:GetRegions",
+      "lightsail:GetInstances",
+
+      "ecs:ListClusters",
+      "ecs:ListContainerInstances",
+      "ecs:ListTasks",
+      "ecs:DescribeTasks",
+
+      "eks:ListClusters",
+      "eks:DescribeCluster",
+      "eks:ListFargateProfiles",
+
+      "lambda:ListFunctions",
+      "lambda:ListVersionsByFunction",
+
+      "sagemaker:ListDomains",
+      "sagemaker:ListEndpoints",
+
+      "ecr:DescribeRepositories",
+      "ecr:ListImages",
+
+      "s3:ListAllMyBuckets",
+      "docdb:DescribeDBClusters",
+      "rds:DescribeDBClusters",
+      "rds:DescribeDBInstances",
+      "redshift:DescribeClusters",
+      "dynamodb:ListTables"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "wiz_resource_count" {
+  count       = local.wiz_role_enabled ? 1 : 0
+  name        = "WizResourceCountReadOnly"
+  description = "Read-only permissions for wiz/resource-count-aws-v2.py (supports --data and --images)"
+  policy      = data.aws_iam_policy_document.wiz_resource_count[0].json
+}
+
+module "wiz-resource-count-access" {
+  count                  = local.wiz_role_enabled ? 1 : 0
+  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5"
+  account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
+  additional_trust_roles = [
+    one(data.aws_iam_roles.member-sso-admin-access.arns)
+  ]
+  policy_arn             = aws_iam_policy.wiz_resource_count[0].arn
+  role_name              = "WizResourceCountAccess"
 }
 
 module "member-access" {
