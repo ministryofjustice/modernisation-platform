@@ -1,28 +1,6 @@
 {
   "users": [
     {
-      "username": "test-user-1",
-      "github-username": "no-value-supplied",
-      "accounts": [
-        {
-          "account-name": "sprinkler-development",
-          "access": "read-only"
-        },
-        {
-          "account-name": "sprinkler-development",
-          "access": "developer"
-        },
-        {
-          "account-name": "testing-test",
-          "access": "read-only"
-        },
-        {
-          "account-name": "sprinkler-development",
-          "access": "fleet-manager"
-        }
-      ]
-    },
-    {
       "username": "james.ashton",
       "github-username": "jamesashton-roc",
       "accounts": [
