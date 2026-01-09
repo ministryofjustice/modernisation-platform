@@ -594,6 +594,63 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       ]
     }
   }
+  statement {
+    sid    = "AllowCloudPlatformEngineersAccess"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:PutObjectAcl",
+      "s3:DeleteObject"
+    ]
+
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/cloud-platform*/*"]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_platform-engineer-admin_*"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalAccount"
+      values = [
+        # Cloud Platform's member account IDs
+        local.environment_management.account_ids["cloud-platform-non-live-development"],
+        local.environment_management.account_ids["cloud-platform-non-live-test"],
+        local.environment_management.account_ids["cloud-platform-non-live-preproduction"],
+        local.environment_management.account_ids["cloud-platform-non-live-production"],
+        local.environment_management.account_ids["cloud-platform-live-development"],
+        local.environment_management.account_ids["cloud-platform-live-test"],
+        local.environment_management.account_ids["cloud-platform-live-preproduction"],
+        local.environment_management.account_ids["cloud-platform-live-production"]
+      ]
+    }
+  }
+  statement {
+    sid    = "AllowCloudPlatformDevelopmentClusterAccess"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:PutObjectAcl",
+      "s3:DeleteObject"
+    ]
+
+    resources = ["${module.state-bucket.bucket.arn}/environments/members/cloud-platform*/*"]
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["cloud-platform-non-live-development"]}:role/github-actions-development-cluster"]
+    }
+  }
 }
 
 # Allow access to the bucket for SSO admins from the MoJ root account
