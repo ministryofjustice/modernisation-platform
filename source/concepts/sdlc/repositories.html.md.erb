@@ -46,11 +46,11 @@ With the exception of modernisation-platform-environments, all of our managed re
 
 ## Creating new Github Repositories
 
-All of our github repositories are managed in terraform in the Modernisation Platform [Repository](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/github/repositories.tf).
+All of our github repositories are defined as code using terraform in the Modernisation Platform [Repository](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/github/repositories.tf).
 
 To add a new repository with correct default security settings, follow the steps outlined below:
 
-1. Define the new repository in the [repositories.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/github/repositories.tf) terraform file. Ensure that the right labels are used for the repository type and the keywords.
+1. Define the new repository in the [repositories.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/github/repositories.tf) terraform file. Ensure that the standard naming convention is followed and labels are used for the repository type and search keywords.
 
 2. Add the module name to the local [modernisation_platform_repositories](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/github/locals.tf#L118), keeping the list in alphabetical order for ease of reference. This will ensure the new repo will inherit the standard security permissions for the team.
 
