@@ -48,14 +48,17 @@ jobs:
           if [[ "$COMPONENT" == "github" || "$COMPONENT" == "pagerduty" || "$COMPONENT" == "single-sign-on" || "$COMPONENT" == "modernisation-platform-account" ]]; then
             echo "TF_PATH=terraform/$COMPONENT" >> $GITHUB_ENV
             echo "TF_WORKSPACE=default" >> $GITHUB_ENV
+            echo "S3_LOCK_KEY=$COMPONENT/terraform.tfstate.tflock" >> $GITHUB_ENV
 
           elif [[ "$COMPONENT" == "environments" ]]; then
             if [[ -n "$APP_NAME" && -n "$ENV" ]]; then
               echo "TF_PATH=terraform/environments/$APP_NAME" >> $GITHUB_ENV
               echo "TF_WORKSPACE=${APP_NAME}-${ENV}" >> $GITHUB_ENV
+              echo "S3_LOCK_KEY=environments/accounts/$APP_NAME/${APP_NAME}-${ENV}/terraform.tfstate.tflock" >> $GITHUB_ENV
             else
               echo "TF_PATH=terraform/environments" >> $GITHUB_ENV
               echo "TF_WORKSPACE=default" >> $GITHUB_ENV
+              echo "S3_LOCK_KEY=environments/terraform.tfstate.tflock" >> $GITHUB_ENV
             fi
 
           elif [[ "$COMPONENT" == bootstrap/* ]]; then
@@ -63,8 +66,10 @@ jobs:
               echo "You must provide 'application_name' and 'environment' for bootstrap"
               exit 1
             fi
+            BOOTSTRAP_COMPONENT="${COMPONENT#bootstrap/}"
             echo "TF_PATH=terraform/environments/$COMPONENT" >> $GITHUB_ENV
             echo "TF_WORKSPACE=${APP_NAME}-${ENV}" >> $GITHUB_ENV
+            echo "S3_LOCK_KEY=environments/bootstrap/$BOOTSTRAP_COMPONENT/${APP_NAME}-${ENV}/terraform.tfstate.tflock" >> $GITHUB_ENV
 
           else
             echo "Unknown component: $COMPONENT"
@@ -90,18 +95,9 @@ jobs:
       - name: Check if lock file exists
         id: check_lock
         run: |
-          # Determine S3 key based on workspace
-          if [[ "$TF_WORKSPACE" == "default" ]]; then
-            # For default workspace, lock file is at the base path
-            S3_KEY="${TF_PATH#terraform/}/terraform.tfstate.tflock"
-          else
-            # For named workspaces, lock file includes workspace name
-            S3_KEY="${TF_PATH#terraform/}/$TF_WORKSPACE/terraform.tfstate.tflock"
-          fi
+          echo "Checking for lock file at: s3://modernisation-platform-terraform-state/$S3_LOCK_KEY"
           
-          echo "Checking for lock file at: s3://modernisation-platform-terraform-state/$S3_KEY"
-          
-          if aws s3api head-object --bucket modernisation-platform-terraform-state --key "$S3_KEY" 2>/dev/null; then
+          if aws s3api head-object --bucket modernisation-platform-terraform-state --key "$S3_LOCK_KEY" 2>/dev/null; then
             echo "LOCK_EXISTS=true" >> $GITHUB_OUTPUT
             echo "Lock file exists, will proceed with unlock"
           else
