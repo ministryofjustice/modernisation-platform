@@ -35,6 +35,7 @@ locals {
 
 #tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "wiz_resource_count" {
+  #checkov:skip=CKV_AWS_356: Needs to access multiple resources
   count = local.wiz_role_enabled ? 1 : 0
 
   statement {
