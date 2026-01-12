@@ -90,8 +90,14 @@ jobs:
       - name: Check if lock file exists
         id: check_lock
         run: |
-          # Extract S3 key from TF_PATH (remove 'terraform/' prefix)
-          S3_KEY="${TF_PATH#terraform/}/terraform.tfstate.tflock"
+          # Determine S3 key based on workspace
+          if [[ "$TF_WORKSPACE" == "default" ]]; then
+            # For default workspace, lock file is at the base path
+            S3_KEY="${TF_PATH#terraform/}/terraform.tfstate.tflock"
+          else
+            # For named workspaces, lock file includes workspace name
+            S3_KEY="${TF_PATH#terraform/}/$TF_WORKSPACE/terraform.tfstate.tflock"
+          fi
           
           echo "Checking for lock file at: s3://modernisation-platform-terraform-state/$S3_KEY"
           
