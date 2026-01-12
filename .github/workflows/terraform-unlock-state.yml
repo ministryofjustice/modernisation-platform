@@ -87,6 +87,29 @@ jobs:
         working-directory: ${{ env.TF_PATH }}
         run: terraform init
 
+      - name: Check if lock file exists
+        id: check_lock
+        run: |
+          # Extract S3 key from TF_PATH (remove 'terraform/' prefix)
+          S3_KEY="${TF_PATH#terraform/}/terraform.tfstate.tflock"
+          
+          echo "Checking for lock file at: s3://modernisation-platform-terraform-state/$S3_KEY"
+          
+          if aws s3api head-object --bucket modernisation-platform-terraform-state --key "$S3_KEY" 2>/dev/null; then
+            echo "LOCK_EXISTS=true" >> $GITHUB_OUTPUT
+            echo "Lock file exists, will proceed with unlock"
+          else
+            echo "LOCK_EXISTS=false" >> $GITHUB_OUTPUT
+            echo "Lock file does not exist, already unlocked"
+          fi
+
       - name: Force Unlock State
+        if: steps.check_lock.outputs.LOCK_EXISTS == 'true'
         working-directory: ${{ env.TF_PATH }}
         run: terraform force-unlock -force ${{ github.event.inputs.lock_id }}
+
+      - name: Lock already removed
+        if: steps.check_lock.outputs.LOCK_EXISTS == 'false'
+        run: |
+          echo "✅ The Terraform state lock has already been removed."
+          echo "Lock ID ${{ github.event.inputs.lock_id }} is not present in the state."
