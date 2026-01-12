@@ -48,14 +48,17 @@ jobs:
           if [[ "$COMPONENT" == "github" || "$COMPONENT" == "pagerduty" || "$COMPONENT" == "single-sign-on" || "$COMPONENT" == "modernisation-platform-account" ]]; then
             echo "TF_PATH=terraform/$COMPONENT" >> $GITHUB_ENV
             echo "TF_WORKSPACE=default" >> $GITHUB_ENV
+            echo "S3_LOCK_KEY=$COMPONENT/terraform.tfstate.tflock" >> $GITHUB_ENV
 
           elif [[ "$COMPONENT" == "environments" ]]; then
             if [[ -n "$APP_NAME" && -n "$ENV" ]]; then
               echo "TF_PATH=terraform/environments/$APP_NAME" >> $GITHUB_ENV
               echo "TF_WORKSPACE=${APP_NAME}-${ENV}" >> $GITHUB_ENV
+              echo "S3_LOCK_KEY=environments/accounts/$APP_NAME/${APP_NAME}-${ENV}/terraform.tfstate.tflock" >> $GITHUB_ENV
             else
               echo "TF_PATH=terraform/environments" >> $GITHUB_ENV
               echo "TF_WORKSPACE=default" >> $GITHUB_ENV
+              echo "S3_LOCK_KEY=environments/terraform.tfstate.tflock" >> $GITHUB_ENV
             fi
 
           elif [[ "$COMPONENT" == bootstrap/* ]]; then
@@ -63,8 +66,10 @@ jobs:
               echo "You must provide 'application_name' and 'environment' for bootstrap"
               exit 1
             fi
+            BOOTSTRAP_COMPONENT="${COMPONENT#bootstrap/}"
             echo "TF_PATH=terraform/environments/$COMPONENT" >> $GITHUB_ENV
             echo "TF_WORKSPACE=${APP_NAME}-${ENV}" >> $GITHUB_ENV
+            echo "S3_LOCK_KEY=environments/bootstrap/$BOOTSTRAP_COMPONENT/${APP_NAME}-${ENV}/terraform.tfstate.tflock" >> $GITHUB_ENV
 
           else
             echo "Unknown component: $COMPONENT"
@@ -87,6 +92,26 @@ jobs:
         working-directory: ${{ env.TF_PATH }}
         run: terraform init
 
+      - name: Check if lock file exists
+        id: check_lock
+        run: |
+          echo "Checking for lock file at: s3://modernisation-platform-terraform-state/$S3_LOCK_KEY"
+          
+          if aws s3api head-object --bucket modernisation-platform-terraform-state --key "$S3_LOCK_KEY" 2>/dev/null; then
+            echo "LOCK_EXISTS=true" >> $GITHUB_OUTPUT
+            echo "Lock file exists, will proceed with unlock"
+          else
+            echo "LOCK_EXISTS=false" >> $GITHUB_OUTPUT
+            echo "Lock file does not exist, already unlocked"
+          fi
+
       - name: Force Unlock State
+        if: steps.check_lock.outputs.LOCK_EXISTS == 'true'
         working-directory: ${{ env.TF_PATH }}
         run: terraform force-unlock -force ${{ github.event.inputs.lock_id }}
+
+      - name: Lock already removed
+        if: steps.check_lock.outputs.LOCK_EXISTS == 'false'
+        run: |
+          echo "✅ The Terraform state lock has already been removed."
+          echo "Lock ID ${{ github.event.inputs.lock_id }} is not present in the state."
