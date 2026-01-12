@@ -1415,16 +1415,6 @@
           "access": "instance-management"
         }
       ]
-    },    
-    {
-      "username": "duncan.abraham",
-      "github-username": "duncanabraham",
-      "accounts": [
-        {
-          "account-name": "cica-sandbox-development",
-          "access": "developer"
-        }
-      ]
     }
   ]
 }

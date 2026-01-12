@@ -7,6 +7,10 @@
         {
           "sso_group_name": "cica-review-case-documents",
           "level": "sandbox"
+        },
+        {
+          "sso_group_name": "cica-external-developers",
+          "level": "developer"
         }
       ],
       "nuke": "exclude"
