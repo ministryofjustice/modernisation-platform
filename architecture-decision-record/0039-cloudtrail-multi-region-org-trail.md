@@ -42,7 +42,7 @@ Date: 2026-01-09
 
 ##### Cons
 - Requires coordination with other OUs  
-- Some teams may not want organisation-wide changes implemented at this stage   
+- Some teams may not want organisation-wide changes implemented at this stage
 
 ---
 
