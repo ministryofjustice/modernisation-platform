@@ -103,10 +103,10 @@ jobs:
             echo "Lock file does not exist, already unlocked"
           fi
 
-      - name: Force Unlock State
-        if: steps.check_lock.outputs.LOCK_EXISTS == 'true'
-        working-directory: ${{ env.TF_PATH }}
-        run: terraform force-unlock -force ${{ github.event.inputs.lock_id }}
+      # - name: Force Unlock State
+      #   if: steps.check_lock.outputs.LOCK_EXISTS == 'true'
+      #   working-directory: ${{ env.TF_PATH }}
+      #   run: terraform force-unlock -force ${{ github.event.inputs.lock_id }}
 
       - name: Lock already removed
         if: steps.check_lock.outputs.LOCK_EXISTS == 'false'
