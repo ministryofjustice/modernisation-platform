@@ -23,30 +23,92 @@ Unless there is a good reason, ACM public certificates should be used as they ar
 
 ### Non production environments
 
-Non production environments should use the [Modernisation Platform domain naming standards](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/networking/dns.html#dns-naming).
+Non production environments should use the [organisation domain naming standards](https://user-guide.modernisation-platform.service.justice.gov.uk/concepts/networking/dns.html#dns-naming).
 
-The following resources need to be created in different AWS accounts (see diagram above), the table details the resources and the AWS provider required for them.
+The following resources need to be created in different AWS accounts (see diagram above), the table details the resources and the AWS provider required for them. We recommend using hosted zones in the relevant core-vpc account for non-production validation records.
 
-| Resource                                                | Terraform Resource  | Terraform Provider        | Description                                                                                                                                                                                                                                                                                                                              |
-| ------------------------------------------------------- | ------------------- | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ACM Public Certificate                                  | aws_acm_certificate | default                   | ACM Public certificate created in the application account. The domain name should equal the main modernisation-platform domain, "modernisation-platform.service.justice.gov.uk", the SAN (subject alternative name) should equal the DNS record name entry, eg "my-application.hmpps-test.modernisation-platform.service.justice.gov.uk" |
-| Route53 DNS record for certificate validation           | aws_route53_record  | aws.core-network-services | Created in the modernisation-platform hosted zone, this record validates the public certificate.                                                                                                                                                                                                                                         |
-| Route53 DNS record for directing traffic to the service | aws_route53_record  | aws.core-vpc              | Created in the hosted zone for the environment and business unit, eg "my-application.hmpps-test.modernisation-platform.service.justice.gov.uk".                                                                                                                                                                                          |
+| Resource                                                | Terraform Resource  | Terraform Provider        | Hosted Zone Reference     | Description                                                                                                                                                                                                                                                                                                                              |
+| ------------------------------------------------------- | ------------------- | ------------------------- | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ACM Public Certificate                                  | aws_acm_certificate | default                   | --                        | ACM Public certificate created in the application account. The domain name should equal the main modernisation-platform domain, "modernisation-platform.service.justice.gov.uk", the SAN (subject alternative name) should equal the DNS record name entry, eg "my-application.hmpps-test.modernisation-platform.service.justice.gov.uk" |
+| Route53 DNS record for certificate validation           | aws_route53_record  | aws.core-vpc              | aws_route53_zone.external | Created in the modernisation-platform hosted zone, this record validates the public certificate.                                                                                                                                                                                                                                         |
+| Route53 DNS record for directing traffic to the service | aws_route53_record  | aws.core-vpc              | aws_route53_zone.external | Created in the hosted zone for the environment and business unit, eg "my-application.hmpps-test.modernisation-platform.service.justice.gov.uk".                                                                                                                                                                                          |
 
 ### Production environments
 
-Production environments should use a `service.justice.gov.uk` domain as per MoJ [naming domains](https://cloud-optimisation-and-accountability.justice.gov.uk/documentation/operations-engineering-legacy/operations-engineering-user-guide/dns/domain-naming-standard.html) guidance.
+Production environments should use a `service.justice.gov.uk` based domain as per MoJ [naming domains](https://cloud-optimisation-and-accountability.justice.gov.uk/documentation/operations-engineering-legacy/operations-engineering-user-guide/dns/domain-naming-standard.html) guidance.
 
 The Modernisation Platform will need to request the delegation of the application domain (eg `my-application.service.justice.gov.uk`) from the [Operations Engineering](https://cloud-optimisation-and-accountability.justice.gov.uk/documentation/operations-engineering-legacy/operations-engineering-user-guide/dns/domainmgt.html) team via an email to the [domains mailbox](mailto:domains@digital.justice.gov.uk) with the details of the records to be added to the `service.justice.gov.uk` domain and to discuss if the subdomain name meets the MoJ naming domains standard. Please contact the Modernisation Platform team in the [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) Slack channel to do this.
 
 The Modernisation Platform team will then create a [hosted zone](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-network-services/route53.tf#L5) for your domain.
 Once this has been completed the following resources need to be created in different AWS accounts (see diagram above), the table details the resources and the AWS provider required for them.
 
-| Resource                                                | Terraform Resource  | Terraform Provider        | Description                                                                                                                                             |
-| ------------------------------------------------------- | ------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ACM Public Certificate                                  | aws_acm_certificate | default                   | ACM Public certificate created in the application account. The domain name should equal the application domain, "my-application.service.justice.gov.uk" |
-| Route53 DNS record for certificate validation           | aws_route53_record  | aws.core-network-services | Created in the application hosted zone, this record validates the public certificate.                                                                   |
-| Route53 DNS record for directing traffic to the service | aws_route53_record  | aws.core-network-services | Created in the application hosted zone, eg "my-application.service.justice.gov.uk".                                                                     |
+| Resource                                                | Terraform Resource  | Terraform Provider        | Hosted Zone Reference             | Description                                                                                                                                             |
+| ------------------------------------------------------- | ------------------- | ------------------------- | ----------------------------------| ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ACM Public Certificate                                  | aws_acm_certificate | default                   | --                                | ACM Public certificate created in the application account. The domain name should equal the application domain, "my-application.service.justice.gov.uk" |
+| Route53 DNS record for certificate validation           | aws_route53_record  | aws.core-network-services | aws_route53_zone.network-services | Created in the application hosted zone, this record validates the public certificate.                                                                   |
+| Route53 DNS record for directing traffic to the service | aws_route53_record  | aws.core-network-services | aws_route53_zone.network-services | Created in the application hosted zone, eg "my-application.service.justice.gov.uk".                                                                     |
+
+
+## Using the modernisation-platform-terraform-dns-certificates Terraform Module to create ACM Certificates and DNS Validation Records
+
+We have added a [module](https://github.com/ministryofjustice/modernisation-platform-terraform-dns-certificates) to simplify how our DNS hosted zones are used for the purposes of ACM Certificate validation using DNS records.
+
+The module uses the core-vpc hosted zones for non-production validation records and creates some default subject alternate names which avoids breaching the 64 character domain name limit. For production use, the relevant core-network-services hosted zone is used based on the hosted zone name provided.
+
+Below are two examples of using the module:
+
+### Non-Production
+
+The example below creates an AWS ACM Certificate with:
+
+- The core domain name that equals the name of the hosted zone obtained from the data call aws_route53_zone.external as defined in platform_data.tf
+- The default subject alternative name using a wildcard & the application name derived from local.application_name - itself set in platform_locals.tf
+- An additional subject alternative_name `*.db`
+- DNS validations against the hosted zone in question.
+
+```hcl
+module "cert_module" {
+  source = "https://github.com/ministryofjustice/modernisation-platform-terraform-dns-certificates?ref=94e7ba452b40bbc5af65338dc63b6b1349e0d890" #v1.0.0
+  providers = {
+    aws.core-vpc              = aws.core-vpc
+    aws.core-network-services = aws.core-network-services
+  }
+  application_name                          = local.application_name
+  subject_alternative_names                 = ["*.db"]
+  is-production                             = local.is-production
+  production_service_fqdn                   = ""
+  zone_name_core_vpc_public                 = data.aws_route53_zone.external.name
+  tags                                      = local.tags
+}
+```
+
+### Production
+
+For production domain names, users are advised to follow the MoJ domain name guidance listed [earlier](https://cloud-optimisation-and-accountability.justice.gov.uk/documentation/operations-engineering-legacy/operations-engineering-user-guide/dns/domain-naming-standard.html). As such using the core-vpc hosted zones are not recommended.
+
+The example below creates an AWS ACM Certificate with the following attributes:
+
+- The core domain name of `servicename.service.justice.gov.uk` which would require a new domain name & hosted zone created with delegated permissions.
+- A Subject Alternative Name of `*.webapp.servicename.service.justice.gov.uk`.
+- DNS validation records for the new hosted zone.
+
+```hcl
+module "cert_module" {
+  source = "https://github.com/ministryofjustice/modernisation-platform-terraform-dns-certificates?ref=94e7ba452b40bbc5af65338dc63b6b1349e0d890" #v1.0.0
+  providers = {
+    aws.core-vpc              = aws.core-vpc
+    aws.core-network-services = aws.core-network-services
+  }
+  application_name                          = local.application_name
+  subject_alternative_names                 = ["*.webapp"]
+  is-production                             = local.is-production
+  production_service_fqdn                   = "servicename.service.justice.gov.uk"
+  zone_name_core_vpc_public                 = "servicename.service.justice.gov.uk"
+  tags                                      = local.tags
+}
+```
+
+For further information on domain name registration, please contact the **Cost Optimisation and Accountability Team** via the slack channel `#ask-operations-engineering`.
 
 ## DNS with Gandi.net certificate
 
