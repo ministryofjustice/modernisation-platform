@@ -32,8 +32,7 @@ locals {
   maintainers = [
     "connormaglynn",
     "davidkelliott",
-    "ewastempel",
-    "seanprivett",
+    "ewastempel"
   ]
 
   # GitHub usernames for CI users
@@ -47,7 +46,6 @@ locals {
   # GitHub usernames for team members who don't need full AWS access
   general_members = [
     "kcbotsh",
-    "seanprivett",
     "SimonPPledger"
   ]
 
