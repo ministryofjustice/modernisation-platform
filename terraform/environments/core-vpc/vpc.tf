@@ -1,3 +1,5 @@
+data "aws_organizations_organization" "current" {}
+
 # lookups for DNS
 
 data "aws_route53_zone" "public" {
