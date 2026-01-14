@@ -1,0 +1,25 @@
+{
+  "account-type": "member",
+  "codeowners": ", ",
+  "environments": [
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "studio-webops (developer); hosting-migrations (developer); csr-application-support (developer); azure-aws-sso-digital-studio-operations (developer);",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "prison-retail",
+    "business-unit": "HMPPS",
+    "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
+    "owner": "digital-studio-operations-team@digital.justice.gov.uk",
+    "slack-channel": "#prison_retail_alarms",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
