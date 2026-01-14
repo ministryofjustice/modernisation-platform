@@ -1,12 +1,23 @@
 {
   "account-type": "member",
-  "codeowners": ", ",
   "environments": [
     {
       "name": "production",
       "access": [
         {
-          "sso_group_name": "studio-webops (developer); hosting-migrations (developer); csr-application-support (developer); azure-aws-sso-digital-studio-operations (developer);",
+          "sso_group_name": "studio-webops",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "hosting-migrations",
+          "level": "developer"
+        },
+        {          
+          "sso_group_name": "csr-application-support",
+          "level": "developer"
+        },        
+        {
+          "sso_group_name": "azure-aws-sso-digital-studio-operations",
           "level": "developer"
         }
       ]
