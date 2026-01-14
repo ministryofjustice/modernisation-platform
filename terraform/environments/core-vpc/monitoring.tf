@@ -239,3 +239,113 @@ module "pagerduty_vpc_flowlog_alerts" {
   sns_topics                = [aws_sns_topic.vpc_flowlog_alarms.name]
   pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
 }
+
+# Transit Gateway attachment monitoring
+
+# CloudTrail log metric filter for Transit Gateway attachment creation outside of automation
+resource "aws_cloudwatch_log_metric_filter" "unauthorized_tgw_attachment" {
+  name           = "unauthorized_transit_gateway_attachment_filter"
+  pattern        = "{ ($.eventSource = \"ec2.amazonaws.com\") && ($.eventName = \"CreateTransitGatewayVpcAttachment\") && ($.userIdentity.sessionContext.sessionIssuer.userName != \"ModernisationPlatformAccess\") }"
+  log_group_name = "cloudtrail"
+
+  metric_transformation {
+    name      = "UnauthorizedTGWAttachment"
+    namespace = "TransitGateway/Security"
+    value     = "1"
+  }
+}
+
+# CloudWatch alarm for unauthorized Transit Gateway attachment creation
+resource "aws_cloudwatch_metric_alarm" "unauthorized_tgw_attachment" {
+  alarm_name          = "unauthorized-transit-gateway-attachment-creation"
+  alarm_description   = "High priority alert: Transit Gateway VPC attachment created outside of GitHub Actions automation. This may indicate unauthorized network access attempt or manual change requiring investigation."
+  alarm_actions       = [aws_sns_topic.tgw_monitoring.arn]
+  ok_actions          = [aws_sns_topic.tgw_monitoring.arn]
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "UnauthorizedTGWAttachment"
+  namespace           = "TransitGateway/Security"
+  period              = "60"
+  statistic           = "Sum"
+  threshold           = "0"
+  treat_missing_data  = "notBreaching"
+
+  tags = local.tags
+}
+
+# SNS topic for TGW monitoring alarms
+resource "aws_sns_topic" "tgw_monitoring" {
+  name              = "tgw_monitoring"
+  kms_master_key_id = aws_kms_key.tgw_monitoring_sns_encryption.arn
+  tags              = local.tags
+}
+
+module "pagerduty_transit_gateway" {
+  depends_on = [
+    aws_sns_topic.tgw_monitoring
+  ]
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=d88bd90d490268896670a898edfaba24bba2f8ab" # v3.0.0
+  sns_topics                = [aws_sns_topic.tgw_monitoring.name]
+  pagerduty_integration_key = local.pagerduty_integration_keys["tgw_cloudwatch"]
+}
+
+# KMS key for TGW monitoring SNS topic encryption
+resource "aws_kms_key" "tgw_monitoring_sns_encryption" {
+  description             = "KMS key for TGW monitoring SNS topic encryption"
+  deletion_window_in_days = 7
+  enable_key_rotation     = true
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "Enable IAM User Permissions",
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        },
+        Action   = "kms:*",
+        Resource = "*"
+      },
+      {
+        Sid    = "Allow SNS to use the key",
+        Effect = "Allow",
+        Principal = {
+          Service = "sns.amazonaws.com"
+        },
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ],
+        Resource = "*"
+      },
+      {
+        Sid    = "Allow CloudWatch to use the key",
+        Effect = "Allow",
+        Principal = {
+          Service = "cloudwatch.amazonaws.com"
+        },
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+
+  tags = {
+    Name = "tgw-monitoring-sns-encryption-key"
+  }
+}
+
+resource "aws_kms_alias" "tgw_monitoring_sns_topic" {
+  name_prefix   = "alias/tgw-monitoring-sns-encryption"
+  target_key_id = aws_kms_key.tgw_monitoring_sns_encryption.key_id
+}
