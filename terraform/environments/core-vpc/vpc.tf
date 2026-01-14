@@ -1,3 +1,5 @@
+data "aws_organizations_organization" "current" {}
+
 # lookups for DNS
 
 data "aws_route53_zone" "public" {
@@ -197,22 +199,25 @@ resource "aws_iam_role" "member-delegation" {
   for_each = local.vpcs[terraform.workspace]
 
   name = "member-delegation-${each.key}"
-  assume_role_policy = jsonencode(
-    {
-      "Version" : "2012-10-17",
-      "Statement" : [
-        {
-          "Effect" : "Allow",
-          "Principal" : {
-            "AWS" : concat(
-              local.expanded_account_numbers_with_keys[each.key],
-              tolist([data.aws_caller_identity.modernisation-platform.account_id])
-            )
-          },
-          "Action" : "sts:AssumeRole",
-          "Condition" : {}
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          AWS = concat(
+            local.expanded_account_numbers_with_keys[each.key],
+            tolist([data.aws_caller_identity.modernisation-platform.account_id])
+          )
         }
-      ]
+        Action = "sts:AssumeRole"
+        Condition = {
+          StringEquals = {
+            "aws:PrincipalOrgID" = data.aws_organizations_organization.current.id
+          }
+        }
+      }
+    ]
   })
 
   tags = merge(
