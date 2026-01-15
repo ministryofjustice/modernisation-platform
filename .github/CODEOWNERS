@@ -1,1 +1,5 @@
 * @ministryofjustice/modernisation-platform
+
+# ECR ownership
+/terraform/environments/core-shared-services/ecr/sprinkler.tf @ministryofjustice/codeowners-test
+/terraform/environments/core-shared-services/ecr/sprinkler/ecr.tf @ministryofjustice/codeowners-test
