@@ -6,7 +6,9 @@ allowed_environments := [
   "development",
   "test",
   "preproduction",
-  "production"
+  "production",
+  "non-live",
+  "live"
 ]
 
 deny contains msg if {

@@ -11,5 +11,5 @@ test_invalid_file_name_length if {
 }
 
 test_unexpected_environment if {
-  deny["`example.json` uses an unexpected environment: got `sandbox`, expected one of: development, test, preproduction, production"] with input as { "filename": "example.json", "environments": [{ "name": "sandbox" }] }
+  deny["`example.json` uses an unexpected environment: got `sandbox`, expected one of: development, test, preproduction, production, non-live, live"] with input as { "filename": "example.json", "environments": [{ "name": "sandbox" }] }
 }
