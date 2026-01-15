@@ -48,9 +48,7 @@ jobs:
         uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@5c713c93eea694829b1bd3f410d0b235053318ce # v4.0.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          git_path: |
-           terraform/environments
-           .github/CODEOWNERS
+          git_path: "terraform/environments .github/CODEOWNERS"
           pr_title: "New files for terraform/environments"
           pr_body: "> This PR was automatically created via a GitHub action workflow 🤖"
         env:
