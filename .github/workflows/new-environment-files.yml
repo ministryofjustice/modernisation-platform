@@ -40,6 +40,8 @@ jobs:
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Provision environment directories
         run: bash ./scripts/provision-environment-directories.sh
+      - name: Generate CODEOWNERS for core-shared-services teams
+        run: bash ./scripts/generate-team-codeowners.sh
       - name: Commit changes to GitHub
         run: bash ./scripts/git-setup.sh
       - name: Commit and Create PR with Signed Commit
