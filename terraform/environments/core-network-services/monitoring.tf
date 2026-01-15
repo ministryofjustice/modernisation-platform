@@ -284,3 +284,37 @@ resource "aws_cloudwatch_metric_alarm" "ErrorPortAllocation" {
 
   tags = local.tags
 }
+
+# Transit Gateway attachment monitoring
+# This catches attachments from ANY account, including unauthorized accounts that may have been granted illicit RAM sharing
+
+# CloudTrail log metric filter for TGW attachment acceptance
+resource "aws_cloudwatch_log_metric_filter" "tgw_attachment_accepted" {
+  name           = "tgw_attachment_accepted_filter"
+  pattern        = "{ ($.eventSource = \"ec2.amazonaws.com\") && ($.eventName = \"AcceptTransitGatewayVpcAttachment\") && ($.userIdentity.sessionContext.sessionIssuer.userName != \"ModernisationPlatformAccess\") }"
+  log_group_name = "cloudtrail"
+
+  metric_transformation {
+    name      = "TGWAttachmentAccepted"
+    namespace = "TransitGateway/Security"
+    value     = "1"
+  }
+}
+
+# CloudWatch alarm for TGW attachment acceptance
+resource "aws_cloudwatch_metric_alarm" "tgw_attachment_accepted" {
+  alarm_name          = "tgw-attachment-accepted-outside-automation"
+  alarm_description   = "High priority alert: Transit Gateway VPC attachment accepted from any account outside of GitHub Actions automation. This may indicate unauthorized network access attempt via illicit RAM sharing or manual attachment creation."
+  alarm_actions       = [aws_sns_topic.tgw_monitoring_production.arn]
+  ok_actions          = [aws_sns_topic.tgw_monitoring_production.arn]
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "TGWAttachmentAccepted"
+  namespace           = "TransitGateway/Security"
+  period              = "60"
+  statistic           = "Sum"
+  threshold           = "0"
+  treat_missing_data  = "notBreaching"
+
+  tags = local.tags
+}
