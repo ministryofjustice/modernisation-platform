@@ -29,6 +29,8 @@
       "com.amazonaws.eu-west-2.execute-api",
       "com.amazonaws.eu-west-2.glue",
       "com.amazonaws.eu-west-2.kinesis-streams",
+      "com.amazonaws.eu-west-2.kms",
+      "com.amazonaws.eu-west-2.monitoring",
       "com.amazonaws.eu-west-2.lambda",
       "com.amazonaws.eu-west-2.lakeformation",
       "com.amazonaws.eu-west-2.secretsmanager",

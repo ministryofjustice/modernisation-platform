@@ -150,6 +150,7 @@ locals {
   ]
 
   repositories_with_full_team_access = [
+    "modernisation-platform",
     "modernisation-platform-ami-builds",
     "modernisation-platform-configuration-management",
     "modernisation-platform-environments"
