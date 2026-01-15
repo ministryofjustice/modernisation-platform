@@ -7,7 +7,7 @@ allowed_environments := [
   "test",
   "preproduction",
   "production",
-  "non-live",
+  "nonlive",
   "live"
 ]
 

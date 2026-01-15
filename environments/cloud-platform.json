@@ -36,7 +36,7 @@
       ]
     },
     {
-      "name": "non-live",
+      "name": "nonlive",
       "access": [
         {
           "sso_group_name": "cloud-platform-engineers",
