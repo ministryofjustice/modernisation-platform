@@ -74,19 +74,23 @@ locals {
   }
 
   tgw_live_data_attachments = {
-    for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => v.tags.Name if(
-      length(regexall("(?:production-attachment)", v.tags.Name)) > 0 ||
-      length(regexall("(?:preproduction-attachment)", v.tags.Name)) > 0 ||
-      length(regexall("(?:-live_data-attachment)", v.tags.Name)) > 0
+    for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => lookup(v.tags, "Name", "") if(
+      lookup(v.tags, "Name", "") != "" && (
+        length(regexall("(?:production-attachment)", lookup(v.tags, "Name", ""))) > 0 ||
+        length(regexall("(?:preproduction-attachment)", lookup(v.tags, "Name", ""))) > 0 ||
+        length(regexall("(?:-live_data-attachment)", lookup(v.tags, "Name", ""))) > 0
+      )
     )
   }
 
   tgw_non_live_data_attachments = {
-    for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => v.tags.Name if(
-      length(regexall("(?:development-attachment)", v.tags.Name)) > 0 ||
-      length(regexall("(?:sandbox-attachment)", v.tags.Name)) > 0 ||
-      length(regexall("(?:test-attachment)", v.tags.Name)) > 0 ||
-      length(regexall("(?:-non_live_data-attachment)", v.tags.Name)) > 0
+    for k, v in data.aws_ec2_transit_gateway_vpc_attachment.transit_gateway_all : k => lookup(v.tags, "Name", "") if(
+      lookup(v.tags, "Name", "") != "" && (
+        length(regexall("(?:development-attachment)", lookup(v.tags, "Name", ""))) > 0 ||
+        length(regexall("(?:sandbox-attachment)", lookup(v.tags, "Name", ""))) > 0 ||
+        length(regexall("(?:test-attachment)", lookup(v.tags, "Name", ""))) > 0 ||
+        length(regexall("(?:-non_live_data-attachment)", lookup(v.tags, "Name", ""))) > 0
+      )
     )
   }
 
