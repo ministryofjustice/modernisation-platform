@@ -31,7 +31,7 @@ The key insight is that even if an unauthorized attachment is created, it cannot
 
 We will **keep `auto_accept_shared_attachments = "enable"`** on the MP Transit Gateway and implement compensating controls through CloudWatch monitoring and alerting.
 
-### Implemented Compensating Controls:
+### Implemented Compensating Controls
 
 1. **CloudWatch Monitoring in Core-VPC Accounts** - Monitor `CreateTransitGatewayVpcAttachment` API calls to detect manual attachment creation in the four legitimate core-vpc accounts (production, preproduction, test, development)
 
@@ -41,21 +41,21 @@ We will **keep `auto_accept_shared_attachments = "enable"`** on the MP Transit G
 
 4. **Security Hub Control Suppression** - Disable EC2.23 control in core-network-services account with documented rationale
 
-### Monitoring Pattern:
+### Monitoring Pattern
 Both alarms exclude the `ModernisationPlatformAccess` IAM role, which is used by GitHub Actions and local Terraform runs for legitimate automation. Any attachment creation outside this role triggers an alert.
 
 ## Consequences
 
-### Positive:
+### Positive
 - Maintains fully automated infrastructure deployment
 - Real-time detection of anomalous attachments (faster than manual review)
 - Defence in depth: monitoring catches unauthorized attachment attempts from any of our accounts
 
-### Trade-offs:
+### Trade-offs
 - Local Terraform runs using `ModernisationPlatformAccess` role won't trigger alarms (accepted limitation as these are authenticated platform engineers)
 - Monitoring is detective, not preventive - but preventive controls exist via RAM sharing restrictions and routing configuration
 
-### Security Outcome:
+### Security Outcome
 The combination of explicit RAM sharing, disabled default routing, and real-time monitoring provides equivalent security to manual approval, while maintaining operational efficiency. An attacker would need to:
 1. Compromise an account that already has RAM access, AND
 2. Create an attachment (which triggers alarms), AND
