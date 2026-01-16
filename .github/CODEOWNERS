@@ -28,6 +28,7 @@
 /terraform/environments/core-shared-services/teams/cica-tariff @ministryofjustice/cica-mp-tariff 
 /terraform/environments/core-shared-services/teams/cloud-platform-live @ministryofjustice/cloud-platform-engineers 
 /terraform/environments/core-shared-services/teams/cloud-platform-non-live @ministryofjustice/cloud-platform-engineers 
+/terraform/environments/core-shared-services/teams/cloud-platform @ministryofjustice/cloud-platform-engineers 
 /terraform/environments/core-shared-services/teams/coat @ministryofjustice/cloud-optimisation-and-accountability 
 /terraform/environments/core-shared-services/teams/contract-work-administration @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-cwa-developer @ministryofjustice/laa-pcuam 
 /terraform/environments/core-shared-services/teams/cooker @ministryofjustice/modernisation-platform @ministryofjustice/panda-cyber-team @ministryofjustice/tvm-purple-team 
