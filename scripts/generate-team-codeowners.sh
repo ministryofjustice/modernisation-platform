@@ -19,7 +19,7 @@ EOL
       continue
     fi
 
-    directory="/terraform/environments/core-shared-services/teams/$application_name"
+    directory="/terraform/environments/core-shared-services/${application_name}.tf"
 
     # Prefer codeowners if present
     if jq -e '.codeowners != null and (.codeowners | length > 0)' "$file" >/dev/null 2>&1; then
