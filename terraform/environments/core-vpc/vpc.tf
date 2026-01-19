@@ -89,7 +89,7 @@ module "vpc" {
     aws.transit-gateway-host = aws.core-network-services
   }
   for_each             = local.vpcs[terraform.workspace]
-  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=2d6439b729e60c4fd72a6c8439ca710229f64064" # v5.1.1
+  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=12d74c97b970b084886405aef6f949a7129d0ff4" # v5.1.2
   additional_endpoints = each.value.options.additional_endpoints
   subnet_sets          = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
   transit_gateway_id   = data.aws_ec2_transit_gateway.transit-gateway.id
@@ -143,20 +143,17 @@ module "resource-share" {
   tags_prefix = each.key
 }
 
-# Separate RAM share for secondary CIDR subnets
-# This requires a second apply after secondary subnets are created
+# RAM share for secondary CIDR subnets
+# Uses map with static keys (CIDR-AZ) to avoid for_each issues with unknown ARNs
 module "resource-share-secondary" {
   source = "../../modules/ram-resource-share"
   for_each = {
     for key, vpc in module.vpc : key => vpc
-    if length(vpc.secondary_cidr_subnet_ids) > 0
+    if length(try(vpc.secondary_cidr_subnet_arns_map, {})) > 0
   }
 
-  # Secondary CIDR subnet ARNs
-  resource_arns = [
-    for subnet_id in each.value.secondary_cidr_subnet_ids :
-    "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.modernisation-platform.account_id}:subnet/${subnet_id}"
-  ]
+  # Map of secondary CIDR subnet ARNs (keys are static: "CIDR-AZ", values are ARNs)
+  resource_arns = each.value.secondary_cidr_subnet_arns_map
 
   # Tags
   tags_common = local.tags

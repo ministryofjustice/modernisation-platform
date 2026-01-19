@@ -9,6 +9,6 @@ variable "tags_prefix" {
 }
 
 variable "resource_arns" {
-  description = "Resource ARNs to attach to a resource share"
-  type        = list(string)
+  description = "Resource ARNs to attach to a resource share. Can be a list(string) or map(string) where keys are static identifiers"
+  type        = any
 }

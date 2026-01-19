@@ -10,7 +10,10 @@ resource "aws_ram_resource_share" "default" {
 }
 
 resource "aws_ram_resource_association" "default" {
-  for_each = toset(var.resource_arns)
+  # Support both list and map inputs
+  # If list: convert to set
+  # If map: use keys directly
+  for_each = can(toset(var.resource_arns)) ? toset(var.resource_arns) : toset(values(var.resource_arns))
 
   resource_arn       = each.value
   resource_share_arn = aws_ram_resource_share.default.arn
