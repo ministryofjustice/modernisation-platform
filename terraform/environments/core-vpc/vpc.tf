@@ -95,6 +95,9 @@ module "vpc" {
   transit_gateway_id   = data.aws_ec2_transit_gateway.transit-gateway.id
   type                 = local.is-live_data ? "live_data" : "non_live_data"
 
+  # Secondary CIDR blocks for additional subnet capacity
+  secondary_cidr_blocks = lookup(each.value.options, "secondary_cidr_blocks", [])
+
   # VPC Flow Logs
   vpc_flow_log_iam_role       = aws_iam_role.vpc_flow_log.arn
   flow_log_s3_destination_arn = local.is-production ? local.core_logging_bucket_arns["vpc-flow-logs"] : ""
