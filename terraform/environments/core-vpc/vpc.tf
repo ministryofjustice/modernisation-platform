@@ -143,6 +143,26 @@ module "resource-share" {
   tags_prefix = each.key
 }
 
+# Separate RAM share for secondary CIDR subnets
+# This requires a second apply after secondary subnets are created
+module "resource-share-secondary" {
+  source = "../../modules/ram-resource-share"
+  for_each = {
+    for key, vpc in module.vpc : key => vpc
+    if length(vpc.secondary_cidr_subnet_ids) > 0
+  }
+
+  # Secondary CIDR subnet ARNs
+  resource_arns = [
+    for subnet_id in each.value.secondary_cidr_subnet_ids :
+    "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.modernisation-platform.account_id}:subnet/${subnet_id}"
+  ]
+
+  # Tags
+  tags_common = local.tags
+  tags_prefix = "${each.key}-secondary"
+}
+
 module "dns-zone" {
   depends_on = [
     module.vpc

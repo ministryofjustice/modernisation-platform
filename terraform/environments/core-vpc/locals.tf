@@ -2,6 +2,8 @@ data "aws_caller_identity" "modernisation-platform" {
   provider = aws.modernisation-platform
 }
 
+data "aws_region" "current" {}
+
 data "aws_organizations_organization" "root_account" {}
 
 locals {
