@@ -29,6 +29,11 @@ on:
         required: false
         type: boolean
         default: false
+      download_collaborators:
+        description: "Whether to download collaborators.json from modernisation-platform-github"
+        required: false
+        type: boolean
+        default: false
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER:
         required: true
@@ -72,7 +77,14 @@ jobs:
           app-id: ${{ env.APP_ID }}               
           private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
           owner: "ministryofjustice"
-          
+      
+      - name: Download collaborators.json from modernisation-platform-github
+        if: ${{ inputs.download_collaborators == true && inputs.set_github_app_token == true }}
+        run: |
+          curl -H "Authorization: token ${{ steps.app.outputs.token }}" \
+            -o collaborators.json \
+            https://raw.githubusercontent.com/ministryofjustice/modernisation-platform-github/main/collaborators.json
+
       - name: Authenticate GitHub CLI as the App and Check the Rate Usage
         if: ${{ inputs.set_github_app_token == true }}
         env:
