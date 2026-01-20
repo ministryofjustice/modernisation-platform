@@ -70,6 +70,7 @@ locals {
     data.key => data.account_nos
   }
 
+  # Primary subnets (lists) - for backward compatibility with existing state
   non-tgw-vpc-subnet = flatten([
     for key, vpc in module.vpc : [
       for set in keys(module.vpc[key].non_tgw_subnet_arns_by_subnetset) : {
@@ -80,6 +81,20 @@ locals {
     ]
   ])
 
+  # Secondary subnets (maps) - allows single-apply deployment
+  secondary-vpc-subnet = flatten([
+    for key, vpc in module.vpc : [
+      length(module.vpc[key].secondary_subnet_arns_with_keys) > 0 ? {
+        key  = key
+        set  = "general-secondary"
+        arns = module.vpc[key].secondary_subnet_arns_with_keys
+      } : null
+    ] if module.vpc[key].secondary_subnet_arns_with_keys != null
+  ])
+
+  # Combined list for RAM sharing
+  all-vpc-subnets = concat(local.non-tgw-vpc-subnet, [for s in local.secondary-vpc-subnet : s if s != null])
+
   modernisation-platform-domain          = "modernisation-platform.service.justice.gov.uk"
   modernisation-platform-internal-domain = "modernisation-platform.internal"
 }
@@ -89,7 +104,7 @@ module "vpc" {
     aws.transit-gateway-host = aws.core-network-services
   }
   for_each             = local.vpcs[terraform.workspace]
-  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=12d74c97b970b084886405aef6f949a7129d0ff4" # v5.1.2
+  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=410bd64f9a9eab204390822a46bf5ccca6fea12b" # v5.1.0
   additional_endpoints = each.value.options.additional_endpoints
   subnet_sets          = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
   transit_gateway_id   = data.aws_ec2_transit_gateway.transit-gateway.id
@@ -132,32 +147,16 @@ locals {
 module "resource-share" {
   source = "../../modules/ram-resource-share"
   for_each = {
-    for vpc in local.non-tgw-vpc-subnet : "${vpc.key}-${vpc.set}" => vpc
+    for vpc in local.all-vpc-subnets : "${vpc.key}-${vpc.set}" => vpc
   }
 
   # Subnet ARNs to attach to a resource share
-  resource_arns = [for key, subnet in each.value.arns : subnet]
+  # Lists for primary subnets (backward compatible), maps for secondary subnets (single-apply)
+  resource_arns = each.value.arns
 
   # Tags
   tags_common = local.tags
   tags_prefix = each.key
-}
-
-# RAM share for secondary CIDR subnets
-# Uses map with static keys (CIDR-AZ) to avoid for_each issues with unknown ARNs
-module "resource-share-secondary" {
-  source = "../../modules/ram-resource-share"
-  for_each = {
-    for key, vpc in module.vpc : key => vpc
-    if length(try(vpc.secondary_cidr_subnet_arns_map, {})) > 0
-  }
-
-  # Map of secondary CIDR subnet ARNs (keys are static: "CIDR-AZ", values are ARNs)
-  resource_arns = each.value.secondary_cidr_subnet_arns_map
-
-  # Tags
-  tags_common = local.tags
-  tags_prefix = "${each.key}-secondary"
 }
 
 module "dns-zone" {
