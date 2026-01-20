@@ -1101,6 +1101,7 @@ data "aws_iam_policy_document" "securityhub_insights_oidc_policy" {
     effect = "Allow"
     actions = [
       "securityhub:CreateInsight",
+      "securityhub:UpdateInsight",
       "securityhub:GetInsights",
       "securityhub:GetInsightResults"
     ]
