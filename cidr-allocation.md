@@ -89,7 +89,7 @@
 | 10.27.136.0 | /21  | core-shared-services live_data                      |
 | 10.27.144.0 | /21  | yjb-preproduction - general                         |
 | 10.27.152.0 | /21  | yjb-production - general                            |
-| 10.27.160.0 | /21  | hmpps production secondary - general                |
+| 10.27.160.0 | /21  |                                                     |
 | 10.27.168.0 | /21  | -                                                   |
 | 10.27.176.0 | /21  | -                                                   |
 | 10.27.184.0 | /21  | -                                                   |
