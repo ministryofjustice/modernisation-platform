@@ -11,7 +11,7 @@
 ## Core Accounts CIDRs
 
 | CIDR        | mask | allocated to                        |
-|:------------|:-----|:------------------------------------|
+| :---------- | :--- | :---------------------------------- |
 | 10.20.0.0   | /19  | core-network-services live_data     |
 | 10.20.32.0  | /19  | core-network-services non_live_data |
 | 10.20.64.0  | /19  | core-shared-services live_data      |
@@ -26,7 +26,7 @@
 ### development and test /21s for member subnet-sets
 
 | CIDR        | mask | allocated to                                         |
-| :---------- |:-----|:-----------------------------------------------------|
+| :---------- | :--- | :--------------------------------------------------- |
 | 10.26.0.0   | /21  | platforms test - general                             |
 | 10.26.8.0   | /21  | hmpps test - general                                 |
 | 10.26.16.0  | /21  | platforms development - general                      |
@@ -66,7 +66,7 @@
 ### preproduction and production /21s for member subnet-sets
 
 | CIDR        | mask | allocated to                                        |
-|:------------|:-----|:----------------------------------------------------|
+| :---------- | :--- | :-------------------------------------------------- |
 | 10.27.0.0   | /21  | hmpps preproduction - general                       |
 | 10.27.8.0   | /21  | hmpps production - general                          |
 | 10.27.16.0  | /21  | hmcts production - general                          |
@@ -89,7 +89,7 @@
 | 10.27.136.0 | /21  | core-shared-services live_data                      |
 | 10.27.144.0 | /21  | yjb-preproduction - general                         |
 | 10.27.152.0 | /21  | yjb-production - general                            |
-| 10.27.160.0 | /21  | -                                                   |
+| 10.27.160.0 | /21  |                                                     |
 | 10.27.168.0 | /21  | -                                                   |
 | 10.27.176.0 | /21  | -                                                   |
 | 10.27.184.0 | /21  | -                                                   |

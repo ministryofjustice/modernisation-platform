@@ -70,6 +70,7 @@ locals {
     data.key => data.account_nos
   }
 
+  # Primary subnets (lists) - for backward compatibility with existing state
   non-tgw-vpc-subnet = flatten([
     for key, vpc in module.vpc : [
       for set in keys(module.vpc[key].non_tgw_subnet_arns_by_subnetset) : {
@@ -80,6 +81,20 @@ locals {
     ]
   ])
 
+  # Secondary subnets (maps) - allows single-apply deployment
+  secondary-vpc-subnet = flatten([
+    for key, vpc in module.vpc : [
+      length(module.vpc[key].secondary_subnet_arns_with_keys) > 0 ? {
+        key  = key
+        set  = "general-secondary"
+        arns = module.vpc[key].secondary_subnet_arns_with_keys
+      } : null
+    ] if module.vpc[key].secondary_subnet_arns_with_keys != null
+  ])
+
+  # Combined list for RAM sharing
+  all-vpc-subnets = concat(local.non-tgw-vpc-subnet, [for s in local.secondary-vpc-subnet : s if s != null])
+
   modernisation-platform-domain          = "modernisation-platform.service.justice.gov.uk"
   modernisation-platform-internal-domain = "modernisation-platform.internal"
 }
@@ -89,11 +104,14 @@ module "vpc" {
     aws.transit-gateway-host = aws.core-network-services
   }
   for_each             = local.vpcs[terraform.workspace]
-  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=1e9d059bcf93cf947c96641a055ffd3f9adc8cad" # v5.1.0
+  source               = "github.com/ministryofjustice/modernisation-platform-terraform-member-vpc?ref=410bd64f9a9eab204390822a46bf5ccca6fea12b" # v5.1.0
   additional_endpoints = each.value.options.additional_endpoints
   subnet_sets          = { for key, subnet in each.value.cidr.subnet_sets : key => subnet.cidr }
   transit_gateway_id   = data.aws_ec2_transit_gateway.transit-gateway.id
   type                 = local.is-live_data ? "live_data" : "non_live_data"
+
+  # Secondary CIDR blocks for additional subnet capacity
+  secondary_cidr_blocks = lookup(each.value.options, "secondary_cidr_blocks", [])
 
   # VPC Flow Logs
   vpc_flow_log_iam_role       = aws_iam_role.vpc_flow_log.arn
@@ -129,11 +147,12 @@ locals {
 module "resource-share" {
   source = "../../modules/ram-resource-share"
   for_each = {
-    for vpc in local.non-tgw-vpc-subnet : "${vpc.key}-${vpc.set}" => vpc
+    for vpc in local.all-vpc-subnets : "${vpc.key}-${vpc.set}" => vpc
   }
 
   # Subnet ARNs to attach to a resource share
-  resource_arns = [for key, subnet in each.value.arns : subnet]
+  # Lists for primary subnets (backward compatible), maps for secondary subnets (single-apply)
+  resource_arns = each.value.arns
 
   # Tags
   tags_common = local.tags
