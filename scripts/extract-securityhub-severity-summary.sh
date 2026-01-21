@@ -21,15 +21,6 @@ create_or_get_insight() {
             --group-by-attribute "SeverityLabel" \
             --query "InsightArn" \
             --output text)
-    else
-        aws securityhub update-insight --region "$REGION" \
-            --name $INSIGHT_NAME \
-            --insight-arn "$INSIGHT_ARN" \
-            --filters '{
-                "RecordState": [{"Value": "ACTIVE", "Comparison": "EQUALS"}],
-                "WorkflowStatus": [{"Value": "NEW", "Comparison": "EQUALS"}]
-            }' \
-            --group-by-attribute "SeverityLabel"
     fi
     get_severity_counts "$INSIGHT_ARN"
     
