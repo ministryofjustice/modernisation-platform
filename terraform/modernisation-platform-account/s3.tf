@@ -624,6 +624,10 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
       variable = "aws:PrincipalAccount"
       values = [
         # Cloud Platform's member account IDs
+        local.environment_management.account_ids["cloud-platform-development"],
+        local.environment_management.account_ids["cloud-platform-preproduction"],
+        local.environment_management.account_ids["cloud-platform-nonlive"],
+        local.environment_management.account_ids["cloud-platform-live"],
         local.environment_management.account_ids["cloud-platform-non-live-development"],
         local.environment_management.account_ids["cloud-platform-non-live-test"],
         local.environment_management.account_ids["cloud-platform-non-live-preproduction"],
@@ -647,8 +651,11 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
 
     resources = ["${module.state-bucket.bucket.arn}/environments/members/cloud-platform*/*"]
     principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["cloud-platform-non-live-development"]}:role/github-actions-development-cluster"]
+      type = "AWS"
+      identifiers = [
+        "arn:aws:iam::${local.environment_management.account_ids["cloud-platform-non-live-development"]}:role/github-actions-development-cluster",
+        "arn:aws:iam::${local.environment_management.account_ids["cloud-platform-development"]}:role/github-actions-development-cluster"
+      ]
     }
   }
 }
