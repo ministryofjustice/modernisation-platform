@@ -2,8 +2,8 @@
 
 environment=$1
 
-# Check for changes in environments-networks
-accounts=$(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep "environments-networks/.*.json" | xargs -I {} cat {} | jq '.cidr.subnet_sets[].accounts[]' -r | grep "\-${TF_ENV}" | uniq | tr \\n " ")
+# Check for changes in environments-networks for the specific environment
+accounts=$(git diff --no-commit-id --name-only --diff-filter=AM -r @^ | awk '{print $1}' | grep "environments-networks/.*-${environment}.json" | xargs -I {} cat {} | jq '.cidr.subnet_sets[].accounts[]' -r | uniq | tr \\n " ")
 echo "[+] -----------------------------------------------------------------"
 echo "[+] environments-networks accounts to run RAM share on: ${accounts}"
 
