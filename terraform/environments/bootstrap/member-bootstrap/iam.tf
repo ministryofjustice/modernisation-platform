@@ -317,6 +317,7 @@ data "aws_iam_policy_document" "member-access" {
       "redshift-serverless:*",
       "resource-explorer-2:*",
       "transfer:*",
+      "vpce:*",
       "kinesisanalytics:*Application*",
       "kinesisanalytics:*Resource",
       "sagemaker:*",
