@@ -41,7 +41,6 @@ setup_ram_share_association() {
       fi
     fi
     echo "Finished running ram share association for application: ${application}"
-    exit 0
 }
 
 setup_ram_share_association
