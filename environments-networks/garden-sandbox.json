@@ -10,6 +10,7 @@
   "options": {
     "bastion_linux": false,
     "additional_cidrs": [],
+    "secondary_cidr_blocks": ["10.231.16.0/21"],
     "additional_endpoints": [],
     "additional_private_zones": [],
     "additional_vpcs": [],
