@@ -29,14 +29,15 @@ setup_ram_share_association() {
       if [[ "${terraform_action}" == "plan" ]]; then
         # Plan only mode - show what would change
         echo "[+] Running terraform plan (no changes will be applied)"
-        terraform -chdir="${basedir}/${application}" plan -target=module.ram-ec2-retagging[0].data.aws_subnets.associated
+        echo "[+] Targeted plan for RAM principal associations:"
+        terraform -chdir="${basedir}/${application}" plan -target=module.ram-principal-association
         echo "[+] Full plan:"
         terraform -chdir="${basedir}/${application}" plan
       else
         # Normal apply mode
-        # Run terraform apply to get subnet info
-        ./scripts/terraform-apply.sh $basedir/$application -target=module.ram-ec2-retagging[0].data.aws_subnets.associated
-        # Run the full terraform apply
+        # First apply RAM principal associations so subnets become accessible
+        ./scripts/terraform-apply.sh $basedir/$application -target=module.ram-principal-association
+        # Then run the full terraform apply (discovers subnets and tags them)
         ./scripts/terraform-apply.sh $basedir/$application
       fi
     fi
