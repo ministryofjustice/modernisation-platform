@@ -29,10 +29,9 @@ setup_ram_share_association() {
       if [[ "${terraform_action}" == "plan" ]]; then
         # Plan only mode - show what would change
         echo "[+] Running terraform plan (no changes will be applied)"
-        echo "[+] Targeted plan for RAM principal associations:"
+        echo "[+] Plan for RAM principal associations:"
         terraform -chdir="${basedir}/${application}" plan -target=module.ram-principal-association
-        echo "[+] Full plan:"
-        terraform -chdir="${basedir}/${application}" plan
+        echo "[+] Note: Full plan cannot be shown until RAM associations are applied and subnets become discoverable"
       else
         # Normal apply mode
         # First apply RAM principal associations so subnets become accessible
