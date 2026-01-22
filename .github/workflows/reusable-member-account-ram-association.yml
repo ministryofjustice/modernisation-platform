@@ -58,13 +58,13 @@ jobs:
         with:
           terraform_wrapper: false
 
-      - name: Run RAM association plan (PR)
+      - name: Plan RAM principal associations (targeted)
         if: github.ref != 'refs/heads/main'
         env:
           TERRAFORM_ACTION: plan
         run: bash scripts/get-applications-and-run-ram.sh ${{ inputs.environment }}
 
-      - name: Run RAM association apply (main)
+      - name: Apply RAM associations and subnet tagging
         if: github.ref == 'refs/heads/main'
         run: bash scripts/get-applications-and-run-ram.sh ${{ inputs.environment }}
 
