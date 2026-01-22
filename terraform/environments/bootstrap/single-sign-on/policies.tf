@@ -652,6 +652,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "migrationhub-strategy:*",
       "networkflowmonitor:*",
       "networkmonitor:*",
+      "network-firewall:*",
       "oam:*",
       "organizations:DescribeOrganization",
       "quicksight:*",
