@@ -260,6 +260,7 @@ data "aws_iam_policy_document" "member-access" {
       "logs:*",
       "networkflowmonitor:*",
       "networkmonitor:*",
+      "network-firewall:*".
       "organizations:Describe*",
       "organizations:List*",
       "oam:*",
