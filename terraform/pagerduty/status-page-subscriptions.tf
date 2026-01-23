@@ -19,15 +19,22 @@ locals {
   }
 
   # Extract unique infrastructure-support emails (non-null only)
+  # Normalise to lowercase to handle case-sensitivity inconsistencies across JSON files
   infrastructure_support_emails = distinct(compact([
     for file, config in local.environment_configs :
-    try(config.tags["infrastructure-support"], null)
+    try(lower(config.tags["infrastructure-support"]), null)
   ]))
+
+  # Normalise additional emails to lowercase for consistency
+  normalised_additional_emails = [
+    for email in local.additional_subscriber_emails :
+    lower(email)
+  ]
 
   # Combine emails from JSON files with additional hardcoded emails
   all_subscriber_emails = distinct(concat(
     local.infrastructure_support_emails,
-    local.additional_subscriber_emails
+    local.normalised_additional_emails
   ))
 
   # Sort for consistent ordering and create a hash to detect ANY changes
