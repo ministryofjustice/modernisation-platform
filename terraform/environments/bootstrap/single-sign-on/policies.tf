@@ -683,7 +683,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "textract:*",
       "tiros:*",
       "transfer:*",
-      "vpce:*".
+      "vpce:*",
       "wafv2:*",
       "wellarchitected:*",
       "workspaces-web:*"
