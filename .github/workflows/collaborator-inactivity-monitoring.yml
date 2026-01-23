@@ -26,6 +26,8 @@ jobs:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   schedule-user-deletion:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     needs: fetch-secrets
     steps:
