@@ -89,3 +89,5 @@ jobs:
           git_path: "collaborators.json"
           pr_title: "Remove inactive IAM collaborators"
           pr_body: "$(cat pr_body.txt)"
+        env:
+          SECRET: ${{ secrets.GITHUB_TOKEN }}
