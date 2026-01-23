@@ -6,8 +6,7 @@ locals {
   # Additional emails to subscribe that aren't in environments/*.json files
   # Add any ad-hoc email addresses here as needed
   additional_subscriber_emails = [
-    # Example: "team-name@justice.gov.uk",
-    # Example: "external-team@example.com",
+    "alistair.curtis@digital.justice.gov.uk"
   ]
 
   # Read all environment JSON files
