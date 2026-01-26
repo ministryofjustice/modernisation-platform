@@ -2,15 +2,6 @@
 
 data "aws_caller_identity" "current" {}
 
-# Get the VPC network configuration to check for secondary CIDRs
-data "http" "vpc_network_config" {
-  url = "https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments-networks/${var.networking[0].business-unit}-${local.environment}.json"
-}
-
-locals {
-  vpc_network_config     = jsondecode(data.http.vpc_network_config.response_body)
-  has_secondary_cidrs    = length(lookup(lookup(local.vpc_network_config, "options", {}), "secondary_cidr_blocks", [])) > 0
-}
 
 module "ram-principal-association" {
 
@@ -23,12 +14,11 @@ module "ram-principal-association" {
     aws.share-host   = aws.core-vpc
     aws.share-tenant = aws
   }
-  principal               = data.aws_caller_identity.current.account_id
-  vpc_name                = var.networking[0].business-unit
-  subnet_set              = var.networking[0].set
-  acm_pca                 = "acm-pca-${local.is_live[0]}"
-  environment             = local.environment
-  enable_secondary_share  = local.has_secondary_cidrs
+  principal   = data.aws_caller_identity.current.account_id
+  vpc_name    = var.networking[0].business-unit
+  subnet_set  = var.networking[0].set
+  acm_pca     = "acm-pca-${local.is_live[0]}"
+  environment = local.environment
 
 }
 

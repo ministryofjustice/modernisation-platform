@@ -24,9 +24,3 @@ variable "environment" {
   description = "environment"
   type        = string
 }
-
-variable "enable_secondary_share" {
-  description = "Whether to lookup and associate secondary CIDR resource share (determined automatically from environments-networks config)"
-  type        = bool
-  default     = false
-}
