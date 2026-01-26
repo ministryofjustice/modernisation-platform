@@ -1,24 +1,16 @@
 name: DORA Metrics Workflow
 
 on:
-    workflow_dispatch:
-        inputs:
-            date_range:
-                description: "Date range for metrics (format: YYYY-MM-DD..YYYY-MM-DD)"
-                required: false
-            json_file_path:
-                description: "Path to the JSON file with repository names"
-                required: false
-    push:
-        branches:
-            - "feature/migrate-dora-the-explora"
-        paths:
-            - ".github/workflows/generate-dora-metrics.yml"
-            - "scripts/dora-the-explora/**"
-            - "requirements.txt"
-    schedule:
-        - cron: "0 8 * * 0" # At 08:00 on Sunday
-
+  workflow_dispatch:
+    inputs:
+      date_range:
+        description: 'Date range for metrics (format: YYYY-MM-DD..YYYY-MM-DD)'
+        required: false
+      json_file_path:
+        description: 'Path to the JSON file with repository names'
+        required: false
+  schedule:
+    - cron: '0 8 * * 0' # At 08:00 on Sunday
 concurrency:
     group: generate-metrics
     cancel-in-progress: false
