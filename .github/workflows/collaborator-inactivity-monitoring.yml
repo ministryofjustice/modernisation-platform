@@ -98,7 +98,7 @@ jobs:
 
       - name: Add PR to project and label
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           PR_JSON=$(gh pr list \
             --repo ministryofjustice/modernisation-platform \
