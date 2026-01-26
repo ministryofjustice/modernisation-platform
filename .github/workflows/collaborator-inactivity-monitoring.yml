@@ -36,9 +36,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-        with:
-          fetch-depth: 0
-          ref: main
 
       - name: Decrypt Secrets
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5c713c93eea694829b1bd3f410d0b235053318ce # v4.0.0
@@ -98,3 +95,23 @@ jobs:
           pr_title: "Remove inactive IAM collaborators"
         env:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add PR to project and label
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          PR_JSON=$(gh pr list \
+            --repo ministryofjustice/modernisation-platform \
+            --state open \
+            --search "Remove inactive IAM collaborators in:title author:github-actions[bot]" \
+            --json number,id)
+
+          PR_NUMBER=$(echo "$PR_JSON" | jq -r '.[0].number')
+          PR_ID=$(echo "$PR_JSON" | jq -r '.[0].id')
+
+          gh pr edit "$PR_NUMBER" --add-label kanban
+
+          gh project item-add \
+            --owner ministryofjustice \
+            --project "Modernisation Platform" \
+            --content-id "$PR_ID"
