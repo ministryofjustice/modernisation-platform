@@ -96,6 +96,26 @@ jobs:
         env:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
 
+  Edit-PR:
+    runs-on: ubuntu-latest
+    needs: [fetch-secrets, schedule-user-deletion]
+    steps: 
+      - name: Checkout Repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - name: Decrypt Secrets
+        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5c713c93eea694829b1bd3f410d0b235053318ce # v4.0.0
+        with:
+          mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Create GitHub App token
+        id: app
+        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
+        with:
+          app-id: ${{ env.APP_ID }}               
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
+          owner: "ministryofjustice"
+          repositories: "modernisation-platform"
+
       - name: Add PR to project and label
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
