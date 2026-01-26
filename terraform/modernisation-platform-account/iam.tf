@@ -262,7 +262,7 @@ module "github_actions_apply_role" {
   github_repositories = ["ministryofjustice/modernisation-platform", "ministryofjustice/modernisation-platform-github", "ministryofjustice/modernisation-platform-ami-builds", "ministryofjustice/modernisation-platform-security"]
   role_name           = "github-actions-apply"
   policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
-  policy_jsons        = [data.aws_iam_policy_document.oidc-deny-specific-actions.json]
+  policy_jsons        = [data.aws_iam_policy_document.apply-oidc-deny-specific-actions.json]
   subject_claim       = "ref:refs/heads/main"
   tags                = { "Name" = "GitHub Actions Apply" }
 }
@@ -286,6 +286,17 @@ data "aws_iam_policy_document" "oidc-deny-specific-actions" {
       "iam:CreateLoginProfile",
       "iam:DeleteUser",
       "iam:DeleteVirtualMFADevice"
+    ]
+    resources = ["*"]
+  }
+}
+
+data "aws_iam_policy_document" "apply-oidc-deny-specific-actions" {
+  statement {
+    effect = "Deny"
+    actions = [
+      "iam:ChangePassword",
+      "iam:CreateLoginProfile"
     ]
     resources = ["*"]
   }
