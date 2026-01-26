@@ -129,9 +129,4 @@ jobs:
           PR_NUMBER=$(echo "$PR_JSON" | jq -r '.[0].number')
           PR_ID=$(echo "$PR_JSON" | jq -r '.[0].id')
 
-          gh pr edit "$PR_NUMBER" --add-label kanban
-
-          gh project item-add \
-            --owner ministryofjustice \
-            --project "Modernisation Platform" \
-            --content-id "$PR_ID"
+          gh pr edit "$PR_NUMBER" --add-project "Modernisation Platform" --add-label "kanban"
