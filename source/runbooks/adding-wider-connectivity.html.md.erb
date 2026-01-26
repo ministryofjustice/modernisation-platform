@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Adding Wider Connectivity to the Modernisation Platform
-last_reviewed_on: 2025-06-16
+last_reviewed_on: 2026-01-23
 review_in: 6 months
 ---
 
@@ -25,17 +25,17 @@ Additional non private IP ranges that need to be routed through to the PTTP TGW 
 
 ### From PTTP TGW to the new connectivity location
 
-A static route to the correct [TGW attachement](https://docs.aws.amazon.com/vpc/latest/tgw/working-with-transit-gateways.html) should be added under `attachment_static_routes` [here](https://github.com/ministryofjustice/deployment-tgw/blob/master/env/production/eu-west-2.yml).
+A static route to the correct [TGW attachment](https://docs.aws.amazon.com/vpc/latest/tgw/working-with-transit-gateways.html) should be added under `attachment_static_routes` [here](https://github.com/ministryofjustice/deployment-tgw/blob/master/env/production/eu-west-2.yml).
 
 - `rtb_name` (route table name) should be `tgw-rtb-modplatform`. This is the route table associated with the MP TGW peering connection.
 - `destination` should be the CIDR range of the new connectivity location.
 - `attach_id` is the ID of the TGW attachment for the new location.
 
-The TGW attachement may be a VPC, VPN, Direct Connect or another Transit Gateway. If it is another Transit Gateway, you will need additional routes in that gateway (see the Cloud Platform example below).
+The TGW attachment may be a VPC, VPN, Direct Connect or another Transit Gateway. If it is another Transit Gateway, you will need additional routes in that gateway (see the Cloud Platform example below).
 
 ### From PTTP TGW back to the MP TGW
 
-A route to the MP TGW must be added in the relevant route table for the PTTP TGW attachement. This should be added under `peering_static_routes` [here](https://github.com/ministryofjustice/deployment-tgw/blob/master/env/production/eu-west-2.yml).
+A route to the MP TGW must be added in the relevant route table for the PTTP TGW attachment. This should be added under `peering_static_routes` [here](https://github.com/ministryofjustice/deployment-tgw/blob/master/env/production/eu-west-2.yml).
 
 - `rtb_name` is the name of the relevant route table. This is the route table associated with the attachment.
 - `destination` should be the CIDR range of the Modernisation live or non live CIDR ranges.

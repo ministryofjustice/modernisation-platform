@@ -68,7 +68,8 @@ get_existing_subscribers() {
 # Get existing subscribers
 echo "📊 Fetching current subscribers..."
 EXISTING_RAW=$(get_existing_subscribers)
-EXISTING_EMAILS=$(echo "$EXISTING_RAW" | grep -v '^$' | cut -d'|' -f1 | sort || echo "")
+# Normalise existing emails to lowercase for comparison (preserve original case in raw data for deletion)
+EXISTING_EMAILS=$(echo "$EXISTING_RAW" | grep -v '^$' | cut -d'|' -f1 | tr '[:upper:]' '[:lower:]' | sort || echo "")
 
 # Handle empty existing emails
 if [ -z "$EXISTING_EMAILS" ]; then
@@ -152,8 +153,8 @@ if [ -n "$TO_REMOVE" ]; then
     while IFS= read -r email; do
         [ -z "$email" ] && continue
         
-        # Get subscription ID for this email
-        subscription_id=$(echo "$EXISTING_RAW" | grep "^${email}|" | cut -d'|' -f2)
+        # Get subscription ID for this email (case-insensitive match)
+        subscription_id=$(echo "$EXISTING_RAW" | grep -i "^${email}|" | cut -d'|' -f2)
         
         if [ -z "$subscription_id" ]; then
             echo -e "   ${RED}✗${NC} Could not find subscription ID for: ${email}"
