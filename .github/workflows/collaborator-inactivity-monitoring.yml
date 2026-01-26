@@ -103,7 +103,7 @@ jobs:
           PR_JSON=$(gh pr list \
             --repo ministryofjustice/modernisation-platform \
             --state open \
-            --search "Remove inactive IAM collaborators in:title author:github-actions[bot]" \
+            --search "Remove inactive IAM collaborators in:title" \
             --json number,id)
 
           PR_NUMBER=$(echo "$PR_JSON" | jq -r '.[0].number')
