@@ -25,9 +25,12 @@ jobs:
           python-version: '3.x'
 
       - name: Save issue body to file
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
-          echo "${{ github.event.issue.body }}" > issue_body.txt
-          echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
+          echo "$ISSUE_BODY" > issue_body.txt
+          echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
 
       - name: Extract fields from issue
         run: |
