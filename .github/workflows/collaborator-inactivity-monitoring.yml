@@ -95,15 +95,6 @@ jobs:
           pr_title: "Remove inactive IAM collaborators"
         env:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Create GitHub App token
-        id: app
-        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
-        with:
-          app-id: ${{ env.APP_ID }}               
-          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
-          owner: "ministryofjustice"
-          repositories: "modernisation-platform"
 
       - name: Add PR to project and label
         env:
