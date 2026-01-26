@@ -14,9 +14,8 @@ env:
 
 permissions:
     id-token: write # This is required for requesting the JWT
-    contents: write # This is required for actions/checkout
+    contents: read # This is required for actions/checkout
     issues: write # This is required to create issues
-    pull-requests: write
 
 jobs:
 
@@ -27,6 +26,11 @@ jobs:
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
   schedule-user-deletion:
+    permissions:
+      id-token: write 
+      contents: write 
+      issues: write
+      pull-requests: write
     runs-on: ubuntu-latest
     needs: fetch-secrets
     steps:
@@ -89,6 +93,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           git_path: "collaborators.json"
           pr_title: "Remove inactive IAM collaborators"
-          pr_body: pr_body.txt
         env:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
