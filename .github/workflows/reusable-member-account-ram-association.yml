@@ -49,7 +49,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5.1.1
         with:
-          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions-apply"
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
           role-session-name: githubactionsrolesession
           aws-region: ${{ inputs.aws_region }}
 
@@ -58,7 +58,14 @@ jobs:
         with:
           terraform_wrapper: false
 
-      - name: Run RAM association if needed
+      - name: Plan RAM principal associations (targeted)
+        if: github.ref != 'refs/heads/main'
+        env:
+          TERRAFORM_ACTION: plan
+        run: bash scripts/get-applications-and-run-ram.sh ${{ inputs.environment }}
+
+      - name: Apply RAM associations and subnet tagging
+        if: github.ref == 'refs/heads/main'
         run: bash scripts/get-applications-and-run-ram.sh ${{ inputs.environment }}
 
       - name: Slack failure notification
