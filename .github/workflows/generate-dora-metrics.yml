@@ -65,6 +65,8 @@ jobs:
 
             - name: Set up Python
               uses: actions/setup-python@v5.6.0
+              with:
+                  python-version: "3.11"
 
             - name: Install dependencies
               run: pip install -r scripts/dora-the-explora/requirements.txt
@@ -96,11 +98,13 @@ jobs:
                   END_DATE: ${{ env.end_date }}
                   GITHUB_ACTIONS: ${{ env.GITHUB_ACTIONS }}
               run: |
+                  shopt -s nullglob
+
                   # Determine list of JSON files to process
                   if [ -n "$JSON_FILE_PATH" ]; then
                     json_files=("$JSON_FILE_PATH")
                   else
-                    json_files=(*.json)
+                    json_files=(scripts/dora-the-explora/*.json)
                   fi
 
                   for json_file in "${json_files[@]}"; do
@@ -109,7 +113,8 @@ jobs:
                     issue_body=""
 
                     for script in cfr.py df.py ltfc.py mttr.py; do
-                      python "$script" "$json_file" "$START_DATE..$END_DATE"
+                      script_path="scripts/dora-the-explora/$script"
+                      python "$script_path" "$json_file" "$START_DATE..$END_DATE"
                       output=$(cat output.log)
                       rm output.log
                       metric=$(basename "$script" .py | tr '[:lower:]' '[:upper:]')
