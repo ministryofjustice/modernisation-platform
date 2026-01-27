@@ -1,16 +1,16 @@
 name: DORA Metrics Workflow
 
 on:
-  workflow_dispatch:
-    inputs:
-      date_range:
-        description: 'Date range for metrics (format: YYYY-MM-DD..YYYY-MM-DD)'
-        required: false
-      json_file_path:
-        description: 'Path to the JSON file with repository names'
-        required: false
-  schedule:
-    - cron: '0 8 1 * *' # At 08:00 on the first day of each month
+    workflow_dispatch:
+        inputs:
+            date_range:
+                description: "Date range for metrics (format: YYYY-MM-DD..YYYY-MM-DD)"
+                required: false
+            json_file_path:
+                description: "Path to the JSON file with repository names"
+                required: false
+    schedule:
+        - cron: "0 8 1 * *" # At 08:00 on the first day of each month
 concurrency:
     group: generate-metrics
     cancel-in-progress: false
@@ -42,7 +42,7 @@ jobs:
               uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
             - name: Decrypt Secrets
-              uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5c713c93eea694829b1bd3f410d0b235053318ce  #4.0.0
+              uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5c713c93eea694829b1bd3f410d0b235053318ce #4.0.0
               with:
                   mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
                   PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -56,21 +56,22 @@ jobs:
                   owner: "ministryofjustice"
 
             - name: Set up Python
-              uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  #v6.2.0
+              uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 #v6.2.0
               with:
                   python-version: "3.11"
 
             - name: Install dependencies
               run: pip install -r scripts/dora-the-explora/requirements.txt
 
-            - name: Get current end_date
-              if: github.event.inputs.date_range == ''
-              run: echo "end_date=$(date -u +%Y-%m-%d)" >> $GITHUB_ENV
-
-            - name: Calculate start_date (7 days ago)
+            - name: Calculate previous full month window
               if: github.event.inputs.date_range == ''
               run: |
-                  echo "start_date=$(date -u +%Y-%m-%d --date='7 days ago')" >> $GITHUB_ENV
+                  start_date=$(date -u -d "$(date -u +%Y-%m-01) -1 month" +%Y-%m-01)
+                  end_date=$(date -u -d "$(date -u +%Y-%m-01) -1 day" +%Y-%m-%d)
+                  {
+                    echo "start_date=$start_date"
+                    echo "end_date=$end_date"
+                  } >> "$GITHUB_ENV"
 
             - name: Parse date_range input
               if: github.event.inputs.date_range != ''
@@ -106,6 +107,8 @@ jobs:
 
                   if [ ${#json_files[@]} -eq 0 ]; then
                     echo "No JSON definitions found; skipping metric generation." >> "$summary_file"
+                    cat "$summary_file" >> "$GITHUB_STEP_SUMMARY"
+                    exit 0
                   fi
 
                   for json_file in "${json_files[@]}"; do
@@ -125,7 +128,7 @@ jobs:
 
             - name: Upload metrics summary artifact
               if: always()
-              uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f  #v6.0.0
+              uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f #v6.0.0
               with:
                   name: dora-metrics-summary
                   path: ${{ env.SUMMARY_FILE }}
