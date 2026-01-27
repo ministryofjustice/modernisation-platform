@@ -83,6 +83,7 @@
 /terraform/environments/core-shared-services/portal.tf @ministryofjustice/laa-aws-infrastructure 
 /terraform/environments/core-shared-services/ppud.tf @ministryofjustice/modernisation-platform @ministryofjustice/ppud-replacement-devs 
 /terraform/environments/core-shared-services/pra-register.tf @ministryofjustice/dts-legacy 
+/terraform/environments/core-shared-services/prison-retail.tf @ministryofjustice/csr-application-support @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
 /terraform/environments/core-shared-services/property-cafm-data-migration.tf @ministryofjustice/property-datahub 
 /terraform/environments/core-shared-services/refer-monitor.tf @ministryofjustice/hmpps-interventions-dashboard-access @ministryofjustice/hmpps-interventions-dev 
 /terraform/environments/core-shared-services/sprinkler.tf @ministryofjustice/modernisation-platform @ministryofjustice/modernisation-platform-security @ministryofjustice/panda-cyber-team 
