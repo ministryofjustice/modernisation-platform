@@ -28,7 +28,7 @@
     "business-unit": "HMPPS",
     "infrastructure-support": "digital-studio-operations-team@digital.justice.gov.uk",
     "owner": "digital-studio-operations-team@digital.justice.gov.uk",
-    "slack-channel": "#prison_retail_alarms",
+    "slack-channel": "prison_retail_alarms",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [],
