@@ -39,7 +39,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
 
             - name: Decrypt Secrets
               uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5c713c93eea694829b1bd3f410d0b235053318ce
@@ -56,7 +56,7 @@ jobs:
                   owner: "ministryofjustice"
 
             - name: Set up Python
-              uses: actions/setup-python@v5.6.0
+              uses: actions/setup-python@v6.2.0
               with:
                   python-version: "3.11"
 
