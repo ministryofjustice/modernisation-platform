@@ -309,6 +309,7 @@ data "aws_iam_policy_document" "member-access" {
       "sso-directory:DescribeGroup",
       "states:*",
       "synthetics:*",
+      "tag:ListRequiredTags",
       "waf:*",
       "wafv2:*",
       "resource-groups:*",
