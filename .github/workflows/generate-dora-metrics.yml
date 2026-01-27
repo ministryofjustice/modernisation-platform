@@ -1,0 +1,121 @@
+name: DORA Metrics Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      date_range:
+        description: 'Date range for metrics (format: YYYY-MM-DD..YYYY-MM-DD)'
+        required: false
+      json_file_path:
+        description: 'Path to the JSON file with repository names'
+        required: false
+  schedule:
+    - cron: '0 8 * * 0' # At 08:00 on Sunday
+concurrency:
+    group: generate-metrics
+    cancel-in-progress: false
+
+permissions: {}
+
+env:
+    APP_ID: 2013696
+
+jobs:
+    fetch-secrets:
+        uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@5c713c93eea694829b1bd3f410d0b235053318ce
+        secrets:
+            MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+            PASSPHRASE: ${{ secrets.PASSPHRASE }}
+        permissions:
+            id-token: write
+            contents: read
+
+    run_metrics:
+        needs: fetch-secrets
+        permissions:
+            issues: write
+            contents: write
+            pull-requests: read
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Decrypt Secrets
+              uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5c713c93eea694829b1bd3f410d0b235053318ce
+              with:
+                  mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
+                  PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+            - name: Create GitHub App token
+              id: app
+              uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
+              with:
+                  app-id: ${{ env.APP_ID }}
+                  private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
+                  owner: "ministryofjustice"
+
+            - name: Set up Python
+              uses: actions/setup-python@v5.6.0
+              with:
+                  python-version: "3.11"
+
+            - name: Install dependencies
+              run: pip install -r scripts/dora-the-explora/requirements.txt
+
+            - name: Get current end_date
+              if: github.event.inputs.date_range == ''
+              run: echo "end_date=$(date -u +%Y-%m-%d)" >> $GITHUB_ENV
+
+            - name: Calculate start_date (7 days ago)
+              if: github.event.inputs.date_range == ''
+              run: |
+                  echo "start_date=$(date -u +%Y-%m-%d --date='7 days ago')" >> $GITHUB_ENV
+
+            - name: Parse date_range input
+              if: github.event.inputs.date_range != ''
+              run: |
+                  start_date=$(echo "${{ github.event.inputs.date_range }}" | cut -d. -f1)
+                  end_date=$(echo "${{ github.event.inputs.date_range }}" | rev | cut -d. -f1 | rev)
+                  echo "start_date=$start_date" >> $GITHUB_ENV
+                  echo "end_date=$end_date" >> $GITHUB_ENV
+
+            - name: Run scripts and create issues
+              env:
+                  ACCESS_TOKEN: ${{ steps.app.outputs.token }}
+                  GH_TOKEN: ${{ steps.app.outputs.token }}
+                  GITHUB_EVENT_NAME: ${{ github.event_name }}
+                  JSON_FILE_PATH: ${{ github.event.inputs.json_file_path }}
+                  START_DATE: ${{ env.start_date }}
+                  END_DATE: ${{ env.end_date }}
+                  GITHUB_ACTIONS: ${{ env.GITHUB_ACTIONS }}
+              run: |
+                  shopt -s nullglob
+
+                  # Determine list of JSON files to process
+                  if [ -n "$JSON_FILE_PATH" ]; then
+                    json_files=("$JSON_FILE_PATH")
+                  else
+                    json_files=(scripts/dora-the-explora/*.json)
+                  fi
+
+                  for json_file in "${json_files[@]}"; do
+                    name=$(basename "$json_file" .json)
+                    issue_title="📊 DORA Metrics for $START_DATE..$END_DATE for $name"
+                    issue_body=""
+
+                    for script in cfr.py df.py ltfc.py mttr.py; do
+                      script_path="scripts/dora-the-explora/$script"
+                      python "$script_path" "$json_file" "$START_DATE..$END_DATE"
+                      output=$(cat output.log)
+                      rm output.log
+                      metric=$(basename "$script" .py | tr '[:lower:]' '[:upper:]')
+                      issue_body+="$output"
+                    done
+
+                    if [ "$GITHUB_ACTIONS" == "true" ]; then
+                      gh issue create --title "$issue_title" --body "$issue_body"
+                    else
+                      echo "Skipping issue creation because running outside GitHub Actions."
+                    fi
+                  done
