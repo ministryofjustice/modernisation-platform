@@ -10,7 +10,7 @@ on:
         description: 'Path to the JSON file with repository names'
         required: false
   schedule:
-    - cron: '0 8 * * 0' # At 08:00 on Sunday
+    - cron: '0 8 1 * *' # At 08:00 on the first day of each month
 concurrency:
     group: generate-metrics
     cancel-in-progress: false
@@ -22,7 +22,7 @@ env:
 
 jobs:
     fetch-secrets:
-        uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@5c713c93eea694829b1bd3f410d0b235053318ce
+        uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@5c713c93eea694829b1bd3f410d0b235053318ce # v4.0.0
         secrets:
             MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
             PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -33,16 +33,16 @@ jobs:
     run_metrics:
         needs: fetch-secrets
         permissions:
-            issues: write
+            issues: read
             contents: write
             pull-requests: read
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
-              uses: actions/checkout@v4
+              uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
             - name: Decrypt Secrets
-              uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5c713c93eea694829b1bd3f410d0b235053318ce
+              uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5c713c93eea694829b1bd3f410d0b235053318ce  #4.0.0
               with:
                   mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
                   PASSPHRASE: ${{ secrets.PASSPHRASE }}
@@ -56,7 +56,7 @@ jobs:
                   owner: "ministryofjustice"
 
             - name: Set up Python
-              uses: actions/setup-python@v5.6.0
+              uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405  #v6.2.0
               with:
                   python-version: "3.11"
 
@@ -80,7 +80,7 @@ jobs:
                   echo "start_date=$start_date" >> $GITHUB_ENV
                   echo "end_date=$end_date" >> $GITHUB_ENV
 
-            - name: Run scripts and create issues
+            - name: Run scripts and build summary
               env:
                   ACCESS_TOKEN: ${{ steps.app.outputs.token }}
                   GH_TOKEN: ${{ steps.app.outputs.token }}
@@ -90,7 +90,12 @@ jobs:
                   END_DATE: ${{ env.end_date }}
                   GITHUB_ACTIONS: ${{ env.GITHUB_ACTIONS }}
               run: |
+                  set -euo pipefail
                   shopt -s nullglob
+
+                  summary_file="$RUNNER_TEMP/dora-summary.md"
+                  echo "SUMMARY_FILE=$summary_file" >> "$GITHUB_ENV"
+                  echo "## 📊 DORA Metrics for $START_DATE..$END_DATE" > "$summary_file"
 
                   # Determine list of JSON files to process
                   if [ -n "$JSON_FILE_PATH" ]; then
@@ -99,23 +104,28 @@ jobs:
                     json_files=(scripts/dora-the-explora/*.json)
                   fi
 
+                  if [ ${#json_files[@]} -eq 0 ]; then
+                    echo "No JSON definitions found; skipping metric generation." >> "$summary_file"
+                  fi
+
                   for json_file in "${json_files[@]}"; do
                     name=$(basename "$json_file" .json)
-                    issue_title="📊 DORA Metrics for $START_DATE..$END_DATE for $name"
-                    issue_body=""
+                    echo -e "\n### $name" >> "$summary_file"
 
                     for script in cfr.py df.py ltfc.py mttr.py; do
                       script_path="scripts/dora-the-explora/$script"
                       python "$script_path" "$json_file" "$START_DATE..$END_DATE"
                       output=$(cat output.log)
                       rm output.log
-                      metric=$(basename "$script" .py | tr '[:lower:]' '[:upper:]')
-                      issue_body+="$output"
+                      echo "$output" >> "$summary_file"
                     done
-
-                    if [ "$GITHUB_ACTIONS" == "true" ]; then
-                      gh issue create --title "$issue_title" --body "$issue_body"
-                    else
-                      echo "Skipping issue creation because running outside GitHub Actions."
-                    fi
                   done
+
+                  cat "$summary_file" >> "$GITHUB_STEP_SUMMARY"
+
+            - name: Upload metrics summary artifact
+              if: always()
+              uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f  #v6.0.0
+              with:
+                  name: dora-metrics-summary
+                  path: ${{ env.SUMMARY_FILE }}
