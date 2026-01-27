@@ -8,3 +8,9 @@ resource "aws_securityhub_standards_control" "ec2_23_tgw_auto_accept" {
   control_status        = "DISABLED"
   disabled_reason       = "Compensating control: CloudWatch monitoring detects unauthorized TGW attachments. Auto-accept required for automated infrastructure deployment."
 }
+
+resource "aws_securityhub_standards_control" "ec2_23_tgw_auto_accept_eu_west_1" {
+  standards_control_arn = "arn:aws:securityhub:eu-west-1:${data.aws_caller_identity.current.account_id}:control/aws-foundational-security-best-practices/v/1.0.0/EC2.23"
+  control_status        = "DISABLED"
+  disabled_reason       = "Compensating control: CloudWatch monitoring detects unauthorized TGW attachments. Auto-accept required for automated infrastructure deployment."
+}
