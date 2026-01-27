@@ -16,8 +16,34 @@ The ECR can then be shared to all of your application accounts.
 ## Steps
 
 1. Clone the [modernisation-platform](https://github.com/ministryofjustice/modernisation-platform/) GitHub repository.
-1. Add your registry to [modernisation-platform/terraform/environments/core-shared-services/ecr_repos.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-shared-services/ecr_repos.tf)
-1. Do this by copying another teams registry code using the [ECR module](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/app-ecr-repo) and modify it accordingly.
-1. You will need to specify the `push_principals` (who do you want to be able to upload to the ECR) and `pull_principals` (who do you want to be able to download from the ECR)
-1. Raise a pull request and post in the [#ask-modernisation-platform](https://mojdt.slack.com/archives/C01A7QK5VM1) channel for a review.
-1. A Modernisation Engineer will review the pull request and merge.
+2. Add your ECR registry to a **Terraform file** in [terraform/environments/core-shared-services/](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-shared-services)
+    - Check if a Terraform file already exists for your application in [terraform/environments/core-shared-services/](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-shared-services)
+    - If it does not exist, create a new file
+    - If it already exists, use the existing file
+    - The file **must be named after your application** and match the name defined in the [environments](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments) configuration
+3. You will need to specify the `push_principals` (who do you want to be able to upload to the ECR) and `pull_principals` (who do you want to be able to download from the ECR)
+4. Raise a pull request
+5. The pull request will require approval from the team associated with the Terraform file, as defined in the [CODEOWNERS](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/CODEOWNERS) configuration. Once the relevant team approves, the pull request can be merged.
+
+## Example: Defining a per-application ECR using the shared module
+
+Below is an example Terraform configuration using the shared [ECR module](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/app-ecr-repo). Modify it for your application:
+
+```hcl
+module "sprinkler_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "sprinkler-test"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/modernisation-platform-oidc-cicd",
+    local.environment_management.account_ids["sprinkler-development"]
+  ]
+
+  pull_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  # Tags
+  tags_common = local.tags
+}

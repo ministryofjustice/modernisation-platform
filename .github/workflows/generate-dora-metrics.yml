@@ -1,0 +1,127 @@
+name: DORA Metrics Workflow
+
+on:
+    workflow_dispatch:
+        inputs:
+            date_range:
+                description: "Date range for metrics (format: YYYY-MM-DD..YYYY-MM-DD)"
+                required: false
+            json_file_path:
+                description: "Path to the JSON file with repository names"
+                required: false
+    schedule:
+        - cron: "0 8 1 * *" # At 08:00 on the first day of each month
+concurrency:
+    group: generate-metrics
+    cancel-in-progress: false
+
+permissions: {}
+
+env:
+    APP_ID: 2013696
+
+jobs:
+    fetch-secrets:
+        uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@5c713c93eea694829b1bd3f410d0b235053318ce # v4.0.0
+        secrets:
+            MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+            PASSPHRASE: ${{ secrets.PASSPHRASE }}
+        permissions:
+            id-token: write
+            contents: read
+
+    run_metrics:
+        needs: fetch-secrets
+        permissions:
+            issues: read
+            contents: write
+            pull-requests: read
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+            - name: Decrypt Secrets
+              uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5c713c93eea694829b1bd3f410d0b235053318ce #4.0.0
+              with:
+                  mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
+                  PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+            - name: Create GitHub App token
+              id: app
+              uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
+              with:
+                  app-id: ${{ env.APP_ID }}
+                  private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }}
+                  owner: "ministryofjustice"
+
+            - name: Set up Python
+              uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 #v6.2.0
+              with:
+                  python-version: "3.11"
+
+            - name: Install dependencies
+              run: pip install -r scripts/dora-the-explora/requirements.txt
+
+            - name: Calculate previous full month window
+              if: github.event.inputs.date_range == ''
+              run: |
+                  start_date=$(date -u -d "$(date -u +%Y-%m-01) -1 month" +%Y-%m-01)
+                  end_date=$(date -u -d "$(date -u +%Y-%m-01) -1 day" +%Y-%m-%d)
+                  {
+                    echo "start_date=$start_date"
+                    echo "end_date=$end_date"
+                  } >> "$GITHUB_ENV"
+
+            - name: Parse date_range input
+              if: github.event.inputs.date_range != ''
+              run: |
+                  start_date=$(echo "${{ github.event.inputs.date_range }}" | cut -d. -f1)
+                  end_date=$(echo "${{ github.event.inputs.date_range }}" | rev | cut -d. -f1 | rev)
+                  echo "start_date=$start_date" >> $GITHUB_ENV
+                  echo "end_date=$end_date" >> $GITHUB_ENV
+
+            - name: Run scripts and build summary
+              env:
+                  ACCESS_TOKEN: ${{ steps.app.outputs.token }}
+                  GH_TOKEN: ${{ steps.app.outputs.token }}
+                  GITHUB_EVENT_NAME: ${{ github.event_name }}
+                  JSON_FILE_PATH: ${{ github.event.inputs.json_file_path }}
+                  START_DATE: ${{ env.start_date }}
+                  END_DATE: ${{ env.end_date }}
+                  GITHUB_ACTIONS: ${{ env.GITHUB_ACTIONS }}
+              run: |
+                  set -euo pipefail
+                  shopt -s nullglob
+
+                  summary_file="$RUNNER_TEMP/dora-summary.md"
+                  echo "SUMMARY_FILE=$summary_file" >> "$GITHUB_ENV"
+                  echo "## 📊 DORA Metrics for $START_DATE..$END_DATE" > "$summary_file"
+
+                  # Determine list of JSON files to process
+                  if [ -n "$JSON_FILE_PATH" ]; then
+                    json_files=("$JSON_FILE_PATH")
+                  else
+                    json_files=(scripts/dora-the-explora/*.json)
+                  fi
+
+                  if [ ${#json_files[@]} -eq 0 ]; then
+                    echo "No JSON definitions found; skipping metric generation." >> "$summary_file"
+                    cat "$summary_file" >> "$GITHUB_STEP_SUMMARY"
+                    exit 0
+                  fi
+
+                  for json_file in "${json_files[@]}"; do
+                    name=$(basename "$json_file" .json)
+                    echo -e "\n### $name" >> "$summary_file"
+
+                    for script in cfr.py df.py ltfc.py mttr.py; do
+                      script_path="scripts/dora-the-explora/$script"
+                      python "$script_path" "$json_file" "$START_DATE..$END_DATE"
+                      output=$(cat output.log)
+                      rm output.log
+                      echo "$output" >> "$summary_file"
+                    done
+                  done
+
+                  cat "$summary_file" >> "$GITHUB_STEP_SUMMARY"

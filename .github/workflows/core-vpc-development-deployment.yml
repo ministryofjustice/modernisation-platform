@@ -65,9 +65,14 @@ jobs:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
+  # NOTE: When adding secondary CIDRs to a VPC for the FIRST time:
+  # - PR plan phase: member-account-ram-association PLAN will fail with "no matching RAM Resource Share found" 
+  #   (expected - secondary share doesn't exist yet during plan)
+  # - After merge: core-vpc APPLY creates the secondary share, then member-account-ram-association APPLY succeeds
+  # 
+  # This is expected behaviour due to the chicken-and-egg nature of planning against resources that don't exist yet.
   member-account-ram-association:
     needs: core-vpc-development-deployment-plan-apply
-    if: github.event.ref == 'refs/heads/main'
     uses: ./.github/workflows/reusable-member-account-ram-association.yml
     with: 
       environment: "development"

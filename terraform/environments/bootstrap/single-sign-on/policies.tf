@@ -295,6 +295,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "ssm-guiconnect:*",
       "sso:ListDirectoryAssociations",
       "support:*",
+      "support-console:*",
       "states:Describe*",
       "states:List*",
       "states:Stop*",
@@ -652,6 +653,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "migrationhub-strategy:*",
       "networkflowmonitor:*",
       "networkmonitor:*",
+      "network-firewall:*",
       "oam:*",
       "organizations:DescribeOrganization",
       "quicksight:*",
@@ -679,9 +681,11 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "states:*",
       "sts:*",
       "support:*",
+      "support-console:*",
       "textract:*",
       "tiros:*",
       "transfer:*",
+      "vpce:*",
       "wafv2:*",
       "wellarchitected:*",
       "workspaces-web:*"
@@ -838,6 +842,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "sso:ListDirectoryAssociations",
       "states:*",
       "support:*",
+      "support-console:*",
       "textract:*",
       "transfer:*",
       "wafv2:*",
@@ -1193,7 +1198,8 @@ data "aws_iam_policy_document" "instance-management-document" {
       "ssm:*",
       "ssm-guiconnect:*",
       "sso:ListDirectoryAssociations",
-      "support:*"
+      "support:*",
+      "support-console:*"
     ]
 
     resources = ["*"]

@@ -1,0 +1,37 @@
+{
+  "repos": [
+    "modernisation-platform",
+    "modernisation-platform-ami-builds",
+    "modernisation-platform-cp-network-test",
+    "modernisation-platform-github-oidc-provider",
+    "modernisation-platform-github-oidc-role",
+    "modernisation-platform-instance-scheduler",
+    "modernisation-platform-terraform-aws-vm-import",
+    "modernisation-platform-terraform-baselines",
+    "modernisation-platform-terraform-bastion-linux",
+    "modernisation-platform-terraform-cross-account-access",
+    "modernisation-platform-terraform-dns-certificates",
+    "modernisation-platform-terraform-ec2-autoscaling-group",
+    "modernisation-platform-terraform-ec2-instance",
+    "modernisation-platform-terraform-ecs-cluster",
+    "modernisation-platform-terraform-environments",
+    "modernisation-platform-terraform-iam-superadmins",
+    "modernisation-platform-terraform-lambda-function",
+    "modernisation-platform-terraform-loadbalancer",
+    "modernisation-platform-terraform-member-vpc",
+    "modernisation-platform-terraform-pagerduty-integration",
+    "modernisation-platform-terraform-s3-bucket",
+    "modernisation-platform-terraform-s3-bucket-replication-role",
+    "modernisation-platform-terraform-ssm-patching",
+    "modernisation-platform-terraform-aws-chatbot",
+    "modernisation-platform-terraform-aws-waf",
+    "modernisation-platform-terraform-certificate-dns-validations",
+    "modernisation-platform-terraform-aws-data-firehose",
+    "modernisation-platform-github-actions"
+  ],
+  "excluded_workflows": [
+    "Scorecards supply-chain security",
+    "Secure Code Analysis",
+    "Terraform Static Code Analysis"
+  ]
+}

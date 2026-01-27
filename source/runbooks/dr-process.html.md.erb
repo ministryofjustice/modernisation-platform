@@ -234,9 +234,11 @@ Located [here](https://github.com/ministryofjustice/modernisation-platform/actio
 
 ### Transit Gateway
 
-To rebuild the transit gateway in a new region, first find the code, [located here](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-network-services), in core-network-services.
+To rebuild the transit gateway in a new region, first find the code, [located here](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-network-services/transit-gateway.tf), in `core-network-services` and change the provider for the relevant region.
 
 Using the admin role, run a Terraform plan and apply. This hasn't been done from scratch since the platform's creation, so expect to debug issues.
+
+We have tested creation of a TGW in `eu-west-1` before with success. See this [example PR](https://github.com/ministryofjustice/modernisation-platform/pull/8935/changes) for details. We also shared the central MoJ TGW into this region by raising a [PR](https://github.com/ministryofjustice/deployment-tgw/pull/276/changes) in the [deployment-tgw](https://github.com/ministryofjustice/deployment-tgw) repo. We have yet to test creating VPC attachments to the TGW in a different region as this would require a significant amount of effort and coordination with other teams/infrastructure.
 
 ### Firewall
 

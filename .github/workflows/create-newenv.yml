@@ -20,40 +20,55 @@ jobs:
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v6.2.0
         with:
           python-version: '3.x'
 
       - name: Save issue body to file
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
-          echo "${{ github.event.issue.body }}" > issue_body.txt
-          echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
+          echo "$ISSUE_BODY" > issue_body.txt
+          echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
 
       - name: Extract fields from issue
         run: |
-          EXISTING_ACCOUNT=$(awk -v key="### Is this an existing AWS account?" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
-          APP_NAME=$(awk -v key="### Application Name" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
-          APP_TAG=$(awk -v key="### application" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
-          BUSINESS_UNIT=$(awk -v key="### business-unit" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
-          INFRA_SUPPORT=$(awk -v key="### infrastructure-support" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
-          OWNER=$(awk -v key="### owner" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
-          SSO_GROUP=$(awk -v key="### SSO Group Name" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
-          ISOLATED_ACCOUNT=$(awk -v key="### Do you require isolated networking?" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
-          SLACK=$(awk -v key="### Slack Channel" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
-          GITHUB_OWNERS=$(awk -v key="### GitHub code owner team slug" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
-          GITHUB_REVIEWERS=$(awk -v key="### GitHub actions reviewer team slug" '$0==key {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
-      
-          echo "EXISTING_ACCOUNT=$EXISTING_ACCOUNT" >> $GITHUB_ENV
-          echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
-          echo "APP_TAG=$APP_TAG" >> $GITHUB_ENV
-          echo "BUSINESS_UNIT=$BUSINESS_UNIT" >> $GITHUB_ENV
-          echo "INFRA_SUPPORT=$INFRA_SUPPORT" >> $GITHUB_ENV
-          echo "OWNER=$OWNER" >> $GITHUB_ENV
-          echo "SSO_GROUP=$SSO_GROUP" >> $GITHUB_ENV
-          echo "ISOLATED_ACCOUNT=$ISOLATED_ACCOUNT" >> $GITHUB_ENV
-          echo "SLACK=$SLACK" >> $GITHUB_ENV
-          echo "GITHUB_OWNERS=$GITHUB_OWNERS" >> $GITHUB_ENV
-          echo "GITHUB_REVIEWERS=$GITHUB_REVIEWERS" >> $GITHUB_ENV
+          # Function to extract and sanitize field values
+          extract_field() {
+            local key="$1"
+            local value=$(awk -v k="$key" '$0==k {while(getline>0){if($0~/^$/)continue;if($0~/^_No response_$/){print "";exit}print $0;exit}}' issue_body.txt | xargs)
+            # Sanitize: remove newlines/carriage returns, limit to 200 chars
+            echo "$value" | tr -d '\n\r' | head -c 200
+          }
+          
+          # Extract all fields
+          EXISTING_ACCOUNT=$(extract_field "### Is this an existing AWS account?")
+          APP_NAME=$(extract_field "### Application Name")
+          APP_TAG=$(extract_field "### application")
+          BUSINESS_UNIT=$(extract_field "### business-unit")
+          INFRA_SUPPORT=$(extract_field "### infrastructure-support")
+          OWNER=$(extract_field "### owner")
+          SSO_GROUP=$(extract_field "### SSO Group Name")
+          ISOLATED_ACCOUNT=$(extract_field "### Do you require isolated networking?")
+          SLACK=$(extract_field "### Slack Channel")
+          GITHUB_OWNERS=$(extract_field "### GitHub code owner team slug")
+          GITHUB_REVIEWERS=$(extract_field "### GitHub actions reviewer team slug")
+          
+          # Write to GITHUB_ENV
+          {
+            echo "EXISTING_ACCOUNT=$EXISTING_ACCOUNT"
+            echo "APP_NAME=$APP_NAME"
+            echo "APP_TAG=$APP_TAG"
+            echo "BUSINESS_UNIT=$BUSINESS_UNIT"
+            echo "INFRA_SUPPORT=$INFRA_SUPPORT"
+            echo "OWNER=$OWNER"
+            echo "SSO_GROUP=$SSO_GROUP"
+            echo "ISOLATED_ACCOUNT=$ISOLATED_ACCOUNT"
+            echo "SLACK=$SLACK"
+            echo "GITHUB_OWNERS=$GITHUB_OWNERS"
+            echo "GITHUB_REVIEWERS=$GITHUB_REVIEWERS"
+          } >> $GITHUB_ENV
 
       - name: Extract environment selections
         run: |

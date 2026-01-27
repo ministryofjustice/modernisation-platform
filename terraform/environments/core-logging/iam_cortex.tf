@@ -55,6 +55,15 @@ data "aws_iam_policy_document" "cortex_user_policy" {
       [for key in aws_s3_bucket.logging : "${key.arn}/*"]
     )
   }
+  statement {
+    sid    = "KMSDecryptLogs"
+    effect = "Allow"
+    actions = [
+      "kms:Decrypt",
+      "kms:DescribeKey"
+    ]
+    resources = [for key in aws_kms_key.logging : key.arn]
+  }
 }
 
 resource "random_uuid" "cortex" {}

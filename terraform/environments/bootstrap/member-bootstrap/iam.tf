@@ -191,8 +191,10 @@ data "aws_iam_policy_document" "member-access" {
       "ds-data:*",
       "dynamodb:*",
       "ebs:*",
+      "ec2:AssociateVpcCidrBlock",
       "ec2:CreateVpc",
       "ec2:DeleteVpc",
+      "ec2:DisassociateVpcCidrBlock",
       "ec2:CreateSubnet",
       "ec2:DeleteSubnet",
       "ec2:CreateRoute",
@@ -258,6 +260,7 @@ data "aws_iam_policy_document" "member-access" {
       "logs:*",
       "networkflowmonitor:*",
       "networkmonitor:*",
+      "network-firewall:*",
       "organizations:Describe*",
       "organizations:List*",
       "oam:*",
@@ -306,6 +309,7 @@ data "aws_iam_policy_document" "member-access" {
       "sso-directory:DescribeGroup",
       "states:*",
       "synthetics:*",
+      "tag:ListRequiredTags",
       "waf:*",
       "wafv2:*",
       "resource-groups:*",
@@ -314,6 +318,7 @@ data "aws_iam_policy_document" "member-access" {
       "redshift-serverless:*",
       "resource-explorer-2:*",
       "transfer:*",
+      "vpce:*",
       "kinesisanalytics:*Application*",
       "kinesisanalytics:*Resource",
       "sagemaker:*",
@@ -916,14 +921,15 @@ data "aws_iam_policy_document" "oidc_assume_role_member" {
   statement {
     sid    = "AllowOIDCToAssumeRoles"
     effect = "Allow"
-    resources = [
-      format("arn:aws:iam::%s:role/member-delegation-%s-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], lower(local.business_unit), local.application_environment),
+    resources = compact([
+      # skip for cloud-platform as it uses a different account naming convention and does not need a member-delegation role
+      local.application_name != "cloud-platform" ? format("arn:aws:iam::%s:role/member-delegation-%s-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], lower(local.business_unit), local.application_environment) : "",
       format("arn:aws:iam::%s:role/modify-dns-records", local.environment_management.account_ids["core-network-services-production"]),
       format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
       format("arn:aws:iam::%s:role/ModernisationPlatformSSOReadOnly", local.environment_management.aws_organizations_root_account_id),
       # the following are required as cooker have development accounts but are in the sandbox vpc
       local.application_name == "cooker" ? format("arn:aws:iam::%s:role/member-delegation-house-sandbox", local.environment_management.account_ids["core-vpc-sandbox"]) : format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id)
-    ]
+    ])
     condition {
       test     = "StringEquals"
       variable = "aws:PrincipalOrgID"
@@ -1098,6 +1104,7 @@ data "aws_iam_policy_document" "securityhub_insights_oidc_policy" {
     effect = "Allow"
     actions = [
       "securityhub:CreateInsight",
+      "securityhub:UpdateInsight",
       "securityhub:GetInsights",
       "securityhub:GetInsightResults"
     ]

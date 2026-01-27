@@ -14,7 +14,10 @@ create_or_get_insight() {
         #Creating new Security Hub insight...
         INSIGHT_ARN=$(aws securityhub create-insight --region "$REGION" \
             --name "$INSIGHT_NAME" \
-            --filters '{"RecordState": [{"Value": "ACTIVE", "Comparison": "EQUALS"}]}' \
+            --filters '{
+                "RecordState": [{"Value": "ACTIVE", "Comparison": "EQUALS"}],
+                "WorkflowStatus": [{"Value": "NEW", "Comparison": "EQUALS"}]
+            }' \
             --group-by-attribute "SeverityLabel" \
             --query "InsightArn" \
             --output text)

@@ -1,0 +1,75 @@
+---
+name: core-vpc-sandbox-deployment
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'environments-networks/*-sandbox.json'
+      - '.github/workflows/core-vpc-sandbox-deployment.yml'
+      - 'terraform/environments/**/networking.auto.tfvars.json'
+      - 'terraform/environments/**/subnet-share.tf'
+      - '!terraform/environments/core-*/**'
+      - 'terraform/environments/core-vpc/**'
+      - 'terraform/modules/core-monitoring/**'
+      - 'terraform/modules/dns-zone/**'
+      - 'terraform/modules/dns-zone-extend/**'
+      - 'terraform/modules/vpc-tgw-routing/**'
+      - 'terraform/modules/vpc-nacls/**'
+      - 'terraform/modules/ram-resource-share/**'
+      - 'terraform/modules/core-vpc-tgw-routes/**'
+      - 'terraform/modules/r53-dns-firewall/**'
+      - '.github/workflows/reusable-member-account-ram-association.yml'
+      - '.github/workflows/reusable_terraform_plan_apply.yml'
+      - '!**.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'environments-networks/*-sandbox.json'
+      - '.github/workflows/core-vpc-sandbox-deployment.yml'
+      - 'terraform/environments/**/networking.auto.tfvars.json'
+      - 'terraform/environments/**/subnet-share.tf'
+      - '!terraform/environments/core-*/**'
+      - 'terraform/environments/core-vpc/**'
+      - 'terraform/modules/core-monitoring/**'
+      - 'terraform/modules/dns-zone/**'
+      - 'terraform/modules/dns-zone-extend/**'
+      - 'terraform/modules/vpc-tgw-routing/**'
+      - 'terraform/modules/vpc-nacls/**'
+      - 'terraform/modules/ram-resource-share/**'
+      - 'terraform/modules/core-vpc-tgw-routes/**'
+      - 'terraform/modules/r53-dns-firewall/**'
+      - '.github/workflows/reusable-member-account-ram-association.yml'
+      - '.github/workflows/reusable_terraform_plan_apply.yml'
+      - '!**.md'
+  workflow_dispatch:
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+  pull-requests: write
+
+defaults:
+  run:
+    shell: bash
+  
+jobs:
+  core-vpc-sandbox-deployment-plan-apply:
+    uses: ./.github/workflows/reusable_terraform_plan_apply.yml
+    with:
+      working-directory: "terraform/environments/core-vpc"
+      environment: "sandbox"
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  member-account-ram-association:
+    needs: core-vpc-sandbox-deployment-plan-apply
+    uses: ./.github/workflows/reusable-member-account-ram-association.yml
+    with: 
+      environment: "sandbox"
+    secrets:
+      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
+      PASSPHRASE: ${{ secrets.PASSPHRASE }}

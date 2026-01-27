@@ -1,0 +1,67 @@
+{
+  "account-type": "member",
+  "components": [
+    {
+      "name": "cluster"
+    },
+    {
+      "name": "cluster-core"
+    },
+    {
+      "name": "cluster-components"
+    },
+    {
+      "name": "network"
+    }
+  ],
+  "isolated-network": "true",
+  "codeowners": "cloud-platform-engineers",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "cloud-platform-engineers",
+          "level": "platform-engineer-admin"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "cloud-platform-engineers",
+          "level": "platform-engineer-admin"
+        }
+      ]
+    },
+    {
+      "name": "nonlive",
+      "access": [
+        {
+          "sso_group_name": "cloud-platform-engineers",
+          "level": "platform-engineer-admin"
+        }
+      ]
+    },
+    {
+      "name": "live",
+      "access": [
+        {
+          "sso_group_name": "cloud-platform-engineers",
+          "level": "platform-engineer-admin"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "cloud-platform",
+    "business-unit": "platforms",
+    "infrastructure-support": "cloudplatform@justice.gov.uk",
+    "owner": "cloudplatform@justice.gov.uk",
+    "slack-channel": "cloud-platform",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}

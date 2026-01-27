@@ -1,1 +1,96 @@
+# This file is auto-generated here, do not manually amend.
+# https://github.com/ministryofjustice/modernisation-platform/blob/main/scripts/generate-team-codeowners.sh
+
 * @ministryofjustice/modernisation-platform
+/terraform/environments/core-shared-services/analytical-platform-common.tf @ministryofjustice/analytical-platform-engineers 
+/terraform/environments/core-shared-services/analytical-platform-compute.tf @ministryofjustice/analytical-platform-engineers 
+/terraform/environments/core-shared-services/analytical-platform-data-engineering.tf @ministryofjustice/analytical-platform-data-engineering-production-data-engineer @ministryofjustice/analytical-platform-data-engineering-production-developer @ministryofjustice/analytical-platform-data-engineering-sandboxa-administrator @ministryofjustice/analytical-platform-data-engineering-sandboxa-data-engineer @ministryofjustice/analytical-platform-data-engineering-sandboxa-developer @ministryofjustice/analytical-platform-engineers @ministryofjustice/data-platform-audit-and-security 
+/terraform/environments/core-shared-services/analytical-platform-data.tf @ministryofjustice/analytical-platform-airflow @ministryofjustice/analytical-platform-data-development-data-engineer @ministryofjustice/analytical-platform-data-production-data-engineer @ministryofjustice/analytical-platform-engineers @ministryofjustice/data-platform-apps-and-tools-powerbi-authors @ministryofjustice/data-platform-audit-and-security 
+/terraform/environments/core-shared-services/analytical-platform-ingestion.tf @ministryofjustice/analytical-platform-engineers 
+/terraform/environments/core-shared-services/analytical-platform-landing.tf @ministryofjustice/analytical-platform-engineers @ministryofjustice/data-platform-audit-and-security 
+/terraform/environments/core-shared-services/analytical-platform-management.tf @ministryofjustice/analytical-platform-engineers @ministryofjustice/data-platform-audit-and-security 
+/terraform/environments/core-shared-services/analytical-platform-next-poc-hub.tf @ministryofjustice/analytical-platform-engineers 
+/terraform/environments/core-shared-services/analytical-platform-next-poc-producer.tf @ministryofjustice/analytical-platform-engineers 
+/terraform/environments/core-shared-services/analytical-platform.tf @ministryofjustice/analytical-platform-data-development-data-engineer @ministryofjustice/analytical-platform-engineers @ministryofjustice/data-platform-audit-and-security 
+/terraform/environments/core-shared-services/apex.tf @ministryofjustice/laa-apex-developer @ministryofjustice/laa-aws-infrastructure 
+/terraform/environments/core-shared-services/bichard7.tf @ministryofjustice/cjse-bichard7-next 
+/terraform/environments/core-shared-services/ccms-ebs-upgrade.tf @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-sre-admins 
+/terraform/environments/core-shared-services/ccms-ebs.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-ccms-instance-access @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-security @ministryofjustice/panda-cyber-team 
+/terraform/environments/core-shared-services/ccms-edrms.tf @ministryofjustice/laa-sre-admins 
+/terraform/environments/core-shared-services/ccms-oia.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-dba @ministryofjustice/laa-sre-admins 
+/terraform/environments/core-shared-services/ccms-pui-internal.tf @ministryofjustice/laa-sre-admins 
+/terraform/environments/core-shared-services/ccms-pui.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-sre-admins 
+/terraform/environments/core-shared-services/cdpt-chaps.tf @ministryofjustice/central-digital-product-team 
+/terraform/environments/core-shared-services/cdpt-ifs.tf @ministryofjustice/central-digital-product-team 
+/terraform/environments/core-shared-services/cica-copilot.tf @ministryofjustice/cica-copilot-llm-maintainers 
+/terraform/environments/core-shared-services/cica-data-extraction.tf @ministryofjustice/cica-mp-tariff 
+/terraform/environments/core-shared-services/cica-sandbox.tf @ministryofjustice/cica-external-developers @ministryofjustice/cica-review-case-documents 
+/terraform/environments/core-shared-services/cica-tariff.tf @ministryofjustice/cica-mp-tariff 
+/terraform/environments/core-shared-services/cloud-platform-live.tf @ministryofjustice/cloud-platform-engineers 
+/terraform/environments/core-shared-services/cloud-platform-non-live.tf @ministryofjustice/cloud-platform-engineers 
+/terraform/environments/core-shared-services/cloud-platform.tf @ministryofjustice/cloud-platform-engineers 
+/terraform/environments/core-shared-services/coat.tf @ministryofjustice/cloud-optimisation-and-accountability 
+/terraform/environments/core-shared-services/contract-work-administration.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-cwa-developer @ministryofjustice/laa-pcuam 
+/terraform/environments/core-shared-services/cooker.tf @ministryofjustice/modernisation-platform @ministryofjustice/panda-cyber-team @ministryofjustice/tvm-purple-team 
+/terraform/environments/core-shared-services/corporate-staff-rostering.tf @ministryofjustice/csr-application-support @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
+/terraform/environments/core-shared-services/dacp.tf @ministryofjustice/dts-legacy 
+/terraform/environments/core-shared-services/data-platform-governance.tf @ministryofjustice/data-platform-engineering 
+/terraform/environments/core-shared-services/data-platform.tf @ministryofjustice/data-platform-engineering 
+/terraform/environments/core-shared-services/delius-alfresco.tf @ministryofjustice/hosting-migrations 
+/terraform/environments/core-shared-services/delius-core-training.tf @ministryofjustice/hmpps-migration @ministryofjustice/hosting-migrations 
+/terraform/environments/core-shared-services/delius-core.tf @ministryofjustice/hmpps-migration @ministryofjustice/hosting-migrations 
+/terraform/environments/core-shared-services/delius-iaps.tf @ministryofjustice/hmpps-migration @ministryofjustice/hosting-migrations 
+/terraform/environments/core-shared-services/delius-jitbit.tf @ministryofjustice/hmpps-migration @ministryofjustice/hosting-migrations 
+/terraform/environments/core-shared-services/delius-mis.tf @ministryofjustice/hmpps-migration @ministryofjustice/hosting-migrations 
+/terraform/environments/core-shared-services/digital-prison-reporting.tf @ministryofjustice/digital-prisons-reporting-development-data-engineer @ministryofjustice/digital-prisons-reporting-preproduction-data-engineer @ministryofjustice/digital-prisons-reporting-production-data-engineer @ministryofjustice/digital-prisons-reporting-test-data-engineer @ministryofjustice/hmpps-digital-prison-reporting @ministryofjustice/hmpps-digital-prison-reporting-non-cleared-team 
+/terraform/environments/core-shared-services/edw-19c.tf @ministryofjustice/laa-aws-infrastructure 
+/terraform/environments/core-shared-services/electronic-monitoring-data.tf @ministryofjustice/hmpps-electronic-monitoring-data-no-sc @ministryofjustice/hmpps-electronic-monitoring-data-store 
+/terraform/environments/core-shared-services/equip.tf @ministryofjustice/modernisation-platform-engineers 
+/terraform/environments/core-shared-services/example.tf @ministryofjustice/green-ops @ministryofjustice/modernisation-platform @ministryofjustice/panda-cyber-team 
+/terraform/environments/core-shared-services/genesys-call-centre-data.tf 
+/terraform/environments/core-shared-services/hmcts-claude-provider.tf @ministryofjustice/modernisation-platform 
+/terraform/environments/core-shared-services/hmpps-domain-services.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
+/terraform/environments/core-shared-services/hmpps-esupervision.tf @ministryofjustice/stg-pathfinders 
+/terraform/environments/core-shared-services/hmpps-oem.tf @ministryofjustice/hmpps-dba @ministryofjustice/hmpps-migration @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
+/terraform/environments/core-shared-services/justice-digital-document-hub.tf @ministryofjustice/justice-digital-document-hub 
+/terraform/environments/core-shared-services/laa-ccms-soa.tf @ministryofjustice/laa-sre-admins 
+/terraform/environments/core-shared-services/laa-cis.tf @ministryofjustice/v1-cis-mod 
+/terraform/environments/core-shared-services/laa-cst-security-dashboard.tf @ministryofjustice/laa-cyber-security-team 
+/terraform/environments/core-shared-services/laa-enterprise-service-bus.tf 
+/terraform/environments/core-shared-services/laa-mail-relay.tf @ministryofjustice/laa-aws-infrastructure 
+/terraform/environments/core-shared-services/laa-oem.tf @ministryofjustice/laa-ccms-migration-team 
+/terraform/environments/core-shared-services/laa-pui-secure-browser.tf @ministryofjustice/ecp-admin @ministryofjustice/laa-sre-admins 
+/terraform/environments/core-shared-services/laa-stabilisation-cdc-poc.tf @ministryofjustice/laa-stabilisation-cdc @ministryofjustice/v1-hub20-developers 
+/terraform/environments/core-shared-services/long-term-storage.tf @ministryofjustice/modernisation-platform-long-term-storage @ministryofjustice/panda-cyber-team 
+/terraform/environments/core-shared-services/maat.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-crime-apps-team @ministryofjustice/laa-sre-admins 
+/terraform/environments/core-shared-services/maatdb.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-crime-apps-team @ministryofjustice/laa-dba @ministryofjustice/laa-maat-migrations 
+/terraform/environments/core-shared-services/mlra.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-crime-apps-team 
+/terraform/environments/core-shared-services/moj-network-operations-centre.tf @ministryofjustice/moj-official-techops @ministryofjustice/moj-official-techops-readonly 
+/terraform/environments/core-shared-services/mojfin.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-mojfin-database-access @ministryofjustice/laa-mojfin-developers @ministryofjustice/laa-sre-admins 
+/terraform/environments/core-shared-services/ncas.tf @ministryofjustice/dts-legacy 
+/terraform/environments/core-shared-services/nomis-combined-reporting.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
+/terraform/environments/core-shared-services/nomis-data-hub.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
+/terraform/environments/core-shared-services/nomis.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
+/terraform/environments/core-shared-services/oas.tf @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-dba @ministryofjustice/oas-migration 
+/terraform/environments/core-shared-services/oasys-national-reporting.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
+/terraform/environments/core-shared-services/oasys.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
+/terraform/environments/core-shared-services/observability-platform.tf @ministryofjustice/observability-platform 
+/terraform/environments/core-shared-services/operations-engineering.tf @ministryofjustice/github-audit-log-viewer @ministryofjustice/operations-engineering 
+/terraform/environments/core-shared-services/opg-lpa-data-store.tf @ministryofjustice/opg-modernising-lpa-team @ministryofjustice/opg-webops 
+/terraform/environments/core-shared-services/panda-cyber-appsec-lab.tf @ministryofjustice/panda-cyber-team 
+/terraform/environments/core-shared-services/performance-hub.tf @ministryofjustice/performance-hub-developers 
+/terraform/environments/core-shared-services/planetfm.tf @ministryofjustice/csr-application-support @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
+/terraform/environments/core-shared-services/portal.tf @ministryofjustice/laa-aws-infrastructure 
+/terraform/environments/core-shared-services/ppud.tf @ministryofjustice/modernisation-platform @ministryofjustice/ppud-replacement-devs 
+/terraform/environments/core-shared-services/pra-register.tf @ministryofjustice/dts-legacy 
+/terraform/environments/core-shared-services/property-cafm-data-migration.tf @ministryofjustice/property-datahub 
+/terraform/environments/core-shared-services/refer-monitor.tf @ministryofjustice/hmpps-interventions-dashboard-access @ministryofjustice/hmpps-interventions-dev 
+/terraform/environments/core-shared-services/sprinkler.tf @ministryofjustice/modernisation-platform @ministryofjustice/modernisation-platform-security @ministryofjustice/panda-cyber-team 
+/terraform/environments/core-shared-services/testing.tf @ministryofjustice/modernisation-platform @ministryofjustice/panda-cyber-team 
+/terraform/environments/core-shared-services/tipstaff.tf @ministryofjustice/dts-legacy 
+/terraform/environments/core-shared-services/tribunals.tf @ministryofjustice/dts-legacy 
+/terraform/environments/core-shared-services/vcms.tf @ministryofjustice/hmpps-vcms-write-team @ministryofjustice/hosting-migrations 
+/terraform/environments/core-shared-services/wardship.tf @ministryofjustice/dts-legacy 
+/terraform/environments/core-shared-services/xhibit-portal.tf @ministryofjustice/cjse-xhibit-portal-discovery @ministryofjustice/panda-cyber-team @ministryofjustice/xhibit-portal-dev 
+/terraform/environments/core-shared-services/youth-justice-app-framework.tf @ministryofjustice/modernisation-platform-engineers 
+/terraform/environments/core-shared-services/youth-justice-networking.tf @ministryofjustice/modernisation-platform-engineers 

@@ -67,7 +67,6 @@ jobs:
 
   member-account-ram-association:
     needs: core-vpc-preproduction-deployment-plan-apply
-    if: github.event.ref == 'refs/heads/main'
     uses: ./.github/workflows/reusable-member-account-ram-association.yml
     with: 
       environment: "preproduction"

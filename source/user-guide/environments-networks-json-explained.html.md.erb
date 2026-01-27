@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: environments-networks json explained
-last_reviewed_on: 2025-07-23
+last_reviewed_on: 2026-01-19
 review_in: 6 months
 ---
 
@@ -34,6 +34,7 @@ The `options` key defines values used in the creation of supplementary configura
 
 - `bastion_linux` is a boolean which determines if a business-unit bastion instance should be created
 - `additional_cidrs` is used by the [vpc-nacls](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/vpc-nacls) module to allow access from external CIDRs such as PSN address ranges.
+- `secondary_cidr_blocks` is used by the [member-vpc](https://github.com/ministryofjustice/modernisation-platform-terraform-member-vpc) module to create secondary CIDR blocks and additional subnets for VPCs requiring expanded IP address capacity.
 - `additional_endpoints` is used by the [vpc](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/environments/core-vpc/vpc.tf#L85) module in `terraform/environments/core-vpc` to supply VPC endpoint names.
 - `additional_private_zones` is used by the [dns-zone-extend-private](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/modules/dns-zone-extend-private) module to create additional private DNS zones.
 

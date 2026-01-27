@@ -59,7 +59,8 @@
       "access": [
         {
           "sso_group_name": "laa-sre-admins",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "laa-ccms-security-testing-kpmg",
