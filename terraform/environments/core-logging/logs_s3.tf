@@ -6,7 +6,6 @@ resource "aws_s3_bucket" "logging" {
   # checkov:skip=CKV_AWS_18:  Access logs not presently required
   # checkov:skip=CKV_AWS_21:  Versioning of log objects not required
   # checkov:skip=CKV_AWS_144: Replication of log objects not required
-  # checkov:skip=CKV_AWS_145: SSE Encryption OK as interim measure
   # checkov:skip=CKV2_AWS_6:  Public access blocked with for_each
   # checkov:skip=CKV2_AWS_61: Lifecycle configuration present with for_each
   # checkov:skip=CKV2_AWS_62: Notifications present with for_each
@@ -118,13 +117,71 @@ resource "aws_s3_bucket_public_access_block" "logging" {
   restrict_public_buckets = true
 }
 
+data "aws_iam_policy_document" "logging_kms" {
+  for_each = local.cortex_logging_buckets
+
+  statement {
+    sid    = "Allow management access of the key to the logging account"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+
+    actions   = ["kms:*"]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "Allow AWS Log Delivery to use the key"
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["delivery.logs.amazonaws.com"]
+    }
+
+    actions = [
+      "kms:Decrypt",
+      "kms:GenerateDataKey"
+    ]
+    resources = ["*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceOrgID"
+      values = [
+        data.aws_organizations_organization.root_account.id
+      ]
+    }
+  }
+}
+
+resource "aws_kms_key" "logging" {
+  for_each                = local.cortex_logging_buckets
+  description             = "KMS key for ${local.application_name}-${each.key} S3 bucket encryption"
+  deletion_window_in_days = 30
+  enable_key_rotation     = true
+  policy                  = data.aws_iam_policy_document.logging_kms[each.key].json
+  tags                    = local.tags
+}
+
+resource "aws_kms_alias" "logging" {
+  for_each      = local.cortex_logging_buckets
+  name          = "alias/${local.application_name}-${each.key}"
+  target_key_id = aws_kms_key.logging[each.key].key_id
+}
+
 resource "aws_s3_bucket_server_side_encryption_configuration" "logging" {
   for_each = local.cortex_logging_buckets
   bucket   = aws_s3_bucket.logging[each.key].id
 
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
+      sse_algorithm     = "aws:kms"
+      kms_master_key_id = aws_kms_key.logging[each.key].arn
     }
+    bucket_key_enabled = true
   }
 }
