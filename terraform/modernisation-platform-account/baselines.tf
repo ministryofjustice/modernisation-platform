@@ -82,5 +82,11 @@ module "baselines-modernisation-platform" {
   high_priority_pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_high_priority_cloudwatch"]
 
   enable_securityhub_slack_alerts                    = true
+  securityhub_slack_alerts_scope                     = ["CRITICAL", "HIGH"]
+  securityhub_slack_alerts_pagerduty_integration_key = local.pagerduty_integration_keys["security_hub_alerts_critical_priority"]
 }
 
+# Keys for pagerduty
+locals {
+  pagerduty_integration_keys = jsondecode(data.aws_secretsmanager_secret_version.pagerduty_integration_keys.secret_string)
+}
