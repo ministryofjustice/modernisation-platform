@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Creating resources in the Modernisation Platform
-last_reviewed_on: 2025-06-24
+last_reviewed_on: 2026-01-27
 review_in: 6 months
 ---
 
@@ -11,14 +11,14 @@ review_in: 6 months
 
 Once your [environment](creating-environments.html) and [networking](creating-networking.html) have been created, now the fun begins and you can start building!
 
-On environment creation, base [Terraform](https://terraform.io) resources are created for you in the [modernisation-platform-environments](https://github.com/ministryofjustice/modernisation-platform-environments/) repository in the environments folder.
+On environment creation, base [Terraform](https://terraform.io) resources are created for you in the [modernisation-platform-environments](https://github.com/ministryofjustice/modernisation-platform-environments/) repository in the [environments](https://github.com/ministryofjustice/modernisation-platform-environments/tree/main/terraform/environments) folder.
 
 These resources are preconfigured with a backend, providers etc, all that you need to start adding in infrastructure such as EC2s or RDS databases.
 
 ## Creating new resources
 
 - Clone the [Modernisation Platform environments](https://github.com/ministryofjustice/modernisation-platform-environments) repository: `git clone git@github.com:ministryofjustice/modernisation-platform-environments.git`
-- Create a new Terraform files or resources in your application folder under `terraform/environments/`
+- Create new Terraform files or resources in your application folder under `terraform/environments/`
 - We recommend following standard Terraform best practices, such as creating a `main.tf`, or logically named Terraform files, such as `database.tf` or `s3.tf`
 - Environment specific variables can be passed in through an [application_variables.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform-environments/application_variables.json), defined as a [local](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform-environments/locals.tf#L41) and [referenced accordingly](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform-environments/locals.tf#L40)
 - Data lookups are provided for common things you may need from the platform such as subnets or DNS zones [here](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/templates/modernisation-platform-environments/platform_data.tf)
@@ -31,7 +31,6 @@ These resources are preconfigured with a backend, providers etc, all that you ne
 ## Restrictions
 
 - The following files you will not be able to amend without an approving review from the Modernisation Platform team.
-
   - `providers.tf`
   - `backend.tf`
   - `subnet_share.tf`
