@@ -80,5 +80,7 @@ module "baselines-modernisation-platform" {
 
   # PagerDuty Key for High Priority Alarms
   high_priority_pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_high_priority_cloudwatch"]
+
+  enable_securityhub_slack_alerts                    = local.securityhub_slack_alerts_accounts
 }
 
