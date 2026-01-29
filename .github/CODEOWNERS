@@ -17,7 +17,7 @@
 /terraform/environments/core-shared-services/ccms-ebs-upgrade.tf @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/ccms-ebs.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-ccms-instance-access @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-security @ministryofjustice/panda-cyber-team 
 /terraform/environments/core-shared-services/ccms-edrms.tf @ministryofjustice/laa-sre-admins 
-/terraform/environments/core-shared-services/ccms-oia.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-sre-admins 
+/terraform/environments/core-shared-services/ccms-oia.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-dba @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/ccms-pui-internal.tf @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/ccms-pui.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/cdpt-chaps.tf @ministryofjustice/central-digital-product-team 
@@ -83,6 +83,7 @@
 /terraform/environments/core-shared-services/portal.tf @ministryofjustice/laa-aws-infrastructure 
 /terraform/environments/core-shared-services/ppud.tf @ministryofjustice/modernisation-platform @ministryofjustice/ppud-replacement-devs 
 /terraform/environments/core-shared-services/pra-register.tf @ministryofjustice/dts-legacy 
+/terraform/environments/core-shared-services/prison-retail.tf @ministryofjustice/csr-application-support @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
 /terraform/environments/core-shared-services/property-cafm-data-migration.tf @ministryofjustice/property-datahub 
 /terraform/environments/core-shared-services/refer-monitor.tf @ministryofjustice/hmpps-interventions-dashboard-access @ministryofjustice/hmpps-interventions-dev 
 /terraform/environments/core-shared-services/sprinkler.tf @ministryofjustice/modernisation-platform @ministryofjustice/modernisation-platform-security @ministryofjustice/panda-cyber-team 

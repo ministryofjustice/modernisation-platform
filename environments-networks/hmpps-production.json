@@ -25,6 +25,7 @@
           "performance-hub-production",
           "planetfm-production",
           "ppud-production",
+          "prison-retail-production",
           "vcms-production"
         ]
       }
@@ -33,7 +34,7 @@
   "options": {
     "bastion_linux": false,
     "additional_cidrs": [],
-    "secondary_cidr_blocks": [],
+    "secondary_cidr_blocks": ["10.27.168.0/21"],
     "additional_endpoints": [
       "com.amazonaws.eu-west-2.athena",
       "com.amazonaws.eu-west-2.execute-api",

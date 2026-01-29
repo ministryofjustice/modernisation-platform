@@ -92,6 +92,7 @@ expected :=
     "portal",
     "ppud",
     "pra-register",
+    "prison-retail",
     "property-cafm-data-migration",
     "refer-monitor",
     "sprinkler",

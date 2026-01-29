@@ -229,6 +229,7 @@ expected :=
           "performance-hub-production",
           "planetfm-production",
           "ppud-production",
+          "prison-retail-production",
           "vcms-production"
         ]
       }
