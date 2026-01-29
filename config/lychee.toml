@@ -38,7 +38,11 @@ exclude = [
     '^https://github\.com/ministryofjustice/modernisation-platform-security',
     '^https://github\.com/ministryofjustice/deployment-tgw',
     '^https://moj-digital-tools.pagerduty.com',
-    '^https://github\.com/ministryofjustice/moj-ip-addresses/'
+    '^https://github\.com/ministryofjustice/moj-ip-addresses/',
+    '^https://github\.com/ministryofjustice/modernisation-platform-github/actions/workflows/terraform-github\.yml',
+    '^https://github\.com/ministryofjustice/modernisation-platform-github/blob/main/terraform/github/locals\.tf',
+    '^https://github\.com/ministryofjustice/modernisation-platform-github/blob/main/terraform/github/repositories\.tf',
+    '^https://github\.com/ministryofjustice/modernisation-platform-github/blob/main/collaborators\.json'
 ]
 
 # Exclude all private IPs from checking.
