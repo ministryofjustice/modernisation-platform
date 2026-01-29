@@ -34,11 +34,14 @@ repository. This will be applied through our [GitHub](https://github.com/ministr
 
 ## Access to the relevant AWS accounts
 
-Add the collaborators to the [collaborators.json](https://github.com/ministryofjustice/modernisation-platform/blob/main/collaborators.json) file.
+Add the collaborators to the [collaborators.json](https://github.com/ministryofjustice/modernisation-platform-github/blob/main/collaborators.json) file.
 
 Valid access levels are detailed [here](../user-guide/platform-user-roles.html#developer).
 
-The modernisation-platform-account workflow will create the users when a pull request with these changes is merged.
+The modernisation-platform-account-github workflow will create the users when a pull request with these changes is merged.
+
+Due to the move of the GitHub code to a new repository, the modernisation-platform-account pipeline must be run manually to create users until we implement automation for this process.
+
 
 Once their IAM user has been created, log into the AWS console yourself and:
 
