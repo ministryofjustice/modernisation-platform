@@ -384,7 +384,6 @@ resource "aws_cloudwatch_metric_alarm" "tgw_unauthorized_change" {
   tags = local.tags
 }
 
-
 # CloudTrail log metric filter for TGW attachment creation
 # Alerts on attachment creation outside of ModernisationPlatformAccess role
 resource "aws_cloudwatch_log_metric_filter" "tgw_attachment_created" {
