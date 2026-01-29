@@ -286,7 +286,9 @@ resource "aws_cloudwatch_metric_alarm" "ErrorPortAllocation" {
 }
 
 # Transit Gateway change monitoring
-# All Transit Gateway changes MUST be performed via theModernisationPlatformAccess automation role.Any TGW change outside this role will raise an alert.
+# All Transit Gateway changes MUST be performed via the ModernisationPlatformAccess automation role.
+# Any TGW change outside this role will raise an alert.
+
 
 locals {
   tgw_unauthorized_role_name = "ModernisationPlatformAccess"
