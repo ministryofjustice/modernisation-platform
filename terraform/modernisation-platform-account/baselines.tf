@@ -18,7 +18,7 @@ locals {
 # Secure baselines (GuardDuty, Config, SecurityHub, etc)
 #trivy:ignore:AVD-AWS-0136 trivy:ignore:AVD-AWS-0132
 module "baselines-modernisation-platform" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=4b7ea74934801bce5cbf16d75af9132f4d49d4ab" # v8.2.1
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=35c27b19f923053a9ab0525d45c9301dca743359" # v9.0.0
   providers = {
     # Default and replication regions
     aws                    = aws.modernisation-platform-eu-west-2
@@ -80,5 +80,8 @@ module "baselines-modernisation-platform" {
 
   # PagerDuty Key for High Priority Alarms
   high_priority_pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_high_priority_cloudwatch"]
-}
 
+  enable_securityhub_slack_alerts                    = true
+  securityhub_slack_alerts_scope                     = ["CRITICAL", "HIGH"]
+  securityhub_slack_alerts_pagerduty_integration_key = local.pagerduty_integration_keys["security_hub_alerts_critical_priority"]
+}
