@@ -1,24 +1,18 @@
-name: "Terraform: GitHub resources"
+name: "GitHub Environment Reviewers Automation"
 
 on:
   push:
     paths:
-      - 'terraform/github/**'
-      - '!**.md'
-      - '.github/workflows/terraform-github.yml'
       - 'environments/**.json'
-      - '.github/workflows/reusable_terraform_plan_apply.yml'
-      - 'collaborators.json'
+      - 'scripts/git-create-environments.sh'
+      - '.github/workflows/terraform-github.yml'
     branches:
       - main
   pull_request:
     paths:
-      - 'terraform/github/**'
-      - '!**.md'
-      - '.github/workflows/terraform-github.yml'
       - 'environments/**.json'
-      - '.github/workflows/reusable_terraform_plan_apply.yml'
-      - 'collaborators.json'
+      - 'scripts/git-create-environments.sh'
+      - '.github/workflows/terraform-github.yml'
     branches:
       - main
     types: [opened, edited, reopened, synchronize]
@@ -27,84 +21,26 @@ on:
     # trigger every Saturday at 12:00am
     - cron: '0 12 * * 6'
   workflow_dispatch:
-
 defaults:
   run:
     shell: bash
-
 env:
   RATE_THRESHOLD: 100
   APP_ID: 2013696
-
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
   pull-requests: write
-  
-jobs:
 
+jobs:
   fetch-secrets:
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@5c713c93eea694829b1bd3f410d0b235053318ce # v4.0.0
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}  
-
-  github-status-check:
-    runs-on: ubuntu-latest
-    needs: fetch-secrets
-    steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-      - name: Decrypt Secrets
-        uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5c713c93eea694829b1bd3f410d0b235053318ce # v4.0.0
-        with:
-          mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
-          slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
-          PASSPHRASE: ${{ secrets.PASSPHRASE }}
-      - name: Check GitHub status
-        run: |
-          response=$(curl -s https://www.githubstatus.com/api/v2/summary.json)
-
-          # Check status of key components
-          git_operations_status=$(echo "$response" | jq -r '.components[] | select(.name == "Git Operations") | .status')
-          api_status=$(echo "$response" | jq -r '.components[] | select(.name == "API Requests") | .status')
-    
-          # Only fail if components are not operational
-          if [ "$git_operations_status" = "operational" ] && [ "$api_status" = "operational" ]; then
-            echo "GitHub components are operational"
-          else
-            echo "GitHub components not fully operational - Git Operations: $git_operations_status, API: $api_status"
-            exit 1
-          fi
-      - name: Create GitHub App token
-        id: app
-        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
-        with:
-          app-id: ${{ env.APP_ID }}               
-          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
-          owner: "ministryofjustice"
-          repositories: "modernisation-platform"
-      - name: Authenticate GitHub CLI as the App and Check the Rate Usage
-        env:
-          GH_TOKEN: ${{ steps.app.outputs.token }}
-        run: |
-          # gh automatically uses GH_TOKEN if set — no `gh auth login` needed
-          gh auth status
-          bash ./scripts/check-github-api-usage.sh
-
-  github-plan-and-apply:
-    needs: [ github-status-check ]
-    uses: ./.github/workflows/reusable_terraform_plan_apply.yml
-    with:
-      working-directory: "terraform/github"
-      workflow_id: "github"
-      set_github_app_token: true
-    secrets:
-      MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
-      PASSPHRASE: ${{ secrets.PASSPHRASE }}
-
   create-github-environments:
     runs-on: ubuntu-latest
-    needs: [ fetch-secrets, github-status-check, github-plan-and-apply ]
+    needs: [ fetch-secrets ]
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
