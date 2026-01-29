@@ -355,7 +355,7 @@ resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_changes" {
 resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_tag_changes" {
   name           = "tgw_unauthorized_tag_changes_filter"
   log_group_name = "cloudtrail"
-  pattern        = "{ ($.eventSource = \"ec2.amazonaws.com\") && (($.eventName = \"CreateTags\") || ($.eventName = \"DeleteTags\")) && ($.resources[0].resourceType = \"transit-gateway\") && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
+  pattern        = "{ ($.eventSource = \"ec2.amazonaws.com\") && (($.eventName = \"CreateTags\") || ($.eventName = \"DeleteTags\")) && (($.resources[0].resourceType = \"transit-gateway\") || ($.resources[1].resourceType = \"transit-gateway\") || ($.resources[2].resourceType = \"transit-gateway\")) && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
 
   metric_transformation {
     name      = "TGWUnauthorizedChange"
@@ -372,17 +372,18 @@ resource "aws_cloudwatch_metric_alarm" "tgw_unauthorized_change" {
   alarm_actions = [aws_sns_topic.tgw_monitoring_production.arn]
   ok_actions    = [aws_sns_topic.tgw_monitoring_production.arn]
 
-  comparison_operator = "GreaterThanThreshold"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "TGWUnauthorizedChange"
   namespace           = "TransitGateway/Security"
   period              = "60"
   statistic           = "Sum"
-  threshold           = "0"
+  threshold           = "1"
   treat_missing_data  = "notBreaching"
 
   tags = local.tags
 }
+
 
 # CloudTrail log metric filter for TGW attachment creation
 # Alerts on attachment creation outside of ModernisationPlatformAccess role
