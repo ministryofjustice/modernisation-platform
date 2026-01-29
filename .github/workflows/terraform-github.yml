@@ -77,7 +77,7 @@ jobs:
           GH_TOKEN: ${{ steps.app-envts.outputs.token }}
       - name: Slack failure notification
         if: ${{ failure() }}
-        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
+        uses: slackapi/slack-github-action@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
         with:
           webhook-type: incoming-webhook
           payload: |
