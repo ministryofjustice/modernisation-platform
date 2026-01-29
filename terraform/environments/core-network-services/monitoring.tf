@@ -285,8 +285,106 @@ resource "aws_cloudwatch_metric_alarm" "ErrorPortAllocation" {
   tags = local.tags
 }
 
-# Transit Gateway attachment monitoring 
+# ------------------------------------------------------------------------------
+# Transit Gateway change monitoring (unauthorized changes)
+# ------------------------------------------------------------------------------
+# Goal:
+#   Alert if ANY TGW change happens outside the ModernisationPlatformAccess automation role.
+# Notes:
+#   - We keep TGW tag events in scope for safe testing, but they should only match TGW resources.
+#   - For non-tag TGW events, we scope by explicit TGW-related eventName.
+#   - The "unauthorized" logic matches:
+#       * any non-AssumedRole caller (IAM user / SSO, etc), OR
+#       * an AssumedRole caller where sessionIssuer.userName != ModernisationPlatformAccess
+# ------------------------------------------------------------------------------
 
+locals {
+  tgw_unauthorized_role_name = "ModernisationPlatformAccess"
+
+  # TGW event names we want to alert on when performed outside the allowed role.
+  # Add/remove as required; this set covers the main TGW change operations.
+  tgw_unauthorized_event_names = [
+    "CreateTransitGateway",
+    "ModifyTransitGateway",
+    "DeleteTransitGateway",
+
+    "CreateTransitGatewayVpcAttachment",
+    "ModifyTransitGatewayVpcAttachment",
+    "DeleteTransitGatewayVpcAttachment",
+
+    "CreateTransitGatewayPeeringAttachment",
+    "AcceptTransitGatewayPeeringAttachment",
+    "RejectTransitGatewayPeeringAttachment",
+    "DeleteTransitGatewayPeeringAttachment",
+
+    "CreateTransitGatewayRouteTable",
+    "DeleteTransitGatewayRouteTable",
+    "AssociateTransitGatewayRouteTable",
+    "DisassociateTransitGatewayRouteTable",
+
+    "CreateTransitGatewayRoute",
+    "ReplaceTransitGatewayRoute",
+    "DeleteTransitGatewayRoute",
+    "EnableTransitGatewayRouteTablePropagation",
+    "DisableTransitGatewayRouteTablePropagation",
+  ]
+}
+
+# Metric filters: one per TGW event, all emitting the same metric.
+# This keeps the CloudWatch Alarm simple (single metric / single alarm),
+# while still matching across a wide set of TGW changes.
+resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_changes" {
+  for_each = toset(local.tgw_unauthorized_event_names)
+
+  name           = "tgw_unauthorized_${lower(each.value)}_filter"
+  log_group_name = "cloudtrail"
+  pattern        = "{ ($.eventSource = \"ec2.amazonaws.com\") && ($.eventName = \"${each.value}\") && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
+
+  metric_transformation {
+    name      = "TGWUnauthorizedChange"
+    namespace = "TransitGateway/Security"
+    value     = "1"
+  }
+}
+
+# TGW tag change filter (safe testing + completes "any TGW change" intent)
+# Scoped to TGW resourceType so we don't alarm on unrelated tagging.
+resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_tag_changes" {
+  name           = "tgw_unauthorized_tag_changes_filter"
+  log_group_name = "cloudtrail"
+  pattern        = "{ ($.eventSource = \"ec2.amazonaws.com\") && (($.eventName = \"CreateTags\") || ($.eventName = \"DeleteTags\")) && ($.resources[0].resourceType = \"transit-gateway\") && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
+
+  metric_transformation {
+    name      = "TGWUnauthorizedChange"
+    namespace = "TransitGateway/Security"
+    value     = "1"
+  }
+}
+
+# CloudWatch alarm: fires if any unauthorized TGW change occurs
+resource "aws_cloudwatch_metric_alarm" "tgw_unauthorized_change" {
+  alarm_name        = "unauthorized-tgw-change"
+  alarm_description = "High priority alert: Transit Gateway change detected outside of ${local.tgw_unauthorized_role_name} automation role. This may indicate unauthorized manual modification."
+
+  alarm_actions = [aws_sns_topic.tgw_monitoring_production.arn]
+  ok_actions    = [aws_sns_topic.tgw_monitoring_production.arn]
+
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "TGWUnauthorizedChange"
+  namespace           = "TransitGateway/Security"
+  period              = "60"
+  statistic           = "Sum"
+  threshold           = "0"
+  treat_missing_data  = "notBreaching"
+
+  tags = local.tags
+}
+
+# ------------------------------------------------------------------------------
+# (Optional) Keep existing specific alarm if you still want it for clarity.
+# If you don't need the dedicated attachment alarm anymore, delete it.
+# ------------------------------------------------------------------------------
 # CloudTrail log metric filter for TGW attachment creation
 # Alerts on attachment creation outside of ModernisationPlatformAccess role
 resource "aws_cloudwatch_log_metric_filter" "tgw_attachment_created" {
