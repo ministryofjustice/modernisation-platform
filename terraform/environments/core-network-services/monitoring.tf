@@ -285,18 +285,21 @@ resource "aws_cloudwatch_metric_alarm" "ErrorPortAllocation" {
   tags = local.tags
 }
 
-# ------------------------------------------------------------------------------
-# Transit Gateway change monitoring (unauthorized changes)
-# ------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------------------
+# Transit Gateway change monitoring for MP Threats/Risks POC https://github.com/ministryofjustice/modernisation-platform/issues/12151
+# -----------------------------------------------------------------------------------------------------------------------------------
 # Goal:
-#   Alert if ANY TGW change happens outside the ModernisationPlatformAccess automation role.
-# Notes:
-#   - We keep TGW tag events in scope for safe testing, but they should only match TGW resources.
-#   - For non-tag TGW events, we scope by explicit TGW-related eventName.
-#   - The "unauthorized" logic matches:
-#       * any non-AssumedRole caller (IAM user / SSO, etc), OR
-#       * an AssumedRole caller where sessionIssuer.userName != ModernisationPlatformAccess
-# ------------------------------------------------------------------------------
+#   All Transit Gateway changes MUST be performed via the
+#   ModernisationPlatformAccess automation role.
+#
+# Alert behaviour:
+#   Raise an alert for ANY Transit Gateway change that is NOT made
+#   by the ModernisationPlatformAccess role.
+#
+# Implementation notes:
+#   - TGW tag events are included to allow safe testing of the alert.
+#   - Non-tag TGW changes are matched explicitly by TGW-related API calls.
+# --------------------------------------------------------------------------------------------------------------------------------------
 
 locals {
   tgw_unauthorized_role_name = "ModernisationPlatformAccess"
