@@ -285,27 +285,15 @@ resource "aws_cloudwatch_metric_alarm" "ErrorPortAllocation" {
   tags = local.tags
 }
 
-# -----------------------------------------------------------------------------------------------------------------------------------
-# Transit Gateway change monitoring for MP Threats/Risks POC https://github.com/ministryofjustice/modernisation-platform/issues/12151
-# -----------------------------------------------------------------------------------------------------------------------------------
-# Goal:
-#   All Transit Gateway changes MUST be performed via the
-#   ModernisationPlatformAccess automation role.
+# -----------------------------------------------------------------------------------------------------------------------------------------------------
+# Transit Gateway change monitoring
 #
-# Alert behaviour:
-#   Raise an alert for ANY Transit Gateway change that is NOT made
-#   by the ModernisationPlatformAccess role.
-#
-# Implementation notes:
-#   - TGW tag events are included to allow safe testing of the alert.
-#   - Non-tag TGW changes are matched explicitly by TGW-related API calls.
-# --------------------------------------------------------------------------------------------------------------------------------------
+# All Transit Gateway changes MUST be performed via theModernisationPlatformAccess automation role.Any TGW change outside this role will raise an alert.
+# ------------------------------------------------------------------------------------------------------------------------------------------------------
 
 locals {
   tgw_unauthorized_role_name = "ModernisationPlatformAccess"
 
-  # TGW event names we want to alert on when performed outside the allowed role.
-  # Add/remove as required; this set covers the main TGW change operations.
   tgw_unauthorized_event_names = [
     "CreateTransitGateway",
     "ModifyTransitGateway",
@@ -333,9 +321,6 @@ locals {
   ]
 }
 
-# Metric filters: one per TGW event, all emitting the same metric.
-# This keeps the CloudWatch Alarm simple (single metric / single alarm),
-# while still matching across a wide set of TGW changes.
 resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_changes" {
   for_each = toset(local.tgw_unauthorized_event_names)
 
@@ -350,8 +335,6 @@ resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_changes" {
   }
 }
 
-# TGW tag change filter (safe testing + completes "any TGW change" intent)
-# Scoped to TGW resourceType so we don't alarm on unrelated tagging.
 resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_tag_changes" {
   name           = "tgw_unauthorized_tag_changes_filter"
   log_group_name = "cloudtrail"
@@ -364,7 +347,6 @@ resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_tag_changes" {
   }
 }
 
-# CloudWatch alarm: fires if any unauthorized TGW change occurs
 resource "aws_cloudwatch_metric_alarm" "tgw_unauthorized_change" {
   alarm_name        = "unauthorized-tgw-change"
   alarm_description = "High priority alert: Transit Gateway change detected outside of ${local.tgw_unauthorized_role_name} automation role. This may indicate unauthorized manual modification."
