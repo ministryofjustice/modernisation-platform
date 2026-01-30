@@ -285,35 +285,81 @@ resource "aws_cloudwatch_metric_alarm" "ErrorPortAllocation" {
   tags = local.tags
 }
 
-# Transit Gateway attachment monitoring 
+# Transit Gateway change monitoring
+# All Transit Gateway changes MUST be performed via the ModernisationPlatformAccess automation role.
+# Any TGW change outside this role will raise an alert.
 
-# CloudTrail log metric filter for TGW attachment creation
-# Alerts on attachment creation outside of ModernisationPlatformAccess role
-resource "aws_cloudwatch_log_metric_filter" "tgw_attachment_created" {
-  name           = "tgw_attachment_created_filter"
-  pattern        = "{ ($.eventSource = \"ec2.amazonaws.com\") && ($.eventName = \"CreateTransitGatewayVpcAttachment\") && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"ModernisationPlatformAccess\")) }"
+
+locals {
+  tgw_unauthorized_role_name = "ModernisationPlatformAccess"
+
+  tgw_unauthorized_event_names = [
+    "CreateTransitGateway",
+    "ModifyTransitGateway",
+    "DeleteTransitGateway",
+
+    "CreateTransitGatewayVpcAttachment",
+    "ModifyTransitGatewayVpcAttachment",
+    "DeleteTransitGatewayVpcAttachment",
+
+    "CreateTransitGatewayPeeringAttachment",
+    "AcceptTransitGatewayPeeringAttachment",
+    "RejectTransitGatewayPeeringAttachment",
+    "DeleteTransitGatewayPeeringAttachment",
+
+    "CreateTransitGatewayRouteTable",
+    "DeleteTransitGatewayRouteTable",
+    "AssociateTransitGatewayRouteTable",
+    "DisassociateTransitGatewayRouteTable",
+
+    "CreateTransitGatewayRoute",
+    "ReplaceTransitGatewayRoute",
+    "DeleteTransitGatewayRoute",
+    "EnableTransitGatewayRouteTablePropagation",
+    "DisableTransitGatewayRouteTablePropagation",
+  ]
+}
+
+resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_changes" {
+  for_each = toset(local.tgw_unauthorized_event_names)
+
+  name           = "tgw_unauthorized_${lower(each.value)}_filter"
   log_group_name = "cloudtrail"
+  pattern        = "{ ($.eventSource = \"ec2.amazonaws.com\") && ($.eventName = \"${each.value}\") && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
 
   metric_transformation {
-    name      = "TGWAttachmentCreated"
+    name      = "TGWUnauthorizedChange"
     namespace = "TransitGateway/Security"
     value     = "1"
   }
 }
 
-# CloudWatch alarm for unauthorized TGW attachment creation
-resource "aws_cloudwatch_metric_alarm" "tgw_attachment_created" {
-  alarm_name          = "unauthorized-tgw-attachment"
-  alarm_description   = "High priority alert: Transit Gateway VPC attachment created outside of ModernisationPlatformAccess automation role. This may indicate unauthorized network access attempt via illicit RAM sharing or manual attachment creation."
-  alarm_actions       = [aws_sns_topic.tgw_monitoring_production.arn]
-  ok_actions          = [aws_sns_topic.tgw_monitoring_production.arn]
-  comparison_operator = "GreaterThanThreshold"
+resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_tag_changes" {
+  name           = "tgw_unauthorized_tag_changes_filter"
+  log_group_name = "cloudtrail"
+  pattern        = "{ ($.eventSource = \"ec2.amazonaws.com\") && (($.eventName = \"CreateTags\") || ($.eventName = \"DeleteTags\")) && (($.resources[0].resourceType = \"transit-gateway\") || ($.resources[1].resourceType = \"transit-gateway\") || ($.resources[2].resourceType = \"transit-gateway\")) && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
+
+  metric_transformation {
+    name      = "TGWUnauthorizedChange"
+    namespace = "TransitGateway/Security"
+    value     = "1"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "tgw_unauthorized_change" {
+  alarm_name        = "unauthorized-tgw-change"
+  alarm_description = "High priority alert: Transit Gateway change detected outside of ${local.tgw_unauthorized_role_name} automation role. This may indicate unauthorized manual modification."
+
+  alarm_actions = [aws_sns_topic.tgw_monitoring_production.arn]
+  ok_actions    = [aws_sns_topic.tgw_monitoring_production.arn]
+
+  comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
-  metric_name         = "TGWAttachmentCreated"
+  metric_name         = "TGWUnauthorizedChange"
   namespace           = "TransitGateway/Security"
   period              = "60"
   statistic           = "Sum"
-  threshold           = "0"
+  threshold           = "1"
   treat_missing_data  = "notBreaching"
 
   tags = local.tags
