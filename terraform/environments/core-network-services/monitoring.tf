@@ -364,35 +364,3 @@ resource "aws_cloudwatch_metric_alarm" "tgw_unauthorized_change" {
 
   tags = local.tags
 }
-
-# CloudTrail log metric filter for TGW attachment creation
-# Alerts on attachment creation outside of ModernisationPlatformAccess role
-resource "aws_cloudwatch_log_metric_filter" "tgw_attachment_created" {
-  name           = "tgw_attachment_created_filter"
-  pattern        = "{ ($.eventSource = \"ec2.amazonaws.com\") && ($.eventName = \"CreateTransitGatewayVpcAttachment\") && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"ModernisationPlatformAccess\")) }"
-  log_group_name = "cloudtrail"
-
-  metric_transformation {
-    name      = "TGWAttachmentCreated"
-    namespace = "TransitGateway/Security"
-    value     = "1"
-  }
-}
-
-# CloudWatch alarm for unauthorized TGW attachment creation
-resource "aws_cloudwatch_metric_alarm" "tgw_attachment_created" {
-  alarm_name          = "unauthorized-tgw-attachment"
-  alarm_description   = "High priority alert: Transit Gateway VPC attachment created outside of ModernisationPlatformAccess automation role. This may indicate unauthorized network access attempt via illicit RAM sharing or manual attachment creation."
-  alarm_actions       = [aws_sns_topic.tgw_monitoring_production.arn]
-  ok_actions          = [aws_sns_topic.tgw_monitoring_production.arn]
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = "1"
-  metric_name         = "TGWAttachmentCreated"
-  namespace           = "TransitGateway/Security"
-  period              = "60"
-  statistic           = "Sum"
-  threshold           = "0"
-  treat_missing_data  = "notBreaching"
-
-  tags = local.tags
-}
