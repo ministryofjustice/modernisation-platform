@@ -29,7 +29,7 @@ Submit a pull request and when it's merged, they will appear on [our team page](
 
 ## Adding them to our GitHub team
 
-To add them to our GitHub team, update the file at [terraform/github/locals.tf](https://github.com/ministryofjustice/modernisation-platform/blob/main/terraform/github/locals.tf) with:
+To add them to our GitHub team, update the file at [terraform/github/locals.tf](https://github.com/ministryofjustice/modernisation-platform-github/blob/main/terraform/github/locals.tf) with:
 
 - their GitHub username either in:
   - the `general_members` list, if they don't need access to AWS
@@ -37,8 +37,7 @@ To add them to our GitHub team, update the file at [terraform/github/locals.tf](
 
 If they are a GitHub organisation owner, add them to the `maintainers` list too. This is because GitHub will return their role as a `maintainer`, because GitHub organisation owners always have those permissions.
 
-> You can view a [sample PR](https://github.com/ministryofjustice/modernisation-platform/pull/382) in case you get stuck.
-
+> You can view a [sample PR](https://github.com/ministryofjustice/modernisation-platform/pull/382) in case you get stuck. Please note that the sample PR is on the modernisation-platform repository, but the change needs to be made on the modernisation-platform-github repository.
 ## Adding them as a superadmin in our AWS landing zone
 
 To add them as a superadmin in our AWS landing zone, add their `firstname.lastname` in the [modernisation-platform-terraform-iam-superadmins](https://github.com/ministryofjustice/modernisation-platform-terraform-iam-superadmins) `main.tf` file.
