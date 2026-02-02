@@ -117,6 +117,9 @@ resource "aws_s3_bucket_public_access_block" "logging" {
   restrict_public_buckets = true
 }
 
+# checkov:skip=CKV_AWS_109: Scope constrained via principal
+# checkov:skip=CKV_AWS_356: Wider permissions follows other kms policies
+# checkov:skip=CKV_AWS_111: Wider permissions follows other kms policies
 data "aws_iam_policy_document" "logging_kms" {
   for_each = local.cortex_logging_buckets
 
