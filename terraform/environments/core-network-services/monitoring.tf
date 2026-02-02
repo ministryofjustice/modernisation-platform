@@ -285,6 +285,59 @@ resource "aws_cloudwatch_metric_alarm" "ErrorPortAllocation" {
   tags = local.tags
 }
 
+# High priority security alerts (non-service-specific)
+# tfsec:ignore:aws-sns-enable-topic-encryption
+resource "aws_sns_topic" "high_priority_alerts" {
+  #checkov:skip=CKV_AWS_26:"encrypted topics do not work with pagerduty subscription"
+  name = "high_priority_alerts"
+
+  tags = local.tags
+}
+
+module "pagerduty_high_priority_alerts" {
+  depends_on = [
+    aws_sns_topic.high_priority_alerts
+  ]
+  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=d88bd90d490268896670a898edfaba24bba2f8ab" # v3.0.0
+  sns_topics                = [aws_sns_topic.high_priority_alerts.name]
+  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
+}
+
+# Trust relationship monitoring for ModernisationPlatformAccess
+# Alert on ANY change to the role trust policy (UpdateAssumeRolePolicy)
+resource "aws_cloudwatch_log_metric_filter" "mpa_trust_policy_changed" {
+  name           = "mpa_trust_policy_changed_filter"
+  log_group_name = "cloudtrail"
+
+  pattern = "{ ($.eventSource = \"iam.amazonaws.com\") && ($.eventName = \"UpdateAssumeRolePolicy\") && ($.requestParameters.roleName = \"ModernisationPlatformAccess\") }"
+
+  metric_transformation {
+    name      = "MPATrustPolicyChanged"
+    namespace = "MP/Security"
+    value     = "1"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "mpa_trust_policy_changed" {
+  alarm_name        = "modernisation-platform-access-trust-policy-changed"
+  alarm_description = "High priority alert: Trust relationship (assume role policy) changed for ModernisationPlatformAccess."
+
+  alarm_actions = [aws_sns_topic.high_priority_alerts.arn]
+  ok_actions    = [aws_sns_topic.high_priority_alerts.arn]
+
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "MPATrustPolicyChanged"
+  namespace           = "MP/Security"
+  period              = "60"
+  statistic           = "Sum"
+  threshold           = "1"
+  treat_missing_data  = "notBreaching"
+
+  tags = local.tags
+}
+
+
 # Transit Gateway change monitoring
 # All Transit Gateway changes MUST be performed via the ModernisationPlatformAccess automation role.
 # Any TGW change outside this role will raise an alert.
