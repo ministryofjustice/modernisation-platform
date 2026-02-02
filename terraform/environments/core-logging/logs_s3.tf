@@ -118,6 +118,9 @@ resource "aws_s3_bucket_public_access_block" "logging" {
 }
 
 data "aws_iam_policy_document" "logging_kms" {
+  # checkov:skip=CKV_AWS_111: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_356: "policy is directly related to the resource"
+  # checkov:skip=CKV_AWS_109: "role is restricted by limited actions in member account"
   for_each = local.cortex_logging_buckets
 
   statement {
