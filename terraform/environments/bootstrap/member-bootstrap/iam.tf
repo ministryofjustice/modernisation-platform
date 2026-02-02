@@ -236,6 +236,7 @@ data "aws_iam_policy_document" "member-access" {
       "ec2:*NatGateway*",
       "ec2:*TransitGatewayVpcAttachment*",
       "ec2:*ManagedPrefixList*",
+      "ec2:*EncryptionControl*",
       "ecr-public:*",
       "ecr:*",
       "ecs:*",
