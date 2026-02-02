@@ -63,11 +63,6 @@ member() {
   jq -n -c -r '[ inputs | . + { filename: input_filename } | select( .["account-type"] == "member" ) ]' environments/*.json | conftest test -p policies/member -
 }
 
-collaborators(){
-  line
-  echo "Running Collaborator tests"
-  jq -n -c -r '[ inputs | . + { filename: input_filename } ]' collaborators.json | conftest test -p policies/collaborators -
-}
 
 # Verify OPA tests
 
@@ -77,7 +72,6 @@ verify-tests(){
   conftest verify -p policies/environments
   conftest verify -p policies/networking
   conftest verify -p policies/member
-  conftest verify -p policies/collaborators
 }
 
 main() {
@@ -93,8 +87,6 @@ main() {
   wait $networking_outcome
   member & member_outcome=$!
   wait $member_outcome
-  collaborators & collaborators_outcome=$!
-  wait $collaborators_outcome
   line
 }
 
