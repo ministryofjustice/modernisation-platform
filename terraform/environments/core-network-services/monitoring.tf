@@ -305,8 +305,8 @@ resource "aws_cloudwatch_metric_alarm" "mpa_trust_policy_changed" {
   alarm_name        = "modernisation-platform-access-trust-policy-changed"
   alarm_description = "High priority alert: Trust relationship (assume role policy) changed for ModernisationPlatformAccess."
 
-  alarm_actions = [aws_sns_topic.cloudtrail.arn]
-  ok_actions    = [aws_sns_topic.cloudtrail.arn]
+  alarm_actions = [module.core_monitoring.cloudtrail_sns_topic_arn]
+  ok_actions    = [module.core_monitoring.cloudtrail_sns_topic_arn]
 
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -319,6 +319,7 @@ resource "aws_cloudwatch_metric_alarm" "mpa_trust_policy_changed" {
 
   tags = local.tags
 }
+
 
 
 # Transit Gateway change monitoring
