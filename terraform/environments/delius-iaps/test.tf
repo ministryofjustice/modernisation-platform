@@ -3,4 +3,3 @@ resource "null_resource" "hello_world" {
 		command = "echo Hello world from cooker"
 	}
 }
-
