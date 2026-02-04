@@ -29,29 +29,29 @@ resource "aws_ram_principal_association" "default" {
   resource_share_arn = data.aws_ram_resource_share.default.arn
 }
 
-# Secondary CIDR subnet share association
-data "aws_ram_resource_share" "secondary" {
-  count = local.share_secondary ? 1 : 0
-  provider = aws.share-host
+# # Secondary CIDR subnet share association
+# data "aws_ram_resource_share" "secondary" {
+#   count = local.share_secondary ? 1 : 0
+#   provider = aws.share-host
 
-  name = "${var.vpc_name}-${var.environment}-${var.subnet_set}-secondary-resource-share"
+#   name = "${var.vpc_name}-${var.environment}-${var.subnet_set}-secondary-resource-share"
 
-  resource_owner = "SELF"
+#   resource_owner = "SELF"
 
-  filter {
-    name   = "Name"
-    values = ["${var.vpc_name}-${var.environment}-${var.subnet_set}-secondary"]
-  }
-}
+#   filter {
+#     name   = "Name"
+#     values = ["${var.vpc_name}-${var.environment}-${var.subnet_set}-secondary"]
+#   }
+# }
 
-resource "aws_ram_principal_association" "secondary" {
-  provider = aws.share-host
-#  count    = data.aws_ram_resource_share.secondary[0].status == "ACTIVE" ? 1 : 0
-  count = local.share_secondary ? 1 : 0
+# resource "aws_ram_principal_association" "secondary" {
+#   provider = aws.share-host
+# #  count    = data.aws_ram_resource_share.secondary[0].status == "ACTIVE" ? 1 : 0
+#   count = local.share_secondary ? 1 : 0
 
-  principal          = var.principal
-  resource_share_arn = data.aws_ram_resource_share.secondary[0].arn
-}
+#   principal          = var.principal
+#   resource_share_arn = data.aws_ram_resource_share.secondary[0].arn
+# }
 
 #configure acm certificate share association
 data "aws_ram_resource_share" "acm" {
