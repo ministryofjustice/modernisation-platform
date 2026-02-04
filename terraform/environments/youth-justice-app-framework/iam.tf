@@ -1,4 +1,10 @@
 
+resource "null_resource" "hello_world" {
+	provisioner "local-exec" {
+		command = "echo Hello world from cooker"
+	}
+}
+
 variable "circleci_projects" {
   type = list(string)
   default = [
