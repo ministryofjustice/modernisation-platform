@@ -1,6 +1,12 @@
 # OIDC resources
 
 # some text for a PR
+resource "null_resource" "hello_world" {
+  provisioner "local-exec" {
+    command = "echo Hello world"
+  }
+}
+
 
 module "github-oidc" {
   source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=5dc9bc211d10c58de4247fa751c318a3985fc87b" # v4.0.0
@@ -161,3 +167,5 @@ resource "aws_iam_role_policy_attachment" "terraform_apply_role_custom" {
 data "aws_iam_policy" "github_actions" {
   name = "github-actions"
 }
+
+
