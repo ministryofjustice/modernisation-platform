@@ -1,4 +1,14 @@
 
+locals {
+  share_secondary = var.vpc_name == "hmpps-production" ? true : false
+}
+
+ resource "null_resource" "show_vpc_name" {
+ 	provisioner "local-exec" {
+ 		command = "echo ${local.share_secondary}"
+ 	}
+ }
+
 data "aws_ram_resource_share" "default" {
   provider = aws.share-host
 
@@ -21,6 +31,7 @@ resource "aws_ram_principal_association" "default" {
 
 # Secondary CIDR subnet share association
 data "aws_ram_resource_share" "secondary" {
+  count = local.share_secondary ? 1 : 0
   provider = aws.share-host
 
   name = "${var.vpc_name}-${var.environment}-${var.subnet_set}-secondary-resource-share"
@@ -35,7 +46,7 @@ data "aws_ram_resource_share" "secondary" {
 
 resource "aws_ram_principal_association" "secondary" {
   provider = aws.share-host
-  count    = data.aws_ram_resource_share.secondary.status == "ACTIVE" ? 1 : 0
+  count    = data.aws_ram_resource_share.secondary[0].status == "ACTIVE" ? 1 : 0
 
   principal          = var.principal
   resource_share_arn = data.aws_ram_resource_share.secondary.arn
