@@ -49,7 +49,7 @@ resource "aws_ram_principal_association" "secondary" {
   count    = data.aws_ram_resource_share.secondary[0].status == "ACTIVE" ? 1 : 0
 
   principal          = var.principal
-  resource_share_arn = data.aws_ram_resource_share.secondary.arn
+  resource_share_arn = data.aws_ram_resource_share.secondary[0].arn
 }
 
 #configure acm certificate share association
