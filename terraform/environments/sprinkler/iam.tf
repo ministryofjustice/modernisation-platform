@@ -9,6 +9,28 @@ module "github-oidc" {
   tags_prefix                 = ""
 }
 
+###### Adds Split github-actions-plan and apply roles for testing ######
+
+# OIDC Provider for GitHub Actions Plan
+module "github_oidc_plan_role" {
+  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=6dd6f177091fb1664998aa37a1d0d5cf5894c10a" # v4.2.0
+  role_name              = "github-actions-plan"
+  additional_permissions = data.aws_iam_policy_document.oidc_deny_specific_actions.json
+  github_repositories    = ["ministryofjustice/modernisation-platform-environments:pull_request"]
+  tags_common            = { "Name" = format("%s-oidc-plan", terraform.workspace) }
+  tags_prefix            = ""
+}
+
+# OIDC Provider for GitHub Actions Apply
+module "github_oidc_apply_role" {
+  source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=6dd6f177091fb1664998aa37a1d0d5cf5894c10a" # v4.2.0
+  role_name                   = "github-actions-apply"
+  additional_permissions      = data.aws_iam_policy_document.oidc-deny-specific-actions.json
+  additional_managed_policies = ["arn:aws:iam::aws:policy/AdministratorAccess"]
+  github_repositories         = ["ministryofjustice/modernisation-platform-environments:ref:refs/heads/main"]
+  tags_prefix                 = ""
+}
+
 #trivy:ignore:AVD-AWS-0345: Required for OIDC role to access Terraform state in S3
 data "aws_iam_policy_document" "oidc_deny_specific_actions" {
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
@@ -51,6 +73,12 @@ data "aws_iam_policy_document" "oidc_deny_specific_actions" {
     actions = ["s3:DeleteObject"]
   }
 }
+
+
+
+
+
+
 
 module "github_actions_test_role" {
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
