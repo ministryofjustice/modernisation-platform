@@ -28,6 +28,7 @@ module "github_oidc_apply_role" {
   additional_permissions      = data.aws_iam_policy_document.oidc-deny-specific-actions.json
   additional_managed_policies = ["arn:aws:iam::aws:policy/AdministratorAccess"]
   github_repositories         = ["ministryofjustice/modernisation-platform-environments:ref:refs/heads/main"]
+  tags_common                 = { "Name" = format("%s-oidc-apply", terraform.workspace) }
   tags_prefix                 = ""
 }
 
