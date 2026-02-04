@@ -1,5 +1,7 @@
 # OIDC resources
 
+# some text for a PR
+
 module "github-oidc" {
   source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=5dc9bc211d10c58de4247fa751c318a3985fc87b" # v4.0.0
   additional_permissions      = data.aws_iam_policy_document.oidc_deny_specific_actions.json
