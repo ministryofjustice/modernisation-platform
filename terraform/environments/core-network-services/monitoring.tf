@@ -337,11 +337,9 @@ resource "aws_cloudwatch_metric_alarm" "mpa_trust_policy_changed" {
   tags = local.tags
 }
 
-
 # Transit Gateway change monitoring
 # All Transit Gateway changes MUST be performed via the ModernisationPlatformAccess automation role.
 # Any TGW change outside this role will raise an alert.
-
 
 locals {
   tgw_unauthorized_role_name = "ModernisationPlatformAccess"
@@ -403,8 +401,8 @@ resource "aws_cloudwatch_metric_alarm" "tgw_unauthorized_change" {
   alarm_name        = "unauthorized-tgw-change"
   alarm_description = "High priority alert: Transit Gateway change detected outside of ${local.tgw_unauthorized_role_name} automation role. This may indicate unauthorized manual modification."
 
-  alarm_actions = [aws_sns_topic.tgw_monitoring_production.arn]
-  ok_actions    = [aws_sns_topic.tgw_monitoring_production.arn]
+  alarm_actions = [aws_sns_topic.high_priority_alerts.arn]
+  ok_actions    = [aws_sns_topic.high_priority_alerts.arn]
 
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
