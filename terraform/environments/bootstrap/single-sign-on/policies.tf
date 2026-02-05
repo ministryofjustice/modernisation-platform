@@ -494,9 +494,9 @@ data "aws_iam_policy_document" "data_engineering_additional" {
   }
 
   statement {
-    sid       = ""
-    effect    = "Allow"
-    actions   = ["iam:PassRole"]
+    sid     = ""
+    effect  = "Allow"
+    actions = ["iam:PassRole"]
     resources = [
       "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-data-production"]}:role/data-first-data-science",
       "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/glue-notebook-role-tf",
