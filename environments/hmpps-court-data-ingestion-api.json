@@ -1,0 +1,39 @@
+{
+  "account-type": "member",
+  "codeowners": "webops, webops",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "webops",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "webops",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": ""
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "webops",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "hmpps-court-data-ingestion-api",
+    "business-unit": "HMPPS",
+    "infrastructure-support": "cloudplatform@justice.gov.uk",
+    "owner": "cloudplatform@justice.gov.uk",
+    "slack-channel": "cloud-platform",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
