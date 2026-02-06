@@ -35,8 +35,8 @@ jobs:
     with:
       working-directory: "terraform/modernisation-platform-account"
       workflow_id: "modernisation-platform-account"
-      set_github_app_token: true
-      download_collaborators: true
+      set_github_app_token: "true"
+      download_collaborators: "true"
     secrets:
       MODERNISATION_PLATFORM_ACCOUNT_NUMBER: ${{ secrets.MODERNISATION_PLATFORM_ACCOUNT_NUMBER }}
       PASSPHRASE: ${{ secrets.PASSPHRASE }}
