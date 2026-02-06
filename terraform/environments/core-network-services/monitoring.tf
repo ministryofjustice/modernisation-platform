@@ -286,17 +286,9 @@ resource "aws_cloudwatch_metric_alarm" "ErrorPortAllocation" {
 }
 
 # High priority security alerts (non-service-specific)
+# SNS topic and PagerDuty subscription are managed in baselines
 data "aws_sns_topic" "high_priority_alerts" {
   name = "high-priority-alarms-topic"
-}
-
-module "pagerduty_high_priority_alerts" {
-  depends_on = [
-    data.aws_sns_topic.high_priority_alerts
-  ]
-  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=d88bd90d490268896670a898edfaba24bba2f8ab" # v3.0.0
-  sns_topics                = [data.aws_sns_topic.high_priority_alerts.name]
-  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
 }
 
 # Trust relationship monitoring for ModernisationPlatformAccess
@@ -372,19 +364,8 @@ resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_changes" {
 
   name           = "tgw_unauthorized_${lower(each.value)}_filter"
   log_group_name = "cloudtrail"
-  pattern        = "{ ($.eventSource = \"ec2.amazonaws.com\") && ($.eventName = \"${each.value}\") && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
 
-  metric_transformation {
-    name      = "TGWUnauthorizedChange"
-    namespace = "TransitGateway/Security"
-    value     = "1"
-  }
-}
-
-resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_tag_changes" {
-  name           = "tgw_unauthorized_tag_changes_filter"
-  log_group_name = "cloudtrail"
-  pattern        = "{ ($.eventSource = \"ec2.amazonaws.com\") && (($.eventName = \"CreateTags\") || ($.eventName = \"DeleteTags\")) && (($.resources[0].resourceType = \"transit-gateway\") || ($.resources[1].resourceType = \"transit-gateway\") || ($.resources[2].resourceType = \"transit-gateway\")) && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
+  pattern = "{ ($.eventSource = \"ec2.amazonaws.com\") && ($.eventName = \"${each.value}\") && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
 
   metric_transformation {
     name      = "TGWUnauthorizedChange"
