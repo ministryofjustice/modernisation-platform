@@ -1,3 +1,6 @@
+locals {
+  share_secondary = var.vpc_name == "hmpps" && var.environment == "production" ? true : false
+}
 
 data "aws_ram_resource_share" "default" {
   provider = aws.share-host
@@ -21,6 +24,7 @@ resource "aws_ram_principal_association" "default" {
 
 # Secondary CIDR subnet share association
 data "aws_ram_resource_share" "secondary" {
+  count = local.share_secondary ? 1 : 0
   provider = aws.share-host
 
   name = "${var.vpc_name}-${var.environment}-${var.subnet_set}-secondary-resource-share"
@@ -35,10 +39,10 @@ data "aws_ram_resource_share" "secondary" {
 
 resource "aws_ram_principal_association" "secondary" {
   provider = aws.share-host
-  count    = data.aws_ram_resource_share.secondary.status == "ACTIVE" ? 1 : 0
+  count = local.share_secondary && data.aws_ram_resource_share.secondary[0].status == "ACTIVE" ? 1 : 0
 
   principal          = var.principal
-  resource_share_arn = data.aws_ram_resource_share.secondary.arn
+  resource_share_arn = data.aws_ram_resource_share.secondary[0].arn
 }
 
 #configure acm certificate share association
