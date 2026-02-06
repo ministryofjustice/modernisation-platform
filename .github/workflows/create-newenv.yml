@@ -174,7 +174,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           PR_TITLE="Automated environment amendment request for $APP_NAME"
-          PR_URL=$(gh pr list --state open --search "$PR_TITLE in:title" --json url -q '.[0].url')
+          PR_URL=$(gh pr list --state open --search "$pr_title in:title" --json url -q '.[0].url')
           echo "PR URL: $PR_URL"
           REPO="${{ github.repository }}"
           gh issue comment $ISSUE_NUMBER --repo "$REPO" --body "A pull request has been created for your environment request: $PR_URL"

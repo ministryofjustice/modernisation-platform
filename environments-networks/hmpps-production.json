@@ -14,6 +14,7 @@
           "digital-prison-reporting-production",
           "electronic-monitoring-data-production",
           "equip-production",
+          "hmpps-court-data-ingestion-api-production",
           "hmpps-domain-services-production",
           "hmpps-esupervision-production",
           "hmpps-oem-production",
