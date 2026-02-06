@@ -97,6 +97,7 @@ expected :=
     "property-cafm-data-migration",
     "refer-monitor",
     "sprinkler",
+    "Test2",
     "testing",
     "tipstaff",
     "tribunals",

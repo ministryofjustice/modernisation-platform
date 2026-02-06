@@ -1,0 +1,25 @@
+{
+  "account-type": "member",
+  "codeowners": ", ",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "Test2",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "Test2",
+    "business-unit": "Test2",
+    "infrastructure-support": "Test2",
+    "owner": "Test2",
+    "slack-channel": "",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
