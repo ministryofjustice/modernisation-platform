@@ -2,12 +2,6 @@ locals {
   share_secondary = var.vpc_name == "hmpps" && var.environment == "production" ? true : false
 }
 
- resource "null_resource" "show_vpc_name" {
- 	provisioner "local-exec" {
- 		command = "echo ${local.share_secondary}"
- 	}
- }
-
 data "aws_ram_resource_share" "default" {
   provider = aws.share-host
 
