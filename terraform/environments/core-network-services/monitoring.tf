@@ -374,22 +374,6 @@ resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_changes" {
   }
 }
 
-# TGW tag change monitoring
-# TGW IDs are present under requestParameters.resourcesSet.items[*].resourceId
-
-resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_tag_changes" {
-  name           = "tgw_unauthorized_tag_changes_filter"
-  log_group_name = "cloudtrail"
-
-  pattern = "{ ($.eventSource = \"ec2.amazonaws.com\") && (($.eventName = \"CreateTags\") || ($.eventName = \"DeleteTags\")) && ( ($.requestParameters.resourcesSet.items[0].resourceId = \"${aws_ec2_transit_gateway.transit-gateway.id}\") || ($.requestParameters.resourcesSet.items[1].resourceId = \"${aws_ec2_transit_gateway.transit-gateway.id}\") || ($.requestParameters.resourcesSet.items[2].resourceId = \"${aws_ec2_transit_gateway.transit-gateway.id}\") || ($.requestParameters.resourcesSet.items[3].resourceId = \"${aws_ec2_transit_gateway.transit-gateway.id}\") || ($.requestParameters.resourcesSet.items[4].resourceId = \"${aws_ec2_transit_gateway.transit-gateway.id}\") ) && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
-
-  metric_transformation {
-    name      = "TGWUnauthorizedChange"
-    namespace = "TransitGateway/Security"
-    value     = "1"
-  }
-}
-
 resource "aws_cloudwatch_metric_alarm" "tgw_unauthorized_change" {
   alarm_name        = "unauthorized-tgw-change"
   alarm_description = "High priority alert: Transit Gateway change detected outside of ${local.tgw_unauthorized_role_name} automation role. This may indicate unauthorized manual modification."
