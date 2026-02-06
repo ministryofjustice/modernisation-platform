@@ -290,15 +290,6 @@ data "aws_sns_topic" "high_priority_alerts" {
   name = "high-priority-alarms-topic"
 }
 
-module "pagerduty_high_priority_alerts" {
-  depends_on = [
-    data.aws_sns_topic.high_priority_alerts
-  ]
-  source                    = "github.com/ministryofjustice/modernisation-platform-terraform-pagerduty-integration?ref=d88bd90d490268896670a898edfaba24bba2f8ab" # v3.0.0
-  sns_topics                = [data.aws_sns_topic.high_priority_alerts.name]
-  pagerduty_integration_key = local.pagerduty_integration_keys["core_alerts_cloudwatch"]
-}
-
 # Trust relationship monitoring for ModernisationPlatformAccess
 # Alert on ANY change to the role trust policy (UpdateAssumeRolePolicy)
 resource "aws_cloudwatch_log_metric_filter" "mpa_trust_policy_changed" {
