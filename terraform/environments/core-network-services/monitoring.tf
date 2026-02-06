@@ -358,12 +358,10 @@ locals {
   ]
 }
 
-resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_changes" {
-  for_each = toset(local.tgw_unauthorized_event_names)
-
-  name           = "tgw_unauthorized_${lower(each.value)}_filter"
+resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_tag_changes" {
+  name           = "tgw_unauthorized_tag_changes_filter"
   log_group_name = "cloudtrail"
-  pattern        = "{ ($.eventSource = \"ec2.amazonaws.com\") && ($.eventName = \"${each.value}\") && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
+  pattern = "{ ($.eventSource = \"ec2.amazonaws.com\") && (($.eventName = \"CreateTags\") || ($.eventName = \"DeleteTags\")) && ( ($.requestParameters.resourcesSet.items[0].resourceId = \"tgw-*\") || ($.requestParameters.resourcesSet.items[1].resourceId = \"tgw-*\") || ($.requestParameters.resourcesSet.items[2].resourceId = \"tgw-*\") || ($.requestParameters.resourcesSet.items[3].resourceId = \"tgw-*\") || ($.requestParameters.resourcesSet.items[4].resourceId = \"tgw-*\") ) && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
 
   metric_transformation {
     name      = "TGWUnauthorizedChange"
@@ -371,6 +369,7 @@ resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_changes" {
     value     = "1"
   }
 }
+
 
 resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_tag_changes" {
   name           = "tgw_unauthorized_tag_changes_filter"
