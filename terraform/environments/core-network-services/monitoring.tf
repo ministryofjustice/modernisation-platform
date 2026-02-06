@@ -358,6 +358,26 @@ locals {
     "DisableTransitGatewayRouteTablePropagation",
   ]
 }
+
+resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_changes" {
+  for_each = toset(local.tgw_unauthorized_event_names)
+
+  name           = "tgw_unauthorized_${lower(each.value)}_filter"
+  log_group_name = "cloudtrail"
+
+  pattern = "{ ($.eventSource = \"ec2.amazonaws.com\") && ($.eventName = \"${each.value}\") && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
+
+  metric_transformation {
+    name      = "TGWUnauthorizedChange"
+    namespace = "TransitGateway/Security"
+    value     = "1"
+  }
+}
+
+# TGW tag change monitoring
+# NOTE: CreateTags/DeleteTags events do NOT reliably populate $.resources[*].resourceType
+# TGW IDs are present under requestParameters.resourcesSet.items[*].resourceId (tgw-*)
+
 resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_tag_changes" {
   name           = "tgw_unauthorized_tag_changes_filter"
   log_group_name = "cloudtrail"
