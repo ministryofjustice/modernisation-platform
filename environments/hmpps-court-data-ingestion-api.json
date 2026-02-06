@@ -1,6 +1,6 @@
 {
   "account-type": "member",
-  "codeowners": "webops, webops",
+  "codeowners": "webops",
   "environments": [
     {
       "name": "development",
@@ -14,7 +14,7 @@
           "level": "sandbox"
         }
       ],
-      "nuke": ""
+      "nuke": "exclude"
     },
     {
       "name": "production",
