@@ -374,10 +374,6 @@ resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_changes" {
   }
 }
 
-# TGW tag change monitoring
-# NOTE: CreateTags/DeleteTags events do NOT reliably populate $.resources[*].resourceType
-# TGW IDs are present under requestParameters.resourcesSet.items[*].resourceId (tgw-*)
-
 resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_tag_changes" {
   name           = "tgw_unauthorized_tag_changes_filter"
   log_group_name = "cloudtrail"
