@@ -286,6 +286,7 @@ resource "aws_cloudwatch_metric_alarm" "ErrorPortAllocation" {
 }
 
 # High priority security alerts (non-service-specific)
+# SNS topic and PagerDuty subscription are managed in baselines
 data "aws_sns_topic" "high_priority_alerts" {
   name = "high-priority-alarms-topic"
 }
@@ -358,10 +359,13 @@ locals {
   ]
 }
 
-resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_tag_changes" {
-  name           = "tgw_unauthorized_tag_changes_filter"
+resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_changes" {
+  for_each = toset(local.tgw_unauthorized_event_names)
+
+  name           = "tgw_unauthorized_${lower(each.value)}_filter"
   log_group_name = "cloudtrail"
-  pattern = "{ ($.eventSource = \"ec2.amazonaws.com\") && (($.eventName = \"CreateTags\") || ($.eventName = \"DeleteTags\")) && ( ($.requestParameters.resourcesSet.items[0].resourceId = \"tgw-*\") || ($.requestParameters.resourcesSet.items[1].resourceId = \"tgw-*\") || ($.requestParameters.resourcesSet.items[2].resourceId = \"tgw-*\") || ($.requestParameters.resourcesSet.items[3].resourceId = \"tgw-*\") || ($.requestParameters.resourcesSet.items[4].resourceId = \"tgw-*\") ) && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
+
+  pattern = "{ ($.eventSource = \"ec2.amazonaws.com\") && ($.eventName = \"${each.value}\") && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
 
   metric_transformation {
     name      = "TGWUnauthorizedChange"
@@ -370,11 +374,15 @@ resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_tag_changes" {
   }
 }
 
+# TGW tag change monitoring
+# NOTE: CreateTags/DeleteTags events do NOT reliably populate $.resources[*].resourceType
+# TGW IDs are present under requestParameters.resourcesSet.items[*].resourceId (tgw-*)
 
 resource "aws_cloudwatch_log_metric_filter" "tgw_unauthorized_tag_changes" {
   name           = "tgw_unauthorized_tag_changes_filter"
   log_group_name = "cloudtrail"
-  pattern        = "{ ($.eventSource = \"ec2.amazonaws.com\") && (($.eventName = \"CreateTags\") || ($.eventName = \"DeleteTags\")) && (($.resources[0].resourceType = \"transit-gateway\") || ($.resources[1].resourceType = \"transit-gateway\") || ($.resources[2].resourceType = \"transit-gateway\")) && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
+
+  pattern = "{ ($.eventSource = \"ec2.amazonaws.com\") && (($.eventName = \"CreateTags\") || ($.eventName = \"DeleteTags\")) && ( ($.requestParameters.resourcesSet.items[0].resourceId = \"tgw-*\") || ($.requestParameters.resourcesSet.items[1].resourceId = \"tgw-*\") || ($.requestParameters.resourcesSet.items[2].resourceId = \"tgw-*\") || ($.requestParameters.resourcesSet.items[3].resourceId = \"tgw-*\") || ($.requestParameters.resourcesSet.items[4].resourceId = \"tgw-*\") ) && (($.userIdentity.type != \"AssumedRole\") || ($.userIdentity.sessionContext.sessionIssuer.userName != \"${local.tgw_unauthorized_role_name}\")) }"
 
   metric_transformation {
     name      = "TGWUnauthorizedChange"
