@@ -422,7 +422,6 @@ expected :=
           "example-development",
           "justice-digital-document-hub-development",
           "observability-platform-development",
-          "operations-engineering-development",
           "panda-cyber-appsec-lab-development"
         ]
       }
