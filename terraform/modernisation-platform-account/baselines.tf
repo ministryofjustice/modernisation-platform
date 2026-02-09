@@ -84,4 +84,5 @@ module "baselines-modernisation-platform" {
   enable_securityhub_slack_alerts                    = true
   securityhub_slack_alerts_scope                     = ["CRITICAL", "HIGH"]
   securityhub_slack_alerts_pagerduty_integration_key = local.pagerduty_integration_keys["security_hub_alerts_critical_priority"]
+
 }
