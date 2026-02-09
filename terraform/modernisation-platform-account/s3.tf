@@ -627,15 +627,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
         local.environment_management.account_ids["cloud-platform-development"],
         local.environment_management.account_ids["cloud-platform-preproduction"],
         local.environment_management.account_ids["cloud-platform-nonlive"],
-        local.environment_management.account_ids["cloud-platform-live"],
-        local.environment_management.account_ids["cloud-platform-non-live-development"],
-        local.environment_management.account_ids["cloud-platform-non-live-test"],
-        local.environment_management.account_ids["cloud-platform-non-live-preproduction"],
-        local.environment_management.account_ids["cloud-platform-non-live-production"],
-        local.environment_management.account_ids["cloud-platform-live-development"],
-        local.environment_management.account_ids["cloud-platform-live-test"],
-        local.environment_management.account_ids["cloud-platform-live-preproduction"],
-        local.environment_management.account_ids["cloud-platform-live-production"]
+        local.environment_management.account_ids["cloud-platform-live"]
       ]
     }
   }
@@ -653,7 +645,6 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::${local.environment_management.account_ids["cloud-platform-non-live-development"]}:role/github-actions-development-cluster",
         "arn:aws:iam::${local.environment_management.account_ids["cloud-platform-development"]}:role/github-actions-development-cluster"
       ]
     }
