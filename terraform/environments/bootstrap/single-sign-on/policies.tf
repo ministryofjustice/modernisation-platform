@@ -203,6 +203,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "datasync:DescribeTask",
       "datasync:ListTasks",
       "datasync:StartTaskExecution",
+      "datasync:TagResource",
       "ds:AccessDSData",
       "ds:*Tags*",
       "ds:*Snapshot*",
