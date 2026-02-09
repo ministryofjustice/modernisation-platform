@@ -170,7 +170,7 @@ data "aws_iam_policy" "github_actions" {
 module "github_oidc_plan_role" {
   source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=6dd6f177091fb1664998aa37a1d0d5cf5894c10a" # v4.2.0
   role_name              = "github-actions-plan"
-  additional_permissions = data.aws_iam_policy_document.oidc_deny_specific_actions.json
+  additional_permissions = data.aws_iam_policy_document.planapply_oidc_deny_specific_actions.json
   github_repositories    = ["ministryofjustice/modernisation-platform-environments:pull_request"]
   tags_common            = { "Name" = format("%s-oidc-plan", terraform.workspace) }
   tags_prefix            = ""
@@ -180,7 +180,7 @@ module "github_oidc_plan_role" {
 module "github_oidc_apply_role" {
   source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=6dd6f177091fb1664998aa37a1d0d5cf5894c10a" # v4.2.0
   role_name                   = "github-actions-apply"
-  additional_permissions      = data.aws_iam_policy_document.oidc_deny_specific_actions.json
+  additional_permissions      = data.aws_iam_policy_document.planapply_oidc_deny_specific_actions.json
   additional_managed_policies = ["arn:aws:iam::aws:policy/AdministratorAccess"]
   github_repositories         = ["ministryofjustice/modernisation-platform-environments:ref:refs/heads/main"]
   tags_common                 = { "Name" = format("%s-oidc-apply", terraform.workspace) }
@@ -188,7 +188,7 @@ module "github_oidc_apply_role" {
 }
 
 #trivy:ignore:AVD-AWS-0345: Required for OIDC role to access Terraform state in S3
-data "aws_iam_policy_document" "oidc_deny_specific_actions" {
+data "aws_iam_policy_document" "planapply_oidc_deny_specific_actions" {
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
   # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
   statement {
