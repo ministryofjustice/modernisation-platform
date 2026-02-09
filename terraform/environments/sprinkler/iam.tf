@@ -159,3 +159,73 @@ resource "aws_iam_role_policy_attachment" "terraform_apply_role_custom" {
 data "aws_iam_policy" "github_actions" {
   name = "github-actions"
 }
+
+
+
+
+
+###### Adds Split github-actions-plan and apply roles for testing ######
+
+# OIDC Provider for GitHub Actions Plan
+module "github_oidc_plan_role" {
+  source                 = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=6dd6f177091fb1664998aa37a1d0d5cf5894c10a" # v4.2.0
+  role_name              = "github-actions-plan"
+  additional_permissions = data.aws_iam_policy_document.oidc_deny_specific_actions.json
+  github_repositories    = ["ministryofjustice/modernisation-platform-environments:pull_request"]
+  tags_common            = { "Name" = format("%s-oidc-plan", terraform.workspace) }
+  tags_prefix            = ""
+}
+
+# OIDC Provider for GitHub Actions Apply
+module "github_oidc_apply_role" {
+  source                      = "github.com/ministryofjustice/modernisation-platform-github-oidc-provider?ref=6dd6f177091fb1664998aa37a1d0d5cf5894c10a" # v4.2.0
+  role_name                   = "github-actions-apply"
+  additional_permissions      = data.aws_iam_policy_document.oidc_deny_specific_actions.json
+  additional_managed_policies = ["arn:aws:iam::aws:policy/AdministratorAccess"]
+  github_repositories         = ["ministryofjustice/modernisation-platform-environments:ref:refs/heads/main"]
+  tags_common                 = { "Name" = format("%s-oidc-apply", terraform.workspace) }
+  tags_prefix                 = ""
+}
+
+#trivy:ignore:AVD-AWS-0345: Required for OIDC role to access Terraform state in S3
+data "aws_iam_policy_document" "oidc_deny_specific_actions" {
+  # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
+  statement {
+    sid       = "AllowOIDCToDecryptKMS"
+    effect    = "Allow"
+    resources = ["*"]
+    actions   = ["kms:Decrypt"]
+  }
+
+  statement {
+    sid       = "AllowOIDCReadState"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*", "arn:aws:s3:::modernisation-platform-terraform-state/"]
+    actions   = ["s3:List*"]
+  }
+
+  statement {
+    sid    = "AllowOIDCWriteState"
+    effect = "Allow"
+    resources = [
+      "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/terraform.tfstate",
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/terraform.tfstate"
+    ]
+    actions = [
+      "s3:PutObject",
+      "s3:PutObjectAcl",
+      "s3:GetObject"
+    ]
+  }
+
+  statement {
+    sid    = "AllowOIDCDeleteLock"
+    effect = "Allow"
+    resources = [
+      "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/*.tflock",
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*.tflock"
+    ]
+    actions = ["s3:DeleteObject"]
+  }
+}
