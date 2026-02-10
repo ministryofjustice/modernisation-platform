@@ -39,7 +39,7 @@ data "aws_ram_resource_share" "secondary" {
 
 resource "aws_ram_principal_association" "secondary" {
   provider = aws.share-host
-  count = local.share_secondary && data.aws_ram_resource_share.secondary[0].status == "ACTIVE" ? 1 : 0
+  count = local.share_secondary ? 1 : 0
 
   principal          = var.principal
   resource_share_arn = data.aws_ram_resource_share.secondary[0].arn
