@@ -76,7 +76,6 @@
 /terraform/environments/core-shared-services/oasys-national-reporting.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
 /terraform/environments/core-shared-services/oasys.tf @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
 /terraform/environments/core-shared-services/observability-platform.tf @ministryofjustice/observability-platform 
-/terraform/environments/core-shared-services/operations-engineering.tf @ministryofjustice/github-audit-log-viewer @ministryofjustice/operations-engineering 
 /terraform/environments/core-shared-services/opg-lpa-data-store.tf @ministryofjustice/opg-modernising-lpa-team @ministryofjustice/opg-webops 
 /terraform/environments/core-shared-services/panda-cyber-appsec-lab.tf @ministryofjustice/panda-cyber-team 
 /terraform/environments/core-shared-services/performance-hub.tf @ministryofjustice/performance-hub-developers 
