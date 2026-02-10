@@ -1,6 +1,9 @@
 {
   "account-type": "member",
-  "codeowners": ["webops", "cloud-platform-engineers"],
+  "codeowners": [
+    "webops",
+    "cloud-platform-engineers"
+  ],
   "environments": [
     {
       "name": "development",
@@ -21,6 +24,15 @@
       "access": [
         {
           "sso_group_name": "cloud-platform-engineers",
+          "level": "developer"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "cloud-platform-engineers,hmpps-calculate-release-dates-team-devs,hmpps-calculate-release-dates-team-live",
           "level": "developer"
         }
       ]
