@@ -45,16 +45,29 @@ data "aws_iam_policy_document" "testing_oidc_assume_plan_role_member" {
     sid       = "AllowOIDCReadState"
     effect    = "Allow"
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*", "arn:aws:s3:::modernisation-platform-terraform-state/"]
+    actions   = ["s3:List*"]
+    condition {
+      test     = "StringLike"
+      variable = "s3:prefix"
+      values   = ["environments/members/sprinkler/*"]
+    }
+  }
+
+  statement {
+    sid       = "AllowOIDGetUpdate"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/sprinkler/*","arn:aws:s3:::modernisation-platform-terraform-state/environments/members/sprinkler/"]
     actions = [
       "s3:Get*",
-      "s3:List*"
+      "s3:PutObject",
+      "s3:PutObjectAcl"
     ]
   }
 
   statement {
     sid       = "AllowOIDCDeleteLock"
     effect    = "Allow"
-    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*.tflock"]
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/sprinkler/*.tflock"]
     actions   = ["s3:DeleteObject"]
   }
 }
