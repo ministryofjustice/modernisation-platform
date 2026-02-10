@@ -6,6 +6,10 @@ module "s3_bucket_no_lock" {
 
   object_lock_enabled = false
 
+  providers = {
+    aws.bucket-replication = aws
+  }
+
   tags = local.tags
 }
 
@@ -20,5 +24,10 @@ module "s3_bucket_governance_lock" {
   object_lock_mode    = "GOVERNANCE"
   object_lock_days    = 1
 
+  providers = {
+    aws.bucket-replication = aws
+  }
+
   tags = local.tags
 }
+
