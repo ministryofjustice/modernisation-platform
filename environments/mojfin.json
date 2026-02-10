@@ -72,18 +72,27 @@
         },
         {
           "sso_group_name": "laa-mojfin-security",
-          "level": "view-only",
-          "github_action_reviewer": "true"
+          "level": "view-only"
         },
         {
           "sso_group_name": "laa-mojfin-security",
-          "level": "read-only",
-          "github_action_reviewer": "true"
+          "level": "read-only"
         },
         {
           "sso_group_name": "laa-mojfin-security",
-          "level": "security-audit",
-          "github_action_reviewer": "true"
+          "level": "security-audit"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-mojfin-security",
+          "level": "view-only"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-mojfin-security",
+          "level": "read-only"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-mojfin-security",
+          "level": "security-audit"
         },
         {
           "sso_group_name": "laa-sre-admins",
