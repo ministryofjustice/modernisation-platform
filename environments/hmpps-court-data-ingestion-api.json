@@ -1,16 +1,16 @@
 {
   "account-type": "member",
-  "codeowners": "webops",
+  "codeowners": ["webops", "cloud-platform-engineers"],
   "environments": [
     {
       "name": "development",
       "access": [
         {
-          "sso_group_name": "webops",
+          "sso_group_name": "cloud-platform-engineers",
           "level": "developer"
         },
         {
-          "sso_group_name": "webops",
+          "sso_group_name": "cloud-platform-engineers",
           "level": "sandbox"
         }
       ],
@@ -20,7 +20,7 @@
       "name": "production",
       "access": [
         {
-          "sso_group_name": "webops",
+          "sso_group_name": "cloud-platform-engineers",
           "level": "developer"
         }
       ]
