@@ -14,14 +14,14 @@ module "s3_bucket_no_lock" {
 }
 
 
-module "s3_bucket_governance_lock" {
+module "s3_bucket_compliance_lock" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=feature/spike-object-lock"
 
   bucket_prefix      = "cook-governance-lock-test"
   versioning_enabled = true
 
   object_lock_enabled = true
-  object_lock_mode    = "GOVERNANCE"
+  object_lock_mode    = "COMPLIANCE"
   object_lock_days    = 1
 
   providers = {
