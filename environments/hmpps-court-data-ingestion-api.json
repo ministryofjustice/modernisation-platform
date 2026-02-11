@@ -1,6 +1,9 @@
 {
   "account-type": "member",
-  "codeowners": ["webops", "cloud-platform-engineers"],
+  "codeowners": [
+    "webops",
+    "cloud-platform-engineers"
+  ],
   "environments": [
     {
       "name": "development",
@@ -17,6 +20,23 @@
       "nuke": "exclude"
     },
     {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "cloud-platform-engineers",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "hmpps-calculate-release-dates-team-devs",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "hmpps-calculate-release-dates-team-live",
+          "level": "developer"
+        }
+      ]
+    },
+    {
       "name": "production",
       "access": [
         {
@@ -31,7 +51,7 @@
     "business-unit": "HMPPS",
     "infrastructure-support": "cloudplatform@justice.gov.uk",
     "owner": "cloudplatform@justice.gov.uk",
-    "slack-channel": "cloud-platform",
+    "slack-channel": "ask-cloud-platform",
     "critical-national-infrastructure": false
   },
   "github-oidc-team-repositories": [],
