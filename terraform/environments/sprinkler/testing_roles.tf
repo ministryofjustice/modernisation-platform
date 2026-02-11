@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "testing_nonprod_oidc_assume_role_member" {
       "sts:AssumeRole",
     ]
     resources = [
-      "arn:aws:iam::*:role/MemberInfrastructureAccess",
+      "arn:aws:iam::${local.environment_management.account_ids[terraform.workspace]}:role/MemberInfrastructureAccess",
       "arn:aws:iam::${local.environment_management.modernisation_platform_account_id}:role/modernisation-account-limited-read-member-access"
     ]
     condition {
