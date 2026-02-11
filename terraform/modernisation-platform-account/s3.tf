@@ -399,7 +399,6 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     effect = "Allow"
     actions = [
       "s3:PutObject",
-      "s3:PutObjectAcl",
       "s3:GetObject"
     ]
     resources = [
@@ -508,8 +507,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     effect = "Allow"
     actions = [
       "s3:GetObject",
-      "s3:PutObject",
-      "s3:PutObjectAcl"
+      "s3:PutObject"
     ]
     resources = ["${module.state-bucket.bucket.arn}/environments/accounts/*"]
     principals {
@@ -600,7 +598,6 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     actions = [
       "s3:GetObject",
       "s3:PutObject",
-      "s3:PutObjectAcl",
       "s3:DeleteObject"
     ]
 
@@ -637,7 +634,6 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     actions = [
       "s3:GetObject",
       "s3:PutObject",
-      "s3:PutObjectAcl",
       "s3:DeleteObject"
     ]
 
