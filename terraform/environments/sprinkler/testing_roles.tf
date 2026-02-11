@@ -1,15 +1,15 @@
 #### Testing New Separate Roles for Github Actions Plan and Apply ####
 
 #trivy:ignore:AVD-AWS-0345: Required for GitHub Actions to access Terraform state in S3
-module "github_actions_testing_plan_role" {
+module "github_actions_nonprod_testing_role" {
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
   github_repositories = ["ministryofjustice/modernisation-platform-environments"]
-  role_name           = "github-actions-testing-plan"
-  policy_jsons        = [data.aws_iam_policy_document.testing_oidc_assume_plan_role_member.json]
-  tags                = { "Name" = "GitHub Actions Testing Plan" }
+  role_name           = "github-actions-testing-nonprod"
+  policy_jsons        = [data.aws_iam_policy_document.testing_nonprod_oidc_assume_role_member.json]
+  tags                = { "Name" = "GitHub Actions Testing NonProd" }
 }
 
-data "aws_iam_policy_document" "testing_oidc_assume_plan_role_member" {
+data "aws_iam_policy_document" "testing_nonprod_oidc_assume_role_member" {
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
   # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
   # checkov:skip=CKV_AWS_108: "Allowing secretsmanager:GetSecretValue with open resource due to specific use case"
@@ -29,15 +29,13 @@ data "aws_iam_policy_document" "testing_oidc_assume_plan_role_member" {
       "sts:AssumeRole",
     ]
     resources = [
-      "arn:aws:iam::*:role/ModernisationPlatformAccess",
-      "arn:aws:iam::${local.environment_management.aws_organizations_root_account_id}:role/ModernisationPlatformSSOAdministrator"
+      "arn:aws:iam::*:role/MemberInfrastructureAccess",
+      "arn:aws:iam::${local.environment_management.modernisation_platform_account_id}:role/modernisation-account-limited-read-member-access"
     ]
     condition {
-      test     = "ForAnyValue:StringLike"
-      variable = "aws:PrincipalOrgPaths"
-      values = [
-        "${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"
-      ]
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.root_account.id]
     }
   }
 
@@ -72,19 +70,19 @@ data "aws_iam_policy_document" "testing_oidc_assume_plan_role_member" {
   }
 }
 
-# OIDC Provider for GitHub Actions Testing Apply
+# OIDC Provider for GitHub Actions Testing Prod
 #trivy:ignore:AVD-AWS-0345: Required for GitHub Actions to access Terraform state in S3
-module "github_actions_testing_apply_role" {
+module "github_actions_prod_testing_role" {
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
   github_repositories = ["ministryofjustice/modernisation-platform-environments"]
-  role_name           = "github-actions-testing-apply"
+  role_name           = "github-actions-testing-prod"
   policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
-  policy_jsons        = [data.aws_iam_policy_document.testing_apply_oidc_deny_specific_actions.json]
+  policy_jsons        = [data.aws_iam_policy_document.testing_prod_oidc_assume_role_member.json]
   subject_claim       = "ref:refs/heads/main"
-  tags                = { "Name" = "GitHub Actions Testing Apply" }
+  tags                = { "Name" = "GitHub Actions Testing Prod" }
 }
 
-data "aws_iam_policy_document" "testing_apply_oidc_deny_specific_actions" {
+data "aws_iam_policy_document" "testing_prod_oidc_assume_role_member" {
   statement {
     effect = "Deny"
     actions = [
