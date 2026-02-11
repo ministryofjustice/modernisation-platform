@@ -2,7 +2,7 @@
   "account-type": "member",
   "codeowners": [
     "cloud-platform-engineers",
-    "hmpps-calculate-release-dates-team-devs",
+    "hmpps-calculate-release-dates-team-devs"
   ],
   "environments": [
     {
@@ -17,7 +17,7 @@
           "level": "sandbox"
         },
         {
-          "sso_group_name": "hmpps-calculate-release-dates-team-dev",
+          "sso_group_name": "hmpps-calculate-release-dates-team-devs",
           "level": "sandbox"
         }
       ],
