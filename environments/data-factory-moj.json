@@ -9,7 +9,7 @@
           "level": "sandbox"
         }
       ],
-      "nuke": ""
+      "nuke": "rebuild"
     },
     {
       "name": "test",
