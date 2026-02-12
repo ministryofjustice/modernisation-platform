@@ -5,6 +5,10 @@
       "name": "development",
       "access": [
         {
+          "sso_group_name": "laa-sre-admins",
+          "level": "sandbox"
+        },
+        {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
@@ -17,6 +21,10 @@
     {
       "name": "test",
       "access": [
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
@@ -31,6 +39,10 @@
       "name": "preproduction",
       "access": [
         {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer"
+        },
+        {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
@@ -43,6 +55,11 @@
     {
       "name": "production",
       "access": [
+        {
+          "sso_group_name": "laa-sre-admins",
+          "level": "developer",
+          "github_action_reviewer": "true"
+        },
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
@@ -61,6 +78,8 @@
     "owner": "laa_ops@digital.justice.gov.uk",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": ["ministryofjustice/laa-apex"],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/laa-apex"
+  ],
   "go-live-date": "2024-11-27"
 }
