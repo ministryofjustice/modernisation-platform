@@ -6,7 +6,7 @@ data "aws_kms_key" "cloudtrail_key" {
 
 #trivy:ignore:AVD-AWS-0136
 module "baselines" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=35c27b19f923053a9ab0525d45c9301dca743359" # v9.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-baselines?ref=2b838cda420b21586ac09575fbcd956f4b52a05d" # v9.1.0
   providers = {
     # Default and replication regions
     aws                    = aws.workspace-eu-west-2
@@ -84,6 +84,8 @@ module "baselines" {
   enable_securityhub_slack_alerts                    = local.securityhub_slack_alerts_accounts
   securityhub_slack_alerts_scope                     = local.securityhub_slack_alerts_scope
   securityhub_slack_alerts_pagerduty_integration_key = local.pagerduty_integration_keys["security_hub_alerts_critical_priority"]
+  enable_securityhub_event_forwarding                = local.enable_securityhub_event_forwarding
+  securityhub_central_event_bus_arn                  = local.securityhub_central_event_bus_arn
 
 }
 

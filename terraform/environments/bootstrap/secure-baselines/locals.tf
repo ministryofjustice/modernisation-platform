@@ -34,6 +34,13 @@ locals {
   is_core_account = length(regexall(join("|", local.mp_owned_workspaces), terraform.workspace)) > 0
 
   # Locals that are passed to the Baselines module for slack alerts for SecurityHub issues.
-  securityhub_slack_alerts_accounts = local.is_core_account && !strcontains(terraform.workspace, "core-shared-services") # All core accounts excluding terraform workspaces containing core-shared-services.
-  securityhub_slack_alerts_scope    = ["CRITICAL", "HIGH"]                                                               # The type of alert to generate alerts for. 
+  securityhub_slack_alerts_accounts        = local.is_core_account && !strcontains(terraform.workspace, "core-shared-services") # All core accounts excluding terraform workspaces containing core-shared-services.
+  securityhub_slack_alerts_scope           = ["CRITICAL", "HIGH"]                                                               # The type of alert to generate alerts for. 
+  enable_securityhub_event_forwarding      = local.is_core_account
+  securityhub_central_event_bus_account_id = local.environment_management.account_ids["observability-platform-production"]
+  securityhub_central_event_bus_arn = format(
+    "arn:aws:events:%s:%s:event-bus/securityhub-central",
+    "eu-west-2",
+    local.securityhub_central_event_bus_account_id,
+  )
 }
