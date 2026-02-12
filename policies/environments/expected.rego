@@ -43,6 +43,7 @@ expected :=
     "core-vpc",
     "corporate-staff-rostering",
     "dacp",
+    "data-factory-moj",
     "data-platform",
     "data-platform-governance",
     "delius-alfresco",

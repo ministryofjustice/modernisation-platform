@@ -1,0 +1,34 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "data-engineering",
+          "level": "sandbox"
+        }
+      ],
+      "nuke": ""
+    },
+    {
+      "name": "test",
+      "access": [
+        {
+          "sso_group_name": "data-engineering",
+          "level": "data-engineering"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "Data Factory - MOJ",
+    "business-unit": "Platforms",
+    "infrastructure-support": "DataEngineering-gg@justice.gov.uk",
+    "owner": "DataEngineering-gg@justice.gov.uk",
+    "slack-channel": "data-engineering-notifications",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
