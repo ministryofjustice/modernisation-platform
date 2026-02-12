@@ -26,10 +26,6 @@
           "level": "developer"
         },
         {
-          "sso_group_name": "laa-sre-admins",
-          "level": "instance-management"
-        },
-        {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
@@ -45,10 +41,6 @@
         {
           "sso_group_name": "laa-sre-admins",
           "level": "developer"
-        },
-        {
-          "sso_group_name": "laa-sre-admins",
-          "level": "instance-management"
         },
         {
           "sso_group_name": "laa-aws-infrastructure",
@@ -69,10 +61,6 @@
           "github_action_reviewer": "true"
         },
         {
-          "sso_group_name": "laa-sre-admins",
-          "level": "instance-management"
-        },
-        {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
         },
@@ -90,6 +78,8 @@
     "owner": "laa_ops@digital.justice.gov.uk",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": ["ministryofjustice/laa-apex"],
+  "github-oidc-team-repositories": [
+    "ministryofjustice/laa-apex"
+  ],
   "go-live-date": "2024-11-27"
 }
