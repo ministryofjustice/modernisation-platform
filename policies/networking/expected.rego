@@ -191,6 +191,7 @@ expected :=
           "delius-mis-preproduction",
           "digital-prison-reporting-preproduction",
           "electronic-monitoring-data-preproduction",
+          "hmpps-court-data-ingestion-api-preproduction",
           "hmpps-domain-services-preproduction",
           "hmpps-oem-preproduction",
           "nomis-preproduction",
