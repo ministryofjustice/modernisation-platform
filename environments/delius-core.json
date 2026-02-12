@@ -102,6 +102,10 @@
           "sso_group_name": "hmpps-community-payback-devs",
           "level": "developer",
           "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "probation-de",
+          "level": "developer"
         }
       ]
     },
