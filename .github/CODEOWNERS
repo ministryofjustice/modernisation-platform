@@ -12,7 +12,7 @@
 /terraform/environments/core-shared-services/analytical-platform-next-poc-hub.tf @ministryofjustice/analytical-platform-engineers 
 /terraform/environments/core-shared-services/analytical-platform-next-poc-producer.tf @ministryofjustice/analytical-platform-engineers 
 /terraform/environments/core-shared-services/analytical-platform.tf @ministryofjustice/analytical-platform-data-development-data-engineer @ministryofjustice/analytical-platform-engineers @ministryofjustice/data-platform-audit-and-security 
-/terraform/environments/core-shared-services/apex.tf @ministryofjustice/laa-apex-developer @ministryofjustice/laa-aws-infrastructure 
+/terraform/environments/core-shared-services/apex.tf @ministryofjustice/laa-apex-developer @ministryofjustice/laa-aws-infrastructure @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/bichard7.tf @ministryofjustice/cjse-bichard7-next 
 /terraform/environments/core-shared-services/ccms-ebs-upgrade.tf @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-sre-admins 
 /terraform/environments/core-shared-services/ccms-ebs.tf @ministryofjustice/laa-ccms-developers @ministryofjustice/laa-ccms-instance-access @ministryofjustice/laa-ccms-migration-team @ministryofjustice/laa-sre-admins @ministryofjustice/modernisation-platform-security @ministryofjustice/panda-cyber-team 
