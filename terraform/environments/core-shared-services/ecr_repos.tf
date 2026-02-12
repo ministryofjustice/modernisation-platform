@@ -1162,6 +1162,13 @@ module "electronic_monitoring_ears_sars_ecr_repo" {
     "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/ears-sars-app-execution-role"
   ]
 
+  enable_retrieval_policy_for_lambdas = [
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-development"]}:function:*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:function:*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-production"]}:function:*",
+    "arn:aws:lambda:eu-west-2:${local.environment_management.account_ids["electronic-monitoring-data-test"]}:function:*",
+  ]
+
   # Tags
   tags_common = local.tags
 }
