@@ -418,6 +418,7 @@ expected :=
           "analytical-platform-next-poc-hub-deveopment",
           "analytical-platform-next-poc-producer-development",
           "coat-development",
+          "data-factory-moj-development",
           "data-platform-development",
           "data-platform-governance-development",
           "example-development",
@@ -431,6 +432,7 @@ expected :=
       "general": {
         "cidr": "10.26.0.0/21",
         "accounts": [
+          "data-factory-moj-test",
           "data-platform-test",
           "data-platform-governance-test",
           "testing-test"
