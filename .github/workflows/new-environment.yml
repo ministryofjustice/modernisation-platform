@@ -30,6 +30,7 @@ env:
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
+  pull-requests: write # This is required for updating PR comments
 
 defaults:
   run:
@@ -88,31 +89,25 @@ jobs:
           terraform_version: "~1"
           terraform_wrapper: false
 
-      - name: Run terraform plan for root terraform/environments
+      - name: Run terraform init in terraform/environments
+        run: bash scripts/terraform-init.sh terraform/environments
+
+      - name: Run terraform plan in terraform/environments
+        id: tf_plan
+        run: bash scripts/terraform-plan.sh terraform/environments
+
+      - name: Update PR comment with plan summary
         run: |
-          terraform --version
-          # Test if this is a PR or PULL event
-
-          #USE IF RUNNING IN GITHUB ACTIONS
-          if [ ! -z ${{ github.event.pull_request.number }} ]
-          then
-
-          #USE IF USING ACT
-          # if [ ! -z ${PULL_REQUEST_NUMBER} ]
-          # then
-
-          #CONFIGURE TERRAFORM
-          bash scripts/terraform-init.sh terraform/environments
-
-          #RUN TERRAFORM PLAN
-          PLAN=`bash scripts/terraform-plan.sh terraform/environments | tee /dev/stderr | grep '^Plan: \|^No changes.'`
-          PLAN="> TERRAFORM PLAN RESULT - ACCOUNTS-TO-CREATE/MODIFY/DELETE -
-          ${PLAN}"
+          PLAN="$(printf '%s\n%s\n%s\n%s\n%s\n' \
+            '### Terraform Plan Summary' \
+            '_terraform/environments_' \
+            '```' \
+            "${{ steps.tf_plan.outputs.summary }}" \
+            '```')"
           bash scripts/update-pr-comments.sh "${PLAN}"
-          fi
         env:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
           PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
 
   create-environment:

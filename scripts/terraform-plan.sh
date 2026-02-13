@@ -29,8 +29,17 @@ else
 fi
 
 
-plan_summary=$(echo "$plan_output" | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')  # Extract summary from full output
+plan_summary=$(echo "$plan_output" | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.' || true)  # Extract summary from full output
 
+if [ -z "$plan_summary" ]; then # If summary only contains "Changes to Outputs:"
+  plan_summary="$(
+    echo "$plan_output" | awk '
+      /^Changes to Outputs:$/ { inblock=1; print; next }
+      inblock && NF==0 { exit }
+      inblock && $1 ~ /^[~+-]/ { print }
+    '
+  )"
+fi
 
 if tty -s; then
     echo "$plan_output" | tee /dev/tty    # Output full redacted plan to terminal if available
