@@ -78,8 +78,6 @@
     "owner": "laa_ops@digital.justice.gov.uk",
     "critical-national-infrastructure": false
   },
-  "github-oidc-team-repositories": [
-    "ministryofjustice/laa-apex"
-  ],
+  "github-oidc-team-repositories": ["ministryofjustice/laa-apex"],
   "go-live-date": "2024-11-27"
 }
