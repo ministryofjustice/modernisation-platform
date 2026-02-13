@@ -34,7 +34,7 @@
 /terraform/environments/core-shared-services/cooker.tf @ministryofjustice/modernisation-platform @ministryofjustice/panda-cyber-team @ministryofjustice/tvm-purple-team 
 /terraform/environments/core-shared-services/corporate-staff-rostering.tf @ministryofjustice/csr-application-support @ministryofjustice/hosting-migrations @ministryofjustice/studio-webops 
 /terraform/environments/core-shared-services/dacp.tf @ministryofjustice/dts-legacy 
-/terraform/environments/core-shared-services/data-factory-moj.tf @ministryofjustice/data-engineering 
+/terraform/environments/core-shared-services/data-factory-moj.tf @ministryofjustice/data-engineering @ministryofjustice/data-factory-security-team 
 /terraform/environments/core-shared-services/data-platform-governance.tf @ministryofjustice/data-platform-engineering 
 /terraform/environments/core-shared-services/data-platform.tf @ministryofjustice/data-platform-engineering 
 /terraform/environments/core-shared-services/delius-alfresco.tf @ministryofjustice/hosting-migrations 
