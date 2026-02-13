@@ -149,10 +149,10 @@ resource "aws_route53_record" "submit_a_bulk_claim_laa" {
 # Amend a claim LAA NS delegation to CP
 resource "aws_route53_record" "amend_a_claim_laa" {
   allow_overwrite = true
-  name    = "amend-a-claim.laa.service.justice.gov.uk"
-  ttl     = 30
-  type    = "NS"
-  zone_id = aws_route53_zone.application_zones["laa"].zone_id
+  name            = "amend-a-claim.laa.service.justice.gov.uk"
+  ttl             = 30
+  type            = "NS"
+  zone_id         = aws_route53_zone.application_zones["laa"].zone_id
   records = [
     "ns-1285.awsdns-32.org.",
     "ns-2014.awsdns-59.co.uk.",
