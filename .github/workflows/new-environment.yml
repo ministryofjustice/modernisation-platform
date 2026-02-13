@@ -98,12 +98,16 @@ jobs:
 
       - name: Update PR comment with plan summary
         run: |
-          PLAN="> TERRAFORM PLAN RESULT - ACCOUNTS-TO-CREATE/MODIFY/DELETE -
-          ${{ steps.tf_plan.outputs.summary }}"
+          PLAN="$(printf '%s\n%s\n%s\n%s\n%s\n' \
+            '### Terraform Plan Summary' \
+            '_terraform/environments_' \
+            '```' \
+            "${{ steps.tf_plan.outputs.summary }}" \
+            '```')"
           bash scripts/update-pr-comments.sh "${PLAN}"
         env:
           SECRET: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
           PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
 
   create-environment:
