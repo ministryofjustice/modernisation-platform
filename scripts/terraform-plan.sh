@@ -29,7 +29,7 @@ else
 fi
 
 
-plan_summary=$(echo "$plan_output" | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')  # Extract summary from full output
+plan_summary=$(echo "$plan_output" | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.|Changes to Outputs:')  # Extract summary from full output
 
 
 if tty -s; then
