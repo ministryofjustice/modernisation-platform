@@ -70,7 +70,8 @@
           "level": "security-audit"
         }
       ],
-      "instance_scheduler_skip": ["true"]
+      "instance_scheduler_skip": ["true"],
+      "nuke": "exclude"
     },
     {
       "name": "test",
