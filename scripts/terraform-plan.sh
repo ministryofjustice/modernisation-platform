@@ -29,7 +29,7 @@ else
 fi
 
 
-plan_summary=$(echo "$plan_output" | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.')  # Extract summary from full output
+plan_summary=$(echo "$plan_output" | grep -E 'Plan:|No changes. Your infrastructure matches the configuration.' || true)  # Extract summary from full output
 
 if [ -z "$plan_summary" ]; then # If summary only contains "Changes to Outputs:"
   plan_summary="$(
