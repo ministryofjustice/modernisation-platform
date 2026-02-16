@@ -55,11 +55,11 @@ data "aws_iam_policy_document" "oidc_deny_specific_actions" {
 # Terraform Read Only Role for use from Modernisation-Platform-Environments
 
 module "github_actions_terraform_read_only" {
-  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
-  github_repositories = ["ministryofjustice/modernisation-platform-environments"]
-  role_name           = "github-actions-terraform-read-only"
-  policy_jsons        = [data.aws_iam_policy_document.github_actions_terraform_read_only.json]
-  tags                = local.tags
+  source               = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
+  github_repositories  = ["ministryofjustice/modernisation-platform-environments"]
+  role_name            = "github-actions-terraform-read-only"
+  policy_jsons         = [data.aws_iam_policy_document.github_actions_terraform_read_only.json]
+  tags                 = local.tags
 }
 
 data "aws_iam_policy_document" "github_actions_terraform_read_only" {
@@ -87,7 +87,7 @@ data "aws_iam_policy_document" "github_actions_terraform_read_only" {
     sid       = "AllowOIDCDeleteLock"
     effect    = "Allow"
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/sprinkler/*.tflock"]
-    actions = [
+    actions   = [
       "s3:DeleteObject",
       "s3:PutObject",
       "s3:PutObjectAcl",
