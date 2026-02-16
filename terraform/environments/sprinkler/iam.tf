@@ -159,3 +159,11 @@ resource "aws_iam_role_policy_attachment" "terraform_apply_role_custom" {
 data "aws_iam_policy" "github_actions" {
   name = "github-actions"
 }
+
+
+# Null resource to force a plan/apply change on each run
+resource "null_resource" "force_plan" {
+  triggers = {
+    always_run = timestamp()
+  }
+}
