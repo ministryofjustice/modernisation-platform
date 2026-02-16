@@ -9,15 +9,15 @@
           "level": "administrator"
         },
         {
-          "sso_group_name": "panda-cyber-team",
+          "sso_group_name": "octo-cyber-team",
           "level": "read-only"
         },
         {
-          "sso_group_name": "panda-cyber-team",
+          "sso_group_name": "octo-cyber-team",
           "level": "security-audit"
         },
         {
-          "sso_group_name": "panda-cyber-team",
+          "sso_group_name": "octo-cyber-team",
           "level": "view-only"
         },
         {
@@ -30,15 +30,15 @@
       "name": "preproduction",
       "access": [
         {
-          "sso_group_name": "panda-cyber-team",
+          "sso_group_name": "octo-cyber-team",
           "level": "read-only"
         },
         {
-          "sso_group_name": "panda-cyber-team",
+          "sso_group_name": "octo-cyber-team",
           "level": "security-audit"
         },
         {
-          "sso_group_name": "panda-cyber-team",
+          "sso_group_name": "octo-cyber-team",
           "level": "view-only"
         },
         {
@@ -51,15 +51,15 @@
       "name": "production",
       "access": [
         {
-          "sso_group_name": "panda-cyber-team",
+          "sso_group_name": "octo-cyber-team",
           "level": "read-only"
         },
         {
-          "sso_group_name": "panda-cyber-team",
+          "sso_group_name": "octo-cyber-team",
           "level": "security-audit"
         },
         {
-          "sso_group_name": "panda-cyber-team",
+          "sso_group_name": "octo-cyber-team",
           "level": "view-only"
         },
         {
