@@ -77,6 +77,20 @@ data "aws_iam_policy_document" "github_actions_terraform_read_only" {
   }
 
   statement {
+    sid    = "AllowAssumeModernisationLimitedReadRole"
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole",
+    ]
+    resources = [
+      "arn:aws:iam::${data.aws_ssm_parameter.modernisation_platform_account_id.value}:role/modernisation-account-limited-read-member-access",
+      "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/modernisation-account-limited-read-member-access",
+      "arn:aws:iam::${local.environment_management.account_ids["core-network-services-production"]}:role/modify-dns-records",
+      "arn:aws:iam::${local.environment_management.account_ids["core-vpc-sandbox"]}:role/member-delegation-garden-sandbox"
+    ]
+  }
+
+  statement {
     sid       = "AllowOIDCReadState"
     effect    = "Allow"
     resources = ["arn:aws:s3:::modernisation-platform-terraform-state/*", "arn:aws:s3:::modernisation-platform-terraform-state/"]
