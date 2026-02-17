@@ -101,12 +101,25 @@ module "member-access" {
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
-  policy_arns = [
-    aws_iam_policy.member-access-compute[0].id,
-    aws_iam_policy.member-access-data[0].id,
-    aws_iam_policy.member-access-network[0].id
-  ]
-  role_name = "MemberInfrastructureAccess"
+  role_name              = "MemberInfrastructureAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "member_infrastructure_access_role_compute" {
+  count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  role       = module.member-access[0].role_name
+  policy_arn = aws_iam_policy.member-access-compute[0].arn
+}
+
+resource "aws_iam_role_policy_attachment" "member_infrastructure_access_role_data" {
+  count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  role       = module.member-access[0].role_name
+  policy_arn = aws_iam_policy.member-access-data[0].arn
+}
+
+resource "aws_iam_role_policy_attachment" "member_infrastructure_access_role_network" {
+  count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  role       = module.member-access[0].role_name
+  policy_arn = aws_iam_policy.member-access-network[0].arn
 }
 
 module "member-access-sprinkler" {
@@ -114,12 +127,25 @@ module "member-access-sprinkler" {
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = [data.aws_iam_role.sprinkler_oidc[0].arn, data.aws_iam_role.sprinkler_terraform_read_only[0].arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
-  policy_arns = [
-    aws_iam_policy.member-access-compute[0].id,
-    aws_iam_policy.member-access-data[0].id,
-    aws_iam_policy.member-access-network[0].id
-  ]
-  role_name = "MemberInfrastructureAccess"
+  role_name              = "MemberInfrastructureAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "member_infrastructure_access_sprinkler_role_compute" {
+  count      = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  role       = module.member-access-sprinkler[0].role_name
+  policy_arn = aws_iam_policy.member-access-compute[0].arn
+}
+
+resource "aws_iam_role_policy_attachment" "member_infrastructure_access_sprinkler_role_data" {
+  count      = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  role       = module.member-access-sprinkler[0].role_name
+  policy_arn = aws_iam_policy.member-access-data[0].arn
+}
+
+resource "aws_iam_role_policy_attachment" "member_infrastructure_access_sprinkler_role_network" {
+  count      = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  role       = module.member-access-sprinkler[0].role_name
+  policy_arn = aws_iam_policy.member-access-network[0].arn
 }
 
 
