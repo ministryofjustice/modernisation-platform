@@ -19,10 +19,14 @@ moved {
   to   = module.pagerduty_core_alerts.aws_sns_topic_subscription.pagerduty_subscription["securityhub-alarms"]
 }
 
+# Suppresses Security Hub control S3.6 for the terraform state bucket.
+# This bucket requires controlled cross-account access for
+# Modernisation Platform environments.
+# Risk reviewed and accepted.
 resource "aws_securityhub_automation_rule" "suppress_tf_state_bucket_cross_account" {
-  rule_name     = "suppress-tf-state-bucket-cross-account-policy"
-  rule_order    = 1
-  description   = "Suppress cross-account S3 policy finding for terraform state bucket"
+  rule_name   = "suppress-tf-state-bucket-cross-account-policy"
+  rule_order  = 1
+  description = "Suppress Security Hub S3.6 finding for terraform state bucket"
 
   criteria {
     resource_id {
@@ -30,9 +34,9 @@ resource "aws_securityhub_automation_rule" "suppress_tf_state_bucket_cross_accou
       value      = "arn:aws:s3:::modernisation-platform-terraform-state"
     }
 
-    title {
-      comparison = "CONTAINS"
-      value      = "S3 general purpose bucket policies should restrict access to other AWS accounts"
+    security_control_id {
+      comparison = "EQUALS"
+      value      = "S3.6"
     }
   }
 
@@ -51,3 +55,4 @@ resource "aws_securityhub_automation_rule" "suppress_tf_state_bucket_cross_accou
     }
   }
 }
+
