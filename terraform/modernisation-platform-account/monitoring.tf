@@ -30,13 +30,13 @@ resource "aws_securityhub_automation_rule" "suppress_tf_state_bucket_cross_accou
 
   criteria {
     resource_id {
-      comparison = "EQUALS"
+      comparison = "PREFIX"
       value      = "arn:aws:s3:::modernisation-platform-terraform-state"
     }
 
-    security_control_id {
+    title {
       comparison = "EQUALS"
-      value      = "S3.6"
+      value      = "S3 general purpose bucket policies should restrict access to other AWS accounts"
     }
   }
 
