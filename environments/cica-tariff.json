@@ -46,5 +46,5 @@
     "critical-national-infrastructure": true
   },
   "github-oidc-team-repositories": [""],
-   "go-live-date": "2025-11-29"
+  "go-live-date": "2025-11-29"
 }
