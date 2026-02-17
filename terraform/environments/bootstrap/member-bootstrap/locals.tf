@@ -31,6 +31,11 @@ data "aws_iam_role" "sprinkler_terraform_read_only" {
   name  = "github-actions-terraform-read-only"
 }
 
+data "aws_iam_role" "sprinkler_terraform_dev_test" {
+  count = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  name  = "github-actions-terraform-dev-test"
+}
+
 data "http" "environments_file" {
   url = format("https://raw.githubusercontent.com/ministryofjustice/modernisation-platform/main/environments/%s.json", local.application_name)
 }
