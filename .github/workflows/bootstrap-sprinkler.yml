@@ -75,10 +75,18 @@ jobs:
           echo "::add-mask::$ACCOUNT_NUMBER"
           echo ACCOUNT_NUMBER=$ACCOUNT_NUMBER >> $GITHUB_ENV
 
+      - name: Set Role to Assume
+        run: |
+          if [ "${GITHUB_REF_NAME}" = "main" ]; then
+            echo "ROLE_NAME=github-actions" >> $GITHUB_ENV
+          else
+            echo "ROLE_NAME=github-actions-terraform-dev-test" >> $GITHUB_ENV
+          fi
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@8df5847569e6427dd6c4fb1cf565c83acfa8afa7 # v6.0.0
         with:
-          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/github-actions"
+          role-to-assume: "arn:aws:iam::${{ env.ACCOUNT_NUMBER }}:role/${{ env.ROLE_NAME }}"
           role-session-name: githubactionsrolesession
           aws-region: ${{ env.AWS_REGION }}
       - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.1.2
