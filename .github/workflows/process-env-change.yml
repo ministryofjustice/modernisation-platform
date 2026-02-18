@@ -22,6 +22,8 @@ jobs:
           script: |
             const body = context.payload.issue.body || "";
             const fields = {};
+            const normalize = (s) => (s || "").toLowerCase().replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+            const toKey = (s) => (s || "").toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/_+/g, '_').replace(/^_+|_+$/g, '');
             // Map human labels from Issue Form to canonical keys
             const labelMap = new Map([
               ["App name (matches JSON filename in environments/)", "account_name"],
@@ -46,15 +48,93 @@ jobs:
               ["Go-live date (DD-MM-YYYY)", "go_live_date"],
             ]);
 
-            for (const line of body.split(/\r?\n/)) {
-              const m = line.match(/^([^:]+):\s*(.*)$/);
+            // Map common heading IDs to canonical keys (supports awk-style ### id + value)
+            const idMap = new Map([
+              ["app_name", "account_name"], ["account_name", "account_name"],
+              ["environment_name", "environment_name"], ["environment", "environment_name"], ["env", "environment_name"],
+              ["environment_change_action", "environment_change_action"], ["change_action", "environment_change_action"],
+              ["current_sso_group_name", "current_sso_group_name"], ["current_group", "current_sso_group_name"],
+              ["current_level", "current_level"],
+              ["sso_group_name", "sso_group_name"], ["group", "sso_group_name"],
+              ["level", "level"],
+              ["reviewers_change_action", "reviewers_change_action"],
+              ["current_additional_reviewers", "current_additional_reviewers"],
+              ["additional_reviewers", "additional_reviewers"],
+              ["tags_change_action", "tags_change_action"],
+              ["current_tag_key", "current_tag_key"], ["current_tag_value", "current_tag_value"],
+              ["tag_key", "tag_key"], ["tag_value", "tag_value"],
+              ["other_change_action", "other_change_action"],
+              ["current_github_oidc_team_repositories", "current_github_oidc_team_repositories"],
+              ["current_go_live_date", "current_go_live_date"],
+              ["github_oidc_team_repositories", "github_oidc_team_repositories"],
+              ["go_live_date", "go_live_date"],
+            ]);
+
+            const lines = body.split(/\r?\n/);
+            // Pass 1: Heading-style parser (### id then next non-empty line is value)
+            for (let i = 0; i < lines.length; i++) {
+              const labelLine = lines[i].trim();
+              if (!labelLine) continue;
+              const headingMatch = labelLine.match(/^#{2,}\s*(.+?)\s*$/);
+              if (headingMatch) {
+                const headingText = headingMatch[1];
+                const idKey = idMap.get(toKey(headingText));
+                if (idKey) {
+                  // find next non-empty, non-heading line
+                  let j = i + 1, value = "";
+                  while (j < lines.length) {
+                    const v = lines[j].trim();
+                    j++;
+                    if (v === "" || /^#{2,}\s*/.test(v)) continue;
+                    value = v;
+                    break;
+                  }
+                  fields[idKey] = value;
+                  fields[toKey(headingText)] = value;
+                }
+                continue; // move to next line
+              }
+              // Skip markdown non-field headings
+              if (labelLine.startsWith("###") || labelLine.startsWith("####")) continue;
+              const norm = normalize(labelLine);
+              let matchedKey = null;
+              // Try exact label match first
+              if (labelMap.has(labelLine)) matchedKey = labelMap.get(labelLine);
+              // Fuzzy match: normalize and compare/contains
+              if (!matchedKey) {
+                for (const [lbl, key] of labelMap.entries()) {
+                  const normLbl = normalize(lbl);
+                  if (norm === normLbl || norm.includes(normLbl)) { matchedKey = key; break; }
+                }
+              }
+              // If label matches any known label, read next non-empty line as value
+              if (matchedKey) {
+                let j = i + 1, value = "";
+                while (j < lines.length) {
+                  const v = lines[j].trim();
+                  j++;
+                  if (v === "" || v.startsWith("###") || v.startsWith("####")) continue;
+                  value = v;
+                  break;
+                }
+                if (matchedKey) fields[matchedKey] = value;
+                const rawKey = toKey(labelLine);
+                fields[rawKey] = value;
+              }
+              // Also support inline 'Label: value' format
+              const m = labelLine.match(/^([^:]+):\s*(.*)$/);
               if (m) {
                 const humanLabel = m[1].trim();
                 const value = m[2].trim();
-                const key = labelMap.get(humanLabel);
+                let key = labelMap.get(humanLabel);
+                if (!key) {
+                  const normLbl = normalize(humanLabel);
+                  for (const [lbl, k] of labelMap.entries()) {
+                    if (normLbl === normalize(lbl) || normLbl.includes(normalize(lbl))) { key = k; break; }
+                  }
+                }
                 if (key) fields[key] = value;
-                // Also capture raw keys in case GitHub uses IDs
-                const rawKey = humanLabel.trim().toLowerCase().replace(/\s+/g,'_');
+                const rawKey = toKey(humanLabel);
                 fields[rawKey] = value;
               }
             }
@@ -71,7 +151,8 @@ jobs:
               try {
                 const res = await github.rest.repos.getContent({ owner, repo, path: 'environments' });
                 const entries = Array.isArray(res.data) ? res.data : [];
-                const names = new Set(entries.filter(e => e.type === 'file' && e.name.endsWith('.json')).map(e => e.name.replace(/\.json$/, '')));
+                const names = entries.filter(e => e.type === 'file' && e.name.endsWith('.json')).map(e => e.name.replace(/\.json$/, ''));
+                const nameSet = new Set(names.map(n => n.toLowerCase()));
                 // scan title and body for tokens that match file names
                 const scanText = `${title}\n${body}`.toLowerCase();
                 for (const name of names) {
@@ -81,7 +162,29 @@ jobs:
                 // ignore API errors; leave account empty
               }
             }
+              // If still empty, try values from parsed fields
+              if (!account) {
+              try {
+                const { owner, repo } = context.repo;
+                const res = await github.rest.repos.getContent({ owner, repo, path: 'environments' });
+                const entries = Array.isArray(res.data) ? res.data : [];
+                const names = entries.filter(e => e.type === 'file' && e.name.endsWith('.json')).map(e => e.name.replace(/\.json$/, ''));
+                const nameSet = new Set(names.map(n => n.toLowerCase()));
+                for (const [k,v] of Object.entries(fields)) {
+                  const val = (v || '').toLowerCase().replace(/[^a-z0-9_-]/g, '');
+                  if (nameSet.has(val)) { account = v; break; }
+                }
+              } catch (err) {
+                // ignore API errors
+              }
+              }
+              // Final fallback: prefer common raw keys
+              if (!account) {
+                account = get('app_name') || get('account-name') || get('account_name');
+              }
             core.setOutput('account_name', account);
+            const preview = body.slice(0, 400).replace(/\n/g, '\\n');
+            core.info(`Issue body preview (first 400 chars): ${preview}`);
             core.info(`Parsed fields: ${JSON.stringify(fields, null, 2)}`);
             core.info(`Resolved account_name: ${account}`);
             // Environment section
@@ -121,9 +224,12 @@ jobs:
         run: |
           safe_account="$(echo "${{ steps.form.outputs.account_name }}" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9_-]//g')"
           target="environments/${safe_account}.json"
+          echo "Resolved safe_account=${safe_account}"
           echo "Checking for ${target}"
           if [ ! -f "$target" ]; then
             echo "ERROR: Target JSON not found: $target" >&2
+            echo "Available files in environments/:" >&2
+            ls -1 environments | sed 's/^/  /' >&2 || true
             exit 1
           fi
 
