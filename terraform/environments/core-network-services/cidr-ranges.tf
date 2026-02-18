@@ -32,6 +32,7 @@ locals {
     moj-core-azure-1                    = "10.50.25.0/27"
     moj-core-azure-2                    = "10.50.26.0/24"
     mojo-azure-landing-zone             = "10.192.0.0/16"
+    moj-wifi                            = "10.148.0.0/14"
     parole-board                        = "10.50.0.0/16"
     psn                                 = "51.0.0.0/8"
     psn-ppud                            = "51.247.2.115/32"
