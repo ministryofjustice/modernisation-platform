@@ -80,7 +80,7 @@ jobs:
           if [ "${GITHUB_REF_NAME}" = "main" ]; then
             echo "ROLE_NAME=github-actions" >> $GITHUB_ENV
           else
-            echo "ROLE_NAME=github-actions-terraform-dev-test" >> $GITHUB_ENV
+            echo "ROLE_NAME=github-actions-terraform-read-only" >> $GITHUB_ENV
           fi
 
       - name: Configure AWS Credentials
