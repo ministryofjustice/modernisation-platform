@@ -434,6 +434,13 @@
     "destination_port": "443",
     "protocol": "TCP"
   },
+  "moj_wifi_to_laa_production_mp_https": {
+    "action": "PASS",
+    "source_ip": "${moj-wifi}",
+    "destination_ip": "${laa-production}",
+    "destination_port": "443",
+    "protocol": "TCP"
+  },
   "dom1_to_laa_production_mp_https": {
     "action": "PASS",
     "source_ip": "${dom1-domain-controllers}",
