@@ -1294,3 +1294,83 @@ data "aws_iam_policy_document" "iam_hygiene_policy" {
     resources = ["*"]
   }
 }
+
+# Role to support OIDC access to Development & Test Accounts from Modernisation-Platform-Environments
+
+module "github_actions_terraform_dev_test" {
+  count               = can(regex("example$|cooker$", terraform.workspace)) ? 1 : 0
+  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
+  github_repositories = ["ministryofjustice/modernisation-platform-environments"]
+  role_name           = "github-actions-terraform-dev-test"
+  policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
+  policy_jsons        = [data.aws_iam_policy_document.github_actions_terraform_dev_test[0].json]
+  tags                = { "Name" = "github-actions-terraform-dev-test"}
+}
+
+#trivy:ignore:AVD-AWS-0345: Required for OIDC role to access Terraform state in S3
+data "aws_iam_policy_document" "github_actions_terraform_dev_test" {
+  count               = can(regex("example$|cooker$", terraform.workspace)) ? 1 : 0
+  # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
+  statement {
+    sid    = "AllowOIDCToAssumeRoles"
+    effect = "Allow"
+    resources = compact([
+      # skip for cloud-platform as it uses a different account naming convention and does not need a member-delegation role
+      local.application_name != "cloud-platform" ? format("arn:aws:iam::%s:role/member-delegation-%s-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], lower(local.business_unit), local.application_environment) : "",
+      format("arn:aws:iam::%s:role/modify-dns-records", local.environment_management.account_ids["core-network-services-production"]),
+      format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
+      format("arn:aws:iam::%s:role/ModernisationPlatformSSOReadOnly", local.environment_management.aws_organizations_root_account_id),
+      # the following are required as cooker have development accounts but are in the sandbox vpc
+      local.application_name == "cooker" ? format("arn:aws:iam::%s:role/member-delegation-house-sandbox", local.environment_management.account_ids["core-vpc-sandbox"]) : format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id)
+    ])
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.root_account.id]
+    }
+    actions = ["sts:AssumeRole"]
+  }
+
+  # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
+  statement {
+    sid       = "AllowOIDCToDecryptKMS"
+    effect    = "Allow"
+    resources = ["*"]
+    actions   = ["kms:Decrypt"]
+  }
+
+  statement {
+    sid    = "AllowOIDCReadState"
+    effect = "Allow"
+
+    resources = [
+      "arn:aws:s3:::modernisation-platform-terraform-state/*",
+      "arn:aws:s3:::modernisation-platform-terraform-state/"
+    ]
+    actions = [
+      "s3:Get*",
+      "s3:List*"
+    ]
+  }
+
+  statement {
+    sid       = "AllowOIDCWriteState"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
+    actions = [
+      "s3:PutObject",
+      "s3:PutObjectAcl"
+    ]
+  }
+
+  statement {
+    sid       = "AllowOIDCDeleteLock"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*.tflock"]
+    actions = [
+      "s3:DeleteObject"
+    ]
+  }
+}
