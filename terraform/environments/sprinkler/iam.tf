@@ -156,7 +156,8 @@ data "aws_iam_policy_document" "github_actions_terraform_dev_test" {
     effect = "Allow"
     resources = [
       "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/terraform.tfstate",
-      "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/terraform.tfstate"
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/terraform.tfstate",
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/sprinkler/sprinkler-development/terraform.tfstate"
     ]
     actions = [
       "s3:PutObject",
@@ -170,7 +171,8 @@ data "aws_iam_policy_document" "github_actions_terraform_dev_test" {
     effect = "Allow"
     resources = [
       "arn:aws:s3:::modernisation-platform-terraform-state/single-sign-on/*.tflock",
-      "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*.tflock"
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/bootstrap/*/sprinkler-development/*.tflock",
+      "arn:aws:s3:::modernisation-platform-terraform-state/environments/members/sprinkler/sprinkler-development/*.tflock"
     ]
     actions = ["s3:DeleteObject"]
   }
