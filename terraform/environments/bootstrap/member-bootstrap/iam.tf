@@ -1309,7 +1309,7 @@ module "github_actions_terraform_dev_test" {
 
 #trivy:ignore:AVD-AWS-0345: Required for OIDC role to access Terraform state in S3
 data "aws_iam_policy_document" "github_actions_terraform_dev_test" {
-  count               = can(regex("example$|cooker$", terraform.workspace)) ? 1 : 0
+  count = can(regex("^(example|cooker)", terraform.workspace)) ? 1 : 0
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
   # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
   statement {
