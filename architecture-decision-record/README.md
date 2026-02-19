@@ -42,6 +42,9 @@ This is our architecture decision log, made during the design and build of the M
 1. ✅ [Use of Component Isolation](0036-managing-environment-collaboration-with-component-isolation.md)
 1. ✅ [Permissions to manage Unwanted EBS Volumes](0037-give-teams-the-permissions-to-manage-unwanted-volumes.md)
 1. ✅ [Stop storing binaries and archives in git](0038-stop-storing-binaries-and-archives-in-git.md)
+1. ✅ [AWS CloudTrail Multi-Region and Organization Trail Implementation](0039-cloudtrail-multi-region-org-trail.md)
+1. ✅ [Transit Gateway Auto-Accept VPC Attachment Requests](0040-transit-gateway-auto-accept.md)
+1. 🤔 [Adopting Entra ID](0041-adopting-entra-id.md)
 
 ## Statuses
 
