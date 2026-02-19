@@ -961,7 +961,7 @@ locals {
         forth-thurs  = "cron(0 21 ? * THU#4 *)"
       }
       patch_classifications = {
-        WINDOWS = ["SecurityUpdates", "CriticalUpdates"]
+        WINDOWS = ["SecurityUpdates", "CriticalUpdates", "UpdateRollups", "ServicePacks", "Updates"]
       }
     }
 
