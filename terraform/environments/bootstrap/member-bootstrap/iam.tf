@@ -100,7 +100,11 @@ module "member-access" {
   count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
-  additional_trust_roles = [module.github-oidc[0].github_actions_role, module.github_actions_terraform_dev_test[0].role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  additional_trust_roles = compact([
+    module.github-oidc[0].github_actions_role,
+    try(module.github_actions_terraform_dev_test[0].role, null),
+    one(data.aws_iam_roles.member-sso-admin-access.arns),
+  ])
   role_name              = "MemberInfrastructureAccess"
 }
 
@@ -601,7 +605,11 @@ module "member-access-us-east" {
   count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
-  additional_trust_roles = [module.github-oidc[0].github_actions_role, module.github_actions_terraform_dev_test[0].role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  additional_trust_roles = compact([
+    module.github-oidc[0].github_actions_role,
+    try(module.github_actions_terraform_dev_test[0].role, null),
+    one(data.aws_iam_roles.member-sso-admin-access.arns),
+  ])
   policy_arn             = aws_iam_policy.member-access-us-east[0].id
   role_name              = "MemberInfrastructureAccessUSEast"
 }
@@ -906,7 +914,11 @@ module "member-access-eu-central" {
   count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
-  additional_trust_roles = [module.github-oidc[0].github_actions_role, module.github_actions_terraform_dev_test[0].role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  additional_trust_roles = compact([
+    module.github-oidc[0].github_actions_role,
+    try(module.github_actions_terraform_dev_test[0].role, null),
+    one(data.aws_iam_roles.member-sso-admin-access.arns),
+  ])
   policy_arn             = aws_iam_policy.member-access-eu-central[0].id
   role_name              = "MemberInfrastructureBedrockEuCentral"
 }
