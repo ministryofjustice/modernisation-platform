@@ -41,6 +41,10 @@
         {
           "sso_group_name": "laa-dba",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "laa-cyber-security-team",
+          "level": "security-audit"
         }
       ]
     },
