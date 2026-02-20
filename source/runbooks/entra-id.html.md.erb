@@ -1,0 +1,75 @@
+---
+owner_slack: "#modernisation-platform"
+title: EntraId on the Modernisation Platform
+last_reviewed_on: 2026-02-20
+review_in: 6 months
+---
+
+# <%= current_page.data.title %>
+
+## What is EntraId?
+
+EntraId (formerly Azure AD) is the Ministry of Justice enterprise identity provider used for all
+justice.gov.uk accounts, email, and core applications such as Word and Excel. It manages user
+identities linked to @Justice accounts, provides authentication and group-based access control, and
+forms part of the core infrastructure for the Ministry of Justice.
+
+
+
+## How the EntraId integration works
+
+EntraId is the authoritative source for user identities and core groups. AWS IAM Identity Center
+consumes those identities to grant access to AWS accounts and permission sets. The platform uses
+SCIM sync jobs to reconcile EntraId and GitHub group membership into Identity Center, so access is
+kept consistent across MoJ identities and platform-specific teams. This design means access changes
+flow from enterprise identity through to AWS, while platform automation keeps memberships aligned.
+
+![EntraId SCIM overview](../images/entra-id-scim.png)
+
+## Why we use it
+The Modernisation Platform has adopted EntraId as an identity provider for AWS account access and
+management. This decision was driven by several key factors:
+
+- Supports non-developer users and enterprise identity requirements
+- Aligns access management with MoJ identity standards
+- Enables consistent onboarding and offboarding across services
+
+## Authentication and access flow
+
+Authentication uses EntraId for MoJ identities and AWS IAM Identity Center for account access. For
+more detail on logging in and the user experience, see the
+[Single Sign-On guide](../concepts/environments/single-sign-on.html).
+
+## Group and access management
+Currently the management of group membership is split between GitHub and EntraId, with the intention to move towards more of a single source of truth in EntraId over time.
+and as such, the current model is:
+
+- Group membership controls access to AWS accounts and roles
+- Some groups are synced automatically from GitHub teams
+- EntraId group creation currently needs approval controls
+
+Both the GitHub and EntraId groups are created outside of the Modernisation Platform. GitHub
+groups can be created by anyone in the GitHub organisation. Anyone with permission to create
+EntraId groups can create a new group, and it will be added to AWS as long as the group name starts
+with `azure-aws-sso`. The platform's role is to consume those groups and manage access in AWS.
+
+For more information about group permission and how groups are given permissions to AWS accounts, see the following documentation:
+[Platform User Roles](source/runbooks/platform-user-roles.html)
+
+## SCIM Lambda jobs
+The platform uses two SCIM Lambda jobs to keep AWS Identity Center in sync with EntraId and GitHub:
+
+For SCIM job schedules, secrets, troubleshooting, and manual execution steps, see the
+[SCIM Lambda runbook](scim-lambda-runbook.html).
+
+## Ownership and support
+
+- Owned by the Modernisation Platform team
+- Built in collaboration with Hosting Leads
+
+## Related documentation
+
+- ADR: Adopting EntraId
+- [SCIM Lambda runbook](scim-lambda-runbook.html)
+- Identity Center access model and permission sets
+- ServiceNow group request workflow (pending)
