@@ -97,15 +97,15 @@ module "wiz-resource-count-access" {
 }
 
 module "member-access" {
-  count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
-  account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
+  count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  source     = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
+  account_id = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = compact([
     module.github-oidc[0].github_actions_role,
     try(module.github_actions_terraform_dev_test[0].role, null),
     one(data.aws_iam_roles.member-sso-admin-access.arns),
   ])
-  role_name              = "MemberInfrastructureAccess"
+  role_name = "MemberInfrastructureAccess"
 }
 
 resource "aws_iam_role_policy_attachment" "member_infrastructure_access_role_compute" {
@@ -602,16 +602,16 @@ resource "aws_iam_role_policy_attachment" "testing_member_infrastructure_access_
 
 # MemberInfrastructureAccessUSEast
 module "member-access-us-east" {
-  count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
-  account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
+  count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  source     = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
+  account_id = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = compact([
     module.github-oidc[0].github_actions_role,
     try(module.github_actions_terraform_dev_test[0].role, null),
     one(data.aws_iam_roles.member-sso-admin-access.arns),
   ])
-  policy_arn             = aws_iam_policy.member-access-us-east[0].id
-  role_name              = "MemberInfrastructureAccessUSEast"
+  policy_arn = aws_iam_policy.member-access-us-east[0].id
+  role_name  = "MemberInfrastructureAccessUSEast"
 }
 
 module "member-access-us-east-sprinkler" {
@@ -911,16 +911,16 @@ data "aws_iam_policy_document" "policy" {
 
 # MemberInfrastructureBedrockEuCentral
 module "member-access-eu-central" {
-  count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
-  account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
+  count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  source     = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
+  account_id = data.aws_ssm_parameter.modernisation_platform_account_id.value
   additional_trust_roles = compact([
     module.github-oidc[0].github_actions_role,
     try(module.github_actions_terraform_dev_test[0].role, null),
     one(data.aws_iam_roles.member-sso-admin-access.arns),
   ])
-  policy_arn             = aws_iam_policy.member-access-eu-central[0].id
-  role_name              = "MemberInfrastructureBedrockEuCentral"
+  policy_arn = aws_iam_policy.member-access-eu-central[0].id
+  role_name  = "MemberInfrastructureBedrockEuCentral"
 }
 
 module "member-access-eu-central-sprinkler" {
@@ -1316,7 +1316,7 @@ module "github_actions_terraform_dev_test" {
   role_name           = "github-actions-terraform-dev-test"
   policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
   policy_jsons        = [data.aws_iam_policy_document.github_actions_terraform_dev_test[0].json]
-  tags                = { "Name" = "github-actions-terraform-dev-test"}
+  tags                = { "Name" = "github-actions-terraform-dev-test" }
 }
 
 #trivy:ignore:AVD-AWS-0345: Required for OIDC role to access Terraform state in S3
