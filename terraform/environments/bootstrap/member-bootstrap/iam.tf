@@ -1319,7 +1319,6 @@ module "github_actions_terraform_dev_test" {
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
   github_repositories = ["ministryofjustice/modernisation-platform-environments"]
   role_name           = "github-actions-terraform-dev-test"
-  policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
   policy_jsons        = [data.aws_iam_policy_document.github_actions_terraform_dev_test[0].json]
   tags                = { "Name" = "github-actions-terraform-dev-test", "service-area" = "Hosting"}
 }
