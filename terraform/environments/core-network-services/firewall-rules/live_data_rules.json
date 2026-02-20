@@ -47,5 +47,12 @@
     "destination_ip": "$AD_HMPP_RD_LICENSING",
     "destination_port": "$RD_LICENSING_TCP",
     "protocol": "TCP"
+  },
+  "mojo_to_mp_core_shared_services_additional_smb_TCP": {
+    "action": "PASS",
+    "source_ip": "${mojo-end-user-devices}",
+    "destination_ip": "${mp-core-shared-services-additional}",
+    "destination_port": "445",
+    "protocol": "TCP"
   }
 }
