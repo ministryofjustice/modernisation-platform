@@ -1315,18 +1315,18 @@ data "aws_iam_policy_document" "iam_hygiene_policy" {
 # Uses the same deployment conditions as the OIDC provider deployment - module.github-oidc
 
 module "github_actions_terraform_dev_test" {
-  count               = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development" && !can(regex("^coat-", terraform.workspace))) ? 1 : 0
+  count               = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
   source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
   github_repositories = ["ministryofjustice/modernisation-platform-environments"]
   role_name           = "github-actions-terraform-dev-test"
   policy_arns         = ["arn:aws:iam::aws:policy/AdministratorAccess"]
   policy_jsons        = [data.aws_iam_policy_document.github_actions_terraform_dev_test[0].json]
-  tags                = { "Name" = "github-actions-terraform-dev-test"}
+  tags                = { "Name" = "github-actions-terraform-dev-test", "service-area" = "Hosting"}
 }
 
 #trivy:ignore:AVD-AWS-0345: Required for OIDC role to access Terraform state in S3
 data "aws_iam_policy_document" "github_actions_terraform_dev_test" {
-  count = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development" && !can(regex("^coat-", terraform.workspace))) ? 1 : 0
+  count = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
   # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
   # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
   statement {
