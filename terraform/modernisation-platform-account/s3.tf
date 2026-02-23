@@ -292,7 +292,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalArn"
-      values   = ["arn:aws:iam::*:role/github-actions"]
+      values   = ["arn:aws:iam::*:role/github-actions", "arn:aws:iam::*:role/github-actions-terraform-dev-test"]
     }
   }
 
@@ -318,7 +318,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalArn"
-      values   = ["arn:aws:iam::*:role/github-actions"]
+      values   = ["arn:aws:iam::*:role/github-actions", "arn:aws:iam::*:role/github-actions-terraform-dev-test"]
     }
   }
 

@@ -18,7 +18,8 @@
         },
         {
           "sso_group_name": "hmpps-calculate-release-dates-team-devs",
-          "level": "sandbox"
+          "level": "sandbox",
+          "github_action_reviewer": "true"
         }
       ],
       "nuke": "exclude"
@@ -28,11 +29,13 @@
       "access": [
         {
           "sso_group_name": "cloud-platform-engineers",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hmpps-calculate-release-dates-team-live",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         }
       ]
     },
@@ -41,11 +44,13 @@
       "access": [
         {
           "sso_group_name": "cloud-platform-engineers",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         },
         {
           "sso_group_name": "hmpps-calculate-release-dates-team-live",
-          "level": "developer"
+          "level": "developer",
+          "github_action_reviewer": "true"
         }
       ]
     }
