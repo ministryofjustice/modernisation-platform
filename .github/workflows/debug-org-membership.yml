@@ -1,0 +1,52 @@
+name: Debug - Org Membership Check
+
+on:
+  workflow_dispatch:
+    inputs:
+      username:
+        description: GitHub username to check
+        required: true
+        type: string
+
+permissions: read-all
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check org membership
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          USERNAME="${{ inputs.username }}"
+          echo "Checking org membership for: $USERNAME"
+
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: token $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/orgs/ministryofjustice/members/${USERNAME}")
+
+          echo "API response status: $STATUS"
+
+          case "$STATUS" in
+            204) echo "RESULT: PASS - '$USERNAME' is a member of ministryofjustice." ;;
+            302) echo "RESULT: FAIL - '$USERNAME' is not a public member (private or not a member)." ;;
+            404) echo "RESULT: FAIL - '$USERNAME' is not a member of ministryofjustice." ;;
+            *)   echo "RESULT: UNEXPECTED - HTTP $STATUS returned." ;;
+          esac
+
+      - name: Show author_association equivalent
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          USERNAME="${{ inputs.username }}"
+          echo "Fetching author_association for a hypothetical issue by $USERNAME..."
+          echo "(This shows what value GitHub would set on an issue/PR opened by this user)"
+
+          RESPONSE=$(curl -s \
+            -H "Authorization: token $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/issues?state=open&per_page=10")
+
+          echo "Recent issues and their author_associations:"
+          echo "$RESPONSE" | jq -r '.[] | "\(.user.login): \(.author_association)"' 2>/dev/null || echo "(no open issues or jq parse failed)"
