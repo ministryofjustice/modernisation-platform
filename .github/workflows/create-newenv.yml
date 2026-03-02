@@ -12,7 +12,6 @@ jobs:
       contents: write
       issues: write 
       pull-requests: write
-      security-events: write
     if: contains(github.event.issue.labels.*.name, 'New Account')
     runs-on: ubuntu-latest
     steps:
