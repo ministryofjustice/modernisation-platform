@@ -1,0 +1,15 @@
+{
+  "account-type": "member",
+  "codeowners": ", ",
+  "environments": [],
+  "tags": {
+    "application": "Test",
+    "business-unit": "Test",
+    "infrastructure-support": "Test",
+    "owner": "Test",
+    "slack-channel": "",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
