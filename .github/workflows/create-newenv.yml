@@ -10,10 +10,9 @@ jobs:
   handle-request:
     permissions:
       contents: write
-      issues: write 
+      issues: write
       pull-requests: write
-      security-events: write
-    if: contains(github.event.issue.labels.*.name, 'New Account')
+    if: contains(github.event.issue.labels.*.name, 'New Account') && contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.issue.author_association)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
