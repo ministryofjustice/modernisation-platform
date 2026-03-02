@@ -12,19 +12,44 @@ jobs:
       contents: write
       issues: write
       pull-requests: write
-    if: contains(github.event.issue.labels.*.name, 'New Account') && contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.issue.author_association)
+    if: contains(github.event.issue.labels.*.name, 'New Account')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - name: Check org membership
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          USERNAME="${{ github.event.issue.user.login }}"
+          AUTHOR_ASSOC="${{ github.event.issue.author_association }}"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: token $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/orgs/ministryofjustice/members/${USERNAME}")
+          echo "User: ${USERNAME}"
+          echo "author_association: ${AUTHOR_ASSOC}"
+          echo "Org membership API status: ${STATUS}"
+          if [ "$STATUS" = "204" ]; then
+            echo "RESULT: MEMBER (org API confirmed)"
+          elif [ "$STATUS" = "302" ]; then
+            echo "RESULT: PRIVATE MEMBER (org API redirect - token may lack org:read scope)"
+          else
+            echo "RESULT: NOT A MEMBER (status ${STATUS})"
+            exit 1
+          fi
+
+      - if: false
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
 
       - name: Set up Python
+        if: false
         uses: actions/setup-python@v6.2.0
         with:
           python-version: '3.x'
 
       - name: Save issue body to file
+        if: false
         env:
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
@@ -33,6 +58,7 @@ jobs:
           echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
 
       - name: Extract fields from issue
+        if: false
         run: |
           # Function to extract and sanitize field values
           extract_field() {
@@ -71,6 +97,7 @@ jobs:
           } >> $GITHUB_ENV
 
       - name: Validate Slack field (no #)
+        if: false
         run: |
           if [[ "${SLACK}" == *"#"* ]]; then
             echo "::error title=Invalid Slack Channel::SLACK must not include '#'. Please enter the channel name without the leading hash (e.g. 'my-channel' not '#my-channel'). Value: '${SLACK}'"
@@ -78,6 +105,7 @@ jobs:
           fi
 
       - name: Extract environment selections
+        if: false
         run: |
           ENVIRONMENTS=""
 
@@ -130,18 +158,19 @@ jobs:
           echo "ENV_SELECTIONS_JSON=$ENV_SELECTIONS_JSON" >> $GITHUB_ENV
 
       - name: Create and checkout branch for environment request
+        if: false
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run create-account.py for new accounts
-        if: env.EXISTING_ACCOUNT == 'No'
+        if: false
         run: |
           ls -l scripts
           python scripts/create-account.py "$APP_NAME" "$APP_TAG" "$GITHUB_OWNERS" "$GITHUB_REVIEWERS" "$BUSINESS_UNIT" "$INFRA_SUPPORT" "$OWNER" "$SLACK" "false" "$SSO_GROUP" "" "$ENV_SELECTIONS_JSON"
 
       - name: Run amend-accounts.py for existing accounts
-        if: env.EXISTING_ACCOUNT == 'Yes'
+        if: false
         run: |
           python scripts/amend-accounts.py \
             "$APP_NAME" \
@@ -150,15 +179,17 @@ jobs:
             # Add other arguments as needed for your amend script
 
       - name: remove issue template files
+        if: false
         run: rm -f issue_body.txt
 
       - name: Install GitHub CLI
+        if: false
         run: |
           sudo apt-get update
           sudo apt-get install gh
   
       - name: Create a signed commit for new accounts
-        if: env.EXISTING_ACCOUNT == 'No'
+        if: false
         uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@5c713c93eea694829b1bd3f410d0b235053318ce # v4.0.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -167,7 +198,7 @@ jobs:
 
 
       - name: Commit changes for existing accounts
-        if: env.EXISTING_ACCOUNT == 'Yes'
+        if: false
         uses: ministryofjustice/modernisation-platform-github-actions/signed-commit@5c713c93eea694829b1bd3f410d0b235053318ce # v4.0.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -176,6 +207,7 @@ jobs:
 
 
       - name: Comment on issue with PR link
+        if: false
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -186,9 +218,11 @@ jobs:
           gh issue comment $ISSUE_NUMBER --repo "$REPO" --body "A pull request has been created for your environment request: $PR_URL"
       
       - name: Save network setup info
+        if: false
         run: |
           echo "{\"pr_number\": ${{ github.event.pull_request.number }}, ISOLATED_ACCOUNT, \"app_name\": \"$APP_NAME\", \"business_unit\": \"$BUSINESS_UNIT\", \"environments\": $(echo $ENV_SELECTIONS_JSON | jq -c 'map(.name)')}" > network-setup-info.json
-      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+      - if: false
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: network-setup-info
           path: network-setup-info.json
