@@ -3,6 +3,12 @@ name: Environment Request
 on:
   issues:
     types: [opened]
+  workflow_dispatch:
+    inputs:
+      username:
+        description: 'GitHub username to test org membership for'
+        required: true
+        default: ''
 
 permissions: read-all
 
@@ -12,14 +18,14 @@ jobs:
       contents: write
       issues: write
       pull-requests: write
-    if: contains(github.event.issue.labels.*.name, 'New Account')
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.issue.labels.*.name, 'New Account')
     runs-on: ubuntu-latest
     steps:
       - name: Check org membership
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          USERNAME="${{ github.event.issue.user.login }}"
+          USERNAME="${{ github.event.inputs.username || github.event.issue.user.login }}"
           AUTHOR_ASSOC="${{ github.event.issue.author_association }}"
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
             -H "Authorization: token $GH_TOKEN" \
