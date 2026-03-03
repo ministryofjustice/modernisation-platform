@@ -67,6 +67,7 @@ expected :=
     "laa-ccms-soa",
     "laa-cis",
     "laa-cst-security-dashboard",
+    "laa-data-factory",
     "laa-enterprise-service-bus",
     "laa-mail-relay",
     "laa-oem",

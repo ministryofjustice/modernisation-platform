@@ -1,0 +1,43 @@
+{
+  "account-type": "member",
+  "codeowners": ", ",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "laa-data-factory-engineering",
+          "level": "data-engineering"
+        }
+      ]
+    },
+    {
+      "name": "preproduction",
+      "access": [
+        {
+          "sso_group_name": "laa-data-factory-engineering",
+          "level": "data-engineering"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "laa-data-factory-engineering",
+          "level": "data-engineering"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "laa-data-factory",
+    "business-unit": "LAA",
+    "infrastructure-support": "LAA_Data-Engineering@justice.gov.uk",
+    "owner": "LAA_Data-Engineering@justice.gov.uk",
+    "slack-channel": "laa_data_engineering",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
