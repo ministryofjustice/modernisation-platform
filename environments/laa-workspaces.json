@@ -1,0 +1,31 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "sandbox"
+        }
+      ]
+    },
+    {
+      "name": "production",
+      "access": [
+        {
+          "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        }
+      ]
+    }
+  ],
+  "tags": {
+    "application": "laa-workspaces",
+    "business-unit": "LAA",
+    "infrastructure-support": "laa_ops@digital.justice.gov.uk",
+    "owner": "get-acccess-service-improvement@digital.justice.gov.uk",
+    "critical-national-infrastructure": true
+  },
+  "github-oidc-team-repositories": [""]
+}
