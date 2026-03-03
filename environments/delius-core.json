@@ -54,6 +54,16 @@
           "sso_group_name": "hmpps-community-payback-devs",
           "level": "developer",
           "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "hmpps-manage-people-on-probation",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "hmpps-manage-people-on-probation-dev",
+          "level": "developer",
+          "github_action_reviewer": "false"
         }
       ],
       "nuke": "exclude"
@@ -106,6 +116,16 @@
         {
           "sso_group_name": "probation-de",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "hmpps-manage-people-on-probation",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "hmpps-manage-people-on-probation-dev",
+          "level": "developer",
+          "github_action_reviewer": "false"
         }
       ]
     },
@@ -144,6 +164,16 @@
           "sso_group_name": "version-1-sit-team",
           "level": "developer",
           "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "hmpps-manage-people-on-probation",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "hmpps-manage-people-on-probation-dev",
+          "level": "developer",
+          "github_action_reviewer": "false"
         }
       ],
       "instance_scheduler_skip": ["true"]
@@ -171,6 +201,16 @@
         },
         {
           "sso_group_name": "probation-integration",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "hmpps-manage-people-on-probation",
+          "level": "developer",
+          "github_action_reviewer": "false"
+        },
+        {
+          "sso_group_name": "hmpps-manage-people-on-probation-dev",
           "level": "developer",
           "github_action_reviewer": "false"
         }
