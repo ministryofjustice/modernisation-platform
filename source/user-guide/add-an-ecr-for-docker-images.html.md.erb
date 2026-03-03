@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: How to add an ECR for shared Docker images
-last_reviewed_on: 2025-08-22
+last_reviewed_on: 2026-02-24
 review_in: 6 months
 ---
 
@@ -17,10 +17,10 @@ The ECR can then be shared to all of your application accounts.
 
 1. Clone the [modernisation-platform](https://github.com/ministryofjustice/modernisation-platform/) GitHub repository.
 2. Add your ECR registry to a **Terraform file** in [terraform/environments/core-shared-services/](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-shared-services)
-    - Check if a Terraform file already exists for your application in [terraform/environments/core-shared-services/](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-shared-services)
-    - If it does not exist, create a new file
-    - If it already exists, use the existing file
-    - The file **must be named after your application** and match the name defined in the [environments](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments) configuration
+   - Check if a Terraform file already exists for your application in [terraform/environments/core-shared-services/](https://github.com/ministryofjustice/modernisation-platform/tree/main/terraform/environments/core-shared-services)
+   - If it does not exist, create a new file
+   - If it already exists, use the existing file
+   - The file **must be named after your application** and match the name defined in the [environments](https://github.com/ministryofjustice/modernisation-platform/tree/main/environments) configuration
 3. You will need to specify the `push_principals` (who do you want to be able to upload to the ECR) and `pull_principals` (who do you want to be able to download from the ECR)
 4. Raise a pull request
 5. The pull request will require approval from the team associated with the Terraform file, as defined in the [CODEOWNERS](https://github.com/ministryofjustice/modernisation-platform/blob/main/.github/CODEOWNERS) configuration. Once the relevant team approves, the pull request can be merged.
@@ -47,3 +47,4 @@ module "sprinkler_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
+```

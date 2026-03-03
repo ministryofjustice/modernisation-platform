@@ -504,7 +504,9 @@ data "aws_iam_policy_document" "data_engineering_additional" {
     resources = [
       "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-data-production"]}:role/data-first-data-science",
       "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/glue-notebook-role-tf",
-      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/AWSS3BucketReplication*"
+      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/AWSS3BucketReplication*",
+      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:role/AWSS3BucketReplication*",
+      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/AWSS3BucketReplication*"
     ]
   }
 
@@ -610,6 +612,7 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "apigateway:*",
       "application-autoscaling:*",
       "appstream:*",
+      "aps:*",
       "athena:*",
       "autoscaling:*",
       "aws-marketplace:ViewSubscriptions",

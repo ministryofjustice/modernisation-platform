@@ -72,6 +72,7 @@ expected :=
     "laa-oem",
     "laa-pui-secure-browser",
     "laa-stabilisation-cdc-poc",
+    "laa-workspaces",
     "long-term-storage",
     "maat",
     "maatdb",

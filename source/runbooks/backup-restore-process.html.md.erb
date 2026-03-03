@@ -1,7 +1,7 @@
 ---
 owner_slack: "#modernisation-platform"
 title: Backup and Recovery
-last_reviewed_on: 2025-08-19
+last_reviewed_on: 2026-02-24
 review_in: 6 months
 ---
 
@@ -17,17 +17,17 @@ This [reference](https://docs.aws.amazon.com/aws-backup/latest/devguide/restorin
 
 1. The engineer undertaking the recovery should use the AdministratorAccess role to perform the recovery operation to ensure they have the necessary permissions to restore resources. As it stands, the ModernisationPlatformEngineer role does not have these permissions.
 
-2. Agree with the Product Team engineer(s) which resources are to be recovered, the recovery points to be used as the source and whether the recovery will be overwriting existing resources, for example EFS or EBS. This communication is vital to ensure that the correct resources are recovered and that the correct parameters are used.
+1. Agree with the Product Team engineer(s) which resources are to be recovered, the recovery points to be used as the source and whether the recovery will be overwriting existing resources, for example EFS or EBS. This communication is vital to ensure that the correct resources are recovered and that the correct parameters are used.
 
-3. It is strongly suggested to use the console for restoring one or two resources.
+1. It is strongly suggested to use the console for restoring one or two resources.
 
-4. Each resource type will require its own specific parameters to be set. For example, an EBS volume or snapshot will require the volume ID the volume type, the availability zone to be added. It is suggested that these are provided by the product team or, failing that, obtained from the terraform source. As such it will be difficult to undertake a mass recovery of different resource types from multiple recovery points without scripting.
+1. Each resource type will require its own specific parameters to be set. For example, an EBS volume or snapshot will require the volume ID the volume type, the availability zone to be added. It is suggested that these are provided by the product team or, failing that, obtained from the terraform source. As such it will be difficult to undertake a mass recovery of different resource types from multiple recovery points without scripting.
 
-5. The recovery process will require a role to be provided. It is suggested that the DEFAULT role is used as this will have all of the necessary permissions required. Using the AWSBackup role will not work.
+1. The recovery process will require a role to be provided. It is suggested that the DEFAULT role is used as this will have all of the necessary permissions required. Using the AWSBackup role will not work.
 
-6. Recovery Points will generally have one resource associated with them. There are exceptions, such as resources backed up to multiple regions.
+1. Recovery Points will generally have one resource associated with them. There are exceptions, such as resources backed up to multiple regions.
 
-7. CLI documentation for recovery can be found [here](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/backup/start-restore-job.html). Each resource type will have its own metadata requirements.
+1. CLI documentation for recovery can be found [here](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/backup/start-restore-job.html). Each resource type will have its own metadata requirements.
 
 ## Backup & Restore Of Member StateFile
 
@@ -40,14 +40,12 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 ### Step 1: Create a New Folder for Testing in S3
 
 1. **Log into AWS Management Console**:
-
    - Access the Modernisation Platform Account and navigate to the S3 service.
 
-2. **Navigate to the S3 Bucket**:
-
+1. **Navigate to the S3 Bucket**:
    - Go to the `modernisation-platform-terraform-state` bucket located in the `eu-west-2` region.
 
-3. **Create a New Folder for Testing**:
+1. **Create a New Folder for Testing**:
    - Create a new folder within this bucket specifically for testing. This ensures the production state file remains isolated, preventing accidental overwrites.
 
 ---
@@ -55,17 +53,14 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 ### Step 2: Copy the Backup State File for Testing
 
 1. **Locate and Copy the Backup State File**:
-
    - In the S3 bucket located in the `eu-west-1` region, find the backup state file.
 
-2. **Set the Destination**:
-
+1. **Set the Destination**:
    - Use the "Copy" function for the state file.
    - Under "Destination type," select "General purpose bucket."
    - Use the "Browse S3" feature to navigate to the destination bucket and folder created in the previous step.
 
-3. **Specify Destination Path**:
-
+1. **Specify Destination Path**:
    - Ensure the destination path is correctly set, such as `s3://modernisation-platform-terraform-state/environments/accounts/cooker/cooker-development/test-restore/`.
 
    **Note**: This method is applicable for objects encrypted with SSE-S3 (Amazon S3 managed keys). It is not suitable for objects encrypted with AWS KMS keys (SSE-KMS) or customer-provided encryption keys (SSE-C) due to additional restrictions.
@@ -90,10 +85,9 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 ### Step 5: Initialise and Test the Configuration
 
 1. **Reinitialise the Terraform Backend**:
-
    - Run `terraform init -reconfigure` to reinitialize the backend with the new test configuration. This step ensures that Terraform recognises the state file at the new location.
 
-2. **Verify the Setup**:
+1. **Verify the Setup**:
    - Execute `terraform plan` to confirm that the state file is correctly recognised and that no changes will be applied unintentionally.
 
 ---
@@ -113,11 +107,10 @@ This runbook provides detailed instructions for backing up a replicated Terrafor
 #### IAM Role and Policy Setup (create a new one or use default)
 
 1. **Create IAM Role for AWS Backup:**
-
    - Create a new role with AWS Backup service as the trusted entity.
    - Attach the `AWSBackupServiceRolePolicyForBackup` managed policy.
 
-2. **Create and Attach IAM Policy:**
+1. **Create and Attach IAM Policy:**
    - Create a custom IAM policy with permissions for EC2 and backup operations.
    - Attach this policy to the IAM role created for AWS Backup.
 

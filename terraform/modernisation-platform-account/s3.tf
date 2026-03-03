@@ -292,7 +292,33 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalArn"
-      values   = ["arn:aws:iam::*:role/github-actions"]
+      values   = ["arn:aws:iam::*:role/github-actions", "arn:aws:iam::*:role/github-actions-environments-dev-test"]
+    }
+  }
+
+  statement {
+    sid     = "AllowGithubActionsTerraformReadOnlyPutLock"
+    effect  = "Allow"
+    actions = ["s3:PutObject"]
+    resources = [
+      "${module.state-bucket.bucket.arn}/*/*.tflock",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalOrgPaths"
+      values   = ["${data.aws_organizations_organization.root_account.id}/*/${local.environment_management.modernisation_platform_organisation_unit_id}/*"]
+    }
+
+    condition {
+      test     = "ForAnyValue:StringLike"
+      variable = "aws:PrincipalArn"
+      values   = ["arn:aws:iam::*:role/github-actions-environments-read-only"]
     }
   }
 
@@ -318,7 +344,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     condition {
       test     = "ForAnyValue:StringLike"
       variable = "aws:PrincipalArn"
-      values   = ["arn:aws:iam::*:role/github-actions"]
+      values   = ["arn:aws:iam::*:role/github-actions", "arn:aws:iam::*:role/github-actions-environments-read-only", "arn:aws:iam::*:role/github-actions-environments-dev-test"]
     }
   }
 
@@ -407,7 +433,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     ]
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions"]
+      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions", "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-environments-dev-test"]
     }
   }
 
@@ -423,7 +449,7 @@ data "aws_iam_policy_document" "allow-state-access-from-root-account" {
     ]
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions"]
+      identifiers = ["arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions", "arn:aws:iam::${local.environment_management.account_ids["sprinkler-development"]}:role/github-actions-environments-dev-test"]
     }
   }
 

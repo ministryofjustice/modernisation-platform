@@ -97,27 +97,65 @@ module "wiz-resource-count-access" {
 }
 
 module "member-access" {
-  count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
-  account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
-  additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
-  policy_arn             = aws_iam_policy.member-access[0].id
-  role_name              = "MemberInfrastructureAccess"
+  count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  source     = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
+  account_id = data.aws_ssm_parameter.modernisation_platform_account_id.value
+  additional_trust_roles = compact([
+    module.github-oidc[0].github_actions_role,
+    try(module.github_actions_terraform_dev_test[0].role, null),
+    one(data.aws_iam_roles.member-sso-admin-access.arns),
+  ])
+  role_name = "MemberInfrastructureAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "member_infrastructure_access_role_compute" {
+  count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  role       = "MemberInfrastructureAccess"
+  policy_arn = aws_iam_policy.member-access-compute[0].arn
+}
+
+resource "aws_iam_role_policy_attachment" "member_infrastructure_access_role_data" {
+  count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  role       = "MemberInfrastructureAccess"
+  policy_arn = aws_iam_policy.member-access-data[0].arn
+}
+
+resource "aws_iam_role_policy_attachment" "member_infrastructure_access_role_network" {
+  count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  role       = "MemberInfrastructureAccess"
+  policy_arn = aws_iam_policy.member-access-network[0].arn
 }
 
 module "member-access-sprinkler" {
   count                  = (terraform.workspace == "sprinkler-development") ? 1 : 0
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
-  additional_trust_roles = [data.aws_iam_role.sprinkler_oidc[0].arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
-  policy_arn             = aws_iam_policy.member-access[0].id
+  additional_trust_roles = [data.aws_iam_role.sprinkler_oidc[0].arn, data.aws_iam_role.sprinkler_environments_read_only[0].arn, data.aws_iam_role.sprinkler_environments_dev_test[0].arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
   role_name              = "MemberInfrastructureAccess"
 }
 
-# lots of SCA ignores and skips on this one as it is the main role allowing members to build most things in the platform
+resource "aws_iam_role_policy_attachment" "member_infrastructure_access_sprinkler_role_compute" {
+  count      = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  role       = "MemberInfrastructureAccess"
+  policy_arn = aws_iam_policy.member-access-compute[0].arn
+}
+
+resource "aws_iam_role_policy_attachment" "member_infrastructure_access_sprinkler_role_data" {
+  count      = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  role       = "MemberInfrastructureAccess"
+  policy_arn = aws_iam_policy.member-access-data[0].arn
+}
+
+resource "aws_iam_role_policy_attachment" "member_infrastructure_access_sprinkler_role_network" {
+  count      = (terraform.workspace == "sprinkler-development") ? 1 : 0
+  role       = "MemberInfrastructureAccess"
+  policy_arn = aws_iam_policy.member-access-network[0].arn
+}
+
+
+# Policy 1: Compute, Containers, and Core Services
 #tfsec:ignore:aws-iam-no-policy-wildcards
-#trivy:ignore:AVD-AWS-0345: Required for member account access to S3
-data "aws_iam_policy_document" "member-access" {
+data "aws_iam_policy_document" "member-access-compute" {
   statement {
     #checkov:skip=CKV_AWS_108
     #checkov:skip=CKV_AWS_111
@@ -134,15 +172,9 @@ data "aws_iam_policy_document" "member-access" {
       "apigateway:*",
       "application-autoscaling:*",
       "applicationinsights:*",
-      "aps:*",
-      "aoss:*",
-      "athena:*",
       "autoscaling:*",
       "backup:*",
       "backup-storage:MountCapsule",
-      "bcm-data-exports:*",
-      "bedrock:*",
-      "chatbot:*",
       "cloudformation:*",
       "cloudfront:*",
       "cloudwatch:*",
@@ -159,38 +191,6 @@ data "aws_iam_policy_document" "member-access" {
       "codepipeline:*",
       "cognito-idp:*",
       "config:*",
-      "cur:DeleteReportDefinition",
-      "cur:DescribeReportDefinitions",
-      "cur:ListTagsForResource",
-      "cur:PutReportDefinition",
-      "datasync:*",
-      "dbqms:*",
-      "dlm:*",
-      "dms:*",
-      "ds:CheckAlias",
-      "ds:Describe*",
-      "ds:List*",
-      "ds:*Tags*",
-      "ds:CancelSchemaExtension",
-      "ds:CreateComputer",
-      "ds:CreateAlias",
-      "ds:CreateDirectory",
-      "ds:CreateLogSubscription",
-      "ds:CreateMicrosoftAD",
-      "ds:CreateSnapshot",
-      "ds:Delete*",
-      "ds:Deregister*",
-      "ds:Disable*",
-      "ds:Enable*",
-      "ds:RegisterCertificate",
-      "ds:RegisterEventTopic",
-      "ds:ResetUserPassword",
-      "ds:RestoreFromSnapshot",
-      "ds:StartSchemaExtension",
-      "ds:Update*",
-      "ds-data:*",
-      "dynamodb:*",
-      "ebs:*",
       "ec2:AssociateVpcCidrBlock",
       "ec2:CreateVpc",
       "ec2:DeleteVpc",
@@ -240,43 +240,127 @@ data "aws_iam_policy_document" "member-access" {
       "ecr-public:*",
       "ecr:*",
       "ecs:*",
-      "elasticache:*",
-      "elasticfilesystem:*",
-      "elasticloadbalancing:*",
       "eks:*",
-      "es:*",
+      "elasticloadbalancing:*",
       "events:*",
       "fis:*",
-      "fsx:*",
-      "firehose:*",
-      "glacier:*",
-      "glue:*",
-      "grafana:*",
-      "guardduty:get*",
       "iam:*",
-      "kinesis:*",
       "kms:*",
-      "lakeformation:*",
       "lambda:*",
       "logs:*",
+      "workspaces:*",
+      "workspaces-web:*"
+    ]
+    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+  }
+}
+
+# Policy 2: Data and Analytics Services
+#tfsec:ignore:aws-iam-no-policy-wildcards
+data "aws_iam_policy_document" "member-access-data" {
+  statement {
+    #checkov:skip=CKV_AWS_108
+    #checkov:skip=CKV_AWS_111
+    #checkov:skip=CKV_AWS_107
+    #checkov:skip=CKV_AWS_109
+    #checkov:skip=CKV_AWS_110
+    #checkov:skip=CKV2_AWS_40
+    #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+    effect = "Allow"
+    actions = [
+      "athena:*",
+      "datasync:*",
+      "dbqms:*",
+      "dlm:*",
+      "dms:*",
+      "dynamodb:*",
+      "ebs:*",
+      "elasticache:*",
+      "elasticfilesystem:*",
+      "es:*",
+      "fsx:*",
+      "glacier:*",
+      "glue:*",
+      "kinesis:*",
+      "kinesisanalytics:*Application*",
+      "kinesisanalytics:*Resource",
+      "lakeformation:*",
+      "quicksight:*",
+      "rds-db:*",
+      "rds:*",
+      "rds-data:*",
+      "redshift:*",
+      "redshift-data:*",
+      "redshift-serverless:*",
+      "s3:*",
+      "firehose:*"
+    ]
+    resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
+  }
+}
+
+# Policy 3: Networking, Security, and Additional Services
+#tfsec:ignore:aws-iam-no-policy-wildcards
+#trivy:ignore:AVD-AWS-0345: Required for member account access to S3
+data "aws_iam_policy_document" "member-access-network" {
+  statement {
+    #checkov:skip=CKV_AWS_108
+    #checkov:skip=CKV_AWS_111
+    #checkov:skip=CKV_AWS_107
+    #checkov:skip=CKV_AWS_109
+    #checkov:skip=CKV_AWS_110
+    #checkov:skip=CKV2_AWS_40
+    #checkov:skip=CKV_AWS_356: Needs to access multiple resources
+    effect = "Allow"
+    actions = [
+      "aps:*",
+      "aoss:*",
+      "bcm-data-exports:*",
+      "bedrock:*",
+      "chatbot:*",
+      "cur:DeleteReportDefinition",
+      "cur:DescribeReportDefinitions",
+      "cur:ListTagsForResource",
+      "cur:PutReportDefinition",
+      "ds:CheckAlias",
+      "ds:Describe*",
+      "ds:List*",
+      "ds:*Tags*",
+      "ds:CancelSchemaExtension",
+      "ds:CreateComputer",
+      "ds:CreateAlias",
+      "ds:CreateDirectory",
+      "ds:CreateLogSubscription",
+      "ds:CreateMicrosoftAD",
+      "ds:CreateSnapshot",
+      "ds:CreateTrust",
+      "ds:Delete*",
+      "ds:Deregister*",
+      "ds:Disable*",
+      "ds:Enable*",
+      "ds:RegisterCertificate",
+      "ds:RegisterEventTopic",
+      "ds:ResetUserPassword",
+      "ds:RestoreFromSnapshot",
+      "ds:StartSchemaExtension",
+      "ds:Update*",
+      "ds:VerifyTrust",
+      "ds-data:*",
+      "grafana:*",
+      "guardduty:get*",
       "networkflowmonitor:*",
       "networkmonitor:*",
       "network-firewall:*",
       "organizations:Describe*",
       "organizations:List*",
       "oam:*",
-      "quicksight:*",
       "ram:AssociateResourceShare",
       "ram:CreateResourceShare",
       "ram:DeleteResourceShare",
       "ram:Get*",
       "ram:List*",
-      "rds-db:*",
-      "rds:*",
-      "rds-data:*",
       "route53:*",
       "route53resolver:*",
-      "s3:*",
       "scheduler:*",
       "secretsmanager:*",
       "ses:*",
@@ -314,17 +398,10 @@ data "aws_iam_policy_document" "member-access" {
       "waf:*",
       "wafv2:*",
       "resource-groups:*",
-      "redshift:*",
-      "redshift-data:*",
-      "redshift-serverless:*",
       "resource-explorer-2:*",
       "transfer:*",
       "vpce:*",
-      "kinesisanalytics:*Application*",
-      "kinesisanalytics:*Resource",
-      "sagemaker:*",
-      "workspaces:*",
-      "workspaces-web:*",
+      "sagemaker:*"
     ]
     resources = ["*"] #tfsec:ignore:AWS099 tfsec:ignore:AWS097
   }
@@ -449,11 +526,34 @@ data "aws_iam_policy_document" "member-access" {
     }
   }
 }
-resource "aws_iam_policy" "member-access" {
+
+resource "aws_iam_policy" "member-access-compute" {
   count       = local.account_data.account-type == "member" ? 1 : 0
+  name        = "MemberInfrastructureAccessActionsCompute"
+  description = "Restricted admin policy for member CI/CD - Compute services"
+  policy      = data.aws_iam_policy_document.member-access-compute.json
+}
+
+resource "aws_iam_policy" "member-access-data" {
+  count       = local.account_data.account-type == "member" ? 1 : 0
+  name        = "MemberInfrastructureAccessActionsData"
+  description = "Restricted admin policy for member CI/CD - Data services"
+  policy      = data.aws_iam_policy_document.member-access-data.json
+}
+
+resource "aws_iam_policy" "member-access-network" {
+  count       = local.account_data.account-type == "member" ? 1 : 0
+  name        = "MemberInfrastructureAccessActionsNetwork"
+  description = "Restricted admin policy for member CI/CD - Network and security services"
+  policy      = data.aws_iam_policy_document.member-access-network.json
+}
+
+# Legacy policy name kept for backwards compatibility - combines all three
+resource "aws_iam_policy" "member-access" {
+  count       = 0 # Deprecated - use split policies instead
   name        = "MemberInfrastructureAccessActions"
-  description = "Restricted admin policy for member CI/CD to use"
-  policy      = data.aws_iam_policy_document.member-access.json
+  description = "Deprecated - split into multiple policies"
+  policy      = data.aws_iam_policy_document.member-access-compute.json
 }
 
 # Testing-test member access - separate as need the testing user created in the testing account to be able to access as well
@@ -481,28 +581,44 @@ resource "aws_iam_role" "testing_member_infrastructure_access_role" {
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
 
-# IAM role attached policy
-resource "aws_iam_role_policy_attachment" "testing_member_infrastructure_access_role" {
+# IAM role attached policies
+resource "aws_iam_role_policy_attachment" "testing_member_infrastructure_access_role_compute" {
   count      = terraform.workspace == "testing-test" ? 1 : 0
   role       = aws_iam_role.testing_member_infrastructure_access_role[0].id
-  policy_arn = aws_iam_policy.member-access[0].arn
+  policy_arn = aws_iam_policy.member-access-compute[0].arn
+}
+
+resource "aws_iam_role_policy_attachment" "testing_member_infrastructure_access_role_data" {
+  count      = terraform.workspace == "testing-test" ? 1 : 0
+  role       = aws_iam_role.testing_member_infrastructure_access_role[0].id
+  policy_arn = aws_iam_policy.member-access-data[0].arn
+}
+
+resource "aws_iam_role_policy_attachment" "testing_member_infrastructure_access_role_network" {
+  count      = terraform.workspace == "testing-test" ? 1 : 0
+  role       = aws_iam_role.testing_member_infrastructure_access_role[0].id
+  policy_arn = aws_iam_policy.member-access-network[0].arn
 }
 
 # MemberInfrastructureAccessUSEast
 module "member-access-us-east" {
-  count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
-  account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
-  additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
-  policy_arn             = aws_iam_policy.member-access-us-east[0].id
-  role_name              = "MemberInfrastructureAccessUSEast"
+  count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  source     = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
+  account_id = data.aws_ssm_parameter.modernisation_platform_account_id.value
+  additional_trust_roles = compact([
+    module.github-oidc[0].github_actions_role,
+    try(module.github_actions_terraform_dev_test[0].role, null),
+    one(data.aws_iam_roles.member-sso-admin-access.arns),
+  ])
+  policy_arn = aws_iam_policy.member-access-us-east[0].id
+  role_name  = "MemberInfrastructureAccessUSEast"
 }
 
 module "member-access-us-east-sprinkler" {
   count                  = (terraform.workspace == "sprinkler-development") ? 1 : 0
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
-  additional_trust_roles = [data.aws_iam_role.sprinkler_oidc[0].arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  additional_trust_roles = [data.aws_iam_role.sprinkler_oidc[0].arn, data.aws_iam_role.sprinkler_environments_read_only[0].arn, data.aws_iam_role.sprinkler_environments_dev_test[0].arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access-us-east[0].id
   role_name              = "MemberInfrastructureAccessUSEast"
 }
@@ -795,19 +911,23 @@ data "aws_iam_policy_document" "policy" {
 
 # MemberInfrastructureBedrockEuCentral
 module "member-access-eu-central" {
-  count                  = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
-  source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
-  account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
-  additional_trust_roles = [module.github-oidc[0].github_actions_role, one(data.aws_iam_roles.member-sso-admin-access.arns)]
-  policy_arn             = aws_iam_policy.member-access-eu-central[0].id
-  role_name              = "MemberInfrastructureBedrockEuCentral"
+  count      = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  source     = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
+  account_id = data.aws_ssm_parameter.modernisation_platform_account_id.value
+  additional_trust_roles = compact([
+    module.github-oidc[0].github_actions_role,
+    try(module.github_actions_terraform_dev_test[0].role, null),
+    one(data.aws_iam_roles.member-sso-admin-access.arns),
+  ])
+  policy_arn = aws_iam_policy.member-access-eu-central[0].id
+  role_name  = "MemberInfrastructureBedrockEuCentral"
 }
 
 module "member-access-eu-central-sprinkler" {
   count                  = (terraform.workspace == "sprinkler-development") ? 1 : 0
   source                 = "github.com/ministryofjustice/modernisation-platform-terraform-cross-account-access?ref=321b0bcb8699b952a2a66f60c6242876048480d5" #v4.0.0
   account_id             = data.aws_ssm_parameter.modernisation_platform_account_id.value
-  additional_trust_roles = [data.aws_iam_role.sprinkler_oidc[0].arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
+  additional_trust_roles = [data.aws_iam_role.sprinkler_oidc[0].arn, data.aws_iam_role.sprinkler_environments_read_only[0].arn, data.aws_iam_role.sprinkler_environments_dev_test[0].arn, one(data.aws_iam_roles.member-sso-admin-access.arns)]
   policy_arn             = aws_iam_policy.member-access-eu-central[0].id
   role_name              = "MemberInfrastructureBedrockEuCentral"
 }
@@ -1187,3 +1307,86 @@ data "aws_iam_policy_document" "iam_hygiene_policy" {
   }
 }
 
+# Role github-actions-terraform-dev-test & policy to support OIDC access from Modernisation-Platform-Environments for:
+#
+# - Development & Test member accounts with terraform plan & apply actions from non-main branches
+# - Pre/Production member accounts with terraform plan from non-main branches
+#
+# Uses the same deployment conditions as the OIDC provider deployment - module.github-oidc
+
+module "github_actions_terraform_dev_test" {
+  count               = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  source              = "github.com/ministryofjustice/modernisation-platform-github-oidc-role?ref=b40748ec162b446f8f8d282f767a85b6501fd192" # v4.0.0
+  github_repositories = ["ministryofjustice/modernisation-platform-environments"]
+  role_name           = "github-actions-terraform-dev-test"
+  policy_jsons        = [data.aws_iam_policy_document.github_actions_terraform_dev_test[0].json]
+  tags                = { "Name" = "github-actions-terraform-dev-test" }
+}
+
+#trivy:ignore:AVD-AWS-0345: Required for OIDC role to access Terraform state in S3
+data "aws_iam_policy_document" "github_actions_terraform_dev_test" {
+  count = (local.account_data.account-type == "member" && terraform.workspace != "testing-test" && terraform.workspace != "sprinkler-development") ? 1 : 0
+  # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
+  statement {
+    sid    = "AllowOIDCToAssumeRoles"
+    effect = "Allow"
+    resources = compact([
+      # skip for cloud-platform as it uses a different account naming convention and does not need a member-delegation role
+      local.application_name != "cloud-platform" ? format("arn:aws:iam::%s:role/member-delegation-%s-%s", local.environment_management.account_ids[format("core-vpc-%s", local.application_environment)], lower(local.business_unit), local.application_environment) : "",
+      format("arn:aws:iam::%s:role/modify-dns-records", local.environment_management.account_ids["core-network-services-production"]),
+      format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id),
+      format("arn:aws:iam::%s:role/ModernisationPlatformSSOReadOnly", local.environment_management.aws_organizations_root_account_id),
+      # the following are required as cooker have development accounts but are in the sandbox vpc
+      local.application_name == "cooker" ? format("arn:aws:iam::%s:role/member-delegation-house-sandbox", local.environment_management.account_ids["core-vpc-sandbox"]) : format("arn:aws:iam::%s:role/modernisation-account-limited-read-member-access", local.environment_management.modernisation_platform_account_id)
+    ])
+    condition {
+      test     = "StringEquals"
+      variable = "aws:PrincipalOrgID"
+      values   = [data.aws_organizations_organization.root_account.id]
+    }
+    actions = ["sts:AssumeRole"]
+  }
+
+  # checkov:skip=CKV_AWS_111: "Cannot restrict by KMS alias so leaving open"
+  # checkov:skip=CKV_AWS_356: "Cannot restrict by KMS alias so leaving open"
+  statement {
+    sid       = "AllowOIDCToDecryptKMS"
+    effect    = "Allow"
+    resources = ["*"]
+    actions   = ["kms:Decrypt"]
+  }
+
+  statement {
+    sid    = "AllowOIDCReadState"
+    effect = "Allow"
+
+    resources = [
+      "arn:aws:s3:::modernisation-platform-terraform-state/*",
+      "arn:aws:s3:::modernisation-platform-terraform-state/"
+    ]
+    actions = [
+      "s3:Get*",
+      "s3:List*"
+    ]
+  }
+
+  statement {
+    sid       = "AllowOIDCWriteState"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*"]
+    actions = [
+      "s3:PutObject",
+      "s3:PutObjectAcl"
+    ]
+  }
+
+  statement {
+    sid       = "AllowOIDCDeleteLock"
+    effect    = "Allow"
+    resources = ["arn:aws:s3:::modernisation-platform-terraform-state/environments/members/*.tflock"]
+    actions = [
+      "s3:DeleteObject"
+    ]
+  }
+}

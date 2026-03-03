@@ -1172,3 +1172,35 @@ module "electronic_monitoring_ears_sars_ecr_repo" {
   # Tags
   tags_common = local.tags
 }
+
+module "electronic_monitoring_emds_gdpr_ecr_repo" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "electronic-monitoring-gdpr"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/modernisation-platform-oidc-cicd"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["electronic-monitoring-data-development"],
+    local.environment_management.account_ids["electronic-monitoring-data-test"],
+    local.environment_management.account_ids["electronic-monitoring-data-preproduction"],
+    local.environment_management.account_ids["electronic-monitoring-data-production"],
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/modernisation-platform-oidc-cicd",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-development"]}:role/emds-gdpr-execution-role",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/emds-gdpr-execution-role",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:role/emds-gdpr-execution-role",
+    "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/emds-gdpr-execution-role"
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
+
