@@ -34,7 +34,7 @@
     "application": "laa-data-factory",
     "business-unit": "LAA",
     "infrastructure-support": "LAA_Data-Engineering@justice.gov.uk",
-    "owner": "LAA_Data-Engineering@justice.gov.uk",
+    "owner": "LAA-Data-Engineering@justice.gov.uk",
     "slack-channel": "laa_data_engineering",
     "critical-national-infrastructure": false
   },
