@@ -1210,7 +1210,7 @@ module "modernisation-platform-slackbot-integration" {
   app_name = "modernisation-platform-slackbot"
 
   push_principals = [
-    "arn:aws:iam::${local.environment_management.account_ids["cooker-development"]}:role/modernisation-platform-oidc-cicd"
+    "arn:aws:iam::${local.environment_management.account_ids["cooker-development"]}:root"
   ]
 
   pull_principals = [
