@@ -419,6 +419,7 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "athena:DeleteNamedQuery",
       "athena:StartQueryExecution",
       "athena:StopQueryExecution",
+      "apigateway:POST",
       "ce:CreateReport",
       "dms:StartReplicationTask",
       "dms:StopReplicationTask",
