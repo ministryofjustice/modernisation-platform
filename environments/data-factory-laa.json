@@ -9,28 +9,10 @@
           "level": "data-engineering"
         }
       ]
-    },
-    {
-      "name": "preproduction",
-      "access": [
-        {
-          "sso_group_name": "laa-data-factory-engineering",
-          "level": "data-engineering"
-        }
-      ]
-    },
-    {
-      "name": "production",
-      "access": [
-        {
-          "sso_group_name": "laa-data-factory-engineering",
-          "level": "data-engineering"
-        }
-      ]
     }
   ],
   "tags": {
-    "application": "laa-data-factory",
+    "application": "data-factory-laa",
     "business-unit": "LAA",
     "infrastructure-support": "LAA_Data-Engineering@justice.gov.uk",
     "owner": "LAA-Data-Engineering@justice.gov.uk",
