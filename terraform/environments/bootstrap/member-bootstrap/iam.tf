@@ -285,6 +285,7 @@ data "aws_iam_policy_document" "member-access-data" {
       "kinesisanalytics:*Application*",
       "kinesisanalytics:*Resource",
       "lakeformation:*",
+      "macie2:*",
       "quicksight:*",
       "rds-db:*",
       "rds:*",

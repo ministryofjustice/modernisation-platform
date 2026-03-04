@@ -283,9 +283,7 @@ data "aws_iam_policy_document" "oidc-deny-specific-actions" {
     effect = "Deny"
     actions = [
       "iam:ChangePassword",
-      "iam:CreateLoginProfile",
-      "iam:DeleteUser",
-      "iam:DeleteVirtualMFADevice"
+      "iam:CreateLoginProfile"
     ]
     resources = ["*"]
   }
