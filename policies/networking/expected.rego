@@ -284,6 +284,7 @@ expected :=
               "ccms-pui-development",
               "ccms-pui-internal-development",
               "contract-work-administration-development",
+              "data-factory-laa-development",
               "edw-19c-development",
               "laa-ccms-soa-development",
               "laa-cis-development",
