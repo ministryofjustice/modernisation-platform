@@ -8,7 +8,8 @@
           "sso_group_name": "laa-data-factory-engineering",
           "level": "data-engineering"
         }
-      ]
+      ],
+      "nuke": "rebuild"
     }
   ],
   "tags": {
