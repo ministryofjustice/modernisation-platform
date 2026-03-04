@@ -1,0 +1,25 @@
+{
+  "account-type": "member",
+  "environments": [
+    {
+      "name": "development",
+      "access": [
+        {
+          "sso_group_name": "laa-data-factory-engineering",
+          "level": "data-engineering"
+        }
+      ],
+      "nuke": "rebuild"
+    }
+  ],
+  "tags": {
+    "application": "data-factory-laa",
+    "business-unit": "LAA",
+    "infrastructure-support": "LAA_Data-Engineering@justice.gov.uk",
+    "owner": "LAA-Data-Engineering@justice.gov.uk",
+    "slack-channel": "laa_data_engineering",
+    "critical-national-infrastructure": false
+  },
+  "github-oidc-team-repositories": [],
+  "go-live-date": ""
+}
