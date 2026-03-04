@@ -1204,3 +1204,20 @@ module "electronic_monitoring_emds_gdpr_ecr_repo" {
   tags_common = local.tags
 }
 
+module "modernisation-platform-slackbot-integration" {
+  source = "../../modules/app-ecr-repo"
+
+  app_name = "modernisation-platform-slackbot"
+
+  push_principals = [
+    "arn:aws:iam::${local.environment_management.account_ids["cooker-development"]}:root"
+  ]
+
+  pull_principals = [
+    local.environment_management.account_ids["cooker-development"]
+  ]
+
+  # Tags
+  tags_common = local.tags
+}
+
