@@ -4,6 +4,10 @@
     {
       "name": "workspaces-secure-browser",
       "sso_group_name": "aws-root-account-admin-team"
+    },
+    {
+      "name": "ccms-ebs-ssogen",
+      "sso_group_name": "laa-sre-admins"
     }
   ],
   "environments": [
