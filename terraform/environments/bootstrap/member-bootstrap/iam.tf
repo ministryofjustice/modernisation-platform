@@ -191,6 +191,7 @@ data "aws_iam_policy_document" "member-access-compute" {
       "codepipeline:*",
       "cognito-idp:*",
       "config:*",
+      "ds:*",
       "ec2:AssociateVpcCidrBlock",
       "ec2:CreateVpc",
       "ec2:DeleteVpc",
