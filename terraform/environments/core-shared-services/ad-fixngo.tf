@@ -390,24 +390,6 @@ locals {
         throughput_capacity                 = 128
         weekly_maintenance_start_time       = "2:04:00" # tue 4am
       }
-      ad-hmpp-fsx = {
-        ad_dns_ips = flatten([
-          module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_hmpp_domain_controllers,
-        ])
-        ad_domain_name                      = "azure.hmpp.root"
-        ad_file_system_administrators_group = "AWS FSx Admins"
-        ad_username                         = "svc_fsx_windows"
-        aliases                             = ["fs.azure.hmpp.root", "fsprisonretail.azure.hmpp.root", "fsbranstonstaff.azure.hmpp.root", "fslinux.azure.hmpp.root"]
-        deployment_type                     = "MULTI_AZ_1"
-        security_group_name                 = "ad_hmpp_fsx_sg"
-        storage_capacity                    = 100
-        subnet_ids = [
-          module.vpc["live_data"].non_tgw_subnet_ids_map.private[0],
-          module.vpc["live_data"].non_tgw_subnet_ids_map.private[1],
-        ]
-        throughput_capacity           = 32
-        weekly_maintenance_start_time = "4:04:00" # thu 4am
-      }
       ad-hmpp-fsx-additional = {
         ad_dns_ips = flatten([
           module.ad_fixngo_ip_addresses.mp_ips.ad_fixngo_hmpp_domain_controllers,
