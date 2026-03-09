@@ -33,9 +33,6 @@
     },
     {
       "name": "next"
-    },
-    {
-      "name": "internal-airflow"
     }
   ],
   "codeowners": ["analytical-platform-engineers"],
