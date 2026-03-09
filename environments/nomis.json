@@ -25,7 +25,11 @@
         },
         {
           "sso_group_name": "csr-application-support",
-          "level": "instance-management"
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
+          "level": "instance-access"
         },
         {
           "sso_group_name": "nomis-access",
@@ -64,7 +68,11 @@
         },
         {
           "sso_group_name": "csr-application-support",
-          "level": "instance-management"
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
+          "level": "instance-access"
         },
         {
           "sso_group_name": "nomis-access",
@@ -106,6 +114,10 @@
           "level": "instance-access"
         },
         {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
+          "level": "instance-access"
+        },
+        {
           "sso_group_name": "nomis-access",
           "level": "instance-access"
         },
@@ -143,6 +155,10 @@
         },
         {
           "sso_group_name": "csr-application-support",
+          "level": "instance-access"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
           "level": "instance-access"
         },
         {
