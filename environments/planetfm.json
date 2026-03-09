@@ -13,15 +13,15 @@
           "level": "developer"
         },
         {
-          "sso_group_name": "studio-webops",
-          "level": "instance-management"
-        },
-        {
           "sso_group_name": "csr-application-support",
           "level": "developer"
         },
         {
           "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
           "level": "developer"
         }
       ]
@@ -38,15 +38,15 @@
           "level": "developer"
         },
         {
-          "sso_group_name": "studio-webops",
-          "level": "instance-management"
-        },
-        {
           "sso_group_name": "csr-application-support",
           "level": "developer"
         },
         {
           "sso_group_name": "azure-aws-sso-digital-studio-operations",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "azure-aws-sso-csr-application-support",
           "level": "developer"
         }
       ]
