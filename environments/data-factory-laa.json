@@ -6,7 +6,7 @@
       "access": [
         {
           "sso_group_name": "laa-data-factory-engineering",
-          "level": "data-engineering"
+          "level": "sandbox"
         }
       ],
       "nuke": "rebuild"
