@@ -7,6 +7,10 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "edw-mp-access",
+          "level": "developer"
         }
       ]
     },
@@ -15,6 +19,10 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "edw-mp-access",
           "level": "developer"
         }
       ]
@@ -25,6 +33,10 @@
         {
           "sso_group_name": "laa-aws-infrastructure",
           "level": "developer"
+        },
+        {
+          "sso_group_name": "edw-mp-access",
+          "level": "developer"
         }
       ]
     },
@@ -33,6 +45,10 @@
       "access": [
         {
           "sso_group_name": "laa-aws-infrastructure",
+          "level": "developer"
+        },
+        {
+          "sso_group_name": "edw-mp-access",
           "level": "developer"
         }
       ]
