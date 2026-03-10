@@ -1,0 +1,29 @@
+name: Prevent unauthorized workflows
+on:
+  pull_request_target:
+    paths:
+      - ".github/workflows/**"
+
+jobs:
+  block_unauthorized:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check author team
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ALLOWED_TEAM="modernisation-platform"
+          AUTHOR=$(jq -r .pull_request.user.login $GITHUB_EVENT_PATH)
+          echo $AUTHOR
+
+          # Use GitHub API to check if author is in the allowed team
+          MEMBERS=$(gh api orgs/ministryofjustice/teams/$ALLOWED_TEAM/members --jq '.[].login')
+
+          if [[ ! " $MEMBERS " =~ " $AUTHOR " ]]; then
+            echo "Only members of the '$ALLOWED_TEAM' team can create or modify workflow files."
+            exit 1
+          fi
+
+          echo "$AUTHOR is authorized to modify workflow files"
