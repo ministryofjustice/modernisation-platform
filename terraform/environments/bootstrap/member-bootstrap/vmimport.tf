@@ -74,6 +74,19 @@ data "aws_iam_policy_document" "vmimport" {
   }
 
   statement {
+    sid    = "VmImportImageBuilderEc2BuildLifecycle"
+    effect = "Allow"
+    actions = [
+      "ec2:RunInstances",
+      "ec2:CreateTags",
+      "ec2:TerminateInstances",
+      "ec2:StartInstances",
+      "ec2:StopInstances"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
     sid    = "VmImportKmsDecrypt"
     effect = "Allow"
     actions = [
