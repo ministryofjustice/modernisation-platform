@@ -45,7 +45,7 @@
 /terraform/environments/core-shared-services/delius-jitbit.tf @ministryofjustice/hmpps-migration @ministryofjustice/hosting-migrations 
 /terraform/environments/core-shared-services/delius-mis.tf @ministryofjustice/hmpps-migration @ministryofjustice/hosting-migrations 
 /terraform/environments/core-shared-services/digital-prison-reporting.tf @ministryofjustice/digital-prisons-reporting-development-data-engineer @ministryofjustice/digital-prisons-reporting-preproduction-data-engineer @ministryofjustice/digital-prisons-reporting-production-data-engineer @ministryofjustice/digital-prisons-reporting-test-data-engineer @ministryofjustice/hmpps-digital-prison-reporting @ministryofjustice/hmpps-digital-prison-reporting-non-cleared-team 
-/terraform/environments/core-shared-services/edw-19c.tf @ministryofjustice/laa-aws-infrastructure 
+/terraform/environments/core-shared-services/edw-19c.tf @ministryofjustice/edw-mp-access @ministryofjustice/laa-aws-infrastructure 
 /terraform/environments/core-shared-services/electronic-monitoring-data.tf @ministryofjustice/hmpps-electronic-monitoring-data-no-sc @ministryofjustice/hmpps-electronic-monitoring-data-store 
 /terraform/environments/core-shared-services/equip.tf @ministryofjustice/modernisation-platform-engineers 
 /terraform/environments/core-shared-services/example.tf @ministryofjustice/green-ops @ministryofjustice/modernisation-platform @ministryofjustice/octo-cyber-team 
