@@ -56,7 +56,7 @@
         },
         {
           "sso_group_name": "laa-cyber-security-team",
-          "level": "instance_access"
+          "level": "instance-access"
         }
       ]
     },
