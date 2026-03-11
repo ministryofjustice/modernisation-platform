@@ -5,6 +5,8 @@ permissions:
   contents: read
   pull-requests: read
   id-token: write
+env:
+  APP_ID: 2013696
 jobs:
   fetch-secrets:
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/aws-secrets-management.yml@5c713c93eea694829b1bd3f410d0b235053318ce # v4.0.0
@@ -20,11 +22,20 @@ jobs:
         uses: ministryofjustice/modernisation-platform-github-actions/decrypt-secrets@5c713c93eea694829b1bd3f410d0b235053318ce # v4.0.0
         with:
           slack_webhook_url: ${{ needs.fetch-secrets.outputs.slack_webhook_url }}
+          mp_github_app_private_key: ${{ needs.fetch-secrets.outputs.mp_github_app_private_key }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
+      - name: Create GitHub App token
+        id: app
+        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
+        with:
+          app-id: ${{ env.APP_ID }}               
+          private-key: ${{ env.MP_GITHUB_APP_PRIVATE_KEY }} 
+          owner: "ministryofjustice"
+          repositories: "modernisation-platform"
       - name: Detect workflow file changes in PR
         id: detect_workflow_changes
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.app.outputs.token }}
         run: |
           FILES=$(gh pr view ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --json files --jq '.files[].path')
           if echo "$FILES" | grep -q "^\.github/workflows/"; then
@@ -36,7 +47,7 @@ jobs:
         if: steps.detect_workflow_changes.outputs.workflow_changed == 'true'
         id: verify_author_authorisation
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.app.outputs.token }}
         run: |
           ALLOWED_TEAM="modernisation-platform"
           AUTHOR=$(jq -r '.sender.login' $GITHUB_EVENT_PATH)
