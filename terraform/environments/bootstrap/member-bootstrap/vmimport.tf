@@ -93,6 +93,24 @@ data "aws_iam_policy_document" "vmimport" {
     ]
     resources = ["*"]
   }
+
+  statement {
+    sid    = "VmImportImageBuilderPassRole"
+    effect = "Allow"
+    actions = [
+      "iam:PassRole"
+    ]
+    resources = [
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/EC2InstanceProfileForImageBuilder",
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/image-builder",
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/vmimport"
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "iam:PassedToService"
+      values   = ["ec2.amazonaws.com", "imagebuilder.amazonaws.com"]
+    }
+  }
 }
 
 resource "aws_iam_role_policy" "vmimport" {
