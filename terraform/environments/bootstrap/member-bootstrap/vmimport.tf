@@ -3,6 +3,7 @@
 
 data "aws_iam_policy_document" "vmimport_assume_role" {
   statement {
+    sid     = "AllowVmImportServiceAssumeRole"
     effect  = "Allow"
     actions = ["sts:AssumeRole"]
 
@@ -17,6 +18,25 @@ data "aws_iam_policy_document" "vmimport_assume_role" {
       values   = ["vmimport"]
     }
   }
+
+  statement {
+    sid     = "AllowImageBuilderExecutionAssumeRole"
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com", "imagebuilder.amazonaws.com"]
+    }
+  }
+}
+
+data "aws_iam_policy" "vmimport_image_builder_managed_policies" {
+  for_each = toset([
+    "EC2InstanceProfileForImageBuilder",
+    "AmazonSSMManagedInstanceCore"
+  ])
+  name = each.key
 }
 
 resource "aws_iam_role" "vmimport" {
@@ -61,6 +81,18 @@ data "aws_iam_policy_document" "vmimport" {
     ]
     resources = ["*"]
   }
+
+  statement {
+    sid    = "VmImportImageBuilderSsmCommands"
+    effect = "Allow"
+    actions = [
+      "ssm:SendCommand",
+      "ssm:ListCommands",
+      "ssm:ListCommandInvocations",
+      "ssm:GetCommandInvocation"
+    ]
+    resources = ["*"]
+  }
 }
 
 resource "aws_iam_role_policy" "vmimport" {
@@ -69,4 +101,11 @@ resource "aws_iam_role_policy" "vmimport" {
   name   = "vmimport"
   role   = aws_iam_role.vmimport[0].id
   policy = data.aws_iam_policy_document.vmimport.json
+}
+
+resource "aws_iam_role_policy_attachment" "vmimport_image_builder_managed" {
+  for_each = local.account_data.account-type == "member" ? data.aws_iam_policy.vmimport_image_builder_managed_policies : {}
+
+  role       = aws_iam_role.vmimport[0].name
+  policy_arn = each.value.arn
 }
