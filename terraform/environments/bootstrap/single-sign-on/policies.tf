@@ -198,12 +198,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "cloudwatch:DeleteDashboards",
       "codebuild:ImportSourceCredentials",
       "codebuild:PersistOAuthToken",
-      "compute-optimizer:*",
       "cur:DescribeReportDefinitions",
-      "datasync:DescribeTask",
-      "datasync:ListTasks",
-      "datasync:StartTaskExecution",
-      "datasync:TagResource",
       "ds:AccessDSData",
       "ds:*Tags*",
       "ds:*Snapshot*",
@@ -249,6 +244,7 @@ data "aws_iam_policy_document" "developer_additional" {
       "events:DisableRule",
       "events:EnableRule",
       "fis:*",
+      "glue:DeleteTable",
       "glue:GetConnection",
       "glue:GetConnections",
       "guardduty:*",
@@ -299,15 +295,13 @@ data "aws_iam_policy_document" "developer_additional" {
       "ssm-guiconnect:*",
       "sso:ListDirectoryAssociations",
       "support:*",
-      "support-console:*",
       "states:Describe*",
       "states:List*",
       "states:Stop*",
       "states:Start*",
       "wellarchitected:Get*",
       "wellarchitected:List*",
-      "wellarchitected:ExportLens",
-      "workspaces-web:ListSessions"
+      "wellarchitected:ExportLens"
     ]
     resources = ["*"]
   }
@@ -419,7 +413,6 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "athena:DeleteNamedQuery",
       "athena:StartQueryExecution",
       "athena:StopQueryExecution",
-      "apigateway:POST",
       "ce:CreateReport",
       "dms:StartReplicationTask",
       "dms:StopReplicationTask",
@@ -467,14 +460,6 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "lakeformation:RemoveLFTagsFromResource",
       "lakeformation:GetDataAccess",
       "lambda:PutRuntimeManagementConfig",
-      "macie2:ListManagedDataIdentifiers",
-      "macie2:ListCustomDataIdentifiers",
-      "macie2:GetFindings",
-      "macie2:ListFindings",
-      "macie2:GetFindingStatistics",
-      "macie2:GetMacieSession",
-      "macie2:ListClassificationJobs",
-      "macie2:DescribeClassificationJob",
       "sqs:StartMessageMoveTask",
       "sqs:CancelMessageMoveTask",
       "sqs:ListMessageMoveTasks",
@@ -483,18 +468,15 @@ data "aws_iam_policy_document" "data_engineering_additional" {
       "sqs:GetQueueAttributes",
       "sqs:ListDeadLetterSourceQueues",
       "sqs:SendMessage",
-      "sqs:PurgeQueue",
       "states:Describe*",
       "states:List*",
       "states:Stop*",
       "states:Start*",
       "states:RedriveExecution",
       "s3:PutBucketNotificationConfiguration",
-      "s3:CreateJob",
       "s3:GetBucketOwnershipControls",
       "s3:PutObjectAcl",
       "s3:PutObjectTagging",
-      "s3:UpdateJobStatus",
       "s3tables:*"
     ]
     resources = ["*"]
@@ -507,16 +489,10 @@ data "aws_iam_policy_document" "data_engineering_additional" {
   }
 
   statement {
-    sid     = ""
-    effect  = "Allow"
-    actions = ["iam:PassRole"]
-    resources = [
-      "arn:aws:iam::${local.environment_management.account_ids["analytical-platform-data-production"]}:role/data-first-data-science",
-      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/glue-notebook-role-tf",
-      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-test"]}:role/AWSS3BucketReplication*",
-      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-preproduction"]}:role/AWSS3BucketReplication*",
-      "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/AWSS3BucketReplication*"
-    ]
+    sid       = ""
+    effect    = "Allow"
+    actions   = ["iam:PassRole"]
+    resources = ["arn:aws:iam::${local.environment_management.account_ids["analytical-platform-data-production"]}:role/data-first-data-science", "arn:aws:iam::${local.environment_management.account_ids["electronic-monitoring-data-production"]}:role/glue-notebook-role-tf"]
   }
 
   statement {
@@ -621,7 +597,6 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "apigateway:*",
       "application-autoscaling:*",
       "appstream:*",
-      "aps:*",
       "athena:*",
       "autoscaling:*",
       "aws-marketplace:ViewSubscriptions",
@@ -675,7 +650,6 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "migrationhub-strategy:*",
       "networkflowmonitor:*",
       "networkmonitor:*",
-      "network-firewall:*",
       "oam:*",
       "organizations:DescribeOrganization",
       "quicksight:*",
@@ -703,14 +677,11 @@ data "aws_iam_policy_document" "platform_engineer_additional_additional" {
       "states:*",
       "sts:*",
       "support:*",
-      "support-console:*",
       "textract:*",
       "tiros:*",
       "transfer:*",
-      "vpce:*",
       "wafv2:*",
-      "wellarchitected:*",
-      "workspaces-web:*"
+      "wellarchitected:*"
     ]
     resources = ["*"]
   }
@@ -864,9 +835,7 @@ data "aws_iam_policy_document" "sandbox_additional" {
       "sso:ListDirectoryAssociations",
       "states:*",
       "support:*",
-      "support-console:*",
       "textract:*",
-      "transfer:*",
       "wafv2:*",
       "wellarchitected:*",
       "workspaces-web:*"
@@ -1220,8 +1189,7 @@ data "aws_iam_policy_document" "instance-management-document" {
       "ssm:*",
       "ssm-guiconnect:*",
       "sso:ListDirectoryAssociations",
-      "support:*",
-      "support-console:*"
+      "support:*"
     ]
 
     resources = ["*"]
