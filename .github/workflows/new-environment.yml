@@ -160,7 +160,7 @@ jobs:
       - name: Run terraform apply in terraform/environments
         run: bash scripts/terraform-apply.sh terraform/environments
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
+        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 # v3.0.1
         with:
           webhook-type: incoming-webhook
           payload: |
@@ -203,7 +203,7 @@ jobs:
       - name: Provision Member Component Workspaces
         run: bash scripts/provision-member-component-workspaces.sh
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
+        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 # v3.0.1
         with:
           webhook-type: incoming-webhook
           payload: |
@@ -258,7 +258,7 @@ jobs:
             echo "[+] There were no AWS member accounts to process"
           fi
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
+        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 # v3.0.1
         with:
           webhook-type: incoming-webhook
           payload: |
@@ -313,7 +313,7 @@ jobs:
             echo "[+] There were no AWS member accounts to process"
           fi   
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
+        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 # v3.0.1
         with:
           webhook-type: incoming-webhook
           payload: |
@@ -368,7 +368,7 @@ jobs:
             echo "[+] There were no AWS member accounts to process"
           fi
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
+        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 # v3.0.1
         with:
           webhook-type: incoming-webhook
           payload: |
@@ -468,7 +468,7 @@ jobs:
             echo "[+] There were no AWS member accounts to process"
           fi
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
+        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 # v3.0.1
         with:
           webhook-type: incoming-webhook
           payload: |
@@ -623,7 +623,7 @@ jobs:
             echo "[+] There were no AWS member accounts to process"
           fi
       - name: Slack failure notification
-        uses: slackapi/slack-github-action@91efab103c0de0a537f72a35f6b8cda0ee76bf0a # v2.1.1
+        uses: slackapi/slack-github-action@af78098f536edbc4de71162a307590698245be95 # v3.0.1
         with:
           webhook-type: incoming-webhook
           payload: |
