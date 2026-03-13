@@ -53,6 +53,10 @@
         {
           "sso_group_name": "laa-cyber-security-team",
           "level": "read-only"
+        },
+        {
+          "sso_group_name": "laa-cyber-security-team",
+          "level": "instance-management"
         }
       ]
     },

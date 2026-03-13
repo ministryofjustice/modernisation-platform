@@ -19,11 +19,11 @@ body:
   validations:
     required: true
 - type: input
-  id: requestor-slack
+  id: requestor-email
   attributes:
-    label: Requestor Slack handle
-    description: The Slack handle of the person making this request.
-    placeholder: e.g., @bilbo-baggins
+    label: Requestor email address
+    description: The email address of the person making this request.
+    placeholder: e.g., user@justice.gov.uk
   validations:
     required: true
 - type: markdown
